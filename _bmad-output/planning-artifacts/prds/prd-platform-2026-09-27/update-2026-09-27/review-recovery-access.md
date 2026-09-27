@@ -1,0 +1,51 @@
+# Recovery and access review
+
+Date: 2026-09-27. Reviewed the current [PRD](../prd.md) and [supporting addendum](../addendum.md) against the user's selected deputy authority, RTO coverage policy and all-checks review request.
+
+**Verdict: PASS for document handoff.** No actionable critical, high, medium or low findings were identified in this review. The requirements distinguish application recovery, disaster recovery, production access and promotion authority, and give the named edge cases a testable outcome. Implementation qualification remains required; this review is not production authorization or evidence of a passed runtime test.
+
+## Scenario review
+
+| Scenario | Required outcome and source | Assessment |
+| --- | --- | --- |
+| First production deployment before admitting users | G1 requires supported infrastructure, executor/probe access, empty initial production admission group, independent monitoring and GitHub delivery. General ingress remains closed. PRD Release scope and production entry. | Coherent initial boundary. |
+| Need a positive authorization test while G2 is still closed | After initial G1 deployment, Administrator can temporarily admit a designated synthetic identity solely for SM-4; executor/probe ingress restriction remains, the grant is revoked and no general users enter. PRD production-entry paragraph and SM-4; addendum Accepted release identity and production entry. | Explicit limited exception resolves the positive-test bootstrap without opening production. |
+| Recovery drill would otherwise alter live identity authority | FR-9 requires isolated copies and prohibits live production/shared-authority mutation. Production-entry clarification applies the same separation to identity copies. | The drill cannot use its qualification purpose to mutate the shared live realm. |
+| Administrator approves an early release before G3 | FR-6 still requires exact-release staging E2E evidence, isolation, serialized changes, provenance and production verification. G2 still controls user opening. | Approval permits the release mode, not bypass of common checks or admission. |
+| Candidate cannot safely roll back | The automatic path fails compatibility qualification. An Administrator-approved incompatible release names a separate recovery procedure and acceptance checks before mutation. FR-6, FR-8 opening and NFR-1. | The incompatible path has an explicit plan; it does not falsely claim previous-application recovery can undo incompatible state. |
+| One changed module leaves other enrolled modules unchanged | The release includes the complete enrolled composition and every required declaration/check. FR-6; release glossary and SM-5. | Unchanged modules do not silently fall outside the gate or verification scope. |
+| Failure after partial workload or routing mutation | FR-8 restores previous working application behavior with compatible current authority; routing-only mutations are included and SM-5 requires their scenario. NFR-1 protects data, events, rotations and revocations. | Recovery scope covers partial application and routing changes. |
+| Failure before any application or routing change | FR-8 retains current release, reports failure and preserves the promotion-stop behavior. | No needless mutation or false successful recovery claim is required. |
+| First deployment or first module enrollment fails | With no prior working release, user ingress stays closed and no successful rollback is claimed. Failed first enrollment removes application workloads while preserving durable data. FR-8 and addendum Recovery and its limits. | Bootstrap and enrollment cases have explicit outcomes. |
+| Executor crashes during rollout or the one recovery attempt | FR-7 prohibits reset of elapsed deadlines or replenishment of the attempt; observation gaps invalidate verification and ambiguous ownership/records stop changes. Any continuation uses only the remaining allowance. FR-8 records remain independently retrievable. | A restart cannot gain a second recovery attempt or erase failed verification. |
+| Rollback command returns success but checks are missing/failing | FR-8 requires restored-release readiness and smoke verification under the same policy; FR-7 rejects missing passing checks. SM-C3 prevents false success. | Command completion is insufficient. |
+| Failed/unverified recovery, or disaster recovery begins | FR-8 sets a durable promotion stop, survives executor/cluster restart and reports the result. Repeated automatic searching through old releases is forbidden. | Promotion remains blocked across restart and uncertainty. |
+| Production becomes unhealthy after the five-minute deployment window | FR-8 treats it as an operational incident and retains/sets the promotion stop until Administrator records a verified baseline; it does not trigger indefinite automatic release switching. | The deployment window is bounded without allowing future promotion from a known unhealthy baseline. |
+| Administrator is unavailable and deputy restores service | Target users, FR-8, FR-9 and the deputy glossary allow named independent access, alerts, documented recovery, verification and reopening. Promotion stop remains; Administrator alone clears it and administers production admission. | The selected split is consistent. Reopening previously authorized service is distinct from new admissions and promotion resumption. |
+| Deputy credentials exist but actual notifications/key access have not been exercised | FR-8/FR-9, G2 and downstream ownership require demonstrated independent access and delivery before counting the arrangement. Addendum Recovery deputy authority explicitly identifies the architecture amendment. | A named deputy alone does not establish response capability. |
+| Outage begins shortly before declared coverage ends | NFR-2 says an incident beginning in coverage remains covered when the schedule ends. Four hours still measures the original outage through verified restoration. | Boundary does not pause or shorten the obligation. |
+| Outage begins outside coverage and persists into the next shift | NFR-2 makes no four-hour promise for that outage; full duration and coverage are recorded and the clock never restarts. RPO, backup protection and monitoring continue. | Coverage is not used to disguise elapsed outage time or reduce data-protection obligations. |
+| Operator response or replacement capacity consumes most of four hours | NFR-2/FR-9 require worst-case acknowledgement, detection, capacity, transfer/restore and verification inside the measured drill. G2 remains closed if evidence cannot meet the accepted target, pending capability correction or explicit target revision. | Infrastructure-only restore timing cannot falsely qualify the target. |
+| Backup jobs succeeded but one module's snapshot is stale or an incremental chain is unusable | FR-9 counts only a complete verified set at a declared cut with integrity, decryption and chain checks. RPO age uses that cut, not job completion. | Individual job success cannot conceal an unusable cross-module recovery point. |
+| Primary server, storage or whole site is lost | FR-9 requires independently available off-site data, artifacts, access and keys. NFR-2 limits whole-site coverage to exercised independent replacement capacity. | Off-site backup location alone is not misrepresented as whole-site RTO evidence. |
+| Restored snapshots contain revoked users or old credentials | FR-9 restores into quarantine, rotates restored credentials, reapplies post-cut revocations and tests revoked-principal denial before reopening. NFR-1 also forbids application rollback from rewinding security authority. | Recovery is not permitted to silently restore outdated security access. |
+| An acknowledged Memories erasure occurred after the ordinary backup cut | FR-9 excludes that erasure guarantee from ordinary one-hour data-loss tolerance and fails closed on unknown lineage. The addendum requires independent tombstone/key continuity and unusability of erased-tenant earlier key backups. | The ordinary RPO does not authorize resurrection of erased tenants or keys. |
+| Other modules lose acknowledgements inside the ordinary RPO window | FR-9 reports the window and requires module-owned reconciliation before destructive retention or external effects resume. Addendum Recovery authority, erasure and external effects addresses unknown external outcomes. | The accepted limitation remains visible and does not relax Memories protections. |
+| Staging workload, CI, smoke/recovery identity or restored copy reaches production authority | FR-10/FR-11/NFR-3 require environment/purpose isolation, no hosted credentials in CI, explicit admission and negative checks at direct service/data/routing/admin boundaries. Restored copies remain restricted production data. | Tests cover machine and direct-access paths as well as ordinary human login. |
+
+## Findings
+
+| Severity | Count |
+| --- | --- |
+| Critical | 0 |
+| High | 0 |
+| Medium | 0 |
+| Low | 0 |
+
+## Existing qualification work, not new findings
+
+The PRD already assigns architecture/spec alignment for deputy operational access and notification recipients before recovery/deployment stories are finalized. The addendum explicitly labels current Administrator-only architecture controls as requiring amendment and says independent deputy access must be proven before counting deputy coverage. This includes the narrow documented recovery steps needed to restore existing authority; it does not grant general identity administration or production admission.
+
+Administrator, Platform and dependency owners must still establish concrete coverage/time zone/acknowledgement bounds, identity/key/executor access, replacement capacity, representative data volume and actual GitHub delivery before the relevant gates. Module owners must prove recovery inventories, integrity and erasure/revocation behavior. Those are named evidence prerequisites; demanding that this document review perform them would confuse document finalization with operating readiness.
+
+This review evaluated requirement scenarios. It did not exercise a deployment, restore infrastructure, inspect live credentials or send notifications.

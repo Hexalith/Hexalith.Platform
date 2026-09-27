@@ -85,3 +85,11 @@ Audited on 2026-09-27 against the updated [PRD](../prd.md), [addendum](../addend
 ## Follow-through already assigned
 
 No missing PRD requirement was identified. Existing downstream work remains visible: amend architecture operational access/notification wording for the deputy and synchronize spec wording; declare coverage and acknowledgement limits; then prove the relevant G1–G3 evidence. These are assigned implementation/document maintenance prerequisites, not grounds to resurrect superseded requirements or claim the production gates have passed.
+
+## Later-entry appendix
+
+Entry **78 (change)** assigns staging trigger/rerun evidence policy to Platform/Builds, preserves the promotion stop for established unhealthy post-window incidents, and retains release artifacts/records/evidence for the longer of the backup retention period or rollback-target lifetime. Captured in the PRD downstream table and FR-8, and addendum Retained release identity (AD-2 retention). The architecture reconciliation's no-blocker result is review history, not production evidence. No audit gap was introduced.
+
+Entries **79–81 (changes)** record resolved reviewer findings and editorial changes. The addendum requires release controls before the first applicable attempt, including approved pre-G3 releases, and applies E2E evidence to both modes. Recovery rationale includes the deputy. Structure and prose changes preserve requirements and contributed alternatives; both documents are final.
+
+Entries **82–83 (events)** record passing document checks and finalization. All 26 requirement and metric IDs remain stable; the 29 checked local links/anchors and requirement references resolve. These events are document evidence only. No new product decision or unassigned prerequisite was introduced after the initial audit.

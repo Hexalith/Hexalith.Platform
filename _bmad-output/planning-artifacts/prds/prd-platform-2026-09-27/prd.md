@@ -1,6 +1,6 @@
 ---
 title: Hexalith Platform Product Requirements
-status: draft
+status: final
 created: 2026-09-27
 updated: 2026-09-27
 ---
@@ -12,6 +12,8 @@ updated: 2026-09-27
 This PRD defines the requirements for the team's internal Hexalith Platform. It builds on the [completed platform brief](../../briefs/brief-platform-2026-09-27/brief.md) and [brief addendum](../../briefs/brief-platform-2026-09-27/addendum.md), supplemented by product-owner decisions captured during PRD coaching. This revision reconciles the [2026-09-27 validation findings](validation-report.md) with the accepted [Platform architecture](../../architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md). Product requirements belong here; implementation decisions and supporting rationale belong in the [PRD addendum](addendum.md).
 
 This document sets the product requirements for architecture and implementation planning. Implementation mechanisms and readiness evidence are assigned to the downstream owners listed at the end; the requirements do not establish deployed capability.
+
+The [update summary](update-2026-09-27/update-summary.md) records the resolved findings, selected policies and final document checks.
 
 ## Vision
 
@@ -30,6 +32,8 @@ Staging and production run on the designated Kubernetes installation and may sha
 - **Automated CI workflows:** obtain the environments required to execute automated tests.
 - **Administrator (recovery owner):** receives deployment, recovery, and backup-failure notifications through GitHub, takes over when automatic recovery fails or cannot be verified, and follows the disaster recovery procedure when production data or infrastructure must be restored.
 - **Recovery deputy:** a named person who receives recovery alerts, has independent recovery/key access, and can execute the documented recovery procedure, verify restoration and reopen service when Administrator is unavailable. Administrator alone authorizes resumption of promotions and production-user administration.
+
+User journeys are represented by capability and acceptance scenarios because this PRD governs developer orchestration and module-provided interfaces; module business journeys remain owned by the modules.
 
 ## Confirmed MVP scope
 
@@ -77,7 +81,7 @@ A domain-module workspace includes Platform as a direct Git submodule and runs t
 
 #### FR-2: Debug the active module checkout
 
-A developer can run and debug a domain module (Tenants, Parties, Folders, Projects) from that module's workspace using Platform and only the components required by the selected scenario. EventStore, Memories, and McpCli must be directly declared in Platform and run and debugged from source in that workspace; this is an enrollment requirement, not a claim that every declaration already exists.
+A developer can run and debug a domain module (Tenants, Parties, Folders, Projects) from that module's workspace using Platform and only the components specified by the module configuration. EventStore, Memories, and McpCli must be directly declared in Platform and run and debugged from source in that workspace; this is an enrollment requirement, not a claim that every declaration already exists.
 
 **Testable consequences:**
 
@@ -109,6 +113,8 @@ A developer or automated CI workflow can provision the configured environment th
 
 **Testable consequences:**
 
+**Composition and readiness**
+
 - Parties integration tests run against real EventStore, Tenants, and Memories, plus any additional dependencies selected in the Parties module configuration.
 - Local integration-test environments run through Aspire using the module configuration and the active source checkout.
 - The configured environment supports both local and automated CI integration runs, following the local Debug/project-reference and CI Release/NuGet rules in FR-2.
@@ -116,9 +122,15 @@ A developer or automated CI workflow can provision the configured environment th
 - Each module defines readiness for its services. Test execution waits until the selected module and its required dependencies report readiness and any required one-off startup tasks complete successfully. A running process alone does not establish readiness; a required service without usable readiness evidence is a configuration error.
 - The default overall environment-startup deadline is **10 minutes**, from the request to start the environment until required resources are ready. The module's test configuration may explicitly override it with a justified finite timeout; diagnostics show the effective value. This deadline excludes test execution and does not change production rollout deadlines.
 - Definite startup failure can fail the run before its deadline. A timeout identifies resources that were not ready and preserves diagnostic evidence.
+
+**Run isolation and ownership**
+
 - Test data is isolated so tests do not depend on data left by other tests or affect staging or production application data.
-- The environment can serve a test suite or compatible batch. A failed local test or startup attempt leaves surviving environment resources available for debugging; the developer can explicitly stop and clean up the retained environment.
 - A new suite or compatible batch gets a fresh run-owned environment by default, or fails with the conflicting run identified. Explicit attachment requires compatible composition, artifact mode, readiness and data isolation in a local or CI run-owned environment; attachment to hosted environments is refused.
+
+**Completion, cleanup and diagnostics**
+
+- The environment can serve a test suite or compatible batch. A failed local test or startup attempt leaves surviving environment resources available for debugging; the developer can explicitly stop and clean up the retained environment.
 - A successful local run cleans up automatically. The run's first terminal outcome determines cleanup or retention; later cancellation must not erase an environment retained after failure. Retained environments show their owner and age.
 - Explicit cancellation of a local test run stops that run and cleans up resources it created. An Aspire environment started separately by the developer remains running.
 - CI automatically cleans up its test environment after success, failure, or cancellation, including resources created before provisioning failed.
@@ -176,7 +188,7 @@ Platform must verify that the intended release becomes ready and performs the re
 - A required smoke test failing **twice consecutively**, with the second attempt **30 seconds after the first failure**, triggers recovery. A required check without a completed passing verification result at the deadline also fails deployment; skipped or missing results do not pass.
 - Availability is sampled at least every **10 seconds**; smoke checks have stable identities and run at the window start and a declared finite cadence. A check timeout fails the check. Results bind the intended served release. A bounded grace may finish an in-flight retry but cannot convert a missing pass at the verification deadline into success.
 - Verification targets the intended release. Platform declares success only when required services are ready and the latest required smoke-test results are passing at the end of the verification window, with no failure trigger having fired.
-- Interruptions do not reset elapsed deadlines or replenish recovery attempts. A gap in observation invalidates verification; uncertain release identity, ownership or records stops changes for intervention. A bounded continuation of the same attempt may use only its remaining recovery allowance.
+- Interruptions do not reset elapsed deadlines or replenish recovery attempts. A gap in observation invalidates verification; uncertainty about release identity, ownership or records stops changes pending intervention. A bounded continuation of the same attempt may use only its remaining recovery allowance.
 
 These are initial policy defaults to validate with staging evidence. They govern deployment acceptance; they are not measured availability guarantees.
 
@@ -213,7 +225,7 @@ The recovery owner can restore production from usable recovery points outside th
 - Independent monitoring checks the newest complete recovery point at least every **15 minutes**, warns before its age reaches one hour and notifies Administrator and the deputy through GitHub on backup failure or age over **one hour**. Production availability is probed at least every **five minutes**, from G1 onward. Failure reporting survives loss of the primary environment; an independent hourly check detects monitor silence.
 - Disaster recovery fences the failed environment and restores into quarantine. Before reopening, rotate restored credentials, reapply post-cut revocations, and verify compatible application/configuration versions, cross-module integrity, restored-release smoke tests and all NFR-3 access outcomes, including denial of revoked principals. Re-enable backups and monitoring before reopening service.
 - Memories recovery must preserve every acknowledged erasure tombstone and prevent resurrection of erased tenants or keys; unknown authority lineage fails closed. The ordinary one-hour RPO does not relax this guarantee. For other modules, deletions, erasures or legal holds acknowledged only inside the lost RPO window may be lost under the accepted MVP recovery envelope; report that window and complete module-owned reconciliation before resuming destructive retention or external effects.
-- An isolated restore exercise runs **before G2, monthly thereafter, and after material storage or backup changes**. It assumes primary server and storage loss and proves detection, worst-case response within declared coverage, replacement capacity, restore and verification inside NFR-2. It records recovered-data age, full elapsed time, coverage and every substituted dependency. Drills use isolated copies and cannot mutate live production or shared authority.
+- An isolated restore exercise runs **before G2, monthly thereafter, and after material storage or backup changes**. It assumes primary server and storage loss and proves that detection, worst-case response within declared coverage, replacement capacity, restore and verification meet the NFR-2 targets. It records recovered-data age, full elapsed time, coverage and every substituted dependency. Drills use isolated copies and cannot mutate live production or shared authority.
 
 ### Hosted environments and user access
 
@@ -263,7 +275,7 @@ A user can discover and invoke the commands and queries published by enabled mod
 - Server-side checks enforce authenticated caller identity, calling surface and current permissions on every invocation. Caller-supplied actor or surface values cannot grant authority; using a public client's token for a direct gateway call must not bypass UI-only or human-confirmation restrictions.
 - Acceptance names the enrolled operations actually demonstrated, proves allowed invocation through CLI and MCP, and proves refusal of ineligible, disabled, mismatched-contract and unauthorized operations. An empty executable catalog cannot satisfy the positive demonstration.
 
-The accepted architecture uses one McpCli client and the selected environment's EventStore gateway; McpCli stdio is the MVP MCP surface. Additional module or technical-module MCP hosts require a later architecture decision. Enrollment, authentication and readiness qualification remain implementation work under the [McpCli context](addendum.md#mcpcli-context).
+The accepted architecture uses `Hexalith.McpCli` and the selected environment's EventStore gateway; McpCli stdio is the MVP MCP surface and its CLI head is the Hexalith-owned command-line surface. Proprietary module and technical-module MCP servers, plug-ins, and CLIs are obsolete migration sources, including EventStore Admin tools. Platform does not add or publish another proprietary Hexalith MCP/CLI surface. A legacy surface is retired after its owner-approved operation inventory, replacement or withdrawal decision, authorization, compatibility, and acceptance evidence pass. Enrollment, authentication and readiness qualification remain implementation work under the [McpCli context](addendum.md#mcpcli-context).
 
 ## Cross-cutting non-functional requirements
 
@@ -333,7 +345,7 @@ The product rules above are settled. The accepted architecture defines the mecha
 | Memories tombstone/key continuity and module-specific recovery reconciliation | Memories/EventStore with other module owners and Platform | Before G2 and whenever recovery mechanisms change |
 | Align architecture operational access and notification recipients with the selected deputy role; synchronize spec/acceptance wording for both release modes, G1–G3 and RTO coverage | Platform architecture/spec owners with Administrator | Before recovery/deployment stories are finalized; this PRD's later explicit decisions govern any stale downstream wording |
 
-No numeric uptime percentage or additional latency/throughput target is established. Revisit with Administrator if external adoption or operating evidence requires a stronger service commitment. User journeys are represented by capability and acceptance scenarios because this PRD governs developer orchestration and module-provided interfaces; module business journeys remain owned by the modules.
+No numeric uptime percentage or additional latency/throughput target is established. Revisit with Administrator if external adoption or operating evidence requires a stronger service commitment.
 
 ## Glossary
 

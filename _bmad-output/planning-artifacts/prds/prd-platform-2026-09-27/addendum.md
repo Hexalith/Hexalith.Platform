@@ -1,6 +1,6 @@
 ---
 title: Hexalith Platform PRD — Supporting Context
-status: draft
+status: final
 created: 2026-09-27
 updated: 2026-09-27
 ---
@@ -19,7 +19,7 @@ The inspected Platform repository declared sixteen references: AI.Tools, Agents,
 
 The source identifies the sibling `../mcpcli` repository as McpCli's canonical location; it was absent from Platform's inspected root submodule declarations. McpCli supplies the `hexalith` .NET tool, discovers decorated Contracts libraries, and routes commands and queries through EventStore.
 
-Its inspected README documented stdio MCP, deferred HTTP transport, and described an empty catalog with enrollment pending. These historical observations do not establish current runtime readiness or enrollment completeness. Accepted AD-11 selects a versioned McpCli running on the user or agent host with a common CLI/stdio MCP core. Hosted access uses the selected environment's authenticated EventStore gateway over HTTPS; stdio is the only MVP MCP surface. Other module or technical MCP hosts are not deployed or routed in Platform compositions until a later architecture decision admits them.
+Its inspected README documented stdio MCP, deferred HTTP transport, and described an empty catalog with enrollment pending. These historical observations do not establish current runtime readiness or enrollment completeness. Accepted AD-11 selects versioned `Hexalith.McpCli` on the user or agent host with a common CLI/stdio MCP core. Hosted access uses the selected environment's authenticated EventStore gateway over HTTPS; stdio is the only MVP MCP surface. Other proprietary Hexalith module or technical MCP hosts and CLIs are obsolete migration sources; Platform does not deploy or route them as new supported surfaces. Each is retired after an approved operation inventory and replacement or withdrawal evidence. EventStore Admin operations and other non-gateway capabilities require a generic McpCli extension decision before cutover.
 
 McpCli exposes module-defined commands and queries subject to the selected environment's permissions and agent eligibility. Offline Contracts inspection does not establish connected availability: execution also requires matching per-operation contract-schema digests from the selected gateway's committed catalog. Unknown or mismatched operations are non-executable. Profiles bind gateway, issuer and audience together; short-lived environment tokens go only to their issuing environment's gateway, with no fallback or implicit module enablement. Platform does not duplicate domain behavior.
 
@@ -31,7 +31,7 @@ Only dependencies declared directly under `references/` by the active root repos
 
 The source policy prohibits recursive or remote submodule updates and requires accidentally initialized nested submodules to be deinitialized. This is preserved policy context, not an instruction to modify the current working tree during PRD creation.
 
-AD-4 resolves the active root once and uses the active module plus its directly declared Hexalith dependencies from source with Debug assets; other dependencies use packages at the Builds catalog version. CI/CD uses Release/NuGet artifacts. Missing required source, duplicate source/package identities and tool/submodule identity mismatches fail explicitly; sibling, ancestor, nested-Platform and package fallback are forbidden. In a module workspace the Platform submodule commit is the sole Platform identity: local mode runs that source, while the pinned CI tool must embed the same commit. Removing the historical preview's alternate paths remains implementation work.
+AD-4 resolves the active root once and uses the active module plus Hexalith dependencies declared directly by that root from source with Debug assets; other dependencies use packages at the Builds catalog version. CI/CD uses Release/NuGet artifacts. Missing required source, duplicate source/package identities and tool/submodule identity mismatches fail explicitly; sibling, ancestor, nested-Platform and package fallback are forbidden. In a module workspace the Platform submodule commit is the sole Platform identity: local mode runs that source, while the pinned CI tool must embed the same commit. Removing the historical preview's alternate paths remains implementation work.
 
 ### Module-owned configuration example
 
@@ -164,11 +164,15 @@ The MVP uses readiness plus submodule-owned production smoke tests and one verif
 
 Use readiness plus module-owned smoke checks for the MVP. Continue running the complete required critical-flow E2E suite in staging. Production smoke checks are a short additional verification and do not replace that staging gate. Defer automatic traffic-metric triggers until operating evidence justifies them.
 
-### Accepted release identity and production entry
+### Retained release identity
 
 AD-1 and AD-2 select one Platform Aspire application model and one retained application Helm package with immutable image identities. Publish once, validate in staging, and deploy that retained artifact; never regenerate it during promotion or recovery. Data services, persistent state, shared infrastructure and credential rotation belong to a separately versioned, forward-only environment layer. A representative exporter qualification must prove the model works without a custom compiler, duplicate topology or recurring generated-file patches; otherwise the accepted fallback is a small maintained Helm chart with parity checks.
 
-The release record binds immutable artifacts, composed-host identity, module contracts and checks, profile template and qualified environment-layer versions. Environment-current values include secret references, authorization/configuration versions and current key/catalog generations. Each attempt records the exact values used; the working baseline is the last verified working release and attempt. Staging evidence must identify the serving release, suite, profile, configuration and production baseline, and remain within its maximum age. Incomplete, stale or mismatched evidence cannot authorize automatic promotion.
+The release record binds immutable artifacts, composed-host identity, module contracts and checks, profile template and qualified environment-layer versions. Environment-current values include secret references, authorization/configuration versions and current key/catalog generations. Each attempt records the exact values used; the working baseline is the last verified working release and attempt. Staging evidence must identify the serving release, suite, profile, configuration and production baseline, and remain within its maximum age. Incomplete, stale or mismatched E2E evidence cannot authorize promotion in either mode. Missing or invalid compatibility evidence blocks the automatic mode and requires approved recovery planning.
+
+AD-2 retains release artifacts, records and supporting evidence outside the primary failure domain for at least the backup retention period or their lifetime as a rollback target, whichever is longer. Platform and Builds qualify this retention and the staging trigger/rerun evidence policy before relying on release evidence.
+
+### Release modes and production entry
 
 There is one production deployment workflow with two modes. **Automatic** requires G3 and complete compatibility evidence. **Administrator-approved** uses an authenticated approval for pre-G3 releases and incompatible changes; an incompatible change names its separately planned recovery. Both retain the staging gate, serialized attempt ownership, artifact provenance, production verification and durable records. Administrator approval is not a waiver of failed critical-flow checks.
 
@@ -179,10 +183,6 @@ There is one production deployment workflow with two modes. **Automatic** requir
 | G3: enable automatic promotion | SM-5 deployment-failure and recovery rehearsals plus qualified release/attempt controls. |
 
 Between initial G1 deployment and G2 opening, Administrator may temporarily admit a designated synthetic test identity to prove SM-4 positive access. Ingress stays executor/probe-only, general users remain excluded, and the test grant is revoked after verification. Recovery drills use isolated identity copies. Architecture must carry this restricted qualification step alongside its initial empty-admission-group rule.
-
-AD-15 requires a prepared recovery combination before rollout: the working application with current security/configuration and a forward catalog generation preserving its routes and all still-referenced idempotency/key entries. Staging rehearses candidate-to-baseline recovery, including a command introduced by the candidate and its written state/events. Retirement cannot invalidate that combination before the release is working. Breaking, missing or wrong-baseline evidence routes the release to Administrator-approved planning.
-
-AD-2 retains release artifacts, records and supporting evidence outside the primary failure domain for at least the backup retention period or their lifetime as a rollback target, whichever is longer. Platform and Builds qualify this retention and the staging trigger/rerun evidence policy before relying on release evidence.
 
 ### Failure triggers and initial thresholds
 
@@ -199,6 +199,8 @@ One lock covers every workload-affecting environment change, including configura
 Each submodule chooses and maintains its small production-safe smoke set. Prefer read-only checks; necessary writes use dedicated synthetic test data, with no real-user changes or external effects such as notifications. Do not assume event records can simply be deleted after a test. The full staging E2E suite may contain operations unsuitable for production and must not be copied blindly.
 
 ### Recovery and its limits
+
+AD-15 requires a prepared recovery combination before rollout: the working application with current security/configuration and a forward catalog generation preserving its routes and all still-referenced idempotency/key entries. Staging rehearses candidate-to-baseline recovery, including a command introduced by the candidate and its written state/events. Retirement cannot invalidate that combination before the release is working. Breaking, missing or wrong-baseline evidence routes the release to Administrator-approved planning.
 
 - Make one automatic recovery attempt to the recorded previous working application release with compatible environment-current values, including partially updated workloads and committed routing changes. If no release-owned object changed and no catalog generation was committed, retain the current release and report the failed attempt. Administrator-approved incompatible releases use their named recovery procedure.
 - Verify recovery using readiness and the recorded production-safe smoke suite applicable to the restored release, under the same verification policy and failure thresholds. Checks for features introduced only in the failed release must not incorrectly fail its predecessor. Initial recovery budget: 10 minutes to restore readiness, followed by the same five-minute verification window. A successful rollback command alone is not proof of restored service.
@@ -217,7 +219,7 @@ GitHub issues assigned to Administrator are the accepted channel for deployment,
 
 | Option | How it works | Advantages | Costs and limits |
 | --- | --- | --- | --- |
-| 1: Deputy restores and reopens; Administrator resumes promotion — selected | Give the deputy only the permissions, key access and runbook needed for documented recovery and verification; leave promotion stopped for Administrator review. | Recovery can proceed when Administrator is unavailable while one person retains release-resume authority. | Releases remain stopped until Administrator returns; the deputy needs practiced access and must receive alerts. |
+| 1: Deputy restores and reopens; Administrator resumes promotion — selected | Give the deputy only the permissions, key access and runbook needed for documented recovery and verification; leave promotion stopped for Administrator review. | Recovery can proceed when Administrator is unavailable while one person retains release-resume authority. | Promotions remain stopped until Administrator resumes them; the deputy needs practiced access and must receive alerts. |
 | 2: Deputy also resumes promotion after the same checks | Add permission for the deputy to record the verified working release and clear the stop under the same evidence requirements. | Removes the final dependency on Administrator after successful recovery. | Delegates broader release authority and requires a clear accountability and access-review rule. |
 
 Implement Option 1 with ordinary named identities, narrowly scoped permissions and a rehearsed runbook, without a custom workflow system. **Architecture follow-up is required:** its current Administrator-only operations access and notification rules do not yet implement deputy recovery authority. Update those controls and prove independent deputy access before relying on deputy response coverage. This does not automatically grant operations-repository write access; if a second writer is introduced, the accepted GitHub Team control review applies.
@@ -236,41 +238,9 @@ The MVP uses Option 2: frequent independent backups and a tested restore procedu
 
 Application rollback under FR-8 restores code while preserving data. Disaster recovery restores lost or damaged state from a recoverable copy and may lose changes beyond its recovery point; its accepted one-hour data-loss target is distinct from the data-preservation requirement for application rollback.
 
-### Option 1: Daily backups and manual rebuild
-
-Create application-consistent backups once per day and copy them outside the primary infrastructure. After a failure, Administrator provisions replacement capacity, redeploys a recorded application release, restores compatible data and configuration, and verifies service behavior.
-
-Illustrative targets: up to 24 hours of lost data and restoration within 24 hours of the outage, if the backup and replacement capacity are available. A missed or unusable backup makes actual loss worse.
-
-Advantages: few moving parts, low operating cost, and an understandable recovery procedure. Suitable where a day's work can be recreated or the data is disposable.
-
-Disadvantages: potentially losing a full day's committed business changes; a lengthy manual restoration; no continuity during infrastructure loss. This is not the recommended default for production business records. Even this option needs off-primary copies and restore validation.
-
-### Option 2: Frequent off-primary backups and a tested restore procedure
-
-Keep a recoverable application-data copy outside the primary server/storage failure domain. Begin with backup or incremental-copy runs every 30 minutes, aiming for a newest completed, usable recovery point no older than one hour. Choose database-native backup mechanisms appropriate to the actual storage engines. Use existing incremental or log-archive capabilities where useful rather than writing a custom backup engine.
-
-After failure, Administrator follows a short restore procedure to rebuild compatible application/configuration state, restore authoritative data, and run the approved production-safe smoke checks before reopening access.
-
-Production targets: **RPO at most one hour continuously** and **RTO at most four hours from outage to verified recovery within declared response coverage**. The RTO includes operator response and replacement capacity; it is not a stopwatch started after those prerequisites become available. Full outage durations are recorded even outside response coverage.
-
-Advantages: substantially less potential data loss than daily backups, no standby production cluster required, and a recovery process that can be tested independently. Fits an internal MVP with one named recovery owner if that owner can respond and recovery capacity is available.
-
-Disadvantages: outages last while data is restored; backup duration, transfer capacity, and data volume can defeat the targets. Backup freshness must be monitored. The selected target explicitly accepts possible loss of up to one hour of committed data.
-
-### Option 3: Redundant infrastructure and database failover, with backups retained
-
-Run redundant application and stateful services across independent failure domains, with standby capacity and tested failover. Depending on the database, synchronous replication can protect acknowledged writes during supported node failures; asynchronous replication can lose changes that have not reached the standby. Continue independent backups for corruption, deletion, and losses affecting both copies.
-
-Illustrative objective for a supported single-node failure: restoration within 15 minutes and little or no loss of acknowledged data, depending on replication semantics. This is a different failure scope from losing the whole installation. A whole-site outage still requires an independent recovery location or restoration from backups.
-
-Advantages: shorter interruptions for failures covered by the redundancy design; less reliance on manual provisioning for those failures.
-
-Disadvantages: more machines and storage, more failure modes, replication monitoring, failover testing, and safeguards against conflicting writers. Replication can also propagate bad changes. Extra application replicas on the same underlying server or storage do not provide independent failure protection. Not recommended for the MVP unless the acceptable outage/data-loss objectives require it.
-
 ### Selected approach and operational scope
 
-Use Option 2 with the one-hour potential ordinary-data loss target and validate the four-hour recovery target under the selected response coverage before production use. The Memories erasure exception below is stronger than the ordinary-data RPO. GitHub notifications and named recovery operators do not establish round-the-clock coverage or an uptime guarantee.
+Use frequent independent backups and a tested restore procedure (Option 2 below) with the one-hour potential ordinary-data loss target and validate the four-hour recovery target under the selected response coverage before production use. The Memories erasure exception below is stronger than the ordinary-data RPO. GitHub notifications and named recovery operators do not establish round-the-clock coverage or an uptime guarantee.
 
 Initial implementation scope:
 
@@ -303,6 +273,38 @@ AD-12 separates authoritative restore, rebuild-only data and live authority. Mem
 The exercised order is: fence old writers and prove their credentials fail; recover the tenant-key store and reapply tombstone key destruction; restore authoritative data into quarantine; run module admission/purge before permitted replay; rotate restored credentials/signing keys and reapply post-cut revocations; verify integrity, release smokes and access; resume protection and monitoring before reopening. Compromise recovery also rotates the Dapr trust root and realm keys. Environment creation or authority-population startup tasks do not silently rerun during recovery.
 
 For non-Memories erasures, deletions and legal holds acknowledged inside the lost window, the user accepted the ordinary RPO limitation. The recovery report states that window. Destructive retention and external-effect workers stay disabled until their module owner reconciles restored state and external-operation outcomes; unknown provider outcomes are never blindly repeated. This exception does not relax Memories continuity or other module functional and authorization rules.
+
+### Option 1: Daily backups and manual rebuild
+
+Create application-consistent backups once per day and copy them outside the primary infrastructure. After a failure, Administrator provisions replacement capacity, redeploys a recorded application release, restores compatible data and configuration, and verifies service behavior.
+
+Illustrative targets: up to 24 hours of lost data and restoration within 24 hours of the outage, if the backup and replacement capacity are available. A missed or unusable backup makes actual loss worse.
+
+Advantages: few moving parts, low operating cost, and an understandable recovery procedure. Suitable where a day's work can be recreated or the data is disposable.
+
+Disadvantages: potentially losing a full day's committed business changes; a lengthy manual restoration; no continuity during infrastructure loss. This is not the recommended default for production business records. Even this option needs off-primary copies and restore validation.
+
+### Option 2: Frequent off-primary backups and a tested restore procedure
+
+Keep a recoverable application-data copy outside the primary server/storage failure domain. Begin with backup or incremental-copy runs every 30 minutes, aiming for a newest completed, usable recovery point no older than one hour. Choose database-native backup mechanisms appropriate to the actual storage engines. Use existing incremental or log-archive capabilities where useful rather than writing a custom backup engine.
+
+After failure, Administrator or the named deputy follows the documented restore procedure to rebuild compatible application/configuration state, restore authoritative data, and run the approved production-safe smoke checks before reopening access.
+
+Production targets: **RPO at most one hour continuously** and **RTO at most four hours from outage to verified recovery within declared response coverage**. The RTO includes operator response and replacement capacity; it is not a stopwatch started after those prerequisites become available. Full outage durations are recorded even outside response coverage.
+
+Advantages: substantially less potential data loss than daily backups, no standby production cluster required, and a recovery process that can be tested independently. Fits an internal MVP when Administrator or the named deputy can respond within declared coverage and recovery capacity is available.
+
+Disadvantages: outages last while data is restored; backup duration, transfer capacity, and data volume can defeat the targets. Backup freshness must be monitored. The selected target explicitly accepts possible loss of up to one hour of committed data.
+
+### Option 3: Redundant infrastructure and database failover, with backups retained
+
+Run redundant application and stateful services across independent failure domains, with standby capacity and tested failover. Depending on the database, synchronous replication can protect acknowledged writes during supported node failures; asynchronous replication can lose changes that have not reached the standby. Continue independent backups for corruption, deletion, and losses affecting both copies.
+
+Illustrative objective for a supported single-node failure: restoration within 15 minutes and little or no loss of acknowledged data, depending on replication semantics. This is a different failure scope from losing the whole installation. A whole-site outage still requires an independent recovery location or restoration from backups.
+
+Advantages: shorter interruptions for failures covered by the redundancy design; less reliance on manual provisioning for those failures.
+
+Disadvantages: more machines and storage, more failure modes, replication monitoring, failover testing, and safeguards against conflicting writers. Replication can also propagate bad changes. Extra application replicas on the same underlying server or storage do not provide independent failure protection. Not recommended for the MVP unless the acceptable outage/data-loss objectives require it.
 
 ### Source grounding
 
@@ -341,7 +343,7 @@ These are evidence and implementation prerequisites. Final PRD or architecture s
 | Exposure/DNS/certificates, monitor and infrastructure currency | Administrator with dependency owners | Before G1; name access paths and owners and verify supported, patched infrastructure. |
 | Prepared capacity, response coverage, key custody and recovery drill | Administrator/deputy with dependency owners | Before G2; identify location, custody, response/acknowledgement bounds and representative data size, and prove the original-outage RTO and continuous RPO. |
 | Memories continuity and recovery conformance | Memories, EventStore and Platform | Before G2; prove tombstone lineage, erasure-safe key custody, replay and adapter boundaries. |
-| Release/attempt controls and notification evidence | Platform, Builds and Administrator | Before G3; resolve EventStore retention/activation/lifecycle confirmations and prove provenance, one recovery attempt, concurrency/interruption controls and actual GitHub delivery. |
+| Release/attempt controls and notification evidence | Platform, Builds and Administrator | Before the first applicable production attempt, including an approved pre-G3 attempt; resolve EventStore retention/activation/lifecycle confirmations and prove provenance, one recovery attempt, concurrency/interruption controls and actual GitHub delivery. SM-5 qualification additionally gates G3. |
 
 Accepted risks remain the shared-node failure domain, GitHub as the single notification path, GitHub Free controls, prerelease hosting/exporter dependencies, whole-site loss without independent replacement capacity, and non-Memories erasures inside the lost RPO window. The architecture permits the recorded pre-production Kubernetes support exception only until G1. Concrete version currency is checked through the profile inventory; historical stack observations do not establish a qualified production combination.
 

@@ -1,6 +1,6 @@
 # Platform PRD update — 2026-09-27
 
-Status: review in progress.
+Status: finalized; all substantive review findings resolved.
 
 The product owner requested alignment with the latest PRD validation and accepted architecture. This update preserves FR-1–FR-12, NFR-1–NFR-3, SM-1–SM-6 and SM-C1–SM-C5, the seven-module MVP, and existing numeric rollout, backup and recovery targets.
 
@@ -29,4 +29,14 @@ Final document status will not establish runtime qualification. The original [va
 
 ## Verification
 
-Pending completion of source reconciliation, rubric and focused reviews, editorial passes and final document checks.
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Decision history and original inputs | All audited entries accounted for; no missing brief requirements | [Decision audit](memlog-audit.md), [brief](reconcile-brief.md), [brief addendum](reconcile-brief-addendum.md) |
+| Validation and architecture reconciliation | No remaining substantive PRD/addendum gaps; downstream qualifications explicitly assigned | [Validation disposition](reconcile-validation.md), [architecture](reconcile-architecture.md) |
+| PRD quality rubric | Pass for planning; five strong and two adequate dimensions. One medium timing mismatch corrected | [Rubric](review-rubric.md) |
+| Consistency | Pass; two low wording issues corrected | [Consistency](review-consistency.md) |
+| Recovery and access | Pass, no findings | [Recovery/access](review-recovery-access.md) |
+| Editorial structure | Both documents reorganized without cutting requirements or option rationale | [PRD structure](review-structure-prd.md), [addendum structure](review-structure-addendum.md) |
+| Editorial prose | Three clarity fixes applied in each document; policy unchanged | [PRD prose](review-prose-prd.md), [addendum prose](review-prose-addendum.md) |
+
+Final mechanical checks passed: all 26 requirement/success-measure IDs are preserved, references resolve, 29 local links and heading anchors are valid, both documents have final frontmatter dated 2026-09-27, and no unresolved placeholders or trailing whitespace remain. Results are recorded in `document-checks.json`. This is document verification; production qualification remains subject to the stated gates.
