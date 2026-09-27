@@ -1,6 +1,6 @@
 # PRD update: decision-log audit
 
-Audited on 2026-09-27 against the updated [PRD](../prd.md), [addendum](../addendum.md), and the first 75 entries of [.memlog.md](../.memlog.md). Entry numbers below count each bullet in order; frontmatter is excluded. The audit is a source-accounting exercise, not runtime verification or a new product decision.
+Audited on 2026-09-27 against the updated [PRD](../prd.md), [addendum](../addendum.md), and the first 77 entries of [.memlog.md](../.memlog.md). Entry numbers below count each bullet in order; frontmatter is excluded. The audit is a source-accounting exercise, not runtime verification or a new product decision.
 
 **Verdict:** all substantive decisions and changes have a current destination or an explicit historical/superseded disposition. No unaccounted product requirement was found. Later accepted decisions govern the differences identified below; they are not omissions to restore from the original brief.
 
@@ -26,7 +26,7 @@ Audited on 2026-09-27 against the updated [PRD](../prd.md), [addendum](../addend
 | 19 | Failed/skipped/missing release E2E results block promotion. | PRD FR-6 and SM-C1; wrong-release, stale and incomplete results are also rejected in the update. |
 | 20 | Each submodule owns critical-flow definitions. | PRD staging-feature introduction, FR-6 and downstream module-declaration ownership. Technical modules declare essential behavior. |
 | 22 | Delegate flow enumeration to modules and revisit on integration. | PRD FR-6 closing paragraph and downstream table; no central invented flow list. |
-| 25 | Preserve proposed rollback options and thresholds. | Addendum Production deployment failure and rollback policy: comparison, failure thresholds, recovery and limits. Proposal state superseded by entries 26–28. |
+| 25 | Preserve proposed rollback options and thresholds. | Addendum Production rollback policy and rationale: comparison, failure thresholds, recovery and limits. Proposal state superseded by entries 26–28. |
 | 26 | Readiness + safe module smokes; 10-minute rollout, 5-minute verification, 60-second unavailability, two failures 30 seconds apart. | PRD FR-7; addendum Failure triggers and initial thresholds. All accepted values preserved. |
 | 27 | One previous-working recovery attempt; 10+5-minute recovery; stop promotions/report; manual intervention for first/failed/unverified recovery. | PRD FR-8, SM-5 and glossary; addendum Recovery and its limits. Current-security configuration and durable stops refine the original shorthand. |
 | 28 | Safe smokes; preserve data/events/rotations; previous-version compatibility; defer traffic triggers; values are targets. | PRD FR-7, NFR-1, MVP non-goals and success-measure qualification; addendum smoke and recovery rationale. |
@@ -67,6 +67,8 @@ Audited on 2026-09-27 against the updated [PRD](../prd.md), [addendum](../addend
 | 73 | Update release/enrollment/gates, approved mode, compatibility, lifecycle, interruption/stops, security recovery, off-site sets/erasure, automation, McpCli, source and chosen recovery policy. | PRD release-scope table, FR-2/FR-4/FR-6–FR-12, NFR-1–NFR-3 and SMs; addendum architecture/recovery/lifecycle sections. All remain qualification requirements, not deployed claims. |
 | 74 | Reconcile proposals rather than adopt all; retain declared-cut age, G2 vs G3, incompatible-release recovery; avoid invented commitments. | PRD FR-9/NFR-2 declared cut, production-entry gates, FR-6/FR-8 approved recovery, downstream no-uptime statement. No arbitrary timeout cap, quota or extra channel added. |
 | 75 | Align addendum, preserve old options and selected deputy/RTO alternatives; run all final reviews. | Addendum updated source/lifecycle/transport/identity/release/recovery sections and two explicit option tables. All-check instruction is current workflow scope; completion belongs to the parent finalization pass. |
+| 76 | Distinguish technical-module enrollment from repository state, require per-module minimum evidence, restrict pre-G2 synthetic admission and own declaration-removal review. | PRD FR-2/SM-2, production-entry gate explanation, FR-6 and downstream qualification table; addendum historical context remains qualified. These clarify acceptance and evidence without changing IDs or thresholds. |
+| 77 | Assign implementation-evidence owners and revisit gates; distinguish them from unresolved product policy or proven readiness. | PRD downstream table and corresponding FR/G1–G3 clauses; addendum Remaining qualification and ownership. Concrete schedule/access/capacity/settings remain implementation prerequisites. |
 
 ## Events and superseded workflow states
 
