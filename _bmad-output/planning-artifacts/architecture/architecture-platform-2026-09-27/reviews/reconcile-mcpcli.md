@@ -1,0 +1,29 @@
+# McpCli input reconciliation
+
+Date: 2026-09-27
+
+Verdict: **PASS, with explicit downstream reconciliation work.** Platform AD-11 preserves McpCli's generic tool, shared core, static Contracts enrollment, stdio transport and EventStore HTTPS gateway. Connected environment discovery is an accepted addition, not a conflict merely because the earlier McpCli design does not implement it. No additional blocking Platform decision was found.
+
+Reviewed: [Platform spine](../ARCHITECTURE-SPINE.md) and [McpCli spine](/home/administrator/projects/hexalith/mcpcli/_bmad-output/planning-artifacts/architecture/architecture-mcpcli-2026-09-22/ARCHITECTURE-SPINE.md). Read McpCli `AGENTS.md` and its permitted baseline after confirming that the root `.gitmodules` declares `references/Hexalith.AI.Tools`. No nested dependencies, runtime sources or external services were changed. README inspection was unnecessary for this architectural comparison.
+
+## Required implementation and source reconciliation
+
+1. **Connected availability must remain separate from immutable contract discovery.** McpCli AD-3 currently builds an immutable local Catalog and derives `submittable` only from URL/read-only settings; AD-13 explicitly permits discovery and MCP serving without a URL. Platform AD-11 deliberately adds selected-environment catalog, compatibility and authorization filtering. Define this as a shared Core availability/compatibility layer over the immutable bundled descriptors, with explicit offline versus connected semantics. Do not redefine offline contract presence as execution authority, make absent gateway access silently select another environment, or duplicate filtering independently in the two heads. Platform's existing deferred “Connected McpCli metadata and contract parity” row already assigns the gateway metadata, freshness and acceptance work. Update the McpCli source contract when implementing the addition.
+
+2. **Reconcile manifest generation and the integration harness with the adopted source/package modes.** McpCli AD-4 derives its manifest from flagged `PackageReference` identities; AD-15's restored-assets gate prohibits module project references; AD-16 and its CI prerequisite describe helpers running checked-out server source. Platform AD-4/AD-5 and the permitted shared baseline instead require local Debug/project sources and CI Release/NuGet assets. Before source-mode enrollment and CI parity are claimed, the owners must add a deterministic source-mode manifest path, scope package-only closure checks to the package lane, and replace CI source-host assumptions with the approved packaged topology. Preserve the semantic allowlist: only permitted Contracts and EventStore client dependencies enter the tool; source mode does not authorize domain server/handler/aggregate dependencies. This is already assigned in Platform's source/package and connected-metadata qualification rows, not a request to weaken the adopted Platform policy.
+
+3. **Completeness needs McpCli's existing module-owned evidence, not merely a non-empty connected intersection.** McpCli AD-15 retains dependency-closure eligibility; AD-16 requires approved, exact-version conformance vectors and live semantic evidence; AD-21 independently maps legacy operations to included contracts or owner-approved exclusions. Platform's seven-module MVP extends beyond the older McpCli source's initially eligible Tenants/Parties set. Preserve those evidence rules while enrolling the required MVP operations. In particular, Tenants' audit-filter and envelope-paging qualifications remain module concerns; a successful gateway status alone does not prove them. Platform already requires all necessary operations before FR-12 acceptance and preserves independent module release gates. The smaller historical McpCli v1 set does not reduce Platform's accepted MVP, and Folders' superseded infrastructure demands do not become enrollment gates through this reconciliation.
+
+## Boundaries confirmed
+
+| Boundary | Result |
+| --- | --- |
+| Generic tool and one shared core | Platform AD-11 aligns with McpCli AD-1/AD-2/AD-11. No per-module CLI/MCP fork, generated per-operation tool surface or business implementation is introduced. |
+| Runtime discovery authority | Platform's committed EventStore routing authority is the sole environment authority. The bundled Contracts catalog remains the local type/schema source; connected metadata is not a second independently maintained registry. |
+| Transport and process placement | Local/user/agent-host CLI and stdio MCP call the chosen EventStore HTTPS gateway. McpCli's deferred hosted HTTP transport is unnecessary for the Platform MVP. |
+| Authorization and settings | Explicit environment selection grants no access, the gateway authorizes every call, and Platform AD-6 preserves actor/workload/delegation requirements. Keep existing tenant-override and read-only gates. Token provisioning/renewal is assigned qualification work; it does not require McpCli to become an identity server. |
+| Submission semantics | McpCli's Core validates and submits through its gateway client once, with caller-supplied idempotency keys and no executor retries. Preserve that source contract when adding discovery or token handling; a refresh or metadata retry must not silently replay a command. |
+| Module operation safety | Platform preserves operation-specific MCP restrictions. Conformance, dependency, serialization, envelope and migration-inventory requirements remain owned by McpCli and its module inputs rather than duplicated in Platform. |
+| Qualification versus current capability | Platform makes no claim that enrollment, connected metadata, token provisioning or complete seven-module CLI/MCP acceptance already work. Its existing deferred work covers the remaining integration. |
+
+Only this report was written by this reviewer during the McpCli reconciliation. No source, spine or memlog edits were made.

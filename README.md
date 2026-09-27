@@ -16,12 +16,13 @@ Those hosting concerns live here.
 | Milestone | State |
 | --- | --- |
 | Repository + empty Aspire AppHost scaffold | Current |
+| Works development topology | Opt-in preview; AD-20 parity gate open |
 | Agents DomainService / UI composition wiring | Planned (Agents Story 5.6) |
 | Live Level 4/5 compatibility evidence | Planned (`Available` gate) |
 
 ## Requirements
 
-- .NET SDK `10.0.302` or later (`latestPatch` roll-forward)
+- .NET SDK `10.0.401` or later (`latestPatch` roll-forward)
 - Aspire CLI `13.4.6` or later
 
 ## Verify Agents host contract (clean checkout)
@@ -41,6 +42,17 @@ hosting projects.
 ```bash
 aspire run
 ```
+
+The Works migration topology is available when the sibling `works` checkout is
+present. Enable it explicitly for local development:
+
+```bash
+Platform__Works__Enabled=true aspire run
+```
+
+The Works topology is a development preview while the AD-20 R1–R11 parity and
+rollback gate remains open. The existing Works AppHost remains the supported
+rollback composition until that gate passes.
 
 ## Owner
 

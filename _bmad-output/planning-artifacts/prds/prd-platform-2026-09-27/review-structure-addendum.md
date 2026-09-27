@@ -1,0 +1,15 @@
+# Addendum structure review
+
+This document exists to help internal developers, architects, and the product owner understand the selected Platform policies, their alternatives, and the implementation context needed to carry them into architecture.
+
+Structure model: **Strategic/Context (Pyramid)**, with conceptual explanation inside each decision. Style guide: Microsoft Writing Style Guide. Audience: humans. Scope: editorial structure only; the selected policies and technical claims were not reconsidered.
+
+Exact baseline: **4,802 words**, measured with `uv run .agents/skills/bmad-review/scripts/word_metrics.py _bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/addendum.md`. No length target was supplied. Counts below are the script's section-body counts; moves preserve headings and bodies unchanged.
+
+| Pass | Original Text | Revised Text | Changes |
+| --- | --- | --- | --- |
+| structure | §Test readiness and local cancellation rationale → §Selected behavior (179 words), currently after five alternative subsections | **MOVE** the complete `### Selected behavior` section, unchanged, immediately after the introductory paragraph beginning “The MVP uses readiness option 3 and cancellation option 1 below.” and before `### Readiness option 1: Central checks and a fixed timeout`. | Put the selected failure/cancellation ownership rules and their table before the detailed alternatives. Readers implementing the accepted policy can see the outcome immediately; the option numbers still link naturally to the ensuing explanations. Word reduction: **0**. |
+| structure | §Testing options for module dependencies → §MVP approach (194 words), currently after Options 1–3 | **MOVE** the complete `### MVP approach` section, unchanged, immediately after the introductory paragraph beginning “The MVP uses Option 3” and before `### Option 1: Real services for all tests that exercise dependencies`. | Present the complete accepted approach before its comparison material, consistently with the conclusion-first treatment of production rollback and disaster recovery. Preserve each option's explanation, benefits, and costs below. Word reduction: **0**. |
+| structure | Brownfield context and module example; alternative comparisons; selected recovery scope; source-grounding subsections | **PRESERVE** these sections and their detail. | The user explicitly requested workings, pros, cons, and recommendations. These passages also distinguish observed repository state from required behavior, application rollback from disaster recovery, and vendor capabilities from project policy. Apparent repetition between an option explanation and its selected operational scope serves explanation or reference rather than being a safe cut. Word reduction: **0**. |
+
+Summary: **2 move recommendations and 1 preservation finding**. If accepted, reduction is **0 words (0% of 4,802)**. No arbitrary shortening is recommended. The moves improve access to accepted behavior without sacrificing the requested alternatives, examples, source links, or policy detail. No substantive structural blocker was found.
