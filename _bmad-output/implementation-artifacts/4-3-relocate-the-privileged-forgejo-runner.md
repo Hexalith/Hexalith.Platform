@@ -38,29 +38,30 @@ Before cutover, the Administrator must provide and approve:
 
 - [x] Record the sanitized namespace, deployment, node, privileged-container and ServiceAccount baseline.
 - [ ] Create `evidence/epic-4/4-3/<attempt-id>/` in the access-controlled evidence store and record source deployment UID/config digest, target host identity/attestation, operator and cutover window.
+- [ ] Immediately before disabling scheduling, revoking credentials, deleting runner resources and deleting the namespace, re-read the source Deployment/namespace UID, resourceVersion, pod-template/config digest, registered runner identity and active-job set. Abort and re-inventory/re-approve if any identity or digest differs, so a replacement runner cannot be mistaken for the recorded source.
 - [ ] Provision and harden the external host:
   1. Prove it is neither `node1` nor a node in the designated cluster and hosts no staging/production executor or sandbox.
   2. Enable host encryption, patching, audit logs and the approved container isolation mode. Restrict administrative access to the named operators.
-  3. Apply outbound allow rules for required services and explicit denies for the Kubernetes API endpoint, node management addresses, pod/service CIDRs and namespace-facing routes.
+  3. Enumerate every route to the designated cluster: configured control-plane endpoint; all DNS aliases and A/AAAA answers; IPv4/IPv6 API, load-balancer/VIP and node addresses; service/pod CIDRs; management/bastion/tunnel routes; and HTTP(S)/SOCKS proxy paths. Apply outbound denies for every direct and proxied path while allowing only required non-cluster services.
 - [ ] Install the pinned Forgejo runner and container runtime on the external host. Enroll it with a new secret-store-issued registration credential, the approved labels and no kubeconfig, ServiceAccount token, cluster certificate, cloud cluster credential or mounted Kubernetes Secret.
 - [ ] Keep the in-cluster runner available but prevent duplicate scheduling while validating the new runner. Route a non-production validation label exclusively to the external runner.
 - [ ] Execute the approved job matrix on the external runner:
   1. Repository checkout, dependency restore, build, unit tests, container build and push/pull by digest pass for the selected repositories.
   2. Job evidence identifies the external host and runner instance.
-  3. From inside a job container, attempts to reach Kubernetes discovery, list namespaces and reach a cluster Service are refused by network and by absence of credentials. A DNS or timeout-only result is supplemented by firewall/audit evidence tied to the attempt.
+  3. From inside a job container, probe every enumerated DNS alias, IPv4/IPv6 endpoint, direct-IP/SNI variant, proxy/tunnel path and representative service/pod address; Kubernetes discovery, namespace listing and cluster Service access must be refused by network and by absence of credentials. A DNS or timeout-only result is supplemented by firewall/proxy/audit evidence tied to the attempt.
   4. Prove the job environment has no Kubernetes token/kubeconfig mounts and no variables or files containing cluster credentials.
 - [ ] Cut over production runner labels only after the entire validation matrix passes. Quiesce the in-cluster runner, wait for active jobs to finish, disable new jobs there and run the matrix again through normal Forgejo triggers.
-- [ ] Rotate/revoke the in-cluster registration credential and any runner-specific registry/job credentials. Verify the old runner cannot accept a job or authenticate.
-- [ ] Remove `Deployment/forgejo-runner`, its ServiceAccount/RBAC and runner-only PVCs, ConfigMaps and Secrets through the approved operations change, then delete namespace `forgejo-runner`.
-- [ ] Verify no namespace/resource named for the old runner remains, no pod runs its image/digest, the old credential is revoked, normal jobs still pass on the external host, and cluster/API/network negative probes still fail.
+- [ ] After the source-identity revalidation passes, rotate/revoke the in-cluster registration credential and any runner-specific registry/job credentials. Verify that exact old runner identity cannot accept a job or authenticate.
+- [ ] Inventory every runner PVC/PV, `persistentVolumeReclaimPolicy`, VolumeSnapshot/provider snapshot and backing-volume identity. Before deleting the namespace, securely erase or cryptographically destroy Docker/action-cache and workspace data under the approved storage procedure; then delete `Deployment/forgejo-runner`, its ServiceAccount/RBAC, runner-only PVCs, ConfigMaps and Secrets and namespace `forgejo-runner`.
+- [ ] Verify no namespace/resource named for the old runner remains, no pod runs its image/digest, the old credential is revoked, normal jobs still pass on the external host, and all enumerated direct/proxied IPv4/IPv6 cluster probes still fail. Prove no retained PV, released volume, snapshot or provider object contains recoverable runner/cache/workspace data; record provider-side residual checks and erase/delete receipts.
 - [ ] Sign `runner-relocation-result.json` and commit a sanitized summary.
 
 ## Evidence outputs
 
 - `target-host-attestation.json`: host identity, ownership, non-co-residency checks, hardening baseline and network-policy/firewall configuration digest.
 - `external-runner-job-matrix.json`: job IDs/commits, runner instance, required job outcomes and artifact digests.
-- `cluster-isolation-proof.json`: attempted API/namespace/service accesses, refusal outcomes, absent-credential checks and matching network/audit events.
-- `source-removal.json`: quiescence, credential revocation, deleted resource identities, namespace absence and post-removal job results.
+- `cluster-isolation-proof.json`: the complete endpoint/alias/proxy/address-family inventory, attempted API/namespace/service accesses, refusal outcomes, absent-credential checks and matching network/proxy/audit events.
+- `source-removal.json`: repeated source UID/config validations, quiescence, credential revocation, deleted resource identities, namespace absence, PV/reclaim/snapshot inventory, secure-erasure and provider residual checks, and post-removal job results.
 
 Evidence must not contain runner registration tokens, job secrets, registry credentials, kubeconfig content, ServiceAccount tokens or Secret values.
 
@@ -70,7 +71,8 @@ Evidence must not contain runner registration tokens, job secrets, registry cred
 - Stop cutover if any required job fails, the runner identity is ambiguous, or the target can reach the cluster API/workload networks.
 - Do not run both runners on the same production labels concurrently.
 - Do not remove the in-cluster runner until active jobs finish and the external runner passes the full matrix through normal triggers.
-- Stop removal if credentials cannot be rotated/revoked or if any required configuration exists only in the namespace.
+- Stop revocation/deletion on source UID/config/registration drift, if credentials cannot be rotated/revoked, if any required configuration exists only in the namespace, or if retained/released storage cannot be securely erased and independently checked for residual data.
+- Stop cutover if any DNS alias, IPv4/IPv6 address, direct-IP/SNI route, proxy, tunnel, node, service or pod path can still reach the cluster.
 - Reopening the old in-cluster runner is not an accepted rollback. Repair the isolated external runner or provision another isolated host.
 
 ## Acceptance criteria
@@ -83,9 +85,10 @@ Evidence must not contain runner registration tokens, job secrets, registry cred
 **Given** the approved Forgejo job matrix
 **When** normal jobs run after cutover
 **Then** they pass on the external runner and identify that runner in evidence
-**And** in-job cluster API, namespace and service probes are refused
+**And** in-job probes of every DNS alias, proxy/tunnel and direct IPv4/IPv6 cluster path are refused
 
 **Given** the external runner passes
 **When** source removal completes
 **Then** the old credentials are revoked and namespace `forgejo-runner` plus its runner resources are absent
+**And** revalidated source identity, secure-erasure receipts and provider residual checks prove no replacement runner or recoverable retained runner data was removed or left behind
 **And** no privileged CI workload remains on `node1`
