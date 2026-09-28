@@ -2,9 +2,10 @@
 title: 'Start the urgent Kubernetes upgrade track and split its backup gate'
 type: 'chore'
 created: '2026-09-28'
-status: 'ready-for-dev'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: '7cbc4c528acfa4b784b4f6fed56a732380221304'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
 ---
