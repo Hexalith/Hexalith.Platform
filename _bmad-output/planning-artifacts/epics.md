@@ -678,9 +678,11 @@ Deliverables owned outside the Platform-accountable scope, listed so their owner
 | Readiness, surface and agent-eligibility declarations; critical-flow declarations and E2E suites; production-safe smoke suites (modules outside the reference composition) | Module owners | Epics 3, 10 | Enrollment in each environment |
 | Recovery-hook and fence-hook implementations; authoritative, rebuild-only and erasure inventories; integrity checks | Module owners | Epic 5 (staging reset); Epic 8 (DR) | First staging reset; first AD-12 drill |
 | Synthetic tenant aggregate and creation task; tenant-lifecycle flow review; leftover synthetic-tenant cleanup or reporting | Tenants | Epic 3 (local); Epic 5 (staging E2E); Epic 6 (production synthetic tenant) | Release gate; first production verification |
-| Tombstone mirror and lineage protocol, tenant-key store, per-tenant principals, operator artifact, tombstone-mirror fence hook, migration of remaining Redis coordination to Dapr | Memories with EventStore | Epic 8 | G2 |
+| Tombstone mirror and lineage protocol, tenant-key store, per-tenant principals, operator artifact and tombstone-mirror fence hook | Memories with EventStore | Epic 8 key restoration and erasure-continuity stories | Before the first key-restore consumer; G2 |
+| Qualify the Memories AD-9 adapter boundary and migrate remaining direct Redis coordination to Dapr | Memories with EventStore | Epic 8 adapter-conformance story; G2 opening | G2 |
 | Idempotency-intent adapters packaged as extension packages | Folders | Epic 3 (local complete environment); Epic 10 (hosted) | Folders joining a composition |
-| Image attestation through Builds `domain-release` or an equivalent attested path | EventStore, Memories | Epic 5 | First staging promotion |
+| Image attestation through Builds `domain-release` or an equivalent attested path | EventStore, Memories | Epic 4 publication workflow | First publication |
+| Record Platform's accepted Folders, Projects and McpCli overrides in their upstream architecture and PRD documents | Folders, Projects and McpCli documentation owners | Recovery and deployment story finalization; final MVP evidence | Before affected recovery/deployment stories are finalized; not an enrollment block |
 | Agents Story 5.6: full wiring and Level 4/5 evidence | Agents | Epic 12 | EXT-HOST-1 status `Available` |
 
 ## Epic List
