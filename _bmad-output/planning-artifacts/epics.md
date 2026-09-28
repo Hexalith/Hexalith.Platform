@@ -1,5 +1,5 @@
 ---
-stepsCompleted: [step-01-validate-prerequisites, step-02-design-epics, step-03-create-stories, step-04-final-validation]
+stepsCompleted: []
 inputDocuments:
   - _bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/prd.md
   - _bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/addendum.md
@@ -11,6 +11,7 @@ inputDocuments:
   - _bmad-output/specs/spec-platform/glossary.md
   - _bmad-output/specs/spec-platform/brownfield.md
   - _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-27.md
+  - _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-28.md
   - docs/ext-host-1-agents-composition.md
   - _bmad-output/planning-artifacts/briefs/brief-platform-2026-09-27/brief.md
   - _bmad-output/planning-artifacts/briefs/brief-platform-2026-09-27/addendum.md
@@ -395,13 +396,14 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Attempt lock, record and promotion-stop store (Platform with Builds).
   - Check-suite invocation and result contract (Builds).
   All three precede the first staging deployment.
-- AR-22: *Image supply chain:* module image attestation (Builds `domain-release`, adopted by EventStore and Memories), and an image and dependency vulnerability policy (scan at intake, a blocking severity, recorded exceptions). Both come before the first staging promotion.
+- AR-22: *Image supply chain:* module image attestation (Builds `domain-release`, adopted by EventStore and Memories) precedes the first publication because the publication workflow verifies the intake-pinned attestations. The image and dependency vulnerability policy (scan at intake, a blocking severity, recorded exceptions) precedes the first staging promotion.
 
 **Hosted environments, identity and isolation**
 - AR-23 (AD-8): *Environment separation:*
   - Each environment has an application namespace and a separate data namespace holding its data services, OpenBao, PVs, Gateway and listener Certificates.
-  - The environment-layer identity writes the data namespace plus Components, HTTPEndpoints, MCPServers, NetworkPolicies, quotas and bootstrap Secrets. The per-job application deploy identity holds none of these.
-  - Each environment has its own StorageClass, with quotas denying the other's, and least-privilege per-module principals.
+  - A named shared-infrastructure/bootstrap workflow and shared-infrastructure identity create the namespaces, environment-identity RBAC, StorageClasses and PriorityClasses.
+  - The environment-layer identity writes inside the already-created data namespace plus the allowed application-namespace Components, HTTPEndpoints, MCPServers, NetworkPolicies, quotas and bootstrap Secrets. It does not create or mutate shared-infrastructure objects. The per-job application deploy identity holds none of these permissions.
+  - Each environment uses its own StorageClass, with quotas denying the other's, and least-privilege per-module principals.
   - Pod Security is `restricted`, with default-deny ingress and egress on an enforcing CNI. Production gets a higher PriorityClass; staging runs under quotas.
   - Dapr has one trust domain per environment, deny-by-default Configurations and HotReload off, with WorkflowAccessPolicies scoped by app ID.
   - The full AD-8 negative-test matrix applies.
@@ -430,7 +432,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Administrator provisions production synthetic credentials, held only by the production executor (and by the recovery executor for one DR job).
 - AR-28 (AD-7): *Executors and triggers:*
   - Staging and production each have a dedicated self-hosted executor on a separate host; the production executor sits outside the application cluster. An off-site recovery executor handles replacement-capacity recovery. No executor shares a host with a CI runner or another executor.
-  - Credentials are per-job, revocable and epoch-bound, issued through OIDC claim checks or held by the executor, never as repository secrets.
+  - Credentials are per-job, revocable and epoch-bound, issued through OIDC claim checks or held by the executor, never as repository secrets. A recovery-kind job additionally receives a recovery-hook credential bound to its attempt and epoch, read access to that environment instance's recovery-point prefix, and only the custodian-released decryption material needed for that job; all three are destroyed or revoked at job end.
   - Module-supplied code runs in a sandbox without job credentials.
   - Jobs come from a private operations repository whose only writers are the named writers. Executors enforce allowlists and verify signed Administrator records.
   - Administrator or the deputy can start in-place recovery on the production executor and replacement-capacity recovery on the recovery executor.
@@ -443,6 +445,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Security currency is checked at each production attempt and monthly drill, and every expiring credential has a named renewal owner.
 - AR-32 (Release tiers):
   - Tiers are the application package, the environment layer (per environment, forward-only) and shared infrastructure (both locks, rehearsed from G1), plus what sits outside every release. Every object belongs to exactly one tier.
+  - Namespaces, environment-identity RBAC, StorageClasses and PriorityClasses are shared infrastructure. Data services, broker, OpenBao, tenant-key store, volumes, Gateway and Certificates, Dapr Components/HTTPEndpoints/MCPServers, NetworkPolicies, quotas, limits and bootstrap Secrets are environment-layer objects. Workloads, services, HTTPRoutes, Dapr Configurations, WorkflowAccessPolicies, Subscriptions and Resiliency belong to the application package.
   - Dapr activation restarts consuming sidecars on a resource change.
   - Environment-layer objects are rendered from the union of baseline and candidate and applied by their own attempt before the release attempt.
   - Definitions live in the operations repository, with a pinned off-site copy.
@@ -451,7 +454,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 **Release and recovery mechanics**
 - AR-33 (AD-3/AD-15): *Rollback sets:*
   - Application rollback touches only the application-package tier. Automatic recovery renders the prepared rollback set through a Helm upgrade. Helm `--rollback-on-failure`, `helm rollback` and controller-driven rollback are forbidden.
-  - Before rollout, the rollback set (baseline package with environment-current values plus the rollback generation) is recorded, prepared and ready-validated.
+  - Before rollout of an attempt eligible for automatic recovery, the rollback set (baseline package with environment-current values plus the rollback generation) is recorded, prepared and ready-validated. Approved empty/degraded and named-recovery attempts do not require production baseline-host validation or an automatic rollback generation.
   - Every forward-only input stays expand-only until the candidate is working, and contraction happens in a later attempt.
 - AR-34 (RRA Staging gate / Staging reset):
   - Each staging attempt cuts a staging recovery point, deploys the production baseline, upgrades to the candidate, runs E2E and rehearses the rollback set with HotReload off. When production has no baseline, it rehearses a fresh install instead.
@@ -487,7 +490,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - G2 opening order: admit the first user, re-verify SM-4 on the live realm, then admit others. A failure aborts and removes the user.
   - G3: after SM-5 and EventStore confirmations. Policy changes suspend it until the affected rehearsals repeat. Before G3, every release is Administrator-approved.
 - AR-40 (Backup coverage / Recovery point / Detection / DR evidence):
-  - The inventory covers module state, the Keycloak DB with its event export, and each OpenBao, each with a recovery owner, recovery class and fence-and-reissue owner.
+  - The inventory covers module state, the Keycloak DB with its event export, and each OpenBao, each with a recovery owner explicitly confirmed by Administrator and recorded with the entry, a recovery class and a fence-and-reissue owner.
   - A backup unit holds one recovery class, and prefixes are per environment instance.
   - Rotated key generations are retained as long as data backups.
   - Recovery-point integrity metadata is kept off-site, and pruning skips referenced points.
@@ -507,7 +510,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   7. Reopen: resume monitoring, cut over DNS and certificates, hand credentials to the production executor and restore the pre-incident ingress state, with the stop kept set.
   Recovery mode keeps user ingress closed and external-effect and destructive-retention workers disabled, with quarantine admitting only recovery actors.
 - AR-43: *Recovery hook contract* (Platform-owned, before the first staging deployment; the first drill proves it): cut identity and per-class positions, quarantine admission, purge, re-provisioning and rotation, fence hooks, rebuild, integrity, external-effect reconciliation, the reopen-before-replay declaration, recovery mode, an internal endpoint with attempt- and epoch-bound credentials, epoch-bound task commits and the result shape.
-- AR-44 (Lost window / After DR): these follow FR-9, NFR-2 and the reduced-recovery posture. The reduced-recovery operating policy (automatic-promotion resumption, drill cadence while capacity is consumed, staging re-establishment) is fixed before G2.
+- AR-44 (Lost window / After DR): these follow FR-9, NFR-2 and the reduced-recovery posture. Administrator reviews every recorded lost-window report applicable to the observed stop; absence is valid only when no recovery capable of producing a lost window has occurred. Once a named-recovery or DR report exists, it is a mandatory input to clearance or approval. The reduced-recovery operating policy (automatic-promotion resumption, drill cadence while capacity is consumed, staging re-establishment) is fixed before G2.
 
 **Diagnostics and notification**
 - AR-45 (Diagnostics and notification):
@@ -567,7 +570,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - AR-55: *First publication* (Administrator): apply the `main` ruleset, CODEOWNERS, tag ruleset and Builds bypass; set the organization base permission to read or none (today it is write); create the operations and notification repositories with only the named writers.
 - AR-56: *First staging deployment* rows:
   - Composed host: Folders adapters are packaged before Folders joins.
-  - Aspire-to-Helm qualification with the representative Parties+EventStore+Tenants+Memories composition. Aspire 13.5.4 `AddGateway` materializes its own Gateway, so work around it. Also prove server-side dry-run against `restricted`, no Secret in the chart, digest-pinned images via values, Helm SSA ownership, chart attestation and retained-package rollback, and apply the fallback trigger.
+  - Aspire-to-Helm qualification with the representative Parties+EventStore+Tenants+Memories composition. Aspire 13.5.4 `AddGateway` materializes its own Gateway, so work around it. Prove deterministic rendering, chart contents, server-side dry-run against `restricted`, no Secret in the chart, digest-pinned images via values, Helm SSA ownership and the fallback trigger. Publication separately proves OCI attestation, and retained-artifact qualification separately proves restore/rollback from the off-site replica.
   - Shared runtime and profile: ratify the profile; create the catalog and secret-contract instances; select and qualify the durable production broker (Redis pub/sub excluded) with retention, dead-letter and backlog recovery; qualify Dapr activation with one policy-only and one HTTPEndpoint-only update.
   - Secrets, identity, network and transport: Keycloak inventory, realm contract and event export, token-exchange clients, per-environment OpenBao and tenant-key store, per-app token mounts, splitting the shared `openbao-runtime-bootstrap` token (expires 2027-07-19), the executor sandbox, CNI enforcement, drop-all-capabilities, volume encryption and TLS, Gateway API CRDs with the Traefik provider, cert-manager per-environment `gatewayHTTPRoute` issuers, staging HTTP-01, trust domains and every negative isolation case.
   - Staging data restore and takeover fencing.
@@ -582,7 +585,8 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - AR-60: *G2 rows:*
   - Recovery capacity and coverage: capacity and location, published coverage, the recovery executor with custody, a pinned off-site workflow copy, fence-and-reissue owners, the deputy's identity, permissions, keys, alerts and rehearsal, Keycloak DB backup with revocation-before-export proof, budget and data sizes.
   - Reduced-recovery operating policy.
-  - Memories conformance: tombstone and key continuity, tenant-key store, per-tenant principals and operator artifact, tombstone-mirror fence hook, adapter boundary, and migration of other Redis coordination to Dapr.
+  - Memories continuity: tombstone and key continuity, tenant-key store, per-tenant principals and operator artifact, tombstone-mirror fence hook and recovery evidence.
+  - Memories adapter conformance: qualify the named AD-9 adapter boundary and migrate remaining direct Redis coordination to Dapr.
   - Telemetry retention and off-site durability.
 - AR-61: *G3 row:* shared-infrastructure currency policy (inventory, cadence, allowed lag, effect on approved attempts). *Triggers, outside the MVP:* GitHub Team controls once anyone beyond the named writers gains write; additional McpCli transports, step-up, mocks and traffic-metric rollback; broker change, standby, regions, scale and universal in-transit TLS.
 - AR-62: *First shared versions:* dependencies owned outside Platform that module adoption waits for.
@@ -1855,7 +1859,31 @@ So that test execution and lifecycle are proven for the whole MVP set.
 
 ## Epic 4: Publish retained releases and run the isolated staging environment
 
-The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions, and staging cannot claim production names or authority. Stories 4.1–4.3 are independent and date-bound or security-driven, so sprint planning schedules them first.
+The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions, and staging cannot claim production names or authority. Stories 4.0–4.3 are urgent, date-bound or security-driven work, so sprint planning schedules them first. Stories 4.0, 4.2 and 4.3 can execute independently; Story 4.1 preparation may run in parallel, but no cluster upgrade may begin until Story 4.0 is done.
+
+### Story 4.0: Prove off-node backups and isolated restores
+
+As Administrator,
+I want restorable off-node backups for Keycloak PostgreSQL, shared OpenBao and `hexalith-memories`,
+So that the disruptive cluster upgrade has independently proven recovery points instead of relying on node-local data or backup-job success.
+
+**Repo:** Administrator operations · **Covers:** AR-59 (upgrade prerequisite), AR-63 · *Independent, pull forward; prerequisite for Story 4.1 upgrade execution*
+
+**Acceptance Criteria:**
+
+**Given** the existing Keycloak PostgreSQL cluster, shared OpenBao raft data and `hexalith-memories` Redis/FalkorDB data
+**When** Story 4.0 completes
+**Then** each system has an encrypted, immutable recovery point stored off the cluster node
+**And** each recovery point has been restored into an isolated target and verified against its source inventory without replacing a live PVC
+
+**Given** the three isolated restore rehearsals
+**When** their evidence is assembled
+**Then** the signed proofs name the recovery-point identifiers, off-node object identities and checksums, isolated targets, verification results, timestamps and accountable operator
+**And** backup-job success without successful isolated restore verification is not accepted as proof
+
+**Given** any missing, stale, unsigned or failed proof
+**When** Story 4.1 reaches its mutation gate
+**Then** the Kubernetes upgrade remains blocked
 
 ### Story 4.1: Upgrade the cluster off Kubernetes 1.34 after verified backups
 
@@ -1867,10 +1895,15 @@ So that the in-place upgrade, which takes every workload down, happens while not
 
 **Acceptance Criteria:**
 
-**Given** the existing Keycloak PostgreSQL cluster, the shared OpenBao and the `hexalith-memories` data
-**When** the upgrade is prepared
-**Then** each has a verified, restorable backup, proven by a restore into an isolated target, and stored off the node
-**And** the upgrade does not start until all three are recorded
+**Given** Story 4.0's signed restore proofs for Keycloak PostgreSQL, shared OpenBao and `hexalith-memories`
+**When** the upgrade mutation is requested
+**Then** Story 4.0 is `done` and all three proofs pass freshness, signature, recovery-point and off-node-storage validation
+**And** a missing, stale, unsigned or failed proof keeps the upgrade blocked
+
+**Given** the single-node topology and external etcd endpoint
+**When** the maintenance window is prepared
+**Then** kubeadm and workload preflights, the sequential minor-version path, the current target patch, the outage approval and rollback/stop conditions are recorded
+**And** preparation does not count as authorization to mutate the cluster
 
 **Given** the single-node cluster on v1.34.9
 **When** it is upgraded in place

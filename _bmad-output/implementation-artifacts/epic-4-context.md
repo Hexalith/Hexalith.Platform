@@ -8,6 +8,7 @@ Publish an immutable, attested release containing the application Helm package, 
 
 ## Stories
 
+- Story 4.0: Prove off-node backups and isolated restores
 - Story 4.1: Upgrade the cluster off Kubernetes 1.34 after verified backups
 - Story 4.2: Close public admin exposure and anonymous registry reads
 - Story 4.3: Relocate the privileged Forgejo runner
@@ -36,8 +37,9 @@ Publish an immutable, attested release containing the application Helm package, 
 
 ## Requirements & Constraints
 
-- Stories 4.1–4.3 are independent, urgent work and precede creation of any staging namespace. The Kubernetes upgrade is an in-place minor upgrade on a single node and therefore interrupts every workload.
-- The existing Keycloak PostgreSQL cluster, shared OpenBao raft data, and Memories data require off-node backups whose restorability is proven in isolated targets before the cluster upgrade begins. No CloudNativePG backups currently exist, and no recovery point for these systems is yet demonstrated.
+- Stories 4.0–4.3 are urgent work and precede creation of any staging namespace. Stories 4.0, 4.2 and 4.3 can execute independently; Story 4.1 preparation can proceed in parallel, but its in-place upgrade mutation is gated by completion of Story 4.0. The single-node upgrade interrupts every workload.
+- Story 4.0 owns encrypted, immutable off-node recovery points and signed isolated-restore proofs for the existing Keycloak PostgreSQL cluster, shared OpenBao raft data, and Memories data. No CloudNativePG backups currently exist, OpenBao snapshots remain on node-local storage, the cluster has no CSI snapshot APIs, and no qualifying recovery point for these systems is yet demonstrated.
+- Story 4.1 owns only kubeadm/workload preflights, the date-bound sequential minor upgrade and post-upgrade health or restore checks. A missing, stale, unsigned or failed Story 4.0 proof keeps its mutation gate closed.
 - After the upgrade, the actual supported Kubernetes minor and current patch must be recorded. Keycloak, OpenBao, Memories, and Forgejo must each be verified healthy or restored, with evidence retained.
 - Keycloak administration, the master realm, and the cluster console must be reachable only through the declared Administrator path and fail an external public probe. Anonymous registry reads must be refused only after all consumers have working pull credentials. Registry garbage collection must preserve retained digests.
 - The Forgejo runner must move to a separate machine or VM shared with neither the application cluster nor an executor. Its in-cluster privileged namespace must be removed, and jobs must succeed without access to cluster APIs or namespaces.
@@ -56,7 +58,7 @@ Publish an immutable, attested release containing the application Helm package, 
 
 ## Cross-Story Dependencies
 
-- The backup-and-restore proofs gate the Kubernetes upgrade; the upgrade, exposure closure, and runner relocation all gate introduction of staging data and workloads.
+- Story 4.0's three signed backup-and-isolated-restore proofs gate Story 4.1's Kubernetes mutation. The completed upgrade, exposure closure, and runner relocation all gate introduction of staging data and workloads.
 - Repository controls, record encoding, the attempt store, intake manifest, profile/contracts, recovery contract, and check-suite contract precede the first retained publication and staging deployment.
 - The Helm qualification depends on retained package publication and rollback support. Staging isolation, secrets, Dapr policy, broker, Gateway, realm, executor, and telemetry must exist before the reference release is deployed.
 - Staging data restore follows the first staging deployment and must complete before candidate evidence is accepted. McpCli and the full isolation matrix are verified against the deployed staging release.
