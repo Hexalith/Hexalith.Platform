@@ -1,5 +1,5 @@
 ---
-stepsCompleted: []
+stepsCompleted: [step-01-validate-prerequisites, step-02-design-epics, step-03-create-stories]
 inputDocuments:
   - _bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/prd.md
   - _bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/addendum.md
@@ -623,12 +623,12 @@ No UX design contract exists. None was found under `ux-designs/`, and there is n
 - FR-5: Epic 2 - Isolated tests first, without Platform
 - FR-6: Epic 5 - Exact-release critical-flow staging gate in both modes; Epic 9 - automatic-mode compatibility and currency conditions; Epic 10 - critical flows of the full seven-module release
 - FR-7: Epic 6 - Production readiness, verification window and failure triggers; Epic 10 - Folders and Projects smoke suites in production verification
-- FR-8: Epic 6 - One automatic recovery, promotion stop and approved attempts; Epic 8 - recovery after DR, reduced-recovery state; Epic 9 - SM-5 rehearsal of every rule
+- FR-8: Epic 6 - One automatic compatible recovery, promotion stop, approved first-install path and baseline re-deploy; Epic 8 - in-place data restore, named retained-data recovery, DR and reduced-recovery state; Epic 9 - SM-5 rehearsal of every rule
 - FR-9: Epic 8 - Backups, recovery points, monitoring, DR sequence and drills; Epic 10 - drill repeated with Folders and Projects state
 - FR-10: Epic 4 - Isolated staging on `hexalith.com`; Epic 6 - production on `tache.ai` and shared-infrastructure change procedure; Epic 9 - currency check blocking automatic promotion; Epic 10 - Folders and Projects hosted in both environments
 - FR-11: Epic 7 - Explicit Administrator-granted production admission with records and reconciliation
 - FR-12: Epic 3 - Local McpCli CLI/MCP operations; Epic 4 - staging operations; Epic 7 - production operations and refusals; Epic 10 - Folders and Projects operations in hosted environments; Epic 11 - legacy MCP/CLI retirement
-- NFR-1: Epic 5 - compatibility evidence and rollback-set rehearsal; Epic 6 - data-preserving recovery render; Epic 9 - automatic-path enforcement
+- NFR-1: Epic 5 - baseline-aware compatibility evidence and automatic-eligible rollback-set rehearsal; Epic 6 - data-preserving automatic recovery render; Epic 8 - named retained-data recovery qualification; Epic 9 - automatic-path enforcement
 - NFR-2: Epic 8 - RPO/RTO targets, coverage and drills
 - NFR-3: Epic 4 - staging-side controls and early closure of public admin exposure; Epic 7 - production negative and positive matrix; Epic 8 - re-verification after restore
 
@@ -643,13 +643,13 @@ No UX design contract exists. None was found under `ux-designs/`, and there is n
 
 **Additional requirements:**
 - Epic 1: AR-1–AR-6, AR-8–AR-10, AR-49, AR-50 (reference-composition adoption), AR-53, AR-54, plus the zero-extension baseline of AR-7.
-- Epic 2: AR-2 (fixed ports and volumes), AR-12 (CI tiers), AR-13, AR-14, AR-15, AR-16 (attachment hold limit).
-- Epic 3: AR-7, AR-11, AR-12 (evidence binding), AR-16 (candidate policy), AR-25–AR-27 (local instances), AR-46–AR-48, AR-62.
-- Epic 4: AR-17–AR-32, AR-43, AR-45, AR-55, AR-56, AR-59 (Kubernetes currency, Forgejo relocation and public-exposure removal, pulled forward), AR-63.
-- Epic 5: AR-19, AR-22, AR-33, AR-34, AR-57.
-- Epic 6: AR-33, AR-35–AR-39, AR-45, AR-58, AR-59 (remaining G1 rows).
+- Epic 2: AR-2 (fixed ports and volumes), AR-12 (CI tiers), AR-13, AR-14, AR-15, AR-16 (the complete candidate and attachment policy).
+- Epic 3: AR-7, AR-11, AR-12 (evidence binding), AR-25–AR-27 (local instances), AR-46–AR-48, AR-62; it consumes the AR-16 policy published by Epic 2.
+- Epic 4: AR-17–AR-32, AR-43, AR-45, AR-55, AR-56, AR-59 (Kubernetes currency, Forgejo relocation, public-exposure removal and the capture-lag decision, pulled forward), AR-63; AR-22 module attestation before publication.
+- Epic 5: AR-19, AR-22 (vulnerability policy), AR-33, AR-34, AR-46 (stable publication after staging validation), AR-57.
+- Epic 6: AR-33, AR-35 (release modes and baseline re-deploy, not data restore), AR-36–AR-39, AR-45, AR-58, AR-59 (remaining G1 rows).
 - Epic 7: AR-25–AR-27, AR-39 (SM-4 grant).
-- Epic 8: AR-28 (recovery executor), AR-40–AR-44, AR-60.
+- Epic 8: AR-28 (commissioned recovery executor), AR-35 (in-place data restore and named recovery), AR-40–AR-44, AR-60.
 - Epic 9: AR-61, AR-58 (G3 confirmations).
 - Epic 10: AR-7 (hosted Folders extension packages), AR-52, AR-56 (Folders adapters before Folders joins).
 - Epic 11: AR-47, AR-49, AR-50 (retirement).
@@ -698,26 +698,28 @@ Deliverables owned outside the Platform-accountable scope, listed so their owner
 **Dependency flow:**
 1. Epic 1 builds the foundation.
 2. Epic 2 builds on Epic 1: run ownership comes before scale.
-3. Epic 3 builds on Epics 1 and 2. Inside it, the composed host and catalog stories come first, then the local realm and McpCli connected mode, then candidate evidence, then the SM-1, SM-2 and SM-3 evidence stories.
-4. Epic 4 needs Epic 1 plus only the composed-host and catalog stories of Epic 3. It does not wait for McpCli connected mode (only its staging McpCli story does) or for the Epic 3 evidence stories. It needs the recovery hook *contract* only; module hook implementations are prerequisites of Epics 5 and 8.
-5. Epic 5 builds on Epic 4.
-6. Epics 6 → 7 → 8 → 9 follow the strict G1 → G2 → G3 gate order.
+3. Epic 3 builds on Epics 1 and 2. Epic 2's published candidate-and-attachment policy precedes every CI-evidence consumer. Inside Epic 3, the composed host and catalog stories come first, then the local realm and McpCli connected mode, then candidate evidence, then the SM-1, SM-2 and SM-3 evidence stories.
+4. Epic 4 needs Epic 1 plus the composed-host, catalog and local-realm foundations of Epic 3. It does not wait for McpCli connected mode (only its staging McpCli story does) or for the Epic 3 evidence stories. It needs the recovery hook *contract* only; module hook implementations are prerequisites of Epics 5 and 8.
+5. Epic 5 builds on Epic 4. Its no-production-baseline branch is complete enough to enable the first G1 deployment; after Epic 6 creates the first working production baseline, Epic 5 closes its baseline-dependent rehearsal branches before a second production candidate is accepted.
+6. Epics 6 → 7 → 8 → 9 follow the strict G1 → G2 → G3 gate order. Epic 6 implements baseline re-deploy and a guarded shared-infrastructure workflow; Epic 8 supplies the recovery points needed to qualify in-place data restore, named retained-data recovery and successful shared-infrastructure execution.
 7. Epic 10's staging enrollment stories can start once Epic 5 exists, and its production enrollment stories once Epic 6 exists. Its MVP acceptance story closes after Epic 9.
 8. Epic 11 needs Epics 3 and 4 plus the parity evidence from McpCli and the modules.
 9. Epic 12 needs Epics 1–3.
 
-No epic depends on a later one. Epic order is dependency order, not calendar order.
+Each epic delivers a usable outcome for the production state that exists when it runs. Epic 5's first-install staging gate is complete before Epic 6; its baseline-dependent qualification is state-contingent and returns after Epic 6 creates the first baseline, rather than blocking that first deployment. Otherwise, epic order is dependency order, not calendar order.
 
 **Early independent track.** These stories depend on no earlier epic but are date-bound or slow to arrange. Each is tagged *independent, pull forward* so sprint planning schedules it at once:
 
 | Story | Epic | Why it moves |
 | --- | --- | --- |
-| Upgrade the cluster off Kubernetes 1.34 (end of life 2026-10-27), in place, after verified backups | 4 | Hard external date. The in-place upgrade takes every workload down, so it runs before staging exists. |
+| Prove off-node backups and isolated restores for Keycloak PostgreSQL, OpenBao and Memories | 4 | The Kubernetes upgrade is blocked until these proofs pass, and both need immediate scheduling. |
+| Upgrade the cluster off Kubernetes 1.34 (end of life 2026-10-27), in place | 4 | Hard external date. Preparation can overlap the backup work, but cluster mutation waits for the verified restore evidence. |
 | Close the public Keycloak admin, master-realm and KubeSphere console routes, verified by an external negative probe; disable anonymous registry reads once existing consumers hold pull credentials | 4 | This exposure is live today. Nothing is gained by waiting for G1. |
 | Move the privileged Forgejo runner off the cluster node and off any executor host | 4 | Must happen before staging holds real data. |
+| Apply publication and operations repository controls | 4 | Publication and notification consumers need these repositories and controls before they can produce accepted evidence. |
 | Off-site monitor host, private notification repository and dead-man workflow | 6 | G1 needs working delivery, and this host must be arranged before then. |
 | Name the recovery deputy: identity, phishing-resistant MFA, minimum permissions | 6 | A human decision. G1 notifications must reach the deputy, and G2 cannot pass without the deputy. |
-| Procure prepared replacement capacity and its location (an independent location for whole-site coverage), plus the off-site recovery executor host | 8 | Procurement lead time; the G2 drill needs it. |
+| Procure prepared replacement capacity and its location, and select the off-site recovery-executor host | 8 | Procurement lead time; integrated executor commissioning waits for the recovery contracts, artifacts, records and recovery points. |
 
 **Pattern: prove the mechanism on the reference composition, then collect evidence across all modules.** Every mechanism epic, local or hosted, closes when the reference composition demonstrates the mechanism. The reference composition is Parties with EventStore, Tenants and Memories, plus McpCli, and locally also the technical modules from the Platform workspace. A release covers only the modules enrolled so far, and production precondition 7 checks only those. The PRD states that incremental enrollment supports implementation while final MVP acceptance needs all seven modules.
 
@@ -751,8 +753,8 @@ Developers and CI provision run-owned, real-service environments through the run
 
 Isolated tests run first, without Platform, and the package-mode integration tier blocks CI.
 - **FRs covered:** FR-4 (lifecycle, readiness, isolation, attachment, retention, cleanup), FR-5 · **Evidence:** SM-3 mechanism, SM-C4, SM-C5
-- **Policy decision (opens the epic):** the finite attachment hold limit, published in the runner and descriptor contract before any consumer implements attachment.
-- **Notes:** candidate artifact-identity evidence follows in Epic 3, once the composed host and run-scoped McpCli exist to report what they loaded.
+- **Policy decision (opens the epic):** one shared candidate-and-attachment policy fixes the candidate revision, the merge or release decision its evidence gates, reuse of accepted evidence for unchanged modules, and default and maximum attachment holds with owners and revisit conditions. It is published in the runner and descriptor contract before any consumer implements attachment or accepts CI evidence.
+- **Notes:** candidate artifact-identity implementation and evidence follow in Epic 3, once the composed host and run-scoped McpCli exist to report what they loaded; those consumers use Epic 2's policy rather than choosing their own.
 
 ### Epic 3: Run the complete Hexalith system locally with agent access
 A developer starts all seven MVP modules together with one command, and they become ready within the effective deadline. The environment runs through:
@@ -763,24 +765,27 @@ A developer starts all seven MVP modules together with one command, and they bec
 
 The local McpCli CLI and stdio MCP discover and execute enabled modules' agent-eligible operations, and refuse ineligible, disabled, mismatched and unauthorized ones. CI candidate evidence proves exactly which candidate artifacts were loaded, including inside the composed host and run-scoped McpCli. Baseline-only runs are labelled, and substituted or uncommitted inputs are refused. The epic closes with the local MVP evidence stories for SM-1, SM-2 and SM-3 across all seven modules.
 - **FRs covered:** FR-1, FR-4 (candidate artifact-identity evidence), FR-12 (local), plus evidence for FR-2, FR-3 and FR-5 across the set · **Evidence:** SM-1, SM-2, SM-3
-- **Policy decision:** before candidate evidence is accepted, fix the candidate revision (pull-request head or merge result), the merge or release decision that the evidence gates, and the reuse of accepted evidence for unchanged modules.
-- **Story order:** composed host and catalog → local realm and McpCli connected mode → candidate evidence → SM evidence stories. Epic 4 depends only on the first group.
+- **Policy dependency:** Epic 2's candidate-and-attachment policy must be published in the runner and descriptor contract before this epic accepts CI candidate evidence.
+- **Story order:** composed host and catalog → local realm and McpCli connected mode → candidate evidence → SM evidence stories. Epic 4 depends on the composed-host, catalog and local-realm foundations, not on this epic's closing evidence stories.
 - **Prerequisites:** see the register. The main ones are EventStore's extension API, catalog schema, gateway metadata endpoint and actor attestation; the realm-contract claims; McpCli's contract amendments; Folders' adapter packages; and, for the evidence stories, adoption by Tenants, Folders and Projects.
 
 ### Epic 4: Publish retained releases and run the isolated staging environment
 The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions. Staging cannot claim production names or authority. Folders and Projects join in Epic 10.
 - **FRs covered:** FR-10 (staging), FR-12 (staging), NFR-3 (staging-side controls)
 - **Early independent stories** (see the Early independent track):
-  - **Story 4.1:** Administrator upgrades the cluster off Kubernetes 1.34 to a supported minor, in place, before any staging namespace exists. **Precondition:** verified, restorable backups of the existing Keycloak PostgreSQL, the OpenBao raft snapshot and the Memories data. Today none of these has a demonstrated recovery point, and there are no CloudNativePG backups.
+  - Prove off-node backups and isolated restores for Keycloak PostgreSQL, OpenBao and Memories, then perform the blocked in-place Kubernetes upgrade as a separate change window.
   - Close the public admin exposure and anonymous registry reads, issuing pull credentials to existing consumers first.
   - Relocate the Forgejo runner.
+  - Apply publication and operations repository controls before notification or publication consumers need them.
 - **Notes:**
-  - The Aspire-to-Helm qualification comes early and is the risk boundary; the AD-1 fallback to a maintained Helm chart applies if needed.
+  - The Aspire-to-Helm qualification comes early and proves deterministic rendering, chart contents, admission and ownership; OCI attestation is proven by publication, and retained-package restore from the off-site replica by retention. The AD-1 fallback to a maintained Helm chart applies if needed.
   - The record encoding, the recovery hook contract and the check-suite contract precede the first publication, because the release record binds their versions.
+  - The identity-event capture-lag bound is decided before the staging realm implements bounded event export.
+  - The reference composition's critical-flow, E2E and smoke suites have explicit Platform-accountable ownership in this epic and block staging-gate validation.
   - The staging in-place data restore needs a deployed release, so it is proven on the first staging deployment, which holds only synthetic data, before Epic 5 accepts any candidate evidence. Module hook implementations are not needed here.
 
 ### Epic 5: Gate every release on exact-release staging evidence
-Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows pass. The rollback set is rehearsed from production's working baseline, or a fresh install when there is none. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one.
+Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows pass. With no production baseline, staging proves installation and candidate behavior. With a production baseline and automatic-recovery eligibility, it upgrades from that baseline and rehearses the rollback set. A retained-data approved path without compatible evidence qualifies its named data recovery and does not prepare automatic rollback. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one. After staging validation passes, the Platform publication workflow alone publishes the stable McpCli version.
 - **FRs covered:** FR-6, NFR-1 (compatibility evidence)
 - **Policy decisions (open the epic):**
   - evidence maximum age;
@@ -788,10 +793,11 @@ Each candidate is proven in staging against that exact release. Every enrolled m
   - review policy for removing or remapping critical flows;
   - staging-reset maximum duration;
   - the image and dependency vulnerability severity that blocks promotion, and how exceptions are recorded.
-- **Prerequisites:** the reference composition's critical-flow declarations and E2E suites; module recovery-hook implementations (staging reset); EventStore and Memories image attestation. The Builds check-suite contract lands in Epic 4, before the first publication.
+- **Conditional closure:** the no-baseline branch enables the first G1 deployment. Baseline-dependent rehearsal branches close after Epic 6 establishes the first working production baseline and before a second production candidate is accepted.
+- **Prerequisites:** Epic 4's owned reference-composition suites; module recovery-hook implementations (staging reset); EventStore and Memories image attestation before publication. The Builds check-suite contract lands in Epic 4, before the first publication.
 
 ### Epic 6: Deploy to production with verification and one-shot recovery (G1)
-Administrator deploys a staged release to `tache.ai` through the Administrator-approved path, with user ingress closed. Platform verifies it against the readiness deadline, the five-minute window and the smoke triggers. On failure it recovers exactly once automatically, without rewinding data. It keeps a durable per-cause promotion stop that only Administrator clears, and reports every outcome through GitHub to Administrator and the deputy. G1 is reached with the off-site monitor, exposure controls and current infrastructure in place.
+Administrator deploys a staged release to `tache.ai` through the Administrator-approved path, with user ingress closed. Platform verifies it against the readiness deadline, the five-minute window and the smoke triggers. On an eligible compatible failure it recovers exactly once automatically, without rewinding data. It supports in-place baseline re-deploy but does not yet claim recovery-point data restore. It keeps a durable per-cause promotion stop that only Administrator clears, and reports every outcome through GitHub to Administrator and the deputy. G1 is reached with the off-site monitor, exposure controls and current infrastructure in place.
 - **FRs covered:** FR-7, FR-8, FR-10 (production and shared-infrastructure changes), NFR-1 · **Evidence:** G1; early SM-5 fault rehearsals in approved mode
 - **Story 6.1: rehearsal-injection architecture spike.**
   - None of the PRD, spine, spec or addendum says how an SM-5 fault rehearsal makes a staged release fail production verification. The release-invariant record cannot carry the fault, or it would be a different release from the one staging approved.
@@ -802,25 +808,28 @@ Administrator deploys a staged release to `tache.ai` through the Administrator-a
     - rehearsal-labelled GitHub notifications, so the deputy never receives a real alert for a planned fault;
     - injection only inside an Administrator-approved rehearsal attempt, with no standing credential, and recorded in the attempt record.
   - Epic 6 then builds one shared rehearsal harness, which Epics 8, 9 and 10 reuse.
-- **Policy decisions (before G1):** the availability-probe stop bound, including how probe failures during a locked attempt count; the identity-provider event-capture lag bound; the two-way admission-check cadence.
+- **Policy decisions (before G1):** the availability-probe stop bound, including how probe failures during a locked attempt count, and the two-way admission-check cadence. Epic 4 has already fixed the identity-event capture-lag bound before staging event export.
 - **Early independent stories:** naming the recovery deputy; the off-site monitor host, notification delivery and dead-man workflow.
 - **G1 access mechanisms:** the production realm, signed admission records and two-way drift detection are built here, because the standing synthetic check identities and the G1 admission-bounds row need them.
+- **Bounded change windows:** infrastructure currency is divided into identity/secrets, shared data services, control-plane/networking, and artifact/backup/administration tooling so each change has a recoverable scope.
+- **Shared-infrastructure boundary:** this epic implements the both-lock guarded workflow and its refusal without a complete recovery point. Successful execution and forward-revert qualification wait for Epic 8 recovery points and close in Epic 9.
 
 ### Epic 7: Control production access explicitly
 Only users that Administrator explicitly admits reach production, with exactly their production permissions, through the API, CLI and MCP. Staging users, workloads, automation and pods are refused at every boundary. Admission is signed, chained and reconciled in both directions. The temporary synthetic grant supplies the SM-4 positive evidence, and its revocation is followed by a denial check.
 - **FRs covered:** FR-11, FR-12 (production), NFR-3 (production matrix) · **Evidence:** SM-4 (reference composition), SM-C2
 - **Notes:** G1 needs the production realm, the signed admission-record chain and two-way drift detection, so Epic 6 builds them. This epic proves them for human admission, the SM-4 grant and the full isolation matrix.
+- **Deferred matrix target:** backup-prefix denial is added only after Epic 8 creates the per-environment-instance backup prefixes; every other G1-existing target is exercised here.
 
 ### Epic 8: Recover production from disaster and open it to users (G2)
-Administrator or the deputy restores production on prepared capacity within one hour of data loss and four hours of recovery for outages during declared coverage. Recovery never resurrects Memories erasures or revoked admission. Backups run every 30 minutes under independent monitoring, and restore drills run monthly. G2 then opens production to users in the prescribed order.
+Administrator or the deputy restores production on prepared capacity within one hour of data loss and four hours of recovery for outages during declared coverage. Recovery never resurrects Memories erasures or revoked admission. Backups run every 30 minutes under independent monitoring. The epic qualifies in-place data restore and named retained-data recovery only after usable recovery points and Memories continuity exist, then completes the isolated drill and opens G2 in the prescribed order.
 - **FRs covered:** FR-9, NFR-2 · **Evidence:** SM-6, SM-C3, G2
-- **Early independent story:** procure prepared replacement capacity and its location, plus the off-site recovery executor host. The deputy is named in Epic 6; this epic proves the deputy's key custody and rehearsed restore.
+- **Early independent story:** procure prepared replacement capacity and its location and select the off-site recovery-executor host. Full executor commissioning waits for the retained artifacts, record store, recovery-point prefix, recovery workflows and custody release path. The deputy is named in Epic 6; this epic proves the deputy's key custody and rehearsed restore.
 - **Policy decision:** the reduced-recovery operating policy — whether automatic promotion may resume before the return to G2 conditions, drill cadence while replacement capacity is consumed, and how staging is re-established.
-- **Notes:** the drills reuse the Epic 6 rehearsal harness and its rehearsal-labelled notifications.
-- **Prerequisites:** Memories tombstone and key continuity; module recovery-hook implementations and inventories.
+- **Notes:** the drill re-verifies backup cadence and retention, availability and recovery-point monitoring, monitor/dead-man silence detection in both directions, actual GitHub delivery, backup-prefix isolation and prior-epoch recovery-hook denial. It reuses the Epic 6 rehearsal harness and its rehearsal-labelled notifications.
+- **Prerequisites:** the Memories tombstone mirror, lineage, tenant-key and fence foundations precede their first key-restore consumer. Erasure continuity and the AD-9 adapter-boundary migration are separate G2 qualifications. Module recovery-hook implementations and Administrator-confirmed recovery inventories also precede the drill.
 
 ### Epic 9: Promote releases to production automatically (G3)
-Releases with valid compatibility evidence against the current baseline, and a passing shared-infrastructure currency check, promote automatically. The SM-5 rehearsals prove every failure trigger and every recovery, stop and approval rule. A policy change suspends automatic promotion until the affected rehearsals repeat.
+Releases with valid compatibility evidence against the current baseline, and a passing shared-infrastructure currency check, promote automatically. The SM-5 rehearsals prove every failure trigger and every recovery, stop and approval rule, including all deputy prohibitions and both accepted/unaccepted cause recurrence rules. They also qualify successful shared-infrastructure execution and forward revert after Epic 8 supplies complete recovery points. A policy change suspends automatic promotion until the affected rehearsals repeat.
 - **FRs covered:** FR-6 (automatic mode), FR-8, FR-10 (currency check), NFR-1 · **Evidence:** SM-5 (reference composition), SM-C1
 - **Policy decision (opens the epic):** the shared-infrastructure currency policy — checked inventory, cadence, allowed lag and effect on approved attempts.
 - **Notes:** the SM-5 suite runs on the Epic 6 rehearsal harness; it adds no harness of its own.
@@ -840,6 +849,7 @@ The MVP is accepted with all seven modules through G1, G2 and G3.
   - Staging enrollment stories can start once Epic 5 exists, and production enrollment once Epic 6 exists.
   - Enrolling a module into production is a release attempt: if a first enrollment fails, its workloads are removed but its data objects are kept.
   - The MVP acceptance story closes after Epic 9.
+  - The full-composition DR drill repeats every SM-6 operating-control check: backup cadence and retention, independent availability and freshness monitoring, bidirectional monitor-silence detection, and actual GitHub delivery to Administrator and deputy.
   - The Platform MVP recovery envelope takes precedence over the stricter infrastructure clauses in Folders and Projects (AR-52).
 - **Prerequisites:** Folders' adapter packages; Folders and Projects declarations, critical flows, smoke suites, recovery hooks and inventories.
 
@@ -1277,24 +1287,31 @@ So that my team adopts on its own schedule and Platform verifies the result cons
 
 Developers and CI provision run-owned, real-service environments through the runner: run-scoped resources with no fixed-port collisions, readiness waits, isolated data, safe attachment with finite holds and a withdrawn outcome, local retention on failure, and CI environments that always clean up with leftovers reported. Isolated tests run first without Platform, and the package-mode integration tier blocks CI. Candidate artifact-identity evidence follows in Epic 3.
 
-### Story 2.1: Decide the attachment hold limit
+### Story 2.1: Decide the candidate and attachment policy
 
 As a Platform maintainer,
-I want one shared, finite attachment hold limit decided and published,
-So that no consumer invents its own attachment policy.
+I want one shared policy for candidate evidence and finite attachment holds,
+So that no consumer invents its own candidate-selection or attachment rules.
 
-**Repo:** Hexalith.Platform with Hexalith.Builds · **Covers:** AR-16 (attachment hold limit)
+**Repo:** Hexalith.Platform with Hexalith.Builds · **Covers:** AR-16 (candidate and attachment policy)
 
 **Acceptance Criteria:**
 
-**Given** the FR-4 attachment rules
+**Given** the FR-4 candidate-evidence rules
 **When** this story completes
-**Then** a decision record fixes a finite default hold limit, whether a run may request a shorter hold, and the maximum any run may request
-**And** the record names its owner and the condition for revisiting it
+**Then** the decision record fixes whether the candidate revision is the pull-request head or merge result, which merge or release decision its evidence gates, and when accepted evidence for an unchanged module may be reused
+
+**Given** the FR-4 attachment rules
+**When** the same decision record is completed
+**Then** it fixes a finite default hold limit, whether a run may request a shorter hold, and the maximum any run may request
+
+**Given** the candidate and attachment decisions
+**When** ownership is recorded
+**Then** each decision names its owner and the condition for revisiting it
 
 **Given** the decision
 **When** it is published
-**Then** it is recorded for inclusion in the runner and descriptor contract, before any consumer implements attachment
+**Then** it is recorded for inclusion in the runner and descriptor contract before any consumer implements attachment or accepts candidate evidence
 
 ### Story 2.2: Define the test environment descriptor and result contract
 
@@ -1550,28 +1567,32 @@ So that local and CI integration evidence can be accepted.
 
 A developer starts all seven MVP modules together with one command. They run through the Platform-composed `eventstore` host with extension packages, a run-scoped catalog, a local realm generated from the realm contract and the synthetic tenant. The local McpCli CLI and stdio MCP discover and execute agent-eligible operations and refuse everything else. CI candidate evidence proves exactly which artifacts were loaded. The epic closes with the SM-1, SM-2 and SM-3 evidence stories across all seven modules.
 
-### Story 3.1: Decide the candidate-selection policy
+### Story 3.1: Apply the candidate-selection policy to the runner contract
 
 As a Platform maintainer,
-I want one shared rule for what a module candidate is and what its CI evidence gates,
-So that every module accepts candidate evidence the same way.
+I want the runner and descriptor contract to enforce the approved candidate-selection policy,
+So that every module produces and consumes candidate evidence consistently.
 
-**Repo:** Hexalith.Platform with Hexalith.Builds · **Covers:** AR-16 (candidate policy)
+**Repo:** Hexalith.Platform with Hexalith.Builds · **Covers:** AR-14, AR-16 (candidate-policy implementation)
 
 **Acceptance Criteria:**
 
-**Given** the FR-4 candidate-evidence rules
-**When** this story completes
-**Then** a decision record fixes:
-- whether a candidate revision is the pull-request head or the merge result;
-- the merge or release decision the evidence gates;
-- when accepted evidence for an unchanged module may be reused
+**Given** the decision record from Story 2.1
+**When** the runner selects a candidate
+**Then** it selects exactly the declared pull-request head or merge result and records the merge or release decision that the evidence gates
 
-**And** the record names its owner and the condition for revisiting it
+**Given** accepted evidence for an unchanged module
+**When** a consumer requests reuse
+**Then** the runner accepts it only under the policy's recorded reuse conditions and records the source evidence and target decision
+**And** it rejects reuse when any declared condition is not met, naming the condition
 
-**Given** the decision
-**When** it is published
-**Then** it appears in the runner and descriptor contract before any consumer implements evidence acceptance
+**Given** a candidate descriptor and result
+**When** they are written
+**Then** they carry the policy identifier, candidate revision, gated decision and any reused-evidence lineage defined by the versioned contract
+
+**Given** a consumer that attempts to select or accept a candidate by another rule
+**When** the contract is validated
+**Then** validation fails and names the policy mismatch
 
 ### Story 3.2: Compose the eventstore host with enrolled extension packages
 
@@ -1861,7 +1882,7 @@ So that test execution and lifecycle are proven for the whole MVP set.
 
 ## Epic 4: Publish retained releases and run the isolated staging environment
 
-The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions, and staging cannot claim production names or authority. Stories 4.0–4.3 are urgent, date-bound or security-driven work, so sprint planning schedules them first. Stories 4.0, 4.2 and 4.3 can execute independently; Story 4.1 preparation may run in parallel, but no cluster upgrade may begin until Story 4.0 is done.
+The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions, and staging cannot claim production names or authority. Stories 4.0–4.4 are urgent, date-bound or security-driven work, so sprint planning schedules them first. Stories 4.0, 4.2, 4.3 and 4.4 can execute independently; Story 4.1 preparation may run in parallel, but no cluster upgrade may begin until Story 4.0 is done.
 
 ### Story 4.0: Prove off-node backups and isolated restores
 
@@ -1963,7 +1984,7 @@ As Administrator,
 I want the Platform repository, the tags and the organization locked down, and the operations and notification repositories created with only the named writers,
 So that what executors run and what publication signs cannot be changed casually.
 
-**Repo:** Administrator operations (GitHub) · **Covers:** AR-18, AR-28 (triggers), AR-45 (notification repository), AR-55
+**Repo:** Administrator operations (GitHub) · **Covers:** AR-18, AR-28 (triggers), AR-45 (notification repository), AR-55 · *Independent, pull forward*
 
 **Acceptance Criteria:**
 
@@ -2011,8 +2032,9 @@ So that hosted deployment has one definition, or we trigger the maintained-chart
 **Then** it passes with HotReload off
 
 **Given** the packaged chart
-**When** verified
-**Then** Helm server-side-apply ownership works, the chart's OCI attestation verifies, and a rollback to the retained package succeeds without regeneration
+**When** verified before publication exists
+**Then** Helm server-side-apply ownership works and two renders from the same declared inputs and mode produce identical manifests
+**And** OCI-attestation and off-site-restoration checks are explicitly excluded until published and retained artifacts exist, so this qualification has no future-story dependency
 
 **Given** export needs per-module Dapr hand-modelling, a custom compiler, recurring generated-file patches or a duplicate topology
 **When** that is found
@@ -2072,7 +2094,7 @@ As a Platform maintainer,
 I want a versioned intake manifest that pins each module release and computes its effective change classification,
 So that every release knows exactly which module artifacts it contains and how breaking they are.
 
-**Repo:** Hexalith.Platform · **Covers:** AR-19
+**Repo:** Hexalith.Platform · **Covers:** AR-19, AR-22 (attestation before publication) · **Prerequisites:** EventStore and Memories image attestation through Builds `domain-release` or an equivalent attested path
 
 **Acceptance Criteria:**
 
@@ -2080,16 +2102,21 @@ So that every release knows exactly which module artifacts it contains and how b
 **When** it is added to the intake manifest
 **Then** the manifest pins its package and image digests, its image-attestation identity and its release-evidence references
 
+**Given** a module image pinned in the intake manifest
+**When** it is admitted for publication
+**Then** its attestation is verified and names the module repository, workflow, protected ref and pinned Builds workflow ref recorded in the manifest
+**And** a missing or mismatched attestation refuses the module release before publication
+
 **Given** a chain of module releases between production's working baseline and a candidate
 **When** the classification is computed
 **Then** the effective classification is the maximum over the chain (breaking, additive or none) under the single definition of breaking
 **And** the manifest records the chain and the working baseline it was computed against
 
-### Story 4.9: Ratify the production profile and the hosted catalog and secret contracts
+### Story 4.9: Ratify the hosted runtime and identity-event contracts
 
 As a Platform maintainer,
-I want the profile, the committed hosted catalog and the secret contract created and ratified,
-So that staging and production share one qualified runtime definition.
+I want the profile, hosted catalog, secret contract and identity-event capture bound created and ratified,
+So that staging and production share one qualified runtime definition with bounded admission-event propagation.
 
 **Repo:** Hexalith.Platform, with EventStore · **Covers:** AR-11, AR-29, AR-31, AR-56 (shared runtime and profile), AR-62 · **Prerequisites:** the EventStore profile template and per-release binding split (EventStore AD-26)
 
@@ -2111,6 +2138,11 @@ So that staging and production share one qualified runtime definition.
 **Given** each time-bound certificate, credential, token and domain registration in the inventory
 **When** recorded
 **Then** it has a named renewal owner
+
+**Given** hosted admission and identity events
+**When** this story completes
+**Then** a decision record fixes a finite maximum capture lag, its measurement point, its owner and the condition for revisiting it
+**And** staging event export and later admission reconciliation use that bound rather than choosing their own
 
 ### Story 4.10: Define the recovery hook contract
 
@@ -2135,13 +2167,13 @@ So that module recovery has one contract before the first release binds its vers
 
 **And** it carries a version that each release record binds
 
-### Story 4.11: Define the check-suite invocation and result contract
+### Story 4.11: Define the check-suite contract and own the reference suites
 
 As a module owner,
-I want one contract for invoking E2E and smoke suites and reporting their results,
-So that my checks run identically on staging and production executors and their results bind to the release.
+I want one contract for invoking E2E and smoke suites, with explicit Platform ownership of the reference-composition suites,
+So that checks run identically on staging and production executors and no required reference flow is left ownerless.
 
-**Repo:** Hexalith.Builds · **Covers:** FR-6, FR-7, AR-21 (check-suite contract, before the first staging deployment)
+**Repo:** Hexalith.Builds (contract), Hexalith.Platform (reference suites) · **Covers:** FR-6, FR-7, AR-21 (check-suite contract, before the first staging deployment)
 
 **Acceptance Criteria:**
 
@@ -2158,6 +2190,12 @@ So that my checks run identically on staging and production executors and their 
 **When** reported
 **Then** it records passed, failed, skipped, timed out or incomplete, together with the served release identity, the suite digest, the profile digest and the configuration digest
 **And** a timeout counts as a failure
+
+**Given** the reference composition and McpCli
+**When** this story completes
+**Then** Platform records the accountable owner and source location for each non-empty critical-flow suite and each production-safe smoke suite required for Parties, EventStore, Tenants, Memories and McpCli
+**And** every mapped check is packaged through this contract and passes its schema validation before the first reference release is published
+**And** an absent owner, empty suite or unresolved flow-to-check mapping blocks publication
 
 ### Story 4.12: Publish retained releases with provenance
 
@@ -2202,6 +2240,10 @@ So that any rollback target or recovery point's release can be restored after lo
 **Given** the off-site replica
 **When** artifacts are published
 **Then** they are replicated with their attestations by a separate writer
+
+**Given** a retained Helm package, composed image, McpCli artifact, release record and attestation set in the off-site replica
+**When** the primary artifact store is treated as unavailable
+**Then** each artifact is retrieved by its recorded digest, every attestation verifies, and the retained chart can be applied without regeneration
 
 **Given** the retention period
 **When** pruning runs
@@ -2523,7 +2565,7 @@ So that the NFR-3 matrix starts from a verified staging boundary.
 
 ## Epic 5: Gate every release on exact-release staging evidence
 
-Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows must pass. The rollback set is rehearsed from production's working baseline, or a fresh install is rehearsed when there is no baseline. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one.
+Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows must pass. With no production baseline, staging proves installation and candidate behavior. With a production baseline and automatic-recovery eligibility, it upgrades from that baseline and rehearses the rollback set. A retained-data approved path without compatible evidence qualifies its named data recovery and does not prepare automatic rollback. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one. The no-baseline branch enables the first G1 deployment; baseline-dependent branches close after Epic 6 establishes the first working production baseline and before a second production candidate is accepted. After staging validation passes, only the Platform publication workflow publishes a stable McpCli version.
 
 ### Story 5.1: Decide the staging evidence policies
 
@@ -2566,7 +2608,7 @@ As a Platform maintainer,
 I want the declaration validator to enforce complete critical-flow and smoke declarations for every module in a release,
 So that no module slips through the gate by declaring nothing.
 
-**Repo:** Hexalith.Builds (validator), Hexalith.Platform · **Covers:** FR-6, FR-7, AR-8 (lifecycle validation) · **Prerequisites:** the reference composition's critical-flow and smoke declarations
+**Repo:** Hexalith.Builds (validator), Hexalith.Platform · **Covers:** FR-6, FR-7, AR-8 (lifecycle validation) · **Prerequisites:** the owned reference suites from Story 4.11
 
 **Acceptance Criteria:**
 
@@ -2615,24 +2657,20 @@ So that staging E2E can create and delete tenants safely without polluting real-
 **When** the attempt ends
 **Then** they are cleaned up, or listed in the attempt report with their creating run
 
-### Story 5.5: Scan and verify module images at intake
+### Story 5.5: Scan module and composed images against the vulnerability policy
 
 As a Platform maintainer,
-I want every module and composed image scanned and its attestation verified before it enters a release,
-So that only attested images below the vulnerability threshold are promoted.
+I want every module and composed image scanned before promotion,
+So that only images below the accepted vulnerability threshold reach production.
 
-**Repo:** Hexalith.Builds, Hexalith.Platform · **Covers:** AR-19, AR-22 · **Prerequisites:** EventStore and Memories image attestation through Builds `domain-release` or an equivalent attested path
+**Repo:** Hexalith.Builds, Hexalith.Platform · **Covers:** AR-22
 
 **Acceptance Criteria:**
-
-**Given** a module image pinned in the intake manifest
-**When** it is admitted
-**Then** its attestation names the module repository, workflow, protected ref and pinned Builds workflow ref recorded in the manifest
-**And** a mismatch refuses the image
 
 **Given** module and composed images
 **When** scanned
 **Then** a finding at or above the blocking severity from Story 5.2 blocks promotion unless a recorded, unexpired exception covers it
+**And** the scan result names every image digest and scanner-database version and is bound to the release evidence
 
 ### Story 5.6: Run exact-release staging E2E in a serialized staging attempt
 
@@ -2644,9 +2682,10 @@ So that production only ever receives releases proven end to end.
 
 **Acceptance Criteria:**
 
-**Given** a candidate whose EventStore server package is evidence-validated
+**Given** a candidate whose intake artifacts and declarations are validated
 **When** a staging attempt starts
-**Then** it first cuts a staging recovery point, then deploys production's working baseline, then upgrades to the candidate within one serialized attempt
+**Then** it takes the staging lock and epoch, cuts a staging recovery point before the candidate writes state, and deploys the exact candidate within one serialized attempt
+**And** the attempt record names the preparation state used, without assuming that a production baseline exists
 
 **Given** the deployed candidate
 **When** E2E runs
@@ -2703,7 +2742,35 @@ So that automatic rollback is only ever used when it is safe.
 **When** applied
 **Then** they stay expand-only relative to production's working baseline
 
-### Story 5.9: Reset staging for unadopted incompatible candidates
+### Story 5.9: Qualify the named recovery for a retained-data approved attempt
+
+As Administrator,
+I want an incompatible candidate's named data recovery rehearsed in staging,
+So that an approved retained-data production attempt has a proven recovery without pretending automatic rollback is safe.
+
+**Repo:** Hexalith.Platform (operations repository) · **Covers:** FR-6, FR-8, NFR-1, AR-34
+
+**Acceptance Criteria:**
+
+**Given** production has a working baseline with retained application data and the candidate lacks valid compatibility evidence against it or is classified breaking
+**When** the approved retained-data path is qualified
+**Then** the qualification names the retained candidate and baseline artifacts, the recovery point, the exact data-restore procedure, the required authority and the expected lost-window treatment
+**And** it states explicitly that no automatic rollback set is prepared
+
+**Given** the named recovery rehearsal
+**When** staging starts from the working baseline, upgrades to the exact candidate and writes representative candidate state
+**Then** the recorded recovery procedure restores the declared data point and deploys the named retained application and compatible current environment configuration
+**And** readiness, smoke, data-integrity and applicable access checks pass against the recovered state
+
+**Given** a missing plan, unavailable retained artifact or recovery point, failed restore, or failed verification
+**When** the qualification is evaluated
+**Then** the retained-data approved path is not qualified and the reason is recorded
+
+**Given** production has no working baseline or retained application data
+**When** staging selects its preparation branch
+**Then** it uses the fresh-install proof from Story 5.7 instead of this path
+
+### Story 5.10: Reset staging for unadopted incompatible candidates
 
 As a Platform maintainer,
 I want staging returned to a baseline-readable state before a new candidate when an unadopted candidate wrote incompatible data,
@@ -2730,7 +2797,7 @@ So that each candidate's evidence starts from a clean, representative staging.
 **When** it runs
 **Then** it keeps any point that a pending staging reset references
 
-### Story 5.10: Evaluate staging evidence for promotion
+### Story 5.11: Evaluate staging evidence for promotion
 
 As Administrator,
 I want one evaluator that decides, from recorded evidence, whether a release may be promoted,
@@ -2751,11 +2818,18 @@ So that the production workflow never promotes on missing, stale or mismatched e
 **Given** the release modes
 **When** evaluated
 **Then** both require the same evidence
-**And** the automatic path additionally reports whether compatibility evidence exists against the current baseline, for use in Epic 9
+**And** a first installation requires the fresh-install proof from Story 5.7
+**And** the automatic path requires valid compatibility evidence and a rehearsed rollback set from Story 5.8 against the current baseline
+**And** an approved retained-data attempt without compatibility evidence requires the named recovery qualification from Story 5.9
+
+**Given** a release that contains a McpCli candidate
+**When** all applicable staging evidence passes
+**Then** only the Platform publication workflow publishes the attested candidate as the stable McpCli version
+**And** failed, stale or mismatched evidence publishes no stable version
 
 ## Epic 6: Deploy to production with verification and one-shot recovery (G1)
 
-Administrator deploys a staged release to `tache.ai` through the Administrator-approved path, with user ingress closed. Platform verifies it against the readiness deadline, the five-minute window and the smoke triggers, recovers exactly once automatically without rewinding data, keeps a durable per-cause promotion stop that only Administrator clears, and reports every outcome through GitHub to Administrator and the deputy. G1 is reached with the off-site monitor, exposure controls, current infrastructure, the production realm and admission records in place.
+Administrator deploys a staged release to `tache.ai` through the Administrator-approved path, with user ingress closed. Platform verifies it against the readiness deadline, the five-minute window and the smoke triggers. On an eligible compatible failure it recovers exactly once automatically without rewinding data. G1 supports an in-place baseline redeploy but does not claim recovery-point data restore or named retained-data recovery. It keeps a durable per-cause promotion stop that only Administrator clears and reports every outcome through GitHub to Administrator and the deputy. G1 is reached with the off-site monitor, exposure controls, current infrastructure, the production realm and admission records in place. Shared-infrastructure changes gain a guarded, both-lock procedure here, but successful execution and forward-revert qualification wait until complete recovery points exist.
 
 ### Story 6.1: Decide how rehearsal faults are injected
 
@@ -2784,10 +2858,10 @@ So that rehearsals prove the real mechanism without changing the release that st
 **When** specified
 **Then** injection is possible only inside an Administrator-approved rehearsal attempt, holds no standing credential, and is recorded in the attempt record
 
-### Story 6.2: Decide the monitor and admission bounds
+### Story 6.2: Decide the monitor and admission-check bounds
 
 As Administrator,
-I want the availability-probe stop bound, the identity-event capture-lag bound and the admission-check cadence decided,
+I want the availability-probe stop bound and admission-check cadence decided,
 So that monitoring sets the promotion stop by agreed rules, starting at G1.
 
 **Repo:** Hexalith.Platform with Administrator · **Covers:** FR-8, FR-9, AR-59 (monitor and admission bounds)
@@ -2798,13 +2872,10 @@ So that monitoring sets the promotion stop by agreed rules, starting at G1.
 **When** this story completes
 **Then** a decision record fixes the availability-probe failure bound that sets the stop, consistent with those thresholds, including how probe failures during a locked attempt count
 
-**Given** identity-provider event export
-**When** decided
-**Then** the record fixes the maximum capture lag, and names who is notified when it is exceeded
-
 **Given** production admission
 **When** decided
 **Then** the record fixes the cadence of the two-way comparison between live admission and signed admission records
+**And** the comparison consumes the identity-event capture-lag bound ratified in Story 4.9
 
 ### Story 6.3: Name the recovery deputy
 
@@ -3123,12 +3194,12 @@ So that a missing condition stops the attempt safely and tells me why.
 1. the lock and a new epoch are held, and the stop is clear;
 2. the release-mode trigger is met;
 3. provenance matches;
-4. exact-release staging evidence is within its maximum age (the evaluator from Story 5.10);
+4. exact-release staging evidence is within its maximum age (the evaluator from Story 5.11);
 5. the EventStore server package and the composed image are release-available;
 6. profile digests are equal, versions fall within the qualified sets, the realm-contract version is present, and the environment layer is applied;
 7. every included module is enrolled for production, with valid, non-empty readiness and smoke declarations;
 8. the working baseline is ready and its smoke suite passes now;
-9. retained-data compatibility evidence exists, or approved mode with a named data restore applies
+9. retained-data compatibility evidence exists; an approved retained-data attempt without it is available only when a named data-restore recovery has been separately qualified, which is not a G1 capability
 
 **Given** any precondition fails
 **When** it is detected
@@ -3278,7 +3349,8 @@ So that production can be installed or repaired without weakening any other gate
 
 **Given** retained application data
 **When** evaluated
-**Then** valid compatibility evidence against the recorded baseline, or a named data-restore recovery, is required
+**Then** G1 requires valid compatibility evidence against the recorded baseline
+**And** a named data-restore recovery cannot authorize the attempt until that recovery capability is separately qualified after G1
 **And** only a first installation with no retained data uses the fresh-install proof from Story 5.7
 
 **Given** the approved attempt
@@ -3294,13 +3366,13 @@ So that production can be installed or repaired without weakening any other gate
 **When** requested
 **Then** it runs only as an Administrator-approved attempt under the lock, and is refused otherwise
 
-### Story 6.19: Run in-place recovery as Administrator or the deputy
+### Story 6.19: Redeploy the working baseline in place as Administrator or the deputy
 
 As Administrator or the recovery deputy,
-I want to start an in-place recovery that redeploys the working baseline or restores an approved recovery point,
+I want to redeploy the recorded working baseline in place,
 So that I can restore service without a release when automatic recovery fails.
 
-**Repo:** Hexalith.Platform (operations repository) · **Covers:** FR-8 (manual recovery), AR-35, AR-42 (in-place forms)
+**Repo:** Hexalith.Platform (operations repository) · **Covers:** FR-8 (manual baseline redeploy), AR-35
 
 **Acceptance Criteria:**
 
@@ -3308,12 +3380,7 @@ So that I can restore service without a release when automatic recovery fails.
 **When** Administrator or the deputy starts a baseline redeploy on the production executor
 **Then** it runs under a new epoch with the stop kept set, rendering the prepared rollback set, or, when none was prepared, the recorded working baseline with environment-current values
 
-**Given** an approved named recovery
-**When** a data restore starts
-**Then** it runs the in-place forms of the Recovery sequence from Story 4.23, against production's recovery point
-**And** a failed or interrupted data restore re-enters as a data restore from the same point
-
-**Given** either recovery
+**Given** the baseline redeploy
 **When** verified
 **Then** it uses the same verification as automatic recovery, and it becomes the working baseline only after that verification passes
 
@@ -3321,34 +3388,29 @@ So that I can restore service without a release when automatic recovery fails.
 **When** its maximum lifetime passes
 **Then** Administrator and the deputy are notified, and the recovery is not aborted
 
-### Story 6.20: Run an approved incompatible release with a named data-restore recovery
+### Story 6.20: Enforce the G1 recovery boundary
 
 As Administrator,
-I want to release a change that cannot be safely rolled back under a named, pre-planned data-restore recovery,
-So that incompatible releases are possible without pretending automatic rollback is safe.
+I want G1 to refuse any release or recovery that requires an unqualified data restore,
+So that baseline redeploy is never mistaken for recovery-point restoration.
 
-**Repo:** Hexalith.Platform · **Covers:** FR-8 (approved incompatible release), NFR-1, AR-35, AR-58 (first degraded non-empty attempt)
+**Repo:** Hexalith.Platform · **Covers:** FR-8, NFR-1, AR-35
 
 **Acceptance Criteria:**
 
-**Given** compatibility evidence that is missing, stale, wrong-baseline, failing or breaking
-**When** Administrator approves the release
-**Then** the record names the recovery procedure, its acceptance checks and its maximum duration before the attempt
-**And** without that record, the attempt is refused
+**Given** a candidate with retained application data and missing, stale, wrong-baseline, failing or breaking compatibility evidence
+**When** a production attempt is requested at G1
+**Then** it is refused even with Administrator approval, and the refusal states that a qualified named data-restore recovery is unavailable
 
-**Given** the approved attempt
-**When** it takes the lock
-**Then** a complete recovery point is cut after the lock, and only then does the rollout start
+**Given** a request to restore a production recovery point at G1
+**When** the production executor evaluates it
+**Then** it is refused without mutating workloads, data, routing or the working pointer
+**And** the refusal does not affect the separately supported baseline-redeploy path
 
-**Given** a non-working outcome
-**When** the attempt ends
-**Then** the executor sets the stop, closes user ingress, removes the candidate's workloads while keeping data objects, and stops, with no automatic rollback prepared or attempted
-
-**Given** the named recovery
-**When** run as an in-place data restore (Story 6.19)
-**Then** it restores to the post-lock recovery point and reports the lost window
-**And** exceeding the maximum duration is reported without aborting
-**And** an admission revocation and a Memories erasure acknowledged after the cut both survive, and the NFR-3 access outcomes are re-verified before ingress reopens
+**Given** a failed compatible deployment or baseline redeploy
+**When** recovery is selected
+**Then** only the data-preserving rollback-set or baseline-redeploy mechanisms are offered
+**And** neither mechanism rewinds application data or current security authority
 
 ### Story 6.21: Build the shared rehearsal harness
 
@@ -3372,7 +3434,7 @@ So that every SM-5 rehearsal and DR drill uses the same trusted mechanism.
 **When** audited
 **Then** every injection appears in its attempt record, with the trigger and its time
 
-### Story 6.22: Change shared infrastructure through one controlled procedure
+### Story 6.22: Guard shared-infrastructure changes with one controlled procedure
 
 As Administrator,
 I want every shared-infrastructure change run as one controlled change covering both environments,
@@ -3383,20 +3445,21 @@ So that shared changes never silently break either environment's isolation or wo
 **Acceptance Criteria:**
 
 **Given** a shared-infrastructure change
-**When** it runs
-**Then** it holds both environment locks, has one named change owner, starts only after a complete recovery point, and records one attempt per environment on that environment's executor
+**When** the procedure prepares it
+**Then** it classifies the bounded change window as identity and secrets, shared data services, control-plane and networking, or artifact, backup and administration tooling
+**And** it requires both environment locks, one named change owner, a complete recovery point, and one attempt record per environment on that environment's executor
 
-**Given** the change applied
-**When** verified
-**Then** it re-runs the smoke checks of the release each environment serves and the NFR-3 negative tests
+**Given** no complete recovery point is available
+**When** a shared-infrastructure mutation is requested
+**Then** the procedure refuses it before mutation and records the missing prerequisite
 
-**Given** a verification failure
-**When** it occurs
-**Then** the outcome is non-working, production's stop is set, production is marked degraded, and Administrator recovers by forward revert
+**Given** a dry-run of the guarded procedure at G1
+**When** its control flow is verified
+**Then** it proves both-lock acquisition, attempt recording, smoke and NFR-3 test selection, failure classification, stop setting and the forward-revert entry point without claiming successful infrastructure mutation or forward-revert qualification
 
 **Given** a change after G1
 **When** requested
-**Then** it is refused unless it has first been rehearsed on a production-profile copy on prepared capacity
+**Then** it is refused unless it has a complete recovery point and has first been rehearsed on a production-profile copy on prepared capacity
 **And** the only exception is an urgent security patch applied in place with an Administrator record
 
 ### Story 6.23: Deploy the reference release to production with ingress closed and reach G1
@@ -3455,7 +3518,7 @@ So that production's safety mechanisms are proven while no user can be affected.
 
 ## Epic 7: Control production access explicitly
 
-Only users that Administrator explicitly admits reach production, with exactly their production permissions, through the API, CLI and MCP. Staging users, workloads, automation and pods are refused at every boundary. The admission-record chain and drift detection built in Epic 6 are proven here for human admission. The temporary synthetic grant supplies the SM-4 positive evidence, and its revocation is followed by a denial check.
+Only users that Administrator explicitly admits reach production, with exactly their production permissions, through the API, CLI and MCP. Staging users, workloads, automation and pods are refused at every boundary. The admission-record chain and drift detection built in Epic 6 are proven here for human admission. The temporary synthetic grant supplies the SM-4 positive evidence, and its revocation is followed by a denial check. Backup-prefix denial is recorded as deferred until Epic 8 creates the per-environment-instance prefixes; every target that exists at G1 is exercised here.
 
 ### Story 7.1: Enforce production admission at every boundary
 
@@ -3596,7 +3659,7 @@ So that shared infrastructure never leaks production data or authority.
 - volume or PersistentVolume binding;
 - production hostnames or certificates;
 - identity administration, including the staging management client and staging admins against the production realm, and McpCli tokens against the admin API;
-- automation targets: production namespaces, environment-layer objects, registry writes, records, evidence, backup prefixes, and the internal verification and recovery endpoints, including the staging recovery-hook principal and a prior-epoch credential
+- automation targets: production namespaces, environment-layer objects, registry writes, records, evidence, and the internal verification and recovery endpoints, including the staging recovery-hook principal and a prior-epoch credential
 
 **Then** every attempt is denied
 **And** the record shows zero successes
@@ -3608,6 +3671,11 @@ So that shared infrastructure never leaks production data or authority.
 **Given** an access change or a shared-infrastructure change
 **When** it completes
 **Then** the affected checks repeat
+
+**Given** production backup prefixes do not yet exist
+**When** the G1 matrix is recorded
+**Then** backup-prefix denial is marked deferred rather than passed
+**And** every other target that exists at G1 must pass
 
 ### Story 7.7: Use McpCli against production
 
@@ -3644,7 +3712,8 @@ So that G2 has its access and isolation evidence.
 
 **Given** staging and production
 **When** SM-4 runs
-**Then** the declared supported interfaces and named agent-eligible McpCli operations are shown, allowed operations succeed, and every FR-11, FR-12 and NFR-3 refusal check passes for users, workloads and automation
+**Then** the declared supported interfaces and named agent-eligible McpCli operations are shown, allowed operations succeed, and every currently applicable FR-11, FR-12 and NFR-3 refusal check passes for users, workloads and automation
+**And** the not-yet-created backup-prefix target remains explicitly deferred, never silently passed
 
 **Given** the SM-4 record
 **When** stored
@@ -3652,12 +3721,12 @@ So that G2 has its access and isolation evidence.
 
 ## Epic 8: Recover production from disaster and open it to users (G2)
 
-Administrator or the deputy restores production on prepared capacity within one hour of data loss and four hours of recovery for outages that begin within declared response coverage. Recovery never resurrects Memories erasures or revoked admission. Backups run every 30 minutes under independent monitoring, and restore drills run monthly. G2 then opens production to users in the prescribed order.
+Administrator or the deputy restores production on prepared capacity within one hour of data loss and four hours of recovery for outages that begin within declared response coverage. Recovery never resurrects Memories erasures or revoked admission. Backups run every 30 minutes under independent monitoring. After usable recovery points and Memories continuity exist, this epic qualifies in-place data restore and named retained-data recovery, completes the isolated monthly drill, closes the deferred backup-prefix isolation target, and opens G2 in the prescribed order.
 
-### Story 8.1: Procure prepared replacement capacity and the recovery executor host
+### Story 8.1: Procure prepared replacement capacity and select the recovery executor host
 
 As Administrator,
-I want replacement compute and storage and an off-site recovery executor identified and ready,
+I want replacement compute and storage procured and an off-site recovery executor host selected,
 So that a disaster restore has somewhere to go before it is ever needed.
 
 **Repo:** Administrator operations · **Covers:** FR-9, NFR-2, AR-28 (recovery executor), AR-60 · *Independent, pull forward*
@@ -3670,13 +3739,13 @@ So that a disaster restore has somewhere to go before it is ever needed.
 **And** whole-site coverage is claimed only if that location is independent of the primary site
 
 **Given** the recovery executor host
-**When** provisioned off-site
-**Then** it runs only replacement-capacity recovery
-**And** its standing credentials cover only the prepared capacity, its record-signing identity, write access to the attempt, lock and stop store, and read-only access to recovery points and the off-site registry replica
+**When** selected and reserved off-site
+**Then** it is dedicated to replacement-capacity recovery and shared with no CI runner or other executor
+**And** its base host is hardened, but no integrated recovery authority is claimed until the recovery contracts, artifacts, records, recovery points and custody release path exist
 
-**Given** the recovery workflows and environment definitions
-**When** copied
-**Then** a pinned off-site copy exists that works with neither operations-repository write access nor GitHub
+**Given** the procurement record
+**When** completed
+**Then** it names the capacity owner, location, readiness lead time, selected host and the prerequisites for later executor commissioning
 
 ### Story 8.2: Decide the reduced-recovery operating policy
 
@@ -3845,7 +3914,7 @@ So that we learn about a backup gap before we need the backup.
 **Then** it verifies coverage, including the erasure proof, without holding key material, and fails the point closed on an unexplained loss
 
 **Given** Keycloak event export
-**When** its lag exceeds the bound from Story 6.2
+**When** its lag exceeds the bound from Story 4.9
 **Then** Administrator and the deputy are notified
 
 **Given** seal state, volume headroom and expiries
@@ -3867,6 +3936,11 @@ So that the failed site can never write again and the restore starts from a trus
 **Then** the promotion stop is set
 **And** each surviving authority's fence-and-reissue owner revokes the old instance's credentials, through a sandboxed module fence hook or a Platform-owned procedure, and proves they fail
 **And** the old node stays isolated from network and DNS
+
+**Given** the selected recovery executor host from Story 8.1 and the completed recovery contracts, off-site artifacts, record store, usable recovery points and custody release path
+**When** the executor is commissioned
+**Then** a pinned off-site copy of the workflows and environment definitions runs with neither operations-repository write access nor GitHub
+**And** its standing credentials cover only the prepared capacity, its record-signing identity, write access to the attempt, lock and stop store, and read-only access to recovery points and the off-site registry replica
 
 **Given** step 2
 **When** it runs
@@ -4051,7 +4125,40 @@ So that everyone knows the four-hour RTO is suspended and releases stay stopped.
 **When** all three exist
 **Then** the reduced-recovery state ends
 
-### Story 8.16: Run the isolated DR drill and prove RPO and RTO
+### Story 8.16: Qualify in-place data restore and named retained-data recovery
+
+As Administrator or the recovery deputy,
+I want production recovery-point restoration and the named retained-data release path qualified,
+So that incompatible releases can recover safely without pretending baseline redeploy or automatic rollback restores data.
+
+**Repo:** Hexalith.Platform (operations and recovery workflows) · **Covers:** FR-8, FR-9, NFR-1, AR-35, AR-42
+
+**Acceptance Criteria:**
+
+**Given** a usable production recovery point, retained artifacts and qualified Memories erasure continuity
+**When** Administrator or the deputy starts an in-place data restore on the production executor
+**Then** it takes a new epoch, keeps the promotion stop set, closes user ingress to executor and probe sources, removes application workloads while keeping data objects, and discards post-cut broker backlog, dead letters, consumer offsets and Scheduler jobs
+**And** it restores keys and data, runs the previous recovery hooks in dependency order, rotates credentials, reconciles admission and verifies readiness, smoke, integrity and access before any ingress state is restored
+
+**Given** an interrupted or failed in-place data restore
+**When** it is resumed
+**Then** it re-enters as a data restore from the same recorded point under a new epoch
+**And** exceeding its recorded maximum duration notifies Administrator and the deputy without aborting the recovery
+
+**Given** a candidate without valid compatibility evidence against the working baseline
+**When** its approved retained-data path is qualified
+**Then** the qualification binds the staged rehearsal, named recovery procedure, recovery-point requirements, retained artifacts, maximum duration and acceptance checks to that candidate
+**And** it prepares no automatic rollback and grants no authority beyond one Administrator-approved attempt
+
+**Given** the named recovery rehearsal
+**When** a post-cut admission revocation and a Memories erasure are introduced
+**Then** both survive restoration, the lost window is reported and the NFR-3 access outcomes pass before the qualification is accepted
+
+**Given** the qualification is missing, stale, bound to another candidate or baseline, or any recovery check fails
+**When** an approved retained-data production attempt is evaluated
+**Then** it is refused before mutation
+
+### Story 8.17: Run the isolated DR drill and prove RPO and RTO
 
 As Administrator,
 I want an isolated drill that proves production can be recovered within the RPO and RTO targets,
@@ -4080,12 +4187,16 @@ So that G2 rests on measured recovery, not intent.
 **When** staging users, workloads, credentials and automation attempt to reach them
 **Then** every attempt is denied, and the copies are handled as restricted production data
 
+**Given** the production backup prefixes created in this epic
+**When** staging credentials and automation try to list, read, write or delete them
+**Then** every attempt is denied and recorded, closing the deferred backup-prefix target from Story 7.6
+
 **Given** the drill record
 **When** stored
 **Then** it lists the recovered-data age, coverage status, full elapsed time, every substitution, every lost-window category, the grants to re-apply, the reduced-recovery state with the stop set, and denial of an admission revoked just before the failure, including a revocation lost before event export
 **And** the drill repeats monthly and after material storage, backup or recovery-mechanism changes
 
-### Story 8.17: Retain production telemetry off-site for incident analysis
+### Story 8.18: Retain production telemetry off-site for incident analysis
 
 As Administrator,
 I want production telemetry retained off the primary failure domain,
@@ -4100,7 +4211,7 @@ So that incidents can be analysed even after losing the primary site.
 **Then** the telemetry needed for incident analysis ships off the primary failure domain with a declared minimum retention
 **And** production data is readable only by production principals
 
-### Story 8.18: Open production to users (G2)
+### Story 8.19: Open production to users (G2)
 
 As Administrator,
 I want production opened to users only after every G2 condition is met, and in a controlled order,
@@ -4117,6 +4228,7 @@ So that the first real users arrive at a recoverable, isolated and verified prod
 - Memories conformance, including the migration of its remaining direct Redis coordination to Dapr (Story 8.13);
 - SM-4 evidence, with the G1 grant's revocation record and denial check;
 - verified recovery access, capacity, deputy alert delivery and response coverage;
+- qualified in-place data restore and named retained-data recovery (Story 8.16);
 - the reduced-recovery policy record;
 - telemetry durability
 
@@ -4136,7 +4248,7 @@ So that the first real users arrive at a recoverable, isolated and verified prod
 
 ## Epic 9: Promote releases to production automatically (G3)
 
-Releases with valid compatibility evidence against the current baseline, and a passing shared-infrastructure currency check, promote automatically. The SM-5 rehearsals, run on the shared harness from Epic 6, prove every failure trigger and every recovery, stop and approval rule. Any policy change suspends automatic promotion until the affected rehearsals repeat.
+Releases with valid compatibility evidence against the current baseline, and a passing shared-infrastructure currency check, promote automatically. The SM-5 rehearsals, run on the shared harness from Epic 6, prove every failure trigger and every recovery, stop and approval rule. With complete recovery points now available, they also qualify successful shared-infrastructure execution and forward revert. Any policy change suspends automatic promotion until the affected rehearsals repeat.
 
 ### Story 9.1: Decide the shared-infrastructure currency policy
 
@@ -4262,6 +4374,11 @@ So that automatic promotion and its alternatives each behave as specified.
 **When** rehearsed
 **Then** the first sets the stop and recovers by forward revert, and the second blocks automatic promotion
 
+**Given** the guarded shared-infrastructure procedure, a complete recovery point and prepared production-profile capacity
+**When** its success and failure paths are qualified
+**Then** a bounded change executes under both environment locks, both served releases pass smoke and NFR-3 verification, and the successful attempts are recorded
+**And** an injected verification failure is recovered by a recorded forward revert that restores both environments' verified state
+
 **Given** GitHub delivery and the deputy's recovery access
 **When** rehearsed
 **Then** both are demonstrated
@@ -4306,7 +4423,7 @@ So that releases reach production automatically on proven safety.
 **Given** missing, failing, stale or wrong-baseline compatibility evidence, or a failed currency check
 **When** automatic promotion is evaluated
 **Then** the automatic path is refused
-**And** the release may proceed only through Administrator approval
+**And** Administrator approval still requires the applicable fresh-install, compatible-baseline or qualified named-recovery path and never bypasses staging evidence
 
 **Given** the promotion history
 **When** audited
@@ -4442,6 +4559,11 @@ So that the one-hour RPO and four-hour RTO are proven for the complete MVP.
 **Given** the drill record
 **When** stored
 **Then** it lists every lost-window category, including theirs
+
+**Given** the full-composition drill
+**When** its operating controls are evaluated
+**Then** it re-verifies backup cadence and retention, independent availability and recovery-point freshness monitoring, monitor-silence and dead-man-silence detection in both directions, and actual GitHub delivery to Administrator and the deputy
+**And** any failed operating-control check fails the full-composition SM-6 result
 
 ### Story 10.7: Record MVP acceptance
 
