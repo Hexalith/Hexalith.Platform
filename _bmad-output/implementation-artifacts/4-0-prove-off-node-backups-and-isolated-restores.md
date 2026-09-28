@@ -6,6 +6,7 @@ story: 0
 created: '2026-09-28'
 status: 'in-progress'
 route: 'dispatch'
+baseline_commit: '6ac920bd26a38b7b50818b62f6562199c6014005'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
   - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md'
