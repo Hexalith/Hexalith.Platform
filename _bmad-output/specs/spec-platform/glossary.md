@@ -11,16 +11,19 @@ Product terms come from the PRD. Architecture terms point to their spine definit
 - **Domain module:** a module that provides domain behavior. Its minimum environment is at least EventStore, Tenants and Memories; Parties is one example. Technical modules and tools are classified in the spine's Design Paradigm.
 - **MVP module set:** EventStore, Tenants, Parties, Folders, Projects, McpCli and Memories.
 - **Complete environment:** the MVP module set plus the supporting components needed to run it.
-- **Module workspace:** a module's own repository, from which a developer edits, runs, tests and debugs that module. In the MVP, the domain modules are the ones debugged this way.
+- **Module workspace:** the active Tenants, Parties, Folders or Projects repository, used for that domain module's Platform development and testing.
 - **Platform workspace:** the Platform repository used as the active root. EventStore, Memories and McpCli are run and debugged from source there.
 - **Active root repository:** the repository work is performed from. Its direct submodule declarations decide which dependencies are initialized.
 - **Minimum environment:** the components a module developer declares as required for development or testing, in addition to the module itself.
 - **Module configuration / declaration:** the module-owned, versioned input that lists the servers Platform enables. The spine's Module declaration convention enumerates its fields.
 - **Enabled module:** a module whose services are enabled in the selected environment.
+- **Enrolled module:** a module with the declarations and qualification evidence needed for inclusion in a Platform composition at the relevant stage. Repository presence alone is not enough, and local or CI enrollment does not qualify a module for production.
 
 **Access and environments**
 
-- **McpCli:** the CLI and MCP tool that exposes enabled modules' commands and queries. It routes them through EventStore and is governed by the selected environment's permissions.
+- **Supported interface:** a module-declared external surface with explicit exposure and authorization rules that Platform qualifies for the selected environment.
+- **Agent-eligible operation:** a module-declared command or query permitted through McpCli. UI-only and human-confirmation operations stay ineligible, even for a human CLI caller.
+- **McpCli:** the caller-hosted CLI and stdio MCP client that exposes enabled modules' agent-eligible operations through EventStore, with selected-environment contract matching and authorization.
 - **Staging:** the hosted environment under `hexalith.com`, where checks gate production promotion.
 - **Production:** the hosted environment under `tache.ai`.
 - **Production user:** a user explicitly admitted to production. Being a staging user never confers this status or any production permissions.
@@ -30,44 +33,66 @@ Product terms come from the PRD. Architecture terms point to their spine definit
 - **Isolated test:** a module-owned unit or focused component test that runs without Platform and may use lightweight test doubles.
 - **Readiness:** a service is initialized and able to handle its intended requests. A running process is not enough. Full business-flow validation belongs to integration and E2E tests.
 - **Integration test:** a test that exercises a module against its configured real services in a Platform environment.
-- **Critical business flow:** a business operation that its owning module designates as mandatory to verify with E2E tests before production promotion.
+- **Critical business flow:** a module-owned business operation, or essential service or tool behavior, designated for mandatory E2E verification before production promotion.
 - **E2E test:** an end-to-end test that verifies a business flow through the deployed services that deliver its outcome.
-- **Smoke test:** a short, production-safe check, chosen and maintained by a submodule, that verifies essential behavior after deployment or rollback.
+- **Smoke test:** a short, production-safe check, chosen and maintained by an enrolled module, that verifies essential behavior after deployment or rollback.
 
 **Release and recovery**
 
+- **Release:** an identified complete composition of enrolled modules, retained application artifacts, compatible configuration and required check suites, including unchanged modules and dependencies.
 - **Working release:** an identified release, with compatible versioned configuration, that has passed production readiness and smoke verification.
-- **Verification window:** the 5 minutes after rollout readiness, during which availability and smoke results are checked before deployment or recovery is declared successful.
+- **Working baseline:** the retained release identity plus the verified attempt record of the current working application. Recovery combines its application artifacts with compatible current environment authority. Spine form: the release record plus the attempt record the latest-working pointer names.
+- **Promotion stop:** the durable block on further production promotion after a non-working outcome or disaster recovery entry. Only Administrator clears it, after verified recovery.
+- **Verification window:** the five minutes after rollout readiness, during which availability and smoke results are checked before deployment or recovery is declared successful.
 - **Recovery owner:** Administrator, the product owner. Receives GitHub notifications and intervenes when automatic recovery fails or cannot be verified.
-- **Recovery point:** a usable copy of authoritative data, together with the compatible application version and configuration needed to restore service. The spine's RRA "Recovery point and freshness" row gives the full definition.
+- **Recovery deputy:** the named person with independent recovery and key access who receives every notification and can restore, verify and reopen service. Cannot resume promotions or administer production-user admission.
+- **Recovery point:** a complete, verified set of module and shared-dependency recovery artifacts at one declared cut, with compatible release and configuration and the required security and erasure context. The spine's RRA "Recovery point and freshness" row gives the full definition.
 - **RPO:** the maximum target age of recoverable data at the time of failure.
 - **RTO:** the maximum target duration from outage to verified restoration, including detection, response, capacity, restore and validation.
+- **Response coverage:** the published hours and time zone in which the primary and deputy commit to responding within a declared acknowledgement bound. It decides whether the four-hour RTO applies, without pausing the outage clock.
 
 ## Architecture terms (spine)
 
 **Roles**
 
-- **Administrator:** the production authority, recovery owner and Platform architecture owner (spine Design Paradigm).
-- **Recovery deputy:** backs Administrator for recovery and key custody (spine Design Paradigm).
+- **Administrator:** the production authority, recovery owner and Platform architecture owner; the only approver of releases, clearer of the promotion stop and administrator of production admission (spine Roles).
+- **Recovery deputy:** receives every deployment-failure, recovery, backup and monitor notification and may execute documented recovery, verify and reopen (spine Roles).
+- **Named writers:** the only writers of the operations repository: Administrator and the second organization owner (spine Roles; AD-7).
 
-**Composition and testing**
+**Tooling and composition**
 
-- **Composed `eventstore` host / gateway:** AD-13.
-- **Platform runner, environment descriptor:** AD-10.
-- **Platform tool:** AD-4; spine "Local tool and readiness".
-- **Environment layer:** AD-3.
+- **Platform tool, runner:** Builds' `hexalith-module` (spine Terms; AD-4, AD-10). The Builds package "release record" is distinct from this spine's release record.
+- **Mode:** source (local, Debug) or package (CI, Release); AD-4.
+- **Platform identity:** AD-4 "Platform identity".
+- **Environment descriptor:** AD-10.
+- **Composed `eventstore` host, gateway:** AD-13. The *gateway* is the host's authenticated endpoint; a *Gateway* is an environment's Gateway API object (spine Terms; Hosted interfaces).
 - **Extension package:** AD-13.
-- **Intake manifest, change classification:** spine "Module intake" and "Module declaration".
-- **Catalog generation, rollback combination:** spine "Catalogs"; AD-15.
+- **Intake manifest, breaking change:** spine "Module intake".
+- **Catalog generation:** spine "Catalogs".
+- **Legacy surfaces, new surfaces:** AD-11.
 
-**Release records and binding classes**
+**Release tiers and records**
 
+- **Release tiers** (application package, environment layer, shared infrastructure, outside every release): spine "Release tiers".
 - **Release record:** AD-2.
-- **Release-invariant, environment-current and attempt-bound values; attempt record; working baseline:** spine "Binding classes".
+- **Binding classes; attempt, qualification, production-promoted and Administrator records; latest-working pointer; promotion-stop records:** spine "Binding classes and records".
+- **Attempt, lock, epoch:** RRA "Attempt ownership".
+- **Rollback set, rollback generation:** AD-15.
+- **Production preconditions:** spine "Production preconditions".
+
+**Release modes and recovery**
+
 - **Release modes (automatic, Administrator-approved):** RRA "Release modes".
-- **Promotion stop:** RRA "Automatic recovery".
+- **Empty or degraded production:** RRA "Empty or degraded production".
+- **In-place recovery:** RRA "In-place recovery".
+- **Staging reset:** RRA "Staging reset".
+- **Promotion stop:** RRA "Promotion stop".
+- **Disaster recovery sequence, recovery executor:** spine "Disaster recovery sequence"; AD-7.
+- **Reduced-recovery posture:** RRA "After DR".
 
 **Identity and gates**
 
-- **Surface class, synthetic identities:** AD-14; spine "Synthetic identities".
+- **Surface classes (`ui`, `agent`, `service`):** AD-14.
+- **Human production-admission group, synthetic-admission group, synthetic tenant:** AD-6; spine "Synthetic identities".
 - **G1, G2, G3:** RRA "Production entry gates"; see [sequencing.md](sequencing.md).
+- **Owned work gates:** spine "Owned work"; see [sequencing.md](sequencing.md#owned-work-by-gate).
