@@ -1,0 +1,55 @@
+# PRD structure review (Finalize, 2026-09-28)
+
+This document exists to help the internal development, operations and architecture team plan and verify the agreed Hexalith Platform scope without reopening product decisions.
+
+**Lens:** `bmad-review lenses=structure`. **Model:** Strategic/Context (Pyramid); the glossary is judged against the Reference model. **Readers:** humans. **Style guide:** Microsoft Writing Style Guide. **Constraints:** the caller's Finalize brief. Requirements, thresholds, numbers, actors, gates, scope, exceptions, decisions, IDs, downstream rows, frontmatter and headings stay unchanged. Nothing moves to the addendum, and no fix may cross a section boundary.
+
+The top-down shape holds. Purpose, vision, users, scope and gates come first, then features, cross-cutting NFRs, measures, downstream work and the glossary. The density that reviewers flagged is mostly *within* requirements, not in the section order. The highest-value changes group related rules inside FR-4, FR-8 and FR-9, and remove restated rules where a cross-reference is enough.
+
+## Word metrics
+
+Command: `uv run .claude/skills/bmad-review/scripts/word_metrics.py prd.md`.
+
+| Section | Before | After structure pass |
+| --- | ---: | ---: |
+| Document total | 9,831 | 9,795 |
+| FR-4 | 768 | 759 |
+| FR-8 | 1,009 | 1,004 |
+| FR-9 | 756 | 772 |
+| Glossary | 1,050 | 1,012 |
+
+## Findings and dispositions
+
+| # | Pass | Original Text | Revised Text | Changes | Disposition |
+| --- | --- | --- | --- | --- | --- |
+| S1 | structure | FR-4 "Completion, cleanup and diagnostics": three bullets on accepted attachment holding the environment, the attached-run hold limit, and the withdrawn outcome | **MOVE** all three unchanged to the end of "Run isolation and ownership", after the attachment-acceptance bullet | All the attachment rules now sit together. "Withdrawn" is defined before the cancellation bullet uses it. The completion group drops from 11 to 7 bullets. 0 words. | Applied |
+| S2 | structure | FR-4: "…except that a failed attached run also retains the environment; …" plus a separate bullet: "A failure of any local run served by the environment, owner or attached, retains it under the failed-local rule, listed with the failed run." | **MERGE**: "…except that a failure of any local run served by the environment, owner or attached, retains it under the failed-local rule, listed with the failed run. Later cancellation must not erase…" The standalone bullet is removed. | The same retention rule was stated twice. The broader wording survives, attached to the first-terminal-outcome rule it qualifies, which keeps the N-7 exception explicit. −9 words. | Applied |
+| S3 | structure | FR-8: the "**First deployment.**" bullet, which came after the two incompatible-release bullets | **MOVE** it up so it follows the empty/degraded outcome bullet | A first deployment is an empty-production attempt, so it belongs with the empty/degraded bullets. Incompatible-release bullets now form their own run. 0 words. | Applied |
+| S4 | structure | FR-8: the empty/degraded approval bullet (5 sentences, about 95 words) and the incompatible-failure bullet (4 sentences, about 95 words) | **SPLIT** each into two bullets: (a) the approval grant and what it lifts, then gates and stop timing; (b) the failure state and approved recovery, then lost state and preserved protections. "Still applies" becomes "still applies to the approved attempt", and "after the point" becomes "after that recovery point", to keep the antecedents clear. | These were the two densest bullets in the document. Each new bullet carries one idea. +4 words. | Applied |
+| S5 | structure | FR-8 "Baseline and incidents": "An incident establishing that production is no longer working sets or retains the promotion stop and makes production degraded; it never triggers an automatic search through older releases." | **CUT** to a cross-reference: "An incident establishing that production is no longer working follows the promotion-stop and degraded-production rules above." | Every clause is already stated in FR-8. A recorded incident is a stop trigger. A continuing condition is recorded once, and only an Administrator record clears the stop. Setting the stop never starts a search through older releases. The degraded definition includes a recorded incident. About −9 words. | Applied |
+| S6 | structure | FR-9: 11 undifferentiated bullets (756 words), including one bullet that lists five pre-reopening steps inline | **Add scaffolding**: bold subgroups "Backups, recovery points and monitoring", "Disaster recovery and reopening" and "Restore exercises and reduced-recovery state", matching the FR-4 and FR-8 pattern. Turn the pre-reopening sequence into five sub-bullets under "Before reopening service:". | Readers can scan FR-9 and pull out stories from it, as they already can for FR-4 and FR-8. The re-enable step joins its siblings under one lead-in. The five steps and their order are unchanged. +16 words. | Applied |
+| S7 | structure | SM-6: "Validates FR-9 and NFR-2 …" came before the recording instruction | **MOVE** "Record full outage duration and coverage status; monitor recovery-point age between exercises." ahead of the "Validates" sentence | SM-1 through SM-4 all end with their validation scope, and SM-6 now does too. 0 words. | Applied |
+| S8 | structure | Glossary "Promotion stop" repeated FR-8's full trigger list. Glossary "Reduced-recovery state" repeated FR-9's RTO and promotion-stop consequences, which NFR-2 also states. | **CONDENSE**: "…set by any trigger listed in FR-8." (the clearance sentence is kept). "…FR-9 defines its RTO and promotion-stop consequences." | This was the third copy of each rule, and glossary copies have drifted before (recheck N-2 and N-7). The definitions stay and the rules stay in their normative place. −38 words. | Applied |
+| S9 | structure | Glossary: 43 entries in a partly conceptual order, with misplaced entries such as Active root repository, Staging/Production and Production user | **Reorder** alphabetically. Entry text is unchanged apart from S8. | The glossary is a lookup table at the end of the document, and random access needs a predictable order. 0 words. | Applied |
+| P1 | structure | Release scope ¶5: "Rules carried from the architecture's third 2026-09-28 revision await its confirmation review: …" | **MOVE** this paragraph to the Downstream decisions introduction, which already states the architecture review status. Change the last row's "as listed under Release scope" to "as listed above". | Groups all readiness and status notes in one place, and keeps the scope section focused on scope. | Proposed, not applied: the move crosses sections and rewrites a pointer. |
+| P2 | structure | FR-12 closing paragraph (about 110 words): McpCli stdio and CLI surfaces, the EventStore gateway, obsolete proprietary surfaces, and legacy retirement criteria | **MOVE** the mechanism sentences to the addendum's [McpCli context](../addendum.md#mcpcli-context). Keep in the PRD only "Platform does not add or publish another proprietary Hexalith MCP/CLI surface" and the retirement criteria. | Would cut implementation naming from a requirement section (about −60 words). | Proposed, not applied: it moves content to the addendum, which the brief forbids. |
+| P3 | structure | Downstream row "Declare the availability-probe stop bound … the admission-mismatch check cadence; and the shared-infrastructure currency check…" (four declarations, two revisit timings) | **SPLIT** into one row per revisit timing. | The admission-mismatch cadence has no stated revisit timing (the row gives only "Probe and capture-lag bounds before G1; currency check before G3"). The split needs a decision on when that cadence must be declared. | Proposed, not applied: needs a decision. |
+| P4 | structure | Downstream row "Adopt the FR-8 and FR-9 rules … Also decide whether a degraded non-empty approval needs compatibility evidence or a named recovery" | **SPLIT** the open decision into its own row. | The cell mixes an adoption task with an open product decision. Its revisit clause "the PRD rules govern until adopted" does not fit an open decision, so the new row needs its own owner and revisit condition. | Proposed, not applied: needs a decision. |
+| P5 | structure | Closing line under Downstream: "No numeric uptime percentage or additional latency/throughput target is established. Revisit with Administrator…" | **MOVE/MERGE** into NFR-2, which already says "These targets establish neither an uptime percentage nor continuous response coverage", or into MVP non-goals. | Places the statement next to the NFR it limits. | Proposed, not applied: the move crosses sections. |
+| R1 | structure | The two release modes appear in Vision ¶4, Release scope ¶2 and FR-6's approval bullet | **PRESERVE** | These are three different roles: orientation, the normative scope definition, and a testable consequence. Cutting any of them would force cross-reference chasing in the section where stories are extracted. | Rejected as a CUT candidate |
+| R2 | structure | Deputy authority appears in Target users, FR-8 "Promotion stop" and the glossary | **PRESERVE** | Authority boundaries are the most-reviewed invariant (recheck "Authority" check). Each copy serves a different reader path, and all three currently agree. | Rejected as a CUT candidate |
+| R3 | structure | Capability-group introductions, such as Local and CI testing and Production verification and recovery, that summarize their FRs | **PRESERVE** | These are overviews before detail, for human readers. | Rejected as a CUT candidate |
+| R4 | structure | FR-7's three statements about a missing pass at the deadline (deadline failure, bounded grace, success condition) | **PRESERVE** | Each adds a distinct condition, so this is not true redundancy. | Rejected as a CUT candidate |
+| R5 | structure | Glossary "Empty or degraded production": "It is the only case in which an Administrator-approved attempt may proceed without a healthy baseline." | **PRESERVE** (not condensed with S8) | This is the only explicit statement of that rule. | Rejected as a CONDENSE candidate |
+
+## Summary
+
+- **Totals:** 19 findings: 9 applied, 5 proposed and not applied, 5 rejected (preserved).
+- **Reduction:** 9,831 to 9,795 words (−36, 0.4%). This pass changes shape: grouping, splitting and cross-references. Sentence-level tightening follows in the prose pass. No length target was set.
+- **Comprehension trade-offs:**
+  - S8 means glossary readers follow a pointer to FR-8 or FR-9 for the trigger list and the reduced-recovery consequences.
+  - S6 adds 16 words of scaffolding in exchange for scannability.
+- **Invariants:**
+  - No heading text changed, so every anchor is preserved, including `#downstream-decisions-and-readiness-evidence`.
+  - The addendum links only to `prd.md`, not to PRD anchors.
+  - No requirement ID, number, actor, gate or downstream row changed. See the prose report for the final verification.

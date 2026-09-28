@@ -1,0 +1,44 @@
+# Focused confirmation — architecture update run 4
+
+**Verdict: PASS. Remaining findings: 0 Critical, 0 High, 0 Medium, 0 Low.** ADV4-1/2, RB4-1/2 and REC4-1 are closed. CF3-1–4 remain closed, and the finalized PRD adoption items P1–P5 are present. No new policy choice is required.
+
+Reviewed 2026-09-28 against the 505-line `../../ARCHITECTURE-SPINE.md`, SHA-256 `d3b935c693c23044492dd48a7187b82b2f413772375d0e18211f26519926d501`. This snapshot includes the recovery-point coverage correction and the final prose reflow. References use stable section and row names.
+
+Scope: the named run-4 findings, run-3 confirmation corrections and PRD reconciliation P1–P5. No unrelated review scope was added. Only this confirmation report was written; no spine, decision log, code or runtime was changed.
+
+## Finding closure
+
+| Finding | Confirmation and evidence |
+| --- | --- |
+| ADV4-1 — first empty deployment asks for nonexistent baseline evidence | **Closed.** Release modes now limits the compatibility-to-named-recovery rule to retained application data. Empty or degraded production and Production precondition 9 explicitly route the first empty installation with no retained application data through fresh-install proof and the workload-removal failure path. They require no nonexistent baseline rehearsal or data restore. Provenance, staging, locking, verification and approval still apply. |
+| ADV4-2 — degraded retry requires absent baseline hosts | **Closed.** AD-15 Rollback set is scoped to attempts eligible for Automatic recovery. Catalogs prepares and validates the candidate generation on the exceptional paths, expressly requires no production baseline-host validation or automatic rollback generation for approved empty/degraded or named-recovery attempts, and preserves staging rehearsal when it supplies compatibility evidence. A compatible degraded retry can therefore run with zero baseline application workloads. It still removes candidate workloads on failure and never obtains automatic rollback. |
+| RB4-1 — general preparation overrides exceptional branches | **Closed by the same coordinated changes.** AD-15, Catalogs, Release modes, Empty or degraded production and precondition 9 now agree on applicability. Named data restore still uses the Recovery sequence's forward recovery generation. Fresh-install proof never waives retained-data compatibility or named recovery. |
+| RB4-2 — stop records lose environment identity | **Closed.** Binding classes and records binds each promotion-stop record to one environment and limits executor writers to that environment's executors. Promotion stop says each environment owns its stop and staging failures/resets never set production's stop. Revision, compare-and-set, per-cause disposition and Administrator-only clearance remain intact. |
+| REC4-1 — intentional erasure makes required recovery keys appear missing | **Closed in both required locations.** Recovery sequence step 3 retains the live key store in place and requires coverage for non-erased referenced generations. A missing generation is accepted only with current surviving tombstone authority and known lineage proving intentional destruction; erased keys remain absent and unknown lineage stops recovery. Recovery point and freshness applies that same proof when assessing usable points and monitoring later erasures; any unexplained missing generation makes a point unusable. Step 4 still orders admission/purge before replay. Owned work explicitly requires SM-5 proof that admission revocation and Memories erasure acknowledged after the cut survive the named restore. |
+
+The first recheck found REC4-1 only partly applied: step 3 and qualification were corrected while Recovery point and freshness still used unconditional coverage. The author then amended that convention and its monitoring rule. The final snapshot above includes that correction; no residual remains.
+
+## Run-3 corrections preserved
+
+| Correction | Confirmation |
+| --- | --- |
+| CF3-1 — recovery kind and executor | AD-3 distinguishes automatic application recovery, baseline re-deploy and data restore. Catalogs selects the prepared rollback generation for automatic recovery and the forward recovery generation for data restore. AD-12 assigns the shared Recovery sequence to the executor owning the attempt under AD-7. |
+| CF3-2 — timing anchors and same-attempt resumption | The seven rows from Timing and interruption through Interruption outcome preserve the former timing contract. Recovery-kind lifetime anchors covered DR to the original outage and other recovery kinds to their specified entry-time bounds; lifetimes notify without aborting. Phase deadlines cannot replace the absolute recovery lifetime. Attempt resumption preserves kind, timers, grace and consumed allowance while recording the new epoch. A different takeover records the predecessor as superseded and its own timing values. |
+| CF3-3 — reservation versus accepted takeover | Attempt ownership permits epoch reservation for fencing/draining control actions and admits operational mutation only after all affected authorities are fenced or drained. After acceptance, no older-epoch mutation may commit. |
+| CF3-4 — admission-drift notification | Diagnostics and notification explicitly notifies Administrator and the deputy and sets the stop for a mismatch, including both live membership without a record and an unapplied signed record. |
+
+## PRD adoption P1–P5
+
+| Adoption item | Confirmation |
+| --- | --- |
+| P1 — CI candidate artifact identity | AD-4 Candidate mapping covers every consumed artifact of the candidate's own committed Release build, including Contracts, server/extension packages, services and tools. AD-5 compares expected and actually loaded identities, including composed host and run-scoped McpCli, refuses substituted/uncommitted inputs and excludes labelled baseline-only runs from acceptance. Shared candidate revision, gating and reuse policy remains explicitly required before consumer implementation/acceptance; no local policy invention is permitted. |
+| P2 — attachment lifecycle and retention | AD-10 requires composition/mode/artifact/readiness/isolation compatibility, owner-finish refusal except retained local failure, finite visible holds, withdrawn outcomes and immediate first terminal outcomes. Any local run's failure retains resources; later cancellation cannot erase retention, while explicit developer cleanup can. Owner cancellation and CI job end withdraw attachments before cleanup; CI attachment is confined to one job. The shared descriptor and lifecycle qualification rows carry the required scenarios. |
+| P3 — degraded production and accepted repair choice | Empty or degraded production includes non-working outcomes, recorded incidents, bounded probe failures and failed pre-update health checks. Later sets block a not-yet-started approved attempt or prevent an executing attempt's success from clearing the stop. Every retained-data repair requires valid compatibility evidence or a named data-restore recovery; it still has the no-automatic-rollback failure path. Reduced-recovery posture is excluded and no release starts during recovery. |
+| P4 — complete promotion-stop semantics | The monitor compares admission in both directions on a declared cadence. Every observed cause receives a resolved/accepted disposition. Accepted continuing causes stay suppressed until resolution and recurrence; other continuing causes are recorded anew after clear. Administrator's lost-window and admission-match reviews precede both direct clearance and exceptional approval, and the observed-revision compare-and-set preserves later stops. |
+| P5 — admission restore and deputy limits | Roles and AD-6 retain Administrator-only admission authority and the explicit absence of a deputy revocation power. Recovery sequence step 5 lists post-cut grants for Administrator to re-apply and grants none during recovery. Step 7 restores only recorded pre-incident ingress, keeps it closed before G2 and leaves the stop set. Lost-window reporting precedes reopening; Administrator review gates clearance/approval rather than the deputy's verified reopening. |
+
+## Confirmation boundary
+
+The final prose reflow preserves the checked policy: timing is split into seven readable rows; Roles points to Recovery sequence step 7, where prior-ingress and pre-G2 limits remain explicit; the removed repeated fresh-install warning leaves both the retained-data rule in Empty or degraded production and precondition 9 intact.
+
+This pass confirms consistency of the specified decisions and their adoption. Runner behavior, common contract encodings, catalog/hook protocols, fencing, custody, operational bounds and SM-3/SM-5/SM-6 evidence remain their existing implementation and qualification gates. No runtime readiness, production qualification or measured recovery capability is inferred.

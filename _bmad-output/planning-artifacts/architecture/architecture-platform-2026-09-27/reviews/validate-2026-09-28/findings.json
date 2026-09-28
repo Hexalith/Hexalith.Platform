@@ -1,0 +1,350 @@
+{
+  "verdict": "CHANGES REQUIRED",
+  "summary": "Five independent lenses found 10 distinct items: 6 high, 3 medium and 1 low. Structural lint and technology verification pass; recovery, authorization and mutation-control rules need correction before the affected implementation work.",
+  "scope": "Standalone review of the existing September 28 initiative-level contract, including its aligned spec and documented decisions. Existing workspace edits are input to this validation. The spine, source memlog, spec and implementation are unchanged.",
+  "spine_sha256": "79f0d65346e9b644de605791a0183e42182bacf7e25b79060ad9e00a2a356c06",
+  "checks": [
+    "Deterministic lint_spine.py: PASS, zero findings across 15 ADs.",
+    "All 10 inline Markdown links resolve.",
+    "The spine contains 15 stable AD IDs and four Mermaid diagrams.",
+    "Five independent review lenses completed: rubric, technology/reality, adversarial compatibility, security and recovery.",
+    "Dapr resource-restart and Keycloak audience/client behavior were cross-checked against current official documentation.",
+    "SHA-256 comparison confirms the spine, source memlog and all captured spec files are unchanged from validation start.",
+    "HTML verified in Chromium at desktop and mobile sizes: search, severity/action filters, reset and evidence expansion pass; no broken local links, horizontal overflow or JavaScript errors (report-check.json)."
+  ],
+  "reviews": [
+    {
+      "name": "Rubric and input coverage",
+      "verdict": "CONDITIONAL PASS",
+      "file": "review-rubric.md"
+    },
+    {
+      "name": "Technology and repository reality",
+      "verdict": "PASS \u2014 0 findings",
+      "file": "review-reality.md"
+    },
+    {
+      "name": "Adversarial compatibility",
+      "verdict": "FAIL",
+      "file": "review-adversarial.md"
+    },
+    {
+      "name": "Security and identity boundaries",
+      "verdict": "NEEDS REVISION",
+      "file": "review-security.md"
+    },
+    {
+      "name": "Recovery safety and liveness",
+      "verdict": "CONDITIONAL PASS",
+      "file": "review-recovery.md"
+    }
+  ],
+  "findings": [
+    {
+      "id": "VAL-01",
+      "severity": "high",
+      "title": "In-place recovery cannot reach the recovery hooks it must invoke",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:309",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:314",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:129"
+      ],
+      "summary": "The production/staging recovery runner correctly performs in-place recovery on its own executor, while the module recovery endpoint correctly admits only the replacement-capacity recovery executor. Reused DR step 4 is denied on both in-place paths.",
+      "impact": "The approved incompatible-release recovery and staging reset cannot restore and verify module-owned data; the deputy's documented in-place path also stops at this boundary.",
+      "action": "autofix",
+      "recommendation": "Define the caller as the executor owning the current recovery attempt: production executor for production in-place recovery, staging executor for staging reset, recovery executor for replacement-capacity DR. Authorize only that executor's environment-scoped, current-epoch recovery principal, and retain in-workload execution.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "RB-1",
+        "ADVR-1"
+      ],
+      "mitigation": "AD-7 already authorizes these in-place executors; the conflict is in the reused endpoint restriction. The correction preserves the accepted executor split and module-owned hook execution."
+    },
+    {
+      "id": "VAL-02",
+      "severity": "high",
+      "title": "An epoch check before a mutation does not fence an earlier executor after takeover",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:279",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:126",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:223"
+      ],
+      "summary": "Executor A reads and validates epoch e before a mutation, then its request is delayed. An allowed takeover gives B epoch e+1; B restores the baseline. A's already-authorized Kubernetes/catalog write then completes using still-valid per-job credentials. Both clients performed the required check before each mutation.",
+      "impact": "A superseded executor can overwrite the recovered workload or catalog after the new owner has verified it; the signed attempt record and actual deployed state diverge.",
+      "action": "discuss",
+      "recommendation": "Add the semantic invariant that once takeover is accepted no prior-epoch mutation may commit, including in-flight writes. Require either fencing at each mutation authority or proven revocation/quiescence and draining of the earlier writer before the new epoch may mutate; record this prerequisite and fail closed if it cannot be proved.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "ADVR-2"
+      ],
+      "mitigation": "The CAS-capable record store, signed records, per-job credentials and monotonic epochs protect ownership records but do not require stale writes to be rejected by Kubernetes, the catalog or other mutation targets."
+    },
+    {
+      "id": "VAL-03",
+      "severity": "high",
+      "title": "Dapr resources can change without activating the change in existing sidecars",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:140",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:240",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:241"
+      ],
+      "summary": "HotReload is disabled but consumer restart is specified only for changed Components, leaving other Dapr resource updates without a required activation mechanism.",
+      "impact": "Sidecars can retain old authorization, subscriptions or HTTP endpoint configuration while release records and rendered objects describe the new state.",
+      "action": "autofix",
+      "recommendation": "Require changed effective Dapr resource content or bindings to restart every affected consuming sidecar within the owning application/environment attempt before readiness or qualification passes; qualify policy-only and HTTPEndpoint-only updates.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "RB-3"
+      ],
+      "mitigation": "The environment-layer row already requires restarts for changed Components, and readiness compares attempt-bound digests. It does not bind the other Dapr resource changes to a consuming-sidecar restart.",
+      "external_sources": [
+        {
+          "title": "Dapr v1.18: Updating resources (verified September 28)",
+          "url": "https://docs.dapr.io/operations/components/component-updates/"
+        }
+      ]
+    },
+    {
+      "id": "VAL-07",
+      "severity": "high",
+      "title": "Confidential target audience is not proof of the calling surface",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:199",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:200",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:201",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:203",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:204",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:438"
+      ],
+      "summary": "AD-14 explicitly allows an externally reachable bearer host to accept its confidential-client audience instead of deriving the surface from authenticated azp. Audience identifies the target, not the originating client. A service token legitimately targeted to a confidential host for an agent-eligible operation can therefore be interpreted as UI authority by an independently implemented host.",
+      "impact": "The realm and host teams can satisfy different clauses while allowing an agent/service origin to reach UI-only or confirmation-required operations. Correct target audience alone cannot enforce the calling-surface boundary.",
+      "action": "autofix",
+      "recommendation": "Require audience validation plus authenticated client-to-surface validation on every bearer endpoint, and require the attested effective originating surface on chained requests. Remove audience-only classification as an alternative. Add a negative case with the correct confidential target audience and a disallowed agent/service origin.",
+      "confidence": "high",
+      "external_sources": [
+        {
+          "title": "Keycloak: Configuring and using token exchange",
+          "url": "https://www.keycloak.org/securing-apps/token-exchange"
+        }
+      ],
+      "reviewer_ids": [
+        "SEC-1"
+      ],
+      "mitigation": "AD-14 already requires client classes, effective originating surface on chains, constrained exchange and per-client negative tests. The audience-only alternative weakens how a bearer host establishes that surface; its removal implements the existing policy."
+    },
+    {
+      "id": "VAL-08",
+      "severity": "high",
+      "title": "Recovery can resurrect admission revoked inside the event-export lag",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:117",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:203",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:247",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:286",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:290",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:312",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:315",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:316",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:437",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:481"
+      ],
+      "summary": "Identity-event export permits a bounded lag, yet DR restores admission from an older database plus surviving exported events and must deny revoked principals. A production-admission removal acknowledged immediately before failure can be absent from both restore inputs. The accepted RPO exception names module-owned revocations, not Keycloak admission revocations.",
+      "impact": "Restoring the realm and rebuilding the admission projection can re-admit a revoked actor with no evidence of the missing revocation. Signing-key and credential rotation does not repair that admission state; restored asynchronous tasks can run for the resurrected actor without a fresh login.",
+      "action": "discuss",
+      "recommendation": "Choose a recovery-safe admission authority: independently durable revocation records before acknowledgement, or fail-closed restored human admission until Administrator reconciliation and explicit reauthorization when the export frontier may be incomplete. Any intended loss window for identity revocations requires an explicit risk decision. Qualify failure immediately after revocation and before event export.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "SEC-2"
+      ],
+      "external_sources": [],
+      "mitigation": "Event-export lag is bounded and monitored; DR rotates keys and replays exported revocations. None recovers an acknowledged identity revocation that had not reached surviving storage. The accepted lost-window exception explicitly covers module-owned revocations."
+    },
+    {
+      "id": "VAL-09",
+      "severity": "high",
+      "title": "In-place restore skips compatible-code preparation and quiescence",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:274",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:275",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:311",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:312",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:314",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:245"
+      ],
+      "summary": "The in-place data-restore branch reuses DR steps 3\u20136, omitting not only D5's excluded fencing, Keycloak restore and cutover but also the worker disable, quarantine admission and recovery-point release deployment supplied by DR steps 1\u20132. Redeployment in the in-place row applies to its separate interrupted-recovery branch. A deployment lock does not stop live application writers.",
+      "impact": "After an incompatible candidate fails, keys and old data can be restored while candidate consumers and workers are active, and recovery hooks can execute in incompatible candidate workloads. Staging reset has no inherited production ingress closure. This can corrupt restored state or cause external effects before reconciliation.",
+      "action": "discuss",
+      "recommendation": "Define an in-place restore preparation phase: close user admission, quiesce ordinary writers/consumers and destructive/external-effect workers, enter quarantine, and deploy the named recovery point's compatible retained release and configuration in recovery mode before key/data restoration. Permit recovery-task writes only until checks pass. Preserve D5's no old-instance fencing, no Keycloak database restore and no DNS cutover; use existing reopening authority and retain the promotion stop.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "REC-1"
+      ],
+      "external_sources": [],
+      "mitigation": "The failed approved-release path already closes production user ingress, and D5 intentionally excludes old-instance fencing, Keycloak restore and cutover. That does not quiesce background writers or prepare compatible recovery workloads; staging reset also needs an explicit admission boundary."
+    },
+    {
+      "id": "VAL-04",
+      "severity": "medium",
+      "title": "A delayed promotion-stop clear can erase a newer incident",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:223",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:283",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:276"
+      ],
+      "summary": "Administrator signs a clear for stop S1 naming the verified working baseline. Before that clear is applied, the off-site monitor records a new incident S2 without changing the working baseline. A store consumer then applies the still-valid signed clear, because no rule binds it to the observed stop revision or rejects it after S2.",
+      "impact": "Promotion may resume while a newer recorded incident remains unresolved. The required health precheck does not cover every incident that legitimately sets the stop.",
+      "action": "discuss",
+      "recommendation": "Bind a clear record to the exact observed stop revision/set records and verified working-attempt identity, and apply it conditionally; any unacknowledged newer set keeps the stop active. Bind an empty/degraded override to one attempt and prevent it from consuming later stop records.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "ADVR-3"
+      ],
+      "mitigation": "Only Administrator can clear the stop, and releases still have a health precheck. Neither requires a clear to acknowledge a later stop for an incident beyond that health check."
+    },
+    {
+      "id": "VAL-05",
+      "severity": "medium",
+      "title": "Staging tenant-lifecycle tests have no admission authority for their permitted tenant IDs",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:127",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:232",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:437",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:273"
+      ],
+      "summary": "A staging E2E unit obeys the explicit exception by creating a run-scoped tenant T distinct from the fixed environment synthetic tenant S. The gateway independently applies the declared synthetic-admission predicate, which admits its synthetic client only for S, while the sandbox has no other tokens. Operations addressing T are denied.",
+      "impact": "The accepted staging tenant-lifecycle critical flow cannot pass without an undocumented admission exception or broader credentials, so its exact-release staging gate remains blocked.",
+      "action": "discuss",
+      "recommendation": "Specify the staging-only authorization bridge for the accepted lifecycle exception: a short-lived run-bound synthetic actor scope covering only the attested test tenant IDs and lifecycle operations, with no production or real-tenant grant. Make creation, subsequent calls and cleanup consume the same run scope and preserve exclusion markers.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "ADVR-4"
+      ],
+      "mitigation": "The exception is restricted to staging and marked test tenants. The fixed synthetic-tenant admission rule and executor sandbox otherwise remain appropriately restrictive."
+    },
+    {
+      "id": "VAL-10",
+      "severity": "medium",
+      "title": "Generic attempt timers lack recovery-specific phase and lifetime semantics",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:279",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:282",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:287",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:288",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:311"
+      ],
+      "summary": "Attempt ownership covers DR and in-place data restore, while 'each attempt' timing derives a maximum lifetime from catalog preparation, ten-minute rollout and release verification. Recovery begins with other mutations and can spend substantially longer restoring data within its separately specified four-hour RTO. The readiness-clock start and persisted maximum lifetime for these attempts are unspecified.",
+      "impact": "Independent implementations can incorrectly expire a valid restore using a release-sized lifetime, or leave restore attempts without a useful stale-attempt deadline. This is a scope ambiguity in the generic timer rule, not a challenge to the explicit four-hour incident RTO.",
+      "action": "discuss",
+      "recommendation": "Scope release deadlines to release attempts. Persist recovery phase deadlines and a declared overall lifetime; for a covered outage, fit recovery into the remaining four-hour incident budget. Define when restored-workload readiness and verification begin, preserve the outage timestamp and deadlines across takeover, and have stale-attempt monitoring use the recorded attempt-kind deadline.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "REC-2"
+      ],
+      "external_sources": [],
+      "mitigation": "The four-hour outage-to-service RTO and unchanged outage timestamp are explicit and remain valid. The ambiguity is which phase/lifetime fields a recovery attempt records for executor and monitor agreement."
+    },
+    {
+      "id": "VAL-06",
+      "severity": "low",
+      "title": "The recovery-contract milestone names a later consumer",
+      "source_refs": [
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:441",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:273",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:274",
+        "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277"
+      ],
+      "summary": "The recovery-hook row names the first DR drill as its milestone even though staging recovery points and resets consume it earlier. The general consumer-waits rule already requires the contract before use.",
+      "impact": "The milestone can mislead sequencing plans, but the existing rule prevents consuming an unavailable contract. This is planning clarity, not an unsafe architectural deferral.",
+      "action": "autofix",
+      "recommendation": "Align the Must precede cell with the earliest staging recovery-point or reset consumer, while preserving the general rule that consumers wait for shared contracts.",
+      "confidence": "high",
+      "reviewer_ids": [
+        "RB-2"
+      ],
+      "mitigation": "The First shared versions preamble says consumers wait, but the explicit first-drill milestone is later than the mandatory staging recovery-point/reset consumers. Move the named milestone to the earliest consumer."
+    }
+  ],
+  "dispositions": [
+    {
+      "id": "RB-1",
+      "disposition": "VAL-01",
+      "reason": "Merged independent reports of the same endpoint contradiction."
+    },
+    {
+      "id": "ADVR-1",
+      "disposition": "VAL-01",
+      "reason": "Merged independent reports of the same endpoint contradiction."
+    },
+    {
+      "id": "ADVR-2",
+      "disposition": "VAL-02",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "RB-3",
+      "disposition": "VAL-03",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "ADVR-3",
+      "disposition": "VAL-04",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "ADVR-4",
+      "disposition": "VAL-05",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "RB-2",
+      "disposition": "VAL-06 \u2014 downgraded to low",
+      "reason": "First shared versions already requires consumers to wait. The reviewer agreed this is milestone clarity, not an unsafe deferral."
+    },
+    {
+      "id": "SEC-1",
+      "disposition": "VAL-07",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "SEC-2",
+      "disposition": "VAL-08",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "REC-1",
+      "disposition": "VAL-09",
+      "reason": "Retained; concrete residual in the current revision."
+    },
+    {
+      "id": "REC-2",
+      "disposition": "VAL-10",
+      "reason": "Retained; concrete residual in the current revision."
+    }
+  ],
+  "positives": [
+    "All 12 functional requirements and three nonfunctional requirements have architecture mappings.",
+    "Release tiers, explicit authority, one-recovery policy, production entry gates and module-owned behavior are specified.",
+    "Technology seed corrections are grounded in repository and primary-source evidence.",
+    "Incomplete implementation generally has a named owner and gate; accepted risks are recorded and were not reopened."
+  ],
+  "limitations": [
+    "This is an architecture consistency review, not proof that the implementation or deployment meets the contract. No application, cluster, repository settings or external service was changed.",
+    "The technology reviewer checked current repository and official-source evidence. This run did not re-audit live infrastructure, validate real credentials, execute recovery drills or run application tests.",
+    "Historical findings were not copied forward as defects. The current spine, accepted decision history and aligned spec govern this report.",
+    "Findings are architectural inferences and counterexamples, not reproduced runtime exploits. Primary-source citations substantiate the technology behavior; the report identifies the resulting contract gaps."
+  ],
+  "next_step": "Roll the accepted findings into bmad-architecture Update, preserving AD-1 through AD-15; resolve the discuss items, apply the clear wording corrections, then refresh the affected spec companions with bmad-spec.",
+  "counts": {
+    "critical": 0,
+    "high": 6,
+    "medium": 3,
+    "low": 1
+  }
+}

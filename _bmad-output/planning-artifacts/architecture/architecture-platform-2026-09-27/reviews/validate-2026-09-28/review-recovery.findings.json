@@ -1,0 +1,41 @@
+[
+  {
+    "id": "REC-1",
+    "severity": "high",
+    "title": "In-place restore skips compatible-code preparation and quiescence",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:274",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:275",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:311",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:312",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:314",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:245"
+    ],
+    "summary": "The in-place data-restore branch reuses DR steps 3–6, omitting not only D5's excluded fencing, Keycloak restore and cutover but also the worker disable, quarantine admission and recovery-point release deployment supplied by DR steps 1–2. Redeployment in the in-place row applies to its separate interrupted-recovery branch. A deployment lock does not stop live application writers.",
+    "impact": "After an incompatible candidate fails, keys and old data can be restored while candidate consumers and workers are active, and recovery hooks can execute in incompatible candidate workloads. Staging reset has no inherited production ingress closure. This can corrupt restored state or cause external effects before reconciliation.",
+    "action": "discuss",
+    "recommendation": "Define an in-place restore preparation phase: close user admission, quiesce ordinary writers/consumers and destructive/external-effect workers, enter quarantine, and deploy the named recovery point's compatible retained release and configuration in recovery mode before key/data restoration. Permit recovery-task writes only until checks pass. Preserve D5's no old-instance fencing, no Keycloak database restore and no DNS cutover; use existing reopening authority and retain the promotion stop.",
+    "confidence": "high"
+  },
+  {
+    "id": "REC-2",
+    "severity": "medium",
+    "title": "Generic attempt timers lack recovery-specific phase and lifetime semantics",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:279",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:282",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:287",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:288",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:311"
+    ],
+    "summary": "Attempt ownership covers DR and in-place data restore, while 'each attempt' timing derives a maximum lifetime from catalog preparation, ten-minute rollout and release verification. Recovery begins with other mutations and can spend substantially longer restoring data within its separately specified four-hour RTO. The readiness-clock start and persisted maximum lifetime for these attempts are unspecified.",
+    "impact": "Independent implementations can incorrectly expire a valid restore using a release-sized lifetime, or leave restore attempts without a useful stale-attempt deadline. This is a scope ambiguity in the generic timer rule, not a challenge to the explicit four-hour incident RTO.",
+    "action": "discuss",
+    "recommendation": "Scope release deadlines to release attempts; persist phase deadlines and an overall lifetime for recovery attempts derived from the existing incident RTO. Define when restored-workload readiness and verification begin, preserve the original outage timestamp and fixed deadlines across takeover, and make stale-attempt monitoring use the attempt kind's recorded deadline.",
+    "confidence": "high"
+  }
+]

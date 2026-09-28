@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PRD Validation: Hexalith Platform</title>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --border: #e7e5e4;
+    --text: #1c1917;
+    --muted: #78716c;
+
+    --verdict-strong: #16a34a;
+    --verdict-adequate: #65a30d;
+    --verdict-thin: #d97706;
+    --verdict-broken: #dc2626;
+
+    --sev-low: #64748b;
+    --sev-medium: #ca8a04;
+    --sev-high: #ea580c;
+    --sev-critical: #dc2626;
+
+    --grade-exc: #16a34a;
+    --grade-good: #65a30d;
+    --grade-fair: #d97706;
+    --grade-poor: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  header.report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .title h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .title .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .grade {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .grade-excellent { background: var(--grade-exc); }
+  .grade-good { background: var(--grade-good); }
+  .grade-fair { background: var(--grade-fair); }
+  .grade-poor { background: var(--grade-poor); }
+
+  .synthesis {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    font-size: 15.5px;
+  }
+  .synthesis p { margin: 0 0 10px; }
+  .synthesis p:last-child { margin-bottom: 0; }
+
+  .dimension-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .dim-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .dim-card .dim-name { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .dim-card .dim-verdict { font-size: 14px; font-weight: 600; }
+
+  section.dimension, section.reviewer-section { margin-bottom: 14px; }
+  section.dimension details, section.reviewer-section details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  section summary {
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  section summary::-webkit-details-marker { display: none; }
+  section summary::before {
+    content: "▸";
+    display: inline-block;
+    color: var(--muted);
+    transition: transform 0.15s ease;
+  }
+  section details[open] summary::before { transform: rotate(90deg); }
+  section summary h2 {
+    display: inline;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    flex: 1;
+  }
+  .verdict-pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: white;
+  }
+  .verdict-strong { background: var(--verdict-strong); }
+  .verdict-adequate { background: var(--verdict-adequate); }
+  .verdict-thin { background: var(--verdict-thin); }
+  .verdict-broken { background: var(--verdict-broken); }
+
+  .dim-body { padding: 4px 20px 18px; }
+  .dim-judgment { color: var(--text); font-size: 14.5px; }
+  .dim-judgment p { margin: 0 0 10px; }
+
+  .findings-list { padding: 0 20px 4px; }
+  article.finding {
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+  }
+  article.finding:first-child { border-top: none; }
+  article.finding header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .badge {
+    font-size: 10.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+  .badge-sev-low { background: rgba(100, 116, 139, 0.12); color: var(--sev-low); }
+  .badge-sev-medium { background: rgba(202, 138, 4, 0.14); color: var(--sev-medium); }
+  .badge-sev-high { background: rgba(234, 88, 12, 0.14); color: var(--sev-high); }
+  .badge-sev-critical { background: rgba(220, 38, 38, 0.14); color: var(--sev-critical); }
+  .finding-title { margin: 0; font-size: 15px; font-weight: 500; flex: 1; min-width: 200px; }
+  .finding-location { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; color: var(--muted); }
+  .finding-note, .finding-fix { margin-top: 6px; font-size: 14px; }
+  .finding-fix strong { color: var(--muted); font-weight: 500; }
+
+  .reviewer-source {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .mechanical {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  .mechanical h3 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .mechanical ul { margin: 0; padding-left: 20px; }
+  .mechanical li { margin-bottom: 4px; color: var(--text); }
+
+  footer.report-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  footer .meta { display: flex; gap: 24px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="report-header">
+      <div class="title">
+        <h1>Hexalith Platform — Validation Report</h1>
+        <div class="subtitle">_bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/prd.md</div>
+      </div>
+      <div class="grade grade-fair">Fair</div>
+    </header>
+
+    <div class="synthesis">
+      <p>The requirement shape suits a single-operator internal platform, and this is a strong capability spec. It states decisions as decisions and backs them with numeric thresholds. Missing evidence fails closed throughout FR-6, FR-7 and FR-9. The non-goals do real work, and one thesis runs through every feature: Platform orchestrates, and modules own behavior and evidence. The risk sits in two places. First, the recovery response model: the four-hour RTO counts detection and operator response, yet the PRD requires no outage detection, disclaims round-the-clock response, and adds a recovery deputy who is bound by nothing. Second, the post-finalization edits were made locally and not propagated. FR-2 now says McpCli is &quot;declared directly&quot; in the Platform workspace, while the addendum and the repository say it is a sibling repo. The agent-eligibility rule never reaches the McpCli glossary entry, SM-4, or the module-developer handoff.</p>
+      <p>The adversarial and consistency reviewers extend that picture without contradicting it. The adversarial reviewer (38 findings: 3 critical, 12 high, 18 medium, 5 low) reads the PRD as a build contract. It finds places where a team could pass every listed check and still ship an unsafe system: the gated unit is undefined; rollback safety rests on compatibility evidence that nothing requires; automation and CI identities sit outside the isolation requirement; gate contents are self-certified; a working release can never be demoted; backup-freshness monitoring fails open; and there is no single go-live gate. The consistency reviewer (15 findings: 7 medium, 8 low, none critical or high) checked the PRD against the memlog, the architecture spine, the spec and the brief. It found every threshold, gate and fail-closed rule consistent. Its problems are incomplete propagation of the post-final alignment edit, plus decisions accepted in the spine that never reached the PRD: the Administrator-approved release mode before G3, the Folders/Projects envelope override, and the lost-window erasure exception. The reviewers converge on the themes listed here. Where all three flag the same gap, it is the most reliable signal in this report.</p>
+      <ul>
+        <li><strong>“Release” is undefined, so the promotion gate has no fixed scope</strong> — Rubric (Downstream usability: “Release” never defined; low: “submodule”/“module” drift); ADV-1, ADV-16. Gate scope, the “previous working release” and partial rollback all depend on what a release contains; one reading promotes a change that breaks an unchanged module, another blocks promotion permanently.</li>
+        <li><strong>NFR-1 compatibility evidence is not wired into FR-6 or SM-5</strong> — Rubric (Done-ness clarity: NFR-1 check not a condition of the FR-6 gate); ADV-2, ADV-5; CON-7. Automatic rollback is safe only if the previous release can read what the new one wrote; with no gate condition, owner or measure, missing evidence does not block promotion, and the “separately planned release” for incompatible changes (the spine’s Administrator-approved mode) is not in the PRD.</li>
+        <li><strong>Manual, approved and resume paths are undefined</strong> — Rubric (Decision-readiness: failed/unverified recovery has no response bound or resume actor); ADV-5, ADV-6; CON-7. The PRD assumes a promotion pause, an incompatible-change path and pre-G3 releases, but never says who deploys manually, who lifts the FR-8 stop, or how a bad working release is revoked, so implementers will add an ungated bypass.</li>
+        <li><strong>The recovery deputy has no requirement behind it; key custody and notification stay single-person</strong> — Rubric (Substance over theater); ADV-8, ADV-22; CON-6. The deputy was added to remove the recovery single point of failure, but FR-8, FR-9, SM-5 and the downstream table still notify and empower Administrator alone.</li>
+        <li><strong>The RTO counts detection and operator response, but no detection requirement and no 24/7 response exist</strong> — Rubric (Decision-readiness, high); ADV-7, ADV-9; CON-8. Whether the four-hour target holds at 03:00 on a Sunday decides on-call coverage; scheduled exercises and an alert that fires only once the RPO is breached cannot measure it, and the spine reads the target two ways.</li>
+        <li><strong>The McpCli agent-eligible rule is not propagated and can be satisfied by an empty set</strong> — Rubric (Downstream usability: FR-12 edit not propagated); ADV-12, ADV-17; CON-1, CON-2. The section intro, Glossary and SM-4 still promise all commands and queries, no measure covers refusal, and McpCli could ship refusing every operation while SM-1 passes.</li>
+        <li><strong>FR-2 says McpCli is “declared directly” in the Platform workspace, but it is a sibling repository</strong> — Rubric (Downstream usability: Platform-workspace edit; low: “Module workspace” not narrowed); CON-3, CON-4, CON-5. A target state is written as current fact; the direct <code>references/</code> declaration has no owner, and nothing says where EventStore, Memories and McpCli minimum environments and integration evidence run.</li>
+        <li><strong>McpCli’s hosted form and readiness are undefined</strong> — ADV-11; CON-15. FR-1, FR-10 and SM-1 require McpCli to become ready and be accessible in hosted environments, yet it is a client tool on the user’s host, and per-module flow and smoke obligations do not fit it.</li>
+        <li><strong>“Supported interfaces” is undefined</strong> — Rubric (Done-ness clarity); ADV-32. FR-10 cannot be tested, and the isolation checks in FR-11, NFR-3 and SM-4 have no enumerated surface to cover.</li>
+        <li><strong>The cross-module recovery point and restore integrity are undefined</strong> — Rubric (Done-ness clarity: cross-module data integrity); ADV-18, ADV-19. With stores backed up independently, RPO can be reported from the freshest store while the newest consistent set is older, and nobody owns the consistency check or Platform’s own state.</li>
+        <li><strong>“Before production use” has no single go-live gate</strong> — ADV-13; CON-7, CON-13. Each of the six preconditions can be skipped on its own; the spec maps the phrase to G2 but the PRD never records that mapping, and SM-4 timing already differs between the PRD and the spec.</li>
+        <li><strong>Erasure and deletion versus backup restore are unaddressed</strong> — ADV-29; CON-11. The spine accepts that erasures and deletions in the lost window can reappear after a restore, a privacy consequence that NFR-2 never states.</li>
+        <li><strong>The fate of existing hosting (Works preview, Agents) is unstated</strong> — Rubric (Scope honesty, low); ADV-31. An implementer may delete the Works rollback composition, or carry non-MVP modules through the gate, backups and access rules with no requirements.</li>
+        <li><strong>The path into staging is unspecified</strong> — Rubric (Scope honesty: how a release reaches staging); ADV-24. Neither the staging trigger nor serialization of staging deployments and E2E runs is stated, so E2E evidence can describe a partially deployed or older release.</li>
+      </ul>
+      <p>Grade rationale. By the rubric, the grade is Fair because no dimension is thin or broken and there is one high finding. The adversarial reviewer rated three findings critical (ADV-1, ADV-2, ADV-3). The orchestrator checked them against the PRD text. ADV-1 is confirmed: the Glossary defines only “Working release”, while FR-6 gates on “submodules included in the release”. ADV-2 overstates the gap, because NFR-1 already says “Compatibility must be verified before automatic promotion”; the real gap is that this check is missing from FR-6’s gate conditions and SM-5’s evidence and has no owner. ADV-3 is confirmed as a gap, because NFR-3 covers only “staging application credentials” and leaves out automation and CI credentials. All three were treated as high-impact rather than critical for grading. If the reader accepts the adversarial severities, the grade becomes Poor.</p>
+    </div>
+
+    <div class="dimension-summary">
+      <div class="dim-card">
+        <div class="dim-name">Decision-readiness</div>
+        <div class="dim-verdict" style="color: var(--verdict-adequate)">adequate</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-name">Substance over theater</div>
+        <div class="dim-verdict" style="color: var(--verdict-strong)">strong</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-name">Strategic coherence</div>
+        <div class="dim-verdict" style="color: var(--verdict-adequate)">adequate</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-name">Done-ness clarity</div>
+        <div class="dim-verdict" style="color: var(--verdict-adequate)">adequate</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-name">Scope honesty</div>
+        <div class="dim-verdict" style="color: var(--verdict-adequate)">adequate</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-name">Downstream usability</div>
+        <div class="dim-verdict" style="color: var(--verdict-adequate)">adequate</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-name">Shape fit</div>
+        <div class="dim-verdict" style="color: var(--verdict-strong)">strong</div>
+      </div>
+    </div>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Decision-readiness</h2>
+          <span class="verdict-pill verdict-adequate">adequate</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>Most decisions are stated plainly, with what was given up:</p>
+            <ul><li>The testing model uses Option 3 with no generic mocking (§ MVP non-goals; addendum § Testing options).</li><li>Rollback uses readiness plus module smoke checks, and traffic-metric triggers are explicitly deferred (§ MVP non-goals, § FR-7).</li><li>Disaster recovery uses backups rather than a standby cluster. The PRD accepts the cost openly: &quot;this accepts possible loss of up to one hour of committed data&quot; (§ NFR-2).</li></ul>
+            <p>The addendum keeps the rejected alternatives with real costs, not straw men. The PRD has no rhetorical open questions. Unresolved work is in a downstream table with owners and revisit conditions (§ Downstream decisions).</p>
+            <p>One tension has been smoothed over rather than decided: how quickly a human responds to a production failure. Three statements sit side by side without being reconciled. NFR-2&#x27;s RTO runs from &quot;service outage to verified restoration, including detection, operator response.&quot; The next paragraph says the targets do &quot;not establish … round-the-clock response guarantee.&quot; FR-8 lets automatic promotion leave production in a &quot;failed or unverified recovery&quot; state that waits on Administrator, with no time bound at all.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">RTO counts detection and response, but neither is required or bounded</h3>
+              <span class="finding-location">§ NFR-2 table and following paragraph; § FR-9; § SM-6</span>
+            </header>
+            <div class="finding-note"><ul><li>The four-hour RTO clock starts at the outage and includes detection. No FR requires production outage detection or alerting. FR-8 explicitly puts post-verification failures &quot;outside this automatic deployment-recovery policy&quot;.</li><li>Today the only detection path is incidental. FR-9&#x27;s alert fires when the newest usable recovery point is &quot;older than one hour&quot;, so detection could use up to a quarter of the RTO before anyone is notified. That notification goes through GitHub, which is not a paging channel.</li><li>The PRD also disclaims round-the-clock response. So it is undecided whether the four-hour target applies at 03:00 on a Sunday. That choice decides whether the team needs on-call coverage.</li><li>SM-6&#x27;s scheduled exercises cannot test this: FR-9 folds &quot;operator-response … assumptions&quot; into the assessment rather than measuring them.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Decide the coverage model. One option: &quot;RTO applies to outages starting within declared coverage hours; outside them, the clock starts at the next coverage window.&quot; Another: the RTO holds around the clock and the deputy gives the second responder. Then add a production-availability alert requirement, or put &quot;outage detection&quot; into the downstream table with an owner.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">A failed or unverified automatic recovery has no response bound, and promotion has no availability window</h3>
+              <span class="finding-location">§ FR-8 consequences 3–4; § Vision</span>
+            </header>
+            <div class="finding-note"><ul><li>Automatic promotion can fire whenever staging E2E passes. If the single rollback attempt fails, production stays down until Administrator intervenes.</li><li>That case is not a &quot;major production server or storage failure requiring backup restoration&quot;. NFR-2 therefore does not apply, and no target covers it.</li><li>&quot;Further automatic promotions stop pending intervention&quot; does not say who resumes promotion or what evidence they need.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Either restrict automatic promotion to times when the recovery owner or deputy is available, or accept an unbounded failed-recovery outage explicitly as a trade-off. Also name the actor and the condition for resuming promotions.</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Substance over theater</h2>
+          <span class="verdict-pill verdict-strong">strong</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>There is no NFR theater. NFR-1 to NFR-3 are product-specific, and each has a verification method: previous-version schema and event compatibility, RPO/RTO with a measurement column, and negative isolation tests using staging credentials. The Vision could not be swapped into another PRD. It names the ownership split, active-checkout debugging, explicit production-user declaration, and the E2E-gated automatic promotion. The addendum&#x27;s option comparisons exist because the coaching surfaced real choices. There is no innovation section.</p>
+            <p>The one piece of furniture came from the post-finalization edit.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">The recovery deputy is a role that binds nothing</h3>
+              <span class="finding-location">§ Target users line 30; § Glossary &quot;Recovery deputy&quot;; addendum § Disaster recovery, &quot;Fits an internal MVP with one named recovery owner&quot; and &quot;a single recovery owner do not establish round-the-clock response coverage&quot;</span>
+            </header>
+            <div class="finding-note"><ul><li>The deputy was added for &quot;recovery and … custody of recovery keys&quot;. Yet no FR, NFR, SM, or downstream row mentions the deputy.</li><li>FR-8 and FR-9 notify only Administrator. FR-9&#x27;s &quot;required access/decryption material remain accessible independently&quot; does not require a second custodian.</li><li>&quot;A named person&quot; is never named, and no row assigns naming the deputy before production use.</li><li>The addendum still reasons from a single recovery owner.</li><li>This matters because single-person key custody is exactly the disaster-recovery single point of failure the deputy was meant to remove.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> <ul><li>Add to FR-9: recovery access and decryption material are held by at least two custodians, namely Administrator and the recovery deputy.</li><li>Decide whether FR-8 and FR-9 notifications also reach the deputy.</li><li>Add &quot;designate recovery deputy&quot; to the Administrator row of the downstream table.</li><li>Update the two addendum sentences.</li></ul></div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Strategic coherence</h2>
+          <span class="verdict-pill verdict-adequate">adequate</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>The thesis is real and runs through the whole document: <em>Platform owns shared hosting, while modules retain their domain behavior</em> (§ Vision). The same split shows up everywhere modules own something:</p>
+            <ul><li>server lists (FR-3)</li><li>readiness checks (FR-4)</li><li>critical flows (FR-6)</li><li>smoke suites (FR-7)</li><li>authoritative-state inventories (FR-9)</li><li>operation sets and their eligibility (FR-12)</li></ul>
+            <p>The counter-metrics pair well with their SMs (SM-C1 to SM-C5), and SM-C5 honestly declines to invent a setup-time target. The MVP is platform-shaped, and its scope logic matches: seven modules proving the model, &quot;not a permanent exclusion of the others&quot;.</p>
+            <p>What&#x27;s missing is the <em>why</em>.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">The brief&#x27;s problem statement was dropped, and nothing measures whether the thesis worked</h3>
+              <span class="finding-location">§ Vision; § Success measures</span>
+            </header>
+            <div class="finding-note"><ul><li>The brief has a Problem section: the only root composition is an optional Works preview, and full-system composition and reusable module startup are missing. The PRD opens directly with the solution. Read on its own, it never says what is broken today or why the shared-orchestration bet beats per-module hosting.</li><li>All six SMs are acceptance demonstrations. None measures adoption, for example that each MVP module&#x27;s local, test and CI path actually runs through Platform instead of its own wiring. Adoption is what would validate &quot;one common solution&quot;.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Add a two- to three-sentence problem statement, taken from the brief, before the Vision. Add an adoption-shaped SM, or an explicit statement that bespoke per-module hosting is retained or retired for MVP modules.</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Done-ness clarity</h2>
+          <span class="verdict-pill verdict-adequate">adequate</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>FR-4 and FR-6 to FR-9 are unusually strong:</p>
+            <ul><li>Every trigger has a number: 10 minutes, a five-minute window, 60 continuous seconds, two failures 30 seconds apart, 30-minute cadence, 7- and 30-day retention, one-hour freshness.</li><li>Absent evidence is treated as failure: &quot;an absent test result is not a pass&quot;; &quot;discovering no checks is not a passing result&quot;.</li><li>Ownership edges are testable: &quot;Cleanup affects only the resources belonging to that test environment&quot;.</li></ul>
+            <p>Story creation can work directly from these. The weak spots are a few undefined nouns and one gate condition the NFRs require but the FRs never enforce.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">&quot;Supported interfaces&quot; is undefined, so FR-10&#x27;s first consequence cannot be tested</h3>
+              <span class="finding-location">§ FR-10 &quot;accessible in both environments through its supported interfaces&quot;; § FR-11 &quot;any supported interface&quot;; § SM-4 &quot;expose the supported MVP interfaces&quot;</span>
+            </header>
+            <div class="finding-note"><ul><li>Nothing lists which interfaces count per module: HTTP APIs through ingress, module UIs, EventStore endpoints, McpCli.</li><li>An engineer cannot tell when FR-10 is done, and the isolation checks in FR-11 and NFR-3 have no enumerated surface to cover.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Define &quot;supported interface&quot; in the Glossary as the module-declared external surfaces. Add module-declared interfaces to the module-developer row of the downstream table.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">NFR-1&#x27;s compatibility check is not a condition of the FR-6 gate</h3>
+              <span class="finding-location">§ NFR-1 &quot;Compatibility must be verified before automatic promotion&quot;; § FR-6; § SM-C1</span>
+            </header>
+            <div class="finding-note"><ul><li>FR-6 lists only E2E evidence as gating, and every missing-E2E case fails closed.</li><li>Previous-version schema and event compatibility gets no gate consequence and no fail-closed rule. SM-C1 counts only E2E bypasses.</li><li>A release with missing compatibility evidence could satisfy FR-6 as written.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Add an FR-6 consequence: &quot;Missing or failed previous-version compatibility evidence blocks automatic promotion; the release requires the separately planned procedure in NFR-1.&quot; Extend SM-C1 to cover compatibility evidence.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">Cross-module data integrity after restore has no definition and no owner</h3>
+              <span class="finding-location">§ FR-9 &quot;Restoration verifies … data integrity across modules&quot;; addendum &quot;independently timed database snapshots do not by themselves prove a recoverable cross-module state&quot;</span>
+            </header>
+            <div class="finding-note"><ul><li>Several stores are backed up independently every 30 minutes. The PRD requires cross-module consistency to be verified but never says what consistent means (a coordinated point, or an accepted skew with reconciliation), nor who provides the check.</li><li>The downstream table assigns &quot;authoritative-state inventories&quot; to modules, but not consistency checks.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Require each module to supply a post-restore integrity and consistency check against its EventStore history. State whether recovery points must be coordinated across modules. Add both to the downstream table.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">Undefined terms remain in several FRs</h3>
+              <span class="finding-location">§ FR-2; § FR-4; § FR-8</span>
+            </header>
+            <div class="finding-note"><ul><li>FR-2: &quot;only the components required by the selected scenario&quot;. The module configuration defines one list, so there is no scenario to select.</li><li>FR-4: &quot;compatible batch&quot; and &quot;useful diagnostic logs&quot; (no minimum content, location, or retention).</li><li>FR-8: &quot;preserves diagnostics&quot; (same gap).</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Replace &quot;selected scenario&quot; with &quot;the module configuration&quot;. State a minimum diagnostic set and a retention period, or assign them to the downstream diagnostics row explicitly.</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Scope honesty</h2>
+          <span class="verdict-pill verdict-adequate">adequate</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>The non-goals are real and each closes something a reader might otherwise assume: a generic mocking subsystem, metric-based rollback, reversal of business data, a standby installation. The downstream table is honest that &quot;the requirements do not establish deployed capability&quot;. There are no <code>[ASSUMPTION]</code> or <code>[NOTE FOR PM]</code> tags. The memlog shows that each adopted policy was confirmed by the user, so the absence is plausible. The open-items density suits a build-ready internal PRD. Two omissions are left for the reader to infer.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">How a release reaches staging is neither required nor ruled out</h3>
+              <span class="finding-location">§ FR-6 &quot;exercise the release being considered for promotion in staging&quot;; § FR-10</span>
+            </header>
+            <div class="finding-note"><ul><li>The PRD specifies production deployment, verification and rollback in detail. It never says what puts a release into staging: merge, tag, or manual trigger.</li><li>It also doesn&#x27;t say whether a failed staging deployment gets FR-7/FR-8 treatment, or whether failed staging E2E results just block promotion.</li><li>Readers must guess whether staging CD is in MVP scope.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Add a short FR for the staging deployment trigger and its failure handling, or add a non-goal saying staging deployment is manual or architecture-defined for the MVP.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">The fate of existing hosting is not stated</h3>
+              <span class="finding-location">addendum § Existing implementation context: Works preview as &quot;the rollback composition until its migration parity gate&quot;; the PRD is silent</span>
+            </header>
+            <div class="finding-note"><ul><li>The PRD never says whether the MVP keeps, replaces, or ignores the root Works preview. Works is outside the MVP set.</li><li>It also never says whether MVP modules keep their own AppHosts.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Add one scope line or non-goal, for example: &quot;The existing Works preview remains until its parity gate; MVP modules&#x27; own AppHosts are neither required nor removed by this PRD&quot;.</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Downstream usability</h2>
+          <span class="verdict-pill verdict-adequate">adequate</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>The Glossary is thorough, and all IDs are unique and contiguous:</p>
+            <ul><li>FR-1 to FR-12</li><li>NFR-1 to NFR-3</li><li>SM-1 to SM-6</li><li>SM-C1 to SM-C5</li></ul>
+            <p>Every FR, NFR and SM cross-reference resolves, as do all three addendum anchors. Sections refer to each other by ID rather than &quot;see above&quot;, and each SM names the FRs it validates.</p>
+            <p>The damage comes from the post-finalization edits. They changed FR-2 and FR-12 without updating the addendum, the Glossary entries, SM-4, or the downstream table. A spec built from this PRD inherits the contradictions.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">The Platform-workspace edit contradicts the addendum and the repository</h3>
+              <span class="finding-location">§ FR-2 &quot;EventStore, Memories, and McpCli are run and debugged from source in the Platform workspace, where they are declared directly&quot;; § Glossary &quot;Platform workspace&quot;; addendum § McpCli context &quot;sibling <code>../mcpcli</code> repository … absent from Platform&#x27;s inspected root submodule declarations&quot;; addendum § Existing implementation context, sixteen references with no McpCli</span>
+            </header>
+            <div class="finding-note"><ul><li><code>.gitmodules</code> confirms McpCli is not a Platform reference. The PRD states &quot;declared directly&quot; as a present fact.</li><li>Under the root-only rule in FR-2 and addendum § Workspace and build constraints, source-debugging McpCli in the Platform workspace requires adding it as a direct reference. That requirement is not stated and has no owner.</li><li>The edit also leaves unstated which composition runs when EventStore, Memories or McpCli is debugged from the Platform workspace. FR-3&#x27;s minimum-environment mechanism is now tied only to domain-module workspaces (§ Individual-module development intro).</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> In FR-2, write &quot;…from source in the Platform workspace, which declares each directly under <code>references/</code>&quot;. Update addendum § McpCli context to say the sibling location is superseded, or how it is reconciled. State whether Platform-workspace debugging uses the complete environment or a per-module configuration.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">The FR-12 agent-eligibility edit was not propagated</h3>
+              <span class="finding-location">§ Module operations through McpCli (intro); § Glossary &quot;McpCli&quot;; § SM-1; § SM-4; § Downstream decisions</span>
+            </header>
+            <div class="finding-note"><ul><li>The section intro (§ Module operations through McpCli), the Glossary &quot;McpCli&quot; entry, and SM-4 (&quot;McpCli operations&quot;) still say McpCli exposes all commands and queries defined by enabled modules. SM-1 alone says &quot;agent-eligible&quot;.</li><li>No SM covers the new refusal consequence.</li><li>The module-developer row of the downstream table lists &quot;public operations&quot; but not their agent-eligibility declarations.</li><li>&quot;Agent use&quot; is undefined. Applied to the CLI, it means a <em>human</em> CLI user is refused confirmation-required operations. That trade-off is real but unacknowledged.</li><li>&quot;Discover&quot; is ambiguous: are ineligible operations listed?</li><li>&quot;Remain available only through that UI&quot; places a requirement on module UIs that the PRD otherwise never mentions.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> <ul><li>Add an &quot;Agent-eligible operation&quot; Glossary entry, and carry the restriction into the McpCli entry, the section intro and SM-4.</li><li>Add eligibility declarations to the module-developer downstream row.</li><li>Add a negative McpCli check to SM-4.</li><li>State whether ineligible operations are listed, and acknowledge that the restriction applies to human CLI use too.</li></ul></div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">&quot;Release&quot; is the unit of FR-6 to FR-8 but is never defined</h3>
+              <span class="finding-location">§ FR-6 &quot;submodules included in the release&quot;; § FR-8 &quot;partially updated workloads&quot;; Glossary defines only &quot;Working release&quot;</span>
+            </header>
+            <div class="finding-note"><ul><li>Nothing says whether a release is the whole seven-module composition at fixed versions or a subset of changed modules. That choice drives gate scope, what &quot;previous working release&quot; means, and partial rollback.</li><li>The downstream table defers &quot;release identity&quot; to architecture, but release <em>scope</em> is a product decision.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Add a Glossary entry. For example: &quot;Release: the versioned set of module builds and configuration promoted together; the gate covers every module included in it.&quot;</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">Several terms drift</h3>
+              <span class="finding-location">§ FR-6; § FR-7; § Glossary</span>
+            </header>
+            <div class="finding-note"><ul><li>&quot;Submodule&quot; and &quot;module&quot; are used interchangeably (§ FR-6, § FR-7, § Glossary &quot;Critical business flow&quot;, &quot;Smoke test&quot;), even though McpCli is not a Git submodule of Platform.</li><li>The Glossary &quot;Module workspace&quot; entry was not narrowed to match FR-2&#x27;s &quot;domain-module workspace&quot;.</li><li>The &quot;Domain module&quot; entry defines the term only by its dependencies and has no member list. For Tenants, &quot;at least EventStore, Tenants, and Memories in addition to the module being worked on&quot; is self-referential.</li><li>&quot;Administrator&quot; appears in the Glossary only inside &quot;Recovery owner&quot;.</li></ul></div>
+            <div class="finding-fix"><strong>Fix:</strong> Use &quot;module&quot; consistently. List the domain modules in the Glossary entry. Add an &quot;Administrator&quot; entry.</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="dimension">
+      <details>
+        <summary>
+          <h2>Shape fit</h2>
+          <span class="verdict-pill verdict-strong">strong</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>The internal, single-operator product is correctly written as a capability spec. Testable consequences carry the acceptance weight, and the SMs are operational acceptance demonstrations, which fits this shape. The decision to skip named user journeys is justified in the document itself: &quot;this PRD governs developer orchestration and module-provided interfaces; module business journeys remain owned by the modules&quot; (§ Downstream decisions, final paragraph). UJs here would add overhead without information. As a chain-top PRD, it keeps traceability through stable IDs and SM-to-FR mapping, which is the right investment. The addendum carries the rationale depth, which keeps the PRD lean. No findings.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="reviewer-section">
+      <details>
+        <summary>
+          <h2>Adversarial review</h2>
+          <span class="reviewer-source">review-adversarial-general.md</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>Reviewed 2026-09-27: <code>prd.md</code> and <code>addendum.md</code> (both <code>status: final</code>). Earlier review reports and <code>.memlog.md</code> were read only to avoid repeating findings that were already resolved. This is a requirements-contract review. It does not validate implementation or infrastructure.</p>
+            <p>The PRD closes the obvious fail-open cases (empty flow sets, missing results, wrong-release evidence), but the unit those checks apply to, the &quot;release&quot;, is never defined. The artifact that makes automatic rollback safe, previous-version compatibility evidence, has no gate, owner, or success measure. The isolation requirement covers people and application credentials but not the CI/CD, smoke-test, backup, and restore identities, which are the credentials most likely to cross environments. Recovery depends on one person reached through one channel, while the deputy added after finalization has no requirement behind them. Several success measures can go green on assumptions, empty catalogs, or self-declared inventories. As a build contract, the document lets a team pass every listed check while shipping a promotion gate that can be bypassed, a rollback that may not be safe, and DR evidence that is partly assumed.</p>
+            <p>38 findings: 3 critical / 12 high / 18 medium / 5 low. Severities below are the reviewer’s own. Orchestrator note: ADV-1 to ADV-3 were treated as high-impact rather than critical for grading only; the check against the PRD text is in the synthesis at the top of this report.</p>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-critical">critical</span>
+              <h3 class="finding-title">ADV-1 — The gated unit (&quot;release&quot; / &quot;included submodule&quot;) is undefined, so the gate can skip the modules a change breaks</h3>
+              <span class="finding-location">§ Staging validation and production promotion / FR-6, FR-7; § Downstream decisions (&quot;release identity and promotion mechanism&quot;); Glossary (no &quot;release&quot; or &quot;submodule&quot; entry)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;The critical business flows used by the gate come from the submodules included in the release&quot; and FR-7 validates declarations &quot;for every included submodule&quot;. The PRD never says what a release is: a composite of all seven modules at pinned versions, or a per-module package. It also never says whether &quot;included&quot; means <em>deployed</em> or <em>changed</em>. &quot;Submodule&quot; is a Git term, and the addendum records that Platform declares <strong>sixteen</strong> references (Works, Agents, ChatBot, and others), not seven. &quot;Release identity&quot; is deferred to architecture, but the gate&#x27;s meaning depends on it.</div>
+            <div class="finding-note"><strong>Consequence:</strong> One reading gates an EventStore-only release on EventStore&#x27;s flows alone, so a change that breaks Parties&#x27; critical flow is promoted. The opposite reading requires all sixteen Git submodules, including non-MVP ones with no flows, to supply declarations, which blocks promotion permanently. Both readings satisfy FR-6 as written.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Define <strong>Release</strong> as the immutable set of artifacts (by digest) for every module deployed to the target environment, plus the versioned configuration. Require the gate to run the declared flows of <strong>every enrolled module deployed in staging</strong>, whether or not it changed. Replace &quot;submodule&quot; with &quot;enrolled module&quot; and define that term in the glossary.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-critical">critical</span>
+              <h3 class="finding-title">ADV-2 — NFR-1 compatibility is required but has no gate, no evidence owner, and no success measure</h3>
+              <span class="finding-location">§ NFR-1; FR-6; SM-5</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;Compatibility must be verified before automatic promotion. An incompatible change requires a separately planned release and recovery procedure. The architecture must define the compatibility evidence.&quot; FR-6&#x27;s blocking conditions list declarations, E2E results, and release identity, but not compatibility evidence. Nobody is assigned to classify a change as incompatible. SM-5 checks only that data is preserved in a controlled rehearsal, not that each promoted release was verified compatible.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A release starts writing a new event format and fails at minute 3 of its verification window. FR-8 restores the previous code, which cannot read the events written in those 3 minutes. The restored release crashes, or silently misreads streams its smoke tests never touch, and FR-8 may still report success. Automatic rollback is safe only if this evidence exists, and nothing requires it to exist.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Add an FR-6 consequence: &quot;Each release carries per-module evidence that the recorded previous working release can read all schemas and event formats the new release writes. Missing, failed, or not-applicable-without-justification evidence blocks automatic promotion. A module declaring a change incompatible routes the release to the manual path (see ADV-5).&quot; Extend SM-5 so one rehearsal uses a failing release that writes new-format data before rollback.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-critical">critical</span>
+              <h3 class="finding-title">ADV-3 — Isolation requirements omit the automation identities most likely to cross environments</h3>
+              <span class="finding-location">§ NFR-3; FR-10; FR-11; SM-4</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> NFR-3 covers &quot;staging application credentials&quot; and &quot;staging-only users&quot;. FR-11 covers users. None of the requirements mention the CI/CD deployer identity (which deploys <em>both</em> staging and production), the production smoke-test runner, backup jobs, restore tooling, or McpCli&#x27;s hosted service identity. Every one of these needs production credentials.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A single GitHub workflow or runner holding both environments&#x27; deploy credentials satisfies every listed check. A staging or pull-request job, or a compromised dependency in it, can then deploy to or read production. SM-4 and SM-C2 stay green because they test only staging-only users and staging application credentials.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Extend NFR-3: &quot;Credentials that can deploy to, read, or write production (deployment, smoke-test, backup, restore, and service identities) are available only to the production promotion and recovery jobs. Staging, pull-request, and CI integration workflows cannot obtain them.&quot; Add matching negative checks to SM-4 and SM-C2.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-4 — Gate contents are self-certified and can be weakened inside the release being gated</h3>
+              <span class="finding-location">FR-6 (second consequence); FR-7 (second consequence); SM-C1</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The only floor is &quot;a non-empty critical-flow declaration and required E2E checks for every declared flow&quot; and &quot;empty required check sets block the update&quot;. If the declaration is read from the release under test, that release can remove the flow that is failing, or remap it to a trivial test. The gate then sees a valid, non-empty, fully passing set. Nothing compares declarations with the previous working release, and nothing proves that an E2E result actually exercised the staged services beyond the words &quot;using the deployed real services&quot;.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A regression is promoted with no failed, skipped, missing, or wrong-release evidence, so SM-C1 records zero violations. The fail-closed fix from the earlier review only blocks the case that is easy to see.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require the gate to diff flow and smoke declarations against the previous working release. Any removed or remapped flow or check requires an explicit, recorded approval by Administrator (or deputy) for that release. Require each E2E result to carry evidence of the release identity it observed from the staged services.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-5 — No manual, hotfix, or resume path is specified, yet several requirements assume one</h3>
+              <span class="finding-location">SM-5 (&quot;before enabling automatic production promotion&quot;); FR-8 (&quot;Further automatic promotions stop pending intervention&quot;); FR-7 (&quot;A pre-existing unhealthy production environment stops the update for investigation&quot;); NFR-1 (&quot;separately planned release&quot;)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The PRD implies a mode in which automatic promotion is not enabled, a pause that someone lifts, a release path for incompatible changes, and a way to fix an already-unhealthy production. None of these is defined: who may deploy manually, what evidence is still required, how the pause is cleared and by whom, or whether a manually deployed release becomes a &quot;working release&quot;.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Implementers will add an unrecorded manual workflow or <code>kubectl</code> bypass with no gate, no verification, and no working-release record. The next automatic deployment then has no valid rollback target. When production is unhealthy, FR-7 blocks the automatic path that would deliver the fix. SM-C1 does not say whether manual promotions count.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Add an FR for manual promotion. It should name who may perform it; state which FR-6 and FR-7 checks still apply or are waived with a recorded justification; require that the result is recorded as a working release only after FR-7 verification; name who lifts the FR-8 pause and what evidence they record; and apply SM-C1 to every production promotion, manual or automatic.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-6 — A &quot;working release&quot; can never be demoted, so a known-bad release becomes the rollback target</h3>
+              <span class="finding-location">FR-8 (last consequence); Glossary &quot;Working release&quot;; FR-7</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> A release becomes &quot;working&quot; once it passes the 5-minute window. &quot;Failures found after the verification window are handled as operational incidents, outside this automatic deployment-recovery policy.&quot; Nothing pauses automatic promotion during such an incident, and nothing lets anyone mark a release as not working.</div>
+            <div class="finding-note"><strong>Consequence:</strong> R2 passes its window and then breaks at minute 20. R3 is automatically promoted on top of it during the incident and fails. FR-8 rolls back to R2 and verifies it with R2&#x27;s smoke suite, which already missed the defect, then reports &quot;successful recovery&quot; to a broken release. SM-C3 counts no violation.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State that an open production incident pauses automatic promotion. Let the recovery owner or deputy revoke a release&#x27;s working status, with the revocation recorded. Rollback-target selection must skip revoked releases, and report &quot;no valid target&quot; rather than guess.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-7 — The RTO includes operator response, but no response coverage exists and SM-6 accepts assumed values</h3>
+              <span class="finding-location">§ NFR-2; FR-9 (restore exercise consequence); SM-6; addendum § Selected approach and operational scope</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The RTO covers &quot;detection, operator response, replacement capacity, restore, and validation&quot;, yet &quot;The targets do not establish an uptime percentage or round-the-clock response guarantee&quot;. The addendum also concedes that the target only &quot;Fits an internal MVP with one named recovery owner <strong>if that owner can respond</strong>&quot;. Restore exercises are scheduled, so detection and response time are zero. FR-9 allows &quot;operator-response and capacity-provisioning <strong>assumptions</strong> included in the RTO assessment.&quot;</div>
+            <div class="finding-note"><strong>Consequence:</strong> SM-6 is satisfied by a measured restore time plus an assumed response time. A failure at the start of a weekend or holiday with one responder cannot meet 4 hours, but every exercise reports that it does. This contradiction is built into NFR-2.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Choose one of two options. Either scope the RTO clock explicitly (for example, from owner acknowledgement, or during stated coverage hours), or define response coverage across owner and deputy. Require SM-6 to report measured restore time and assumed response time as separate figures, and require at least one exercise per year to start from an unannounced alert.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-8 — The recovery deputy has no requirements, which leaves Administrator as a single point of human failure</h3>
+              <span class="finding-location">§ Target users (Recovery deputy); Glossary; FR-8; FR-9; SM-5; § Success measures preamble</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The deputy &quot;backs Administrator for recovery and for custody of recovery keys&quot;, but the deputy was added after finalization with &quot;No threshold, gate or other requirement changed&quot; (memlog). FR-8 notifies only &quot;the recovery owner, Administrator&quot;. FR-9 notifies only &quot;Administrator&quot;, and SM-5 verifies &quot;GitHub delivery to Administrator&quot; only. The deputy is never named, has no notification, access, key-custody, or exercise obligation, and does not appear in the downstream table. Administrator is also the product owner, the owner of recovery evidence, co-owner of production-user administration, and the person who accepts that evidence, so the same person produces the evidence and accepts it.</div>
+            <div class="finding-note"><strong>Consequence:</strong> If Administrator is unavailable, nobody learns about a failed rollback, stale backups, or paused promotions, and the recovery keys sit with one person. The deputy exists only in the glossary.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Add FR consequences. Every FR-8 and FR-9 notification goes to owner and deputy. The deputy holds independent access to recovery and decryption material, and this is verified in a restore exercise. The deputy performs at least one restore exercise per defined period. Name the deputy in the downstream table, and verify delivery to the deputy in SM-5 and SM-6.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-9 — Backup-freshness monitoring fails open and alerts only after the RPO is already breached</h3>
+              <span class="finding-location">FR-9 (fifth consequence); SM-6</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;Platform notifies Administrator … when a backup job fails or the newest usable recovery point is older than <strong>one hour</strong>.&quot; There are three gaps. (a) If the monitor or its GitHub integration stops, silence looks like health; there is no heartbeat or dead-man&#x27;s switch. (b) The alert threshold equals the RPO, so the alert means the target has already been missed. (c) &quot;Usable&quot; is not defined between monthly restores: job exit status, a checksum, and a verified restore are all possible readings.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Backups stop silently, or the chain becomes unrestorable, and the first discovery happens at the next monthly exercise or during the disaster itself.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Alert when the monitor&#x27;s heartbeat is missing, detected from outside the primary environment. Add a warning threshold below the RPO (for example, 45 minutes). Define the minimum usability evidence for each recovery point (for example, an integrity check of the base-plus-incremental chain) and state that only points passing it count toward recovery-point age.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-10 — The off-site copy is optional by grammar</h3>
+              <span class="finding-location">FR-9 (fourth consequence); § NFR-2 (last paragraph); § MVP non-goals</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;protection against whole-site loss <strong>additionally requires</strong> an off-site copy&quot; and &quot;Whole-site loss requires an independent recovery location&quot;. These sentences state what whole-site protection would need, not that the MVP must provide it. &quot;Outside the primary server/storage failure domain&quot; can be met by a second disk or NAS on the same LAN as <code>192.168.1.30</code>.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A fire, theft, or site-wide power or flooding event destroys production and every backup, yet FR-9 and SM-6 were satisfied.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State explicitly whether whole-site loss is in MVP scope. If it is, require an off-site copy and include the off-site copy&#x27;s age in freshness monitoring. If it is not, move it to § MVP non-goals as an accepted risk signed by Administrator.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-11 — Infrastructure modules and McpCli cannot meet per-module flow and smoke obligations as written</h3>
+              <span class="finding-location">FR-6 (second consequence); FR-7 (first consequence); FR-1; FR-10; Glossary &quot;Critical business flow&quot;; addendum § McpCli context</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Every included submodule must supply &quot;a non-empty critical-flow declaration&quot;, and a critical flow is &quot;a business operation that its owning module designates&quot;. EventStore, Memories, and McpCli do not own business operations. McpCli is &quot;the <code>hexalith</code> .NET tool&quot; with &quot;stdio MCP, deferred HTTP transport&quot;. Yet FR-1 requires McpCli to be &quot;available&quot; with readiness checks, and FR-10 requires the whole MVP set to be &quot;accessible in both environments&quot;. The PRD never says whether hosted McpCli is a deployed service or a client-side tool that talks to hosted EventStore.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Either promotion is blocked indefinitely, or teams invent vacuous &quot;flows&quot; for infrastructure modules to meet the non-empty rule. SM-4&#x27;s hosted McpCli acceptance depends on a hosting decision nobody has made.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Classify modules as domain, infrastructure, or client tool, and state the flow, smoke, readiness, and backup obligations for each class. For example, infrastructure modules are covered by the domain flows that exercise them. State whether McpCli is deployed in staging and production or is only a client.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-12 — An empty McpCli catalog satisfies SM-1 and SM-4</h3>
+              <span class="finding-location">FR-12; SM-1; SM-4; addendum § McpCli context (&quot;empty catalog with enrollment pending&quot;)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;McpCli executes only operations that their owning module declares eligible for agent use&quot;, and SM-1 requires demonstrations that &quot;execute enabled modules&#x27; agent-eligible commands and queries&quot;. If no module declares any operation eligible, which is the default and matches the observed empty catalog, the positive demonstrations are vacuously true. The fail-closed rule applied to FR-6 and FR-7 was not applied here. Only the <em>refusal</em> consequence can actually be tested.</div>
+            <div class="finding-note"><strong>Consequence:</strong> McpCli can ship refusing every operation while SM-1 and SM-4 pass.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require each enrolled domain module to publish at least one agent-eligible query and one command, or a recorded exemption. SM-1 and SM-4 must name the operations demonstrated for each module in each environment.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-13 — No go-live gate; &quot;before production use&quot; is undefined and appears six times</h3>
+              <span class="finding-location">NFR-2; FR-9; SM-4; SM-6; § Downstream decisions; FR-8 (first-deployment consequence)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Readiness evidence is repeatedly required &quot;before production use&quot;, but nothing defines when production use begins (first deployment, first real tenant, public DNS, first production user), who declares it, or that these preconditions are checked together. FR-8 already handles a first <em>deployment</em>, so production can exist before &quot;production use&quot;.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Production accumulates real data after its first deployment while the restore exercise, isolation checks, and GitHub delivery are still pending. Each &quot;before production use&quot; condition can be skipped on its own.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Add a Production readiness gate FR. It lists the required evidence (SM-4, SM-5, SM-6, notification delivery to owner and deputy, and the identified replacement capacity) and requires a recorded Administrator sign-off. Production user access and DNS are enabled only after the gate passes.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-14 — Isolation runs one way only; restores and debugging can put production data on staging-reachable infrastructure</h3>
+              <span class="finding-location">FR-10 (third consequence); § NFR-3; FR-9 (restore exercise consequence)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> FR-10 forbids copying &quot;staging data or credentials into production&quot;, and NFR-3 addresses staging access to production. Nothing forbids copying production data <em>into</em> staging, for example for debugging. FR-9&#x27;s &quot;isolated restore exercise&quot; does not say what it is isolated from, where it runs, who can reach it, or when it is destroyed. The shared database server permitted by § Confirmed MVP scope is an obvious target for such a restore.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A monthly restore places production business data on shared infrastructure reachable with staging credentials, where staging-only users can read it. SM-4 still passes because its negative checks target production endpoints only.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Add to NFR-3: &quot;Production data, including backups and restored copies, exists only in locations with production access controls. Restore-exercise environments inherit those controls and are destroyed after evidence capture. Production data is never copied to staging.&quot; Add a matching SM-4 check.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-high">high</span>
+              <h3 class="finding-title">ADV-15 — Shared infrastructure isolates access, not capacity or faults; staging can take production down</h3>
+              <span class="finding-location">§ Confirmed MVP scope; § Vision; § NFR-3; FR-7 (failure triggers)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Staging and production &quot;may share supporting services or capacity, such as a database server, only while their application data and credentials remain isolated.&quot; There is no resource, quota, or fault-isolation requirement. The staging E2E gate, restore exercises, and possibly CI (see ADV-26) run on the same cluster.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A staging E2E run, a runaway staging workload, or a restore exercise saturates the shared database during a production verification window. The result is a production outage, a false FR-7 rollback, or both, with the cause attributed to the release. Maintenance on the shared database takes down both environments at once, so the staging gate is also unavailable during production recovery.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require resource limits or quotas that protect production from staging on shared services. State whether CI and restore exercises may run on the production cluster. Require FR-7 diagnostics to record the state of shared dependencies so a shared-infrastructure fault is not reported as a release failure.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-16 — Configuration, Platform, and shared-infrastructure changes bypass the gate</h3>
+              <span class="finding-location">FR-6; FR-7; FR-10 (third consequence); addendum § Hosted architecture questions</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The gate applies to &quot;a release&quot;. Nothing says that production-only configuration values, Keycloak client or role changes, ingress, Dapr component definitions, Platform&#x27;s own manifests, or database-server upgrades are part of a release. Production configuration values are never exercised in staging, because the two environments intentionally differ.</div>
+            <div class="finding-note"><strong>Consequence:</strong> The changes most likely to break production (configuration and infrastructure) skip FR-6 E2E, FR-7 verification, and FR-8 rollback.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State that any change to production application configuration or Platform-managed manifests is a release subject to FR-6 through FR-8. Require a written procedure for shared-infrastructure changes, which affect both environments at once.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-17 — The enforcement point for agent eligibility and human confirmation is unspecified</h3>
+              <span class="finding-location">FR-12 (intro and first consequence); FR-11 (first consequence); addendum § McpCli context</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Non-eligible operations are &quot;refused through McpCli&quot; and human-confirmation operations &quot;remain available only through that UI&quot;. If the refusal is implemented in McpCli (a client-side .NET tool), an agent holding the user&#x27;s token can call EventStore directly. FR-11 explicitly anticipates direct API access. The PRD also does not require recording whether a production command came from a human or an agent.</div>
+            <div class="finding-note"><strong>Consequence:</strong> The human-confirmation safeguard becomes a client-side convenience that any direct call bypasses, and production audit cannot tell agent actions from human ones.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State that eligibility and confirmation rules are enforced on the server side (EventStore or the module), and that production commands record the invoking principal and interface (UI, CLI, MCP, or API).</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-18 — The cross-module recovery point and its age are undefined</h3>
+              <span class="finding-location">§ NFR-2 (RPO row); FR-9 (sixth consequence); Glossary &quot;Recovery point&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> RPO is measured by &quot;Age of the newest usable recovery point&quot;. With several stores backed up at different times, it is unclear which age counts. The glossary defines a recovery point as &quot;a usable copy of authoritative application data&quot;, in the singular. FR-9 requires &quot;data integrity across modules&quot; but does not define a consistent set.</div>
+            <div class="finding-note"><strong>Consequence:</strong> RPO is reported from the freshest store while the newest <em>consistent</em> restorable set is older. Alternatively, restores mix points in time (a Parties record references a Tenants record that the Tenants backup lacks).</div>
+            <div class="finding-fix"><strong>Fix:</strong> Define a recovery point as a cross-module consistent set, with RPO age equal to the age of its oldest member. Freshness monitoring (ADV-9) measures that value.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-19 — The backup inventory is self-declared and omits Platform-owned state</h3>
+              <span class="finding-location">FR-9 (first consequence); § Downstream decisions (last row)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Coverage is &quot;identified by each deployed module&quot;. Platform&#x27;s own state has no owner: working-release records, versioned configuration, gate and compatibility evidence, secrets, certificates, Dapr components, and Kubernetes objects. Nothing checks that module inventories are complete.</div>
+            <div class="finding-note"><strong>Consequence:</strong> After disaster recovery, Platform cannot identify a previous working release, so FR-7 blocks every update. Alternatively, a store no module listed is lost, and the restore exercise still passes because smoke tests never touch it.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require Platform to inventory its own state. Require each restore exercise to reconcile the inventory against all stateful resources found in the cluster (volumes, databases, secrets) and fail on any that are unlisted.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-20 — Local, CI, and hosted environments have no common version or composition source</h3>
+              <span class="finding-location">FR-2 (third consequence); FR-4 (third consequence); addendum § Workspace and build constraints; § Hosted architecture questions (&quot;choose CI hosting&quot;)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;Local development and testing use project references and Debug assets. CI/CD uses NuGet package references and Release assets.&quot; Nothing requires CI&#x27;s NuGet versions to correspond to the submodule commits pinned under <code>references/</code>. Nothing requires the local Aspire, CI, and Kubernetes compositions to come from the same service list and configuration.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Local integration tests pass against EventStore commit X, CI tests against NuGet version Y, and staging deploys Z. The &quot;integration acceptance&quot; evidence describes none of the systems actually deployed.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Define the authoritative dependency version for each release. Require CI and hosted package versions to match the pinned references, or record the mapping. Require all three compositions to come from one module-configuration source.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-21 — Module-root composition is undefined for servers with no direct declaration, and for embedded Platform version skew</h3>
+              <span class="finding-location">FR-2 (second consequence); FR-3; addendum § Workspace and build constraints</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> A module configuration may list any server (&quot;any additional dependencies its developer declares&quot;), but &quot;Dependency initialization follows only the active root repository&#x27;s direct declarations under <code>references/</code>; nested submodules remain uninitialized.&quot; Suppose Parties&#x27; configuration enables Folders without declaring it under <code>parties/references/</code>. Platform could fail, fetch a package or container, or initialize a nested submodule (which is prohibited). Separately, the Platform version embedded in a module may expect module versions that differ from the module&#x27;s own pinned EventStore.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Implementations will differ, and resolving the problem by initializing nested submodules would violate the stated policy.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State that a listed server with no direct declaration is a configuration error, or name the permitted fallback. Require a compatibility check between the embedded Platform version and the module&#x27;s declared references.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-22 — GitHub as the only channel: possible exposure and unconfirmed receipt</h3>
+              <span class="finding-location">FR-8 (third consequence); FR-9 (fifth consequence); SM-5 (&quot;Verify GitHub delivery to Administrator&quot;); addendum § GitHub notification integration</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Notifications carry release, environment, recovery status, and &quot;where to find diagnostic evidence&quot;, and the repository visibility is not constrained. Delivery is verified once; there is no acknowledgement, re-notification, or escalation, and a GitHub outage is not considered.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Production diagnostics end up visible to anyone who can read the repository, and a delivered notification lands in a filtered inbox. Promotions stay paused, or a failed recovery goes unhandled, indefinitely.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Post production notifications and diagnostics only to locations restricted to production-authorized people. Require acknowledgement of critical notifications, with re-notification and escalation to the deputy within a stated time.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-23 — Verification-window mechanics can be read two ways</h3>
+              <span class="finding-location">FR-7 (fourth to sixth consequences); FR-8 (second consequence)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Three points are open. (a) &quot;unable to serve traffic for 60 continuous seconds&quot; does not say whether this is measured by probes or by real requests, which matters for a low-traffic internal system. (b) &quot;the latest required smoke-test results are passing at the end of the verification window&quot; does not set a cadence, so a single run at the start of the window satisfies it. (c) &quot;A required check without a completed passing verification result <strong>at the deadline</strong>&quot; does not say whether the deadline is the 10-minute rollout deadline or the end of the window.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Two compliant implementations detect different failures. A suite run only at the start of the window misses a defect that appears at minute 3.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Name the availability signal. Require smoke runs at least at the start and end of the window, or at a stated interval. Name the deadline.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-24 — Reruns, concurrency, and ordering of staging promotions are unspecified</h3>
+              <span class="finding-location">FR-6 (fourth and sixth consequences); SM-C1</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;Any required E2E test that fails … prevents automatic promotion&quot; does not say whether a rerun that later passes clears the failure, or whether SM-C1 (&quot;zero releases promoted with failed … evidence&quot;) counts it. Nothing serializes staging deployment and E2E runs, and nothing prevents promoting an older release after a newer one.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Flaky tests get rerun until they pass. E2E for release A runs against a partially deployed release B. A late-finishing older release downgrades production.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Define the rerun policy and how SM-C1 counts reruns. Serialize staging deployment and E2E per release. Forbid promoting a release older than the current working release.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-25 — &quot;Zero&quot; counter-metrics cannot be observed without retained, auditable records</h3>
+              <span class="finding-location">§ Success measures preamble; SM-C1–SM-C3</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;Record the release or source revision, environment, result, and supporting diagnostics with each demonstration&quot; covers demonstrations, not every promotion or recovery decision. No retention, immutability, or periodic audit is required. SM-C2 is limited to &quot;the staging-only negative checks&quot;.</div>
+            <div class="finding-note"><strong>Consequence:</strong> &quot;Zero bypassed validations&quot; and &quot;zero false recovery successes&quot; mean &quot;none noticed&quot;. A violation is found only by accident.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require an append-only record for every promotion and recovery (release ID, declaration digest, results, decision, actor), retained for a stated period. Compute SM-C1 and SM-C3 from that record on a stated schedule.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-26 — CI orphan cleanup and CI hosting location are unaddressed</h3>
+              <span class="finding-location">FR-4 (tenth and eleventh consequences); SM-C4; addendum § Hosted architecture questions</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;CI automatically cleans up … after success, failure, or cancellation&quot;. A crashed runner, a killed job after timeout, or a lost runner fits none of these cases, and no orphan sweep is required. CI hosting is deferred, and nothing prevents it from running on the production cluster at <code>192.168.1.30</code>. SM-C4 counts only &quot;cancelled/finished&quot; runs.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Orphaned CI environments build up, possibly on the cluster that hosts production, and SM-C4 stays at zero.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require ownership labels with a time-to-live and a periodic orphan sweep. State whether CI may run on the production cluster.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-27 — Local identity and permissions are undefined</h3>
+              <span class="finding-location">FR-12 (intro and third consequence); FR-1; SM-1; addendum § Hosted architecture questions</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> McpCli access in local Aspire is &quot;subject to the user&#x27;s permissions in the selected environment&quot;. The only identity provider named is the shared Keycloak &quot;on the Kubernetes installation&quot;, which also hosts production. The PRD does not say whether local environments use it, a local identity provider, or no authentication.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Either developer laptops depend on, and hold credentials for, the production-hosting identity server, or a local no-auth mode hides permission bugs that SM-1 cannot catch.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State the local identity source and seed permissions. State that local environments never use production realms, clients, or credentials.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-28 — Production smoke writes have no containment</h3>
+              <span class="finding-location">FR-7 (first consequence); addendum § Module responsibilities and production test data</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;necessary writes use dedicated synthetic data without real-user changes or external effects&quot;. Yet &quot;Do not assume event records can simply be deleted&quot;. There is no dedicated synthetic tenant, no exclusion from business queries, and no bound on growth. Every deployment and rollback writes permanent production events that end up in backups. The smoke runner&#x27;s production identity is also undefined (see ADV-3).</div>
+            <div class="finding-note"><strong>Consequence:</strong> Synthetic records appear in production reporting and tenant data, and the smoke identity has broader production write access than it needs.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require a dedicated synthetic tenant or partition, marked and excluded from business views. The smoke identity is authorized only within it.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-29 — Personal-data obligations are an unstated assumption</h3>
+              <span class="finding-location">§ NFR-1 (&quot;preserve … event history&quot;); FR-9 (retention); general</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The MVP includes Parties, and production (<code>tache.ai</code>) will hold business records in immutable event history, with 30-day backup retention. The PRD never classifies production data or says whether erasure or retention obligations apply.</div>
+            <div class="finding-note"><strong>Consequence:</strong> The architecture spine fixed immutable history and backup retention without considering erasure. If obligations apply, retrofitting them into event-sourced history and backup chains is expensive.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Add a data-classification statement for production. If personal data is in scope, add a requirement, or an explicit deferral with an owner, covering erasure in event history and backups.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-30 — Production-user declaration is unaudited, and the Keycloak admin plane is shared</h3>
+              <span class="finding-location">FR-11; § NFR-3 (second paragraph); addendum § Hosted architecture questions</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Declaration is the only control on production access, yet &quot;production-user administration process are architecture choices&quot;. The PRD does not say who may declare users, require an audit record, periodic review, or revocation latency, or cover staging identity administrators. In one shared Keycloak, a staging-scoped administrator may be able to grant production roles, and NFR-3 tests only staging <em>users</em> and <em>application credentials</em>.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Production access grows without review, and staging administration becomes a path to production authorization that no check covers.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Require that declarations are made by named approvers, are auditable, and take effect on revocation within a stated time. Require that staging identity administrators cannot modify production authorization, and add a negative test to SM-4.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-31 — Silent scope in the addendum: Works and Agents</h3>
+              <span class="finding-location">addendum § Existing implementation context; PRD § Confirmed MVP scope</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;The source addendum identifies Works as the rollback composition until its migration parity gate and assigns Agents wiring and live evidence to an existing Agents story.&quot; Neither Works nor Agents is in the MVP set, but the existing AppHost composes Works, and the repository history shows an Agents host being scaffolded. The PRD does not say whether Platform must keep these compositions working, or whether they are subject to FR-6 through FR-9.</div>
+            <div class="finding-note"><strong>Consequence:</strong> An implementer either deletes the Works preview and breaks a declared rollback path, or carries modules outside the scope through the gate, backups, and access rules with no requirements.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State in § MVP non-goals or § Confirmed MVP scope whether the Works and Agents compositions are maintained, frozen, or removed. If maintained, state which FRs apply to them.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-32 — The hosted network exposure model and &quot;supported interfaces&quot; are undefined</h3>
+              <span class="finding-location">FR-10 (intro and first consequence); § Confirmed MVP scope</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;The MVP module set is accessible in both environments through its supported interfaces&quot;, published under public domains (<code>hexalith.com</code>, <code>tache.ai</code>) on a private RFC1918 address. The PRD does not say whether the environments are internet-exposed or reachable only over the LAN or VPN, and does not list which interfaces each module supports.</div>
+            <div class="finding-note"><strong>Consequence:</strong> The security posture (exposure of Keycloak, TLS, rate limiting) and the scope of SM-4 acceptance are left to the implementer.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State the exposure model. Require each module to declare its supported interfaces at enrollment, with a missing declaration treated as a failure.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">ADV-33 — Preserving credential rotations conflicts with restoring versioned configuration</h3>
+              <span class="finding-location">§ NFR-1 (first paragraph); FR-8 (first consequence); Glossary &quot;Recovery point&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> Rollback must preserve &quot;credential rotations&quot; while restoring &quot;compatible versioned configuration&quot;. A recovery point includes &quot;configuration needed to restore service&quot;. The PRD does not define the boundary between configuration and secrets.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Rollback reverts secret references to rotated-out credentials, or a disaster-recovery restore brings back credentials that were revoked after the recovery point.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State that secrets are excluded from versioned configuration and are never restored by rollback. Disaster-recovery restores must reapply current credentials and revocations before reopening service.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">ADV-34 — The mandatory baseline contradicts &quot;developer controls the list&quot;</h3>
+              <span class="finding-location">FR-3 (first and second consequences)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;The module developer controls the required server list&quot; conflicts with &quot;A domain module&#x27;s minimum environment includes EventStore, Tenants, and Memories&quot;. The PRD does not say what happens when a configuration omits a baseline server.</div>
+            <div class="finding-note"><strong>Consequence:</strong> One implementation adds the server silently, another rejects the configuration, so developers see different behavior.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Specify one behavior. Rejecting the configuration with a clear error is the fail-closed choice.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">ADV-35 — Success measures are one-shot and scoped to a single example</h3>
+              <span class="finding-location">SM-1; SM-2; SM-3; FR-4 (first consequence)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> SM-1 and SM-2 are validated &quot;at MVP acceptance&quot; only. SM-3 does not say which modules&#x27; integration runs must pass, and FR-4&#x27;s only concrete example is Parties.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A demonstration that covers only Parties satisfies SM-3, and the complete local environment degrades unnoticed after acceptance.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Make SM-3 apply to each domain module, and to EventStore, Memories, and McpCli from the Platform workspace. Add a scheduled CI job that starts the complete environment.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">ADV-36 — The startup-deadline override and its start boundary are loose</h3>
+              <span class="finding-location">FR-4 (fifth consequence); SM-C5</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The override needs only a &quot;justified finite timeout&quot;, but the justification is not recorded or reviewed, and &quot;finite&quot; allows 24 hours. The PRD does not say whether the time from &quot;the request to start the environment&quot; includes build, restore, and image pulls.</div>
+            <div class="finding-note"><strong>Consequence:</strong> SM-C5 records overrides but cannot stop them from masking slow startups, and timings are not comparable between local and CI runs.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Store the justification with the override, set a maximum, and define which steps count toward the startup time.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">ADV-37 — Behavior of the next run while a failed local environment is retained is undefined</h3>
+              <span class="finding-location">FR-4 (eighth consequence); addendum § Selected behavior</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> &quot;A failed local test or startup attempt leaves surviving environment resources available for debugging.&quot; The PRD does not say what the next run does while that environment holds ports, containers, or data: fail, reuse it (which breaks FR-4 data isolation), or start in parallel.</div>
+            <div class="finding-note"><strong>Consequence:</strong> Retained environments collide with new runs, or tests silently reuse stale state.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Specify the next-run behavior, for example refusing to start and naming the retained environment and how to clean it up.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">ADV-38 — Deployment disruption is unbounded and unstated</h3>
+              <span class="finding-location">FR-7; FR-8; § Downstream decisions (closing paragraph)</span>
+            </header>
+            <div class="finding-note"><strong>Problem:</strong> The PRD does not say whether a normal deployment may interrupt service. A failed deployment can leave production degraded for up to 10 + 5 + 10 + 5 = 30 minutes before a human is involved, and this worst case is never stated as accepted.</div>
+            <div class="finding-note"><strong>Consequence:</strong> A recreate-style deployment that interrupts service on every release satisfies the PRD, and users see repeated outages that no measure records.</div>
+            <div class="finding-fix"><strong>Fix:</strong> State whether deployments must avoid service interruption, and record the 30-minute worst case as an accepted limit (or tighten it).</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="reviewer-section">
+      <details>
+        <summary>
+          <h2>Cross-document consistency review</h2>
+          <span class="reviewer-source">review-consistency.md</span>
+        </summary>
+        <div class="dim-body">
+          <div class="dim-judgment">
+            <p>The PRD is still a coherent source of truth after the post-final alignment edit. The three user decisions in memlog entry 71 (agent-eligible McpCli operations, domain-module versus Platform-workspace debugging, recovery deputy) are reflected in FR-2, FR-12, SM-1, SM-2, target users, glossary and the addendum McpCli context, and none of them contradicts a threshold, gate or fail-closed rule. The problems are incomplete propagation rather than contradictions. Some pre-alignment wording remains (the McpCli intro and glossary, the Module workspace glossary, and McpCli described as already &quot;declared directly&quot;). The recovery deputy and the agent-eligibility rule were added without any requirement, measure or owner behind them. The edit also leaves open how EventStore, Memories and McpCli get their minimum environments and integration tests. Separately, some user-accepted decisions recorded in the spine affect product behavior but never reached the PRD: the Administrator-approved release mode before G3, the Folders/Projects envelope override and the lost-window erasure exception. No finding is critical or high.</p>
+            <p>15 findings: 0 critical / 0 high / 7 medium / 8 low. Each finding names the check it came from and the reviewer’s classification: (a) spine refinement consistent with the PRD, (b) PRD should be updated to match an accepted decision, (c) genuine conflict needing a product decision, (d) spine scope beyond the PRD, or a named document that is right.</p>
+            <p><strong>Verified consistent</strong> (reviewer’s list):</p>
+            <ul><li><strong>Memlog fidelity:</strong> every decision still in force (entries 7–66) is in the PRD or addendum. This covers the seven-module scope; Option 3 testing with no mocking subsystem; one module-owned server list; the 10-minute test startup deadline with finite overrides; failed-local retention, cancellation ownership and CI cleanup; the module-owned E2E gate that fails closed; the rollback thresholds (10 min / 5 min / 60 s / 2 failures 30 s apart) and the single recovery attempt; GitHub notifications to Administrator; DR Option 2 (RPO 1 h, RTO 4 h, 30-minute runs, 7-day/30-day retention, 1-hour freshness alert, drills before production, monthly and after changes); permission to share infrastructure; reuse of the existing Keycloak; explicit production users; capability scenarios with no uptime target; and the deferred successful-local cleanup default. The only superseded decision still restated is memlog 52 (see CON-1).</li><li><strong>Entry 71 alignment:</strong> FR-2, the Individual-module intro, SM-2, FR-12 body and TC 1, SM-1, target users (deputy), and the glossary entries &quot;Platform workspace&quot; and &quot;Recovery deputy&quot; all match the decision. The addendum McpCli context matches FR-12. No threshold, gate or fail-closed rule changed. FR-1–FR-12, NFR-1–NFR-3, SM-1–SM-6 and SM-C1–SM-C5 are still unique and contiguous.</li><li><strong>PRD ↔ spine thresholds:</strong> the spine&#x27;s Release and Recovery Acceptance section reproduces every PRD number verbatim. That includes rollout, verification, unavailability, smoke-retry and recovery budgets, backup cadence and retention, the freshness alert, RPO/RTO and the 10-minute test deadline. The spine&#x27;s capability map already says FR-12 acceptance &quot;covers agent-eligible operations&quot;, so it is consistent with the post-final PRD.</li><li><strong>Spine refinements consistent with the PRD (a):</strong> AD-2 exact-release digests plus the maximum evidence age; smoke sampling every 10 s or less and the bounded grace; the durable promotion stop cleared by Administrator; AD-6 separate realms with an Administrator-granted production group; AD-8 negative tests from staging pods, Dapr and hostnames; the off-site monitor (probe every 5 minutes or less, freshness every 15 minutes or less) plus the dead-man check; always off-site, immutable copies; Keycloak and OpenBao in the recovery inventory; the first failed deployment keeps ingress closed; the complete environment uses the largest declared override; McpCli stdio on the user&#x27;s host, calling the gateway over HTTPS with OIDC, satisfies &quot;MCP access to hosted environments&quot;.</li><li><strong>Spine scope beyond the PRD (d), acceptable:</strong> the AD-9 Dapr boundary, the AD-13 composed host, the AD-15 rollback sets, G1 needing a supported Kubernetes minor, G2 needing Memories tombstone continuity, and ratification of EventStore AD-26 before production profile proof. They add schedule dependencies to the PRD&#x27;s &quot;before production use&quot; but don&#x27;t contradict it.</li><li><strong>PRD ↔ spec:</strong> CAP-1–CAP-12 match FR-1–FR-12 on thresholds, actors, module lists and fail-closed rules: empty or invalid declarations block, absent results are not passes, only one recovery attempt, and cleanup stays within owned resources. Spec additions are cited spine refinements (stale evidence, ingress only after G2, Administrator admission). SM-1–SM-3, SM-5, SM-6 and SM-C1–SM-C5 match the PRD wording; the only difference is SM-4 timing (CON-13). The spec&#x27;s non-goals trace to PRD non-goals, FR-8 text or spine AD-11/Source Precedence.</li><li><strong>Brief → PRD:</strong> the five brief outcomes map to SM-1–SM-5, and SM-6 adds the DR outcome from coaching. The brief&#x27;s IP, domains, data/credential separation, automatic promotion and rollback, root-only submodules and Debug/Release rules are all kept. The two narrowings, module-repository debugging for technical modules and McpCli limited to agent-eligible operations, are backed by memlog entry 71. The brief&#x27;s tentative integration-tester and operator personas were reconciled on purpose (reconcile-brief-addendum.md). The Hexalith.Builds relationship is carried in the addendum and the spine.</li></ul>
+          </div>
+        </div>
+        <div class="findings-list">
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-1 — FR-12 section intro and McpCli glossary keep the pre-alignment &quot;all commands and queries&quot; wording</h3>
+              <span class="finding-location">PRD § Module operations through McpCli (intro), FR-12 body, Glossary &quot;McpCli&quot;  ↔  FR-12 second sentence; spine AD-11/AD-14; spec glossary &quot;McpCli&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit / memlog</div>
+            <div class="finding-note"><strong>Evidence:</strong> Intro: &quot;McpCli provides CLI and MCP access to the commands and queries defined by each enabled module in local Aspire, staging, and production environments.&quot; Glossary: &quot;McpCli: the CLI and MCP access component that exposes commands and queries defined by enabled modules…&quot;. FR-12: &quot;A user can discover and invoke the commands and queries published by enabled modules … In the MVP, McpCli executes only operations that their owning module declares eligible for agent use&quot;. These restate the superseded memlog decision (line 52) with no qualifier. The spec glossary copied the stale wording (&quot;the CLI and MCP tool that exposes enabled modules&#x27; commands and queries&quot;), so the problem has already spread downstream. FR-12 also drops the spine&#x27;s &quot;step-up&quot; category (AD-14: &quot;operations not eligible for agent use, or requiring confirmation or step-up, are not executable through McpCli&quot;). It also leaves discovery ambiguous: &quot;discover and invoke&quot; covers every published operation, while the spine separates &quot;offline contract inspection&quot; from &quot;executable&quot; (AD-11).</div>
+            <div class="finding-note"><strong>Classification:</strong> PRD-internal residue; spine is right on the step-up and discovery semantics.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, add &quot;agent-eligible&quot; to the McpCli section intro and the glossary entry. In FR-12, say whether discovery lists operations that are not eligible (marked non-executable) or hides them, and add step-up to the list of refused categories. Mirror the glossary change in the spec&#x27;s <code>glossary.md</code>.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-2 — The agent-eligibility rule has no measure, no owner and no non-empty guard, so FR-12 acceptance can pass vacuously</h3>
+              <span class="finding-location">PRD FR-12 TC 1, SM-1, SM-4, counter-metrics, Downstream table row 1  ↔  spec SPEC.md CAP-12 success, success-measures.md SM-1/SM-4; spine Owned work &quot;Connected McpCli&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit / spec</div>
+            <div class="finding-note"><strong>Evidence:</strong> FR-12 adds a fail-closed rule (&quot;An operation not declared eligible for agent use … is refused through McpCli&quot;), but SM-1 only measures the positive case (&quot;execute enabled modules&#x27; agent-eligible commands and queries&quot;) and SM-4 only covers environment isolation. No counter-metric covers a UI-only or confirmation-required operation that McpCli executed. Spec CAP-12 success claims &quot;UI-only or confirmation-required operations are refused (SM-1, SM-4)&quot;, yet neither SM measures refusal. With a fail-closed default and nothing requiring any operation to be eligible, &quot;enabled modules&#x27; agent-eligible commands&quot; could be an empty set. FR-6, by contrast, requires &quot;a non-empty critical-flow declaration&quot;. The spine&#x27;s &quot;prove … all required agent-eligible operations before FR-12 acceptance&quot; never defines &quot;required&quot;. Downstream row 1 assigns &quot;public operations&quot; to module developers but not their agent-eligibility declaration.</div>
+            <div class="finding-note"><strong>Classification:</strong> Gap in both PRD and spec. The spine&#x27;s AD-14 per-public-client negative test is the correct evidence.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, extend SM-1 or SM-4 with &quot;and refusal of non-eligible, confirmation-required and step-up operations through McpCli (AD-14 negative test)&quot;. Consider a counter-metric: &quot;zero non-eligible operations executed through McpCli&quot;. Say which operations each MVP module must declare eligible (or that each module declares at least one), and add &quot;agent-use eligibility&quot; to Downstream row 1. Update the spec&#x27;s SM-1/SM-4 to match, or stop CAP-12 citing SMs that don&#x27;t measure refusal.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-3 — FR-2 says McpCli is already &quot;declared directly&quot; in the Platform workspace; the addendum still names a sibling path as canonical</h3>
+              <span class="finding-location">PRD FR-2 body  ↔  PRD addendum § Existing implementation context, § McpCli context; spine Owned work &quot;Source/package adoption&quot;, AD-4; spec acceptance-criteria CAP-2</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit</div>
+            <div class="finding-note"><strong>Evidence:</strong> FR-2: &quot;EventStore, Memories, and McpCli are run and debugged from source in the Platform workspace, where they are declared directly.&quot; Addendum: &quot;The inspected Platform repository declared sixteen references: …&quot; (McpCli is not among them). The McpCli context says &quot;The source identifies the sibling <code>../mcpcli</code> repository as McpCli&#x27;s canonical location; it was absent from Platform&#x27;s inspected root submodule declarations.&quot; Spine AD-4 allows &quot;no ancestor, sibling, recursive, nested-Platform or package fallback&quot; and lists &quot;canonical McpCli enrollment&quot; as owned work. Spec CAP-2 AC correctly says &quot;McpCli needs canonical McpCli enrollment in Platform&#x27;s references first.&quot;</div>
+            <div class="finding-note"><strong>Classification:</strong> The spec is right. The PRD states a target state as if it were current.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, change FR-2 to &quot;…where they are, or for McpCli must become, direct <code>references/</code> declarations&quot;. Update the addendum McpCli context to separate the canonical <em>repository</em> from how it is resolved: McpCli must be added as a direct Platform reference, and the sibling path is not a resolution path. Extend Downstream row 3 (&quot;McpCli enrollment…&quot;) to cover the Platform <code>references/</code> declaration.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-4 — After the alignment, nothing says how EventStore, Memories and McpCli get minimum environments and Platform integration tests</h3>
+              <span class="finding-location">PRD FR-3, FR-4 TC 2, SM-3, section intro &quot;Each module developer … supplies a module configuration&quot;  ↔  spine AD-4, AD-10; spec SPEC.md Open Questions</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit / spine / spec</div>
+            <div class="finding-note"><strong>Evidence:</strong> The alignment edit scoped only <em>debugging</em>. FR-2: &quot;EventStore, Memories, and McpCli are run and debugged from source in the Platform workspace&quot;. FR-3 and FR-4 still assume each module has its own configuration and workspace: FR-4 says &quot;Local integration-test environments run through Aspire using the module configuration and the active source checkout&quot;, and SM-3 says &quot;local Aspire and CI integration runs pass their module-defined checks&quot;. AD-10 says &quot;EventStore.Testing(.Integration), module and McpCli tests consume its versioned environment descriptor and never start their own AppHost. A technical module&#x27;s own-repository tests may start its AppHost … such runs are never Platform integration evidence&quot;. The spine also removes McpCli&#x27;s Platform submodule. The spec&#x27;s open question: &quot;how do McpCli&#x27;s CI integration tests get a Platform runner version? … AD-4&#x27;s version check assumes a submodule.&quot; The same question applies to EventStore and Memories, which have no Platform submodule under Option A: which repository runs their Platform integration evidence, and where does their module configuration live?</div>
+            <div class="finding-note"><strong>Classification:</strong> (c) genuine conflict needing a product decision (with an architecture follow-up)</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, say for FR-3, FR-4 and SM-3 where EventStore, Memories and McpCli minimum environments and integration runs execute: the Platform workspace/CI, or their own repositories through a pinned Platform tool. In the spine, answer the spec&#x27;s open question and extend it to cover EventStore and Memories. In the spec, widen the open question beyond McpCli.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-6 — The recovery deputy has no requirement, notification path, authority or downstream owner, and every operative recovery rule is still Administrator-only</h3>
+              <span class="finding-location">PRD Target users &quot;Recovery deputy&quot;, Glossary; FR-8 TC 3, FR-9 body, SM preamble, Downstream table; addendum § Disaster recovery Option 2 and Selected approach  ↔  spine Design Paradigm, AD-6, AD-7, Diagnostics and notification, RRA Automatic recovery, Secrets</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit / spine</div>
+            <div class="finding-note"><strong>Evidence:</strong> The PRD adds &quot;Recovery deputy: a named person who backs Administrator for recovery and for custody of recovery keys&quot;. Every operative clause, however, still names Administrator alone: <ul><li>FR-8: &quot;notifies the recovery owner, Administrator, through GitHub&quot;</li><li>FR-9: &quot;The recovery owner can restore production…&quot;</li><li>SM preamble: &quot;Administrator owns recovery evidence&quot;</li><li>addendum: &quot;After failure, Administrator follows a short restore procedure…&quot;</li><li>addendum: &quot;GitHub notifications and a single recovery owner do not establish round-the-clock response coverage&quot;</li></ul>The spine&#x27;s operative rules are Administrator-only too: <ul><li>&quot;GitHub issues assigned to Administrator are the single accepted notification path&quot;</li><li>&quot;Deployment workflows live in a private operations repository writable only by Administrator&quot;</li><li>&quot;only an authenticated Administrator record … clears&quot; the promotion stop</li><li>&quot;production realm changes are Administrator-only&quot;</li></ul>The spine gives the deputy only one concrete role: &quot;Administrator and the recovery deputy are the unseal and recovery-key custodians.&quot; If Administrator is unavailable, the deputy is not notified and cannot run recovery workflows, so the &quot;backs Administrator for recovery&quot; role has no effect on RTO response. Naming the deputy is a spine Deferred item (&quot;Administrator MFA, break-glass and recovery deputy&quot;) but has no PRD downstream row.</div>
+            <div class="finding-note"><strong>Classification:</strong> (c) genuine conflict needing a product decision about the deputy&#x27;s scope</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, decide whether the deputy only holds keys or can also receive notifications, run the DR procedure and clear the promotion stop. State that in the Target users entry and in FR-8/FR-9. Add a Downstream row: &quot;Name the recovery deputy and provision deputy access | Administrator | Before hosted readiness&quot;. If the deputy&#x27;s scope is broadened, update the spine&#x27;s notification path, operations-repository access (this triggers AD-7&#x27;s &quot;second person&quot; GitHub Team clause) and promotion-stop authority to match.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-7 — The Administrator-approved release mode and the G3 delay on automatic promotion are not in the PRD</h3>
+              <span class="finding-location">PRD Vision, FR-6, NFR-1, SM-5  ↔  spine RRA &quot;Release modes&quot;, &quot;Production entry gates&quot;; spec SPEC.md G3 constraint, spec .memlog A4</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spine / memlog / brief</div>
+            <div class="finding-note"><strong>Evidence:</strong> PRD Vision: &quot;A release must pass end-to-end tests … before automatic production promotion&quot;. The brief: &quot;After a release passes staging checks, Platform automatically deploys it to production.&quot; Spine: &quot;Administrator-approved replaces only those two triggers with an authenticated Administrator record; it serves pre-G3 releases, SM-5 fault rehearsals on a staged release before G2, and incompatible releases&quot;. Spec: &quot;Before G3, every production release uses the Administrator-approved mode.&quot; Spec memlog A4: &quot;GitHub issues to Administrator, the Administrator-approved release mode and the recovery deputy are accepted as elaborations of the PRD&quot;. The PRD memlog (entry 71) records only the deputy from A4.</div>
+            <div class="finding-note"><strong>Classification:</strong> (b) The PRD should be updated to match an accepted decision.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, add a sentence to FR-6 or NFR-1: until automatic promotion is enabled (SM-5), and for incompatible releases, production releases need an explicit Administrator approval. The staging gate, verification and one-attempt recovery still apply. Append a memlog entry recording all of A4 (approved mode and GitHub issues as the notification mechanism) and the A2 mapping (&quot;before production use&quot; = G2, &quot;before enabling automatic production promotion&quot; = G3).</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-medium">medium</span>
+              <h3 class="finding-title">CON-8 — A 4-hour RTO that includes operator response conflicts with having no round-the-clock response; the spine reads it two ways</h3>
+              <span class="finding-location">PRD NFR-2 table and closing paragraph, FR-9 TC 7; addendum § Selected approach  ↔  spine RRA &quot;Detection and response&quot;, &quot;Disaster recovery evidence&quot;; spec CAP-9 AC</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spine</div>
+            <div class="finding-note"><strong>Evidence:</strong> PRD: RTO &quot;At most four hours | Service outage to verified restoration, including detection, operator response, replacement capacity…&quot;. The addendum adds that &quot;it is not a four-hour stopwatch started after those prerequisites happen to become available&quot;. But the PRD also says &quot;The targets do not establish … round-the-clock response guarantee.&quot; The spine&#x27;s Detection row says &quot;The recovery procedure declares response arrangements, such as staffed hours and a maximum acknowledgement time; the RTO is assessed within them&quot;, which can be read as pausing the clock outside staffed hours. Its DR evidence row &quot;applies the declared worst-case response&quot; and requires &quot;outage-to-verified-service RTO at most four hours&quot;, which is the strict reading. The spec inherits both readings: &quot;RTO ≤ 4 h … including … operator response&quot; and &quot;no 24/7 response commitment&quot;.</div>
+            <div class="finding-note"><strong>Classification:</strong> (c) genuine conflict needing a product decision</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD (NFR-2), state one of two options. Either the 4-hour RTO holds for an outage at any time, which implies a maximum acknowledgement time that fits inside it, or it holds only for outages that start within the declared response hours and otherwise the target is revisited. Then change the spine&#x27;s Detection row to match; &quot;assessed within them&quot; should not stay ambiguous.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-5 — The &quot;Module workspace&quot; glossary entry is not scoped to domain modules</h3>
+              <span class="finding-location">PRD Glossary &quot;Module workspace&quot;  ↔  PRD FR-2, SM-2, Glossary &quot;Platform workspace&quot;; spec glossary &quot;Module workspace&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit</div>
+            <div class="finding-note"><strong>Evidence:</strong> PRD: &quot;Module workspace: the individual module repository from which a developer edits, runs, tests, and debugs that module.&quot; FR-2 now limits module-workspace debugging to &quot;a domain module (Tenants, Parties, Folders, Projects)&quot;. The spec glossary is already correct: &quot;In the MVP, the domain modules are the ones debugged this way.&quot;</div>
+            <div class="finding-note"><strong>Classification:</strong> The spec is right.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, add the spec&#x27;s qualifier to the glossary entry.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-9 — &quot;Local uses project references&quot; is absolute in the PRD but AD-4 uses packages for dependencies not declared at the root</h3>
+              <span class="finding-location">PRD FR-2 TC 3 (&quot;Local development and testing use project references and Debug assets&quot;)  ↔  spine AD-4; spec SPEC.md Constraints &quot;Active-root dependencies&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spine</div>
+            <div class="finding-note"><strong>Evidence:</strong> AD-4: &quot;Root-declared Hexalith dependencies build from source in Debug; all others resolve as packages at the Builds catalog version&quot;. The spec restates the PRD: &quot;Local builds use project references and Debug&quot;.</div>
+            <div class="finding-note"><strong>Classification:</strong> (a) spine refinement consistent with the PRD, though the PRD wording is too broad.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, qualify FR-2 TC 3 as &quot;root-declared Hexalith dependencies use project references and Debug locally; other dependencies resolve as packages&quot;. Apply the same qualifier to the spec constraint.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-10 — The PRD&#x27;s shared &quot;database server&quot; example is excluded by the adopted AD-8</h3>
+              <span class="finding-location">PRD § Confirmed MVP scope, § Hosted environments intro  ↔  spine AD-8; spine .memlog (&quot;User selected option 1 … separate application data-service instances&quot;); spec SPEC.md Constraints &quot;Hosting&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spine / spec</div>
+            <div class="finding-note"><strong>Evidence:</strong> PRD: &quot;Staging and production may share supporting services or capacity, such as a database server, only while their application data and credentials remain isolated.&quot; Spine AD-8: &quot;Staging and production each have an application namespace and a separate data namespace holding their own data-service instances, OpenBao instance…&quot;. The spec understates this: &quot;Supporting infrastructure may be shared only if application data, credentials and namespaces stay per environment&quot; (it omits data-service instances).</div>
+            <div class="finding-note"><strong>Classification:</strong> (a) The spine uses the PRD&#x27;s permission more narrowly, and the spec is less precise than the spine.</div>
+            <div class="finding-fix"><strong>Fix:</strong> Optional PRD note that architecture chose per-environment data-service instances, with shared Keycloak, the Dapr control plane, ingress and node capacity. Required spec fix: add &quot;data-service and OpenBao instances&quot; to the Hosting constraint.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-11 — Two product-level decisions made in the spine are missing from the PRD</h3>
+              <span class="finding-location">PRD FR-9 intro (&quot;Each module identifies its authoritative state and recovery needs&quot;), NFR-2  ↔  spine § Source Precedence; RRA &quot;Lost window and external effects&quot;</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spine</div>
+            <div class="finding-note"><strong>Evidence:</strong> <ul><li>Spine: &quot;The Platform MVP envelope … governs the stricter infrastructure clauses of Folders … and Projects … by explicit user authority.&quot; A reader of the PRD would take module &quot;recovery needs&quot; (such as Folders&#x27; RPO of 5 minutes or less) as binding on Platform.</li><li>Spine: &quot;Non-Memories erasures, deletions and legal holds acknowledged after the recovery cut are an accepted RPO exception&quot;. This means erased or deleted data can come back after a restore. That is a privacy consequence, not just data loss, and NFR-2 says nothing about it.</li></ul></div>
+            <div class="finding-note"><strong>Classification:</strong> (b) The PRD should be updated to match accepted decisions.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, add a sentence to FR-9 saying module recovery needs are met within the NFR-2 envelope and stricter module infrastructure targets do not bind Platform in the MVP. Add a sentence to NFR-2 saying erasures, deletions and legal holds inside the lost window are an accepted exception that the DR report states.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-12 — The PRD downstream table and addendum still list as open some items the final spine has decided</h3>
+              <span class="finding-location">PRD Downstream table rows 2, 4, 5; addendum § Hosted architecture questions  ↔  spine AD-5, AD-6, AD-10, Hosted interfaces</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spine</div>
+            <div class="finding-note"><strong>Evidence:</strong> The PRD lists &quot;local Aspire lifecycle (including the successful local-run cleanup default)&quot; as pending, while spine AD-10 says &quot;Local success cleans&quot;. The addendum says &quot;Realm, client, role/group, and account layouts have not been selected&quot; and &quot;It must also choose CI hosting&quot;, while AD-6 (separate realms, production group) and AD-5 (GitHub-hosted runners) have decided them.</div>
+            <div class="finding-note"><strong>Classification:</strong> (a) The spine resolves items the PRD handed downstream. This is not a conflict, but the PRD&#x27;s statements have gone stale.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD, add one line to the Downstream section saying the architecture spine (final 2026-09-27) resolves the architecture rows, with a link, and stop describing the addendum&#x27;s hosted questions as current. Don&#x27;t restate the mechanisms.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-13 — The spec moves SM-4 to &quot;during G2 opening&quot;, and SPEC.md contradicts its own sequencing file</h3>
+              <span class="finding-location">PRD SM-4 (&quot;before production use&quot;)  ↔  spec success-measures.md SM-4 (&quot;Completes during the G2 opening order&quot;), SPEC.md G2 constraint (&quot;SM-4 and SM-6 are its entry evidence&quot;), sequencing.md G2 (&quot;SM-6 before opening; SM-4 completes during the opening order&quot;)</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spec</div>
+            <div class="finding-note"><strong>Evidence:</strong> In the spec&#x27;s opening order, the first user is admitted and ingress opened before the SM-4 positive check runs on the live realm. SPEC.md still calls SM-4 G2 <em>entry</em> evidence.</div>
+            <div class="finding-note"><strong>Classification:</strong> The spec&#x27;s sequencing.md is right (user-accepted A3). Its SPEC.md wording is inconsistent, and the PRD&#x27;s &quot;before production use&quot; is broadly consistent with A3 if the first admitted test user doesn&#x27;t count as production use.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the spec, change SPEC.md&#x27;s G2 constraint to &quot;SM-6 is entry evidence; SM-4 completes in the opening order before anyone other than the first user is admitted&quot;. Optionally add a clause to PRD SM-4 matching that.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-14 — Spec brownfield says EventStore and Memories should add a Platform submodule, contrary to Option A</h3>
+              <span class="finding-location">spec brownfield.md § Module repositories  ↔  spec sequencing.md &quot;Before SM-2&quot;; PRD FR-2</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> spec</div>
+            <div class="finding-note"><strong>Evidence:</strong> brownfield.md: &quot;None of EventStore, Memories, Parties, Tenants, Folders or Projects declares Platform as a submodule yet. Adding these direct declarations is owned work in the spine.&quot; sequencing.md: &quot;Each domain module (Tenants, Parties, Folders, Projects) adds Platform as a direct submodule&quot;. PRD FR-2 puts EventStore and Memories in the Platform workspace.</div>
+            <div class="finding-note"><strong>Classification:</strong> The spec&#x27;s sequencing.md and the PRD are right; brownfield.md is stale.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the spec, limit brownfield.md&#x27;s &quot;adding these direct declarations&quot; to the four domain modules, and keep the six-module list as an observation only.</div>
+          </article>
+          <article class="finding">
+            <header>
+              <span class="badge badge-sev-low">low</span>
+              <h3 class="finding-title">CON-15 — McpCli is required to &quot;become ready&quot; even though the spine treats it as a tool on the user&#x27;s host</h3>
+              <span class="finding-location">PRD FR-1 TC, SM-1 (&quot;all seven MVP modules … become ready&quot;)  ↔  spine Design Paradigm (&quot;Tool: McpCli&quot;), flowchart (&quot;McpCli on user or agent host&quot;), AD-11; spec CAP-1 (&quot;All seven modules report module-owned readiness&quot;)</span>
+            </header>
+            <div class="finding-note"><strong>Check:</strong> alignment-edit / spine / spec</div>
+            <div class="finding-note"><strong>Evidence:</strong> Readiness is defined for services (&quot;Each module defines readiness for its services&quot;). McpCli is a stdio or CLI process with no hosted workload.</div>
+            <div class="finding-note"><strong>Classification:</strong> (a) The spine refines this and the PRD/spec never adjusted. Needs a definition.</div>
+            <div class="finding-fix"><strong>Fix:</strong> In the PRD and spec, define what &quot;ready&quot; means for McpCli in SM-1 and CAP-1. For example: built through the AD-4 mapping, and its connected-mode metadata/digest check against the local gateway succeeds.</div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <div class="mechanical">
+      <h3>Mechanical notes</h3>
+      <ul>
+        <li><strong>IDs:</strong> FR, NFR, SM and SM-C sequences are contiguous and unique, and every referenced ID exists. Addendum anchors <code>#module-owned-configuration-example</code>, <code>#mcpcli-context</code> and <code>#hosted-architecture-questions</code> resolve. Brief links resolve to <code>briefs/brief-platform-2026-09-27/brief.md</code> and its <code>addendum.md</code>.</li>
+        <li><strong>Assumptions Index:</strong> there are no inline <code>[ASSUMPTION]</code> tags and no index, so the roundtrip holds trivially.</li>
+        <li><strong>Placement:</strong> the UJ-substitution rationale sits at the end of § Downstream decisions (line 293). It would read better next to § Target users and jobs, where a reader looks for journeys.</li>
+        <li><strong>Status after edits:</strong> frontmatter still says <code>status: final</code> with an unchanged <code>updated</code> date after the post-finalization edits. The memlog&#x27;s last entry says &quot;No threshold, gate or other requirement changed&quot;. In fact FR-12 gained a new restriction and refusal consequence, and FR-2 changed where three modules are debugged. Downstream owners relying on &quot;final&quot; should know requirements changed after the finalize-pass review.</li>
+        <li><strong>Regression check against the prior finalize-pass review</strong> (checked after the judgments above were written):<ul><li>No previously resolved finding has regressed. FR-6 still fails closed on missing or empty declarations, and FR-7 still validates declarations before updating production. SM-5 still requires a successful rollback plus separate failure-reporting evidence. FR-8 still uses the restored release&#x27;s smoke suite. FR-9 still covers Keycloak and access restore checks. The successful local-run cleanup default is still assigned in the downstream table.</li><li>The prior recovery/access review accepted the &quot;no round-the-clock coverage&quot; disclosure as sufficient. This review disagrees and rates it high, because detection is counted in the RTO but no requirement produces it.</li><li>The Platform-workspace, agent-eligibility and deputy findings above are new. They come from post-finalization edits that the prior review never saw.</li></ul></li>
+      </ul>
+    </div>
+
+    <footer class="report-footer">
+      <div class="meta">
+        <span>Rubric: .claude/skills/bmad-prd/assets/prd-validation-checklist.md</span>
+        <span>Generated: 2026-09-27T21:54:47+02:00</span>
+      </div>
+      <div class="meta">
+        <span>Reviewer files: review-rubric.md · review-adversarial-general.md · review-consistency.md</span>
+      </div>
+      <div class="meta">
+        <span>Earlier finalize-pass files (finalize-review-rubric.md, review-recovery-access.md, review-structure-*.md, review-prose-*.md, review-resolutions.md) exist in the workspace; they were resolved during finalization and were not part of this run.</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

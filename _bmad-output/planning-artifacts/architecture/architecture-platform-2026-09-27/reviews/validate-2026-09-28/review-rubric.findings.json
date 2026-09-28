@@ -1,0 +1,49 @@
+[
+  {
+    "id": "RB-1",
+    "severity": "medium",
+    "title": "In-place recovery cannot reach the contract's recovery endpoint",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:309",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:314"
+    ],
+    "summary": "In-place production and staging recovery reuse DR steps 3–6, whose module hook endpoint permits only the off-site recovery executor.",
+    "impact": "Correctly isolated production/staging executors cannot run their authorized data restoration and staging reset.",
+    "action": "autofix",
+    "recommendation": "Define the executor owning the recovery attempt and admit that environment's authorized production, staging or replacement-capacity executor to the internal recovery endpoint, with consistent custody and epoch rules.",
+    "confidence": "high"
+  },
+  {
+    "id": "RB-2",
+    "severity": "medium",
+    "title": "Recovery-hook contract is scheduled after an earlier mandatory consumer",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:441",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:273",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:274",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277"
+    ],
+    "summary": "The shared recovery contract is due at the first AD-12 drill, but earlier staging attempts already require recovery points and in-place resets.",
+    "impact": "Teams can reach a mandatory staging reset before agreeing the cut, restore and result protocol, blocking further candidates or producing incompatible early implementations.",
+    "action": "autofix",
+    "recommendation": "Gate the recovery-point subset before the first staging recovery point and the complete hook/restore contract before the first staging reset or in-place production recovery; first staging deployment is a conservative single gate.",
+    "confidence": "high"
+  },
+  {
+    "id": "RB-3",
+    "severity": "high",
+    "title": "Dapr resources can change without activating the change in existing sidecars",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:140",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:240",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:241",
+      "https://docs.dapr.io/operations/components/component-updates/"
+    ],
+    "summary": "HotReload is disabled but consumer restart is specified only for changed Components, leaving other Dapr resource updates without a required activation mechanism.",
+    "impact": "Sidecars can retain old authorization, subscriptions or HTTP endpoint configuration while release records and rendered objects describe the new state.",
+    "action": "autofix",
+    "recommendation": "Require changed effective Dapr resource content or bindings to restart every affected consuming sidecar within the owning application/environment attempt before readiness or qualification passes; qualify policy-only and HTTPEndpoint-only updates.",
+    "confidence": "high"
+  }
+]

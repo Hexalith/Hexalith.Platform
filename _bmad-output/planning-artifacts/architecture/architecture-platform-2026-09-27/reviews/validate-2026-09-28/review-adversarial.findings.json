@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ADVR-1",
+    "severity": "high",
+    "title": "In-place recovery cannot reach the recovery hooks it must invoke",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:277",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:309",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:314",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:129"
+    ],
+    "summary": "The production/staging recovery runner correctly performs in-place recovery on its own executor, while the module recovery endpoint correctly admits only the replacement-capacity recovery executor. Reused DR step 4 is denied on both in-place paths.",
+    "impact": "The approved incompatible-release recovery and staging reset cannot restore and verify module-owned data; the deputy's documented in-place path also stops at this boundary.",
+    "action": "autofix",
+    "recommendation": "Define the caller as the executor owning the current recovery attempt: production executor for production in-place recovery, staging executor for staging reset, recovery executor for replacement-capacity DR. Authorize only that executor's environment-scoped, current-epoch recovery principal, and retain in-workload execution.",
+    "confidence": "high"
+  },
+  {
+    "id": "ADVR-2",
+    "severity": "high",
+    "title": "An epoch check before a mutation does not fence an earlier executor after takeover",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:279",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:126",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:223"
+    ],
+    "summary": "Executor A reads and validates epoch e before a mutation, then its request is delayed. An allowed takeover gives B epoch e+1; B restores the baseline. A's already-authorized Kubernetes/catalog write then completes using still-valid per-job credentials. Both clients performed the required check before each mutation.",
+    "impact": "A superseded executor can overwrite the recovered workload or catalog after the new owner has verified it; the signed attempt record and actual deployed state diverge.",
+    "action": "discuss",
+    "recommendation": "Add the semantic invariant that once takeover is accepted no prior-epoch mutation may commit, including in-flight writes. Require either fencing at each mutation authority or proven revocation/quiescence and draining of the earlier writer before the new epoch may mutate; record this prerequisite and fail closed if it cannot be proved.",
+    "confidence": "high"
+  },
+  {
+    "id": "ADVR-3",
+    "severity": "medium",
+    "title": "A delayed promotion-stop clear can erase a newer incident",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:223",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:278",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:283",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:276"
+    ],
+    "summary": "Administrator signs a clear for stop S1 naming the verified working baseline. Before that clear is applied, the off-site monitor records a new incident S2 without changing the working baseline. A store consumer then applies the still-valid signed clear, because no rule binds it to the observed stop revision or rejects it after S2.",
+    "impact": "Promotion may resume while a newer recorded incident remains unresolved. The required health precheck does not cover every incident that legitimately sets the stop.",
+    "action": "discuss",
+    "recommendation": "Bind a clear record to the exact observed stop revision/set records and verified working-attempt identity, and apply it conditionally; any unacknowledged newer set keeps the stop active. Bind an empty/degraded override to one attempt and prevent it from consuming later stop records.",
+    "confidence": "high"
+  },
+  {
+    "id": "ADVR-4",
+    "severity": "medium",
+    "title": "Staging tenant-lifecycle tests have no admission authority for their permitted tenant IDs",
+    "source_refs": [
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:127",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:232",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:437",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md:273"
+    ],
+    "summary": "A staging E2E unit obeys the explicit exception by creating a run-scoped tenant T distinct from the fixed environment synthetic tenant S. The gateway independently applies the declared synthetic-admission predicate, which admits its synthetic client only for S, while the sandbox has no other tokens. Operations addressing T are denied.",
+    "impact": "The accepted staging tenant-lifecycle critical flow cannot pass without an undocumented admission exception or broader credentials, so its exact-release staging gate remains blocked.",
+    "action": "discuss",
+    "recommendation": "Specify the staging-only authorization bridge for the accepted lifecycle exception: a short-lived run-bound synthetic actor scope covering only the attested test tenant IDs and lifecycle operations, with no production or real-tenant grant. Make creation, subsequent calls and cleanup consume the same run scope and preserve exclusion markers.",
+    "confidence": "high"
+  }
+]

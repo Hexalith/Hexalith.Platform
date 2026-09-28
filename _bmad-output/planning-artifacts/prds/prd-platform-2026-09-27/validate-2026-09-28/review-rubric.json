@@ -1,0 +1,55 @@
+{
+  "reviewer": "rubric",
+  "overall_verdict": "The current PRD is strong and ready to guide architecture/spec alignment and implementation planning: its shared-environment thesis, module ownership, acceptance outcomes and operating trade-offs are coherent. Production qualification remains substantial, but the document names its owners and gates and explicitly avoids claiming deployed readiness; no substantive rubric finding requires a product-policy correction.",
+  "dimensions": [
+    {
+      "name": "Decision-readiness",
+      "verdict": "strong",
+      "judgment": "The PRD makes consequential choices directly. It limits the MVP to seven modules while allowing incremental enrollment without weakening final acceptance (`prd.md:40–48`), distinguishes automatic and Administrator-approved promotion (`prd.md:48–56`), and names real omissions such as traffic-metric rollback, standby infrastructure and a generic mocking subsystem (`prd.md:58–64`). Those choices provide usable boundaries for scope and release planning.\n\nThe recovery commitment is candid: “Outside declared response coverage, no four-hour recovery commitment is made” (`prd.md:301`), while RPO and monitoring remain continuous. Deputy recovery authority and Administrator-only promotion resumption are explicit (`prd.md:203–208`). The addendum preserves the alternatives and costs for both decisions (`addendum.md:216–225`, `258–267`), and the memlog records their acceptance (`.memlog.md:76–79`). These are accepted trade-offs, not unresolved policy questions.",
+      "findings": []
+    },
+    {
+      "name": "Substance over theater",
+      "verdict": "strong",
+      "judgment": "The opening identifies the concrete gap in the existing Works preview and connects it to complete and minimum environments, active-checkout debugging and hosted promotion (`prd.md:20–26`). User roles drive requirements: developers need source debugging, CI needs disposable isolated environments, and the recovery owner/deputy need distinct operating permissions (`prd.md:28–36`). There are no decorative personas or unsupported differentiation claims.\n\nThe NFRs describe the actual platform risks: preserving current data/security authority during rollback, bounding ordinary-data loss and response-dependent recovery time, and preventing staging authority from reaching production (`prd.md:282–309`). Exact budgets and refusal outcomes replace generic claims that the system should be reliable or secure. The document explicitly declines to invent an uptime or throughput commitment (`prd.md:348`).",
+      "findings": []
+    },
+    {
+      "name": "Strategic coherence",
+      "verdict": "strong",
+      "judgment": "The thesis is consistent composition across local development, integration testing and hosted releases while modules retain domain behavior (`prd.md:20–26`). FR-1 through FR-5 establish the development/testing foundation; FR-6 through FR-9 carry release verification and recovery into production; FR-10 through FR-12 preserve environment access and operation boundaries. Production gates separate infrastructure deployment, user opening and automated promotion without changing the final seven-module scope (`prd.md:46–56`).\n\nSuccess measures test the stated outcomes rather than activity: source changes affect the running checkout, real integrations use the declared environment, isolation refusals hold, and recovery is demonstrated (`prd.md:313–320`). Counter-metrics explicitly prevent apparent success from hidden startup delay, destructive cleanup, bypassed validation or unverified restoration (`prd.md:324–328`).",
+      "findings": []
+    },
+    {
+      "name": "Done-ness clarity",
+      "verdict": "strong",
+      "judgment": "Every FR has observable consequences. Examples include explicit failure on missing/duplicate source identities (`prd.md:88–90`), a ten-minute startup default and defined lifecycle outcomes (`prd.md:122–139`), rejection of skipped/stale/wrong-release E2E evidence (`prd.md:161–169`), bounded production verification and one recovery attempt (`prd.md:183–208`), and positive as well as negative McpCli demonstrations (`prd.md:268–276`). Recovery acceptance includes security, erasure, data-integrity and response-time checks rather than treating a successful restore command as sufficient (`prd.md:220–228`, `294–301`).\n\nSeveral concrete configurations remain to be qualified, including check declarations, evidence-age limits and coverage hours. Those deferrals have named owners, required boundaries and acceptance consequences (`prd.md:334–346`); the requirements fail closed when prerequisite evidence is absent. For this upstream technical PRD, requiring those artifacts before their relevant gate is a valid definition of done and does not require inventing module flow lists or parameter values centrally.",
+      "findings": []
+    },
+    {
+      "name": "Scope honesty",
+      "verdict": "strong",
+      "judgment": "The document separates product requirements from deployed evidence in its purpose statement (`prd.md:14`), describes initial policy defaults as unmeasured (`prd.md:193`), and reiterates that final document status does not pass production gates (`prd.md:332`). Non-goals identify omissions that would otherwise be easy to infer incorrectly (`prd.md:58–64`). Whole-site recovery and out-of-coverage outages have explicit limits (`prd.md:299–303`).\n\nThe memlog confirms that capability scenarios, the ordinary-data RPO envelope, deputy authority, coverage-bound RTO and downstream qualification were deliberate decisions (`.memlog.md:59`, `76–83`). There are no unresolved assumption or PM tags in the current PRD. Remaining module declarations and implementation evidence are tracked with owners and revisit conditions rather than silently represented as completed work (`prd.md:334–346`).",
+      "findings": []
+    },
+    {
+      "name": "Downstream usability",
+      "verdict": "strong",
+      "judgment": "Stable FR/NFR/SM IDs, explicit acceptance consequences, grouped capability sections and a glossary give architecture and story authors clear extraction boundaries. The glossary distinguishes enabled from enrolled modules, working release from working baseline, and rollback from disaster recovery (`prd.md:350–385`). The success measures identify the requirements and qualification moments they validate (`prd.md:313–328`).\n\nThe downstream table assigns composition, identity, operations, release control, recovery and document alignment to named owners (`prd.md:334–346`). It explicitly says that later PRD decisions govern stale downstream wording (`prd.md:346`), so such alignment is acknowledged work rather than an ambiguity in the product requirement. The addendum holds detailed mechanisms and option comparisons while preserving the PRD's product acceptance structure. This conclusion concerns source-extractability; a separate cross-document review must assess whether external architecture/spec wording has since converged or changed.",
+      "findings": []
+    },
+    {
+      "name": "Shape fit",
+      "verdict": "strong",
+      "judgment": "The capability-first shape fits an internal developer/operator platform. The document explains why it uses acceptance scenarios instead of inventing user journeys and leaves module business journeys with their owners (`prd.md:36`). Developer, CI and recovery jobs carry the necessary role context without a consumer-style persona apparatus.\n\nThe operational detail is earned by hosting production data, sharing infrastructure and owning release/recovery behavior. Keeping comparative options and implementation mechanisms in the addendum allows the PRD to remain organized around capabilities, operating commitments and verification. The historical implementation observations are explicitly dated and are not presented as evidence that the intended platform already exists (`addendum.md:10–22`).",
+      "findings": []
+    }
+  ],
+  "mechanical_notes": [
+    "Verified all 26 declared requirement/measure IDs: FR-1–FR-12, NFR-1–NFR-3, SM-1–SM-6 and SM-C1–SM-C5 are unique and contiguous. All ID references found in the PRD resolve.",
+    "All 16 Markdown local-link file targets across the current PRD and addendum exist; their explicit local heading anchors resolve. External URLs were not revalidated for this internal-consistency review.",
+    "No unresolved `[ASSUMPTION]`, `[NOTE FOR PM]` or TODO markers occur in the PRD; an Assumptions Index roundtrip is therefore not applicable.",
+    "No UJ identifiers or unnamed protagonists require correction because the documented capability-spec shape deliberately omits UJs.",
+    "No substantive glossary drift or required-section omission was identified for the agreed internal-platform scope."
+  ]
+}

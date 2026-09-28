@@ -1,0 +1,23 @@
+{
+  "reviewer": "adversarial",
+  "overall_verdict": "Ready for planning with two medium clarifications; no critical or high findings.",
+  "findings": [
+    {
+      "id": "A1",
+      "severity": "medium",
+      "title": "CI can exercise an older module package without rejecting evidence for the candidate revision",
+      "location": "prd.md:90 (FR-2), prd.md:119-121 (FR-4 Composition and readiness), prd.md:313 (Success measures); addendum.md:34 (Workspace and build constraints)",
+      "note": "Local integration explicitly uses the active source checkout; CI specifies Release/NuGet mode without explicitly binding the tested module artifact to the candidate revision. A correctly pinned Platform runner can test an older Parties package with real dependencies and pass the listed lifecycle/evidence requirements while never exercising the changed module. The addendum's exact Platform-tool commit binding does not establish the candidate module's artifact identity.",
+      "fix": "Require CI acceptance for a candidate to identify and exercise that module's Release artifact from the candidate revision and reject evidence for a different artifact/revision. Label intentional baseline-only runs so they cannot satisfy candidate acceptance; leave package mechanics to Platform/Builds."
+    },
+    {
+      "id": "A2",
+      "severity": "medium",
+      "title": "Successful attachment does not define what happens when the environment owner finishes",
+      "location": "prd.md:129 (FR-4 Run isolation and ownership), prd.md:133-138 (FR-4 Completion, cleanup and diagnostics); addendum.md:54 (MVP approach), addendum.md:105 (Selected behavior)",
+      "note": "Run B may attach successfully to A after all required compatibility checks. If A succeeds or is cancelled while B is still testing, A cleans its own environment and B loses its services. The restriction on deleting another run's resources does not clearly cover this because A retains ownership. The reverse cancellation case is covered, but accepted attachment lifetime and its outcome when the owner terminates are not.",
+      "fix": "Define whether owner termination preserves the environment until attached work terminates or explicitly terminates/reports attached runs before cleanup, including failed-local retention. Cover the selected ordering in the existing SM-3 attachment/lifecycle demonstration."
+    }
+  ],
+  "mechanical_notes": []
+}

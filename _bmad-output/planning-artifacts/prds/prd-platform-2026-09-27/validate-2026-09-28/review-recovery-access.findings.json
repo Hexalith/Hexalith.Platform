@@ -1,0 +1,31 @@
+{
+  "reviewer": "Recovery and access",
+  "overall_verdict": "Reconciliation required before recovery and deployment stories are finalized: 0 critical, 2 high, 1 medium, 0 low. Later user-accepted recovery/access decisions have not been carried back from the current architecture. This is document synchronization, not unauthorized architecture weakening or failed deployed controls.",
+  "findings": [
+    {
+      "id": "S1",
+      "severity": "high",
+      "title": "Restoration revocation guarantees omit the later accepted exceptions",
+      "location": "prd.md:226, :227, :296, :303, :309; addendum.md:273, :275; ARCHITECTURE-SPINE.md:118, :295, :320, :321; architecture .memlog.md:220, :237, :250, :258",
+      "note": "FR-9 requires \"reapply post-cut revocations\" and \"denial of revoked principals\", while its ordinary lost-window exception enumerates only deletions, erasures and legal holds. NFR-3 repeats denial after revocation during restoration. The architecture accepts loss of module-owned revocations after the recovery cut and non-admission realm access removals after the durable event-export frontier. These were accepted in architecture C-25 (:220) and G-4 (:258); D5 (:237) records exceptions before reopening and requires Administrator review before promotion resumes. VAL-08 (:250) separately preserves production admission revocations. A restore can satisfy the accepted policy while failing the PRD, or builders can implement an unselected stronger guarantee.",
+      "fix": "Synchronize FR-9, NFR-2/NFR-3 references and addendum with the accepted scopes: production admission revocations survive restoration; the named module and realm removal exceptions use their respective lost windows and reporting/review boundaries. Preserve Memories continuity, live authorization and current-security application rollback. Keep implementation mechanisms in architecture."
+    },
+    {
+      "id": "S2",
+      "severity": "high",
+      "title": "The PRD blocks the accepted Administrator-approved recovery release path",
+      "location": "prd.md:48, :168, :185, :204, :208; addendum.md:177, :193, :207; ARCHITECTURE-SPINE.md:280, :281, :288, :309; architecture .memlog.md:249, :252, :260",
+      "note": "FR-7 requires a currently healthy baseline before update and FR-8 requires a verified current working release to clear the stop. The architecture additionally allows an Administrator-approved candidate attempt when the last production outcome is non-working, waiving the healthy-baseline condition and observed stop only for that attempt. A later stop still dominates and successful verification establishes the new working baseline. Architecture VAL-04 (:249), the accepted decisions summary (:252), and accepted gate corrections (:260) document this evolution. The conflict concerns approved release into degraded production, not the already documented first deployment or manual recovery.",
+      "fix": "Carry the accepted approved degraded-production use case into release modes, FR-7/FR-8, addendum and SM-5 acceptance wording. State its one-attempt authorization and observed-stop boundary, newer-stop precedence, unchanged common gates, and verified-success requirement. Preserve Administrator-only release authorization and separate deputy recovery authority."
+    },
+    {
+      "id": "S3",
+      "severity": "medium",
+      "title": "The addendum misstates the accepted operations-writer and deputy controls",
+      "location": "addendum.md:225, :326, :342; prd.md:346; ARCHITECTURE-SPINE.md:36, :130, :131, :478, :480, :481; architecture .memlog.md:218, :236, :237",
+      "note": "The addendum still calls the accepted operations repository single-writer, triggers GitHub Team review at the second writer, and says architecture lacks deputy access and notification rules. The current spine supplies independent deputy recovery without repository write, accepts Administrator plus the second organization owner as writers, and triggers review only beyond those named writers. Architecture C-09 (:218), D4 (:236) and D5 (:237) explicitly record accepted decisions. The stale summary can create an unnecessary control decision/story dependency and misstate the accepted workflow-editing trust boundary. Runtime deputy qualification remains open at G2.",
+      "fix": "Refresh the accepted-control summary to two named writers and the revised review trigger. Replace obsolete architecture follow-up with remaining implementation/qualification of deputy identity, custody, alert delivery and rehearsed recovery. Retain separate spec synchronization and evidence gates that remain open."
+    }
+  ],
+  "mechanical_notes": []
+}

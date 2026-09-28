@@ -4,7 +4,7 @@ These are current-state facts that affect implementation, observed read-only on 
 
 ## Platform repository
 
-- The root `apphost.cs` is a file-based Aspire host. It holds an opt-in, Development-only Works preview that resolves a sibling Works checkout and nested EventStore paths (EventStore/admin/Operations, Works, Dapr). It is not the MVP composition and does not provide general module selection.
+- The root `apphost.cs` is a file-based Aspire host on Aspire SDK 13.5.4. It holds an opt-in, Development-only Works preview that resolves a sibling Works checkout and nested EventStore paths (EventStore/admin/Operations, Works, Dapr). It is not the MVP composition and does not provide general module selection. `global.json` pins .NET SDK 10.0.401; architecture update 4 selected no version upgrade.
 - The Works preview remains the rollback composition until Works passes its migration parity gate; the Works lane must move off hard-coded sibling paths (spine Owned work, Module adoption).
 - Platform declares seventeen `references/`: AI.Tools, Agents, Builds, ChatBot, Commons, Conversations, EventStore, Folders, FrontComposer, McpCli, Memories, Parties, PolymorphicSerializations, Projects, Tenants, Timesheets and Works. `references/Hexalith.McpCli` was added in commit `decb37e`. A declaration does not make a component a running service.
 - No hosted Kubernetes or domain configuration exists in the root, and there is no root Platform runtime workflow.
@@ -17,6 +17,7 @@ These are current-state facts that affect implementation, observed read-only on 
 - `SupportedPlatformPins.cs` hard-codes EventStore 3.109.0, Dapr runtime 1.18.2, Dapr SDK 1.18.10 and FrontComposer 4.5.0; the catalog must become the single version authority.
 - `hexalith.module-manifest.v1` identifies itself through its `schema` value, forbids additional properties and lacks most Platform declaration fields, so the Platform declaration ships as its next major.
 - Builds.Module.AppHost composes its own environment and Builds.Module.EventStoreHost exists; both change or go under tool ratification.
+- `CompositionRunState` and its store are metadata-only v1 state. `ModuleCommandExecutionService` still reports `HXR003` on the unqualified descriptor path. The AD-4/AD-5/AD-10 candidate-artifact identity, actual-loaded identity, attachment-hold and withdrawal contracts are therefore target work under tool and runner qualification, not current runner capability.
 
 ## Module repositories
 

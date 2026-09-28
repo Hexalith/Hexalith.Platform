@@ -1,0 +1,45 @@
+[
+  {
+    "id": "SEC-1",
+    "severity": "high",
+    "title": "Confidential target audience is not proof of the calling surface",
+    "source_refs": [
+      "ARCHITECTURE-SPINE.md:199",
+      "ARCHITECTURE-SPINE.md:200",
+      "ARCHITECTURE-SPINE.md:201",
+      "ARCHITECTURE-SPINE.md:203",
+      "ARCHITECTURE-SPINE.md:204",
+      "ARCHITECTURE-SPINE.md:438"
+    ],
+    "summary": "AD-14 explicitly allows an externally reachable bearer host to accept its confidential-client audience instead of deriving the surface from authenticated azp. Audience identifies the target, not the originating client. A service token legitimately targeted to a confidential host for an agent-eligible operation can therefore be interpreted as UI authority by an independently implemented host.",
+    "impact": "The realm and host teams can satisfy different clauses while allowing an agent/service origin to reach UI-only or confirmation-required operations. Correct target audience alone cannot enforce the calling-surface boundary.",
+    "action": "autofix",
+    "recommendation": "Require audience validation plus authenticated client-to-surface validation on every bearer endpoint, and require the attested effective originating surface on chained requests. Remove audience-only classification as an alternative. Add a negative case with the correct confidential target audience and a disallowed agent/service origin.",
+    "confidence": "high",
+    "external_sources": [
+      "https://www.keycloak.org/securing-apps/token-exchange"
+    ]
+  },
+  {
+    "id": "SEC-2",
+    "severity": "high",
+    "title": "Recovery can resurrect admission revoked inside the event-export lag",
+    "source_refs": [
+      "ARCHITECTURE-SPINE.md:117",
+      "ARCHITECTURE-SPINE.md:203",
+      "ARCHITECTURE-SPINE.md:247",
+      "ARCHITECTURE-SPINE.md:286",
+      "ARCHITECTURE-SPINE.md:290",
+      "ARCHITECTURE-SPINE.md:312",
+      "ARCHITECTURE-SPINE.md:315",
+      "ARCHITECTURE-SPINE.md:316",
+      "ARCHITECTURE-SPINE.md:437",
+      "ARCHITECTURE-SPINE.md:481"
+    ],
+    "summary": "Identity-event export permits a bounded lag, yet DR restores admission from an older database plus surviving exported events and must deny revoked principals. A production-admission removal acknowledged immediately before failure can be absent from both restore inputs. The accepted RPO exception names module-owned revocations, not Keycloak admission revocations.",
+    "impact": "Restoring the realm and rebuilding the admission projection can re-admit a revoked actor with no evidence of the missing revocation. Signing-key and credential rotation does not repair that admission state; restored asynchronous tasks can run for the resurrected actor without a fresh login.",
+    "action": "discuss",
+    "recommendation": "Choose a recovery-safe admission authority: independently durable revocation records before acknowledgement, or fail-closed restored human admission until Administrator reconciliation and explicit reauthorization when the export frontier may be incomplete. Any intended loss window for identity revocations requires an explicit risk decision. Qualify failure immediately after revocation and before event export.",
+    "confidence": "high"
+  }
+]
