@@ -1,72 +1,106 @@
 ---
-date: 2026-09-28
+date: 2026-09-29
 gate: CONCERNS
-decision: Proceed; sprint-status.yaml generated. Fix findings in epics.md before the affected work starts.
+decision: Proceed; sprint-status.yaml regenerated against the edited epics.md (144 stories). Fix the open findings below before the affected work starts.
+supersedes: 2026-09-28 gate (C-01–C-19)
 inputs:
-  - _bmad-output/planning-artifacts/epics.md
+  - _bmad-output/planning-artifacts/epics.md (at 9360ee3)
+  - _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-28.md
   - _bmad-output/specs/spec-platform/ (SPEC.md, acceptance-criteria.md, sequencing.md, success-measures.md)
   - _bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/prd.md, addendum.md
   - _bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md (update 4)
 ---
 
-# Implementation Readiness — Hexalith Platform
+# Implementation Readiness — Hexalith Platform (re-gate)
 
-**Verdict: CONCERNS.** The plan is implementable and sound overall. Every FR-1..12, NFR-1..3, SM-1..6, SM-C1..C5 and AR-1..AR-63 traces to stories whose acceptance criteria carry the source thresholds, and AR-64 is accepted risk by design. No story adds scope that the sources don't support. The G1 → G2 → G3 order holds, the version pins agree across documents, and the final CAP-8/SM-5 spec refinement is reflected in Stories 6.18, 6.20 and 9.5.
+**Verdict: CONCERNS.** The edit that applied the 2026-09-28 sprint change proposal only partly landed. Most corrections reached the requirements inventory (AR-23, AR-28, AR-32, AR-33, AR-44), the epic notes and the External Prerequisites Register. Many never reached the stories' acceptance criteria: Stories 4.14, 5.7, 6.6, 6.7, 6.8, 8.4, 8.10, 8.13 and 9.5 are word-for-word unchanged. The edit also used a smaller renumbering than the proposal's §6/F5 laid out. Separate stories for capture-lag, reference suites, adapter conformance and executor commissioning were folded into existing stories, but the register and epic notes still read as if those stories exist.
 
-The findings below are gaps in sequencing, coverage or freshness. Fix them in `epics.md` with `bmad-correct-course` or a direct edit before the affected work starts, then re-run `bmad-sprint-planning` to refresh `sprint-status.yaml`.
+**Current work is unaffected.** Stories 4.0–4.4 (the urgent Kubernetes track) are split and sequenced correctly (C-15), and the story files on disk for 4.0–4.3 match `epics.md`.
 
-**Fix before:** Epic 2 starts (C-01) and the early independent track is scheduled (C-04, C-15). Fix the others before their epic starts.
+| Status | Findings |
+| --- | --- |
+| Resolved | C-02, C-03, C-05, C-06, C-09, C-15 |
+| Partly fixed | C-01, C-04, C-07, C-08, C-10, C-12, C-14, C-18, C-19 |
+| Still open | C-11, C-13, C-16, C-17 |
+| New (from the edit) | N-01 – N-11 |
 
-## Sequencing — undeclared forward dependencies
+Line numbers refer to the current `epics.md`. Fix the findings with a direct edit or `bmad-correct-course`, then re-run `bmad-sprint-planning` to resync `sprint-status.yaml`.
 
-| ID | Sev | Finding | Where | Suggested fix |
-| --- | --- | --- | --- | --- |
-| C-01 | Medium | Stories 2.8 and 2.10 accept CI integration evidence (2.10 marks the runner Platform-accepted "so that local and CI integration evidence can be accepted"). The candidate policy they depend on (PR head or merge result, the gated decision, evidence reuse) is decided only in Story 3.1. The spec requires it first. | SPEC.md:103; sequencing.md:99, :205; spine:470-471; epics.md:1520, :1541 | Move 3.1 into Epic 2 next to 2.1, or narrow 2.10's claim to non-candidate evidence. |
-| C-02 | Medium | Story 5.8 needs "a candidate over production's working baseline" and evidence that "names the recorded production baseline". The baseline branches of 5.6 and 5.9 need it too. The first production baseline exists only at Story 6.23. | epics.md:2648-2668; 6.23 at epics.md:3367 | State that 5.8 closes after 6.23, or move it to follow 6.23. |
-| C-03 | Medium | Stories 6.19 (data-restore branch), 6.20 and 6.22 need a complete recovery point. Backups and usable recovery points are built in 8.5 and 8.7. Story 6.20 also needs Memories erasure continuity (8.13 plus the tombstone prerequisite). None of these is required for G1. | epics.md:3262, :3289, :3306, :3340, :3352 | Move them after 8.7 and 8.13, or split off the recovery-point-dependent criteria. |
-| C-04 | Medium | The early independent track isn't fully independent. 6.3 (test issue) and 6.4 (monitor) raise issues in the notification repository that Story 4.4 creates. For 8.1, only procurement is independent: its host wiring needs 4.6, 4.13, 6.9, 8.5, 8.7 and 8.9–8.12. | epics.md:712, :1949, :2789, :2793, :3640-3644 | Pull 4.4 (or its notification-repository part) forward with 6.3 and 6.4. Split 8.1 into procurement and executor-host wiring. |
-| C-05 | Low | Story 4.19 uses the realm-contract instance and generation from 3.4, which is outside the declared Epic 4 exception (only 3.2 and 3.3). It also requires event export "within the declared bound", which 6.2 decides later. | epics.md:2314, :2338; epic list dependency flow item 4 | Add 3.4 to the Epic 4 exception, and move the capture-lag bound decision ahead of 4.19. |
-| C-06 | Low | Story 4.12 verifies module image attestations, but the register only expects EventStore and Memories attestation by Epic 5. The first staging deployment (4.22) is therefore blocked on it. | epics.md:2140; External Prerequisites Register | Retime the register row to Epic 4 and first publication. |
-| C-07 | Low | Minor cross-epic needs: 4.5 needs OCI attestation and rollback built in 4.12 and 4.13; 4.14 needs deputy key custody from 6.3; 7.6 tests backup-prefix access that 8.5 creates; 6.10 and 6.18 use "lost-window", which is defined only in 8.12. | epics.md:1980, :2198, :3564, :2993, :3231 | Add the notes, or reorder where it's cheap. |
+## Fix before Epic 2 accepts CI evidence
 
-## Coverage gaps
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-01 | Medium | Partial | The policy is now decided in 2.1, but it reaches the runner contract only in 3.1 (Epic 3). Story 2.10 still marks the runner accepted "so that local and CI integration evidence can be accepted". Stories 2.8 and 2.10 are not limited to non-candidate (lifecycle) evidence. | L1543, L1570 | Narrow 2.10 to non-candidate evidence, or move 3.1 into Epic 2 after 2.2. |
+| N-01 | Medium | New | Story 2.2 says Epic 3 only fills existing fields "without a version change". Story 3.1 writes the policy identifier, gated decision and reused-evidence lineage, which 2.2 never defines. | L1346, L1591 | Define those fields in 2.2, or let 3.1 version the contract. |
 
-| ID | Sev | Finding | Where | Suggested fix |
-| --- | --- | --- | --- | --- |
-| C-08 | Medium | No story writes the reference composition's critical-flow declarations, E2E suites and production smoke suites (Parties, EventStore, Tenants, Memories). Story 5.3 lists them as a prerequisite, but the register covers only "modules outside the reference composition", and the reference composition's module work is in Platform scope. | epics.md:2534; register row "Readiness, surface … smoke suites" | Add a story in Epic 4 or 5, tagged with each module repository, or move it into the register with an owner. |
-| C-09 | Medium | No story makes the Platform publication workflow publish stable `Hexalith.McpCli` versions after staging validation. Stories build only the run-scoped tool and the McpCli candidate. | acceptance-criteria.md:263; sequencing.md:162; AR-46 | Extend 4.12 or 5.10, or add a story. |
-| C-10 | Medium | No story has staging qualify the named data-restore recovery (refusal, candidate removal, no automatic rollback, continuity) before the first applicable retained-data attempt. Story 6.20 only names the procedure, and the only rehearsal is 9.6 at G3. | sequencing.md:117, :173, :211 | Add staging qualification criteria to 5.x or 6.20. |
-| C-11 | Medium | Every approved empty or degraded attempt needs staging to prove the candidate installs and works without the baseline. Story 5.7 triggers only when "production has no working baseline", so degraded-but-retained-data attempts get no fresh-install proof. (Fresh-install proof is sufficient on its own only for a first installation; retained-data repair also needs precondition 9.) | prd.md:232; spine:288; SPEC.md:87; epics.md:2646, :3247 | Widen 5.7's trigger to every empty or degraded approved attempt, keeping "sufficient alone only for first install". |
-| C-12 | Medium | The SM-6 evidence stories don't re-verify backup cadence and retention, independent availability and freshness monitoring, monitor-silence detection, or GitHub delivery to both people in the drill record. | success-measures.md:15; Stories 8.16, 10.6 | Add these to the 8.16 and 10.6 drill-record criteria. |
-| C-13 | Low | SM-5 evidence (9.5) rehearses one of the four deputy limits (approval). The other three (clear, admission, pre-G2 ingress) and the "accepted cause resolves and recurs" case are not rehearsed. | success-measures.md:14; acceptance-criteria.md:156-157 | Extend 9.5. |
-| C-14 | Low | Smaller gaps: the G2 Memories adapter-boundary conformance is missing from 8.13, 8.18 and the register (sequencing.md:54). Recording the Folders, Projects and McpCli override records upstream is untracked (sequencing.md:126, :227). "Recovery owner, confirmed by Administrator" is missing from 8.4 (acceptance-criteria.md:186). | as cited | Add the criteria or register rows. |
+## Fix before the staging build (Story 4.5 onward)
 
-## Story size and entanglement
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-18 | High | Partial | AR-23 and AR-32 now say a named shared-infrastructure/bootstrap workflow creates namespaces, environment-identity RBAC, StorageClasses and PriorityClasses. Stories 4.14 and 6.7 still have the environment-layer identity create them. No story builds that workflow before 6.22. Story 6.22 refuses any mutation without a complete recovery point, which exists only from 8.7. Moving the creation onto 6.22 as written would block 4.14 and 6.7 until Epic 8. | L404, L448, L2258–2265, L2993–2999, L3450–3454 | Add a staging-era bootstrap step (story or 4.14 criterion) run by the shared-infrastructure identity. Record the pre-G2 bootstrap exception to 6.22's recovery-point rule. |
+| C-07a | Low | Partial | Story 4.14 needs keys under Administrator and deputy custody, but 6.3 (name the deputy) is not a prerequisite. | L2275 | Add the 6.3 prerequisite, or scope 4.14 to Administrator custody. |
+| C-08 | Medium | Partial | Story 4.11 claims suite ownership and blocks publication. But no criterion requires writing or running the reference composition's declarations, E2E suites and smoke suites (Parties, EventStore, Tenants, Memories, McpCli). It is tagged only Builds/Platform, so module owners don't have to review it. Register row L678 still excludes the reference composition. | L2170–2198, L2176, L678 | Add criteria that deliver and run the suites, tagged with each module repository (proposal B6). |
+| N-02 | Medium | New | Story 4.13 says the retained chart "can be applied without regeneration" but names no target. Staging is built in 4.14–4.20 and first deployed in 4.22. | L2244–2246 | Name a dry-run or scratch target, or move the check to 4.22. |
+| N-03 | Low | New | The capture-lag bound decision now sits inside 4.9, which waits on EventStore's AD-26. A Platform decision is now blocked by another team for no reason. AR-59 is missing from 4.9's Covers line. The clause "names who is notified when it is exceeded" was lost. | L2121, L2142–2145 | Split the bound decision out of 4.9, or declare the dependency. Restore the notification clause and the AR-59 tag. |
+| N-04 | Low | New | `epic-4-context.md` is stale. It gives the old titles for 4.9 and 4.11 and the urgent set as 4.0–4.3 (epics says 4.0–4.4). Its L63 says Helm qualification depends on publication and rollback, contradicting 4.5 (L2037). | epic-4-context.md L20, L22, L40, L63 | Refresh the context file. |
 
-| ID | Sev | Finding | Where | Suggested fix |
-| --- | --- | --- | --- | --- |
-| C-15 | Medium | Story 4.1 bundles backup and isolated-restore proofs for three systems (no CloudNativePG backups exist today) with the in-place upgrade, on a hard clock: Kubernetes 1.34 reaches end of life on 2026-10-27. | epics.md:1860 | Split the backup proofs from the upgrade and schedule both immediately. |
-| C-16 | Medium | Story 6.6 upgrades about 13 shared components in one story, including Redis Stack 7.4 → Redis 8 through the Memories digest set (another team), CloudNativePG with two PostgreSQL instances, Keycloak, and KubeSphere removal. | epics.md:2844-2858 | Split by component or by change window. |
-| C-17 | Low | Stories 8.10 and 8.13 depend on each other: 8.10 re-applies key destruction from the tombstone mirror, a prerequisite listed only on 8.13, and 8.13 can be proven only through 8.10's restore. 8.13 also bundles the unrelated Memories Redis → Dapr migration gate. Story 4.18 is borderline oversized. | epics.md:3862, :3965, :2280 | Put the tombstone prerequisite on 8.10, and split out the Redis → Dapr gate. |
+## Fix before the early independent track is scheduled
 
-## Out of date after architecture update 4
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-04a | Medium | Partial | 4.4 is now on the early track, but 6.3 and 6.4 raise issues in its notification repository without listing 4.4 as a prerequisite. | L2886, L2895, L2905 | Add the 4.4 prerequisite to 6.3 and 6.4. |
 
-| ID | Sev | Finding | Where | Suggested fix |
-| --- | --- | --- | --- | --- |
-| C-18 | Medium | Stories 4.14 and 6.7 have the environment-layer identity create namespaces, the StorageClass and the PriorityClass. Update 4 moved namespaces, environment-identity RBAC, PriorityClasses and StorageClasses to the shared-infrastructure tier, changed only through the named shared-infrastructure workflow. The environment-layer identity writes only into the data namespace. AR-32 doesn't reflect the tier move. | spine:142, :250; epics.md:445, :2184-2197, :2887-2893 | Re-home the namespace, StorageClass and PriorityClass creation under the shared-infrastructure workflow (6.22 or a staging-era equivalent). |
-| C-19 | Low | AR-33 says the rollback set is always prepared and ready-validated. The final rule applies this only to attempts eligible for automatic recovery (6.17 is correct). Story 6.8's per-job credentials are missing the recovery-kind attempt's recovery-hook credential and the read access to the recovery-point prefix. Story 5.6 deploys production's baseline for every staging attempt, but the spec limits this to automatic-eligible attempts. | epics.md:454, :2920, :2614; spine:132, :219; acceptance-criteria.md:149; sequencing.md:171-173 | Align the wording. |
+## Fix before Epic 5 starts
 
-## Open decisions (by design, not findings)
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-11 | Medium | Open | Story 5.7 still triggers only when production has "no working baseline". Stories 6.18, 5.11 and AR-34 keep the narrow scope. | L2704–2720, L3354, L2821, L460 | Widen to every approved empty or degraded attempt, keeping "sufficient alone only for first install" (spine:288). |
+| C-10 | Medium | Partial | Stories 5.9 and 8.16 now qualify the named recovery, but neither covers preserving a later stop or the candidate-removal failure path. | L2745–2771, L4150–4158; sequencing.md:117 | Add both cases. |
+| N-05 | Medium | New | Stories 5.9 and 8.16 both claim to qualify the named recovery. Story 5.11 treats 5.9 as the qualification. Stories 6.18 and 6.20 require a separate post-G1 qualification (8.16). Story 5.9 depends on production's first baseline (Epic 6) and can't be used before 8.16, but states neither. It also leaves out the revocation and Memories erasure continuity that 8.16 requires. | L2823, L3353, L3401–3403, L4153–4158 | Decide which story is the qualification. Make the other a rehearsal feeding it, and link the two. |
+| N-06 | Low | New | Coverage map: AR-19 is still mapped to Epic 5 though no Epic 5 story covers it (the content moved to 4.8). AR-46 is in 5.11's criteria but not its Covers line. | L649, L2806 | Fix the map and the Covers line. |
 
-Policy decisions: 2.1 attachment hold limit; 3.1 candidate-selection policy; 5.1 staging evidence policies; 5.2 vulnerability policy; 6.2 monitor and admission bounds; 8.2 reduced-recovery operating policy; 9.1 shared-infrastructure currency policy. The human decision is 6.3 (name the recovery deputy). The architecture spike is 6.1 (rehearsal-fault injection; 6.21 and every SM-5 rehearsal depend on it). Stories with embedded ratifications: 1.6 (AppHost form), 1.7 (local Dapr convention), 4.5 (Aspire-to-Helm or AD-1 fallback), 4.17 (durable broker).
+## Fix before Epic 6 starts
 
-## External prerequisites — stories that cannot close without other teams
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-16 | Medium | Open | Story 6.6 is identical to the old text. The four change windows appear only in prose and in 6.22's classification rule. | L2950–2981, L814, L3449 | Split 6.6 by change window. |
+| C-19 | Low | Partial | Story 6.8's per-job credentials still lack the recovery-kind attempt's recovery-hook credential and read access to the recovery-point prefix. No story issues them for 8.16. AR-34 still says every staging attempt deploys the baseline and rehearses the rollback set. | L3025–3027, L460 | Align 6.8 and AR-34 with AR-33 and 5.6. |
+| C-07b | Low | Partial | Stories 6.10 and 6.18 still require lost-window review unconditionally. Only AR-44 was amended, and neither story cites it. | L3099, L3337, L513 | Apply AR-44's condition in both stories. |
 
-Epics 1 and 2 have no External Prerequisites Register blockers, but several stories need other teams to review and merge under the cross-repository definition of done: 1.5, 1.9, 1.10, 1.11, 1.12, 2.9 and 2.10. Register-blocked stories:
-- Epic 3: 3.2–3.8 and 3.10–3.12. Story 3.3 also needs the gateway metadata endpoint, which is untagged.
-- Epic 4: 4.9, 4.12 (see C-06), 4.19, 4.24.
-- Epic 5: 5.3 (see C-08), 5.4, 5.5, 5.9.
-- Epic 6: 6.11, 6.14.
-- Epic 7: 7.1, 7.3.
-- Epic 8: 8.4, 8.6, 8.9–8.11 (untagged) and 8.13.
-- Later epics: 9.3, 10.1, 10.2, 11.2, 11.3, 12.1, 12.2.
+## Fix before Epic 8 starts
+
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-17 | Medium | Open | Story 8.10, the first key-restore consumer, still lists only recovery hooks as prerequisites, not the tombstone/lineage work. Story 8.13 still bundles the Memories Redis → Dapr migration. Only register row L682 changed. | L3965, L4073–4076, L682 | Add the tombstone prerequisite to 8.10, and split out the Redis → Dapr gate. |
+| C-14 | Low | Partial | Register L682 points to an "Epic 8 adapter-conformance story" that doesn't exist. No story qualifies the AR-60 adapter boundary. Story 8.4 still lacks "recovery owner, confirmed by Administrator". The override-records row was added (L686). | L682, L589, L3802, L3807 | Add the adapter-conformance story, or retarget the row to 8.13 with criteria. Add the confirmation to 8.4. |
+| C-12 | Medium | Partial | Story 10.6 is fixed. The 8.17 drill record still lacks backup cadence and retention, availability and freshness monitoring, dead-man detection and GitHub delivery. The Epic 8 notes (L828) claim the drill has them. | L4186–4190, L828 | Add them to the 8.17 criteria. |
+| C-04b | Medium | Partial / new dependency | Executor commissioning was folded into 8.9. It needs a pinned off-site copy of the workflows that 8.10–8.12 build, and its prerequisites (4.6, 4.13, 6.9, 8.5, 8.7) aren't named. AR-28 is tagged on 8.1, which now excludes commissioning, not on 8.9. | L3940–3945, L3930, L3732 | Move commissioning after 8.12 (proposal F2), name the prerequisites and move the AR-28 tag. |
+| N-07 | Medium | New | Story 8.19 makes 8.16 a G2 condition. The source G2 rows don't include it; the source ties it to the first applicable degraded non-empty attempt. The proposal (F5) asked for adapter-boundary conformance in G2, not 8.16. | L4231; sequencing.md:52–55, :116; spine:494–495 | Reconcile with the source: drop 8.16 from G2, or record why it is added. |
+| N-08 | Low | New | Story 8.16 has no Prerequisites field. It depends on 8.7, 8.10, 8.11 and 8.13, and on recovery-kind credentials that no story provides (see C-19). | L4128 | Add the prerequisites. |
+| N-09 | Low | New | Coverage: AR-58 (first degraded non-empty attempt qualification) is covered by no story since the old 6.20 was replaced. The Epic 8 summary (L825) lists FR-9 and NFR-2 but not FR-8 and NFR-1, which the map (L626, L631) assigns via 8.16. | L579, L825 | Tag AR-58 on 8.16 or 5.9, and fix the summary. |
+
+## Fix before Epic 9 starts
+
+| ID | Sev | Status | Remaining gap | Where | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| C-13 | Low | Open | Story 9.5 still rehearses only "the deputy cannot approve". The deputy limits on clearing a stop, admission and pre-G2 ingress, and the "resolves and recurs" case, appear only in the Epic 9 prose (L832). | L4351, L832 | Extend 9.5. |
+
+## Minor references
+
+| ID | Where | Fix |
+| --- | --- | --- |
+| N-10 | Story 3.9, L1791: "a candidate under the policy from Story 3.1". | Point to Story 2.1 (applied through 3.1's runner contract). |
+| N-11 | Epic 3 AR list, L647: omits AR-14, which 3.1 now covers (L1576). | Add AR-14. |
+
+## Resolved since 2026-09-28
+
+- **C-02:** the closure boundary after 6.23 is declared at epic level. Story 5.6 no longer assumes a production baseline, and 5.9 branches to 5.7 when there is none.
+- **C-03:** Stories 6.19, 6.20 and 6.22 no longer claim a recovery point. Data restore moved to 8.16, after 8.7 and 8.13.
+- **C-05:** Epic 4 may depend on 3.4. The capture-lag bound is decided before 4.19 (but see N-03).
+- **C-06:** AR-22 and the register now expect attestation from first publication. 4.8 and 4.12 verify it.
+- **C-09:** Story 5.11 publishes stable `Hexalith.McpCli` versions after staging validation (tag gap in N-06).
+- **C-15:** backup proofs (4.0) are split from the upgrade (4.1), with a mutation gate, and scheduled first.
+
+## Carried forward unchanged
+
+The open policy decisions, human decisions, spike, embedded ratifications and the stories blocked by the External Prerequisites Register are as recorded in the 2026-09-28 report. Two renumberings apply: the candidate policy is now Story 2.1, and the named-recovery qualification is now 8.16 (see N-05).

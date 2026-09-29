@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 09-28-2026 14:28
+last_updated: 09-29-2026 08:37
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -52,7 +52,7 @@ development_status:
   epic-1-retrospective: optional
 
   epic-2: backlog
-  2-1-decide-the-attachment-hold-limit: backlog
+  2-1-decide-the-candidate-and-attachment-policy: backlog
   2-2-define-the-test-environment-descriptor-and-result-contract: backlog
   2-3-make-local-composition-resources-run-scoped: backlog
   2-4-provision-a-run-owned-environment-for-a-test-suite: backlog
@@ -65,7 +65,7 @@ development_status:
   epic-2-retrospective: optional
 
   epic-3: backlog
-  3-1-decide-the-candidate-selection-policy: backlog
+  3-1-apply-the-candidate-selection-policy-to-the-runner-contract: backlog
   3-2-compose-the-eventstore-host-with-enrolled-extension-packages: backlog
   3-3-generate-the-run-scoped-routing-catalog: backlog
   3-4-generate-the-local-realm-from-the-realm-contract: backlog
@@ -89,9 +89,9 @@ development_status:
   4-6-encode-release-attempt-qualification-and-administrator-recor: backlog
   4-7-provide-the-staging-attempt-lock-and-promotion-stop-store: backlog
   4-8-maintain-the-module-intake-manifest: backlog
-  4-9-ratify-the-production-profile-and-the-hosted-catalog-and-sec: backlog
+  4-9-ratify-the-hosted-runtime-and-identity-event-contracts: backlog
   4-10-define-the-recovery-hook-contract: backlog
-  4-11-define-the-check-suite-invocation-and-result-contract: backlog
+  4-11-define-the-check-suite-contract-and-own-the-reference-suites: backlog
   4-12-publish-retained-releases-with-provenance: backlog
   4-13-retain-artifacts-off-the-primary-failure-domain: backlog
   4-14-build-staging-namespaces-storage-and-pod-and-network-isolati: backlog
@@ -113,17 +113,18 @@ development_status:
   5-2-decide-the-image-and-dependency-vulnerability-policy: backlog
   5-3-validate-critical-flow-and-smoke-declarations-for-every-incl: backlog
   5-4-review-tenant-lifecycle-flows-and-handle-leftover-synthetic: backlog
-  5-5-scan-and-verify-module-images-at-intake: backlog
+  5-5-scan-module-and-composed-images-against-the-vulnerability-po: backlog
   5-6-run-exact-release-staging-e2e-in-a-serialized-staging-attemp: backlog
   5-7-rehearse-a-fresh-install-when-production-has-no-baseline: backlog
   5-8-rehearse-the-rollback-set-and-record-compatibility-evidence: backlog
-  5-9-reset-staging-for-unadopted-incompatible-candidates: backlog
-  5-10-evaluate-staging-evidence-for-promotion: backlog
+  5-9-qualify-the-named-recovery-for-a-retained-data-approved-atte: backlog
+  5-10-reset-staging-for-unadopted-incompatible-candidates: backlog
+  5-11-evaluate-staging-evidence-for-promotion: backlog
   epic-5-retrospective: optional
 
   epic-6: backlog
   6-1-decide-how-rehearsal-faults-are-injected: backlog
-  6-2-decide-the-monitor-and-admission-bounds: backlog
+  6-2-decide-the-monitor-and-admission-check-bounds: backlog
   6-3-name-the-recovery-deputy: backlog
   6-4-stand-up-the-off-site-monitor-github-notification-delivery-a: backlog
   6-5-complete-g1-exposure-dns-and-certificate-controls: backlog
@@ -140,10 +141,10 @@ development_status:
   6-16-roll-out-and-verify-a-production-release: backlog
   6-17-recover-once-automatically-from-a-failed-compatible-deployme: backlog
   6-18-run-administrator-approved-attempts-into-empty-or-degraded-p: backlog
-  6-19-run-in-place-recovery-as-administrator-or-the-deputy: backlog
-  6-20-run-an-approved-incompatible-release-with-a-named-data-resto: backlog
+  6-19-redeploy-the-working-baseline-in-place-as-administrator-or-t: backlog
+  6-20-enforce-the-g1-recovery-boundary: backlog
   6-21-build-the-shared-rehearsal-harness: backlog
-  6-22-change-shared-infrastructure-through-one-controlled-procedur: backlog
+  6-22-guard-shared-infrastructure-changes-with-one-controlled-proc: backlog
   6-23-deploy-the-reference-release-to-production-with-ingress-clos: backlog
   6-24-run-the-pre-g2-fault-rehearsals-in-approved-mode: backlog
   epic-6-retrospective: optional
@@ -160,7 +161,7 @@ development_status:
   epic-7-retrospective: optional
 
   epic-8: backlog
-  8-1-procure-prepared-replacement-capacity-and-the-recovery-execu: backlog
+  8-1-procure-prepared-replacement-capacity-and-select-the-recover: backlog
   8-2-decide-the-reduced-recovery-operating-policy: backlog
   8-3-publish-response-coverage-and-record-incident-timing: backlog
   8-4-build-the-recovery-inventory: backlog
@@ -175,9 +176,10 @@ development_status:
   8-13-preserve-memories-erasure-continuity-through-recovery: backlog
   8-14-prove-the-deputy-s-recovery-capability: backlog
   8-15-operate-the-reduced-recovery-state-after-a-disaster-restore: backlog
-  8-16-run-the-isolated-dr-drill-and-prove-rpo-and-rto: backlog
-  8-17-retain-production-telemetry-off-site-for-incident-analysis: backlog
-  8-18-open-production-to-users-g2: backlog
+  8-16-qualify-in-place-data-restore-and-named-retained-data-recove: backlog
+  8-17-run-the-isolated-dr-drill-and-prove-rpo-and-rto: backlog
+  8-18-retain-production-telemetry-off-site-for-incident-analysis: backlog
+  8-19-open-production-to-users-g2: backlog
   epic-8-retrospective: optional
 
   epic-9: backlog
