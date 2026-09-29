@@ -44,3 +44,11 @@ This sampled read-back proves only that the source Velero credential can read on
 ## Gate result
 
 No backup, restore or workload mutation was authorized after this audit. The configured bucket fails Story 4.0's immutability, approved-retention, source-writer separation and independent-read-back gates, and it contains no current protected-system recovery point. It must not be used for a Story 4.0 capture unless those properties are changed and independently proved, or the Administrator approves a different qualifying Scaleway destination and credential boundary.
+
+## Addendum 2026-09-29: Velero credential identity
+
+A read-only IAM lookup of the key in `Secret/velero/velero-credentials` found that it is not an IAM application key. It is a personal API key of member user `dbedc9a6-a861-4854-8926-bd2cef0b0b14` (not the organization owner), expiring `2027-03-19T12:46:13Z`. That user belongs to group `Administrators`, whose policy grants `OrganizationManager` and `AllProductsFullAccess` across organization `473492ff-94c0-44dc-bc87-4f0bb3a463b7`.
+
+The Velero server and node agent can therefore administer every Scaleway product and IAM object in the organization, including any new Story 4.0 bucket. No bucket policy or object lock can make Velero's access to a Story 4.0 destination read-only while this key stays mounted. This key was not used to create or change anything.
+
+Resolved the same day: Velero was moved to scoped application `hexalith-velero`; see [recovery-destination-setup.md](recovery-destination-setup.md#velero-key-replacement). The personal key has not been revoked in Scaleway.

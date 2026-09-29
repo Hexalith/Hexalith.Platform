@@ -11,6 +11,7 @@ context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
   - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md'
   - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/scaleway-backup-audit.md'
+  - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/recovery-destination-setup.md'
 depends_on: []
 blocks:
   - '4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu'
@@ -40,17 +41,42 @@ Before taking a backup, the Administrator records one approved evidence bundle l
 
 The Administrator approved these policy defaults on 2026-09-28: recovery-point objective `30m`, retention `30d`, restore-test cadence `monthly`, and maximum proof age `24h`. The Administrator also identified Scaleway as the existing backup provider. Exact Scaleway object identities, immutability, encryption, retention, failure-domain placement, credentials references and read-back checksums remain to be verified; the provider statement alone is not recovery evidence. Identity, custody, cleanup-owner and system-access inputs remain subject to the hard gates below and must not be inferred from these approvals.
 
+On 2026-09-29 the Administrator chose the destination: a new dedicated Scaleway Object Storage bucket in `fr-par`, created with versioning and object lock enabled and a default `COMPLIANCE` retention of 30 days. It holds only Story 4.0 recovery points and evidence. `hexalith-velero-backups` stays unchanged and is not a Story 4.0 destination; a re-check that day still found no versioning, object lock, lifecycle or bucket policy on it. The new bucket needs a backup write credential that cannot delete objects or bypass retention and a separate read-only validator credential; the Velero credential must have no access to it. Velero was moved the same day from an organization-admin personal key to scoped application `hexalith-velero`, which cannot reach this bucket or IAM (see [recovery-destination-setup.md](evidence/epic-4/recovery-destination-setup.md#velero-key-replacement)). The destination was set up and read back on 2026-09-29: bucket `hexalith-recovery-points` in dedicated Scaleway project `hexalith-recovery`, with writer application `hexalith-recovery-writer` for backups and validator application `hexalith-recovery-validator` for read-only validation. Identities, settings and probe results are in [recovery-destination-setup.md](evidence/epic-4/recovery-destination-setup.md). Backups write only under the lifecycle-managed prefixes `keycloak/`, `openbao/` and `memories/`; sanitized evidence copies go under `evidence/`.
+
+The Administrator also decided on 2026-09-29:
+
+- The bucket and credentials were set up on the Administrator's behalf with their organization-owner key. Application keys are in `~/.config/hexalith-recovery/writer.env` and `validator.env` on the Administrator's workstation and are referenced by path only; key values are never printed, logged or committed. Before independent validation, the validator key must be handed to, or re-issued under, the second operator.
+- Keycloak uses the CloudNativePG barman-cloud plugin with the new bucket; the live instance image is not changed.
+- Proof records are signed with SSH signatures (`ssh-keygen -Y sign -n hexalith-recovery`), replacing the earlier GPG choice because no GPG keys exist. The Administrator signs with `~/.ssh/id_ed25519_git_signing` (`jpiquot@itaneo.com`, `SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk`, passphrase-protected). The independent validator signs with their own SSH key. An `allowed_signers` file holding both public keys is the verification trust root. Signing is always done by the named person entering their own passphrase; the implementer prepares the records and never signs on anyone's behalf.
+- The independent validator and cleanup signer is `pduong@itaneo.com` (named by the Administrator on 2026-09-29). Their SSH public key is added to `allowed_signers` before validation, and the validator key moves to their custody.
+- OpenBao has no separate custodians. It auto-unseals with `seal "static"` from Secret `openbao/openbao-seal`; its `shamir` 2-of-3 recovery shares are in Secret `openbao/openbao-operator-credentials` and are not escrowed. The module's OpenBao runbook names the Administrator as owner. On 2026-09-29 the Administrator approved a temporary copy of the static seal key into the isolated restore namespace only; it must be deleted with that namespace and proven absent in `restore-target-cleanup.json`. This approval is the custodian ceremony for Step 3 of the OpenBao proof.
+- Evidence bundle location, set on 2026-09-29 under the Administrator's delegation: full operational records live in `~/hexalith-recovery-evidence/4-0/<recovery-id>/` on the Administrator's workstation (directory mode `0700`, outside Git), and every signed record plus its detached signature is uploaded by the writer to `s3://hexalith-recovery-points/evidence/4-0/<recovery-id>/`, where object lock keeps it immutable. Git holds only sanitized summaries and digests under `_bmad-output/implementation-artifacts/evidence/epic-4/`.
+- Memories intake may be paused whenever the proof needs it. No deployment-owned quiescence/resume playbook exists yet, so the implementer writes it first and the Administrator approves it before use. On 2026-09-29 Redis held 3 keys (about 2 MB); `data-redis-stack-0` and `data-falkordb-0` are `openebs-hostpath-retain` volumes of 20Gi and 10Gi. Intake stays paused on any failed or uncertain capture.
+
+After reviewing recovery run `20260929t124806z`, the Administrator decided on 2026-09-29:
+
+- That run is a rehearsal. Its Keycloak and OpenBao proofs expire before the Memories proof and independent validation can finish, so the Administrator does not sign them. When every open item is ready, a final fresh capture, restore and cleanup of all three systems runs shortly before the Story 4.1 upgrade, using the kept scripts. Only that run is signed, assembled into `backup-gate.json` and validated.
+- The additions from that run are approved and kept: `ScheduledBackup/keycloak/keycloak-postgres-daily` at 02:00 UTC, and CloudNativePG `WATCH_NAMESPACE=keycloak,cnpg-system`.
+- The [Memories quiescence/resume playbook](evidence/epic-4/memories-quiescence-resume-playbook.md) is approved with these answers:
+  - **D1:** Memories has zero tenants. The logical proof records that from the census (no `tenant-registry-index`), so there is no tenant export to run `verify-backup-recovery.py` against. The proof must say so explicitly rather than claim a verifier pass.
+  - **D2:** not needed, because no tenant API export runs.
+  - **D3:** the isolated restore covers only the paired physical copies. It restores `redis-stack` and `falkordb` under those names into a new namespace with default-deny networking and no egress exception, and needs no embedding-provider credential or `memories` app. It passes when the restored key, graph and `memories-events` stream counts and consumer-group state match the pre-copy census.
+  - **D4:** the full Memories outage while both StatefulSets are at 0 for the copy is approved.
+  - **D5:** the maximum quiescence-evidence age is 900 s.
+  - **Resume:** the implementer may resume Memories as soon as the restore proof passes and the drain re-check is clean. Any failed or uncertain step keeps intake paused and goes back to the Administrator.
+- Run the Memories rehearsal now, so the final run repeats a proven procedure.
+
 The following infrastructure decisions are required:
 
-1. Keycloak: operator-supported CloudNativePG object-store backup destination and credentials, supplied without committing or printing secret values.
-2. OpenBao: off-node immutable destination plus an isolated restore target whose unseal/recovery-key ceremony is controlled by the existing custodians.
+1. Keycloak: operator-supported CloudNativePG object-store backup destination and credentials, supplied without committing or printing secret values. On 2026-09-29 the cluster ran CloudNativePG `1.30.0` with instance image `docker.io/library/postgres:15.15`, which has no `barman-cloud` binaries, so the in-tree `spec.backup.barmanObjectStore` method cannot run without an image change. The barman-cloud plugin needs no image change; cert-manager `v1.21.2`, which the plugin requires, is installed. Enabling the plugin on `Cluster/keycloak-postgres` triggers a rolling update of both instances ([plugin migration docs](https://cloudnative-pg.io/plugin-barman-cloud/docs/migration/)), so Keycloak briefly loses its database when the primary restarts. On 2026-09-29 the Administrator approved enabling it whenever the proof needs it.
+2. OpenBao: off-node immutable destination plus an isolated restore target unsealed with the approved temporary copy of the static seal key (see above).
 3. Memories: either a qualified CSI snapshot API/class and restore `StorageClass`, or the deployment-owned, read-only maintenance-pod copy procedure allowed by the module runbook. The current cluster cannot execute the runbook's CSI path.
-4. Signing: the Administrator-approved signer and verification trust root for the three proof records and their aggregate gate record.
+4. Signing: SSH signatures with the trust root described above for the three proof records and their aggregate gate record.
 
 ## Ordered tasks
 
 - [x] Record the sanitized initial inventory without Secret data.
-- [ ] Create an access-controlled evidence directory `evidence/epic-4/4-0/<recovery-id>/` outside Git for full operational records; commit only sanitized summaries and cryptographic digests.
+- [x] Create an access-controlled evidence directory `evidence/epic-4/4-0/<recovery-id>/` outside Git for full operational records; commit only sanitized summaries and cryptographic digests.
 - [ ] Record the approved policy inputs above in `recovery-policy.json`, sign it, and bind all subsequent artifacts to its digest. For each source, record the source Kubernetes UID plus its system-native incarnation/index and the data cutoff; prove the cutoff satisfies the approved RPO at validation time.
 - [ ] Maintain a signed `evidence-manifest.json` that covers every backup, restore, verification, validator and cleanup object with its immutable object identity, byte length and SHA-256; encryption-at-rest/key-custody evidence; object-lock/immutability mode and expiry; retention expiry; provider account/region/failure-domain identity; source UID/incarnation/index; data cutoff and measured RPO. Independently read back and checksum every listed object before signing the final manifest.
 - [ ] Prove Keycloak PostgreSQL recovery:
@@ -109,3 +135,25 @@ Story 4.1 must validate `backup-gate.json` and the three signed proofs directly.
 **When** Story 4.1 validates it
 **Then** an independent validator's signature covers the final evidence manifest, every object checksum/storage property, source-incarnation and data-cutoff/RPO binding, isolation tests, successful Memories resume/reconciliation and signed residual-storage cleanup
 **And** any missing or failed validation blocks the upgrade
+
+## Implementation status (2026-09-29, rehearsal `20260929t124806z`)
+
+The sanitized summary is [4-0-recovery-run-20260929t124806z.md](evidence/epic-4/4-0-recovery-run-20260929t124806z.md). The full records are in `~/hexalith-recovery-evidence/4-0/20260929t124806z/`.
+
+The rehearsal covered all three systems. Each got an off-node, COMPLIANCE-locked, AES256 recovery point in `fr-par`, read back by the validator key. Each was restored into a new isolated namespace on new volumes and verified, and every target was then removed; the cleanup check covers all four namespaces.
+
+- **Keycloak and OpenBao:** all checks passed.
+- **Memories:**
+  - It followed the approved playbook. Intake was paused from 14:08:40 to 14:15:03, and both stores were stopped from 14:10:00 to 14:11:21.
+  - Paired copies were taken and restored (D3). They match the pre-copy census on every durable field.
+  - The drain re-check was clean, intake resumed, and `/ready` reports `Healthy`.
+  - There are zero tenants, so no verifier pass is claimed (D1).
+- **Finding:** the Kubernetes API Service VIP is reachable at TCP level from default-deny namespaces (kube-proxy IPVS), while every resource request is refused with 403. It is recorded for the final run.
+
+Nothing from this run is signed, per the Administrator's decision. The kept procedure for the final run is `tools/final-run-order.sh` in the bundle.
+
+**Open, so this story stays `in-progress`:**
+
+- The final signed run shortly before the Story 4.1 upgrade.
+- `pduong@itaneo.com`'s key in `allowed_signers`, and the validator credential moved to their custody.
+- The signed `restore-target-cleanup.json`, `backup-gate.json` and `independent-validation.json`.
