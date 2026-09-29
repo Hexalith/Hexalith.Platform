@@ -10,6 +10,7 @@ baseline_commit: '6ac920bd26a38b7b50818b62f6562199c6014005'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
   - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md'
+  - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/scaleway-backup-audit.md'
 depends_on: []
 blocks:
   - '4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu'
@@ -31,11 +32,13 @@ Discovery on 2026-09-28 found:
 - `StatefulSet/hexalith-keys` in namespace `openbao` has three ready replicas. `CronJob/openbao-raft-snapshot` writes to PVC `openbao-snapshots`, whose retained local volume is pinned to `node1`; job success is not an off-node restore proof.
 - `StatefulSet/redis-stack` and `StatefulSet/falkordb` in namespace `hexalith-memories` use PVCs `data-redis-stack-0` and `data-falkordb-0`. The cluster does not serve the `snapshot.storage.k8s.io` API.
 
-The sanitized observations are in [initial-cluster-inventory.md](evidence/epic-4/initial-cluster-inventory.md). They are blockers, not completed acceptance.
+The sanitized observations are in [initial-cluster-inventory.md](evidence/epic-4/initial-cluster-inventory.md). The read-only follow-up of the existing provider is in [scaleway-backup-audit.md](evidence/epic-4/scaleway-backup-audit.md). They are blockers, not completed acceptance.
 
 ## Dependencies and Administrator inputs
 
 Before taking a backup, the Administrator records one approved evidence bundle location and, for each system, the accountable operator, recovery-point objective, retention, restore-test cadence, encrypted immutable off-node destination, restore target, cleanup owner and maximum proof age accepted by Story 4.1.
+
+The Administrator approved these policy defaults on 2026-09-28: recovery-point objective `30m`, retention `30d`, restore-test cadence `monthly`, and maximum proof age `24h`. The Administrator also identified Scaleway as the existing backup provider. Exact Scaleway object identities, immutability, encryption, retention, failure-domain placement, credentials references and read-back checksums remain to be verified; the provider statement alone is not recovery evidence. Identity, custody, cleanup-owner and system-access inputs remain subject to the hard gates below and must not be inferred from these approvals.
 
 The following infrastructure decisions are required:
 
