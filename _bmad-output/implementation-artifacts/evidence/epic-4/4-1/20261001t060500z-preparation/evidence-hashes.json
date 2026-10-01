@@ -1,0 +1,39 @@
+{
+  "attemptId": "20261001t060500z-preparation",
+  "classification": "sanitized digests; local preparation only",
+  "mutationGate": "closed",
+  "operationalCompletion": false,
+  "privateEvidenceRoot": "~/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261001t060500z-preparation/",
+  "privateRecordSha256": {
+    "api-addon-compatibility.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "attempt.json": "3c1a0dc84fb2a95f861a1339cbb2c7060d80c34f382e994427198da876d927b1",
+    "dynamic-storage-proof.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "external-etcd-isolated-restore.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "external-etcd-recovery-point.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "gate-validation.json": "3cd56614b26fdb01e1cad449e8dc0b76781d29086acae8f7db1ee1456a63108a",
+    "hop-gate-1.34-to-1.35.json": "6d748e4fb5fb430c778f70519e8a8a426967b981df0e73e9bf5c0415127867af",
+    "local-verification.json": "f63bc40b771fd0a35a628950846b7a203cad14f454f86b40495e6abc95b8aeff",
+    "maintenance-transition.json": "5153e93b2bd1ad7ab03b729ed1f70e7f3f1497a886d078eb3cc28078e127c2ad",
+    "minor-hop-1.34-to-1.35.json": "22a029821c57dd324f26d6891633ebb99ca80f133bb0677593ae39ff90ee96ff",
+    "node-recovery-bundle.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "post-upgrade-health.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "pre-upgrade-health.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "preflight.json": "e8bf9d91e77b1c2e0dd0108cfa97becd6a7435a6dfe09ff084f9793734b14e4e",
+    "upgrade-result.json": "9486e3e6d4affd0ea92be296b8f852fe53c0dabda32d8c3527af2661b55749a4"
+  },
+  "privateSHA256SUMS": "580b75e764b6afc6b34450921ea8446f12291ba97c12af6ab10c481215be652d",
+  "signed": false,
+  "sourceEvidenceSha256": {
+    "_bmad-output/implementation-artifacts/4-0-prove-off-node-backups-and-isolated-restores.md": "0170365a56eb1fef3a7d5df3c37fd5ec87ad659c54ccf83592331cb2394782a7",
+    "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md": "dcd54885e1c069c64fe0a7b24d8e7fa756a0cb7565e5ee48f9eeb94114842280",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "e77de1b4f5561f0dedec7d88cd4e3ea48bd88a949e5d01a0fdd46ad2b8f1f4e6",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "d315f937579f455686f313cb2f06cd9de0bed3b90b2c228fedcf72c6aa55e355",
+    "eng/kubernetes-upgrade/README.md": "1e4fb98d8891d0f592db960ea8540c09036665297616543a347596cb64d9773e",
+    "eng/kubernetes-upgrade/prepare.py": "9b19b45a42620cf5536b5246c4001a4fb6da0c8967e24948b01efbca07138be3"
+  },
+  "sourceRehearsalFileCount": 76,
+  "sourceRehearsalManifestSha256After": "dcfa29c24af3a8fc7dbb1b80b171d1cd7b27dfdcc2011009ced067cd1dfe6cce",
+  "sourceRehearsalManifestSha256Before": "dcfa29c24af3a8fc7dbb1b80b171d1cd7b27dfdcc2011009ced067cd1dfe6cce",
+  "sourceRehearsalUnchanged": true
+}

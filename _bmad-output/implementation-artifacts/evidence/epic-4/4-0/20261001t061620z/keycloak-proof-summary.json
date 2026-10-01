@@ -1,0 +1,164 @@
+{
+  "artifactSha256": {
+    "aggregate": "9ae0cd7daa5bc43709f47163a3653690a73232d84bff7f6f138e5b3c385dc024",
+    "objects": {
+      "keycloak/keycloak-postgres/base/20261001T071655/backup.info": "5ed2448e6cc30c8183fade8c20bdef8f00b013159f42a929f547afc13010c11d",
+      "keycloak/keycloak-postgres/base/20261001T071655/data.tar.gz": "bc8f6e092fcc29fa0b5776d7466a6bc3c8632b469fb1543471258d964e9905a1",
+      "keycloak/keycloak-postgres/wals/0000000200000007/00000002000000070000009A.gz": "6c8144a756954732dc784373c36ef1d2ce31dcc6228822b59fe76fffd8dffc1d",
+      "keycloak/keycloak-postgres/wals/0000000200000007/00000002000000070000009B.gz": "9b878288648154a926d3fc146fc66396986de44d85f1decfe2c6f3f366eebf6c"
+    }
+  },
+  "capturedAt": "2026-10-01T07:17:08Z",
+  "cleanupProofSha256": "bf8022b7642fb4a3df5274f1c07a547837a04befb27421c183b6d6a6bade1c7c",
+  "dataCutoff": "2026-10-01T07:16:59Z",
+  "evidenceManifestSha256": "41196f2447cacc1671c2b4d7bff9da5fd70b0993f4c72c576e191767b9b6ba65",
+  "expiresAt": "2026-10-02T07:17:08Z",
+  "isolatedTargetIdentity": {
+    "namespace": "recovery-4-0-kc",
+    "namespaceUid": "be330669-c288-42b8-baed-d501e0cdb9bd",
+    "restoredClusterUid": "71d45b20-fb0c-42de-93d8-59af90f8589d",
+    "volumes": [
+      {
+        "claimRefNamespace": "recovery-4-0-kc",
+        "pv": "pvc-b8e3e25b-9f11-4260-9be9-0a7204f451d3",
+        "pvUid": "17d48b87-83aa-439a-9a17-5ec2fc397a65",
+        "pvc": "keycloak-restore-1",
+        "pvcUid": "b8e3e25b-9f11-4260-9be9-0a7204f451d3",
+        "reclaimPolicy": "Delete",
+        "storageClass": "openebs-hostpath"
+      }
+    ],
+    "workloads": [
+      {
+        "kind": "deployment",
+        "name": "keycloak-restore-app",
+        "uid": "5ea95297-ff7c-43ed-a47d-eb0e2c5b38da"
+      },
+      {
+        "kind": "cluster.postgresql.cnpg.io",
+        "name": "keycloak-restore",
+        "uid": "71d45b20-fb0c-42de-93d8-59af90f8589d"
+      }
+    ]
+  },
+  "isolationChecks": {
+    "allPvClaimRefsInTargetNamespace": true,
+    "allSourceProbesBlocked": true,
+    "allTargetLocalPathsNew": true,
+    "allTargetPvcUidsNew": true,
+    "defaultDenyPresent": true,
+    "kubernetesApiResourceAccessDenied": true,
+    "noHostPathVolumes": true,
+    "noSourceRbac": true,
+    "podsMountOnlyTargetPvcs": true,
+    "positiveControlsOpen": true,
+    "restrictedPodSecurity": true
+  },
+  "measuredRpo": {
+    "continuousArchiving": "WAL archiving to the same destination stays enabled (archive_timeout 5min)",
+    "lastArchivedWal": "00000002000000070000009B",
+    "seconds": 14,
+    "sourceLsnAtObservation": "7/9C000000",
+    "sourceObservedAt": "2026-10-01T07:17:13Z",
+    "withinPolicy": true
+  },
+  "offNodeObjectIdentity": [
+    "hexalith-recovery-points/keycloak/keycloak-postgres/base/20261001T071655/backup.info?versionId=1790839020879931",
+    "hexalith-recovery-points/keycloak/keycloak-postgres/base/20261001T071655/data.tar.gz?versionId=1790839020607365",
+    "hexalith-recovery-points/keycloak/keycloak-postgres/wals/0000000200000007/00000002000000070000009A.gz?versionId=1790838835992817",
+    "hexalith-recovery-points/keycloak/keycloak-postgres/wals/0000000200000007/00000002000000070000009B.gz?versionId=1790839027889836"
+  ],
+  "operator": "jpiquot@itaneo.com",
+  "policySha256": "531807640d49edb5a0ce1bbda22bd947663768125b766941b07179498935d00e",
+  "projection": {
+    "classification": "sanitized checksummed summary; signed full record remains in the access-controlled off-node store",
+    "fullRecordSha256": "d0928e7159ebdfd475fadb0b0a38d5d71e5277533655a43538023a8c34c2fc10",
+    "recordObjectVersionId": "1790840276246690",
+    "signatureSha256": "d9ff33306b4bc03c708985c1400585d01dac9b12a9c118beae8e0205a7682bcc"
+  },
+  "recoveryPointId": "cnpg-backup:kc-4-0-20261001t061620z:20261001T071655 (uid d394e142-e924-4579-8a09-beb4bcc055bb)",
+  "restoredAt": "2026-10-01T07:18:15Z",
+  "schemaVersion": 1,
+  "signatureIdentity": {
+    "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "namespace": "hexalith-recovery",
+    "principal": "jpiquot@itaneo.com",
+    "verified": true
+  },
+  "sourceIdentity": {
+    "image": "docker.io/library/postgres:15.15@sha256:86d2fe3ed4d43250d2865b551fca46478361c4cd7e359939ad6e8663be274f3a",
+    "kind": "postgresql.cnpg.io/v1 Cluster",
+    "name": "keycloak-postgres",
+    "namespace": "keycloak",
+    "readyInstances": 2
+  },
+  "sourceIncarnation": {
+    "postgresSystemIdentifier": "7689076343157272595",
+    "timeline": 2
+  },
+  "sourceIndex": {
+    "backupBeginLSN": "7/9A006518",
+    "backupEndLSN": "7/9B003718",
+    "beginWal": "00000002000000070000009A",
+    "endWal": "00000002000000070000009B"
+  },
+  "sourceUid": "56d8d39c-d688-48f2-aa27-a549400352ce",
+  "storageProperties": {
+    "encryption": [
+      {
+        "SSEAlgorithm": "AES256"
+      }
+    ],
+    "keyCustody": "provider-managed keys (Scaleway); no customer-held key; recorded as residual risk",
+    "objectLock": {
+      "ObjectLockEnabled": "Enabled",
+      "Rule": {
+        "DefaultRetention": {
+          "Days": 30,
+          "Mode": "COMPLIANCE"
+        }
+      }
+    },
+    "offNode": true,
+    "provider": {
+      "bucket": "hexalith-recovery-points",
+      "endpoint": "https://s3.fr-par.scw.cloud",
+      "failureDomain": "provider region fr-par; not node1 (192.168.1.30) and not the cluster",
+      "name": "Scaleway Object Storage",
+      "organizationId": "473492ff-94c0-44dc-bc87-4f0bb3a463b7",
+      "projectId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "region": "fr-par"
+    },
+    "retentionPolicy": "30d object lock COMPLIANCE; lifecycle expires current versions after 31d",
+    "sourceWriterCanDelete": false,
+    "versioning": "Enabled"
+  },
+  "system": "keycloak-postgresql",
+  "validator": "jpiquot@itaneo.com",
+  "verificationChecks": {
+    "clusterReady": true,
+    "countsMatch": true,
+    "databaseNamesDigestMatch": true,
+    "keycloakStartedOnRestoredDb": true,
+    "migrationMatch": true,
+    "oidc_clientCountEqualsDb": true,
+    "oidc_clientCredentialsLoginSucceeded": true,
+    "oidc_oidcDiscoveryAndJwksAllRealms": true,
+    "oidc_realmCountEqualsDb": true,
+    "oidc_realmNamesDigestEqualsDb": true,
+    "oidc_roleCountEqualsDb": true,
+    "oidc_tokenRoleClaimsEqualLive": true,
+    "oidc_userCountEqualsDb": true,
+    "realmClientsDigestMatch": true,
+    "realmNamesDigestMatch": true,
+    "realmRolesDigestMatch": true,
+    "sameSystemIdentifier": true,
+    "schemaDigestMatch": true,
+    "serverVersionMatch": true,
+    "systemIdentifierMatch": true,
+    "timelineForkAtBackupEndLsn": true,
+    "timelineHistory": "2\t7/9B003718\treached consistency",
+    "usersPerRealmMatch": true
+  },
+  "verificationResult": "pass"
+}

@@ -1,0 +1,161 @@
+{
+  "artifactSha256": {
+    "aggregate": "2dcceeb33ed6c9ade3d8e2f4a4d79e15a49359bbeb91711e2812458945fe1b57",
+    "pvcRecordedSha256": "c053f37fff1d7114d9889a8551f45f3017c681f41eb49807a30e9d759ef051e4",
+    "snapshot": "c053f37fff1d7114d9889a8551f45f3017c681f41eb49807a30e9d759ef051e4"
+  },
+  "capturedAt": "2026-10-01T07:21:38Z",
+  "cleanupProofSha256": "bf8022b7642fb4a3df5274f1c07a547837a04befb27421c183b6d6a6bade1c7c",
+  "dataCutoff": "2026-10-01T07:21:28Z",
+  "evidenceManifestSha256": "41196f2447cacc1671c2b4d7bff9da5fd70b0993f4c72c576e191767b9b6ba65",
+  "expiresAt": "2026-10-02T07:21:38Z",
+  "isolatedTargetIdentity": {
+    "namespace": "recovery-4-0-bao",
+    "namespaceUid": "988316a9-d14d-4796-828f-e1f89e9fef2f",
+    "volumes": [
+      {
+        "claimRefNamespace": "recovery-4-0-bao",
+        "pv": "pvc-f3021244-223b-4709-bd3d-25da5a1d4110",
+        "pvUid": "a6c99469-15ff-4a81-8b6c-30dc20f7756b",
+        "pvc": "data-bao-restore-0",
+        "pvcUid": "f3021244-223b-4709-bd3d-25da5a1d4110",
+        "reclaimPolicy": "Delete",
+        "storageClass": "openebs-hostpath"
+      },
+      {
+        "claimRefNamespace": "recovery-4-0-bao",
+        "pv": "pvc-3a6fdc6b-9c74-4437-83d7-932ee01c3006",
+        "pvUid": "760397f2-7c22-4167-8cc1-c96437c8a1bc",
+        "pvc": "data-bao-restore-1",
+        "pvcUid": "3a6fdc6b-9c74-4437-83d7-932ee01c3006",
+        "reclaimPolicy": "Delete",
+        "storageClass": "openebs-hostpath"
+      },
+      {
+        "claimRefNamespace": "recovery-4-0-bao",
+        "pv": "pvc-a79071d8-03fb-489a-9432-e72a1f971eb8",
+        "pvUid": "11ba9aea-8572-47ad-9a83-7ea2c026d848",
+        "pvc": "data-bao-restore-2",
+        "pvcUid": "a79071d8-03fb-489a-9432-e72a1f971eb8",
+        "reclaimPolicy": "Delete",
+        "storageClass": "openebs-hostpath"
+      }
+    ],
+    "workloads": [
+      {
+        "kind": "statefulset",
+        "name": "bao-restore",
+        "uid": "4a4606fe-9898-4876-a597-c4d36f9690a4"
+      }
+    ]
+  },
+  "isolationChecks": {
+    "allPvClaimRefsInTargetNamespace": true,
+    "allSourceProbesBlocked": true,
+    "allTargetLocalPathsNew": true,
+    "allTargetPvcUidsNew": true,
+    "defaultDenyPresent": true,
+    "kubernetesApiResourceAccessDenied": true,
+    "noHostPathVolumes": true,
+    "noSourceRbac": true,
+    "podsMountOnlyTargetPvcs": true,
+    "positiveControlsOpen": true,
+    "restrictedPodSecurity": true
+  },
+  "measuredRpo": {
+    "indexDriftAfterCutoff": 0,
+    "seconds": 42,
+    "sourceAppliedIndexAtObservation": 4356,
+    "sourceObservedAt": "2026-10-01T07:22:10Z",
+    "withinPolicy": true
+  },
+  "offNodeObjectIdentity": [
+    "hexalith-recovery-points/openbao/20261001t061620z/openbao-20261001T072128Z.snap?versionId=1790839296545309",
+    "hexalith-recovery-points/openbao/20261001t061620z/openbao-20261001T072128Z.snap.sha256?versionId=1790839296980859"
+  ],
+  "operator": "jpiquot@itaneo.com",
+  "policySha256": "531807640d49edb5a0ce1bbda22bd947663768125b766941b07179498935d00e",
+  "projection": {
+    "clarification": "The full proof has a static rehearsal-era abortedAttempt note. No aborted target occurred in this fresh run; see the signed final-run-observations.json supplement.",
+    "classification": "sanitized checksummed summary; signed full record remains in the access-controlled off-node store",
+    "fullRecordSha256": "96ed1df1f03f642c05ba0663f37d0e0c1cbfe0f649348ac790ec0f773cee0a54",
+    "recordObjectVersionId": "1790840277763481",
+    "signatureSha256": "0c85b05fb47f4aec5953d7100aea1fabc739b9e7ecd0f546a0c16e25510103f7"
+  },
+  "recoveryPointId": "openbao-raft-snapshot:openbao-20261001T072128Z.snap (job openbao-raft-snapshot-4-0-20261001061620 uid 77297fa4-0ddc-4833-ab1f-0a7d4b94823b)",
+  "restoredAt": "2026-10-01T07:22:58Z",
+  "schemaVersion": 1,
+  "signatureIdentity": {
+    "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "namespace": "hexalith-recovery",
+    "principal": "jpiquot@itaneo.com",
+    "verified": true
+  },
+  "sourceIdentity": {
+    "image": "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+    "kind": "apps/v1 StatefulSet",
+    "name": "hexalith-keys",
+    "namespace": "openbao",
+    "readyReplicas": 3
+  },
+  "sourceIncarnation": {
+    "clusterId": "47c0ef18-869d-7b96-edd0-b6006200c9c8",
+    "clusterName": "vault-cluster-a3756bea",
+    "raftTermAtSnapshot": 25
+  },
+  "sourceIndex": {
+    "appliedIndexBeforeSnapshot": 4353,
+    "configurationIndex": 180,
+    "snapshotIndex": 4356
+  },
+  "sourceUid": "df2bbbbe-1fe8-4e0b-a8a6-174bd3287806",
+  "storageProperties": {
+    "encryption": [
+      {
+        "SSEAlgorithm": "AES256"
+      }
+    ],
+    "keyCustody": "provider-managed keys (Scaleway); no customer-held key; recorded as residual risk",
+    "objectLock": {
+      "ObjectLockEnabled": "Enabled",
+      "Rule": {
+        "DefaultRetention": {
+          "Days": 30,
+          "Mode": "COMPLIANCE"
+        }
+      }
+    },
+    "offNode": true,
+    "provider": {
+      "bucket": "hexalith-recovery-points",
+      "endpoint": "https://s3.fr-par.scw.cloud",
+      "failureDomain": "provider region fr-par; not node1 (192.168.1.30) and not the cluster",
+      "name": "Scaleway Object Storage",
+      "organizationId": "473492ff-94c0-44dc-bc87-4f0bb3a463b7",
+      "projectId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "region": "fr-par"
+    },
+    "retentionPolicy": "30d object lock COMPLIANCE; lifecycle expires current versions after 31d",
+    "sourceWriterCanDelete": false,
+    "versioning": "Enabled"
+  },
+  "system": "openbao",
+  "validator": "jpiquot@itaneo.com",
+  "verificationChecks": {
+    "allVotersInitializedUnsealed": true,
+    "appliedIndexReachesSnapshotIndex": true,
+    "canaryEntriesReadable": true,
+    "canaryMetadataDigestEqual": true,
+    "clusterIdEqualsSource": true,
+    "kvPathInventoryDigestEqual": true,
+    "mountInventoryDigestEqual": true,
+    "observation": "the active restored node still reported the temporary cluster_name after the forced restore; cluster_id on all voters equals the source",
+    "peerShapeEqual": true,
+    "policyInventoryDigestEqual": true,
+    "restoreHttpStatus": 204,
+    "restoredAppliedIndex": 4361,
+    "singleLeader": true,
+    "snapshotIndex": 4356
+  },
+  "verificationResult": "pass"
+}

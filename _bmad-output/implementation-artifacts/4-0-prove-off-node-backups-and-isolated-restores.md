@@ -4,7 +4,7 @@ type: 'story'
 epic: 4
 story: 0
 created: '2026-09-28'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 baseline_commit: '6ac920bd26a38b7b50818b62f6562199c6014005'
 context:
@@ -77,30 +77,30 @@ The following infrastructure decisions are required:
 
 - [x] Record the sanitized initial inventory without Secret data.
 - [x] Create an access-controlled evidence directory `evidence/epic-4/4-0/<recovery-id>/` outside Git for full operational records; commit only sanitized summaries and cryptographic digests.
-- [ ] Record the approved policy inputs above in `recovery-policy.json`, sign it, and bind all subsequent artifacts to its digest. For each source, record the source Kubernetes UID plus its system-native incarnation/index and the data cutoff; prove the cutoff satisfies the approved RPO at validation time.
-- [ ] Maintain a signed `evidence-manifest.json` that covers every backup, restore, verification, validator and cleanup object with its immutable object identity, byte length and SHA-256; encryption-at-rest/key-custody evidence; object-lock/immutability mode and expiry; retention expiry; provider account/region/failure-domain identity; source UID/incarnation/index; data cutoff and measured RPO. Independently read back and checksum every listed object before signing the final manifest.
-- [ ] Prove Keycloak PostgreSQL recovery:
+- [x] Record the approved policy inputs above in `recovery-policy.json`, sign it, and bind all subsequent artifacts to its digest. For each source, record the source Kubernetes UID plus its system-native incarnation/index and the data cutoff; prove the cutoff satisfies the approved RPO at validation time.
+- [x] Maintain a signed `evidence-manifest.json` that covers every backup, restore, verification, validator and cleanup object with its immutable object identity, byte length and SHA-256; encryption-at-rest/key-custody evidence; object-lock/immutability mode and expiry; retention expiry; provider account/region/failure-domain identity; source UID/incarnation/index; data cutoff and measured RPO. Independently read back and checksum every listed object before signing the final manifest.
+- [x] Prove Keycloak PostgreSQL recovery:
   1. Capture the source `Cluster/keycloak-postgres` UID, PostgreSQL system identifier/timeline and WAL LSN, image digest, ready-instance count, schema/catalog digest, database/table/realm/client/user/role counts and approved non-secret canary digests without credential or row data.
   2. Create an operator-supported CloudNativePG physical backup to the approved off-node destination and wait for the operator's completed state. Record the backup resource UID, object-store identity, start/end timestamps, WAL boundary and manifest/checksum evidence.
   3. Restore into a new isolated namespace and a new CloudNativePG cluster; do not bind or replace `keycloak-postgres-1`, `keycloak-postgres-2` or any other live PVC. Prove a distinct ServiceAccount/RBAC boundary, default-deny network boundary with failed source/live-service probes, and new PV/PVC UIDs and provider volume handles with no attachment to source storage.
   4. Require the restored cluster ready; PostgreSQL system identity to be a valid recovery descendant at the recorded WAL cutoff; schema/catalog digest, inventory counts and canary digests to match; Keycloak migrations readable; and isolated login/OIDC plus representative realm/client/role checks to succeed.
   5. Write and sign `keycloak-restore-proof.json`; backup completion without steps 3–4 is a failure.
-- [ ] Prove OpenBao recovery:
+- [x] Prove OpenBao recovery:
   1. Capture the source StatefulSet UID, raft cluster identifier, peer/member set, term, commit/applied index, snapshot index, enabled non-secret mount/path inventory digest and approved canary metadata digest; then take a fresh raft snapshot through the approved OpenBao operator workflow without exposing tokens, recovery keys or data values.
   2. Hash the snapshot, transfer it to the approved encrypted immutable off-node destination, and verify the destination object identity and checksum. The `openbao-snapshots` PVC is not an acceptable destination.
   3. Restore into the isolated target using custodian-controlled unseal/recovery material; never restore over `StatefulSet/hexalith-keys` or its live PVCs. Prove the target identity cannot access source namespace resources, source services or source storage and that all restored volumes have distinct UIDs/handles.
   4. Verify the restored raft is healthy, its recovered applied index reaches the signed snapshot index, and the peer shape, sanitized mount/path inventory digest and approved canary metadata digest match the source evidence; never include secret values in evidence.
   5. Write and sign `openbao-restore-proof.json`; a successful `CronJob/openbao-raft-snapshot` run alone is a failure.
-- [ ] Prove Memories recovery by following [the module backup/restore contract](../../references/Hexalith.Memories/docs/operations/backup-restore.md):
+- [x] Prove Memories recovery by following [the module backup/restore contract](../../references/Hexalith.Memories/docs/operations/backup-restore.md):
   1. Enumerate every tenant and the deployment-owned intake/in-flight workflow controls. Approve the quiescence/resume playbook and keep intake paused on any failed or uncertain capture.
   2. Produce validated logical exports and checksums for every tenant. Produce the paired Redis/FalkorDB physical recovery point only through qualified CSI snapshots or the runbook's approved quiesced read-only maintenance-copy path.
   3. Store logical and physical artifacts together in the approved immutable off-node destination and bind their object identities, source PVC UIDs and checksums in one recovery manifest.
   4. Restore into an isolated namespace with a distinct ServiceAccount/RBAC boundary, default-deny network policy and new PVC/PV UIDs/provider handles. Prove denied source namespace/API/live-service access and no source-volume attachment. For every tenant, require terminal restore counters to match the export and run `references/Hexalith.Memories/tools/verify-backup-recovery.py` against a consolidated tenant export.
   5. Explicitly resume source intake through the approved playbook, reconcile every queued/in-flight workflow captured at quiescence, and prove terminal processing with no missing or duplicate work before writing and signing `memories-restore-proof.json`.
   6. Preserve the verifier JSON, restore status bodies, checksums, resume/reconciliation result and smoke-test evidence.
-- [ ] After evidence capture, remove every isolated restore target through its approved cleanup procedure. The Administrator signs `restore-target-cleanup.json` after proving namespace/workload/RBAC/network resources absent and checking PVCs, PVs, VolumeSnapshots/contents and provider volumes/snapshots for no unapproved residual storage.
-- [ ] Assemble and sign `backup-gate.json` containing the final evidence-manifest digest, the three proof digests/signatures, recovery-point IDs, data cutoffs/RPO results, off-node object/storage-property validation, isolated-target validation, cleanup proof, verification timestamps, policy digest and expiry time.
-- [ ] Validate with the read-only validator credential rather than the writer, without relying on values the capture scripts recorded. Check the signatures, source-incarnation bindings, and every manifest entry and storage property against provider/API evidence plus read-back checksums. The Administrator signs `validation.json`, and Story 4.0 is marked `done` only if all three proofs pass.
+- [x] After evidence capture, remove every isolated restore target through its approved cleanup procedure. The Administrator signs `restore-target-cleanup.json` after proving namespace/workload/RBAC/network resources absent and checking PVCs, PVs, VolumeSnapshots/contents and provider volumes/snapshots for no unapproved residual storage.
+- [x] Assemble and sign `backup-gate.json` containing the final evidence-manifest digest, the three proof digests/signatures, recovery-point IDs, data cutoffs/RPO results, off-node object/storage-property validation, isolated-target validation, cleanup proof, verification timestamps, policy digest and expiry time.
+- [x] Validate with the read-only validator credential rather than the writer, without relying on values the capture scripts recorded. Check the signatures, source-incarnation bindings, and every manifest entry and storage property against provider/API evidence plus read-back checksums. The Administrator signs `validation.json`, and Story 4.0 is marked `done` only if all three proofs pass.
 
 ### Final-run preparation (Administrator decision, 2026-10-01)
 
@@ -197,12 +197,22 @@ The final-run tools are staged in `~/hexalith-recovery-evidence/4-0/final-run-to
   - All 76 rehearsal files kept their SHA-256.
 - **Not done in preparation:** nothing was captured, mutated or signed.
 
-**Open, so this story stays `in-progress`:**
+**Open at preparation time (resolved by the final run below):**
 
 - The final signed run shortly before the Story 4.1 upgrade. Start it no earlier than about 20 h before the planned kubeadm hop, with `./final-run-order.sh new` from the staging directory, and follow the order in [4-0-final-run-tools.md](evidence/epic-4/4-0-final-run-tools.md#for-the-final-run). Before signing `validation.json`, perform the two manual steps it lists:
   - **M1:** the Memories `run_id`.
   - **M2:** every IAM policy of the writer, plus its bucket-policy statement.
 - The signed `restore-target-cleanup.json`, `backup-gate.json` and `validation.json`.
+
+## Final operational result — 2026-10-01
+
+Fresh run `20261001t061620z` completed after the Administrator requested the maintenance start immediately. The Administrator subsequently instructed the implementer to perform signing and supplied the signing-key unlock input interactively; this explicit delegation supersedes the earlier personal-entry restriction for this run. The pinned Administrator key signed the policy before capture, then cleanup, manifest, all three proofs, gate and final validation. No unlock input was written to workspace files, environment variables or execution logs.
+
+All three isolated restores passed under the approved scope, Memories intake resumed with healthy readiness and no missing or duplicate work, and all restore targets and temporary seal-key copies were removed. Read-only final validation passed 648 checks with zero failures/skips, including independent readback of all 553 manifest object versions. M1/M2 passed eight manual checks, with actual observations and delegated execution recorded in the signed validation. The eight required signed records and signatures were independently read back and cryptographically verified with exact gate/manifest/policy/recovery-ID bindings; all 80 local manifest files remained unchanged.
+
+The [sanitized final-run summary](evidence/epic-4/4-0/20261001t061620z/summary.md), [record hash ledger](evidence/epic-4/4-0/20261001t061620z/evidence-hashes.json) and three proof projections retain the required identities, cutoffs, indexes, digests, checks, signature identity and expiry. Signed full records remain outside Git and in the encrypted immutable evidence store. A ninth signed observations supplement clarifies the retained OpenBao proof generator's rehearsal-era aborted-attempt note (no target was aborted in this fresh run) and the fresh Memories census input supplied without changing the checksum-verified tools. No tenant verifier pass is claimed for the approved zero-tenant D1/D3 scope. The previously disclosed API-VIP TCP reachability and inferred OpenEBS host-directory cleanup limitations remain explicit.
+
+Story 4.0 is `done` on this evidence. The backup gate expires at `2026-10-02T06:16:52Z`; Story 4.1 must recheck freshness, source identity, signatures and bindings immediately before any hop. Its remaining node/etcd, maintenance ownership, preflight, compatibility and storage gates still prevent upgrade mutation.
 
 ## Review Triage Log
 

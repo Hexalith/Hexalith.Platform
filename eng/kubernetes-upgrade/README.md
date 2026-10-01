@@ -1,0 +1,65 @@
+# Story 4.1 preparation and maintenance handoff
+
+The [story](../../_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md) governs this procedure. The local tool creates an owner-only attempt under `~/hexalith-upgrade-evidence/evidence/epic-4/4-1/<attempt-id>/`. It reads local files, inventories checksums/signature-file presence and writes sanitized, checksummed records. It makes no network or cluster calls, signs nothing and always leaves the mutation gate closed. It does not validate SSH signatures or off-node objects. `not-run` records reserve the required filenames; they are not operational proofs.
+
+```bash
+python3 eng/kubernetes-upgrade/prepare.py --operator 'Codex (preparation only)'
+```
+
+Use `--backup-bundle /absolute/path/to/final-bundle` only to inventory a selected local bundle. A rehearsal is not a final recovery proof. A successful preparation command means files were created; it never means the upgrade is authorized. Preserve each attempt rather than overwrite it. The tool refuses evidence output inside the repository or selected recovery bundle. The committed summary may include the attempt ID and digests; full logs and recovery material must be encrypted and access controlled outside Git.
+
+Actual delegated preparation is recorded in the [2026-10-01 recovery/preflight evidence](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261001t095344z-recovery-preparation/summary.md). SSH access, encrypted immutable node/etcd recovery with isolated tests, target kubeadm plans and both baseline StorageClass probes passed. The signed API/add-on result remains incomplete; no hop gate was opened. These operational proofs were collected separately from this local-only tool.
+
+## Resolve before scheduling mutation
+
+Record the Administrator's window, outage approval, incident channel, incident commander, rollback owner, operator and acknowledgements from every workload owner. The baseline source version is historical; record the live source version before selecting the hops. The first candidate hop is 1.34 → 1.35. Further hops require a selected target and independent gates; none is automatically requested by this preparation.
+
+The [release page](https://kubernetes.io/releases/) checked on 2026-10-01 lists supported branches 1.35–1.37 and Kubernetes 1.34 end of life on 2026-10-27. Resolve the current patch again at window start. Record exact package versions, package SHA-256, signed repository metadata/source, kubeadm binary version and all control-plane/add-on image digests; do not install from an unbound wildcard version.
+
+Use the target minor's instructions: [1.34 → 1.35](https://v1-35.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/), [1.35 → 1.36](https://v1-36.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/), or [1.36 → 1.37](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/). Kubernetes requires sequential minor upgrades. The existing client v1.36.1 was outside skew for the baseline v1.34 server: choose a compatible client before collecting live evidence, and record [version-skew compliance](https://kubernetes.io/releases/version-skew-policy/) per hop.
+
+Installing the target kubeadm package and changing repository/package state are mutations under this story. Do the initial live planning with the current kubeadm and, when needed, an approved standalone target-version binary without replacing installed packages. If planning requires installation first, stop and resolve that ordering with the Administrator; preparation cannot authorize a package change. Re-run the exact target kubeadm plan after authorized installation and stop on any failure. Never skip preflight errors.
+
+Live node inspection found manually installed binaries and no dpkg Kubernetes/containerd packages or Kubernetes apt repository. The candidate hop uses exact upstream-checksummed binary identities. Replacing an installed binary is a gated mutation too; do not introduce an apt-based installation assumption. The standalone target plan succeeded from a temporary executable location after `/run` proved noexec, and both that temporary binary and capture directory were removed.
+
+## Populate and sign the gate evidence
+
+| Record | Required evidence before a hop |
+| --- | --- |
+| `attempt.json` | Operator, approver, window, incident/recovery owners, observed source version, selected sequential hops, evidence hashes and workload-owner acknowledgements. |
+| `gate-validation.json` | Story 4.0 is `done`; direct Administrator signature verification of `backup-gate.json`, all three restore proofs and passing final `validation/validation.json` against the approved trust root; unexpired proof/gate timestamps and final validation age within the signed policy; immutable off-node object versions independently read back with matching checksums. Bind final validation to the exact backup-gate/manifest SHA-256, recovery ID and policy SHA-256, checking its signed `inputs` map, `gateSha256`, `evidenceManifestSha256`, `policySha256`, `recoveryId` and gate-binding results. Bind this new signed validation to the attempt ID. Missing, failed, stale, unsigned or differently bound final validation closes the gate even if sprint status is `done`. |
+| `preflight.json` | Fresh API, node, kubeadm, kubelet, kubectl, runtime, CNI and kube-proxy versions; explicit skew result; exact supported target patch, release notes, repository/package/image identities; current-hop kubeadm plan/preflight exits, warnings and blocker decisions. |
+| `external-etcd-recovery-point.json` | Owner-controlled health/member inventory for `192.168.1.30:2379`; fresh snapshot, integrity/status result, encrypted immutable off-node version and read-back checksum; signed source revision, key count/hash and approved non-secret canary digests. |
+| `external-etcd-isolated-restore.json` | Distinct target/member identity, verified isolation from the source, successful restore/member health, source revision/key-count/hash/canary agreement, cleanup absence evidence and signature. |
+| `node-recovery-bundle.json` | Encrypted off-node bundle covering kubeadm config, static manifests, PKI/certificates/keys, kubelet configuration and package/repository state. Record owner/mode-preserving per-file checksums, independent read-back digest, custody/access-control evidence and the tested node recovery procedure. Private contents never enter Git. |
+| `api-addon-compatibility.json` | Live and desired API versions plus removed/deprecated-API scans; installed CRDs, admission webhooks and operators. Per-hop result for Calico/CNI, CoreDNS, kube-proxy, OpenEBS/CSI/storage, CloudNativePG, Dapr, Traefik, cert-manager and every other discovered add-on, with vendor-source evidence and no unresolved blocker. |
+| `dynamic-storage-proof.json` | Every required dynamic StorageClass: unique disposable PVC/pod, provision completion, non-secret write/read comparison, deletion/cleanup and provider-volume absence. Record class/provisioner, PVC/PV UID and provider handle, timestamps and exits. Do not bind or replace a workload PVC. |
+| `pre-upgrade-health.json` | Fresh readiness, data-service/native health, smoke checks, workload image versions/digests, PVC state and workload-owner expectation for every protected workload below. |
+| `hop-gate-<from>-to-<to>.json` | New Administrator signature, attempt ID, exact source/target patch and hashes of all fresh prerequisite records. Revalidate proof expiry, etcd restore, node bundle, compatibility, storage probe, health, accountable owners and outage approval before every hop. |
+
+Do not include Secret values, kubeconfigs, certificates, key material, tokens, database rows or OpenBao values in the sanitized evidence. Raw workload specs/logs and etcd snapshots may contain credentials or tenant data; keep them in the approved encrypted store and commit projections/digests only.
+
+External etcd is a separate recovery responsibility: kubeadm's local-etcd backup directory is empty for external etcd. Use the installed etcd version's tools and [restore instructions](https://etcd.io/docs/v3.6/op-guide/recovery/), never a live data directory. Snapshot restore changes cluster/member identity. The isolated rehearsal must preserve the snapshot revision for comparison; production recovery needs an approved decision on revision bump and watch-cache invalidation. Neither procedure is an improvised downgrade.
+
+The storage probe is a cluster mutation even though disposable; execute it only within its explicitly approved preparation scope. Before the hop it must be fresh. After the hop, run it while the node is still cordoned with an approved scheduling method: a scheduler-managed pod selecting `node1` and tolerating its unschedulable taint must also satisfy the control-plane taints and storage topology. Check `WaitForFirstConsumer` binding; setting `nodeName` directly bypasses the scheduler and can prevent that binding. Record scheduling/binding and never uncordon merely to make a failed probe run. A `Retain` class needs an explicit provider-volume cleanup procedure; deleting the PVC alone is not proof of cleanup.
+
+## Outage, hop and recovery sequence
+
+1. Verify the signed-open per-hop gate immediately before the first package change or outage action. If any prerequisite is absent, stale, ambiguous or failed, stop. Preparation files and checksums do not authorize mutation.
+2. Quiesce Keycloak, OpenBao, Memories and Forgejo through their approved owner procedures, including runner jobs and every tracked workflow. Record every workflow terminal and a successful quiesce in `maintenance-transition.json`. The approved Memories backup playbook alone does not approve the other workloads' upgrade quiescence.
+3. Cordon `node1` and observe `spec.unschedulable=true`. Drain to exit 0 with only named, approved static-pod/DaemonSet/local-data exceptions. A control-plane mirror pod or DaemonSet exception never excuses an untracked application. Do not automatically use force, bypass disruption budgets or delete local data. Record the exact command, exit and exceptions. Do not start kubeadm apply while quiesce, cordon or drain is pending, failed or ambiguous.
+4. Follow the selected target minor's Kubernetes instructions: upgrade the control plane first, then kubelet/kubectl packages and restart only the required components. Capture exact command/tool versions, exit codes and resulting component versions in `minor-hop-<from>-to-<to>.json`. Preserve sanitized diagnostics on any failure; the recovery owner follows the approved control-plane/etcd/workload recovery procedure.
+5. Before uncordoning, require API readiness, `node1` Ready, CNI/DNS/add-on/operator health, cleared API scan, healthy external etcd, valid skew and the fresh functional storage probe including cleanup. Any unhealthy protected workload also stops the next hop. If another hop is selected, repeat planning and the whole signed gate without skipping a minor; account for the still-paused workload state through its approved procedure.
+6. Restore service through the owner procedures and verify the complete baseline workload set. Record pre/post comparisons and smoke/restore outcomes in `post-upgrade-health.json`. Do not replace a PVC or attempt kubeadm downgrade.
+7. Record actual server/node/kubeadm/kubelet/kubectl/runtime and workload versions, all hop records, workload/restore outcomes and remaining incidents in `upgrade-result.json`. The Administrator signs the result and sanitized summary. Only supported actual versions and every successful workload outcome permit completion.
+
+## Protected workloads to compare before and after
+
+| Workload | Required post-outage outcome |
+| --- | --- |
+| `keycloak/Cluster/keycloak-postgres` and Keycloak pods/deployment | Desired/ready instances and baseline database health; login/OIDC and representative realm/client/role smoke checks. |
+| `openbao/StatefulSet/hexalith-keys` | Healthy raft peers, unsealed through the approved custodian workflow, approved read/write canary with no retained values. |
+| `hexalith-memories/StatefulSet/redis-stack`, `StatefulSet/falkordb`, Memories deployments and `StatefulSet/access-telemetry-postgresql` | Persistence/native database health, API/MCP readiness and representative search checks; telemetry PostgreSQL readiness/health. Approved Story 4.0 recovery only if needed. |
+| Forgejo workload and `forgejo-runner/Deployment/forgejo-runner` | Discover and record exact Forgejo namespace/kind and baseline UI/repository health; runner status and job expectation match baseline. |
+
+The historical inventory does not establish today's resource versions, health, Forgejo workload identity, required StorageClass set or complete installed add-on inventory. Local-only preparation leaves those fields pending until actual live collection is authorized.

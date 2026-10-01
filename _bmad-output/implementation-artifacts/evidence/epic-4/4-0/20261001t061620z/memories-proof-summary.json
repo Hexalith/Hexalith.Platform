@@ -1,0 +1,215 @@
+{
+  "artifactSha256": {
+    "aggregate": "776c68e8ddf6e5c3a082f5faf1f2f109ae8448afc81238f2678202c19a51c6ba",
+    "objects": {
+      "memories/20261001t061620z/falkordb-data.tar": "193268159e93678567078b9ed0e2f47744655106c4bb46f983d381ac2e013745",
+      "memories/20261001t061620z/recovery-manifest.json": "8eaeb968f7f01f50fcfe61a16023fa4f3cd5717b7517ca1ae91435e1b18c92a6",
+      "memories/20261001t061620z/redis-stack-data.tar": "c40c1432935f7f20e8aad662a9793f8accbe34c56c912e1c9b221ee7ec24d9e2"
+    }
+  },
+  "capturedAt": "2026-10-01T07:30:43Z",
+  "cleanupProofSha256": "bf8022b7642fb4a3df5274f1c07a547837a04befb27421c183b6d6a6bade1c7c",
+  "dataCutoff": "2026-10-01T07:29:21Z",
+  "evidenceManifestSha256": "41196f2447cacc1671c2b4d7bff9da5fd70b0993f4c72c576e191767b9b6ba65",
+  "expiresAt": "2026-10-02T07:30:43Z",
+  "isolatedTargetIdentity": {
+    "namespace": "recovery-4-0-mem",
+    "namespaceUid": "14aaf5a1-6172-41a1-9d30-8b7f35d1ce3d",
+    "topology": "Administrator decision D3: paired physical stores only (redis-stack, falkordb), default-deny, no egress exception, no memories app or embedding credential",
+    "volumes": [
+      {
+        "claimRefNamespace": "recovery-4-0-mem",
+        "pv": "pvc-71160160-24e5-4c8e-8c73-877aa0cb9861",
+        "pvUid": "3de24213-daed-4a7f-ae54-d3c678a86544",
+        "pvc": "data-falkordb-0",
+        "pvcUid": "71160160-24e5-4c8e-8c73-877aa0cb9861",
+        "reclaimPolicy": "Delete",
+        "storageClass": "openebs-hostpath"
+      },
+      {
+        "claimRefNamespace": "recovery-4-0-mem",
+        "pv": "pvc-06bee0a8-46bb-4460-9f35-7f4b0c7d786e",
+        "pvUid": "ada78d2a-e4ae-4283-8781-eea84b8c2494",
+        "pvc": "data-redis-stack-0",
+        "pvcUid": "06bee0a8-46bb-4460-9f35-7f4b0c7d786e",
+        "reclaimPolicy": "Delete",
+        "storageClass": "openebs-hostpath"
+      }
+    ],
+    "workloads": [
+      {
+        "kind": "statefulset",
+        "name": "falkordb",
+        "uid": "648e034c-1d7a-4c0a-8083-d0f99eaf5014"
+      },
+      {
+        "kind": "statefulset",
+        "name": "redis-stack",
+        "uid": "d3a5c6b0-3d1c-41e5-8346-695004e0c26c"
+      }
+    ]
+  },
+  "isolationChecks": {
+    "allPvClaimRefsInTargetNamespace": true,
+    "allSourceProbesBlocked": true,
+    "allTargetLocalPathsNew": true,
+    "allTargetPvcUidsNew": true,
+    "defaultDenyOnlyPolicy": true,
+    "kubernetesApiResourceAccessDenied": true,
+    "noHostPathVolumes": true,
+    "noServiceAccountToken": true,
+    "noSourceRbac": true,
+    "podsMountOnlyTargetPvcs": true,
+    "positiveControlsOpen": true
+  },
+  "isolationFinding": "Known cluster finding (kube-proxy IPVS): the API Service VIP can be reachable at TCP level from default-deny namespaces; the host endpoint 192.168.1.30:6443 is probed as a source target, and these pods mount no ServiceAccount token (see memories/isolation.json of run 20260929t124806z).",
+  "measuredRpo": {
+    "basis": "intake paused and drained before BGSAVE; post-restart census equals pre-copy census",
+    "changesAfterCutoff": 0,
+    "seconds": 89,
+    "sourceObservedAt": "2026-10-01T07:30:50Z",
+    "withinPolicy": true
+  },
+  "offNodeObjectIdentity": [
+    "hexalith-recovery-points/memories/20261001t061620z/falkordb-data.tar?versionId=1790839810298584",
+    "hexalith-recovery-points/memories/20261001t061620z/recovery-manifest.json?versionId=1790839881984682",
+    "hexalith-recovery-points/memories/20261001t061620z/redis-stack-data.tar?versionId=1790839774050325"
+  ],
+  "operator": "jpiquot@itaneo.com",
+  "policySha256": "531807640d49edb5a0ce1bbda22bd947663768125b766941b07179498935d00e",
+  "projection": {
+    "classification": "sanitized checksummed summary; signed full record remains in the access-controlled off-node store",
+    "fullRecordSha256": "91058aaaf7d1833bc56fb221b831af1b1ca0fdf0bcfcad6575371ce798bf1dee",
+    "recordObjectVersionId": "1790840279065978",
+    "signatureSha256": "f514ab649b15d6dda265429422e8bf754a3bcdfe64d48f2c3e49a91a2dd4d86e"
+  },
+  "recoveryPointId": "memories-maintenance-copy:20261001t061620z (paired redis-stack + falkordb, single stop window 2026-10-01T07:29:26Z..2026-10-01T07:30:43Z)",
+  "restoredAt": "2026-10-01T07:31:42Z",
+  "schemaVersion": 1,
+  "signatureIdentity": {
+    "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "namespace": "hexalith-recovery",
+    "principal": "jpiquot@itaneo.com",
+    "verified": true
+  },
+  "sourceIdentity": {
+    "images": {
+      "falkordb": "falkordb/falkordb:v4.12.0@sha256:7927eb194df0fadf70e2deb6c20c8178743ec92aacd739c790f8a35ce5dee613",
+      "redis-stack": "redis/redis-stack-server:7.4.0-v8@sha256:798ab84d9f266936b034ab11c4d04a2b8e4b441884c5aa7d17ac951eefdf742a"
+    },
+    "kind": "apps/v1 StatefulSet pair",
+    "names": [
+      "redis-stack",
+      "falkordb"
+    ],
+    "namespace": "hexalith-memories",
+    "playbook": "_bmad-output/implementation-artifacts/evidence/epic-4/memories-quiescence-resume-playbook.md@61a7766e4d21a411a02f12edf38cc662d1950b54036a7dc3c09ddc7623ca20d5"
+  },
+  "sourceIncarnation": {
+    "pvcUids": {
+      "data-falkordb-0": "bca95598-d97b-4822-8b1b-ae5d74a2b749",
+      "data-redis-stack-0": "e168aa15-d103-4669-9395-2fcbb05dece6"
+    },
+    "runIdNote": "runIds is the pre-copy incarnation; the approved store stop (D4) restarts both stores, so the live run_id is runIdsAfterCopyRestart",
+    "runIds": {
+      "falkordb": "65a5241e3eadf344be5d9be4809407c1420c1716",
+      "redis": "e820b469b69f980afa415dab7aa0fcfa96687812"
+    },
+    "runIdsAfterCopyRestart": {
+      "falkordb": "b5b84f8b40192c35944dec05c8309532d496e59f",
+      "redis": "7d9fd1c130d3364175f594ba023d5229223e2d96"
+    }
+  },
+  "sourceIndex": {
+    "falkordbGraphs": 0,
+    "lastSave": {
+      "falkordb": "1790839763",
+      "redis": "1790839761"
+    },
+    "redisKeys": 3,
+    "streamLastGeneratedId": "0-0"
+  },
+  "sourceUid": {
+    "falkordb": "3dfd84ae-b4d7-47e8-b7fd-7934782603e6",
+    "redis-stack": "6eb1484c-fe20-4efe-b13e-57245a81324e"
+  },
+  "storageProperties": {
+    "encryption": [
+      {
+        "SSEAlgorithm": "AES256"
+      }
+    ],
+    "keyCustody": "provider-managed keys (Scaleway); no customer-held key; recorded as residual risk",
+    "objectLock": {
+      "ObjectLockEnabled": "Enabled",
+      "Rule": {
+        "DefaultRetention": {
+          "Days": 30,
+          "Mode": "COMPLIANCE"
+        }
+      }
+    },
+    "offNode": true,
+    "provider": {
+      "bucket": "hexalith-recovery-points",
+      "endpoint": "https://s3.fr-par.scw.cloud",
+      "failureDomain": "provider region fr-par; not node1 (192.168.1.30) and not the cluster",
+      "name": "Scaleway Object Storage",
+      "organizationId": "473492ff-94c0-44dc-bc87-4f0bb3a463b7",
+      "projectId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "region": "fr-par"
+    },
+    "retentionPolicy": "30d object lock COMPLIANCE; lifecycle expires current versions after 31d",
+    "sourceWriterCanDelete": false,
+    "versioning": "Enabled"
+  },
+  "system": "hexalith-memories",
+  "validator": "jpiquot@itaneo.com",
+  "verificationChecks": {
+    "consumerRegistry": {
+      "explanation": "Redis loads the AOF on start (appendonly yes); the implicitly created stream consumer is not in the AOF, so a restart shows 0 consumers until the Dapr subscriber reconnects. Durable group fields (name, pending, last-delivered-id, entries-read, lag) are compared instead.",
+      "liveAfterSubscriberReconnect": "1",
+      "postRestartConsumers": "0",
+      "preCopyConsumers": "1"
+    },
+    "falkordb.aofHealthy": true,
+    "falkordb.dbsizeEqual": true,
+    "falkordb.graphsEqual": true,
+    "falkordb.keyListSha256Equal": true,
+    "falkordb.keysEqual": true,
+    "falkordb.newProcess": true,
+    "logicalProof": "zero tenants (D1): no tenant-registry-index in the statestore; no tenant export exists, so verify-backup-recovery.py was NOT run and no verifier pass is claimed",
+    "quiescenceAgeSecondsAtCapture": 1,
+    "quiescenceContractGate": true,
+    "readyAfterResume": {
+      "memories-675fd5d64-5zqpv": "Healthy",
+      "memories-675fd5d64-jtd8v": "Healthy"
+    },
+    "reconciliation": {
+      "basis": "zero workflow instances and zero queued messages were captured at quiescence; after resume in-flight=0, pending=0, stream unchanged",
+      "duplicateWork": 0,
+      "inflightAfter": 0,
+      "missingWork": 0,
+      "pendingAfter": "0",
+      "streamLengthUnchanged": true,
+      "workflowsAtQuiescence": []
+    },
+    "recoveryManifestSha256": "8eaeb968f7f01f50fcfe61a16023fa4f3cd5717b7517ca1ae91435e1b18c92a6",
+    "redis.aofHealthy": true,
+    "redis.dbsizeEqual": true,
+    "redis.groupsDurableEqual": true,
+    "redis.keyListSha256Equal": true,
+    "redis.keysEqual": true,
+    "redis.newProcess": true,
+    "redis.reminder_keysEqual": true,
+    "redis.streamEqual": true,
+    "redis.workflow_state_keysEqual": true,
+    "redis.xlenEqual": true,
+    "redis.zcard_inflightEqual": true,
+    "resumeDrainRecheckClean": true,
+    "resumedAt": "2026-10-01T07:33:22Z",
+    "verifierRun": false
+  },
+  "verificationNote": "data restore, isolation of source services/storage/RBAC and resume checks; zero tenants (D1), so no verifier pass is claimed; recorded finding (not a check): the Kubernetes API Service VIP can be reachable at TCP level from default-deny namespaces (kube-proxy IPVS)",
+  "verificationResult": "pass"
+}

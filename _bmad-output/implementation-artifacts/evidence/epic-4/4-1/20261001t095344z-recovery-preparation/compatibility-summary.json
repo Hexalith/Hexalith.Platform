@@ -1,0 +1,158 @@
+{
+  "allAggregatedApisAvailable": true,
+  "clearancePass": false,
+  "components": [
+    {
+      "basis": "Calico 3.31 primary requirements list Kubernetes 1.32, 1.33, 1.34 and 1.35 as tested.",
+      "component": "Calico and Tigera operator",
+      "installed": "3.31.3 / 1.40.3",
+      "sources": [
+        "https://docs.tigera.io/calico/3.31/getting-started/kubernetes/requirements"
+      ],
+      "state": "vendor-version-range-found"
+    },
+    {
+      "basis": "The 1.21 release supports/tests Kubernetes 1.33 through 1.36.",
+      "component": "cert-manager",
+      "installed": "1.21.2",
+      "sources": [
+        "https://controller.cert-manager.io/docs/releases/"
+      ],
+      "state": "vendor-version-range-found"
+    },
+    {
+      "basis": "The 1.30 release supports Kubernetes 1.34, 1.35 and 1.36.",
+      "component": "CloudNativePG",
+      "installed": "1.30.0",
+      "sources": [
+        "https://cloudnative-pg.io/docs/1.30/supported_releases/"
+      ],
+      "state": "vendor-version-range-found"
+    },
+    {
+      "basis": "Dapr documents compatibility with supported Kubernetes versions and alignment with Kubernetes skew policy.",
+      "component": "Dapr operator, scheduler, placement, injector and sentry",
+      "installed": "1.18.1",
+      "sources": [
+        "https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-overview/",
+        "https://docs.dapr.io/operations/support/support-release-policy/"
+      ],
+      "state": "vendor-policy-found"
+    },
+    {
+      "basis": "Vendor prerequisites require Kubernetes >=1.23; both live classes passed actual functional and provider-cleanup probes. Exact target-minor operator clearance is not claimed from a baseline probe.",
+      "component": "OpenEBS Local PV Hostpath",
+      "installed": "4.4.0",
+      "sources": [
+        "https://openebs.io/docs/4.4.x/releases",
+        "https://openebs.io/docs/main/quickstart-guide/prerequisites"
+      ],
+      "state": "baseline-functional-proof-pass; target-clearance-pending"
+    },
+    {
+      "basis": "Traefik documents support for at least the latest three Kubernetes minors. Installed chart declares >=1.25.0-0. Gateway/CRD compatibility still needs complete resource clearance.",
+      "component": "Traefik",
+      "installed": "3.7.13",
+      "sources": [
+        "https://doc.traefik.io/traefik/includes/kubernetes-requirements/",
+        "https://doc.traefik.io/traefik/migrate/v3/"
+      ],
+      "state": "vendor-policy-found"
+    },
+    {
+      "basis": "Vendor 0.9.x compatibility matrix requires Kubernetes 1.34+. Live aggregated API is Available.",
+      "component": "Metrics Server",
+      "installed": "0.9.0",
+      "sources": [
+        "https://github.com/kubernetes-sigs/metrics-server"
+      ],
+      "state": "vendor-version-range-found"
+    },
+    {
+      "basis": "Installed chart has no Kubernetes-version constraint. Retrieved 4.2.1 release notes do not establish 1.35 support. The available 4.2.0 environment table lists 1.23 through 1.32; that older table cannot establish the installed 4.2.1 support range. No vendor-confirmed 1.35 compatibility or isolated target-minor test for this installation was found.",
+      "component": "KubeSphere core, console and controller",
+      "installed": "4.2.1 (ks-core chart 1.2.4)",
+      "sources": [
+        "https://kubesphere.cloud/en/docs/kse/release-notes/v4.2.1",
+        "https://docs.kubesphere.co/v4.2.0/03-installation-and-upgrade/01-preparations/01-supported-k8s/"
+      ],
+      "state": "unresolved"
+    },
+    {
+      "basis": "Part of the unverified KubeSphere target-minor compatibility. Console embed chart declares >=1.19.0-0; this does not prove every KubeSphere component compatible.",
+      "component": "KubeSphere extensions museum / console embed",
+      "installed": "11.1.3 / console image 4.2.1",
+      "sources": [
+        "https://kubesphere.cloud/en/docs/kse/release-notes/v4.2.1"
+      ],
+      "state": "unresolved"
+    },
+    {
+      "basis": "Exact v0.15.0 requirements specify CloudNativePG >=1.26 (recommend >=1.27) and cert-manager; installed 1.30.0/1.21.2 meet those dependencies. These docs give no independent Kubernetes target-minor range, so complete target clearance is still pending.",
+      "component": "Barman Cloud plugin",
+      "installed": "0.15.0",
+      "sources": [
+        "https://raw.githubusercontent.com/cloudnative-pg/plugin-barman-cloud/v0.15.0/web/versioned_docs/version-0.15.0/intro.md"
+      ],
+      "state": "dependency-version-requirements-found; target-clearance-pending"
+    },
+    {
+      "basis": "Installed /velero version --client-only reports v1.18.3. Primary versioned README lists expected Kubernetes 1.18 through latest and tested 1.35.0 for the 1.18 release line; actual node-agent/post-hop behavior remains untested.",
+      "component": "Velero and node agent",
+      "installed": "1.18.3 (native version verified)",
+      "nativeVersionRecordSha256": "9878f107295a62f8db3134ddc9a42f0e4c6b556aa47691c66b9d3bd1addcc7f5",
+      "sources": [
+        "https://raw.githubusercontent.com/vmware-tanzu/velero/v1.18.3/README.md"
+      ],
+      "state": "vendor-version-range-found"
+    },
+    {
+      "basis": "Target kubeadm plans CoreDNS 1.13.1 and kube-proxy 1.35.9. Exact registry index and Linux amd64 manifests verified; post-hop functionality has not run.",
+      "component": "CoreDNS and kube-proxy",
+      "installed": "1.12.1 / 1.34.9",
+      "sources": [
+        "https://v1-35.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/"
+      ],
+      "state": "kubeadm-target-plan-pass"
+    },
+    {
+      "basis": "Live topology warning explained and source DNS resolution passed; target-minor clearance and post-hop functional proof remain pending.",
+      "component": "NodeLocal DNS",
+      "installed": "1.26.4",
+      "sources": [
+        "https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/"
+      ],
+      "state": "target-clearance-pending"
+    },
+    {
+      "basis": "Application manifests, expected health/outage/quiescence and all required post-hop outcomes remain to be fully cleared.",
+      "component": "Protected applications plus Zot registries and Stalwart",
+      "installed": "Live images/digests inventoried",
+      "sources": [],
+      "state": "target-clearance-pending"
+    }
+  ],
+  "crdCount": 137,
+  "deprecatedApiMetrics": [
+    "apiserver_requested_deprecated_apis{group=\"\",removed_release=\"\",resource=\"endpoints\",subresource=\"\",version=\"v1\"} 1"
+  ],
+  "deprecatedMetricScope": "Only actual apiserver metric usage is recorded; it is not a complete desired-resource or target-schema validation. Endpoints/v1 is reported with no removed_release.",
+  "gateState": "closed",
+  "mutationAuthorized": false,
+  "reasonGateClosed": "No complete, affirmative API/add-on compatibility clearance for the exact hop; KubeSphere 4.2.1 remains unproven and several component/resource checks remain pending.",
+  "sourceVersion": "v1.34.9",
+  "state": "incomplete",
+  "targetApiVersionScan": {
+    "all137CrdStoredVersionsDefinedWithSingleStorageVersion": true,
+    "all20WebhookConfigurationsAcceptAdmissionV1": true,
+    "desiredHelmReferencesChecked": 87,
+    "missingCoreOrServedCrdKinds": [],
+    "record": "target-api-version-scan.json",
+    "scope": "API kind/version presence and storage/admission version definitions only; full field/schema, non-Helm desired resources and target runtime compatibility are not established.",
+    "sha256": "4e59af8a2afb4d3c4b1f87728c215a4735d07ee0276efa29225dd419aa5df606",
+    "targetOpenApiSha256": "483500149ee52ce5753d75f5639101d985bb4f5e902cc05b1ba7627465d62446",
+    "targetOpenApiSource": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.35.9/api/openapi-spec/swagger.json"
+  },
+  "targetVersion": "v1.35.9",
+  "webhookConfigurationCount": 20
+}

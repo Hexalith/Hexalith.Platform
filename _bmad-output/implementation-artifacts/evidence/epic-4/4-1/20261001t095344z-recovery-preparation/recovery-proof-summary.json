@@ -1,0 +1,39 @@
+{
+  "cleanup": {
+    "all128CapturedSourceNodeFilesUnchanged": true,
+    "encryptedRecoveryRetained": true,
+    "inspectionHelperPodsAbsent": true,
+    "isolatedDockerTargetsAbsent": true,
+    "nodeTemporaryDirectoriesAbsent": true,
+    "plaintextTmpfsDirectoryAbsent": true,
+    "temporaryPlaintextAndCopiedAccessKeysAbsent": true,
+    "temporarySigningAgentAbsent": true
+  },
+  "externalEtcd": {
+    "canariesPassed": 3,
+    "hashKv": 3992780285,
+    "isolatedTargetAbsent": true,
+    "keyCount": 2495,
+    "nativeMemberHealthy": true,
+    "productionRecoveryDecision": "A production Kubernetes recovery must fence old API/etcd clients and restore onto isolated prepared capacity using a sufficient revision bump and --mark-compacted before reopening; the no-bump rehearsal compares the original snapshot revision. No production restore or downgrade performed.",
+    "productionRestorePerformed": false,
+    "restoredRevision": 25283476,
+    "skipIntegrityHashCheck": false,
+    "snapshotRevision": 25283476,
+    "sourceEndpointUnreachableFromIsolatedTarget": true,
+    "sourceVersion": "3.6.5"
+  },
+  "mutationAuthorized": false,
+  "nodeRecovery": {
+    "certificateKeyPairsPass": 8,
+    "entries": 128,
+    "fileContentOwnerGroupModePass": true,
+    "independentEncryptedImmutableReadbackPass": true,
+    "independentlyRecoveredSSHAccessPass": true,
+    "isolatedTargetAbsent": true,
+    "productionReconstructionPerformed": false,
+    "scope": "Decrypt independent immutable archive; restore files into isolated capacity preserving numeric owner/group/modes and checksums; validate key/certificate pairs; prove recovered SSH identity can access node independently of the Kubernetes API. No production restore, node reconstruction or kubeadm downgrade was performed."
+  },
+  "sourceAttemptId": "20261001t075120z-backup-verified",
+  "upgradeGate": "closed"
+}

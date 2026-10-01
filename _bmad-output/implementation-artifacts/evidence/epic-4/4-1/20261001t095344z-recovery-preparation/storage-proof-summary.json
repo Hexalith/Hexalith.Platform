@@ -1,0 +1,37 @@
+{
+  "classes": [
+    {
+      "claimAndVolumeAbsent": true,
+      "cleanupPolicyChange": null,
+      "independentReaderPass": true,
+      "name": "openebs-hostpath",
+      "providerDirectoryAbsent": true,
+      "provisionWritePass": true,
+      "reclaimPolicy": "Delete",
+      "retainSemanticsPass": null
+    },
+    {
+      "claimAndVolumeAbsent": true,
+      "cleanupPolicyChange": "Only UID-bound disposable Released PV: Retain -> Delete",
+      "independentReaderPass": true,
+      "name": "openebs-hostpath-retain",
+      "providerDirectoryAbsent": true,
+      "provisionWritePass": true,
+      "reclaimPolicy": "Retain",
+      "retainSemanticsPass": true
+    }
+  ],
+  "cleanupProcedure": "Delete only this attempt PVCs. For a Retain PV, verify Released state and remaining unique provider directory; change only that PV reclaim policy to Delete with UID/claim-UID preconditions. Require normal provider cleanup plus direct SSH absence. No source StorageClass or protected PVC is changed.",
+  "freshProbeRequiredImmediatelyBeforeAnyHop": true,
+  "mutationAuthorized": false,
+  "nodeNameBypass": false,
+  "observedAt": "2026-10-01T09:26:19.194628+00:00",
+  "probeNamespaceAbsent": true,
+  "protectedPVCCount": 17,
+  "protectedPVCsUnchanged": true,
+  "result": "pass",
+  "schedulerManaged": true,
+  "sourceAttemptId": "20261001t075120z-backup-verified",
+  "sourceStorageClassesUnchanged": true,
+  "upgradeGate": "closed"
+}

@@ -5,6 +5,7 @@ epic: 4
 story: 1
 created: '2026-09-28'
 status: 'in-progress'
+baseline_commit: '7c2f0f89f29c79f5d7ab4b731155e2cb07fc690f'
 route: 'dispatch'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
@@ -32,7 +33,7 @@ Current supported branches are 1.35–1.37. Resolve each exact current patch and
 Preparation may start immediately, but no `kubeadm upgrade`, node drain, package mutation or reboot may occur until all conditions below pass:
 
 1. Story `4-0-prove-off-node-backups-and-isolated-restores` is `done` in `sprint-status.yaml`.
-2. `backup-gate.json` and all three Keycloak, OpenBao and Memories restore proofs have valid Administrator-approved signatures, unexpired timestamps, readable immutable off-node objects and matching checksums.
+2. `backup-gate.json`, all three Keycloak, OpenBao and Memories restore proofs, and the passing final Story 4.0 `validation/validation.json` have valid Administrator-approved signatures. Proof/gate timestamps are unexpired and final validation is fresh under the signed recovery policy. Final validation is bound to the exact backup-gate and evidence-manifest SHA-256, recovery ID and policy SHA-256; readable immutable off-node objects have matching checksums. A missing, stale, unsigned, failed or differently bound final validation closes the gate even when sprint status says `done`.
 3. The maintenance window and single-node outage are approved, incident command and rollback owners are present, and all workload owners acknowledge the outage.
 4. A fresh external-etcd snapshot for `192.168.1.30:2379` passes integrity/status checks and an isolated restore rehearsal. The restored target must reach member health and match the signed source revision, key-count/hash and approved non-secret canaries; credentials and key material are not recorded in Git.
 5. An encrypted, access-controlled, off-node recovery bundle covers node-local kubeadm configuration, static-pod manifests, PKI/certificate/key material, package/repository state and kubelet configuration with owner/mode-preserving checksums and a tested recovery procedure.
@@ -45,18 +46,18 @@ Any failed condition closes the gate. Preparation evidence is not mutation autho
 
 - [x] Capture the sanitized baseline inventory and identify the single-node outage boundary.
 - [ ] Create the access-controlled attempt directory `evidence/epic-4/4-1/<attempt-id>/` and record operator, approver, window, incident channel, source version, intended minor hops and evidence hashes.
-- [ ] Validate the Story 4.0 gate exactly as described above and retain a signed validation result bound to this attempt ID.
+- [x] Validate the Story 4.0 gate exactly as described above and retain a signed validation result bound to this attempt ID.
 - [ ] Prepare the upgrade without mutation:
-  1. Record control-plane, kubelet, kubeadm, kubectl, container runtime, CNI, kube-proxy and API versions; capture node/PVC/workload health without Secret data.
-  2. Resolve the Kubernetes release notes and kubeadm package/image compatibility for each required minor hop. Record the exact current patch, repository source and digest/version at window start.
-  3. Run kubeadm planning/preflight appropriate to the current hop; record warnings and blockers. Never bypass a failed preflight.
-  4. Confirm external etcd health, integrity-check a fresh snapshot, restore it into an isolated target, and record matching revision/key-count/hash/canary evidence plus signed cleanup of the target.
-  5. Hash and transfer the node-local kubeadm/static-pod/PKI/kubelet/package recovery bundle to the approved encrypted off-node store, then independently read back and checksum it without exposing private material.
-  6. Inventory live/desired API versions and run deprecated/removed-API scans. Record a per-hop compatibility result for Calico/CNI, CoreDNS, kube-proxy, OpenEBS/storage, CloudNativePG, Dapr, Traefik, cert-manager and every installed CRD operator/admission webhook.
-  7. Run the disposable dynamic-storage provision/write/read/delete probe against each required `StorageClass` and prove provider volumes are cleaned up.
-  8. Record rollback/stop decisions. Kubeadm downgrade is not a rollback; recovery means stopping, preserving diagnostics and following the approved control-plane/etcd/workload recovery procedures.
+  - [x] Record control-plane, kubelet, kubeadm, kubectl, container runtime, CNI, kube-proxy and API versions; capture node/PVC/workload health without Secret data.
+  - [x] Resolve the Kubernetes release notes and kubeadm binary/image identities for the candidate 1.34 → 1.35 hop. Record the exact current patch, upstream source and digest/version; refresh at the actual hop.
+  - [x] Run kubeadm planning/preflight appropriate to the current hop; record warnings and blockers. Never bypass a failed preflight.
+  - [x] Confirm external etcd health, integrity-check a fresh snapshot, restore it into an isolated target, and record matching revision/key-count/hash/canary evidence plus signed cleanup of the target.
+  - [x] Hash and transfer the node-local kubeadm/static-pod/PKI/kubelet/package recovery bundle to the approved encrypted off-node store, then independently read back and checksum it without exposing private material.
+  - [ ] Inventory live/desired API versions and run deprecated/removed-API scans. Record a complete per-hop compatibility result for Calico/CNI, CoreDNS, kube-proxy, OpenEBS/storage, CloudNativePG, Dapr, Traefik, cert-manager and every installed CRD operator/admission webhook. Partial version-presence checks do not clear this task.
+  - [x] Run the disposable dynamic-storage provision/write/read/delete probe against each required `StorageClass` and prove provider volumes are cleaned up; refresh immediately before any actual hop.
+  - [ ] Record rollback/stop decisions under the accountable recovery procedure. Kubeadm downgrade is not a rollback; recovery means stopping, preserving diagnostics and following the approved control-plane/etcd/workload recovery procedures.
 - [ ] Record pre-outage health for concrete workloads: `Cluster/keycloak-postgres` and Keycloak pods in `keycloak`; `StatefulSet/hexalith-keys` in `openbao`; `StatefulSet/redis-stack`, `StatefulSet/falkordb`, Memories deployments and `StatefulSet/access-telemetry-postgresql` in `hexalith-memories`; Forgejo and `Deployment/forgejo-runner` in their namespaces.
-- [ ] Before every minor hop, sign a new per-hop mutation gate that revalidates Story 4.0 proof freshness, the fresh isolated-etcd-restore result, node recovery bundle, exact target patch, deprecated-API/add-on compatibility, dynamic-storage proof, workload health, owners and outage approval.
+- [ ] Before every minor hop, sign a new per-hop mutation gate that revalidates Story 4.0 proof and final-validation signature/freshness/bindings, the fresh isolated-etcd-restore result, node recovery bundle, exact target patch, deprecated-API/add-on compatibility, dynamic-storage proof, workload health, owners and outage approval.
 - [ ] After the per-hop mutation gate is signed open, quiesce applications with their approved procedures and require every tracked workflow terminal; cordon `node1` and observe `spec.unschedulable=true`; drain it to terminal success with only explicitly approved static-pod/DaemonSet/local-data exceptions recorded. Do not begin kubeadm while quiesce, cordon or drain is pending, failed or ambiguous.
 - [ ] For that hop, upgrade the control plane first, then kubelet/kubectl packages as required; restart only the components called for by the selected Kubernetes instructions. Record every command version, exit result and resulting component version without credentials.
 - [ ] Require API readiness, `node1` Ready, CNI/add-on/operator health, deprecated-API scan clearance, external-etcd health, version-skew compliance and a fresh dynamic-storage provision/write/read/delete proof before uncordoning. If another minor hop is required, repeat planning and the full gate for the next current patch; never skip a minor.
@@ -73,7 +74,7 @@ The attempt must produce signed or checksummed records for `gate-validation.json
 
 ## Stop conditions
 
-- Stop before mutation if any Story 4.0 proof is absent, stale, unsigned, unreadable, checksum-invalid or failed.
+- Stop before mutation if any Story 4.0 proof or its final validation is absent, stale, unsigned, unreadable, checksum-invalid, differently bound or failed.
 - Stop if the exact target patch is unsupported, version skew is invalid, a kubeadm preflight fails, isolated etcd restore/integrity evidence or the node recovery bundle is incomplete, any deprecated API/add-on is incompatible, the functional storage probe fails, external etcd is unhealthy, the outage lacks approval, or an accountable owner is unavailable.
 - Stop unless quiesce, cordon and drain have each reached and recorded their defined terminal-success state.
 - Stop after any hop if the API, node, CNI, DNS, storage, external etcd or a protected workload is unhealthy. Do not begin another minor hop.
@@ -96,3 +97,43 @@ The attempt must produce signed or checksummed records for `gate-validation.json
 **When** the node returns
 **Then** each is verified healthy or restored through its approved recovery procedure
 **And** each outcome is included in the signed upgrade result
+
+## Preparation record — 2026-10-01
+
+Local-only preparation is retained in attempt `20261001t060500z-preparation`; see the [sanitized attempt summary](evidence/epic-4/4-1/20261001t060500z-preparation/summary.md) and [maintenance handoff](../../eng/kubernetes-upgrade/README.md). The diagnostic recorder creates owner-only, checksummed preparation records outside Git and cannot open a mutation gate. During that phase, the recovery rehearsal was inventoried without modification; no cluster, SSH, provider, package, service or storage operation was performed, and no Administrator signature was created.
+
+At that preparation stage, Story 4.0 was `in-progress`. Its rehearsal had no signed final backup gate or final validation, and its three proof signatures/freshness did not establish an open gate. The actual live source version, maintenance approval and accountable owners, fresh isolated-etcd restore, encrypted node recovery bundle, current target patch/package/image identities, API/add-on compatibility, functional storage probes and fresh workload health were outstanding. Upgrade quiesce, cordon, drain, all upgrade hops and post-upgrade checks were `not-run`.
+
+The mutation gate also requires the passing, signed final Story 4.0 validation with exact backup-gate/manifest/policy/recovery-ID bindings, resolving deferred review finding B3 for this story. Preparation checks cannot replace that signed operational validation.
+
+## Immediate maintenance request — 2026-10-01
+
+The Administrator requested the window start `now`, observed at approximately `2026-10-01T06:15:14Z` (08:15 Europe/Paris). Started the prerequisite final Story 4.0 run `20261001t061620z`: copied and verified the staged tools, passed the live destination precheck, and prepared/uploaded the unsigned recovery policy. At this initial snapshot, the required policy signature was pending and no capture, isolated restore or upgrade had started. End time, incident/recovery owners and workload acknowledgements remained unrecorded.
+
+A fresh read-only baseline using a separately downloaded, upstream-checksummed v1.34.12 client confirms the API/kubelet v1.34.9, `node1` Ready and schedulable, all 16 running protected pods Ready, five completed job pods and 17 protected PVCs Bound. Native health, smoke tests, kubeadm preflight, external-etcd restore, node recovery, compatibility and functional storage gates remain outstanding. See the [maintenance-request evidence](evidence/epic-4/4-1/20261001t061620z-maintenance-request/summary.md). The mutation gate remains closed and the story remains `in-progress`.
+
+## Fresh backup prerequisite result — 2026-10-01
+
+The Administrator explicitly delegated signing after the initial maintenance-request snapshot. Final Story 4.0 run `20261001t061620z` now has signed passing policy, cleanup, manifest, Keycloak/OpenBao/Memories proofs, backup gate and final validation. The validator independently read all 553 manifest object versions: 648 automated checks and eight manual checks passed, with zero failed/skipped checks. All eight required signed records and signatures were uploaded and cryptographically verified on readback, and final validation binds the exact gate/manifest/policy digests and recovery ID. Story 4.0 is now `done`; see its [sanitized final evidence](evidence/epic-4/4-0/20261001t061620z/summary.md). The backup gate expires at `2026-10-02T06:16:52Z` and must be revalidated immediately before a hop.
+
+After the backup run, all 16 running protected pods are Ready, five job pods are Succeeded and all 17 protected PVCs are Bound. Memories intake resumed after successful restore/isolation/drain checks. The API and kubelet remain v1.34.9, and `node1` remains Ready and schedulable.
+
+At that backup-only stage, the remaining required inputs were the node1 SSH target/login and trusted access, approved external-etcd/node recovery procedure and accountable recovery owner, window end/incident channel, named present incident commander and rollback owner, and workload-owner outage acknowledgements. External-etcd snapshot/isolated restore, encrypted node recovery, kubeadm planning, compatibility and storage probes had not yet run. The subsequent preparation results below supersede those missing-access and unperformed-preparation observations. No upgrade operation has run; Story 4.1 remains `in-progress`.
+
+Operational attempt `20261001t075120z-backup-verified` now retains signed `gate-validation.json` bound to this attempt. It directly verifies local/uploaded signatures, immutable encrypted record readback, exact final-validation input hashes, recovery ID, policy/manifest/gate digests and proof/gate/validation freshness. All 12 backup-prerequisite checks passed; the record and signature were uploaded and verified on readback. See the [signed backup-prerequisite summary](evidence/epic-4/4-1/20261001t075120z-backup-verified/summary.md). This completes the backup-validation task only: pending maintenance metadata and all other hop prerequisites keep mutation unauthorized.
+
+## Verified recovery and storage preparation — 2026-10-01
+
+Under the Administrator's delegated request, existing root SSH access to node1 was discovered and tested with its trusted host key without changing node authentication. Preparation remains bound to operational attempt `20261001t075120z-backup-verified`. Its new records have 12 Administrator signatures and 43 immutable evidence object versions, all cryptographically verified on independent validator readback. Two additional AGE-encrypted recovery archives passed independent immutable readback and decryption. See the [sanitized recovery/preflight evidence](evidence/epic-4/4-1/20261001t095344z-recovery-preparation/summary.md) and its exact [hash/version ledger](evidence/epic-4/4-1/20261001t095344z-recovery-preparation/evidence-hashes.json).
+
+The isolated node file-recovery rehearsal passed content, numeric owner/group and mode checks for all 128 entries, eight certificate/key pairs and SSH access using the independently recovered key. It tests file/key recovery, not complete production node reconstruction. The external-etcd 3.6.5 snapshot passed integrity checking and restored onto a distinct healthy member with no network path to the source. Source and target matched revision `25283476`, 2,495 keys, MVCC hash `3992780285` and all three non-secret canaries. Both isolated targets and the temporary node capture/binary directories were removed. Source-node entries remained unchanged. Production recovery still requires its accountable procedure, fencing and a suitable revision bump/watch-cache invalidation decision.
+
+Installed kubeadm v1.34.9 and the independently checksummed standalone v1.35.9 binary both passed the target plan. A first standalone execution under noexec `/run` failed with exit 126; its evidence is retained alongside the successful executable-location retry. Installed binaries/packages were not replaced and preflight errors were not skipped. Exact target binary sources/checksums and seven official image identities are retained. The NodeLocal DNS warning is explained by the existing topology, with successful actual service-name resolution.
+
+Both `openebs-hostpath` and `openebs-hostpath-retain` passed scheduler-managed provision/write/independent-read/delete probes and direct provider-directory absence checks. The Retain probe verified retention before changing only its UID-bound disposable Released PV to Delete for normal cleanup. Both source StorageClasses and all 17 protected PVC identities/bindings remained unchanged. The namespace, claims, PVs and provider directories are absent; fresh probes remain mandatory immediately before and after an actual hop.
+
+API presence/version checks passed for all 87 Helm references, all 20 admission configurations accepting v1, and all 137 CRDs' stored/storage version definitions. The signed compatibility record is nevertheless `incomplete`: full field/schema/non-Helm desired-resource and target-runtime clearance is not established. Exact KubeSphere 4.2.1 compatibility with 1.35 remains unproven, and other component/resource checks remain pending. Retrieved older-version support tables are not applied to the installed version.
+
+Closeout at `2026-10-01T09:50:05Z` confirmed API/kubelet v1.34.9, node1 Ready and schedulable, all 16 running protected pods Ready, five completed job pods, all 17 protected PVCs Bound with unchanged identities/bindings, and healthy external etcd. Partial native health passed for CNPG, all three unsealed OpenBao voters, Forgejo health/version/UI and Keycloak OIDC discovery. Complete workload smoke coverage remains pending. Temporary plaintext recovery files, copied access keys and the temporary signing agent were removed; encrypted recovery material remains retained off-node.
+
+The gate remains closed: full API/add-on compatibility, complete workload smoke expectations, accountable incident/recovery owners, window end/incident channel and all workload-owner acknowledgements are still unrecorded. No signed-open hop gate, upgrade quiesce, cordon, drain, installed package/binary mutation, reboot, kubeadm apply or post-upgrade result exists. Story 4.1 remains `in-progress` and every prerequisite must be revalidated for freshness before any actual hop.

@@ -1,0 +1,262 @@
+{
+  "allObjectReadbacksAndRetentionPass": true,
+  "encryptedRecoveryObjects": [
+    {
+      "bytes": 137029225,
+      "clientEncryption": "age",
+      "filename": "node-recovery.tar.gz.age",
+      "independentReadbackPass": true,
+      "retainedUntil": "2026-10-31T09:16:25Z",
+      "retentionMode": "COMPLIANCE",
+      "serverSideEncryption": "AES256",
+      "sha256": "dab0817585b6786cbeab95414f8cbaf53c730aca23fe7d6c191e6e710d146749",
+      "versionId": "1790846185238755"
+    },
+    {
+      "bytes": 62348388,
+      "clientEncryption": "age",
+      "filename": "external-etcd-snapshot.db.age",
+      "independentReadbackPass": true,
+      "retainedUntil": "2026-10-31T09:16:32Z",
+      "retentionMode": "COMPLIANCE",
+      "serverSideEncryption": "AES256",
+      "sha256": "3714ca1b86ecb0eba80ee3cf980fec9abf9cb53501692225531757235f98cc50",
+      "versionId": "1790846192186850"
+    }
+  ],
+  "executedPreparationHelpers": [
+    {
+      "name": "story41-capture-recovery.py",
+      "sha256": "1f122106adf8b1423f255d1aa2212c00d14173488b1d8edcdda8f4c2f06da1ce"
+    },
+    {
+      "name": "story41-etcd-recovery-test.py",
+      "sha256": "3b6e2a935e5b2d05527ac5bbce276488eac718a66f1c622f8e59ff7a0028d138"
+    },
+    {
+      "name": "story41-node-recovery-test.py",
+      "sha256": "a8a1edb0d2bccda33abb5b2b3315330faccb8bb155644f81f1cae20bdee75c2a"
+    },
+    {
+      "name": "story41-storage-probe.py",
+      "sha256": "380b93ad62b3d5a81700524c8f2ab103d479225d41859679d3d725cc78acf759"
+    }
+  ],
+  "immutablePreparationEvidenceObjects": 43,
+  "mutationAuthorized": false,
+  "recordedAt": "2026-10-01T09:54:18Z",
+  "schemaVersion": 1,
+  "scope": "Preparation only; no signed-open hop gate or upgrade outcome",
+  "signatureIdentity": {
+    "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "namespace": "hexalith-recovery",
+    "principal": "jpiquot@itaneo.com"
+  },
+  "signedPreparationRecords": 12,
+  "signedRecords": {
+    "api-addon-compatibility.json": {
+      "recordVersionId": "1790848398717827",
+      "sha256": "7f5959571cc4f5efb61d5a1de88b7f679eef032a45ec0d25ea8e0faa3a103d5d",
+      "signatureSha256": "b4cd422556bddbe513ce6ceb55de9a73ac427180171d3f4f2180e19840a6b766",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848418624630"
+    },
+    "dynamic-storage-proof.json": {
+      "recordVersionId": "1790848400936445",
+      "sha256": "d600da66213758dffafa70cccc1243844bb564dbf7bfc2e86022dfcd07d949bb",
+      "signatureSha256": "11a381728494ced47496873bc905308d5db375bb4ec9adbe503f9b0fb40a99cb",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848419608826"
+    },
+    "external-etcd-isolated-restore.json": {
+      "recordVersionId": "1790848399889687",
+      "sha256": "dadb118798698560e77c186c12ca944f7a4fb5b5c174953b5f6ffb544eea524f",
+      "signatureSha256": "147e54fe1b03805c0bac4f6243735f7703e8ad6ea4480b50342d3afb4fcd0751",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848419254673"
+    },
+    "external-etcd-recovery-point.json": {
+      "recordVersionId": "1790848396675810",
+      "sha256": "6bd435047b775e341029c17ba7eb15965b07f97af02473d95ec852881ab195d5",
+      "signatureSha256": "7e74ebe0c67eddab36d1d00919ba355205dac547b28b9da2680e00f5bb955d0a",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848417399160"
+    },
+    "local-preparation-cleanup.json": {
+      "recordVersionId": "1790848402683020",
+      "sha256": "1fde394384592a380578ff6eda04917af869af9885adfd34a3e0c7929b46bf2f",
+      "signatureSha256": "45feba3866a6d291b5aa5db85396455052c332e1b35b9d7a28cbedf036345202",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848420308430"
+    },
+    "node-recovery-bundle.json": {
+      "recordVersionId": "1790848396097897",
+      "sha256": "61e8b18d4ab28a2322aaf4814699ab17f88e74d9f8ceffd4b0be12375927b85a",
+      "signatureSha256": "46f4100b8116d2102457b201c5da0940029f37a485b06cfe60889225f7b57f56",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848416452251"
+    },
+    "node-recovery-rehearsal.json": {
+      "recordVersionId": "1790848400168127",
+      "sha256": "1cff6af8adf1f6e547a979907838452976197530188b4673e6bd3fc1531a572e",
+      "signatureSha256": "eeef7ae35a353d120f8b96752f2c097ca6dfc67ea0e7bb20b43efe0515588bd4",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848419466924"
+    },
+    "preflight.json": {
+      "recordVersionId": "1790848397512719",
+      "sha256": "83bf3c7ad5b39f05b61de75906a30cfe41b7b7436db3d73d4e22062bfac6a77c",
+      "signatureSha256": "f240a30e32369a942a624ac3b10c6164ae3f4a7cfc92fac9e6b526f027992f02",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848417949083"
+    },
+    "preparation-closeout-health.json": {
+      "recordVersionId": "1790848403654569",
+      "sha256": "be31dec5513f946d1718841cca0fc862c136038d67eb03b08f1897b2ac8a8349",
+      "signatureSha256": "c83cdcd808196d21f7eb71d1ed1d9dbd9c82ae2d59957c8829480df0f26bcd01",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848421054364"
+    },
+    "preparation-evidence-manifest.json": {
+      "recordVersionId": "1790848416012748",
+      "sha256": "03397b56d76950e069b88b62ad8f68d0fbf0c41242a600dea4a520543d3d2c8c",
+      "signatureSha256": "4e24f3fa500663929981bc8ce4bc154ede92118b8943ad2057ba60c3115ab2e8",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848421536138"
+    },
+    "preparation-signed-record-readback.json": {
+      "recordVersionId": "1790848456667118",
+      "sha256": "2eab7178d785086b58e59dc034d679cab15cd88282831d7570a2573751a69895",
+      "signatureSha256": "8fb743e7c3a8275561ef011b39cf7e78eba50a991fb81720b944396967ca7ab4",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848457331148"
+    },
+    "recovery-preparation-cleanup.json": {
+      "recordVersionId": "1790848402129200",
+      "sha256": "0d44d9301c97ed90f05ecf6a0afdb54247a0d2e13927b17b4bc70dbf27c2909a",
+      "signatureSha256": "46818ca707666e4b2384dd54293c8456b16f6e650cc698e41591921be6b878fe",
+      "signatureVerifiedOnIndependentReadback": true,
+      "signatureVersionId": "1790848420123818"
+    }
+  },
+  "sourceAttemptId": "20261001t075120z-backup-verified",
+  "supportingRecordHashes": {
+    "api-addon-compatibility.json": {
+      "bytes": 9341,
+      "sha256": "7f5959571cc4f5efb61d5a1de88b7f679eef032a45ec0d25ea8e0faa3a103d5d"
+    },
+    "database-native-pre-upgrade-health.json": {
+      "bytes": 1119,
+      "sha256": "b62fd76037339f229c37cee1d3fe909df25f4c32e1edf90b5c6a1b5590860dd0"
+    },
+    "dynamic-storage-proof.json": {
+      "bytes": 7176,
+      "sha256": "d600da66213758dffafa70cccc1243844bb564dbf7bfc2e86022dfcd07d949bb"
+    },
+    "external-etcd-isolated-restore.json": {
+      "bytes": 3682,
+      "sha256": "dadb118798698560e77c186c12ca944f7a4fb5b5c174953b5f6ffb544eea524f"
+    },
+    "external-etcd-recovery-point.json": {
+      "bytes": 4837,
+      "sha256": "6bd435047b775e341029c17ba7eb15965b07f97af02473d95ec852881ab195d5"
+    },
+    "external-etcd-source.json": {
+      "bytes": 2401,
+      "sha256": "06ddb6e9f9cfcfd138e2cfbe0369253ab0f8872e782070389796973f72daadad"
+    },
+    "failed-node-capture-cleanup.json": {
+      "bytes": 348,
+      "sha256": "4c9fb52a5e0e611b9a64d6b836d34de710b90523a1b846eb4e7b80ddec100e98"
+    },
+    "helm-addon-inventory.json": {
+      "bytes": 2354,
+      "sha256": "b227dd6748040f6bfd8953c1835be9c18590e505586322888c1144dff9f3d90e"
+    },
+    "helm-chart-api-compatibility-inputs.json": {
+      "bytes": 11767,
+      "sha256": "c88ffc7f71712bf974fd8d6aa6fd6b2ffab2379c59513d01ec8526622a1a0bf6"
+    },
+    "installed-kubeadm-plan.json": {
+      "bytes": 2428,
+      "sha256": "56737a8dcc72cd7a003643c7f68d7822a300bae2d8120ebbf679b6fc30ba13b8"
+    },
+    "isolated-etcd-native.log": {
+      "bytes": 2826,
+      "sha256": "6015df73c6ab3d96e54edb3f597877979cbc8ede942214ba01587f56a9f81691"
+    },
+    "live-api-addon-inventory.json": {
+      "bytes": 72303,
+      "sha256": "bb4e4a8f2dea5707b32b97a93b7678d1d8cf02a00943420d63aa6ecae4fa8db2"
+    },
+    "local-preparation-cleanup.json": {
+      "bytes": 1105,
+      "sha256": "1fde394384592a380578ff6eda04917af869af9885adfd34a3e0c7929b46bf2f"
+    },
+    "node-file-manifest.json": {
+      "bytes": 28609,
+      "sha256": "30e59687ce2ae61f9040352df5a4751244ac645ba245c3f7af9275b478e6ced7"
+    },
+    "node-live-preparation.json": {
+      "bytes": 3533,
+      "sha256": "afd04516aac23faecb595e9429c852353b3b891cfff3566f42ecb8b82ed4050a"
+    },
+    "node-recovery-bundle.json": {
+      "bytes": 2850,
+      "sha256": "61e8b18d4ab28a2322aaf4814699ab17f88e74d9f8ceffd4b0be12375927b85a"
+    },
+    "node-recovery-rehearsal.json": {
+      "bytes": 16034,
+      "sha256": "1cff6af8adf1f6e547a979907838452976197530188b4673e6bd3fc1531a572e"
+    },
+    "partial-pre-upgrade-health.json": {
+      "bytes": 2149,
+      "sha256": "8c783b474a967b30c70a4f3aecfbb1366a739cdece773d40b2d355c9a565f3d2"
+    },
+    "preflight.json": {
+      "bytes": 6097,
+      "sha256": "83bf3c7ad5b39f05b61de75906a30cfe41b7b7436db3d73d4e22062bfac6a77c"
+    },
+    "preparation-closeout-health.json": {
+      "bytes": 4480,
+      "sha256": "be31dec5513f946d1718841cca0fc862c136038d67eb03b08f1897b2ac8a8349"
+    },
+    "recovery-capture.json": {
+      "bytes": 1141,
+      "sha256": "714e42303669c490628e867da95c1ec14dfd6992bd4379505a24a231f572f6dd"
+    },
+    "recovery-immutable-readback.json": {
+      "bytes": 2743,
+      "sha256": "b888d06962233f5a32324c2fd8e7f2381d37621bda59c6fed55a230340aeea80"
+    },
+    "recovery-preparation-cleanup.json": {
+      "bytes": 937,
+      "sha256": "0d44d9301c97ed90f05ecf6a0afdb54247a0d2e13927b17b4bc70dbf27c2909a"
+    },
+    "target-api-version-scan.json": {
+      "bytes": 35468,
+      "sha256": "4e59af8a2afb4d3c4b1f87728c215a4735d07ee0276efa29225dd419aa5df606"
+    },
+    "target-image-identities.json": {
+      "bytes": 3305,
+      "sha256": "edfda3ca24dfab25fd9636bf5c9846e54dd21985a2b20afb11fb0fec2060bf44"
+    },
+    "target-kubeadm-plan-executable.json": {
+      "bytes": 2640,
+      "sha256": "3bb1e14538a6ec1e38e9bd085a9571add440f272fcf42e62b6ec046fd43a89dc"
+    },
+    "target-kubeadm-plan.json": {
+      "bytes": 537,
+      "sha256": "f8af6e5a737eed5c6d120f3a092d346ce6f04a0d61a91565b8942808b1a9f1e1"
+    },
+    "velero-native-version.json": {
+      "bytes": 385,
+      "sha256": "9878f107295a62f8db3134ddc9a42f0e4c6b556aa47691c66b9d3bd1addcc7f5"
+    },
+    "workload-ownership-discovery.json": {
+      "bytes": 3631,
+      "sha256": "ba9cdd011f4dc6075174a8f08341ab9672430bbb4b1329bb0bb58d7235bf6dcc"
+    }
+  },
+  "upgradeGate": "closed"
+}

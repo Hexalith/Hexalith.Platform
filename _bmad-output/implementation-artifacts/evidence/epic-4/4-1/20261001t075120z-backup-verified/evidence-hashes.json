@@ -1,0 +1,149 @@
+{
+  "attemptId": "20261001t075120z-backup-verified",
+  "backupGateExpiresAt": "2026-10-02T06:16:52Z",
+  "backupPrerequisiteChecks": {
+    "allManifestObjectsIndependentlyReadBackByFreshSignedValidation": true,
+    "allRequiredLocalAndUploadedSignaturesVerified": true,
+    "approvedTrustRootVerified": true,
+    "backupGatePassingAndUnexpired": true,
+    "finalValidationExactInputHashesMatch": true,
+    "finalValidationPassingFreshNoSkippedChecks": true,
+    "immutableEncryptedObjectVersionsReadable": true,
+    "manualFinalStepsActuallyPassed": true,
+    "policyManifestGateRecoveryIdMatch": true,
+    "recordAndSignatureReadbacksMatchLocal": true,
+    "story40Done": true,
+    "threeProofsPassingAndUnexpired": true
+  },
+  "backupPrerequisiteVerificationResult": "pass",
+  "finalValidationSummary": {
+    "fail": 0,
+    "pass": 648,
+    "skipped": 0,
+    "total": 648
+  },
+  "manifestObjectVersions": 553,
+  "manualCheckCount": 8,
+  "mutationAuthorized": false,
+  "privateRecordSha256": {
+    "SHA256SUMS": "1213ecc953ae0d9a6f86ef679413a33ff39ad05ed883013af7d791e3189cab1e",
+    "attempt.json": "1f18854d2eb1091aeca144c66027ac86cd7445d380e3fc9750bc2a7e15b2f9c7",
+    "gate-validation.json": "3786822be961b3a5a406bbfab5f6a360884bcda36c421bf9b2acaace4716ee4a",
+    "gate-validation.json.sig": "877f057934308da27aecf5aa7866c82d15dcd1571320fe8d6cb6ffb0cae0074c",
+    "uploads.json": "aa1c9e386e77cf794a0d0edb4a7bdac5b131f88af61e56b5a1e68f734ffffabf"
+  },
+  "recordAndSignatureUploadReadbackVerified": true,
+  "recoveryId": "20261001t061620z",
+  "schemaVersion": 1,
+  "scope": "Story 4.0 backup prerequisite only; no per-hop mutation authorization",
+  "signatureIdentity": {
+    "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "namespace": "hexalith-recovery",
+    "principal": "jpiquot@itaneo.com"
+  },
+  "signedAttemptRecordObjectVersions": [
+    {
+      "bytes": 1500,
+      "key": "evidence/4-1/20261001t075120z-backup-verified/attempt.json",
+      "sha256": "1f18854d2eb1091aeca144c66027ac86cd7445d380e3fc9750bc2a7e15b2f9c7",
+      "versionId": "1790841179368658"
+    },
+    {
+      "bytes": 6785,
+      "key": "evidence/4-1/20261001t075120z-backup-verified/gate-validation.json",
+      "sha256": "3786822be961b3a5a406bbfab5f6a360884bcda36c421bf9b2acaace4716ee4a",
+      "versionId": "1790841179988640"
+    },
+    {
+      "bytes": 314,
+      "key": "evidence/4-1/20261001t075120z-backup-verified/gate-validation.json.sig",
+      "sha256": "877f057934308da27aecf5aa7866c82d15dcd1571320fe8d6cb6ffb0cae0074c",
+      "versionId": "1790841180760676"
+    }
+  ],
+  "signedBackupRecords": {
+    "cleanup/restore-target-cleanup.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840155967415",
+      "sha256": "bf8022b7642fb4a3df5274f1c07a547837a04befb27421c183b6d6a6bade1c7c",
+      "signatureSha256": "6dc8139455a910fe79170f498af290b8fa7b95a18337fab980bc2e6a673194a1",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840156432678"
+    },
+    "gate/backup-gate.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840313093850",
+      "sha256": "2b36b709184796c9309bbc97b1344dfa178f04841c832bb44dafd540f89bb3e0",
+      "signatureSha256": "dc21bbc2ad572dda9997d2149d628364686eb4d11e84b1b2104f97cf75dbd840",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840314018231"
+    },
+    "keycloak/keycloak-restore-proof.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840276246690",
+      "sha256": "d0928e7159ebdfd475fadb0b0a38d5d71e5277533655a43538023a8c34c2fc10",
+      "signatureSha256": "d9ff33306b4bc03c708985c1400585d01dac9b12a9c118beae8e0205a7682bcc",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840276903001"
+    },
+    "manifest/evidence-manifest.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840275189708",
+      "sha256": "41196f2447cacc1671c2b4d7bff9da5fd70b0993f4c72c576e191767b9b6ba65",
+      "signatureSha256": "3b7c6aac2923b4f44dedd0c0ecf1d1b9cd703ae5bdf457fa7dde38283d84a672",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840275866230"
+    },
+    "memories/memories-restore-proof.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840279065978",
+      "sha256": "91058aaaf7d1833bc56fb221b831af1b1ca0fdf0bcfcad6575371ce798bf1dee",
+      "signatureSha256": "f514ab649b15d6dda265429422e8bf754a3bcdfe64d48f2c3e49a91a2dd4d86e",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840279821322"
+    },
+    "openbao/openbao-restore-proof.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840277763481",
+      "sha256": "96ed1df1f03f642c05ba0663f37d0e0c1cbfe0f649348ac790ec0f773cee0a54",
+      "signatureSha256": "0c85b05fb47f4aec5953d7100aea1fabc739b9e7ecd0f546a0c16e25510103f7",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840278229502"
+    },
+    "policy/recovery-policy.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790838831188369",
+      "sha256": "531807640d49edb5a0ce1bbda22bd947663768125b766941b07179498935d00e",
+      "signatureSha256": "9af7fc306013dead79ccc0de5822f436c798664ae72e13fe9e19434f4e6b53a9",
+      "signatureVerified": true,
+      "signatureVersionId": "1790838832058122"
+    },
+    "validation/final-run-observations.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840692886470",
+      "sha256": "948e14a55d0f773021a53638ddaacf650c13af1abddd001fa73b254ea3704a80",
+      "signatureSha256": "3252a36a245eb12c167df585c7ba95f5849948a03a9232710c6c18102768325e",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840693719163"
+    },
+    "validation/validation.json": {
+      "immutableEncryptedReadbackMatches": true,
+      "keyFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+      "recordVersionId": "1790840504313314",
+      "sha256": "79d37caf292d7119771ce61faa0eb295e534d3c6df46130cf48d1be94f2cb17e",
+      "signatureSha256": "5043b69431c590959eb0167196fdb7bd8b1b2ec6b466e6e5b58088bfa43c2f3c",
+      "signatureVerified": true,
+      "signatureVersionId": "1790840504945956"
+    }
+  },
+  "upgradeGate": "closed",
+  "verifiedAt": "2026-10-01T07:51:20Z"
+}
