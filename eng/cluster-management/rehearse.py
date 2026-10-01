@@ -19,6 +19,31 @@ def key(obj):
     return (obj['apiVersion'], obj['kind'], obj.get('namespace'), obj['name'])
 
 
+def native_delete_options(action):
+    """Every native deletion carries both observed object preconditions."""
+    if (action.get('propagation') not in ('Foreground', 'Orphan')
+            or any(not isinstance(action.get(k), str) or not action[k] for k in ('uid', 'resourceVersion'))):
+        raise ValueError('missing-native-delete-preconditions')
+    return {'apiVersion': 'v1', 'kind': 'DeleteOptions', 'propagationPolicy': action['propagation'],
+            'preconditions': {'uid': action['uid'], 'resourceVersion': action['resourceVersion']}}
+
+
+def native_conflict(result):
+    """Require Kubernetes Conflict evidence, not a transport or command failure."""
+    if result.returncode != 1:
+        return False
+    for payload in (result.stdout, result.stderr):
+        try:
+            status = json.loads(payload)
+            if (isinstance(status, dict) and status.get('kind') == 'Status'
+                    and status.get('reason') == 'Conflict' and status.get('code') == 409):
+                return True
+        except (ValueError, TypeError):
+            pass
+    lines = result.stderr.decode(errors='replace').strip().splitlines()
+    return len(lines) == 1 and lines[0].startswith('Error from server (Conflict): ')
+
+
 def absence_state(result, kind, name):
     """An unavailable Docker daemon is not evidence of object absence."""
     if result.returncode == 0:
@@ -29,6 +54,8 @@ def absence_state(result, kind, name):
                       f'Error response from daemon: No such container: {name}'},
         'network': {f'Error response from daemon: network {name} not found', f'Error: No such network: {name}'},
         'volume': {f'Error response from daemon: get {name}: no such volume', f'Error: No such volume: {name}'},
+        'image': {f'Error response from daemon: No such image: {name}', f'Error: No such image: {name}',
+                  f'Error: No such object: {name}'},
     }
     expected_messages = {message.lower() for message in expected[kind]}
     return 'absent' if result.returncode == 1 and messages and all(m in expected_messages for m in messages) else 'unverified'
@@ -61,6 +88,8 @@ def validate_allowlist(inventory, actions):
             raise ValueError('allowlist-missing-duplicate-or-wildcard')
         seen.add(k)
         current = indexed[k]
+        if any(owner.get('uid') not in by_uid for owner in current['owners']):
+            raise ValueError('owner-outside-censused-inventory')
         if action.get('uid') != current['uid'] or action.get('resourceVersion') != current['resourceVersion']:
             raise ValueError('uid-or-resource-version-drift')
         if current['kind'] in PROTECTED_KINDS:
@@ -72,13 +101,15 @@ def validate_allowlist(inventory, actions):
         if action['action'] == 'remove-named-finalizer' and action.get('finalizer') not in current['finalizers']:
             raise ValueError('unnamed-or-drifted-finalizer-intervention')
     deleted = {a['uid'] for a in actions if a['action'] == 'delete'}
-    closure = set(deleted)
+    orphaned = {a['uid'] for a in actions if a['action'] == 'delete' and a['propagation'] == 'Orphan'}
+    closure, cascading = set(deleted), deleted - orphaned
     while True:
-        descendants = {o['uid'] for o in inventory if any(v.get('uid') in closure for v in o['owners'])}
+        descendants = {o['uid'] for o in inventory if any(v.get('uid') in cascading for v in o['owners'])}
         expanded = closure | descendants
         if expanded == closure:
             break
         closure = expanded
+        cascading |= descendants - orphaned
     if closure - deleted:
         # Every cascaded deletion must be an explicit reviewed member too.
         raise ValueError('unallowlisted-deletion-propagation')
@@ -93,8 +124,30 @@ def assert_preserved(before, after, expected_deleted):
     if removed != set(expected_deleted):
         raise ValueError('unexpected-or-incomplete-deletion')
     for k in set(initial) & set(current):
-        if initial[k]['uid'] != current[k]['uid'] or initial[k].get('binding') != current[k].get('binding'):
+        protected = ('owners', 'finalizers', 'namespaceFinalizers', 'storageClass', 'reclaimPolicy',
+                     'storagePropertiesSha256', 'volumeMode', 'accessModes', 'provisioner', 'volumeBindingMode')
+        fields = ('uid', 'binding', 'deletionTimestamp') + (protected if initial[k]['kind'] in PROTECTED_KINDS else ())
+        if any(initial[k].get(field) != current[k].get(field) for field in fields):
             raise ValueError('preserved-identity-or-binding-changed')
+
+
+def extension_phase_actions(inventory, plan, retirement_actions):
+    """Bound the installed extension's phase separately from later core removal."""
+    expected = {plan['uid']}
+    expected |= {v['uid'] for v in inventory if v.get('helmRelease', {}).get('release-name') == 'ks-console-embed'}
+    expected |= {v['uid'] for v in inventory if v['kind'] == 'Secret' and v['namespace'] == 'kubesphere-system'
+                 and v['name'].startswith('sh.helm.release.v1.ks-console-embed.')}
+    while True:
+        expanded = expected | {v['uid'] for v in inventory if any(owner.get('uid') in expected for owner in v['owners'])}
+        if expanded == expected:
+            break
+        expected = expanded
+    if expected - {v['uid'] for v in retirement_actions}:
+        raise ValueError('extension-phase-outside-retirement-allowlist')
+    actions = [{**{k: v[k] for k in ('apiVersion', 'kind', 'namespace', 'name', 'uid', 'resourceVersion')},
+                'action': 'delete', 'propagation': 'Foreground'} for v in inventory if v['uid'] in expected]
+    validate_allowlist(inventory, actions)
+    return actions
 
 
 class Fixture:
@@ -111,6 +164,32 @@ class Fixture:
         self.image_tags = []
         self.last_step = 'not-started'
         self.fixture_volumes = []
+        self.volume_capture_verified = True  # no kind invocation and no owned volumes yet
+        self.base_tag = 'hexalith-s426-base:' + self.cluster
+        self.derived_tag = 'hexalith-s426-fenced:' + self.cluster
+
+    def capture_volumes(self):
+        """Keep volume identities before encryption or teardown can fail."""
+        self.volume_capture_verified = False
+        try:
+            result = subprocess.run(['docker', 'inspect', self.node], capture_output=True, timeout=20)
+            if result.returncode:
+                return False
+            containers = json.loads(result.stdout)
+            if (not isinstance(containers, list) or len(containers) != 1
+                    or not isinstance(containers[0].get('Mounts'), list)):
+                return False
+            if any(not isinstance(v, dict) or not isinstance(v.get('Type'), str) or not v['Type']
+                   for v in containers[0]['Mounts']):
+                return False
+            volumes = [v['Name'] for v in containers[0]['Mounts'] if v.get('Type') == 'volume']
+            if any(not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,255}', name) for name in volumes):
+                return False
+            self.fixture_volumes = sorted(set(self.fixture_volumes) | set(volumes))
+            self.volume_capture_verified = True
+            return True
+        except (ValueError, TypeError, KeyError, AttributeError, OSError, subprocess.TimeoutExpired):
+            return False
 
     def run(self, name, argv, input=None, timeout=120, allowed=(0,)):
         self.last_step = name
@@ -144,12 +223,15 @@ class Fixture:
 
     def start(self):
         # Refuse existing names, and require an already retained local image by immutable Docker ID.
+        for kind, name, command in [('container', self.node, ['docker', 'container', 'inspect', self.node]),
+                ('network', self.network, ['docker', 'network', 'inspect', self.network]),
+                ('image', self.base_tag, ['docker', 'image', 'inspect', self.base_tag]),
+                ('image', self.derived_tag, ['docker', 'image', 'inspect', self.derived_tag])]:
+            if absence_state(subprocess.run(command, capture_output=True, timeout=20), kind, name) != 'absent':
+                raise ValueError('fixture-name-exists-or-absence-unverified')
         image = json.loads(self.run('inspect-image', ['docker', 'image', 'inspect', self.args.node_image]).stdout)[0]
         if image['Id'] != self.args.node_image:
             raise ValueError('node-image-must-be-local-sha256-identity')
-        inspect = subprocess.run(['docker', 'container', 'inspect', self.node], capture_output=True)
-        if absence_state(inspect, 'container', self.node) != 'absent':
-            raise ValueError('fixture-node-exists-or-absence-unverified')
         # Stock kind assumes a default gateway. Internal Docker networks deliberately
         # have none; use the container's own IP for its DNS rewrite without adding a route.
         original = self.run('read-public-entrypoint', ['docker', 'run', '--rm', '--network', 'none', '--entrypoint',
@@ -162,9 +244,9 @@ class Fixture:
     fi''')
         from evidence import write_new
         write_new(self.attempt.directory / 'entrypoint-fenced', updated)
-        base_tag, derived_tag = 'hexalith-s426-base:' + self.cluster, 'hexalith-s426-fenced:' + self.cluster
-        self.run('tag-local-base', ['docker', 'tag', self.args.node_image, base_tag])
+        base_tag, derived_tag = self.base_tag, self.derived_tag
         self.image_tags.append(base_tag)
+        self.run('tag-local-base', ['docker', 'tag', self.args.node_image, base_tag])
         write_new(self.attempt.directory / 'Dockerfile', (f'FROM {base_tag}\nCOPY entrypoint-fenced /usr/local/bin/entrypoint\n'
                   'RUN chmod 755 /usr/local/bin/entrypoint\n').encode())
         self.image_tags.append(derived_tag)
@@ -174,18 +256,22 @@ class Fixture:
         self.attempt.record('fixture-image.json', {'baseImage': self.args.node_image, 'derivedImage': derived,
                    'originalEntrypointSha256': digest(original), 'fencedEntrypointSha256': digest(updated),
                    'change': 'internal-network DNS rewrite uses node IP; no default route or external network added'})
-        self.run('create-internal-network', ['docker', 'network', 'create', '--internal', self.network])
         self.network_created = True
+        self.run('create-internal-network', ['docker', 'network', 'create', '--internal', self.network])
         env = dict(os.environ, KIND_EXPERIMENTAL_DOCKER_NETWORK=self.network)
         # KIND never uses or modifies the source kubeconfig; all credentials here are fresh.
         config = {'kind': 'Cluster', 'apiVersion': 'kind.x-k8s.io/v1alpha4',
                   'networking': {'apiServerAddress': '127.0.0.1', 'serviceSubnet': '10.96.0.0/16'},
                   'nodes': [{'role': 'control-plane'}]}
         self.created = True  # permit exact cleanup even when create returns partially failed
+        self.volume_capture_verified = False
         self.last_step = 'kind-create'
-        r = subprocess.run(['kind', 'create', 'cluster', '--name', self.cluster, '--image', derived_tag,
+        try:
+            r = subprocess.run(['kind', 'create', 'cluster', '--name', self.cluster, '--image', derived_tag,
                             '--kubeconfig', str(self.kubeconfig), '--config', '-', '--wait', '90s', '--retain'],
                            input=canonical(config), capture_output=True, timeout=180, env=env)
+        finally:
+            self.capture_volumes()
         self.attempt.encrypt('kind-create', canonical({'exitCode': r.returncode,
                              'stdoutBase64': __import__('base64').b64encode(r.stdout).decode(),
                              'stderrBase64': __import__('base64').b64encode(r.stderr).decode()}), self.args.age, self.args.recipient)
@@ -203,7 +289,7 @@ class Fixture:
         network = json.loads(self.run('inspect-network', ['docker', 'network', 'inspect', self.network]).stdout)[0]
         # Ensure no second externally reachable Docker network was attached.
         container = json.loads(self.run('inspect-fixture-node', ['docker', 'inspect', self.node]).stdout)[0]
-        self.fixture_volumes = [v['Name'] for v in container.get('Mounts', []) if v.get('Type') == 'volume']
+        self.fixture_volumes = sorted(set(self.fixture_volumes) | {v['Name'] for v in container.get('Mounts', []) if v.get('Type') == 'volume'})
         attached = set(container['NetworkSettings']['Networks'])
         if attached != {self.network}:
             raise ValueError('fixture-has-unfenced-network')
@@ -322,7 +408,8 @@ class Fixture:
     def kubesphere_inventory(self):
         # Native names alone omit chart-owned KubeSphere ServiceAccounts/IAM/tenant
         # instances. Include all served KubeSphere CRD resources before and after.
-        resources = ('namespaces,persistentvolumes,persistentvolumeclaims,deployments.apps,replicasets.apps,pods,services,'
+        resources = ('namespaces,persistentvolumes,persistentvolumeclaims,storageclasses.storage.k8s.io,'
+                     'deployments.apps,replicasets.apps,jobs.batch,pods,services,endpoints,endpointslices.discovery.k8s.io,'
                      'configmaps,secrets,serviceaccounts,roles.rbac.authorization.k8s.io,rolebindings.rbac.authorization.k8s.io,'
                      'clusterroles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,'
                      'validatingwebhookconfigurations.admissionregistration.k8s.io,mutatingwebhookconfigurations.admissionregistration.k8s.io')
@@ -357,19 +444,30 @@ class Fixture:
         self.attempt.record('kubesphere-retirement-allowlist.json', allowlist)
         # Complete the installed extension's native controller/finalizer lifecycle
         # while its controller still exists, before removing core reconcilers.
-        plan = self.get('installplans.kubesphere.io', 'ks-console-embed')
+        phase_before = self.kubesphere_inventory()
+        plan = next(v for v in phase_before if v['kind'] == 'InstallPlan' and v['name'] == 'ks-console-embed')
         original = next(v for v in before if v['kind'] == 'InstallPlan' and v['name'] == 'ks-console-embed')
-        if plan['metadata']['uid'] != original['uid']:
+        if plan['uid'] != original['uid']:
             raise ValueError('installed-plan-uid-drift')
-        phase = {'apiVersion': plan['apiVersion'], 'kind': plan['kind'], 'name': plan['metadata']['name'],
-                 'uid': plan['metadata']['uid'], 'resourceVersion': plan['metadata']['resourceVersion'],
+        phase = {'apiVersion': plan['apiVersion'], 'kind': plan['kind'], 'name': plan['name'],
+                 'uid': plan['uid'], 'resourceVersion': plan['resourceVersion'],
                  'namespace': None, 'action': 'delete', 'propagation': 'Foreground'}
+        phase_actions = extension_phase_actions(phase_before, plan, actions)
         self.attempt.record('installed-extension-delete-phase.json', {'action': phase,
+                    'expectedRemovals': phase_actions, 'phaseBefore': phase_before,
+                    'phaseAllowlistSha256': digest(canonical(phase_actions)),
                     'allowlistSha256': digest(canonical(allowlist)), 'controllerStillRunning': True})
-        self.kube('native-extension-retirement', 'delete', '--raw', '/apis/kubesphere.io/v1alpha1/installplans/ks-console-embed',
-                  '-f', '-', obj={'apiVersion': 'v1', 'kind': 'DeleteOptions', 'propagationPolicy': 'Foreground',
-                  'preconditions': {'uid': phase['uid'], 'resourceVersion': phase['resourceVersion']}})
+        path = '/apis/kubesphere.io/v1alpha1/installplans/ks-console-embed'
+        self.kube('native-extension-retirement', 'delete', '--raw', path,
+                  '-f', '-', obj=native_delete_options(phase))
         self.kube('installed-extension-absent', 'wait', 'installplans.kubesphere.io/ks-console-embed', '--for=delete', '--timeout=90s')
+        phase_after = self.kubesphere_inventory()
+        self.attempt.record('installed-extension-after-state.json', {'resources': phase_after,
+                    'phaseAllowlistSha256': digest(canonical(phase_actions)), 'productionAccepted': False})
+        self.last_step = 'installed-extension-preservation'
+        # Unexpected controller cleanup or protected identity drift stops before
+        # any core controller is removed. Unknown non-owner effects stay blocked.
+        assert_preserved(phase_before, phase_after, {key(v) for v in phase_actions})
         result = self.run('native-kubesphere-uninstall', ['docker', 'exec', self.node, '/usr/local/bin/helm426', '--kubeconfig',
                  '/etc/kubernetes/admin.conf', '--kube-context', self.cluster, 'uninstall', 'ks-core', '-n', 'kubesphere-system',
                  '--no-hooks', '--wait', '--timeout', '90s'], timeout=120, allowed=(0, 1))
@@ -437,13 +535,56 @@ class Fixture:
         current = self.inventory()
         # Revalidate this individual action immediately before the native delete; previously deleted dependents no longer participate.
         validate_allowlist(current, [action])
-        self.kube('uid-bound-native-delete', 'delete', '--raw', path, '-f', '-', obj={'apiVersion': 'v1', 'kind': 'DeleteOptions',
-            'propagationPolicy': action['propagation'], 'preconditions': {'uid': action['uid'], 'resourceVersion': action['resourceVersion']}})
+        self.kube('uid-bound-native-delete', 'delete', '--raw', path, '-f', '-', obj=native_delete_options(action))
+
+    def check_native_delete_preconditions(self):
+        # Deliberately bypass local drift rejection only in this newly created
+        # fixture, so native apiserver precondition enforcement is observed.
+        name, namespace = 's426-precondition-race', 's426-management'
+        path = '/api/v1/namespaces/' + namespace + '/configmaps/' + name
+        obj = {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': name, 'namespace': namespace},
+               'data': {'synthetic': 'first-incarnation'}}
+        self.create(obj)
+        snapshot = self.get('configmap', name, namespace)
+        self.kube('native-race-recreate-delete', 'delete', '--raw', path, '-f', '-',
+                  obj=native_delete_options({**project_resource(snapshot), 'propagation': 'Foreground'}))
+        self.kube('native-race-old-absent', 'wait', 'configmap/' + name, '-n', namespace, '--for=delete', '--timeout=20s')
+        self.create({**obj, 'data': {'synthetic': 'second-incarnation'}})
+        before = self.get('configmap', name, namespace)
+        for label, field in [('stale-uid', 'uid'), ('stale-resource-version', 'resourceVersion')]:
+            if label == 'stale-resource-version':
+                snapshot = before
+                replacement = copy.deepcopy(before)
+                replacement['data']['synthetic'] = 'mutated-after-snapshot'
+                self.kube('native-race-mutate', 'replace', '-f', '-', obj=replacement)
+                before = self.get('configmap', name, namespace)
+            action = {**project_resource(before), 'propagation': 'Foreground'}
+            stale = snapshot['metadata'][field]
+            if stale == action[field]:
+                raise ValueError('native-negative-precondition-not-stale')
+            result = self.kube('native-negative-' + label, 'delete', '--raw', path, '-f', '-',
+                              obj=native_delete_options({**action, field: stale}), allowed=(0, 1))
+            after = self.get('configmap', name, namespace)
+            conflict = native_conflict(result)
+            unchanged = (after['metadata']['uid'] == before['metadata']['uid']
+                         and canonical(after) == canonical(before))
+            self.attempt.record('native-precondition-' + label + '.json', {
+                'precondition': field, 'nativeConflictConfirmed': conflict,
+                'nativeStatusCode': 409 if conflict else None, 'uidAndContentUnchanged': unchanged,
+                'snapshotIdentity': {k: snapshot['metadata'][k] for k in ('uid', 'resourceVersion')},
+                'currentIdentity': {k: before['metadata'][k] for k in ('uid', 'resourceVersion')},
+                'beforeObjectSha256': digest(canonical(before)), 'afterObjectSha256': digest(canonical(after)),
+                'scope': 'fresh synthetic fixture only', 'productionAccepted': False})
+            if not conflict or not unchanged:
+                raise ValueError('native-delete-precondition-not-enforced')
+        self.kube('native-race-cleanup', 'delete', '--raw', path, '-f', '-', obj=native_delete_options(action))
+        self.kube('native-race-absent', 'wait', 'configmap/' + name, '-n', namespace, '--for=delete', '--timeout=20s')
 
     def execute(self):
         if self.args.ks_chart:
             self.install_kubesphere()
         self.populate()
+        self.check_native_delete_preconditions()
         before = self.inventory()
         owner = next(v for v in before if v['kind'] == 'Workspace')
         child = next(v for v in before if v['name'] == 's426-managed')
@@ -481,6 +622,7 @@ class Fixture:
         self.attempt.record('native-result.json', {'state': 'passed-limited-synthetic-native-rehearsal',
             'before': before, 'after': after, 'allowlistSha256': digest(canonical(plan)),
             'observedNamedFinalizerBlock': True, 'protectedIdentitiesAndBindingsPreserved': True,
+            'nativeStaleUidAndResourceVersionConflictConfirmed': True,
             'syntheticCanarySha256': digest(canary), 'licensedKubeSphereWritesUsed': False,
             'stopRecovery': 'stop deletions; retain failed fixture encrypted diagnostics; rebuild only a fresh synthetic target',
             'limitations': [('Actual core runtime/uninstall outcome is recorded separately; broad vendor cleanup hooks remain disabled'
@@ -494,34 +636,63 @@ class Fixture:
 
     def cleanup(self):
         outcomes = {}
+
+        def command(argv, timeout):
+            try:
+                result = subprocess.run(argv, capture_output=True, timeout=timeout)
+                return result, {'state': 'completed', 'exitCode': result.returncode}
+            except subprocess.TimeoutExpired:
+                return None, {'state': 'timed-out', 'exitCode': None}
+            except OSError:
+                return None, {'state': 'inaccessible', 'exitCode': None}
+
+        def inspect(argv, kind, name):
+            result, _ = command(argv, 30)
+            return absence_state(result, kind, name) if result is not None else 'unverified'
+
+        # Capture mounts before deleting an owned node, even when startup failed
+        # before its normal inspection. Unknown coverage never proves absence.
         if self.created:
-            r = subprocess.run(['kind', 'delete', 'cluster', '--name', self.cluster, '--kubeconfig', str(self.kubeconfig)],
-                               capture_output=True, timeout=120)
-            outcomes['kindDeleteExit'] = r.returncode
-        if self.kubeconfig.exists():
-            self.kubeconfig.unlink()
+            try:
+                self.capture_volumes()
+            except (ValueError, OSError, subprocess.TimeoutExpired):
+                self.volume_capture_verified = False
+            _, result = command(['kind', 'delete', 'cluster', '--name', self.cluster,
+                                 '--kubeconfig', str(self.kubeconfig)], 120)
+            outcomes['kindDeleteExit'] = result['exitCode']
+            outcomes['kindDeleteState'] = result['state']
+        try:
+            if self.kubeconfig.exists() or self.kubeconfig.is_symlink():
+                self.kubeconfig.unlink()
+            outcomes['freshCredentialFileAbsent'] = not (self.kubeconfig.exists() or self.kubeconfig.is_symlink())
+        except OSError:
+            outcomes['freshCredentialFileAbsent'] = False
         if self.network_created:
-            r = subprocess.run(['docker', 'network', 'rm', self.network], capture_output=True, timeout=30)
-            outcomes['networkDeleteExit'] = r.returncode
-        inspections = {'node': absence_state(subprocess.run(['docker', 'inspect', self.node], capture_output=True), 'container', self.node),
-                       'network': absence_state(subprocess.run(['docker', 'network', 'inspect', self.network], capture_output=True), 'network', self.network)}
+            _, result = command(['docker', 'network', 'rm', self.network], 30)
+            outcomes['networkDeleteExit'] = result['exitCode']
+            outcomes['networkDeleteState'] = result['state']
+        inspections = {'node': inspect(['docker', 'inspect', self.node], 'container', self.node),
+                       'network': inspect(['docker', 'network', 'inspect', self.network], 'network', self.network)}
         outcomes['inspectionStates'] = inspections
         outcomes['nodeAbsent'] = inspections['node'] == 'absent'
         outcomes['networkAbsent'] = inspections['network'] == 'absent'
-        outcomes['freshCredentialFileAbsent'] = not self.kubeconfig.exists()
-        outcomes['volumeInspectionStates'] = {volume: absence_state(subprocess.run(['docker', 'volume', 'inspect', volume],
-                         capture_output=True), 'volume', volume) for volume in self.fixture_volumes}
-        outcomes['fixtureVolumesAbsent'] = all(state == 'absent' for state in outcomes['volumeInspectionStates'].values())
+        outcomes['volumeInventoryVerified'] = self.volume_capture_verified
+        outcomes['volumeInspectionStates'] = {volume: inspect(['docker', 'volume', 'inspect', volume], 'volume', volume)
+                                              for volume in self.fixture_volumes}
+        outcomes['fixtureVolumesAbsent'] = (outcomes['volumeInventoryVerified']
+                    and all(state == 'absent' for state in outcomes['volumeInspectionStates'].values()))
         image_cleanup = []
         for tag in reversed(self.image_tags):
-            r = subprocess.run(['docker', 'image', 'rm', tag], capture_output=True, timeout=60)
-            image_cleanup.append({'tag': tag, 'exitCode': r.returncode})
+            _, result = command(['docker', 'image', 'rm', tag], 60)
+            image_cleanup.append({'tag': tag, **result})
         outcomes['fixtureImageTagsRemoved'] = image_cleanup
+        outcomes['imageInspectionStates'] = {tag: inspect(['docker', 'image', 'inspect', tag], 'image', tag)
+                                             for tag in self.image_tags}
+        outcomes['fixtureImageTagsAbsent'] = all(state == 'absent' for state in outcomes['imageInspectionStates'].values())
         outcomes['globalPruneUsed'] = False
         outcomes['unrelatedDockerObjectsChanged'] = False
         outcomes['passed'] = (outcomes['nodeAbsent'] and outcomes['networkAbsent'] and outcomes['freshCredentialFileAbsent']
-                              and outcomes['fixtureVolumesAbsent']
-                              and outcomes.get('kindDeleteExit', 0) == 0 and outcomes.get('networkDeleteExit', 0) == 0)
+                              and outcomes['fixtureVolumesAbsent'] and outcomes['fixtureImageTagsAbsent'])
         self.attempt.record('cleanup.json', outcomes)
         return outcomes['passed']
 
@@ -544,8 +715,9 @@ class Fixture:
 
 def rehearse(args):
     args.script_digest = file_digest(Path(__file__))
-    args.source_digest = file_digest(args.source_inventory)
-    args.source = json.loads(args.source_inventory.read_text())
+    source_bytes = args.source_inventory.read_bytes()
+    args.source_digest = digest(source_bytes)
+    args.source = json.loads(source_bytes)
     if not args.source.get('sourceClusterUid') or not args.source.get('nativeEndpoint'):
         raise ValueError('source-identity-missing')
     attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id, 'rehearsal')

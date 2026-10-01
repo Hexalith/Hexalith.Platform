@@ -1,0 +1,3179 @@
+{
+  "actions": [
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "name": "extensions-museum",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1282",
+      "uid": "09de34ba-0636-4e22-8974-35b8c52b7381"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "name": "ks-apiserver",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1200",
+      "uid": "abb42dc6-8a13-485e-8532-9595e0684413"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "name": "ks-console",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1217",
+      "uid": "2384f6ff-caf9-4680-a15d-3225b860fcb6"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "name": "ks-console-embed",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1324",
+      "uid": "a869bfc0-a839-4747-b36b-dfd59b4f7d9f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "name": "ks-controller-manager",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1213",
+      "uid": "d11841b3-f011-4caa-afe5-e9d6bbb34356"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "ReplicaSet",
+      "name": "extensions-museum-76986bc55f",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1279",
+      "uid": "99f530e8-72de-480e-8f14-76b3adeb3e01"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "ReplicaSet",
+      "name": "ks-apiserver-666db447f",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1197",
+      "uid": "11ff32c9-dfa8-43b3-b289-cd7713b4c57c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "ReplicaSet",
+      "name": "ks-console-embed-675c98bc58",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1322",
+      "uid": "171624bf-071b-480f-b775-d1f12b958cd3"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "ReplicaSet",
+      "name": "ks-console-f5b799454",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1211",
+      "uid": "d284f520-7614-49d2-a5ad-4b6a60a00160"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "apps/v1",
+      "kind": "ReplicaSet",
+      "name": "ks-controller-manager-9fdbb9cb",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1205",
+      "uid": "5a27a678-ee74-4dfc-89b3-58fbd05e7986"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "name": "extensions-museum-76986bc55f-dchpk",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1277",
+      "uid": "29dcb2ea-7939-48d1-9450-c1e9475f325c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "name": "ks-apiserver-666db447f-64fzc",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1190",
+      "uid": "922817ab-bb8b-4aff-81eb-87718d1555fe"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "name": "ks-console-embed-675c98bc58-vtxcq",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1319",
+      "uid": "fbd8d758-de24-4abc-9991-cdf2f9e803f1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "name": "ks-console-f5b799454-sdtx2",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1207",
+      "uid": "e55b1392-09e7-4ed0-a263-1a7eb4bcac36"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "name": "ks-controller-manager-9fdbb9cb-78rz9",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1199",
+      "uid": "4231ff4e-0f41-4c46-b6ea-0f81d044c6bd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Service",
+      "name": "extensions-museum",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "858",
+      "uid": "b199c227-b0ec-4388-b92f-c86011ce698b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Service",
+      "name": "ks-apiserver",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "868",
+      "uid": "fb77ac7e-1328-4155-9323-94b49403ca7d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Service",
+      "name": "ks-console",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "869",
+      "uid": "d5d491bb-f85c-47da-b389-40f011447481"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Service",
+      "name": "ks-console-embed",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1288",
+      "uid": "0d72b686-55f5-4e96-a481-56d1e3e25f35"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Service",
+      "name": "ks-controller-manager",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "860",
+      "uid": "c9e50ca2-7a9d-4d81-9ec4-94307d5b10e3"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "ConfigMap",
+      "name": "extension-ks-console-embed-1.2.0-chart",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "851",
+      "uid": "629d478f-5fb8-4f71-947a-ff7776af5e9b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "ConfigMap",
+      "name": "helm-install-ks-console-embed-vw55k9",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1264",
+      "uid": "7a516a41-32cf-4b4e-9d59-c03a3392f3c8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "ConfigMap",
+      "name": "ks-console-config",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "852",
+      "uid": "214c97ae-f32d-47ad-824e-8b517ebfd23c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "ConfigMap",
+      "name": "kubesphere-config",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "850",
+      "uid": "5a76ca2a-ce05-4c13-ba83-87ef5b45ee0a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "extensions-museum-certs",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "846",
+      "uid": "7c3d4627-c7a5-4c14-b3d7-8e4501859d3a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "io.kubesphere.config.platformconfig.posthog",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "841",
+      "uid": "5cfaa2da-de44-4e7e-a11e-7aa5f311e06c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "io.kubesphere.config.platformconfig.resources",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "847",
+      "uid": "fb710825-ae3b-4ffe-a80e-1f75161fc680"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "io.kubesphere.config.platformconfig.security",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "844",
+      "uid": "5520be23-b39c-4ef9-9a2f-988537dad249"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "io.kubesphere.config.platformconfig.theme",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "849",
+      "uid": "e82c3554-1550-4611-b688-2e9f98d4f6c0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "io.kubesphere.custom-resource-filter.v1.extensions",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "842",
+      "uid": "996d1572-1829-4645-823b-f76803f255d3"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "ks-controller-manager-webhook-cert",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "845",
+      "uid": "132efc2c-1e27-446b-a2c8-809799c3c84c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "kubesphere-sa-token",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1082",
+      "uid": "1e95d6a3-4432-4628-8885-aaf031b98971"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "oauthclient-kubesphere",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "848",
+      "uid": "74aeb7ce-25f0-47e1-ab07-7cc5e519ca18"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "sh.helm.release.v1.ks-console-embed.v1",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1587",
+      "uid": "dc78a9ab-6250-4ca7-9307-defcd1bdad2b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "name": "sh.helm.release.v1.ks-core.v1",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1789",
+      "uid": "1fe2ca6e-ad6d-4a2c-9535-695e66560abc"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "ServiceAccount",
+      "name": "kubesphere",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "836",
+      "uid": "11cd1b70-1c1e-414a-9a74-f87b59f42764"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "name": "kubesphere:iam:cluster-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1182",
+      "uid": "df349fad-f64d-4c9d-b743-3ff4870ad264"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "name": "kubesphere:iam:cluster-viewer",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1173",
+      "uid": "b2429e3f-df23-4b85-a2e5-4af284b693a0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "name": "kubesphere:iam:system-workspace:system-workspace-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1341",
+      "uid": "6f32bcf7-d1b8-4293-b258-fdc2d12eca8d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "name": "kubesphere:iam:system-workspace:system-workspace-regular",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1347",
+      "uid": "0d745054-e1d1-4a9d-b8bb-8635cfb873b4"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "name": "kubesphere:iam:system-workspace:system-workspace-self-provisioner",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1348",
+      "uid": "10346cae-b2ef-45c3-b3ce-f8b2e29f89f9"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "name": "kubesphere:iam:system-workspace:system-workspace-viewer",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1342",
+      "uid": "54ec285d-072d-443e-8489-8a22fced2a4f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRoleBinding",
+      "name": "admin-cluster-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1337",
+      "uid": "a69bcf55-ce4d-4100-a109-8190d385c8f0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRoleBinding",
+      "name": "kubesphere",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "856",
+      "uid": "c181f90f-1815-4f16-8dbc-e10d4beffc51"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "applications.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1057",
+      "uid": "69383511-7bb4-44e1-932a-aa71f7775185"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "extensions.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1064",
+      "uid": "8ef76050-5dbe-488a-a28d-620954bc7c56"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "license.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1061",
+      "uid": "c771221c-e17d-4f1b-8420-53429f964fef"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "protector.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1063",
+      "uid": "8d5ab0dd-ea9e-465f-a038-956f55533f91"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "resourcequotas.quota.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1062",
+      "uid": "d69c73be-2482-464a-9873-77c216506dae"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "validator.clusters.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1060",
+      "uid": "1afcf1b6-0263-4414-a1f3-c9841638c1a1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "validator.config.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1058",
+      "uid": "e5058eb4-5a6f-4117-9f68-2c27fb5e88d0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "validator.installplan.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1059",
+      "uid": "8d96760f-deda-4944-84c7-61eef07c6882"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingWebhookConfiguration",
+      "name": "validator.user.iam.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1056",
+      "uid": "ec291128-9b62-47be-abc8-bbd6a8d8483c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "MutatingWebhookConfiguration",
+      "name": "defaulter.config.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "978",
+      "uid": "1f8f772a-ff7a-4ae5-a972-70a96e53bd13"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "MutatingWebhookConfiguration",
+      "name": "defaulter.installplan.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "981",
+      "uid": "fcb187e3-2055-4475-86e9-b1ccb50971af"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "MutatingWebhookConfiguration",
+      "name": "defaulter.user.iam.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "980",
+      "uid": "e9fbd0c5-2879-41bf-b399-72bfe93802f8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "MutatingWebhookConfiguration",
+      "name": "extensions.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "979",
+      "uid": "044f34f8-d6b9-4229-bd5c-f967d6c88978"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "MutatingWebhookConfiguration",
+      "name": "serviceaccount.kubesphere.io",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "982",
+      "uid": "b336a2fb-c1de-45bd-a9de-8da755781d4b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "project-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "885",
+      "uid": "8a89a33a-2318-42b0-bc54-e0a0994f0cf0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "project-operator",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "887",
+      "uid": "f9564812-e3dc-4b0c-805c-9f6a74380d94"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "project-viewer",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "886",
+      "uid": "c89d9369-4e1c-4a63-9ea3-eb6c8efd66d2"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "workspace-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "888",
+      "uid": "6af26d3a-f515-4820-8246-637442c10440"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "workspace-regular",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "879",
+      "uid": "4c951b96-f4b6-40c7-b8af-ffb3c7580119"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "workspace-self-provisioner",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "880",
+      "uid": "e0eaeaa5-6e38-40ff-9ffe-a1e5600e57c6"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "BuiltinRole",
+      "name": "workspace-viewer",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "878",
+      "uid": "1d0bf606-b417-45eb-915a-6ead58c0bef7"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "cluster-access-control",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "920",
+      "uid": "4df76f10-ed0d-40e8-9e06-67b960cb52c6"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "cluster-app-workloads-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "918",
+      "uid": "8ff390cf-df73-4f57-9dc0-14ce57574a46"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "cluster-project-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "924",
+      "uid": "e04838a9-627d-4c59-8426-77ea619d7b21"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "cluster-resource-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "921",
+      "uid": "bfff915e-838c-4f4a-80a3-89c16000043a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "cluster-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "913",
+      "uid": "8d8a1e77-ba21-464c-a05d-4a3db19127bc"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "cluster-storage-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "908",
+      "uid": "81b6f232-36e2-4a8c-999f-db1ad3929d75"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "global-access-control",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "912",
+      "uid": "22014be9-d36c-4b2e-b7d0-823e4a15327c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "global-cluster-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "919",
+      "uid": "a7719d3d-4b42-4ce2-b81c-82af3f71e7ef"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "global-platform-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "917",
+      "uid": "4aa2cc6e-4829-4b22-a876-908d86ab6f4d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "global-workspace-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "896",
+      "uid": "12c3a4e5-8d72-4bad-89b0-d6bb6d869c93"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "manage-app",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "923",
+      "uid": "54c10ab2-b028-40e1-a07a-2588868150e0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "namespace-access-control",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "895",
+      "uid": "aa0b9952-e8ca-4954-9c9f-abd1486b61d5"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "namespace-app",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "889",
+      "uid": "a7ae0c27-3381-40fc-ad50-0ef565780f0d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "namespace-application-workloads",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "922",
+      "uid": "691068a3-4c2c-48d0-bc04-25ea29fcbe1e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "namespace-configuration-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "916",
+      "uid": "e922ecd7-9873-4d20-a6b1-026cbd4dfe83"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "namespace-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "898",
+      "uid": "70e06f2c-df2f-45ee-93bf-4fd084d97800"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "namespace-storage-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "899",
+      "uid": "1d1411d5-81c9-4e15-a4e3-e4e4343f7862"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "workspace-access-control",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "894",
+      "uid": "cb1889d0-938f-4144-8267-184b8300d007"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "workspace-app",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "914",
+      "uid": "6bc6d9e0-39bc-4454-8cd5-7bb49b5c8e9d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "workspace-project-management",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "897",
+      "uid": "6e043d81-17da-49ba-a6e4-09a194070391"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "Category",
+      "name": "workspace-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "915",
+      "uid": "78d32c6e-fa62-4ba9-b156-b83a96aa5b83"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "ai-machine-learning",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1672",
+      "uid": "ac460288-746f-4fff-bdad-22db31318062"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "computing",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1729",
+      "uid": "58570007-92d3-4d30-9fdf-51c384ab7d7e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "database",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1644",
+      "uid": "8f066941-0413-44bc-97b3-f2447b03091e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "deepseek",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1594",
+      "uid": "010fee2f-82c5-4677-a932-0f8d953ca1e3"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "dev-tools",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1558",
+      "uid": "3d29c14a-37da-40dc-aca7-087a0d757da6"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "integration-delivery",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1598",
+      "uid": "d6d1f633-26f7-41fd-b6cf-370e48ae2480"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "networking",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1717",
+      "uid": "afe1a47c-660f-4b59-8214-3f9236a47564"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "observability",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1735",
+      "uid": "8cbdc035-760f-431e-9f6f-2f2112c07a32"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "security",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1617",
+      "uid": "7456c178-9993-4520-8938-d16351b5b4bd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "storage",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1566",
+      "uid": "79ce8f7d-390d-4c1b-8a66-070afa80751c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Category",
+      "name": "streaming-messaging",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1126",
+      "uid": "2af66550-1517-4d38-bcc5-f5afff2656bd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "ClusterRole",
+      "name": "cluster-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1178",
+      "uid": "fb051461-1e60-4f6c-8269-1323d2e2d1fa"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "ClusterRole",
+      "name": "cluster-viewer",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1098",
+      "uid": "dedb0f0f-d50f-4071-8f2b-41a575ecab14"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "alloy",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1705",
+      "uid": "d4be3df3-9f03-455d-bb00-03eb496ef697"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "cert-manager",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1499",
+      "uid": "0d027531-b77d-4652-8152-d10a2c36538f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "computing-device-manager",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1589",
+      "uid": "866aaaf1-03ac-4289-b38a-634cf50cbec0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "deepseek",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1596",
+      "uid": "ef6088ba-13b8-4309-90ec-bf3f2d985674"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "devops",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1602",
+      "uid": "31329f12-3eef-4a61-93f6-4ddd024ed4a6"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "doris",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1709",
+      "uid": "cd91db4e-4e02-4dfe-a9dc-b24466a2e1c8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "edgewize",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1606",
+      "uid": "4f95482b-5d47-4192-b628-d98e0c1f1caa"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "fluid",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1540",
+      "uid": "f35e50de-966f-4e04-9f2b-2101b44eee46"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "fluid-console",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1619",
+      "uid": "589557f7-e2df-4d79-9c1f-0b2b82f329b7"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "gatekeeper",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1621",
+      "uid": "1c888b58-f92b-403b-bc1c-7669917b6a18"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "gateway",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1719",
+      "uid": "a8da0bbc-525a-45e8-9fd5-dc6143e86e07"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "grafana",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1425",
+      "uid": "784b7894-af53-4161-88bc-910c87924bdb"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "higress",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1460",
+      "uid": "b27c9399-3119-4171-a886-6017f5c1abe1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "ingress-utils",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1467",
+      "uid": "9acd952c-042b-447d-8ba2-336156439736"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "kaito",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1674",
+      "uid": "f740407b-1143-40a5-b925-0102d12ab10f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "karmada",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1625",
+      "uid": "32ca8bae-3280-43bf-a4df-6366fc975a37"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "karmada-dashboard",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1544",
+      "uid": "e4e05274-90c6-4384-bdf5-eea854f92dba"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "ks-autoscaling",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1631",
+      "uid": "6959bf83-74ba-4126-9f20-c581c527dd4d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "ks-console-embed",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1647",
+      "uid": "2dfdb8a7-d37e-40ac-91ee-04e3cea556d2"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "kubeeye",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1432",
+      "uid": "df4c648b-8250-4a61-baa0-023ab7e0f883"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "kubefed",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1504",
+      "uid": "0d67b6f1-7645-45a1-8668-a9464005fc11"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "loki",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1640",
+      "uid": "f1e0c1c1-0491-46fe-9e10-a398ae9565e1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "lws",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1641",
+      "uid": "0a87df0a-3079-4b97-9735-b6651dd202d0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "metrics-server",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1554",
+      "uid": "964c4ccd-8d69-43ec-843b-487def0e08f4"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "network",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1722",
+      "uid": "6914d357-65fe-4d4c-9d1c-8a11414e4ffb"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "nodegroup",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1681",
+      "uid": "7028e51a-31cc-444b-83b2-8a6951487a6d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "nvidia-gpu-operator",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1510",
+      "uid": "fd3c9b8e-28d8-41f1-8877-43aac325437f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "nvidia-network-operator",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1447",
+      "uid": "30831608-a734-4f8d-bc70-62bc792f54f1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "oauth2-proxy",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1518",
+      "uid": "aed4bda9-8ecd-4cbc-b761-00995b18b929"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "ob-operator",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1648",
+      "uid": "f52a038a-196e-4f11-a33b-4a16aeed1f78"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "oceanbase-dashboard",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1473",
+      "uid": "d87759e8-aea4-4e0c-8426-8dcc70f2387c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "openpitrix",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1556",
+      "uid": "da97acf6-6770-4525-856a-0467c338914b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "opensearch",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1477",
+      "uid": "e97fb63f-c299-408d-a420-9872b5971eb4"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "s2ibuilder",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1482",
+      "uid": "4d56b1a5-9005-4cfd-a1d3-73de9169e04a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "servicemesh",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1450",
+      "uid": "24e01be5-57ee-4b62-9293-6ec7a1497b27"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "springcloud",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1563",
+      "uid": "dbf8761a-a988-43e5-8c32-9e43753af50d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "storage-utils",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1570",
+      "uid": "545e5e7a-54bb-4b71-8cdd-c2bb3ee74154"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "tempo",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1727",
+      "uid": "86c71e87-7de5-4344-a893-5c16191fa4ca"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "tower",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1453",
+      "uid": "fedaf0f0-52c3-436d-be01-6d2dfdeeca7e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "vector",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1692",
+      "uid": "11411267-e160-42a4-992d-3127aa9b5c3b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "vertical-pod-autoscaler",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1732",
+      "uid": "8d93e100-6773-4b55-8117-a20daf402679"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "volcano",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1577",
+      "uid": "573c1803-dc23-4f30-a55a-a0289158b501"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-alerting",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1654",
+      "uid": "1de89556-e2df-42a0-9108-b075a85d9474"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-auditing",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1581",
+      "uid": "10f310ca-259a-4da4-b231-2ea87164c6ae"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-events",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1661",
+      "uid": "0225fba3-0b20-47e9-9a81-98ddc38dd32e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-logging",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1695",
+      "uid": "2ffa8231-b907-4845-921f-f998e8086eed"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-monitoring",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1743",
+      "uid": "5ebaef0a-33f0-4bf0-a1ac-2d5683e69502"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-monitoring-pro",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1528",
+      "uid": "008e60ad-a410-4634-b83e-9bc6df40343b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-notification",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1669",
+      "uid": "ec33abc0-8a96-4464-888a-25fe81817a5a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-telemetry",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1489",
+      "uid": "7e7a5301-7ed2-48cb-95d3-36c21dc88a36"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "whizard-telemetry-ruler",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1534",
+      "uid": "559d7a38-3467-48c1-bd30-7faf4d27da0a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "wiztelemetry-bpfconductor",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1699",
+      "uid": "3b4694e2-0976-45ca-ae58-8ffaeb76259c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Extension",
+      "name": "wiztelemetry-tracing",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1494",
+      "uid": "803a9f0b-cd61-4c01-8d6f-dc2926ca0237"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "alloy-1.0.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1701",
+      "uid": "da027fc1-bfb1-46a1-9426-3ee891442462"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "cert-manager-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1496",
+      "uid": "062b65d3-6fa1-4662-a738-4ecd2e805f58"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "computing-device-manager-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1584",
+      "uid": "ef089a97-911c-4791-8d6a-24fa72646aea"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "deepseek-0.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1593",
+      "uid": "22883701-b692-40b0-b7a0-4e93074a1343"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "deepseek-0.1.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1592",
+      "uid": "922dc554-0ac0-4a8d-bb3b-cc9e59846e89"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "devops-1.2.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1601",
+      "uid": "2ae07c52-2fae-4470-a184-9fe0319c66da"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "devops-1.2.4",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1599",
+      "uid": "ed62565f-b32e-4087-989f-49e76d345192"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "doris-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1707",
+      "uid": "88ac443f-2f79-4166-b5e4-b617b6d13733"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "edgewize-3.1.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1604",
+      "uid": "f5507782-f993-4f89-9091-c0052677c678"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "fluid-0.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1536",
+      "uid": "9238ee26-9786-4cb6-968c-307ce6540936"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "fluid-console-0.4.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1613",
+      "uid": "0cb5fe7e-8c4e-4628-a3a1-93c92be0cf6b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "fluid-console-0.5.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1611",
+      "uid": "db862ec0-d3c6-45b4-95e1-d2703e68b40c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "fluid-console-0.6.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1609",
+      "uid": "28f77b80-f08c-42d4-9089-5e10cbfdb75d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "gatekeeper-1.0.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1616",
+      "uid": "f428a278-6ff2-47db-b16b-703e5854c408"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "gateway-1.1.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1714",
+      "uid": "a1a1f349-9402-4ed4-9a60-ac2d710843ea"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "gateway-1.1.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1711",
+      "uid": "abda71f9-ce4e-4ca7-b3d7-96da427bcd24"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "grafana-10.4.14",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1424",
+      "uid": "0c2ce7f1-0cc6-4cf8-88e4-a4cdaeb5f9e3"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "grafana-10.4.19",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1422",
+      "uid": "d2a58bf2-deec-4351-b246-0627f5fc36de"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "higress-2.1.4",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1455",
+      "uid": "6a32b094-8465-4701-a484-da8ca0ef77ea"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "ingress-utils-1.0.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1465",
+      "uid": "e01a5bd0-0c0c-4df0-aada-f981f08d7d68"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "ingress-utils-1.0.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1462",
+      "uid": "722bf3f2-937c-439c-a879-af1de0ffb42c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "kaito-0.6.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1671",
+      "uid": "20f570bc-857e-4cbe-a0bd-59ffcc07f9b9"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "karmada-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1623",
+      "uid": "afc25941-adea-414b-8851-e8a8b9103ce5"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "karmada-dashboard-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1542",
+      "uid": "6fe1dc31-6f06-419f-bea4-468d938aef4b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "ks-autoscaling-1.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1628",
+      "uid": "06ebae0f-d8ba-4f82-9c4f-60eb2d7b3784"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "ks-console-embed-1.2.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1223",
+      "uid": "266fd94a-9d3f-49d7-be1b-83be123b5ffd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "kubeeye-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1428",
+      "uid": "3d0cd235-377e-429b-95f2-ef0a192ea11a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "kubefed-1.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1501",
+      "uid": "bbccb4ec-fb66-4de1-8633-5d3b3dd4cd11"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "loki-1.0.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1633",
+      "uid": "5ed681a4-3a79-40f2-bfb8-e169e39a4bad"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "lws-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1637",
+      "uid": "bc738066-bd20-4ace-a6bd-78b3d00417af"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "metrics-server-0.7.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1549",
+      "uid": "d69636dc-c221-4454-aaa4-504fe53bf353"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "metrics-server-0.8.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1547",
+      "uid": "88e32031-5ff9-4fd2-aab3-04e1fe22ecd4"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "network-1.2.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1720",
+      "uid": "774e2fcf-d5cc-47e3-a7d2-78d3fe510762"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "network-1.3.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1718",
+      "uid": "caed640c-b052-4bbc-a68b-794924cb2444"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "nodegroup-1.0.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1679",
+      "uid": "8108562b-2594-4bb6-a1f7-38e08331a788"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "nodegroup-1.0.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1676",
+      "uid": "62041bdb-8ced-4d71-b5ef-bf240d0ff4b8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "nvidia-gpu-operator-23.9.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1507",
+      "uid": "70148c26-775b-4475-8e3f-40ed314806db"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "nvidia-network-operator-25.7.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1434",
+      "uid": "998682ed-194d-4fc4-a1f6-5121d6e13fa5"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "oauth2-proxy-7.6.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1515",
+      "uid": "a0dee152-ad3c-4368-bd92-0507227b6de2"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "oauth2-proxy-7.6.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1514",
+      "uid": "dc892484-c8ff-42d8-8273-fc82cb0886ad"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "ob-operator-2.3.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1645",
+      "uid": "ef34695b-478e-4db8-95de-43ee88bfa42a"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "oceanbase-dashboard-0.4.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1469",
+      "uid": "bd5bf808-3a45-4711-a2df-ac2ebd0eed22"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "openpitrix-2.1.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1552",
+      "uid": "251e10d3-e1b9-4913-a169-f2ef1cf66954"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "opensearch-2.11.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1475",
+      "uid": "1a62ef84-9155-4618-945b-51709628cb97"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "s2ibuilder-0.1.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1479",
+      "uid": "2b049ead-3d2d-4e23-9812-ddc82d7bc992"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "servicemesh-1.0.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1443",
+      "uid": "88473512-d5ff-478a-9015-0e0157aede70"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "springcloud-1.0.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1561",
+      "uid": "f30c0c1d-f043-4e56-afee-da7ef35ebf35"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "springcloud-1.0.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1559",
+      "uid": "fb71e941-91b3-49b2-a894-51ccf9b06766"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "storage-utils-1.0.3",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1568",
+      "uid": "806af161-a807-4795-976b-ef146c0623ff"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "storage-utils-1.0.4",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1565",
+      "uid": "21e46fd1-b036-49d9-a335-4f4cd9287b88"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "tempo-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1724",
+      "uid": "da34b9d0-e000-4f05-9872-a5c55d111a0d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "tower-1.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1449",
+      "uid": "2c607064-01fd-459d-9a17-9179b482d82f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "vector-1.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1686",
+      "uid": "0cbd12ab-509f-4d8d-8a33-c945e07c577e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "vector-1.1.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1684",
+      "uid": "4bd5d720-d2b1-4cda-bb0f-b6083d02295c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "vertical-pod-autoscaler-1.4.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1730",
+      "uid": "73a34e19-bf3e-4518-a8cb-154d6e97ef21"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "volcano-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1572",
+      "uid": "774ce110-fdbd-4876-acb6-59692158abc8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-alerting-1.0.5",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1653",
+      "uid": "c6acdd16-aeb5-4017-b68c-e47a0905b2f7"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-alerting-1.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1652",
+      "uid": "71b95555-d8ce-4f34-a276-f09a2fc4748d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-auditing-1.3.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1578",
+      "uid": "6130a33b-2781-4676-abed-1e0ce0ed0d93"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-events-1.3.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1658",
+      "uid": "3b3cd7e5-50fb-4455-827b-d93ecb32f689"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-logging-1.3.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1690",
+      "uid": "41df2aa0-b02d-487f-8192-2a457f3e5279"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-monitoring-1.2.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1739",
+      "uid": "85da1e8d-960c-4eb4-9eb8-5375cd09e28f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-monitoring-1.2.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1736",
+      "uid": "96632a72-6369-4355-beb1-db0f57464d85"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-monitoring-pro-1.0.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1524",
+      "uid": "748ce347-a479-4f90-bb44-b36b8eee2b02"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-monitoring-pro-1.0.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1520",
+      "uid": "e33197f3-aaf4-4d59-b431-6c1f5a35485b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-notification-2.6.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1667",
+      "uid": "c95719b7-4df0-4324-8fb4-d0105204f540"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-notification-2.6.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1665",
+      "uid": "c5620d2b-108d-45f8-b7dc-37382eef56cb"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-telemetry-2.0.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1487",
+      "uid": "9e46abfb-7ece-433a-87aa-db37d40044cd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-telemetry-2.1.0",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1486",
+      "uid": "d5243a1f-3f98-4878-b0f7-897503d3450d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-telemetry-ruler-1.3.1",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1532",
+      "uid": "ab89d13f-7487-463d-9843-42217935e3a8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "whizard-telemetry-ruler-1.3.2",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1530",
+      "uid": "e4bccff1-8fef-4567-80bd-4a0c2d0befb7"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "wiztelemetry-bpfconductor-1.0.4",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1697",
+      "uid": "39cc0515-7811-4807-8416-ab97eca10cb0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ExtensionVersion",
+      "name": "wiztelemetry-tracing-1.0.4",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1492",
+      "uid": "a69ac696-8cc0-4737-97d0-9c5ee149abaa"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRoleBinding",
+      "name": "admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1168",
+      "uid": "d3acebe3-db0d-4977-ba91-8b4fc4c46fd8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRoleBinding",
+      "name": "anonymous",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1152",
+      "uid": "0cdad8bc-4639-4ec0-a373-eed80fdf2fbf"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRoleBinding",
+      "name": "authenticated",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1151",
+      "uid": "3004d919-8b39-45e6-b94b-f932ee57e9d8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRoleBinding",
+      "name": "ks-console",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1160",
+      "uid": "b4243c50-1076-4c3f-85ee-7af1ce161313"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRoleBinding",
+      "name": "pre-registration",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1161",
+      "uid": "e990252a-87b5-4dcf-b41f-dc401413288d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "anonymous",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1101",
+      "uid": "90748b36-2e4b-46b2-8fd1-7bf26f432bef"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "authenticated",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1104",
+      "uid": "1c9b6c95-7937-4665-aa4a-f89e2c281b6e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "ks-console",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1107",
+      "uid": "c88d9aa9-16ab-413c-83c2-0a482aeda4a9"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "platform-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1116",
+      "uid": "c2c40493-86bd-4357-9053-982ada95fedc"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "platform-regular",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1090",
+      "uid": "8313431d-53f3-48c8-ba37-58bb4310f3a0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "platform-self-provisioner",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1095",
+      "uid": "76ca20f6-a832-43c1-8747-567ee0e24d57"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "GlobalRole",
+      "name": "pre-registration",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1097",
+      "uid": "2a22d52c-b3b4-47f9-8d04-4bdb870f9007"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "InstallPlan",
+      "name": "ks-console-embed",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1643",
+      "uid": "06f7a2e9-7396-4f91-9bfe-ad62607b0868"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "Repository",
+      "name": "extensions-museum",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1742",
+      "uid": "bfa92ce6-22de-419c-a30e-d777dc9d5755"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "extensions.kubesphere.io/v1alpha1",
+      "kind": "ReverseProxy",
+      "name": "io.kubesphere.console.embed",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1293",
+      "uid": "d8b8fe60-db36-47b5-a39d-10be5e8893d6"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-app-workloads",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1000",
+      "uid": "99e3ea90-d6b5-4916-b78b-e4bd0e63d042"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-cluster-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "991",
+      "uid": "ef200031-2f46-493f-b23a-944ef35b49fb"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-crds",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1011",
+      "uid": "384f2eff-78ef-428a-b466-e93ebb414adc"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-members",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1033",
+      "uid": "3fac6ff1-8729-4ac7-a126-c4dd0d496b74"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-nodes",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1036",
+      "uid": "845204cb-d171-4210-99ec-887c9a1bab27"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-persistentvolumeclaims",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1013",
+      "uid": "0a0dc267-e4b3-43ea-93d2-2f9fb661754b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-projects",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "999",
+      "uid": "4711d202-479c-458d-873c-4486e6fdd17e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1027",
+      "uid": "46df1c6a-b587-4e08-8ced-34155fbe3f62"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-manage-storageclasses",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1019",
+      "uid": "b821f813-d42a-4dcf-b05c-64d06f04e232"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-app-workloads",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1004",
+      "uid": "2e9bd540-ce86-491b-a1a3-34afaa5b19c1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-cluster-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "988",
+      "uid": "d8954402-6037-4816-86a0-116b39446a66"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-components",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1030",
+      "uid": "792db525-5a79-41aa-a194-5da5cc8f1852"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-crds",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "995",
+      "uid": "6ba9de84-72a5-4715-8058-667026fdfda0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-members",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1029",
+      "uid": "7fbebe75-ab9f-4edb-8f63-3d2ad170ee91"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-nodes",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1021",
+      "uid": "240c2459-efc7-4907-9e9b-e667fce0e949"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-persistentvolumeclaims",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1024",
+      "uid": "9d636bd7-e32e-428f-bd7b-dba9b3bd4c87"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-projects",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "996",
+      "uid": "a240f20f-2a3d-4f7c-b8c0-9c42798d3189"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1049",
+      "uid": "0ebd3a37-0dfe-4387-a2a6-d0b8ed515429"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "cluster-view-storageclasses",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1008",
+      "uid": "85f0910b-388e-43e9-8e27-60d52c3b559f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-create-workspaces",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "987",
+      "uid": "775f12e0-a78e-43af-8527-f81eb7dd8e4e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-manage-clusters",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "994",
+      "uid": "31f7d506-c6cd-4467-a8ed-894622e99874"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-manage-platform-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "986",
+      "uid": "311ccd63-d238-4ec0-918e-8f40b9881129"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-manage-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "997",
+      "uid": "6fe6479d-9826-4953-a161-24d00305bd85"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-manage-users",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "985",
+      "uid": "27409ce0-912b-4065-8f17-32046185d4be"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-manage-workspaces",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1009",
+      "uid": "f6d9ec6a-f5b0-4ffe-9ef9-a1054e171698"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-role-template-manage-app",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1012",
+      "uid": "5ac28946-46fd-4377-88fa-8dd61a8304dd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-view-clusters",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1018",
+      "uid": "c6729e56-4973-497b-ae0a-5025b271acec"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-view-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "990",
+      "uid": "2659c67a-2470-4804-b3e8-989ea897b167"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-view-users",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1010",
+      "uid": "a52e4a41-b850-4dfd-965f-2f9c57753a29"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "global-view-workspaces",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1006",
+      "uid": "84d8d90f-5355-4964-bfd1-87880c2ae642"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-create-app-releases",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "989",
+      "uid": "23b0fd50-03b5-4f79-97ad-24aa76b1802d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-delete-app-releases",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1050",
+      "uid": "99876eb0-cded-4b17-a575-9b78b5d6c48b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-app-releases",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1037",
+      "uid": "d725142c-3cec-4a29-afe6-4968edd23f8b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-app-workloads",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1039",
+      "uid": "5386f85a-d483-4709-b8f2-8b354508d04c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-configmaps",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1047",
+      "uid": "a13f0177-7991-4e0e-a60f-3c10f4543791"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-members",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1020",
+      "uid": "99d653da-561f-4745-8137-02d64dce6582"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-persistentvolumeclaims",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1007",
+      "uid": "cc73b42e-9e1e-4e2d-be59-670a8de32dda"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-project-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1035",
+      "uid": "e7287ccf-66e9-4212-ad80-c1c65eb9e877"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1041",
+      "uid": "0aa20b4c-79dd-448b-80e8-affe11bd2a3f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-secrets",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1028",
+      "uid": "b66a977f-dca8-4949-9c23-6459a2c2340c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-serviceaccount",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1014",
+      "uid": "995af11d-2cf5-427d-9e3b-cf0ffea90afc"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-manage-workloadtemplates",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1025",
+      "uid": "ec483598-489f-45fe-8beb-a39dd1b22b96"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-app-releases",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1045",
+      "uid": "44759417-2bf1-4058-98a4-2fcfa625a58d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-app-workloads",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1052",
+      "uid": "395d1dc9-df46-4e6f-9efd-0796adf416a1"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-configmaps",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1046",
+      "uid": "22e747f3-f7b2-467b-9c4f-4492cef75f44"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-members",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1017",
+      "uid": "54bbb5c8-2278-4f0f-accf-6ff7b4ba959d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-persistentvolumeclaims",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1003",
+      "uid": "89c3615a-98c4-4020-9e78-06e8dfe6b0c8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-project-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1043",
+      "uid": "d1fc37d6-b860-4787-8ba2-3e82dc3a0cff"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1032",
+      "uid": "5e7a42a7-05f7-45ca-aa96-8f98a8dd25dd"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-secrets",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1022",
+      "uid": "7244b0a8-7b34-498c-a579-13353b24236d"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-serviceaccount",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1031",
+      "uid": "c5e59a67-59d4-40cf-92a1-568e3602080f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "namespace-view-workloadtemplates",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1001",
+      "uid": "a26955b2-bf86-4a49-a293-b3915ad40e1c"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-create-projects",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1054",
+      "uid": "68aab523-ac7f-4f35-b5c6-1bdb77652078"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-delete-app-templates",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1016",
+      "uid": "b5b1c6f0-a620-4353-90b7-2efedaa5b618"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-app-repos",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "993",
+      "uid": "06ff4336-bdda-44de-91cc-047ef35757a0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-app-templates",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1023",
+      "uid": "0a28adf9-afd3-4042-a7e5-ae4afcf57ae8"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-groups",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1026",
+      "uid": "212ae32e-6708-4f17-8c56-604faef86ffe"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-members",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1048",
+      "uid": "3a9bd0a6-5e95-4070-b45a-3d6292f8d9a7"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-projects",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1053",
+      "uid": "b6b11732-1f02-48b9-bedd-9ec280d4683b"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1044",
+      "uid": "f58dd93f-e5f2-492a-81e3-76f7b595ba59"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-manage-workspace-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1002",
+      "uid": "a38f312e-8b39-4fa8-a094-84a31d69b38e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-app-repos",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1015",
+      "uid": "f84217ec-8e04-431a-b429-2564de2d849f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-app-templates",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "998",
+      "uid": "62154010-754a-41e3-b28e-8330d6c8748e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-create-app-templates",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1005",
+      "uid": "49edd2c1-624f-4211-b3eb-b84611cca25e"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-groups",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1034",
+      "uid": "be0ef447-3991-4720-a717-ea4668b30766"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-members",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1038",
+      "uid": "e8bd1ec8-e820-4681-899b-30b93fed890f"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-projects",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1040",
+      "uid": "1e06d83b-3e46-4bf5-a50a-a79b5a60b2b5"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-roles",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1051",
+      "uid": "1477d00c-9644-4ba1-b23f-cd1516c13201"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "RoleTemplate",
+      "name": "workspace-view-workspace-settings",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "992",
+      "uid": "547272e1-1c8d-4ecc-a628-76ed37246da7"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "kubesphere.io/v1alpha1",
+      "kind": "ServiceAccount",
+      "name": "ks-console",
+      "namespace": "kubesphere-system",
+      "propagation": "Foreground",
+      "resourceVersion": "1157",
+      "uid": "36fd3c18-cb53-4148-8558-89089cd510ea"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "User",
+      "name": "admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1359",
+      "uid": "464cd9cf-c0c3-4685-8ff0-c167ea0e2ed0"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "WorkspaceRoleBinding",
+      "name": "system-workspace-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1193",
+      "uid": "9ae1ac9c-57d8-491b-b66b-29e212ec6713"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "WorkspaceRole",
+      "name": "system-workspace-admin",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1179",
+      "uid": "7f949e84-c893-4bcf-8a57-2c72b9995e97"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "WorkspaceRole",
+      "name": "system-workspace-regular",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1212",
+      "uid": "b01cb832-0a89-4424-bf88-6133012e9c55"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "WorkspaceRole",
+      "name": "system-workspace-self-provisioner",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1198",
+      "uid": "7f752bc2-68e4-4766-8c76-262938c61e84"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "iam.kubesphere.io/v1beta1",
+      "kind": "WorkspaceRole",
+      "name": "system-workspace-viewer",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1175",
+      "uid": "a7a94132-014b-45e5-b5b3-9076bc44c1b5"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "tenant.kubesphere.io/v1beta1",
+      "kind": "WorkspaceTemplate",
+      "name": "system-workspace",
+      "namespace": null,
+      "propagation": "Foreground",
+      "resourceVersion": "1184",
+      "uid": "4741ad06-561b-4969-833b-497955d01c75"
+    }
+  ],
+  "chartSha256": "a5c87fe18477bacf9032eb9cf2968b73d73465aa3652b99eede865fe3ba7fbdd",
+  "procedure": "native Helm3 uninstall ks-core --no-hooks; no namespace/CRD wildcard/finalizer edits",
+  "productionAccepted": false,
+  "scope": "fixture-only; Helm observes UIDs immediately before command, no atomic multiobject preconditions",
+  "sourceInventorySha256": "1046cd7a694adce9a785be602704904d8e567db8adaf63a85e7401dd7f839e65"
+}

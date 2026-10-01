@@ -40,7 +40,11 @@ class Attempt:
             raise ValueError('invalid-attempt-id')
         if category not in ('qualification', 'rehearsal'):
             raise ValueError('invalid-attempt-category')
-        resolved = root.resolve()
+        self.directory = root / category / attempt_id
+        for part in [self.directory, *self.directory.parents]:
+            if part.is_symlink():
+                raise ValueError('symlink-in-evidence-path')
+        resolved = self.directory.resolve()
         if resolved == self.project or self.project in resolved.parents:
             raise ValueError('private-evidence-must-be-outside-git')
         # Evidence from 4.0/4.1 is read-only even if a caller selects its path.
@@ -48,10 +52,6 @@ class Attempt:
                           Path.home() / 'hexalith-recovery-evidence')
         if any(resolved == p.resolve() or p.resolve() in resolved.parents for p in recovery_roots):
             raise ValueError('must-not-write-into-existing-recovery-evidence')
-        for part in [root, *root.parents]:
-            if part.is_symlink():
-                raise ValueError('symlink-in-evidence-path')
-        self.directory = root / category / attempt_id
         for part in [self.directory, *self.directory.parents]:
             if part == root.parent:
                 break

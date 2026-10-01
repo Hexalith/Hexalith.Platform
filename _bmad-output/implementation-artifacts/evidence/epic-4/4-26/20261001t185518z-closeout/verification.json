@@ -1,0 +1,749 @@
+{
+  "actualRetirement": {
+    "afterObjects": 437,
+    "allowlistSha256": "fa04fd13ad22f73d096a2c714e161848fca6ebe7b75a38f7f95bb5fc671c8a12",
+    "allowlistedRemoved": 166,
+    "attempt": "20261001t184031z-rehearsal",
+    "authenticatedApplicationHealthVerified": false,
+    "beforeObjects": 604,
+    "cleanup": {
+      "fixtureImageTagsRemoved": [
+        {
+          "exitCode": 0,
+          "tag": "hexalith-s426-fenced:s426-98923ed4a2f8"
+        },
+        {
+          "exitCode": 0,
+          "tag": "hexalith-s426-base:s426-98923ed4a2f8"
+        }
+      ],
+      "fixtureVolumesAbsent": true,
+      "freshCredentialFileAbsent": true,
+      "globalPruneUsed": false,
+      "inspectionStates": {
+        "network": "absent",
+        "node": "absent"
+      },
+      "kindDeleteExit": 0,
+      "networkAbsent": true,
+      "networkDeleteExit": 0,
+      "nodeAbsent": true,
+      "passed": true,
+      "unrelatedDockerObjectsChanged": false,
+      "volumeInspectionStates": {
+        "1d752a1a52b5ab6419f5cbd0b442066fd99d9c71ff98692ba49b84e053d1c3f3": "absent"
+      }
+    },
+    "currentPhaseOwnerCoverageGuardsUnitTestedOnly": true,
+    "currentProcedureSha256": "ff92dbb095f1bcadee382b61dacf9629a359be7d789f0da094f1918a8cc26e08",
+    "executedProcedureBytesRetainedEncrypted": true,
+    "executedProcedureSha256": "d4fd9a0977d3e5fc8d40de9bc5e0f54830210c3455ea2b2f8218bd061d17a3eb",
+    "expectedRetirements": 317,
+    "helmExitCode": 1,
+    "noFinalizersStripped": true,
+    "postCoreCanaryVerified": false,
+    "protectedMetadata": [
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {
+          "kubesphere.io/managed": "true",
+          "kubesphere.io/workspace": "system-workspace"
+        },
+        "name": "default",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1404",
+        "uid": "6b5da0ec-34ab-4ab5-862f-92ab1cc2318c"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {
+          "kubesphere.io/managed": "true",
+          "kubesphere.io/workspace": "system-workspace"
+        },
+        "name": "kube-node-lease",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1412",
+        "uid": "0b61578f-61f7-47f4-be55-0d268a9994da"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {
+          "kubesphere.io/managed": "true",
+          "kubesphere.io/workspace": "system-workspace"
+        },
+        "name": "kube-public",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1427",
+        "uid": "6b68b700-90de-40d2-a702-75f5b075e389"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {
+          "kubesphere.io/managed": "true",
+          "kubesphere.io/workspace": "system-workspace"
+        },
+        "name": "kube-system",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1458",
+        "uid": "400ac25d-544f-4cf1-bb87-0e5754d52707"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {
+          "kubesphere.io/managed": "true",
+          "kubesphere.io/workspace": "system-workspace"
+        },
+        "name": "kubesphere-controls-system",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1395",
+        "uid": "7443fcfc-2cce-4fd8-8a03-565f15701c1f"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {
+          "kubesphere.io/managed": "true",
+          "kubesphere.io/workspace": "system-workspace"
+        },
+        "name": "kubesphere-system",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1384",
+        "uid": "b945ca50-bd67-4134-9497-d103c9ce6d4f"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {},
+        "name": "local-path-storage",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "419",
+        "uid": "43651ff6-5bae-4b46-bf9a-17709908ff68"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {},
+        "name": "s426-management",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1824",
+        "uid": "aa76707b-bd65-417e-871f-d7da3db6e052"
+      },
+      {
+        "apiVersion": "v1",
+        "deletionTimestamp": null,
+        "finalizers": [],
+        "helmRelease": {},
+        "kind": "Namespace",
+        "managementLabels": {},
+        "name": "s426-workload",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "1832",
+        "uid": "b91a5021-e012-4db6-a1f2-7a394215ae42"
+      },
+      {
+        "apiVersion": "v1",
+        "binding": {
+          "name": "s426-data",
+          "namespace": "s426-workload",
+          "uid": "b1662c18-84d0-466e-9a8c-fdc7ebb72b06"
+        },
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubernetes.io/pv-protection"
+        ],
+        "helmRelease": {},
+        "kind": "PersistentVolume",
+        "managementLabels": {},
+        "name": "s426-data",
+        "namespace": null,
+        "owners": [],
+        "reclaimPolicy": "Retain",
+        "resourceVersion": "1890",
+        "storageClass": null,
+        "uid": "9c05c6d1-6cbe-41b9-b2a8-ebff8a8f8318"
+      },
+      {
+        "apiVersion": "v1",
+        "binding": {
+          "phase": "Bound",
+          "storageClass": null,
+          "volumeName": "s426-data"
+        },
+        "deletionTimestamp": null,
+        "finalizers": [
+          "kubernetes.io/pvc-protection"
+        ],
+        "helmRelease": {},
+        "kind": "PersistentVolumeClaim",
+        "managementLabels": {},
+        "name": "s426-data",
+        "namespace": "s426-workload",
+        "owners": [],
+        "resourceVersion": "1914",
+        "uid": "b1662c18-84d0-466e-9a8c-fdc7ebb72b06"
+      },
+      {
+        "apiVersion": "apps/v1",
+        "claims": [],
+        "configReferences": [],
+        "deletionTimestamp": null,
+        "finalizers": [],
+        "helmRelease": {},
+        "imageIds": [],
+        "images": [
+          "registry.k8s.io/pause:3.10"
+        ],
+        "kind": "Deployment",
+        "managementLabels": {},
+        "name": "s426-preserve",
+        "namespace": "s426-workload",
+        "owners": [],
+        "replicas": 0,
+        "resourceVersion": "1877",
+        "serviceAccount": null,
+        "uid": "5fbd9c99-d407-488b-9ce9-06120becc345"
+      }
+    ],
+    "protectedMetadataPreserved": true,
+    "remainingExpected": 151,
+    "state": "failed-closed",
+    "terminatingResources": [
+      {
+        "apiVersion": "kubesphere.io/v1alpha1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "extensionEvidenceClass": "catalog-or-configuration",
+        "finalizers": [
+          "kubesphere.io/extension-protection"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "Extension",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "ks-console-embed",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2357",
+        "uid": "2dfdb8a7-d37e-40ac-91ee-04e3cea556d2"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalrolebindings"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRoleBinding",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "admin",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2370",
+        "uid": "d3acebe3-db0d-4977-ba91-8b4fc4c46fd8"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalrolebindings"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRoleBinding",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "anonymous",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2369",
+        "uid": "0cdad8bc-4639-4ec0-a373-eed80fdf2fbf"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalrolebindings"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRoleBinding",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "authenticated",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2367",
+        "uid": "3004d919-8b39-45e6-b94b-f932ee57e9d8"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalrolebindings"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRoleBinding",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "ks-console",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2366",
+        "uid": "b4243c50-1076-4c3f-85ee-7af1ce161313"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalrolebindings"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRoleBinding",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "pre-registration",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2368",
+        "uid": "e990252a-87b5-4dcf-b41f-dc401413288d"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "anonymous",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2359",
+        "uid": "90748b36-2e4b-46b2-8fd1-7bf26f432bef"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "authenticated",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2362",
+        "uid": "1c9b6c95-7937-4665-aa4a-f89e2c281b6e"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "ks-console",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2364",
+        "uid": "c88d9aa9-16ab-413c-83c2-0a482aeda4a9"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "platform-admin",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2365",
+        "uid": "c2c40493-86bd-4357-9053-982ada95fedc"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "platform-regular",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2361",
+        "uid": "8313431d-53f3-48c8-ba37-58bb4310f3a0"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "platform-self-provisioner",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2360",
+        "uid": "76ca20f6-a832-43c1-8747-567ee0e24d57"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/globalroles"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "GlobalRole",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "pre-registration",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2363",
+        "uid": "2a22d52c-b3b4-47f9-8d04-4bdb870f9007"
+      },
+      {
+        "apiVersion": "kubesphere.io/v1alpha1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "kubesphere.io/repository-protection"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "Repository",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "extensions-museum",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2376",
+        "uid": "bfa92ce6-22de-419c-a30e-d777dc9d5755"
+      },
+      {
+        "apiVersion": "kubesphere.io/v1alpha1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/serviceaccount"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "ServiceAccount",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "ks-console",
+        "namespace": "kubesphere-system",
+        "owners": [],
+        "resourceVersion": "2314",
+        "uid": "36fd3c18-cb53-4148-8558-89089cd510ea"
+      },
+      {
+        "apiVersion": "iam.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "finalizers.kubesphere.io/users"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "User",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "admin",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2446",
+        "uid": "464cd9cf-c0c3-4685-8ff0-c167ea0e2ed0"
+      },
+      {
+        "apiVersion": "tenant.kubesphere.io/v1beta1",
+        "deletionTimestamp": "2026-10-01T18:49:15Z",
+        "finalizers": [
+          "kubesphere.io/cascading-deletion"
+        ],
+        "helmRelease": {
+          "release-name": "ks-core",
+          "release-namespace": "kubesphere-system"
+        },
+        "kind": "WorkspaceTemplate",
+        "managementLabels": {
+          "app.kubernetes.io/managed-by": "Helm"
+        },
+        "name": "system-workspace",
+        "namespace": null,
+        "owners": [],
+        "resourceVersion": "2456",
+        "uid": "4741ad06-561b-4969-833b-497955d01c75"
+      }
+    ],
+    "unexpectedRemoved": [
+      {
+        "apiVersion": "v1",
+        "claims": [],
+        "configReferences": [
+          "helm-install-ks-console-embed-vw55k9"
+        ],
+        "deletionTimestamp": null,
+        "finalizers": [],
+        "helmRelease": {},
+        "imageIds": [
+          "sha256:3381d3cdc6893c17a108be9cbe663fd005a69d258a450a14218cb31d97fbb5a2"
+        ],
+        "images": [
+          "registry.cn-beijing.aliyuncs.com/kubesphereio/kubectl:v1.33.1"
+        ],
+        "kind": "Pod",
+        "managementLabels": {},
+        "name": "helm-install-ks-console-embed-vw55k9-cptjb",
+        "namespace": "kubesphere-system",
+        "owners": [
+          {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "name": "helm-install-ks-console-embed-vw55k9",
+            "uid": "294cabda-e9d8-435e-a6f6-8d9558bd5287"
+          }
+        ],
+        "resourceVersion": "1769",
+        "serviceAccount": "default",
+        "uid": "b45c29a1-5f52-4ca5-9156-a61ccb380c6a"
+      }
+    ]
+  },
+  "allOriginalCriteriaAccepted": false,
+  "artifactDigests": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "f04dbef54f14b4fad8e56aa8b9b4b9d55972e552462af8d932b428775f4fb4ea",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "7ccf8d18c1ddecb71894929ccdeb866e97ceac7c84d63be557c91532f7542264",
+    "eng/cluster-management/QUALIFICATION.md": "6044d0056a49b408e3a437c1257b060a71bdf83082140daf0accc984ac2e65a1",
+    "eng/cluster-management/RANCHER.md": "d2f137566cbd81905fa993eed2de08ed00d6abcd6dfd81ab99cadb62791ed9f2",
+    "eng/cluster-management/README.md": "4eda33a00afd6e9510b55183c957b46255a169297b209d57d1bba0985f66e265",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "f88145265da195b9ca70cc17de00cda209cb80f67893a49109eb1ddf3ebe313e",
+    "eng/cluster-management/evidence.py": "5d898b85b71d6d3cdeeb8a35d7f10ac9cf7829100e0f837fc468beede75f2a72",
+    "eng/cluster-management/qualify.py": "9e817276afaf59295fdd7e3c0ea6b527a526848026e07c5a293ba81f436158fa",
+    "eng/cluster-management/rehearse.py": "ff92dbb095f1bcadee382b61dacf9629a359be7d789f0da094f1918a8cc26e08",
+    "eng/cluster-management/test_qualify.py": "9181145dda5d4bfbaab22bef9173c9704917897e4952b87563c17ea1f16441e4",
+    "eng/cluster-management/test_rehearse.py": "36c2613ed941b06887cfad85ae9515462ee9a25056576fad2e9a2b9b961e4750"
+  },
+  "authorityOrMfaAccepted": false,
+  "checkedAt": "2026-10-01T19:06:07Z",
+  "checkedPrivateCiphertexts": 1012,
+  "checkedSanitizedLedgerEntries": 128,
+  "checkedSourceAttempts": [
+    "20261001t173028z-census",
+    "20261001t173555z-rehearsal",
+    "20261001t173900z-rehearsal",
+    "20261001t173902z-census",
+    "20261001t174500z-target-sources",
+    "20261001t174551z-rehearsal",
+    "20261001t175000z-current-pins",
+    "20261001t175304z-rehearsal",
+    "20261001t180000z-target-review",
+    "20261001t180039z-rehearsal",
+    "20261001t180841z-rehearsal",
+    "20261001t180843z-rehearsal",
+    "20261001t181000z-public-verification",
+    "20261001t181200z-capability-review",
+    "20261001t182403z-rehearsal",
+    "20261001t183042z-dependency-review",
+    "20261001t183444z-plan-render",
+    "20261001t184031z-rehearsal",
+    "20261001t184142z-dependency-images"
+  ],
+  "independentOffNodeDecryptionOrSignaturesVerified": false,
+  "localDigestHeaderModeErrors": [],
+  "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+  "mutationAuthorized": false,
+  "priorConservativeCleanupRecheck": {
+    "attempt": "20261001t182403z-rehearsal",
+    "originalUnverifiedRecordPreserved": true,
+    "states": {
+      "container": {
+        "name": "s426-c69114970857-control-plane",
+        "state": "absent"
+      },
+      "network": {
+        "name": "s426-c69114970857-internal",
+        "state": "absent"
+      },
+      "volume": {
+        "name": "b9ddf9db46c9b9dfa64b180b1264299d85d1fb013b3bc41ce573a2c2e2deac56",
+        "state": "absent"
+      }
+    }
+  },
+  "productionRetirementAccepted": false,
+  "qualificationAccepted": false,
+  "scope": "local read-only evidence verification and unit tests; no acceptance or production mutation",
+  "unitTests": {
+    "count": 21,
+    "exitCode": 0,
+    "passingCases": [
+      "test_endpoint_userinfo_query_and_fragment_cannot_disclose_credentials (test_qualify.CensusTests.test_endpoint_userinfo_query_and_fragment_cannot_disclose_credentials)",
+      "test_failed_discovery_is_not_an_empty_accepted_census (test_qualify.CensusTests.test_failed_discovery_is_not_an_empty_accepted_census)",
+      "test_proxy_credentials_are_refused_before_discovery (test_qualify.CensusTests.test_proxy_credentials_are_refused_before_discovery)",
+      "test_supported_skew_and_prerelease_fail (test_qualify.CensusTests.test_supported_skew_and_prerelease_fail)",
+      "test_private_attempts_immutable_and_no_recovery_overwrite (test_qualify.CustodyTests.test_private_attempts_immutable_and_no_recovery_overwrite)",
+      "test_symlink_evidence_custody_refused (test_qualify.CustodyTests.test_symlink_evidence_custody_refused)",
+      "test_github_prerelease_and_stale_review_rejected (test_qualify.PinAuthorityTests.test_github_prerelease_and_stale_review_rejected)",
+      "test_missing_gapped_conflicting_or_expanded_authority_fails_closed (test_qualify.PinAuthorityTests.test_missing_gapped_conflicting_or_expanded_authority_fails_closed)",
+      "test_post_cut_revocation_survives_source_loss (test_qualify.PinAuthorityTests.test_post_cut_revocation_survives_source_loss)",
+      "test_unqualified_tag_hosting_security_and_tools_fail_closed (test_qualify.PinAuthorityTests.test_unqualified_tag_hosting_security_and_tools_fail_closed)",
+      "test_ownership_storage_and_installed_catalog_distinction (test_qualify.ProjectionTests.test_ownership_storage_and_installed_catalog_distinction)",
+      "test_secret_and_configuration_values_never_enter_projection (test_qualify.ProjectionTests.test_secret_and_configuration_values_never_enter_projection)",
+      "test_terminating_custom_resource_projects_timestamp_and_named_finalizer_only (test_qualify.ProjectionTests.test_terminating_custom_resource_projects_timestamp_and_named_finalizer_only)",
+      "test_unknown_owner_consumer_and_deletion_effects_block_retirement (test_qualify.ProjectionTests.test_unknown_owner_consumer_and_deletion_effects_block_retirement)",
+      "test_daemon_failure_does_not_prove_cleanup_or_source_refusal (test_rehearse.RehearsalTests.test_daemon_failure_does_not_prove_cleanup_or_source_refusal)",
+      "test_extension_phase_cannot_use_later_core_scope_to_allow_unexpected_deletion (test_rehearse.RehearsalTests.test_extension_phase_cannot_use_later_core_scope_to_allow_unexpected_deletion)",
+      "test_named_finalizer_only_and_drift_stop (test_rehearse.RehearsalTests.test_named_finalizer_only_and_drift_stop)",
+      "test_source_endpoint_uid_reachability_and_credentials_refused (test_rehearse.RehearsalTests.test_source_endpoint_uid_reachability_and_credentials_refused)",
+      "test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops (test_rehearse.RehearsalTests.test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops)",
+      "test_unknown_cascade_blocks_and_child_first_allows_explicit_scope (test_rehearse.RehearsalTests.test_unknown_cascade_blocks_and_child_first_allows_explicit_scope)",
+      "test_wildcards_missing_resources_protected_namespaces_and_claims_refused (test_rehearse.RehearsalTests.test_wildcards_missing_resources_protected_namespaces_and_claims_refused)"
+    ]
+  },
+  "whitespaceChecks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "emptyOutput": true,
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "emptyOutput": true,
+      "exitCode": 0
+    }
+  ]
+}

@@ -38,6 +38,15 @@ def reference(value):
     return {key: safe(value.get(key)) for key in ('apiVersion', 'kind', 'name', 'uid')}
 
 
+def kubesphere_mark(value):
+    domain = value.split('/', 1)[0] if isinstance(value, str) else ''
+    return domain == 'kubesphere.io' or domain.endswith('.kubesphere.io')
+
+
+def port_identity(value):
+    return value if isinstance(value, int) and not isinstance(value, bool) and 0 < value <= 65535 else None
+
+
 def project_resource(obj):
     """Secret/ConfigMap data, arbitrary annotations, specs and RBAC rules never leave custody."""
     meta, spec = obj.get('metadata', {}), obj.get('spec', {})
@@ -47,8 +56,8 @@ def project_resource(obj):
               'deletionTimestamp': safe(meta.get('deletionTimestamp')),
               'owners': [reference(v) for v in meta.get('ownerReferences', [])],
               'finalizers': identities(meta.get('finalizers', [])),
-              'managementLabels': {k: safe(meta.get('labels', {}).get(k)) for k in MANAGEMENT_LABELS
-                                   if safe(meta.get('labels', {}).get(k))},
+              'managementLabels': {k: safe(v) for k, v in meta.get('labels', {}).items()
+                                   if safe(k) and (k in MANAGEMENT_LABELS or kubesphere_mark(k))},
               'helmRelease': {k: safe(meta.get('annotations', {}).get('meta.helm.sh/' + k))
                               for k in ('release-name', 'release-namespace')
                               if safe(meta.get('annotations', {}).get('meta.helm.sh/' + k))}}
@@ -62,13 +71,30 @@ def project_resource(obj):
     if kind in ('Deployment', 'StatefulSet', 'DaemonSet', 'Job', 'CronJob', 'Pod'):
         template = spec.get('jobTemplate', {}).get('spec', {}).get('template', {}) if kind == 'CronJob' else spec.get('template', {})
         pod = spec if kind == 'Pod' else template.get('spec', {})
-        result['images'] = identities([c.get('image') for key in ('containers', 'initContainers') for c in pod.get(key, [])])
+        containers = [c for key in ('containers', 'initContainers', 'ephemeralContainers') for c in pod.get(key, [])]
+        result['images'] = identities([c.get('image') for c in containers])
         result['imageIds'] = identities([c.get('imageID') for key in ('containerStatuses', 'initContainerStatuses')
                                         for c in obj.get('status', {}).get(key, [])])
         result['serviceAccount'] = safe(pod.get('serviceAccountName'))
         result['claims'] = identities([v.get('persistentVolumeClaim', {}).get('claimName') for v in pod.get('volumes', [])])
-        result['configReferences'] = identities([v.get(key, {}).get('name') for v in pod.get('volumes', [])
-                                                for key in ('configMap', 'secret')])
+        secrets, configmaps = [], []
+        for volume in pod.get('volumes', []):
+            secrets.append(volume.get('secret', {}).get('secretName'))
+            configmaps.append(volume.get('configMap', {}).get('name'))
+            for source in volume.get('projected', {}).get('sources', []):
+                secrets.append(source.get('secret', {}).get('name'))
+                configmaps.append(source.get('configMap', {}).get('name'))
+        for container in containers:
+            for env in container.get('env', []):
+                secrets.append(env.get('valueFrom', {}).get('secretKeyRef', {}).get('name'))
+                configmaps.append(env.get('valueFrom', {}).get('configMapKeyRef', {}).get('name'))
+            for env in container.get('envFrom', []):
+                secrets.append(env.get('secretRef', {}).get('name'))
+                configmaps.append(env.get('configMapRef', {}).get('name'))
+        secrets.extend(v.get('name') for v in pod.get('imagePullSecrets', []))
+        result['secretReferences'] = sorted(set(identities(secrets)))
+        result['configMapReferences'] = sorted(set(identities(configmaps)))
+        result['configReferences'] = sorted(set(result['secretReferences'] + result['configMapReferences']))
         if isinstance(spec.get('replicas'), int):
             result['replicas'] = spec['replicas']
     if kind == 'PersistentVolumeClaim':
@@ -78,6 +104,19 @@ def project_resource(obj):
         result['binding'] = {k: safe(spec.get('claimRef', {}).get(k)) for k in ('name', 'namespace', 'uid')}
         result['storageClass'] = safe(spec.get('storageClassName'))
         result['reclaimPolicy'] = safe(spec.get('persistentVolumeReclaimPolicy'))
+    if kind in ('PersistentVolume', 'PersistentVolumeClaim'):
+        result['storagePropertiesSha256'] = digest(canonical(spec))
+        result['volumeMode'] = safe(spec.get('volumeMode'))
+        result['accessModes'] = identities(spec.get('accessModes', []))
+    if kind == 'StorageClass':
+        fields = ('provisioner', 'reclaimPolicy', 'volumeBindingMode', 'allowVolumeExpansion',
+                  'mountOptions', 'parameters', 'allowedTopologies')
+        result['storagePropertiesSha256'] = digest(canonical({k: obj.get(k) for k in fields}))
+        result['provisioner'] = safe(obj.get('provisioner'))
+        result['reclaimPolicy'] = safe(obj.get('reclaimPolicy'))
+        result['volumeBindingMode'] = safe(obj.get('volumeBindingMode'))
+    if kind == 'Namespace':
+        result['namespaceFinalizers'] = identities(spec.get('finalizers', []))
     if kind in ('RoleBinding', 'ClusterRoleBinding'):
         result['roleRef'] = reference(obj.get('roleRef', {}))
         result['subjects'] = [{k: safe(s.get(k)) for k in ('kind', 'name', 'namespace')} for s in obj.get('subjects', [])]
@@ -98,6 +137,21 @@ def project_resource(obj):
         result['routeHosts'] = identities(spec.get('hostnames', []) + [v.get('host') for v in spec.get('rules', [])])
         result['backends'] = [{k: safe(v.get(k)) for k in ('name', 'namespace', 'kind')}
                               for rule in spec.get('rules', []) for v in rule.get('backendRefs', [])]
+    if kind == 'Ingress':
+        backends = [spec.get('defaultBackend', {})] + [p.get('backend', {}) for rule in spec.get('rules', [])
+                    for p in rule.get('http', {}).get('paths', [])]
+        result['backends'] = [{'kind': 'Service', 'name': safe(v['service'].get('name')),
+                               'namespace': result['namespace'], 'port': port_identity(v['service'].get('port', {}).get('number')),
+                               'portName': safe(v['service'].get('port', {}).get('name'))}
+                              if 'service' in v else {k: safe(v.get('resource', {}).get(k))
+                                                     for k in ('apiGroup', 'kind', 'name')} for v in backends if v]
+        result['secretReferences'] = identities([v.get('secretName') for v in spec.get('tls', [])])
+    if kind == 'Gateway':
+        result['listeners'] = [{**{k: safe(v.get(k)) for k in ('name', 'protocol', 'hostname')},
+                                'port': port_identity(v.get('port')),
+                                'certificateReferences': [{k: safe(ref.get(k)) for k in ('group', 'kind', 'name', 'namespace')}
+                                  for ref in v.get('tls', {}).get('certificateRefs', [])]} for v in spec.get('listeners', [])]
+        result['routeHosts'] = identities([v.get('hostname') for v in spec.get('listeners', [])])
     # Catalog spec/config is private. Existence of an Extension is not installation proof.
     if kind in ('Extension', 'ExtensionVersion', 'InstallPlan', 'ClusterConfiguration'):
         result['extensionEvidenceClass'] = 'installation-plan' if kind == 'InstallPlan' else 'catalog-or-configuration'
@@ -110,6 +164,8 @@ def management_resource(item):
                 or 'kubesphere.io' in (item.get('apiVersion') or '')
                 or (item.get('helmRelease', {}).get('release-namespace') or '').startswith('kubesphere')
                 or (item.get('customResource', {}).get('group') or '').endswith('kubesphere.io')
+                or any(kubesphere_mark(k) for k in item.get('managementLabels', {}))
+                or any(kubesphere_mark(v) for v in item.get('finalizers', []))
                 or any('kubesphere' in str(v) for v in item.get('managementLabels', {}).values()))
 
 
@@ -252,6 +308,85 @@ class Capture:
     def raw(self, name, path):
         return self.kube(name, ['get', '--raw', path])
 
+    def gap(self, step):
+        self.coverage.append({'step': step, 'state': 'invalid-schema', 'exitCode': 0})
+
+    def resources(self, data, step):
+        if not isinstance(data, dict) or not isinstance(data.get('resources'), list):
+            self.gap(step)
+            return []
+        valid = []
+        for resource in data['resources']:
+            if (not isinstance(resource, dict) or not safe(resource.get('name'))
+                    or not safe(resource.get('kind')) or not isinstance(resource.get('verbs'), list)
+                    or any(not isinstance(v, str) for v in resource['verbs'])):
+                self.gap(step)
+            else:
+                valid.append(resource)
+        return valid
+
+    def list_resource(self, gv, prefix, resource, step):
+        continuation, seen = '', set()
+        for page in range(1, 101):
+            query = '?limit=500' + ('&continue=' + urllib.parse.quote(continuation, safe='') if continuation else '')
+            listing = self.raw(step + '-' + str(page), prefix + '/' + resource['name'] + query)
+            if listing is None:
+                return
+            if (not isinstance(listing, dict) or not isinstance(listing.get('items'), list)
+                    or not isinstance(listing.get('metadata', {}), dict)
+                    or not isinstance(listing.get('metadata', {}).get('continue', ''), str)):
+                self.gap(step)
+                return
+            valid_page = True
+            for raw in listing['items']:
+                try:
+                    if not isinstance(raw, dict) or not isinstance(raw.get('metadata'), dict):
+                        raise ValueError('malformed-resource')
+                    obj = dict(raw, apiVersion=raw.get('apiVersion', gv), kind=raw.get('kind', resource['kind']))
+                    meta = obj['metadata']
+                    if (any(not safe(meta.get(k)) for k in ('name', 'uid', 'resourceVersion'))
+                            or not safe(obj['apiVersion']) or not safe(obj['kind'])
+                            or (meta.get('namespace') is not None and not safe(meta['namespace']))
+                            or not isinstance(meta.get('ownerReferences', []), list)
+                            or not isinstance(meta.get('finalizers', []), list)
+                            or any(not safe(v) for v in meta.get('finalizers', []))
+                            or any(not isinstance(owner, dict) or not safe(owner.get('uid'))
+                                   for owner in meta.get('ownerReferences', []))):
+                        raise ValueError('malformed-resource')
+                    self.inventory.append(project_resource(obj))
+                except (ValueError, TypeError, KeyError, AttributeError):
+                    self.gap(step + '-object')
+                    valid_page = False
+            if valid_page:
+                self.collected_resource_types.add((gv, resource['name']))
+            continuation = listing.get('metadata', {}).get('continue', '')
+            if not continuation:
+                return
+            if continuation in seen:
+                self.gap(step + '-pagination')
+                return
+            seen.add(continuation)
+        self.coverage.append({'step': step + '-pagination', 'state': 'failed', 'exitCode': None})
+
+    def helm_releases(self):
+        releases, offset, maximum = [], 0, 256
+        for page in range(100):
+            listing = self.command('helm-releases-' + str(page + 1), [str(self.args.helm), '--kubeconfig', str(self.args.kubeconfig),
+                    '--kube-context', self.args.context, 'list', '--all-namespaces', '--all', '--max', str(maximum),
+                    '--offset', str(offset), '-o', 'json'])
+            if listing is None:
+                return releases
+            if (not isinstance(listing, list) or any(not isinstance(r, dict)
+                    or any(not safe(r.get(k)) for k in ('name', 'namespace', 'chart', 'status')) for r in listing)):
+                self.gap('helm-releases')
+                return releases
+            releases.extend(listing)
+            if len(listing) < maximum:
+                return releases
+            offset += len(listing)
+        self.coverage.append({'step': 'helm-pagination', 'state': 'failed', 'exitCode': None})
+        return releases
+
     def collect(self):
         version = self.kube('versions', ['version', '-o', 'json'])
         if not version or not compatible(version.get('clientVersion', {}).get('gitVersion', ''),
@@ -283,39 +418,26 @@ class Capture:
             access['unauthorizedProbe'] = 'unreachable-or-unverified-tls; denial-not-proven'
         core = self.raw('core-discovery', '/api/v1')
         groups = self.raw('group-discovery', '/apis')
-        if not core or not groups:
+        if (not isinstance(core, dict) or not isinstance(groups, dict)
+                or not isinstance(groups.get('groups'), list)):
+            self.gap('api-discovery')
             raise ValueError('api-discovery-failed')
         discovery = [('v1', '/api/v1', core)]
         for group in groups.get('groups', []):
-            gv = safe(group.get('preferredVersion', {}).get('groupVersion'))
+            preferred = group.get('preferredVersion') if isinstance(group, dict) else None
+            gv = safe(preferred.get('groupVersion')) if isinstance(preferred, dict) else None
             if gv:
                 data = self.raw('discovery-' + gv.replace('/', '-').replace('.', '-'), '/apis/' + gv)
-                if data:
+                if data is not None:
                     discovery.append((gv, '/apis/' + gv, data))
+            else:
+                self.gap('group-preferred-version')
         for gv, prefix, data in discovery:
-            for resource in data.get('resources', []):
+            for resource in self.resources(data, 'discovery-' + gv.replace('/', '-')):
                 name = safe(resource.get('name'))
                 if not name or '/' in name or 'list' not in resource.get('verbs', []):
                     continue
-                # Discovery lists all namespaces through the group resource endpoint.
-                path, continuation, pages = prefix + '/' + name, '', 0
-                while True:
-                    pages += 1
-                    query = '?limit=500' + ('&continue=' + urllib.parse.quote(continuation, safe='') if continuation else '')
-                    listing = self.raw('list-' + gv.replace('/', '-').replace('.', '-') + '-' + name + '-' + str(pages), path + query)
-                    if not listing or not isinstance(listing.get('items'), list):
-                        break
-                    self.collected_resource_types.add((gv, name))
-                    for obj in listing['items']:
-                        obj.setdefault('apiVersion', gv)
-                        obj.setdefault('kind', resource.get('kind'))
-                        self.inventory.append(project_resource(obj))
-                    continuation = listing.get('metadata', {}).get('continue', '')
-                    if not continuation:
-                        break
-                    if pages >= 100:
-                        self.coverage.append({'step': 'pagination', 'state': 'failed', 'exitCode': None})
-                        break
+                self.list_resource(gv, prefix, resource, 'list-' + gv.replace('/', '-').replace('.', '-') + '-' + name)
         # A group's preferred version need not serve every installed CRD. Discover
         # the CRD's actual storage/served version before calling an empty list unused.
         for crd in [v for v in self.inventory if v['kind'] == 'CustomResourceDefinition']:
@@ -330,33 +452,18 @@ class Capture:
             if observed:
                 continue
             data = self.raw('crd-discovery-' + gv.replace('/', '-').replace('.', '-'), '/apis/' + gv)
-            if not data or not any(r.get('name') == cr['plural'] and 'list' in r.get('verbs', []) for r in data.get('resources', [])):
+            resource = next((r for r in self.resources(data, 'crd-discovery-' + crd['name'])
+                             if r['name'] == cr['plural'] and 'list' in r['verbs']), None)
+            if resource is None:
                 self.coverage.append({'step': 'crd-instance-discovery-' + crd['name'], 'state': 'failed', 'exitCode': None})
                 continue
             discovery.append((gv, '/apis/' + gv, data))
-            continuation, pages = '', 0
-            while True:
-                pages += 1
-                query = '?limit=500' + ('&continue=' + urllib.parse.quote(continuation, safe='') if continuation else '')
-                listing = self.raw('crd-list-' + crd['name'].replace('.', '-') + '-' + str(pages),
-                                   '/apis/' + gv + '/' + cr['plural'] + query)
-                if not listing or not isinstance(listing.get('items'), list):
-                    break
-                self.collected_resource_types.add((gv, cr['plural']))
-                for obj in listing['items']:
-                    self.inventory.append(project_resource(obj))
-                continuation = listing.get('metadata', {}).get('continue', '')
-                if not continuation:
-                    break
-                if pages >= 100:
-                    self.coverage.append({'step': 'crd-pagination', 'state': 'failed', 'exitCode': None})
-                    break
+            self.list_resource(gv, '/apis/' + gv, resource, 'crd-list-' + crd['name'].replace('.', '-'))
         # Some resources (notably Events) are exposed through multiple groups.
         # Keep one observation per native UID; every request remains encrypted.
         self.inventory = list({v['uid']: v for v in self.inventory if v.get('uid')}.values())
         access['authorizedRead'] = any(v['kind'] == 'Namespace' for v in self.inventory)
-        releases = self.command('helm-releases', [str(self.args.helm), '--kubeconfig', str(self.args.kubeconfig),
-                               '--kube-context', self.args.context, 'list', '--all-namespaces', '-o', 'json'])
+        releases = self.helm_releases()
         charts = []
         if isinstance(releases, list):
             for release in releases:
@@ -396,28 +503,34 @@ def collect(args):
     for path in (args.kubectl, args.helm, args.age, args.kubeconfig):
         if not path.is_file():
             raise ValueError('missing-tool-or-native-kubeconfig')
+    maintenance_digest = file_digest(args.project_root / 'eng/kubernetes-upgrade/MAINTENANCE.md')
     attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id)
     attempt.record('attempt.json', {'schemaVersion': 1, 'story': '4.26', 'attemptId': args.attempt_id,
                     'capturedAt': now(), 'operator': safe(args.operator), 'context': safe(args.context),
                     'mode': 'read-only-observation', 'mutationAuthorized': False, 'signed': False,
-                    'maintenanceProposalSha256': file_digest(args.project_root / 'eng/kubernetes-upgrade/MAINTENANCE.md')})
+                    'maintenanceProposalSha256': maintenance_digest})
     tools = []
-    for name, path, command in [('kubectl', args.kubectl, ['version', '--client', '-o', 'json']),
-                                 ('helm', args.helm, ['version', '--short']), ('age', args.age, ['--version'])]:
-        r = subprocess.run([str(path), *command], capture_output=True, timeout=30)
-        tools.append({'name': name, 'sha256': file_digest(path), 'versionOutputSha256': digest(r.stdout),
-                      'versionExitCode': r.returncode, 'releaseAuthenticityVerified': False,
-                      'qualifiedForManagement': False})
-    attempt.record('tools.json', {'tools': tools, 'applicationExecutorFloorChanged': False})
     state = 'incomplete'
     capture = Capture(args, attempt)
     try:
+        for name, path, command in [('kubectl', args.kubectl, ['version', '--client', '-o', 'json']),
+                                   ('helm', args.helm, ['version', '--short']), ('age', args.age, ['--version'])]:
+            r = subprocess.run([str(path), *command], capture_output=True, timeout=30)
+            tools.append({'name': name, 'sha256': file_digest(path), 'versionOutputSha256': digest(r.stdout),
+                          'versionExitCode': r.returncode, 'releaseAuthenticityVerified': False,
+                          'qualifiedForManagement': False})
+            if r.returncode:
+                raise ValueError('tool-version-preflight-failed')
         capture.collect()
-    except (ValueError, OSError, subprocess.TimeoutExpired):
+        if any(v['state'] != 'observed' for v in capture.coverage):
+            state = 'failed-closed'
+    except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError):
         # Error details are withheld: external failures can contain secret/config values.
         state = 'failed-closed'
+    attempt.record('tools.json', {'tools': tools, 'applicationExecutorFloorChanged': False})
+    if state == 'failed-closed':
         attempt.record('capture-failure.json', {'state': state, 'coverage': capture.coverage,
-                               'reason': 'discovery, identity, skew, encryption or access failed; inspect private diagnostics'})
+                               'reason': 'tools, schema, discovery, identity, skew, encryption or access failed; inspect private diagnostics'})
     attempt.record('criteria.json', {'criteria': [{'criterion': n, 'state': state,
                      'reason': reason} for n, reason in enumerate([
                      'Native census is an observation; node/etcd/coverage/currency and independent export readback require acceptance',

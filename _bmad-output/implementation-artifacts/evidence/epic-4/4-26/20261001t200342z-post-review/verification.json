@@ -1,0 +1,1255 @@
+{
+  "actualKubeSphereRetirement": {
+    "arbitraryFinalizerRemovalUsed": false,
+    "attemptId": "20261001t184031z-rehearsal",
+    "authenticatedApplicationAndPostCoreCanaryVerified": false,
+    "expectedRetirementsRemaining": 151,
+    "state": "failed",
+    "terminatingCRsWithFinalizers": 17,
+    "unallowlistedCompletedExtensionJobPodsRemoved": 1
+  },
+  "approvedFrozenBlockSha256": "08afbc1f63a322ffc30ad9a49c342b56c85e1eaac0f5ec8d0bf39554aa759d7e",
+  "approvedFrozenBlockUnchanged": true,
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "b5fd49ada4c0b8267a35aaeb1e9c801fd673489252bef9f0d07ece2a66ae9e42",
+    "_bmad-output/implementation-artifacts/deferred-work.md": "c513fb4c738a3db6d7cf294915e306df24c0ddef13e30c245ec16cab3229f988",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "3f9c235d1dda94d51228cac62c21486bf7a6082ef2e4b436aaf69316bcd90f7e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/SHA256SUMS": "863a4858f670acf08608f134f1e3ecc55fd3e35ac57062a6c07105fcc3775298",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/access.json": "579cae485d093f93f9982b2d7d692063a97175d284ea85ee619748b299fed456",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/attempt.json": "de155c695f9343b3637b50e4358601a69fe768e7b72031a5addb0b135e5a16c1",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/capabilities.json": "4b82f133f1135e512c23bd8c195f96c7c12aeac230d7c820ff6ef1e66e2f289b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/criteria.json": "7033fbaec6f659e8076d4668b4a19b869eca09d36173925f376bda24b7395422",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/encrypted-exports.json": "9e46413e64acd05de4d8294d5cdcc8f9c23561ed8d13c5df09d903a20a7f2d8d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/inventory.json": "96aa68c3e9cf0699add1160d4d9758ee2a53054ecfdbac9cb02e76ff0a6688b8",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/retirement-allowlist.json": "987a6d38409dbef9bd4febbd5ea3feaeefa2f651076b3d0fbaf179a703d7d280",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173028z-census/tools.json": "8bbee5ddc0c4c9c88731a87c946a64772919bc0a9431d989d33387099388e4c5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173555z-rehearsal/SHA256SUMS": "dc70f4a31e6a16f15ae053c3572357139cbc719bfd32279ac1abdc48ce68b5e7",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173555z-rehearsal/attempt.json": "ff88893b7b64540bf2f6276b858b973d5dc0ef4021d9d2b739b9c9b301e79195",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173555z-rehearsal/cleanup.json": "71531e37f99f7157857ca661882f8b56c34b6052315a880886827f17ed81b63c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173555z-rehearsal/encrypted-exports.json": "de79a3076985ba08619beb7c6c28286bb8f008e5552b147215bfa3646769d905",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173555z-rehearsal/failure.json": "a0db6ec7067ae483f46cb0c453c386e9b2422df518209b19cbd8d94d1b3f2718",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173555z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173900z-rehearsal/SHA256SUMS": "cc610218cbbdb3c81354625c2a3223b975b5300c30f4e2a9063a0cf764d7cfd3",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173900z-rehearsal/attempt.json": "4005e432f57eda234de2dc1f8e88a45a6f47bc4f16647f62e8c0d7aec871bb96",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173900z-rehearsal/cleanup.json": "71531e37f99f7157857ca661882f8b56c34b6052315a880886827f17ed81b63c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173900z-rehearsal/encrypted-exports.json": "5cb08d68add099a7f64e99eb3240457f638db152a630c09dcab4a32aa6b16930",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173900z-rehearsal/failure.json": "a0db6ec7067ae483f46cb0c453c386e9b2422df518209b19cbd8d94d1b3f2718",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173900z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/SHA256SUMS": "b09a73b01222f2c1281ca890808c2019b01f2f20725d9840fe3d3e346d81487c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/access.json": "04239809a7d002cda203410221927f04d09970913debb6c8d9f6f6f54dbca042",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/attempt.json": "5a2d45eff0e6393f6498ce34f1704e3ce32e28399532d58c2caa0d0b0638d258",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/capabilities.json": "b61d9a88d4a467d297c1d35ae5323005254d30c7a45f04bf02cb6689910ce2ca",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/criteria.json": "7033fbaec6f659e8076d4668b4a19b869eca09d36173925f376bda24b7395422",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/encrypted-exports.json": "2ed06a022bf804af7a61f44a3493f8042550192e6e76fa3712635a8625c05e09",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/inventory.json": "1046cd7a694adce9a785be602704904d8e567db8adaf63a85e7401dd7f839e65",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/retirement-allowlist.json": "987a6d38409dbef9bd4febbd5ea3feaeefa2f651076b3d0fbaf179a703d7d280",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t173902z-census/tools.json": "8bbee5ddc0c4c9c88731a87c946a64772919bc0a9431d989d33387099388e4c5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174500z-target-sources/SHA256SUMS": "ff2015a124e5dc79a26b97efe0cd22d5cda41dd4e0a43a403a7506da18cfa722",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174500z-target-sources/encrypted-exports.json": "8f586220e22af3fa962b05f5d5556e5f2d90aff36332d077ee3102091b4584fe",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174500z-target-sources/sources.json": "961d8d0831feffb3fa6232169da76849dbfeba4c8e30de6674a854a8cc073a6d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/SHA256SUMS": "b7495748c3f9d3126acc37dc22c66cccc5aa04d821b47512110149ef8d9a5464",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/attempt.json": "220c2fd8b636daba5da9b78a894a72b7cb6aaec0c974dda4deea3626f4b92392",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/cleanup.json": "57a88c9b3fb0ecbff269ace31bf274aa28d541079bf159bb357ac3d69da7d867",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/encrypted-exports.json": "cd49846e0be57d98c2f8386d9df1cdf862b377c51b41696cf84432ea80bd247c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/failure.json": "39a447b8ec7e23ae6fde7009d1f73dabcfab4e759b98fe9e7e94a16d83cd736a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/fixture-image.json": "ab84bcbaf754e9d340acbce0d3c6088dca8719103e9cbd3fc37f7f47f1159c82",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t174551z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175000z-current-pins/SHA256SUMS": "db0b7d5ba3826cb40ce78c10e5214fe25a16898f85145f4e22a0480ff07d0d99",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175000z-current-pins/encrypted-exports.json": "f651bff9064f2b53465b39c4eec5f021e4e29e4e8cb3cfc9fc5c55b2ad28761d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175000z-current-pins/pins.json": "f9d84438e7e2176025cf0e114d0ba730a32f2f6c705997ae2030158d58e94db9",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175000z-current-pins/sources.json": "210bfb08e7bbbb332369fa38cb740606e4eb65925634ac0a4182ae3d60b4286a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/SHA256SUMS": "74eefe1f72db5cfe33ac575a95ba0337d66365837020192e9e35a93ae65a3881",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/attempt.json": "997e16cf8d93ed4a5637b2c4dfb80c759ba9afb5e5180fa6e457f2face37049f",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/cleanup.json": "b621299a1d7701161d70fa64ccfe89bf3fe6308a2699bd8a70976371a2325774",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/encrypted-exports.json": "47c90dff8fe81cd0830199445632c1e850f6a4a557c306f9eb8002b00aa339ed",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/failure.json": "0b8fcd2a22dac5013eadaca4f9e329e36625bb4de98840ac81486f95b1637cf4",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/fixture-image.json": "e59c186ba67c34aeeddbebd6f98a6cda038d33e9a1993af03f172676393c7355",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/isolation.json": "318d4cc6b79f205d38e5b0f88109f73fb258ff7f9fec7e56e5c8d46b0420fcf6",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/kubesphere-uninstall-hooks.json": "b5f44d6376aeed76eec87183dbd24c689c1d476fdd44bcce8e1dc1763d3b162e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t175304z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180000z-target-review/SHA256SUMS": "d511ec6f3e6eede9a1354cb36904b69977cc919e308a303bec4706c323362bc2",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180000z-target-review/criteria.json": "8539acf3af9e2158676afa5460a973867b9eba7cb288b859a95dc3081c5e2122",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180000z-target-review/encrypted-exports.json": "09d1d4aee6e8cb686184319b4d1018f8b067f930eb4defaf0f4f29f7aa1a0799",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180000z-target-review/pins.json": "842ba7b093717736554de50a238fd25ca2041cebbcb9eefd9c474c1b4ffd3398",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180000z-target-review/sources.json": "0c3da7d09fd63f3a2827e99f6f50f912e218da7efce2dc198f477987a0bf4892",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180000z-target-review/tools.json": "1105131c62790493148fdb7b3956b62edbc09c3240761e1c839fe55366508dd5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/SHA256SUMS": "215acfbb9c5110cf79e16217a08fe178a5dce290a199a626c02291b8c7ccbbe3",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/attempt.json": "a01fe5f45d4a02048579699c31bd5bef6944b05c2f8c8fa2daa9d095a3811022",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/cleanup.json": "6254a2b0ae999dffbc912031516861194c78c854b892f93858a0aea60b29be77",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/encrypted-exports.json": "dd22d725da5a10ac31e89dc67738d555cea9615ec92276d13abd5d8093a1d242",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/failure.json": "12eae5efff869fa74dbd75f2e929eda4ddd701300d2a5a054905bfeea4982be3",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/fixture-image.json": "a5ea7ec1775333841f65783b751dc1f7d8ddcdee359ea39a1d4aafb102d7e9af",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/isolation.json": "43cdfae89127a339b57041a88b3578ab582dc96eb32a0507fc795092107186bf",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/kubesphere-fixture-inputs.json": "b80900ead716af57dbf51dd7e25f4b37832799c7e60b7fe184a7a36db5f8aa06",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/kubesphere-uninstall-hooks.json": "b5f44d6376aeed76eec87183dbd24c689c1d476fdd44bcce8e1dc1763d3b162e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180039z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/SHA256SUMS": "ffc892706dbd223ad628de40eb8cf2882c9a14d040f5fd3cd0d41235489b236f",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/attempt.json": "af6f59799af34e11e813554ad70fed8e53b24a50dee3f20954e9292ee02f19f2",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/cleanup.json": "e092bb18191137dc9394b37409a7ff3d7a598c4222f2a00d9369416d99365358",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/encrypted-exports.json": "723ad660f3a3dff69916f1c01c5dd48b0153f94bede30aae4c8910595cbef25e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/failure.json": "12eae5efff869fa74dbd75f2e929eda4ddd701300d2a5a054905bfeea4982be3",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/fixture-image.json": "a2671ab96d1f61dc58afe1a3892402183335dbc7eb6e31908ce7118f25f1e218",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/isolation.json": "fea49d07f9ad8cca1aed357fbd21d0d4e24e5203fa5d60ccf99d6227f0634150",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/kubesphere-fixture-inputs.json": "b80900ead716af57dbf51dd7e25f4b37832799c7e60b7fe184a7a36db5f8aa06",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/kubesphere-uninstall-hooks.json": "b5f44d6376aeed76eec87183dbd24c689c1d476fdd44bcce8e1dc1763d3b162e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180841z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/SHA256SUMS": "fd826a215b46224022cf24a635ec26cec08204db625fc7bcd06c0163ea50878a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/attempt.json": "44c990fb1593387bc1287b74342f57a2d1df76772a28af4b756c2c0dc11726b0",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/cleanup.json": "a0a9393da2f15b06544d5c82e436fac87092e63d185a3498398be1d1ac12a767",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/encrypted-exports.json": "bb107712f8bd676080196e8887fde58dc7c04b7bc4292daae07b29274dd8a409",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/fixture-allowlist.json": "976446cacba8254712b4fd4fb96a2328c977958e9642e95ba203b5b451615ca5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/fixture-image.json": "d60c44ef9fad242bd1044cae8fdf4f20a6c6dbb6034dc683ce8400bcce13c38f",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/isolation.json": "e3e690563792904ca9939dfa3ce0881aa510c01e8c9d04fda84ae2e2c280c6a1",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/named-finalizer-phase.json": "53a6ed3f3f8249c766df975a86ace11afbe511587e719027be3fa35fcf0208f4",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/native-result.json": "7fe881b147f749c3fa9023cf1afa704931090a31e2c1275e7b65ca38e342748b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/owner-delete-phase.json": "ccfdbbbf838802d0166a2dc4be8264e2f630a6b2f101065151c21187c095a38e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t180843z-rehearsal/summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181000z-public-verification/SHA256SUMS": "9c11d77249a7ad18d190a8928f92604d5a5cc18f334b80e6f809ada70761490d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181000z-public-verification/artifact-checks.json": "cc18335a4042de7dde1c3cf10929ce3933228a249ed258648859435dd91780f5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181000z-public-verification/encrypted-exports.json": "4feddfcd414e9733bed909701a2f8efbccf15e8a5ed5f5f14d49e03fb3e0f71b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181000z-public-verification/security-review.json": "4eae727591f63bca55fc140d6892ae57ae1531fc8baf8d071df74864944cdabe",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181000z-public-verification/sources.json": "5f2ffb12b737eaf95664aaf23d940096dcdb8c0ad945ace30eba6114a90f70d3",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181200z-capability-review/SHA256SUMS": "750fcca6c1b93cf78eba55309789f84ab40a7c580d0d2683856bfc2705ea7d1a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181200z-capability-review/capability-dispositions.json": "b0e641ddc0520a8e3f018f4a649eab0efc3583f14a524e3900ca96a3c89a092a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181200z-capability-review/encrypted-exports.json": "f0c4ef5264d7221b4660af5857750aeac843dd135f00a6a83328cc3b0c055c8b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/SHA256SUMS": "a54e343e23a6617cffd150cf2758d67e686d902a5455c73d9081ab610da6ca05",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/attempt.json": "b06e831f432f18cd296198d27023ab266679873bd79e1a10225d12c435183184",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/cleanup.json": "93c0689f237f92ed5cab7308f85da4548247208baa2e5d44250a5c5f337b568e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/encrypted-exports.json": "01da8b2818902154bc5d12cab8ad97b7c7e2354e64d02ec1d0b1572f7106c350",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/failure.json": "047eb22f148c09260b2830d803046598177fc699c3cbff973ee999bb7d259d29",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/fixture-allowlist.json": "fe4b588ebb9f5e36ed2227aa038c5652b53a8460ea813f08135cbd84f9218b41",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/fixture-image.json": "e172bd60e191236251303125a8abea49737031c9ff33f9c33555143cf08e2652",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/installed-extension-delete-phase.json": "61868dda49c0f51e445b4ea6e67d590bd0797198f84b46adee9cb619a5f42799",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/isolation.json": "24c8bf4a07c829e3822f3b7326fd6df1c01585e7ced244851308cb011f69ee19",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/kubesphere-fixture-inputs.json": "5b4c80bf6b5f764533961d8bc3961320c466420be15c503f3aca7f5293949698",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/kubesphere-retirement-allowlist.json": "4f17e7af9ccea252abda4ca5d30c6a44dc8e2d5add5093b1c0b1c0b18400e8b1",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/kubesphere-runtime.json": "5477a2423ff79b6f7f1d17eed35b0089b4b7a74dacd1ca97baf1246a0902c4fe",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/kubesphere-uninstall-hooks.json": "b5f44d6376aeed76eec87183dbd24c689c1d476fdd44bcce8e1dc1763d3b162e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/named-finalizer-phase.json": "54308e3b1ef0496520d2e0d6fd68608e5e85decb283c3bb7c8726452bed8d231",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/native-result.json": "719b54e8863cd12f0632c1f4d489c1daa92e5442a2b8183de1a18028bc06d0be",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/owner-delete-phase.json": "7ccab9d3cc6672986fa59a9a59bf474ae8a4226ae7f5bb88e5ce9b6e3035a6be",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t182403z-rehearsal/summary.json": "bbd6b42881417ef085a386fe0d6636dd3b8ec85cf8a0afadecd9741f8d59832a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183042z-dependency-review/SHA256SUMS": "7b4b6ad37fba6d19d84cf29ac344ddba2dcaf944f8bd1beadfbab63e67da4336",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183042z-dependency-review/dependency-checks.json": "16afbdbcb0a34b3d7a93da063553333d1b7ccc8ffc16a144c549c95f4ec92d72",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183042z-dependency-review/encrypted-exports.json": "00385dd8b4bf927c7cbf8049f646144fa3edb9df779cadb473a6b64af5c533ef",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183042z-dependency-review/sources.json": "e144bc6ee43a781a014479821dc7ad4a07a0aa0ceb36cd342ffc3a63d79ab727",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183444z-plan-render/SHA256SUMS": "91748a121b4325ae556716275ce880933a3fceca16b06ad8402a322c84c58985",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183444z-plan-render/encrypted-exports.json": "5b9376003c2b91ff46e5939e598f87a9a40a5fde896d4952823fb798a61e6b28",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183444z-plan-render/plan-checks.json": "b19add020d6aff36e61ebbdffea8f6a227d54891949a9942d930fbd666fd8b62",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t183444z-plan-render/sources.json": "e6fbf1880d26f869e3be24f79a0ac74bb8c693ccfb7a47ad59476fe0bacc2791",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/SHA256SUMS": "5872f63fa3f87fbbca5dde0eb746e24fb2f0fc8d7bf76cbe460238dfc39f751a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/attempt.json": "36962fa532a1b3d3b94897bb7bd2bd3073b7e9b216d545dd41b0a94f830b8e30",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/cleanup.json": "39a6e7add1e44547c5032c7e6005a1972f4386a1c0de88b0405e9e40f1103960",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/encrypted-exports.json": "5acda589d003d9fde5d5b30c354f32f71424d2ed7654df89930f3ac8f8505ba1",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/failure.json": "7df324fc29fe0514002eea282466d2a73cabeb611f3f075895d68fa04f6e29ee",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/fixture-allowlist.json": "91933f36b57f4a30d20807b8512804986c6091e779b0ebf242cd0732251ba6d4",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/fixture-image.json": "82f8cca6151c62bf9099da67d58a0e93988fa01c4d0f52f5153080d10cb4c376",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/installed-extension-delete-phase.json": "561411d5dda128b5e09ed2299c24c4c16c0288aa2ee8556d29ddc6b63ac7ca80",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/isolation.json": "8b0355d7a44d5fbab45ae516d4af3012b06e9e6e045f2667e84d527659551d06",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-before-state.json": "1fce5dc3d6f5db3da1844cd109c30fb2d88c9fac71bfa052c3a73fc430ae7ec9",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-diagnostic-state-111.json": "b698bfd54b38cf982fa37290930cbc431f335adf2e6340a1281df93720572d66",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-fixture-inputs.json": "5b4c80bf6b5f764533961d8bc3961320c466420be15c503f3aca7f5293949698",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-retirement-allowlist.json": "fa04fd13ad22f73d096a2c714e161848fca6ebe7b75a38f7f95bb5fc671c8a12",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-runtime.json": "5477a2423ff79b6f7f1d17eed35b0089b4b7a74dacd1ca97baf1246a0902c4fe",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-uninstall-hooks.json": "b5f44d6376aeed76eec87183dbd24c689c1d476fdd44bcce8e1dc1763d3b162e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/kubesphere-uninstall-observation.json": "fd511405cb884419036571fe660def8e673397764d732ae15857a44fbdc9b053",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/named-finalizer-phase.json": "5c73b245e4189d83874b2f01307fc51a4c7e883d6c1150395247f8fcfdc4b7c5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/native-result.json": "5d44b5bb6dd59ede091a7ba434542dd53a20066f4c3204c4566917af97487a50",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/owner-delete-phase.json": "326e9fe65bc147fa03f6e585749e79b223d50e753c2bf67067e614ceb2e9722a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184031z-rehearsal/summary.json": "075cc14c6d6cc5e653aeea55a0315ca524bfe7d73cc7f17f25a4198f834ff8da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184142z-dependency-images/SHA256SUMS": "1707e4659387459fadaa42ff5e4381dd576463136475846130fdf80b5f8f1853",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184142z-dependency-images/encrypted-exports.json": "055e5f7d7558feaa66c9aa99e26c217b32bda82fce77a9dd27e6f263d396eea9",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184142z-dependency-images/image-checks.json": "9d2e0508e8d58a60b8691894e06043918a5d35fbe129751ab91f6a46d04c0f52",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t184142z-dependency-images/sources.json": "766ba0be2a7e8f59ccbf917060a85db30ceade96274f13f77e570b72af4d9741",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t185518z-closeout/SHA256SUMS": "21d7f2cea09ce576761e379c899d468ba5cba8792e7d79309c003a5f2db95e95",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t185518z-closeout/encrypted-exports.json": "4eab362b15e67a7e085bf5159ea8e7bd5bf2dd0fb0a61da4ea7b08961fabc78d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t185518z-closeout/verification.json": "db86d2ddbfe3f85e19af7dd97d264481e4028d9a99b71115ee72323e4009ecce",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/SHA256SUMS": "91b28ba6691bbc2ce170e20b976d31eddd6bf6e3e8d1912a9e74990dd405bd2f",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/access.json": "04239809a7d002cda203410221927f04d09970913debb6c8d9f6f6f54dbca042",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/attempt.json": "006fb337a852e6f350101f2158a11028d5c77a4ee212ee8035988e656176c668",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/capabilities.json": "6fa2bba5cd2737daf7da03ecf35c98b042528d25b10e49da15a400cbc79466b0",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/capture-failure.json": "2d65e1c04b5d34aa0f3131e2394a39f6fb8fa2efd421b308fe18d0fa9cb9c8ce",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/criteria.json": "0175c84ef32dbb0cfbd3cecbfb8129f9cf2c77e7226313a500b5f0ad1854bc81",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/encrypted-exports.json": "6cb48c8246ba89b3d567113e68ba5a4dd2b6c2171244b721fa628f44ea9d7f3d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/inventory.json": "84c44e0af0c2aaa2fbd2e23cc531a64e14613d61534d3a57e38ab416d6480d9c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/retirement-allowlist.json": "51860e318ecdc7caa0418510b8b9e24790348dbba59004a980498cd8cbc9025a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195141z-census/tools.json": "8bbee5ddc0c4c9c88731a87c946a64772919bc0a9431d989d33387099388e4c5",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195456z-native-identities/SHA256SUMS": "84834533caeef2d79fad51de2ec03725c3e1e324fdad81cf01876f3507336049",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195456z-native-identities/encrypted-exports.json": "5b5b1258fac0bbd803e7fb17e9269f0b674866615a6e5f125509e2319469e137",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195456z-native-identities/identity-observations.json": "fa601b420760226721bd65cbd32eb02935177a0e1d574b57316836d80e85093c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/SHA256SUMS": "cde31852f7b1055645fe24017b9d5e54bd27f2a5d3e1c00cf81c259c3efbee36",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/attempt.json": "34775311ce38e3ecbe125b11a9488336d8c6aacfeefcd4862c2e8f4685d22390",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/cleanup.json": "7c2f779298a6cdd4a8765429532e6fb3c8cf1324d23d7398e8055eddc111ac34",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/encrypted-exports.json": "77341f896d9ed903c11816a6b9496447ed607767a5a1a30d3cd28a03fd41a0ea",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/fixture-allowlist.json": "efa8e0eb9c6eb4607b8d0495cddf9b257f8a4dc9e848978d821607ba99feab4b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/fixture-image.json": "c84b5bae679fc5dffb9d7149e0ac5afa9a0beb3f4433c5c0a75d7286720e3349",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/isolation.json": "4e2def4d2680ec4d4f3c3fd34921afd5b6d2610e88753040cfba5bb93fe9d468",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/named-finalizer-phase.json": "0b05182778fcbc61f2802b19ea6774dde49ac62a828330eb70f142080b9aa406",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/native-precondition-stale-resource-version.json": "bb8fac7c0512c61864d613c7dbf1abe5dfdeff721c1ed95be9fd8929176a6a3d",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/native-precondition-stale-uid.json": "bf511c024c12e37173c0d1c5bdc6048e41f3136f853960ef03be09255493f441",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/native-result.json": "3e389b2a6c7927432ad457f65c5fa7e6988db328ce6974a84296e91b2416223a",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/owner-delete-phase.json": "78c6e6935136cb9ed0057ff512934c9a63a570b3a983ee2b29c21da6d1adb9ae",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t195601z-rehearsal/summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "6db934d4c3132d12146ee2b17ead31191ca3b0c3414bb73a6fffd2c3b817d48e",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "8ed4eb3f8518ed1c7c41dac14e4ccfad026a644b5c69c16d8773cd4efdf0437d",
+    "eng/cluster-management/QUALIFICATION.md": "6a9ba83be27b3c3f3b23cc4c458df6ceb18255d82e8431bc755b87232832ef74",
+    "eng/cluster-management/RANCHER.md": "d2f137566cbd81905fa993eed2de08ed00d6abcd6dfd81ab99cadb62791ed9f2",
+    "eng/cluster-management/README.md": "b426f01ee71b9bd6a0cb511c7aabc826aebc12da3938ba2cd3682817627d593e",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "bc5c68a1b616991c1c480f6d7a3392db8d0be2d9c0baf01d7bd0f58e625d7c0c",
+    "eng/cluster-management/evidence.py": "06820885d28935c05e84774fba3ba55e4dcf48f1ee45c992d32129f03ab5eba5",
+    "eng/cluster-management/qualify.py": "137fe5a8f693fabb2891ff30c6e3d37ea2752849cd65d8044dba965175a816c1",
+    "eng/cluster-management/rehearse.py": "a78aa7904801e589a9aa14fd0816503b3fcae5de4d128f34916f6c0aaa7f4ee0",
+    "eng/cluster-management/test_cleanup.py": "cdba94ce6166488ae6ebb4ffed3f46c554847135faddcaecbea54be5b96f5942",
+    "eng/cluster-management/test_evidence.py": "ab427aefc3214276f4d7164b10b02b69d91b2aa75d0458270034c265edb2d84e",
+    "eng/cluster-management/test_qualify.py": "1e1312d93cb2ac75461e9787b202008c7d49c620b5f3fff20734cde6d3c2bbb2",
+    "eng/cluster-management/test_rehearse.py": "bcaf4b9c9d9035d5975d14c22e73c420e8a9e54fffa1a8b38101ee3ac62bdc26"
+  },
+  "attemptId": "20261001t200342z-post-review",
+  "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+  "checkedAt": "2026-10-01T20:21:25Z",
+  "currentCensus": {
+    "additionalManagementMarkedObjectsRequiringOwnerReview": 27,
+    "allStateHelmReleases": 9,
+    "attemptId": "20261001t195141z-census",
+    "encryptedRequests": 283,
+    "missingNativeDeletionIdentityCoverageEntries": 70,
+    "productionRemovalActions": 0,
+    "state": "failed-closed",
+    "targetedIdentityObservationAttempt": "20261001t195456z-native-identities",
+    "uniqueUIDs": 2593
+  },
+  "historicalMaintenanceUnchanged": true,
+  "historicalOwnedImageAliasReadback": [
+    {
+      "attempt": "20261001t174551z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-7ed0b3b577a2"
+    },
+    {
+      "attempt": "20261001t174551z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-7ed0b3b577a2"
+    },
+    {
+      "attempt": "20261001t175304z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-598ca4f6f034"
+    },
+    {
+      "attempt": "20261001t175304z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-598ca4f6f034"
+    },
+    {
+      "attempt": "20261001t180039z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-2a03b9c4eb9c"
+    },
+    {
+      "attempt": "20261001t180039z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-2a03b9c4eb9c"
+    },
+    {
+      "attempt": "20261001t180841z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-7c5a0ebfc7dc"
+    },
+    {
+      "attempt": "20261001t180841z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-7c5a0ebfc7dc"
+    },
+    {
+      "attempt": "20261001t180843z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-77f136cb266b"
+    },
+    {
+      "attempt": "20261001t180843z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-77f136cb266b"
+    },
+    {
+      "attempt": "20261001t182403z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-c69114970857"
+    },
+    {
+      "attempt": "20261001t182403z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-c69114970857"
+    },
+    {
+      "attempt": "20261001t184031z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-fenced:s426-98923ed4a2f8"
+    },
+    {
+      "attempt": "20261001t184031z-rehearsal",
+      "state": "absent",
+      "tag": "hexalith-s426-base:s426-98923ed4a2f8"
+    }
+  ],
+  "limits": [
+    "Sequential source observations are not an atomic etcd cut",
+    "Newly projected fields do not prove equality with earlier unprojected state",
+    "Standalone canary/finalizer are synthetic; its deployment has zero replicas",
+    "Current parser guard verified with actual retained synthetic metadata and unit tests; full fixture not rerun after that edit",
+    "Local metadata/hash validators do not authenticate authority or accept operational criteria"
+  ],
+  "localEvidenceAudit": {
+    "attempts": [
+      {
+        "attemptId": "20261001t173028z-census",
+        "encryptedExports": 263,
+        "privateDigestEntries": 271,
+        "publicDigestEntries": 8
+      },
+      {
+        "attemptId": "20261001t173555z-rehearsal",
+        "encryptedExports": 3,
+        "privateDigestEntries": 8,
+        "publicDigestEntries": 5
+      },
+      {
+        "attemptId": "20261001t173900z-rehearsal",
+        "encryptedExports": 3,
+        "privateDigestEntries": 8,
+        "publicDigestEntries": 5
+      },
+      {
+        "attemptId": "20261001t173902z-census",
+        "encryptedExports": 283,
+        "privateDigestEntries": 291,
+        "publicDigestEntries": 8
+      },
+      {
+        "attemptId": "20261001t174500z-target-sources",
+        "encryptedExports": 0,
+        "privateDigestEntries": 12,
+        "publicDigestEntries": 2
+      },
+      {
+        "attemptId": "20261001t174551z-rehearsal",
+        "encryptedExports": 7,
+        "privateDigestEntries": 15,
+        "publicDigestEntries": 6
+      },
+      {
+        "attemptId": "20261001t175000z-current-pins",
+        "encryptedExports": 0,
+        "privateDigestEntries": 13,
+        "publicDigestEntries": 3
+      },
+      {
+        "attemptId": "20261001t175304z-rehearsal",
+        "encryptedExports": 24,
+        "privateDigestEntries": 34,
+        "publicDigestEntries": 8
+      },
+      {
+        "attemptId": "20261001t180000z-target-review",
+        "encryptedExports": 0,
+        "privateDigestEntries": 6,
+        "publicDigestEntries": 5
+      },
+      {
+        "attemptId": "20261001t180039z-rehearsal",
+        "encryptedExports": 36,
+        "privateDigestEntries": 47,
+        "publicDigestEntries": 9
+      },
+      {
+        "attemptId": "20261001t180841z-rehearsal",
+        "encryptedExports": 39,
+        "privateDigestEntries": 50,
+        "publicDigestEntries": 9
+      },
+      {
+        "attemptId": "20261001t180843z-rehearsal",
+        "encryptedExports": 87,
+        "privateDigestEntries": 99,
+        "publicDigestEntries": 10
+      },
+      {
+        "attemptId": "20261001t181000z-public-verification",
+        "encryptedExports": 0,
+        "privateDigestEntries": 14,
+        "publicDigestEntries": 4
+      },
+      {
+        "attemptId": "20261001t181200z-capability-review",
+        "encryptedExports": 1,
+        "privateDigestEntries": 3,
+        "publicDigestEntries": 2
+      },
+      {
+        "attemptId": "20261001t182403z-rehearsal",
+        "encryptedExports": 118,
+        "privateDigestEntries": 136,
+        "publicDigestEntries": 16
+      },
+      {
+        "attemptId": "20261001t183042z-dependency-review",
+        "encryptedExports": 7,
+        "privateDigestEntries": 10,
+        "publicDigestEntries": 3
+      },
+      {
+        "attemptId": "20261001t183444z-plan-render",
+        "encryptedExports": 7,
+        "privateDigestEntries": 10,
+        "publicDigestEntries": 3
+      },
+      {
+        "attemptId": "20261001t184031z-rehearsal",
+        "encryptedExports": 123,
+        "privateDigestEntries": 144,
+        "publicDigestEntries": 19
+      },
+      {
+        "attemptId": "20261001t184142z-dependency-images",
+        "encryptedExports": 11,
+        "privateDigestEntries": 14,
+        "publicDigestEntries": 3
+      },
+      {
+        "attemptId": "20261001t185518z-closeout",
+        "encryptedExports": 8,
+        "privateDigestEntries": 10,
+        "publicDigestEntries": 2
+      },
+      {
+        "attemptId": "20261001t195141z-census",
+        "encryptedExports": 283,
+        "privateDigestEntries": 292,
+        "publicDigestEntries": 9
+      },
+      {
+        "attemptId": "20261001t195456z-native-identities",
+        "encryptedExports": 4,
+        "privateDigestEntries": 6,
+        "publicDigestEntries": 2
+      },
+      {
+        "attemptId": "20261001t195601z-rehearsal",
+        "encryptedExports": 102,
+        "privateDigestEntries": 116,
+        "publicDigestEntries": 12
+      }
+    ],
+    "checksumHeaderModeChecksPassed": true,
+    "independentDecryptionAccepted": false,
+    "independentOffNodeReadbackAccepted": false,
+    "priorEncryptedExportsChecked": 1409,
+    "priorPublicJsonParsed": 153,
+    "priorPublicLedgers": 23
+  },
+  "originalCriteriaAccepted": [],
+  "originalStoryStatus": "in-progress",
+  "pendingAcceptance": [
+    "effective host/virtualization/reservation facts using working SSH access",
+    "owner-approved complete consumer/disposition/propagation decisions",
+    "successful representative dependency-first KubeSphere retirement",
+    "target authenticity and complete transitive image license/security qualification",
+    "independent native maintenance/recovery access and public/unauthorized denial",
+    "approved MFA/scopes and authenticated current grant/revocation lineage",
+    "independently decrypted off-node custody and quarantined recovery acceptance"
+  ],
+  "preReviewDiffSha256": "5a0e2bbb8e14fd04ac8b63db7b61e50cdc18a3f5f0c17d6ab94ce3bd186da010",
+  "procedureAttribution": {
+    "actualExecutedSourceEncryptedExport": {
+      "ciphertextBytes": 53495,
+      "ciphertextSha256": "2fc054653b74a66a76011bdf98f60eed32143a87b596b8e34ac518e35a3de6b1",
+      "file": "actual-executed-standalone-script.age",
+      "plaintextSha256": "6277bf2ceb290e276405780016968eb83b0a3bd1e36694f35e311262faf94f19"
+    },
+    "currentFullFixtureRerun": false,
+    "currentProcedureSha256": "a78aa7904801e589a9aa14fd0816503b3fcae5de4d128f34916f6c0aaa7f4ee0",
+    "difference": "Three-line malformed-mount Type/schema guard in capture_volumes",
+    "executedProcedureSha256": "6277bf2ceb290e276405780016968eb83b0a3bd1e36694f35e311262faf94f19",
+    "independentDecryptVerification": false,
+    "knownPlaintextDigestsFromLocalCapture": true,
+    "misnamedHistoricalExport": {
+      "actualContent": "current revision, not the standalone executed revision",
+      "file": "executed-post-review-rehearsal-script.age",
+      "plaintextSha256": "a78aa7904801e589a9aa14fd0816503b3fcae5de4d128f34916f6c0aaa7f4ee0",
+      "preservedWithoutOverwrite": true
+    },
+    "mountCount": 2,
+    "nativeDeleteAndPreservationBehaviorBytesUnchanged": true,
+    "newGuardAcceptsRetainedRealFixtureMounts": true,
+    "ownedVolumeCount": 1,
+    "retainedEncryptedCapture": "fixture-011-inspect-fixture-node.age",
+    "scope": "Replay of synthetic fixture metadata only; no source credentials/data"
+  },
+  "productionRetirementAccepted": false,
+  "protectedSourceComparison": {
+    "changedPreviouslyProjectedFields": [],
+    "newlyProjectedFields": [
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-ca7554e9-7796-437a-a34f-f8969b88d14a"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-b172a66f-a75c-4845-9d20-59915334e6e3"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "audit-hexalith-keys-2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "calico-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "hexalith-memories"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-69558e7e-2469-4789-a07d-2aa38061ba5e"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-9550e626-8ac7-4d4d-8873-80ab24ba2c59"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "audit-hexalith-keys-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-c105c628-fbf8-422f-bff9-9cda98414df3"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-651ebd76-284c-4d15-9d75-0ce5172c6299"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-8f7094af-1209-4257-9219-2147bb599a53"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "kubesphere-controls-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "traefik"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "StorageClass",
+          null,
+          "openebs-hostpath-retain"
+        ],
+        "newlyProjectedField": "reclaimPolicy"
+      },
+      {
+        "identity": [
+          "StorageClass",
+          null,
+          "openebs-hostpath-retain"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "hexalith-memories",
+          "data-access-telemetry-postgresql-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "keycloak",
+          "keycloak-pvc"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-bff6336f-66a4-4924-9d01-fd6ed620c49e"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "openbao"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-bca95598-d97b-4822-8b1b-ae5d74a2b749"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "llm",
+          "ollama-models-pvc"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "StorageClass",
+          null,
+          "openebs-hostpath"
+        ],
+        "newlyProjectedField": "reclaimPolicy"
+      },
+      {
+        "identity": [
+          "StorageClass",
+          null,
+          "openebs-hostpath"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "dapr-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "data-hexalith-keys-1"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-7fdb7c7b-c9fe-4917-96a9-bb534edb8c7e"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "keycloak",
+          "postgres-pvc"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "cert-manager"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "kubesphere-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-d93414a2-cc0d-454c-843a-6abefafe1470"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-75dd73cb-9b11-415f-b161-9b06d5dc3347"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "forgejo-runner"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "data-hexalith-keys-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "registry-private",
+          "private-registry-storage"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "cnpg-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-be46e78a-12d8-41ca-b89d-94555b3eb8d4"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-961c71e1-2f65-44f3-8b8e-26dcf50bb5e5"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "kube-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "dapr-system",
+          "dapr-scheduler-data-dir-dapr-scheduler-server-1"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "keycloak"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "forgejo-runner",
+          "forgejo-runner-actions-cache"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "default"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "registry-distribution",
+          "distribution-registry-storage"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "dapr-system",
+          "dapr-scheduler-data-dir-dapr-scheduler-server-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-315f8a4c-020e-4df6-b548-04a3a58800b9"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "data-hexalith-keys-2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-cad494a2-800e-405b-977e-ee1eed463e09"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-e9424aeb-3e08-401f-9d39-821e9028f6bf"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-f3a85864-d12f-48ae-9604-bcb083129eb7"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "openbao-snapshots"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "forgejo",
+          "forgejo-data"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "velero"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-31258a19-5814-48c5-8209-1d92f2e6f8ed"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "keycloak",
+          "keycloak-postgres-2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "dapr-system",
+          "raft-log-dapr-placement-server-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "hexalith-memories",
+          "data-redis-stack-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "tigera-operator"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-42e01d8e-d500-4ce8-8e84-945f9266af93"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-f74fdb7d-eb17-44c6-bdcc-20b55c157de4"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "registry-distribution"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-e168aa15-d103-4669-9395-2fcbb05dece6"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "dapr-system",
+          "dapr-scheduler-data-dir-dapr-scheduler-server-2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "llm"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "stalwart"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "dapr-system",
+          "raft-log-dapr-placement-server-1"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-269cac67-811e-4e12-8e34-ff1cb998d8b2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "forgejo-runner",
+          "forgejo-runner-docker-cache"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "registry-private"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "openbao",
+          "audit-hexalith-keys-1"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "forgejo"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "stalwart",
+          "stalwart-data"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "kube-public"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-e35a833f-6c05-4b71-9a43-c95308a19153"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-da142de4-dec5-4519-880d-b7ede4000283"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-f09bc317-db98-4b34-81bf-7e501ad6d3c2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "kubekey-system"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "Namespace",
+          null,
+          "kube-node-lease"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "dapr-system",
+          "raft-log-dapr-placement-server-2"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "keycloak",
+          "keycloak-postgres-1"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "pvc-c2506af5-c314-4ede-9992-c6998c0fbb3f"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolumeClaim",
+          "hexalith-memories",
+          "data-falkordb-0"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      },
+      {
+        "identity": [
+          "PersistentVolume",
+          null,
+          "bm-dfc1358c-4e3d-4d8f-ae84-64af817b61e1"
+        ],
+        "newlyProjectedField": "deletionTimestamp"
+      }
+    ],
+    "protectedObjectsCompared": 80,
+    "scope": "Sequential read-only observations; new fields do not establish prior-state equality"
+  },
+  "qualificationAccepted": false,
+  "review": {
+    "deferred": [
+      "G18: restore accepted 4.2/4.3 staging prerequisite in generated agent context"
+    ],
+    "individualFindingsTriaged": 27,
+    "layersCompleted": [
+      "blind",
+      "edge-case",
+      "verification-gap"
+    ],
+    "limitation": "Verification-gap reviewer reused a source-recon agent after the fresh-agent slot request was rejected; two other reviewers had fresh context.",
+    "patchedRootCauses": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceMutation": false,
+  "standaloneNativeRehearsal": {
+    "actualKubeSphereRuntimeRerun": false,
+    "attemptId": "20261001t195601z-rehearsal",
+    "cleanupPassed": true,
+    "currentFullContentAndUIDPreserved": true,
+    "staleUIDAndResourceVersionNative409ConflictObserved": true,
+    "state": "passed-limited",
+    "syntheticCanaryPassed": true
+  },
+  "state": "verified-limited",
+  "unitVerification": {
+    "actualOutputEncryptedExport": {
+      "ciphertextBytes": 7487,
+      "ciphertextSha256": "2e240ecc529f5b8a490a030d8b3c11cc2fc9fd14222b262805c7b426358a885e",
+      "file": "current-unit-test-output.age",
+      "plaintextSha256": "2b9721096c1e35c97d4ae4ae41058b25c63b419729469bbd48e85ae7fbed3c11"
+    },
+    "command": "python3 -m unittest discover -s eng/cluster-management -p 'test_*.py' -v",
+    "passed": 45,
+    "passingCaseIds": [
+      "test_cleanup.CleanupTests.test_early_failure_discovers_volumes_before_teardown",
+      "test_cleanup.CleanupTests.test_empty_unknown_volume_inventory_cannot_pass",
+      "test_cleanup.CleanupTests.test_failed_image_removal_with_present_or_unverified_alias_cannot_pass",
+      "test_cleanup.CleanupTests.test_timed_out_teardown_still_verifies_remaining_exact_objects",
+      "test_evidence.DestinationTests.test_attempt_symlink_is_refused_before_touching_existing_custody",
+      "test_evidence.DestinationTests.test_category_symlink_cannot_write_into_git_or_recovery",
+      "test_evidence.DestinationTests.test_dangling_category_symlink_is_refused",
+      "test_qualify.CensusTests.test_all_helm_states_paginate_beyond_default_limit",
+      "test_qualify.CensusTests.test_allocated_tool_and_shape_failures_finalize_closed_criteria",
+      "test_qualify.CensusTests.test_collect_pagination_nonpreferred_crd_and_empty_discovery_coverage",
+      "test_qualify.CensusTests.test_endpoint_userinfo_query_and_fragment_cannot_disclose_credentials",
+      "test_qualify.CensusTests.test_failed_discovery_is_not_an_empty_accepted_census",
+      "test_qualify.CensusTests.test_malformed_successful_lists_are_coverage_failures",
+      "test_qualify.CensusTests.test_proxy_credentials_are_refused_before_discovery",
+      "test_qualify.CensusTests.test_supported_skew_and_prerelease_fail",
+      "test_qualify.CustodyTests.test_private_attempts_immutable_and_no_recovery_overwrite",
+      "test_qualify.CustodyTests.test_symlink_evidence_custody_refused",
+      "test_qualify.PinAuthorityTests.test_github_prerelease_and_stale_review_rejected",
+      "test_qualify.PinAuthorityTests.test_missing_gapped_conflicting_or_expanded_authority_fails_closed",
+      "test_qualify.PinAuthorityTests.test_post_cut_revocation_survives_source_loss",
+      "test_qualify.PinAuthorityTests.test_unqualified_tag_hosting_security_and_tools_fail_closed",
+      "test_qualify.ProjectionTests.test_explicit_management_keys_and_finalizers_classify_native_objects",
+      "test_qualify.ProjectionTests.test_ingress_backends_and_gateway_listeners_preserve_sanitized_consumers",
+      "test_qualify.ProjectionTests.test_ownership_storage_and_installed_catalog_distinction",
+      "test_qualify.ProjectionTests.test_secret_and_config_consumers_project_only_reference_identities",
+      "test_qualify.ProjectionTests.test_secret_and_configuration_values_never_enter_projection",
+      "test_qualify.ProjectionTests.test_terminating_custom_resource_projects_timestamp_and_named_finalizer_only",
+      "test_qualify.ProjectionTests.test_unknown_owner_consumer_and_deletion_effects_block_retirement",
+      "test_rehearse.FixtureBoundaryTests.test_exact_name_conflicts_stop_before_mutation",
+      "test_rehearse.FixtureBoundaryTests.test_kind_timeout_captures_owned_volumes_before_failure_returns",
+      "test_rehearse.FixtureBoundaryTests.test_native_conflict_requires_specific_server_rejection",
+      "test_rehearse.FixtureBoundaryTests.test_native_delete_request_contains_both_preconditions_on_fixture_only",
+      "test_rehearse.FixtureBoundaryTests.test_native_negative_transport_failure_or_content_drift_stops",
+      "test_rehearse.FixtureBoundaryTests.test_real_stale_uid_and_version_requests_require_conflict_and_unchanged_content",
+      "test_rehearse.FixtureBoundaryTests.test_side_effects_owned_before_encryption_failure",
+      "test_rehearse.FixtureBoundaryTests.test_source_inventory_hash_and_parse_share_one_capture",
+      "test_rehearse.RehearsalTests.test_daemon_failure_does_not_prove_cleanup_or_source_refusal",
+      "test_rehearse.RehearsalTests.test_extension_phase_cannot_use_later_core_scope_to_allow_unexpected_deletion",
+      "test_rehearse.RehearsalTests.test_named_finalizer_only_and_drift_stop",
+      "test_rehearse.RehearsalTests.test_orphan_propagation_retains_children_and_stops_nested_cascade",
+      "test_rehearse.RehearsalTests.test_protected_storage_properties_finalizers_and_deletion_timestamps_cannot_drift",
+      "test_rehearse.RehearsalTests.test_source_endpoint_uid_reachability_and_credentials_refused",
+      "test_rehearse.RehearsalTests.test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops",
+      "test_rehearse.RehearsalTests.test_unknown_cascade_blocks_and_child_first_allows_explicit_scope",
+      "test_rehearse.RehearsalTests.test_wildcards_missing_resources_protected_namespaces_and_claims_refused"
+    ],
+    "skipped": 0
+  },
+  "whitespaceChecksPassed": true
+}

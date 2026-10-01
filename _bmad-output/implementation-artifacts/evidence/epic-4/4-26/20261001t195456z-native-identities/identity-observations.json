@@ -1,0 +1,526 @@
+{
+  "checkedAt": "2026-10-01T19:54:57Z",
+  "checks": [
+    {
+      "apiPath": "/api/v1/componentstatuses",
+      "exitCode": 0,
+      "objectsWithoutDeletionIdentity": [
+        {
+          "kind": null,
+          "name": "scheduler",
+          "namespace": null,
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "controller-manager",
+          "namespace": null,
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "etcd-0",
+          "namespace": null,
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        }
+      ],
+      "returnedObjects": 3
+    },
+    {
+      "apiPath": "/apis/projectcalico.org/v3/profiles",
+      "exitCode": 0,
+      "objectsWithoutDeletionIdentity": [
+        {
+          "kind": "Profile",
+          "name": "projectcalico-default-allow",
+          "namespace": null,
+          "resourceVersionPresent": true,
+          "uidPresent": false
+        }
+      ],
+      "returnedObjects": 126
+    },
+    {
+      "apiPath": "/apis/metrics.k8s.io/v1beta1/nodes",
+      "exitCode": 0,
+      "objectsWithoutDeletionIdentity": [
+        {
+          "kind": null,
+          "name": "node1",
+          "namespace": null,
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        }
+      ],
+      "returnedObjects": 1
+    },
+    {
+      "apiPath": "/apis/metrics.k8s.io/v1beta1/pods",
+      "exitCode": 0,
+      "objectsWithoutDeletionIdentity": [
+        {
+          "kind": null,
+          "name": "calico-apiserver-5497f697fb-f2b4r",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "calico-apiserver-5497f697fb-zstzs",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "calico-kube-controllers-64f84946d-b7mgl",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "calico-node-8swc5",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "calico-typha-774c8dc76-5lf8p",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "goldmane-7449f766bd-2s4hj",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "whisker-6c7f4c4844-7ffkw",
+          "namespace": "calico-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "cert-manager-58b9ddb94b-q7br4",
+          "namespace": "cert-manager",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "cert-manager-cainjector-7f8cd56994-bbhnx",
+          "namespace": "cert-manager",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "cert-manager-webhook-54797cd4c8-2n5jx",
+          "namespace": "cert-manager",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "barman-cloud-54568989bf-ldqv7",
+          "namespace": "cnpg-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "cnpg-controller-manager-5d78fcc98c-w5jmn",
+          "namespace": "cnpg-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-operator-58bfcd4f54-kvg9q",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-operator-58bfcd4f54-s6bxk",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-operator-58bfcd4f54-zqj95",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-placement-server-0",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-placement-server-1",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-placement-server-2",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-scheduler-server-0",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-scheduler-server-1",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-scheduler-server-2",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-sentry-68fc6cf899-59gqp",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-sentry-68fc6cf899-8fn2c",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-sentry-68fc6cf899-k7tww",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-sidecar-injector-c46dfc499-vxjsg",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-sidecar-injector-c46dfc499-xlqnm",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "dapr-sidecar-injector-c46dfc499-zmjz2",
+          "namespace": "dapr-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "forgejo-7995c56876-8bgnz",
+          "namespace": "forgejo",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "forgejo-runner-bc8b8dfc5-f4hq2",
+          "namespace": "forgejo-runner",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "access-telemetry-postgresql-0",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "falkordb-0",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "memories-675fd5d64-5zqpv",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "memories-675fd5d64-jtd8v",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "memories-mcp-55d65d86d6-gwlj9",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "memories-mcp-55d65d86d6-wz9n5",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "redis-stack-0",
+          "namespace": "hexalith-memories",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "keycloak-7bfc8979b8-rjk5k",
+          "namespace": "keycloak",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "keycloak-7bfc8979b8-vc4cn",
+          "namespace": "keycloak",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "keycloak-postgres-1",
+          "namespace": "keycloak",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "keycloak-postgres-2",
+          "namespace": "keycloak",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "coredns-57cbfcd5b7-qw8w8",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "coredns-57cbfcd5b7-wtx2m",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "kube-apiserver-node1",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "kube-controller-manager-node1",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "kube-proxy-6fxfx",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "kube-scheduler-node1",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "localpv-provisioner-69bbbc59bf-k5756",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "metrics-server-5bc456dd79-zb6g8",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "nodelocaldns-l6v88",
+          "namespace": "kube-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "extensions-museum-74b7ddbdc4-7rwfd",
+          "namespace": "kubesphere-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "ks-apiserver-5cc56cf596-gczzj",
+          "namespace": "kubesphere-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "ks-console-77c96c4765-fm25w",
+          "namespace": "kubesphere-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "ks-console-embed-675c98bc58-hdkxj",
+          "namespace": "kubesphere-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "ks-controller-manager-c87b45dbd-w264z",
+          "namespace": "kubesphere-system",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "hexalith-keys-0",
+          "namespace": "openbao",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "hexalith-keys-1",
+          "namespace": "openbao",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "hexalith-keys-2",
+          "namespace": "openbao",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "distribution-registry-7459574665-qh725",
+          "namespace": "registry-distribution",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "private-registry-58bfc64f6-z27bt",
+          "namespace": "registry-private",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "stalwart-df97b564c-5tzgw",
+          "namespace": "stalwart",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "tigera-operator-85979684d8-lpw88",
+          "namespace": "tigera-operator",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "hexalith-tache-ai-relay-78df5dbc99-vdrhb",
+          "namespace": "traefik",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "traefik-x8j6k",
+          "namespace": "traefik",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "node-agent-g5dnl",
+          "namespace": "velero",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        },
+        {
+          "kind": null,
+          "name": "velero-669d4c75cd-sbm6d",
+          "namespace": "velero",
+          "resourceVersionPresent": false,
+          "uidPresent": false
+        }
+      ],
+      "returnedObjects": 65
+    }
+  ],
+  "interpretation": "These records lack native deletion preconditions and are not removal actions; provenance requires resource-type review",
+  "qualificationAccepted": false,
+  "sourceMutation": false
+}
