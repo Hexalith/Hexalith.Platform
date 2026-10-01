@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-01T18:01:58Z",
+  "parentSourceRecordSha256": "210bfb08e7bbbb332369fa38cb740606e4eb65925634ac0a4182ae3d60b4286a",
+  "sources": [
+    {
+      "bytes": 10174,
+      "fetchedAt": "2026-10-01T18:01:57Z",
+      "httpStatus": 200,
+      "name": "backup-license",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "url": "https://raw.githubusercontent.com/rancher/backup-restore-operator/v11.0.3/LICENSE"
+    },
+    {
+      "errorClass": "HTTPError",
+      "name": "k3s-os-matrix",
+      "state": "fetch-failed",
+      "url": "https://www.suse.com/suse-k3s/support-matrix/all-supported-versions/k3s-v1-35/"
+    },
+    {
+      "errorClass": "HTTPError",
+      "name": "rancher-backup-index",
+      "state": "fetch-failed",
+      "url": "https://charts.rancher.io/index.yaml"
+    }
+  ]
+}

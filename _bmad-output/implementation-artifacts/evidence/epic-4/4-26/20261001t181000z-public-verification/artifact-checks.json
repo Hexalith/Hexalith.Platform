@@ -1,0 +1,86 @@
+{
+  "acceptance": false,
+  "backupCharts": [
+    {
+      "accepted": false,
+      "checksumMatches": true,
+      "images": [
+        "rancher/backup-restore-operator:v11.0.3",
+        "rancher/kuberlr-kubectl:v8.1.2"
+      ],
+      "indexDigest": "aedaceec644a240eeda3c6a3c6cc211c45161981cc1bbe9631fa50308aebd6c2",
+      "package": "rancher-backup",
+      "renderExit": 0,
+      "sha256": "aedaceec644a240eeda3c6a3c6cc211c45161981cc1bbe9631fa50308aebd6c2",
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/assets/rancher-backup/rancher-backup-110.0.2+up11.0.3.tgz",
+      "version": "110.0.2+up11.0.3"
+    },
+    {
+      "accepted": false,
+      "checksumMatches": true,
+      "images": [],
+      "indexDigest": "523714ef630f9d1675f423bca8f7d7ece13034ac7876c276bb6792b11fd0301b",
+      "package": "rancher-backup-crd",
+      "renderExit": 0,
+      "sha256": "523714ef630f9d1675f423bca8f7d7ece13034ac7876c276bb6792b11fd0301b",
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/assets/rancher-backup-crd/rancher-backup-crd-110.0.2+up11.0.3.tgz",
+      "version": "110.0.2+up11.0.3"
+    }
+  ],
+  "checkedAt": "2026-10-01T18:14:36Z",
+  "checks": [
+    {
+      "accepted": false,
+      "artifact": "k3s-v1.35.9+k3s1",
+      "checksumMatches": true,
+      "downloadedSha256": "897acb21cca57d477a211102251a6591450ce767344a9faaa121a1007ca9fa9a",
+      "publishedSha256": "897acb21cca57d477a211102251a6591450ce767344a9faaa121a1007ca9fa9a",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "artifact": "kubectl-source",
+      "checksumMatches": true,
+      "observedSha256": "90b7b9058ffeb5c10710bb1c73f541eaf426fb1b4e87df435db669de9a2564a2",
+      "publishedSha256": "90b7b9058ffeb5c10710bb1c73f541eaf426fb1b4e87df435db669de9a2564a2",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "artifact": "kubectl-target",
+      "checksumMatches": true,
+      "observedSha256": "3cfeaf80be482b435b0aa214aff6e0b2c312ee23c0ff20810c75517b6004c6eb",
+      "publishedSha256": "3cfeaf80be482b435b0aa214aff6e0b2c312ee23c0ff20810c75517b6004c6eb",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "archiveMatches": true,
+      "artifact": "helm-v3.22.0",
+      "installedBinaryMatchesArchive": true,
+      "publishedArchiveSha256": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+      "retainedArchiveSha256": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "artifact": "age",
+      "publishedAssetDigest": "sha256:cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "publishedDigestMatchesRetainedSource": true,
+      "releasePrerelease": false,
+      "retainedSourceArchiveSha256": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "retainedSourceMetadataIsNotIndependentBinaryVerification": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "artifact": "etcd",
+      "publishedAssetDigest": "sha256:66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "publishedDigestMatchesRetainedSource": true,
+      "releasePrerelease": false,
+      "retainedSourceArchiveSha256": "66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "retainedSourceMetadataIsNotIndependentBinaryVerification": true,
+      "signatureVerified": false
+    }
+  ]
+}

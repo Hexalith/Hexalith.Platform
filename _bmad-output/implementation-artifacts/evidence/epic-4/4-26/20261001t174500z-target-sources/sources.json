@@ -1,0 +1,227 @@
+{
+  "accepted": false,
+  "checkedAt": "2026-10-01T17:43:56Z",
+  "purpose": "public release/chart/license and fixture binary sources; no production mutation",
+  "sources": [
+    {
+      "assets": [],
+      "bytes": 2044,
+      "fetchedAt": "2026-10-01T17:42:21Z",
+      "httpStatus": 200,
+      "name": "rancher-release",
+      "prerelease": false,
+      "publicSource": true,
+      "publishedAt": "2026-09-23T19:38:38Z",
+      "sha256": "67b55d92f38f49687e29b91983463bb16934fbe453087ba188dca04ddfd1d148",
+      "url": "https://api.github.com/repos/rancher/rancher/releases/tags/v2.14.6",
+      "version": "v2.14.6"
+    },
+    {
+      "assets": [
+        {
+          "name": "k3s",
+          "sha256": "sha256:897acb21cca57d477a211102251a6591450ce767344a9faaa121a1007ca9fa9a",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s"
+        },
+        {
+          "name": "k3s-airgap-images-amd64.tar",
+          "sha256": "sha256:072c62b356001db55d05217595f44ab509f4493d6a631992dfe40081826ea189",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-amd64.tar"
+        },
+        {
+          "name": "k3s-airgap-images-amd64.tar.gz",
+          "sha256": "sha256:d4cad85d6485632494ee1eb896df49720d1773f695b9a6a5dfe1a326eb16e7a0",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-amd64.tar.gz"
+        },
+        {
+          "name": "k3s-airgap-images-amd64.tar.zst",
+          "sha256": "sha256:7f1cbfea56d38f5e69aec13500a89290119096cc2f5a6d4f542e5f26599977d0",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+        },
+        {
+          "name": "k3s-airgap-images-arm.tar",
+          "sha256": "sha256:58f5a5a65789a73903226146db1aaaeb1120be0f212936806c356267239f2b2d",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-arm.tar"
+        },
+        {
+          "name": "k3s-airgap-images-arm.tar.gz",
+          "sha256": "sha256:f987a0342830904925ce57e2d330b249b7f4905ad96420b47c36dea4fc0371bb",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-arm.tar.gz"
+        },
+        {
+          "name": "k3s-airgap-images-arm.tar.zst",
+          "sha256": "sha256:fffbe1d1c4ff13f263b2a6c0898266857f05744f2ce2574edb3d6e8263983e5a",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-arm.tar.zst"
+        },
+        {
+          "name": "k3s-airgap-images-arm64.tar",
+          "sha256": "sha256:939bc834e880c33c1dc4ddd1e8def071b28cd11a406f4f69017b7e64f7d212cb",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-arm64.tar"
+        },
+        {
+          "name": "k3s-airgap-images-arm64.tar.gz",
+          "sha256": "sha256:6efc30348f0ef48874e0a6ca86fc839e11a91867b8dc3efc04e47dde601d8681",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-arm64.tar.gz"
+        },
+        {
+          "name": "k3s-airgap-images-arm64.tar.zst",
+          "sha256": "sha256:2c7a2347a7bf7606a40b6d2a8e2f350dfdc47f552c059f4594491934c25a6780",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-airgap-images-arm64.tar.zst"
+        },
+        {
+          "name": "k3s-arm64",
+          "sha256": "sha256:6176dd12c512e177af998e6035920f6283c5fdbd5adfdff85c103a7fdf2a00b5",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-arm64"
+        },
+        {
+          "name": "k3s-armhf",
+          "sha256": "sha256:d6ebc7b594b6c8dc08d44378a571b595166efcf08fe29a5b6f98619169740cc2",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-armhf"
+        },
+        {
+          "name": "k3s-images.txt",
+          "sha256": "sha256:377307d4039ccd04f0e27d2906595a8c7b7d49a79f7553c311f6f960ff3efb58",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-images.txt"
+        },
+        {
+          "name": "sha256sum-amd64.txt",
+          "sha256": "sha256:b6a1a49b8dc3d672dbf9908548eea082ed6cc2db12f546a6809f7a8a4ef97ad1",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/sha256sum-amd64.txt"
+        },
+        {
+          "name": "sha256sum-arm.txt",
+          "sha256": "sha256:f7e0c65ece411144df43789f268645a901636292e6ee188cd6bf3de3abfdb578",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/sha256sum-arm.txt"
+        },
+        {
+          "name": "sha256sum-arm64.txt",
+          "sha256": "sha256:e722c62b9a368029c5c58f93e97ab7fc04adebafca5c8ee420c9d3271cfd34d6",
+          "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/sha256sum-arm64.txt"
+        }
+      ],
+      "bytes": 32040,
+      "fetchedAt": "2026-10-01T17:42:22Z",
+      "httpStatus": 200,
+      "name": "k3s-release",
+      "prerelease": false,
+      "publicSource": true,
+      "publishedAt": "2026-09-30T16:09:21Z",
+      "sha256": "74ac82cce938fc8f9ea1839d19a0f3128da4fbf33d1f5bc7266e8745400c155e",
+      "url": "https://api.github.com/repos/k3s-io/k3s/releases/tags/v1.35.9%2Bk3s1",
+      "version": "v1.35.9+k3s1"
+    },
+    {
+      "errorClass": "HTTPError",
+      "fetchedAt": "2026-10-01T17:42:22Z",
+      "name": "rancher-chart",
+      "state": "fetch-failed",
+      "url": "https://releases.rancher.com/server-charts/stable/rancher-2.14.6.tgz"
+    },
+    {
+      "bytes": 10175,
+      "fetchedAt": "2026-10-01T17:42:22Z",
+      "httpStatus": 200,
+      "name": "rancher-license",
+      "publicSource": true,
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "url": "https://raw.githubusercontent.com/rancher/rancher/v2.14.6/LICENSE"
+    },
+    {
+      "bytes": 10174,
+      "fetchedAt": "2026-10-01T17:42:22Z",
+      "httpStatus": 200,
+      "name": "k3s-license",
+      "publicSource": true,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "url": "https://raw.githubusercontent.com/k3s-io/k3s/v1.35.9%2Bk3s1/LICENSE"
+    },
+    {
+      "bytes": 10174,
+      "fetchedAt": "2026-10-01T17:42:23Z",
+      "httpStatus": 200,
+      "name": "backup-license",
+      "publicSource": true,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "url": "https://raw.githubusercontent.com/rancher/backup-restore-operator/v10.0.10/LICENSE"
+    },
+    {
+      "bytes": 234177,
+      "fetchedAt": "2026-10-01T17:42:23Z",
+      "httpStatus": 200,
+      "name": "hosting-import-matrix",
+      "publicSource": true,
+      "sha256": "c357eab46fefd210a9c907d0c5af88af08a6a9025cde529ee610511cdd029764",
+      "url": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-14-6/"
+    },
+    {
+      "bytes": 7462,
+      "fetchedAt": "2026-10-01T17:42:23Z",
+      "httpStatus": 200,
+      "name": "security-session",
+      "publicSource": true,
+      "sha256": "0dc21685ed96594cb44215576b182569bb805c9b222be6c20bebdb5709b57760",
+      "url": "https://api.github.com/repos/rancher/rancher/security-advisories/GHSA-6vpq-mf48-9794",
+      "vulnerabilities": [
+        {
+          "affected": ">=v2.15.0, <v2.15.2",
+          "package": "github.com/rancher/rancher",
+          "patched": "v2.15.2"
+        }
+      ]
+    },
+    {
+      "bytes": 6645,
+      "fetchedAt": "2026-10-01T17:42:24Z",
+      "httpStatus": 200,
+      "name": "security-xss",
+      "publicSource": true,
+      "sha256": "95a6095cad46e6696043696885124c97a78e131cb01c8cabdd57a5edabd2d922",
+      "url": "https://api.github.com/repos/rancher/rancher/security-advisories/GHSA-992f-xh8r-jg2f",
+      "vulnerabilities": [
+        {
+          "affected": ">=v2.15.0, <v2.15.2",
+          "package": "github.com/rancher/rancher",
+          "patched": "v2.15.2"
+        },
+        {
+          "affected": ">=v2.14.0, <v2.14.6",
+          "package": "github.com/rancher/rancher",
+          "patched": "v2.14.6"
+        },
+        {
+          "affected": ">=v2.13.0, <v2.13.10",
+          "package": "github.com/rancher/rancher",
+          "patched": "v2.13.10"
+        },
+        {
+          "affected": ">=v2.12.0, <v2.12.14",
+          "package": "github.com/rancher/rancher",
+          "patched": "v2.12.14"
+        },
+        {
+          "affected": ">=v2.11.0, <v2.11.18",
+          "package": "github.com/rancher/rancher",
+          "patched": "v2.11.18"
+        }
+      ]
+    },
+    {
+      "bytes": 337448164,
+      "fetchedAt": "2026-10-01T17:43:55Z",
+      "httpStatus": 200,
+      "name": "kubernetes-server",
+      "publicSource": true,
+      "sha256": "b2dceb86cdaea3a66bc4917d9d0b27d80c697bf09f6d84869ee8d182a262eaa8",
+      "url": "https://dl.k8s.io/release/v1.34.9/kubernetes-server-linux-amd64.tar.gz"
+    },
+    {
+      "bytes": 64,
+      "fetchedAt": "2026-10-01T17:43:56Z",
+      "httpStatus": 200,
+      "name": "kubernetes-server-checksum",
+      "publicSource": true,
+      "sha256": "87814a8a620aa46e9f7d7dc301bea2c4feab707f8c35f0dedea2e97899eff6af",
+      "url": "https://dl.k8s.io/release/v1.34.9/kubernetes-server-linux-amd64.tar.gz.sha256"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "accepted": false,
+  "chart": {
+    "appVersion": "v2.15.2",
+    "repositoryDigest": "855cb9be954f65a31b9a8c77f7aebce125c2d7797425257d21d35e3380816ac8",
+    "repositoryDigestMatches": true,
+    "sha256": "855cb9be954f65a31b9a8c77f7aebce125c2d7797425257d21d35e3380816ac8",
+    "version": "2.15.2"
+  },
+  "checkedAt": "2026-10-01T17:48:53Z",
+  "dependencyImages": "render/install inventory and backup operator image digests incomplete",
+  "hostingMatrix": {
+    "accepted": false,
+    "distro": "k3s",
+    "exactMatrixReview": "pending",
+    "url": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-15-2/"
+  },
+  "images": [
+    {
+      "accepted": false,
+      "identity": "rancher/rancher@sha256:0c3d8e5702555b2bfd2ec3fe7a6e5f95484a28fcb9787c498db3e5b0f62652ea",
+      "manifestSha256": "0c3d8e5702555b2bfd2ec3fe7a6e5f95484a28fcb9787c498db3e5b0f62652ea",
+      "sha256Matches": true,
+      "tag": "v2.15.2"
+    },
+    {
+      "accepted": false,
+      "identity": "rancher/rancher-agent@sha256:fb006776b7ee42818ed1e2575bc2015e33ec64d6799545ba72e4297e43ce22a3",
+      "manifestSha256": "fb006776b7ee42818ed1e2575bc2015e33ec64d6799545ba72e4297e43ce22a3",
+      "sha256Matches": true,
+      "tag": "v2.15.2"
+    }
+  ],
+  "importMatrix": {
+    "accepted": false,
+    "distro": "generic kubeadm import",
+    "exactMatrixReview": "pending",
+    "url": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-15-2/"
+  },
+  "licenses": {
+    "backupOperator": "Apache-2.0",
+    "dependencyLicenseCoverage": "incomplete; image SBOM/transitive licenses not accepted",
+    "k3s": "Apache-2.0",
+    "rancher": "Apache-2.0",
+    "rancherSha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+  },
+  "managementK3s": {
+    "artifactDownloadedVerified": false,
+    "artifactSha256": "897acb21cca57d477a211102251a6591450ce767344a9faaa121a1007ca9fa9a",
+    "earlierBrowserObservation": "Earlier page showed Pre-release; current official API prerelease=false and v1.35 channel now match",
+    "prerelease": false,
+    "version": "v1.35.9+k3s1"
+  },
+  "managementTools": {
+    "helm": "v3.22.0 retained identity; installation compatibility/current-security proof incomplete",
+    "nativeRecovery": "etcd3.6.5 / age1.3.2 retained; authenticity/readback requalification incomplete"
+  },
+  "rancher": {
+    "prerelease": false,
+    "releaseSha256": "08b19845512295d660a98cb01f5c1d0c13ceea17d3e9db767749bc890d3df09a",
+    "version": "v2.15.2"
+  },
+  "securityReview": {
+    "Sep23Advisories": "v2.15.2 is patched boundary for GHSA-992f-xh8r-jg2f and GHSA-6vpq-mf48-9794",
+    "fullCurrentAdvisoryAndImageReview": "incomplete"
+  },
+  "state": "proposal-not-accepted",
+  "workloadKubernetes": {
+    "accepted": false,
+    "distribution": "native kubeadm",
+    "version": "v1.35.9"
+  }
+}

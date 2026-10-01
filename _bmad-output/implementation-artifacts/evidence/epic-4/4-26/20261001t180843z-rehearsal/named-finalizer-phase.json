@@ -1,0 +1,20 @@
+{
+  "action": {
+    "action": "remove-named-finalizer",
+    "apiVersion": "qualification.hexalith.io/v1",
+    "finalizer": "qualification.hexalith.io/hold",
+    "finalizers": [
+      "qualification.hexalith.io/hold"
+    ],
+    "helmRelease": {},
+    "kind": "Workspace",
+    "managementLabels": {},
+    "name": "s426-owner",
+    "namespace": null,
+    "owners": [],
+    "propagation": "Foreground",
+    "resourceVersion": "908",
+    "uid": "bacac2d6-e2de-42e4-8f3b-f6070c5872cf"
+  },
+  "scope": "fixture-only synthetic finalizer"
+}

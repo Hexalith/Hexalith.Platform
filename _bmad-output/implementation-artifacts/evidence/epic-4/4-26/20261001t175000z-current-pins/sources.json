@@ -1,0 +1,70 @@
+{
+  "accepted": false,
+  "checkedAt": "2026-10-01T17:48:53Z",
+  "sources": [
+    {
+      "bytes": 58121,
+      "fetchedAt": "2026-10-01T17:48:49Z",
+      "httpStatus": 200,
+      "name": "rancher-release",
+      "sha256": "08b19845512295d660a98cb01f5c1d0c13ceea17d3e9db767749bc890d3df09a",
+      "url": "https://api.github.com/repos/rancher/rancher/releases/tags/v2.15.2"
+    },
+    {
+      "bytes": 84065,
+      "fetchedAt": "2026-10-01T17:48:50Z",
+      "httpStatus": 200,
+      "name": "rancher-chart-index",
+      "sha256": "f1783d48ad5be04b037a6a89beff1007334431a1188d88c9527170a50d87023a",
+      "url": "https://releases.rancher.com/server-charts/stable/index.yaml"
+    },
+    {
+      "bytes": 21943,
+      "fetchedAt": "2026-10-01T17:48:50Z",
+      "httpStatus": 200,
+      "name": "rancher-chart",
+      "sha256": "855cb9be954f65a31b9a8c77f7aebce125c2d7797425257d21d35e3380816ac8",
+      "url": "https://releases.rancher.com/server-charts/stable/rancher-2.15.2.tgz"
+    },
+    {
+      "bytes": 10175,
+      "fetchedAt": "2026-10-01T17:48:50Z",
+      "httpStatus": 200,
+      "name": "rancher-license",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "url": "https://raw.githubusercontent.com/rancher/rancher/v2.15.2/LICENSE"
+    },
+    {
+      "bytes": 234539,
+      "fetchedAt": "2026-10-01T17:48:50Z",
+      "httpStatus": 200,
+      "name": "hosting-import-matrix",
+      "sha256": "6513f802859739b0ded242be4686dc33019eff361844c41740f94803f0dab650",
+      "url": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-15-2/"
+    },
+    {
+      "bytes": 217508,
+      "fetchedAt": "2026-10-01T17:48:51Z",
+      "httpStatus": 200,
+      "name": "k3s-channel",
+      "sha256": "032df0be5085e84398dd6a09499894aa2025306b1a68278e6866efba6bba8d5f",
+      "url": "https://update.k3s.io/v1-release/channels/v1.35"
+    },
+    {
+      "bytes": 359,
+      "fetchedAt": "2026-10-01T17:48:52Z",
+      "httpStatus": 200,
+      "name": "k3s-checksum",
+      "sha256": "b6a1a49b8dc3d672dbf9908548eea082ed6cc2db12f546a6809f7a8a4ef97ad1",
+      "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/sha256sum-amd64.txt"
+    },
+    {
+      "bytes": 378,
+      "fetchedAt": "2026-10-01T17:48:52Z",
+      "httpStatus": 200,
+      "name": "k3s-images",
+      "sha256": "377307d4039ccd04f0e27d2906595a8c7b7d49a79f7553c311f6f960ff3efb58",
+      "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-images.txt"
+    }
+  ]
+}

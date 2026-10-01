@@ -1,0 +1,98 @@
+{
+  "accepted": false,
+  "checkedAt": "2026-10-01T18:41:48Z",
+  "checks": [
+    {
+      "accepted": false,
+      "artifact": "rancher2.15.2-proposed-values",
+      "earlierRegexProjectionIncomplete": true,
+      "images": [
+        "rancher/rancher:v2.15.2",
+        "rancher/shell:v0.8.2"
+      ],
+      "manifestSha256": "10915f7ffa4d8b07dd9a2968676d23f71427666f39b59472ebfdc0ed828f1c3f",
+      "renderExit": 0
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/klipper-helm:v0.13.3-build20260727",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:5425a2b4613d2458dbdff99218e8d487ebb59c20e7a941f061c0777070f0aac1",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/klipper-lb:v0.4.17",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:910944bb0bd94f060a82a56ca1ea1c577d3e49b3473a093a47a985f32e92d94a",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/local-path-provisioner:v0.0.37",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:e757967a5ec338f6a9b371c5a9688bedaa8c3578ea3dd4db329ea0084be0a86f",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/mirrored-coredns-coredns:1.14.7",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:7efd3c635b03efd68c4e8398fc45f0d993d0e9ab016f72c1cefb0fd6d01aa286",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/mirrored-library-busybox:1.37.0",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:101b4afd76732482eff9b95cae5f94bcf295e521fbec4e01b69c5421f3f3f3e5",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/mirrored-library-traefik:3.7.13",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:f86a2cab1b5c649070c49f883c743dd32d8485a56e3368c5f93b9e91f1e91259",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/mirrored-metrics-server:v0.9.0",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:d9862115e7c7881280d3d75ca26bda8ffc0fc213315979575bf23ce9826205c0",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "docker.io/rancher/mirrored-pause:3.10.2",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "rancher/rancher:v2.15.2",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:0c3d8e5702555b2bfd2ec3fe7a6e5f95484a28fcb9787c498db3e5b0f62652ea",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "image": "rancher/shell:v0.8.2",
+      "licenseSecurityAccepted": false,
+      "manifestDigest": "sha256:1eeed72d4eda486de13403c4ae6e9d29a0842edc35d0f4a8fb7b0dab79d04be9",
+      "registryDigestMatches": true,
+      "signatureVerified": false
+    }
+  ],
+  "scope": "offline render and public registry reads; no installation"
+}

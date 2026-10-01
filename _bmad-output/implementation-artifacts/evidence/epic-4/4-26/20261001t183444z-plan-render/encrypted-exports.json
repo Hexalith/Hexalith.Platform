@@ -1,0 +1,51 @@
+{
+  "attemptId": "20261001t183444z-plan-render",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 72562326,
+      "ciphertextSha256": "1ffc6cbee9371f3f37c671dd9b599667b8c5fdbe7dbb6931cfa1632bfd5542f3",
+      "file": "kubeadm-target.age",
+      "plaintextSha256": "b77649f3f9d4fc9cff73f9d2cc70c39ad2ca3ffddf5b43d33b2f3493a77aab9a"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "cf8356c902c31431f9f1d240dfcb0d5e280cbb1e681d48e2cd9e54f0db49e26c",
+      "file": "kubeadm-target-checksum.age",
+      "plaintextSha256": "97f666f31ef5ac78b448566274ae274567870d49c41c94611db0ed3a733b069f"
+    },
+    {
+      "ciphertextBytes": 58993165,
+      "ciphertextSha256": "6c7844e85eca25c40e8a474dbed39f8d1a30a1936793829d800d443b2d2d0ae9",
+      "file": "kubelet-target.age",
+      "plaintextSha256": "80f983da61642110456a95e13de3483895d65df6e18dcccfcee994d8947db026"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "37813c134bd9bda00ebce646b37a20745483c31dfc908a4e59aa71e27505e098",
+      "file": "kubelet-target-checksum.age",
+      "plaintextSha256": "26352523a2b13f70fbec4cf6b7e82dfb392664081464fb945ccee2970e09f2e4"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "e3a26e74a735f20b590516829fd6091ac7ecf0389f71674b5fca552cf4ef0776",
+      "file": "workload-server-checksum.age",
+      "plaintextSha256": "123260590c98f781e9d69299ab7a26678398b4158f06e4955e4816cfcb396ec1"
+    },
+    {
+      "ciphertextBytes": 590,
+      "ciphertextSha256": "9946b31462526232bc890a1c0ff604d63fdf8234d7a49f49df6f2700748b45a7",
+      "file": "k3s-required-images.age",
+      "plaintextSha256": "377307d4039ccd04f0e27d2906595a8c7b7d49a79f7553c311f6f960ff3efb58"
+    },
+    {
+      "ciphertextBytes": 20229,
+      "ciphertextSha256": "6c9d1e97ada4bf39eedda18106e2ebe8e04edc3cd1dd3c6aa5c6cb9f1f7bfa68",
+      "file": "rancher-proposed-values-render.age",
+      "plaintextSha256": "069ad75aa2bc4befcf8a963244366aa3099e0f3fa373fcce239a4e6cbfa528dd"
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "schemaVersion": 1
+}

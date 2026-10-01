@@ -1,0 +1,55 @@
+{
+  "accepted": false,
+  "checkedAt": "2026-10-01T18:34:54Z",
+  "failures": [],
+  "sources": [
+    {
+      "bytes": 72544418,
+      "fetchedAt": "2026-10-01T18:34:46Z",
+      "httpStatus": 200,
+      "name": "kubeadm-target",
+      "sha256": "b77649f3f9d4fc9cff73f9d2cc70c39ad2ca3ffddf5b43d33b2f3493a77aab9a",
+      "url": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubeadm"
+    },
+    {
+      "bytes": 64,
+      "fetchedAt": "2026-10-01T18:34:47Z",
+      "httpStatus": 200,
+      "name": "kubeadm-target-checksum",
+      "sha256": "97f666f31ef5ac78b448566274ae274567870d49c41c94611db0ed3a733b069f",
+      "url": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubeadm.sha256"
+    },
+    {
+      "bytes": 58978569,
+      "fetchedAt": "2026-10-01T18:34:52Z",
+      "httpStatus": 200,
+      "name": "kubelet-target",
+      "sha256": "80f983da61642110456a95e13de3483895d65df6e18dcccfcee994d8947db026",
+      "url": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubelet"
+    },
+    {
+      "bytes": 64,
+      "fetchedAt": "2026-10-01T18:34:53Z",
+      "httpStatus": 200,
+      "name": "kubelet-target-checksum",
+      "sha256": "26352523a2b13f70fbec4cf6b7e82dfb392664081464fb945ccee2970e09f2e4",
+      "url": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubelet.sha256"
+    },
+    {
+      "bytes": 64,
+      "fetchedAt": "2026-10-01T18:34:53Z",
+      "httpStatus": 200,
+      "name": "workload-server-checksum",
+      "sha256": "123260590c98f781e9d69299ab7a26678398b4158f06e4955e4816cfcb396ec1",
+      "url": "https://dl.k8s.io/v1.35.9/kubernetes-server-linux-amd64.tar.gz.sha256"
+    },
+    {
+      "bytes": 378,
+      "fetchedAt": "2026-10-01T18:34:54Z",
+      "httpStatus": 200,
+      "name": "k3s-required-images",
+      "sha256": "377307d4039ccd04f0e27d2906595a8c7b7d49a79f7553c311f6f960ff3efb58",
+      "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-images.txt"
+    }
+  ]
+}

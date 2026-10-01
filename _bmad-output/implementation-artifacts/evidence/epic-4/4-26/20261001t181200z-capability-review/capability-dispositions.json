@@ -1,0 +1,3723 @@
+{
+  "accepted": false,
+  "capabilities": [
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Core management API/controllers",
+      "deletionEffectToVerify": "Remove only exact core resources after tenant/extension/admission dependencies are dispositioned; retain unknown CRDs/instances",
+      "deletionEffectsAccepted": false,
+      "observation": "ks-core1.2.4/app4.2.1 deployed; native APIs exposed",
+      "observedOrRequiredConsumers": [
+        "Administrator/deputy management operations",
+        "KubeSphere IAM/tenant/extension reconciliation"
+      ],
+      "proposedDisposition": "replaced",
+      "proposedReplacement": "Independent native administration during transition; private Rancher afterward",
+      "resources": [
+        {
+          "apiVersion": "v1",
+          "kind": "ServiceAccount",
+          "name": "default",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6359",
+          "uid": "682a1596-dab0-4d4c-8f66-3fa8208e82d4"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "ServiceAccount",
+          "name": "helm-executor.ks-console-embed",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6748",
+          "uid": "d9996f13-27cd-4504-b20f-1088e0437fd1"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "ServiceAccount",
+          "name": "kubesphere",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6362",
+          "uid": "8d1b06f7-4610-4201-aabb-8604a95ddaf8"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "extensions-museum",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6389",
+          "uid": "d8a73a4b-3b82-4ed9-8078-a811c4618f13"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "ks-apiserver",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6381",
+          "uid": "2c25d5ec-3d92-49a6-983f-e1434b75eef1"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22447113",
+          "uid": "bd77e81a-6bfd-409f-9444-cbade4e0f2af"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "ks-console-embed",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "7065",
+          "uid": "4eb10a0b-3e18-4d9e-a226-109471755c73"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "ks-controller-manager",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6385",
+          "uid": "de59cb2a-ed73-4376-9f9c-8cd587bb89e3"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "extensions-museum",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22466051",
+          "uid": "f330e131-2e6c-49f9-bdac-5e15b0154bc5"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ks-apiserver",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22466390",
+          "uid": "d2ad3748-8ce8-4fb3-beff-c10665f9352b"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22466063",
+          "uid": "52eb8d84-ebf7-4cf3-b5b9-f57d46356cc7"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ks-console-embed",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22465969",
+          "uid": "a46e993e-2a9e-4c5e-880e-7a01946cfd26"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ks-controller-manager",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22466308",
+          "uid": "99473d49-f274-414a-9572-7e5c0986390d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ServiceAccount",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6681",
+          "uid": "567fdfb0-d169-482d-a9d1-c1063e5b6071"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Console and installed embedded console",
+      "deletionEffectToVerify": "Native no-hooks core deletion may leave extension release; install-plan protection and embedded-console chart need separate exact actions",
+      "deletionEffectsAccepted": false,
+      "observation": "ks-console and ks-console-embed1.2.0 deployed; one Installed InstallPlan",
+      "observedOrRequiredConsumers": [
+        "Existing management users",
+        "Private management routing; public closure under4.2"
+      ],
+      "proposedDisposition": "replaced",
+      "proposedReplacement": "Private native CLI then qualified private Rancher UI",
+      "resources": [
+        {
+          "apiVersion": "v1",
+          "kind": "Endpoints",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22790968",
+          "uid": "81942d70-b75b-42ba-9e9a-dd0e5084400f"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Endpoints",
+          "name": "ks-console-embed",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22790952",
+          "uid": "8db130db-9ecf-4ec9-9eeb-3608e092fe88"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22447113",
+          "uid": "bd77e81a-6bfd-409f-9444-cbade4e0f2af"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "ks-console-embed",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "7065",
+          "uid": "4eb10a0b-3e18-4d9e-a226-109471755c73"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22466063",
+          "uid": "52eb8d84-ebf7-4cf3-b5b9-f57d46356cc7"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ks-console-embed",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22465969",
+          "uid": "a46e993e-2a9e-4c5e-880e-7a01946cfd26"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "ReplicaSet",
+          "name": "ks-console-embed-675c98bc58",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "22465965",
+          "uid": "7afcff6a-2dc0-4c96-906a-c8d578a2761f"
+        },
+        {
+          "apiVersion": "extensions.kubesphere.io/v1alpha1",
+          "kind": "ReverseProxy",
+          "name": "io.kubesphere.console.embed",
+          "namespace": null,
+          "resourceVersion": "7070",
+          "uid": "c3224322-e852-4cd3-ba15-4eff4153647e"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ServiceAccount",
+          "name": "ks-console",
+          "namespace": "kubesphere-system",
+          "resourceVersion": "6681",
+          "uid": "567fdfb0-d169-482d-a9d1-c1063e5b6071"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "InstallPlan",
+          "name": "ks-console-embed",
+          "namespace": null,
+          "resourceVersion": "7588",
+          "uid": "3c989807-7c14-4159-a8f9-0844e494effd"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "ks-console-embed",
+          "namespace": null,
+          "resourceVersion": "7589",
+          "uid": "b3b90240-ce8d-400c-9630-c5d7d6bb986d"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "ks-console",
+          "namespace": null,
+          "resourceVersion": "6640",
+          "uid": "e2c9957d-7c21-4544-a2af-3871266f89ee"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "ks-console",
+          "namespace": null,
+          "resourceVersion": "6665",
+          "uid": "8859f05a-05e5-4f4f-bb7a-e3e941130354"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Extension catalog",
+      "deletionEffectToVerify": "Retirement is proposed, not an assertion of unused installation; confirm non-owner/config consumers before deleting exact catalog instances",
+      "deletionEffectsAccepted": false,
+      "observation": "53 Extension and73 ExtensionVersion entries; availability distinct from installation",
+      "observedOrRequiredConsumers": [
+        "Marketplace discovery; actual installed-console dependency still separately tracked"
+      ],
+      "proposedDisposition": "unused-retired",
+      "proposedReplacement": "No optional marketplace replacement proposed",
+      "resources": [
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Repository",
+          "name": "extensions-museum",
+          "namespace": null,
+          "resourceVersion": "25440184",
+          "uid": "d881c192-ebcc-4807-b37e-5653ac80a1b7"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "ai-machine-learning",
+          "namespace": null,
+          "resourceVersion": "7393",
+          "uid": "b8c53069-f60d-47b3-a4ee-242cf966d29e"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "computing",
+          "namespace": null,
+          "resourceVersion": "7477",
+          "uid": "80bb1f8e-aaa1-494c-a386-ad953df743b9"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "database",
+          "namespace": null,
+          "resourceVersion": "7150",
+          "uid": "2a1b4ffe-d7d5-4ce6-bbef-082487ab1536"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "deepseek",
+          "namespace": null,
+          "resourceVersion": "7299",
+          "uid": "7955e5a9-57d7-47d8-87a4-bc7453482578"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "dev-tools",
+          "namespace": null,
+          "resourceVersion": "7469",
+          "uid": "9b7d1f8b-8691-4ae2-949a-2bc4aad9ede3"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "integration-delivery",
+          "namespace": null,
+          "resourceVersion": "7280",
+          "uid": "0c0ef27f-329e-490c-8ca1-bb5a3614ed5a"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "networking",
+          "namespace": null,
+          "resourceVersion": "7524",
+          "uid": "2beae24b-2a5c-4be6-88ea-38742bd2d776"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "observability",
+          "namespace": null,
+          "resourceVersion": "7552",
+          "uid": "f1cf2e22-e96b-4c2f-999f-03080ec3758d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "security",
+          "namespace": null,
+          "resourceVersion": "7561",
+          "uid": "5ba02d29-0bbb-45a6-b4ba-e9d6e62378c6"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "storage",
+          "namespace": null,
+          "resourceVersion": "7314",
+          "uid": "194bccb6-d716-47ab-b97e-e6752670bab3"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Category",
+          "name": "streaming-messaging",
+          "namespace": null,
+          "resourceVersion": "6762",
+          "uid": "38a41901-e149-4a66-bf46-dbc18734e7ce"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "alloy-1.0.1",
+          "namespace": null,
+          "resourceVersion": "22795857",
+          "uid": "85dbb307-afe7-4f36-9704-8faab9d451b9"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "cert-manager-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795862",
+          "uid": "62ce4a6a-9f78-46b4-8977-5b461051b8c0"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "computing-device-manager-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795867",
+          "uid": "2f52d8e8-4299-45e3-ad85-0a3e1844da86"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "deepseek-0.1.0",
+          "namespace": null,
+          "resourceVersion": "22795997",
+          "uid": "caa76005-3584-4516-af4a-5bd0b5e23dd8"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "deepseek-0.1.1",
+          "namespace": null,
+          "resourceVersion": "22795996",
+          "uid": "5b8d70d8-47a8-40e8-b8b1-222cca9bac17"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "devops-1.2.3",
+          "namespace": null,
+          "resourceVersion": "22795959",
+          "uid": "ebaa38ba-94b1-4403-aead-760c6c7ba6e6"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "devops-1.2.4",
+          "namespace": null,
+          "resourceVersion": "22795957",
+          "uid": "eb48cbfc-70d9-491e-a34f-ac0901b429eb"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "doris-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795962",
+          "uid": "8f0cdad5-baf3-4e3e-9a04-96032ecc4457"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "edgewize-3.1.2",
+          "namespace": null,
+          "resourceVersion": "22796035",
+          "uid": "899eed29-6495-4a1e-a27e-44e108dd4998"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "fluid-0.1.0",
+          "namespace": null,
+          "resourceVersion": "22795831",
+          "uid": "8984bb4d-dfe9-4848-b739-0d6d14a608e2"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "fluid-console-0.4.0",
+          "namespace": null,
+          "resourceVersion": "22795899",
+          "uid": "1ed77dce-06bc-4b6b-a9bd-93c588f4c0cd"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "fluid-console-0.5.1",
+          "namespace": null,
+          "resourceVersion": "22795897",
+          "uid": "d11f5e6f-f97d-4db0-9edb-ce56c15781b9"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "fluid-console-0.6.0",
+          "namespace": null,
+          "resourceVersion": "22795895",
+          "uid": "50a570bb-b250-4b88-b132-112a971424d9"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "gatekeeper-1.0.3",
+          "namespace": null,
+          "resourceVersion": "22795902",
+          "uid": "6d93eb73-b413-4e19-8cc5-070de44934cf"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "gateway-1.1.2",
+          "namespace": null,
+          "resourceVersion": "22795872",
+          "uid": "9bcdc61b-1242-4902-8715-f10b015158b5"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "gateway-1.1.3",
+          "namespace": null,
+          "resourceVersion": "22795871",
+          "uid": "e20c02d4-8086-41cc-ab6e-6e5b4c915dd7"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "grafana-10.4.14",
+          "namespace": null,
+          "resourceVersion": "22795969",
+          "uid": "4fae77ff-d2fc-498e-bf17-7fef8d554e98"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "grafana-10.4.19",
+          "namespace": null,
+          "resourceVersion": "22795967",
+          "uid": "1a1da3c4-36c5-454d-a117-b3b2be297c02"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "higress-2.1.4",
+          "namespace": null,
+          "resourceVersion": "22795807",
+          "uid": "128723b9-5ff7-4983-b891-38b60e782b11"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "ingress-utils-1.0.1",
+          "namespace": null,
+          "resourceVersion": "22795907",
+          "uid": "68d8655c-48e6-4483-a5f5-f34ed475a6ce"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "ingress-utils-1.0.2",
+          "namespace": null,
+          "resourceVersion": "22795905",
+          "uid": "a021c419-f45e-440a-a41d-80cb0296ec72"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "kaito-0.6.0",
+          "namespace": null,
+          "resourceVersion": "22795874",
+          "uid": "6358bd7d-1553-464f-8eb0-f5127d041193"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "karmada-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795973",
+          "uid": "f62cd73d-a599-4e5c-bb99-720ee156d94c"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "karmada-dashboard-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795878",
+          "uid": "220fd204-1e2b-47e0-99cf-0a94e3c4d5ad"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "ks-autoscaling-1.1.0",
+          "namespace": null,
+          "resourceVersion": "22796000",
+          "uid": "d5b71a47-41cc-4d95-958a-ecebff843035"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "ks-console-embed-1.2.0",
+          "namespace": null,
+          "resourceVersion": "6726",
+          "uid": "09e29ee9-c651-44cb-a574-c96d933adfee"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "kubeeye-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795928",
+          "uid": "7a3a393c-33fc-4f5c-bffe-8e71263a93c0"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "kubefed-1.1.0",
+          "namespace": null,
+          "resourceVersion": "22796004",
+          "uid": "9d37ae74-1529-4f0d-8c23-05f63bf284c5"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "loki-1.0.2",
+          "namespace": null,
+          "resourceVersion": "22795911",
+          "uid": "d8c954da-e833-4103-91ac-8341e6f08e31"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "lws-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795916",
+          "uid": "5ec0e2f1-a885-458a-8d65-a4a84d551c3b"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "metrics-server-0.7.3",
+          "namespace": null,
+          "resourceVersion": "22795934",
+          "uid": "2c4c47d6-11a1-43ce-bc9f-b7935e369a61"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "metrics-server-0.8.0",
+          "namespace": null,
+          "resourceVersion": "22795932",
+          "uid": "7b6d0c3d-cf80-42d0-a698-c5c6933d1c1f"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "network-1.2.2",
+          "namespace": null,
+          "resourceVersion": "22795837",
+          "uid": "733138a9-5b2e-4e5d-a127-36f14ed2105e"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "network-1.3.0",
+          "namespace": null,
+          "resourceVersion": "22795836",
+          "uid": "53d90161-90af-48ce-8fa9-ea46830fbf71"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "nodegroup-1.0.1",
+          "namespace": null,
+          "resourceVersion": "22796010",
+          "uid": "d288a222-eb68-4b89-b3eb-a01384c5cc86"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "nodegroup-1.0.2",
+          "namespace": null,
+          "resourceVersion": "22796008",
+          "uid": "9b6004d0-fdf7-452d-a58d-d1427bd70a89"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "nvidia-gpu-operator-23.9.2",
+          "namespace": null,
+          "resourceVersion": "22795991",
+          "uid": "366380cf-6515-43f9-b541-9114099b7e08"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "nvidia-network-operator-25.7.0",
+          "namespace": null,
+          "resourceVersion": "22795891",
+          "uid": "a2ddcaff-a91b-4ecf-981d-d1c1b5fbff55"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "oauth2-proxy-7.6.2",
+          "namespace": null,
+          "resourceVersion": "22796031",
+          "uid": "9f585579-68f9-4652-8429-b301384308a6"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "oauth2-proxy-7.6.3",
+          "namespace": null,
+          "resourceVersion": "22796029",
+          "uid": "0df4c9d7-ce4e-40ae-a15d-2c7370d2ad5c"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "ob-operator-2.3.2",
+          "namespace": null,
+          "resourceVersion": "22795938",
+          "uid": "202995ec-68b4-401e-a9ea-a70b54a590c7"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "oceanbase-dashboard-0.4.0",
+          "namespace": null,
+          "resourceVersion": "22796014",
+          "uid": "2b03f9a0-1497-436c-82d6-c176dea215a1"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "openpitrix-2.1.2",
+          "namespace": null,
+          "resourceVersion": "22796019",
+          "uid": "775ceadb-56d7-4542-a545-88633469406d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "opensearch-2.11.1",
+          "namespace": null,
+          "resourceVersion": "22795841",
+          "uid": "9e167f44-1293-4eca-88c1-8d02742d9983"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "s2ibuilder-0.1.1",
+          "namespace": null,
+          "resourceVersion": "22795883",
+          "uid": "c259e734-dd6c-47fb-b31e-3e4981bb9d7d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "servicemesh-1.0.3",
+          "namespace": null,
+          "resourceVersion": "22795844",
+          "uid": "aa4be6e0-95bf-454e-aea2-65eb37a5227d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "springcloud-1.0.2",
+          "namespace": null,
+          "resourceVersion": "22795850",
+          "uid": "80bc7679-e452-41a3-ac4f-668c9d4b87d0"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "springcloud-1.0.3",
+          "namespace": null,
+          "resourceVersion": "22795848",
+          "uid": "066f9331-fc67-4366-9d23-16d3dc570936"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "storage-utils-1.0.3",
+          "namespace": null,
+          "resourceVersion": "22795814",
+          "uid": "e1308cc5-11ca-45e7-a757-d8dd6fa20b58"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "storage-utils-1.0.4",
+          "namespace": null,
+          "resourceVersion": "22795812",
+          "uid": "2ff2be17-8a69-447e-a25e-c8807941b526"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "tempo-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795817",
+          "uid": "8c822b0b-b80a-43c9-97aa-cf9977d09800"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "tower-1.1.0",
+          "namespace": null,
+          "resourceVersion": "22795854",
+          "uid": "98e65c28-1e8e-4050-9225-1df8d9130ef4"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "vector-1.1.0",
+          "namespace": null,
+          "resourceVersion": "22795823",
+          "uid": "16c84482-c443-4cac-99ef-cd454612b51f"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "vector-1.1.1",
+          "namespace": null,
+          "resourceVersion": "22795821",
+          "uid": "4c8d9a61-438b-4dc7-b014-fcde7644aa28"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "vertical-pod-autoscaler-1.4.1",
+          "namespace": null,
+          "resourceVersion": "22795943",
+          "uid": "883ea6a7-59c0-4ad5-b492-3aef25dc8488"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "volcano-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795976",
+          "uid": "cfb8d89a-5357-4b09-895c-ce447075b0bc"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-alerting-1.0.5",
+          "namespace": null,
+          "resourceVersion": "22796041",
+          "uid": "cfe0de82-3c59-48f5-b05b-24ca94563993"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-alerting-1.1.0",
+          "namespace": null,
+          "resourceVersion": "22796039",
+          "uid": "370dc5b7-a736-4c87-889c-4473f92c29fa"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-auditing-1.3.0",
+          "namespace": null,
+          "resourceVersion": "22795920",
+          "uid": "a0c5355c-f0fb-44a6-b5ca-71efbe26a2ff"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-events-1.3.0",
+          "namespace": null,
+          "resourceVersion": "22795827",
+          "uid": "4bd76ad1-e66f-4ddc-b772-aac24d9f05a1"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-logging-1.3.0",
+          "namespace": null,
+          "resourceVersion": "22795925",
+          "uid": "3157f541-d22e-4c90-af77-5f4b8cd91379"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-monitoring-1.2.0",
+          "namespace": null,
+          "resourceVersion": "22796025",
+          "uid": "28dcfe9a-1bb9-42f7-9d67-b7194a934c49"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-monitoring-1.2.1",
+          "namespace": null,
+          "resourceVersion": "22796024",
+          "uid": "d47f764b-0fde-4091-9216-719f6cdc5478"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-monitoring-pro-1.0.0",
+          "namespace": null,
+          "resourceVersion": "22795889",
+          "uid": "8e5ef04d-f8e4-4a23-a6b2-5195739aa62c"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-monitoring-pro-1.0.1",
+          "namespace": null,
+          "resourceVersion": "22795887",
+          "uid": "0b486789-9dd4-4879-b642-2cdd6859e1de"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-notification-2.6.1",
+          "namespace": null,
+          "resourceVersion": "22795982",
+          "uid": "8db57628-407f-4de4-b302-ccd70684659c"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-notification-2.6.2",
+          "namespace": null,
+          "resourceVersion": "22795980",
+          "uid": "f16a496e-33bf-4dc0-ac83-872b79bad8ab"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-telemetry-2.0.2",
+          "namespace": null,
+          "resourceVersion": "22795948",
+          "uid": "62dfb421-abf8-46ab-b9cc-35c844e86a0a"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-telemetry-2.1.0",
+          "namespace": null,
+          "resourceVersion": "22795947",
+          "uid": "ac99bcf2-ee4c-43da-a76a-20246fc0537f"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-telemetry-ruler-1.3.1",
+          "namespace": null,
+          "resourceVersion": "22795989",
+          "uid": "86f23746-4e18-4803-9e55-f20eca820973"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "whizard-telemetry-ruler-1.3.2",
+          "namespace": null,
+          "resourceVersion": "22795987",
+          "uid": "91620551-c005-475d-80a1-787c96b47776"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "wiztelemetry-bpfconductor-1.0.4",
+          "namespace": null,
+          "resourceVersion": "22795953",
+          "uid": "3ca4c254-5431-4ff5-b77b-22624594b2de"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "ExtensionVersion",
+          "name": "wiztelemetry-tracing-1.0.4",
+          "namespace": null,
+          "resourceVersion": "22796044",
+          "uid": "f6e989c5-4c16-4f0b-8bbe-cd62fd924142"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "alloy",
+          "namespace": null,
+          "resourceVersion": "22795859",
+          "uid": "9514f21d-6202-4a99-a4ae-de9700ef2c2d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "cert-manager",
+          "namespace": null,
+          "resourceVersion": "22795863",
+          "uid": "3a092dbe-f8b5-41c8-881e-b1c531ff815e"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "computing-device-manager",
+          "namespace": null,
+          "resourceVersion": "22795869",
+          "uid": "1164b228-2c51-49c1-9edb-d58418f9650f"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "deepseek",
+          "namespace": null,
+          "resourceVersion": "22795998",
+          "uid": "21c04e4e-35f3-4498-8a00-c47223895487"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "devops",
+          "namespace": null,
+          "resourceVersion": "22795960",
+          "uid": "ab9207b5-131f-4abf-8a97-8b92dc384da2"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "doris",
+          "namespace": null,
+          "resourceVersion": "22795964",
+          "uid": "c3e99490-6e49-45ee-a5de-0dbef10880a0"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "edgewize",
+          "namespace": null,
+          "resourceVersion": "22796036",
+          "uid": "d3096a58-c734-44f5-aab2-3a27cb309b5d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "fluid",
+          "namespace": null,
+          "resourceVersion": "22795833",
+          "uid": "4248a721-83fc-459b-8478-68ec3c3f4863"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "fluid-console",
+          "namespace": null,
+          "resourceVersion": "22795898",
+          "uid": "3408cd4a-3132-402a-93b6-397f6f947629"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "gatekeeper",
+          "namespace": null,
+          "resourceVersion": "22795903",
+          "uid": "151fa558-a331-4807-9c4c-82dd038554cc"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "gateway",
+          "namespace": null,
+          "resourceVersion": "22795870",
+          "uid": "3755fa4d-9490-43e5-83ed-190390e844ac"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "grafana",
+          "namespace": null,
+          "resourceVersion": "22795968",
+          "uid": "10742bff-918c-4413-ad88-b57e78a8e53d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "higress",
+          "namespace": null,
+          "resourceVersion": "22795809",
+          "uid": "42fae46e-b729-4cc9-8192-5931a2e75d6a"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "ingress-utils",
+          "namespace": null,
+          "resourceVersion": "22795908",
+          "uid": "f7786a5f-9257-4169-a776-c4d6651f1d44"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "kaito",
+          "namespace": null,
+          "resourceVersion": "22795876",
+          "uid": "27973af4-eac6-4a10-bfbf-4c7076827a54"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "karmada",
+          "namespace": null,
+          "resourceVersion": "22795974",
+          "uid": "fd2dfad2-f563-4877-8751-df4f59f98d24"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "karmada-dashboard",
+          "namespace": null,
+          "resourceVersion": "22795880",
+          "uid": "368a9f3e-9408-48bf-ba61-ed074db29795"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "ks-autoscaling",
+          "namespace": null,
+          "resourceVersion": "22796002",
+          "uid": "abe33503-116c-4c1d-8242-fe4f61493f68"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "ks-console-embed",
+          "namespace": null,
+          "resourceVersion": "7589",
+          "uid": "b3b90240-ce8d-400c-9630-c5d7d6bb986d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "kubeeye",
+          "namespace": null,
+          "resourceVersion": "22795930",
+          "uid": "10a54ef9-cfe6-4652-bb11-3c608d88bced"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "kubefed",
+          "namespace": null,
+          "resourceVersion": "22796006",
+          "uid": "8dd5c1fc-4015-4637-8073-1100c1aa8b67"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "loki",
+          "namespace": null,
+          "resourceVersion": "22795913",
+          "uid": "7d3e7323-8394-4423-975f-03e64249d152"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "lws",
+          "namespace": null,
+          "resourceVersion": "22795917",
+          "uid": "eb53dfc1-f804-45b8-8237-85cea24f9e36"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "metrics-server",
+          "namespace": null,
+          "resourceVersion": "22795935",
+          "uid": "83b56bb8-2982-42f8-9de7-1e4817b7f142"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "network",
+          "namespace": null,
+          "resourceVersion": "22795838",
+          "uid": "9e07f661-8906-4c9c-8ede-2fc60c0f47ac"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "nodegroup",
+          "namespace": null,
+          "resourceVersion": "22796011",
+          "uid": "4a81f4ba-64d1-4d55-9edd-7e194ee1e51d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "nvidia-gpu-operator",
+          "namespace": null,
+          "resourceVersion": "22795993",
+          "uid": "cf0b2fc4-7fb8-469e-88c6-5e262c21e5ba"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "nvidia-network-operator",
+          "namespace": null,
+          "resourceVersion": "22795893",
+          "uid": "6367a4ee-5cf5-4093-bdf5-684dd26cffbd"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "oauth2-proxy",
+          "namespace": null,
+          "resourceVersion": "22796030",
+          "uid": "ee1256b2-17a6-45c5-9b2d-dca4d71671c5"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "ob-operator",
+          "namespace": null,
+          "resourceVersion": "22795939",
+          "uid": "f42da5b7-6c4b-45a3-afa4-f84ad5ca43e5"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "oceanbase-dashboard",
+          "namespace": null,
+          "resourceVersion": "22796015",
+          "uid": "ce114d76-501c-4601-8413-e42151392f0a"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "openpitrix",
+          "namespace": null,
+          "resourceVersion": "22796021",
+          "uid": "6babfbf2-3545-4350-a9aa-7bd5d24c6126"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "opensearch",
+          "namespace": null,
+          "resourceVersion": "22795842",
+          "uid": "c06c109f-81f8-428e-ba8a-1cec3713cdc5"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "s2ibuilder",
+          "namespace": null,
+          "resourceVersion": "22795884",
+          "uid": "32f657c1-2e4c-4f12-a1d3-278c9e98032b"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "servicemesh",
+          "namespace": null,
+          "resourceVersion": "22795846",
+          "uid": "1722fcbb-df3b-42f5-9ba8-745241d2caef"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "springcloud",
+          "namespace": null,
+          "resourceVersion": "22795851",
+          "uid": "6f81b01d-739d-4ef9-b4d3-bd77e165393a"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "storage-utils",
+          "namespace": null,
+          "resourceVersion": "22795813",
+          "uid": "4b5d3cf4-cfd8-4b8e-ac40-e31eb32b9b57"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "tempo",
+          "namespace": null,
+          "resourceVersion": "22795818",
+          "uid": "1836126a-6fcb-42a4-897c-6e975cd4862d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "tower",
+          "namespace": null,
+          "resourceVersion": "22795855",
+          "uid": "7e154ccb-fb5a-4a31-b26c-326fd452a2bc"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "vector",
+          "namespace": null,
+          "resourceVersion": "22795824",
+          "uid": "4d390231-cd06-470b-a256-6a918d62c0b4"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "vertical-pod-autoscaler",
+          "namespace": null,
+          "resourceVersion": "22795944",
+          "uid": "889458d4-837c-4981-b0cb-a6c5adcd249d"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "volcano",
+          "namespace": null,
+          "resourceVersion": "22795978",
+          "uid": "0f950315-48a3-455d-ae55-22363b07db71"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-alerting",
+          "namespace": null,
+          "resourceVersion": "22796040",
+          "uid": "9ba1ca0e-3eae-4af9-a211-4360d32cad12"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-auditing",
+          "namespace": null,
+          "resourceVersion": "22795921",
+          "uid": "f62fcf36-dd83-4989-8c8a-984c556da7f6"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-events",
+          "namespace": null,
+          "resourceVersion": "22795828",
+          "uid": "33e7751c-c5aa-4f96-89d2-657961331aa8"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-logging",
+          "namespace": null,
+          "resourceVersion": "22795926",
+          "uid": "2e290f67-48d4-4ce3-a28a-259b6bb5269a"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-monitoring",
+          "namespace": null,
+          "resourceVersion": "22796026",
+          "uid": "37217c07-7037-44e2-9fd3-eaf414c2f873"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-monitoring-pro",
+          "namespace": null,
+          "resourceVersion": "22795888",
+          "uid": "6053656d-ba34-42e9-8167-3cb8bfd34eb8"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-notification",
+          "namespace": null,
+          "resourceVersion": "22795983",
+          "uid": "f824a173-615a-4eb7-b41f-e24d7b4a9c24"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-telemetry",
+          "namespace": null,
+          "resourceVersion": "22795949",
+          "uid": "ef0a6a4d-0e5e-410e-a42e-e97379fce2e1"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "whizard-telemetry-ruler",
+          "namespace": null,
+          "resourceVersion": "22795988",
+          "uid": "9a53eeec-df41-4e21-8721-96ae2706d5e0"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "wiztelemetry-bpfconductor",
+          "namespace": null,
+          "resourceVersion": "22795955",
+          "uid": "05f15190-2b02-426c-9f83-1731e81fc8fb"
+        },
+        {
+          "apiVersion": "kubesphere.io/v1alpha1",
+          "kind": "Extension",
+          "name": "wiztelemetry-tracing",
+          "namespace": null,
+          "resourceVersion": "22796046",
+          "uid": "edb4d9e9-679c-4188-be09-097df1206448"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "cluster-access-control",
+          "namespace": null,
+          "resourceVersion": "6422",
+          "uid": "99971aaf-3936-4b6a-8c72-ed109a7e7b4a"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "cluster-app-workloads-management",
+          "namespace": null,
+          "resourceVersion": "6417",
+          "uid": "34e2424c-6e67-45a8-8be7-5e4f7132831b"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "cluster-project-management",
+          "namespace": null,
+          "resourceVersion": "6424",
+          "uid": "73854d85-9406-4201-a31e-b000292437be"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "cluster-resource-management",
+          "namespace": null,
+          "resourceVersion": "6418",
+          "uid": "b5f08965-9996-452d-8dc0-8c104315ec61"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "cluster-settings",
+          "namespace": null,
+          "resourceVersion": "6425",
+          "uid": "ef7c67ad-7b52-4f1c-a4e2-f6ecd6d52c6e"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "cluster-storage-management",
+          "namespace": null,
+          "resourceVersion": "6415",
+          "uid": "0b075ea3-0af7-4802-8f80-c8c22ef1e5c5"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "global-access-control",
+          "namespace": null,
+          "resourceVersion": "6427",
+          "uid": "45cab4be-f4c7-412a-b06a-330cb273d15f"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "global-cluster-management",
+          "namespace": null,
+          "resourceVersion": "6420",
+          "uid": "ba7a6ef4-942f-47b5-ac68-800d433595c9"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "global-platform-settings",
+          "namespace": null,
+          "resourceVersion": "6431",
+          "uid": "3643f9c0-62a3-4706-a00e-9d791e36a58d"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "global-workspace-management",
+          "namespace": null,
+          "resourceVersion": "6430",
+          "uid": "379a253c-f771-406b-b11e-dfbbb090384a"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "manage-app",
+          "namespace": null,
+          "resourceVersion": "6447",
+          "uid": "9a5505a1-71b8-4a34-909c-9e88afc74fa3"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "namespace-access-control",
+          "namespace": null,
+          "resourceVersion": "6426",
+          "uid": "d481c1df-540a-4a8e-97d6-6f086d772000"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "namespace-app",
+          "namespace": null,
+          "resourceVersion": "6419",
+          "uid": "4dbf7310-3a56-4bfd-aaca-480d2a6057f7"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "namespace-application-workloads",
+          "namespace": null,
+          "resourceVersion": "6421",
+          "uid": "1f4fe564-14bc-4d69-af3e-a491e878cf79"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "namespace-configuration-management",
+          "namespace": null,
+          "resourceVersion": "6429",
+          "uid": "bf9a3bc7-217c-41f2-b9d5-2f4f152e0664"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "namespace-settings",
+          "namespace": null,
+          "resourceVersion": "6433",
+          "uid": "f37edc8f-e2d4-41ec-a084-764372a2f22c"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "namespace-storage-management",
+          "namespace": null,
+          "resourceVersion": "6435",
+          "uid": "b37adcd0-48ef-4e11-9df9-031086ffe940"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "workspace-access-control",
+          "namespace": null,
+          "resourceVersion": "6416",
+          "uid": "22f9996e-8309-4783-84c8-b1b0e2bd6bfe"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "workspace-app",
+          "namespace": null,
+          "resourceVersion": "6448",
+          "uid": "b7de86af-32f9-4e55-bc6c-791e807fc7ad"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "workspace-project-management",
+          "namespace": null,
+          "resourceVersion": "6423",
+          "uid": "b5c7d290-3588-47af-aa51-61263d3527c5"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "Category",
+          "name": "workspace-settings",
+          "namespace": null,
+          "resourceVersion": "6437",
+          "uid": "c2ea64f9-c3d4-4e50-a74c-995a36f50afe"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Category",
+          "name": "kubesphere-app-uncategorized",
+          "namespace": null,
+          "resourceVersion": "6769",
+          "uid": "14278b44-8ff4-482a-8d85-1eae32cb3bed"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Workspace/account/management IAM",
+      "deletionEffectToVerify": "Owner/namespace/finalizer and current grant lineage must be independently reviewed; retain source namespaces and unknown entitlements",
+      "deletionEffectsAccepted": false,
+      "observation": "One Workspace/WorkspaceTemplate; native and KubeSphere RBAC/users separately inventoried",
+      "observedOrRequiredConsumers": [
+        "Existing management user operations",
+        "Namespace association and role subjects"
+      ],
+      "proposedDisposition": "replaced",
+      "proposedReplacement": "Explicit Administrator/deputy approved native/Rancher scopes; no automatic account/workspace/project migration",
+      "resources": [
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "anonymous",
+          "namespace": null,
+          "resourceVersion": "6648",
+          "uid": "a403a168-cbad-4bac-b79d-a6ef7804e96c"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "authenticated",
+          "namespace": null,
+          "resourceVersion": "6650",
+          "uid": "6e7bf6e0-c438-4921-8086-a899198e82a8"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "ks-console",
+          "namespace": null,
+          "resourceVersion": "6640",
+          "uid": "e2c9957d-7c21-4544-a2af-3871266f89ee"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "platform-admin",
+          "namespace": null,
+          "resourceVersion": "6653",
+          "uid": "02ee6236-4f85-4862-a746-c752fde9f391"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "platform-regular",
+          "namespace": null,
+          "resourceVersion": "6646",
+          "uid": "5b608670-27ff-4917-9906-6d9c05337933"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "platform-self-provisioner",
+          "namespace": null,
+          "resourceVersion": "6645",
+          "uid": "15f459e8-34ec-4184-ba71-d0ac6f1115ec"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRole",
+          "name": "pre-registration",
+          "namespace": null,
+          "resourceVersion": "6647",
+          "uid": "4e8ab2e7-20a3-46cb-add9-3d4616df23ee"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "WorkspaceRoleBinding",
+          "name": "system-workspace-admin",
+          "namespace": null,
+          "resourceVersion": "6754",
+          "uid": "73b7493c-c5cb-4994-870f-6138aabbe4e9"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-app-workloads",
+          "namespace": null,
+          "resourceVersion": "6565",
+          "uid": "639b0134-2acc-41cb-a754-c4de3073cfa2"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-cluster-settings",
+          "namespace": null,
+          "resourceVersion": "6549",
+          "uid": "016b2764-08aa-4207-b8da-2f63c08a1be6"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-crds",
+          "namespace": null,
+          "resourceVersion": "6534",
+          "uid": "f300a066-5310-469c-aa72-47e2f94a9b79"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-members",
+          "namespace": null,
+          "resourceVersion": "6546",
+          "uid": "6b42c3d6-69bb-4b71-b911-0531216ee26a"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-nodes",
+          "namespace": null,
+          "resourceVersion": "6545",
+          "uid": "11d40058-07cc-4ccd-a442-29004f466587"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-persistentvolumeclaims",
+          "namespace": null,
+          "resourceVersion": "6577",
+          "uid": "d9a30d8a-00e1-4745-ad7f-353f2605b1c7"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-projects",
+          "namespace": null,
+          "resourceVersion": "6524",
+          "uid": "a29f5073-7d41-412b-8d67-94710540e1c6"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-roles",
+          "namespace": null,
+          "resourceVersion": "6536",
+          "uid": "89ac50e9-aebc-442d-b327-6c7c1f15b7ad"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-manage-storageclasses",
+          "namespace": null,
+          "resourceVersion": "6573",
+          "uid": "9a40f306-1e7f-4bd4-8f65-cfb79b1d7ba4"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-app-workloads",
+          "namespace": null,
+          "resourceVersion": "6554",
+          "uid": "d411e0d4-1a02-4e0f-8ab7-6e8f1d1fb0d1"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-cluster-settings",
+          "namespace": null,
+          "resourceVersion": "6557",
+          "uid": "3c3568ff-975f-4c4f-9ef7-8137a5790f12"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-components",
+          "namespace": null,
+          "resourceVersion": "6544",
+          "uid": "673a6c4f-5e5e-471a-8709-fe34714c97ea"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-crds",
+          "namespace": null,
+          "resourceVersion": "6519",
+          "uid": "bea271b3-5717-42c8-84b6-bebafd5245e7"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-members",
+          "namespace": null,
+          "resourceVersion": "6543",
+          "uid": "7355520a-07d5-4698-b617-5103e6e83353"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-nodes",
+          "namespace": null,
+          "resourceVersion": "6547",
+          "uid": "a2c885ed-c520-4cee-b8e6-584eb7015618"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-persistentvolumeclaims",
+          "namespace": null,
+          "resourceVersion": "6567",
+          "uid": "74bc5fd2-aa24-456f-b230-bcadfe2f3061"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-projects",
+          "namespace": null,
+          "resourceVersion": "6568",
+          "uid": "16599c79-ac18-4529-93ab-82b4aae871ac"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-roles",
+          "namespace": null,
+          "resourceVersion": "6528",
+          "uid": "5519ae7c-b753-40d7-a161-e969c4d68cfd"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "cluster-view-storageclasses",
+          "namespace": null,
+          "resourceVersion": "6556",
+          "uid": "aaa22664-3676-4da9-a880-1faae03157b2"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-create-workspaces",
+          "namespace": null,
+          "resourceVersion": "6509",
+          "uid": "c2293d55-acbd-4416-a493-c23f7538273b"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-manage-clusters",
+          "namespace": null,
+          "resourceVersion": "6551",
+          "uid": "4047876e-788e-485e-90e8-8907e89f406c"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-manage-platform-settings",
+          "namespace": null,
+          "resourceVersion": "6566",
+          "uid": "c5acde4c-ac6c-4d30-9b5e-66ed56e073c3"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-manage-roles",
+          "namespace": null,
+          "resourceVersion": "6550",
+          "uid": "aa0fd973-d8d4-4cbd-bd7a-c4a3a8721e2b"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-manage-users",
+          "namespace": null,
+          "resourceVersion": "6558",
+          "uid": "d4b944f9-7e39-43a4-a082-a0d390e4df79"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-manage-workspaces",
+          "namespace": null,
+          "resourceVersion": "6511",
+          "uid": "ea325f67-23a8-4565-99a8-e9109f67751b"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-role-template-manage-app",
+          "namespace": null,
+          "resourceVersion": "6563",
+          "uid": "4431bb15-654b-42cc-bb75-e91190a49894"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-view-clusters",
+          "namespace": null,
+          "resourceVersion": "6530",
+          "uid": "e39ee4b1-c764-4665-ac25-19466eef49df"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-view-roles",
+          "namespace": null,
+          "resourceVersion": "6510",
+          "uid": "1853db57-6494-4cd0-b0fc-95818d4a10ff"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-view-users",
+          "namespace": null,
+          "resourceVersion": "6540",
+          "uid": "3a7126d0-5f1d-452c-af79-4b26e2d6caec"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "global-view-workspaces",
+          "namespace": null,
+          "resourceVersion": "6531",
+          "uid": "266ee672-ec0e-42e8-9bd9-766d24ffda17"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-create-app-releases",
+          "namespace": null,
+          "resourceVersion": "6537",
+          "uid": "683d3804-e7c0-4eef-81ed-3de932a1c0cb"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-delete-app-releases",
+          "namespace": null,
+          "resourceVersion": "6516",
+          "uid": "abd93ef6-4d28-4c1c-a667-e908e1bf25b4"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-app-releases",
+          "namespace": null,
+          "resourceVersion": "6512",
+          "uid": "88058bd2-cf22-4fd7-aeb4-20c8149481ab"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-app-workloads",
+          "namespace": null,
+          "resourceVersion": "6569",
+          "uid": "665a3f69-327b-4a1c-a656-bb526118b1da"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-configmaps",
+          "namespace": null,
+          "resourceVersion": "6529",
+          "uid": "009f5f63-eca3-403a-82f3-e2a55d9ffd2d"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-members",
+          "namespace": null,
+          "resourceVersion": "6578",
+          "uid": "8fe63a19-8bd3-4fa4-9e28-16c5260c6422"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-persistentvolumeclaims",
+          "namespace": null,
+          "resourceVersion": "6562",
+          "uid": "f8653ac0-5ab7-4650-bc98-5151bc45823f"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-project-settings",
+          "namespace": null,
+          "resourceVersion": "6559",
+          "uid": "c86ef460-eb44-4372-8e28-45910eb3895e"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-roles",
+          "namespace": null,
+          "resourceVersion": "6518",
+          "uid": "39bc6daf-d7ea-4724-9b45-6c5d6395017b"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-secrets",
+          "namespace": null,
+          "resourceVersion": "6542",
+          "uid": "be14fe24-0085-4247-a8f6-3592857aaeb2"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-serviceaccount",
+          "namespace": null,
+          "resourceVersion": "6561",
+          "uid": "4163f162-13fd-40ad-9996-898b98501cd7"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-manage-workloadtemplates",
+          "namespace": null,
+          "resourceVersion": "6548",
+          "uid": "d9acd2e4-fe30-4acb-a243-a12d8eafb486"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-app-releases",
+          "namespace": null,
+          "resourceVersion": "6515",
+          "uid": "86cc064b-9f93-421c-88ed-0da919175150"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-app-workloads",
+          "namespace": null,
+          "resourceVersion": "6571",
+          "uid": "4a7b2ac6-f4ef-489f-912f-72e57ff9eb2a"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-configmaps",
+          "namespace": null,
+          "resourceVersion": "6514",
+          "uid": "8195a3eb-a0b2-4506-b009-5ead0fd6505d"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-members",
+          "namespace": null,
+          "resourceVersion": "6574",
+          "uid": "5b5ac841-2d60-468a-a9d8-989da2d6f84a"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-persistentvolumeclaims",
+          "namespace": null,
+          "resourceVersion": "6576",
+          "uid": "5a4984a6-75ad-438f-899b-4c075321a967"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-project-settings",
+          "namespace": null,
+          "resourceVersion": "6541",
+          "uid": "0c512cc8-d67a-4351-b426-707b18aefaf6"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-roles",
+          "namespace": null,
+          "resourceVersion": "6522",
+          "uid": "cc235aaa-1745-4569-a8e6-046968a7c635"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-secrets",
+          "namespace": null,
+          "resourceVersion": "6535",
+          "uid": "d3ff3677-b1dc-4f35-82b2-f4becfbcf7e8"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-serviceaccount",
+          "namespace": null,
+          "resourceVersion": "6555",
+          "uid": "3f796210-64c6-4bc4-8830-ce701159ca92"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "namespace-view-workloadtemplates",
+          "namespace": null,
+          "resourceVersion": "6520",
+          "uid": "dca154ad-472e-4ebf-ade2-907dad0a3162"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-create-projects",
+          "namespace": null,
+          "resourceVersion": "6564",
+          "uid": "4e1d3301-bec8-4b68-87e4-c22a22452482"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-delete-app-templates",
+          "namespace": null,
+          "resourceVersion": "6560",
+          "uid": "cb117bac-95e1-4403-a1c7-05f547cea851"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-app-repos",
+          "namespace": null,
+          "resourceVersion": "6533",
+          "uid": "fe447f83-4aca-4460-a47a-13b0d5868950"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-app-templates",
+          "namespace": null,
+          "resourceVersion": "6570",
+          "uid": "229e5a7b-05f5-4180-97df-f8205f6b5b57"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-groups",
+          "namespace": null,
+          "resourceVersion": "6521",
+          "uid": "d309a8b1-e50d-4d54-b357-027dad2154d3"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-members",
+          "namespace": null,
+          "resourceVersion": "6538",
+          "uid": "a8c6d2cf-16ab-4d43-b53e-357d44eefdd9"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-projects",
+          "namespace": null,
+          "resourceVersion": "6523",
+          "uid": "16429091-f367-44fb-b085-1df3386c1fbd"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-roles",
+          "namespace": null,
+          "resourceVersion": "6539",
+          "uid": "dce131af-87a2-482f-9d10-6b0fd962cc59"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-manage-workspace-settings",
+          "namespace": null,
+          "resourceVersion": "6513",
+          "uid": "f27b50c1-acec-449a-bcba-2b194cc78543"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-app-repos",
+          "namespace": null,
+          "resourceVersion": "6572",
+          "uid": "6267ef88-dda5-4661-8b38-39c741028209"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-app-templates",
+          "namespace": null,
+          "resourceVersion": "6552",
+          "uid": "68afca29-c5ea-47f4-89a8-cb21b960f0b2"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-create-app-templates",
+          "namespace": null,
+          "resourceVersion": "6553",
+          "uid": "dd7d4c68-1a25-4b1d-9e03-700eb62f7721"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-groups",
+          "namespace": null,
+          "resourceVersion": "6527",
+          "uid": "20540d99-055a-4940-8b5e-3c48964f5b6c"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-members",
+          "namespace": null,
+          "resourceVersion": "6525",
+          "uid": "760a1c22-629b-4e37-9393-bdd4265ed9e1"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-projects",
+          "namespace": null,
+          "resourceVersion": "6575",
+          "uid": "531771d5-70db-4ad6-89ef-b9e8ad2cc0cf"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-roles",
+          "namespace": null,
+          "resourceVersion": "6532",
+          "uid": "de62df7b-3503-40cb-97bf-d7b6ea80b0b5"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "RoleTemplate",
+          "name": "workspace-view-workspace-settings",
+          "namespace": null,
+          "resourceVersion": "6517",
+          "uid": "bfeee21b-3d6d-40fc-ad06-4561f4e2e4f7"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "WorkspaceRole",
+          "name": "system-workspace-admin",
+          "namespace": null,
+          "resourceVersion": "6739",
+          "uid": "0392bdf6-4301-46bf-8618-9be04d4537fd"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "WorkspaceRole",
+          "name": "system-workspace-regular",
+          "namespace": null,
+          "resourceVersion": "6738",
+          "uid": "769d6adb-b517-456b-80be-d23a77c44e5f"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "WorkspaceRole",
+          "name": "system-workspace-self-provisioner",
+          "namespace": null,
+          "resourceVersion": "6784",
+          "uid": "4dc10163-c003-4146-8290-d695f3797047"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "WorkspaceRole",
+          "name": "system-workspace-viewer",
+          "namespace": null,
+          "resourceVersion": "6783",
+          "uid": "ebbc21af-7e69-452e-be71-9207b71c93e6"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "User",
+          "name": "admin",
+          "namespace": null,
+          "resourceVersion": "22750837",
+          "uid": "607f2c30-e079-4012-a625-21c4b8978287"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "User",
+          "name": "jpiquot",
+          "namespace": null,
+          "resourceVersion": "13126254",
+          "uid": "0a138b8e-cd87-4d62-ae7e-0f73b194773d"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "admin",
+          "namespace": null,
+          "resourceVersion": "6669",
+          "uid": "cb935442-9a9b-4221-a070-57460117e471"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "anonymous",
+          "namespace": null,
+          "resourceVersion": "6664",
+          "uid": "854b7f2c-32b7-429a-bae3-8933343c4cce"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "authenticated",
+          "namespace": null,
+          "resourceVersion": "6663",
+          "uid": "c33780c7-b0f4-44cc-9527-35b04e3dfebf"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "jpiquot-platform-admin",
+          "namespace": null,
+          "resourceVersion": "8304",
+          "uid": "95c50881-600d-42cf-8d66-52956fa34694"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "ks-console",
+          "namespace": null,
+          "resourceVersion": "6665",
+          "uid": "8859f05a-05e5-4f4f-bb7a-e3e941130354"
+        },
+        {
+          "apiVersion": "iam.kubesphere.io/v1beta1",
+          "kind": "GlobalRoleBinding",
+          "name": "pre-registration",
+          "namespace": null,
+          "resourceVersion": "6667",
+          "uid": "7d1fb175-57a6-45c7-8162-e0e816e4f439"
+        },
+        {
+          "apiVersion": "tenant.kubesphere.io/v1beta1",
+          "kind": "Workspace",
+          "name": "system-workspace",
+          "namespace": null,
+          "resourceVersion": "6761",
+          "uid": "f8d1645e-0f26-466d-b7f1-7ad717a65613"
+        },
+        {
+          "apiVersion": "tenant.kubesphere.io/v1beta1",
+          "kind": "WorkspaceTemplate",
+          "name": "system-workspace",
+          "namespace": null,
+          "resourceVersion": "6745",
+          "uid": "9502bbd1-8230-4345-9613-5f9327a3865c"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Application catalog and release capabilities",
+      "deletionEffectToVerify": "Proposed catalog retirement only after owners verify no required application reconciliation; preserve existing workload/release identities",
+      "deletionEffectsAccepted": false,
+      "observation": "27 Application/90 ApplicationVersion objects; installed controllers/consumers require review",
+      "observedOrRequiredConsumers": [
+        "Catalog consumers; actual managed native releases remain unknown"
+      ],
+      "proposedDisposition": "unused-retired",
+      "proposedReplacement": "Existing approved native/application Helm writers; no Fleet application writer",
+      "resources": [
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-3053ddc26f-1.3.0",
+          "namespace": null,
+          "resourceVersion": "7042",
+          "uid": "5ecfc440-6477-4949-85fc-c636bdcd1719"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-47ca04a943-2.2.2",
+          "namespace": null,
+          "resourceVersion": "6789",
+          "uid": "4383e47d-4bcf-4d26-853a-5e02e4c59707"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-47ca04a943-2.5.2",
+          "namespace": null,
+          "resourceVersion": "6778",
+          "uid": "80319a02-b83d-44da-84eb-b75b6370c1f0"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-47ca04a943-2.6.3",
+          "namespace": null,
+          "resourceVersion": "6771",
+          "uid": "4222f787-d7cf-412a-86f1-13360e2b1285"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-antrea-1.9.0",
+          "namespace": null,
+          "resourceVersion": "7056",
+          "uid": "3944a925-54c5-4263-8d90-63761f5a6262"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-b8ceba18a3-1.9.0",
+          "namespace": null,
+          "resourceVersion": "7008",
+          "uid": "2aea4766-7346-41f2-9be1-4b5bd08c132e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-ccm-qingcloud-0.1.0",
+          "namespace": null,
+          "resourceVersion": "7074",
+          "uid": "370dd35e-3fad-4392-abd4-b63685a82434"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-chaos-mesh-2.0.3",
+          "namespace": null,
+          "resourceVersion": "6998",
+          "uid": "fc4a636c-e1d8-4ccf-a926-38d65821d719"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-chaos-mesh-2.0.4",
+          "namespace": null,
+          "resourceVersion": "6995",
+          "uid": "0109d0c5-f75a-429e-aadb-74ce79cd1e3a"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-chaos-mesh-2.4.1",
+          "namespace": null,
+          "resourceVersion": "6986",
+          "uid": "474053b7-4f25-42f4-8528-7c3f03eb5d3e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-chaos-mesh-2.5.1",
+          "namespace": null,
+          "resourceVersion": "6979",
+          "uid": "606172ce-5825-422c-8e25-97c0cd394e3d"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-cni-hostnic-0.1.0",
+          "namespace": null,
+          "resourceVersion": "7003",
+          "uid": "65afc2c3-1035-4db0-bb57-634d61d6f700"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-crane-0.5.0",
+          "namespace": null,
+          "resourceVersion": "6925",
+          "uid": "ddb7c3f5-99a0-4ed4-a5fe-a027fa9d67ab"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-crane-0.5.1",
+          "namespace": null,
+          "resourceVersion": "6923",
+          "uid": "7518707b-556c-4bb5-a18e-7d9c17b4c50e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-crane-0.5.2",
+          "namespace": null,
+          "resourceVersion": "6921",
+          "uid": "154a00b5-6a6f-4966-a155-e7a321566253"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-csi-qingcloud-1.4.0",
+          "namespace": null,
+          "resourceVersion": "6806",
+          "uid": "ff5f93eb-f180-4cf2-9e86-2877f5ed3d9e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-curvefs-csi-0.1.0",
+          "namespace": null,
+          "resourceVersion": "7096",
+          "uid": "ec50fae2-64b6-4ab1-9410-7d60b150af18"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-databend-meta-0.3.0",
+          "namespace": null,
+          "resourceVersion": "6935",
+          "uid": "8322f429-c8b7-4b28-a9d1-911239af94da"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-databend-meta-0.6.1",
+          "namespace": null,
+          "resourceVersion": "6933",
+          "uid": "0d1c609a-03bb-4719-9959-341bb4fde4c4"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-databend-meta-0.7.3",
+          "namespace": null,
+          "resourceVersion": "6931",
+          "uid": "1d80fbaf-2dfc-48f2-9db1-696133e05d09"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-databend-query-0.3.0",
+          "namespace": null,
+          "resourceVersion": "7125",
+          "uid": "8d09851b-8260-4804-a68f-70712da6fddd"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-databend-query-0.5.1",
+          "namespace": null,
+          "resourceVersion": "7121",
+          "uid": "9758bc92-c63d-4e48-b064-2e4473e2f9f2"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-databend-query-0.8.3",
+          "namespace": null,
+          "resourceVersion": "7114",
+          "uid": "015a82bb-f6bf-44cb-a55a-31684bbef266"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.006",
+          "namespace": null,
+          "resourceVersion": "7342",
+          "uid": "497e8c1d-edf0-4fcf-b296-86234077326d"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.011",
+          "namespace": null,
+          "resourceVersion": "7335",
+          "uid": "ce929496-1f31-4e24-82af-1574f3e7c875"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.012",
+          "namespace": null,
+          "resourceVersion": "7330",
+          "uid": "5eee99a1-0be8-4f40-9a3b-f6db22f16976"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.031",
+          "namespace": null,
+          "resourceVersion": "7324",
+          "uid": "50d91ba6-1e70-402d-b957-c1c5f8f204a9"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.036",
+          "namespace": null,
+          "resourceVersion": "7320",
+          "uid": "d2e01142-0d32-4612-ab46-fe91db90613d"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.057",
+          "namespace": null,
+          "resourceVersion": "7313",
+          "uid": "23d99112-f715-4654-85e4-5390f067b787"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.058",
+          "namespace": null,
+          "resourceVersion": "7310",
+          "uid": "bbfb5d9e-cabe-4ead-9dd8-9f4b2043f096"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.069",
+          "namespace": null,
+          "resourceVersion": "7308",
+          "uid": "bf168384-8fc0-4a67-a9d1-f8bb0494b3e0"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.074",
+          "namespace": null,
+          "resourceVersion": "7304",
+          "uid": "e232c6ef-b091-4fa1-8cec-5326b7cbc732"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.075",
+          "namespace": null,
+          "resourceVersion": "7300",
+          "uid": "d61657a8-567c-46e5-8d56-923ae1496f08"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.083",
+          "namespace": null,
+          "resourceVersion": "7296",
+          "uid": "48a4b377-9889-4b42-9daa-4d105d6af5c6"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-0.1.084",
+          "namespace": null,
+          "resourceVersion": "7292",
+          "uid": "5e2c9cf6-a752-4a84-acf7-32df883a5e7f"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.1.8",
+          "namespace": null,
+          "resourceVersion": "7285",
+          "uid": "e5d9fca5-85ce-4b36-99b5-b09906cf2d66"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.0",
+          "namespace": null,
+          "resourceVersion": "7281",
+          "uid": "e28a0da5-029f-4d03-b52c-415b1deccdf1"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.102",
+          "namespace": null,
+          "resourceVersion": "7275",
+          "uid": "b1c1c12e-6a59-4484-8f30-69b91209f893"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.201",
+          "namespace": null,
+          "resourceVersion": "7269",
+          "uid": "4c2170c7-1803-4c71-86cb-c2a399fca340"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.206",
+          "namespace": null,
+          "resourceVersion": "7262",
+          "uid": "4df0422f-d74a-4514-9422-2652ab5f9798"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.401",
+          "namespace": null,
+          "resourceVersion": "7256",
+          "uid": "25ab392a-4d31-4c9e-995d-41650bbff80e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.601",
+          "namespace": null,
+          "resourceVersion": "7249",
+          "uid": "0ea32cf2-723a-4431-ba43-dd0a35c9024f"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.603",
+          "namespace": null,
+          "resourceVersion": "7243",
+          "uid": "716a8fd4-0609-498e-9290-d9f8963996fa"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.604",
+          "namespace": null,
+          "resourceVersion": "7236",
+          "uid": "db5169c1-54a7-4255-98de-63e33ba640e1"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.605",
+          "namespace": null,
+          "resourceVersion": "7225",
+          "uid": "da02c80f-9de9-4820-8293-d8f913f40192"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.2.606",
+          "namespace": null,
+          "resourceVersion": "7217",
+          "uid": "2122e77b-64cc-41c5-b523-8dfc17b291ab"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.003",
+          "namespace": null,
+          "resourceVersion": "7213",
+          "uid": "dfd376c6-5fac-45f3-bc66-e3c2d98d0906"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.004",
+          "namespace": null,
+          "resourceVersion": "7206",
+          "uid": "8171fbab-37de-4e21-ba2e-113981f03064"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.005",
+          "namespace": null,
+          "resourceVersion": "7201",
+          "uid": "beca4b4b-e35e-46c5-9936-7b0fd46b9e64"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.008",
+          "namespace": null,
+          "resourceVersion": "7194",
+          "uid": "2a79c2ce-798f-48d9-bc63-0fc145af9d51"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.009",
+          "namespace": null,
+          "resourceVersion": "7191",
+          "uid": "82c9b3dd-4a56-429c-b505-82c4371a0815"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.010",
+          "namespace": null,
+          "resourceVersion": "7185",
+          "uid": "9428515d-9d8a-49f8-a9ae-6fde9efc51ad"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.011",
+          "namespace": null,
+          "resourceVersion": "7180",
+          "uid": "198cec4c-a7b5-4c57-b056-ca864ac8ae8e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.3.013",
+          "namespace": null,
+          "resourceVersion": "7177",
+          "uid": "cd069c46-f4ec-4fba-8c69-703cec58e6ef"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.4.003",
+          "namespace": null,
+          "resourceVersion": "7172",
+          "uid": "b7b5dd9f-dcba-4c47-ad29-53a3de0234be"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.4.004",
+          "namespace": null,
+          "resourceVersion": "7166",
+          "uid": "425fbb05-97a7-4404-9d88-ccc93a912660"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.4.012",
+          "namespace": null,
+          "resourceVersion": "7162",
+          "uid": "9a5ca54a-9da0-4cfa-9475-a58916c9292b"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.4.013",
+          "namespace": null,
+          "resourceVersion": "7156",
+          "uid": "c952a9b1-45d2-4c22-9cd5-9d006b0ac343"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.5.007",
+          "namespace": null,
+          "resourceVersion": "7153",
+          "uid": "258d75d9-7579-477a-90e0-ef1483009d79"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.5.010",
+          "namespace": null,
+          "resourceVersion": "7148",
+          "uid": "f20df4d0-99cf-465b-ac0a-dd1a341e6494"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.5.011",
+          "namespace": null,
+          "resourceVersion": "7144",
+          "uid": "57838102-311d-4a01-8f70-900e6840cefc"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-deepflow-6.5.012",
+          "namespace": null,
+          "resourceVersion": "7137",
+          "uid": "337f09e9-5e70-4000-af1e-94f6783a12e0"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-easegress-1.0.0",
+          "namespace": null,
+          "resourceVersion": "6907",
+          "uid": "c362f90a-965c-494f-b708-3c1de03428eb"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-edgemesh-0.1.0",
+          "namespace": null,
+          "resourceVersion": "6913",
+          "uid": "a3bbfe3e-31b2-4b21-9ac3-6a3ff5946ebe"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-fpga-operator-2.6.1",
+          "namespace": null,
+          "resourceVersion": "6831",
+          "uid": "d5d4887a-8590-4e30-a763-4d99a5a20966"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-fpga-operator-2.7.4",
+          "namespace": null,
+          "resourceVersion": "6825",
+          "uid": "20cb7607-552b-4791-bcd4-a2b7eb24f20f"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-iomesh-v1.0.1",
+          "namespace": null,
+          "resourceVersion": "25313818",
+          "uid": "9a3fc0f7-ce99-444f-8369-0393b65198bd"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-iomesh-v1.1.0",
+          "namespace": null,
+          "resourceVersion": "25313816",
+          "uid": "79cced3f-8d08-40e4-b1f2-d267a7f70231"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-jh-gitlab-5.9.2",
+          "namespace": null,
+          "resourceVersion": "6848",
+          "uid": "0d7df155-adf7-4f8a-a854-a6b583a10dcd"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.11.0",
+          "namespace": null,
+          "resourceVersion": "6952",
+          "uid": "1d7ee995-5afd-483b-8d7d-88981aeb7bf6"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.12.1",
+          "namespace": null,
+          "resourceVersion": "6950",
+          "uid": "b2c82a4a-6011-41db-b78d-1fd3f8d32539"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.14.1",
+          "namespace": null,
+          "resourceVersion": "6947",
+          "uid": "d1017eb4-168a-4df4-b3cd-fd4eb1afae72"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.16.1",
+          "namespace": null,
+          "resourceVersion": "6944",
+          "uid": "488927e5-6569-4515-8b95-95956de784fc"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.16.2",
+          "namespace": null,
+          "resourceVersion": "6941",
+          "uid": "f9488d6f-c594-406e-95f6-5d8e1dd39d8f"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.6.1",
+          "namespace": null,
+          "resourceVersion": "6959",
+          "uid": "6796e4eb-4305-4112-9531-785dfce5fc99"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.7.0",
+          "namespace": null,
+          "resourceVersion": "6956",
+          "uid": "ea61f71d-14ce-4b4c-a332-0bdfeb9006ca"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-juicefs-0.9.2",
+          "namespace": null,
+          "resourceVersion": "6954",
+          "uid": "b38d7298-436a-4507-b99d-4e77ddc6c9b3"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-meshery-0.5.0",
+          "namespace": null,
+          "resourceVersion": "7026",
+          "uid": "42544c5b-d694-4969-90e2-18977de36d51"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-nocalhost-0.5.7",
+          "namespace": null,
+          "resourceVersion": "6876",
+          "uid": "bf4f3bf6-2c62-409f-9f85-c605fc1ac063"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-nocalhost-0.6.2",
+          "namespace": null,
+          "resourceVersion": "6872",
+          "uid": "93bb37bb-b1cd-49cc-87fe-ed0104987d84"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-nocalhost-0.6.4",
+          "namespace": null,
+          "resourceVersion": "6865",
+          "uid": "4625ed48-adb6-4b32-a696-3cf05421cb8c"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-nocalhost-0.6.9",
+          "namespace": null,
+          "resourceVersion": "6860",
+          "uid": "407514ad-96e8-49f5-9232-de7662ca95fa"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-openelb-0.2.5",
+          "namespace": null,
+          "resourceVersion": "6888",
+          "uid": "ac3b9774-028c-48a8-a80e-5363a7ff4c0f"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-openelb-0.2.6",
+          "namespace": null,
+          "resourceVersion": "6885",
+          "uid": "b5bbbe7e-3254-43b0-a300-985314053fec"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-openelb-0.5.0",
+          "namespace": null,
+          "resourceVersion": "6881",
+          "uid": "02049664-132a-4edf-adcc-24df75fe3f8a"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-pulsar-2.7.13",
+          "namespace": null,
+          "resourceVersion": "7354",
+          "uid": "63ac2c1b-aeca-43f4-8e60-4c25980df98e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-stonedb-helm-0.1.0",
+          "namespace": null,
+          "resourceVersion": "6893",
+          "uid": "98be96de-ef2a-44ff-857c-8ff90f00a8f8"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-theia-0.3.0",
+          "namespace": null,
+          "resourceVersion": "7034",
+          "uid": "6131974a-9920-4954-9f35-0e8d6462e7d7"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-vsphere-cpi-1.3.0",
+          "namespace": null,
+          "resourceVersion": "6898",
+          "uid": "caebb8d1-7179-4fde-9b68-2c3d5a0958d5"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "ApplicationVersion",
+          "name": "builtin-stable-vsphere-csi-2.5.0",
+          "namespace": null,
+          "resourceVersion": "6965",
+          "uid": "c2f61283-d568-4851-ac4f-fab7363974ad"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-3053ddc26f",
+          "namespace": null,
+          "resourceVersion": "7043",
+          "uid": "05c8701b-dac5-451b-b43b-45e4ed25462d"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-47ca04a943",
+          "namespace": null,
+          "resourceVersion": "6794",
+          "uid": "925037e5-9f64-4465-956f-714c33a45b67"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-antrea",
+          "namespace": null,
+          "resourceVersion": "7058",
+          "uid": "9f2c1001-a996-4b01-8f1c-903ecaf079d8"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-b8ceba18a3",
+          "namespace": null,
+          "resourceVersion": "7009",
+          "uid": "93da589f-48b3-4f65-a8bb-a9ea46511ccf"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-ccm-qingcloud",
+          "namespace": null,
+          "resourceVersion": "7078",
+          "uid": "af56f934-a3c2-4153-9b27-c55c70f7093b"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-chaos-mesh",
+          "namespace": null,
+          "resourceVersion": "6999",
+          "uid": "810fb3ba-2e7d-40b7-b3b7-272579ec47a8"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-cni-hostnic",
+          "namespace": null,
+          "resourceVersion": "7004",
+          "uid": "f5de7766-83b6-4fed-8493-3552e394c5ae"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-crane",
+          "namespace": null,
+          "resourceVersion": "6926",
+          "uid": "16fe3e89-5912-432a-a761-ebe9438454c0"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-csi-qingcloud",
+          "namespace": null,
+          "resourceVersion": "6811",
+          "uid": "ae6419c8-c60b-4483-88fd-a2acdf99108b"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-curvefs-csi",
+          "namespace": null,
+          "resourceVersion": "7101",
+          "uid": "d47865f0-3233-4022-b908-7195000bd5d6"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-databend-meta",
+          "namespace": null,
+          "resourceVersion": "6937",
+          "uid": "5c85e61c-ebad-42da-bd7b-2ddb44da9532"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-databend-query",
+          "namespace": null,
+          "resourceVersion": "7127",
+          "uid": "289bc875-e1be-4193-bd38-fa5fafcd6e45"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-deepflow",
+          "namespace": null,
+          "resourceVersion": "7346",
+          "uid": "078468a8-9c27-493e-a179-c025e8d14c58"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-easegress",
+          "namespace": null,
+          "resourceVersion": "6908",
+          "uid": "116d5d02-2fbf-4a34-a7e7-4e64cb3a7f4e"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-edgemesh",
+          "namespace": null,
+          "resourceVersion": "6916",
+          "uid": "2cb3cf3e-3253-4d8b-9c9b-7f2f9da317aa"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-fpga-operator",
+          "namespace": null,
+          "resourceVersion": "6835",
+          "uid": "7d2fbdd7-cc04-42fe-9a58-40d7df92b360"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-iomesh",
+          "namespace": null,
+          "resourceVersion": "25313819",
+          "uid": "58e6a958-f4dc-4019-9708-f4d3d3c308fa"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-jh-gitlab",
+          "namespace": null,
+          "resourceVersion": "6850",
+          "uid": "a54c68f3-f0b9-4ab9-a707-8471684a6dd1"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-juicefs",
+          "namespace": null,
+          "resourceVersion": "6960",
+          "uid": "c2843e02-94f7-4823-a86c-cc48bfc53622"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-meshery",
+          "namespace": null,
+          "resourceVersion": "7027",
+          "uid": "f225dad8-c5b7-4cc2-9e22-6f897466478a"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-nocalhost",
+          "namespace": null,
+          "resourceVersion": "6877",
+          "uid": "fbb7e0e9-628b-4def-acc6-ff9011520c07"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-openelb",
+          "namespace": null,
+          "resourceVersion": "6889",
+          "uid": "6151072b-df72-4f9e-adf7-9b7082d62608"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-pulsar",
+          "namespace": null,
+          "resourceVersion": "7356",
+          "uid": "0e4c1d93-0af7-4657-bb10-bedd07e61688"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-stonedb-helm",
+          "namespace": null,
+          "resourceVersion": "6894",
+          "uid": "2226b64f-5fa7-42db-819e-75f233748efb"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-theia",
+          "namespace": null,
+          "resourceVersion": "7035",
+          "uid": "924b8acc-a598-4043-a5ef-0907bd4a59f0"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-vsphere-cpi",
+          "namespace": null,
+          "resourceVersion": "6899",
+          "uid": "02020cde-e612-4f62-91f4-9b7f72c8cb2d"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Application",
+          "name": "builtin-stable-vsphere-csi",
+          "namespace": null,
+          "resourceVersion": "6967",
+          "uid": "7fe9f9e8-f66d-4070-9916-61b4f2455af8"
+        },
+        {
+          "apiVersion": "application.kubesphere.io/v2",
+          "kind": "Repo",
+          "name": "builtin-stable",
+          "namespace": null,
+          "resourceVersion": "25313820",
+          "uid": "b24ce1d8-0751-44e0-b158-6f28cf9c1a36"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "CNI/DNS",
+      "deletionEffectToVerify": "Preserve Calico/Tigera/CoreDNS/node-local DNS/kube-proxy resources and unrelated CRDs; never treat a KubeSphere label as sole deletion authority",
+      "deletionEffectsAccepted": false,
+      "observation": "Native controllers/releases in census; shared infrastructure outside management replacement",
+      "observedOrRequiredConsumers": [
+        "All workload namespaces/pods and manager-agent connectivity"
+      ],
+      "proposedDisposition": "native-owned",
+      "proposedReplacement": "Retain existing native owners; Rancher only supplies scoped management views",
+      "resources": [
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "calico-api",
+          "namespace": "calico-system",
+          "resourceVersion": "624",
+          "uid": "4ce674de-2659-4f2f-8f46-64438499b481"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "calico-kube-controllers-metrics",
+          "namespace": "calico-system",
+          "resourceVersion": "1097",
+          "uid": "60aaeebb-bfeb-4857-a8d0-c7e8c92d8d94"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "calico-typha",
+          "namespace": "calico-system",
+          "resourceVersion": "694",
+          "uid": "1a5daf8c-f2b2-491b-a91a-6dcb662167c0"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "goldmane",
+          "namespace": "calico-system",
+          "resourceVersion": "657",
+          "uid": "9e0fa96b-7c59-404e-bc9e-937f118c2e3a"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "whisker",
+          "namespace": "calico-system",
+          "resourceVersion": "619",
+          "uid": "e2ce7cc9-4dc9-4091-b4c2-bc4a1294655c"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "coredns",
+          "namespace": "kube-system",
+          "resourceVersion": "292",
+          "uid": "2ba2b707-f416-447d-971d-0de303a420da"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "metrics-server",
+          "namespace": "kube-system",
+          "resourceVersion": "22387256",
+          "uid": "e1de6375-61f0-4807-8429-d630555e51d0"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "calico-node",
+          "namespace": "calico-system",
+          "resourceVersion": "22791310",
+          "uid": "d07c4be0-ba5d-408c-8628-7b9ec39b8a22"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "kube-proxy",
+          "namespace": "kube-system",
+          "resourceVersion": "22465790",
+          "uid": "65843d45-8228-403b-aa56-bd1a0592d484"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "nodelocaldns",
+          "namespace": "kube-system",
+          "resourceVersion": "22465737",
+          "uid": "874acc3b-b776-4995-8447-10f8d63f16ef"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "calico-apiserver",
+          "namespace": "calico-system",
+          "resourceVersion": "22791230",
+          "uid": "bf124385-7679-4b10-ac81-879a9145031d"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "calico-kube-controllers",
+          "namespace": "calico-system",
+          "resourceVersion": "22466540",
+          "uid": "7a0f1a11-5179-48e6-9008-6d585c63c50b"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "calico-typha",
+          "namespace": "calico-system",
+          "resourceVersion": "22466944",
+          "uid": "f6d52d06-42ec-453f-88b7-c98ab53ca7e3"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "goldmane",
+          "namespace": "calico-system",
+          "resourceVersion": "22791416",
+          "uid": "35973db2-8559-4fc8-bdb9-13dffa7c0fd6"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "whisker",
+          "namespace": "calico-system",
+          "resourceVersion": "22466359",
+          "uid": "5dbb908b-4037-40af-a2a5-493a2ffa6291"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "coredns",
+          "namespace": "kube-system",
+          "resourceVersion": "22466396",
+          "uid": "604add4f-493c-4987-8d76-af4c88cabf6c"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "localpv-provisioner",
+          "namespace": "kube-system",
+          "resourceVersion": "22466535",
+          "uid": "0fd5b7ed-869c-437c-aeac-9153803f21fa"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "metrics-server",
+          "namespace": "kube-system",
+          "resourceVersion": "22791289",
+          "uid": "694f5e27-272d-47a2-a1dd-dab1ac401510"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "tigera-operator",
+          "namespace": "tigera-operator",
+          "resourceVersion": "22465777",
+          "uid": "fa8bd053-3aa7-4b02-8bea-bcc05c2c8b2f"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Native storage/backup",
+      "deletionEffectToVerify": "Preserve PVC/PV UID/bindings/reclaim policy, storage classes/provisioner/Velero/CNPG/Barman; manager backup is separate",
+      "deletionEffectsAccepted": false,
+      "observation": "Native controllers/releases in census; shared infrastructure outside management replacement",
+      "observedOrRequiredConsumers": [
+        "27 source PVCs/28 PVs; protected databases/data and all recovery points"
+      ],
+      "proposedDisposition": "native-owned",
+      "proposedReplacement": "Retain existing native owners; Rancher only supplies scoped management views",
+      "resources": [
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "coredns",
+          "namespace": "kube-system",
+          "resourceVersion": "292",
+          "uid": "2ba2b707-f416-447d-971d-0de303a420da"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "metrics-server",
+          "namespace": "kube-system",
+          "resourceVersion": "22387256",
+          "uid": "e1de6375-61f0-4807-8429-d630555e51d0"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "velero",
+          "namespace": "velero",
+          "resourceVersion": "15608",
+          "uid": "38049e43-ed79-43ef-b9bc-4a3dce70ea4c"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "kube-proxy",
+          "namespace": "kube-system",
+          "resourceVersion": "22465790",
+          "uid": "65843d45-8228-403b-aa56-bd1a0592d484"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "nodelocaldns",
+          "namespace": "kube-system",
+          "resourceVersion": "22465737",
+          "uid": "874acc3b-b776-4995-8447-10f8d63f16ef"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "node-agent",
+          "namespace": "velero",
+          "resourceVersion": "24436416",
+          "uid": "5659019b-006f-4469-9d6a-cde6a5326221"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "coredns",
+          "namespace": "kube-system",
+          "resourceVersion": "22466396",
+          "uid": "604add4f-493c-4987-8d76-af4c88cabf6c"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "localpv-provisioner",
+          "namespace": "kube-system",
+          "resourceVersion": "22466535",
+          "uid": "0fd5b7ed-869c-437c-aeac-9153803f21fa"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "metrics-server",
+          "namespace": "kube-system",
+          "resourceVersion": "22791289",
+          "uid": "694f5e27-272d-47a2-a1dd-dab1ac401510"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "velero",
+          "namespace": "velero",
+          "resourceVersion": "24436582",
+          "uid": "c3bdaf16-757e-4ef9-9f1c-b60171fcde8d"
+        }
+      ],
+      "retirementAccepted": false
+    },
+    {
+      "allConsumersVerified": false,
+      "approvedDisposition": null,
+      "capability": "Ingress/TLS/identity",
+      "deletionEffectToVerify": "Preserve shared Traefik/cert-manager/Keycloak/OpenBao and their routes/TLS/PVC state; removing a console route does not authorize shared ingress/identity deletion",
+      "deletionEffectsAccepted": false,
+      "observation": "Native controllers/releases in census; shared infrastructure outside management replacement",
+      "observedOrRequiredConsumers": [
+        "Public OIDC/apps and private admin routes; native secret custody"
+      ],
+      "proposedDisposition": "native-owned",
+      "proposedReplacement": "Retain existing native owners; Rancher only supplies scoped management views",
+      "resources": [
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "cert-manager-webhook",
+          "namespace": "cert-manager",
+          "resourceVersion": "22083203",
+          "uid": "8aa69c2b-6db4-46e3-a606-f86c78b4fbfe"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "keycloak",
+          "namespace": "keycloak",
+          "resourceVersion": "12902031",
+          "uid": "0ac9cd04-9d7e-41ed-8ac7-5a74ca659fd0"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "keycloak-postgres-r",
+          "namespace": "keycloak",
+          "resourceVersion": "22423520",
+          "uid": "32b6a332-fe31-4357-855b-1702bc013aa8"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "keycloak-postgres-ro",
+          "namespace": "keycloak",
+          "resourceVersion": "22423527",
+          "uid": "f93ac050-31c8-4d60-8e54-20f46d1e6af3"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "keycloak-postgres-rw",
+          "namespace": "keycloak",
+          "resourceVersion": "22423532",
+          "uid": "f35b67ad-7f3d-4224-847e-e61b401888c9"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "postgres",
+          "namespace": "keycloak",
+          "resourceVersion": "22425985",
+          "uid": "868aa2c1-2986-4166-9bcf-b85efbeeb7e3"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "deployment-seal-transit",
+          "namespace": "openbao",
+          "resourceVersion": "9368557",
+          "uid": "70e73eb1-999d-4876-8452-5b796f073031"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "hexalith-keys",
+          "namespace": "openbao",
+          "resourceVersion": "21791800",
+          "uid": "785b7809-be9a-4e1b-ad64-1921e1219f81"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "hexalith-keys-active",
+          "namespace": "openbao",
+          "resourceVersion": "21791791",
+          "uid": "8da386d7-635a-4c27-98f5-bd7451baecdb"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "hexalith-keys-internal",
+          "namespace": "openbao",
+          "resourceVersion": "21791797",
+          "uid": "d79bab74-8285-4fc0-b5b1-decf5a3cc8d2"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "hexalith-keys-standby",
+          "namespace": "openbao",
+          "resourceVersion": "21791792",
+          "uid": "b8a5b9e7-a1b6-49a3-96df-7a113e75d8a9"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "hexalith-tache-ai-relay",
+          "namespace": "traefik",
+          "resourceVersion": "12545205",
+          "uid": "c3fd5e2d-3c2b-418c-baf7-d75e62abce4d"
+        },
+        {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "name": "traefik",
+          "namespace": "traefik",
+          "resourceVersion": "11766",
+          "uid": "e3ebe82f-beb9-4186-bb6d-c6a710c33d94"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "DaemonSet",
+          "name": "traefik",
+          "namespace": "traefik",
+          "resourceVersion": "22466679",
+          "uid": "ed2da1ec-13a1-4b4e-b941-35bfb06597dc"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "cert-manager",
+          "namespace": "cert-manager",
+          "resourceVersion": "22466504",
+          "uid": "649a9400-676a-4037-93d6-324a88b04aa4"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "cert-manager-cainjector",
+          "namespace": "cert-manager",
+          "resourceVersion": "22466289",
+          "uid": "751bca31-801e-4e3a-851e-8d37daac12c9"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "cert-manager-webhook",
+          "namespace": "cert-manager",
+          "resourceVersion": "22791076",
+          "uid": "3920f5a9-339d-4be2-9a97-719f6b207afd"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "keycloak",
+          "namespace": "keycloak",
+          "resourceVersion": "22855572",
+          "uid": "98fc84f3-918f-46d9-ae22-7584fb31ff9b"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "postgres",
+          "namespace": "keycloak",
+          "resourceVersion": "22425967",
+          "uid": "d9712f4b-d289-479c-916d-ae5ff80af177"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "hexalith-tache-ai-relay",
+          "namespace": "traefik",
+          "resourceVersion": "22465759",
+          "uid": "be7b3397-dab5-4f3c-8b8e-dd1fe498537a"
+        },
+        {
+          "apiVersion": "apps/v1",
+          "kind": "StatefulSet",
+          "name": "hexalith-keys",
+          "namespace": "openbao",
+          "resourceVersion": "22791138",
+          "uid": "df2bbbbe-1fe8-4e0b-a8a6-174bd3287806"
+        }
+      ],
+      "retirementAccepted": false
+    }
+  ],
+  "capturedAt": "2026-10-01T18:16:31Z",
+  "cohortMembershipIsNotRemovalScope": true,
+  "installedExtensions": [
+    {
+      "configurationSha256": "9da9187b5078c1485c13063994fc50be887082504566359380e7022fee7a8793",
+      "enabled": true,
+      "extension": {
+        "name": "ks-console-embed",
+        "version": "1.2.0"
+      },
+      "name": "ks-console-embed",
+      "resourceVersion": "7588",
+      "state": "Installed",
+      "targetNamespace": "kubesphere-system",
+      "uid": "3c989807-7c14-4159-a8f9-0844e494effd"
+    }
+  ],
+  "productionActions": [],
+  "sourceInventorySha256": "1046cd7a694adce9a785be602704904d8e567db8adaf63a85e7401dd7f839e65"
+}

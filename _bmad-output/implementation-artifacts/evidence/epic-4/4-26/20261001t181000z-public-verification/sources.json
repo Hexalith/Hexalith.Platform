@@ -1,0 +1,70 @@
+{
+  "accepted": false,
+  "checkedAt": "2026-10-01T18:14:36Z",
+  "sources": [
+    {
+      "bytes": 78237858,
+      "fetchedAt": "2026-10-01T18:14:31Z",
+      "httpStatus": 200,
+      "name": "k3s-binary",
+      "sha256": "897acb21cca57d477a211102251a6591450ce767344a9faaa121a1007ca9fa9a",
+      "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s"
+    },
+    {
+      "bytes": 2360639,
+      "fetchedAt": "2026-10-01T18:14:31Z",
+      "httpStatus": 200,
+      "name": "backup-chart-index",
+      "sha256": "0a258f121a0e0a27c8bba6a6ff6bf77ab8f248301499c1554225481ca016bbe1",
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/index.yaml"
+    },
+    {
+      "bytes": 401473,
+      "fetchedAt": "2026-10-01T18:14:32Z",
+      "httpStatus": 200,
+      "name": "rancher-security-advisories",
+      "sha256": "2733ae610731fd458db629a26573897a5bd7136354646f1d2e09a3e87a4c9cc6",
+      "url": "https://api.github.com/repos/rancher/rancher/security-advisories?per_page=100"
+    },
+    {
+      "bytes": 98,
+      "fetchedAt": "2026-10-01T18:14:32Z",
+      "httpStatus": 200,
+      "name": "helm-checksum",
+      "sha256": "a29228c647c8235c0fac443dc3e4744fd1a10692f3baf34a0b4887cab6688bd3",
+      "url": "https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz.sha256sum"
+    },
+    {
+      "bytes": 64,
+      "fetchedAt": "2026-10-01T18:14:32Z",
+      "httpStatus": 200,
+      "name": "kubectl-source-checksum",
+      "sha256": "8fba32eac676a42f55d04fa89b2aca4332f3c5075a7761c5bf7082064d954820",
+      "url": "https://dl.k8s.io/release/v1.34.12/bin/linux/amd64/kubectl.sha256"
+    },
+    {
+      "bytes": 64,
+      "fetchedAt": "2026-10-01T18:14:32Z",
+      "httpStatus": 200,
+      "name": "kubectl-target-checksum",
+      "sha256": "de79dcf74d6cf4a7346d17ffa054d2111b3f7bb4b48cc6bf368091e850e5760b",
+      "url": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubectl.sha256"
+    },
+    {
+      "bytes": 31080,
+      "fetchedAt": "2026-10-01T18:14:32Z",
+      "httpStatus": 200,
+      "name": "age-release",
+      "sha256": "d7985bfae54ecc8ed4d7079dfbb88a92e93c60378f23b112301877b301e55e3a",
+      "url": "https://api.github.com/repos/FiloSottile/age/releases/tags/v1.3.2"
+    },
+    {
+      "bytes": 17316,
+      "fetchedAt": "2026-10-01T18:14:32Z",
+      "httpStatus": 200,
+      "name": "etcd-release",
+      "sha256": "405a0df5413376352a818c593e06dd12cbc4bccb0126deda36b8d79a8a4ef42f",
+      "url": "https://api.github.com/repos/etcd-io/etcd/releases/tags/v3.6.5"
+    }
+  ]
+}

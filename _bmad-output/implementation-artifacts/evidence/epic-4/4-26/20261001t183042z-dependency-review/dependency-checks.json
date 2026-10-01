@@ -1,0 +1,123 @@
+{
+  "accepted": false,
+  "checkedAt": "2026-10-01T18:30:46Z",
+  "checks": [
+    {
+      "accepted": false,
+      "artifact": "kuberlr",
+      "license": "Apache-2.0",
+      "licenseSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "transitiveCoverageAccepted": false,
+      "version": "v8.1.2"
+    },
+    {
+      "accepted": false,
+      "artifact": "age-license",
+      "license": "BSD-3-Clause",
+      "licenseSha256": "c5d65279d02955c0fc2294ae417c3add650d228f4f5c82bd6d531fc26c89cd96",
+      "transitiveCoverageAccepted": false,
+      "version": "v1.3.2"
+    },
+    {
+      "accepted": false,
+      "artifact": "etcd-license",
+      "license": "Apache-2.0",
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "transitiveCoverageAccepted": false,
+      "version": "v3.6.5"
+    },
+    {
+      "accepted": false,
+      "actualDownloadedArchiveSha256": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "archiveMatchesPublishedMetadata": true,
+      "artifact": "age",
+      "binaries": {
+        "age": {
+          "archiveBinarySha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c",
+          "installedBinarySha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c",
+          "matches": true
+        }
+      },
+      "compatibilityRestoreAccepted": false,
+      "retainedSourceArchiveSha256": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "actualDownloadedArchiveSha256": "66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "archiveMatchesPublishedMetadata": true,
+      "artifact": "etcd",
+      "binaries": {
+        "etcd": {
+          "archiveBinarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+          "installedBinarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+          "matches": true
+        },
+        "etcdctl": {
+          "archiveBinarySha256": "18416269c49d0f25624938b0b45d5bd5d3eb980ab92048dc4652c66a4246141e",
+          "installedBinarySha256": "18416269c49d0f25624938b0b45d5bd5d3eb980ab92048dc4652c66a4246141e",
+          "matches": true
+        },
+        "etcdutl": {
+          "archiveBinarySha256": "226944e63398e1503791e23f7667041ad7782cab3787350f641f9b52fd4d2dd2",
+          "installedBinarySha256": "226944e63398e1503791e23f7667041ad7782cab3787350f641f9b52fd4d2dd2",
+          "matches": true
+        }
+      },
+      "compatibilityRestoreAccepted": false,
+      "retainedSourceArchiveSha256": "66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "artifact": "rancher/backup-restore-operator:v11.0.3",
+      "imageSecurityAccepted": false,
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        },
+        {
+          "architecture": "unknown",
+          "os": "unknown"
+        },
+        {
+          "architecture": "unknown",
+          "os": "unknown"
+        }
+      ],
+      "registryManifestDigest": "sha256:ba529dbe0772b79c543c103a981e17f931543e77b9a8d6d6cbb2ffcbb7189ed2",
+      "signatureVerified": false
+    },
+    {
+      "accepted": false,
+      "artifact": "rancher/kuberlr-kubectl:v8.1.2",
+      "imageSecurityAccepted": false,
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        },
+        {
+          "architecture": "unknown",
+          "os": "unknown"
+        },
+        {
+          "architecture": "unknown",
+          "os": "unknown"
+        }
+      ],
+      "registryManifestDigest": "sha256:64994ba062b10a732955d6f58d7a21a3f0fbf674bfc8f7aef4d1ef3f6354a109",
+      "signatureVerified": false
+    }
+  ],
+  "scope": "read-only public source and local binary identity; no installation/grants"
+}

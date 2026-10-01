@@ -1,0 +1,1587 @@
+{
+  "attemptId": "20261001t173028z-census",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 1304,
+      "ciphertextSha256": "f70beb40ad4f5c5528817c416f9c31ad864d1d6ed72cfa43da0505309538e0ed",
+      "file": "0001-versions.age",
+      "plaintextSha256": "6519082731b2bb72b6f12a472044b444e466f1e5acbf0a7934c07640c1a0863a"
+    },
+    {
+      "ciphertextBytes": 8184,
+      "ciphertextSha256": "cec06f2f306723a6690abe4eba5d4b1bb6e1b5fa920d613d54284898a828b44b",
+      "file": "0002-native-config.age",
+      "plaintextSha256": "9b0841289576d9af237eabace8b1d59363e0db991cf6fa5f842bf397ee71cc9d"
+    },
+    {
+      "ciphertextBytes": 8928,
+      "ciphertextSha256": "2db8cf9309b46801ea9e9cb4b28d9c7fca1c3f2c05c659526672fd8e4d1fc683",
+      "file": "0003-core-discovery.age",
+      "plaintextSha256": "79a64acc52589b06b412c962256c55cf80622aa5e043828d811ab3cf063cf486"
+    },
+    {
+      "ciphertextBytes": 11420,
+      "ciphertextSha256": "1755d0d95baa2c39f6577a41c66209c0426042913d9569a2f6a7236b3148fa5e",
+      "file": "0004-group-discovery.age",
+      "plaintextSha256": "ed63e3bf5d42859e6c153adf4febfdd0d586c893df865d02bbf3934b7b15fa22"
+    },
+    {
+      "ciphertextBytes": 896,
+      "ciphertextSha256": "b02f53a8af959afdfc53000ca6100c51adc799643c31a568ba45f20760471a79",
+      "file": "0005-discovery-apiregistration-k8s-io-v1.age",
+      "plaintextSha256": "a09d7c6325dd0f90ef4af3c6c09da70dddd1e1bc3edec2dfbe7cfd6764f0f7d7"
+    },
+    {
+      "ciphertextBytes": 3284,
+      "ciphertextSha256": "eae10b501cdaabea65d5a5e4f179e8c19c78e9fded9e771431d409bd1c2b9174",
+      "file": "0006-discovery-apps-v1.age",
+      "plaintextSha256": "d5367ba30ba80215e62c796f07d6516605fbafd97ae120580a26c218abee756b"
+    },
+    {
+      "ciphertextBytes": 688,
+      "ciphertextSha256": "9d8be12459bb63b210195f10fdcf33de232720e3a68707cbb5d922edb32eade3",
+      "file": "0007-discovery-events-k8s-io-v1.age",
+      "plaintextSha256": "aedda44683e956a9df574b1d21dc9ca0ede75c2b91842a2b57517d2199721bd9"
+    },
+    {
+      "ciphertextBytes": 736,
+      "ciphertextSha256": "4ae05bdcf8f9ba61b967d00ddda660ae7222e2155fe714f5140b43a6bd5e95cf",
+      "file": "0008-discovery-authentication-k8s-io-v1.age",
+      "plaintextSha256": "a7fd641ddd6c87f0835019db12be0f84d22428438910f9f2135552465f8fe60b"
+    },
+    {
+      "ciphertextBytes": 1184,
+      "ciphertextSha256": "ab6af78f374d5c62fc7fce7402568955bd37ddbe97089162c72b3631870900cd",
+      "file": "0009-discovery-authorization-k8s-io-v1.age",
+      "plaintextSha256": "cf7aff4e19909eb7e29a12ccbdbbf6c9b599327030b443528b01b57e4d38de79"
+    },
+    {
+      "ciphertextBytes": 980,
+      "ciphertextSha256": "9911746320d39f4afb1ecf5421bcbe1c5d013e7957192f48e02fa9da1116cfb0",
+      "file": "0010-discovery-autoscaling-v2.age",
+      "plaintextSha256": "98628e2f11f434d9c8a881245da17b786c1125ad2480ecaf64b089342d622377"
+    },
+    {
+      "ciphertextBytes": 1284,
+      "ciphertextSha256": "3dd3175d2e39f5b17635163d87b56a754a0eb2e97d889e6de07ab5473dcea14b",
+      "file": "0011-discovery-batch-v1.age",
+      "plaintextSha256": "d01641dd5f7e0456e195fe7b99f0954d0eb2589a1c7686dc879ead625542dfa3"
+    },
+    {
+      "ciphertextBytes": 1180,
+      "ciphertextSha256": "6db55e60d48812d442a8c76aeeb4956889cdff32a842fd7e292937c78bbec8b5",
+      "file": "0012-discovery-certificates-k8s-io-v1.age",
+      "plaintextSha256": "431a161e09cdd8a661add63a4653d017829a21ea0c8a107f49b13d21d33a4b21"
+    },
+    {
+      "ciphertextBytes": 2224,
+      "ciphertextSha256": "96c18038cc9d6e5e61304c1efe2983347c38a4d31e6e08763760c74519b10a4b",
+      "file": "0013-discovery-networking-k8s-io-v1.age",
+      "plaintextSha256": "3af237fed4727d44e11ad52bacb4dce4855f916a319feb04838446b8cb693afd"
+    },
+    {
+      "ciphertextBytes": 920,
+      "ciphertextSha256": "20366c1787d224464247cd525a9b1a1797a07b18a0b64c2d4825373d2e5209f4",
+      "file": "0014-discovery-policy-v1.age",
+      "plaintextSha256": "8bd3d2ea76ac7e0196c33843e7e2b7656df3449ef781e41730a558417a0cd6ec"
+    },
+    {
+      "ciphertextBytes": 1556,
+      "ciphertextSha256": "cc79b5e37dedcd335e87439f572266d18a58e59bd97c7ee2d67742c819fdaa00",
+      "file": "0015-discovery-rbac-authorization-k8s-io-v1.age",
+      "plaintextSha256": "66e65145476f0c2cbf66ae87ecc58d58eddc75c424b3725e3581f3e725e8aa28"
+    },
+    {
+      "ciphertextBytes": 2416,
+      "ciphertextSha256": "197ed8bb7dbc1d4117c9766c9924eaf6f3fd1c1e28d3c57c457de4b5eb3b9647",
+      "file": "0016-discovery-storage-k8s-io-v1.age",
+      "plaintextSha256": "3d97d718259af6afb9ddf637060fdfb48163acd47522f707aee0e898532a10fe"
+    },
+    {
+      "ciphertextBytes": 2220,
+      "ciphertextSha256": "39cda105176965191231da2365696c33e6101f2838d62ca33ec31434689579be",
+      "file": "0017-discovery-admissionregistration-k8s-io-v1.age",
+      "plaintextSha256": "0b919ae0c51c5083fe88403d62d8437bbbd59b580405c521f71492f061ce299f"
+    },
+    {
+      "ciphertextBytes": 1024,
+      "ciphertextSha256": "58ce936a87d12ed8738a39772ee65e37cfce46a082c6b4d248cfc9fc06151489",
+      "file": "0018-discovery-apiextensions-k8s-io-v1.age",
+      "plaintextSha256": "4ca0e01d4fa39dfb6293645d79d677f1b5902d4fb2a85a6485f1b69029521c6d"
+    },
+    {
+      "ciphertextBytes": 728,
+      "ciphertextSha256": "05df905723725fb59f4dda2a815d208040672786f931934f51009aba8f70fd72",
+      "file": "0019-discovery-scheduling-k8s-io-v1.age",
+      "plaintextSha256": "1c02ff3f4a49092bd935efea1757a44425984fac79a6d67732d1ecb76d9e264f"
+    },
+    {
+      "ciphertextBytes": 668,
+      "ciphertextSha256": "2979002021c91dc85484edfeac37ea475aee2f973ffac899e9f39119bd1648a7",
+      "file": "0020-discovery-coordination-k8s-io-v1.age",
+      "plaintextSha256": "49ccfc4339ff81735066d478953572439d142da45cbc5f8b825baf96277efaef"
+    },
+    {
+      "ciphertextBytes": 688,
+      "ciphertextSha256": "d4de689a05804bffa17db603ca3d8ff0770c2e5e5e4003b3033621d7b25dbc7a",
+      "file": "0021-discovery-node-k8s-io-v1.age",
+      "plaintextSha256": "502163666704317f98837d4a667e87473027b70d78b69655ac0ad95563d93ed6"
+    },
+    {
+      "ciphertextBytes": 696,
+      "ciphertextSha256": "808091bd28e900d6571f348c0668f3e58bd309c7737204d4ea7a6a4e358688de",
+      "file": "0022-discovery-discovery-k8s-io-v1.age",
+      "plaintextSha256": "09b0eaa34936b07156c9d3026a67f97042f2aa7d587058cac3b8d507c5ddbd92"
+    },
+    {
+      "ciphertextBytes": 1768,
+      "ciphertextSha256": "e8f8c51db6a670ba47cd6d4c5459030e0b77456958ece94a9def367b50c1f19c",
+      "file": "0023-discovery-resource-k8s-io-v1.age",
+      "plaintextSha256": "c7323c25319f6a0adf14d94de742c388d8b4d9c37556d04051150b669a7e95a3"
+    },
+    {
+      "ciphertextBytes": 1412,
+      "ciphertextSha256": "2c119524ea64fa6b40708588d3f6a5ec8ac1df21fbd36fdc8eacde480e6a36f4",
+      "file": "0024-discovery-flowcontrol-apiserver-k8s-io-v1.age",
+      "plaintextSha256": "e141ac83528dc3b6bfb06af4313bf9ccea4af6a64d6d1f263542ce722178cb43"
+    },
+    {
+      "ciphertextBytes": 6568,
+      "ciphertextSha256": "a365999656eb7e22b2aa0f07b4c2e07120d21b0f192b3cf1bcd778374b056bf5",
+      "file": "0025-discovery-projectcalico-org-v3.age",
+      "plaintextSha256": "58a19f2c96bf6f9890c435b3da2b97ee0dd4ad53bc1092ec8b328af57914371f"
+    },
+    {
+      "ciphertextBytes": 1380,
+      "ciphertextSha256": "c6e931e035b9050f5c5b82330aeb87efab7ec58c4fabfb6b37f7e61401c30deb",
+      "file": "0026-discovery-acme-cert-manager-io-v1.age",
+      "plaintextSha256": "a8db8e9500cb0437dacc927cd50a208c8dbbaae5658a4254d86e710b0b8248f9"
+    },
+    {
+      "ciphertextBytes": 856,
+      "ciphertextSha256": "2c5f7831dae717370768b2e17648f562576b6cb16e00bc3971ef93924e8147c1",
+      "file": "0027-discovery-barmancloud-cnpg-io-v1.age",
+      "plaintextSha256": "cb98243e20a5fd3e76b8ab14928f2abebc90f865f97e7736154817f5ba4d198b"
+    },
+    {
+      "ciphertextBytes": 2508,
+      "ciphertextSha256": "87d515780a13bc8f40ca279fa4631754e0790690b118c8a4f57899ff8f50a9df",
+      "file": "0028-discovery-cert-manager-io-v1.age",
+      "plaintextSha256": "57697b13999286f6d0529d4c667086928e077a3643f7618282be64ff7e793482"
+    },
+    {
+      "ciphertextBytes": 7004,
+      "ciphertextSha256": "954fccab618f9f4e2813494e79a8877d5408f0b4689ebdda6a9ac51f1221bca9",
+      "file": "0029-discovery-crd-projectcalico-org-v1.age",
+      "plaintextSha256": "3cf5521395050671e0670edb7c8b7c0d699dd81fe38e817d08cd5fa836935579"
+    },
+    {
+      "ciphertextBytes": 3868,
+      "ciphertextSha256": "cb1d165b48409729f31762c55a9c7b3e255380cddbc7578d44e52e7ffc4d3f73",
+      "file": "0030-discovery-operator-tigera-io-v1.age",
+      "plaintextSha256": "a6cd84c5e2594d085952dec51c1016cbe067085902561be40d1893721209813b"
+    },
+    {
+      "ciphertextBytes": 5360,
+      "ciphertextSha256": "b197297ab5bd10a4a2e279efc0299240c716a2bf676a766bb7921cdac01e5e57",
+      "file": "0031-discovery-postgresql-cnpg-io-v1.age",
+      "plaintextSha256": "1cc04a77eb520dd42c91f356117c05f206a32ecef7fe93dd60deae600b20a11c"
+    },
+    {
+      "ciphertextBytes": 1488,
+      "ciphertextSha256": "fc0b918aeb2a3078f065fc31a5fe4fd4e2169994df06c4578a573ef438f8d68a",
+      "file": "0032-discovery-tenant-kubesphere-io-v1.age",
+      "plaintextSha256": "3d009a381fd29436530e23a76b6df095192f17405a09bd23b61a893ca283c459"
+    },
+    {
+      "ciphertextBytes": 3776,
+      "ciphertextSha256": "91fcba9eb06dce653832693bc757b003f7cffb79e00acec38c63fe3cde2f1ab3",
+      "file": "0033-discovery-velero-io-v1.age",
+      "plaintextSha256": "91dd7fc65ba48b104a8782b7911938558b5936c789c9b5b2929ed9abf6913972"
+    },
+    {
+      "ciphertextBytes": 952,
+      "ciphertextSha256": "203b93b9adcf29412af322b59beb6882266c78e81a67555e54d7b761af201f89",
+      "file": "0034-discovery-cluster-kubesphere-io-v1alpha1.age",
+      "plaintextSha256": "283eb736e998bfb057844518df36c6d3e2734fa3fe6ec440f239231ccf63aa32"
+    },
+    {
+      "ciphertextBytes": 688,
+      "ciphertextSha256": "6e7a5e2897aa83a9a4e072a8fb24bcf06f7dc09c945d09f62b2049cb7e6af63e",
+      "file": "0035-discovery-dapr-io-v2alpha1.age",
+      "plaintextSha256": "3ec9fb92bb4ac80be16b8292486683c3185fd2683213e8fb98e6ec2b938a11cf"
+    },
+    {
+      "ciphertextBytes": 1568,
+      "ciphertextSha256": "f5e0da06c2c14d9252f97fea6118427e54bcc05ed03acf46be41d1ee744b73b4",
+      "file": "0036-discovery-extensions-kubesphere-io-v1alpha1.age",
+      "plaintextSha256": "e3e03c561d204079c723e1ee3ee9a46722c2640bbd5124baad19bc258339e429"
+    },
+    {
+      "ciphertextBytes": 6596,
+      "ciphertextSha256": "a76f1388030a9537936035f822b429d4b1582d316792bff37c259cf6079d250b",
+      "file": "0037-discovery-hub-traefik-io-v1alpha1.age",
+      "plaintextSha256": "c60df02a59f23f2fed693eed04933e56b965477e8598b8c86bc0f5324515d90f"
+    },
+    {
+      "ciphertextBytes": 2316,
+      "ciphertextSha256": "4976f547d35791639838f9452a5f32d47f9fbfdb0bdead98fa59a1d8af4ac926",
+      "file": "0038-discovery-kubesphere-io-v1alpha1.age",
+      "plaintextSha256": "2d172df773d72de8dbbb9aabad52c6f9c489774a555f5ef0694e4b0f9093ce5f"
+    },
+    {
+      "ciphertextBytes": 752,
+      "ciphertextSha256": "9d0edabba083a287dd920d8b25f5e10bf9f0d3034e5a76d20c8d19a352f9e744",
+      "file": "0039-discovery-marketplace-kubesphere-io-v1alpha1.age",
+      "plaintextSha256": "a36f52c77b9cf8de8b6ea160ab71438538fd36cec6edbb2e8727281cf1b4d74d"
+    },
+    {
+      "ciphertextBytes": 1528,
+      "ciphertextSha256": "7c19e50f01d63537d1e66edd9b153a8156bae44fd8c4b9d288d4fc8afca51c8b",
+      "file": "0040-discovery-policy-networking-k8s-io-v1alpha1.age",
+      "plaintextSha256": "8808066c302b81a47d847780439dcabd9402e9eb7c44b3a604de4b2399f17ab8"
+    },
+    {
+      "ciphertextBytes": 1076,
+      "ciphertextSha256": "87e77d8ef61e58d53e7e931c8da0135b06c81861d1382d1458602540a21c70b6",
+      "file": "0041-discovery-storage-kubesphere-io-v1alpha1.age",
+      "plaintextSha256": "885ff67c342cdf52f28785b116619b02f64e9732da3926f5317f800858a860c2"
+    },
+    {
+      "ciphertextBytes": 3328,
+      "ciphertextSha256": "f329e819beb4823489ba8dd9e2dca63f6abe4ac445e6941006cab1838291fb18",
+      "file": "0042-discovery-traefik-io-v1alpha1.age",
+      "plaintextSha256": "0ebd5e9ef9e5448c23567fad65c74c82bacd7c8cbdc3570c529209c76a2c17b6"
+    },
+    {
+      "ciphertextBytes": 728,
+      "ciphertextSha256": "fd560205b44403b6c0b37150281bd2088a11f53796d342ca69afd17ba4b2cee1",
+      "file": "0043-discovery-gateway-kubesphere-io-v1alpha2.age",
+      "plaintextSha256": "6b2a6f82a9dc344a430b29501a40c805ec52c04ecf4b1106d38977bf21d31adc"
+    },
+    {
+      "ciphertextBytes": 5124,
+      "ciphertextSha256": "e438018facada00ded71252d0369f1d10d366e40bc12f6df4c99a9f017a9a898",
+      "file": "0044-discovery-iam-kubesphere-io-v1beta1.age",
+      "plaintextSha256": "827066831e7ac64d0976d3edec7c61acccb1f78966696846c59d7c84d7fadd34"
+    },
+    {
+      "ciphertextBytes": 908,
+      "ciphertextSha256": "bc7d0bd215c5d1c7ae9e3111646d9b5d989cffb31c3b8b4659de16b36399b641",
+      "file": "0045-discovery-quota-kubesphere-io-v1alpha2.age",
+      "plaintextSha256": "0090c9f770c22eefa5a8b376a8895f5c5fa3d628e5cfc2690a8f523f52ed855e"
+    },
+    {
+      "ciphertextBytes": 904,
+      "ciphertextSha256": "5d6ed74f18665f2d8214a5f3cae6234b281bf609808996df97fd917f72960e52",
+      "file": "0046-discovery-app-k8s-io-v1beta1.age",
+      "plaintextSha256": "29757ba53ca7a737e5f2bedac4b715dbcbd259f8bf7fa459480b3d133d348854"
+    },
+    {
+      "ciphertextBytes": 2840,
+      "ciphertextSha256": "548d4d6bff01072ad049d67af320b750e168e2d921106eade0aabbf33a9d3bd2",
+      "file": "0047-discovery-application-kubesphere-io-v2.age",
+      "plaintextSha256": "555ac7d0fc9e1dbe9bb08a5cf54c985eb58bdd0177ed33f96bb398b11f3de896"
+    },
+    {
+      "ciphertextBytes": 668,
+      "ciphertextSha256": "ea937efb22d94560e105dd0333d99b82ad78eb285a115a1fc6dbf67e32fb344f",
+      "file": "0048-discovery-metrics-k8s-io-v1beta1.age",
+      "plaintextSha256": "499cb2822238628155fb2053a5657172f80c171ece51b72557928cafa13d6883"
+    },
+    {
+      "ciphertextBytes": 852,
+      "ciphertextSha256": "35874237ae3936c738166ca5dc400161ea93ffea4b826bf1d1e5774e34447299",
+      "file": "0049-list-v1-componentstatuses-1.age",
+      "plaintextSha256": "92e6d9f1b7d0b82a8e16d6e2074b8c1b72179bf57df3de94eb9a04adbb2ceda5"
+    },
+    {
+      "ciphertextBytes": 565972,
+      "ciphertextSha256": "55388a7085c0f5a92a9691ad148e251b3fed2cc5ac4ba48b02928e817b7e1d25",
+      "file": "0050-list-v1-configmaps-1.age",
+      "plaintextSha256": "e06ae9bfe87f510c683a910d5e6a1ba9da1e3d84f3dc3ceffcbbc4e57e86620d"
+    },
+    {
+      "ciphertextBytes": 90764,
+      "ciphertextSha256": "f2ddb702f1f74dec7a7f4a70c06c3835346cb616a3e6c7c19f893918c374d680",
+      "file": "0051-list-v1-endpoints-1.age",
+      "plaintextSha256": "d7c518de14fcec13734c600f3d644d7e83e583f8fccc765e691df21cf9706e73"
+    },
+    {
+      "ciphertextBytes": 49384,
+      "ciphertextSha256": "10fa60a82ab527c557883793dc21a5787f0aea1706416992784e702d75d2ccc8",
+      "file": "0052-list-v1-events-1.age",
+      "plaintextSha256": "dbfb134c20a7430d6598f1f213988e4e239de9d1a8fc61ec5f3d794b863abe85"
+    },
+    {
+      "ciphertextBytes": 408,
+      "ciphertextSha256": "a40449ad0300de5abc55e13b515faa18e9badfc3dcbdf67f857e12530d9dd60b",
+      "file": "0053-list-v1-limitranges-1.age",
+      "plaintextSha256": "00d07c36bb483f0593dfa1c1b82b682b005fd05270f03d2a04d0c4a0d9207d59"
+    },
+    {
+      "ciphertextBytes": 36032,
+      "ciphertextSha256": "24ddcbc67f043bee8d80d21ed4c2ba6e47f39faa9c029b76218222b552596ee9",
+      "file": "0054-list-v1-namespaces-1.age",
+      "plaintextSha256": "cd6d47a9875255620230018abeb2beeab74efe6fe3be87bb71dff8d56d28c16a"
+    },
+    {
+      "ciphertextBytes": 18124,
+      "ciphertextSha256": "37acc11ff5736e8c46768f4937c594a81e4f19165fa2448627c40036eb3db16b",
+      "file": "0055-list-v1-nodes-1.age",
+      "plaintextSha256": "013055d50ef767333fe7086bee2f3a401d1c28449cb9bb09e311bc9123fa9ffc"
+    },
+    {
+      "ciphertextBytes": 78752,
+      "ciphertextSha256": "655a37015a1396cec257dd3906b65dca2a42d0b3282a7690d0a7e0a64162c325",
+      "file": "0056-list-v1-persistentvolumeclaims-1.age",
+      "plaintextSha256": "052dd76f34f854bf32c029b8e8a7a0637822de76e9a5ed714e603d0cc2c2909d"
+    },
+    {
+      "ciphertextBytes": 81092,
+      "ciphertextSha256": "576763ad84534e354535191404c0a9cc285341a11731ebeea43df6415913541c",
+      "file": "0057-list-v1-persistentvolumes-1.age",
+      "plaintextSha256": "1952387f8d02c14a287e70193d53c71406dc243135e52a8c2daa05ae4410caac"
+    },
+    {
+      "ciphertextBytes": 1487004,
+      "ciphertextSha256": "96dfcce22a5deb25784aeff992617cb3d264e89e6ce62ee27e2cbca8a538f0bd",
+      "file": "0058-list-v1-pods-1.age",
+      "plaintextSha256": "f168bddb6c5201b0d5e5425b98163e84229e4e91f434d06bb0f9a56806ede6d5"
+    },
+    {
+      "ciphertextBytes": 408,
+      "ciphertextSha256": "9c2839a2271d1f3336fe710af2fcacb717c6ac5d0ac485f5b1288bde4346e8d0",
+      "file": "0059-list-v1-podtemplates-1.age",
+      "plaintextSha256": "1b3c95ea54cdb11f4e93b2d107a77c814518f636ed92aaa4c32af7b5cca9dbd4"
+    },
+    {
+      "ciphertextBytes": 420,
+      "ciphertextSha256": "3bad8d0fab3fa6bd720263869ad1a0cfc8dc9bbb9dca953c331b265a4bb8fcea",
+      "file": "0060-list-v1-replicationcontrollers-1.age",
+      "plaintextSha256": "f808722b414d574eddef53e441137bf803594c9284ffe55431f182944062ad04"
+    },
+    {
+      "ciphertextBytes": 412,
+      "ciphertextSha256": "add276bd1bfccf073e4bcf3b1820639eba272900de92a02fbe1a3eb4cbca2e3e",
+      "file": "0061-list-v1-resourcequotas-1.age",
+      "plaintextSha256": "757352b2c6f690bb3f4fa504aa8b1829ecd31152ef4829dd3f787e9f360b91bb"
+    },
+    {
+      "ciphertextBytes": 9277968,
+      "ciphertextSha256": "d10b98718123c004e4cfa97f21acac26300cd44e6ef9a1a1ab3faa0d720a4111",
+      "file": "0062-list-v1-secrets-1.age",
+      "plaintextSha256": "2a7ebf460ef38c54082adf7a9078c09533f27a5131fb588ee9e6e149301ae754"
+    },
+    {
+      "ciphertextBytes": 62672,
+      "ciphertextSha256": "feeeaa2193bd922955b04c185fde3cfd5c08782df4dac0ed3c3ddd6d666fe844",
+      "file": "0063-list-v1-serviceaccounts-1.age",
+      "plaintextSha256": "a9b682833470b5536900239199263be7a8f986ff6e5d3c85839d651ec30a1708"
+    },
+    {
+      "ciphertextBytes": 122484,
+      "ciphertextSha256": "6a2b92cab080311b4693409b7fca951053e3eb2323399c250a7d139f4cf084c6",
+      "file": "0064-list-v1-services-1.age",
+      "plaintextSha256": "ddd01800b192094c23b9433822f18c8a4046ea7d26780a2322752f50b3b43575"
+    },
+    {
+      "ciphertextBytes": 66468,
+      "ciphertextSha256": "69242c9371f4046a007a19a7deb5ae84cbfeaa331c919c36c4a016103d1869ee",
+      "file": "0065-list-apiregistration-k8s-io-v1-apiservices-1.age",
+      "plaintextSha256": "8d87657e350c2ab6f54b5f164acc5c684ff0f022f25c025e50b8320d9267e5be"
+    },
+    {
+      "ciphertextBytes": 255808,
+      "ciphertextSha256": "2522ee0f1e7765cb114d640907a19bdd89fcef0296ab18650425b3418cadaef0",
+      "file": "0066-list-apps-v1-controllerrevisions-1.age",
+      "plaintextSha256": "702d197a2fa591325e9b0b57c16c7950148751a4aeb603138d086a65beca379f"
+    },
+    {
+      "ciphertextBytes": 58976,
+      "ciphertextSha256": "75567d65c1a72ac3478c3fd7ee917550f0f6ce49d1cd21d8debfb03d26bd83e5",
+      "file": "0067-list-apps-v1-daemonsets-1.age",
+      "plaintextSha256": "2ef3402676f3e8066d28a0e72c6ef299b20d237cd0434360802dd7308b498923"
+    },
+    {
+      "ciphertextBytes": 414616,
+      "ciphertextSha256": "216734a768d9a162860be42acae2d376e1efc5000c81e07cb80f9d63ff165cbb",
+      "file": "0068-list-apps-v1-deployments-1.age",
+      "plaintextSha256": "6cf127684a3599f58ce7f49612b65c8cb07cc1e1eabe8361fcd35f0cdff390b2"
+    },
+    {
+      "ciphertextBytes": 1034120,
+      "ciphertextSha256": "aa4a1df701b65d409ccbcaecce3196a7dacb1a2b65b9a102c85fe75a64a4f58e",
+      "file": "0069-list-apps-v1-replicasets-1.age",
+      "plaintextSha256": "ce53eba191110f24bfaecdbb74e2343d0451e4ffb3e27a9446b0f2b322f5f991"
+    },
+    {
+      "ciphertextBytes": 83144,
+      "ciphertextSha256": "7014ce885dd5a4997f89a7750e6c17b588110786669a9edbd09ecfb8a3eb309a",
+      "file": "0070-list-apps-v1-statefulsets-1.age",
+      "plaintextSha256": "ea122f8d5836335cc278207bc70f732e48f5876bcaedb274b9fd9ad8662345d1"
+    },
+    {
+      "ciphertextBytes": 50076,
+      "ciphertextSha256": "bf9479aa189e6291a4aeefe40198b3b0a106608e7fafdf5947ac4a3b4a50fbff",
+      "file": "0071-list-events-k8s-io-v1-events-1.age",
+      "plaintextSha256": "0698b779bdf808c58b2603489caaeee842b43bdc50666eed23389ee444e43305"
+    },
+    {
+      "ciphertextBytes": 440,
+      "ciphertextSha256": "73989a22e278e84e606ffb3e7488ca1f15478b413bda19080bbf4e2f356742c8",
+      "file": "0072-list-autoscaling-v2-horizontalpodautoscalers-1.age",
+      "plaintextSha256": "c56651a4cdf03c584c644e1b453a3933dc6911990aa156fdc79dad274e8329ec"
+    },
+    {
+      "ciphertextBytes": 28932,
+      "ciphertextSha256": "a7cac5cf1e0692a137cd8496f4cfc094d087eda85480254b5e218f0f49a8c02e",
+      "file": "0073-list-batch-v1-cronjobs-1.age",
+      "plaintextSha256": "5ca3f15d8d2563c1b7aea9ad0094b28f6a6524402058069956d457f98a0d31f7"
+    },
+    {
+      "ciphertextBytes": 353132,
+      "ciphertextSha256": "4850d600f70c79291fd29060b644215ba752bbc5c96091450c207b79b8238124",
+      "file": "0074-list-batch-v1-jobs-1.age",
+      "plaintextSha256": "47956050eacfe676497f96caabf469da528a19eef3326bae9b566de93ff5e06a"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "65c3e5d9100e84084bf40f3debdf06a09cdef8f881110ad72129c100feca0243",
+      "file": "0075-list-certificates-k8s-io-v1-certificatesigningrequests-1.age",
+      "plaintextSha256": "871eef38d852fddb3131d5de053b7f11deb73ade5df68fe3f705bf25de254e13"
+    },
+    {
+      "ciphertextBytes": 1456,
+      "ciphertextSha256": "6c85c8b18f21fd4fd839efa36229d404af6032350b67ef13edb3dca4e42b9fd1",
+      "file": "0076-list-networking-k8s-io-v1-ingressclasses-1.age",
+      "plaintextSha256": "ac90f337c870ce064cd59db61b13ed451191b4938e8a3a8d28ded9a4214ab542"
+    },
+    {
+      "ciphertextBytes": 28592,
+      "ciphertextSha256": "7f9c7d7e7d0dc3268c4b1657fadf2a8a8c540fe74a16655d9c01320830b8a811",
+      "file": "0077-list-networking-k8s-io-v1-ingresses-1.age",
+      "plaintextSha256": "26ced21723c270a96e86abd44e388a931040920b32e1f4144b59e1d9e188cce8"
+    },
+    {
+      "ciphertextBytes": 44064,
+      "ciphertextSha256": "18e2ce901284532c9ed791b42f16f15e290085fe137d3e4fb31d7a110c15ea95",
+      "file": "0078-list-networking-k8s-io-v1-ipaddresses-1.age",
+      "plaintextSha256": "d0afd45ad3d36f2c443c7df3784f266a77402768018f699aea9368f44096a379"
+    },
+    {
+      "ciphertextBytes": 50208,
+      "ciphertextSha256": "35c0d73c0e65cc091b6b8381f6a58da7cb5cfc99819fbcc0d6167ed72068a314",
+      "file": "0079-list-networking-k8s-io-v1-networkpolicies-1.age",
+      "plaintextSha256": "cbb7bbca6acbce3371eb4875cd158c977d9200940c8d5586252114b03add8c91"
+    },
+    {
+      "ciphertextBytes": 2380,
+      "ciphertextSha256": "56e72424f0ecb8cc99c7332d2b8e0e7e808c8a668e8606818a18c8285d6e2429",
+      "file": "0080-list-networking-k8s-io-v1-servicecidrs-1.age",
+      "plaintextSha256": "cdab89b64a34bedc0ecec0ab2465d7b548c8315da7db0d78b813b8fda34b023f"
+    },
+    {
+      "ciphertextBytes": 27912,
+      "ciphertextSha256": "696c2d4a032bdbe00468d0a751bf4ffd5fe1d996520d1cefeb822b37be69ce43",
+      "file": "0081-list-policy-v1-poddisruptionbudgets-1.age",
+      "plaintextSha256": "2dfe10383999f508003ad0100b06d7dbe2ad1712d07488db56b3958be5628a70"
+    },
+    {
+      "ciphertextBytes": 121248,
+      "ciphertextSha256": "5ea31a1805aeb61cab091520678c8414b18c2f5af3bc1f9d79be175c7df4c25c",
+      "file": "0082-list-rbac-authorization-k8s-io-v1-clusterrolebindings-1.age",
+      "plaintextSha256": "953567bb59bbc95af48e8d924d202a7e93f07d8b4334bdee416c2f4de890d184"
+    },
+    {
+      "ciphertextBytes": 216088,
+      "ciphertextSha256": "6fa70ccc9d29e794bdd7a132705cdafa523dd7bbb68f044be5fcd134d7c6f8bf",
+      "file": "0083-list-rbac-authorization-k8s-io-v1-clusterroles-1.age",
+      "plaintextSha256": "49d161b575238dd4342bf74092c92b446802ae054949957be5bf2539b5620441"
+    },
+    {
+      "ciphertextBytes": 63912,
+      "ciphertextSha256": "efe09af6b6b98ed06985c03b08a0b4fe33a297a355de48973064c3eb290ca2ee",
+      "file": "0084-list-rbac-authorization-k8s-io-v1-rolebindings-1.age",
+      "plaintextSha256": "d7181374d031236aebb2ad088dd45c63ae4f88947ce274ce3f8f6bcd0eae8dd5"
+    },
+    {
+      "ciphertextBytes": 56856,
+      "ciphertextSha256": "966bdb5733a3e013d4ec17a70b6ec600effd9275c6a446f5e82d87aae19209a2",
+      "file": "0085-list-rbac-authorization-k8s-io-v1-roles-1.age",
+      "plaintextSha256": "1faafce40e5650bd18e14af582df0150e568b54efe9c432de9110e80bccdea88"
+    },
+    {
+      "ciphertextBytes": 424,
+      "ciphertextSha256": "7ee0ae3356e75a792126d1eea83b68dc6059453b2dcbe91aa7617338f4945d94",
+      "file": "0086-list-storage-k8s-io-v1-csidrivers-1.age",
+      "plaintextSha256": "124c650d97e8ab6a9a62168bedacf0a6ddeaafadee8acb9844e8ab6e0fe17f1a"
+    },
+    {
+      "ciphertextBytes": 1568,
+      "ciphertextSha256": "27098f62887bc1c00db8161ab9f1d2a7f85779d744b23bdb7ba7301cfb145117",
+      "file": "0087-list-storage-k8s-io-v1-csinodes-1.age",
+      "plaintextSha256": "5ac3636570a4d702705c7fa9bcfca57cf0d573ecc9f2f10ea84f2371806f2272"
+    },
+    {
+      "ciphertextBytes": 436,
+      "ciphertextSha256": "ecd9ec7178c7d7854cd32e79d3195516328cb10cfdf9d22d759b19cbb1973f95",
+      "file": "0088-list-storage-k8s-io-v1-csistoragecapacities-1.age",
+      "plaintextSha256": "941aa3a6dde17c3f1f43effb915288d701917a7d5ca367a099e9d9a3204bdd18"
+    },
+    {
+      "ciphertextBytes": 4800,
+      "ciphertextSha256": "a7cd838247606b8f43dd99966be4d2f14e4f11fa03946b1c29b0178cb387d928",
+      "file": "0089-list-storage-k8s-io-v1-storageclasses-1.age",
+      "plaintextSha256": "63ed925fb37e47b3aa1d147fe5383e865d6a7214c58ff1ff305b8faaa30b1003"
+    },
+    {
+      "ciphertextBytes": 436,
+      "ciphertextSha256": "fd7d03ef4f56315a003e027591610df5b5257d7c634d42f8e2c2de8613301b22",
+      "file": "0090-list-storage-k8s-io-v1-volumeattachments-1.age",
+      "plaintextSha256": "7e1ec48ca69399e6bfc649b83022d96fb8c8d37baa0d1e1c64cc4cc8c26cfdfc"
+    },
+    {
+      "ciphertextBytes": 440,
+      "ciphertextSha256": "8078c7f8a37a48ce771dead2fcfd396855b772991f245cf34fb0a706385900d9",
+      "file": "0091-list-storage-k8s-io-v1-volumeattributesclasses-1.age",
+      "plaintextSha256": "d5994ca3b878f23659e821acfbda2b42214fff9548a9d8d6921840b919c044cc"
+    },
+    {
+      "ciphertextBytes": 43612,
+      "ciphertextSha256": "b97ea5caf874a4e71e35f643f28b3be895a93c98f71fa726523b2589d37b7df4",
+      "file": "0092-list-admissionregistration-k8s-io-v1-mutatingwebhookconfigurations-1.age",
+      "plaintextSha256": "94561f6e5d29eccb7e18dc30506071c3b67bd142b104e1cd3879efd44b8f34aa"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "83e68fefb0fecb302d0377794736aa67169ca93b4e280350aa5a985f811f7c83",
+      "file": "0093-list-admissionregistration-k8s-io-v1-validatingadmissionpolicies-1.age",
+      "plaintextSha256": "075bbce330b31909c6b4c872e42eadfba4dc48e6382d3c9a2fbe94116c5dd040"
+    },
+    {
+      "ciphertextBytes": 476,
+      "ciphertextSha256": "c5d669fc04db54efe222464350faa6f2b1c3a184768e40fc91d27c7546a8ba94",
+      "file": "0094-list-admissionregistration-k8s-io-v1-validatingadmissionpolicybindings-1.age",
+      "plaintextSha256": "af1e305a6502ff80eb2e28c9df93a4a45ad9cccd9430eef55ccd23b381d18ae8"
+    },
+    {
+      "ciphertextBytes": 70200,
+      "ciphertextSha256": "ba37b669ae5d752275dd11c1502fd9074b7fc08264273986050c8e5c09a003bf",
+      "file": "0095-list-admissionregistration-k8s-io-v1-validatingwebhookconfigurations-1.age",
+      "plaintextSha256": "932b508ecd0e722021966fa2301228654c898b97d06a524f38e72b7a19e19f25"
+    },
+    {
+      "ciphertextBytes": 4598100,
+      "ciphertextSha256": "cf168afe7c5a1d163160b8c2e2125980555718a0fc6d3dbaf0b2ebb22d19f474",
+      "file": "0096-list-apiextensions-k8s-io-v1-customresourcedefinitions-1.age",
+      "plaintextSha256": "d595bc00cd3da26ef9f3b8c495d2e0dd8e76e3da34a9dac52b6d9a7c6e1660f2"
+    },
+    {
+      "ciphertextBytes": 1952,
+      "ciphertextSha256": "b94eb639caad05d22594a82fa0e23f33e0c769dfaeade573c1be91ad66bc46ca",
+      "file": "0097-list-scheduling-k8s-io-v1-priorityclasses-1.age",
+      "plaintextSha256": "19b25e4dfc4b5e45f5b7cca30d6c588b22e00c95dc5cceebc5ea15c6aa1fcade"
+    },
+    {
+      "ciphertextBytes": 13824,
+      "ciphertextSha256": "1c9dccc8149c0ab4fbcc20b729280690da23ead77a021df1a9c5ea7c206c653f",
+      "file": "0098-list-coordination-k8s-io-v1-leases-1.age",
+      "plaintextSha256": "c83c511873b7056af6d00cf3f371feda32554888fa03648ded1175cdda89a18e"
+    },
+    {
+      "ciphertextBytes": 424,
+      "ciphertextSha256": "82ae05c24388dee90521c1a2b1975bcbf49b0ad9292ba247e7d54dc5fbca13b9",
+      "file": "0099-list-node-k8s-io-v1-runtimeclasses-1.age",
+      "plaintextSha256": "df8e2c6dcfbdb7b90c0c22eb0a2d5df0559b7db937709af6c82e9f876cff8c03"
+    },
+    {
+      "ciphertextBytes": 135140,
+      "ciphertextSha256": "87c3be8d219a820db66f547538c0ffa07280b642f77e2e91d031525bd86a70ff",
+      "file": "0100-list-discovery-k8s-io-v1-endpointslices-1.age",
+      "plaintextSha256": "c2a415d985631d36ac72b93692d7a2095e7d93192b815b9bde75e67a86fa3b7b"
+    },
+    {
+      "ciphertextBytes": 428,
+      "ciphertextSha256": "67362b4fdeb5e89748763d8b2b691a23f693289cc7b8e4b5906a886b4a8d72cc",
+      "file": "0101-list-resource-k8s-io-v1-deviceclasses-1.age",
+      "plaintextSha256": "09201601b5baaae4123f23e489f0393c92c45afafc87e5c9fc25f99bb713a471"
+    },
+    {
+      "ciphertextBytes": 432,
+      "ciphertextSha256": "cb173f89c4c60f7745d809297f503e8e6afdb7c1a26adb95de79d0e533773760",
+      "file": "0102-list-resource-k8s-io-v1-resourceclaims-1.age",
+      "plaintextSha256": "a56d0d3a862ffd7721f46f579604ccc29a46eaaef34bca7997d34d68383772a3"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "aa37341511fb280fb8c83a313b5dcc5f8bf34905bb29c7dc44bde0dc6738766a",
+      "file": "0103-list-resource-k8s-io-v1-resourceclaimtemplates-1.age",
+      "plaintextSha256": "e264edfe2abc84d1067780d0cf9fc9c51d269b599ac17d9ae47343a4ffbd8e7f"
+    },
+    {
+      "ciphertextBytes": 432,
+      "ciphertextSha256": "2fa8b0c95a4d95d5932f5fb815a7159dcc0e129f7c588ca0d31691f9507c6d68",
+      "file": "0104-list-resource-k8s-io-v1-resourceslices-1.age",
+      "plaintextSha256": "a9ec2006e36837994823e5b5b85f4ffdce39e6dcfe1a7bc161ccba60cd219e7e"
+    },
+    {
+      "ciphertextBytes": 24592,
+      "ciphertextSha256": "ea9d4224c5432acff30f5684ad088543704409e495b81da4243f32d6c41f1567",
+      "file": "0105-list-flowcontrol-apiserver-k8s-io-v1-flowschemas-1.age",
+      "plaintextSha256": "b39b8411c43b2b929cf94c327e952067de995205ddcd92a42d0a69ff55ebe8ba"
+    },
+    {
+      "ciphertextBytes": 9816,
+      "ciphertextSha256": "d0bf8427501599943f76195bacb80489fafbe12693dd3670e82d22eac35372ee",
+      "file": "0106-list-flowcontrol-apiserver-k8s-io-v1-prioritylevelconfigurations-1.age",
+      "plaintextSha256": "1d0dc0cb857a5cd679354fa3975c7b290c059930a26406c0fd1b06cb615e22f8"
+    },
+    {
+      "ciphertextBytes": 440,
+      "ciphertextSha256": "584a2895f379b35d109bb20f94c4f80a20434222b2d4fa9b4668d7ad80c8fb90",
+      "file": "0107-list-projectcalico-org-v3-bgpconfigurations-1.age",
+      "plaintextSha256": "575093c4ab5455f36abc85e740a3022a53aae44174842ad20c2d6dd6eccebac8"
+    },
+    {
+      "ciphertextBytes": 428,
+      "ciphertextSha256": "6eb79f4bc7ba3fb048aebe0002cba1f127ec84dd4f2217db0a29ef298756add0",
+      "file": "0108-list-projectcalico-org-v3-bgpfilters-1.age",
+      "plaintextSha256": "fa1727923fcb2d20e1cb2afed815e430b73e19a52ae9e4f333c3c184c8dddfbc"
+    },
+    {
+      "ciphertextBytes": 428,
+      "ciphertextSha256": "edbf989ec66c46ece8c8b609f9f941f4c4178c3160a96d5ddf58b77c598c81af",
+      "file": "0109-list-projectcalico-org-v3-bgppeers-1.age",
+      "plaintextSha256": "b0d3d76b44ebf6047e72916b84c9bd3fd0e9fc5dcf1c9a2806c00d8ed1bd0a66"
+    },
+    {
+      "ciphertextBytes": 1056,
+      "ciphertextSha256": "201054d1cedb30421aa214e3bdba2e22767d0b4c8609ed09c2e7b6b24e793f0a",
+      "file": "0110-list-projectcalico-org-v3-blockaffinities-1.age",
+      "plaintextSha256": "e79099ca1f0077060db930cd4a50a550226d32ae00700f6f91fb9ea760f3b421"
+    },
+    {
+      "ciphertextBytes": 440,
+      "ciphertextSha256": "6d127469cfe8523086ae5cd9499f7f9a132a5cf8f01c0698d47f1fff3bef8a44",
+      "file": "0111-list-projectcalico-org-v3-caliconodestatuses-1.age",
+      "plaintextSha256": "0a0d9409220ed1d94ea0a6af9daea60015119c58d95dcf8626a4b77d9c6730f2"
+    },
+    {
+      "ciphertextBytes": 928,
+      "ciphertextSha256": "d7dd3c1b86f3c031928adb4a0171ec1399fc89642eecb2dae7197a8bd9f68087",
+      "file": "0112-list-projectcalico-org-v3-clusterinformations-1.age",
+      "plaintextSha256": "70939b0b5412f549bb9ceb747047821ef3a1304ec60db794ea4ddaebd72348e0"
+    },
+    {
+      "ciphertextBytes": 2128,
+      "ciphertextSha256": "54e28790cd7d4468cbe4390d7661b7104a67613e2f45bcf95075e05d46f4b42e",
+      "file": "0113-list-projectcalico-org-v3-felixconfigurations-1.age",
+      "plaintextSha256": "56fe727224f6cc66529b65fb26a99e4c74a42b6ac0ff60d32051ebafc48eb3dd"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "3cecc0f1fe8ddced8d4ca2764f710686c8107bee56ee824e92bd238a5c7ea033",
+      "file": "0114-list-projectcalico-org-v3-globalnetworkpolicies-1.age",
+      "plaintextSha256": "2fd98593dcd9106ff8e2d2edb98cbfc3b36a5f7031dbc670b5f5c36a87dbb2f8"
+    },
+    {
+      "ciphertextBytes": 440,
+      "ciphertextSha256": "0b99d0ed328504c18f9971859dee1703f18b9077973a98139b66cc1041b2dbcc",
+      "file": "0115-list-projectcalico-org-v3-globalnetworksets-1.age",
+      "plaintextSha256": "30ed8db116adefb36d771377a905cc768e3b5ba36ff13b13534b86773573ea7c"
+    },
+    {
+      "ciphertextBytes": 432,
+      "ciphertextSha256": "44f0d454def8f4f9bf93a362ca40ba0d43b62a84ca9bf7b7466e27d3be72b8cc",
+      "file": "0116-list-projectcalico-org-v3-hostendpoints-1.age",
+      "plaintextSha256": "baa38960afcf9a6bfcd843e351377379a9105653689c0e6327205ce118fd7533"
+    },
+    {
+      "ciphertextBytes": 756,
+      "ciphertextSha256": "0e6b93a0fe2c08dff1a10261021f454238801076acf4fd5079b07371b1bd429f",
+      "file": "0117-list-projectcalico-org-v3-ipamconfigurations-1.age",
+      "plaintextSha256": "99f4cc815a17efea8fd61f6ac45c99d40d657f16eb8d0d20069c6221330b1e99"
+    },
+    {
+      "ciphertextBytes": 1064,
+      "ciphertextSha256": "de91d72fbe79a72ef25bc79778d8f4f26617ded025559baaa034ceb07f0cd0a4",
+      "file": "0118-list-projectcalico-org-v3-ippools-1.age",
+      "plaintextSha256": "55f93f6e2fee9743c548c905dc3b520800ef449ad2c68e696c49ec0257441449"
+    },
+    {
+      "ciphertextBytes": 436,
+      "ciphertextSha256": "01495c2c02bc1a7637ebeba79652b88f4eb699086a2d06307bc5255c306cc4fc",
+      "file": "0119-list-projectcalico-org-v3-ipreservations-1.age",
+      "plaintextSha256": "a578e7a270d5e42f355163e83e1a432d5d5c7601bcefa1228940f101826d7907"
+    },
+    {
+      "ciphertextBytes": 1968,
+      "ciphertextSha256": "1d05f8a4e1178dd6ba52a305e90cfb827e9bfbbcb7035e6c30b7d393cbc155d4",
+      "file": "0120-list-projectcalico-org-v3-kubecontrollersconfigurations-1.age",
+      "plaintextSha256": "1a80460dd5cd85fed51e6bd3617923ab7989e995831c92771b609a0da9a1c8ab"
+    },
+    {
+      "ciphertextBytes": 436,
+      "ciphertextSha256": "eec47714f9d80a122f3034903fca66999b04109b88abf4df8e6cc8a27cebaa04",
+      "file": "0121-list-projectcalico-org-v3-networkpolicies-1.age",
+      "plaintextSha256": "4f6fbfd9d945056b3c3d60d333f1d4998c3bc5ff223604fa1a6a02ab234fbe7f"
+    },
+    {
+      "ciphertextBytes": 432,
+      "ciphertextSha256": "cfd987cfef59dde0f4695e2f6f699e668bb148d06fa53373b5a8d148d201ba46",
+      "file": "0122-list-projectcalico-org-v3-networksets-1.age",
+      "plaintextSha256": "868b35daf0b33423075986ac698abd5b2ccbb837299b0d42a28040fbf8db9633"
+    },
+    {
+      "ciphertextBytes": 66080,
+      "ciphertextSha256": "20b93f7b06832519813f47b70aae42ef2d1963273f9697165d5b5cc4ad8ce250",
+      "file": "0123-list-projectcalico-org-v3-profiles-1.age",
+      "plaintextSha256": "abd7d28c28449f8d297c509eb5e36a37461fb97890a21ba877931f0ae69dc3e3"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "49185d8a16949ea311a6b231cb9c13d2da01e0b7b127756a1672eb420773c0cf",
+      "file": "0124-list-projectcalico-org-v3-stagedglobalnetworkpolicies-1.age",
+      "plaintextSha256": "1dd1002c3026c4e094a6ff0a38f9d219d82c89737b631a864fd1da2bab924540"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "ac059a6872fab301dd9e9ae455c18c9a0a41a59df6615ad53b0434bfa2e180ff",
+      "file": "0125-list-projectcalico-org-v3-stagedkubernetesnetworkpolicies-1.age",
+      "plaintextSha256": "eb5c6f24163acbafe1e8b0322809a9c003b534481a0c3396e24a5d3d2f8743e9"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "ce82f9bf004c06c2922741b126fd5d82295f8e41ad85cd206cb15b25e3df3865",
+      "file": "0126-list-projectcalico-org-v3-stagednetworkpolicies-1.age",
+      "plaintextSha256": "562ebaff3373b36921c31380a3331b55bb2ce75da1396d04d1fcdde5ebb48405"
+    },
+    {
+      "ciphertextBytes": 1428,
+      "ciphertextSha256": "008fca6fb8645452b0b75766cd25edfaf46823ca9ac93044269e30ad24c2bbaa",
+      "file": "0127-list-projectcalico-org-v3-tiers-1.age",
+      "plaintextSha256": "73000e1e25f613acdb0e0926c7d5cd44066ac01eb89f266cafc50eb33c748be5"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "e04da963c6775c0c93345c7928429233c1b971fa9ca0cb6f219c4442fc82d55e",
+      "file": "0128-list-acme-cert-manager-io-v1-challenges-1.age",
+      "plaintextSha256": "1dec75a11c98c75518b10b4b78b90939816ec10cbe7ee04e50b31b494968d1e5"
+    },
+    {
+      "ciphertextBytes": 103788,
+      "ciphertextSha256": "a91d5b5bbddfc797feef13df4623ddc4c85573aaaa34f061db18f4f82c01a8ee",
+      "file": "0129-list-acme-cert-manager-io-v1-orders-1.age",
+      "plaintextSha256": "09c97bc48d5dfb2fd3c0bfbfd4dda6a34aeb830a5fe46f50075310f9a5721119"
+    },
+    {
+      "ciphertextBytes": 3940,
+      "ciphertextSha256": "800bdd62b3066531dc12d89f0f34d14ed7841e8a247a3b98b226a4b9f1124bc2",
+      "file": "0130-list-barmancloud-cnpg-io-v1-objectstores-1.age",
+      "plaintextSha256": "e493ce8ba74aad5eb612c21115283daf51151b92ecd55f73c9380762827ceb77"
+    },
+    {
+      "ciphertextBytes": 11400,
+      "ciphertextSha256": "0cbb9452c4901092d921f7f3c9b22c9d7a23f89a36efc7ea3dd98408f89960ea",
+      "file": "0131-list-cert-manager-io-v1-clusterissuers-1.age",
+      "plaintextSha256": "68993ac4e08b70d8dc213c14062f4fcf4fc11b19cb201f825d746af53fc223de"
+    },
+    {
+      "ciphertextBytes": 7492,
+      "ciphertextSha256": "3343ff8ac1df3d7f778f62773ac01db5abd651b9e8d5fcf055f42a397b13c2ce",
+      "file": "0132-list-cert-manager-io-v1-issuers-1.age",
+      "plaintextSha256": "9878c20107cc676327911950534fc8cc8beba3a95130b55ccee3773a31d34490"
+    },
+    {
+      "ciphertextBytes": 49032,
+      "ciphertextSha256": "21e45f2bcc4886f6b6d5f461f4eccdf04033529e0871d72989da3335c99be24f",
+      "file": "0133-list-cert-manager-io-v1-certificates-1.age",
+      "plaintextSha256": "6e4af2e5b67405ee34b4c362998f1d814efb00b6c4c0f23aa2cbd5adb9a02234"
+    },
+    {
+      "ciphertextBytes": 153916,
+      "ciphertextSha256": "944ec7f6a1c57bc996b73d64a75e6574f7b84800783b1adf40a72459cdb7ca73",
+      "file": "0134-list-cert-manager-io-v1-certificaterequests-1.age",
+      "plaintextSha256": "33a3d5549cb2129d4d7c5546ca20aceb1ae497e513ce14a6b6b7015cab39bb21"
+    },
+    {
+      "ciphertextBytes": 460,
+      "ciphertextSha256": "0ea5c93f588beb697a8c89b40c3da403b997ea240eb2b31f5271ef26dc5f9fb1",
+      "file": "0135-list-crd-projectcalico-org-v1-ipreservations-1.age",
+      "plaintextSha256": "06834b7c98520a088d8e791c921c029fcda66b25724ff5c26f251e313900c13a"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "38d275299cb9d3315c8b1c388e85855e004493294e63943a55d3997a734189b1",
+      "file": "0136-list-crd-projectcalico-org-v1-bgpconfigurations-1.age",
+      "plaintextSha256": "4773a9b77f34d70a2c9a8c7ea6ac5d9ad10eaf8dc0681b1df8a0f54c46b68d51"
+    },
+    {
+      "ciphertextBytes": 468,
+      "ciphertextSha256": "d8929165eaceb6a0ea79205154b652fae355e6789c2a18aa2106ba1ce01eb45d",
+      "file": "0137-list-crd-projectcalico-org-v1-globalnetworkpolicies-1.age",
+      "plaintextSha256": "e4a8b6e2b41e4b705d45823ca398b8d7a456920d43c56600a68938a0a1a42bc0"
+    },
+    {
+      "ciphertextBytes": 476,
+      "ciphertextSha256": "b431e1cc0e41a92f9435a83e6ad8eea9b2ab3542174c57b5b0ae2f9728675938",
+      "file": "0138-list-crd-projectcalico-org-v1-stagedglobalnetworkpolicies-1.age",
+      "plaintextSha256": "5128752984c83bfcfda6f01b63252c0d2a10a2816f21134fa4791638ac11aee9"
+    },
+    {
+      "ciphertextBytes": 2156,
+      "ciphertextSha256": "0e89238db7227ea229b9b11ad0a25a92352a7df2377e794292a1cc36f601e992",
+      "file": "0139-list-crd-projectcalico-org-v1-felixconfigurations-1.age",
+      "plaintextSha256": "de59a566c32f4c28c623bf4674df33bef91a0c7bade529ad6cbf1e76ab7cfbe3"
+    },
+    {
+      "ciphertextBytes": 2124,
+      "ciphertextSha256": "382eb13c9ebb8b259127164a0706e9661af8a2b75aec3cbf72e929efaf675fcc",
+      "file": "0140-list-crd-projectcalico-org-v1-blockaffinities-1.age",
+      "plaintextSha256": "c1d8daa843a5bb8f6c00dc7b6849d00a7b7a2be5abd46a4d1f776fe4f5fa22c2"
+    },
+    {
+      "ciphertextBytes": 23280,
+      "ciphertextSha256": "131280c1add7fd6aa3f60900b7acbc978325673ffd6fc66a564b73cd6a11c5a1",
+      "file": "0141-list-crd-projectcalico-org-v1-ipamblocks-1.age",
+      "plaintextSha256": "7bccb8a1743bd6bcb186091dcb1fa2433bf8f0db4473191ecfadf878f8d1c40c"
+    },
+    {
+      "ciphertextBytes": 67452,
+      "ciphertextSha256": "5a83b366bdb0ceb5bc35b89e809754d4c6f1bf3924bc0e84b6af6605d4fa98b5",
+      "file": "0142-list-crd-projectcalico-org-v1-ipamhandles-1.age",
+      "plaintextSha256": "fc97429213029b57cae6d141dfb688421a3ad25ddba8db38dbd8cbb4ef520a15"
+    },
+    {
+      "ciphertextBytes": 1996,
+      "ciphertextSha256": "669a21a37e5214370044ccc6bd3255b0d74aa4bb17e62c304aaa18adeed5be86",
+      "file": "0143-list-crd-projectcalico-org-v1-ippools-1.age",
+      "plaintextSha256": "446925dc4e2effe987160f27cbc305c9275c0cbd320ba1a10941e764bdfe0305"
+    },
+    {
+      "ciphertextBytes": 1344,
+      "ciphertextSha256": "cb28e01ca116114881c746ae33f8d0ae63bfefd199caa0be6bef2845fde9b2f0",
+      "file": "0144-list-crd-projectcalico-org-v1-ipamconfigs-1.age",
+      "plaintextSha256": "883b6ed440a0ff7492f8f9b21315223eb2a5a39ff83d87516a0374ff181ec45e"
+    },
+    {
+      "ciphertextBytes": 460,
+      "ciphertextSha256": "5ce0c74ff27387ab027b91fb6ae3112671f8c3ce27ad9d9e25959e3998e6b15c",
+      "file": "0145-list-crd-projectcalico-org-v1-networkpolicies-1.age",
+      "plaintextSha256": "a6d19a52741b2dbaeb4ed95d4e233fb8ca54f2b2f5912f1b6966e2961e0137ca"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "3d1933276986140da7ddb83e6de82926b1b62764e2db9dfb1049590b2c39bf5e",
+      "file": "0146-list-crd-projectcalico-org-v1-bgppeers-1.age",
+      "plaintextSha256": "ceef99f585b7a73aa52e9ecbf63612f4373a769006920549b60a4cc76558890c"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "082d1f322b8f98cf8f939eb01f99e3cc83f54a3cee5c80d3c2abe4d4ca2ce1fa",
+      "file": "0147-list-crd-projectcalico-org-v1-caliconodestatuses-1.age",
+      "plaintextSha256": "5f4ba7f4af38715aabeccee8c8e2f57c8ddd6cfa35cb6b72b15769c372536086"
+    },
+    {
+      "ciphertextBytes": 468,
+      "ciphertextSha256": "0ba0cc4974e04a206f538aa5fc42ebf62559232c7d9036b1fb76d4d7489e53c7",
+      "file": "0148-list-crd-projectcalico-org-v1-stagednetworkpolicies-1.age",
+      "plaintextSha256": "098ac2b0aa969acd173cb5df63593dc1b7d42a7b65354c89f78a79d7ab2697d0"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "17aa856a07e89c7ebba66f6e3cf545b5e5d8a2e07cba8d24b0d239fb3865930f",
+      "file": "0149-list-crd-projectcalico-org-v1-networksets-1.age",
+      "plaintextSha256": "081cfd11d7c8162ea9d3d60a2c985348eeaa81f96298fd6eb0a2dfe232561289"
+    },
+    {
+      "ciphertextBytes": 480,
+      "ciphertextSha256": "34e2ab2677123ee395be311a28e7c33210f7247dc5643df0c5894ad32572c8e2",
+      "file": "0150-list-crd-projectcalico-org-v1-stagedkubernetesnetworkpolicies-1.age",
+      "plaintextSha256": "5d2ded6841c61a1e1389a4438b5b1118f067e957689d72cf3e0735e44b4ca1a7"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "de37e78eadac640a0e44da91d2c41d424b1b525f75927e6928b3f9cf144f9181",
+      "file": "0151-list-crd-projectcalico-org-v1-hostendpoints-1.age",
+      "plaintextSha256": "1cb509319b3ff09949c06d65e6c7e021155c743ca6638f74d565576460f7f79f"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "866481d8cd3511ef7454257d53400768305cc3b0d38f8296e431ba7899dd4bc0",
+      "file": "0152-list-crd-projectcalico-org-v1-bgpfilters-1.age",
+      "plaintextSha256": "f0bcf1b5ae9664222ebdb3fd05e53a1d869149b0cf6fd3657383a75ca441fd31"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "2d1e02c1fcee3a25f8e9b738f7ed1900e12b601e1f2ab34a1097c893008c849a",
+      "file": "0153-list-crd-projectcalico-org-v1-globalnetworksets-1.age",
+      "plaintextSha256": "f18765d746ec523d59e95577c3019ff3147705d51530e8be122e50ac7d68c2b3"
+    },
+    {
+      "ciphertextBytes": 1568,
+      "ciphertextSha256": "00ab0f5705bd21befbd5f4624646b2ac1ee2574ec27950efcfdcf65cd4dd50dd",
+      "file": "0154-list-crd-projectcalico-org-v1-clusterinformations-1.age",
+      "plaintextSha256": "2e5f9212b08525a4c00aba2cf1999fb304918664948771b4425960f7a16a8ad7"
+    },
+    {
+      "ciphertextBytes": 3744,
+      "ciphertextSha256": "b175e4bcc0e117ef101ebd8a809015baea6c9fcd7a8307a0cdb64329e674c936",
+      "file": "0155-list-crd-projectcalico-org-v1-kubecontrollersconfigurations-1.age",
+      "plaintextSha256": "dd22505ec7dfdc4a4dc70eeec4f3ac71a3911cf88fd9bc6185d61b6155f92b68"
+    },
+    {
+      "ciphertextBytes": 3116,
+      "ciphertextSha256": "a46080fe2ace11a8e932a0be6d0d0b44aaca32c10177ec5c3945f1157c7c0dd7",
+      "file": "0156-list-crd-projectcalico-org-v1-tiers-1.age",
+      "plaintextSha256": "411e1eb75f25a516616dc221c6d3fbfecc722ad41a99e6a703616f9dbb13130c"
+    },
+    {
+      "ciphertextBytes": 1404,
+      "ciphertextSha256": "a0338763dc8d746fa2be95a9787ba64d12837368d54c09e0f2a012219c63eb95",
+      "file": "0157-list-operator-tigera-io-v1-goldmanes-1.age",
+      "plaintextSha256": "8703a36352073cc757ea43c89c0577e3adbe755ce6eda71a48616271e6555a6c"
+    },
+    {
+      "ciphertextBytes": 2440,
+      "ciphertextSha256": "dc5d974d1e7011c1bd49ec3fcdf2f4e0fc7800663340ab4bdbbb9f19685cb6df",
+      "file": "0158-list-operator-tigera-io-v1-apiservers-1.age",
+      "plaintextSha256": "24b04f9a2eddbc31ad3a6b5ea04b3e965b8a645460b30663e16a8ddb9473fdad"
+    },
+    {
+      "ciphertextBytes": 8156,
+      "ciphertextSha256": "32f510a5d982b4c16a3ae2099e0653a742e33a96a4c0ff409385842e9487cab0",
+      "file": "0159-list-operator-tigera-io-v1-tigerastatuses-1.age",
+      "plaintextSha256": "9896c870d9df1d9808b5cf8275ba50b97a221e18963894324f5cd02410a3b1cd"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "8567d66faff66ad1e01364f143896ed14ad2405770a310e81309a6bf6abf5811",
+      "file": "0160-list-operator-tigera-io-v1-gatewayapis-1.age",
+      "plaintextSha256": "3cbbd21f504bdb18a6655d06735b853f8a74427f329fadc06e812017e59a661f"
+    },
+    {
+      "ciphertextBytes": 1676,
+      "ciphertextSha256": "2493839043e6e1e6b33939d8e8125e2f9239dad23bf28cc5c65d9f933c33b607",
+      "file": "0161-list-operator-tigera-io-v1-whiskers-1.age",
+      "plaintextSha256": "a953b9b44523b5b54f69c27452fc350087014a662c2aa85fd319c7a6745aeddd"
+    },
+    {
+      "ciphertextBytes": 8356,
+      "ciphertextSha256": "c974ffa19e181084eec4868b3b5437c200a70657aca4ce8c65a8475d458036f8",
+      "file": "0162-list-operator-tigera-io-v1-installations-1.age",
+      "plaintextSha256": "0cde1b56b8988f119c87f308471d075c5141910915c29d6ebaf9506cb99225b1"
+    },
+    {
+      "ciphertextBytes": 472,
+      "ciphertextSha256": "8bc9cc45aecff6b51aaf61fc166390b4d618aa43fed8adf273075787206ad415",
+      "file": "0163-list-operator-tigera-io-v1-managementclusterconnections-1.age",
+      "plaintextSha256": "23bf4ff0f32756cd0d5a29d16e8ff4764b75a99bb99b2db20beaaeca25f1ba51"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "d719d2b8b36fd7c68216f443a673596413f108ff8127eae51c6e3d4650d9bb8a",
+      "file": "0164-list-operator-tigera-io-v1-imagesets-1.age",
+      "plaintextSha256": "cb41fbfd2a14a0337cd95f316be802a69ad951d8b3efda72b74f83ec49ad32de"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "3e791fdf9f677d2f10db1a42ba15e5865355501db38681586ba2341d6d959d48",
+      "file": "0165-list-postgresql-cnpg-io-v1-subscriptions-1.age",
+      "plaintextSha256": "74e2f18212217687c26d5af6aa62b71c9a3083bd12926eb8e55e30f424f828cd"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "40909dce9e8d1917047ede179544f24dac122cdadc3ef467d3e40b09834905f0",
+      "file": "0166-list-postgresql-cnpg-io-v1-clusterimagecatalogs-1.age",
+      "plaintextSha256": "8b112e2f0864caedec0424a198ada3c41dcf3252f583a285644ed392f926443c"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "156e0995434ed5ec949621ac735c49a06af88e3e4275368f098a4661f505910a",
+      "file": "0167-list-postgresql-cnpg-io-v1-databases-1.age",
+      "plaintextSha256": "0edc898e4522d318681e50bd1847e70391d6adb785c0e55dd1ab57ca893c0c93"
+    },
+    {
+      "ciphertextBytes": 3548,
+      "ciphertextSha256": "b8690d5b00c5967fbffcb506ec2c0807e1e23ae29f72cd6dd40a10e0c4aef865",
+      "file": "0168-list-postgresql-cnpg-io-v1-scheduledbackups-1.age",
+      "plaintextSha256": "f0d36c24d90223ee97200f241cd1f90cf5609d7a3a2bad0b6405e17e8525cf4e"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "f0901d588860530cb25f407cb87c5bbb33eaf1fa4bedae8cdfa4da68569d641d",
+      "file": "0169-list-postgresql-cnpg-io-v1-publications-1.age",
+      "plaintextSha256": "fdf3dbbef113f937d813de41257e9c9eb3a7c993cd17ae3ff24b55604fbce8ae"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "0debc230966b5b8403200be6f63d248d493226a7349ecfeec2c1d70a0a2840cc",
+      "file": "0170-list-postgresql-cnpg-io-v1-databaseroles-1.age",
+      "plaintextSha256": "dba83c7140f398c0daf36abe18b29316514e977989d3bb595140b7a0ababea35"
+    },
+    {
+      "ciphertextBytes": 15400,
+      "ciphertextSha256": "6df7ed684f3c719e80237a6ea2f5e64c86bbb96ac76aa7dff0ca53a51d5d79eb",
+      "file": "0171-list-postgresql-cnpg-io-v1-backups-1.age",
+      "plaintextSha256": "d4d980c9dd12a8ead618e4a1064ac0359b936de3fe008b7ae41efe5d34377415"
+    },
+    {
+      "ciphertextBytes": 17828,
+      "ciphertextSha256": "4148200e3ae572ed9dc1dc0f14cb56afb4744a1f1cd58aa8a2103d2225facac6",
+      "file": "0172-list-postgresql-cnpg-io-v1-clusters-1.age",
+      "plaintextSha256": "108d81e72abf70ddfe45011bbd013030c7e03505e0baa08ee140a2e27ebbec26"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "e49a10cdd3f395c8df474706c1496f6631451c94c09cc566cad7068f6e15fb99",
+      "file": "0173-list-postgresql-cnpg-io-v1-poolers-1.age",
+      "plaintextSha256": "f783a7c4991b93d70fc3381cf4677a06d631fcf58c81fa109aae5b2a43abfb64"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "450308c90faa92c1d937f0c32a07d116bc96c3bdc95433a6eb7190c1b87d4952",
+      "file": "0174-list-postgresql-cnpg-io-v1-failoverquorums-1.age",
+      "plaintextSha256": "9a5b82bec07c78b5296996db7ae592df434d26ffa738d48e3ed111ffb492b419"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "2a2efd7bcbb569e89f8cb1bf0122621a3e5b6d54c35c0c1688b201978178e79b",
+      "file": "0175-list-postgresql-cnpg-io-v1-imagecatalogs-1.age",
+      "plaintextSha256": "bdade7cb464ad057c788174396e5e230f0e4fc5c543dae7754bdf5da8d3233fb"
+    },
+    {
+      "ciphertextBytes": 468,
+      "ciphertextSha256": "183e495f63c9a59ef368020ab65818266def8f7236f785480e15e66b82cad805",
+      "file": "0176-list-tenant-kubesphere-io-v1-workspaceconfigurations-1.age",
+      "plaintextSha256": "78da4fdd199d0a6f31c0a1c33d4a1f60299c28de4d2ce9a0707ab84aa1ea9ecc"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "f3f33694a17d008e364503ad399704cccb484331c8dbe7c974e44904cea3b402",
+      "file": "0177-list-tenant-kubesphere-io-v1-subnamespaceanchors-1.age",
+      "plaintextSha256": "790595ca1c21e782586696369e04ef12477cb2ff9ff16a01beee8496c51e327f"
+    },
+    {
+      "ciphertextBytes": 436,
+      "ciphertextSha256": "b4969a700fcb124d8dee70a66cae3ffe04d9c95c8b5d2c4b3c243bedda9138a8",
+      "file": "0178-list-velero-io-v1-restores-1.age",
+      "plaintextSha256": "17a7a11d96f8b9a5975420b40caf891392442be6ff8aaa5cacf5c05c592876b6"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "8dc80a41c8a73d634667f38877426b6da87f19d39af822b6a6a59618f5c03903",
+      "file": "0179-list-velero-io-v1-downloadrequests-1.age",
+      "plaintextSha256": "fffc0f40c0827dc7c50ae2b5aecaaeee6fda976ec891639cce97f39af858251d"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "d0f5a6d039d8892d262e690e6b4b934372343088e43af52fb118a933ffb87682",
+      "file": "0180-list-velero-io-v1-deletebackuprequests-1.age",
+      "plaintextSha256": "1af63580fe96fd1512e019a59f83dcaf0387430c32ad09ebbaeac4510f1f2236"
+    },
+    {
+      "ciphertextBytes": 596636,
+      "ciphertextSha256": "e9b52f69f6e2f6f0181227202e45a9e5bec2b4e8769d5e86571cb7797b43e66c",
+      "file": "0181-list-velero-io-v1-podvolumebackups-1.age",
+      "plaintextSha256": "a7804ae4c24df25db94ab59fba7c68b2e8771d69ebbb4d814cc15ae7ea93e6ba"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "77a67dbcfb2029e070b87581ee351c45147f2582ca329877adccb01f2d35cee5",
+      "file": "0182-list-velero-io-v1-volumesnapshotlocations-1.age",
+      "plaintextSha256": "819a763e383ce56e0377bc990c10859a7dbd339230f9a64ae4d0568fd11bcb1a"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "3ee671eddca3152025387765c7c0ee9343b5fbe403a0a39ad89b29bd3db9f97d",
+      "file": "0183-list-velero-io-v1-podvolumerestores-1.age",
+      "plaintextSha256": "41b873db0eaeb95f098b29a29337b04606ea7b60e8a797aa363db3cb5c13e9fc"
+    },
+    {
+      "ciphertextBytes": 3128,
+      "ciphertextSha256": "b4e151b52ee42dd39d719038aac310250f79a8f76ca193a18a47e20c28618bab",
+      "file": "0184-list-velero-io-v1-backupstoragelocations-1.age",
+      "plaintextSha256": "0bcc48d3a1c19b1ffced983bd9976fba9f982767d7387067c82677a3cc241b23"
+    },
+    {
+      "ciphertextBytes": 2392,
+      "ciphertextSha256": "c350ded3cee6bd207f0731bf65e1806e5c1f9c4516d13f0493e57b1bf0cf94a2",
+      "file": "0185-list-velero-io-v1-backuprepositories-1.age",
+      "plaintextSha256": "8a1ad799e9f036320d5def2a58a1588a65a3f62f5b5928d395a4efd26ba5edea"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "8fdac5060f35deddd186931a2e4c5bca9ddadb2f1f47bed12d05b913d9ace952",
+      "file": "0186-list-velero-io-v1-serverstatusrequests-1.age",
+      "plaintextSha256": "36a9321d305a355add7126fdb3dcd3eb8f2f30895eb3b0e326c0bb5805211f9f"
+    },
+    {
+      "ciphertextBytes": 658136,
+      "ciphertextSha256": "8406962c168fc34ed2bb6fc0245c0c6d04894167530fd27f9e418e2d9b165313",
+      "file": "0187-list-velero-io-v1-backups-1.age",
+      "plaintextSha256": "8c82977ab9c18e2d4b5a1ed606dc61fc707530470bbd2290e8ec17df3b9a9bee"
+    },
+    {
+      "ciphertextBytes": 3180,
+      "ciphertextSha256": "58508ed1133126730d556a8fa6c6cdec1ed8f8d35a05ecdba0d2f5626dfee135",
+      "file": "0188-list-velero-io-v1-schedules-1.age",
+      "plaintextSha256": "009dedc73ec36af3ff1aa6ef905ed7f6728adc52e60103ff05b2e8f2de243135"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "009faef921bdb6b848441c8aa590cf650d9fc8037393bd49c1b9ecb5b90d9ef7",
+      "file": "0189-list-cluster-kubesphere-io-v1alpha1-labels-1.age",
+      "plaintextSha256": "dde723d250f4f40e7bc4e163f1c1636dd1345a91cb4159703013799747f60d7a"
+    },
+    {
+      "ciphertextBytes": 8244,
+      "ciphertextSha256": "d9602e0ef4a4ae68650f1d9b411249a583f3c007f94a89cf2b9a96abe16f9ab8",
+      "file": "0190-list-cluster-kubesphere-io-v1alpha1-clusters-1.age",
+      "plaintextSha256": "de517791356465b2da39a2b38b24508ba4f7b5b5bfb19acfbd532ccc18e383d9"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "fb6f7300930a8b9f71b5d0cb7208fd0aaf8798a3efad4aeff54433d49261a98c",
+      "file": "0191-list-dapr-io-v2alpha1-subscriptions-1.age",
+      "plaintextSha256": "ce34e4142d20940f1c59a84585816f6d7c7eb1ce1fae8f5da2fe7a2c848f8392"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "a36d89db054d41bf1c5e9b7fe776bb9dc531961d4e4a40b22ad07f2a9c1675d7",
+      "file": "0192-list-extensions-kubesphere-io-v1alpha1-jsbundles-1.age",
+      "plaintextSha256": "627a34efe1c5816e5b6449dae8405f4236006b1fda147a5cc23591d78c0ea194"
+    },
+    {
+      "ciphertextBytes": 472,
+      "ciphertextSha256": "2b995f44715d7fa23f15c03ff2f44c2782a61fa868c83b4c9244470131cd9ddf",
+      "file": "0193-list-extensions-kubesphere-io-v1alpha1-extensionentries-1.age",
+      "plaintextSha256": "bf503950f999fc49c058194e459100eb44a42ff18a02e2b8179ba6182bc08789"
+    },
+    {
+      "ciphertextBytes": 468,
+      "ciphertextSha256": "4ec455bd7156d8e463b1ea5d2c3434beb7df0e8f2989d11552b13a6476c048d8",
+      "file": "0194-list-extensions-kubesphere-io-v1alpha1-apiservices-1.age",
+      "plaintextSha256": "494f95a2cffb015636b365dfc3d19e4f2eff381bac171ab182119f07cfa0ebf6"
+    },
+    {
+      "ciphertextBytes": 2320,
+      "ciphertextSha256": "8641bf5ff24df905e42584e8c011ae8451c8bf0aa6ee26ea6b823fb062b6c832",
+      "file": "0195-list-extensions-kubesphere-io-v1alpha1-reverseproxies-1.age",
+      "plaintextSha256": "71cebadaa51e9261ee4506d57da26e3b805c83c0134b08f48f3dcff2d4352e71"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "55c150b8c38b71d4cce0acd6f4e5e2856e8089d296200d28e8ae56b4307c6871",
+      "file": "0196-list-hub-traefik-io-v1alpha1-apiportalauths-1.age",
+      "plaintextSha256": "16bbd0b883ccc397bb446f44f0d6fbdbfc063c2226c3c122062a7fd8ec9f9b59"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "b0487ee379f1eb9bb6565e899921635be72b3f2f39f847fc63be850cdd8a66d7",
+      "file": "0197-list-hub-traefik-io-v1alpha1-apis-1.age",
+      "plaintextSha256": "87187b3a73c90e3025d4c4313cc86775a269915638b5a4568217ce0fe1a707bc"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "812bc5edcb9da1b2e09b08486be42576cea6ffe84b3a402c90585d047ad2bd7b",
+      "file": "0198-list-hub-traefik-io-v1alpha1-accesscontrolpolicies-1.age",
+      "plaintextSha256": "213b163fd88a805ee269ba7d80b0a470a01522303545e6bd5f4d75f78a086816"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "bb0eadcfdec77f935f4ddadc7d0bb7471eedeafa63f93869b64ac9d18f54b225",
+      "file": "0199-list-hub-traefik-io-v1alpha1-apibundles-1.age",
+      "plaintextSha256": "806c9301e03ff54a603cab9b93a57e6bcc078a928486aa8156b91250a042eaa3"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "6231cd25b93bf1bbd44c98e90b5f573356c8f19f4caf75f20898be576ad979ad",
+      "file": "0200-list-hub-traefik-io-v1alpha1-uplinks-1.age",
+      "plaintextSha256": "dccad162d5bf84690c1302f0738de8affc2d1a9ec70365ab74afcb48b8959fd6"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "4739f0921f3f75e52047d9da7e843770965e08b195a585bcf767c5deb1564991",
+      "file": "0201-list-hub-traefik-io-v1alpha1-aiservices-1.age",
+      "plaintextSha256": "6ae996e64127a8f5f6dbdb3d0b9c27c7b7d10d319b7657699db627049dea247c"
+    },
+    {
+      "ciphertextBytes": 460,
+      "ciphertextSha256": "51ed28de9325bba282cce9cd69e6d5c4c071ff872de137166abb9af7c9b90fa0",
+      "file": "0202-list-hub-traefik-io-v1alpha1-apicatalogitems-1.age",
+      "plaintextSha256": "6c3d718af0620e763515926a9b37f0b1deb998c1da6128cd7b0873bf39ebe1cd"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "a2118265a781a96591f9f1158b8e2d2ff5bb8d8f0e17ffa982125f010d7c51d1",
+      "file": "0203-list-hub-traefik-io-v1alpha1-contentitems-1.age",
+      "plaintextSha256": "1d1f15e6ffda99d45e30fa86cae30d9ba7c4699c1b253e6e0aac0f1d6984b6a2"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "462244acf9580f2d41147a5d688505aad31955fdff59bcbc9c5532b7ec02d98d",
+      "file": "0204-list-hub-traefik-io-v1alpha1-managedsubscriptions-1.age",
+      "plaintextSha256": "f5fc40f9d24933d1edaee6306c85b7232049721e68565a13593c4031ded6d36d"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "b965c2ec09e4adfe1456ea06bbbe0c3db8035a0a0c54f43a78bce05204aad203",
+      "file": "0205-list-hub-traefik-io-v1alpha1-apiplans-1.age",
+      "plaintextSha256": "829777e0eedc65c87082a0a8b5118e786bfd0a38a9505d8f75cd1f1ae0ff8f73"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "30a1f2c5ce07c26566d3192188676fcdd1d4f53eaad9b570d13952cd872831aa",
+      "file": "0206-list-hub-traefik-io-v1alpha1-apiportals-1.age",
+      "plaintextSha256": "33a5cdbe1f69e768e16bc5195fd8671e33f1379ab1ceb06fc2645776439d16e9"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "3c2d1aa594ee119a9d46648fdf0622a1de14ec7c1bff25aa8d34b6c2ae418489",
+      "file": "0207-list-hub-traefik-io-v1alpha1-apiratelimits-1.age",
+      "plaintextSha256": "512f20ee640955598c489887e3d609b6b1f7beddaa177fc39623fd9b6cf13c22"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "4c6d35fa7b7c649053314e14b125927c7d1b26a6cd91f3bf8f2888e7a89c9749",
+      "file": "0208-list-hub-traefik-io-v1alpha1-apiversions-1.age",
+      "plaintextSha256": "ee28c38e2c8b0e3d116157afee0dd93a7b233d153d370c3294e2cf2b1ac91de9"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "6d6c969a8a7417c11ac5b611f1e00747df8d4d57bbf8c4ccc73963fcac78f2dc",
+      "file": "0209-list-hub-traefik-io-v1alpha1-apiauths-1.age",
+      "plaintextSha256": "3b77a4ca77f878cb84cccfe500a443f112bf89c3ff6c83add814c1e0dc5e7032"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "8b3ffc88093a580aaa2ad41a2a8291afff7d34628e8324e4439e517bb142da25",
+      "file": "0210-list-hub-traefik-io-v1alpha1-managedapplications-1.age",
+      "plaintextSha256": "dcf71e4ea9f8f942924948cbf4dbf55070e7c40ae1fe4d1d4f8dc5eb84cdbee3"
+    },
+    {
+      "ciphertextBytes": 2460588,
+      "ciphertextSha256": "a81ca967ec5086cca68a046fa8107e06bd7bad9d65141f18a1bcf12ceeb0ae57",
+      "file": "0211-list-kubesphere-io-v1alpha1-extensionversions-1.age",
+      "plaintextSha256": "2e56db2a33e0cd3b616f6f93f81042f5564134a86d0c8e2f99039d60a741b527"
+    },
+    {
+      "ciphertextBytes": 3628,
+      "ciphertextSha256": "6f15667f1cd35a8443a28c765772987bc875fd60ea16e0875775f2416c7e998f",
+      "file": "0212-list-kubesphere-io-v1alpha1-installplans-1.age",
+      "plaintextSha256": "7250f29c4a7c2cc994ab6a2cf257a4f2abcbfa79cddd1cc01c1ee21d9798589b"
+    },
+    {
+      "ciphertextBytes": 1792480,
+      "ciphertextSha256": "b257365eb66659342f7ad3b6d6c3597e8a2aa277dd0423728eb5474c1aa6cf52",
+      "file": "0213-list-kubesphere-io-v1alpha1-extensions-1.age",
+      "plaintextSha256": "3b065e208e7ea93798684ba14c3769e6919d76c49d89f5c1f31c74e0603fa1f8"
+    },
+    {
+      "ciphertextBytes": 1976,
+      "ciphertextSha256": "62c8715aefb93bac0e813b884bbeb6f09695500f3997ca248ecb3f615bda5df1",
+      "file": "0214-list-kubesphere-io-v1alpha1-serviceaccounts-1.age",
+      "plaintextSha256": "a32f2e2bd6c0303da267694ea182b0b642ee7a9ddf2f8f3c358433defafba659"
+    },
+    {
+      "ciphertextBytes": 4140,
+      "ciphertextSha256": "fc41704e7b07c70490226fe80844afdb7efd65288cdc9b59730201d09ac76b6f",
+      "file": "0215-list-kubesphere-io-v1alpha1-repositories-1.age",
+      "plaintextSha256": "49f21382229a6ef28a60bd48ad5d2c9f3f80c511945c96cd9f698b4fd23bceb8"
+    },
+    {
+      "ciphertextBytes": 16336,
+      "ciphertextSha256": "e02b632475ba77c91c31e93c62797850d4fb8e3f89b4e13cb4a101c5a44e510a",
+      "file": "0216-list-kubesphere-io-v1alpha1-categories-1.age",
+      "plaintextSha256": "131b95f48d1904f91ea4595e6dee3972c4256ea16d031033283cdb646f540b82"
+    },
+    {
+      "ciphertextBytes": 472,
+      "ciphertextSha256": "63efb7006fa4e6615d18b5791b197c2a13167b02f2b967b416665ba633adaa25",
+      "file": "0217-list-marketplace-kubesphere-io-v1alpha1-subscriptions-1.age",
+      "plaintextSha256": "df32798e1d227349b0d9a0be177450d32dbd09b447c3041c90c765ceb69c3fd9"
+    },
+    {
+      "ciphertextBytes": 476,
+      "ciphertextSha256": "938db4287d2988c759e96c5372a3a42ab9d95245f1db5adc63c17d2093e4f18f",
+      "file": "0218-list-policy-networking-k8s-io-v1alpha1-adminnetworkpolicies-1.age",
+      "plaintextSha256": "44665e15fa2035d9ebabeaae5f4f5726f286a09b4e6505d6167372bcbeddc217"
+    },
+    {
+      "ciphertextBytes": 488,
+      "ciphertextSha256": "238d0f4766d33f938ce3f66190427bc121bd5ada8c6a3f4bb9f50b12bd0e52ee",
+      "file": "0219-list-policy-networking-k8s-io-v1alpha1-baselineadminnetworkpolicies-1.age",
+      "plaintextSha256": "622d4561c6c1052cd6101d5c8dff640769176679fda694f1e9b1abc437451074"
+    },
+    {
+      "ciphertextBytes": 480,
+      "ciphertextSha256": "70f538af2901b613d48eb81a70a0fb31026a638c44e327a3b68e03362a654fcf",
+      "file": "0220-list-storage-kubesphere-io-v1alpha1-storageclasscapabilities-1.age",
+      "plaintextSha256": "86ef73e0da959d8db3ada8e5436a95088ae9080c57e0a98f72e0a872875c42c7"
+    },
+    {
+      "ciphertextBytes": 476,
+      "ciphertextSha256": "8c2c6583fcf484c650a1001542cc2c94977486e67994b463847a8933759b3285",
+      "file": "0221-list-storage-kubesphere-io-v1alpha1-provisionercapabilities-1.age",
+      "plaintextSha256": "d97ea47faf21ea4a17cc5d45424de36c935dc921da4559b165b70b41ac31f2b8"
+    },
+    {
+      "ciphertextBytes": 460,
+      "ciphertextSha256": "c1180628765f0774fd0322e8d38a6ff6f6f2139d055ebddc27a397d136ea71b8",
+      "file": "0222-list-traefik-io-v1alpha1-serverstransporttcps-1.age",
+      "plaintextSha256": "e5fdb2659c4f8f9ff781729b9c1def8eebae629d818280ce3aca876882fb14d2"
+    },
+    {
+      "ciphertextBytes": 4940,
+      "ciphertextSha256": "19e9e404b88978e9e676631f8f07d153b05172ab39da24079b744c1dcbd98774",
+      "file": "0223-list-traefik-io-v1alpha1-ingressroutetcps-1.age",
+      "plaintextSha256": "446aeffcc78082e99a71d5ed4cf66305aba2be71dd413f01a18394687813f435"
+    },
+    {
+      "ciphertextBytes": 7888,
+      "ciphertextSha256": "caa5f611ab2ae9d221b4c83ddd72b9c43da8de0c4f4c8e41fe5e2db0ca9be354",
+      "file": "0224-list-traefik-io-v1alpha1-middlewares-1.age",
+      "plaintextSha256": "63499e5d1f24dac650e6cd8613b5e78f21fcb1ea7237ce823c00c06afa4573ec"
+    },
+    {
+      "ciphertextBytes": 2260,
+      "ciphertextSha256": "b05ebaf1b3831a3575c7bfbae787623b8e1444fa1eeb6b10b2335c3e5db376e7",
+      "file": "0225-list-traefik-io-v1alpha1-middlewaretcps-1.age",
+      "plaintextSha256": "e58a987e89708df7e7fdebeaaae342b493d893bb6e47d3716bed900ad6c59ae1"
+    },
+    {
+      "ciphertextBytes": 444,
+      "ciphertextSha256": "42017efa3d7312b27a72df24525501b839f08c49f282648caf36fd72c6b10415",
+      "file": "0226-list-traefik-io-v1alpha1-tlsstores-1.age",
+      "plaintextSha256": "f933a04954886789189549c3e00f1ae41ba230b45cae355efee6cf15be673892"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "20190a33e40e119f8da66ea088c5f81cbc70a1bd1257bd8d39da6071e1f0df96",
+      "file": "0227-list-traefik-io-v1alpha1-serverstransports-1.age",
+      "plaintextSha256": "cfb39d4d5da19f5b309ff4267583f9941e398d997b2cb2440ce353683d86b006"
+    },
+    {
+      "ciphertextBytes": 452,
+      "ciphertextSha256": "a3700b184df2ff250963987e27562fcfdefe07e4c34d9ed11df98aa8f86fc6e6",
+      "file": "0228-list-traefik-io-v1alpha1-traefikservices-1.age",
+      "plaintextSha256": "9f616308685f83b747b19d789619baa9896f7955de6653a849bb4337c3fad34d"
+    },
+    {
+      "ciphertextBytes": 7528,
+      "ciphertextSha256": "452ef23ab4b7938cb9ce2446d17fde7faedf654daf0cf87ab9f6c274a05de5ab",
+      "file": "0229-list-traefik-io-v1alpha1-ingressroutes-1.age",
+      "plaintextSha256": "d7c3b63b6dda2933ea3b49b3720082462fc227ee774ef82545c7dd0054cfa6f0"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "b1014d758329d48c62ab1e3e7b9d32b42bb606d4a27dc5cf0cd0a457f6024a4b",
+      "file": "0230-list-traefik-io-v1alpha1-ingressrouteudps-1.age",
+      "plaintextSha256": "6dc4ea28e6a0cada8707d1ab068aeef829d1edf79cecff6a561d4f377e19162d"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "278dfa4362bcc84233b4131cc501b81bf2b91a19aaf44cc8f452ef3359c56586",
+      "file": "0231-list-traefik-io-v1alpha1-tlsoptions-1.age",
+      "plaintextSha256": "2778054e8f405239fa05d96fbc60e55504343c45b0efe63b7d95da88f1243694"
+    },
+    {
+      "ciphertextBytes": 472,
+      "ciphertextSha256": "60c8511c938b7b8bfe8d7b305a0992abcb83ebc6170900af9d7289ce3c1681e3",
+      "file": "0232-list-gateway-kubesphere-io-v1alpha2-ingressclassscopes-1.age",
+      "plaintextSha256": "b3efe62b7f9b012399d59989ff477b715d88c9241a1f5bd44b739571b32b30de"
+    },
+    {
+      "ciphertextBytes": 1540,
+      "ciphertextSha256": "15398881ee4008ece2aba356e1f74857e8cdcf0670b333e0bbccf563eb010cfa",
+      "file": "0233-list-iam-kubesphere-io-v1beta1-clusterrolebindings-1.age",
+      "plaintextSha256": "e235b0cf14e5b209ff4ba37cd9e6e4ce26a0d04ad355891715f109322c34604f"
+    },
+    {
+      "ciphertextBytes": 153376,
+      "ciphertextSha256": "df7c82640632455fa751be736d8423e12fb664dfa3c1fecb42e812c252eba4e8",
+      "file": "0234-list-iam-kubesphere-io-v1beta1-roletemplates-1.age",
+      "plaintextSha256": "cc1538382e9b24b254f0d3bf62f7b8e47422b25f1a84f6f0b4017ade083e75e5"
+    },
+    {
+      "ciphertextBytes": 13904,
+      "ciphertextSha256": "9d3ab279718c665b5e3692fc317ca05db86833b93c1169b514daaf2b33bc2d70",
+      "file": "0235-list-iam-kubesphere-io-v1beta1-workspaceroles-1.age",
+      "plaintextSha256": "173c28d44190f5280cf8b9fd5d59f94a17efe24e64034a7b55939819bcf500e5"
+    },
+    {
+      "ciphertextBytes": 1560,
+      "ciphertextSha256": "acf6c965a5ea71a44c916f40efc33ca534e83cd63720784b5c17fac393c0dca0",
+      "file": "0236-list-iam-kubesphere-io-v1beta1-loginrecords-1.age",
+      "plaintextSha256": "bed4ec06af63f58549d5acaffaeedb9b3cb54c56b809f631aa956e3464a4f613"
+    },
+    {
+      "ciphertextBytes": 7204,
+      "ciphertextSha256": "6a91903bf51a7c9dd13d0c1df7ba5265191343cf775698ac7a24ef7e930cc985",
+      "file": "0237-list-iam-kubesphere-io-v1beta1-clusterroles-1.age",
+      "plaintextSha256": "5324b0442534394cef864c464b038db9c2df96f5bf708abf41758fb5b5a62cb8"
+    },
+    {
+      "ciphertextBytes": 456,
+      "ciphertextSha256": "c515817929dc8f92d5b37d9b50090b6912d157554421d52622c0a02b4ea611a3",
+      "file": "0238-list-iam-kubesphere-io-v1beta1-rolebindings-1.age",
+      "plaintextSha256": "ba7b150aac894094bb85ef03f1737495ee28ae1de1ee9e5d16b16ae0f4c5011b"
+    },
+    {
+      "ciphertextBytes": 460,
+      "ciphertextSha256": "a4ef2e4a7749785dbe1f5d71e6450a9b544885afdb646df9ff0a4ccbc4404ee3",
+      "file": "0239-list-iam-kubesphere-io-v1beta1-groupbindings-1.age",
+      "plaintextSha256": "6d582a158bddf2dc5487b5078d4e07fe783547b86afb075c202a27e8d770b14b"
+    },
+    {
+      "ciphertextBytes": 19204,
+      "ciphertextSha256": "30e3e4d96d3742915c8b8c300ae36dc2ac17989fa8c4f502d6fb3cbada711637",
+      "file": "0240-list-iam-kubesphere-io-v1beta1-builtinroles-1.age",
+      "plaintextSha256": "9a0e6b8db7da344a897f0f79b6caa9ef64cabe90b1a98119035bd402cbf46d9a"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "38081a65b4b4c840999ac79640d247c4fc77ee5ea4da36a962659d1c2c355c0c",
+      "file": "0241-list-iam-kubesphere-io-v1beta1-groups-1.age",
+      "plaintextSha256": "43ebefb0af7658d1661437b58b7d5ac8c97b07b39f466a81a47987dc775aa9ba"
+    },
+    {
+      "ciphertextBytes": 6228,
+      "ciphertextSha256": "7664ebe25260ea2517efc0bcec81b0584ef3f79bbf56458babdd61bb92fcfd56",
+      "file": "0242-list-iam-kubesphere-io-v1beta1-users-1.age",
+      "plaintextSha256": "12488712a140c3744e378a727f15110dd63347aa8c9dc7275f0509497128fc8b"
+    },
+    {
+      "ciphertextBytes": 11132,
+      "ciphertextSha256": "3bd392e38d1e678c4caa0f92952ebe161ebe3f00d8e995517139f7d5906e31f2",
+      "file": "0243-list-iam-kubesphere-io-v1beta1-roles-1.age",
+      "plaintextSha256": "116baa9a5635d806a1902b5c9646a98888903f07955bb7b6150a6b6f80e21c28"
+    },
+    {
+      "ciphertextBytes": 10460,
+      "ciphertextSha256": "c93d906972643ceb6800122564dcd0ee2a4ec04faab830521c05d45a9910cc11",
+      "file": "0244-list-iam-kubesphere-io-v1beta1-globalrolebindings-1.age",
+      "plaintextSha256": "22a82276a24656802f7a24f0403025d23e37839ee8c212362ea2e55d75ca0d76"
+    },
+    {
+      "ciphertextBytes": 27912,
+      "ciphertextSha256": "e6a8b3d8b4ce11256a6d57499dd9a9245abbc906635d7d2f18973665a81a416a",
+      "file": "0245-list-iam-kubesphere-io-v1beta1-categories-1.age",
+      "plaintextSha256": "caafeffa9b9f5546a6de5deeb4fa2c0c5d514312460b3041863755c68cbba067"
+    },
+    {
+      "ciphertextBytes": 18908,
+      "ciphertextSha256": "40e2cb017c41c6351e03e374b469a247e09e693d6ae6a5ad3b4d0aa7578c382e",
+      "file": "0246-list-iam-kubesphere-io-v1beta1-globalroles-1.age",
+      "plaintextSha256": "ad292305e31794c120ce8c47a4efbfc698cb04b78d5f50d1d74c386eb1d06667"
+    },
+    {
+      "ciphertextBytes": 2276,
+      "ciphertextSha256": "33a60431d55fcbf889f344d841862481964b51e8ef44eb39cacf1cd9f25eaf74",
+      "file": "0247-list-iam-kubesphere-io-v1beta1-workspacerolebindings-1.age",
+      "plaintextSha256": "278df4985e692a14138e0577bbb2d37d8d288f6f75e1f2cf4cdbeea0b898c0e1"
+    },
+    {
+      "ciphertextBytes": 464,
+      "ciphertextSha256": "a3873e320221b4ddca71e27e577d08e9cf881b47bfb3468f59ebb892a391f34e",
+      "file": "0248-list-quota-kubesphere-io-v1alpha2-resourcequotas-1.age",
+      "plaintextSha256": "e23e0a763cbd02bb42b2f0796b2580688d599f459a16dd8ab94ac1f38daae08f"
+    },
+    {
+      "ciphertextBytes": 448,
+      "ciphertextSha256": "68475a9c9d95aefd7a50069dc9e7e475e8d7bc6018078d731293eff697b8774c",
+      "file": "0249-list-app-k8s-io-v1beta1-applications-1.age",
+      "plaintextSha256": "299c4979d670ae4a1487ab22f315c9aef5e3ae60ee5b80b3de44be1e91973c05"
+    },
+    {
+      "ciphertextBytes": 290896,
+      "ciphertextSha256": "55152d673007d9d20765a6a507ae4734d266a96164875ff07bfaa07187de14b5",
+      "file": "0250-list-application-kubesphere-io-v2-applicationversions-1.age",
+      "plaintextSha256": "6240d6d90f117196f5ca59f3a5779f3cf9131ed1317b7bc20fe8d2e1aff1d591"
+    },
+    {
+      "ciphertextBytes": 472,
+      "ciphertextSha256": "e5b338450975bbca60d14ad957e7b01bcc5603b60d4d3e100c5032b413af6f80",
+      "file": "0251-list-application-kubesphere-io-v2-applicationreleases-1.age",
+      "plaintextSha256": "d0fae40c61a8426903ce74479df7f2c09e63fe68fc2500fb16035cd203e7ae24"
+    },
+    {
+      "ciphertextBytes": 84944,
+      "ciphertextSha256": "c01b4fb2e00303e1e9ef1a3380de0a613f1d37d963c85fe469dc5d3d230126b6",
+      "file": "0252-list-application-kubesphere-io-v2-applications-1.age",
+      "plaintextSha256": "a369cace83d307d2955a0fce95096bd71bd175f1bce57767491bb8f6dcd4c758"
+    },
+    {
+      "ciphertextBytes": 1272,
+      "ciphertextSha256": "05e0ecb39af7560c5fbb8b631199601df42cc32c4039e83a6150f1058e4502ba",
+      "file": "0253-list-application-kubesphere-io-v2-categories-1.age",
+      "plaintextSha256": "da9bfb35a1deefdb746c84687695b66c13460d6f3703836d0076f4646881974d"
+    },
+    {
+      "ciphertextBytes": 2468,
+      "ciphertextSha256": "7403bdf95acbaaa2a14cadab886369fa837750a6292cc87d73b488e146923936",
+      "file": "0254-list-application-kubesphere-io-v2-repos-1.age",
+      "plaintextSha256": "4f2be966013b8ff50a5fad3e42375b9a65cd31417ea9e9ec7181863fae0e2e21"
+    },
+    {
+      "ciphertextBytes": 1044,
+      "ciphertextSha256": "3705f41e79d72b67b07c9b0cf65b02d7531e8539b96f33ce3791372bdb6c08f6",
+      "file": "0255-list-metrics-k8s-io-v1beta1-nodes-1.age",
+      "plaintextSha256": "a52c93a0991e7e221badac949bdf3c2cd165a3112d1a8e3e1a689aab228e5a93"
+    },
+    {
+      "ciphertextBytes": 42656,
+      "ciphertextSha256": "0569ae5ff32dd5c78bcb01baa1fc2aa4d14d438423f5942bc7097c21bfdbc030",
+      "file": "0256-list-metrics-k8s-io-v1beta1-pods-1.age",
+      "plaintextSha256": "72a61fd9646a773ea9b77f90f99aff82157cfb970e01edc50bbfd623810cd4eb"
+    },
+    {
+      "ciphertextBytes": 2528,
+      "ciphertextSha256": "4c99ac903abfb713e628a808ef03fa6f6a91b09f33c5ef0de62e75d3f16a806c",
+      "file": "0257-helm-releases.age",
+      "plaintextSha256": "fb8b82bed6d09053e58ebf3ad6609374fbbb070e0c2b3c4154c528cc984f80dd"
+    },
+    {
+      "ciphertextBytes": 612,
+      "ciphertextSha256": "f4459ca67d553a8a5ffe79bdc5e01fbd315a6cc0419b071902d03f7304bfc713",
+      "file": "0258-helm-values-ks-console-embed.age",
+      "plaintextSha256": "38ac5bfa42506d3c717ff5e7b4a7ff0c5ca2415873117ddd29ee2f2ae5f4892b"
+    },
+    {
+      "ciphertextBytes": 3084,
+      "ciphertextSha256": "1f5b760b9ab885967539b409138fb6fc0c586d072cda39323b22de1c6a6e8249",
+      "file": "0259-helm-manifest-ks-console-embed.age",
+      "plaintextSha256": "7507bb9c5e4d026115063ab287a0cf788f6eef625ee699a8b57f1922b7e7adca"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "7208ccb41efb9e52f8937d54e067ab73bf801857fd3ab2ff9bdcf14a052515e5",
+      "file": "0260-helm-hooks-ks-console-embed.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 9772,
+      "ciphertextSha256": "d2f744360e550070b396dc4fcfa8a2a9cf414052a3f8c77a0e19712f32bffb63",
+      "file": "0261-helm-values-ks-core.age",
+      "plaintextSha256": "be8e767a75c7e06ee5b4b157adae51c291bb9b2a7304f68475d58f17022a32e3"
+    },
+    {
+      "ciphertextBytes": 221084,
+      "ciphertextSha256": "94bfef6e58896b8c42d2a370d0970c6e222dc94dd8a8ff2d387c8ded9ccde29c",
+      "file": "0262-helm-manifest-ks-core.age",
+      "plaintextSha256": "0f82c119f25b7e8e2acd0ac417f01c9c7a7c05317cc11b2a3cdc79175eff87ba"
+    },
+    {
+      "ciphertextBytes": 12016,
+      "ciphertextSha256": "f6b8534adaeeac38202f1187e9a90c966ab5ffc2bbb1f20347e3a12680335bea",
+      "file": "0263-helm-hooks-ks-core.age",
+      "plaintextSha256": "830039e50ba95ad397dfb98dc1f33bc54965b32b878f27fa2c8dd1475e275789"
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "schemaVersion": 1
+}
