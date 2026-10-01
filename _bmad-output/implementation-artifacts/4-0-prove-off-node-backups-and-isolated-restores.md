@@ -45,17 +45,17 @@ On 2026-09-29 the Administrator chose the destination: a new dedicated Scaleway 
 
 The Administrator also decided on 2026-09-29:
 
-- The bucket and credentials were set up on the Administrator's behalf with their organization-owner key. Application keys are in `~/.config/hexalith-recovery/writer.env` and `validator.env` on the Administrator's workstation and are referenced by path only; key values are never printed, logged or committed. Before independent validation, the validator key must be handed to, or re-issued under, the second operator.
+- The bucket and credentials were set up on the Administrator's behalf with their organization-owner key. Application keys are in `~/.config/hexalith-recovery/writer.env` and `validator.env` on the Administrator's workstation and are referenced by path only; key values are never printed, logged or committed. The validator key stays in the Administrator's custody as the read-only credential used for validation.
 - Keycloak uses the CloudNativePG barman-cloud plugin with the new bucket; the live instance image is not changed.
-- Proof records are signed with SSH signatures (`ssh-keygen -Y sign -n hexalith-recovery`), replacing the earlier GPG choice because no GPG keys exist. The Administrator signs with `~/.ssh/id_ed25519_git_signing` (`jpiquot@itaneo.com`, `SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk`, passphrase-protected). The independent validator signs with their own SSH key. An `allowed_signers` file holding both public keys is the verification trust root. Signing is always done by the named person entering their own passphrase; the implementer prepares the records and never signs on anyone's behalf.
-- The independent validator and cleanup signer is `pduong@itaneo.com` (named by the Administrator on 2026-09-29). Their SSH public key is added to `allowed_signers` before validation, and the validator key moves to their custody.
+- Proof records are signed with SSH signatures (`ssh-keygen -Y sign -n hexalith-recovery`), replacing the earlier GPG choice because no GPG keys exist. The Administrator signs with `~/.ssh/id_ed25519_git_signing` (`jpiquot@itaneo.com`, `SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk`, passphrase-protected). An `allowed_signers` file holding that public key is the verification trust root. Signing is always done by the Administrator entering their own passphrase; the implementer prepares the records and never signs on anyone's behalf.
+- On 2026-10-01 the Administrator decided to sign every record alone, including cleanup and validation, so Story 4.0 has no second-person validator. This still meets `epics.md`, which requires signed proofs naming the accountable operator. As a safeguard, validation re-reads every object and storage property with the read-only validator credential, not the writer that made the backups. It does not rely on values the capture scripts recorded. `pduong@itaneo.com` keeps read-only bucket access (see [recovery-destination-setup.md](evidence/epic-4/recovery-destination-setup.md#independent-validator-identity)) for an optional extra check; the gate does not require it.
 - OpenBao has no separate custodians. It auto-unseals with `seal "static"` from Secret `openbao/openbao-seal`; its `shamir` 2-of-3 recovery shares are in Secret `openbao/openbao-operator-credentials` and are not escrowed. The module's OpenBao runbook names the Administrator as owner. On 2026-09-29 the Administrator approved a temporary copy of the static seal key into the isolated restore namespace only; it must be deleted with that namespace and proven absent in `restore-target-cleanup.json`. This approval is the custodian ceremony for Step 3 of the OpenBao proof.
 - Evidence bundle location, set on 2026-09-29 under the Administrator's delegation: full operational records live in `~/hexalith-recovery-evidence/4-0/<recovery-id>/` on the Administrator's workstation (directory mode `0700`, outside Git), and every signed record plus its detached signature is uploaded by the writer to `s3://hexalith-recovery-points/evidence/4-0/<recovery-id>/`, where object lock keeps it immutable. Git holds only sanitized summaries and digests under `_bmad-output/implementation-artifacts/evidence/epic-4/`.
 - Memories intake may be paused whenever the proof needs it. No deployment-owned quiescence/resume playbook exists yet, so the implementer writes it first and the Administrator approves it before use. On 2026-09-29 Redis held 3 keys (about 2 MB); `data-redis-stack-0` and `data-falkordb-0` are `openebs-hostpath-retain` volumes of 20Gi and 10Gi. Intake stays paused on any failed or uncertain capture.
 
 After reviewing recovery run `20260929t124806z`, the Administrator decided on 2026-09-29:
 
-- That run is a rehearsal. Its Keycloak and OpenBao proofs expire before the Memories proof and independent validation can finish, so the Administrator does not sign them. When every open item is ready, a final fresh capture, restore and cleanup of all three systems runs shortly before the Story 4.1 upgrade, using the kept scripts. Only that run is signed, assembled into `backup-gate.json` and validated.
+- That run is a rehearsal. Its Keycloak and OpenBao proofs expire before the remaining steps can finish, so the Administrator does not sign them. When every open item is ready, a final fresh capture, restore and cleanup of all three systems runs shortly before the Story 4.1 upgrade, using the kept scripts. Only that run is signed, assembled into `backup-gate.json` and validated.
 - The additions from that run are approved and kept: `ScheduledBackup/keycloak/keycloak-postgres-daily` at 02:00 UTC, and CloudNativePG `WATCH_NAMESPACE=keycloak,cnpg-system`.
 - The [Memories quiescence/resume playbook](evidence/epic-4/memories-quiescence-resume-playbook.md) is approved with these answers:
   - **D1:** Memories has zero tenants. The logical proof records that from the census (no `tenant-registry-index`), so there is no tenant export to run `verify-backup-recovery.py` against. The proof must say so explicitly rather than claim a verifier pass.
@@ -98,9 +98,9 @@ The following infrastructure decisions are required:
   4. Restore into an isolated namespace with a distinct ServiceAccount/RBAC boundary, default-deny network policy and new PVC/PV UIDs/provider handles. Prove denied source namespace/API/live-service access and no source-volume attachment. For every tenant, require terminal restore counters to match the export and run `references/Hexalith.Memories/tools/verify-backup-recovery.py` against a consolidated tenant export.
   5. Explicitly resume source intake through the approved playbook, reconcile every queued/in-flight workflow captured at quiescence, and prove terminal processing with no missing or duplicate work before writing and signing `memories-restore-proof.json`.
   6. Preserve the verifier JSON, restore status bodies, checksums, resume/reconciliation result and smoke-test evidence.
-- [ ] After evidence capture, remove every isolated restore target through its approved cleanup procedure. A second operator must sign `restore-target-cleanup.json` after proving namespace/workload/RBAC/network resources absent and checking PVCs, PVs, VolumeSnapshots/contents and provider volumes/snapshots for no unapproved residual storage.
+- [ ] After evidence capture, remove every isolated restore target through its approved cleanup procedure. The Administrator signs `restore-target-cleanup.json` after proving namespace/workload/RBAC/network resources absent and checking PVCs, PVs, VolumeSnapshots/contents and provider volumes/snapshots for no unapproved residual storage.
 - [ ] Assemble and sign `backup-gate.json` containing the final evidence-manifest digest, the three proof digests/signatures, recovery-point IDs, data cutoffs/RPO results, off-node object/storage-property validation, isolated-target validation, cleanup proof, verification timestamps, policy digest and expiry time.
-- [ ] Have a second operator, using an identity independent of the backup operator, validate signatures, source-incarnation bindings, every manifest entry and storage property by provider/API evidence plus read-back checksums; sign `independent-validation.json` and mark Story 4.0 `done` only if all three proofs pass.
+- [ ] Validate with the read-only validator credential rather than the writer, without relying on values the capture scripts recorded. Check the signatures, source-incarnation bindings, and every manifest entry and storage property against provider/API evidence plus read-back checksums. The Administrator signs `validation.json`, and Story 4.0 is marked `done` only if all three proofs pass.
 
 ## Evidence contract
 
@@ -111,7 +111,7 @@ Story 4.1 must validate `backup-gate.json` and the three signed proofs directly.
 ## Hard gates and stop conditions
 
 - Stop before capture if the destination is on `node1`, mutable by the source workload, unencrypted, or cannot be independently read back and checksummed.
-- Stop if encryption, immutability/object lock, retention, failure-domain separation, data-cutoff/RPO compliance, source-incarnation binding or independent validator evidence is absent or contradicted.
+- Stop if encryption, immutability/object lock, retention, failure-domain separation, data-cutoff/RPO compliance, source-incarnation binding or validation evidence is absent or contradicted.
 - Stop Keycloak proof on backup/WAL failure, incomplete object-store evidence, non-isolated storage, restore failure or source/restore inventory mismatch.
 - Stop OpenBao proof if a snapshot remains only on `openbao-snapshots`, the custodian ceremony is unavailable, the isolated raft is unhealthy, or verification would expose secret data.
 - Stop Memories proof if quiescence evidence is missing/stale/non-zero, if only one physical store is captured, if snapshots from different attempts are paired, or if the repository verifier fails. Keep intake paused until incident command makes an explicit safe decision.
@@ -133,7 +133,7 @@ Story 4.1 must validate `backup-gate.json` and the three signed proofs directly.
 
 **Given** `backup-gate.json`
 **When** Story 4.1 validates it
-**Then** an independent validator's signature covers the final evidence manifest, every object checksum/storage property, source-incarnation and data-cutoff/RPO binding, isolation tests, successful Memories resume/reconciliation and signed residual-storage cleanup
+**Then** the Administrator's signature on `validation.json`, made after a read-only re-check with the validator credential, covers the final evidence manifest, every object checksum/storage property, source-incarnation and data-cutoff/RPO binding, isolation tests, successful Memories resume/reconciliation and signed residual-storage cleanup
 **And** any missing or failed validation blocks the upgrade
 
 ## Implementation status (2026-09-29, rehearsal `20260929t124806z`)
@@ -154,6 +154,5 @@ Nothing from this run is signed, per the Administrator's decision. The kept proc
 
 **Open, so this story stays `in-progress`:**
 
-- The final signed run shortly before the Story 4.1 upgrade.
-- `pduong@itaneo.com`'s key in `allowed_signers`, and the validator credential moved to their custody.
-- The signed `restore-target-cleanup.json`, `backup-gate.json` and `independent-validation.json`.
+- The final signed run shortly before the Story 4.1 upgrade. Its new bundle starts from copies of the rehearsal scripts. Those copies must first be updated for the single-signer decision, because `policy.py`, `proofs.py`, `sign.sh` and `final-run-order.sh` still name `pduong@itaneo.com` as validator and produce `independent-validation.json`. Leave the rehearsal bundle unchanged; its manifest holds their digests.
+- The signed `restore-target-cleanup.json`, `backup-gate.json` and `validation.json`.
