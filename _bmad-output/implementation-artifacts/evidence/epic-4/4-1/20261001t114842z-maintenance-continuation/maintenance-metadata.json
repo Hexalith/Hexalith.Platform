@@ -1,0 +1,103 @@
+{
+  "additionalWorkloadOutageAcknowledgement": "pending",
+  "approvedWindowRecord": {
+    "accountableRecoveryOwner": "Administrator jpiquot@itaneo.com (present)",
+    "acknowledgedWorkloads": [
+      "Keycloak",
+      "OpenBao",
+      "Memories",
+      "Forgejo",
+      "Forgejo runner"
+    ],
+    "administratorPrincipal": "jpiquot@itaneo.com",
+    "exactRoleAcknowledgement": "Yes, I hold all these roles and acknowledge the outage",
+    "exactWindowApproval": "Yes, start now; this chat; end at 14:55",
+    "gateState": "closed",
+    "incidentChannel": "this ChatGPT/Codex conversation",
+    "incidentCommander": "Administrator jpiquot@itaneo.com (present)",
+    "mutationAuthorized": false,
+    "reasonGateClosed": "Full target compatibility/workload/accountable-procedure prerequisites and a signed-open per-hop gate remain required.",
+    "recordedAt": "2026-10-01T10:53:56.291838+00:00",
+    "source": "Administrator answer relayed by root agent in this session",
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "windowEnd": "2026-10-01T14:55:00+02:00",
+    "windowEndUtc": "2026-10-01T12:55:00Z",
+    "windowStart": "immediate upon Administrator instruction; approvals do not bypass technical gates",
+    "workloadOutageOwner": "Administrator jpiquot@itaneo.com (present)"
+  },
+  "approvedWindowRecordSupersededBy": "20261001t124016z-maintenance-window-end-amendment.json",
+  "approver": "Administrator",
+  "effectiveWindow": {
+    "incidentChannel": "this ChatGPT/Codex conversation",
+    "source": "20261001t124016z-maintenance-window-end-amendment.json",
+    "timezone": "Europe/Paris",
+    "windowEnd": "2026-10-02T14:00:00+02:00",
+    "windowEndUtc": "2026-10-02T12:00:00Z",
+    "windowStart": "immediate upon Administrator instruction; approvals do not bypass technical gates"
+  },
+  "gateState": "closed",
+  "intendedMinorHops": [
+    {
+      "candidatePatch": "v1.35.9",
+      "from": "1.34",
+      "refreshAtExecutionRequired": true,
+      "to": "1.35"
+    }
+  ],
+  "mutationAuthorized": false,
+  "operator": "Codex (delegated preparation)",
+  "ownerAcknowledgementRecord": {
+    "accountableRecoveryOwnerPresent": true,
+    "acknowledgedWorkloads": [
+      "Keycloak",
+      "OpenBao",
+      "Memories",
+      "Forgejo",
+      "Forgejo runner"
+    ],
+    "administratorPrincipal": "jpiquot@itaneo.com",
+    "exactAcknowledgement": "Yes, I hold all these roles and acknowledge the outage",
+    "gateState": "closed",
+    "incidentChannel": null,
+    "incidentCommanderPresent": true,
+    "mutationAuthorized": false,
+    "reasonGateClosed": "Explicit window end/channel and full compatibility/workload clearance remain pending. This acknowledgement does not replace the signed-open per-hop gate.",
+    "recordedAt": "2026-10-01T10:52:02.300441+00:00",
+    "source": "Administrator answer relayed by root agent in this session",
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "subsequentWindowAnswer": "now",
+    "windowEnd": null,
+    "windowEndChannelClarificationPending": true,
+    "windowStartIntent": "now",
+    "workloadOutageOwnerPresent": true
+  },
+  "procedureApproval": false,
+  "projectionAttemptId": "20261001t114842z-maintenance-continuation",
+  "recordedAt": "2026-10-01T11:48:42.533551+00:00",
+  "sourceAttemptId": "20261001t075120z-backup-verified",
+  "sourceVersion": "v1.34.9",
+  "windowEndAmendment": {
+    "administratorPrincipal": "jpiquot@itaneo.com",
+    "backupGateExpiresAt": "2026-10-02T06:16:52Z",
+    "earlierAuthorizationRecordsPreserved": true,
+    "exactWindowEndAmendment": "end time is tomorrow 2pm.",
+    "gateState": "closed",
+    "incidentChannel": "this ChatGPT/Codex conversation",
+    "localUnsignedEvidence": true,
+    "mutationAuthorized": false,
+    "previousProposedProcedureSha256": "a6f90af217287802e1d4d8764bc2d386f67ec5d9507b77544be5bf5daa9a80fe",
+    "previousWindowEnd": "2026-10-01T14:55:00+02:00",
+    "procedureApproved": false,
+    "proofRefreshRequiredIfHopAtOrAfterExpiry": true,
+    "proposedProcedureSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+    "recordedAt": "2026-10-01T12:40:16.009072+00:00",
+    "schemaVersion": 1,
+    "source": "Direct Administrator message in this conversation",
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "supersedesWindowEndOnly": true,
+    "timezone": "Europe/Paris",
+    "windowEnd": "2026-10-02T14:00:00+02:00",
+    "windowEndUtc": "2026-10-02T12:00:00Z",
+    "windowStart": "immediate upon Administrator instruction; approvals do not bypass technical gates"
+  }
+}

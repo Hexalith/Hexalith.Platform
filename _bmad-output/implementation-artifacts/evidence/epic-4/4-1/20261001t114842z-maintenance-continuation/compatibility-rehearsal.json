@@ -1,0 +1,269 @@
+{
+  "allStructuralFindingsClearedByTargetServer": false,
+  "completeHopCompatibilityClearance": false,
+  "liveSourceTargetCommonFindings": 16,
+  "missingSchemasRemaining": 0,
+  "mutationAuthorized": false,
+  "primaryVendorEvidence": {
+    "documentedSupportedKubernetesRange": "1.23.x through1.34.x",
+    "source": "https://docs.kubesphere.com.cn/v4.2.1/03-installation-and-upgrade/03-upgrade-kubesphere/03-online-upgrade-kubephere-from-4.1.x/",
+    "supportsTarget135": false
+  },
+  "recordedAt": "2026-10-01T11:48:42.533551+00:00",
+  "remainingScope": [
+    "Secret/ConfigMap contents, Helm hooks, non-preferred served-version clients and complete external desired sources",
+    "19 Go regex constraints and target CEL/conversion/defaulting semantics",
+    "Every installed CNI/storage/operator/admission target runtime, with all20 admission dependencies mapped to kubeadm writes",
+    "Source custom KubeSphere values/resource/data migration and licensed application write paths"
+  ],
+  "sourceAttemptId": "20261001t075120z-backup-verified",
+  "sourceTargetCommonHelmFindings": 12,
+  "structuralAuditCounts": {
+    "helmDesiredDocuments": 283,
+    "helmDesiredDocumentsWithFindings": 7,
+    "helmSensitiveDocumentsExcluded": 16,
+    "lastAppliedDesiredDocuments": 378,
+    "liveDesiredStateDocuments": 2340,
+    "liveDesiredStateDocumentsWithFindings": 9,
+    "schemaPatternsUnsupportedByPython": 19
+  },
+  "structuralFindingCount": 28,
+  "targetCandidate": "v1.35.9",
+  "targetOnlyHelmFindings": 0,
+  "targetRehearsal": {
+    "application": "4.2.1",
+    "chart": "ks-core1.2.4",
+    "cleanup": {
+      "capturedAt": "2026-10-01T11:45:23.551334+00:00",
+      "cleanupLogSha256": "73062901a2ada261e4e12ca3e4e0d78eaf832e6de2a45d950df69144a9e79844",
+      "cleanupSucceeded": true,
+      "encryptedFullLogsRetained": true,
+      "fixtureAnonymousVolumesAbsent": true,
+      "fixtureImages": [
+        {
+          "absent": true,
+          "exit": 0,
+          "image": "hexalith-story41-node-fenced:v1.35.9"
+        },
+        {
+          "absent": true,
+          "exit": 0,
+          "image": "hexalith-story41-node:v1.35.9"
+        }
+      ],
+      "freshCredentialFileAbsent": true,
+      "globalDockerPruneUsed": false,
+      "hostFixtureKubeconfigAbsent": true,
+      "internalNetworkAbsent": true,
+      "kindDeleteExit": 0,
+      "nodeContainerAbsent": true,
+      "productionMutationAuthorized": false,
+      "removedStagedArtifactNames": [
+        "entrypoint-fenced",
+        "isolated-values.yaml",
+        "ks-core-1.2.4.tgz",
+        "kubernetes-server-linux-amd64.tar.gz",
+        "Dockerfile.fenced",
+        "vendor-images-amd64.tar",
+        "helm-cache/",
+        "helm-config/",
+        "helm-data/"
+      ],
+      "sourceAttemptId": "20261001t075120z-backup-verified",
+      "sourceCredentialsOrDataImported": false,
+      "unrelatedContainersNetworksVolumesOrImagesRemoved": false
+    },
+    "exactApiAndKubeletVersion": "v1.35.9",
+    "licensedApplicationWriteScope": {
+      "capturedAt": "2026-10-01T11:39:57.307712+00:00",
+      "curlExit": 0,
+      "expectedEmptyLicenseDenialConfirmed": true,
+      "freshTokenRetained": false,
+      "fullLicensedWriteCompatibilityEstablished": false,
+      "httpStatus": 403,
+      "mutationAuthorized": false,
+      "observedStaticMessage": "forbidden: invalid license, violation type: Empty license",
+      "productionLicenseImported": false,
+      "reason": "Forbidden",
+      "sourceCredentialsOrDataImported": false
+    },
+    "podDnsHttp": {
+      "capturedAt": "2026-10-01T11:40:00.747040+00:00",
+      "exit": 0,
+      "httpStatus": 200,
+      "podServiceDnsAndHttpPassed": true,
+      "sourceCredentialsOrDataImported": false
+    },
+    "sourceImageContentComparison": {
+      "allFiveProductionImageContentsMatched": true,
+      "capturedAt": "2026-10-01T11:36:51.283297+00:00",
+      "checks": [
+        {
+          "fixtureCRIConfigDigest": "sha256:91799c33c966c41c8bad1f48490289fa1aa64cbb47aee3400ddde39ff0a718c2",
+          "hostPulledRepoDigests": [
+            "registry.cn-beijing.aliyuncs.com/kse/extensions-museum@sha256:af3c1af1f7a3f561aa2eb465d8df14cc7f71e2c246f18fda8078758bd7676a5e"
+          ],
+          "image": "registry.cn-beijing.aliyuncs.com/kse/extensions-museum:v11.1.3",
+          "passed": true,
+          "productionImageDigest": "sha256:af3c1af1f7a3f561aa2eb465d8df14cc7f71e2c246f18fda8078758bd7676a5e",
+          "pulledDigestMatchesProduction": true,
+          "runtimeConfigFieldsMatch": {
+            "Cmd": true,
+            "Entrypoint": true,
+            "Env": true,
+            "User": true,
+            "WorkingDir": true
+          },
+          "uncompressedLayerDigestSetSha256": "2464fe70f5404a03a501bc17bae93b61c46829fd2d71f474ca8f395db03dc28a",
+          "uncompressedLayerDigestsMatch": true
+        },
+        {
+          "fixtureCRIConfigDigest": "sha256:db903db2a9dea17b78c615d0e9de3f368749dd0237b54412c2424aaa6430c6d4",
+          "hostPulledRepoDigests": [
+            "registry.cn-beijing.aliyuncs.com/kse/ks-apiserver@sha256:f4ce353103e982a03cf9b659637d41fbcd8a94ad7e1f1867fbf364c54a5ed521"
+          ],
+          "image": "registry.cn-beijing.aliyuncs.com/kse/ks-apiserver:v4.2.1",
+          "passed": true,
+          "productionImageDigest": "sha256:f4ce353103e982a03cf9b659637d41fbcd8a94ad7e1f1867fbf364c54a5ed521",
+          "pulledDigestMatchesProduction": true,
+          "runtimeConfigFieldsMatch": {
+            "Cmd": true,
+            "Entrypoint": true,
+            "Env": true,
+            "User": true,
+            "WorkingDir": true
+          },
+          "uncompressedLayerDigestSetSha256": "4cfd1f99d6be27f08f4b300e350dcfb498c2f4640dd0978f5ec86c2e2c0abe46",
+          "uncompressedLayerDigestsMatch": true
+        },
+        {
+          "fixtureCRIConfigDigest": "sha256:aeb723ba5eba1e269e343ebe32bd3933c8d03a30c792e9fd1e6f5e4751445af6",
+          "hostPulledRepoDigests": [
+            "registry.cn-beijing.aliyuncs.com/kse/ks-console-embed@sha256:e2931d830cf1d6d53398bb3cf96124ef31f7c34d551efccc6ddd9885b12b8830"
+          ],
+          "image": "registry.cn-beijing.aliyuncs.com/kse/ks-console-embed:v4.2.1",
+          "passed": true,
+          "productionImageDigest": "sha256:e2931d830cf1d6d53398bb3cf96124ef31f7c34d551efccc6ddd9885b12b8830",
+          "pulledDigestMatchesProduction": true,
+          "runtimeConfigFieldsMatch": {
+            "Cmd": true,
+            "Entrypoint": true,
+            "Env": true,
+            "User": true,
+            "WorkingDir": true
+          },
+          "uncompressedLayerDigestSetSha256": "87de717d319750fb0f34f23ecb84c0b683be4578a180cacb3c7659d739219e11",
+          "uncompressedLayerDigestsMatch": true
+        },
+        {
+          "fixtureCRIConfigDigest": "sha256:f40152066ff033999e0c8c12484e550bad3c788a4ead5eb15a741b2e38d60ab6",
+          "hostPulledRepoDigests": [
+            "registry.cn-beijing.aliyuncs.com/kse/ks-console@sha256:cdcfb1c2d546f9b6f0e1aeda978857783466729aec493f80d96b7e3553d88f08"
+          ],
+          "image": "registry.cn-beijing.aliyuncs.com/kse/ks-console:v4.2.1",
+          "passed": true,
+          "productionImageDigest": "sha256:cdcfb1c2d546f9b6f0e1aeda978857783466729aec493f80d96b7e3553d88f08",
+          "pulledDigestMatchesProduction": true,
+          "runtimeConfigFieldsMatch": {
+            "Cmd": true,
+            "Entrypoint": true,
+            "Env": true,
+            "User": true,
+            "WorkingDir": true
+          },
+          "uncompressedLayerDigestSetSha256": "b9f4bed31be58456889ecba8946540eb17d82e5d9bfd9ff2f19ff1a159312b87",
+          "uncompressedLayerDigestsMatch": true
+        },
+        {
+          "fixtureCRIConfigDigest": "sha256:5338d654165184001dff5991a4c6ce492ecfedc2c95f1dbd82346c31aab175c7",
+          "hostPulledRepoDigests": [
+            "registry.cn-beijing.aliyuncs.com/kse/ks-controller-manager@sha256:abfeac0412bef57085ec335c7c0d50d9a5b9dbf5bd5c3cab2b42b66d08452610"
+          ],
+          "image": "registry.cn-beijing.aliyuncs.com/kse/ks-controller-manager:v4.2.1",
+          "passed": true,
+          "productionImageDigest": "sha256:abfeac0412bef57085ec335c7c0d50d9a5b9dbf5bd5c3cab2b42b66d08452610",
+          "pulledDigestMatchesProduction": true,
+          "runtimeConfigFieldsMatch": {
+            "Cmd": true,
+            "Entrypoint": true,
+            "Env": true,
+            "User": true,
+            "WorkingDir": true
+          },
+          "uncompressedLayerDigestSetSha256": "688bc595062bdb04dd5aa1c9c07e118180106b52d5c5853e413d122c1f8f23a3",
+          "uncompressedLayerDigestsMatch": true
+        }
+      ],
+      "exportNote": "Single-platform Docker OCI export/import changes manifest media-type digests; original registry digests match source and exported config/layer identities are compared separately.",
+      "sourceAttemptId": "20261001t075120z-backup-verified",
+      "sourceCredentialsOrDataImported": false,
+      "sourceCustomHelmSettingsReproduced": false
+    },
+    "syntheticNativeApiChecks": {
+      "allChecksPassed": true,
+      "capturedAt": "2026-10-01T11:32:23.466626+00:00",
+      "checks": [
+        {
+          "exit": 0,
+          "name": "target-native-workspace-crd-admission-create",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 0,
+          "name": "workspace-controller-reconciliation",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 1,
+          "name": "protected-system-workspace-delete-admission-denied",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 0,
+          "name": "target-native-namespace-admission-create",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 0,
+          "name": "target-native-workload-admission-create",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 0,
+          "name": "target-native-workload-controller-scheduler-runtime",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 0,
+          "name": "target-native-fixture-namespace-cleanup",
+          "passed": true,
+          "rawOutputRetained": false
+        },
+        {
+          "exit": 0,
+          "name": "target-native-fixture-workspace-template-cleanup",
+          "passed": true,
+          "rawOutputRetained": false
+        }
+      ],
+      "limitations": [
+        "These native Kubernetes admin API tests do not exercise licensed KubeSphere /apis or /kapis write paths, which remain denied in this fixture.",
+        "No production upgrade/data migration or other installed operator/CNI/storage runtime is reproduced."
+      ],
+      "mutationAuthorized": false,
+      "scope": "Target Kubernetes1.35.9 native API admission and current KubeSphere CRD/controller synthetic reconciliation",
+      "sourceAttemptId": "20261001t075120z-backup-verified",
+      "sourceCredentialsImported": false,
+      "sourceDataImported": false,
+      "vendorSupportClaim": false
+    }
+  },
+  "targetStructuralSchemaSha256": "483500149ee52ce5753d75f5639101d985bb4f5e902cc05b1ba7627465d62446",
+  "targetStructuralSchemaSource": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.35.9/api/openapi-spec/swagger.json"
+}

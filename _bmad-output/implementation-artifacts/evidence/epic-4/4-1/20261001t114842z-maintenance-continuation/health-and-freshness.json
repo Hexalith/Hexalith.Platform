@@ -1,0 +1,373 @@
+{
+  "allNewRecordsSigned": false,
+  "backupFreshness": {
+    "allEightLocalSignaturesVerified": true,
+    "allSevenFinalValidationInputHashesAndSignaturesMatch": true,
+    "earliestProofGateExpiresAt": "2026-10-02T06:16:52Z",
+    "exactRecoveryGateManifestPolicyBindingsMatch": true,
+    "expiryBasis": "policy.preparedAt",
+    "finalValidationAgeCapExpiresAt": "2026-10-02T07:39:12Z",
+    "finalValidationAgeSeconds": 14707,
+    "finalValidationFreshnessDecision": "Apply conservative minimum signed per-system proof-age cap as well as each earlier gate/proof expiry",
+    "finalValidationPassedWithoutFailedSkippedChecks": true,
+    "freshnessPass": true,
+    "gateState": "closed",
+    "localBackupPrerequisiteRecheckPassed": true,
+    "localUnsignedEvidence": true,
+    "mutationAuthorized": false,
+    "priorSignedRecordsChanged": false,
+    "recordedAt": "2026-10-01T11:44:19Z",
+    "remoteObjectsReReadThisContinuation": false,
+    "remoteReadbackBasis": "Prior signed immutable independent readback is unchanged; perform fresh independent remote readback before an actual hop",
+    "separateFinalValidationTtlDefinedByPolicy": false,
+    "signatures": [
+      {
+        "record": "policy/recovery-policy.json",
+        "sha256": "531807640d49edb5a0ce1bbda22bd947663768125b766941b07179498935d00e",
+        "signatureSha256": "9af7fc306013dead79ccc0de5822f436c798664ae72e13fe9e19434f4e6b53a9",
+        "verified": true
+      },
+      {
+        "record": "manifest/evidence-manifest.json",
+        "sha256": "41196f2447cacc1671c2b4d7bff9da5fd70b0993f4c72c576e191767b9b6ba65",
+        "signatureSha256": "3b7c6aac2923b4f44dedd0c0ecf1d1b9cd703ae5bdf457fa7dde38283d84a672",
+        "verified": true
+      },
+      {
+        "record": "cleanup/restore-target-cleanup.json",
+        "sha256": "bf8022b7642fb4a3df5274f1c07a547837a04befb27421c183b6d6a6bade1c7c",
+        "signatureSha256": "6dc8139455a910fe79170f498af290b8fa7b95a18337fab980bc2e6a673194a1",
+        "verified": true
+      },
+      {
+        "record": "gate/backup-gate.json",
+        "sha256": "2b36b709184796c9309bbc97b1344dfa178f04841c832bb44dafd540f89bb3e0",
+        "signatureSha256": "dc21bbc2ad572dda9997d2149d628364686eb4d11e84b1b2104f97cf75dbd840",
+        "verified": true
+      },
+      {
+        "record": "keycloak/keycloak-restore-proof.json",
+        "sha256": "d0928e7159ebdfd475fadb0b0a38d5d71e5277533655a43538023a8c34c2fc10",
+        "signatureSha256": "d9ff33306b4bc03c708985c1400585d01dac9b12a9c118beae8e0205a7682bcc",
+        "verified": true
+      },
+      {
+        "record": "openbao/openbao-restore-proof.json",
+        "sha256": "96ed1df1f03f642c05ba0663f37d0e0c1cbfe0f649348ac790ec0f773cee0a54",
+        "signatureSha256": "0c85b05fb47f4aec5953d7100aea1fabc739b9e7ecd0f546a0c16e25510103f7",
+        "verified": true
+      },
+      {
+        "record": "memories/memories-restore-proof.json",
+        "sha256": "91058aaaf7d1833bc56fb221b831af1b1ca0fdf0bcfcad6575371ce798bf1dee",
+        "signatureSha256": "f514ab649b15d6dda265429422e8bf754a3bcdfe64d48f2c3e49a91a2dd4d86e",
+        "verified": true
+      },
+      {
+        "record": "validation/validation.json",
+        "sha256": "79d37caf292d7119771ce61faa0eb295e534d3c6df46130cf48d1be94f2cb17e",
+        "signatureSha256": "5043b69431c590959eb0167196fdb7bd8b1b2ec6b466e6e5b58088bfa43c2f3c",
+        "verified": true
+      }
+    ],
+    "signedRecoveryPolicyMaximumProofAgeSeconds": 86400,
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "trustRootVerified": true
+  },
+  "forgejoWarning": {
+    "aggregateOrphanedObjectsReported": 5,
+    "capturedAt": "2026-10-01T11:38:33.272742+00:00",
+    "check": "forgejo-doctor-check-db-consistency",
+    "classification": "native-consistency-issue",
+    "completeConsistencyPassed": false,
+    "decision": "Record source baseline finding and require accountable diagnosis/expectation before clearing workload health; do not repair data during closed-gate preparation.",
+    "exit": 0,
+    "fixPerformed": false,
+    "localUnsignedEvidence": true,
+    "mutationAuthorized": false,
+    "rawWarningsOrDatabaseRowsRetained": false,
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "supersedesCompleteConsistencyInterpretationOf": "20261001t113341z-forgejo-readonly-native-health.json",
+    "warningCount": 1,
+    "warningMessageDigests": [
+      "21e1ec101b214d8eb23c91adacc13084d5ede95fbd51bfaa572f5b8fd2a0a091"
+    ]
+  },
+  "fullWorkloadSmokeClearance": false,
+  "keycloak": {
+    "allChecksPassed": true,
+    "capturedAt": "2026-10-01T11:21:49.728767+00:00",
+    "checks": [
+      {
+        "httpStatus": 200,
+        "name": "master-oidc-discovery",
+        "passed": true
+      },
+      {
+        "credentialRetained": false,
+        "httpStatus": 200,
+        "name": "existing-approved-client-credentials-login",
+        "passed": true,
+        "tokenRetained": false
+      },
+      {
+        "algorithm": "RS256",
+        "claimsOrTokenRetained": false,
+        "jwksHttpStatus": 200,
+        "name": "oidc-token-signature-issuer-expiry",
+        "passed": true
+      },
+      {
+        "instances": 2,
+        "name": "cnpg-cluster-ready",
+        "passed": true,
+        "readyInstances": 2
+      },
+      {
+        "exit": 0,
+        "name": "cnpg-native-primary-streaming-replication",
+        "passed": true,
+        "primaryNotInRecovery": true,
+        "replayLagBytes": "0",
+        "streamingReplicas": 1
+      }
+    ],
+    "localUnsignedEvidence": true,
+    "loginScope": "Existing master realm machine client credentials; interactive user password login not exercised",
+    "mutationAuthorized": false,
+    "productionConfigurationMutated": false,
+    "secretValuesOrTokenRetained": false,
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "sourceVersion": "v1.34.9"
+  },
+  "memoriesHttp": {
+    "checks": [
+      {
+        "credentialValuesRetained": false,
+        "endpoint": "/health",
+        "nativeHttpProbeExit": 0,
+        "pass": true,
+        "responseBodyRetained": false,
+        "workload": "memories"
+      },
+      {
+        "credentialValuesRetained": false,
+        "endpoint": "/alive",
+        "nativeHttpProbeExit": 0,
+        "pass": true,
+        "responseBodyRetained": false,
+        "workload": "memories"
+      },
+      {
+        "credentialValuesRetained": false,
+        "endpoint": "/ready",
+        "nativeHttpProbeExit": 0,
+        "pass": true,
+        "responseBodyRetained": false,
+        "workload": "memories"
+      },
+      {
+        "credentialValuesRetained": false,
+        "endpoint": "/health",
+        "nativeHttpProbeExit": 0,
+        "pass": true,
+        "responseBodyRetained": false,
+        "workload": "memories-mcp"
+      },
+      {
+        "credentialValuesRetained": false,
+        "endpoint": "/alive",
+        "nativeHttpProbeExit": 0,
+        "pass": true,
+        "responseBodyRetained": false,
+        "workload": "memories-mcp"
+      },
+      {
+        "credentialValuesRetained": false,
+        "endpoint": "/ready",
+        "nativeHttpProbeExit": 0,
+        "pass": true,
+        "responseBodyRetained": false,
+        "workload": "memories-mcp"
+      }
+    ],
+    "gateState": "closed",
+    "mutationAuthorized": false,
+    "observedAt": "2026-10-01T10:49:58.013402+00:00",
+    "scope": "Direct application HTTP GET with existing runtime application-token header; no Secret queried, no authentication values retained, no body retained. Representative authenticated search/MCP tool calls remain pending.",
+    "sourceAttemptId": "20261001t075120z-backup-verified"
+  },
+  "memoriesPersistence": {
+    "checks": [
+      {
+        "check": "ping",
+        "exit": 0,
+        "passResult": true,
+        "workload": "redis-stack"
+      },
+      {
+        "check": "persistence",
+        "exit": 0,
+        "observation": {
+          "aof_enabled": "1",
+          "aof_last_bgrewrite_status": "ok",
+          "aof_last_write_status": "ok",
+          "aof_rewrite_in_progress": "0",
+          "loading": "0",
+          "rdb_bgsave_in_progress": "0",
+          "rdb_last_bgsave_status": "ok"
+        },
+        "passResult": true,
+        "workload": "redis-stack"
+      },
+      {
+        "check": "lastsave",
+        "exit": 0,
+        "observation": 1790840745,
+        "passResult": true,
+        "workload": "redis-stack"
+      },
+      {
+        "check": "key-count",
+        "exit": 0,
+        "observation": 3,
+        "passResult": true,
+        "workload": "redis-stack"
+      },
+      {
+        "check": "ping",
+        "exit": 0,
+        "passResult": true,
+        "workload": "falkordb"
+      },
+      {
+        "check": "persistence",
+        "exit": 0,
+        "observation": {
+          "aof_enabled": "1",
+          "aof_last_bgrewrite_status": "ok",
+          "aof_last_write_status": "ok",
+          "aof_rewrite_in_progress": "0",
+          "loading": "0",
+          "rdb_bgsave_in_progress": "0",
+          "rdb_last_bgsave_status": "ok"
+        },
+        "passResult": true,
+        "workload": "falkordb"
+      },
+      {
+        "check": "lastsave",
+        "exit": 0,
+        "observation": 1790839844,
+        "passResult": true,
+        "workload": "falkordb"
+      },
+      {
+        "check": "key-count",
+        "exit": 0,
+        "observation": 0,
+        "passResult": true,
+        "workload": "falkordb"
+      },
+      {
+        "check": "native-primary-version",
+        "exit": 0,
+        "passResult": true,
+        "primary": true,
+        "version": "18.4 (Debian 18.4-1.pgdg13+1)",
+        "workload": "access-telemetry-postgresql"
+      }
+    ],
+    "gateState": "closed",
+    "mutationAuthorized": false,
+    "observedAt": "2026-10-01T10:51:13.093487+00:00",
+    "scope": "Read-only PING/INFO persistence/LASTSAVE/DBSIZE and native PostgreSQL primary/version; no Secret queried, no payload/credentials retained, no write or backup initiated. Representative authenticated application search remains pending.",
+    "sourceAttemptId": "20261001t075120z-backup-verified"
+  },
+  "memoriesTenantCensus": {
+    "basis": "Story4.0 approved D1 zero-tenant census; this local aggregate check does not exercise a representative authenticated search.",
+    "capturedAt": "2026-10-01T11:35:33.507106+00:00",
+    "exit": 0,
+    "localUnsignedEvidence": true,
+    "matchesSignedZeroTenantBaseline": true,
+    "mutationAuthorized": false,
+    "productionTenantCreated": false,
+    "redisTenantRegistryIndexExists": 0,
+    "representativeSearch": "pending-accountable-expectation-and-tenant-scoped-token",
+    "secretValuesOrKeyNamesRetained": false,
+    "sourceAttemptId": "20261001t075120z-backup-verified"
+  },
+  "mutationAuthorized": false,
+  "openbao": {
+    "allChecksPassed": true,
+    "approvedReadWriteCanary": "pending",
+    "authenticatedCustodianRaftPeerCheck": "pending",
+    "capturedAt": "2026-10-01T11:30:39.086463+00:00",
+    "checks": [
+      {
+        "exit": 0,
+        "haEnabled": true,
+        "initialized": true,
+        "mode": null,
+        "passed": true,
+        "pod": "hexalith-keys-0",
+        "raftAppliedIndex": 4367,
+        "raftCommittedIndex": 4367,
+        "sealed": false,
+        "storageType": "raft"
+      },
+      {
+        "exit": 0,
+        "haEnabled": true,
+        "initialized": true,
+        "mode": null,
+        "passed": true,
+        "pod": "hexalith-keys-1",
+        "raftAppliedIndex": 4367,
+        "raftCommittedIndex": 4367,
+        "sealed": false,
+        "storageType": "raft"
+      },
+      {
+        "exit": 0,
+        "haEnabled": true,
+        "initialized": true,
+        "mode": null,
+        "passed": true,
+        "pod": "hexalith-keys-2",
+        "raftAppliedIndex": 4367,
+        "raftCommittedIndex": 4367,
+        "sealed": false,
+        "storageType": "raft"
+      }
+    ],
+    "localUnsignedEvidence": true,
+    "mutationAuthorized": false,
+    "secretValuesOrTokenRetained": false,
+    "sourceAttemptId": "20261001t075120z-backup-verified"
+  },
+  "recordedAt": "2026-10-01T11:48:42.533551+00:00",
+  "sourceAttemptId": "20261001t075120z-backup-verified",
+  "sourceCloseout": {
+    "apiVersion": "v1.34.9",
+    "boundProtectedPVCs": 17,
+    "containerRuntimeVersion": "containerd://2.3.3",
+    "gateState": "closed",
+    "healthClearance": "incomplete: Forgejo five-orphan consistency finding and uncompleted authenticated workload checks remain",
+    "installedNodeOrWorkloadConfigurationMutatedThisContinuation": false,
+    "kubeletVersion": "v1.34.9",
+    "localUnsignedEvidence": true,
+    "mutationAuthorized": false,
+    "nodeReady": true,
+    "nodeSchedulable": true,
+    "protectedPVCIdentityBindingsUnchanged": true,
+    "protectedPVCs": 17,
+    "readyRunningProtectedPods": 16,
+    "recordedAt": "2026-10-01T11:44:20Z",
+    "runningProtectedPods": 16,
+    "signedOpenHopGateExists": false,
+    "sourceAttemptId": "20261001t075120z-backup-verified",
+    "succeededProtectedJobPods": 5,
+    "upgradeQuiesceCordonDrainKubeadmApplyReboot": "not-run"
+  }
+}
