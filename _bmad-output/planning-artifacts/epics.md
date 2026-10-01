@@ -579,8 +579,8 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - AR-58: *First production attempt* (Platform, Builds, Administrator): the production store instance reachable from the production executor, recovery executor and monitor; provenance; interruption, epoch and timing; takeover fencing with revocable per-job credentials and a Kubernetes drain; revision-conditioned stop clears; one recovery; the in-place recovery entry point; signed records; executor runner updates and version monitoring; stale-attempt detection. *First degraded non-empty attempt:* the compatibility or named-recovery qualification.
 - AR-59: *G1 rows:*
   - Monitor and admission bounds (Platform with Administrator): probe-stop bound including behavior during a locked attempt, identity-event capture lag, two-way admission cadence, mismatch notification, and refusal to clear or approve while admission differs from its records.
-  - Exposure, DNS and certificates (Administrator): exposure paths, the ingress-closure mechanism, zone owners, ACME credentials, the internal verification endpoint, registry controls and replica, monitor host, notification repository, dead-man workflow, actual issue delivery, and removal of the public Keycloak admin, master-realm and KubeSphere console routes, verified by an external negative probe.
-  - Infrastructure currency: move Kubernetes off 1.34 (end of life 2026-10-27); patch OpenBao; move Redis Stack 7.4 to Redis 8; bring Keycloak, CNPG, PostgreSQL, FalkorDB, Dapr, Traefik, Calico, cert-manager, Gateway API, storage provisioner, Zot and Velero current; update or remove KubeSphere; name renewal owners.
+  - Exposure, DNS and certificates (Administrator): exposure paths, the ingress-closure mechanism, zone owners, ACME credentials, the internal verification endpoint, registry controls and replica, monitor host, notification repository, dead-man workflow, actual issue delivery, and removal of the public Keycloak admin and master-realm routes and public cluster-management exposure, including the retired KubeSphere route and Rancher UI/API/proxy, verified by external negative probes; retain qualified private native administration throughout the transition.
+  - Infrastructure currency: move Kubernetes off 1.34 (end of life 2026-10-27); patch OpenBao; move Redis Stack 7.4 to Redis 8; bring Keycloak, CNPG, PostgreSQL, FalkorDB, Dapr, Traefik, Calico, cert-manager, Gateway API, storage provisioner, Zot and Velero current; retire KubeSphere before the Kubernetes upgrade and qualify Rancher community, required agents and its management cluster before staging; name renewal owners.
   - Forgejo runner relocation: move the privileged runner off the node and off any executor host.
 - AR-60: *G2 rows:*
   - Recovery capacity and coverage: capacity and location, published coverage, the recovery executor with custody, a pinned off-site workflow copy, fence-and-reissue owners, the deputy's identity, permissions, keys, alerts and rehearsal, Keycloak DB backup with revocation-before-export proof, budget and data sizes.
@@ -608,7 +608,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - A Dapr injector that does not drop capabilities.
   - The `forgejo-runner` namespace at Pod Security `privileged`.
   - The only Velero schedule is `forgejo-hourly`.
-- AR-64 (Accepted risks — constraints, not work): a single node and shared kernel with no HA; in-place Kubernetes-minor upgrades taking both environments down; staging on 1.34 after 2026-10-27 until G1; GitHub Free with two named writers; GitHub as the single notification path; prerelease Aspire, Dapr toolkit and Keycloak pins; plaintext Redis and FalkorDB inside the data namespace; manual unseal outside coverage; whole-site loss without independent capacity; the accepted lost-window revocations and erasures.
+- AR-64 (Accepted risks — constraints, not work): a single node and shared kernel with no HA; in-place Kubernetes-minor upgrades taking both environments down; staging waits for the supported Kubernetes upgrade; the initial single-node Rancher manager has no HA and needs independent native access and management recovery; GitHub Free with two named writers; GitHub as the single notification path; prerelease Aspire, Dapr toolkit and Keycloak pins; plaintext Redis and FalkorDB inside the data namespace; manual unseal outside coverage; whole-site loss without independent capacity; the accepted lost-window revocations and erasures.
 
 ### UX Design Requirements
 
@@ -713,8 +713,10 @@ Each epic delivers a usable outcome for the production state that exists when it
 | Story | Epic | Why it moves |
 | --- | --- | --- |
 | Prove off-node backups and isolated restores for Keycloak PostgreSQL, OpenBao and Memories | 4 | The Kubernetes upgrade is blocked until these proofs pass, and both need immediate scheduling. |
-| Upgrade the cluster off Kubernetes 1.34 (end of life 2026-10-27), in place | 4 | Hard external date. Preparation can overlap the backup work, but cluster mutation waits for the verified restore evidence. |
-| Close the public Keycloak admin, master-realm and KubeSphere console routes, verified by an external negative probe; disable anonymous registry reads once existing consumers hold pull credentials | 4 | This exposure is live today. Nothing is gained by waiting for G1. |
+| Qualify Rancher and the native management retirement (4.26) | 4 | Resolve ownership, independent private access and the exact retirement rehearsal; VM procurement may follow. |
+| Retire KubeSphere with workload preservation (4.27) | 4 | Precedes the hop; requires the qualified procedure and current recoverable state. |
+| Upgrade the cluster off Kubernetes 1.34 (end of life 2026-10-27), in place | 4 | Mutation requires current verified restore evidence, accepted 4.27 retirement and every per-hop gate. |
+| Close public Keycloak admin/master-realm and cluster-management exposure, including the retired KubeSphere route and later Rancher UI/API/proxy; disable anonymous registry reads once consumers have verified credentials | 4 | Live exposure stays independently urgent; replacement-console installation does not delay closure. |
 | Move the privileged Forgejo runner off the cluster node and off any executor host | 4 | Must happen before staging holds real data. |
 | Apply publication and operations repository controls | 4 | Publication and notification consumers need these repositories and controls before they can produce accepted evidence. |
 | Off-site monitor host, private notification repository and dead-man workflow | 6 | G1 needs working delivery, and this host must be arranged before then. |
@@ -1882,7 +1884,7 @@ So that test execution and lifecycle are proven for the whole MVP set.
 
 ## Epic 4: Publish retained releases and run the isolated staging environment
 
-The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions, and staging cannot claim production names or authority. Stories 4.0–4.4 are urgent, date-bound or security-driven work, so sprint planning schedules them first. Stories 4.0, 4.2, 4.3 and 4.4 can execute independently; Story 4.1 preparation may run in parallel, but no cluster upgrade may begin until Story 4.0 is done.
+The publication workflow produces an attested, immutable release: application Helm package, composed image, McpCli candidate and release record. The staging executor deploys it by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition's supported interfaces and McpCli with staging permissions, and staging cannot claim production names or authority. Stories 4.0–4.4 and 4.26–4.27 are urgent, date-bound or security-driven work, so sprint planning schedules them first. Stories 4.0, 4.2, 4.3, 4.4 and read-only 4.26 preparation can proceed independently. Story 4.27 retirement requires 4.26 qualification and current validated 4.0 evidence; Story 4.1 upgrade mutation additionally requires completed 4.27 and every existing per-hop gate. Story 4.28 qualifies private Rancher after the supported hop and before staging foundations. Rancher procurement/availability does not block native retirement or upgrade; public closure remains independently urgent.
 
 ### Story 4.0: Prove off-node backups and isolated restores
 
@@ -1914,7 +1916,7 @@ As Administrator,
 I want the designated cluster on a supported Kubernetes minor before staging exists,
 So that the in-place upgrade, which takes every workload down, happens while nothing depends on it and before 1.34 reaches end of life on 2026-10-27.
 
-**Repo:** Administrator operations · **Covers:** AR-59 (infrastructure currency: Kubernetes), AR-63 · *Independent, pull forward*
+**Repo:** Administrator operations · **Covers:** AR-59 (infrastructure currency: Kubernetes), AR-63 · *Independent preparation, pull forward; upgrade mutation requires current 4.0 proof validation and completed 4.27 retirement*
 
 **Acceptance Criteria:**
 
@@ -1936,20 +1938,31 @@ So that the in-place upgrade, which takes every workload down, happens while not
 **When** the upgrade completes
 **Then** each is verified healthy, or restored from its backup, and the outcome is recorded
 
+**Given** Story 4.27's signed retirement and workload-preservation result
+**When** the upgrade mutation gate is evaluated
+**Then** KubeSphere's runtime, owned blocking admission dependencies and public route are absent, and any retained/replaced dependency has a named qualified owner
+**And** a fresh post-retirement external-etcd recovery point and matching node/configuration inventory are independently verified
+**And** the complete remaining API/add-on/admission compatibility assessment, source workload consistency findings, authenticated smoke expectations and exact revised maintenance procedure are cleared for the selected supported target patch
+**And** removing KubeSphere alone never opens the hop gate or extends evidence validity.
+
+
 ### Story 4.2: Close public admin exposure and anonymous registry reads
 
 As Administrator,
-I want the Keycloak admin and master-realm routes, the KubeSphere console and anonymous registry reads closed now,
+I want the Keycloak admin and master-realm routes, public cluster-management exposure and anonymous registry reads closed now,
 So that live administrative exposure doesn't persist while staging is built beside it.
 
 **Repo:** Administrator operations · **Covers:** AR-59 (exposure), AR-18 (registry controls), AR-25 (admin path), AR-63 · *Independent, pull forward*
 
 **Acceptance Criteria:**
 
-**Given** the public Keycloak admin and master-realm routes and the KubeSphere console at `kube.hexalith.com`
-**When** this story completes
-**Then** they are reachable only from the declared Administrator path
-**And** an external negative probe proves they are unreachable from the internet
+**Given** the public Keycloak admin/master-realm routes and existing KubeSphere route at `kube.hexalith.com`
+**When** their public exposure is closed
+**Then** the required Keycloak administration and native cluster administration work only through the declared private Administrator path
+**And** the KubeSphere console is private while present, or absent following approved Story 4.27 retirement
+**And** external negative probes prove that the administrative routes are unreachable from the internet while approved public OIDC functionality still works
+**And** Rancher, when introduced by 4.28, passes the same private-access and public-denial requirement before its endpoint is accepted
+**And** the replacement console's later installation does not delay closing the existing public routes.
 
 **Given** the Zot registry at `registry.hexalith.com`
 **When** anonymous read is disabled
@@ -2144,6 +2157,11 @@ So that staging and production share one qualified runtime definition with bound
 **Then** a decision record fixes a finite maximum capture lag, its measurement point, its owner and the condition for revisiting it
 **And** staging event export and later admission reconciliation use that bound rather than choosing their own
 
+**Given** the hosted profile inventory
+**When** it is ratified
+**Then** it records the Rancher release/chart/image identities and license, management-cluster version/topology/capacity, registered workload-cluster identity/version, private access/authentication, required agent permissions, backup units, independent native access, renewal/currency owners and deployment writer boundaries.
+
+
 ### Story 4.10: Define the recovery hook contract
 
 As a Platform maintainer,
@@ -2281,6 +2299,12 @@ So that staging workloads are confined before any release runs there.
 **Given** the per-job application deploy identity
 **When** inspected
 **Then** it cannot write the data namespace or any environment-layer object
+
+**Given** the urgent infrastructure work
+**When** staging namespaces are first created
+**Then** 4.1, 4.2, 4.3, 4.27 and 4.28 have accepted evidence, including the qualified private Rancher baseline and independent native access
+**And** all existing namespace, storage, pod, network and identity-isolation criteria still apply.
+
 
 ### Story 4.15: Provide staging secrets through a per-environment OpenBao and tenant-key store
 
@@ -2562,6 +2586,59 @@ So that the NFR-3 matrix starts from a verified staging boundary.
 **Given** these results
 **When** recorded
 **Then** they become the staging-side part of the NFR-3 matrix that Epic 7 completes against production
+
+### Story 4.26: Qualify Rancher and the management migration
+
+As Administrator, I want an exact supported Rancher target, independent native access and an ownership-based migration plan, so that replacing management does not change workload data or silently expand authority.
+
+**Repo:** Administrator operations and Platform planning. **Covers:** FR-9, FR-10, NFR-3, AR-59, AR-63. **Dependencies:** none for read-only preparation; current qualifying recovery evidence is required before any production mutation.
+
+Acceptance criteria:
+
+1. Record the live workload-cluster identity/topology, effective kubeadm/client versions, KubeSphere chart/images/configuration, extensions, CRDs and instances, owners/finalizers, API services, webhooks, RBAC, routes, namespaces and native persistent-state inventory. Retain sensitive exports encrypted outside Git.
+2. Classify every KubeSphere-managed capability as unused/retired, native-owned or replaced. Identify all consumers and approved replacements. Unknown ownership, deletion effects or required functionality blocks retirement.
+3. Select exact Rancher community chart/image identities, required dependency licenses and a security-current version pairing for the management cluster and target imported workload cluster. Retain dated version-specific matrices and release notes. Qualify the management installation Helm CLI and native recovery-tool identities separately from the application executor tool floor. No unqualified tag or claim that a generic import certifies manager hosting is accepted.
+4. Specify the dedicated K3s VM's host, supported OS, CPU/RAM/storage budget, private DNS/TLS endpoint, route/firewall/CA requirements, independent backups and owner. Record costs, provisioning dependencies and single-node/shared-host limitations. Actual provisioning and console rollout may follow the workload upgrade.
+5. Independently demonstrate authorized native Kubernetes administration and deny unauthorized/public access. Retain recovery kubeconfig/key custody independent of KubeSphere and Rancher. Do not substitute Rancher-proxy credentials for this path.
+6. Map required operator accounts/roles to approved native/Rancher authority. Preserve the Administrator/deputy division, MFA requirement and least privilege; no automatic workspace-to-project, account-to-admin or staging-membership mapping is accepted. Define Administrator-approved management grant/revocation records and their independent off-site custody/complete lineage so restored authority can be reconciled after the cut; missing or conflicting authority fails closed.
+7. Rehearse the version-specific uninstall against a representative isolated inventory. Produce an exact proposed resource allowlist, ownership/deletion-propagation result, dependency order, workload-preservation assertions and stop/recovery procedure. Demonstrate that licensed KubeSphere application writes are not needed to complete the qualified native retirement procedure.
+8. Deliver a separately reviewable retirement runbook, revised upgrade ordering and 4.28 installation/access/backup plan. Qualification evidence alone neither authorizes live deletion nor clears Story 4.1. Story 4.26's retirement deliverable may complete while management-VM procurement remains scheduled for 4.28.
+
+### Story 4.27: Retire KubeSphere without changing workload data
+
+As Administrator, I want KubeSphere removed through a rehearsed native procedure while applications and recovery inputs are preserved, so that its licensing and compatibility no longer block the supported Kubernetes hop.
+
+**Repo:** Administrator operations. **Covers:** AR-59, AR-63, FR-9, NFR-3. **Dependencies:** 4.26 retirement qualification and current validated 4.0 proofs; precedes 4.1 mutation. No dependency on Rancher availability.
+
+Acceptance criteria:
+
+1. Before mutation, obtain approval bound to the exact removal procedure, resource allowlist, workload interruption scope, incident/recovery owner, window and stop conditions. Independently verify fresh encrypted immutable off-node native workload proofs, external-etcd recovery and node/configuration recovery inputs under the approved attempt policy. Preserve sources and qualifying prior evidence.
+2. Capture pre-change native API, authenticated workload health, controllers/replicas, namespace/resource ownership, admissions, storage and PVC UID/binding census. Verify independent private Administrator access again. Drift from the qualified deletion/dependency inventory stops execution.
+3. Archive KubeSphere configuration and required metadata under restricted encrypted custody. Rehome any required extension/controller or resource ownership before removing its reconciler. Preserve public application/OIDC service contracts.
+4. Apply only the rehearsed, UID-bound uninstall steps to KubeSphere-owned resources. Do not delete application/data namespaces, PVCs/PVs, shared storage/CNI/ingress/identity components or unrelated CRDs. Any finalizer intervention or changed deletion propagation requires the specific approved resource decision; no blanket forced deletion is permitted.
+5. Verify the retired releases/controllers, obsolete API services/admission references and public console route are absent; classify any intentionally retained inert archival resources with owner and cleanup date. No unresolved KubeSphere-only runtime/admission dependency may remain on the 1.35 path.
+6. Prove native API and private administration, DNS/CNI/storage/admission health, unchanged application/data namespace and PVC identities/bindings, and authenticated protected-workload smoke outcomes. Check old public console access from outside the private path. A failed/unobserved result stops further work and does not mark retirement done.
+7. Record signed before/after inventories, deletion identities, preserved-state comparisons, versioned runbook digest and accountable outcome. Prepare a fresh post-retirement etcd point and configuration inventory for 4.1; old-point restoration must explicitly reconcile retired controllers and authority before reopening.
+8. Handoff to 4.1 only with accepted retirement evidence. Keep all remaining upgrade blockers, freshness checks and approvals in force; no Kubernetes binary change, drain or upgrade is implied by retirement completion.
+
+### Story 4.28: Deploy Rancher and register the existing cluster
+
+As Administrator, I want private Rancher management of the existing supported cluster with independently tested recovery, so that cluster visibility and administration use the chosen open-source platform without becoming a workload-recovery dependency.
+
+**Repo:** Administrator operations and Platform operations definitions. **Covers:** FR-9, FR-10, NFR-3, AR-59. **Dependencies:** 4.26 target qualification, 4.27 accepted retirement and 4.1 accepted supported workload-cluster upgrade; precedes staging foundations and G1.
+
+Acceptance criteria:
+
+1. Provision the approved dedicated management VM/K3s cluster and deploy the exact qualified Rancher Helm release, required certificates, agents and backup operator from retained identities. Record actual versions, placement, resource use, licensing and owner. Use a Kubernetes installation with declared single-node limitations.
+2. Configure the declared private TLS UI/API endpoint, verified trust chain and required agent connectivity. Demonstrate private authorized access and public/unauthorized denial. Inspect the registration manifest and its authority before applying it; do not use an insecure unverified download as the installation procedure.
+3. Register the existing kubeadm cluster identity as generic/imported and prove a healthy agent connection and representative read/admin operations. Preserve native maintenance and external-etcd recovery; do not recreate the workload cluster or enable unattended Kubernetes upgrades.
+4. Qualify administrator authentication/MFA, narrowly scoped deputy recovery access, token custody/rotation and revocation. Prove staging users, workload/service identities and executor credentials cannot obtain global/cluster-owner authority, production proxy access or usable production credentials through Rancher.
+5. Inventory required agent namespaces, service accounts, cluster roles, CRDs and admission endpoints. Bound any necessary system-namespace security exception to those resources. Preserve application namespace restrictions, network policy and executor authority. Do not enable optional app/platform stacks or Fleet application reconciliation as part of registration.
+6. Prove existing workload/namespace/PVC preservation and smoke outcomes against the post-upgrade baseline. Re-run affected access checks. Record any new reconcilers and demonstrate that application deployment remains owned by the existing qualified workflow.
+7. Create encrypted immutable off-node management backups and separately retain required encryption configuration/keys, TLS material, definitions and management-cluster recovery inputs. Restore into an isolated non-production-connected target and verify the manager's configuration and authorized state. State clearly that this backup does not recover downstream business data or external etcd. Native workload backup coverage continues.
+8. Demonstrate direct native administration and a representative authorized maintenance/recovery operation while Rancher is unreachable. Rehearse stale manager/agent fencing and deny a revoked management credential after isolated restore before reconnection. Preserve the deputy's prohibition on approving releases or granting admission.
+9. Deliver pinned deployment/upgrade/backup/restore runbooks and actual profile inventory with currency, renewal, monitoring and recovery owners. Initial evidence is required before staging/G1; later integrated FR-9 retention, monitoring and RPO/RTO evidence follows Epic 8.
+
 
 ## Epic 5: Gate every release on exact-release staging evidence
 
@@ -2972,9 +3049,11 @@ So that production starts on infrastructure that is not already behind.
 
 **And** the actual versions are recorded as evidence
 
-**Given** KubeSphere
-**When** reviewed
-**Then** it is either current or removed
+**Given** the cluster-management inventory and Stories 4.27/4.28
+**When** G1 currency is accepted
+**Then** KubeSphere retirement is proven, and Rancher community, required agents, management cluster and backup operator have qualified supported, security-current pins
+**And** the retained evidence proves private access/public denial, independent native access and initial isolated management restore
+**And** every expiring management certificate or credential has a renewal owner and monitoring lead time.
 
 **Given** every expiring certificate and credential
 **When** inventoried
@@ -3480,7 +3559,8 @@ So that production exists, is monitored and is verified before anyone is admitte
 **Given** the verified deployment
 **When** G1 is evaluated
 **Then** each of these is recorded:
-- a supported Kubernetes minor;
+- a supported Kubernetes minor at its qualified current patch;
+- accepted 4.27/4.28 evidence for retired KubeSphere, private Rancher management, independent native administration and initial management backup/restore;
 - working GitHub delivery;
 - the off-site probe running at least every five minutes;
 - the G1 exposure, currency, Forgejo and bound decisions in place
@@ -3659,6 +3739,7 @@ So that shared infrastructure never leaks production data or authority.
 - volume or PersistentVolume binding;
 - production hostnames or certificates;
 - identity administration, including the staging management client and staging admins against the production realm, and McpCli tokens against the admin API;
+- Rancher UI/API, management-cluster administration, Kubernetes proxy and issued kubeconfigs/tokens, including attempts by staging admins or automation to gain global/cluster-owner roles, bind broader authority or reach production through the manager;
 - automation targets: production namespaces, environment-layer objects, registry writes, records, evidence, and the internal verification and recovery endpoints, including the staging recovery-hook principal and a prior-epoch credential
 
 **Then** every attempt is denied
@@ -3804,7 +3885,9 @@ So that no required state or authority is missed when production must be restore
 
 **Given** shared dependencies
 **When** inventoried
-**Then** the Keycloak database with its event export, each environment's OpenBao, the production access configuration and the revocation evidence are listed with owners, and evidence that each survives or can be restored
+**Then** the Keycloak database with its event export, each environment's OpenBao, Rancher management resources/configuration and required management-cluster recovery inputs, production access configuration and revocation evidence are listed with owners and recovery classes, and evidence that each survives or can be restored
+**And** management-backup decryption configuration/keys, TLS and registration authority, independent native access and fence/reissue procedures are inventoried under independent Administrator/deputy custody
+**And** management backup is distinguished from workload native-data and external-etcd recovery.
 
 **Given** each authority that survives a failure
 **When** inventoried
@@ -3956,6 +4039,12 @@ So that the failed site can never write again and the restore starts from a trus
 **When** prepared for G2
 **Then** they have been rehearsed on staging
 
+**Given** a surviving or restored Rancher manager, agent or registration authority
+**When** the failed environment is fenced and rebuilt
+**Then** old management/agent connections and credentials cannot control the recovered cluster
+**And** native recovery works with Rancher unavailable; the restored manager remains isolated until current authority and cluster identity are reconciled.
+
+
 ### Story 8.10: Restore keys and data into quarantine with module recovery hooks
 
 As Administrator or the recovery deputy,
@@ -4015,6 +4104,12 @@ So that a restore never brings back revoked access or grants anything new.
 **Then** they are re-applied
 **And** old credentials are proven to fail against the restored instances
 **And** EventStore's admission projection is rebuilt from the reconciled realm before any user, scheduled or asynchronous work runs
+
+**Given** restored Rancher users, role bindings, API tokens and cluster-registration credentials
+**When** authority is reconciled
+**Then** later revocations are reapplied, current approved operator grants bound restored access, and old tokens/proxy credentials are proven denied
+**And** no restore promotes a staging principal, expands deputy authority or grants production admission.
+
 
 ### Story 8.12: Verify, record the lost window and reopen service
 
@@ -4196,6 +4291,12 @@ So that G2 rests on measured recovery, not intent.
 **Then** it lists the recovered-data age, coverage status, full elapsed time, every substitution, every lost-window category, the grants to re-apply, the reduced-recovery state with the stop set, and denial of an admission revoked just before the failure, including a revocation lost before event export
 **And** the drill repeats monthly and after material storage, backup or recovery-mechanism changes
 
+**Given** loss or unavailability of the management plane during the isolated drill
+**When** workload and management recovery are exercised
+**Then** qualified native access completes the required workload recovery, and Rancher recovery/re-registration is measured within the applicable recovery plan
+**And** old management/agent authority stays fenced, restored-role reconciliation and revoked-token denial pass, and every necessary management step or substitution is included in the RTO accounting.
+
+
 ### Story 8.18: Retain production telemetry off-site for incident analysis
 
 As Administrator,
@@ -4277,7 +4378,8 @@ So that automatic promotion never runs on stale or unpatched infrastructure.
 
 **Given** a production attempt or a monthly drill
 **When** the check runs
-**Then** it compares each deployed shared component with the supported, security-current version in the inventory under the policy from Story 9.1, and records the result
+**Then** it compares each deployed shared component, including Rancher, required agents, management-cluster distribution and backup operator, with the supported, security-current inventory under Story 9.1
+**And** it checks the qualified management/workload version pairing and records exact deployed identities and the result.
 
 **Given** a failed check
 **When** an automatic promotion is evaluated

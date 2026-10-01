@@ -20,7 +20,7 @@ The gates run strictly in the order G1 → G2 → G3. The PRD's "before producti
 
 - **G1 rows:**
   - *Exposure, DNS and certificates:* exposure paths and ingress-closure mechanism, DNS zone owners, staging HTTP-01 and production ACME credentials, the internal executor verification endpoint, the retained registry's controls and off-site replica, the off-site monitor host, notification repository and dead-man workflow, actual GitHub issue delivery, and removal of public Keycloak admin, master-realm and cluster-console routes, verified by an external negative probe.
-  - *Infrastructure currency:* Kubernetes off 1.34 (end of life 2026-10-27) to a supported minor, plus every inventory pin current; renewal owners and monitor lead times for every expiring certificate and credential.
+  - *Infrastructure currency:* supported Kubernetes current patch before staging; accepted 4.27 KubeSphere retirement and 4.28 private Rancher/agent/management-cluster qualification with native-access and initial restore evidence; every inventory pin current; renewal owners and monitor lead times for every expiring certificate and credential.
   - *Forgejo runner relocation* off the cluster node, never shared with an executor.
   - *Monitor and admission bounds:* the availability-probe stop bound and its locked-attempt treatment, identity-provider event-capture lag and two-way admission-check cadence; mismatch notification and refusal to clear or approve while records and live admission differ.
 - **First production attempt row:** the G1 deployment is a production attempt, so its release-state controls apply first — the attempt, lock and stop store reachable from the production executor, recovery executor and monitor; provenance; interruption, epoch and timing; one recovery; the in-place recovery entry point; signed records; stale-attempt detection.
@@ -84,7 +84,7 @@ The gates run strictly in the order G1 → G2 → G3. The PRD's "before producti
 
 ### Around the gates
 
-- The pre-G1 Kubernetes 1.34 upgrade runs in place; staging on 1.34 after 2026-10-27 is an accepted risk until G1 (spine Release tiers, Accepted risks).
+- The Kubernetes upgrade precedes staging; delay blocks staging and does not authorize using 1.34 past its 2026-10-27 end of life. Sequence 4.26 retirement qualification → 4.27 KubeSphere retirement → 4.1 supported native hop → 4.28 private Rancher qualification → staging. Public administrative closure remains independently urgent. VM procurement and Rancher availability do not block native retirement/upgrade; current backup, compatibility, consistency, smoke and exact procedure gates remain binding (spine Cluster management, Release tiers, Accepted risks).
 - From G1, a pending shared-infrastructure change is first rehearsed on a production-profile copy on the prepared capacity during the monthly drill, except an urgent security patch applied in place with a recovery point and an Administrator record (spine Release tiers).
 - After DR, production runs in a recorded reduced-recovery posture until new prepared capacity is identified, a drill repeats and Administrator records the return to G2 conditions; the promotion stop stays set until staging is re-established (RRA After DR).
 
@@ -222,6 +222,6 @@ The module developer supplies:
 
 Spine Owned work requires this alignment before recovery or deployment stories are finalized; it is not an enrollment block.
 
-- **Spec package:** synchronized on 2026-09-28 with the finalized PRD, addendum and final architecture update 4, including its accepted retained-data compatibility or named-recovery rule. CAP-1–CAP-12, FR/NFR/SM IDs, AD-1–AD-15 references and numeric targets remain stable.
-- **PRD and addendum:** architecture adoption and update-4 confirmation are recorded; no stale spec-owner correction remains.
+- **Spec package:** synchronized on 2026-10-01 with the finalized PRD, addendum, final architecture update 4 and approved Rancher correction, including the retained-data compatibility or named-recovery rule and management authority/recovery boundary. CAP-1–CAP-12, FR/NFR/SM IDs, AD-1–AD-15 references and numeric targets remain stable.
+- **PRD and addendum:** architecture adoption, update-4 confirmation and the approved 2026-10-01 Rancher decision are recorded; no stale spec-owner correction remains.
 - **Still owned upstream:** Folders, Projects and McpCli documentation override records remain with their module documentation owners under the spine's Source-document alignment row.

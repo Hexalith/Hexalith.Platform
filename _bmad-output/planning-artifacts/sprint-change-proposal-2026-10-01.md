@@ -1,19 +1,22 @@
 ---
 title: Replace KubeSphere with Rancher
 date: 2026-10-01
-status: proposed
+status: approved
 review_mode: batch
 scope: moderate
 approver: Administrator
-approval: pending
-implementation_authorized_by_this_proposal: false
+approval: approved
+workflow_status: complete
+planning_application: complete
+planning_changes_authorized: true
+cluster_mutation_authorized_by_this_proposal: false
 ---
 
 # Sprint Change Proposal: Replace KubeSphere with Rancher
 
 Replace KubeSphere 4.2.1 with the Apache-2.0 Rancher community distribution. Add three stories to Epic 4, retire KubeSphere safely before the Kubernetes 1.35 hop, and install Rancher on a dedicated management VM after the hop. Import the existing kubeadm cluster; continue native Kubernetes maintenance and the existing application deployment process.
 
-This is a **moderate course correction** requiring backlog coordination and an architecture amendment. The twelve epics, seven MVP modules, release ownership and G1/G2/G3 objectives remain achievable. This document contains the complete proposed edits and handoff. Canonical artifacts and the live cluster have not been changed by this proposal.
+This is a **moderate course correction** requiring backlog coordination and an architecture amendment. The twelve epics, seven MVP modules, release ownership and G1/G2/G3 objectives remain achievable. This document retains the complete approved before/after edits and handoff. Administrator approved it on 2026-10-01 with “I approve.” Canonical planning changes implement that decision; live operations retain their exact qualified execution gates.
 
 ## 1. Issue summary and evidence
 
@@ -557,7 +560,7 @@ Implementation succeeds when:
 
 ### Approval and next action
 
-**Pending:** Administrator approval of this complete proposal, including the dedicated single-node K3s management VM, sequencing and backlog additions. The next planning action after approval is canonical artifact/backlog synchronization and creation of the scoped migration inputs. Live deletion, installation and the Kubernetes hop still require their qualified execution evidence and exact procedure approvals; those approvals are not fabricated by accepting this document.
+**Approved on 2026-10-01:** Administrator said “I approve,” accepting the complete proposal, dedicated single-node K3s management VM, sequencing and backlog additions. Canonical artifact/backlog synchronization and scoped migration inputs implement that decision. Live deletion, installation and the Kubernetes hop still require their qualified execution evidence and exact procedure approvals; those approvals are not fabricated by accepting this document.
 
 ## 6. Change-navigation checklist record
 
@@ -574,7 +577,7 @@ Implementation succeeds when:
 | 2.4 Invalidated/new epics | [x] | None; existing recovery and isolation epics accommodate management state. |
 | 2.5 Priority/order | [x] | Retirement before the native hop; replacement qualification before staging; exposure closure remains independently urgent. |
 | 3.1 PRD | [x] | P1–P5 add licensing, management and recovery consequences without reducing MVP. |
-| 3.2 Architecture | [x] | A1–A6 cover placement, stack, ownership, access, recovery, diagram and accepted-risk alignment. Ratification is part of the approved handoff. |
+| 3.2 Architecture | [x] | A1–A6 cover placement, stack, ownership, access, recovery, diagram and accepted-risk alignment. The architecture update gate passed and ratification is recorded. |
 | 3.3 UI/UX | [N/A] | No standalone UX artifact found. Operator flow/runbook changes are explicitly specified; product user journeys preserve current scope. |
 | 3.4 Other artifacts | [x] | Spec, current stories/context, runbooks, inventory, monitoring and sprint tracking listed with concrete changes. |
 | 4.1 Direct adjustment | [x] | Viable; medium effort, high operational risk; recommended. |
@@ -586,10 +589,22 @@ Implementation succeeds when:
 | 5.3 Approach/rationale | [x] | Section 3, alternatives and risks. |
 | 5.4 MVP/action plan | [x] | Preserved goals; explicit sequence, estimates, timing and independent execution gates. |
 | 5.5 Handoff | [x] | Moderate scope; named Administrator/PO/DEV/Architect/QA responsibilities. |
-| 6.1 Checklist review | [x] | Applicable analysis complete; approval/application/handoff follow-ups identified below. |
+| 6.1 Checklist review | [x] | Applicable analysis, approval, planning application and handoff are complete. |
 | 6.2 Proposal accuracy | [x] | Source anchors, story IDs, local links, ordering, evidence scope and time conversion checked. |
-| 6.3 Explicit approval | [!] | Await Administrator yes/no/revise and any conditions; Batch preference is not implementation approval. |
-| 6.4 Sprint-status update | [!] | Apply the three proposed backlog entries only after approval; retain all current progress. |
-| 6.5 Confirm handoff | [!] | Handoff plan is prepared; confirm approved responsibilities/conditions and next action after review. |
+| 6.3 Explicit approval | [x] | Administrator approved the complete proposal on 2026-10-01 with “I approve”; no additional conditions stated. |
+| 6.4 Sprint-status update | [x] | Added 4.26–4.28 as backlog; retained every prior story/epic status. |
+| 6.5 Confirm handoff | [x] | Approved ownership is captured in the synchronized plans, three scoped story inputs, migration spec and operational package; next implementation input is 4.26 qualification. |
 
-The invoked [correct-course skill](../../.agents/skills/bmad-correct-course/SKILL.md) requires explicit approval of the complete proposal before implementing the planning changes. The proposal is ready for Batch review; the workflow is awaiting that decision.
+The invoked [correct-course skill](../../.agents/skills/bmad-correct-course/SKILL.md) requires explicit approval of the complete proposal before implementing the planning changes. Approval and planning application are recorded above; consistency verification and final handoff are recorded in the execution log below.
+
+## 7. Approval, execution and handoff log — 2026-10-01
+
+- **Approval:** Administrator said “I approve” after Batch review of this complete proposal; no additional conditions. The subsequent “continue” steered the same approved work.
+- **Classification:** Moderate; existing epic/backlog coordination with an architecture update. No epic or existing story is renumbered or removed.
+- **Applied:** PRD/addendum; architecture convention, stack/release-tier/diagram/accepted-risk updates; epic requirements and 4.1/4.2/4.9/4.14/6.6/6.23/7.6/8.4/8.9/8.11/8.17/9.2 criteria; spec constraints/acceptance/sequencing/glossary and dated brownfield note; current Epic 4 context and active 4.1/4.2 handoffs; sprint tracking; append-only decision logs. Historical signed evidence and the exact hashed maintenance proposal are preserved.
+- **Scoped implementation inputs:** [4.26 qualification](../implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md), [4.27 retirement](../implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md), [4.28 Rancher deployment](../implementation-artifacts/4-28-deploy-rancher-and-register-the-existing-cluster.md), [migration spec](../specs/spec-kubesphere-to-rancher/SPEC.md) and [operator package](../../eng/cluster-management/README.md). All three new sprint entries remain backlog; every previous status is retained.
+- **Architecture review:** [Gate summary](architecture/architecture-platform-2026-09-27/reviews/update-2026-10-01-rancher/gate-summary.md) passes rubric/PRD, reality/spec and adversarial/proposal reconciliation. Clarifications capture the exact pre-lock urgent path, explicit sequence, manager backup scope/tool qualification, independently retained current role/revocation authority and manager-independent workload recovery. Stable AD-1–AD-15 remain.
+- **Verification:** Zero spine-linter findings; links/fences/whitespace, story IDs/criterion placement, YAML and dependencies checked. Original maintenance evidence remains intact. This is document validation; no cluster qualification, removal, installation, upgrade or runtime test is claimed.
+- **Route and next action:** PO/Developer receives synchronized backlog and scoped implementation inputs; Architect’s amendment is finalized; Administrator owns qualified access/capacity and exact execution decisions; QA/dependency owners verify actual outcomes. Begin 4.26 native-access/inventory/version/retirement qualification, then follow the recorded dependencies. No external stakeholder notification or automated operational dispatch was performed.
+
+The Correct Course workflow is complete. Live implementation acceptance remains with the three migration stories and existing upgrade gates, as specified in the approved plan.

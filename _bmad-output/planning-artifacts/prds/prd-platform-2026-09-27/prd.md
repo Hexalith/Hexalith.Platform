@@ -2,7 +2,7 @@
 title: Hexalith Platform Product Requirements
 status: final
 created: 2026-09-27
-updated: 2026-09-28
+updated: 2026-10-01
 ---
 
 # PRD: Hexalith Platform
@@ -40,6 +40,8 @@ User journeys are represented by capability and acceptance scenarios because thi
 The MVP covers EventStore, Tenants, Parties, Folders, Projects, McpCli, and Memories across local development/debugging, local tests, automated CI tests, staging, and production. It supports both a complete environment and the minimum environment needed for individual-module development. Platform's longer-term scope includes all Hexalith servers and components; the initial module set is not a permanent exclusion of the others.
 
 The designated hosted Kubernetes installation is at `192.168.1.30`; this address does not establish cluster topology or availability. Staging and production may share physical capacity and the existing identity provider; their application state and credentials remain isolated in separate environment instances as selected by the architecture. User access to production requires explicit production-user declaration.
+
+Hosted cluster administration uses a maintained open-source management platform whose required core management functions do not depend on vendor activation. Rancher community replaces KubeSphere. The management UI and API are reachable only through the declared private Administrator path. Independently retained native Kubernetes access supports maintenance and recovery when the manager is unavailable. This substitution does not require changing the existing workload-cluster distribution or establish high availability.
 
 ### Release scope and production entry
 
@@ -255,7 +257,7 @@ Administrator or the deputy can restore production from usable recovery points o
 **Backups, recovery points and monitoring**
 
 - Backup coverage includes the authoritative databases, files, and configuration identified by each deployed module, plus Platform's retained releases and recovery records. EventStore history alone is not assumed sufficient to restore every module. Modules classify state as authoritative, rebuild-only or dependent on surviving live authority, and supply the required restoration, reconciliation and integrity checks.
-- The recovery inventory includes required identity, secret and other shared dependencies, including Keycloak, production access configuration and revocation evidence. Each dependency has an identified recovery owner and evidence that it remains available or can be restored within the recovery procedure.
+- The recovery inventory includes required identity, secret and other shared dependencies, including Keycloak, Rancher management state and configuration, its management-cluster recovery inputs, production access configuration and revocation evidence. Each dependency has an identified recovery owner and evidence that it remains available or can be restored within the recovery procedure. Rancher management backup does not substitute for workload-data or workload-cluster recovery. Native cluster access, management-backup decryption material and recovery procedures remain independently available to Administrator and the deputy; restored management authority is fenced and reconciled before reconnection.
 - Backup or incremental-copy runs start every **30 minutes**. Retention provides frequent recovery points for **seven days** and daily recovery points for **30 days**, including the base backups and incremental data needed to restore them.
 - A usable recovery point is a complete, verified cross-module recovery set at one declared cut, with compatible release/configuration identity and required security and erasure context, including identity-provider changes exported within their declared lag bound. Integrity, complete incremental chains and decryption are verified when the point is recorded. Independently timed snapshots or successful jobs alone do not establish a usable point; RPO age is measured from the declared cut.
 - Recovery points are encrypted, immutable, restricted and off-site. Required artifacts, access and decryption material remain independently available to Administrator and the deputy, with tenant-key custody separated from ordinary data backups. Prepared replacement capacity is identified and exercised. Off-site backups alone do not prove whole-site recovery capability.
@@ -296,6 +298,8 @@ Platform must host the supported MVP modules in staging under `hexalith.com` and
 - Shared-infrastructure changes run as one controlled change covering both environments, after a complete recovery point. They re-run the smoke checks of the release each environment serves and the NFR-3 isolation checks. From G1, a change is first rehearsed on a production-profile copy on prepared capacity; an urgent security patch may instead be applied in place with an Administrator record.
 - A failed shared-infrastructure verification is a non-working outcome that sets the promotion stop and makes production degraded. Administrator, who owns shared-infrastructure changes, recovers by a forward revert; disaster recovery, if needed, follows FR-9.
 - A shared-infrastructure currency check compares deployed shared components with the supported, security-current versions in the environment profile inventory. A failed check blocks automatic promotion.
+
+- Rancher server, required downstream agents and management-cluster changes follow the shared-infrastructure change and currency controls. Application deployment identities receive no Rancher administrative authority. A manager outage does not remove independently qualified native maintenance and recovery access. Management UI/API, Kubernetes proxy access and credentials issued through the manager are included in the affected NFR-3 tests.
 
 #### FR-11: Require explicit production-user access
 
@@ -404,7 +408,7 @@ The product rules above are settled except where a row below routes a decision t
 | Define the module candidate revision (pull-request head or merge result), the merge or release decision that CI candidate evidence gates, reuse of accepted evidence for unchanged modules, and the attachment hold limit | Platform with Builds | Before accepting CI integration evidence |
 | Qualify McpCli enrollment and selected-environment contract matching, surface/actor authorization and named positive/refusal demonstrations | Platform, McpCli and EventStore maintainers | Before FR-12/SM-1/SM-4 acceptance |
 | Qualify environment-specific identity/state, automation permissions, network isolation and explicit production admission | Platform with Administrator and module maintainers | Before G2 and after access changes; controlled test admission precedes general user opening |
-| Supported infrastructure, ingress/DNS/certificates, executor/probe access, independent monitoring and verified GitHub delivery | Administrator with Platform implementation | Before G1; retain evidence of actual configuration and versions |
+| Supported infrastructure, KubeSphere retirement and qualified private Rancher management with independent native access, ingress/DNS/certificates, executor/probe access, independent monitoring and verified GitHub delivery | Administrator with Platform implementation | Retirement before the Kubernetes hop; Rancher qualified before staging; retain actual configuration/version, access and recovery evidence before G1 |
 | Retained artifacts, evidence-age policy, attempt serialization, compatibility rehearsal, interruption/recovery bounds, notification delivery and promotion-stop clearance | Platform with Builds, EventStore and Administrator | Before applicable production attempts; SM-5 qualification before G3 |
 | Declare the availability-probe stop bound consistent with FR-7 thresholds, including how probe failures during a locked attempt count; the identity-provider capture-lag bound; the admission-mismatch check cadence; and the shared-infrastructure currency check's inventory, cadence, allowed lag and effect on approved attempts | Platform with Administrator | Probe, capture-lag and admission-check bounds before G1; currency check before G3 |
 | Reduced-recovery operating rules: whether automatic promotion resumes before the return to G2 conditions, restore-exercise cadence while prepared capacity is consumed, and re-establishing staging after disaster recovery | Administrator with Platform architecture | Before G2 |

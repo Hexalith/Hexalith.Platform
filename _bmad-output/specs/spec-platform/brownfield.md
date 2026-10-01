@@ -56,3 +56,7 @@ These are current-state facts that affect implementation, observed read-only on 
 
 - The Hexalith organization has two owners, and its default repository permission is write.
 - The Builds ruleset bypass actors are organization admins and one named member; organization owners can edit rulesets. The spine's First publication row tightens this.
+
+## Approved management direction — 2026-10-01
+
+Administrator approved the [Rancher correction](../../planning-artifacts/sprint-change-proposal-2026-10-01.md): a dedicated private single-node K3s manager imports the existing kubeadm cluster; retirement precedes the supported hop and Rancher qualification precedes staging. Observations above remain historical. Story 4.0 is now done with [signed final recovery evidence](../../implementation-artifacts/4-0-prove-off-node-backups-and-isolated-restores.md), subject to its validity policy. The [2026-10-01 continuation](../../implementation-artifacts/evidence/epic-4/4-1/20261001t114842z-maintenance-continuation/summary.md) records remaining upgrade blockers and the earlier time-bound gate. Planning approval does not establish retirement, Rancher installation or an open upgrade gate.

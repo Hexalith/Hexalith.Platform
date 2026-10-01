@@ -67,3 +67,9 @@ The storage probe is a cluster mutation even though disposable; execute it only 
 | Forgejo workload and `forgejo-runner/Deployment/forgejo-runner` | Discover and record exact Forgejo namespace/kind and baseline UI/repository health; runner status and job expectation match baseline. |
 
 The historical inventory does not establish today's resource versions, health, Forgejo workload identity, required StorageClass set or complete installed add-on inventory. Local-only preparation leaves those fields pending until actual live collection is authorized.
+
+## Approved management migration ordering — 2026-10-01
+
+The [approved correction](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-10-01.md) introduces [qualification and retirement handoff](../cluster-management/README.md): 4.26 qualifies retirement, 4.27 retires KubeSphere, 4.1 clears its full gate and upgrades, then 4.28 qualifies private Rancher. Rancher installation is not an upgrade prerequisite.
+
+Current `MAINTENANCE.md` and its SHA-256 remain the earlier unapproved proposal. After actual retirement, issue a new revision using the remaining workload/controller/admission census, remove obsolete KubeSphere pause/restart steps, preserve the old digest and bind exact new procedure/outage approval. Collect fresh post-retirement etcd/configuration and current qualifying backup/preflight/smoke evidence before opening the signed hop gate. Planning approval does not waive remaining Forgejo, compatibility/admission, authenticated-smoke or recovery requirements.

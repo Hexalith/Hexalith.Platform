@@ -106,3 +106,7 @@ Full probe headers and operational records remain access controlled. Do not reta
 **When** registry garbage collection runs
 **Then** every retained index, platform manifest, config, layer and artifact/referrer survives
 **And** uncached authenticated post-GC pulls with correlated audit evidence prove preservation
+
+## Approved management handoff — 2026-10-01
+
+The [approved Rancher correction](../planning-artifacts/sprint-change-proposal-2026-10-01.md) retains this story’s private-CLI/removal option. Story 4.27 owns retirement; this story owns public exposure closure and external negative tests. Close existing public administrative routes independently of Rancher installation. Revalidate exact route/DNS/UID state; preserve private authorized administration and approved public OIDC. Story 4.28 qualifies the later private Rancher UI/API/proxy and issued-credential path before accepting that endpoint. Keep registry-consumer, anonymous-denial and retained-digest GC criteria and `in-progress` status.

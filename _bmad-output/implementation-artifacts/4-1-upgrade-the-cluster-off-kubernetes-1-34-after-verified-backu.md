@@ -12,6 +12,7 @@ context:
   - '{project-root}/_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md'
 depends_on:
   - '4-0-prove-off-node-backups-and-isolated-restores'
+  - '4-27-retire-kubesphere-without-changing-workload-data'
 ---
 
 # Story 4.1: Upgrade the cluster off Kubernetes 1.34 after verified backups
@@ -155,3 +156,21 @@ Production closeout at `2026-10-01T11:44:20Z` confirms API/kubelet v1.34.9, node
 ## Maintenance end-time amendment — 2026-10-01
 
 The Administrator corrected the maintenance end with “end time is tomorrow 2pm.” The effective end is **2026-10-02 14:00 Europe/Paris** (`2026-10-02T12:00:00Z`). The immediate start, this conversation as incident channel and acknowledged roles remain recorded; the prior end-time record is preserved and superseded by the [amendment metadata](evidence/epic-4/4-1/20261001t114842z-maintenance-continuation/maintenance-metadata.json). The existing backup gate expires at **2026-10-02 08:16:52 Europe/Paris** (`06:16:52Z`), before the extended window ends. A hop at or after expiry requires fresh signed backup/restore validation, and all other technical gates remain required. No production mutation is authorized by this time amendment; the story remains `in-progress`.
+
+## Approved course correction — 2026-10-01
+
+Administrator approved the [complete Rancher proposal](../planning-artifacts/sprint-change-proposal-2026-10-01.md) with “I approve.” The [migration spec](../specs/spec-kubesphere-to-rancher/SPEC.md) supersedes retaining/licensing KubeSphere as the upgrade path: 4.26 qualifies retirement, 4.27 retires it, this story performs the supported native hop, then 4.28 qualifies private Rancher. Historical observations and signed preparation records above remain unchanged.
+
+**Given** Story 4.27's signed retirement and workload-preservation result
+**When** the upgrade mutation gate is evaluated
+**Then** KubeSphere's runtime, owned blocking admission dependencies and public route are absent, and any retained/replaced dependency has a named qualified owner
+**And** a fresh post-retirement external-etcd recovery point and matching node/configuration inventory are independently verified
+**And** the complete remaining API/add-on/admission compatibility assessment, source workload consistency findings, authenticated smoke expectations and exact revised maintenance procedure are cleared for the selected supported target patch
+**And** removing KubeSphere alone never opens the hop gate or extends evidence validity.
+
+- [ ] Require accepted 4.27 signed retirement/preservation and private native-access proof.
+- [ ] Obtain fresh post-retirement etcd and matching node/configuration recovery evidence; revalidate 4.0 proofs and independent remote readability.
+- [ ] Complete remaining API/operator/admission checks, Forgejo consistency disposition and authenticated workload expectations.
+- [ ] Revise the exact maintenance procedure from the remaining controller/admission/outage census; preserve its old digest and bind exact revised procedure/outage approval and signed hop gate.
+
+Status stays `in-progress`; planning approval neither opens the gate nor extends the 2026-10-02T06:16:52Z backup expiry. The disclosed full-OS reconstruction limitation is not added as a new immediate prerequisite.

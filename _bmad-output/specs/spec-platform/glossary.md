@@ -107,3 +107,9 @@ Product terms come from the PRD. Architecture terms point to their spine definit
 - **Human production-admission group, synthetic-admission group, synthetic tenant:** AD-6; spine "Synthetic identities".
 - **G1, G2, G3:** RRA "Production entry gates"; see [sequencing.md](sequencing.md).
 - **Owned work gates:** spine "Owned work"; see [sequencing.md](sequencing.md#owned-work-by-gate).
+
+## Cluster management terms
+
+- **Management/local cluster:** the dedicated private single-node K3s cluster hosting Rancher and its management backup operator, distinct from the existing workload cluster, with no HA claim.
+- **Registered/imported/downstream cluster:** the existing kubeadm workload cluster registered in Rancher, retaining native lifecycle and external-etcd recovery. Import is not a distribution migration or cluster rebuild.
+- **Independent native admin path:** private Kubernetes/SSH access with independently retained identity/key custody that works without either management console. A Rancher-proxy kubeconfig is not this path.

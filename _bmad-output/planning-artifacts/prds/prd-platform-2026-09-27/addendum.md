@@ -2,7 +2,7 @@
 title: Hexalith Platform PRD — Supporting Context
 status: final
 created: 2026-09-27
-updated: 2026-09-28
+updated: 2026-10-01
 ---
 
 # Supporting context
@@ -367,6 +367,7 @@ The [accepted architecture](../../architecture/architecture-platform-2026-09-27/
 | Build and deployment execution | Public Platform/Builds workflows publish and attest retained artifacts on disposable hosted runners. A private operations repository whose only writers are the named writers supplies allowlisted deployment workflows to separate staging and production executors; the production executor is outside the application cluster. Credentials are environment-scoped and never available to PR/test code. An off-site recovery executor runs replacement-capacity recovery; in-place recovery runs on the production executor, started by Administrator or the deputy. |
 | GitHub plan and control boundary | Remain on GitHub Free. The operations and notification repositories have two named writers, Administrator and the second Hexalith organization owner, with the organization base permission set to read or none; either writer can change what executors run, which is an accepted risk. Enforcement sits at the executor/target through allowlists, signed Administrator records and OIDC or executor-held credentials; repository write never authenticates a record. Adopt GitHub Team controls once anyone beyond the named writers gains write or admin access. The deputy needs no repository write access. |
 | Secrets and infrastructure | Environment-current secrets and authority advance independently of application rollback. OpenBao uses per-app bootstrap credentials with named renewal owners; tenant-key custody is separate. The environment profile inventories supported, security-current runtime/data-service versions and qualified artifact combinations. |
+| Cluster management | Rancher community on a dedicated, privately reachable K3s management VM registers the existing kubeadm workload cluster. Exact versions, resource budget, permissions and licenses are qualified in the shared profile inventory. Native kubeconfig/SSH and workload recovery remain independent. The initial management server is single-node and does not establish HA. KubeSphere is retired before the workload Kubernetes upgrade; Rancher is qualified before staging. |
 | Runtime integration | Dapr/shared SDKs provide infrastructure access, with named Memories FalkorDB, Redis search/vector and preflight-dedup adapter exceptions. Other direct Redis coordination is transitional and gates G2, not local/CI enrollment. New exceptions need recorded architecture-owner acceptance. |
 
 Platform's MVP envelope governs the stricter Folders and Projects infrastructure clauses: one-hour ordinary-data RPO, four-hour disaster RTO under declared coverage, independent backup/restore, no HA or standby requirement and no uptime percentage. Projects retains its module process/task recovery behavior; its durable task engine is outside Platform MVP. Module behavior, authorization, erasure safeguards and release gates remain binding. Upstream documentation alignment is maintenance, not an additional enrollment gate.
@@ -405,3 +406,7 @@ Later architecture decisions add:
 - shared Keycloak, Dapr control plane and ingress.
 
 The architecture permits the recorded pre-production Kubernetes support exception only until G1. Concrete version currency is checked through the profile inventory; historical stack observations do not establish a qualified production combination.
+
+## Approved cluster-management correction — 2026-10-01
+
+Administrator approved the [complete Rancher course correction](../../sprint-change-proposal-2026-10-01.md) with “I approve.” The hosted management row adopts the dedicated private single-node K3s manager and generic import of the existing kubeadm cluster. Exact pins, authentication, placement/cost and deletion scope remain qualification inputs, not deployed capabilities. Retire KubeSphere before the supported hop; qualify Rancher before staging. The synchronized architecture, spec and backlog preserve historical observations and completed backup proof.

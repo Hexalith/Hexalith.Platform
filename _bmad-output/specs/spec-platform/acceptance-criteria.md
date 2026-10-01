@@ -178,6 +178,8 @@ Spine: `../../planning-artifacts/architecture/architecture-platform-2026-09-27/A
 
 ## CAP-9 — Production backup and disaster recovery (NFR-2)
 
+- Include Rancher management state/configuration, separately retained decryption configuration/keys and management-cluster recovery inputs in the shared recovery inventory, with owners, recovery classes and fence/reissue procedures. Management backup never substitutes for downstream workload-data or external-etcd recovery. Prove independent native maintenance/recovery when Rancher is unavailable and an initial isolated manager restore in 4.28; integrated Epic 8 drills measure every necessary management step within existing RPO/RTO accounting. Before reconnecting, fence stale managers/agents, reconcile restored roles to independently retained Administrator-approved management grant/revocation records with complete lineage, fail closed on missing/conflicting/gapped authority, and prove revoked token/proxy credentials fail. Recovery neither grants admission nor expands deputy authority.
+
 **Coverage**
 
 - Backups cover the authoritative databases, files and configuration identified by each deployed module, plus Platform's retained releases and recovery records.
@@ -222,6 +224,8 @@ Spine: `../../planning-artifacts/architecture/architecture-platform-2026-09-27/A
 - **Mechanism guidance:** use database-native backup and incremental or log-archive mechanisms suited to the actual storage engines. Improve those native capabilities before building a custom backup engine or custom replication for a tighter RPO. A raw volume or snapshot copy never counts toward a recovery point (AD-12 Model).
 
 ## CAP-10 — Isolated staging and production (NFR-3)
+
+- Rancher UI/API, its management cluster, Kubernetes proxy and issued credentials are private administrative boundaries. Authorized Administrator access works, public/unauthorized access fails, and staging users, workload identities and executors cannot obtain global/cluster-owner authority or production proxy/credential access. Required agent privileges/system-namespace exceptions are inventoried and bounded; application restrictions and existing deployment writers remain intact. Re-run affected tests after manager/agent or access changes (4.27/4.28; 7.6).
 
 - The MVP module set is reachable in both environments through its supported interfaces; in production, only from G2 onwards. Each module declares its external surfaces, required authorization and exposure class; a disabled or private surface is not advertised.
 - McpCli runs on the caller's host and reaches the selected environment through its permitted gateway.
