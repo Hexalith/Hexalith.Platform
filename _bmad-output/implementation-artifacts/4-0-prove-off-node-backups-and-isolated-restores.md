@@ -102,6 +102,18 @@ The following infrastructure decisions are required:
 - [ ] Assemble and sign `backup-gate.json` containing the final evidence-manifest digest, the three proof digests/signatures, recovery-point IDs, data cutoffs/RPO results, off-node object/storage-property validation, isolated-target validation, cleanup proof, verification timestamps, policy digest and expiry time.
 - [ ] Validate with the read-only validator credential rather than the writer, without relying on values the capture scripts recorded. Check the signatures, source-incarnation bindings, and every manifest entry and storage property against provider/API evidence plus read-back checksums. The Administrator signs `validation.json`, and Story 4.0 is marked `done` only if all three proofs pass.
 
+### Final-run preparation (Administrator decision, 2026-10-01)
+
+On 2026-10-01 the Administrator decided to prepare the final run now and to run it only when the Story 4.1 window is scheduled. This preparation takes no captures, causes no outage, mutates nothing in the cluster or bucket, and signs nothing. The rehearsal bundle `~/hexalith-recovery-evidence/4-0/20260929t124806z/` stays byte-for-byte unchanged.
+
+- [x] Stage the final-run tool set in `~/hexalith-recovery-evidence/4-0/final-run-tools/` (mode `0700`, files `0600`, scripts `0700`, outside Git), copied from the rehearsal `tools/`. Leave out `RID`, so a tool run from the staging directory fails instead of writing into any bundle. `final-run-order.sh new` run from there must create the fresh bundle, copy every tool into it and seed `signatures/allowed_signers` with only the Administrator key above.
+- [x] Apply the single-signer decision. In `policy.py`, the accountable operator, cleanup owner, cleanup signer and validator are all the Administrator. Mark the 2026-09-29 `pduong@itaneo.com` decision superseded by the 2026-10-01 decision and state that validator-credential custody stays with the Administrator. In `proofs.py`, set `validator` to the Administrator. In the final run, fail instead of falling back when `cleanup/restore-target-cleanup.json` is absent. In `sign.sh`, `final-run-order.sh` and every read-back identity string, remove the second-signer flow and `independent-validation.json`.
+- [x] Add a `cleanup` output step that writes unsigned `cleanup/restore-target-cleanup.json` from the `cleanup_check.py` result. It records the absence checks for every namespace, workload, RBAC, network, PVC, PV, VolumeSnapshot and provider object, plus the deletion and absence of the temporary OpenBao seal-key copy.
+- [x] Add `gate.py`. It writes `gate/backup-gate.json` with every field listed in the `backup-gate.json` task above. It refuses to write when any input record lacks a valid signature against `signatures/allowed_signers`, its `verificationResult` is not `pass`, or it is older than the policy's maximum proof age.
+- [x] Add `validate.py`. It loads only `~/.config/hexalith-recovery/validator.env` and never the writer credential, and it writes unsigned `validation/validation.json`. It re-reads every manifest object and every uploaded signed record, recomputes SHA-256 and byte length, and checks the bucket and object versioning, `COMPLIANCE` lock and retain-until date against policy, plus encryption. It verifies every signature. It re-reads source UIDs and system incarnations read-only from the live API and compares them with the proofs. It also re-checks the RPO and proof age at validation time. Any failure or skipped check makes the result `fail`. If a check would need another credential or a mutating call, record it in the output as a manual final-run step; do not substitute a weaker check.
+- [x] Wire `final-run-order.sh` steps `cleanup`, `records`, `gate` and `validate` into the signing order: Administrator signs cleanup → proofs and manifest → gate → `validation.json`, uploading each with `upload_signed.py`.
+- [x] Commit a sanitized `evidence/epic-4/4-0-final-run-tools.md` listing each staged file's SHA-256 and the changes made, and update the open items below.
+
 ## Evidence contract
 
 Each sanitized proof summary must contain `schemaVersion`, `system`, `sourceIdentity`, `sourceUid`, `sourceIncarnation`, `sourceIndex`, `dataCutoff`, `measuredRpo`, `recoveryPointId`, `capturedAt`, `offNodeObjectIdentity`, `artifactSha256`, `storageProperties`, `isolatedTargetIdentity`, `isolationChecks`, `restoredAt`, `verificationChecks`, `verificationResult`, `cleanupProofSha256`, `operator`, `validator`, `policySha256`, `evidenceManifestSha256`, `expiresAt` and `signatureIdentity`. The signed full record and detached signature remain in the approved access-controlled evidence store; the committed summary contains no credentials, tokens, keys, database rows, tenant payloads or Secret values.
@@ -136,6 +148,17 @@ Story 4.1 must validate `backup-gate.json` and the three signed proofs directly.
 **Then** the Administrator's signature on `validation.json`, made after a read-only re-check with the validator credential, covers the final evidence manifest, every object checksum/storage property, source-incarnation and data-cutoff/RPO binding, isolation tests, successful Memories resume/reconciliation and signed residual-storage cleanup
 **And** any missing or failed validation blocks the upgrade
 
+**Given** the staged final-run tools
+**When** `grep -rn 'pduong\|independent-validation'` runs over them
+**Then** the only matches are the record that the 2026-09-29 decision is superseded and the optional read-only access note
+**And** `python3 -m py_compile` passes for every Python file and `bash -n` passes for every shell script
+
+**Given** the unsigned rehearsal bundle
+**When** `gate.py` and `validate.py` run against it in a dry-run mode that writes output only under the session scratch directory
+**Then** `gate.py` refuses because the proofs are unsigned
+**And** `validate.py` re-reads every manifest object with the validator credential, reports matching checksums and storage properties, and returns `fail` only for missing signatures, expired proof age or RPO staleness
+**And** the SHA-256 of every file in the rehearsal bundle is identical before and after
+
 ## Implementation status (2026-09-29, rehearsal `20260929t124806z`)
 
 The sanitized summary is [4-0-recovery-run-20260929t124806z.md](evidence/epic-4/4-0-recovery-run-20260929t124806z.md). The full records are in `~/hexalith-recovery-evidence/4-0/20260929t124806z/`.
@@ -152,7 +175,90 @@ The rehearsal covered all three systems. Each got an off-node, COMPLIANCE-locked
 
 Nothing from this run is signed, per the Administrator's decision. The kept procedure for the final run is `tools/final-run-order.sh` in the bundle.
 
+## Final-run preparation status (2026-10-01)
+
+The final-run tools are staged in `~/hexalith-recovery-evidence/4-0/final-run-tools/`, with no `RID` and with a `SHA256SUMS` that `new` enforces. They were revised after the review below. The sanitized file list, digests, changes, self-test and dry-run results are in [4-0-final-run-tools.md](evidence/epic-4/4-0-final-run-tools.md).
+
+- **Single-signer changes:** `policy.py`, `proofs.py`, `sign.sh`, `final-run-order.sh` and the read-back identity strings now name the Administrator as the only signer and as validator.
+- **New tools:** `cleanup_record.py`, `gate.py`, `validate.py`, `s40verify.py` and `selftest.sh`.
+- **Signing order:** `final-run-order.sh` enforces it: the policy before any capture, then cleanup, then the manifest and proofs, then the gate, then `validation.json`. Each record is uploaded through `sign.sh`.
+- **Re-runs:** signed records cannot be overwritten by a re-run.
+- **Pre-capture gate:** `precheck.py` stops the run when its gate fails, including a bucket-policy digest that differs from the pinned revision.
+- **Self-test:** `selftest.sh` passes all 32 assertions. It runs the sign, upload, records, gate and validate chain against a local moto S3 server, with a throwaway key and a stubbed kubectl, including a tampered-upload failure.
+- **Dry runs on the unsigned rehearsal bundle:**
+  - `gate.py` refused.
+  - `validate.py` re-read all 39 manifest objects with the validator key, and checksums and storage properties matched. It failed on:
+    - missing signatures (14);
+    - the superseded validator named in the rehearsal proofs (`identity`, 3);
+    - proof age (3) and RPO staleness (3);
+    - the rehearsal policy's pre-2026-09-30 bucket-policy digest (`storage`, 1).
+
+    Checks blocked by the absent signed records were skipped under their own categories. The `identity` and `storage` failures come from review fixes G9 and G3. They go beyond the dry-run acceptance criterion, which was written before the review, and both are true of the rehearsal records.
+  - All 76 rehearsal files kept their SHA-256.
+- **Not done in preparation:** nothing was captured, mutated or signed.
+
 **Open, so this story stays `in-progress`:**
 
-- The final signed run shortly before the Story 4.1 upgrade. Its new bundle starts from copies of the rehearsal scripts. Those copies must first be updated for the single-signer decision, because `policy.py`, `proofs.py`, `sign.sh` and `final-run-order.sh` still name `pduong@itaneo.com` as validator and produce `independent-validation.json`. Leave the rehearsal bundle unchanged; its manifest holds their digests.
+- The final signed run shortly before the Story 4.1 upgrade. Start it no earlier than about 20 h before the planned kubeadm hop, with `./final-run-order.sh new` from the staging directory, and follow the order in [4-0-final-run-tools.md](evidence/epic-4/4-0-final-run-tools.md#for-the-final-run). Before signing `validation.json`, perform the two manual steps it lists:
+  - **M1:** the Memories `run_id`.
+  - **M2:** every IAM policy of the writer, plus its bucket-policy statement.
 - The signed `restore-target-cleanup.json`, `backup-gate.json` and `validation.json`.
+
+## Review Triage Log
+
+Review of the final-run preparation on 2026-10-01 used three layers: Blind Hunter (B), Edge Case Hunter (E) and Verification Gap (V, pre-verified). Groups (G) share one root cause.
+
+| ID | Finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- | --- |
+| B1 | Frontmatter `in-review` disagrees with body/sprint-status `in-progress` | reject | — | `in-review` is the workflow's transient review state; the final status is set when the build closes, and the fix would edit this spec. |
+| B2a | `gate.py` hard-codes `pass` without enforcing its computed RPO/off-node/isolation flags | high | patch G1 | `gate.py` computes `withinPolicy`, `allInManifest`, `allSse`, `allCompliance` and `allIsolationChecksTrue` but never refuses on them, and the proofs' `verificationResult` omits `measuredRpo.withinPolicy`; Story 4.1 validates the gate directly. |
+| B2b | Gate `expiresAt` ignores the policy/manifest/cleanup ages it enforces | low | patch G2 | `gate.py` age-checks `preparedAt`/`generatedAt`/`checkedAt`, but `expiresAt` is only the earliest proof expiry. |
+| B3 | Story 4.1 never consumes `validation.json` | medium | defer | Story 4.1's gate and the evidence contract check only `backup-gate.json` and the proofs; a failed validation blocks 4.1 only through the sprint status. The fix belongs to Story 4.1. |
+| B4 | Dry-run result relies on blocked checks filed under `signature` | low | patch G9 | `validate.py` files skipped cleanup/gate/upload checks and the validator-identity check under category `signature`. |
+| B5 | Bucket-policy digest recorded but never enforced; M2 covers one IAM policy | medium | patch G3 | `precheck.py` gate and `validate.py` never compare the observed digest with `2beba1ea…`; M2 names only policy `b64476cd…`. |
+| B6 | API isolation relaxed with no automated replacement | medium | patch G5 | `iso_mem.py` drops `kube-api` from `allSourceProbesBlocked`; no tool checks anonymous API resource access, which Memories step 4 requires. |
+| B7 | Memories tasks/stop conditions contradict D1/D3 | reject | — | The fix would edit this spec; D1/D3 are recorded as Administrator decisions in it. |
+| B8 | Approved playbook still says DRAFT | low | patch G17b | Front matter says "not approved"; the file cannot change without breaking hash `61a7766e…`. |
+| B9 | Superseded second-validator text left in evidence docs | low | patch G17a | `recovery-destination-setup.md:46` and the rehearsal summary's line 14 still require independent validation. The `epics.md` "independently proven" sub-claim is rejected: the spec records the Administrator's reading. |
+| B10 | `sign.sh` partial failure dead-ends | medium | patch G6 | Upload runs after all signatures; a mid-batch failure leaves `.sig` files that a re-run refuses. |
+| B11 | Manual-step results not captured in a signed record | low | reject | `validation.json` records each manual step's procedure and expected value, and the signature attests them; only an audit nicety is lost and the fix needs a new input path. |
+| B12 | Upload chain never ran; doc's scratch-clone claim is inconsistent | medium | patch G10 | No `uploads.json` exists anywhere; `gate.py` step 5 refuses without uploads, yet the doc says the clone produced a complete gate without uploads. |
+| B13 | Captures can run under an unsigned policy | medium | patch G21 | `final-run-order.sh` lets the policy be signed "with the proofs", while `policy.py` says nothing is approved until it verifies. |
+| B14 | Manifest "covers validator objects" vs signing order | reject | — | Wording in this spec's pre-existing task; the fix edits the spec. |
+| B15a | Residual-risk list incomplete | low | patch G18 | Single signer, co-located writer/validator keys and the validator account's `OrganizationManager` with MFA off are not listed. |
+| B15b | CNPG uses the general writer key in the source namespace | medium | defer | Secret `keycloak/recovery-writer-s3` lets the source workload add versions under any prefix, including `evidence/`; pre-existing rehearsal setup. |
+| B16 | "Does not rely on capture-recorded values" over-claims | medium | patch G8 | RPO timestamps, isolation, restore checks and Memories resume are taken from the signed proofs. |
+| B17 | "RPO at validation time" undefined | false | — | `validate.py` `rpo.*.measuredWithinPolicy` re-proves at validation time that each cutoff meets the 30 m RPO; staleness is an extra check. |
+| B18 | `cleanup_check.py` can pass when it should fail | low | patch G14 | By-name namespace check treats any error as absent; recorded-UID checks are vacuous when files are missing; PV deletion can race. |
+| B19 | Readiness renumbering note incomplete | low | defer | Planning-doc maintenance from an earlier commit, outside this story's goal. |
+| B20a | Spec context list omits playbook and summaries | reject | — | The fix edits this spec. |
+| B20b | Staged tools not checked against committed digests | medium | patch G11 | Same as V4. |
+| B20c | Manifest/validate read every bucket version | medium | patch G13 | Same root cause as E6/E7. |
+| B20d | No time budget or latest start | low | patch G20 | The run must finish inside the 24 h expiry before the hop; nothing states it. |
+| E1 | `sign.sh` mid-batch failure | medium | patch G6 | See B10. |
+| E2 | `write_json` overwrites signed records on re-run | medium | patch G7 | `s40lib.write_json` has no `.sig` guard; re-running `policy`/`records` invalidates signatures and deadlocks `sign.sh`. |
+| E3 | Cleanup re-run rewrites `cleanup-check.json` after signing | medium | patch G7 | The signed record's `cleanupCheckSha256` then no longer matches, and nothing checks it. |
+| E4 | `precheck.py` exits 0 on failed gate | medium | patch G4 | `preCaptureGate` is written but never enforced; `policy.py` does not read it. |
+| E5 | Bucket-policy digest not enforced | medium | patch G3 | See B5. |
+| E6 | `retainUntilPassed` fails after 2026-10-29 | medium | patch G13 | The manifest holds the canary, rehearsal and old WAL versions, whose locks end from 2026-10-29. |
+| E7 | Lifecycle delete markers fail checks from 2026-10-30 | medium | patch G13 | 31-day expiry in a versioned bucket adds markers; `noDeleteMarkers`, `preCaptureGate` and `allObjectsInRetentionSet` all require zero. |
+| E8 | Gate hard-coded `pass` | high | patch G1 | See B2a. |
+| E9 | Gate `expiresAt` | low | patch G2 | See B2b. |
+| E10 | `proofs.py` uses the minimum max-age across systems | low | patch G15 | `validate.py` expects each system's own value; a direct correction. |
+| E11 | Cleanup races OpenEBS PV deletion | low | patch G14 | Namespace deletion completes before the provisioner removes released PVs. |
+| E12 | Retain-policy target PV leaves data | low | reject | Target PVs use `openebs-hostpath` with reclaim `Delete` (recorded in the cleanup residuals); unlikely, and the guard adds complexity. |
+| E13 | No API resource-denial check | medium | patch G5 | See B6. |
+| E14 | Status inconsistency | reject | — | See B1. |
+| E15 | `recovery-destination-setup.md` open gap superseded | low | patch G17a | See B9. |
+| E16 | Validation over-claim | medium | patch G8 | See B16. |
+| E17 | Cleanup provider-object absence is inferred | low | patch G16 | `providerObjects` passes on PV deletion and bucket prefixes; the basis is not stated in the check. |
+| E18 | Category masking | low | patch G9 | See B4. |
+| V1 | Upload chain never exercised | medium | patch G10 | Pre-verified; see B12. |
+| V2 | Bucket-policy digest never compared | medium | patch G3 | Pre-verified; see B5. |
+| V3 | API-access-denied evidence missing | medium | patch G5 | Pre-verified; see B6. |
+| V4 | `new` not tied to verified digests | medium | patch G11 | Pre-verified; `new` compares copies only with the staging directory. |
+| V5 | Gate says `pass` on RPO breach | high | patch G1 | See B2a. |
+| V6 | `processIncarnation` has zero clock tolerance | medium | patch G12 | API-server `creationTimestamp` vs workstation `capturedAt`; the dry run passed with 0 s margin. |
+| V7 | `preCaptureGate` not enforced | medium | patch G4 | See E4. |
+| V8 | No retry after failed upload | medium | patch G6 | See B10. |
+| V9 | Status inconsistency | reject | — | See B1. |

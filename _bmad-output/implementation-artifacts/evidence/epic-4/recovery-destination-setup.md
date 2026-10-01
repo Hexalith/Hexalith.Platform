@@ -43,7 +43,7 @@ All results below come from the validator key unless another principal is named.
 ## Open gaps
 
 - Resolved 2026-09-29: Velero now runs on scoped application `hexalith-velero` (see [Velero key replacement](#velero-key-replacement)). The previous personal organization-admin key is no longer mounted in the cluster but has not been revoked in Scaleway; its owner should revoke it.
-- The validator key is in the Administrator's custody. It must be handed to, or re-issued under, the independent second operator before independent validation.
+- The validator key is in the Administrator's custody. It must be handed to, or re-issued under, the independent second operator before independent validation. *Superseded by the 2026-10-01 single-signer decision: the validator key stays in the Administrator's custody and no handover is needed (see [Independent validator identity](#independent-validator-identity)).*
 - This setup was not performed or validated by an independent operator and proves only the destination. It is not a recovery point or restore proof.
 
 ## Velero key replacement
