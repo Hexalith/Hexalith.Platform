@@ -174,3 +174,7 @@ Administrator approved the [complete Rancher proposal](../planning-artifacts/spr
 - [ ] Revise the exact maintenance procedure from the remaining controller/admission/outage census; preserve its old digest and bind exact revised procedure/outage approval and signed hop gate.
 
 Status stays `in-progress`; planning approval neither opens the gate nor extends the 2026-10-02T06:16:52Z backup expiry. The disclosed full-OS reconstruction limitation is not added as a new immediate prerequisite.
+
+## Maintenance end-time amendment — 2026-10-02
+
+The Administrator further amended the end with “set the end monday 2pm.” The **current effective end is Monday, 2026-10-05 14:00 Europe/Paris** (`2026-10-05T12:00:00Z`), recorded in the [new amendment](evidence/epic-4/4-1/20261002t111602z-maintenance-window-end-amendment.json). Earlier end-time records remain historical. The start, incident channel and acknowledged roles are unchanged. The signed backup gate expired at `2026-10-02T06:16:52Z`; fresh signed backup/restore validation and all other technical prerequisites are required before any hop. This amendment does not authorize production mutation; the hop gate remains closed.
