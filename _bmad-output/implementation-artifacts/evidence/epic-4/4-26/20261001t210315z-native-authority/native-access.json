@@ -1,0 +1,102 @@
+{
+  "actualWritePerformed": false,
+  "administratorDeputySeparationAccepted": false,
+  "authenticatedPrincipal": {
+    "groups": [
+      "system:authenticated"
+    ],
+    "username": "jpiquot"
+  },
+  "authorizedReadObserved": true,
+  "clientVersion": "v1.34.12",
+  "context": "jpiquot@local",
+  "denialProbes": [
+    {
+      "case": "credential-free",
+      "deniedObserved": true,
+      "httpStatus": 403,
+      "principalAuthentication": "no authenticated unauthorized principal established",
+      "vantage": "current private operator network; not public Internet"
+    },
+    {
+      "case": "invalid-bearer",
+      "deniedObserved": true,
+      "httpStatus": 401,
+      "principalAuthentication": "no authenticated unauthorized principal established",
+      "vantage": "current private operator network; not public Internet"
+    }
+  ],
+  "distinctUnauthorizedAuthenticatedPrincipalTested": false,
+  "independentCustodyReadbackVerified": false,
+  "managementGrantLineageAuthenticated": false,
+  "mfaVerified": false,
+  "nativeCaValidationEnabled": true,
+  "nativeEndpoint": "https://192.168.1.30:6443",
+  "nativePath": "direct",
+  "nativePermissionObservations": [
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": null,
+      "resource": "nodes",
+      "verb": "get"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": "kube-system",
+      "resource": "secrets",
+      "verb": "get"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": "default",
+      "resource": "deployments.apps",
+      "verb": "create"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": "default",
+      "resource": "deployments.apps",
+      "verb": "patch"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": "default",
+      "resource": "deployments.apps",
+      "verb": "delete"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": null,
+      "resource": "clusterrolebindings.rbac.authorization.k8s.io",
+      "verb": "create"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": null,
+      "resource": "namespaces",
+      "verb": "delete"
+    },
+    {
+      "basis": "nonpersisted native SelfSubjectAccessReview; no resource write attempted",
+      "decision": "allowed",
+      "namespace": "default",
+      "resource": "persistentvolumeclaims",
+      "verb": "delete"
+    }
+  ],
+  "publicVantageDenialTested": false,
+  "qualified": false,
+  "recordedAt": "2026-10-01T21:03:15Z",
+  "schemaVersion": 1,
+  "serverVersion": "v1.34.9",
+  "signed": false,
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "state": "observed-limited"
+}

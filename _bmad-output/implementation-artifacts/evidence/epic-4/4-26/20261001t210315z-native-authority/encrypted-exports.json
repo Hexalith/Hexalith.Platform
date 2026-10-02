@@ -1,0 +1,99 @@
+{
+  "attemptId": "20261001t210315z-native-authority",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 1304,
+      "ciphertextSha256": "691d7ccb27f400164f9e75d6457f953482d5f26ebea4aee1ddfc80adc2ba6c5e",
+      "file": "0001-version.age",
+      "plaintextSha256": "6519082731b2bb72b6f12a472044b444e466f1e5acbf0a7934c07640c1a0863a"
+    },
+    {
+      "ciphertextBytes": 8184,
+      "ciphertextSha256": "3d3461be7bb8f8f0ef511e04863c5ba2d119bd805801f945cefe150af731d827",
+      "file": "0002-native-config.age",
+      "plaintextSha256": "9b0841289576d9af237eabace8b1d59363e0db991cf6fa5f842bf397ee71cc9d"
+    },
+    {
+      "ciphertextBytes": 1224,
+      "ciphertextSha256": "303ab31869f5c3f5adcff8ab801891b94763584af2512f46d36ad651b9ded839",
+      "file": "0003-cluster-identity.age",
+      "plaintextSha256": "d94d6d9d62f11fd1daf083f9532fceb4ba7d9cb73d092236f422d9e357d5f488"
+    },
+    {
+      "ciphertextBytes": 1004,
+      "ciphertextSha256": "b6c4c0ab54e8f394aef3cc419444b8392a0b5cdb670ae9def84900c673593919",
+      "file": "0004-native-authenticated-identity.age",
+      "plaintextSha256": "be18ab6f004a0587053138bb025275da234fe0873aca3e7bd1ca20b6d2e3c88c"
+    },
+    {
+      "ciphertextBytes": 3344,
+      "ciphertextSha256": "747360578975de863165c4226deed3e3707a6e81c11a68d4d033c26ee2412042",
+      "file": "0005-native-selfsubject-rules.age",
+      "plaintextSha256": "acb5a5f3e2ec32e3704bfb9b5bc1d3ceb5bf6844b4238cb9fc418997101f1e02"
+    },
+    {
+      "ciphertextBytes": 324,
+      "ciphertextSha256": "5d2167eaad1e4de6caeec15506929081a2b98ec0c6fe07478fafad5226f41adf",
+      "file": "permission-get-nodes.age",
+      "plaintextSha256": "feac77e0d6056a1c0aaa5141c787b316dd35932dcc360c9d33a132f14f9f6169"
+    },
+    {
+      "ciphertextBytes": 271,
+      "ciphertextSha256": "159457f6b7d98355b460426f798387017eaa0fdf580ecc09b177d468e47f18bf",
+      "file": "permission-get-secrets.age",
+      "plaintextSha256": "1ea4f0ef4a0a7957329d044b101e76f263e37f3d18fce56ea395955eeb0bb339"
+    },
+    {
+      "ciphertextBytes": 271,
+      "ciphertextSha256": "949f15a09c8c9b8e6d887d65f0e656ffd7709e567e44c3b85b60e183070eccc9",
+      "file": "permission-create-deployments.age",
+      "plaintextSha256": "1ea4f0ef4a0a7957329d044b101e76f263e37f3d18fce56ea395955eeb0bb339"
+    },
+    {
+      "ciphertextBytes": 271,
+      "ciphertextSha256": "07afa34525f111730e99adf363fdfcfcd5decbba4ea9582c9b2f5d197a5699cd",
+      "file": "permission-patch-deployments.age",
+      "plaintextSha256": "1ea4f0ef4a0a7957329d044b101e76f263e37f3d18fce56ea395955eeb0bb339"
+    },
+    {
+      "ciphertextBytes": 271,
+      "ciphertextSha256": "9204aed9a08d50ac59199dd8dc84f021c3706bc6e37de3054481ed8bc3ceea0a",
+      "file": "permission-delete-deployments.age",
+      "plaintextSha256": "1ea4f0ef4a0a7957329d044b101e76f263e37f3d18fce56ea395955eeb0bb339"
+    },
+    {
+      "ciphertextBytes": 375,
+      "ciphertextSha256": "d367693474ca091224ee9282054eff291ed2eb75e21c0fd0f26fedc486f196b6",
+      "file": "permission-create-clusterrolebindings.age",
+      "plaintextSha256": "8e7863335620462fd09d99646463de628985eb1fe28f8192b320fc5431760318"
+    },
+    {
+      "ciphertextBytes": 329,
+      "ciphertextSha256": "e43d2047f808dc7d84c45f72e3e5b3c8c36ca739a7de746e8c709c1ea129706c",
+      "file": "permission-delete-namespaces.age",
+      "plaintextSha256": "2b9243ea5e8919075ad88a9798abf7e0884e9e8c0985b255efc7c1a2fb035e86"
+    },
+    {
+      "ciphertextBytes": 271,
+      "ciphertextSha256": "80e46f47d15e810c989bdafef38f9a6052e8824d015dc2ef0e2a33cacbfb6680",
+      "file": "permission-delete-persistentvolumeclaims.age",
+      "plaintextSha256": "1ea4f0ef4a0a7957329d044b101e76f263e37f3d18fce56ea395955eeb0bb339"
+    },
+    {
+      "ciphertextBytes": 564,
+      "ciphertextSha256": "72c847e21078bcf9aab1ce24f1e66e1853324dd21ade83622fb474ff05f5dd7f",
+      "file": "native-denial-credential-free.age",
+      "plaintextSha256": "1da49832ef8977b827570c39f7c7d64d6fcf22fbf264098e42696669ab8f6d39"
+    },
+    {
+      "ciphertextBytes": 404,
+      "ciphertextSha256": "da5ddaa5a36eb3e646f8289104731f2aab31e16483c7fd53e4dfdb2f3d764eee",
+      "file": "native-denial-invalid-bearer.age",
+      "plaintextSha256": "39ccd22279ac9f7df8bd14dc718e652f94c0d78ba8696dbabd76ffe1a7798190"
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "schemaVersion": 1
+}

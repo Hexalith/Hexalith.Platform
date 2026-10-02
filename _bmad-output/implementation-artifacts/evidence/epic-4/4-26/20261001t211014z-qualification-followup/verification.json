@@ -1,0 +1,120 @@
+{
+  "accessEvidence": {
+    "authenticatedPrincipal": "jpiquot",
+    "conversationAuthorizationAttempt": "20261001t205847z-native-access",
+    "independentHostKeyTrustVerified": false,
+    "independentProductionDecryptionOrOffNodeReadbackVerified": false,
+    "nativeAuthorityAttempt": "20261001t210315z-native-authority",
+    "nativePermissionObservations": 8,
+    "privateCredentialFreeStatus": 403,
+    "privateInvalidBearerStatus": 401,
+    "sameNativeClusterUidVerified": true,
+    "sshAuthenticated": false,
+    "sshFinalDiagnosticAttempt": "20261001t210432z-ssh-identity-check",
+    "temporaryOperationalKeyCopiesRemoved": true
+  },
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "5deb9e1eb910e4431344c251394884d9b8a66bca779945c7d43ba35baec1e105",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "8a5022c4b12ce48c8201a49736ddd0b55ed0f01492042519ba0ed78e38b2aa7b",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "8ed4eb3f8518ed1c7c41dac14e4ccfad026a644b5c69c16d8773cd4efdf0437d",
+    "eng/cluster-management/QUALIFICATION.md": "12aab0494b107c2274909127ea9a12672c1dcb4efa833d6566cbaa55c1880030",
+    "eng/cluster-management/RANCHER.md": "d2f137566cbd81905fa993eed2de08ed00d6abcd6dfd81ab99cadb62791ed9f2",
+    "eng/cluster-management/README.md": "97d65e81236fe9153083db9731414b08391318a57a43e910c593e5d6f60ed5c2",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "3f2b798783e06e3a0738be32789a7e8d06d298f66ee5a1f3b780d5f23689fb75",
+    "eng/cluster-management/evidence.py": "06820885d28935c05e84774fba3ba55e4dcf48f1ee45c992d32129f03ab5eba5",
+    "eng/cluster-management/qualify.py": "137fe5a8f693fabb2891ff30c6e3d37ea2752849cd65d8044dba965175a816c1",
+    "eng/cluster-management/rehearse.py": "a78aa7904801e589a9aa14fd0816503b3fcae5de4d128f34916f6c0aaa7f4ee0",
+    "eng/cluster-management/test_cleanup.py": "cdba94ce6166488ae6ebb4ffed3f46c554847135faddcaecbea54be5b96f5942",
+    "eng/cluster-management/test_evidence.py": "ab427aefc3214276f4d7164b10b02b69d91b2aa75d0458270034c265edb2d84e",
+    "eng/cluster-management/test_qualify.py": "1e1312d93cb2ac75461e9787b202008c7d49c620b5f3fff20734cde6d3c2bbb2",
+    "eng/cluster-management/test_rehearse.py": "bcaf4b9c9d9035d5975d14c22e73c420e8a9e54fffa1a8b38101ee3ac62bdc26",
+    "eng/kubernetes-upgrade/MAINTENANCE.md": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+  },
+  "attemptId": "20261001t211014z-qualification-followup",
+  "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+  "buildReviewAndCompletionPendingOperationalAcceptance": true,
+  "buildStep": 3,
+  "checkedAt": "2026-10-01T21:12:31Z",
+  "currentCommit": "55c62389ec4510edb41d82bf3f79a6a5ef916df5",
+  "frozenBlockSha256": "08afbc1f63a322ffc30ad9a49c342b56c85e1eaac0f5ec8d0bf39554aa759d7e",
+  "frozenBlockUnchanged": true,
+  "gitIgnoredCoverageRecordExplicitlyRetained": true,
+  "historicalMaintenanceUnchanged": true,
+  "localEvidenceAudit": {
+    "ciphertextExports": 1539,
+    "failures": [],
+    "indexManifestReferences": 188,
+    "privateFiles": 1776,
+    "projectionFiles": 188,
+    "projectionManifests": 30,
+    "scope": "all existing attempts before this verification receipt; local integrity and Git index portability only"
+  },
+  "matrixAudit": {
+    "allFiveRowsHaveExecutedPassingTests": true,
+    "passingCasesByRow": {
+      "Authority": [
+        "test_proxy_credentials_are_refused_before_discovery",
+        "test_missing_gapped_conflicting_or_expanded_authority_fails_closed",
+        "test_post_cut_revocation_survives_source_loss"
+      ],
+      "Census": [
+        "test_secret_and_configuration_values_never_enter_projection",
+        "test_failed_discovery_is_not_an_empty_accepted_census",
+        "test_supported_skew_and_prerelease_fail",
+        "test_private_attempts_immutable_and_no_recovery_overwrite"
+      ],
+      "Ownership": [
+        "test_unknown_owner_consumer_and_deletion_effects_block_retirement",
+        "test_ownership_storage_and_installed_catalog_distinction",
+        "test_unknown_cascade_blocks_and_child_first_allows_explicit_scope"
+      ],
+      "Rehearsal": [
+        "test_source_endpoint_uid_reachability_and_credentials_refused",
+        "test_wildcards_missing_resources_protected_namespaces_and_claims_refused",
+        "test_named_finalizer_only_and_drift_stop",
+        "test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops"
+      ],
+      "Target": [
+        "test_unqualified_tag_hosting_security_and_tools_fail_closed",
+        "test_github_prerelease_and_stale_review_rejected"
+      ]
+    },
+    "scope": "implementation and synthetic negative behavior; no cryptographic grant/MFA/operational acceptance inferred"
+  },
+  "originalCriteriaAccepted": 0,
+  "qualificationAccepted": false,
+  "remainingGates": [
+    "Authorized SSH login for current effective kubeadm/external-etcd/virtualization/capacity facts",
+    "Complete owner-approved capability consumers/replacements/deletion effects",
+    "Complete exact target dependency license/security/authenticity/procedure review",
+    "Approved VM/network/CA/cost/owner decisions; procurement may wait for4.28",
+    "Distinct authenticated unauthorized/public denial and independent native recovery custody/MFA",
+    "Actual approved accounts/scopes, authenticated current independent grant/revocation lineage and restore denial",
+    "Representative successful actual KubeSphere native retirement with health/preservation/recovery",
+    "Acceptance of separately reviewable evidence-bound retirement and installation handoffs"
+  ],
+  "roleGrantsPerformed": false,
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceMutation": false,
+  "standaloneFixture": {
+    "actualKubeSphereRetirementRepeated": false,
+    "attemptId": "20261001t204952z-rehearsal",
+    "cleanupPassed": true,
+    "executedCurrentProcedure": true,
+    "passedLimited": true,
+    "recipientScope": "synthetic fixture only"
+  },
+  "state": "verified-limited",
+  "storyAndSprintStatus": "in-progress",
+  "unitVerification": {
+    "actualSyntheticOutputLocallyDecrypted": true,
+    "allRecordedCaseIdsMatchActualOutput": true,
+    "codeUnchangedSinceUnitRun": true,
+    "independentCustodyAccepted": false,
+    "passed": 45,
+    "plaintextSha256": "b37d4e6bde72596cd25562ade92e39bbf1876a5039ee8648256ce1c09f484df7",
+    "skipped": 0
+  },
+  "whitespaceChecksPassed": true
+}

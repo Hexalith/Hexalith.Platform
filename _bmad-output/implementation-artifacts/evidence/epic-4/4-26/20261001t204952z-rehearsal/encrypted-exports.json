@@ -1,0 +1,621 @@
+{
+  "attemptId": "20261001t204952z-rehearsal",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 2876,
+      "ciphertextSha256": "3badfbac56d6ad58d78d351546c2917c75ea86b4811e27565048f98fafb00e30",
+      "file": "fixture-001-inspect-image.age",
+      "plaintextSha256": "d26a6ed703a06f36cc2efc60a3ed872d1ab3c95d685da92ca28704ad3aabb561"
+    },
+    {
+      "ciphertextBytes": 32848,
+      "ciphertextSha256": "5996a4b3eefc58cee8923c9a8c6411de709a9d5fef321386e0ea32d0808e2315",
+      "file": "fixture-002-read-public-entrypoint.age",
+      "plaintextSha256": "3d3d0e8939521e5a6e53c641f8ca392822ebbd4e9032ccb9400dc3868afea54d"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "d9a306268468a268f9e52b573d08e41cbc49bb1c2d972c85ae4aa89ea38665f7",
+      "file": "fixture-003-tag-local-base.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 2448,
+      "ciphertextSha256": "cf77bfbba48b3bc5c23630b78cde82b6cb6c2b6ef23409b679601e6d9a3c07bd",
+      "file": "fixture-004-build-fenced-image.age",
+      "plaintextSha256": "eaf35362a8d48603cf21baf16c3f7aa238e1aeccb2a2c4c34fc8c16bb2c73661"
+    },
+    {
+      "ciphertextBytes": 3136,
+      "ciphertextSha256": "81cab9c92fb7923b6a511666bd3a601498b42068ed230a8c1f1b8540f011bfe6",
+      "file": "fixture-005-inspect-fenced-image.age",
+      "plaintextSha256": "c696f4290cbdd9630588ee541663692d68446052b5e2a872d5c37d6095d25745"
+    },
+    {
+      "ciphertextBytes": 364,
+      "ciphertextSha256": "df317f2a6bcd8f2e6ef0156bcce81de44a1603c4b4bb1bc7967de804dd121621",
+      "file": "fixture-006-create-internal-network.age",
+      "plaintextSha256": "c40a91700afb83d6d5aa125c867e8bea0babbec57e3d498889aba93d0dc6c25e"
+    },
+    {
+      "ciphertextBytes": 1940,
+      "ciphertextSha256": "52d6d8ffa921d50a3d5f239ff20464c915985b0b6389adce401b3aa60c0414ed",
+      "file": "kind-create.age",
+      "plaintextSha256": "27cfaae4e0dc0b21ef7d32e3af7123678592cce109ee6d4f3a7c896489ad5ee9"
+    },
+    {
+      "ciphertextBytes": 1384,
+      "ciphertextSha256": "1a4b9f48251d13bce9d45c658a991ea73fce5d2340d342606db804c06db1de2e",
+      "file": "fixture-007-fixture-context.age",
+      "plaintextSha256": "861aa11c6f04ffe57cfc08cb20089be2049feb3835d7c7e8b2911b42857e78e1"
+    },
+    {
+      "ciphertextBytes": 380,
+      "ciphertextSha256": "3c8729c2eeeff57d48837e83c222c02823d67a2e693af0e18c0090f1bd9493a3",
+      "file": "fixture-008-fixture-context-alias.age",
+      "plaintextSha256": "c36d864d6aed0fe24bd5bd54923b86b7ab7cbffe783e5bf3323af2a104109efe"
+    },
+    {
+      "ciphertextBytes": 896,
+      "ciphertextSha256": "a0f6ca6b33dcdee82663efe3e8bfd41ee14fac7d9d90bedf0913a50a68c20f1c",
+      "file": "fixture-009-get.age",
+      "plaintextSha256": "5accc0f5d9d24b5fd62352648046d46e4a02ba57d482c65baa53a9a963286b8c"
+    },
+    {
+      "ciphertextBytes": 2388,
+      "ciphertextSha256": "a7ca9bb32dabd39489b9131234755686ecb83e803d63bcbfc3593871ff21d129",
+      "file": "fixture-010-inspect-network.age",
+      "plaintextSha256": "d84e39f84c8b9ef6eefcd60a743c7059bebaef0c2eb8fb11487c27b2e35c82f2"
+    },
+    {
+      "ciphertextBytes": 11132,
+      "ciphertextSha256": "0c276e32e0542c6ddb89d23498a0a6f65aa70185a1fe1aafac2a006629fb5578",
+      "file": "fixture-011-inspect-fixture-node.age",
+      "plaintextSha256": "ca45d84fef77f3f5c77e2599075f642f3d4b3e19097567ba3488a41f4fd7669e"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "f45780ca6edcaaa8e86be9dc766665aa0cf192dee1a63f49f32ed78ddf1729d5",
+      "file": "fixture-012-fixture-service-cidr-route.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 424,
+      "ciphertextSha256": "6dddf812b0efbb64edc91582f00f8cc4b82479411e20b1ac1f4a323f0ea8a170",
+      "file": "fixture-013-fence-probe.age",
+      "plaintextSha256": "fa106ae29f7ab0d78a9430e6194b7fe24496d5546627610f335e4b4e33d4dc3f"
+    },
+    {
+      "ciphertextBytes": 428,
+      "ciphertextSha256": "9d878ef629251367ed545d3baba2277fbcabded6bb05301ad6e5f8b3393f4318",
+      "file": "fixture-014-fence-probe.age",
+      "plaintextSha256": "533f4b23c7c06ee6f7dd3b1ed0cbd5e7a86c5a924060edbc1b23e48439a3cd59"
+    },
+    {
+      "ciphertextBytes": 428,
+      "ciphertextSha256": "0635c42d5224d11edde472cd5f1a43052693750f3dad54d6b8c3cd5083f76809",
+      "file": "fixture-015-fence-probe.age",
+      "plaintextSha256": "8bf7a82296faf64d781e748a5cd26231c996df7277adb600a31432708e66a342"
+    },
+    {
+      "ciphertextBytes": 428,
+      "ciphertextSha256": "6945d5a180926dd20c4ca99e05d09f3b8efa51b2abe389f7ba6f3261699410df",
+      "file": "fixture-016-fence-probe.age",
+      "plaintextSha256": "19197349fbf6e8afc36f5afc44201d0d05d16d061b97234a354d950454941cf3"
+    },
+    {
+      "ciphertextBytes": 424,
+      "ciphertextSha256": "d64395dc8dceeb1d327535111a55f31667c757180a4ff22e4ce553cd0ac015b4",
+      "file": "fixture-017-fence-probe.age",
+      "plaintextSha256": "11409773b25f68a145dba1171238a532b727d6b2d0c40c362df2f98996e30dba"
+    },
+    {
+      "ciphertextBytes": 420,
+      "ciphertextSha256": "872b108d90f5805f8a40839b4c3b20b86d70a44b4c929f03d57ce040c96a18b1",
+      "file": "fixture-018-fence-probe.age",
+      "plaintextSha256": "24f89bec39235edaade475a343b4911e4bac7bd771f91fe28e84a3adb754bb5a"
+    },
+    {
+      "ciphertextBytes": 1304,
+      "ciphertextSha256": "b1ee33ad32faf042845f669e04aeba5901fc0a085dbaeb586f86b47804856694",
+      "file": "fixture-019-fixture-version.age",
+      "plaintextSha256": "aa7ab4fbf04cc47d7c753ccc7d3b5d777f87557a986fb8405408b40cceaa39c2"
+    },
+    {
+      "ciphertextBytes": 324,
+      "ciphertextSha256": "1c015374af26e0b8dc5283d12f65e0729f902fc20696e9b0dcad1db8963f8b5f",
+      "file": "fixture-020-create-synthetic.age",
+      "plaintextSha256": "4d63df1a78fe21cd747fbbb0ab8063e27d8031591453314f22c44c696bbb98de"
+    },
+    {
+      "ciphertextBytes": 320,
+      "ciphertextSha256": "099916fe8b159c803ce644f17aa4d99276a3a7dfad92185a4f6176cb7df6ddf1",
+      "file": "fixture-021-create-synthetic.age",
+      "plaintextSha256": "277f4c949299af52ab5c0e94ed8083d5d8e074f54b41994b6547315121eb7996"
+    },
+    {
+      "ciphertextBytes": 400,
+      "ciphertextSha256": "8257e755627ba1fa879d91747500b0abeffa2a62863ae5b9b6ca7abcc1af24d6",
+      "file": "fixture-022-create-synthetic.age",
+      "plaintextSha256": "0f8e8e73aca3c0a23f62515e1de737cf7ba06fc5e5c0716e3cd1e051e8d4e4b9"
+    },
+    {
+      "ciphertextBytes": 408,
+      "ciphertextSha256": "c374a619a33339a9c676ff91d8179ae8ca0e30be875c6e574c6343f227e1743e",
+      "file": "fixture-023-crd-established.age",
+      "plaintextSha256": "10cd7d4d19d8db1553c98b0af6cf057560c21b7ca628437ee7b1986093ba47f6"
+    },
+    {
+      "ciphertextBytes": 352,
+      "ciphertextSha256": "1d7b6d3ed39c901b6a98ec9acaa0a0ac15491d3d30547ec5f9d877709aa0cce8",
+      "file": "fixture-024-create-synthetic.age",
+      "plaintextSha256": "04bb95007b1a0a01b2e48cc3972174c3974bdb1864950f5e5d2b7f3a3e834a41"
+    },
+    {
+      "ciphertextBytes": 804,
+      "ciphertextSha256": "15d56ffec0790996180da7cc8b1de1e427b98977a6ddee24d80070044ca98fb1",
+      "file": "fixture-025-get.age",
+      "plaintextSha256": "10020a881873d886cfa0ea25418fe402a7e10f0d2bf90ad1a92bc8d7e19d9f2e"
+    },
+    {
+      "ciphertextBytes": 320,
+      "ciphertextSha256": "0d301e731305ff86ec0379b7bbce20bfe4e3cc71ab8a80db28b4bff5f0986515",
+      "file": "fixture-026-create-synthetic.age",
+      "plaintextSha256": "019ba0e1af127c7065eef064c66873fa20c19499b75a70692830a7fbe97158b8"
+    },
+    {
+      "ciphertextBytes": 328,
+      "ciphertextSha256": "3508b44c5cd013a0f2e0b11217d6f2414342af065182b11e74904969f723dc93",
+      "file": "fixture-027-create-synthetic.age",
+      "plaintextSha256": "75185b8d2775e95c57d54d910bf5c0860e8542f591a4c9f105ad0ce3f2009aab"
+    },
+    {
+      "ciphertextBytes": 324,
+      "ciphertextSha256": "0c3d6e5b9312d7a2a07d67275703fc2234d74400ef239c3ec2a57a63e5922a21",
+      "file": "fixture-028-create-synthetic.age",
+      "plaintextSha256": "c35fa41aa10f96db9199cc4e88df765b32805ca31614d35e832f61de251e9575"
+    },
+    {
+      "ciphertextBytes": 332,
+      "ciphertextSha256": "233d45decd94686512c680f60dca64872c0daa88cdbf85d4e0c8696eaac364cf",
+      "file": "fixture-029-create-synthetic.age",
+      "plaintextSha256": "1396dbb6f389e3aaabd29f3a54c227ff22c88b24478ab8c12562e7ae8d5496ba"
+    },
+    {
+      "ciphertextBytes": 340,
+      "ciphertextSha256": "aa3d1a0b4d7f6459dc182f68f9d65d63324d291e085258d9e849ae6a7a51c9a4",
+      "file": "fixture-030-claim-bound.age",
+      "plaintextSha256": "715d1d33d1b8e801890e64d27df8665dea98483562c1f91906914e45b68fde32"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "ed891fab6010b66b366e0396bf61439bb86adeb3c489dea546288fc6029f4463",
+      "file": "fixture-031-synthetic-data.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 332,
+      "ciphertextSha256": "47deb1855b50a6dbe9fc58bdadfd226856f08b2d2f1339ccd64897c4760352a0",
+      "file": "fixture-032-create-synthetic.age",
+      "plaintextSha256": "6c180fe7d1ce711bbc5c2e6f22d68e14100774913e98b766d0048a5fbe8c94d4"
+    },
+    {
+      "ciphertextBytes": 760,
+      "ciphertextSha256": "4f5181d87acf9ba37897dd040f6eb2b28b76d0f110fcb97e8984abb298fc7f78",
+      "file": "fixture-033-get.age",
+      "plaintextSha256": "e671348920c2d4980aec5da87bee1780e5ca855aeb2555666fb00a947f9816c4"
+    },
+    {
+      "ciphertextBytes": 1032,
+      "ciphertextSha256": "3f828ce1a640fe837acf54d0556ff4a758833b72cdf41a6159f43c91519408ed",
+      "file": "fixture-034-native-race-recreate-delete.age",
+      "plaintextSha256": "14b9981624d61bb7d25c5d44c7b00e96ee0afcc9e5ac0ad8479d66210b6a563a"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "d58e79c464c81a09e4ac1805ac6b8f97c17270f8222b8089b197fcaad95728e2",
+      "file": "fixture-035-native-race-old-absent.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 332,
+      "ciphertextSha256": "55272f54996dd73d93df7c96095ada8650cb50f2804ff106d18c324bf82898c2",
+      "file": "fixture-036-create-synthetic.age",
+      "plaintextSha256": "6c180fe7d1ce711bbc5c2e6f22d68e14100774913e98b766d0048a5fbe8c94d4"
+    },
+    {
+      "ciphertextBytes": 760,
+      "ciphertextSha256": "a97cc59c1ba019a1477ed1b57ac632e9c64ce14c85109a43ae2428d73a38b630",
+      "file": "fixture-037-get.age",
+      "plaintextSha256": "4ed05d981fd350c34d2057378b2e812a37d3f04207e91f3071fe44d8641d7623"
+    },
+    {
+      "ciphertextBytes": 668,
+      "ciphertextSha256": "f59e150cd656f59fa77b9e24237a11c14dcf74864da1831079059499693e2497",
+      "file": "fixture-038-native-negative-stale-uid.age",
+      "plaintextSha256": "c010b99e6bf33b1f6ce4ced2d6c229eee915e225178be68fd2b17684e10c7cc3"
+    },
+    {
+      "ciphertextBytes": 760,
+      "ciphertextSha256": "bf1c7149ce0b1ac37b80f5ecca6f477f415adcff55dd7f8329ac045e3f01903d",
+      "file": "fixture-039-get.age",
+      "plaintextSha256": "4ed05d981fd350c34d2057378b2e812a37d3f04207e91f3071fe44d8641d7623"
+    },
+    {
+      "ciphertextBytes": 332,
+      "ciphertextSha256": "aa571f8966fd7f892f7dd3571ce181962140416937a509e7fdba104cc1bca4ee",
+      "file": "fixture-040-native-race-mutate.age",
+      "plaintextSha256": "0642693bc6fa60e4cde466365f63a7d485d426a9a34d29bb712582f922da7e39"
+    },
+    {
+      "ciphertextBytes": 768,
+      "ciphertextSha256": "6a1684c5008a3933a54c8c0373c1505daa2a9cf40e37fdfb9c9ec5152dd368c4",
+      "file": "fixture-041-get.age",
+      "plaintextSha256": "93e9a877ab10a9105ef6d752307a3ae2ff337b0dd30e928ef405d062c94b941e"
+    },
+    {
+      "ciphertextBytes": 588,
+      "ciphertextSha256": "8abbeacae3e85fded9141b12fdd2e0e76086d592acc2410e748323fc451b1c2a",
+      "file": "fixture-042-native-negative-stale-resource-version.age",
+      "plaintextSha256": "bf909edc88bf4bfde1e469fb185f704d0e47ad44beca0ac62fe17a1cf778a7aa"
+    },
+    {
+      "ciphertextBytes": 768,
+      "ciphertextSha256": "864068d02d64ab9b7cc8b6578c38602974659a421d693324665cd77fe4396506",
+      "file": "fixture-043-get.age",
+      "plaintextSha256": "93e9a877ab10a9105ef6d752307a3ae2ff337b0dd30e928ef405d062c94b941e"
+    },
+    {
+      "ciphertextBytes": 1224,
+      "ciphertextSha256": "6d0bbf1ad5853116c2756fd1450b892f3ff984677c4c114a217340b008636ab2",
+      "file": "fixture-044-native-race-cleanup.age",
+      "plaintextSha256": "07d1f27a8989fef9dc6e3a15b58633e53ba6758c85ba9a2501bef8bcbb9ccdc9"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "169beadefb0e220a29ec96717292f53478e7164a3afc977230c0f1b2dd55fc47",
+      "file": "fixture-045-native-race-absent.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "e453f8eec5461a005adce43ffecd4370c7466c41fc102326204ad8bf3e42a0ef",
+      "file": "fixture-046-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "66510baefc795754f2f5a7e9bb6cdafa430a3d0c7779e649ed479c7561ab3ac3",
+      "file": "fixture-047-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "b925010960d94fbe0f45c3d8fd0b0e360b4585f2e31dc75776c87e95f22e3f5b",
+      "file": "fixture-048-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 38636,
+      "ciphertextSha256": "39df4016af5e72bd78a8d85e0003628e2fbaa255d227c3da444fcc16d1781538",
+      "file": "fixture-049-get.age",
+      "plaintextSha256": "aeaba14a505a66ed52089430e57fc58dade5d58df6dfc4063b35b6943b71f092"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "ea14c2184856e324bf5143d3c5f4768ef7ccd2afef9f0bc3c3445c29c35cb69f",
+      "file": "fixture-050-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "64bd9323a17472bf36963fc97197b1610385e3b07762703c42457d4926095d4a",
+      "file": "fixture-051-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 1128,
+      "ciphertextSha256": "c1a30ab77536a355889948e0f0b90330f1bc57a0fd6aa7abd564ff45622dd549",
+      "file": "fixture-052-get.age",
+      "plaintextSha256": "25b2afd00ce6638bc49682d782fe6e478f686605b185e22909e91ccc3b8c4b2c"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "5fc4d7687429568d47c41557b491742b2563cc3089b0845fe4f2a05c86ed7026",
+      "file": "fixture-053-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "8bedb92383f1599e4c3efebb019fbca9a77bd317c881aa7d23bf6964d002b01b",
+      "file": "fixture-054-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "a7b8f7febcc7fbed712bbadb88762066d2813e10abe0e8873319a9b497b5bdb7",
+      "file": "fixture-055-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 38636,
+      "ciphertextSha256": "f344713b14b035fdbeb69927dad41dc4fa19621c96b9e626a3ab7923beade1fe",
+      "file": "fixture-056-get.age",
+      "plaintextSha256": "aeaba14a505a66ed52089430e57fc58dade5d58df6dfc4063b35b6943b71f092"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "319731020296107807df697bb6a2806a7930308a6ad8407cfef0e53d668bebb9",
+      "file": "fixture-057-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "8c54c9a5d277c1dc918501013c4194c90e4fd147c8ce5161ab15875c41c84e64",
+      "file": "fixture-058-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 1128,
+      "ciphertextSha256": "e6d1eb66dfcedd279522d2f0a189b5513d8070a78e5cbd5e1d3a7f8fbff243ed",
+      "file": "fixture-059-get.age",
+      "plaintextSha256": "25b2afd00ce6638bc49682d782fe6e478f686605b185e22909e91ccc3b8c4b2c"
+    },
+    {
+      "ciphertextBytes": 1428,
+      "ciphertextSha256": "49262303c7044ae1bfd23eace11618aea770d377cef994d699cd833377ec0fcf",
+      "file": "fixture-060-uid-bound-native-delete.age",
+      "plaintextSha256": "9423998a1f2bbfd32a31126d8ab3256b221705b48fc321acfad2065671e618e1"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "d07e7e1815ea266cfaff8af3466bc0a478c9f6079ddc5b2a9e2fa66f789afc60",
+      "file": "fixture-061-child-absent.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "93e0ed4c3ad5fa348600085caff28976cc8f529a2fcfaf189741da2d715693d6",
+      "file": "fixture-062-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "eeb999ec77306db435ef8fa21f4dfee4c581e289ed52c5334454ee8700666956",
+      "file": "fixture-063-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "81df9574330925ce1dca75efd5a2b20a74d48e1f9787aaeff0b8936e0bda5d41",
+      "file": "fixture-064-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 37432,
+      "ciphertextSha256": "451721ad0161f93a1263a30c3d51d0d7388b53d4dbc82228216d1433b97e3f04",
+      "file": "fixture-065-get.age",
+      "plaintextSha256": "f4a64dd32bd4341f788ea14c47720cf586fafce89b1b7a91b17c08d43fb0c656"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "445ad2660288498c7846b358c226645fc0e6e98fe05f036788503179a87da7db",
+      "file": "fixture-066-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "0fec318d176b1c270191f487f7d9260598439a247a3ed96259331c59e42c3023",
+      "file": "fixture-067-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 1128,
+      "ciphertextSha256": "b7abea435395b894913134a58d63ccaf416fea24d005e6bf2fa217524f713bc6",
+      "file": "fixture-068-get.age",
+      "plaintextSha256": "25b2afd00ce6638bc49682d782fe6e478f686605b185e22909e91ccc3b8c4b2c"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "fe9a40b6b5d3c5d7c61fd1ba8741b454aad4e08dbfc48fdce82c35d275b539e0",
+      "file": "fixture-069-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "e9a4b6e275b417fcfdf354139f8b02e5088f3d0b5471eecd6d2417e5310c4ede",
+      "file": "fixture-070-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "f712df5444c0d95f2da448b702f314fcb27cc301e1988b9118a1fc5e2990a572",
+      "file": "fixture-071-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 37432,
+      "ciphertextSha256": "2123bcfcda75ec6fac3f4475ccc9e96ca6bb2cc385ef222267240f17ca313d13",
+      "file": "fixture-072-get.age",
+      "plaintextSha256": "f4a64dd32bd4341f788ea14c47720cf586fafce89b1b7a91b17c08d43fb0c656"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "68ceaa9c10ac114ed601f88f8c4dc03e62dcc59fbce999deeaffec7417a0d646",
+      "file": "fixture-073-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "ec277a0b26e5ee26e2271d61aaf63b9a6dbcb9016d95ee85d52869ca3db43d44",
+      "file": "fixture-074-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 1128,
+      "ciphertextSha256": "464077a04025e5f97411a819a81984f113008eae0acf9723c32262a13e97aa7b",
+      "file": "fixture-075-get.age",
+      "plaintextSha256": "25b2afd00ce6638bc49682d782fe6e478f686605b185e22909e91ccc3b8c4b2c"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "b05b82c945e9cd0c0f4f72206ff27448028a4dc3b24a47df1b43342ac920bec0",
+      "file": "fixture-076-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "bf824e421cb82d1e55d2f417b00d49c26245d07cd1f38d1750835d1f267d651e",
+      "file": "fixture-077-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "67a41666f50dc5c1aa648b3f3666d1c4142690deb471be69a6bf3aaab9f35d43",
+      "file": "fixture-078-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 37432,
+      "ciphertextSha256": "1736c0685f72744fbc08e089e57d0446e044518306c2cbd4922edfaed505b456",
+      "file": "fixture-079-get.age",
+      "plaintextSha256": "f4a64dd32bd4341f788ea14c47720cf586fafce89b1b7a91b17c08d43fb0c656"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "d8847dfbfe14929a6ac2371fec53ba2e2aa80decb11ac7b469e357eecdb65412",
+      "file": "fixture-080-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "3a648f824019d2a0fdc3c5678e53f19a3cf9b0ace97433c56e187c0a010d703a",
+      "file": "fixture-081-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 1128,
+      "ciphertextSha256": "45877f2e40599f6350042fec96becef603daa9597a996193205ace65b0405715",
+      "file": "fixture-082-get.age",
+      "plaintextSha256": "25b2afd00ce6638bc49682d782fe6e478f686605b185e22909e91ccc3b8c4b2c"
+    },
+    {
+      "ciphertextBytes": 1144,
+      "ciphertextSha256": "46c5b61452961c8619ede4a1d7482de6174bdfa9205b6c125b88de9b6eba6903",
+      "file": "fixture-083-uid-bound-native-delete.age",
+      "plaintextSha256": "440ed0ece55230fbe8d4580d31d29a5069745a2cae33bd86969ba298e53c9667"
+    },
+    {
+      "ciphertextBytes": 928,
+      "ciphertextSha256": "c9037021f81d19da33299c12ef1834309763717850d7741dd141b8949de5fc35",
+      "file": "fixture-084-get.age",
+      "plaintextSha256": "2ee82e6e2e813786137d1fe75f76e870ed3d437cc2a44a29355879af527235be"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "ebdbcc82bd4c350c9bd124346adee0324990018196d3773a8f5eb67a07af4f72",
+      "file": "fixture-085-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "1df6e2b0577b9d1fe0f61a1764a628f73caf563d26f58a1660ea27e2950157df",
+      "file": "fixture-086-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "24f4b1e1878f5df9f90385151a685bb49fa20d1de61b6d37706e8d0964ad7cff",
+      "file": "fixture-087-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 37432,
+      "ciphertextSha256": "03a66ccc43bb62c993cbd96b95a371d41ae50438096285018e736826c43a22a8",
+      "file": "fixture-088-get.age",
+      "plaintextSha256": "f4a64dd32bd4341f788ea14c47720cf586fafce89b1b7a91b17c08d43fb0c656"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "ad0985904175757977ef302bcbe3b718763ef27100ccfea81cd36648a0ac1a1a",
+      "file": "fixture-089-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "dd03c2b06f04780fc78719c9f30e47c7da4ab237dc1675a7f71d3d378f1c7d09",
+      "file": "fixture-090-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 1276,
+      "ciphertextSha256": "500e2ed9bd3f21ab853a2c3bd30bf0ce8e05e58664b5700095054d3d8201d08d",
+      "file": "fixture-091-get.age",
+      "plaintextSha256": "041d8e1c02ef8ded3df570606ab070825f8e17a3aa1801a54eba154f3141cf6f"
+    },
+    {
+      "ciphertextBytes": 352,
+      "ciphertextSha256": "aad5f0d98072ef59d9b4044788036461cc132792b7849198f3012bf7b6611923",
+      "file": "fixture-092-remove-synthetic-finalizer.age",
+      "plaintextSha256": "8d54932a30f31d1d77ed98eb48d76ed1db25bbbc33ba24489f9496e68332dd3d"
+    },
+    {
+      "ciphertextBytes": 276,
+      "ciphertextSha256": "71e6384f79c2af263ba594fde507d79843da706fc0eddd77523ba8dade6c7b27",
+      "file": "fixture-093-owner-absent.age",
+      "plaintextSha256": "8c6a4e59d567602bc5443a8cd41887a7e4e810743fb07865ad688fd2ff8cf4f7"
+    },
+    {
+      "ciphertextBytes": 6716,
+      "ciphertextSha256": "ab7267a76768fdfb83580671cde474ccb50265a797e4fb4a8c172136962088d7",
+      "file": "fixture-094-get.age",
+      "plaintextSha256": "084314fc81993b4fdbbc0d1e917ef9b439da6dddca76e742673f0e57dc717a7b"
+    },
+    {
+      "ciphertextBytes": 2424,
+      "ciphertextSha256": "3a85804ae419fdfb3c9dda06c0b8e313146cbd663b4ea0e0b342a2c628c38780",
+      "file": "fixture-095-get.age",
+      "plaintextSha256": "80ea332873ca43daa24d675ede4bd8c1da8ccf02a07394bcb538465eba7a3662"
+    },
+    {
+      "ciphertextBytes": 2100,
+      "ciphertextSha256": "2ee3f899a8c2e105d95fc3e88640b3dfdc6ccb534e0d0b1e378a4d816fbbb7a8",
+      "file": "fixture-096-get.age",
+      "plaintextSha256": "20e9ba378d1092e12ce77d6a5e0b1c6a90243bb315924700fb926660301e6107"
+    },
+    {
+      "ciphertextBytes": 37432,
+      "ciphertextSha256": "94e8502a81df26f0e1a36545683bbc6219a2e54460ccd20bf93db6077df55b35",
+      "file": "fixture-097-get.age",
+      "plaintextSha256": "f4a64dd32bd4341f788ea14c47720cf586fafce89b1b7a91b17c08d43fb0c656"
+    },
+    {
+      "ciphertextBytes": 28340,
+      "ciphertextSha256": "a25eb4c9894b34bafc5731188eab78883662f880f05c213bf8f66205163676a0",
+      "file": "fixture-098-get.age",
+      "plaintextSha256": "5777f584d59f9085f1e335c1d531f823c4337fa13ccf25a918f4dc52ca2ccd5d"
+    },
+    {
+      "ciphertextBytes": 3824,
+      "ciphertextSha256": "fe6be3c4df479b84935892f4e3c9441930b0df5b8c5761ed04d4660604d07e55",
+      "file": "fixture-099-get.age",
+      "plaintextSha256": "84d5819c4f4fb29b0900af372cc9facdc91f5694e4cd110fae3b0d5d67c1806e"
+    },
+    {
+      "ciphertextBytes": 436,
+      "ciphertextSha256": "ee06cb578cd4dec224a71125edee77845c0fc81fc8a717a33562193492db8a7f",
+      "file": "fixture-100-get.age",
+      "plaintextSha256": "ff2a4691be2ab3006ad14ad570a78b5e5b8f911bccbd952b2c4faae2aa7aa7e7"
+    },
+    {
+      "ciphertextBytes": 304,
+      "ciphertextSha256": "0b3877f2866c39e7ca8ddbfa8a1a0bfe7081d9eb79ef61999f656c92b6b5f395",
+      "file": "fixture-101-canary-readback.age",
+      "plaintextSha256": "5ffa6bb39c699ec7400715643776f5a792ef68b34c9298faae433476f3337b00"
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "schemaVersion": 1
+}
