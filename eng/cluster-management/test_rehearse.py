@@ -9,7 +9,9 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 from evidence import canonical, digest
 from qualify import project_resource
-from rehearse import Fixture, absence_state, assert_preserved, extension_phase_actions, key, native_conflict, native_delete_options, probe_blocked, rehearse, validate_allowlist, validate_isolation
+from rehearse import (Fixture, SYSTEM_WORKSPACE_FINALIZER, absence_state, api_path, assert_phase, assert_preserved,
+                      dependency_plan, extension_phase_actions, key, native_conflict, native_delete_options, native_not_found,
+                      phase_delta, probe_blocked, rehearse, retirement_scope, validate_allowlist, validate_isolation)
 
 
 def resource(kind, name, uid, owner=None):
@@ -130,6 +132,203 @@ class RehearsalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'incomplete'):assert_preserved(before, before, {key(cm)})
         for updates in ({'uid': 'replacement-claim'}, {'binding': {'volumeName': 'other-pv'}}):
             with self.assertRaisesRegex(ValueError, 'identity-or-binding'):assert_preserved(before, [{**pvc, **updates}], {key(cm)})
+
+
+def ks(api, kind, name, uid, namespace=None, release=None, owner=None, finalizers=(), labels=None):
+    return {'apiVersion': api, 'kind': kind, 'namespace': namespace, 'name': name, 'uid': uid, 'resourceVersion': '1',
+            'owners': [{'uid': owner}] if owner else [], 'finalizers': list(finalizers), 'deletionTimestamp': None,
+            'managementLabels': labels or {}, 'helmRelease': {'release-name': release} if release else {}}
+
+
+def kubesphere_baseline():
+    sys = 'kubesphere-system'
+    return [
+        ks('v1', 'Namespace', sys, 'ns', finalizers=[SYSTEM_WORKSPACE_FINALIZER], labels={'kubesphere.io/workspace': 'system-workspace'}),
+        ks('kubesphere.io/v1alpha1', 'InstallPlan', 'ks-console-embed', 'plan', release='ks-core', finalizers=['kubesphere.io/installplan-protection']),
+        ks('apps/v1', 'Deployment', 'ks-console-embed', 'embed-deploy', sys, 'ks-console-embed'),
+        ks('v1', 'Service', 'ks-console-embed', 'embed-svc', sys, 'ks-console-embed'),
+        ks('v1', 'Endpoints', 'ks-console-embed', 'embed-ep', sys),
+        ks('v1', 'Secret', 'sh.helm.release.v1.ks-console-embed.v1', 'embed-record', sys),
+        ks('iam.kubesphere.io/v1beta1', 'GlobalRoleBinding', 'admin', 'grb', release='ks-core', finalizers=['finalizers.kubesphere.io/globalrolebindings']),
+        ks('rbac.authorization.k8s.io/v1', 'ClusterRoleBinding', 'admin-cluster-admin', 'crb', owner='grb'),
+        ks('tenant.kubesphere.io/v1beta1', 'WorkspaceTemplate', 'system-workspace', 'wst', release='ks-core', finalizers=[SYSTEM_WORKSPACE_FINALIZER]),
+        ks('iam.kubesphere.io/v1beta1', 'WorkspaceRole', 'system-workspace-admin', 'wsr', owner='wst', finalizers=['finalizers.kubesphere.io/workspaceroles']),
+        ks('tenant.kubesphere.io/v1beta1', 'Workspace', 'system-workspace', 'ws', finalizers=[SYSTEM_WORKSPACE_FINALIZER]),
+        ks('kubesphere.io/v1alpha1', 'Repository', 'extensions-museum', 'repo', release='ks-core', finalizers=['kubesphere.io/repository-protection']),
+        ks('kubesphere.io/v1alpha1', 'Extension', 'catalog', 'ext', owner='repo', finalizers=['kubesphere.io/extension-protection']),
+        ks('kubesphere.io/v1alpha1', 'ExtensionVersion', 'catalog-1', 'extv', owner='ext'),
+        ks('admissionregistration.k8s.io/v1', 'ValidatingWebhookConfiguration', 'users.iam.kubesphere.io', 'hook', release='ks-core'),
+        ks('apps/v1', 'Deployment', 'ks-controller-manager', 'deploy', sys, 'ks-core'),
+        ks('apps/v1', 'ReplicaSet', 'ks-controller-manager-1', 'rs', sys, owner='deploy'),
+        ks('v1', 'Pod', 'ks-controller-manager-1-a', 'pod', sys, owner='rs'),
+        ks('v1', 'Service', 'ks-controller-manager', 'svc', sys, 'ks-core'),
+        ks('v1', 'Endpoints', 'ks-controller-manager', 'ep', sys),
+        ks('discovery.k8s.io/v1', 'EndpointSlice', 'ks-controller-manager-x', 'slice', sys, owner='svc'),
+        ks('v1', 'ConfigMap', 'kubesphere-config', 'cm', sys, 'ks-core'),
+        ks('v1', 'Secret', 'sh.helm.release.v1.ks-core.v1', 'record', sys),
+        ks('v1', 'ConfigMap', 'unrelated', 'other', sys),
+        ks('cluster.kubesphere.io/v1alpha1', 'Cluster', 'host', 'cluster', finalizers=['finalizer.cluster.kubesphere.io']),
+    ]
+
+
+class DependencyRetirementTests(unittest.TestCase):
+    def test_dependency_plan_is_child_first_exact_and_partitions_scope(self):
+        baseline = kubesphere_baseline()
+        scope = retirement_scope(baseline)
+        self.assertEqual(scope, {v['uid'] for v in baseline} - {'ns', 'other', 'cluster'})
+        plan = dependency_plan(baseline, scope)
+        phases = {p['phase']: p for p in plan}
+        self.assertEqual([p['phase'] for p in plan], ['installed-extension', 'global-role-bindings', 'workspace-roles',
+                         'extension-repository', 'admission', 'controllers-and-services', 'remaining-release-objects',
+                         'release-records', 'system-workspace-finalizers'])
+        self.assertEqual(set(phases['installed-extension']['expected']), {'plan', 'embed-deploy', 'embed-svc', 'embed-ep', 'embed-record'})
+        self.assertEqual(phases['installed-extension']['roots'], ['plan'])
+        self.assertEqual(set(phases['global-role-bindings']['expected']), {'grb', 'crb'})
+        self.assertEqual(phases['workspace-roles']['roots'], ['wsr'])
+        self.assertEqual(set(phases['extension-repository']['expected']), {'repo', 'ext', 'extv'})
+        self.assertEqual(phases['extension-repository']['roots'], ['repo'])
+        self.assertEqual(set(phases['controllers-and-services']['expected']), {'deploy', 'rs', 'pod', 'svc', 'ep', 'slice'})
+        self.assertEqual(set(phases['controllers-and-services']['roots']), {'deploy', 'svc'})
+        self.assertFalse(phases['controllers-and-services']['controllersRunning'])
+        self.assertTrue(phases['admission']['controllersRunning'])
+        named = phases['system-workspace-finalizers']
+        self.assertEqual((named['mode'], set(named['roots'])), ('named-finalizer', {'wst', 'ws'}))
+        self.assertEqual(sorted(u for p in plan for u in p['expected']), sorted(scope))
+
+    def test_dependency_plan_refuses_unreviewed_finalizers_protected_cascade_and_unknown_owners(self):
+        for mutate, reason in [
+                (lambda b: b[[v['uid'] for v in b].index('cm')].update(finalizers=['kubesphere.io/cleanup']), 'finalizer-after-controller'),
+                (lambda b: b[[v['uid'] for v in b].index('ws')].update(finalizers=[SYSTEM_WORKSPACE_FINALIZER, 'other/hold']), 'system-workspace'),
+                (lambda b: b.append(ks('v1', 'PersistentVolumeClaim', 'data', 'claim', 'kubesphere-system', owner='cm')), 'protected'),
+                (lambda b: b[[v['uid'] for v in b].index('cm')].update(owners=[{'uid': 'unseen'}]), 'owner-outside')]:
+            with self.subTest(reason=reason):
+                baseline = kubesphere_baseline();mutate(baseline)
+                with self.assertRaisesRegex(ValueError, reason):dependency_plan(baseline, retirement_scope(baseline))
+
+    def test_phase_assertion_detects_recreation_and_permits_only_attempt_transients(self):
+        cm = ks('v1', 'ConfigMap', 'retired', 'cm-1', 'kubesphere-system')
+        job = ks('batch/v1', 'Job', 'installer', 'job-1', 'kubesphere-system')
+        namespace = ks('v1', 'Namespace', 'kubesphere-system', 'ns-1', labels={'kubesphere.io/workspace': 'system-workspace'})
+        transient = ks('batch/v1', 'Job', 'uninstaller', 'job-2', 'kubesphere-system')
+        baseline, before = {'cm-1', 'job-1', 'ns-1'}, [cm, job, namespace, transient]
+        assert_phase(baseline, before, [job, namespace], {'cm-1'})
+        delta = phase_delta(baseline, before, [job, namespace], {'cm-1'})
+        self.assertEqual(delta['transientRemovals'], ['batch/v1/Job/kubesphere-system/uninstaller'])
+        self.assertEqual((delta['unexpectedRemovals'], delta['retainedExpected'], delta['recreated']), ([], [], []))
+        recreated = {**cm, 'uid': 'cm-2'}
+        self.assertEqual(phase_delta(baseline, before, [job, namespace, recreated], {'cm-1'})['recreated'],
+                         ['v1/ConfigMap/kubesphere-system/retired'])
+        for after, reason in [([job, namespace, recreated], 'recreated'), ([namespace], 'unexpected'),
+                              ([job, {**namespace, 'managementLabels': {}}], 'identity-or-binding'),
+                              ([job, {**namespace, 'uid': 'ns-2'}], 'identity-or-binding')]:
+            with self.subTest(reason=reason), self.assertRaisesRegex(ValueError, reason):
+                assert_phase(baseline, before, after, {'cm-1'})
+
+    def test_native_not_found_and_discovered_paths_are_exact(self):
+        self.assertTrue(native_not_found(SimpleNamespace(returncode=1, stderr=b'Error from server (NotFound): users "x" not found\n')))
+        for code, stderr in [(0, b''), (1, b'Error from server (Forbidden): denied'), (1, b'Cannot connect to the Docker daemon'),
+                             (1, b'Error from server (NotFound): x\ntransport failed')]:
+            self.assertFalse(native_not_found(SimpleNamespace(returncode=code, stderr=stderr)))
+        resources = {('iam.kubesphere.io/v1beta1', 'ClusterRole'): ('clusterroles', False), ('v1', 'Secret'): ('secrets', True)}
+        role = ks('iam.kubesphere.io/v1beta1', 'ClusterRole', 'kubesphere:iam:admin', 'r')
+        self.assertEqual(api_path(resources, role), '/apis/iam.kubesphere.io/v1beta1/clusterroles/kubesphere:iam:admin')
+        secret = ks('v1', 'Secret', 'tls', 's', 'kubesphere-system')
+        self.assertEqual(api_path(resources, secret), '/api/v1/namespaces/kubesphere-system/secrets/tls')
+        for obj in ({**secret, 'namespace': None}, {**role, 'namespace': 'other'}, {**secret, 'name': '../../namespaces/x'},
+                    {**secret, 'name': 'a/b'}, {**secret, 'namespace': 'a?b'}):
+            with self.subTest(obj=obj), self.assertRaises(ValueError):api_path(resources, obj)
+        with self.assertRaises(KeyError):api_path(resources, ks('v1', 'Namespace', 'x', 'n'))
+
+
+class NativeRequestTests(unittest.TestCase):
+    def fixture(self):
+        records = {}
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
+        return Fixture(SimpleNamespace(attempt_id='native-request-test'), attempt), records
+
+    def obj(self, uid='u-1', version='5', finalizers=(), deleting=False, owners=()):
+        meta = {'name': 'system-workspace', 'uid': uid, 'resourceVersion': version, 'finalizers': list(finalizers),
+                'ownerReferences': list(owners)}
+        if deleting:
+            meta['deletionTimestamp'] = '2026-10-02T09:00:00Z'
+        return {'apiVersion': 'tenant.kubesphere.io/v1beta1', 'kind': 'WorkspaceTemplate', 'metadata': meta, 'spec': {}}
+
+    def test_native_retire_revalidates_uid_retries_conflict_and_refuses_other_errors(self):
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): precondition failed')
+        fixture, _ = self.fixture()
+        with patch.object(fixture, 'native_read', side_effect=[self.obj(version='5'), self.obj(version='6')]), \
+             patch.object(fixture, 'kube', side_effect=[conflict, SimpleNamespace(returncode=0, stdout=b'', stderr=b'')]) as kube:
+            outcome = fixture.native_retire('users', '/apis/x', 'u-1')
+        self.assertEqual((outcome['outcome'], outcome['resourceVersion'], outcome['conflictRetries']), ('native-delete-accepted', '6', 1))
+        self.assertEqual([c.kwargs['obj']['preconditions'] for c in kube.call_args_list],
+                         [{'uid': 'u-1', 'resourceVersion': '5'}, {'uid': 'u-1', 'resourceVersion': '6'}])
+        self.assertTrue(all(c.args[1:3] == ('delete', '--raw') for c in kube.call_args_list))
+        with patch.object(fixture, 'native_read', return_value=self.obj(uid='replacement')), patch.object(fixture, 'kube') as kube:
+            with self.assertRaisesRegex(ValueError, 'uid-drift'):fixture.native_retire('users', '/apis/x', 'u-1')
+        kube.assert_not_called()
+        with patch.object(fixture, 'native_read', return_value=self.obj()), patch.object(fixture, 'kube',
+                return_value=SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Forbidden): denied')):
+            with self.assertRaisesRegex(ValueError, 'rejected'):fixture.native_retire('users', '/apis/x', 'u-1')
+        with patch.object(fixture, 'native_read', return_value=self.obj()), patch.object(fixture, 'kube', return_value=conflict):
+            with self.assertRaisesRegex(ValueError, 'retries-exhausted'):fixture.native_retire('users', '/apis/x', 'u-1')
+        with patch.object(fixture, 'native_read', return_value=None), patch.object(fixture, 'kube') as kube:
+            self.assertEqual(fixture.native_retire('users', '/apis/x', 'u-1')['outcome'], 'absent-before-request')
+        kube.assert_not_called()
+
+    def test_named_finalizer_removes_only_one_named_finalizer_after_deletion_request(self):
+        fixture, _ = self.fixture()
+        current = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER, 'foregroundDeletion'], deleting=True)
+        with patch.object(fixture, 'native_read', return_value=current), \
+             patch.object(fixture, 'kube', return_value=SimpleNamespace(returncode=0, stdout=b'', stderr=b'')) as kube:
+            outcome = fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+        body = kube.call_args.kwargs['obj']
+        self.assertEqual(kube.call_args.args[1:3], ('replace', '--raw'))
+        self.assertEqual(body['metadata']['finalizers'], ['foregroundDeletion'])
+        self.assertEqual((body['metadata']['uid'], body['metadata']['resourceVersion']), ('u-1', '5'))
+        self.assertEqual(outcome['otherFinalizersRetained'], ['foregroundDeletion'])
+        for candidate, reason in [(self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER]), 'precondition'),
+                                  (self.obj(finalizers=['other/hold'], deleting=True), 'precondition'),
+                                  (self.obj(uid='replacement', finalizers=[SYSTEM_WORKSPACE_FINALIZER], deleting=True), 'precondition'),
+                                  (None, 'precondition'),
+                                  (self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER], deleting=True,
+                                            owners=[{'apiVersion': 'v1', 'kind': 'X', 'name': 'x', 'uid': 'unseen'}]), 'owner-outside')]:
+            with self.subTest(reason=reason), patch.object(fixture, 'native_read', return_value=candidate), \
+                 patch.object(fixture, 'kube') as kube:
+                with self.assertRaisesRegex(ValueError, reason):fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+            kube.assert_not_called()
+        with patch.object(fixture, 'native_read', return_value=current), patch.object(fixture, 'kube',
+                return_value=SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Forbidden): denied')):
+            with self.assertRaisesRegex(ValueError, 'rejected'):fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+
+    def test_phase_records_delta_before_stopping_and_refuses_post_controller_runtime(self):
+        baseline = kubesphere_baseline()
+        by_uid = {v['uid']: v for v in baseline}
+        plan = {p['phase']: p for p in dependency_plan(baseline, retirement_scope(baseline))}
+        resources = {(v['apiVersion'], v['kind']): ('things', bool(v['namespace'])) for v in baseline}
+        uids = {v['uid'] for v in baseline}
+        phase = plan['global-role-bindings']
+        unexpected = [v for v in baseline if v['uid'] not in ('grb', 'crb', 'other')]
+        fixture, records = self.fixture()
+        with patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (unexpected, True)]), \
+             patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}) as retire, \
+             patch.object(fixture, 'wait_absent', return_value=True):
+            with self.assertRaisesRegex(ValueError, 'unexpected'):fixture.retire_phase(phase, uids, by_uid, resources)
+        retire.assert_called_once()
+        record = records['retirement-phase-02-global-role-bindings.json']
+        self.assertEqual(record['delta']['unexpectedRemovals'], ['v1/ConfigMap/kubesphere-system/unrelated'])
+        fixture, records = self.fixture()
+        with patch.object(fixture, 'settled_inventory', return_value=(baseline, True)), patch.object(fixture, 'native_retire') as retire:
+            with self.assertRaisesRegex(ValueError, 'manager-runtime-present'):
+                fixture.retire_phase(plan['remaining-release-objects'], uids, by_uid, resources)
+        retire.assert_not_called()
+        fixture, records = self.fixture()
+        incomplete = [v for v in baseline if v['uid'] != 'grb']
+        with patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (incomplete, True)]), \
+             patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}), \
+             patch.object(fixture, 'wait_absent', return_value=False):
+            with self.assertRaisesRegex(ValueError, 'incomplete'):fixture.retire_phase(phase, uids, by_uid, resources)
+        self.assertEqual(records['retirement-phase-02-global-role-bindings.json']['delta']['retainedExpected'],
+                         ['rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/admin-cluster-admin'])
 
 
 class FixtureBoundaryTests(unittest.TestCase):
