@@ -1,0 +1,55 @@
+{
+  "attemptId": "20261002t065350z-reported-shell-ssh",
+  "authorizedLoginObserved": false,
+  "endpoint": "192.168.1.30:22",
+  "independentHostKeyTrustVerified": false,
+  "linuxHostAccountConfirmed": false,
+  "observedHostKeyFingerprint": "SHA256:cC09u9n08cO/+GKfx4TL6xMuFHQUiQXm3UFaF3TWFGw",
+  "qualificationAccepted": false,
+  "recordedAt": "2026-10-02T06:53:50Z",
+  "remainingQuestion": "Hostname and whether user-reported whoami came from successful SSH or the web kubectl container",
+  "roleGrantPerformed": false,
+  "sameRetainedHostKeyVerified": true,
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceMutation": false,
+  "sshUsername": "quentindv",
+  "state": "failed-closed",
+  "temporaryOperationalKeyCopiesRemoved": true,
+  "trials": [
+    {
+      "authorizedLoginObserved": false,
+      "observedContinuingAuthenticationMethods": [
+        "publickey,password"
+      ],
+      "originalKeyPath": "/home/administrator/.ssh/hexalith-kube-c1",
+      "permissionDeniedObserved": true,
+      "publicKeyOfferedObserved": true,
+      "returnCode": 255,
+      "serverAcceptedPublicKeyObserved": false
+    },
+    {
+      "authorizedLoginObserved": false,
+      "observedContinuingAuthenticationMethods": [
+        "publickey,password"
+      ],
+      "originalKeyPath": "/mnt/c/Users/JeromePiquot/.ssh/id_ed25519_hexalith",
+      "permissionDeniedObserved": true,
+      "publicKeyOfferedObserved": true,
+      "returnCode": 255,
+      "serverAcceptedPublicKeyObserved": false
+    },
+    {
+      "authorizedLoginObserved": false,
+      "observedContinuingAuthenticationMethods": [
+        "publickey,password"
+      ],
+      "originalKeyPath": "/mnt/c/Users/JeromePiquot/.ssh/id_ed25519",
+      "permissionDeniedObserved": true,
+      "publicKeyOfferedObserved": true,
+      "returnCode": 255,
+      "serverAcceptedPublicKeyObserved": false
+    }
+  ],
+  "usernameSource": "user-reported whoami; shell location remains unconfirmed"
+}

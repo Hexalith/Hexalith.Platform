@@ -1,0 +1,46 @@
+{
+  "attemptId": "20261002t062946z-domain-existing-keys",
+  "authorizedLoginObserved": false,
+  "endpoint": "192.168.1.30:22",
+  "independentHostKeyTrustVerified": false,
+  "linuxAccountConfirmed": false,
+  "observedHostKeyFingerprint": "SHA256:cC09u9n08cO/+GKfx4TL6xMuFHQUiQXm3UFaF3TWFGw",
+  "qualificationAccepted": false,
+  "reason": "Existing keys tested with exact user-provided username; failure does not confirm Linux account existence or Keycloak-to-host mapping",
+  "recordedAt": "2026-10-02T06:29:46Z",
+  "roleGrantPerformed": false,
+  "sameRetainedHostKeyVerified": true,
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceMutation": false,
+  "sshUsername": "jpiquot@itaneo.com",
+  "state": "failed-closed",
+  "temporaryOperationalKeyCopiesRemoved": true,
+  "trials": [
+    {
+      "authorizedLoginObserved": false,
+      "keyTransport": "temporary owner-only operational copy; removed after attempt",
+      "observedContinuingAuthenticationMethods": [
+        "publickey,password"
+      ],
+      "originalKeyPath": "/mnt/c/Users/JeromePiquot/.ssh/id_ed25519_hexalith",
+      "permissionDeniedObserved": true,
+      "publicKeyOfferedObserved": true,
+      "returnCode": 255,
+      "serverAcceptedPublicKeyObserved": false
+    },
+    {
+      "authorizedLoginObserved": false,
+      "keyTransport": "temporary owner-only operational copy; removed after attempt",
+      "observedContinuingAuthenticationMethods": [
+        "publickey,password"
+      ],
+      "originalKeyPath": "/mnt/c/Users/JeromePiquot/.ssh/id_ed25519",
+      "permissionDeniedObserved": true,
+      "publicKeyOfferedObserved": true,
+      "returnCode": 255,
+      "serverAcceptedPublicKeyObserved": false
+    }
+  ],
+  "usernameSource": "user-provided clarification"
+}

@@ -1,0 +1,121 @@
+{
+  "attemptId": "20261002t054119z-native-node-read",
+  "clientVersion": "v1.34.12",
+  "context": "jpiquot@local",
+  "coverage": [
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "native-context"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "versions"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "cluster-identity"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "nodes"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "kubeadm-configuration"
+    }
+  ],
+  "hostSshAuthenticated": false,
+  "independentHostAccessAccepted": false,
+  "kubeadmConfiguration": {
+    "apiVersion": "kubeadm.k8s.io/v1beta4",
+    "configuredExternalEndpointCount": 1,
+    "configuredKubernetesVersion": "v1.34.9",
+    "effectiveEtcdRuntimeVersionVerified": false,
+    "effectiveKubeadmBinaryVersionVerified": false,
+    "externalEtcdConfigured": true,
+    "resourceVersion": "63502",
+    "uid": "6b30ae18-90e3-4d77-b1a7-36d3b82224b7"
+  },
+  "kubectlSha256": "90b7b9058ffeb5c10710bb1c73f541eaf426fb1b4e87df435db669de9a2564a2",
+  "linuxHostAccountKnown": false,
+  "mfaVerified": false,
+  "nativeEndpoint": "https://192.168.1.30:6443",
+  "nodes": [
+    {
+      "allocatable": {
+        "cpu": "31600m",
+        "ephemeral-storage": "959218776Ki",
+        "memory": "127653983951",
+        "pods": "110"
+      },
+      "apiVersion": "v1",
+      "capacity": {
+        "cpu": "32",
+        "ephemeral-storage": "959218776Ki",
+        "memory": "131762204Ki",
+        "pods": "110"
+      },
+      "conditions": [
+        {
+          "status": "False",
+          "type": "NetworkUnavailable"
+        },
+        {
+          "status": "False",
+          "type": "MemoryPressure"
+        },
+        {
+          "status": "False",
+          "type": "DiskPressure"
+        },
+        {
+          "status": "False",
+          "type": "PIDPressure"
+        },
+        {
+          "status": "True",
+          "type": "Ready"
+        }
+      ],
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Node",
+      "managementLabels": {},
+      "name": "node1",
+      "namespace": null,
+      "owners": [],
+      "reportedOsImage": "Ubuntu 24.04.3 LTS",
+      "resourceVersion": "25665255",
+      "runtime": {
+        "architecture": "amd64",
+        "containerRuntimeVersion": "containerd://2.3.3",
+        "kernelVersion": "7.0.0-34-generic",
+        "kubeProxyVersion": null,
+        "kubeletVersion": "v1.34.9",
+        "operatingSystem": "linux"
+      },
+      "uid": "46d8d528-420d-4501-a6d8-12680d8a6ac6"
+    }
+  ],
+  "qualificationAccepted": false,
+  "recordedAt": "2026-10-02T05:41:19Z",
+  "remainingHostFacts": [
+    "Actual Linux account and authorized SSH/physical/VM-console access",
+    "Effective host kubeadm and external-etcd runtime versions",
+    "Physical/VM/hypervisor identity and existing virtualization capability",
+    "Hypervisor/host reservations, spare capacity, disk health and non-disruptive VM placement"
+  ],
+  "sameSourceClusterUidVerified": true,
+  "schemaVersion": 1,
+  "scope": "read-only native Kubernetes node/configuration observation",
+  "serverVersion": "v1.34.9",
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "sourceMutation": false,
+  "state": "observed-limited"
+}

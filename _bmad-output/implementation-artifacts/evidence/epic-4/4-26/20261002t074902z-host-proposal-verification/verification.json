@@ -1,0 +1,133 @@
+{
+  "agentRoleOrPermissionGrants": false,
+  "agentSourceMutation": false,
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "160fdee85977a1f6445fce267cf82fde7dca593bbcd535435f8f47018d2a032f",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "946539ff34eebc423f344974689709f1dbfee6632064443ca68ae6242662bca8",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "8ed4eb3f8518ed1c7c41dac14e4ccfad026a644b5c69c16d8773cd4efdf0437d",
+    "eng/cluster-management/QUALIFICATION.md": "076ee6f436fbf91c0a6742b3dd03d2d03f50e52f18ed3a8e4c4cef18d3cfdb6d",
+    "eng/cluster-management/RANCHER.md": "6559a671c8faa76ac03823e050eac7c6d1f913b257a6d5ac207e60b6ba538496",
+    "eng/cluster-management/README.md": "fa50791ac59144e407e8c9fa62f9462375c287bb40f22d04c3a17c8a8a444001",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "cd7a1a51e727913f84323249c3c37a21405f6386fd1951af43fc364e9a5bb907",
+    "eng/cluster-management/evidence.py": "06820885d28935c05e84774fba3ba55e4dcf48f1ee45c992d32129f03ab5eba5",
+    "eng/cluster-management/qualify.py": "137fe5a8f693fabb2891ff30c6e3d37ea2752849cd65d8044dba965175a816c1",
+    "eng/cluster-management/rehearse.py": "9f84f36382efecec137f2dad936421c12e48e6afbbb956330470e12df169716b",
+    "eng/cluster-management/test_cleanup.py": "cdba94ce6166488ae6ebb4ffed3f46c554847135faddcaecbea54be5b96f5942",
+    "eng/cluster-management/test_evidence.py": "ab427aefc3214276f4d7164b10b02b69d91b2aa75d0458270034c265edb2d84e",
+    "eng/cluster-management/test_qualify.py": "1e1312d93cb2ac75461e9787b202008c7d49c620b5f3fff20734cde6d3c2bbb2",
+    "eng/cluster-management/test_rehearse.py": "c36c66aa141d7365fec0086b0db42f8d2a3e1c71cf2741ead13079e9083132b6",
+    "eng/kubernetes-upgrade/MAINTENANCE.md": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+  },
+  "attemptId": "20261002t074902z-host-proposal-verification",
+  "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+  "buildReviewAndCompletionPendingOperationalAcceptance": true,
+  "buildStep": 3,
+  "checkedAt": "2026-10-02T07:49:02Z",
+  "currentCommit": "d2baa18bd0271048b95927ff8a667eb742443a67",
+  "currentEtcdIdentityComparison": {
+    "bytesMatch": true,
+    "retainedPublicReleaseBinarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+    "retainedReleaseCheckReference": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t181000z-public-verification/artifact-checks.json",
+    "runningBinarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+    "signatureOrRestoreCompatibilityAccepted": false
+  },
+  "custody": {
+    "independentDecryptionVerified": false,
+    "offNodeCustodyAccepted": false,
+    "sameAgentReadbackVerified": true,
+    "signatureVerified": false
+  },
+  "diffVerification": {
+    "bytes": 8592152,
+    "currentHandoffDiffInspected": true,
+    "newStructuredProjectionsParsed": true,
+    "privateExport": {
+      "ciphertextBytes": 8594460,
+      "ciphertextSha256": "dbcb7fc40e5378fa78e9c99f9857625f7d9427d999e55d193e6d63b06db64389",
+      "file": "baseline-diff-before-receipt.age",
+      "plaintextSha256": "963b46d068b32543ec70eba32820981880721f36d83c43211dbc27c0b7ef5f5a"
+    },
+    "scope": "complete staged baseline diff before this receipt, with unrelated historical changes preserved",
+    "sha256": "963b46d068b32543ec70eba32820981880721f36d83c43211dbc27c0b7ef5f5a"
+  },
+  "hostAuthentication": {
+    "agentPerformedKeyEnrollment": false,
+    "hostKeyMatchesPreviousPin": true,
+    "hostTrustIndependentlyAccepted": false,
+    "hostname": "node1",
+    "linuxUsername": "quentindv",
+    "operatorPerformedKeyEnrollment": true,
+    "publicKeyLoginVerified": true
+  },
+  "implementationVerification": {
+    "allFiveRowsPreviouslyVerified": true,
+    "codeBytesUnchanged": true,
+    "currentRuntimeRetirementVerified": false,
+    "priorPassedCases": 48,
+    "priorReceipt": "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t051917z-resume-verification/verification.json",
+    "priorReceiptSha256": "be55f6ab1308a54112c6b5e0efc93abc2d2ccae93db5fb16952c916691c441b0",
+    "reason": "Only planning documents and read-only evidence changed; all implementation/test bytes match the prior 48-case run",
+    "testsRerunThisFollowup": false
+  },
+  "isolatedRuntimeExecutedThisFollowup": false,
+  "localEvidenceAudit": {
+    "codeAndPrior48CaseEvidenceUnchanged": true,
+    "encryptedExports": 13,
+    "failures": [],
+    "frozenBlockSha256": "08afbc1f63a322ffc30ad9a49c342b56c85e1eaac0f5ec8d0bf39554aa759d7e",
+    "frozenBlockUnchanged": true,
+    "maintenanceUnchanged": true,
+    "projectionJsonFiles": 10,
+    "reservationArithmeticVerified": true,
+    "reservationYamlParsed": true,
+    "sameAgentDecryptionAndPlaintextDigestsVerified": 13,
+    "scope": "five newly collected immutable host/native attempts; same-agent local decryption is not independent custody"
+  },
+  "observationsSha256": {
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072113z-authorized-host-login/SHA256SUMS": "8f67280083f0ca0c3ebc985065b77e3ea10d749297a8076f2b80760c7019b820",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072113z-authorized-host-login/encrypted-exports.json": "2b96ff64d1367831be8a061e77b64efee5cb0630e331c3ed99862e4deb3cbfbf",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072113z-authorized-host-login/host-access.json": "20061b5780e74face5c906ce1327f72963cc313cfa288d90fa3cb9c1681f009c",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072401z-host-facts/SHA256SUMS": "768bb24fce746032aeff65531ac324fa1e12dd2cf20003d17e0f2e732b128051",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072401z-host-facts/encrypted-exports.json": "5ee3df4d311f5aa0acddcf86dbe4676294e8bcc7d3ec468ddb78b58c5d689194",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072401z-host-facts/host-observation.json": "83e96612fc89364bf2f1ab4f23afbeee2cdb3a79e9c4e75423541b22f99911eb",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072631z-host-services/SHA256SUMS": "0d035f02e287da8467e1611cb2280ba85e91d116ac80bfe6714d3ed79d33845e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072631z-host-services/encrypted-exports.json": "84e6c479f74c1548411034eb4c4126ab2d51d189fbf6f71ef3be1f248f3a725f",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072631z-host-services/host-services.json": "f9ebce7eee7d6dc97e002773363d2d8bae90d6879975c7e9a668bc6203866c2f",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072944z-native-datastore-host/SHA256SUMS": "96802e9d557c0f0166110040553ff60df0c7d38068d0b5713dd70f353ef72df3",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072944z-native-datastore-host/datastore-host-observation.json": "2d6b2fcfa80799741b76432f907ba367d55b942d63e54f40ac6aa1f3620e0d62",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t072944z-native-datastore-host/encrypted-exports.json": "9f1310535ee5eb2dbc0567a29dee90fab1b6b31c7538eb1844df82c59416f3f1",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t073151z-node-resource-budget/SHA256SUMS": "1971af95b0005b9fce368a65b83b791eb0197e9a7adb78bf57193cb7928170da",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t073151z-node-resource-budget/encrypted-exports.json": "89503bd3b2bb56b914d202ae72f10d54ad050a5f938bea2a542d4405e7abcc5b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t073151z-node-resource-budget/node-resource-budget.json": "376bdaa8ce671f6a8c7548193431e250711adf438ccd7519dd5e7d57bb1d1783"
+  },
+  "operatorPlanningChoice": {
+    "answer": "Prepare a node1 reservation proposal",
+    "authorizedScope": "prepare concrete planning artifacts",
+    "implementationApprovalReceived": false,
+    "questionScope": "node1 management VM reservation proposal",
+    "reportedAt": "2026-10-02T07:49:02Z",
+    "roleOrCustodyAcceptanceInferred": false,
+    "source": "direct operator reply in this conversation"
+  },
+  "originalCriteriaAccepted": 0,
+  "remainingQualificationGaps": [
+    "Owner-approved capability consumers/replacements and exact propagation/finalizer effects",
+    "Required target/transitive license/security/authenticity and procedure/recovery qualification",
+    "Measured/approved host reservations, disk health/performance, guest usability and endpoint/cost/owners",
+    "Distinct authenticated unauthorized/public denial, MFA and independent native maintenance/recovery custody",
+    "Approved scoped management authority and complete authenticated independent current lineage/restoration",
+    "Successful representative native KubeSphere retirement with workload preservation and recovery",
+    "Independent export custody/decryption/signatures and acceptance of evidence-bound handoffs"
+  ],
+  "schemaVersion": 1,
+  "servicesStarted": false,
+  "storyStatus": "in-progress",
+  "whitespaceChecks": {
+    "index": {
+      "exitCode": 0
+    },
+    "worktree": {
+      "exitCode": 0
+    }
+  }
+}

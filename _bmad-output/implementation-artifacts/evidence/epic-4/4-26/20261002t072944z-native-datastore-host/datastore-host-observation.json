@@ -1,0 +1,175 @@
+{
+  "acceptedForVMAllocation": false,
+  "agentCommandsReadOnly": true,
+  "attemptId": "20261002t072944z-native-datastore-host",
+  "capturedAt": "2026-10-02T07:29:45Z",
+  "commandResults": {
+    "alarm-list": {
+      "error": null,
+      "exitCode": 0
+    },
+    "api-server-manifest": {
+      "error": null,
+      "exitCode": 0
+    },
+    "effective-etcd-environment": {
+      "error": null,
+      "exitCode": 0
+    },
+    "effective-etcd-hash": {
+      "error": null,
+      "exitCode": 0
+    },
+    "effective-etcd-version": {
+      "error": null,
+      "exitCode": 0
+    },
+    "endpoint-status": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcd-main-pid": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcdctl-hash": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcdctl-version": {
+      "error": null,
+      "exitCode": 0
+    },
+    "guest-processes": {
+      "error": null,
+      "exitCode": 0
+    },
+    "libvirt-service-sockets": {
+      "error": null,
+      "exitCode": 0
+    },
+    "libvirt-version": {
+      "error": null,
+      "exitCode": 0
+    },
+    "member-list": {
+      "error": null,
+      "exitCode": 0
+    },
+    "offline-guest-definitions": {
+      "error": null,
+      "exitCode": 0
+    },
+    "qemu-version": {
+      "error": null,
+      "exitCode": 0
+    }
+  },
+  "currentEtcdAlarmCount": 0,
+  "currentEtcdMemberCount": 1,
+  "effectiveEtcdConfiguration": {
+    "backendQuotaBytesConfigured": null,
+    "clientCertAuth": true,
+    "configuredInitialMemberCount": 1,
+    "effectiveEnvironmentUsedWithoutArguments": true,
+    "environmentKeysObserved": [
+      "ETCD_ADVERTISE_CLIENT_URLS",
+      "ETCD_CERT_FILE",
+      "ETCD_CLIENT_CERT_AUTH",
+      "ETCD_DATA_DIR",
+      "ETCD_INITIAL_ADVERTISE_PEER_URLS",
+      "ETCD_INITIAL_CLUSTER",
+      "ETCD_KEY_FILE",
+      "ETCD_LISTEN_CLIENT_URLS",
+      "ETCD_LISTEN_PEER_URLS",
+      "ETCD_NAME",
+      "ETCD_PEER_CLIENT_CERT_AUTH",
+      "ETCD_TRUSTED_CA_FILE"
+    ],
+    "listenClientAllTls": true,
+    "listenClientEndpointCount": 2,
+    "peerClientCertAuth": true
+  },
+  "etcdEndpointStatus": [
+    {
+      "clusterId": "5441947248925166366",
+      "dbSizeBytes": 62332928,
+      "dbSizeInUseBytes": 20791296,
+      "errors": [],
+      "isLearner": null,
+      "leaderId": "3140057840123254396",
+      "memberId": "3140057840123254396",
+      "raftAppliedIndex": 29092267,
+      "raftIndex": 29092267,
+      "raftTerm": 27,
+      "revision": 25699867,
+      "version": "3.6.5"
+    }
+  ],
+  "etcdMembers": [
+    {
+      "clientEndpointCount": 1,
+      "clientEndpointsAllTls": true,
+      "isLearner": false,
+      "memberId": "3140057840123254396",
+      "name": "node1"
+    }
+  ],
+  "existingNativeEtcdClientTlsSucceeded": true,
+  "guestReservationsAccepted": false,
+  "host": "192.168.1.30",
+  "hostKeyFingerprint": "SHA256:cC09u9n08cO/+GKfx4TL6xMuFHQUiQXm3UFaF3TWFGw",
+  "hostKeyScanExport": {
+    "ciphertextBytes": 484,
+    "ciphertextSha256": "ee0d264e148b21750004a3e8c6a3775aab09443bde73c9ea70a6c3c4e6b8b765",
+    "file": "host-key-scan.age",
+    "plaintextSha256": "cc2762ccf57fd3c2d0fe638be1094b01219a1eaf98817658537e376ffd4cf7cf"
+  },
+  "independentCustodyAccepted": false,
+  "libvirtDefinitionDirectoryExists": true,
+  "libvirtServiceSocketStates": [
+    {
+      "ActiveState": "inactive",
+      "Id": "libvirtd.service",
+      "LoadState": "loaded",
+      "MainPID": "0",
+      "SubState": "dead"
+    },
+    {
+      "ActiveState": "active",
+      "Id": "libvirtd.socket",
+      "LoadState": "loaded",
+      "SubState": "listening"
+    },
+    {
+      "ActiveState": "active",
+      "Id": "libvirtd-ro.socket",
+      "LoadState": "loaded",
+      "SubState": "listening"
+    },
+    {
+      "ActiveState": "active",
+      "Id": "libvirtd-admin.socket",
+      "LoadState": "loaded",
+      "SubState": "listening"
+    }
+  ],
+  "libvirtVersion": "10.0.0",
+  "linuxUsername": "quentindv",
+  "offlineDefinitionCount": 0,
+  "offlineLibvirtDefinitions": [],
+  "originalCriteriaAccepted": 0,
+  "privateExport": {
+    "ciphertextBytes": 39120,
+    "ciphertextSha256": "e54212d199c65a348660e28a7504f0cdc91935966931e010cd0e487be7908797",
+    "file": "datastore-host-observation.age",
+    "plaintextSha256": "34ffc347550d113f8a67b8dcac65aaa3a09b0960b9c1721ccac19e599dbf9f39"
+  },
+  "qemuVersionOutput": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.17)\nCopyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers",
+  "remoteExitCode": 0,
+  "runningQemuProcessCount": 0,
+  "schemaVersion": 1,
+  "servicesStarted": false,
+  "snapshotTaken": false,
+  "temporaryKnownHostsRemoved": true
+}

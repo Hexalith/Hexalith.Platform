@@ -1,0 +1,301 @@
+{
+  "acceptedForVMAllocation": false,
+  "agentCommandsReadOnly": true,
+  "attemptId": "20261002t072401z-host-facts",
+  "capturedAt": "2026-10-02T07:24:02Z",
+  "commandResults": {
+    "block-storage": {
+      "error": null,
+      "exitCode": 0
+    },
+    "containerd-exe-19332": {
+      "error": null,
+      "exitCode": 1
+    },
+    "containerd-exe-2089": {
+      "error": null,
+      "exitCode": 1
+    },
+    "containerd-privileged-exe-19332": {
+      "error": null,
+      "exitCode": 0
+    },
+    "containerd-privileged-exe-2089": {
+      "error": null,
+      "exitCode": 0
+    },
+    "containerd-running-sha256-19332": {
+      "error": null,
+      "exitCode": 0
+    },
+    "containerd-running-sha256-2089": {
+      "error": null,
+      "exitCode": 0
+    },
+    "containerd-running-version-19332": {
+      "error": null,
+      "exitCode": 0
+    },
+    "containerd-running-version-2089": {
+      "error": null,
+      "exitCode": 0
+    },
+    "cpu": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcd-exe-3529": {
+      "error": null,
+      "exitCode": 1
+    },
+    "etcd-privileged-exe-3529": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcd-running-sha256-3529": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcd-running-version-3529": {
+      "error": null,
+      "exitCode": 0
+    },
+    "filesystem": {
+      "error": null,
+      "exitCode": 0
+    },
+    "hostname": {
+      "error": null,
+      "exitCode": 0
+    },
+    "identity": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kernel": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubeadm-sha256": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubeadm-version": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubelet-exe-3149": {
+      "error": null,
+      "exitCode": 1
+    },
+    "kubelet-privileged-exe-3149": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubelet-running-sha256-3149": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubelet-running-version-3149": {
+      "error": null,
+      "exitCode": 0
+    },
+    "load": {
+      "error": null,
+      "exitCode": 0
+    },
+    "memory": {
+      "error": null,
+      "exitCode": 0
+    },
+    "memory-detail": {
+      "error": null,
+      "exitCode": 0
+    },
+    "os-release": {
+      "error": null,
+      "exitCode": 0
+    },
+    "processes": {
+      "error": null,
+      "exitCode": 0
+    },
+    "root-mount": {
+      "error": null,
+      "exitCode": 0
+    },
+    "units": {
+      "error": null,
+      "exitCode": 0
+    },
+    "virtualization": {
+      "error": null,
+      "exitCode": 1
+    },
+    "virtualization-packages": {
+      "error": null,
+      "exitCode": 1
+    }
+  },
+  "cpu": {
+    "Architecture": "x86_64",
+    "CPU(s)": "32",
+    "Core(s) per socket": "16",
+    "Model name": "AMD Ryzen Threadripper 2950X 16-Core Processor",
+    "On-line CPU(s) list": "0-31",
+    "Socket(s)": "1",
+    "Thread(s) per core": "2",
+    "Virtualization": "AMD-V"
+  },
+  "filesystems": [
+    {
+      "availableBytes": 849498918912,
+      "mountpoint": "/",
+      "percentUsed": "9%",
+      "sizeBytes": 982240026624,
+      "usedBytes": 82770591744
+    },
+    {
+      "availableBytes": 849498918912,
+      "mountpoint": "/",
+      "percentUsed": "9%",
+      "sizeBytes": 982240026624,
+      "usedBytes": 82770591744
+    },
+    {
+      "availableBytes": 849498918912,
+      "mountpoint": "/",
+      "percentUsed": "9%",
+      "sizeBytes": 982240026624,
+      "usedBytes": 82770591744
+    }
+  ],
+  "hardwareVirtualizationFlagPresent": true,
+  "host": "192.168.1.30",
+  "hostKeyFingerprint": "SHA256:cC09u9n08cO/+GKfx4TL6xMuFHQUiQXm3UFaF3TWFGw",
+  "hostKeyIndependentlyTrusted": false,
+  "hostKeyMatchesPreviousPin": true,
+  "hostKeyScanExport": {
+    "ciphertextBytes": 484,
+    "ciphertextSha256": "8585e13c6b35c6ffe60f665655f7c2d6887b2cbf9d503bba817869ebab1164d1",
+    "file": "host-key-scan.age",
+    "plaintextSha256": "cc2762ccf57fd3c2d0fe638be1094b01219a1eaf98817658537e376ffd4cf7cf"
+  },
+  "hostname": "node1",
+  "independentCustodyAccepted": false,
+  "installedTools": {
+    "containerd": true,
+    "etcd": true,
+    "etcdctl": true,
+    "kubeadm": true,
+    "kubelet": true,
+    "pvesh": false,
+    "qemu-system-x86_64": true,
+    "virsh": true
+  },
+  "kernel": "Linux 7.0.0-34-generic x86_64",
+  "kubeadm": {
+    "binarySha256": "76802c717a6917c35124675c639e283854506fec8700e6a63c81069918845127",
+    "buildDate": "2026-06-11T17:39:19Z",
+    "gitCommit": "ad7c7374b74c04d07ea041d367ecb1a526bdf758",
+    "gitVersion": "v1.34.9",
+    "goVersion": "go1.25.11",
+    "platform": "linux/amd64"
+  },
+  "kvm": {
+    "/dev/kvm": {
+      "exists": true,
+      "gid": 993,
+      "mode": "0o660",
+      "uid": 0,
+      "userReadable": false,
+      "userWritable": false
+    },
+    "/sys/module/kvm": {
+      "exists": true,
+      "gid": 0,
+      "mode": "0o755",
+      "uid": 0,
+      "userReadable": true,
+      "userWritable": false
+    },
+    "/sys/module/kvm_amd": {
+      "exists": true,
+      "gid": 0,
+      "mode": "0o755",
+      "uid": 0,
+      "userReadable": true,
+      "userWritable": false
+    },
+    "/sys/module/kvm_intel": {
+      "exists": false
+    }
+  },
+  "linuxUsername": "quentindv",
+  "load": [
+    "2.73",
+    "1.51",
+    "1.01"
+  ],
+  "localSanitizedObservationCopy": false,
+  "memory": {
+    "MemAvailableBytes": 122236764160,
+    "MemTotalBytes": 134924496896,
+    "SwapFreeBytes": 0,
+    "SwapTotalBytes": 0
+  },
+  "operatorEnrollmentAttempt": "20261002t072113z-authorized-host-login",
+  "originalCriteriaAccepted": 0,
+  "os": {
+    "ID": "ubuntu",
+    "PRETTY_NAME": "Ubuntu 24.04.3 LTS",
+    "VERSION_ID": "24.04"
+  },
+  "rawHostExport": {
+    "ciphertextBytes": 68864,
+    "ciphertextSha256": "816359bc653aeac4a496763fa675fa6b696071e4953551fbf9e0d69c4cbb926b",
+    "file": "host-observation.age",
+    "plaintextSha256": "e36a9593ceb7ff64dccdbb9acb3a628544aa43877980507a9be180d9ca11a3e2"
+  },
+  "remoteExitCode": 0,
+  "runningProcesses": [
+    {
+      "binarySha256": "dcd1f9fcf26b93cd0f579c52ca96d82fe88067d42a5edb3f7c4e0c9f6e5c4e34",
+      "name": "containerd",
+      "pid": 2089,
+      "running-sha256ExitCode": 0,
+      "running-versionExitCode": 0,
+      "versionOutput": "containerd github.com/containerd/containerd/v2 v2.3.3 aad11006b869517fcd3009450b6f82da282e1a9b"
+    },
+    {
+      "binarySha256": "d4ce6d8d7e2d762894b13bbed90dbb56fbe8fa01414a68cc2988e070d8676b94",
+      "name": "kubelet",
+      "pid": 3149,
+      "running-sha256ExitCode": 0,
+      "running-versionExitCode": 0,
+      "versionOutput": "Kubernetes v1.34.9"
+    },
+    {
+      "binarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+      "name": "etcd",
+      "pid": 3529,
+      "running-sha256ExitCode": 0,
+      "running-versionExitCode": 0,
+      "versionOutput": "etcd Version: 3.6.5\nGit SHA: a061450\nGo Version: go1.24.7\nGo OS/Arch: linux/amd64"
+    },
+    {
+      "binarySha256": "7d5802be8afa78e2439387bbee254b8447e49b6d08ceb4586e7a905a0eb91b64",
+      "name": "containerd",
+      "pid": 19332,
+      "running-sha256ExitCode": 0,
+      "running-versionExitCode": 0,
+      "versionOutput": "containerd github.com/containerd/containerd/v2 v2.3.3 aad11006b869517fcd3009450b6f82da282e1a9b"
+    }
+  ],
+  "schemaVersion": 1,
+  "temporaryKnownHostsRemoved": true,
+  "virtualization": {
+    "detected": "none",
+    "exitCode": 1
+  }
+}

@@ -28,7 +28,7 @@ Management installation Helm and native recovery tools are independent procedure
 
 | Item | Proposed decision | Evidence/dependency still needed |
 | --- | --- | --- |
-| Host | Evaluate Administrator host192.168.1.30 first; sibling VM if node1 is already a guest, separate VM on its hypervisor; alternate physical host if no safe capacity | Operator SSH/hypervisor login; virtualization/KVM/nested support, current reservation/pressure, disk health/IOPS and placement |
+| Host | Evaluate Administrator host192.168.1.30 first; current observations report bare metal with existing AMD-V/KVM/QEMU/libvirt; alternate physical host if no safe capacity | Approved host/resource reservation, usable guest/network/storage configuration, disk health/IOPS and measured contention |
 | OS | Ubuntu Server24.04 LTS amd64, minimal dedicated management guest | Approved exact installer checksum, patched OS baseline and tested K3s pairing |
 | Budget | 4vCPU, 16GiB RAM, 80GiB SSD; reserve guest memory/CPU and independent backup space | CPU/RAM follows [small-tier starting guidance](https://ranchermanager.docs.rancher.com/v2.15/getting-started/installation-and-upgrade/installation-requirements/); disk is an operator estimate, not vendor minimum; measure space/IOPS and workload growth |
 | Placement | Management only, distinct OS/disk/credentials from workload node, Forgejo runner and staging executor | Confirm hypervisor capacity rather than subtracting reported node totals; no allocation is approved |
@@ -51,6 +51,39 @@ Single-node K3s/manager has no HA. Same-host placement shares host/power/storage
 **Separate physical host:** Put the management guest on an existing spare physical host with the same private-network/TLS/backup requirements. It reduces correlated outages from node1's host and simplifies independent maintenance. It costs more if hardware is needed, adds power/network/patching ownership, and still leaves a single management node and shared site/power dependencies. Choose it when safe existing capacity is available elsewhere, or when the current host cannot meet the reservation/non-disruption requirements. Record the actual host/quote and connectivity before approval; no purchase is authorized here.
 
 **Recommendation:** Evaluate the Administrator's192.168.1.30 host first. Prefer a sibling VM on its existing hypervisor when node1 is a guest. Otherwise use a guest on the current bare-metal host only if virtualization and reserved capacity already permit a non-disruptive allocation. If either condition fails, prefer an existing separate host and schedule any necessary procurement under4.28. Start with4vCPU/16GiB/80GiB and the private endpoint proposal, measure rather than overbuild, and keep independent native access/off-node recovery available. Do not add a new HA stack to resolve this placement decision.
+
+## Observed host and reservation proposal
+
+[Authenticated host observations](QUALIFICATION.md#authorized-host-observations-2026-10-02) now resolve the SSH/binary/topology input: `quentindv` reaches `node1` with the operator-enrolled local key and unchanged host pin. The host reports bare metal, 32 logical CPUs/16 physical cores, approximately 125.66 GiB RAM, loaded AMD-V/KVM and installed QEMU/libvirt. It has approximately 113.84 GiB available memory and 791.16 GiB root-filesystem space at the recorded sample. Libvirt is inactive with listening sockets; no system guest definition or running QEMU process was observed. A sibling VM on an upstream hypervisor is therefore not the currently observed placement. Host disk medium/health/IOPS, actual guest usability and resource ownership remain unqualified.
+
+The operator selected preparation of a node1 reservation proposal on 2026-10-02. Prepare a dedicated guest there as the provisional plan, subject to measured reservations and approval of the concrete implementation. This choice authorizes planning, not allocation or changes to kubelet. Current pod requests are 12.3 CPUs/~20.22 GiB RAM against allocatable 31.6 CPUs/~118.89 GiB RAM, but CPU limits already total 49.7 CPUs. Kubelet's existing system reservation is only 200m/250Mi. Reserve the guest in the workload node's scheduling budget as well as in its VM definition; a free-memory observation or VM vCPU count alone does not protect it from host contention. Kubernetes documents the relationship between reservations and Node Allocatable in its [version 1.34 resource guidance](https://v1-34.docs.kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/).
+
+| Budget component | Provisional amount | Basis and limit |
+| --- | --- | --- |
+| Guest | 4 vCPU, 16 GiB RAM, 80 GiB disk | Existing management proposal; logical vCPUs are not four dedicated physical cores |
+| Host virtualization headroom | 500m CPU, 2 GiB RAM, 20 GiB storage | Planning estimate for QEMU/host overhead and bounded temporary files; requires profiling and owner acceptance |
+| Additional host reservation | 4500m CPU, 18 GiB RAM, 100 GiB storage | Guest plus headroom, in addition to current OS/Kubernetes reservations; no thin-image free-space assumption |
+| Illustrative workload allocatable | 27.1 CPUs/~100.89 GiB RAM after the additional reservation | Arithmetic against the recorded current allocatable, preserving existing reservations and eviction threshold; remeasure after any separately approved change |
+| Root space after the proposed storage budget | ~691.16 GiB at the sampled state | Current free space less 100 GiB; excludes future workload growth and any other unobserved reservation |
+
+One possible reviewed implementation would retain `kubeReserved` and increase the current `systemReserved` budget as follows. This partial configuration proposal preserves the sampled eviction thresholds; every other setting and effective command-line override needs a fresh comparison before implementation.
+
+```yaml
+kubeReserved:
+  cpu: 200m
+  memory: 250Mi
+systemReserved:
+  cpu: 4700m
+  memory: 18682Mi
+  ephemeral-storage: 100Gi
+evictionHard:
+  memory.available: 5%
+  pid.available: 10%
+```
+
+This is a planning input rather than an applied kubelet configuration. The shared filesystem also needs a bounded guest image, actual space reservation, growth limits and filesystem alerts. Current pod ephemeral-storage requests/limits are zero; reducing advertised allocatable alone cannot contain all workload/PVC/log growth. Guest memory/CPU contention controls and the systemd placement of QEMU require review. Scheduler CPU reservation does not dedicate cores or establish sustained guest performance. Do not enable broad system-cgroup enforcement or restart kubelet merely to collect this evidence. Any host scheduling, service activation, networking or storage change requires its separately approved procedure; this story performs no such change.
+
+Approve host/reservation and confirm disk health/performance, private address/DNS/CA, native recovery, backup retention/cost and named owners before allocation. Provisioning remains in4.28, with single-host correlated failure and no HA. The proposal accepts no capacity, procurement, installation or authority gate.
 
 ## Scoped installation/import and access tests
 

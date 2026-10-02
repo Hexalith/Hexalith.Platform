@@ -1,0 +1,103 @@
+{
+  "acceptedVmReservation": false,
+  "agentSourceMutation": false,
+  "allocatable": {
+    "cpu": "31600m",
+    "ephemeral-storage": "959218776Ki",
+    "hugepages-1Gi": "0",
+    "hugepages-2Mi": "0",
+    "memory": "127653983951",
+    "pods": "110"
+  },
+  "allocatedResourcesFromKubectlDescribe": {
+    "cpu": {
+      "limitPercent": "(157%)",
+      "limits": "49700m",
+      "requestPercent": "(38%)",
+      "requests": "12300m"
+    },
+    "ephemeral-storage": {
+      "limitPercent": "(0%)",
+      "limits": "0",
+      "requestPercent": "(0%)",
+      "requests": "0"
+    },
+    "memory": {
+      "limitPercent": "(66%)",
+      "limits": "80484Mi",
+      "requestPercent": "(17%)",
+      "requests": "20702Mi"
+    }
+  },
+  "attemptId": "20261002t073151z-node-resource-budget",
+  "capacity": {
+    "cpu": "32",
+    "ephemeral-storage": "959218776Ki",
+    "hugepages-1Gi": "0",
+    "hugepages-2Mi": "0",
+    "memory": "131762204Ki",
+    "pods": "110"
+  },
+  "capturedAt": "2026-10-02T07:31:53Z",
+  "clientVersion": "v1.34.12",
+  "context": "jpiquot@local",
+  "coverage": [
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "native-context"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "versions"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "cluster-identity"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "node"
+    },
+    {
+      "exitCode": 0,
+      "state": "observed",
+      "step": "node-resource-description"
+    }
+  ],
+  "directCaVerified": true,
+  "independentCustodyAccepted": false,
+  "nativeEndpoint": "https://192.168.1.30:6443",
+  "nodeResourceVersion": "25700177",
+  "nodeUid": "46d8d528-420d-4501-a6d8-12680d8a6ac6",
+  "originalCriteriaAccepted": 0,
+  "sampledConditions": [
+    {
+      "status": "False",
+      "type": "NetworkUnavailable"
+    },
+    {
+      "status": "False",
+      "type": "MemoryPressure"
+    },
+    {
+      "status": "False",
+      "type": "DiskPressure"
+    },
+    {
+      "status": "False",
+      "type": "PIDPressure"
+    },
+    {
+      "status": "True",
+      "type": "Ready"
+    }
+  ],
+  "schemaVersion": 1,
+  "scope": "read-only node scheduling budget",
+  "serverVersion": "v1.34.9",
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557"
+}

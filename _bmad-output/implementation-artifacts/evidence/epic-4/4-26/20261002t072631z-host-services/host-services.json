@@ -1,0 +1,210 @@
+{
+  "acceptedForVMAllocation": false,
+  "agentCommandsReadOnly": true,
+  "attemptId": "20261002t072631z-host-services",
+  "capturedAt": "2026-10-02T07:26:32Z",
+  "commandResults": {
+    "api-server-manifest": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcd-process-arguments": {
+      "error": null,
+      "exitCode": 0
+    },
+    "etcd-unit-definition": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubelet-configuration": {
+      "error": null,
+      "exitCode": 0
+    },
+    "kubelet-service-definition": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-cgroup-19332": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-cgroup-2089": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-cgroup-3149": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-cgroup-3529": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-exe-19332": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-exe-2089": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-exe-3149": {
+      "error": null,
+      "exitCode": 0
+    },
+    "process-exe-3529": {
+      "error": null,
+      "exitCode": 0
+    },
+    "units": {
+      "error": null,
+      "exitCode": 0
+    },
+    "virtual-storage-filesystem": {
+      "error": null,
+      "exitCode": 0
+    },
+    "virtualization-packages": {
+      "error": null,
+      "exitCode": 0
+    }
+  },
+  "effectiveApiServerEtcdEndpointCount": 1,
+  "effectiveApiServerEtcdTlsEndpoints": true,
+  "etcdClientCertAuthArgument": false,
+  "etcdCommandArgumentCount": 1,
+  "etcdUsesConfigurationFile": false,
+  "existingLibvirtServiceActive": false,
+  "host": "192.168.1.30",
+  "hostKeyFingerprint": "SHA256:cC09u9n08cO/+GKfx4TL6xMuFHQUiQXm3UFaF3TWFGw",
+  "hostKeyScanExport": {
+    "ciphertextBytes": 484,
+    "ciphertextSha256": "33b0904e598309165c3a7a95c1d0ec505491a63d13ee4e56b601d80be895d6c1",
+    "file": "host-key-scan.age",
+    "plaintextSha256": "cc2762ccf57fd3c2d0fe638be1094b01219a1eaf98817658537e376ffd4cf7cf"
+  },
+  "independentCustodyAccepted": false,
+  "kubeletResourceReservations": {
+    "cgroupDriver": "systemd",
+    "enforceNodeAllocatable": null,
+    "evictionHard": {
+      "memory.available": "5%",
+      "pid.available": "10%"
+    },
+    "kubeReserved": {
+      "cpu": "200m",
+      "memory": "250Mi"
+    },
+    "reservedSystemCPUs": null,
+    "systemReserved": {
+      "cpu": "200m",
+      "memory": "250Mi"
+    }
+  },
+  "libvirtGuests": [],
+  "libvirtQueryExecuted": false,
+  "libvirtVersionOutput": "",
+  "linuxUsername": "quentindv",
+  "originalCriteriaAccepted": 0,
+  "privateExport": {
+    "ciphertextBytes": 14124,
+    "ciphertextSha256": "be7c74045fd6c78c690a43c486b06e4c02e465e73b59510f48ac0f6e9485fecc",
+    "file": "host-service-observation.age",
+    "plaintextSha256": "60947ed316d5a45e1fe6d0df3b2b2e3da55f20b23f92c913190141ff5f41d08e"
+  },
+  "processBindings": [
+    {
+      "containerScopedCgroup": false,
+      "executablePath": "/usr/local/bin/containerd",
+      "executableReadExitCode": 0,
+      "pid": 2089,
+      "systemdServiceNames": [
+        "containerd.service"
+      ]
+    },
+    {
+      "containerScopedCgroup": false,
+      "executablePath": "/usr/local/bin/kubelet",
+      "executableReadExitCode": 0,
+      "pid": 3149,
+      "systemdServiceNames": [
+        "kubelet.service"
+      ]
+    },
+    {
+      "containerScopedCgroup": false,
+      "executablePath": "/usr/local/bin/etcd",
+      "executableReadExitCode": 0,
+      "pid": 3529,
+      "systemdServiceNames": [
+        "etcd.service"
+      ]
+    },
+    {
+      "containerScopedCgroup": true,
+      "executablePath": "/usr/local/bin/containerd",
+      "executableReadExitCode": 0,
+      "pid": 19332,
+      "systemdServiceNames": []
+    }
+  ],
+  "remoteExitCode": 0,
+  "schemaVersion": 1,
+  "services": [
+    {
+      "ActiveState": "active",
+      "Id": "etcd.service",
+      "LoadState": "loaded",
+      "MainPID": "3529",
+      "SubState": "running"
+    },
+    {
+      "ActiveState": "active",
+      "Id": "kubelet.service",
+      "LoadState": "loaded",
+      "MainPID": "3149",
+      "SubState": "running"
+    },
+    {
+      "ActiveState": "active",
+      "Id": "containerd.service",
+      "LoadState": "loaded",
+      "MainPID": "2089",
+      "SubState": "running"
+    },
+    {
+      "ActiveState": "inactive",
+      "Id": "libvirtd.service",
+      "LoadState": "loaded",
+      "MainPID": "0",
+      "SubState": "dead"
+    },
+    {
+      "ActiveState": "inactive",
+      "Id": "virtqemud.service",
+      "LoadState": "not-found",
+      "MainPID": "0",
+      "SubState": "dead"
+    },
+    {
+      "ActiveState": "inactive",
+      "Id": "k3s.service",
+      "LoadState": "not-found",
+      "MainPID": "0",
+      "SubState": "dead"
+    },
+    {
+      "ActiveState": "inactive",
+      "Id": "docker.service",
+      "LoadState": "loaded",
+      "MainPID": "0",
+      "SubState": "dead"
+    }
+  ],
+  "temporaryKnownHostsRemoved": true,
+  "virtualizationPackages": [
+    "libvirt-clients 10.0.0-2ubuntu8.19 install ok installed",
+    "libvirt-daemon-system 10.0.0-2ubuntu8.19 install ok installed",
+    "qemu-system-x86 1:8.2.2+ds-0ubuntu1.17 install ok installed"
+  ]
+}
