@@ -1,0 +1,181 @@
+{
+  "acceptanceLedger": "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md",
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "58572d9ee025c5aa41f43a560d04ef3436dd0623a4300f7b973a7a01c0eae234",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "d53ea19b3204ba87e74b394782e4924e635737939f90d8c37e4f3620e99d8c4e",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "8ed4eb3f8518ed1c7c41dac14e4ccfad026a644b5c69c16d8773cd4efdf0437d",
+    "eng/cluster-management/QUALIFICATION.md": "107b946b2bb2567a56025025df03980c04a0c33103aafb6f38e98ed65026f726",
+    "eng/cluster-management/RANCHER.md": "d2f137566cbd81905fa993eed2de08ed00d6abcd6dfd81ab99cadb62791ed9f2",
+    "eng/cluster-management/README.md": "3b1ef72a65d1b40ca64a0606166030b221a82d9c6e215035b1f20b19c7631d8a",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "cd7a1a51e727913f84323249c3c37a21405f6386fd1951af43fc364e9a5bb907",
+    "eng/cluster-management/evidence.py": "06820885d28935c05e84774fba3ba55e4dcf48f1ee45c992d32129f03ab5eba5",
+    "eng/cluster-management/qualify.py": "137fe5a8f693fabb2891ff30c6e3d37ea2752849cd65d8044dba965175a816c1",
+    "eng/cluster-management/rehearse.py": "9f84f36382efecec137f2dad936421c12e48e6afbbb956330470e12df169716b",
+    "eng/cluster-management/test_cleanup.py": "cdba94ce6166488ae6ebb4ffed3f46c554847135faddcaecbea54be5b96f5942",
+    "eng/cluster-management/test_evidence.py": "ab427aefc3214276f4d7164b10b02b69d91b2aa75d0458270034c265edb2d84e",
+    "eng/cluster-management/test_qualify.py": "1e1312d93cb2ac75461e9787b202008c7d49c620b5f3fff20734cde6d3c2bbb2",
+    "eng/cluster-management/test_rehearse.py": "c36c66aa141d7365fec0086b0db42f8d2a3e1c71cf2741ead13079e9083132b6",
+    "eng/kubernetes-upgrade/MAINTENANCE.md": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+  },
+  "attemptId": "20261002t051917z-resume-verification",
+  "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+  "buildReviewAndCompletionPendingOperationalAcceptance": true,
+  "buildStep": 3,
+  "checkedAt": "2026-10-02T05:22:20Z",
+  "currentCommit": "5f94f148b882a92cb4963b8f577a19d591b2a574",
+  "custody": {
+    "independentDecryptionVerified": false,
+    "offNodeCustodyAccepted": false,
+    "recipientFileSha256": "8eb1656e1e2de1ec89dccb4042dcd046f836381e70269e2f301802ed333e2310",
+    "recipientType": "retained local SSH public encryption recipient",
+    "signatureVerified": false
+  },
+  "diffVerification": {
+    "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+    "encryptedExport": "baseline-diff-before-receipt.age",
+    "historicalStructuredProjectionsParsed": true,
+    "resumedChangeDiffInspected": true,
+    "snapshotBytes": 8500575,
+    "snapshotScope": "complete staged baseline diff before publishing this receipt; includes unrelated historical commits, preserved without edits",
+    "snapshotSha256": "b2996b4fce1c12eaf74c1df4b6451717447cb14ba450bbedccc7752a2c3ce275",
+    "untrackedChangesIncluded": true
+  },
+  "frozenBlockSha256": "08afbc1f63a322ffc30ad9a49c342b56c85e1eaac0f5ec8d0bf39554aa759d7e",
+  "frozenBlockUnchanged": true,
+  "historicalMaintenanceUnchanged": true,
+  "isolatedRuntimeExecutedThisResume": false,
+  "localEvidenceAudit": {
+    "encryptedExports": 1539,
+    "failures": [],
+    "privateFiles": 1810,
+    "privateManifestFiles": 1779,
+    "projectionAttempts": 31,
+    "projectionFiles": 191,
+    "scope": "All prior projected attempts; local manifests, encryption headers/digests, modes and parseability. No independent decryption/signature/off-node custody claim."
+  },
+  "matrixAudit": {
+    "allFiveRowsHaveExecutedPassingTests": true,
+    "operationalAcceptanceInferred": false,
+    "passingCasesByRow": {
+      "Authority": [
+        "test_qualify.CensusTests.test_proxy_credentials_are_refused_before_discovery",
+        "test_qualify.PinAuthorityTests.test_missing_gapped_conflicting_or_expanded_authority_fails_closed",
+        "test_qualify.PinAuthorityTests.test_post_cut_revocation_survives_source_loss"
+      ],
+      "Census": [
+        "test_qualify.ProjectionTests.test_secret_and_configuration_values_never_enter_projection",
+        "test_qualify.CensusTests.test_failed_discovery_is_not_an_empty_accepted_census",
+        "test_qualify.CustodyTests.test_private_attempts_immutable_and_no_recovery_overwrite"
+      ],
+      "Ownership": [
+        "test_qualify.ProjectionTests.test_ownership_storage_and_installed_catalog_distinction",
+        "test_qualify.ProjectionTests.test_unknown_owner_consumer_and_deletion_effects_block_retirement",
+        "test_rehearse.RehearsalTests.test_unknown_cascade_blocks_and_child_first_allows_explicit_scope"
+      ],
+      "Rehearsal": [
+        "test_rehearse.RehearsalTests.test_source_endpoint_uid_reachability_and_credentials_refused",
+        "test_rehearse.RehearsalTests.test_wildcards_missing_resources_protected_namespaces_and_claims_refused",
+        "test_rehearse.RehearsalTests.test_named_finalizer_only_and_drift_stop",
+        "test_rehearse.RehearsalTests.test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops",
+        "test_rehearse.FixtureBoundaryTests.test_malformed_source_identity_refused_before_fixture_allocation",
+        "test_rehearse.FixtureBoundaryTests.test_malformed_successful_docker_image_schema_finalizes_closed",
+        "test_rehearse.FixtureBoundaryTests.test_malformed_native_diagnostics_cannot_interrupt_failure_receipt_or_cleanup"
+      ],
+      "Target": [
+        "test_qualify.PinAuthorityTests.test_unqualified_tag_hosting_security_and_tools_fail_closed",
+        "test_qualify.PinAuthorityTests.test_github_prerelease_and_stale_review_rejected"
+      ]
+    }
+  },
+  "originalCriteriaAccepted": 0,
+  "pendingInputs": [
+    "Working SSH identity path/alias for jpiquot@192.168.1.30",
+    "References to existing Administrator-approved capability and authority/MFA/grant/revocation records"
+  ],
+  "procedure": {
+    "actualKubeSphereUninstallRemainsFailed": true,
+    "currentRevisionFullFixtureExecuted": false,
+    "currentSha256": "9f84f36382efecec137f2dad936421c12e48e6afbbb956330470e12df169716b",
+    "encryptedCurrentBytes": "current-procedure.age",
+    "historicalExecutedSha256": "a78aa7904801e589a9aa14fd0816503b3fcae5de4d128f34916f6c0aaa7f4ee0",
+    "historicalStandaloneAttempt": "20261001t204952z-rehearsal"
+  },
+  "productionSourceMutation": false,
+  "qualificationAccepted": false,
+  "remainingGates": [
+    "Effective host kubeadm/external-etcd/virtualization/capacity facts",
+    "Owner-approved capability consumers/replacements/deletion effects",
+    "Complete exact target dependency license/security/authenticity/procedure qualification",
+    "Approved VM/network/CA/cost/owner decisions; procurement may wait for4.28",
+    "Distinct authenticated unauthorized/public denial and independent native recovery custody/MFA",
+    "Authentic complete independent authority lineage and quarantined restoration denial",
+    "Successful representative actual KubeSphere native retirement with health/preservation/recovery",
+    "Acceptance of evidence-bound retirement and installation handoffs"
+  ],
+  "roleGrantsPerformed": false,
+  "schemaVersion": 1,
+  "signed": false,
+  "state": "verified-limited",
+  "storyAndSprintStatus": "in-progress",
+  "unitVerification": {
+    "caseIds": [
+      "test_cleanup.CleanupTests.test_early_failure_discovers_volumes_before_teardown",
+      "test_cleanup.CleanupTests.test_empty_unknown_volume_inventory_cannot_pass",
+      "test_cleanup.CleanupTests.test_failed_image_removal_with_present_or_unverified_alias_cannot_pass",
+      "test_cleanup.CleanupTests.test_timed_out_teardown_still_verifies_remaining_exact_objects",
+      "test_evidence.DestinationTests.test_attempt_symlink_is_refused_before_touching_existing_custody",
+      "test_evidence.DestinationTests.test_category_symlink_cannot_write_into_git_or_recovery",
+      "test_evidence.DestinationTests.test_dangling_category_symlink_is_refused",
+      "test_qualify.CensusTests.test_all_helm_states_paginate_beyond_default_limit",
+      "test_qualify.CensusTests.test_allocated_tool_and_shape_failures_finalize_closed_criteria",
+      "test_qualify.CensusTests.test_collect_pagination_nonpreferred_crd_and_empty_discovery_coverage",
+      "test_qualify.CensusTests.test_endpoint_userinfo_query_and_fragment_cannot_disclose_credentials",
+      "test_qualify.CensusTests.test_failed_discovery_is_not_an_empty_accepted_census",
+      "test_qualify.CensusTests.test_malformed_successful_lists_are_coverage_failures",
+      "test_qualify.CensusTests.test_proxy_credentials_are_refused_before_discovery",
+      "test_qualify.CensusTests.test_supported_skew_and_prerelease_fail",
+      "test_qualify.CustodyTests.test_private_attempts_immutable_and_no_recovery_overwrite",
+      "test_qualify.CustodyTests.test_symlink_evidence_custody_refused",
+      "test_qualify.PinAuthorityTests.test_github_prerelease_and_stale_review_rejected",
+      "test_qualify.PinAuthorityTests.test_missing_gapped_conflicting_or_expanded_authority_fails_closed",
+      "test_qualify.PinAuthorityTests.test_post_cut_revocation_survives_source_loss",
+      "test_qualify.PinAuthorityTests.test_unqualified_tag_hosting_security_and_tools_fail_closed",
+      "test_qualify.ProjectionTests.test_explicit_management_keys_and_finalizers_classify_native_objects",
+      "test_qualify.ProjectionTests.test_ingress_backends_and_gateway_listeners_preserve_sanitized_consumers",
+      "test_qualify.ProjectionTests.test_ownership_storage_and_installed_catalog_distinction",
+      "test_qualify.ProjectionTests.test_secret_and_config_consumers_project_only_reference_identities",
+      "test_qualify.ProjectionTests.test_secret_and_configuration_values_never_enter_projection",
+      "test_qualify.ProjectionTests.test_terminating_custom_resource_projects_timestamp_and_named_finalizer_only",
+      "test_qualify.ProjectionTests.test_unknown_owner_consumer_and_deletion_effects_block_retirement",
+      "test_rehearse.FixtureBoundaryTests.test_exact_name_conflicts_stop_before_mutation",
+      "test_rehearse.FixtureBoundaryTests.test_kind_timeout_captures_owned_volumes_before_failure_returns",
+      "test_rehearse.FixtureBoundaryTests.test_malformed_native_diagnostics_cannot_interrupt_failure_receipt_or_cleanup",
+      "test_rehearse.FixtureBoundaryTests.test_malformed_source_identity_refused_before_fixture_allocation",
+      "test_rehearse.FixtureBoundaryTests.test_malformed_successful_docker_image_schema_finalizes_closed",
+      "test_rehearse.FixtureBoundaryTests.test_native_conflict_requires_specific_server_rejection",
+      "test_rehearse.FixtureBoundaryTests.test_native_delete_request_contains_both_preconditions_on_fixture_only",
+      "test_rehearse.FixtureBoundaryTests.test_native_negative_transport_failure_or_content_drift_stops",
+      "test_rehearse.FixtureBoundaryTests.test_real_stale_uid_and_version_requests_require_conflict_and_unchanged_content",
+      "test_rehearse.FixtureBoundaryTests.test_side_effects_owned_before_encryption_failure",
+      "test_rehearse.FixtureBoundaryTests.test_source_inventory_hash_and_parse_share_one_capture",
+      "test_rehearse.RehearsalTests.test_daemon_failure_does_not_prove_cleanup_or_source_refusal",
+      "test_rehearse.RehearsalTests.test_extension_phase_cannot_use_later_core_scope_to_allow_unexpected_deletion",
+      "test_rehearse.RehearsalTests.test_named_finalizer_only_and_drift_stop",
+      "test_rehearse.RehearsalTests.test_orphan_propagation_retains_children_and_stops_nested_cascade",
+      "test_rehearse.RehearsalTests.test_protected_storage_properties_finalizers_and_deletion_timestamps_cannot_drift",
+      "test_rehearse.RehearsalTests.test_source_endpoint_uid_reachability_and_credentials_refused",
+      "test_rehearse.RehearsalTests.test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops",
+      "test_rehearse.RehearsalTests.test_unknown_cascade_blocks_and_child_first_allows_explicit_scope",
+      "test_rehearse.RehearsalTests.test_wildcards_missing_resources_protected_namespaces_and_claims_refused"
+    ],
+    "errors": 0,
+    "failures": 0,
+    "outputEncryptedExport": "unit-output.age",
+    "outputPlaintextSha256": "60ad31e550791baf9512da8879dbcc66cde6b2e3c1ff3849de3c772e6c912763",
+    "passed": 48,
+    "scope": "root independent unit run; synthetic/mocked failures; no runtime retirement or independent custody claim",
+    "skipped": 0,
+    "testsRun": 48
+  },
+  "whitespaceChecksPassed": true
+}

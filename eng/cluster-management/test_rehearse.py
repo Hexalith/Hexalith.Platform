@@ -232,6 +232,74 @@ class FixtureBoundaryTests(unittest.TestCase):
         self.assertEqual(attempt.record.call_args_list[0].args[1]['sourceInventorySha256'], digest(source))
         attempt.finish.assert_called_once()
 
+    def test_malformed_source_identity_refused_before_fixture_allocation(self):
+        for source in (None, [], 'private-source-value', {},
+                       {'sourceClusterUid': True, 'nativeEndpoint': 'https://192.168.1.30:6443'},
+                       {'sourceClusterUid': 'source-1', 'nativeEndpoint': {'private': 'source-value'}}):
+            with self.subTest(source=source):
+                path = Mock();path.read_bytes.return_value = canonical(source)
+                args = SimpleNamespace(source_inventory=path)
+                with patch('rehearse.Attempt') as attempt, patch('rehearse.Fixture') as fixture:
+                    with self.assertRaisesRegex(ValueError, 'source-identity-missing'):
+                        rehearse(args)
+                attempt.assert_not_called();fixture.assert_not_called()
+
+    def test_malformed_successful_docker_image_schema_finalizes_closed(self):
+        for output in ([], [None], [{}]):
+            with self.subTest(output=output), tempfile.TemporaryDirectory() as temp:
+                fixture, _ = self.fixture(temp)
+                path = Mock();path.read_bytes.return_value = canonical({
+                    'sourceClusterUid': 'source-1', 'nativeEndpoint': 'https://192.168.1.30:6443'})
+                fixture.args.source_inventory = path
+                fixture.args.project_root = Path(temp) / 'repo'
+                fixture.args.evidence_root = Path(temp) / 'private'
+                fixture.args.operator = 'operator'
+                fixture.attempt.record = Mock()
+                fixture.attempt.finish = Mock()
+                original = self.startup_commands(fixture)
+                def command(argv, **kwargs):
+                    if argv == ['docker', 'image', 'inspect', fixture.args.node_image]:
+                        return SimpleNamespace(returncode=0, stdout=canonical(output), stderr=b'')
+                    return original(argv, **kwargs)
+                with patch('rehearse.Attempt', return_value=fixture.attempt), \
+                     patch('rehearse.Fixture', return_value=fixture), \
+                     patch('rehearse.subprocess.run', side_effect=command) as commands, \
+                     patch.object(fixture, 'cleanup', return_value=True) as cleanup:
+                    _, state = rehearse(fixture.args)
+                records = {call.args[0]: call.args[1] for call in fixture.attempt.record.call_args_list}
+                self.assertEqual(state, 'failed-closed')
+                self.assertEqual(records['failure.json']['failureStep'], 'inspect-image')
+                self.assertEqual(records['failure.json']['reasonCode'], 'command-or-custody-error')
+                self.assertFalse(records['summary.json']['qualificationAccepted'])
+                self.assertTrue(all('inspect' in call.args[0] for call in commands.call_args_list))
+                cleanup.assert_called_once();fixture.attempt.finish.assert_called_once()
+
+    def test_malformed_native_diagnostics_cannot_interrupt_failure_receipt_or_cleanup(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture, _ = self.fixture(temp)
+            fixture.created = True
+            fixture.args.ks_chart = Path(temp) / 'public-chart.tgz'
+            fixture.args.source_inventory = Mock()
+            fixture.args.source_inventory.read_bytes.return_value = canonical({
+                'sourceClusterUid': 'source-1', 'nativeEndpoint': 'https://192.168.1.30:6443'})
+            fixture.args.project_root = Path(temp) / 'repo'
+            fixture.args.evidence_root = Path(temp) / 'private'
+            fixture.args.operator = 'operator'
+            fixture.attempt.record = Mock();fixture.attempt.finish = Mock()
+            fixture.last_step = 'native-fixture-schema'
+            with patch('rehearse.Attempt', return_value=fixture.attempt), \
+                 patch('rehearse.Fixture', return_value=fixture), patch.object(fixture, 'start'), \
+                 patch.object(fixture, 'execute', side_effect=KeyError('private-native-value')), \
+                 patch.object(fixture, 'get', return_value={'items': [None]}), \
+                 patch.object(fixture, 'cleanup', return_value=True) as cleanup:
+                _, state = rehearse(fixture.args)
+            records = {call.args[0]: call.args[1] for call in fixture.attempt.record.call_args_list}
+            self.assertEqual(state, 'failed-closed')
+            self.assertEqual(records['failure.json']['failureStep'], 'native-fixture-schema')
+            self.assertNotIn('private-native-value', json.dumps(records))
+            self.assertEqual(records['summary.json']['state'], 'failed-closed')
+            cleanup.assert_called_once();fixture.attempt.finish.assert_called_once()
+
     def test_native_delete_request_contains_both_preconditions_on_fixture_only(self):
         action = {'uid': 'observed-uid', 'resourceVersion': '7', 'propagation': 'Foreground'}
         options = native_delete_options(action)

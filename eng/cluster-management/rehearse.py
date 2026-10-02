@@ -709,7 +709,7 @@ class Fixture:
             self.kube('failed-fixture-pods', 'get', 'pods,replicasets.apps,events', '-n', 'kubesphere-system', '-o', 'json', allowed=(0, 1))
             self.kube('failed-console-log', 'logs', 'deployment/ks-console', '-n', 'kubesphere-system', '--all-containers', '--tail=80', allowed=(0, 1))
             self.kube('failed-controller-log', 'logs', 'deployment/ks-controller-manager', '-n', 'kubesphere-system', '--all-containers', '--tail=80', allowed=(0, 1))
-        except (ValueError, OSError, subprocess.TimeoutExpired):
+        except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError, IndexError):
             pass
 
 
@@ -718,7 +718,9 @@ def rehearse(args):
     source_bytes = args.source_inventory.read_bytes()
     args.source_digest = digest(source_bytes)
     args.source = json.loads(source_bytes)
-    if not args.source.get('sourceClusterUid') or not args.source.get('nativeEndpoint'):
+    if (not isinstance(args.source, dict)
+            or any(not isinstance(args.source.get(field), str) or not args.source[field]
+                   for field in ('sourceClusterUid', 'nativeEndpoint'))):
         raise ValueError('source-identity-missing')
     attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id, 'rehearsal')
     attempt.record('attempt.json', {'attemptId': args.attempt_id, 'recordedAt': now(), 'operator': args.operator,
@@ -730,7 +732,7 @@ def rehearse(args):
         fixture.start()
         fixture.execute()
         state = 'passed-limited'
-    except (ValueError, OSError, subprocess.TimeoutExpired) as error:
+    except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError, IndexError) as error:
         failure_step = fixture.last_step
         fixture.diagnostics()
         attempt.record('failure.json', {'state': 'failed-closed', 'failureStep': failure_step,
@@ -742,7 +744,7 @@ def rehearse(args):
         try:
             if not fixture.cleanup():
                 state = 'failed-cleanup'
-        except (ValueError, OSError, subprocess.TimeoutExpired):
+        except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError, IndexError):
             state = 'failed-cleanup'
         attempt.record('summary.json', {'state': state, 'productionRetirementAccepted': False,
                        'qualificationAccepted': False, 'licensedKubeSphereWritesUsed': False})
