@@ -1,0 +1,84 @@
+{
+  "before": {
+    "member": {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/workspace": "s426-probe"
+      },
+      "name": "s426-probe-member",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "2345",
+      "uid": "9190cf83-ad84-4fad-b8d0-60416c55677d"
+    },
+    "template": {
+      "apiVersion": "tenant.kubesphere.io/v1beta1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "WorkspaceTemplate",
+      "managementLabels": {},
+      "name": "s426-probe",
+      "namespace": null,
+      "owners": [],
+      "resourceVersion": "2312",
+      "uid": "7794abe1-bc12-42fd-9e13-e4e1b168c6b9"
+    },
+    "workspace": {
+      "apiVersion": "tenant.kubesphere.io/v1beta1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Workspace",
+      "managementLabels": {},
+      "name": "s426-probe",
+      "namespace": null,
+      "owners": [],
+      "resourceVersion": "2320",
+      "uid": "cb01e90b-dcb3-4ca5-b5fa-9e5242b414e1"
+    }
+  },
+  "cascadeHazard": false,
+  "controllersRunning": true,
+  "memberAfter": {
+    "apiVersion": "v1",
+    "deletionTimestamp": null,
+    "finalizers": [],
+    "helmRelease": {},
+    "kind": "Namespace",
+    "managementLabels": {},
+    "name": "s426-probe-member",
+    "namespace": null,
+    "namespaceFinalizers": [
+      "kubernetes"
+    ],
+    "owners": [],
+    "resourceVersion": "2397",
+    "uid": "9190cf83-ad84-4fad-b8d0-60416c55677d"
+  },
+  "memberNamespaceFinallyAbsent": false,
+  "memberNamespaceOutcome": "retained-label-or-finalizer-changed",
+  "procedurePart": false,
+  "productionAccepted": false,
+  "request": {
+    "conflictRetries": 0,
+    "outcome": "native-delete-accepted",
+    "resourceVersion": "2312"
+  },
+  "scope": "synthetic workspace and member namespace in the fresh fixture only; not a retirement action",
+  "templateRemoved": true,
+  "workspaceRemoved": true
+}

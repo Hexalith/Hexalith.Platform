@@ -1,0 +1,78 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/anonymous",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/authenticated",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/ks-console",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-admin",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-regular",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-self-provisioner",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/pre-registration"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 7,
+  "phase": "global-roles",
+  "phaseAllowlistSha256": "4144e0241bb7e97d1c6007e49e2fba3a527bd18ddd3815efa1ceae388d9685b2",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/anonymous",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1143",
+      "uid": "3663d216-d9f2-45d1-a30c-97a5c9a0b802"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/authenticated",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1144",
+      "uid": "20bce5fb-433a-4ec5-a765-1f38a8086244"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1150",
+      "uid": "31f0a5ab-a379-4b73-944a-005496217bf7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1156",
+      "uid": "44b8bb0a-04a6-40b3-b9ec-981f583a7e78"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-regular",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1154",
+      "uid": "d6f33852-6327-4d4c-a367-0d95ea791268"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-self-provisioner",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1153",
+      "uid": "9b2a1715-5c9c-4d26-bff1-005f1bc3e55c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/pre-registration",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1155",
+      "uid": "4ffc1d88-2be4-4707-9d56-23af206b6435"
+    }
+  ],
+  "settled": true
+}

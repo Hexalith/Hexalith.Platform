@@ -1,5 +1,6 @@
 """Source refusal, exact retirement scope, drift and preservation assertions."""
 import copy
+import itertools
 import json
 from pathlib import Path
 import subprocess
@@ -168,6 +169,31 @@ def kubesphere_baseline():
         ks('v1', 'Secret', 'sh.helm.release.v1.ks-core.v1', 'record', sys),
         ks('v1', 'ConfigMap', 'unrelated', 'other', sys),
         ks('cluster.kubesphere.io/v1alpha1', 'Cluster', 'host', 'cluster', finalizers=['finalizer.cluster.kubesphere.io']),
+        ks('iam.kubesphere.io/v1beta1', 'WorkspaceRoleBinding', 'system-workspace-admin', 'wrb', owner='wst',
+           finalizers=['finalizers.kubesphere.io/workspacerolebindings'], labels={'iam.kubesphere.io/user-ref': 'admin'}),
+        ks('rbac.authorization.k8s.io/v1', 'RoleBinding', 'kubesphere:iam:system-workspace:system-workspace-admin', 'wrb-projection',
+           'kube-system', labels={'iam.kubesphere.io/workspacerolebinding-ref': 'system-workspace-admin'}),
+        ks('iam.kubesphere.io/v1beta1', 'User', 'admin', 'user', release='ks-core', finalizers=['finalizers.kubesphere.io/users']),
+        ks('iam.kubesphere.io/v1beta1', 'ClusterRoleBinding', 'admin-cluster-admin', 'iam-crb', labels={'iam.kubesphere.io/user-ref': 'admin'}),
+        ks('rbac.authorization.k8s.io/v1', 'ClusterRoleBinding', 'kubesphere:iam:admin-cluster-admin', 'iam-crb-projection', owner='iam-crb'),
+        ks('iam.kubesphere.io/v1beta1', 'User', 'operator', 'other-user', finalizers=['finalizers.kubesphere.io/users']),
+        ks('rbac.authorization.k8s.io/v1', 'ClusterRoleBinding', 'operator-cluster-admin', 'operator-native-grant',
+           labels={'iam.kubesphere.io/user-ref': 'operator'}),
+        ks('v1', 'ServiceAccount', 'helm-executor.ks-console-embed', 'executor', 'kubesphere-system',
+           labels={'kubesphere.io/extension-ref': 'ks-console-embed'}),
+        ks('v1', 'ServiceAccount', 'helm-executor.other', 'other-executor', 'kubesphere-system',
+           labels={'kubesphere.io/extension-ref': 'other'}),
+        ks('v1', 'Secret', 'kubeconfig-admin', 'user-kubeconfig', 'kubesphere-system', labels={'kubesphere.io/username': 'admin'}),
+        ks('v1', 'Secret', 'kubeconfig-operator', 'operator-kubeconfig', 'kubesphere-system', labels={'kubesphere.io/username': 'operator'}),
+        ks('kubesphere.io/v1alpha1', 'ServiceAccount', 'ks-console', 'ks-sa', 'kubesphere-system', 'ks-core',
+           finalizers=['finalizers.kubesphere.io/serviceaccount']),
+        {**ks('v1', 'Secret', 'ks-console-x1', 'ks-sa-token', 'kubesphere-system'), 'serviceAccountReference': 'ks-console'},
+        {**ks('v1', 'Secret', 'other-token', 'other-token', 'other-namespace'), 'serviceAccountReference': 'ks-console'},
+        {**ks('admissionregistration.k8s.io/v1', 'ValidatingWebhookConfiguration', 'validator.license.kubesphere.io', 'license-hook'),
+         'webhooks': [{'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}]},
+        {**ks('admissionregistration.k8s.io/v1', 'MutatingWebhookConfiguration', 'unrelated-hook', 'other-hook'),
+         'webhooks': [{'service': {'namespace': 'other', 'name': 'ks-controller-manager'}}]},
+        {**ks('apiregistration.k8s.io/v1', 'APIService', 'v1.apps', 'local-api'), 'service': {'namespace': None, 'name': None}},
     ]
 
 
@@ -175,12 +201,22 @@ class DependencyRetirementTests(unittest.TestCase):
     def test_dependency_plan_is_child_first_exact_and_partitions_scope(self):
         baseline = kubesphere_baseline()
         scope = retirement_scope(baseline)
-        self.assertEqual(scope, {v['uid'] for v in baseline} - {'ns', 'other', 'cluster'})
+        # Unrelated users' grants, other extensions' identities and the host Cluster stay outside the exact scope.
+        self.assertEqual(scope, {v['uid'] for v in baseline} - {'ns', 'other', 'cluster', 'other-user', 'operator-native-grant',
+                                                                'other-executor', 'operator-kubeconfig', 'other-token',
+                                                                'other-hook', 'local-api'})
         plan = dependency_plan(baseline, scope)
         phases = {p['phase']: p for p in plan}
-        self.assertEqual([p['phase'] for p in plan], ['installed-extension', 'global-role-bindings', 'workspace-roles',
-                         'extension-repository', 'admission', 'controllers-and-services', 'remaining-release-objects',
-                         'release-records', 'system-workspace-finalizers'])
+        self.assertEqual([p['phase'] for p in plan], ['installed-extension', 'global-role-bindings', 'workspace-role-bindings',
+                         'workspace-roles', 'kubesphere-cluster-role-bindings', 'users', 'kubesphere-service-accounts',
+                         'extension-repository', 'admission',
+                         'controllers-and-services', 'remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
+        self.assertEqual(set(phases['workspace-role-bindings']['expected']), {'wrb', 'wrb-projection'})
+        self.assertEqual(phases['workspace-role-bindings']['roots'], ['wrb'])
+        self.assertEqual(set(phases['kubesphere-cluster-role-bindings']['expected']), {'iam-crb', 'iam-crb-projection'})
+        self.assertEqual(set(phases['users']['expected']), {'user', 'user-kubeconfig'})
+        self.assertEqual(set(phases['kubesphere-service-accounts']['expected']), {'ks-sa', 'ks-sa-token'})
+        self.assertIn('executor', phases['remaining-release-objects']['expected'])
         self.assertEqual(set(phases['installed-extension']['expected']), {'plan', 'embed-deploy', 'embed-svc', 'embed-ep', 'embed-record'})
         self.assertEqual(phases['installed-extension']['roots'], ['plan'])
         self.assertEqual(set(phases['global-role-bindings']['expected']), {'grb', 'crb'})
@@ -191,6 +227,7 @@ class DependencyRetirementTests(unittest.TestCase):
         self.assertEqual(set(phases['controllers-and-services']['roots']), {'deploy', 'svc'})
         self.assertFalse(phases['controllers-and-services']['controllersRunning'])
         self.assertTrue(phases['admission']['controllersRunning'])
+        self.assertEqual(set(phases['admission']['roots']), {'hook', 'license-hook'})
         named = phases['system-workspace-finalizers']
         self.assertEqual((named['mode'], set(named['roots'])), ('named-finalizer', {'wst', 'ws'}))
         self.assertEqual(sorted(u for p in plan for u in p['expected']), sorted(scope))
@@ -321,6 +358,17 @@ class NativeRequestTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'manager-runtime-present'):
                 fixture.retire_phase(plan['remaining-release-objects'], uids, by_uid, resources)
         retire.assert_not_called()
+        # The controller-removal phase starts while the manager still runs; it must not be refused for that.
+        self.assertEqual([p['phase'] for p in plan.values() if p['managerAbsentRequired']],
+                         ['remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
+        removal = plan['controllers-and-services']
+        after = [v for v in baseline if v['uid'] not in removal['expected']]
+        fixture, records = self.fixture()
+        with patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (after, True)]), \
+             patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}) as retire, \
+             patch.object(fixture, 'wait_absent', return_value=True):
+            fixture.retire_phase(removal, uids, by_uid, resources)
+        self.assertEqual(retire.call_count, len(removal['roots']))
         fixture, records = self.fixture()
         incomplete = [v for v in baseline if v['uid'] != 'grb']
         with patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (incomplete, True)]), \
@@ -329,6 +377,84 @@ class NativeRequestTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'incomplete'):fixture.retire_phase(phase, uids, by_uid, resources)
         self.assertEqual(records['retirement-phase-02-global-role-bindings.json']['delta']['retainedExpected'],
                          ['rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/admin-cluster-admin'])
+
+
+class WorkspaceProbeTests(unittest.TestCase):
+    def test_probe_refuses_before_member_namespace_when_controller_never_materializes_workspace(self):
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=Mock())
+        fixture = Fixture(SimpleNamespace(attempt_id='probe-test'), attempt)
+        with patch.object(fixture, 'create') as create, patch.object(fixture, 'native_read', return_value=None), \
+             patch.object(fixture, 'native_retire') as retire, patch('rehearse.time.sleep'), \
+             patch('rehearse.time.monotonic', side_effect=itertools.count(0, 10)):
+            with self.assertRaisesRegex(ValueError, 'workspace-probe-setup-incomplete'):fixture.probe_workspace_propagation()
+        self.assertEqual([c.args[0]['kind'] for c in create.call_args_list], ['WorkspaceTemplate'])
+        retire.assert_not_called();attempt.record.assert_not_called()
+
+    def test_probe_records_unbinding_without_treating_it_as_a_cascade(self):
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=Mock())
+        fixture = Fixture(SimpleNamespace(attempt_id='probe-test'), attempt)
+        meta = lambda name, uid, **extra: {'name': name, 'uid': uid, 'resourceVersion': '1', **extra}
+        template = {'apiVersion': 'tenant.kubesphere.io/v1beta1', 'kind': 'WorkspaceTemplate', 'metadata': meta('s426-probe', 't')}
+        workspace = {'apiVersion': 'tenant.kubesphere.io/v1beta1', 'kind': 'Workspace', 'metadata': meta('s426-probe', 'w')}
+        bound = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': meta('s426-probe-member', 'n', finalizers=[SYSTEM_WORKSPACE_FINALIZER],
+                 labels={'kubesphere.io/workspace': 's426-probe'})}
+        unbound = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': meta('s426-probe-member', 'n')}
+        reads = iter([workspace, bound, template, None, None, unbound])
+        with patch.object(fixture, 'create'), patch.object(fixture, 'native_read', side_effect=lambda path: next(reads)), \
+             patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}), patch('rehearse.time.sleep'):
+            record = fixture.probe_workspace_propagation()
+        self.assertEqual(record['memberNamespaceOutcome'], 'retained-label-or-finalizer-changed')
+        self.assertFalse(record['cascadeHazard']);self.assertFalse(record['procedurePart'])
+        self.assertEqual(record['memberAfter']['finalizers'], [])
+
+
+class PostRetirementTests(unittest.TestCase):
+    def run_checks(self, final, crds=(), pods=(), namespace_labels=None, namespace_gone=True):
+        records = {}
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
+        fixture = Fixture(SimpleNamespace(attempt_id='post-retirement-test'), attempt)
+        created = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': 's426-post-retirement', 'uid': 'n-1',
+                   'resourceVersion': '1', 'labels': namespace_labels or {}}}
+        written = {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 's426-post-retirement', 'namespace': 's426-workload',
+                   'uid': 'c-1', 'resourceVersion': '1'}}
+        reads = {'/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement': [written],
+                 '/api/v1/namespaces/s426-post-retirement': [created] + [None if namespace_gone else created] * 30}
+        with patch.object(fixture, 'create'), patch.object(fixture, 'get', return_value={'items': list(pods)}), \
+             patch.object(fixture, 'native_read', side_effect=lambda path: reads[path].pop(0)), \
+             patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}) as retire, \
+             patch('rehearse.time.sleep'), patch('rehearse.time.monotonic', side_effect=itertools.count(0, 10)):
+            try:
+                fixture.post_retirement_checks(final, list(crds))
+                error = None
+            except ValueError as raised:
+                error = str(raised)
+        return error, records['post-retirement-native-health.json'], retire
+
+    def test_native_health_requires_no_stale_backends_runtime_or_namespace_mutation(self):
+        error, record, retire = self.run_checks([ks('v1', 'Service', 'kube-dns', 's', 'kube-system')])
+        self.assertIsNone(error)
+        self.assertEqual(retire.call_args_list[0].args[1:], ('/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement', 'c-1'))
+        self.assertTrue(record['newNamespaceDeletionCompleted'])
+        hook = {**ks('admissionregistration.k8s.io/v1', 'ValidatingWebhookConfiguration', 'users', 'h'),
+                'webhooks': [{'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}]}
+        crd = {**ks('apiextensions.k8s.io/v1', 'CustomResourceDefinition', 'x.kubesphere.io', 'crd'),
+               'customResource': {'conversionService': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}}
+        pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': 'ks-apiserver-x', 'namespace': 'kubesphere-system', 'uid': 'p'},
+               'status': {'phase': 'Running'}}
+        done = {**pod, 'metadata': {**pod['metadata'], 'name': 'installer-x'}, 'status': {'phase': 'Succeeded'}}
+        for kwargs, field in [({'final': [hook]}, 'staleAdmissionOrApiServiceReferences'),
+                              ({'final': [], 'crds': [crd]}, 'staleAdmissionOrApiServiceReferences'),
+                              ({'final': [ks('apps/v1', 'Deployment', 'ks-apiserver', 'd', 'kubesphere-system')]}, 'managerRuntimeRemaining'),
+                              ({'final': [], 'pods': [pod]}, 'managerRuntimeRemaining'),
+                              ({'final': [], 'namespace_labels': {'kubesphere.io/workspace': 'system-workspace'}}, 'newNamespaceManagementLabels'),
+                              ({'final': [], 'namespace_gone': False}, 'newNamespaceDeletionCompleted')]:
+            with self.subTest(field=field, kwargs=list(kwargs)):
+                error, record, _ = self.run_checks(**kwargs)
+                self.assertEqual(error, 'post-retirement-native-health-failed')
+                self.assertTrue(record[field] in (False,) or record[field])
+        error, record, _ = self.run_checks([], pods=[done])
+        self.assertIsNone(error)
+        self.assertEqual(record['completedManagerPodResidue'], ['v1/Pod/kubesphere-system/installer-x'])
 
 
 class FixtureBoundaryTests(unittest.TestCase):

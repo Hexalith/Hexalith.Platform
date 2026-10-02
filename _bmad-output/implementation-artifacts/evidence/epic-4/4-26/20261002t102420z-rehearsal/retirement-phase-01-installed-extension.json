@@ -1,0 +1,41 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "apps/v1/Deployment/kubesphere-system/ks-console-embed",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-console-embed-675c98bc58",
+      "batch/v1/Job/kubesphere-system/helm-install-ks-console-embed-b2p8bm",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-console-embed-nb9nb",
+      "extensions.kubesphere.io/v1alpha1/ReverseProxy/-/io.kubesphere.console.embed",
+      "kubesphere.io/v1alpha1/InstallPlan/-/ks-console-embed",
+      "v1/ConfigMap/kubesphere-system/helm-install-ks-console-embed-b2p8bm",
+      "v1/Endpoints/kubesphere-system/ks-console-embed",
+      "v1/Pod/kubesphere-system/helm-install-ks-console-embed-b2p8bm-2zhmb",
+      "v1/Pod/kubesphere-system/ks-console-embed-675c98bc58-k4wnr",
+      "v1/Secret/kubesphere-system/sh.helm.release.v1.ks-console-embed.v1",
+      "v1/Service/kubesphere-system/ks-console-embed"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "controller-lifecycle",
+  "order": 1,
+  "phase": "installed-extension",
+  "phaseAllowlistSha256": "38e2fe72ba082db35a391e037ddfbcac96ef1f2136ce6e7bfbeb65946bd6a69e",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/InstallPlan/-/ks-console-embed",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1611",
+      "uid": "01e8d7a2-feb3-47b9-9ab6-a1088df83ede"
+    }
+  ],
+  "settled": true
+}

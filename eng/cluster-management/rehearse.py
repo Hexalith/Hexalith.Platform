@@ -148,12 +148,30 @@ def descendants(inventory, roots):
         expected = expanded
 
 
-def with_endpoint_counterparts(inventory, uids):
-    """The native endpoints controller removes a deleted Service's same-named Endpoints."""
-    services = {(v['namespace'], v['name']) for v in inventory
-                if v['uid'] in uids and (v['apiVersion'], v['kind']) == ('v1', 'Service')}
-    return descendants(inventory, set(uids) | {v['uid'] for v in inventory if (v['apiVersion'], v['kind']) == ('v1', 'Endpoints')
-                                               and (v['namespace'], v['name']) in services})
+# KubeSphere IAM controllers project some grants without ownerReferences; the label names the source object.
+LABEL_LINKS = (('iam.kubesphere.io/workspacerolebinding-ref', ('iam.kubesphere.io/v1beta1', 'WorkspaceRoleBinding')),
+               ('iam.kubesphere.io/user-ref', ('iam.kubesphere.io/v1beta1', 'User')),
+               ('kubesphere.io/username', ('iam.kubesphere.io/v1beta1', 'User')))
+
+
+def with_counterparts(inventory, uids):
+    """Add exact native Endpoints, service-account token Secrets and label-linked IAM projections
+    that their controllers remove with the source object."""
+    expected = set(uids)
+    while True:
+        members = [v for v in inventory if v['uid'] in expected]
+        services = {(v['namespace'], v['name']) for v in members if (v['apiVersion'], v['kind']) == ('v1', 'Service')}
+        accounts = {(v['namespace'], v['name']) for v in members if v['kind'] == 'ServiceAccount'
+                    and v['apiVersion'] in ('v1', 'kubesphere.io/v1alpha1')}
+        sources = {(label, v['name']) for label, identity in LABEL_LINKS for v in members if (v['apiVersion'], v['kind']) == identity}
+        linked = {v['uid'] for v in inventory if ((v['apiVersion'], v['kind']) == ('v1', 'Endpoints')
+                  and (v['namespace'], v['name']) in services)
+                  or (v['kind'] == 'Secret' and (v['namespace'], v.get('serviceAccountReference')) in accounts)
+                  or any(v['managementLabels'].get(label) == name for label, name in sources)}
+        expanded = descendants(inventory, expected | linked)
+        if expanded == expected:
+            return expected
+        expected = expanded
 
 
 def release_record(v, releases=RELEASES):
@@ -170,7 +188,7 @@ def extension_members(inventory, plan):
     """The installed extension controller retires its own Helm release objects and record."""
     members = {plan['uid']} | {v['uid'] for v in inventory if v.get('helmRelease', {}).get('release-name') == 'ks-console-embed'}
     members |= {v['uid'] for v in inventory if release_record(v, ('ks-console-embed',))}
-    return with_endpoint_counterparts(inventory, descendants(inventory, members))
+    return with_counterparts(inventory, descendants(inventory, members))
 
 
 def extension_phase_actions(inventory, plan, retirement_actions):
@@ -185,10 +203,20 @@ def extension_phase_actions(inventory, plan, retirement_actions):
 
 
 def retirement_scope(inventory):
-    """Exact release objects/records, the controller-created system Workspace and native counterparts."""
+    """Exact release objects/records, the controller-created system Workspace, the installed extension's
+    leftover executor identities, admission/API registrations backed by retired Services and native/IAM counterparts."""
+    installed = {v['name'] for v in inventory if (v['apiVersion'], v['kind']) == ('kubesphere.io/v1alpha1', 'InstallPlan')}
     scope = {v['uid'] for v in inventory if v['kind'] not in PROTECTED_KINDS
-             and (v.get('helmRelease', {}).get('release-name') in RELEASES or release_record(v) or system_workspace(v))}
-    return with_endpoint_counterparts(inventory, descendants(inventory, scope))
+             and (v.get('helmRelease', {}).get('release-name') in RELEASES or release_record(v) or system_workspace(v)
+                  or v['managementLabels'].get('kubesphere.io/extension-ref') in installed)}
+    scope = with_counterparts(inventory, descendants(inventory, scope))
+    # Nothing deletes a dynamically registered webhook/APIService with its backend; it must be an explicit root.
+    retired = {(v['namespace'], v['name']) for v in inventory if v['uid'] in scope and (v['apiVersion'], v['kind']) == ('v1', 'Service')}
+    backends = lambda v: ({(w['service']['namespace'], w['service']['name']) for w in v.get('webhooks', [])}
+                          | ({(v['service']['namespace'], v['service']['name'])} if v['kind'] == 'APIService' else set()))
+    scope |= {v['uid'] for v in inventory if v['kind'] in ('ValidatingWebhookConfiguration', 'MutatingWebhookConfiguration', 'APIService')
+              and backends(v) & retired}
+    return with_counterparts(inventory, descendants(inventory, scope))
 
 
 def _api(api, *kinds):
@@ -201,11 +229,14 @@ DEPENDENCY_PHASES = (
     ('global-role-bindings', _api('iam.kubesphere.io/v1beta1', 'GlobalRoleBinding')),
     ('workspace-role-bindings', _api('iam.kubesphere.io/v1beta1', 'WorkspaceRoleBinding')),
     ('workspace-roles', _api('iam.kubesphere.io/v1beta1', 'WorkspaceRole')),
+    ('kubesphere-cluster-role-bindings', _api('iam.kubesphere.io/v1beta1', 'ClusterRoleBinding')),
     ('users', _api('iam.kubesphere.io/v1beta1', 'User')),
     ('global-roles', _api('iam.kubesphere.io/v1beta1', 'GlobalRole')),
     ('kubesphere-service-accounts', _api('kubesphere.io/v1alpha1', 'ServiceAccount')),
     ('catalog-extension', lambda v: _api('kubesphere.io/v1alpha1', 'Extension', 'ExtensionVersion')(v) and not v['owners']),
     ('extension-repository', _api('kubesphere.io/v1alpha1', 'Repository')),
+    # Production-only app store; the egress-fenced fixture cannot sync its applications, so this phase is unrehearsed.
+    ('application-store', _api('application.kubesphere.io/v2', 'Repo')),
     ('admission', lambda v: v['kind'] in ('ValidatingWebhookConfiguration', 'MutatingWebhookConfiguration')
                             or _api('apiregistration.k8s.io/v1', 'APIService')(v)),
     ('controllers-and-services', lambda v: (v['apiVersion'], v['kind']) in (('apps/v1', 'Deployment'), ('v1', 'Service'))),
@@ -233,7 +264,7 @@ def dependency_plan(inventory, scope):
             expected = set().union(*(extension_members(remaining, by_uid[uid]) for uid in selected))
         else:
             roots = {uid for uid in selected if not any(o.get('uid') in selected for o in by_uid[uid]['owners'])}
-            expected = with_endpoint_counterparts(remaining, descendants(remaining, roots))
+            expected = with_counterparts(remaining, descendants(remaining, roots))
         if not expected:
             continue
         if expected - scope:
@@ -251,6 +282,8 @@ def dependency_plan(inventory, scope):
         validate_allowlist(remaining, actions)
         assigned |= expected
         phases.append({'phase': name, 'order': order, 'controllersRunning': name not in POST_CONTROLLER_PHASES and not named,
+                       # The controller-removal phase itself starts with the manager present; later phases require it gone.
+                       'managerAbsentRequired': named or name in POST_CONTROLLER_PHASES[1:],
                        'mode': 'named-finalizer' if named else ('controller-lifecycle' if name == 'installed-extension' else 'delete'),
                        'namedFinalizer': SYSTEM_WORKSPACE_FINALIZER if named else None,
                        'roots': sorted(roots, key=lambda uid: (by_uid[uid]['kind'], by_uid[uid]['namespace'] or '', by_uid[uid]['name'])),
@@ -691,7 +724,9 @@ class Fixture:
                     return current
                 time.sleep(3)
 
-        workspace = observe(workspace_path, lambda v: v is not None, 60)
+        workspace = observe(workspace_path, lambda v: v is not None, 180)
+        if workspace is None:
+            raise ValueError('workspace-probe-setup-incomplete')
         self.create({'apiVersion': 'v1', 'kind': 'Namespace',
                      'metadata': {'name': namespace, 'labels': {'kubesphere.io/workspace': template}}})
         member = observe(namespace_path, lambda v: SYSTEM_WORKSPACE_FINALIZER in v['metadata'].get('finalizers', []), 45)
@@ -727,7 +762,7 @@ class Fixture:
         current = {v['uid']: v for v in before}
         if not settled:
             raise ValueError('fixture-state-did-not-settle-before-' + name)
-        if not phase['controllersRunning'] and any(v['kind'] == 'Pod' and v['namespace'] in MANAGER_NAMESPACES for v in before):
+        if phase['managerAbsentRequired'] and any(v['kind'] == 'Pod' and v['namespace'] in MANAGER_NAMESPACES for v in before):
             raise ValueError('manager-runtime-present-before-' + name)
         if phase['mode'] == 'named-finalizer' and any(set(current.get(uid, {}).get('finalizers', [])) - {SYSTEM_WORKSPACE_FINALIZER}
                                                      for uid in phase['roots']):
@@ -754,7 +789,7 @@ class Fixture:
         assert_phase(baseline, before, after, expected)
         return after
 
-    def post_retirement_checks(self, final):
+    def post_retirement_checks(self, final, crds):
         """Native API/admission/namespace lifecycle must work without any KubeSphere component."""
         services = {(v['namespace'], v['name']) for v in final if (v['apiVersion'], v['kind']) == ('v1', 'Service')}
         stale = [label(key(v)) for v in final if v['kind'] in ('ValidatingWebhookConfiguration', 'MutatingWebhookConfiguration')
@@ -762,6 +797,9 @@ class Fixture:
                  and (hook['service']['namespace'], hook['service']['name']) not in services]
         stale += [label(key(v)) for v in final if v['kind'] == 'APIService' and v['service']['name']
                   and (v['service']['namespace'], v['service']['name']) not in services]
+        stale += [label(key(v)) for v in crds if v['customResource'].get('conversionService', {}).get('name')
+                  and (v['customResource']['conversionService']['namespace'],
+                       v['customResource']['conversionService']['name']) not in services]
         runtime = [label(key(v)) for v in final if v['namespace'] in MANAGER_NAMESPACES
                    and v['kind'] in ('Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet')]
         completed = []
@@ -834,9 +872,13 @@ class Fixture:
         self.attempt.record('kubesphere-after-state.json', {'resources': final, 'crds': final_crds, 'delta': delta,
                             'allowlistSha256': digest(canonical(allowlist)), 'productionAccepted': False})
         assert_phase(baseline, before, final, scope)
-        if {(v['uid'], v['resourceVersion']) for v in baseline_crds} != {(v['uid'], v['resourceVersion']) for v in final_crds}:
+        # Retained CRDs keep identity, served/storage versions and conversion; status-driven resourceVersion churn is recorded.
+        crd_identity = lambda items: sorted(canonical({k: v[k] for k in ('uid', 'name', 'customResource')}) for v in items)
+        if crd_identity(baseline_crds) != crd_identity(final_crds):
             raise ValueError('retained-crd-changed')
-        health = self.post_retirement_checks(final)
+        crd_versions_changed = sorted(v['name'] for v in final_crds
+                                      if (v['uid'], v['resourceVersion']) not in {(x['uid'], x['resourceVersion']) for x in baseline_crds})
+        health = self.post_retirement_checks(final, final_crds)
         retained = [{'object': label(key(v)), 'finalizers': v['finalizers'], 'managementLabels': v['managementLabels'],
                      'disposition': ('protected; KubeSphere label/finalizer residual retained pending a named decision'
                                      if v['kind'] in PROTECTED_KINDS else 'retained inert instance pending owner decision')}
@@ -846,7 +888,8 @@ class Fixture:
                     'phases': [p['phase'] for p in plan], 'exactBaselineRemovals': len(delta['expectedRemovals']),
                     'licensedApplicationWritesUsed': False, 'helmUninstallOrVendorHooksUsed': False,
                     'blanketFinalizerRemovalUsed': False, 'namespacePvcPvIdentitiesAndBindingsPreserved': True,
-                    'retainedCrds': len(final_crds), 'retainedKubeSphereMarkedObjects': retained,
+                    'retainedCrds': len(final_crds), 'retainedCrdResourceVersionChanges': crd_versions_changed,
+                    'retainedKubeSphereMarkedObjects': retained,
                     'postRetirementHealth': health, 'productionAccepted': False})
 
     def inventory(self):

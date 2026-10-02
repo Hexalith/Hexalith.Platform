@@ -1,0 +1,383 @@
+{
+  "after": [
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "s426-management",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "1860",
+      "uid": "27190c52-6f8d-4ff3-b3ca-4c648a99e81f"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "s426-workload",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "1870",
+      "uid": "7e293ff6-737c-4759-9085-b705ab369a99"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "s426-data",
+        "namespace": "s426-workload",
+        "uid": "59e70ed1-bb9d-4bf2-9eaf-ebb940770cb8"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "s426-data",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1928",
+      "storageClass": null,
+      "storagePropertiesSha256": "f8419809a1173fad5ea2ff3a4d6d89febec06a0ca7a554937479730ad0a06f22",
+      "uid": "42ba2458-3df0-49c5-9ea3-dd9bd4d5dbf9",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": null,
+        "volumeName": "s426-data"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "s426-data",
+      "namespace": "s426-workload",
+      "owners": [],
+      "resourceVersion": "1930",
+      "storagePropertiesSha256": "c65ab64ce67cfc22b95eef2378e212c244b82bdccbad01a8894b5a25dcb143eb",
+      "uid": "59e70ed1-bb9d-4bf2-9eaf-ebb940770cb8",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "ConfigMap",
+      "managementLabels": {},
+      "name": "kube-root-ca.crt",
+      "namespace": "s426-management",
+      "owners": [],
+      "resourceVersion": "1861",
+      "uid": "92973ca5-84a7-4693-be36-5fe616cc6163"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "ConfigMap",
+      "managementLabels": {},
+      "name": "kube-root-ca.crt",
+      "namespace": "s426-workload",
+      "owners": [],
+      "resourceVersion": "1871",
+      "uid": "0ef50110-cf2c-40bc-8771-e19418cb86ac"
+    },
+    {
+      "apiVersion": "apps/v1",
+      "claims": [],
+      "configMapReferences": [],
+      "configReferences": [],
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "imageIds": [],
+      "images": [
+        "registry.k8s.io/pause:3.10"
+      ],
+      "kind": "Deployment",
+      "managementLabels": {},
+      "name": "s426-preserve",
+      "namespace": "s426-workload",
+      "owners": [],
+      "replicas": 0,
+      "resourceVersion": "1913",
+      "secretReferences": [],
+      "serviceAccount": null,
+      "uid": "0a3e88c6-9b78-4812-97fe-443b105eb10b"
+    },
+    {
+      "apiVersion": "apiextensions.k8s.io/v1",
+      "customResource": {
+        "conversionService": {
+          "name": null,
+          "namespace": null
+        },
+        "conversionStrategy": "None",
+        "group": "qualification.hexalith.io",
+        "plural": "workspaces",
+        "scope": "Cluster",
+        "versions": [
+          {
+            "name": "v1",
+            "served": true,
+            "storage": true
+          }
+        ]
+      },
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "CustomResourceDefinition",
+      "managementLabels": {},
+      "name": "workspaces.qualification.hexalith.io",
+      "namespace": null,
+      "owners": [],
+      "resourceVersion": "1882",
+      "uid": "2d163347-c14c-42d6-99ec-34770cb56bc1"
+    }
+  ],
+  "allowlistSha256": "dee74f1f51866749fcfdaa616d203faa3c5fbce15f1992a521aa29fcda78bd75",
+  "before": [
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "s426-management",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "1860",
+      "uid": "27190c52-6f8d-4ff3-b3ca-4c648a99e81f"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "s426-workload",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "1870",
+      "uid": "7e293ff6-737c-4759-9085-b705ab369a99"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "s426-data",
+        "namespace": "s426-workload",
+        "uid": "59e70ed1-bb9d-4bf2-9eaf-ebb940770cb8"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "s426-data",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1928",
+      "storageClass": null,
+      "storagePropertiesSha256": "f8419809a1173fad5ea2ff3a4d6d89febec06a0ca7a554937479730ad0a06f22",
+      "uid": "42ba2458-3df0-49c5-9ea3-dd9bd4d5dbf9",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": null,
+        "volumeName": "s426-data"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "s426-data",
+      "namespace": "s426-workload",
+      "owners": [],
+      "resourceVersion": "1930",
+      "storagePropertiesSha256": "c65ab64ce67cfc22b95eef2378e212c244b82bdccbad01a8894b5a25dcb143eb",
+      "uid": "59e70ed1-bb9d-4bf2-9eaf-ebb940770cb8",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "ConfigMap",
+      "managementLabels": {},
+      "name": "kube-root-ca.crt",
+      "namespace": "s426-management",
+      "owners": [],
+      "resourceVersion": "1861",
+      "uid": "92973ca5-84a7-4693-be36-5fe616cc6163"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "ConfigMap",
+      "managementLabels": {},
+      "name": "s426-managed",
+      "namespace": "s426-management",
+      "owners": [
+        {
+          "apiVersion": "qualification.hexalith.io/v1",
+          "kind": "Workspace",
+          "name": "s426-owner",
+          "uid": "3427208c-fe20-4df9-a5a9-bbe19f58a134"
+        }
+      ],
+      "resourceVersion": "1905",
+      "uid": "4fe295d3-d730-49c5-b350-caf9e2fdf235"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "ConfigMap",
+      "managementLabels": {},
+      "name": "kube-root-ca.crt",
+      "namespace": "s426-workload",
+      "owners": [],
+      "resourceVersion": "1871",
+      "uid": "0ef50110-cf2c-40bc-8771-e19418cb86ac"
+    },
+    {
+      "apiVersion": "apps/v1",
+      "claims": [],
+      "configMapReferences": [],
+      "configReferences": [],
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "imageIds": [],
+      "images": [
+        "registry.k8s.io/pause:3.10"
+      ],
+      "kind": "Deployment",
+      "managementLabels": {},
+      "name": "s426-preserve",
+      "namespace": "s426-workload",
+      "owners": [],
+      "replicas": 0,
+      "resourceVersion": "1913",
+      "secretReferences": [],
+      "serviceAccount": null,
+      "uid": "0a3e88c6-9b78-4812-97fe-443b105eb10b"
+    },
+    {
+      "apiVersion": "apiextensions.k8s.io/v1",
+      "customResource": {
+        "conversionService": {
+          "name": null,
+          "namespace": null
+        },
+        "conversionStrategy": "None",
+        "group": "qualification.hexalith.io",
+        "plural": "workspaces",
+        "scope": "Cluster",
+        "versions": [
+          {
+            "name": "v1",
+            "served": true,
+            "storage": true
+          }
+        ]
+      },
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "CustomResourceDefinition",
+      "managementLabels": {},
+      "name": "workspaces.qualification.hexalith.io",
+      "namespace": null,
+      "owners": [],
+      "resourceVersion": "1882",
+      "uid": "2d163347-c14c-42d6-99ec-34770cb56bc1"
+    },
+    {
+      "apiVersion": "qualification.hexalith.io/v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "qualification.hexalith.io/hold"
+      ],
+      "helmRelease": {},
+      "kind": "Workspace",
+      "managementLabels": {},
+      "name": "s426-owner",
+      "namespace": null,
+      "owners": [],
+      "resourceVersion": "1892",
+      "uid": "3427208c-fe20-4df9-a5a9-bbe19f58a134"
+    }
+  ],
+  "licensedKubeSphereWritesUsed": false,
+  "limitations": [
+    "Actual core runtime/uninstall outcome is recorded separately; broad vendor cleanup hooks remain disabled",
+    "Fixture Kubernetes patch/CNI/runtime differ from source; no source workload/data restore",
+    "Explicit child-first native deletion exercises scope and finalizer preconditions; controller cascade still unaccepted",
+    "Synthetic deployment stays at zero; no production application health claim"
+  ],
+  "mutationAuthorized": false,
+  "nativeStaleUidAndResourceVersionConflictConfirmed": true,
+  "observedNamedFinalizerBlock": true,
+  "productionRetirementAccepted": false,
+  "protectedIdentitiesAndBindingsPreserved": true,
+  "state": "passed-limited-synthetic-native-rehearsal",
+  "stopRecovery": "stop deletions; retain failed fixture encrypted diagnostics; rebuild only a fresh synthetic target",
+  "syntheticCanarySha256": "3b54c8332236f2f2171ac3d8e3c57d789bc1d1f1867ffaf27f13fb8ba2941641"
+}

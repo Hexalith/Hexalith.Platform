@@ -117,6 +117,11 @@ def project_resource(obj):
         result['volumeBindingMode'] = safe(obj.get('volumeBindingMode'))
     if kind == 'Namespace':
         result['namespaceFinalizers'] = identities(spec.get('finalizers', []))
+    if kind == 'Secret':
+        # Token Secrets name their service account only in an annotation; keep that identity, never the value.
+        annotations = meta.get('annotations', {})
+        result['serviceAccountReference'] = safe(annotations.get('kubesphere.io/service-account.name')
+                                                 or annotations.get('kubernetes.io/service-account.name'))
     if kind in ('RoleBinding', 'ClusterRoleBinding'):
         result['roleRef'] = reference(obj.get('roleRef', {}))
         result['subjects'] = [{k: safe(s.get(k)) for k in ('kind', 'name', 'namespace')} for s in obj.get('subjects', [])]
@@ -124,7 +129,10 @@ def project_resource(obj):
         result['customResource'] = {'group': safe(spec.get('group')), 'plural': safe(spec.get('names', {}).get('plural')),
                                     'scope': safe(spec.get('scope')),
                                     'versions': [{'name': safe(v.get('name')), 'served': v.get('served') is True,
-                                                  'storage': v.get('storage') is True} for v in spec.get('versions', [])]}
+                                                  'storage': v.get('storage') is True} for v in spec.get('versions', [])],
+                                    'conversionStrategy': safe(spec.get('conversion', {}).get('strategy')),
+                                    'conversionService': {k: safe(spec.get('conversion', {}).get('webhook', {}).get('clientConfig', {})
+                                                                  .get('service', {}).get(k)) for k in ('namespace', 'name')}}
     if kind in ('MutatingWebhookConfiguration', 'ValidatingWebhookConfiguration'):
         result['webhooks'] = [{'name': safe(v.get('name')), 'failurePolicy': safe(v.get('failurePolicy')),
                                'service': {k: safe(v.get('clientConfig', {}).get('service', {}).get(k))

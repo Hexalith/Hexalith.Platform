@@ -91,6 +91,19 @@ class ProjectionTests(unittest.TestCase):
             self.assertNotIn('DO-NOT-PUBLISH-SECRET', projection)
             self.assertNotIn('password', projection)
 
+    def test_token_secret_projects_only_its_service_account_identity(self):
+        for annotation in ('kubesphere.io/service-account.name', 'kubernetes.io/service-account.name'):
+            raw = {'apiVersion': 'v1', 'kind': 'Secret', 'type': 'kubesphere.io/service-account-token',
+                   'metadata': {'name': 'ks-console-x1', 'namespace': 'kubesphere-system', 'uid': 'uid-1', 'resourceVersion': '3',
+                                'annotations': {annotation: 'ks-console', 'private': 'DO-NOT-PUBLISH-SECRET'}},
+                   'data': {'token': 'DO-NOT-PUBLISH-SECRET'}}
+            projection = project_resource(raw)
+            self.assertEqual(projection['serviceAccountReference'], 'ks-console')
+            self.assertNotIn('DO-NOT-PUBLISH-SECRET', json.dumps(projection))
+        unsafe = {'apiVersion': 'v1', 'kind': 'Secret', 'metadata': {'name': 'x', 'uid': 'u', 'annotations': {
+                  'kubesphere.io/service-account.name': 'not a safe identity; DO-NOT-PUBLISH'}}}
+        self.assertIsNone(project_resource(unsafe)['serviceAccountReference'])
+
     def test_ownership_storage_and_installed_catalog_distinction(self):
         base = {'apiVersion': 'extensions.kubesphere.io/v1alpha1', 'metadata': {'name': 'sample', 'uid': 'uid-1', 'resourceVersion': '2'}}
         self.assertEqual(project_resource({**base, 'kind': 'Extension'})['extensionEvidenceClass'], 'catalog-or-configuration')
