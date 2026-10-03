@@ -16,7 +16,8 @@ def fake_age(directory, body):
     return path
 
 
-VALID = 'printf "age-encryption.org/v1\\n-> X25519 fake\\nciphertext"\n'
+VALID = 'printf "age-encryption.org/v1\\n-> X25519 ephemeral-share\\nwrapped-key\\n--- mac\\nciphertext"\n'
+SSH = 'printf "age-encryption.org/v1\\n-> ssh-ed25519 8XlNQg ssh-ephemeral-share\\nwrapped-key\\n--- mac\\nciphertext"\n'
 
 
 class DestinationTests(unittest.TestCase):
@@ -103,7 +104,7 @@ class AttemptPublicationTests(unittest.TestCase):
         self.assertEqual(set(sums), {'encrypted-exports.json', 'observation.json'})
         self.assertTrue(all(file_digest(published / name) == value for name, value in sums.items()))
         exports = json.loads((published / 'encrypted-exports.json').read_text())
-        self.assertEqual(set(exports['exports'][0]), {'file', 'ciphertextSha256', 'ciphertextBytes'})
+        self.assertEqual(set(exports['exports'][0]), {'file', 'ciphertextSha256', 'ciphertextBytes', 'recipientStanzas'})
         self.assertNotIn('plaintextSha256', json.dumps(exports))
         self.assertNotIn(digest(b'PRIVATE-PLAINTEXT'), ''.join(p.read_text() for p in published.iterdir()))
         private = json.loads((attempt.directory / 'private-export-digests.json').read_text())
@@ -129,6 +130,45 @@ class AttemptPublicationTests(unittest.TestCase):
                     attempt.encrypt(name + '-export', b'PRIVATE', age, 'public-only')
                 self.assertFalse((attempt.directory / (name + '-export.age')).exists())
                 self.assertEqual(attempt.exports, [entry])
+
+    def test_recipient_stanza_type_and_ssh_tag_are_recorded_and_published_without_shares(self):
+        attempt = Attempt(self.project, self.base / 'private', 'recipient-test')
+        ssh = attempt.encrypt('ssh-export', b'PRIVATE', fake_age(self.base, SSH), 'public-only')
+        self.assertEqual(ssh['recipientStanzas'], [{'type': 'ssh-ed25519', 'tag': '8XlNQg'}])
+        native = attempt.encrypt('x25519-export', b'PRIVATE', fake_age(self.base, VALID), 'public-only')
+        self.assertEqual(native['recipientStanzas'], [{'type': 'X25519', 'tag': None}])
+        attempt.finish()
+        published = (self.project / '_bmad-output/implementation-artifacts/evidence/epic-4/4-26/recipient-test'
+                     / 'encrypted-exports.json').read_text()
+        self.assertEqual([e['recipientStanzas'] for e in json.loads(published)['exports']],
+                         [[{'type': 'ssh-ed25519', 'tag': '8XlNQg'}], [{'type': 'X25519', 'tag': None}]])
+        # Ephemeral shares and wrapped keys never leave the ciphertext.
+        for value in ('ephemeral-share', 'wrapped-key'):
+            self.assertNotIn(value, published)
+
+    def test_headers_without_recipient_stanza_terminator_or_valid_ssh_tag_are_refused(self):
+        attempt = Attempt(self.project, self.base / 'private', 'stanza-test')
+        for name, body in (('no-stanza', 'printf "age-encryption.org/v1\\n--- mac\\nciphertext"\n'),
+                           ('no-terminator', 'printf "age-encryption.org/v1\\n-> X25519 share\\nciphertext"\n'),
+                           ('no-tag', 'printf "age-encryption.org/v1\\n-> ssh-ed25519\\nwrapped\\n--- mac\\nx"\n'),
+                           ('bad-tag', 'printf "age-encryption.org/v1\\n-> ssh-rsa not-a-tag!\\nwrapped\\n--- mac\\nx"\n')):
+            with self.subTest(case=name):
+                age = self.base / ('age-' + name)
+                age.write_text('#!/bin/sh\ncat >/dev/null\n' + body);age.chmod(0o700)
+                with self.assertRaisesRegex(ValueError, 'export-encryption-failed'):
+                    attempt.encrypt(name, b'PRIVATE', age, 'public-only')
+                self.assertFalse((attempt.directory / (name + '.age')).exists())
+        self.assertEqual(attempt.exports, [])
+
+    def test_existing_upgrade_and_recovery_evidence_roots_are_refused(self):
+        home = self.base / 'home'  # Path.home() is patched to this directory in setUp
+        for name in ('hexalith-upgrade-evidence', 'hexalith-recovery-evidence'):
+            with self.subTest(root=name):
+                retained = home / name
+                retained.mkdir(mode=0o700)
+                with self.assertRaisesRegex(ValueError, 'must-not-write-into-existing-recovery-evidence'):
+                    Attempt(self.project, retained / 'new-root', 'attempt')
+                self.assertEqual(list(retained.iterdir()), [])
 
     def test_invalid_attempt_ids_and_categories_are_refused_before_allocation(self):
         root = self.base / 'private'

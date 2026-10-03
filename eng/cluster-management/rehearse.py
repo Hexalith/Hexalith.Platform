@@ -8,12 +8,13 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import time
 import urllib.parse
 
 from evidence import Attempt, canonical, digest, file_digest, now
-from qualify import PROTECTED_KINDS, management_resource, project_resource
+from qualify import PROTECTED_KINDS, management_resource, project_resource, safe
 
 
 def key(obj):
@@ -378,13 +379,20 @@ def synthetic_hold_blocked(obj):
 
 
 def tool_identities(args):
-    """Digests of the supplied files and runtime version output: identities, not release authenticity."""
+    """Digests of the supplied files, the PATH-resolved runtime binaries and their version output:
+    identities, not release authenticity."""
     files = {name: (file_digest(path) if path else None)
              for name, path in (('kubectl', args.kubectl), ('helm', getattr(args, 'helm', None)), ('age', args.age))}
     versions = {}
-    for name, argv in (('kind', ['kind', 'version']), ('docker', ['docker', 'version'])):
-        result = subprocess.run(argv, capture_output=True, timeout=30)
-        versions[name] = {'exitCode': result.returncode, 'outputSha256': digest(result.stdout)}
+    for name in ('kind', 'docker'):
+        resolved = shutil.which(name)
+        if resolved is None:
+            versions[name] = {'exitCode': None, 'outputSha256': None, 'binarySha256': None}
+            continue
+        # Hash the bytes the PATH lookup reaches (through any symlink) and run that same lookup result.
+        result = subprocess.run([resolved, 'version'], capture_output=True, timeout=30)
+        versions[name] = {'exitCode': result.returncode, 'outputSha256': digest(result.stdout),
+                          'binarySha256': file_digest(os.path.realpath(resolved))}
     return {'toolSha256': files, 'kubectlExecuted': False, 'runtimeVersionOutput': versions, 'releaseAuthenticityVerified': False}
 
 
@@ -737,8 +745,9 @@ class Fixture:
 
     def native_retire(self, phase, path, reviewed):
         """Fresh read compared with the reviewed allowlist entry, then a DELETE carrying its UID and the read resourceVersion.
-        A resourceVersion that changed since review is accepted only when the sanitized reviewed projection is identical
-        (status-only churn); any other difference stops for re-review."""
+        A resourceVersion that changed since review is accepted only when the sanitized reviewed projection is identical;
+        any projected difference stops for re-review. The projection omits spec, data, RBAC rules, status and
+        non-management labels/annotations, so a change confined to those fields is not detected here."""
         uid = reviewed['uid']
         for retry in range(3):
             current = self.native_read(path)
@@ -1201,6 +1210,8 @@ class Fixture:
 
 def rehearse(args):
     args.script_digest = file_digest(Path(__file__))
+    # Imported helpers (including project_resource) are part of the executed procedure.
+    args.module_digests = {name: file_digest(Path(__file__).with_name(name)) for name in ('evidence.py', 'qualify.py')}
     source_bytes = args.source_inventory.read_bytes()
     args.source_digest = digest(source_bytes)
     args.source = json.loads(source_bytes)
@@ -1209,15 +1220,15 @@ def rehearse(args):
                    for field in ('sourceClusterUid', 'nativeEndpoint'))):
         raise ValueError('source-identity-missing')
     attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id, 'rehearsal')
-    attempt.record('attempt.json', {'attemptId': args.attempt_id, 'recordedAt': now(), 'operator': args.operator,
-                    'scriptSha256': args.script_digest,
+    attempt.record('attempt.json', {'attemptId': args.attempt_id, 'recordedAt': now(), 'operator': safe(args.operator),
+                    'scriptSha256': args.script_digest, 'moduleSha256': args.module_digests,
                     'sourceInventorySha256': args.source_digest, 'scope': 'isolated synthetic native operations only',
                     'mutationAuthorized': False, 'signed': False, 'productionAccepted': False})
     fixture, state = Fixture(args, attempt), 'failed-closed'
     try:
         identities = tool_identities(args)
         attempt.record('tools.json', identities)
-        if any(v['exitCode'] for v in identities['runtimeVersionOutput'].values()):
+        if any(v['exitCode'] != 0 for v in identities['runtimeVersionOutput'].values()):
             raise ValueError('runtime-version-preflight-failed')
         fixture.start()
         fixture.execute()

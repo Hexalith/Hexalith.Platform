@@ -4,9 +4,9 @@ type: 'chore'
 epic: 4
 story: 26
 created: '2026-10-01'
-status: 'in-progress'
+status: 'ready-for-dev'
 route: 'dispatch'
-review_loop_iteration: 0
+review_loop_iteration: 2
 baseline_commit: '98436a4cb884f8d11b4b5f3e6ae70e95ce687463'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
@@ -22,6 +22,8 @@ context:
 **Approach:** Execute Story 4.26 qualification: collect protected native evidence, classify management dependencies, qualify exact Rancher/K3s/tool identities and independently usable access, rehearse native retirement in isolation, and deliver reviewable retirement and management plans.
 
 **Decision:** Evaluate the Administrator's host `192.168.1.30` first; VM capability, capacity, endpoint and cost require qualification.
+
+**Decision (2026-10-03, Administrator):** The repository is public. Security-weakness narratives and host-access specifics go to encrypted private custody for the Administrator, and Git keeps only a neutral pointer. This covers which key or account reaches which privilege, authentication or sudo weaknesses, credential file locations, modes and validity, and the remediation status of those weaknesses. Future published projections omit them. Pushed history and committed immutable evidence attempts are not rewritten. Kubernetes RBAC facts from the census are not covered and stay public: which user or ServiceAccount holds which role, including the `jpiquot` binding finding.
 
 ## Boundaries & Constraints
 
@@ -50,6 +52,9 @@ context:
 - `~/hexalith-upgrade-evidence/tools/` — requalify retained kubectl/Helm/age/etcd identities.
 - `~/hexalith-recovery-evidence/4-0/20261001t061620z/tools/` — reuse accepted signature/readback verification.
 - `eng/kubernetes-upgrade/MAINTENANCE.md` — preserve digest; derive successor after retirement.
+- `eng/cluster-management/evidence.py` `Attempt` (`encrypt`, `finish`) — hold redacted text in a new private attempt; only ciphertext identities and a neutral pointer are published.
+- Redaction recipient: the Administrator signing public key, age tag `8XlNQg`, which was the original production census recipient (see `targetRecipient` in the `20261003t063011z-recipient-reencryption` manifest). Confirm `8XlNQg` in every new header. Never use `hexalith-kube-c1` or the fixture recipient.
+- Redaction sweep: every `eng/cluster-management/*.md`, the story file, this spec's non-frozen body (including Review Triage Log rows B25, B33, B40 and B41) and this story's `deferred-work.md` entries. In QUALIFICATION.md the targets are mainly the access follow-ups, web-login clarification, authorized host observations, kubeadm credential paragraphs, access-risk section and recipient observation. Keep non-sensitive facts: criterion status, required decisions, credential revocability, and versions and topology already in the census.
 
 ## Tasks & Acceptance
 
@@ -63,6 +68,9 @@ context:
 - [x] `eng/cluster-management/RETIRE-KUBESPHERE.md` — deliver ordered UID/resourceVersion-bound actions, allowlist/procedure digests, preservation assertions, currency/drift stops and 4.27 approval/recovery requirements.
 - [x] `eng/cluster-management/RANCHER.md` and `README.md` — deliver concrete VM/OS/resource/storage/cost/private DNS/TLS/firewall/CA/backup/owner plan, scoped access and independent backup/restore tests; retain single-node/shared-host limitations and qualification → retirement → hop → Rancher → staging order.
 - [x] `_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md` and `sprint-status.yaml` — retain unmet criteria; complete only with mandatory evidence. Procurement may wait for 4.28.
+- [x] Redaction (2026-10-03 decision) — move the matching passages from the swept files into one encrypted private attempt and replace each with a neutral pointer: attempt ID, ciphertext SHA-256 and a neutral reason such as "criterion 5 remains unmet". Leave committed evidence attempts and history unchanged.
+- [x] Review loop 3 patch groups G48–G50, G52, G54 and G56–G70 — apply each as its Review loop 3 row states, with tests for code changes. G50 and G52 apply to the redacted or neutral text.
+- [ ] Review loop 4 patch groups G72–G74 and G76–G83 — apply each as its Review loop 4 row states, with tests for code changes.
 
 **Acceptance Criteria:**
 - Given qualification results, when assessed, then all eight criteria have traceable evidence or remain incomplete; proposals/checksums alone cannot pass.
@@ -167,7 +175,7 @@ Review covered the full diff since `baseline_commit`, with code and handoffs fir
 | B22 joined words/numbers | low | Handoffs contain "Ranchercommunity2.15.2", "All45" and "in4.28". Readers meet these constantly, and the fix is a direct correction. | patch G28 |
 | B23 epic context deletions | medium | The rewritten `epic-4-context.md` drops the 4.3 runner, registry/profile and Traefik requirements that `epics.md` still states. The fix edits agent context. | defer G45 |
 | B24 relayed approvals | low | The 2026-10-03 kubeadm and re-encryption records cite only a coordinator relay, unlike `20261001t205847z` authorization evidence. | patch G30 |
-| B25 workstation key root access | high | `hexalith-kube-c1` has no passphrase, authenticates as `quentindv`, and `sudo -n` succeeded on node1. The docs frame this only as export custody, and nothing tracks remediation. | patch G31 |
+| B25 host-access risk | high | The evidence is held in private custody: `passage-13.age` of attempt [`20261003t103215z-custody-redaction`](evidence/epic-4/4-26/20261003t103215z-custody-redaction/encrypted-exports.json) (ciphertext SHA-256 `a31309d5081dd49a0016180578817775fdd425627ae8f7da56b8914f549a1773`; criterion 5 remains unmet). The docs framed it only as export custody, and nothing tracked remediation. | patch G31 |
 | B26 spec/sprint metadata | low | The spec status/body mismatch would be fixed by editing this spec, so that part is rejected. `sprint-status.yaml` `last_updated` changed from `MM-DD-YYYY HH:MM` to an ISO date. | patch G34 |
 | B27 unrelated changes | false | `apphost.cs`, submodule and 4.1 amendments arrived in separate user commits such as `e7aee88`. The baseline range spans them, but this story did not make them. | reject |
 | B28 evidence size/index | low | The JSON size is a repository cost rather than a functional defect. The criterion ledger links current and superseded attempts, and restructuring is more than a direct correction. | reject |
@@ -241,7 +249,137 @@ Resolution: G19–G44 are patched, and G45/G46 are appended to [deferred work](d
 - **G19.** Besides the stale-route health check, `dependency_plan` now refuses any out-of-scope Ingress or HTTPRoute that sends traffic to a retired Service (`route-consumer-of-retired-service-outside-scope`). On the committed census it refuses on `Ingress/kubesphere-system/kubesphere-console`. Excluding that route, it reproduces 476 objects in 17 phases.
 - **G21.** `native_retire` compares each fresh read with the root's reviewed allowlist entry. A changed resourceVersion proceeds only when the sanitized reviewed projection is otherwise identical, and any other drift stops with `reviewed-entry-drift-before-native-delete`. The executed `42e8e6ef…` run carried a newer resourceVersion than planned for 13 of 178 requests, so a rerun may surface reviewed-field changes made by controllers.
 
-All 76 tests pass without skips, and `git diff --check` is clean. Disabling any single guard from G19–G23, G25, G26, G29, G33 or G35–G43 makes at least one test fail. Final `rehearse.py` SHA-256 `1ac666c06c93ecb619e737cce198204f8a8d4644a9e1382aa3e626b2a1d6d2f9` supersedes the interim `1e723b75…` cited in the dependency-first follow-up. These bytes have unit verification only, with no fixture rerun. No production read or mutation, grant, Rancher action or frozen-intent change occurred, and all eight criteria remain incomplete.
+All 76 tests pass without skips, and `git diff --check` is clean. Disabling any single guard from G19–G23, G25, G26, G29, G33 or G35–G43 makes at least one test fail. Final `rehearse.py` SHA-256 `1ac666c06c93ecb619e737cce198204f8a8d4644a9e1382aa3e626b2a1d6d2f9` supersedes the interim `1e723b75…` cited in the dependency-first follow-up. These bytes were later executed in the [current-procedure fixture rerun](#current-procedure-fixture-rerun-2026-10-03). No production read or mutation, grant, Rancher action or frozen-intent change occurred, and all eight criteria remain incomplete.
+
+### Review loop 3 (2026-10-03)
+
+The review covered the full diff since `baseline_commit`, with code and handoffs first and evidence last. All three layers ran as fresh context-free agents, and none was skipped. A finding whose location and claim match an earlier row, where the code still reads as that row describes, is marked `carried`; it keeps the earlier verdict and route and is not patched or deferred again. Verification-gap findings V13–V23 arrive pre-verified. Every other verdict comes from reading the cited code, the committed census, the local Docker state or the repository settings.
+
+| Finding | Verdict | Evidence | Route |
+| --- | --- | --- | --- |
+| B33 public repository exposure | high | `gh repo view` reports `Hexalith/Hexalith.Platform` as `PUBLIC`. The 2026-10-03 commit `c3c473a` is pushed (`origin/main` = HEAD). It publishes access-weakness and credential observations, now in the same private passage (`passage-13.age`), and census inventories with Secret names, hostnames and image versions. The frozen intent says to commit sanitized evidence but does not say whether security-weakness narratives and production maps may go into a public repository. | intent_gap G47 |
+| B34 historical plaintext digests | low | Pre-G22 attempts still publish `plaintextSha256`. The guessable short outputs (`whoami`, `stat`, sudo exit) are already stated in the projections and prose, so confirming them reveals nothing new. High-entropy exports cannot be brute-forced, and scrubbing immutable attempts is not a direct correction. | reject |
+| B35 recipient unrecorded | medium | `Attempt.encrypt` and `finish()` record no recipient stanza, so Git readers cannot check the `8XlNQg`/`yYjuKA`/`bHCI3g` tags the handoffs cite. The 12 wrong-recipient attempts show the state occurs. Recording each export's age stanza type and tag adds no surface. Pinning an expected recipient would add a parameter, so that sub-claim is rejected. | patch G48 |
+| B36 drift-guard overclaim | medium | `project_resource` excludes specs, data, rules and non-management labels and annotations. RETIRE-KUBESPHERE.md line 85 still says "an identical projection means status-only churn", and step 4 (line 55) says "stop and re-review on any difference". The code tolerates a changed resourceVersion whenever projected fields match. | patch G49 |
+| B37 in-run allowlist | false | Fixture UIDs differ from production by design, so a fixture cannot bind an externally reviewed production allowlist. A 4.27 executor is excluded because the intent says qualification does not authorize 4.27. | reject |
+| B38 fence address coverage | carried | Same claim as B16: probes reach only the source host and 1.1.1.1. `Fixture.start` still reads as B16 describes. maybe-false; settle by probing the bridge/host and other addresses from inside a fixture. | defer G46 (carried) |
+| B39 authorization evidence | low | `givenBefore: 2026-10-03T06:28:00Z` shows the answers preceded the actions, and the relay provenance is explicit. Fixture-only reruns need no production authorization record, and the handoffs cite the approval. Recording the earlier passphrase request would need the Administrator to restate it, which is not a direct correction. | reject |
+| B40 action-1 overclaim | medium | QUALIFICATION.md overclaimed completion of a remediation action and kept contradicting statements in the same section; the specifics are in the same private passage (`passage-13.age`). | patch G50 |
+| B41 remediation untracked | medium | Remediation actions are listed only in prose, and the conditions behind them predate this story; the specifics are in the same private passage (`passage-13.age`). | defer G51 |
+| B42 kubeadm credential revocation | medium | The criterion-5 section offers `admin.conf` without saying that a shared `kubeadm:cluster-admins` certificate cannot be revoked short of CA rotation or removing a binding kubeadm relies on. That bears on the intent's independent revocation lineage. The alternative, an unowned binding for an approved identity, is listed but not contrasted on revocability. | patch G52 |
+| B43 Kubernetes 1.34 end of life | medium | Kubernetes 1.34 reaches end of life on 2026-10-27. All eight 4.26 criteria are open and 4.27 has not started, and nothing records a critical path or fallback. The schedule belongs to 4.1, which predates this story. | defer G53 |
+| B44 stale handoff text | low | QUALIFICATION.md line 3 links the "criterion ledger" to the superseded `20261001t173902z-census/criteria.json`. The story says "Each correction has unit tests", which is untrue for the doc-only G27, G28, G30–G32 and G34. Each fix is a direct correction. The sub-claim about an "operator's working SSH login" sentence is false because it no longer exists. | patch G54 |
+| B45 spec stale text and metadata | low | The run-together tokens, "no fixture rerun" wording and frontmatter are in this build's spec. | reject (spec edit) |
+| B46 further context deletions | medium | The `epic-4-context.md` rewrite also drops off-cluster record storage, distinct staging promotion-stop state, separate-writer off-site replication and "signed" release records, beyond G45's list. The fix edits agent context. The deferred-work overlap and path-style sub-claim would modify existing entries, so it is rejected. | defer G55 |
+| B47 eviction thresholds | false | RANCHER.md line 88 says the proposal reproduces the observed disk-eviction gap and requires an explicit disk-eviction decision before relying on the reservation. Choosing thresholds is that owner decision. | reject |
+| B48 stale Rancher wording | low | RANCHER.md line 55 still leads with "when node1 is a guest", although node1 is observed bare metal. Line 37 pairs "split-horizon" with "no public ... record". Both are direct corrections, part of the same incomplete stale-text sweep as B44. The v2.14 link is in the spec, so that part is rejected. | patch G54 |
+| B49 kind and docker binaries | low | `tool_identities` hashes only the version output of PATH `kind` and `docker`. Hashing the resolved binaries is a direct correction. | patch G56 |
+| B50 vendor images by local tag | carried | Same as B20's image-ID cross-check sub-claim, recorded low and unpatched. The code is unchanged. | reject (carried) |
+| B51 locale-dependent values | low | Same kind as B32, in new immutable attempts. The meaning is intact, and re-capture is not a direct correction. | reject |
+| B52 unrelated changes | carried | Same as B27. `apphost.cs` and the submodule bumps are separate user commits such as `73421308`. | reject (carried) |
+| E37 identity-less virtual items | false | ComponentStatus, metrics views and the built-in Calico profile cannot satisfy a UID census. Recording them as explicit closed coverage matches the frozen Census row, and targeted metadata for all 70 is retained. Accepting them is a reviewer decision, not a collector defect. | reject |
+| E38 HTTPException in anonymous probe | false | Only a non-HTTP or broken TLS peer at the native API port raises `http.client.HTTPException`. That was never shown, and the failure is loud. | reject |
+| E39 proxy environment | carried | Same as E22, and the code is unchanged. | reject (carried) |
+| E40 non-preferred non-CRD versions | maybe-false | `collect()` lists only each group's preferred version, adding non-preferred versions only for CRDs. Whether any production group serves a resource only in a non-preferred version is unobserved. Medium if true; settle by comparing per-version discovery on production. | defer G71 |
+| E41 Traefik routes | carried | Same as E20: the five census IngressRoutes sit in unrelated namespaces. | reject (carried) |
+| E42 dotted Helm release name | false | None of the nine census releases contains a dot, and an unshown dotted name fails loudly on `invalid-export-name`. | reject |
+| E43 pin validator types | carried | Same as E23. | reject (carried) |
+| E44 naive `checkedAt` | low | Subtracting a naive datetime raises before the `tzinfo` check, so the guard never runs and the error code reads `missing-pin-review-date`. It still fails closed, and the reorder is a direct correction. | patch G68 |
+| E45 malformed authority event | false | A non-dict event or non-string digest raises loudly, as E23 recorded, and no non-test caller supplies such records. | reject |
+| E46 revoke without grant | carried | Same as E24. | reject (carried) |
+| E47 published attempt collision | low | Collision needs the same timestamped attempt ID and category under a different evidence root. A pre-check adds a guard. | reject |
+| E48 ancestor symlink race | low | Needs a concurrent local attacker with write access to the custody path. An `openat` rewrite is not a direct correction. | reject |
+| E49 unsanitized operator | low | `rehearse.py` records `args.operator` raw, while `qualify.py` applies `safe()`. Importing and applying `safe` is a direct correction. | patch G69 |
+| E50 network/cluster creation race | low | Names derive from the unique attempt ID and are checked absent just before. A concurrent same-named creation is unlikely, and the fix adds ID tracking. | reject |
+| E51 base tag sole reference | false | The retained node image `sha256:8a9be59e…` also carries `hexalith-s426-node:v1.34.9` and survived ten runs, so removing the base alias only untags. | reject |
+| E52 refused probe | carried | Same as E17. | reject (carried) |
+| E53 hard-coded isolation endpoint | carried | Same as B17's "`validate_isolation` checks literals set just before"; the endpoint literal is unchanged. | patch G25 (carried; not re-patched) |
+| E54 undrained save stderr | low | `docker save` writes little to stderr, and a stall ends in a loud timeout. | reject |
+| E55 probe observe timeout | carried | Same as E25. | reject (carried) |
+| E56 synthetic replace race | low | A changed resourceVersion makes the replace fail loudly with 409. A retry loop adds logic. | reject |
+| E57 release-name namespace | low | The census has no duplicate release names across namespaces, and the plan is reviewed exactly. The namespace condition adds a guard. | reject |
+| E58 fixed resource list | low | G23 added the observed missing kinds. Discovery-driven listing is more than a direct correction, and the fixture holds no other cascade targets. | reject |
+| E59 repeatable attempt ID | false | The sentence before the command says to supply a new attempt ID each time, and refusing reuse is intended. | reject |
+| E60 reviewed-entry drift claim | medium | Same root cause as B36: changes to spec, data or RBAC rules after review pass the projection comparison, while the handoffs promise drift stops. | patch G49 |
+| E61 procedure digest scope | medium | `rehearse.py` imports `evidence` and `qualify`, including `project_resource`, but `attempt.json` binds only `scriptSha256`. Recording those module digests adds no surface. | patch G70 |
+| V13 fixture isolation gate | medium | Pre-verified: deleting `validate_isolation`, the attached-network check or the IP-literal guard in `start()` passes all 76 tests. | patch G57 |
+| V14 synthetic `execute()` assertions | medium | Pre-verified: removing the canary check, the final `assert_preserved`, the hold check or per-action revalidation passes all tests. | patch G58 |
+| V15 final phase and settle gates | medium | Pre-verified: removing the final `assert_phase`, the settle/`wait_absent` checks or the `did-not-settle` raises passes all tests. | patch G59 |
+| V16 health-gate branches | medium | Pre-verified: removing the stale-APIService line or the new-namespace finalizer term passes all tests. | patch G60 |
+| V17 census native-path refusals | medium | Pre-verified: removing the TLS/proxy/CA refusal, the skew check or the single-cluster check passes all tests. | patch G61 |
+| V18 census raw encryption | medium | Pre-verified: making `Capture.command` skip `encrypt` passes all tests. | patch G62 |
+| V19 CRD instance-discovery gaps | medium | Pre-verified: removing either CRD coverage append passes all tests. | patch G63 |
+| V20 `native_read` mapping | medium | Pre-verified: an unconditional `return None` passes all tests. | patch G64 |
+| V21 cleanup pass criteria | medium | Pre-verified: dropping `networkAbsent`, dropping `freshCredentialFileAbsent` or removing the `failed-cleanup` state passes all tests. | patch G65 |
+| V22 chart digest and readiness | medium | Pre-verified: removing the chart-digest or readiness refusal passes all tests. | patch G66 |
+| V23 upgrade-evidence root | medium | Pre-verified: removing `hexalith-upgrade-evidence` from the refused roots passes all tests. | patch G67 |
+| V24 protected-propagation guard | false | Propagation into protected kinds is still stopped by the earlier per-action and closure checks, so the redundant guard causes no missing protection. | reject |
+| V25 literal success records | false | The records are written only after their guards. The real gap is untested guards, which V13–V15 cover. | reject |
+
+Groups: G47=B33; G48=B35; G49=B36, E60; G50=B40; G51=B41; G52=B42; G53=B43; G54=B44, B48; G55=B46; G56=B49; G57–G67=V13–V23, one each; G68=E44; G69=E49; G70=E61; G71=E40.
+
+Routing: G47 is an intent gap, which triggers a loopback under the cascade, so the patch and defer entries wait for its resolution. `review_loop_iteration` is incremented. The pushed public history cannot be undone by reverting the local tree, and the commits are the user's own, so no revert or remote change was made. The intent gap goes to the Administrator for a decision.
+
+Resolution: the Administrator's 2026-10-03 decision settles G47. The redaction and G48–G50, G52, G54 and G56–G70 are applied, and G51, G53, G55 and G71 are appended to [deferred work](deferred-work.md), G51 as a neutral pointer.
+
+- **Redaction.** 41 fragments from QUALIFICATION.md, README.md, RANCHER.md, the story and this spec's non-frozen body, including rows B25, B33, B40 and B41, moved verbatim into 15 encrypted passages of the private attempt [`20261003t103215z-custody-redaction`](evidence/epic-4/4-26/20261003t103215z-custody-redaction/redaction-index.json). The fragments cover which key or account reaches which privilege, authentication and sudo weaknesses, credential file locations, modes and validity, and remediation status. Each passage is encrypted with the retained age 1.3.2 to the Administrator signing key. All 15 headers carry `-> ssh-ed25519 8XlNQg`, and the published `encrypted-exports.json` records that stanza for each export. The private directory is 0700 with 0600 files, both `SHA256SUMS` files verify, and no plaintext digest is published. Every moved passage is replaced by a pointer that names the attempt, export and ciphertext SHA-256 with a neutral reason. Row B25's title is also neutralized; its substance is in passages P07 and P13. RETIRE-KUBESPHERE.md and this story's existing deferred-work entries held no matching passage. Committed evidence attempts and Git history are unchanged. The agent cannot decrypt the passages, because the Administrator identity needs an interactive passphrase, so Administrator readback is pending.
+- **G50 and G52.** G50 is applied to the private copy of the access assessment: the passage carries a corrected text in which the passphrase step does not complete the remediation action. G52 is applied to the neutral text: QUALIFICATION.md contrasts the shared kubeadm group certificate, revocable only by CA rotation or by deleting the binding kubeadm relies on, with an unowned per-identity binding, revocable by deleting that binding.
+- **Frozen decision in code.** Following "future published projections omit them", `qualify.py` writes the native kubeconfig file-mode observation only to the encrypted export `native-credential-custody`; the published `access.json` names the export.
+- **G54 note.** QUALIFICATION.md still held the "operator's working SSH login" sentence that row B44 called absent; it is corrected with the other stale text.
+- **Verification.** 97 tests pass without skips, and `git diff --check` is clean. A scratch mutation run removed each guard that V13–V23 named, plus the new G48, G56, G68–G70 and custody guards, one at a time: all 39 removals fail at least one test. Final SHA-256: `rehearse.py` `4862637dc063d06742392e21c98262d16127b4a1b055c56621ecb1299adf98a5`, `qualify.py` `86a7d65c8248f8cda197f7656712a1d45413cd54bba9fdef6c56de98c97ca17a`, `evidence.py` `96d25efa03cdeb59f865712b148243799d5ad813a828000c02a972e998a59024`. These bytes have unit verification only, with no census or fixture rerun. No production read or mutation, grant, Rancher action, recovery overwrite or change to `MAINTENANCE.md` occurred. All eight criteria and story/sprint remain `in-progress`.
+
+### Review loop 4 (2026-10-03)
+
+The review covered the full diff since `baseline_commit` after the redaction and the loop 3 corrections. All three layers ran as fresh context-free agents, and none was skipped. The carry rule is the same as in loop 3. Verification-gap findings V26–V33 arrive pre-verified.
+
+| Finding | Verdict | Evidence | Route |
+| --- | --- | --- | --- |
+| B53 unrecorded intent amendment | low | The story's loop 3 section says no "frozen-intent change occurred", but the 2026-10-03 decision was added to the frozen block. Rewording the story is a direct correction. The Spec Change Log sub-claim would edit this spec, so it is rejected. | patch G72 |
+| B54 spec frontmatter | low | Editing it would edit this build's spec. | reject (spec edit) |
+| B55 stale spec body text | carried | Same claim as B45. | reject (carried) |
+| B56 published credential path | low | QUALIFICATION.md line 49 still shows the actual native context and kubeconfig file path in the example command. The decision explicitly covers credential file locations. Placeholders are a direct correction. | patch G73 |
+| B57 residual account-to-privilege text | intent gap | QUALIFICATION.md line 120 says the `jpiquot@local` certificate "carries no group, so that binding is its only cluster-admin grant". The kubeadm group path is also stated publicly. The decision covers "which key or account reaches which privilege", while the approved Code Map keeps facts "already in the census". The census itself publishes these bindings. | intent_gap G75 |
+| B58 census RBAC projections | intent gap | `project_resource` publishes every RoleBinding and ClusterRoleBinding `roleRef` and `subjects` into `inventory.json`. Read literally, the decision's "future published projections omit them" covers account-to-privilege mappings, yet the frozen Census and Ownership rows rely on RBAC projection. Only the Administrator can settle which reading applies. | intent_gap G75 |
+| B59 anonymous access fields | low | `access.json` would publish `anonymousReadAllowed: true` only if credential-free reads succeeded. The observed result is 401/403, kubeadm defaults deny `system:anonymous`, and the operator reviews a census before committing it. Withholding the field conditionally adds a branch for an unobserved state. | reject |
+| B60 recipient not enforced | carried | Same claim as B35's rejected pinning sub-claim. | reject (carried) |
+| B61 census procedure binding | medium | `qualify.py` `collect()` writes no script or module digests, because G70 covered only `rehearse.py`. The `20261003t073627z` rerun handoffs do not say that its imported-module bytes are unbound. Recording the digests and adding that disclosure are direct corrections. | patch G74 |
+| B62 terminated manager pods | false | `post_retirement_checks` exempts only Succeeded or Failed Pods, which run nothing. The stricter per-phase gate is the fail-closed behavior E29 recorded. | reject |
+| B63 remediation untracked | carried | Same claim as B41. | defer G51 (carried) |
+| B64 per-fragment redaction index | low | The published index belongs to an immutable attempt. The pushed history already gives a fragment-level map through `git diff c3c473a`, and adding a private per-fragment index is more than a direct correction. | reject |
+| B65 Kubernetes 1.34 end of life | carried | Same claim as B43. | defer G53 (carried) |
+| B66 context deletions | carried | Same claim as B23 and B46. | defer G45/G55 (carried) |
+| E62 proxy environment | carried | Same as E22. | reject (carried) |
+| E63 refused probe | carried | Same as E17. | reject (carried) |
+| E64 multi-owner dependents | false | Over-approximating the closure only demands more explicit members, or ends in a loud wait timeout. It never deletes an unreviewed object, and no in-scope multi-owner dependent was shown. | reject |
+| E65 per-phase manager Pod gate | carried | Same as E29. | reject (carried) |
+| E66 later-phase path discovery | false | Roots come from the same fixture's inventory and discovered kinds. An unshown missing kind fails loudly. | reject |
+| E67 retained CRD conversion to a retired Service | low | The final health gate checks retained CRD conversion backends, and the current-procedure rerun found none stale. Planning earlier adds logic. | reject |
+| E68 transient errors while polling | low | A transient read error fails the attempt loudly and stays fail-closed. A retry adds branches. | reject |
+| E69 ServiceAccount reference domain | low | A mismatched token-Secret expectation stops on a wait or an unexpected deletion. The rerun completed with exact removals. | reject |
+| E70 probe member finalizer | carried | Same as E25. | reject (carried) |
+| E71 null `checkedAt` | carried | Same class as E23: malformed test-only input raises loudly. | reject (carried) |
+| E72 null validator fields | carried | Same as E23. | reject (carried) |
+| E73 revoke without grant | carried | Same as E24. | reject (carried) |
+| E74 published attempt collision | carried | Same as E47. | reject (carried) |
+| E75 partial publication directory | low | Needs a write failure partway through publication. A staged rename is more than a direct correction. | reject |
+| E76 system ancestor symlink | false | This host's custody path has no symlinked ancestor, and an unshown symlinked host fails loudly. | reject |
+| E77 ancestor symlink race | carried | Same as E48. | reject (carried) |
+| E78 network/cluster creation race | carried | Same as E50. | reject (carried) |
+| E79 build cache residue | low | Build cache is not a named fixture object that cleanup claims to remove. Pruning adds logic. | reject |
+| E80 census RBAC claim | intent gap | Same root cause as B58. | intent_gap G75 |
+| E81 anonymous-read claim | low | Same as B59. | reject |
+| V26 projected Helm annotations | medium | Pre-verified: dropping the `helmRelease` projection passes all 97 tests. Replaying the committed census shrinks the refused 476-object scope to an accepted 38-object plan. | patch G76 |
+| V27 fixture custom-resource listing | medium | Pre-verified: omitting the served KubeSphere custom resources passes all tests. Replaying the rerun baseline shrinks 347 objects in 16 phases to 62 in 5. | patch G77 |
+| V28 health gate and probe invocation | medium | Pre-verified: removing the `post_retirement_checks` or probe call still records a pass. | patch G78 |
+| V29 probe outcomes | medium | Pre-verified: misclassifying a deleted or terminating member namespace passes all tests. | patch G79 |
+| V30 fixture command exit check | medium | Pre-verified: removing the refusal of disallowed exit codes passes all tests. | patch G80 |
+| V31 owner resolution record | medium | Pre-verified: a constant `ownersResolved`, an empty dependent list or a missing empty-inventory error passes all tests. | patch G81 |
+| V32 management classification terms | medium | Pre-verified: removing the CRD-group or Helm release-namespace term passes all tests. On the committed census that drops 41 CRDs and one binding. | patch G82 |
+| V33 census coverage branches and Helm exports | medium | Pre-verified: removing the malformed owner, finalizer and namespace, preferred-version or Helm-entry gap branches, or skipping KubeSphere `helm get` exports, passes all tests. | patch G83 |
+
+Groups: G72=B53; G73=B56; G74=B61; G75=B57, B58, E80; G76–G83=V26–V33, one each.
+
+Routing: G75 is an intent gap, so the patch entries wait for its resolution and survive the loopback. `review_loop_iteration` is incremented. No revert was made, because the verified code changes do not depend on how G75 is resolved and the user has not asked to discard them.
 
 ## Design Notes
 
@@ -261,9 +399,9 @@ The [20261001t204952z-rehearsal result](evidence/epic-4/4-26/20261001t204952z-re
 
 ## User-authorized access follow-up
 
-The user supplied SSH username `jpiquot`, approved creation of evidence, confirmed the discovered local key and requested retrieval of the host key. [Conversation authorization](evidence/epic-4/4-26/20261001t205847z-native-access/authorization.json) is recorded without manufacturing authenticated grants, MFA or acceptance. [Native authority observations](evidence/epic-4/4-26/20261001t210315z-native-authority/native-access.json) verify the unchanged direct TLS cluster UID, authenticated `jpiquot`, eight sampled allowed SelfSubjectAccessReview decisions, private credential-free HTTP 403 and invalid-bearer HTTP 401. These checks changed no persistent resource or role and establish no distinct authenticated unauthorized/public denial, current signed lineage or independent custody.
+The user approved creation of evidence. [Conversation authorization](evidence/epic-4/4-26/20261001t205847z-native-access/authorization.json) is recorded without manufacturing authenticated grants, MFA or acceptance. [Native authority observations](evidence/epic-4/4-26/20261001t210315z-native-authority/native-access.json) verify the unchanged direct TLS cluster UID, authenticated native access, private credential-free HTTP 403 and invalid-bearer HTTP 401. The principal's sampled permissions and the SSH inputs are held in private custody: `passage-14.age` of attempt [`20261003t103215z-custody-redaction`](evidence/epic-4/4-26/20261003t103215z-custody-redaction/encrypted-exports.json) (ciphertext SHA-256 `b47f8e24efb4754db4e1cdec6bccc559342786218742a1bec123d11d2d2018a4`; criterion 5 remains unmet). These checks changed no persistent resource or role and establish no distinct authenticated unauthorized/public denial, current signed lineage or independent custody.
 
-The observed ED25519 host fingerprint is `SHA256:cC09u9n08cO/+GKfx4TL6xMuFHQUiQXm3UFaF3TWFGw`, retrieved on first use at the user's request. SSH requires the same exact key afterward; independent host trust remains unqualified. The local `hexalith-kube-c1` key and two discovered Windows identities did not authenticate. [Final diagnostics](evidence/epic-4/4-26/20261001t210432z-ssh-identity-check/host-access.json) explicitly confirm offering and rejection of both Windows public keys; earlier memory-file attempts make no offering claim. Temporary operational key copies were removed. Host facts/capacity remain unavailable without an authorized key. Sensitive command output uses the retained production census recipient, encrypted outside Git, with off-node decryption/signatures unverified. Frozen intent, historical evidence, procedure code and story/sprint statuses remain unchanged.
+Host-access trials from 2026-10-01 are in the same private passage (`passage-14.age`). Host facts/capacity remained unavailable at that point. Sensitive command output uses the retained production census recipient, encrypted outside Git, with off-node decryption/signatures unverified. Frozen intent, historical evidence, procedure code and story/sprint statuses remain unchanged.
 
 [Follow-up verification](evidence/epic-4/4-26/20261001t211014z-qualification-followup/verification.json) binds the current handoff after these additions, local evidence integrity, actual decrypted synthetic unit-test output and all five frozen matrix rows. The full baseline diff is retained in a unique system-temporary file; structured evidence was parsed and the current handoff diff inspected. All 45 executed tests passed without skips. This is implementation verification; operational acceptance remains incomplete and Build stays at Step 3.
 
@@ -275,23 +413,23 @@ The procedure SHA-256 changes from `a78aa7904801e589a9aa14fd0816503b3fcae5de4d12
 
 [Resume verification](evidence/epic-4/4-26/20261002t051917z-resume-verification/verification.json) records the root's independent 48-case run without skips, passing coverage for all five frozen matrix rows, inspection of the resumed diff, and local integrity of 31 prior projection attempts and 1,539 encrypted exports. It binds the current procedure and handoffs; local checks establish no independent decryption, signatures, authority or operational acceptance. The pending inputs are a working SSH identity and references to existing Administrator-approved capability/authority records; no response or approval is inferred.
 
-The operator subsequently clarified that their login is to `kube.hexalith.com` through Keycloak and that a kubectl console is available. The Linux host account is therefore still unknown: `jpiquot` was a tested SSH username, not an established mapping from that web identity. The pending host-access input is the actual Linux username and existing authorized SSH/console access from the host administrator. This clarification accepts no MFA, role, custody or retirement criterion and does not alter historical evidence; see the [qualification handoff](../../eng/cluster-management/QUALIFICATION.md#web-login-clarification).
+Host-account clarifications from 2026-10-02 are in the same private passage (`passage-14.age`). They accept no MFA, role, custody or retirement criterion and do not alter historical evidence.
 
 The [20261002t054119z targeted native read](evidence/epic-4/4-26/20261002t054119z-native-node-read/native-node-observation.json) independently confirms the same cluster UID, node `node1` reporting Ubuntu 24.04.3 LTS/kubelet v1.34.9/32 CPUs/~126 GiB RAM, and kubeadm configuration with one external-etcd endpoint. Raw outputs are encrypted outside Git. This uses the existing native credential and verifies no host account, effective kubeadm/etcd binary, virtualization, reserved capacity, MFA or independent custody. No persistent source resource or role changed; all eight criteria remain incomplete.
 
-The next supplied username is `jpiquot@itaneo.com`. Fresh SSH checks use the exact login name with `ssh -l` and the unchanged retained host key: the [local identity](evidence/epic-4/4-26/20261002t062759z-domain-ssh-check/host-access.json) and [two existing Windows identities](evidence/epic-4/4-26/20261002t062946z-domain-existing-keys/host-access.json) were offered and rejected. The server advertises password authentication as well as public-key authentication; no password was supplied or attempted. An operator-confirmed host login is still required, and the email identifier is not an authenticated Linux/Keycloak mapping. Temporary operational copies were removed; private diagnostics remain encrypted. No account/key/role grant or production change occurred, and all original criteria remain incomplete.
+Further host-account SSH trials on 2026-10-02 are in the same private passage (`passage-14.age`). No account/key/role grant or production change occurred, and all original criteria remain incomplete.
 
-The operator now provides a successful password-SSH transcript for Linux account `quentindv` on `node1`; the [normalized report](evidence/epic-4/4-26/20261002t065855z-operator-password-login/operator-access.json) is retained with explicit operator provenance and encrypted custody. The [three available identities](evidence/epic-4/4-26/20261002t065350z-reported-shell-ssh/host-access.json) remain rejected for that username, so independent agent host capture is still blocked. The existing local public/private key pair matches, but no key authorization or role/source mutation was performed. Manual read-only host observations remain possible through the operator's established password login. This supersedes only the unknown operator host-account input; effective host/virtualization/capacity facts, approved management authority/MFA and independent custody/retirement acceptance remain incomplete.
+An operator-supplied host-login report followed; it is in the same private passage (`passage-14.age`) and supersedes only the unknown operator host-account input; effective host/virtualization/capacity facts, approved management authority/MFA and independent custody/retirement acceptance remain incomplete.
 
 ## Independently authenticated host follow-up
 
-The operator subsequently enrolled the existing local public key through `ssh-copy-id`, reporting one added key. [Independent public-key authentication](evidence/epic-4/4-26/20261002t072113z-authorized-host-login/host-access.json) now verifies `quentindv` on `node1` with the unchanged ED25519 host pin. This supersedes the working-SSH input; enrollment was performed by the operator. OS/native/web identities are not automatically mapped to approved management roles.
+Authorized read-only host access then became available; its specifics are in the same private passage (`passage-14.age`). OS/native/web identities are not automatically mapped to approved management roles.
 
 [Host facts](evidence/epic-4/4-26/20261002t072401z-host-facts/host-observation.json) and [service/process bindings](evidence/epic-4/4-26/20261002t072631z-host-services/host-services.json) establish installed kubeadm/running kubelet1.34.9, running host containerd2.3.3 and external-etcd3.6.5 with exact binary digests. A second container-scoped containerd has different bytes despite the same version. [Native datastore reads](evidence/epic-4/4-26/20261002t072944z-native-datastore-host/datastore-host-observation.json) confirm client/peer certificate authentication, one current member and no sampled status errors/alarms. They take no snapshot, perform no health-write probe and test no restore.
 
 Node1 reports bare metal, AMD-V/KVM, installed QEMU8.2.2/libvirt10.0.0, ~125.66GiB total/~113.84GiB available RAM and ~791.16GiB available root space. Libvirt is inactive with listening activation sockets, so live daemon queries were omitted; no running QEMU or offline system guest definition was observed. [Current node budget](evidence/epic-4/4-26/20261002t073151z-node-resource-budget/node-resource-budget.json) revalidates source/node UIDs and Ready/no-pressure conditions, with allocatable31.6CPUs/~118.89GiB, requests12.3CPUs/20,702MiB and limits49.7CPUs/80,484MiB. The [reviewable reservation proposal](../../eng/cluster-management/RANCHER.md#observed-host-and-reservation-proposal) adds4500m/18GiB/100GiB for the guest and estimated overhead, subject to measured contention/owner approval and separately scoped implementation. Host SSH/binary/topology facts are now observed; safe reservations, disk health/IOPS, private endpoint/cost/owners, approved capabilities/authority/MFA, target qualification, representative retirement and independent custody/recovery remain unresolved.
 
-All raw outputs are encrypted outside Git before writes, with only allowlisted projections published. Agent commands were read-only, used existing noninteractive privileges and started no services. Historical failures, current procedure bytes, frozen intent, protected recovery/upgrade artifacts and story/sprint statuses remain intact. Build remains at Step3 because original operational criteria are incomplete.
+All raw outputs are encrypted outside Git before writes, with only allowlisted projections published. Agent commands were read-only and started no services. Historical failures, current procedure bytes, frozen intent, protected recovery/upgrade artifacts and story/sprint statuses remain intact. Build remains at Step3 because original operational criteria are incomplete.
 
 ## Dependency-first retirement follow-up
 
@@ -313,7 +451,7 @@ Analysis of committed evidence only:
 - The census-derived production plan proposes 476 objects in 17 phases and includes an unrehearsed application-store phase.
 - License Secrets, `User/jpiquot`, its GlobalRoleBinding, `Cluster/host`, an app Category and 7 namespaces would retain inert KubeSphere finalizers.
 - The only `jpiquot` cluster-admin binding is ownerReferenced by `GlobalRoleBinding/jpiquot-platform-admin`, so native authorization is not KubeSphere-independent.
-- 12 qualification attempts from `20261002t051917z` through `20261002t074902z` are encrypted to the passphrase-less `hexalith-kube-c1` key.
+- 12 qualification attempts from `20261002t051917z` through `20261002t074902z` used a non-Administrator recipient; the custody finding is held in private custody: `passage-15.age` of attempt [`20261003t103215z-custody-redaction`](evidence/epic-4/4-26/20261003t103215z-custody-redaction/encrypted-exports.json) (ciphertext SHA-256 `c82e112058320bf6bfad7553eb02a8e11b40524316dfdcfe5798a9cf1e816403`; criteria 1 and 5 remain incomplete).
 
 These findings need Administrator decisions. No production mutation, grant, Rancher action, recovery overwrite or hashed upgrade-proposal change occurred, and frozen intent is unchanged. The [receipt](evidence/epic-4/4-26/20261002t125604z-dependency-first-verification/verification.json) binds the executed and current procedure digests. All eight criteria and story/sprint remain `in-progress`; Build stays at Step 3.
 
@@ -321,12 +459,44 @@ These findings need Administrator decisions. No production mutation, grant, Ranc
 
 On 2026-10-03, two Administrator-approved follow-ups ran.
 
-- **Native admin credential (A).** A read-only node1 check ([observation](evidence/epic-4/4-26/20261003t062816z-kubeadm-admin-credential/admin-credential-observation.json)) used `sudo -n`, which ran without a password. `admin.conf` exists, owned root with mode 600. Its certificate is `CN=kubernetes-admin, O=kubeadm:cluster-admins`, issued by `CN=kubernetes` and valid 2026-09-24 to 2027-09-24 GMT. `super-admin.conf` is absent. The census shows the `kubeadm:cluster-admins` and `cluster-admin` (`system:masters`) bindings have no owners, so this path does not depend on KubeSphere.
-  - `kubeadm certs check-expiration` could not complete without reading cluster configuration through `admin.conf`. It fails on the stacked-etcd default key ([diagnosis](evidence/epic-4/4-26/20261003t062921z-check-expiration-diagnosis/check-expiration-diagnosis.json)).
+- **Native admin credential (A).** A read-only host check observed a kubeadm administrator credential in group `kubeadm:cluster-admins`. The census shows the `kubeadm:cluster-admins` and `cluster-admin` (`system:masters`) bindings have no owners, so this path does not depend on KubeSphere. Its location, custody and validity, and the diagnosis of the expiry tooling, are in the same private passage (`passage-15.age`).
   - The credential was not used, copied or changed.
   - Criterion 5 stays unmet until the Administrator decides the holder and encrypted off-node copy and working use is proven.
 - **Re-encryption (B).** The 33 private exports of the 12 attempts `20261002t051917z` to `20261002t074902z` were stream-re-encrypted to the Administrator recipient (`8XlNQg`) without writing plaintext to disk ([manifest](evidence/epic-4/4-26/20261003t063011z-recipient-reencryption/reencryption-manifest.json)). File counts match, every new header carries `8XlNQg`, every plaintext matched its original record, and the originals are unchanged.
-  - Administrator readback and a passphrase on `hexalith-kube-c1` remain pending.
-  - Update: `hexalith-kube-c1` now rejects an empty passphrase ([access-risk update](../../eng/cluster-management/QUALIFICATION.md#access-risk-workstation-key-reaches-root-on-node1-high-severity)). Administrator readback, private rotation of the conversation-shared passphrase and the decision on the original ciphertexts remain pending.
+  - Administrator readback, the decision on the original ciphertexts and the remaining custody actions in the same private passage (`passage-15.age`) are pending.
 
 Frozen intent, `rehearse.py`, `MAINTENANCE.md` and sprint status are unchanged. No commit was made.
+
+## Current-procedure fixture rerun (2026-10-03)
+
+The Administrator approved one rerun of the dependency-first rehearsal in an isolated kind fixture with the current procedure.
+
+- **Inputs.** The procedure SHA-256 `1ac666c06c93ecb619e737cce198204f8a8d4644a9e1382aa3e626b2a1d6d2f9` was confirmed before the start and recorded as executed. Every other input was copied from the recorded `20261002t121114z` invocation:
+  - the committed sanitized census `20261001t195141z` (`84c44e0a…`);
+  - node image `sha256:8a9be59e…`;
+  - public chart `a5c87fe1…`;
+  - retained kubectl `90b7b905…`, Helm `7a319dee…` and age `eb7dd1b5…`;
+  - the existing synthetic fixture recipient (tag `bHCI3g`).
+
+  No production credential or data entered the fixture, and nothing outside the new fixture was mutated.
+- **Outcome.** [`20261003t073627z-rehearsal`](evidence/epic-4/4-26/20261003t073627z-rehearsal/kubesphere-retirement-result.json) **passed**, and no code change was needed.
+  - Source and egress refusal: 6/6 probes blocked.
+  - Native stale-UID and stale-resourceVersion requests returned 409/Conflict.
+  - All five deployments were Ready, the InstallPlan reproduced `Installed` and tenant sync took 3 s.
+  - The baseline has 667 objects, of which 347 were removed exactly in 16 executed phases. Allowlist SHA-256 is `76b32cf39e60ff05ce407c844e90e281acfe3134628f3b528c8ffa7970b3b22c`.
+- **Reviewed-entry binding.** There were 179 root actions: 1 `absent-before-request` (`ExtensionVersion/ks-console-embed-1.2.0`) and 178 accepted DELETEs with no conflict retries.
+  - 165 DELETEs carried their reviewed resourceVersion.
+  - 13 saw a changed resourceVersion, and all 13 passed the reviewed-projection comparison, so no reviewed field had drifted. They are `User/admin` 1345→2704, `Extension/ks-console-embed` 1657→2613, `Repository/extensions-museum` 1760→3397 and ten extension Categories (`ai-machine-learning`, `computing`, `database`, `deepseek`, `dev-tools`, `integration-delivery`, `networking`, `observability`, `security`, `storage`).
+- **Route refusal.** The route-consumer check did not fire, because the fixture has no out-of-scope route. Its refusal path has unit verification only.
+- **Preservation.**
+  - There were zero unexpected, incomplete, recreated or transient removals.
+  - The 13 protected identities, the synthetic canary and all 43 CRDs with their resourceVersions are unchanged.
+  - The post-retirement gate found no stale admission, APIService, CRD-conversion or route reference and no manager runtime, and the new-namespace lifecycle was clean.
+  - The only finalizer interventions were the two named `system-workspace` removals.
+  - 27 KubeSphere-marked objects remain: the earlier 26 plus the newly inventoried manager Lease.
+- **Cleanup and custody.**
+  - [Cleanup](evidence/epic-4/4-26/20261003t073627z-rehearsal/cleanup.json) passed: node, network, owned volume, both image aliases and the fresh kubeconfig are absent, and `kind delete` exited 0.
+  - An independent readback found no kind cluster or `s426` container or network.
+  - All 639 exports are encrypted to the synthetic fixture recipient, with 0700/0600 modes, and both `SHA256SUMS` files verify. The published export record omits plaintext digests.
+
+76 unit tests pass and `git diff --check` is clean. Frozen intent, `MAINTENANCE.md` (`834be822…`), recovery evidence and sprint status are unchanged, and nothing was committed. This is fixture evidence only. Source ownership and consumer decisions, the production-only cohorts, production values, authenticated workload and recovery evidence and the other criteria's gates remain. All eight criteria and story/sprint remain `in-progress`.

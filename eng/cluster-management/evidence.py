@@ -31,6 +31,28 @@ def write_new(path, data):
         stream.write(data)
 
 
+STANZA_TYPE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}')
+SSH_TAG = re.compile(r'[A-Za-z0-9+/]{6}')
+
+
+def recipient_stanzas(ciphertext):
+    """Each age header stanza's type and, for SSH recipients, the public-key tag; never shares or key material."""
+    header, terminator, _ = ciphertext.partition(b'\n---')
+    stanzas = []
+    for line in header.split(b'\n')[1:]:
+        if not line.startswith(b'-> '):
+            continue
+        args = line[3:].decode('ascii', errors='replace').split(' ')
+        ssh = args[0] in ('ssh-ed25519', 'ssh-rsa')
+        if not STANZA_TYPE.fullmatch(args[0]) or (ssh and (len(args) < 2 or not SSH_TAG.fullmatch(args[1]))):
+            raise ValueError('export-encryption-failed')
+        # An X25519 argument is a per-file ephemeral share, not a recipient identity.
+        stanzas.append({'type': args[0], 'tag': args[1] if ssh else None})
+    if not terminator or not stanzas:
+        raise ValueError('export-encryption-failed')
+    return stanzas
+
+
 class Attempt:
     """Never reuse an attempt, follow a symlink, or write into recovery custody."""
     def __init__(self, project, root, attempt_id, category='qualification'):
@@ -83,10 +105,13 @@ class Attempt:
                                 input=plaintext, capture_output=True, timeout=120)
         if result.returncode or not result.stdout.startswith(b'age-encryption.org/v1\n'):
             raise ValueError('export-encryption-failed')
+        # Recorded so Git readers can check which recipient each export names.
+        stanzas = recipient_stanzas(result.stdout)
         filename = name + '.age'
         write_new(self.directory / filename, result.stdout)
         entry = {'file': filename, 'plaintextSha256': digest(plaintext),
-                 'ciphertextSha256': digest(result.stdout), 'ciphertextBytes': len(result.stdout)}
+                 'ciphertextSha256': digest(result.stdout), 'ciphertextBytes': len(result.stdout),
+                 'recipientStanzas': stanzas}
         self.exports.append(entry)
         return entry
 
@@ -95,7 +120,8 @@ class Attempt:
         write_new(self.directory / 'private-export-digests.json', canonical({'schemaVersion': 1, 'attemptId': self.attempt_id,
                   'exports': self.exports, 'published': False}))
         self.record('encrypted-exports.json', {'schemaVersion': 1, 'attemptId': self.attempt_id,
-                    'encryption': 'age', 'exports': [{k: e[k] for k in ('file', 'ciphertextSha256', 'ciphertextBytes')}
+                    'encryption': 'age', 'exports': [{k: e[k] for k in ('file', 'ciphertextSha256', 'ciphertextBytes',
+                                                                        'recipientStanzas')}
                                                      for e in self.exports],
                     'plaintextDigests': 'private-export-digests.json (private custody only)',
                     'independentReadbackVerified': False, 'offNodeCustodyAccepted': False})

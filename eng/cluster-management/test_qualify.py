@@ -294,6 +294,8 @@ class CensusTests(unittest.TestCase):
             with patch('qualify.subprocess.run', side_effect=command), patch('qualify.ssl.create_default_context'), \
                  patch('qualify.urllib.request.urlopen', side_effect=side, return_value=response):
                 capture.collect()
+            self.custody_exports = [json.loads(c.args[1]) for c in attempt.encrypt.call_args_list
+                                    if c.args[0] == 'native-credential-custody']
             return records['access.json']
 
     def test_credential_free_probe_and_kubeconfig_custody_fields_are_recorded(self):
@@ -314,7 +316,11 @@ class CensusTests(unittest.TestCase):
         for mode, restricted in ((0o600, True), (0o644, False)):
             with self.subTest(mode=oct(mode)):
                 access = self.run_access(403, mode)
-                self.assertEqual(access['custodyPermissionsRestricted'], restricted)
+                # Credential file modes go only to the encrypted export; the published record points to it.
+                self.assertEqual([v['kubeconfigModeRestricted'] for v in self.custody_exports], [restricted])
+                self.assertNotIn('custodyPermissionsRestricted', access)
+                self.assertNotIn('mode', json.dumps(access).lower())
+                self.assertIn('native-credential-custody', access['custodyObservation'])
                 self.assertFalse(access['effectiveCustodyAccepted'])
                 self.assertFalse(access['independentCustodyReadback']);self.assertFalse(access['mfaVerified'])
 
@@ -343,6 +349,93 @@ class CensusTests(unittest.TestCase):
                         failure = json.loads((directory / 'capture-failure.json').read_text())
                         self.assertEqual(failure['coverage'][-1]['state'], 'invalid-schema')
 
+    def test_tls_proxy_ca_skew_and_cluster_count_are_refused_before_discovery(self):
+        version = {'clientVersion': {'gitVersion': 'v1.34.12'}, 'serverVersion': {'gitVersion': 'v1.34.9'}}
+        good = {'server': 'https://127.0.0.1:6443', 'certificate-authority-data': base64.b64encode(b'fixture-cert').decode()}
+        cases = [('insecure-tls', version, {'clusters': [{'cluster': {**good, 'insecure-skip-tls-verify': True}}]}, 'direct-verified-tls'),
+                 ('proxy', version, {'clusters': [{'cluster': {**good, 'proxy-url': 'http://proxy.example:3128'}}]}, 'direct-verified-tls'),
+                 ('no-ca', version, {'clusters': [{'cluster': {'server': good['server']}}]}, 'direct-verified-tls'),
+                 ('no-cluster', version, {'clusters': []}, 'native-context-unresolved'),
+                 ('two-clusters', version, {'clusters': [{'cluster': good}, {'cluster': good}]}, 'native-context-unresolved'),
+                 ('skew', {'clientVersion': {'gitVersion': 'v1.36.1'}, 'serverVersion': {'gitVersion': 'v1.34.9'}}, None,
+                  'kubectl-server-skew-unqualified'),
+                 ('no-version', None, None, 'kubectl-server-skew-unqualified')]
+        for name, version_payload, config, reason in cases:
+            with self.subTest(case=name):
+                capture = Capture(SimpleNamespace(kubeconfig=Path(__file__), age='age', recipient='public-only'),
+                                  SimpleNamespace(encrypt=Mock()))
+                with patch.object(capture, 'kube', side_effect=[version_payload, config]) as kube, \
+                     patch.object(capture, 'raw') as raw, patch('qualify.urllib.request.urlopen') as probe:
+                    with self.assertRaisesRegex(ValueError, reason):
+                        capture.collect()
+                raw.assert_not_called();probe.assert_not_called()
+                self.assertEqual(kube.call_count, 1 if config is None else 2)
+                self.assertEqual(capture.inventory, [])
+
+    def test_every_raw_response_is_encrypted_before_use_and_encryption_failure_withholds_it(self):
+        encrypt = Mock()
+        capture = Capture(SimpleNamespace(age='retained-age', recipient='public-only'), SimpleNamespace(encrypt=encrypt))
+        for code, stdout, stderr in ((0, b'{"data": {"token": "PRIVATE-TOKEN"}}', b'warning PRIVATE-WARNING'),
+                                     (1, b'', b'Error from server (Forbidden): PRIVATE-DETAIL')):
+            with self.subTest(code=code), patch('qualify.subprocess.run',
+                                                return_value=SimpleNamespace(returncode=code, stdout=stdout, stderr=stderr)):
+                data = capture.command('secrets', ['kubectl', 'get', 'secrets'])
+            name, payload, age, recipient = encrypt.call_args.args
+            self.assertEqual((name, age, recipient), (f'{capture.counter:04d}-secrets', 'retained-age', 'public-only'))
+            body = json.loads(payload)
+            self.assertEqual((body['exitCode'], base64.b64decode(body['stdoutBase64']), base64.b64decode(body['stderrBase64'])),
+                             (code, stdout, stderr))
+            self.assertEqual(data, {'data': {'token': 'PRIVATE-TOKEN'}} if code == 0 else None)
+            self.assertNotIn('PRIVATE', json.dumps(capture.coverage))
+        encrypt.side_effect = ValueError('export-encryption-failed')
+        with patch('qualify.subprocess.run', return_value=SimpleNamespace(returncode=0, stdout=b'{"x": 1}', stderr=b'')):
+            self.assertIsNone(capture.command('secrets', ['kubectl', 'get', 'secrets']))
+        self.assertEqual(capture.coverage[-1], {'step': 'secrets', 'state': 'invalid-or-inaccessible', 'exitCode': None})
+
+    def test_unserved_or_undiscovered_crd_instances_are_explicit_coverage_failures(self):
+        def native(name, uid, **extra):
+            return {'metadata': {'name': name, 'uid': uid, 'resourceVersion': '7'}, **extra}
+        unserved = native('widgets.unserved.kubesphere.io', 'crd-unserved', spec={'group': 'unserved.kubesphere.io',
+                          'names': {'plural': 'widgets'}, 'scope': 'Cluster', 'versions': [{'name': 'v1', 'served': False, 'storage': True}]})
+        hidden = native('gadgets.hidden.kubesphere.io', 'crd-hidden', spec={'group': 'hidden.kubesphere.io',
+                        'names': {'plural': 'gadgets'}, 'scope': 'Cluster', 'versions': [{'name': 'v1', 'served': True, 'storage': True}]})
+        raw = {'/api/v1': {'resources': [{'name': 'namespaces', 'kind': 'Namespace', 'verbs': ['list']}]},
+               '/apis': {'groups': [{'preferredVersion': {'groupVersion': 'apiextensions.k8s.io/v1'}}]},
+               '/api/v1/namespaces?limit=500': {'items': [native('kube-system', 'ns-1')]},
+               '/apis/apiextensions.k8s.io/v1': {'resources': [
+                   {'name': 'customresourcedefinitions', 'kind': 'CustomResourceDefinition', 'verbs': ['list']}]},
+               '/apis/apiextensions.k8s.io/v1/customresourcedefinitions?limit=500': {'items': [unserved, hidden]},
+               '/apis/hidden.kubesphere.io/v1': {'resources': []}}
+        config = {'clusters': [{'cluster': {'server': 'https://127.0.0.1:6443',
+                  'certificate-authority-data': base64.b64encode(b'fixture-cert').decode()}}]}
+        def command(argv, **kwargs):
+            if argv[0] == 'helm':
+                data = []
+            elif 'config' in argv:
+                data = config
+            elif '--raw' in argv:
+                data = raw[argv[argv.index('--raw') + 1]]
+            else:
+                data = {'clientVersion': {'gitVersion': 'v1.34.12'}, 'serverVersion': {'gitVersion': 'v1.34.9'}}
+            return SimpleNamespace(returncode=0, stdout=json.dumps(data).encode(), stderr=b'')
+        records = {}
+        capture = Capture(SimpleNamespace(kubectl='kubectl', helm='helm', context='local', kubeconfig=Path(__file__),
+                                          age='age', recipient='public-only'),
+                          SimpleNamespace(encrypt=Mock(), record=lambda name, value: records.update({name: value})))
+        with patch('qualify.subprocess.run', side_effect=command), patch('qualify.ssl.create_default_context'), \
+             patch('qualify.urllib.request.urlopen', side_effect=OSError):
+            capture.collect()
+        steps = [v['step'] for v in capture.coverage]
+        helm = steps.index('helm-releases-1')
+        failed = lambda step: [i for i, v in enumerate(capture.coverage) if v['step'] == step and v['state'] == 'failed']
+        # No served version, fallback discovery without the plural, and the final served-version check each leave a gap.
+        self.assertEqual(len(failed('crd-no-served-version-widgets.unserved.kubesphere.io')), 1)
+        self.assertTrue(all(i > helm for i in failed('crd-instance-discovery-widgets.unserved.kubesphere.io')))
+        self.assertEqual(len(failed('crd-instance-discovery-widgets.unserved.kubesphere.io')), 1)
+        hidden_gaps = failed('crd-instance-discovery-gadgets.hidden.kubesphere.io')
+        self.assertEqual((sum(i < helm for i in hidden_gaps), sum(i > helm for i in hidden_gaps)), (1, 1))
+        self.assertEqual(records['inventory.json']['coverage'], capture.coverage)
+
     def test_endpoint_userinfo_query_and_fragment_cannot_disclose_credentials(self):
         validate_native_endpoint('https://192.168.1.30:6443')
         for endpoint in ('https://user:secret@api.example:6443', 'https://api.example:6443?token=secret',
@@ -356,7 +449,8 @@ class CensusTests(unittest.TestCase):
         self.assertFalse(compatible('v1.35.9-rc.1', 'v1.34.9'))
 
     def test_failed_discovery_is_not_an_empty_accepted_census(self):
-        capture = Capture(SimpleNamespace(kubeconfig=Path(__file__)), None)
+        capture = Capture(SimpleNamespace(kubeconfig=Path(__file__), age='age', recipient='public-only'),
+                          SimpleNamespace(encrypt=Mock()))
         config = {'clusters': [{'cluster': {'server': 'https://127.0.0.1:6443',
                   'certificate-authority-data': __import__('base64').b64encode(b'invalid-cert').decode()}}]}
         with patch.object(capture, 'kube', side_effect=[{'clientVersion': {'gitVersion': 'v1.34.12'},
@@ -403,6 +497,13 @@ class PinAuthorityTests(unittest.TestCase):
         pins['checkedAt'] = '2025-01-01T00:00:00Z'
         self.assertIn('stale-or-future-pin-review', validate_pins(pins))
         self.assertTrue(validate_pins({}))
+        # A naive timestamp is refused by the timezone guard, not reported as a missing date.
+        pins['checkedAt'] = now().replace('Z', '')
+        self.assertIn('stale-or-future-pin-review', validate_pins(pins))
+        self.assertNotIn('missing-pin-review-date', validate_pins(pins))
+        for missing in ({}, {'checkedAt': 'not-a-date'}):
+            self.assertIn('missing-pin-review-date', validate_pins({**pins, **missing} if missing else
+                                                                    {k: v for k, v in pins.items() if k != 'checkedAt'}))
 
     def authority(self):
         event = sealed({'sequence': 1, 'previousSha256': None, 'signatureVerified': True,

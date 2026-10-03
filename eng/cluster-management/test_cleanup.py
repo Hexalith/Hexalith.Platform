@@ -6,7 +6,8 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from rehearse import Fixture
+from evidence import canonical
+from rehearse import Fixture, rehearse
 
 
 def result(argv, code=0, stderr=b''):
@@ -102,6 +103,45 @@ class CleanupTests(unittest.TestCase):
             self.assertEqual(receipt['inspectionStates']['node'], 'unverified')
             self.assertTrue(receipt['fixtureImageTagsAbsent'])
             self.assertTrue(any(c.args[0][:3] == ['docker', 'image', 'rm'] for c in runner.call_args_list))
+
+    def test_present_network_or_retained_fresh_credential_cannot_pass(self):
+        for case in ('network-present', 'credential-retained'):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temp:
+                fixture = self.fixture(temp)
+                fixture.volume_capture_verified = True
+                if case == 'credential-retained':
+                    # Unlinking a directory raises, so the fresh credential path is not proven absent.
+                    fixture.kubeconfig.unlink();fixture.kubeconfig.mkdir()
+                def run(argv, **kwargs):
+                    if case == 'network-present' and argv[:3] == ['docker', 'network', 'inspect']:
+                        return result(argv)
+                    return self.absent(fixture, argv, **kwargs)
+                with patch('rehearse.subprocess.run', side_effect=run):
+                    self.assertFalse(fixture.cleanup())
+                receipt = fixture.attempt.record.call_args.args[1]
+                self.assertEqual((receipt['networkAbsent'], receipt['freshCredentialFileAbsent']),
+                                 (case != 'network-present', case != 'credential-retained'))
+                self.assertTrue(receipt['nodeAbsent'] and receipt['fixtureVolumesAbsent'] and receipt['fixtureImageTagsAbsent'])
+
+    def test_failed_or_raising_cleanup_makes_an_otherwise_passing_attempt_fail(self):
+        for outcome in (False, OSError('daemon unavailable')):
+            with self.subTest(outcome=outcome):
+                path = Mock();path.read_bytes.return_value = canonical({'sourceClusterUid': 'source-1',
+                                                                        'nativeEndpoint': 'https://192.168.1.30:6443'})
+                args = SimpleNamespace(source_inventory=path, project_root='repo', evidence_root='private',
+                                       attempt_id='unit', operator='operator')
+                attempt = Mock(directory=Path('/private/unit'))
+                fixture = Mock(last_step='retirement-final-state')
+                fixture.cleanup.side_effect = [outcome] if isinstance(outcome, Exception) else None
+                fixture.cleanup.return_value = outcome
+                with patch('rehearse.Attempt', return_value=attempt), patch('rehearse.Fixture', return_value=fixture), \
+                     patch('rehearse.tool_identities', return_value={'runtimeVersionOutput': {'kind': {'exitCode': 0}}}):
+                    _, state = rehearse(args)
+                records = {c.args[0]: c.args[1] for c in attempt.record.call_args_list}
+                fixture.execute.assert_called_once()
+                self.assertNotIn('failure.json', records)
+                self.assertEqual((state, records['summary.json']['state']), ('failed-cleanup', 'failed-cleanup'))
+                attempt.finish.assert_called_once()
 
 
 if __name__ == '__main__':

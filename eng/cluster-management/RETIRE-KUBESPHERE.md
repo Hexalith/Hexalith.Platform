@@ -52,7 +52,7 @@ For an individually approved deletion, use Kubernetes `DeleteOptions` with `prec
 1. Bind accepted 4.26 evidence to an exact 4.27 attempt. Administrator names operator, window/outage owners, incident commander, stop/recovery owner and affected workload-owner acknowledgements. Current signed 4.0 proofs, policy freshness/final-validation bindings, immutable off-node readback, external-etcd isolated restore and matching node recovery must independently pass. Earlier approval of the replacement or upgrade does not approve these removals.
 2. Capture source health and exact protected namespaces, workloads/replicas, PVC/PV UIDs/bindings/reclaim policies, CNI/DNS/storage/ingress/identity dependencies and authenticated application outcomes. Independently read/decrypt encrypted configuration exports. Rehome required controllers/configuration/ownership before their reconciler is removed; retain unaccepted objects and stop on an unknown required consumer.
 3. Retire individually approved console routes/extensions and admission/API-service dependencies in the rehearsed dependency order. Bind a separate exact expected-removal set to every phase and compare deletions/protected identities immediately after it; an unexpected extension-controller cleanup stops before core removal. Preserve public application/OIDC contracts. Complete each reviewed custom-resource finalizer/ownership lifecycle while its required controller still operates. Source WorkspaceTemplate/Workspace/namespace ownership and consumers must be explicitly dispositioned before any such deletion; this fixture conveys no orphaning, reownership or finalizer-edit approval. Unknown effects keep that action blocked. Confirm required native admission remains healthy before disabling any manager controller. Licensed KubeSphere application API writes must not be required.
-4. Remove only reviewed core release resources using the UID/resourceVersion-bound native action sequence. Before each DELETE, compare the fresh object with its reviewed allowlist entry (UID and resourceVersion, or a reviewed content digest); stop and re-review on any difference. The current procedure enforces this ([reviewed-entry binding](#dependency-first-fixture-qualification-2026-10-02)); that revision has unit verification only. Handle each named finalizer/owner propagation decision separately. Namespace/PVC/PV and unrelated shared infrastructure remain protected. Compare observed deletions after **every phase** with the exact allowlist and original protected identities/bindings; unexpected deletion, drift, controller recreation or failed smoke stops the attempt.
+4. Remove only reviewed core release resources using the UID/resourceVersion-bound native action sequence. Before each DELETE, compare the fresh object with its reviewed allowlist entry (UID and resourceVersion, or a reviewed content digest); stop and re-review on any difference. The fixture procedure enforces only part of this ([reviewed-entry binding](#dependency-first-fixture-qualification-2026-10-02)). It stops on a changed UID or on any difference in the sanitized reviewed projection, but a changed resourceVersion with an unchanged projection proceeds, so a change confined to spec, data, RBAC rules or non-management labels and annotations is not detected. Fixture attempt `20261003t073627z` executed that partial check. A 4.27 executor must also compare a reviewed content digest held in private custody, or require the reviewed resourceVersion unchanged. Handle each named finalizer/owner propagation decision separately. Namespace/PVC/PV and unrelated shared infrastructure remain protected. Compare observed deletions after **every phase** with the exact allowlist and original protected identities/bindings; unexpected deletion, drift, controller recreation or failed smoke stops the attempt.
 5. Retain or separately retire each exact CRD/instance/RBAC/configuration artifact with its documented owner and disposition. A retained inert archive requires a named custodian and no live runtime/admission blocker. Verify retired release/controllers/routes are absent and remaining admission/DNS/CNI/storage/native API/private admin are healthy. Public-console denial and authenticated Keycloak/OpenBao/Memories/Forgejo outcomes must pass.
 6. Sign acceptance with the actual change set, protected before/after identities/bindings, health/access results, allowlist/procedure digests and incident outcomes. Missing/failed/unsigned observations keep 4.27 incomplete.
 
@@ -78,14 +78,14 @@ After accepted retirement, create a fresh external-etcd point and matching node/
 
 Objects created during the attempt may disappear; they are reported separately.
 
-**Reviewed-entry binding (review loop 2, unit verification only).** The executed `42e8e6ef…` run compared only the UID: each DELETE carried the resourceVersion read just before the request, so drift between review and DELETE went undetected. In that run, 13 of 178 requests carried a resourceVersion newer than the planned one: `User/admin`, `Extension/ks-console-embed`, `Repository/extensions-museum` and ten extension `Category` objects. The current procedure compares each fresh read with the root's reviewed allowlist entry, the baseline projection:
+**Reviewed-entry binding (review loop 2).** The executed `42e8e6ef…` run compared only the UID: each DELETE carried the resourceVersion read just before the request, so drift between review and DELETE went undetected. In that run, 13 of 178 requests carried a resourceVersion newer than the planned one: `User/admin`, `Extension/ks-console-embed`, `Repository/extensions-museum` and ten extension `Category` objects. The current procedure compares each fresh read with the root's reviewed allowlist entry, the baseline projection:
 
 - A different UID stops the attempt (`uid-drift-before-native-delete`).
 - An unchanged resourceVersion is sent as the DELETE precondition, so the server enforces the reviewed state.
-- A changed resourceVersion is allowed only if the sanitized reviewed projection is identical apart from the resourceVersion. The projection covers owners, finalizers, management labels, Helm release, deletion state and references; an identical projection means status-only churn. Any other difference stops the attempt with `reviewed-entry-drift-before-native-delete`.
+- A changed resourceVersion is allowed only if the sanitized reviewed projection is identical apart from the resourceVersion. The projection covers owners, finalizers, management labels, Helm release, deletion state and references. It omits spec, data, RBAC rules, status and non-management labels and annotations, so an identical projection does not prove status-only churn: a change confined to those fields passes (review loop 3, G49). Any projected difference stops the attempt with `reviewed-entry-drift-before-native-delete`.
 - A 409/Conflict retry re-reads the object and compares it with the reviewed entry again.
 
-Each request record keeps the reviewed and sent resourceVersions, whether they differ, and the reviewed projection digest. Whether the 13 drifted roots above changed only status is unknown. A fixture rerun of the current bytes could therefore stop on a controller-driven change to a reviewed field, and that stop would need its own expected-effect review. **Production requirement:** keep this comparison and re-review on any stop.
+Each request record keeps the reviewed and sent resourceVersions, whether they differ, and the reviewed projection digest. In the [current-procedure rerun](#current-procedure-fixture-rerun-2026-10-03), the same 13 roots carried newer resourceVersions and each one passed the reviewed-projection comparison. So between review and DELETE, the controllers changed only fields outside the sanitized projection; whether those were status, spec or data fields was not observed. No projected field changed and nothing stopped. **Production requirement:** keep this comparison, add a reviewed content digest held in private custody (or require an unchanged resourceVersion) so that spec, data and rules drift also stops, and re-review on any stop.
 
 **Scope.** The scope is built from these exact sources. Protected kinds never enter it:
 
@@ -99,7 +99,7 @@ Each request record keeps the reviewed and sent resourceVersions, whether they d
   - service-account token Secrets, linked by annotation;
   - IAM projections linked by `iam.kubesphere.io/workspacerolebinding-ref`, `iam.kubesphere.io/user-ref` and `kubesphere.io/username`.
 
-Routes are never added to the scope by inference. If an Ingress or HTTPRoute outside the scope sends traffic to a retired Service, planning stops with `route-consumer-of-retired-service-outside-scope` until that route is closed or repointed under its own decision (review loop 2, unit verification only).
+Routes are never added to the scope by inference. If an Ingress or HTTPRoute outside the scope sends traffic to a retired Service, planning stops with `route-consumer-of-retired-service-outside-scope` until that route is closed or repointed under its own decision (review loop 2). The fixture has no out-of-scope route, so the rerun shows only that the check does not misfire; the refusal path itself has unit verification only.
 
 | # | Phase | KubeSphere controllers | Exact fixture removals | Observed controller or native effect |
 | --- | --- | --- | --- | --- |
@@ -128,7 +128,7 @@ Routes are never added to the scope by inference. If an Ingress or HTTPRoute out
 - 15 license-quota Secrets;
 - the native `default` ServiceAccounts and `kube-root-ca.crt` ConfigMaps in the two manager namespaces.
 
-Allowlist SHA-256 is `8928485490cd4eb4aa883eb4739d7d25e5200fdac88236f8c875268a74ea3388`. This run proves only its recorded procedure digest `42e8e6ef…`. Review loop 2 then changed `rehearse.py`, first to the interim `1e723b75…` and now to SHA-256 `1ac666c06c93ecb619e737cce198204f8a8d4644a9e1382aa3e626b2a1d6d2f9`. The changes are the stale-route health check, the plan-time route-consumer refusal, the reviewed-entry DELETE binding, additional inventory kinds, broader fail-closed handling, labelled declarations, tool identities, the CRD-cache reset and synthetic-hold handling. The patched bytes have unit verification only, with no fixture rerun. [Cleanup](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t121114z-rehearsal/cleanup.json) proves node/network/volume/image-alias/credential absence.
+Allowlist SHA-256 is `8928485490cd4eb4aa883eb4739d7d25e5200fdac88236f8c875268a74ea3388`. This run proves only its recorded procedure digest `42e8e6ef…`. Review loop 2 then changed `rehearse.py`, first to the interim `1e723b75…` and then to SHA-256 `1ac666c06c93ecb619e737cce198204f8a8d4644a9e1382aa3e626b2a1d6d2f9`. The changes are the stale-route health check, the plan-time route-consumer refusal, the reviewed-entry DELETE binding, additional inventory kinds, broader fail-closed handling, labelled declarations, tool identities, the CRD-cache reset and synthetic-hold handling. Attempt `20261003t073627z` [executed those bytes](#current-procedure-fixture-rerun-2026-10-03). [Cleanup](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t121114z-rehearsal/cleanup.json) proves node/network/volume/image-alias/credential absence.
 
 **Attempt chain.** Every attempt is retained, failed ones included, and cleanup passed in each:
 
@@ -142,7 +142,8 @@ Allowlist SHA-256 is `8928485490cd4eb4aa883eb4739d7d25e5200fdac88236f8c875268a74
 | [`20261002t104904z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t104904z-rehearsal/post-retirement-native-health.json) | All 16 phases and the final preservation comparison passed; the health gate found the stale dynamic license webhook | Backend-linked admission rule added |
 | [`20261002t113254z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t113254z-rehearsal/failure.json) | KubeSphere never materialized `Workspace/system-workspace` (tenant sync), so the probe was refused | Representativeness gate: wait up to 300 s for tenant sync, otherwise fail before the probe |
 | [`20261002t114621z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t114621z-rehearsal/retirement-phase-12-admission.json) | Tenant sync in 3 s; phases 1–10 passed; the controller **recreated** the license webhook deleted in phase 12 | `reconciled-admission` phase after controller removal, with an `Ignore`-only guard |
-| [`20261002t121114z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t121114z-rehearsal/kubesphere-retirement-result.json) | **Passed** all 16 executed phases, the final comparison and the health gate | Procedure bytes current at execution; later review changes are unit-verified only |
+| [`20261002t121114z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t121114z-rehearsal/kubesphere-retirement-result.json) | **Passed** all 16 executed phases, the final comparison and the health gate | Procedure bytes current at execution; review loop 2 followed |
+| [`20261003t073627z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261003t073627z-rehearsal/kubesphere-retirement-result.json) | **Passed** with the review loop 2 procedure `1ac666c0…`: 347 exact removals in 16 phases; 13 changed resourceVersions all passed the reviewed-projection comparison | Procedure bytes current at execution; no code change before the run; review loop 3 followed |
 
 **Workspace propagation probe.** In each probe that ran (6 attempts), deleting a synthetic WorkspaceTemplate while controllers were running did not delete its member namespace. Instead, the controller removed the namespace's `kubesphere.io/workspace` label and `kubesphere.io/cascading-deletion` finalizer. So a controller-processed deletion of `system-workspace` would write to the labels and finalizers of `kube-system`, `default` and the other system namespaces. The rehearsed procedure avoids those protected-namespace writes: it deletes `system-workspace` only after the controller is gone, with one named finalizer intervention per object. The trade-off is that the system namespaces keep an inert `kubesphere.io/cascading-deletion` finalizer and workspace labels; 7 namespaces in production. Deleting such a namespace later needs a separate, named, per-namespace finalizer decision. Letting the controller unbind them is the alternative. That alternative writes protected-namespace metadata, needs owner approval, and was not rehearsed on `system-workspace` (which carries `kubesphere.io/protected-resource`).
 
@@ -173,3 +174,54 @@ The public route must be denied or removed **before** a production plan is compu
 - no recovery test.
 
 Licensed KubeSphere application APIs were not used; every request went to the native Kubernetes API. The probe's synthetic WorkspaceTemplate write is fixture setup, not part of the procedure. The [verification receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261002t125604z-dependency-first-verification/verification.json) binds the executed and current procedure digests.
+
+## Current-procedure fixture rerun, 2026-10-03
+
+With Administrator approval, [attempt `20261003t073627z`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261003t073627z-rehearsal/kubesphere-retirement-result.json) reran the fixture with the then-current `rehearse.py`, SHA-256 `1ac666c06c93ecb619e737cce198204f8a8d4644a9e1382aa3e626b2a1d6d2f9`. The SHA-256 was confirmed before the start and is recorded in the attempt. The other inputs are the same as for `20261002t121114z`:
+
+- the sanitized 2026-10-01 census (`84c44e0a…`);
+- node image `sha256:8a9be59e…`;
+- chart `a5c87fe1…`;
+- retained kubectl, Helm and age with SHA-256 `90b7b905…`, `7a319dee…` and `eb7dd1b5…`;
+- the synthetic fixture recipient.
+
+The run **passed** and needed no code change:
+
+- All six source and egress probes were blocked, and the fixture cluster UID differs from the source.
+- Stale-UID and stale-resourceVersion requests returned 409/Conflict with content unchanged.
+- All five KubeSphere deployments became Ready, the console InstallPlan reproduced `Installed`, and tenant sync took 3 s.
+- The workspace probe again unbound its member namespace without deleting it.
+
+The baseline has 667 objects. That is 7 more than before, because the added inventory kinds now include 5 Leases and 2 ControllerRevisions. None of them is in scope. The scope, at 347 objects in 16 executed phases, and every per-phase count in the [phase table](#dependency-first-fixture-qualification-2026-10-02) are unchanged. Allowlist SHA-256 is `76b32cf39e60ff05ce407c844e90e281acfe3134628f3b528c8ffa7970b3b22c`.
+
+The procedure had 179 root actions:
+
+- 1 was `absent-before-request`: `ExtensionVersion/ks-console-embed-1.2.0`, already removed by its controller.
+- 178 DELETEs were accepted with no conflict retries.
+- Of those, 165 carried their reviewed resourceVersion unchanged.
+- The other 13 carried a newer resourceVersion, and every one passed the reviewed-projection comparison:
+  - `User/admin` (1345→2704);
+  - `Extension/ks-console-embed` (1657→2613);
+  - `Repository/extensions-museum` (1760→3397);
+  - the ten extension Categories `ai-machine-learning`, `computing`, `database`, `deepseek`, `dev-tools`, `integration-delivery`, `networking`, `observability`, `security` and `storage`.
+
+There were no unexpected, incomplete, recreated or transient removals:
+
+- All 13 protected Namespace/PV/PVC/StorageClass identities are unchanged, and the synthetic canary is intact.
+- All 43 CRDs are unchanged, including their resourceVersions.
+- The post-retirement gate found no stale admission, APIService, CRD-conversion or route reference and no manager runtime or residue. A new namespace got no KubeSphere label or finalizer, and its deletion completed.
+- The only finalizer interventions were the two named `system-workspace` removals.
+
+27 KubeSphere-marked objects remain: the 26 listed in the 2026-10-02 result plus the now-inventoried `Lease/kubesphere-system/ks-controller-manager-leader-election`.
+
+[Cleanup](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261003t073627z-rehearsal/cleanup.json) passed:
+
+- The node, network, single owned volume, both image aliases and the fresh kubeconfig are absent, and `kind delete` exited 0.
+- An independent readback after the run confirms each absence and shows no remaining kind cluster or `s426` container or network.
+- All 639 private exports are encrypted to the synthetic fixture recipient (tag `bHCI3g`). The private attempt directory is mode 0700 with 0600 files, and both `SHA256SUMS` files verify. The published export record carries no plaintext digests.
+
+The 2026-10-02 fixture limits still apply, and no production allowlist or acceptance follows from this run.
+
+## Review loop 3 changes, 2026-10-03
+
+Review loop 3 changed `rehearse.py` to SHA-256 `4862637dc063d06742392e21c98262d16127b4a1b055c56621ecb1299adf98a5`. The procedure now hashes the PATH-resolved kind and docker binaries, records the operator only when it is a safe identity, and records the digests of the imported `evidence.py` and `qualify.py` in `attempt.json`. The reviewed-entry comparison is described accurately above; its behavior is unchanged. Native deletion, phase, finalizer and preservation behavior is unchanged. These bytes have unit verification only, and no fixture rerun followed. New tests cover the fixture start's isolation gates, the synthetic run's checks, phase settling and absence waits, the final retirement comparison, the chart digest and core readiness refusals, and cleanup's network and credential criteria.

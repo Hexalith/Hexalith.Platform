@@ -1,0 +1,99 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/anonymous",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/authenticated",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/ks-console",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-admin",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-regular",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-self-provisioner",
+      "iam.kubesphere.io/v1beta1/GlobalRole/-/pre-registration"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 7,
+  "phase": "global-roles",
+  "phaseAllowlistSha256": "6a657b9d0ce570531ccbdf6ebb7a6f66dac77485e2b773317e0cd636ceaacf49",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/anonymous",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1103",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "aadb48af42e6dacb876beaecf7b8145225734974c8820b3a9a5fba1991f8caea",
+      "reviewedResourceVersion": "1103",
+      "uid": "93e983a3-0ae8-4a24-8172-fa3d02eb3984"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/authenticated",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1105",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "16012dff7ebd60e5d64289ebe1c6a04db77346d73500cd8b9c96bfe5479a7c93",
+      "reviewedResourceVersion": "1105",
+      "uid": "1dafb270-8784-44b8-9e50-eae7edf5b240"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1109",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "5425a5819ebc6923be371c9ae4e816d077077c6f2d4e420f54061e0175dc9d9e",
+      "reviewedResourceVersion": "1109",
+      "uid": "3c733221-4021-4283-b424-7637aecbbc27"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1123",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "c3a671f6945b21c91142c0a967d8687d7d65c18dcd71cd293b54db19e2202c16",
+      "reviewedResourceVersion": "1123",
+      "uid": "6a4e3808-e4b5-47db-8e87-18e556562ced"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-regular",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1121",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "b6333d0fcf31caaa4c9120051e41f3ff3d16964141fd5ccbee455df57d36aa13",
+      "reviewedResourceVersion": "1121",
+      "uid": "470d81f7-748e-4c90-8334-2da96229b627"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/platform-self-provisioner",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1098",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "1fd0f12814148d5a85ccf6c990c0450825266525d6835ccb785dcd68662ec7d1",
+      "reviewedResourceVersion": "1098",
+      "uid": "652e36b7-4d8b-4686-adcc-26611961f0ed"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRole/-/pre-registration",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1097",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "e7fb1033aa20788aa1ffab76f792bbf45abf310c341b3e44d4b793394c1b46d7",
+      "reviewedResourceVersion": "1097",
+      "uid": "85ee65bb-9ee9-4407-8705-69eab2f0e368"
+    }
+  ],
+  "settled": true
+}

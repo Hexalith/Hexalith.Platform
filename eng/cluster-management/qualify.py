@@ -237,11 +237,12 @@ def validate_pins(record):
         errors.append('generic-import-does-not-qualify-hosting')
     try:
         observed = datetime.fromisoformat(record['checkedAt'].replace('Z', '+00:00'))
-        delta = datetime.now(timezone.utc) - observed
-        if not observed.tzinfo or not 0 <= delta.total_seconds() <= 86400:
-            errors.append('stale-or-future-pin-review')
     except (KeyError, ValueError, TypeError):
         errors.append('missing-pin-review-date')
+    else:
+        # A naive timestamp is refused before any aware/naive subtraction can raise.
+        if not observed.tzinfo or not 0 <= (datetime.now(timezone.utc) - observed).total_seconds() <= 86400:
+            errors.append('stale-or-future-pin-review')
     return sorted(set(errors))
 
 
@@ -415,11 +416,15 @@ class Capture:
         if (native.get('insecure-skip-tls-verify')
                 or native.get('proxy-url') or not native.get('certificate-authority-data')):
             raise ValueError('native-path-must-be-direct-verified-tls')
+        # Credential file modes stay in encrypted private custody; the published record only points to them.
+        self.attempt.encrypt('native-credential-custody', canonical({
+            'kubeconfigModeRestricted': stat.S_IMODE(self.args.kubeconfig.stat().st_mode) & 0o077 == 0,
+            'observation': 'resolved file POSIX mode only; independent custody/ACL verification pending'}),
+            self.args.age, self.args.recipient)
         access = {'nativePath': 'direct', 'authorizedRead': False,
                   'unauthorizedDenied': False, 'publicDenied': False,
-                  'custodyPermissionsRestricted': stat.S_IMODE(self.args.kubeconfig.stat().st_mode) & 0o077 == 0,
+                  'custodyObservation': 'encrypted private export native-credential-custody; never published',
                   'effectiveCustodyAccepted': False,
-                  'permissionObservation': 'resolved file POSIX mode only; independent custody/ACL verification pending',
                   'independentCustodyReadback': False, 'mfaVerified': False,
                   'managementGrantLineageVerified': False, 'acceptance': 'incomplete'}
         tls = ssl.create_default_context(cadata=base64.b64decode(native['certificate-authority-data']).decode())
