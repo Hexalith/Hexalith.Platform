@@ -1,0 +1,103 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "apps/v1/Deployment/kubesphere-system/extensions-museum",
+      "apps/v1/Deployment/kubesphere-system/ks-apiserver",
+      "apps/v1/Deployment/kubesphere-system/ks-console",
+      "apps/v1/Deployment/kubesphere-system/ks-controller-manager",
+      "apps/v1/ReplicaSet/kubesphere-system/extensions-museum-c476cd87c",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-apiserver-7c45d665c",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-console-597c59f57c",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-console-f5b799454",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-controller-manager-76b5fc9fd4",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/extensions-museum-b5fk5",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-apiserver-6jk2r",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-console-xf87t",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-controller-manager-k889m",
+      "v1/Endpoints/kubesphere-system/extensions-museum",
+      "v1/Endpoints/kubesphere-system/ks-apiserver",
+      "v1/Endpoints/kubesphere-system/ks-console",
+      "v1/Endpoints/kubesphere-system/ks-controller-manager",
+      "v1/Pod/kubesphere-system/extensions-museum-c476cd87c-wc84z",
+      "v1/Pod/kubesphere-system/ks-apiserver-7c45d665c-lntkk",
+      "v1/Pod/kubesphere-system/ks-console-597c59f57c-vfvrl",
+      "v1/Pod/kubesphere-system/ks-controller-manager-76b5fc9fd4-79j4w",
+      "v1/Service/kubesphere-system/extensions-museum",
+      "v1/Service/kubesphere-system/ks-apiserver",
+      "v1/Service/kubesphere-system/ks-console",
+      "v1/Service/kubesphere-system/ks-controller-manager"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 13,
+  "phase": "controllers-and-services",
+  "phaseAllowlistSha256": "d46e98b6f98a3e361ca21dba1ca8528bda502247b23168887e337c725a9b8c59",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/extensions-museum",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1314",
+      "uid": "22d42f96-f167-48cd-8656-b4396d02f9a7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/ks-apiserver",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1276",
+      "uid": "f88b8e36-1c80-4e14-8dd5-8c25317b14bb"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1444",
+      "uid": "ba7b9411-4502-4518-866a-ee82a33966a0"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/ks-controller-manager",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1289",
+      "uid": "71f67b17-44f2-4edb-b37d-97e2aa33a74b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/extensions-museum",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "900",
+      "uid": "e73c7a1f-38fc-4e44-8511-8e692416f9c5"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/ks-apiserver",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "906",
+      "uid": "8bbf9a35-80ce-48cc-8720-d94493d66dbf"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "908",
+      "uid": "92ed95f7-ead4-4db7-ab13-825bb0b1d03d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/ks-controller-manager",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "909",
+      "uid": "df9e0a94-7c91-47ab-be97-33502ab2eb85"
+    }
+  ],
+  "settled": true
+}

@@ -56,6 +56,9 @@ class CleanupTests(unittest.TestCase):
             receipt = fixture.attempt.record.call_args.args[1]
             self.assertEqual(receipt['volumeInspectionStates'], {'owned-volume': 'absent'})
             self.assertTrue(receipt['fixtureImageTagsAbsent'])
+            # Unmeasured claims are labelled as declarations, never recorded as observations.
+            self.assertNotIn('unrelatedDockerObjectsChanged', receipt)
+            self.assertIn('not measured', receipt['unmeasuredDeclarations']['basis'])
             self.assertFalse(fixture.kubeconfig.exists())
             self.assertTrue(all(call.kwargs.get('timeout') for call in runner.call_args_list))
 

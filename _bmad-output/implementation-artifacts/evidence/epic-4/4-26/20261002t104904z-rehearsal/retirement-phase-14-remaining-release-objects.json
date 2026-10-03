@@ -1,0 +1,1056 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/project-admin",
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/project-operator",
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/project-viewer",
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-admin",
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-regular",
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-self-provisioner",
+      "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-viewer",
+      "iam.kubesphere.io/v1beta1/Category/-/cluster-access-control",
+      "iam.kubesphere.io/v1beta1/Category/-/cluster-app-workloads-management",
+      "iam.kubesphere.io/v1beta1/Category/-/cluster-project-management",
+      "iam.kubesphere.io/v1beta1/Category/-/cluster-resource-management",
+      "iam.kubesphere.io/v1beta1/Category/-/cluster-settings",
+      "iam.kubesphere.io/v1beta1/Category/-/cluster-storage-management",
+      "iam.kubesphere.io/v1beta1/Category/-/global-access-control",
+      "iam.kubesphere.io/v1beta1/Category/-/global-cluster-management",
+      "iam.kubesphere.io/v1beta1/Category/-/global-platform-settings",
+      "iam.kubesphere.io/v1beta1/Category/-/global-workspace-management",
+      "iam.kubesphere.io/v1beta1/Category/-/manage-app",
+      "iam.kubesphere.io/v1beta1/Category/-/namespace-access-control",
+      "iam.kubesphere.io/v1beta1/Category/-/namespace-app",
+      "iam.kubesphere.io/v1beta1/Category/-/namespace-application-workloads",
+      "iam.kubesphere.io/v1beta1/Category/-/namespace-configuration-management",
+      "iam.kubesphere.io/v1beta1/Category/-/namespace-settings",
+      "iam.kubesphere.io/v1beta1/Category/-/namespace-storage-management",
+      "iam.kubesphere.io/v1beta1/Category/-/workspace-access-control",
+      "iam.kubesphere.io/v1beta1/Category/-/workspace-app",
+      "iam.kubesphere.io/v1beta1/Category/-/workspace-project-management",
+      "iam.kubesphere.io/v1beta1/Category/-/workspace-settings",
+      "iam.kubesphere.io/v1beta1/ClusterRole/-/cluster-admin",
+      "iam.kubesphere.io/v1beta1/ClusterRole/-/cluster-viewer",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-app-workloads",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-cluster-settings",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-crds",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-members",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-nodes",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-persistentvolumeclaims",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-projects",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-storageclasses",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-app-workloads",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-cluster-settings",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-components",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-crds",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-members",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-nodes",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-persistentvolumeclaims",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-projects",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-storageclasses",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-create-workspaces",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-clusters",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-platform-settings",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-users",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-workspaces",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-role-template-manage-app",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-clusters",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-users",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-workspaces",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-create-app-releases",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-delete-app-releases",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-app-releases",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-app-workloads",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-configmaps",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-members",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-persistentvolumeclaims",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-project-settings",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-secrets",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-serviceaccount",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-workloadtemplates",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-app-releases",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-app-workloads",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-configmaps",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-members",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-persistentvolumeclaims",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-project-settings",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-secrets",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-serviceaccount",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-workloadtemplates",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-create-projects",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-delete-app-templates",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-app-repos",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-app-templates",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-groups",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-members",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-projects",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-workspace-settings",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-app-repos",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-app-templates",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-create-app-templates",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-groups",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-members",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-projects",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-roles",
+      "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-workspace-settings",
+      "kubesphere.io/v1alpha1/Category/-/ai-machine-learning",
+      "kubesphere.io/v1alpha1/Category/-/computing",
+      "kubesphere.io/v1alpha1/Category/-/database",
+      "kubesphere.io/v1alpha1/Category/-/deepseek",
+      "kubesphere.io/v1alpha1/Category/-/dev-tools",
+      "kubesphere.io/v1alpha1/Category/-/integration-delivery",
+      "kubesphere.io/v1alpha1/Category/-/networking",
+      "kubesphere.io/v1alpha1/Category/-/observability",
+      "kubesphere.io/v1alpha1/Category/-/security",
+      "kubesphere.io/v1alpha1/Category/-/storage",
+      "kubesphere.io/v1alpha1/Category/-/streaming-messaging",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:iam:cluster-admin",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:iam:cluster-viewer",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:ks-console-embed:helm-executor",
+      "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/kubesphere",
+      "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/kubesphere:ks-console-embed:helm-executor",
+      "rbac.authorization.k8s.io/v1/Role/kubesphere-system/kubesphere:ks-console-embed:helm-executor",
+      "rbac.authorization.k8s.io/v1/RoleBinding/kubesphere-system/kubesphere:ks-console-embed:helm-executor",
+      "v1/ConfigMap/kubesphere-system/extension-ks-console-embed-1.2.0-chart",
+      "v1/ConfigMap/kubesphere-system/ks-console-config",
+      "v1/ConfigMap/kubesphere-system/kubesphere-config",
+      "v1/Secret/kubesphere-system/extensions-museum-certs",
+      "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.posthog",
+      "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.resources",
+      "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.security",
+      "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.theme",
+      "v1/Secret/kubesphere-system/io.kubesphere.custom-resource-filter.v1.extensions",
+      "v1/Secret/kubesphere-system/ks-controller-manager-webhook-cert",
+      "v1/Secret/kubesphere-system/kubesphere-sa-token",
+      "v1/Secret/kubesphere-system/oauthclient-kubesphere",
+      "v1/ServiceAccount/kubesphere-system/helm-executor.ks-console-embed",
+      "v1/ServiceAccount/kubesphere-system/kubesphere"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 14,
+  "phase": "remaining-release-objects",
+  "phaseAllowlistSha256": "3de801b8c23fe8a69f06d8b93ab754295965595da0c85d7f7798d48560e84cc6",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/project-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "923",
+      "uid": "479ff3b2-b03a-4d41-b180-54315e7b07fb"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/project-operator",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "927",
+      "uid": "6dc9fd42-299d-486c-bb34-58e2da9e3715"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/project-viewer",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "920",
+      "uid": "b524439a-9d06-46f5-973c-85ea10be443b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "925",
+      "uid": "e6c23926-5f80-4a2d-9a10-7a603599bf2e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-regular",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "921",
+      "uid": "08070790-7530-4674-a912-381adb950cc5"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-self-provisioner",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "928",
+      "uid": "d165f1ba-8575-4df3-8aa9-003c46fb130d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/BuiltinRole/-/workspace-viewer",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "922",
+      "uid": "a274e11c-0a1f-4cd6-b332-7d63d4eeb3b6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/ai-machine-learning",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3869",
+      "uid": "6da71f59-3d45-4505-8154-078e147d1f1e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/cluster-access-control",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "963",
+      "uid": "4b9ea463-79ed-4c72-902a-820ebf8f72b7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/cluster-app-workloads-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "943",
+      "uid": "4e19544a-cff5-47d3-96e3-cbd9ea989cc2"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/cluster-project-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "965",
+      "uid": "3d1c2640-f7fd-46e3-ba67-3e54ba1bbc04"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/cluster-resource-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "967",
+      "uid": "1cb30856-2ebf-4df0-b137-419feb8fe550"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/cluster-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "969",
+      "uid": "552d8259-199e-4566-9e45-2bc1aae816f6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/cluster-storage-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "961",
+      "uid": "e40203b1-7159-4df3-9739-c98242646b0e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/computing",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3877",
+      "uid": "8728a31b-a6fc-4296-9d8a-1422ba699625"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/database",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3820",
+      "uid": "7b5209f9-ad07-41da-a012-b1271f8e9b03"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/deepseek",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3859",
+      "uid": "55859323-a265-4570-bbf7-d20ec8b9e8d2"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/dev-tools",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3850",
+      "uid": "931bdd64-faef-4c6f-88a2-17a9766546be"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/global-access-control",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "949",
+      "uid": "9107c42e-cda3-49a2-a2d9-83e5f4045751"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/global-cluster-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "964",
+      "uid": "40e0a16f-b334-43f6-882d-95120d7f9cfd"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/global-platform-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "956",
+      "uid": "efa96b55-9420-40ae-8e82-e43f2085ef1e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/global-workspace-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "951",
+      "uid": "b31ff93a-b832-43c4-b42d-51f12db29dac"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/integration-delivery",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3822",
+      "uid": "7a62eee8-abfd-4037-b5fc-baecd0688bd9"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/manage-app",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "962",
+      "uid": "ec9838a3-d9c8-4e2e-87a6-2b780950109e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/namespace-access-control",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "946",
+      "uid": "cf61d41e-f1f2-4c6e-8ec2-ae9bddb54e39"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/namespace-app",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "942",
+      "uid": "d3474e6f-bb0b-4c63-9a19-30fe72df543c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/namespace-application-workloads",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "960",
+      "uid": "28748567-71a5-4f5b-b862-dfed33ffb2a5"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/namespace-configuration-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "947",
+      "uid": "e1becc09-0df3-4aa1-8153-93789852d1a3"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/namespace-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "968",
+      "uid": "93704d1f-c852-451b-9fbf-8ed15ecca555"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/namespace-storage-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "958",
+      "uid": "69ef7a09-dca7-4298-ba81-013f8ae0078d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/networking",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3875",
+      "uid": "0baf8009-b676-4f17-aa06-a6d8ba09f12a"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/observability",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3865",
+      "uid": "fbe7ad11-ccfc-4b57-b7b6-55d791603acf"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/security",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3852",
+      "uid": "d7323485-d5d9-408a-860d-919fd58e46d1"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/storage",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3857",
+      "uid": "62a62ba6-4537-43fd-925a-6fa688913c7e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Category/-/streaming-messaging",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1218",
+      "uid": "cf58ec71-d0f3-4f09-a162-1c704cf075c2"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/workspace-access-control",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "966",
+      "uid": "f7911841-3633-48e0-b7f3-56e5ac84a9ce"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/workspace-app",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "971",
+      "uid": "5987b03c-e40a-403a-b1f3-f1219d472fb6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/workspace-project-management",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "955",
+      "uid": "f1a8e5e9-7622-4688-b96e-97d2266d54e0"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/Category/-/workspace-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "959",
+      "uid": "d424ed9d-941b-4480-a20e-0f1f44254e9d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/ClusterRole/-/cluster-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1128",
+      "uid": "624a60c0-9429-4d77-a332-3a9cda099f62"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/ClusterRole/-/cluster-viewer",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1189",
+      "uid": "60ac818a-c376-488f-b580-03e0b5574fa5"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:ks-console-embed:helm-executor",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1269",
+      "uid": "8bc9facd-8387-411e-8e3a-e26043ff8bcb"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/kubesphere",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "898",
+      "uid": "f4a257c6-df44-4c2c-bf96-542046814302"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/kubesphere:ks-console-embed:helm-executor",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1290",
+      "uid": "46367b53-c8c8-4aac-8bbc-0d788741a2e4"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/ConfigMap/kubesphere-system/extension-ks-console-embed-1.2.0-chart",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "894",
+      "uid": "03210719-6abb-4b91-8915-71feb6112308"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/ConfigMap/kubesphere-system/ks-console-config",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "892",
+      "uid": "f1df018a-ee3c-4b40-a7eb-436e0e8ef6da"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/ConfigMap/kubesphere-system/kubesphere-config",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "893",
+      "uid": "ea46489f-7f49-4270-8cf2-325a6f6cd008"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "rbac.authorization.k8s.io/v1/Role/kubesphere-system/kubesphere:ks-console-embed:helm-executor",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1262",
+      "uid": "daba6392-ed70-4247-bb9d-175576438734"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "rbac.authorization.k8s.io/v1/RoleBinding/kubesphere-system/kubesphere:ks-console-embed:helm-executor",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1268",
+      "uid": "8a160926-b9f0-4902-be31-77be2d84d646"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-app-workloads",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1063",
+      "uid": "c8449fa6-b175-4df7-96d1-0caa41e29b46"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-cluster-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1035",
+      "uid": "4de6f89f-ebb4-4f65-a397-7f355e885a1c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-crds",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1041",
+      "uid": "ea7b6cc4-c89c-4aa7-b0c1-6b437192cb1b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-members",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1087",
+      "uid": "9e1c5caa-a4e2-4f92-8d26-c00195c3de84"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-nodes",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1049",
+      "uid": "8d117ddf-6a2e-4720-95d1-24a3235b0e1d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-persistentvolumeclaims",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1047",
+      "uid": "bd382f08-517d-4e60-9911-c519eb4fa80f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-projects",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1040",
+      "uid": "797ae598-ecde-4389-82bc-2de571bc0380"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1079",
+      "uid": "4c4aa67f-e5f0-473c-a605-9a0db26c240e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-manage-storageclasses",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1045",
+      "uid": "f120edd5-046a-498e-852b-0658336ec090"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-app-workloads",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1059",
+      "uid": "5c46515b-f44d-4add-9616-592e9e382346"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-cluster-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1044",
+      "uid": "15cb5b71-7a0e-4171-a615-3d86be34a04b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-components",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1043",
+      "uid": "2ffcbbb3-cb1b-4e19-bf60-0d2b34cdde06"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-crds",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1036",
+      "uid": "f9ae8219-68a9-4e43-8870-ba09c03c2d60"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-members",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1085",
+      "uid": "4c08213f-14b4-46db-8908-0e05a36885e2"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-nodes",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1054",
+      "uid": "3908135e-8645-445f-9920-32931e48d087"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-persistentvolumeclaims",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1042",
+      "uid": "3619c16c-0481-4dba-a2f4-bb73010ec8ea"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-projects",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1029",
+      "uid": "86a08822-2d59-4d5f-aa36-522cf770922e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1091",
+      "uid": "2b44a411-de3a-4d14-8aeb-6c71b94952a3"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/cluster-view-storageclasses",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1030",
+      "uid": "e3aa8712-6ba7-4d55-b7a4-e41000c4de4c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-create-workspaces",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1028",
+      "uid": "5dd0ed4a-2356-4f84-8709-5afe688d707f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-clusters",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1055",
+      "uid": "c6b97ec0-f2e0-4099-9819-12a2767e1266"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-platform-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1052",
+      "uid": "86cfd9fc-96c8-47c8-9eed-8b5a13533215"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1065",
+      "uid": "9fc363f0-4f91-4427-bb7d-9e37dcc31c06"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-users",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1038",
+      "uid": "c37a7b4d-e110-4672-827b-a660e42dc729"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-manage-workspaces",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1031",
+      "uid": "239ef7f1-f707-4025-8c3a-87512db56eae"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-role-template-manage-app",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1034",
+      "uid": "3e08b005-f21e-42b6-b79a-18bb13e23fa4"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-clusters",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1046",
+      "uid": "d18e03c7-0527-429b-bd49-823e82b0ce3f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1053",
+      "uid": "3266a470-af41-4a82-81f0-84dfa4887456"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-users",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1033",
+      "uid": "e1d69e62-0d48-44e7-806f-713643c649d7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/global-view-workspaces",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1058",
+      "uid": "eaf6b7d7-9dca-43f4-a092-8d12339a0e54"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-create-app-releases",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1037",
+      "uid": "7ba1a229-0f3a-465d-97be-53dc4f1a4ec7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-delete-app-releases",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1094",
+      "uid": "704b126b-3bd7-4099-ab13-2bcb64afebb4"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-app-releases",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1093",
+      "uid": "4e868385-c0b5-471e-8a22-c0250b3a96bf"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-app-workloads",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1090",
+      "uid": "912d06db-5f4f-484b-95a2-cd76e30fbe54"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-configmaps",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1072",
+      "uid": "c76de135-bd89-4367-8148-d05968667ff6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-members",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1075",
+      "uid": "ae474bc0-8f62-44d1-9a42-3391068bc7b1"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-persistentvolumeclaims",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1051",
+      "uid": "c3ac77c5-5c8b-477f-be69-f798046ab9b0"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-project-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1076",
+      "uid": "00dc3269-f3bf-4fa6-a576-f22e174581c8"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1062",
+      "uid": "13da8e7f-61d4-4e3a-bffc-ac402b400be2"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-secrets",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1077",
+      "uid": "487ff87e-898a-4cd3-a0b2-ed53c2f5b994"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-serviceaccount",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1078",
+      "uid": "4454cea2-4bdc-40fc-b542-63db53e2990b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-manage-workloadtemplates",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1067",
+      "uid": "e0981270-18c6-48b1-8408-4e9771762b54"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-app-releases",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1080",
+      "uid": "64c1b0c6-67f3-44b9-b5d9-e10e725cec6f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-app-workloads",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1095",
+      "uid": "37a66d47-fab5-49df-8bab-5cc92bccf235"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-configmaps",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1071",
+      "uid": "5fc4477a-5412-40f6-ab3b-9219ba01f665"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-members",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1070",
+      "uid": "4b275f72-1151-470e-825d-7539c3dc5cc5"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-persistentvolumeclaims",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1084",
+      "uid": "b53586ab-c42f-49cd-aceb-2392a9247d13"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-project-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1083",
+      "uid": "ca6fe4ba-fc33-4d52-8584-51398b8e6e7c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1039",
+      "uid": "6943cb50-cf9c-4d1b-aed3-1c7c54f0b10b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-secrets",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1073",
+      "uid": "1d2c3d46-957d-4d63-ad6a-ac5e23932dc6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-serviceaccount",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1082",
+      "uid": "3aa4da45-c6bf-4448-bab9-ec91d65671e0"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/namespace-view-workloadtemplates",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1056",
+      "uid": "cb50b153-5353-421c-8d5a-c41034bedd9e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-create-projects",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1081",
+      "uid": "7da12a91-51e5-4ee9-954b-c991d5217341"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-delete-app-templates",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1057",
+      "uid": "a3f867eb-8670-449e-b793-ac055081aaf7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-app-repos",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1048",
+      "uid": "2bba4097-98c9-4d39-b185-3bf5612a550f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-app-templates",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1060",
+      "uid": "70438967-7275-4790-9926-b2cccc9709d3"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-groups",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1069",
+      "uid": "101cc17e-e104-44be-a8b4-922217ddd33f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-members",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1089",
+      "uid": "93d792c6-adaa-401b-a473-e88ddc79ec47"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-projects",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1086",
+      "uid": "3a446a77-3a07-4fe4-8d81-7cc7cff1d277"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1092",
+      "uid": "f9411cc3-93c8-41c8-bf4e-19b9c67407e7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-manage-workspace-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1066",
+      "uid": "cfc531f2-bd2f-476b-95d8-dcab45e6df9f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-app-repos",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1032",
+      "uid": "ab693ad8-cac8-4b08-9373-13cff7a0a768"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-app-templates",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1061",
+      "uid": "3946e4dd-b599-4de1-9d97-70744fc271e6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-create-app-templates",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1050",
+      "uid": "20bb1e40-7677-4b26-a882-9b396e96635d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-groups",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1068",
+      "uid": "f24c6d28-2c77-4dc7-baca-9cbeac56e5ea"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-members",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1096",
+      "uid": "21ecc047-add5-45df-a16a-8a6b122e0e02"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-projects",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1088",
+      "uid": "360af5bc-6f90-4d3c-b5f6-72d216a021df"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-roles",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1074",
+      "uid": "2b6f323a-43db-42cf-8556-747ff15bba72"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/RoleTemplate/-/workspace-view-workspace-settings",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1064",
+      "uid": "49b5176e-e786-4895-ae38-c8410b23b5c7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/extensions-museum-certs",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "891",
+      "uid": "672e4fad-1263-4c5b-8b6d-147ba61c6d92"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.posthog",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "888",
+      "uid": "ba241ed7-65d9-4d25-9d7e-b2449a03b469"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.resources",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "890",
+      "uid": "3e67c56c-b6ea-4068-80ca-c4ec03fd262d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.security",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "884",
+      "uid": "709f10c2-be4b-4fc0-8579-dd49556ab98b"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.config.platformconfig.theme",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "886",
+      "uid": "241577f5-0f14-41a6-97b2-7164c118d309"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.custom-resource-filter.v1.extensions",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "885",
+      "uid": "1645a860-b8fe-467d-b5ec-02caca070ace"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/ks-controller-manager-webhook-cert",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "887",
+      "uid": "f3fa4f9a-7e30-46d0-99c1-354f27ef5032"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/kubesphere-sa-token",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1122",
+      "uid": "d3f6cace-9e74-462e-8f18-8cc985519d34"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/oauthclient-kubesphere",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "883",
+      "uid": "08e06f2a-bcde-45ec-844b-faed301fb3b4"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/ServiceAccount/kubesphere-system/helm-executor.ks-console-embed",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1223",
+      "uid": "aa0a7df9-a26b-4695-8ab2-2ab3941474ad"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/ServiceAccount/kubesphere-system/kubesphere",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "881",
+      "uid": "9cd85a53-190b-4975-a649-2512e42c5152"
+    }
+  ],
+  "settled": true
+}

@@ -1,5 +1,6 @@
 """Source refusal, exact retirement scope, drift and preservation assertions."""
 import copy
+import inspect
 import itertools
 import json
 from pathlib import Path
@@ -10,9 +11,11 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 from evidence import canonical, digest
 from qualify import project_resource
-from rehearse import (Fixture, SYSTEM_WORKSPACE_FINALIZER, absence_state, api_path, assert_phase, assert_preserved,
+import rehearse as rehearse_module
+from rehearse import (Fixture, SYNTHETIC_HOLD, SYSTEM_WORKSPACE_FINALIZER, absence_state, api_path, assert_phase, assert_preserved,
                       dependency_plan, extension_phase_actions, key, native_conflict, native_delete_options, native_not_found,
-                      phase_delta, probe_blocked, rehearse, retirement_scope, validate_allowlist, validate_isolation)
+                      phase_delta, probe_blocked, rehearse, retirement_scope, synthetic_hold_blocked, tool_identities,
+                      validate_allowlist, validate_isolation)
 
 
 def resource(kind, name, uid, owner=None):
@@ -190,7 +193,7 @@ def kubesphere_baseline():
         {**ks('v1', 'Secret', 'ks-console-x1', 'ks-sa-token', 'kubesphere-system'), 'serviceAccountReference': 'ks-console'},
         {**ks('v1', 'Secret', 'other-token', 'other-token', 'other-namespace'), 'serviceAccountReference': 'ks-console'},
         {**ks('admissionregistration.k8s.io/v1', 'ValidatingWebhookConfiguration', 'validator.license.kubesphere.io', 'license-hook'),
-         'webhooks': [{'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}]},
+         'webhooks': [{'failurePolicy': 'Ignore', 'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}]},
         {**ks('admissionregistration.k8s.io/v1', 'MutatingWebhookConfiguration', 'unrelated-hook', 'other-hook'),
          'webhooks': [{'service': {'namespace': 'other', 'name': 'ks-controller-manager'}}]},
         {**ks('apiregistration.k8s.io/v1', 'APIService', 'v1.apps', 'local-api'), 'service': {'namespace': None, 'name': None}},
@@ -209,8 +212,8 @@ class DependencyRetirementTests(unittest.TestCase):
         phases = {p['phase']: p for p in plan}
         self.assertEqual([p['phase'] for p in plan], ['installed-extension', 'global-role-bindings', 'workspace-role-bindings',
                          'workspace-roles', 'kubesphere-cluster-role-bindings', 'users', 'kubesphere-service-accounts',
-                         'extension-repository', 'admission',
-                         'controllers-and-services', 'remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
+                         'extension-repository', 'admission', 'controllers-and-services', 'reconciled-admission',
+                         'remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
         self.assertEqual(set(phases['workspace-role-bindings']['expected']), {'wrb', 'wrb-projection'})
         self.assertEqual(phases['workspace-role-bindings']['roots'], ['wrb'])
         self.assertEqual(set(phases['kubesphere-cluster-role-bindings']['expected']), {'iam-crb', 'iam-crb-projection'})
@@ -227,7 +230,9 @@ class DependencyRetirementTests(unittest.TestCase):
         self.assertEqual(set(phases['controllers-and-services']['roots']), {'deploy', 'svc'})
         self.assertFalse(phases['controllers-and-services']['controllersRunning'])
         self.assertTrue(phases['admission']['controllersRunning'])
-        self.assertEqual(set(phases['admission']['roots']), {'hook', 'license-hook'})
+        self.assertEqual(phases['admission']['roots'], ['hook'])
+        self.assertEqual((phases['reconciled-admission']['roots'], phases['reconciled-admission']['managerAbsentRequired']),
+                         (['license-hook'], True))
         named = phases['system-workspace-finalizers']
         self.assertEqual((named['mode'], set(named['roots'])), ('named-finalizer', {'wst', 'ws'}))
         self.assertEqual(sorted(u for p in plan for u in p['expected']), sorted(scope))
@@ -237,10 +242,30 @@ class DependencyRetirementTests(unittest.TestCase):
                 (lambda b: b[[v['uid'] for v in b].index('cm')].update(finalizers=['kubesphere.io/cleanup']), 'finalizer-after-controller'),
                 (lambda b: b[[v['uid'] for v in b].index('ws')].update(finalizers=[SYSTEM_WORKSPACE_FINALIZER, 'other/hold']), 'system-workspace'),
                 (lambda b: b.append(ks('v1', 'PersistentVolumeClaim', 'data', 'claim', 'kubesphere-system', owner='cm')), 'protected'),
-                (lambda b: b[[v['uid'] for v in b].index('cm')].update(owners=[{'uid': 'unseen'}]), 'owner-outside')]:
+                (lambda b: b[[v['uid'] for v in b].index('cm')].update(owners=[{'uid': 'unseen'}]), 'owner-outside'),
+                (lambda b: b[[v['uid'] for v in b].index('license-hook')]['webhooks'][0].update(failurePolicy='Fail'), 'blocking-registration'),
+                (lambda b: b.append({**ks('apiregistration.k8s.io/v1', 'APIService', 'v1.iam.kubesphere.io', 'reconciled-api'),
+                                     'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}), 'blocking-registration'),
+                # An operator-created console Ingress or HTTPRoute outside the release still routes to a retired Service.
+                (lambda b: b.append({**ks('networking.k8s.io/v1', 'Ingress', 'kubesphere-console', 'console-route', 'kubesphere-system'),
+                                     'backends': [{'kind': 'Service', 'name': 'ks-controller-manager', 'namespace': 'kubesphere-system'}]}),
+                 'route-consumer-of-retired-service'),
+                (lambda b: b.append({**ks('gateway.networking.k8s.io/v1', 'HTTPRoute', 'console', 'console-http', 'kubesphere-system'),
+                                     'backends': [{'kind': None, 'name': 'ks-console-embed', 'namespace': None}]}),
+                 'route-consumer-of-retired-service')]:
             with self.subTest(reason=reason):
                 baseline = kubesphere_baseline();mutate(baseline)
                 with self.assertRaisesRegex(ValueError, reason):dependency_plan(baseline, retirement_scope(baseline))
+        # Routes to retained Services, non-Service backends and routes inside the retirement scope do not block planning.
+        baseline = kubesphere_baseline()
+        baseline += [{**ks('networking.k8s.io/v1', 'Ingress', 'web', 'web-route', 'app'),
+                      'backends': [{'kind': 'Service', 'name': 'web', 'namespace': 'app'},
+                                   {'apiGroup': 'x', 'kind': 'Bucket', 'name': 'ks-controller-manager'}]},
+                     {**ks('networking.k8s.io/v1', 'Ingress', 'ks-console', 'chart-route', 'kubesphere-system', 'ks-core'),
+                      'backends': [{'kind': 'Service', 'name': 'ks-controller-manager', 'namespace': 'kubesphere-system'}]}]
+        scope = retirement_scope(baseline)
+        self.assertIn('chart-route', scope);self.assertNotIn('web-route', scope)
+        self.assertEqual(sorted(u for p in dependency_plan(baseline, scope) for u in p['expected']), sorted(scope))
 
     def test_phase_assertion_detects_recreation_and_permits_only_attempt_transients(self):
         cm = ks('v1', 'ConfigMap', 'retired', 'cm-1', 'kubesphere-system')
@@ -293,24 +318,48 @@ class NativeRequestTests(unittest.TestCase):
     def test_native_retire_revalidates_uid_retries_conflict_and_refuses_other_errors(self):
         conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): precondition failed')
         fixture, _ = self.fixture()
+        reviewed = project_resource(self.obj(version='5'))
         with patch.object(fixture, 'native_read', side_effect=[self.obj(version='5'), self.obj(version='6')]), \
              patch.object(fixture, 'kube', side_effect=[conflict, SimpleNamespace(returncode=0, stdout=b'', stderr=b'')]) as kube:
-            outcome = fixture.native_retire('users', '/apis/x', 'u-1')
+            outcome = fixture.native_retire('users', '/apis/x', reviewed)
         self.assertEqual((outcome['outcome'], outcome['resourceVersion'], outcome['conflictRetries']), ('native-delete-accepted', '6', 1))
+        self.assertEqual((outcome['reviewedResourceVersion'], outcome['resourceVersionChangedSinceReview']), ('5', True))
         self.assertEqual([c.kwargs['obj']['preconditions'] for c in kube.call_args_list],
                          [{'uid': 'u-1', 'resourceVersion': '5'}, {'uid': 'u-1', 'resourceVersion': '6'}])
         self.assertTrue(all(c.args[1:3] == ('delete', '--raw') for c in kube.call_args_list))
         with patch.object(fixture, 'native_read', return_value=self.obj(uid='replacement')), patch.object(fixture, 'kube') as kube:
-            with self.assertRaisesRegex(ValueError, 'uid-drift'):fixture.native_retire('users', '/apis/x', 'u-1')
+            with self.assertRaisesRegex(ValueError, 'uid-drift'):fixture.native_retire('users', '/apis/x', reviewed)
         kube.assert_not_called()
         with patch.object(fixture, 'native_read', return_value=self.obj()), patch.object(fixture, 'kube',
                 return_value=SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Forbidden): denied')):
-            with self.assertRaisesRegex(ValueError, 'rejected'):fixture.native_retire('users', '/apis/x', 'u-1')
+            with self.assertRaisesRegex(ValueError, 'rejected'):fixture.native_retire('users', '/apis/x', reviewed)
         with patch.object(fixture, 'native_read', return_value=self.obj()), patch.object(fixture, 'kube', return_value=conflict):
-            with self.assertRaisesRegex(ValueError, 'retries-exhausted'):fixture.native_retire('users', '/apis/x', 'u-1')
+            with self.assertRaisesRegex(ValueError, 'retries-exhausted'):fixture.native_retire('users', '/apis/x', reviewed)
         with patch.object(fixture, 'native_read', return_value=None), patch.object(fixture, 'kube') as kube:
-            self.assertEqual(fixture.native_retire('users', '/apis/x', 'u-1')['outcome'], 'absent-before-request')
+            self.assertEqual(fixture.native_retire('users', '/apis/x', reviewed)['outcome'], 'absent-before-request')
         kube.assert_not_called()
+
+    def test_native_retire_stops_when_reviewed_fields_drift_after_review(self):
+        fixture, _ = self.fixture()
+        reviewed = project_resource(self.obj(version='5'))
+        ok = SimpleNamespace(returncode=0, stdout=b'', stderr=b'')
+        with patch.object(fixture, 'native_read', return_value=self.obj(version='5')), patch.object(fixture, 'kube', return_value=ok):
+            outcome = fixture.native_retire('users', '/apis/x', reviewed)
+        self.assertEqual((outcome['resourceVersion'], outcome['resourceVersionChangedSinceReview']), ('5', False))
+        labelled = self.obj(version='7');labelled['metadata']['labels'] = {'kubesphere.io/workspace': 'other'}
+        for drifted in (self.obj(version='7', finalizers=['kubesphere.io/new-hold']), self.obj(version='7', deleting=True),
+                        self.obj(version='7', owners=[{'apiVersion': 'v1', 'kind': 'X', 'name': 'x', 'uid': 'new-owner'}]), labelled):
+            # A later reviewed-field change stops before any DELETE, even though the UID is unchanged.
+            with self.subTest(meta=drifted['metadata']), patch.object(fixture, 'native_read', return_value=drifted), \
+                 patch.object(fixture, 'kube') as kube:
+                with self.assertRaisesRegex(ValueError, 'reviewed-entry-drift'):fixture.native_retire('users', '/apis/x', reviewed)
+            kube.assert_not_called()
+        # A conflict retry re-reads and compares with the reviewed entry again, not with the previous read.
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): precondition failed')
+        with patch.object(fixture, 'native_read', side_effect=[self.obj(version='6'), self.obj(version='7', finalizers=['x/hold'])]), \
+             patch.object(fixture, 'kube', return_value=conflict) as kube:
+            with self.assertRaisesRegex(ValueError, 'reviewed-entry-drift'):fixture.native_retire('users', '/apis/x', reviewed)
+        kube.assert_called_once()
 
     def test_named_finalizer_removes_only_one_named_finalizer_after_deletion_request(self):
         fixture, _ = self.fixture()
@@ -360,15 +409,18 @@ class NativeRequestTests(unittest.TestCase):
         retire.assert_not_called()
         # The controller-removal phase starts while the manager still runs; it must not be refused for that.
         self.assertEqual([p['phase'] for p in plan.values() if p['managerAbsentRequired']],
-                         ['remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
+                         ['reconciled-admission', 'remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
         removal = plan['controllers-and-services']
         after = [v for v in baseline if v['uid'] not in removal['expected']]
+        observed = [{**v, 'resourceVersion': '2'} for v in baseline]  # status churn seen at phase start
         fixture, records = self.fixture()
-        with patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (after, True)]), \
+        with patch.object(fixture, 'settled_inventory', side_effect=[(observed, True), (after, True)]), \
              patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}) as retire, \
              patch.object(fixture, 'wait_absent', return_value=True):
             fixture.retire_phase(removal, uids, by_uid, resources)
         self.assertEqual(retire.call_count, len(removal['roots']))
+        # Each request is bound to the reviewed baseline entry, not to the phase's fresh observation.
+        self.assertEqual([c.args[2] for c in retire.call_args_list], [by_uid[uid] for uid in removal['roots']])
         fixture, records = self.fixture()
         incomplete = [v for v in baseline if v['uid'] != 'grb']
         with patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (incomplete, True)]), \
@@ -389,6 +441,15 @@ class WorkspaceProbeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'workspace-probe-setup-incomplete'):fixture.probe_workspace_propagation()
         self.assertEqual([c.args[0]['kind'] for c in create.call_args_list], ['WorkspaceTemplate'])
         retire.assert_not_called();attempt.record.assert_not_called()
+
+    def test_tenant_sync_gate_reports_elapsed_or_none(self):
+        fixture = Fixture(SimpleNamespace(attempt_id='probe-test'), SimpleNamespace(directory=Path('/nonexistent')))
+        with patch.object(fixture, 'native_read', side_effect=[None, None, {'metadata': {}}]), patch('rehearse.time.sleep'), \
+             patch('rehearse.time.monotonic', side_effect=itertools.count(0, 10)):
+            self.assertEqual(fixture.wait_tenant_sync(), 30)
+        with patch.object(fixture, 'native_read', return_value=None), patch('rehearse.time.sleep'), \
+             patch('rehearse.time.monotonic', side_effect=itertools.count(0, 10)):
+            self.assertIsNone(fixture.wait_tenant_sync())
 
     def test_probe_records_unbinding_without_treating_it_as_a_cascade(self):
         attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=Mock())
@@ -433,7 +494,8 @@ class PostRetirementTests(unittest.TestCase):
     def test_native_health_requires_no_stale_backends_runtime_or_namespace_mutation(self):
         error, record, retire = self.run_checks([ks('v1', 'Service', 'kube-dns', 's', 'kube-system')])
         self.assertIsNone(error)
-        self.assertEqual(retire.call_args_list[0].args[1:], ('/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement', 'c-1'))
+        self.assertEqual(retire.call_args_list[0].args[1], '/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement')
+        self.assertEqual([c.args[2]['uid'] for c in retire.call_args_list], ['c-1', 'n-1'])
         self.assertTrue(record['newNamespaceDeletionCompleted'])
         hook = {**ks('admissionregistration.k8s.io/v1', 'ValidatingWebhookConfiguration', 'users', 'h'),
                 'webhooks': [{'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}]}
@@ -447,14 +509,132 @@ class PostRetirementTests(unittest.TestCase):
                               ({'final': [ks('apps/v1', 'Deployment', 'ks-apiserver', 'd', 'kubesphere-system')]}, 'managerRuntimeRemaining'),
                               ({'final': [], 'pods': [pod]}, 'managerRuntimeRemaining'),
                               ({'final': [], 'namespace_labels': {'kubesphere.io/workspace': 'system-workspace'}}, 'newNamespaceManagementLabels'),
-                              ({'final': [], 'namespace_gone': False}, 'newNamespaceDeletionCompleted')]:
+                              ({'final': [], 'namespace_gone': False}, 'newNamespaceDeletionCompleted'),
+                              ({'final': [{**ks('networking.k8s.io/v1', 'Ingress', 'kubesphere-console', 'ing', 'kubesphere-system'),
+                                           'backends': [{'kind': 'Service', 'name': 'ks-console', 'namespace': 'kubesphere-system'}]}]},
+                               'staleRouteBackends'),
+                              ({'final': [{**ks('gateway.networking.k8s.io/v1', 'HTTPRoute', 'console', 'route', 'kubesphere-system'),
+                                           'backends': [{'kind': None, 'name': 'ks-console', 'namespace': None}]}]},
+                               'staleRouteBackends')]:
             with self.subTest(field=field, kwargs=list(kwargs)):
                 error, record, _ = self.run_checks(**kwargs)
                 self.assertEqual(error, 'post-retirement-native-health-failed')
                 self.assertTrue(record[field] in (False,) or record[field])
+        live = [ks('v1', 'Service', 'web', 'svc', 'app'),
+                {**ks('networking.k8s.io/v1', 'Ingress', 'web', 'ing', 'app'),
+                 'backends': [{'kind': 'Service', 'name': 'web', 'namespace': 'app'}, {'apiGroup': 'x', 'kind': 'Bucket', 'name': 'b'}]}]
+        error, record, _ = self.run_checks(live)
+        self.assertIsNone(error);self.assertEqual(record['staleRouteBackends'], [])
         error, record, _ = self.run_checks([], pods=[done])
         self.assertIsNone(error)
         self.assertEqual(record['completedManagerPodResidue'], ['v1/Pod/kubesphere-system/installer-x'])
+
+
+class ReviewFollowUpTests(unittest.TestCase):
+    def fixture(self, **args):
+        records = {}
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
+        return Fixture(SimpleNamespace(attempt_id='review-test', **args), attempt), records
+
+    def test_inventory_covers_additional_native_kinds_and_their_removal_stops(self):
+        for resource in ('leases.coordination.k8s.io', 'ingresses.networking.k8s.io', 'networkpolicies.networking.k8s.io',
+                         'cronjobs.batch', 'controllerrevisions.apps', 'poddisruptionbudgets.policy',
+                         'horizontalpodautoscalers.autoscaling', 'resourcequotas', 'limitranges'):
+            self.assertIn(resource, Fixture.NATIVE_RESOURCES.split(','))
+        lease = ks('coordination.k8s.io/v1', 'Lease', 'ks-controller-manager-leader-election', 'lease-1', 'kubesphere-system')
+        with self.assertRaisesRegex(ValueError, 'unexpected'):
+            assert_phase({'lease-1'}, [lease], [], set())
+
+    def test_synthetic_hold_tolerates_transient_foreground_finalizer_only(self):
+        held = lambda *finalizers, deleting=True: {'metadata': {'finalizers': list(finalizers),
+                                                               **({'deletionTimestamp': 't'} if deleting else {})}}
+        self.assertTrue(synthetic_hold_blocked(held(SYNTHETIC_HOLD)))
+        self.assertTrue(synthetic_hold_blocked(held('foregroundDeletion', SYNTHETIC_HOLD)))
+        for obj in (held(), held('foregroundDeletion'), held(SYNTHETIC_HOLD, deleting=False), held(SYNTHETIC_HOLD, 'other/hold')):
+            self.assertFalse(synthetic_hold_blocked(obj))
+
+    def test_synthetic_finalizer_replace_removes_only_the_named_hold(self):
+        source = inspect.getsource(Fixture.execute)
+        self.assertIn("if v != SYNTHETIC_HOLD]", source)
+        self.assertNotIn("['finalizers'] = []", source)
+
+    def test_tool_identities_digest_files_and_runtime_versions_without_running_kubectl(self):
+        with tempfile.TemporaryDirectory() as temp:
+            tools = {}
+            for name in ('kubectl', 'helm', 'age'):
+                tools[name] = Path(temp) / name;tools[name].write_bytes(name.encode())
+            calls = []
+            def run(argv, **kwargs):
+                calls.append(argv)
+                return SimpleNamespace(returncode=0, stdout=(argv[0] + ' version output').encode(), stderr=b'')
+            with patch('rehearse.subprocess.run', side_effect=run):
+                result = tool_identities(SimpleNamespace(**tools))
+        self.assertEqual(result['toolSha256'], {n: digest(n.encode()) for n in tools})
+        self.assertEqual(result['runtimeVersionOutput']['kind']['outputSha256'], digest(b'kind version output'))
+        self.assertEqual(result['runtimeVersionOutput']['docker']['outputSha256'], digest(b'docker version output'))
+        self.assertEqual(calls, [['kind', 'version'], ['docker', 'version']])
+        self.assertFalse(result['kubectlExecuted']);self.assertFalse(result['releaseAuthenticityVerified'])
+
+    def test_failed_runtime_version_preflight_is_recorded_and_fails_closed_before_fixture_start(self):
+        path = Mock();path.read_bytes.return_value = canonical({'sourceClusterUid': 'source-1', 'nativeEndpoint': 'https://192.168.1.30:6443'})
+        args = SimpleNamespace(source_inventory=path, project_root='repo', evidence_root='private', attempt_id='unit', operator='operator')
+        attempt = Mock(directory=Path('/private/unit'))
+        fixture = Mock(last_step='not-started');fixture.cleanup.return_value = True
+        identities = {'runtimeVersionOutput': {'kind': {'exitCode': 0}, 'docker': {'exitCode': 1}}}
+        with patch('rehearse.Attempt', return_value=attempt), patch('rehearse.Fixture', return_value=fixture), \
+             patch('rehearse.tool_identities', return_value=identities):
+            _, state = rehearse(args)
+        records = {c.args[0]: c.args[1] for c in attempt.record.call_args_list}
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(records['tools.json'], identities)
+        self.assertEqual(records['failure.json']['reasonCode'], 'runtime-version-preflight-failed')
+        self.assertIn('unmeasured', records['failure.json']['sourceUnchanged'])
+        fixture.start.assert_not_called();fixture.cleanup.assert_called_once()
+
+    def test_main_refusal_covers_unexpected_errors(self):
+        argv = ['rehearse.py', '--operator', 'unit', '--source-inventory', 'source.json', '--node-image', 'sha256:' + 'a' * 64,
+                '--kubectl', 'kubectl', '--age', 'age', '--recipient', 'public-only']
+        for error in (StopIteration(), ImportError('yaml'), RuntimeError('unexpected')):
+            with self.subTest(error=type(error).__name__), patch('sys.argv', argv), \
+                 patch('rehearse.rehearse', side_effect=error), patch('sys.stderr'):
+                with self.assertRaises(SystemExit) as stopped:
+                    rehearse_module.main()
+                self.assertEqual(stopped.exception.code, 2)
+
+    def test_tenant_sync_gate_records_false_before_raising(self):
+        fixture, records = self.fixture()
+        with patch.object(fixture, 'wait_tenant_sync', return_value=None):
+            with self.assertRaisesRegex(ValueError, 'kubesphere-tenant-sync-not-ready'):
+                fixture.record_runtime(['ks-apiserver'], [], True)
+        self.assertFalse(records['kubesphere-runtime.json']['systemWorkspaceSynchronized'])
+        self.assertIsNone(records['kubesphere-runtime.json']['tenantSyncSeconds'])
+        fixture, records = self.fixture()
+        with patch.object(fixture, 'wait_tenant_sync', return_value=3):
+            fixture.record_runtime(['ks-apiserver'], [], True)
+        self.assertTrue(records['kubesphere-runtime.json']['systemWorkspaceSynchronized'])
+
+    def test_changed_retained_crd_stops_before_any_result_record(self):
+        baseline = kubesphere_baseline()
+        scope = retirement_scope(baseline)
+        final = [v for v in baseline if v['uid'] not in scope]
+        crd = {**ks('apiextensions.k8s.io/v1', 'CustomResourceDefinition', 'workspaces.tenant.kubesphere.io', 'crd-1'),
+               'customResource': {'group': 'tenant.kubesphere.io', 'plural': 'workspaces', 'scope': 'Cluster',
+                                  'versions': [{'name': 'v1beta1', 'served': True, 'storage': True}]}}
+        changed = {**crd, 'customResource': {**crd['customResource'], 'versions': [{'name': 'v1beta1', 'served': False, 'storage': True}]}}
+        fixture, records = self.fixture(ks_chart_sha256='c' * 64, source_digest='s' * 64, script_digest='p' * 64)
+        fixture.custom_resources = ['stale-cache']
+        with patch.object(fixture, 'probe_workspace_propagation'), \
+             patch.object(fixture, 'crd_inventory', side_effect=[[crd], [changed]]), \
+             patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (final, True)]), \
+             patch.object(fixture, 'discover', return_value={}), patch.object(fixture, 'retire_phase') as phases, \
+             patch.object(fixture, 'post_retirement_checks') as health:
+            with self.assertRaisesRegex(ValueError, 'retained-crd-changed'):
+                fixture.retire_kubesphere()
+        self.assertIsNone(fixture.custom_resources)
+        self.assertEqual(phases.call_count, len(dependency_plan(baseline, scope)))
+        health.assert_not_called()
+        self.assertIn('kubesphere-after-state.json', records)
+        self.assertNotIn('kubesphere-retirement-result.json', records)
 
 
 class FixtureBoundaryTests(unittest.TestCase):
@@ -548,7 +728,8 @@ class FixtureBoundaryTests(unittest.TestCase):
         args = SimpleNamespace(source_inventory=path, project_root='repo', evidence_root='private', attempt_id='unit', operator='operator')
         attempt = Mock(directory=Path('/private/unit'))
         fixture = Mock(last_step='unit-start');fixture.start.side_effect = ValueError('fixture-refused');fixture.cleanup.return_value = True
-        with patch('rehearse.Attempt', return_value=attempt), patch('rehearse.Fixture', return_value=fixture):
+        with patch('rehearse.Attempt', return_value=attempt), patch('rehearse.Fixture', return_value=fixture), \
+             patch('rehearse.tool_identities', return_value={'runtimeVersionOutput': {}}):
             _, state = rehearse(args)
         self.assertEqual(state, 'failed-closed')
         path.read_bytes.assert_called_once();path.read_text.assert_not_called()
@@ -588,6 +769,7 @@ class FixtureBoundaryTests(unittest.TestCase):
                     return original(argv, **kwargs)
                 with patch('rehearse.Attempt', return_value=fixture.attempt), \
                      patch('rehearse.Fixture', return_value=fixture), \
+                     patch('rehearse.tool_identities', return_value={'runtimeVersionOutput': {}}), \
                      patch('rehearse.subprocess.run', side_effect=command) as commands, \
                      patch.object(fixture, 'cleanup', return_value=True) as cleanup:
                     _, state = rehearse(fixture.args)
@@ -600,6 +782,14 @@ class FixtureBoundaryTests(unittest.TestCase):
                 cleanup.assert_called_once();fixture.attempt.finish.assert_called_once()
 
     def test_malformed_native_diagnostics_cannot_interrupt_failure_receipt_or_cleanup(self):
+        import tarfile
+        import yaml
+        for error in (KeyError('private-native-value'), yaml.YAMLError('private-native-value'),
+                      tarfile.TarError('private-native-value'), ImportError('private-native-value'), StopIteration()):
+            with self.subTest(error=type(error).__name__):
+                self.assert_failure_receipt_and_cleanup(error)
+
+    def assert_failure_receipt_and_cleanup(self, error):
         with tempfile.TemporaryDirectory() as temp:
             fixture, _ = self.fixture(temp)
             fixture.created = True
@@ -614,7 +804,8 @@ class FixtureBoundaryTests(unittest.TestCase):
             fixture.last_step = 'native-fixture-schema'
             with patch('rehearse.Attempt', return_value=fixture.attempt), \
                  patch('rehearse.Fixture', return_value=fixture), patch.object(fixture, 'start'), \
-                 patch.object(fixture, 'execute', side_effect=KeyError('private-native-value')), \
+                 patch('rehearse.tool_identities', return_value={'runtimeVersionOutput': {}}), \
+                 patch.object(fixture, 'execute', side_effect=error), \
                  patch.object(fixture, 'get', return_value={'items': [None]}), \
                  patch.object(fixture, 'cleanup', return_value=True) as cleanup:
                 _, state = rehearse(fixture.args)

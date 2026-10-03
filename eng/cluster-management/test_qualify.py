@@ -1,6 +1,7 @@
 """Evidence disclosure, coverage and fail-closed qualification boundaries."""
 import copy
 import base64
+import io
 import json
 import os
 from pathlib import Path
@@ -11,8 +12,14 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from evidence import Attempt, now
-from qualify import Capture, classify, collect, compatible, project_resource, validate_authority, validate_native_endpoint, validate_ownership, validate_pins
+from evidence import Attempt, canonical, digest, now
+from qualify import (Capture, classify, collect, compatible, management_resource, project_resource, validate_authority,
+                     validate_native_endpoint, validate_ownership, validate_pins)
+import urllib.error
+
+
+def sealed(event):
+    return {**event, 'sha256': digest(canonical(event))}
 
 
 class ProjectionTests(unittest.TestCase):
@@ -112,6 +119,22 @@ class ProjectionTests(unittest.TestCase):
                                   'spec': {'volumeName': 'pv-1', 'storageClassName': 'local'}, 'status': {'phase': 'Bound'}})
         self.assertEqual(claim['binding']['volumeName'], 'pv-1')
         self.assertEqual(claim['uid'], 'claim-1')
+
+    def test_unlabeled_registrations_backed_by_manager_services_are_management_state(self):
+        hook = project_resource({'apiVersion': 'admissionregistration.k8s.io/v1', 'kind': 'ValidatingWebhookConfiguration',
+            'metadata': {'name': 'validator.license.example', 'uid': 'hook-1'},
+            'webhooks': [{'name': 'quota', 'clientConfig': {'service': {'namespace': 'kubesphere-system', 'name': 'manager'}}}]})
+        api = project_resource({'apiVersion': 'apiregistration.k8s.io/v1', 'kind': 'APIService', 'metadata': {'name': 'v1.example', 'uid': 'api-1'},
+                                'spec': {'service': {'namespace': 'kubesphere-system', 'name': 'manager'}}})
+        crd = project_resource({'apiVersion': 'apiextensions.k8s.io/v1', 'kind': 'CustomResourceDefinition',
+            'metadata': {'name': 'widgets.example.io', 'uid': 'crd-1'}, 'spec': {'group': 'example.io', 'names': {'plural': 'widgets'},
+            'conversion': {'strategy': 'Webhook', 'webhook': {'clientConfig': {'service': {'namespace': 'kubesphere-system', 'name': 'manager'}}}}}})
+        self.assertTrue(all(management_resource(v) for v in (hook, api, crd)))
+        native = project_resource({'apiVersion': 'admissionregistration.k8s.io/v1', 'kind': 'ValidatingWebhookConfiguration',
+            'metadata': {'name': 'cert-manager', 'uid': 'hook-2'},
+            'webhooks': [{'clientConfig': {'service': {'namespace': 'cert-manager', 'name': 'webhook'}}}]})
+        local = project_resource({'apiVersion': 'apiregistration.k8s.io/v1', 'kind': 'APIService', 'metadata': {'name': 'v1.apps', 'uid': 'api-2'}, 'spec': {}})
+        self.assertFalse(management_resource(native) or management_resource(local))
 
     def test_unknown_owner_consumer_and_deletion_effects_block_retirement(self):
         item = project_resource({'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'manager', 'namespace': 'kubesphere-system',
@@ -240,6 +263,86 @@ class CensusTests(unittest.TestCase):
                 self.assertTrue((directory / 'capture-failure.json').is_file())
                 self.assertNotIn('private detail', (directory / 'capture-failure.json').read_text())
 
+    def run_access(self, outcome, mode):
+        with tempfile.TemporaryDirectory() as temp:
+            kubeconfig = Path(temp) / 'config';kubeconfig.write_text('native');kubeconfig.chmod(mode)
+            records = {}
+            attempt = SimpleNamespace(encrypt=Mock(), record=lambda name, value: records.update({name: value}))
+            capture = Capture(SimpleNamespace(kubectl='kubectl', helm='helm', context='local', kubeconfig=kubeconfig,
+                                              age='age', recipient='public-only'), attempt)
+            config = {'clusters': [{'cluster': {'server': 'https://127.0.0.1:6443',
+                      'certificate-authority-data': base64.b64encode(b'fixture-cert').decode()}}]}
+            raw = {'/api/v1': {'resources': [{'name': 'namespaces', 'kind': 'Namespace', 'verbs': ['list']}]}, '/apis': {'groups': []},
+                   '/api/v1/namespaces?limit=500': {'items': [{'metadata': {'name': 'kube-system', 'uid': 'ns-1', 'resourceVersion': '1'}}]}}
+            def command(argv, **kwargs):
+                if argv[0] == 'helm':
+                    data = []
+                elif 'config' in argv:
+                    data = config
+                elif '--raw' in argv:
+                    data = raw[argv[argv.index('--raw') + 1]]
+                else:
+                    data = {'clientVersion': {'gitVersion': 'v1.34.12'}, 'serverVersion': {'gitVersion': 'v1.34.9'}}
+                return SimpleNamespace(returncode=0, stdout=json.dumps(data).encode(), stderr=b'')
+            if isinstance(outcome, int):
+                side = urllib.error.HTTPError('https://127.0.0.1:6443/api/v1/namespaces', outcome, 'status', {}, io.BytesIO(b''))
+            elif outcome == 'success':
+                side = None
+            else:
+                side = outcome
+            response = Mock(status=200)
+            with patch('qualify.subprocess.run', side_effect=command), patch('qualify.ssl.create_default_context'), \
+                 patch('qualify.urllib.request.urlopen', side_effect=side, return_value=response):
+                capture.collect()
+            return records['access.json']
+
+    def test_credential_free_probe_and_kubeconfig_custody_fields_are_recorded(self):
+        expected = {401: (True, 401, False), 403: (True, 403, False), 404: (False, 404, None), 500: (False, 500, None),
+                    'success': (False, 200, True)}
+        for outcome, (denied, status, anonymous) in expected.items():
+            with self.subTest(outcome=outcome):
+                access = self.run_access(outcome, 0o600)
+                self.assertEqual((access['unauthorizedDenied'], access['unauthorizedHttpStatus'], access['anonymousReadAllowed']),
+                                 (denied, status, anonymous))
+                self.assertNotIn('unauthorizedProbe', access)
+                self.assertTrue(access['authorizedRead'])
+                self.assertFalse(access['publicDenied']);self.assertEqual(access['acceptance'], 'incomplete')
+        access = self.run_access(OSError('unreachable'), 0o600)
+        self.assertFalse(access['unauthorizedDenied']);self.assertIsNone(access['anonymousReadAllowed'])
+        self.assertNotIn('unauthorizedHttpStatus', access)
+        self.assertIn('denial-not-proven', access['unauthorizedProbe'])
+        for mode, restricted in ((0o600, True), (0o644, False)):
+            with self.subTest(mode=oct(mode)):
+                access = self.run_access(403, mode)
+                self.assertEqual(access['custodyPermissionsRestricted'], restricted)
+                self.assertFalse(access['effectiveCustodyAccepted'])
+                self.assertFalse(access['independentCustodyReadback']);self.assertFalse(access['mfaVerified'])
+
+    def test_completed_census_with_any_gap_finalizes_failed_closed_and_complete_one_stays_incomplete(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp);project = base / 'repo';maintenance = project / 'eng/kubernetes-upgrade/MAINTENANCE.md'
+            maintenance.parent.mkdir(parents=True);maintenance.write_text('existing proposal')
+            tool = base / 'tool';tool.write_text('retained tool')
+            for name, coverage, expected in (('gap', [{'step': 'list', 'state': 'observed', 'exitCode': 0},
+                                                       {'step': 'list-object', 'state': 'invalid-schema', 'exitCode': 0}], 'failed-closed'),
+                                              ('observed', [{'step': 'list', 'state': 'observed', 'exitCode': 0}], 'incomplete')):
+                with self.subTest(case=name):
+                    args = SimpleNamespace(project_root=project, evidence_root=base / 'private', attempt_id='census-' + name,
+                                           operator='operator', context='local', kubectl=tool, helm=tool, age=tool, kubeconfig=tool)
+                    def census(self_capture, coverage=coverage):
+                        self_capture.coverage.extend(coverage)
+                    with patch('qualify.subprocess.run', return_value=SimpleNamespace(returncode=0, stdout=b'{}', stderr=b'')), \
+                         patch.object(Capture, 'collect', autospec=True, side_effect=census):
+                        directory, state = collect(args)
+                    self.assertEqual(state, expected)
+                    self.assertEqual((directory / 'capture-failure.json').is_file(), expected == 'failed-closed')
+                    criteria = json.loads((directory / 'criteria.json').read_text())
+                    self.assertTrue(all(v['state'] == expected for v in criteria['criteria']))
+                    self.assertFalse(criteria['qualificationAccepted'])
+                    if expected == 'failed-closed':
+                        failure = json.loads((directory / 'capture-failure.json').read_text())
+                        self.assertEqual(failure['coverage'][-1]['state'], 'invalid-schema')
+
     def test_endpoint_userinfo_query_and_fragment_cannot_disclose_credentials(self):
         validate_native_endpoint('https://192.168.1.30:6443')
         for endpoint in ('https://user:secret@api.example:6443', 'https://api.example:6443?token=secret',
@@ -302,8 +405,8 @@ class PinAuthorityTests(unittest.TestCase):
         self.assertTrue(validate_pins({}))
 
     def authority(self):
-        event = {'sequence': 1, 'previousSha256': None, 'signatureVerified': True, 'sha256': 'a' * 64,
-                 'approvedBy': 'Administrator', 'action': 'grant', 'principal': 'deputy', 'scope': 'scoped-native-recovery'}
+        event = sealed({'sequence': 1, 'previousSha256': None, 'signatureVerified': True,
+                        'approvedBy': 'Administrator', 'action': 'grant', 'principal': 'deputy', 'scope': 'scoped-native-recovery'})
         return {'nativeAccess': 'verified', 'nativePath': 'direct',
                 **{k: True for k in ('mfaVerified', 'unauthorizedDenied', 'publicDenied', 'independentCustodyReadback',
                    'administratorSignatureVerified', 'independentOffsiteLineageReadback', 'restoredRevocationDenied')},
@@ -316,14 +419,18 @@ class PinAuthorityTests(unittest.TestCase):
         self.assertIn('gapped-or-unverified-authority-lineage', validate_authority(a))
         a = self.authority();a['events'][0]['scope'] = 'global-admin'
         self.assertIn('deputy-authority-expanded', validate_authority(a))
+        # Content changed after sealing, or a well-formed but arbitrary declared digest, fails closed.
+        self.assertIn('authority-event-digest-mismatch', validate_authority(a))
+        a = self.authority();a['events'][0]['sha256'] = a['currentHeadSha256'] = 'a' * 64
+        self.assertEqual(validate_authority(a), ['authority-event-digest-mismatch'])
         a = self.authority();a['nativePath'] = 'rancher-proxy'
         self.assertIn('native-access-unverified-or-proxy-only', validate_authority(a))
 
     def test_post_cut_revocation_survives_source_loss(self):
         a = self.authority()
-        a['events'].append({'sequence': 2, 'previousSha256': 'a' * 64, 'signatureVerified': True, 'sha256': 'b' * 64,
-                            'approvedBy': 'Administrator', 'action': 'revoke', 'principal': 'deputy'})
-        a['currentHeadSha256'] = 'b' * 64
+        a['events'].append(sealed({'sequence': 2, 'previousSha256': a['events'][0]['sha256'], 'signatureVerified': True,
+                                   'approvedBy': 'Administrator', 'action': 'revoke', 'principal': 'deputy'}))
+        a['currentHeadSha256'] = a['events'][1]['sha256']
         self.assertIn('missing-or-conflicting-current-authority', validate_authority(a))
         a['restoredScopes'] = {}
         self.assertEqual(validate_authority(a), [])
@@ -343,7 +450,10 @@ class CustodyTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):attempt.record('safe.json', {})
             with self.assertRaises(FileExistsError):Attempt(project, root, 'first')
             with self.assertRaises(ValueError):Attempt(project, project / 'private', 'second')
-            with self.assertRaises(ValueError):Attempt(project, Path.home() / 'hexalith-recovery-evidence' / 'new', 'second')
+            home = base / 'home';(home / 'hexalith-recovery-evidence').mkdir(parents=True, mode=0o700)
+            with patch('evidence.Path.home', return_value=home), self.assertRaisesRegex(ValueError, 'recovery-evidence'):
+                Attempt(project, home / 'hexalith-recovery-evidence' / 'new', 'second')
+            self.assertFalse((home / 'hexalith-recovery-evidence' / 'new').exists())
 
     def test_symlink_evidence_custody_refused(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -1,0 +1,63 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/admin",
+      "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/anonymous",
+      "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/authenticated",
+      "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/ks-console",
+      "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/pre-registration",
+      "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/admin-cluster-admin"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 2,
+  "phase": "global-role-bindings",
+  "phaseAllowlistSha256": "d912f44417c86876ac99f80896625b36f1e409d2a285c0ed032c0c953e716971",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1112",
+      "uid": "bf776a41-c75c-40b2-84dc-44e123079143"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/anonymous",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1106",
+      "uid": "0826e39f-4087-4e3c-a1c9-70bd2bbe9362"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/authenticated",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1121",
+      "uid": "d3682a86-5664-4a05-9b75-5dd19f562916"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1124",
+      "uid": "2905ad0a-49ef-4cba-967b-072c4011228e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/GlobalRoleBinding/-/pre-registration",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1130",
+      "uid": "e4fd7fec-0fbd-4e59-a7bd-1bdbf6292cdc"
+    }
+  ],
+  "settled": true
+}

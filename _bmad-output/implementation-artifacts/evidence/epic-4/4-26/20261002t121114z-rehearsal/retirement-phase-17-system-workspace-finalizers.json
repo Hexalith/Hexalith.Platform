@@ -1,0 +1,52 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "named-finalizer",
+  "order": 17,
+  "phase": "system-workspace-finalizers",
+  "phaseAllowlistSha256": "200308d8c0f0d6c7bb0e8e42c7c5e4e783dde886e836793625ac3b42c0747ac3",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "resourceVersion": "5873"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1352",
+      "uid": "48a1ffa2-d60c-428e-b9dc-2ee8ef00c6a7"
+    },
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "resourceVersion": "5893"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1192",
+      "uid": "f5be2255-bf93-4cff-8c3c-d3f82353130c"
+    }
+  ],
+  "settled": true
+}

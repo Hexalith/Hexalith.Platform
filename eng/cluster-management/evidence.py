@@ -91,8 +91,13 @@ class Attempt:
         return entry
 
     def finish(self, publish=True):
+        # Plaintext digests stay in private custody; only ciphertext identities are published.
+        write_new(self.directory / 'private-export-digests.json', canonical({'schemaVersion': 1, 'attemptId': self.attempt_id,
+                  'exports': self.exports, 'published': False}))
         self.record('encrypted-exports.json', {'schemaVersion': 1, 'attemptId': self.attempt_id,
-                    'encryption': 'age', 'exports': self.exports,
+                    'encryption': 'age', 'exports': [{k: e[k] for k in ('file', 'ciphertextSha256', 'ciphertextBytes')}
+                                                     for e in self.exports],
+                    'plaintextDigests': 'private-export-digests.json (private custody only)',
                     'independentReadbackVerified': False, 'offNodeCustodyAccepted': False})
         sums = ''.join(f'{file_digest(p)}  {p.name}\n' for p in sorted(self.directory.iterdir()) if p.is_file())
         write_new(self.directory / 'SHA256SUMS', sums.encode())

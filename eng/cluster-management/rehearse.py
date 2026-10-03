@@ -237,14 +237,28 @@ DEPENDENCY_PHASES = (
     ('extension-repository', _api('kubesphere.io/v1alpha1', 'Repository')),
     # Production-only app store; the egress-fenced fixture cannot sync its applications, so this phase is unrehearsed.
     ('application-store', _api('application.kubesphere.io/v2', 'Repo')),
-    ('admission', lambda v: v['kind'] in ('ValidatingWebhookConfiguration', 'MutatingWebhookConfiguration')
-                            or _api('apiregistration.k8s.io/v1', 'APIService')(v)),
+    ('admission', lambda v: admission_registration(v) and bool(v.get('helmRelease'))),
     ('controllers-and-services', lambda v: (v['apiVersion'], v['kind']) in (('apps/v1', 'Deployment'), ('v1', 'Service'))),
+    # A running manager recreates its dynamic registrations; retire them only after it is gone.
+    ('reconciled-admission', lambda v: admission_registration(v) and not v.get('helmRelease')),
     ('remaining-release-objects', lambda v: not release_record(v) and not system_workspace(v)),
     ('release-records', release_record),
     ('system-workspace-finalizers', system_workspace),
 )
-POST_CONTROLLER_PHASES = ('controllers-and-services', 'remaining-release-objects', 'release-records')
+POST_CONTROLLER_PHASES = ('controllers-and-services', 'reconciled-admission', 'remaining-release-objects', 'release-records')
+
+
+def admission_registration(v):
+    return v['kind'] in ('ValidatingWebhookConfiguration', 'MutatingWebhookConfiguration') or (
+        (v['apiVersion'], v['kind']) == ('apiregistration.k8s.io/v1', 'APIService'))
+
+
+def route_service_backends(v):
+    """(namespace, name) of every Service an Ingress or HTTPRoute sends traffic to; other backend kinds are not Services."""
+    if v['kind'] not in ('Ingress', 'HTTPRoute'):
+        return set()
+    return {(b.get('namespace') or v['namespace'], b['name']) for b in v.get('backends') or []
+            if (b.get('kind') or 'Service') == 'Service' and b.get('name')}
 
 
 def dependency_plan(inventory, scope):
@@ -252,6 +266,10 @@ def dependency_plan(inventory, scope):
     by_uid = {v['uid']: v for v in inventory}
     if not set(scope) <= set(by_uid):
         raise ValueError('scope-outside-censused-inventory')
+    # A retained route to a retired Service is an undecided consumer: close or repoint it before planning, never after deletion.
+    retired = {(v['namespace'], v['name']) for v in inventory if v['uid'] in scope and (v['apiVersion'], v['kind']) == ('v1', 'Service')}
+    if any(v['uid'] not in scope and route_service_backends(v) & retired for v in inventory):
+        raise ValueError('route-consumer-of-retired-service-outside-scope')
     assigned, phases = set(), []
     for order, (name, selector) in enumerate(DEPENDENCY_PHASES, 1):
         # Earlier child-first phases have already removed their members from the simulated state.
@@ -274,6 +292,10 @@ def dependency_plan(inventory, scope):
         members = [by_uid[uid] for uid in expected]
         if name in POST_CONTROLLER_PHASES and any(v['finalizers'] for v in members):
             raise ValueError('finalizer-after-controller-removal')
+        # Between controller removal and this phase a stale registration must not block requests or discovery.
+        if name == 'reconciled-admission' and any(v['kind'] == 'APIService' or any(
+                hook.get('failurePolicy') != 'Ignore' for hook in v.get('webhooks', [])) for v in members):
+            raise ValueError('blocking-registration-reconciled-by-controller')
         named = name == 'system-workspace-finalizers'
         if named and any(v['finalizers'] != [SYSTEM_WORKSPACE_FINALIZER] or v['owners'] or v['uid'] not in roots for v in members):
             raise ValueError('unreviewed-system-workspace-finalizer-scope')
@@ -295,6 +317,11 @@ def dependency_plan(inventory, scope):
 
 def label(k):
     return '/'.join(v or '-' for v in k)
+
+
+def review_digest(projection):
+    """Digest of the sanitized reviewed content: every projected field except the server's resourceVersion."""
+    return digest(canonical({k: v for k, v in projection.items() if k != 'resourceVersion'}))
 
 
 def phase_delta(baseline_uids, before, after, expected_uids):
@@ -339,6 +366,26 @@ def api_path(resources, obj):
     prefix = '/api/v1' if obj['apiVersion'] == 'v1' else '/apis/' + obj['apiVersion']
     scope = f'/namespaces/{obj["namespace"]}' if namespaced else ''
     return f'{prefix}{scope}/{plural}/{urllib.parse.quote(obj["name"], safe=":@")}'
+
+
+SYNTHETIC_HOLD = 'qualification.hexalith.io/hold'
+
+
+def synthetic_hold_blocked(obj):
+    """Deletion is held only by the named synthetic finalizer; GC's transient foregroundDeletion is tolerated."""
+    meta = obj['metadata']
+    return bool(meta.get('deletionTimestamp')) and set(meta.get('finalizers') or []) - {'foregroundDeletion'} == {SYNTHETIC_HOLD}
+
+
+def tool_identities(args):
+    """Digests of the supplied files and runtime version output: identities, not release authenticity."""
+    files = {name: (file_digest(path) if path else None)
+             for name, path in (('kubectl', args.kubectl), ('helm', getattr(args, 'helm', None)), ('age', args.age))}
+    versions = {}
+    for name, argv in (('kind', ['kind', 'version']), ('docker', ['docker', 'version'])):
+        result = subprocess.run(argv, capture_output=True, timeout=30)
+        versions[name] = {'exitCode': result.returncode, 'outputSha256': digest(result.stdout)}
+    return {'toolSha256': files, 'kubectlExecuted': False, 'runtimeVersionOutput': versions, 'releaseAuthenticityVerified': False}
 
 
 class Fixture:
@@ -503,7 +550,11 @@ class Fixture:
                     'clusterUid': native['metadata']['uid'],
                     'sourceCredentialsImported': False, 'sourceDataImported': False}
         validate_isolation(self.args.source, identity, network['Internal'], probes)
-        self.attempt.record('isolation.json', {'fixture': identity, 'internalNetwork': network['Internal'],
+        declared = ('sourceCredentialsImported', 'sourceDataImported')
+        self.attempt.record('isolation.json', {'fixture': {k: v for k, v in identity.items() if k not in declared},
+                    'unmeasuredDeclarations': {**{k: identity[k] for k in declared},
+                        'basis': 'procedure design accepts no source kubeconfig or data; not measured'},
+                    'internalNetwork': network['Internal'],
                     'serviceCidrRoute': '10.96.0.0/16 dev eth0, fixture only; no default/source route',
                     'probes': probes, 'sourceUidDifferent': True, 'passed': True,
                     'nodeImage': self.args.node_image, 'nativeVersion': json.loads(self.kube('fixture-version', 'version', '-o', 'json').stdout)['serverVersion']['gitVersion']})
@@ -591,11 +642,28 @@ class Fixture:
         if limited:
             self.diagnostics()
         installed_plan = self.get('installplans.kubesphere.io', 'ks-console-embed')
-        extension_installed = installed_plan.get('status', {}).get('state') == 'Installed'
+        self.record_runtime(ready, limited, installed_plan.get('status', {}).get('state') == 'Installed')
+
+    def record_runtime(self, ready, limited, extension_installed):
+        tenant_sync = self.wait_tenant_sync()
         self.attempt.record('kubesphere-runtime.json', {'deployedCore': 'ks-core1.2.4/app4.2.1', 'readyDeployments': ready,
                     'unreadyDeployments': limited, 'fullRuntimeAccepted': False,
                     'nativeCredentialsOnly': True, 'licensedApplicationWritesUsed': False,
-                    'sourceConsoleEmbedInstallPlanReproduced': extension_installed})
+                    'sourceConsoleEmbedInstallPlanReproduced': extension_installed,
+                    'systemWorkspaceSynchronized': tenant_sync is not None, 'tenantSyncSeconds': tenant_sync})
+        if tenant_sync is None:
+            # Production has Workspace/system-workspace; without it the fixture baseline is not representative.
+            raise ValueError('kubesphere-tenant-sync-not-ready')
+
+    def wait_tenant_sync(self, timeout=300):
+        """Seconds until the controller materializes the system Workspace, or None."""
+        started = time.monotonic()
+        while True:
+            if self.native_read('/apis/tenant.kubesphere.io/v1beta1/workspaces/system-workspace') is not None:
+                return round(time.monotonic() - started)
+            if time.monotonic() - started > timeout:
+                return None
+            time.sleep(5)
 
     def resource_list(self):
         # Native names alone omit chart-owned KubeSphere ServiceAccounts/IAM/tenant
@@ -612,7 +680,9 @@ class Fixture:
                         'endpointslices.discovery.k8s.io,configmaps,secrets,serviceaccounts,roles.rbac.authorization.k8s.io,'
                         'rolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io,'
                         'clusterrolebindings.rbac.authorization.k8s.io,apiservices.apiregistration.k8s.io,'
-                        'validatingwebhookconfigurations.admissionregistration.k8s.io,mutatingwebhookconfigurations.admissionregistration.k8s.io')
+                        'validatingwebhookconfigurations.admissionregistration.k8s.io,mutatingwebhookconfigurations.admissionregistration.k8s.io,'
+                        'leases.coordination.k8s.io,ingresses.networking.k8s.io,networkpolicies.networking.k8s.io,cronjobs.batch,'
+                        'controllerrevisions.apps,poddisruptionbudgets.policy,horizontalpodautoscalers.autoscaling,resourcequotas,limitranges')
 
     def crd_inventory(self):
         return [project_resource(v) for v in self.get('customresourcedefinitions.apiextensions.k8s.io')['items']]
@@ -665,8 +735,11 @@ class Fixture:
             return None
         raise ValueError('native-read-failed')
 
-    def native_retire(self, phase, path, uid):
-        """Fresh UID-bound read, then a DELETE carrying the original UID and current resourceVersion."""
+    def native_retire(self, phase, path, reviewed):
+        """Fresh read compared with the reviewed allowlist entry, then a DELETE carrying its UID and the read resourceVersion.
+        A resourceVersion that changed since review is accepted only when the sanitized reviewed projection is identical
+        (status-only churn); any other difference stops for re-review."""
+        uid = reviewed['uid']
         for retry in range(3):
             current = self.native_read(path)
             if current is None:
@@ -674,12 +747,17 @@ class Fixture:
             if current['metadata']['uid'] != uid:
                 raise ValueError('uid-drift-before-native-delete')
             version = current['metadata']['resourceVersion']
+            changed = version != reviewed['resourceVersion']
+            if changed and review_digest(project_resource(current)) != review_digest(reviewed):
+                raise ValueError('reviewed-entry-drift-before-native-delete')
+            binding = {'reviewedResourceVersion': reviewed['resourceVersion'], 'resourceVersion': version,
+                       'resourceVersionChangedSinceReview': changed, 'reviewedProjectionSha256': review_digest(reviewed)}
             result = self.kube('native-retire-' + phase, 'delete', '--raw', path, '-f', '-', allowed=(0, 1),
                                obj=native_delete_options({'uid': uid, 'resourceVersion': version, 'propagation': 'Foreground'}))
             if result.returncode == 0:
-                return {'outcome': 'native-delete-accepted', 'resourceVersion': version, 'conflictRetries': retry}
+                return {'outcome': 'native-delete-accepted', **binding, 'conflictRetries': retry}
             if native_not_found(result):
-                return {'outcome': 'absent-at-request', 'conflictRetries': retry}
+                return {'outcome': 'absent-at-request', **binding, 'conflictRetries': retry}
             if not native_conflict(result):
                 raise ValueError('native-delete-rejected')
         raise ValueError('native-delete-conflict-retries-exhausted')
@@ -734,7 +812,7 @@ class Fixture:
         if before is None or workspace is None or member is None:
             raise ValueError('workspace-probe-setup-incomplete')
         projections = {'template': project_resource(before), 'workspace': project_resource(workspace), 'member': project_resource(member)}
-        request = self.native_retire('workspace-probe', template_path, before['metadata']['uid'])
+        request = self.native_retire('workspace-probe', template_path, projections['template'])
         template_after = observe(template_path, lambda v: v is None, 90)
         workspace_after = observe(workspace_path, lambda v: v is None, 60)
         time.sleep(30)  # allow a delayed namespace cascade to become visible
@@ -771,7 +849,8 @@ class Fixture:
         self.last_step = 'retire-' + name
         for uid in phase['roots']:
             path = api_path(resources, by_uid[uid])
-            outcome = self.native_retire(name, path, uid)
+            # by_uid holds the reviewed allowlist entry (baseline projection), not this phase's fresh read.
+            outcome = self.native_retire(name, path, by_uid[uid])
             if phase['mode'] == 'named-finalizer' and outcome['outcome'] == 'native-delete-accepted':
                 outcome['intervention'] = self.remove_named_finalizer(path, uid, phase['namedFinalizer'])
             requests.append({'object': label(key(by_uid[uid])), 'uid': uid, **outcome})
@@ -800,6 +879,9 @@ class Fixture:
         stale += [label(key(v)) for v in crds if v['customResource'].get('conversionService', {}).get('name')
                   and (v['customResource']['conversionService']['namespace'],
                        v['customResource']['conversionService']['name']) not in services]
+        # A route still pointing at a retired Service is a stale entry point, public or private.
+        routes = sorted(f'{label(key(v))} -> {namespace or "-"}/{name}' for v in final
+                        for namespace, name in route_service_backends(v) if (namespace, name) not in services)
         runtime = [label(key(v)) for v in final if v['namespace'] in MANAGER_NAMESPACES
                    and v['kind'] in ('Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet')]
         completed = []
@@ -813,31 +895,32 @@ class Fixture:
                      'data': {'synthetic': 'post-retirement-native-write'}})
         written = self.native_read(f'/api/v1/namespaces/{workload}/configmaps/s426-post-retirement')
         write = self.native_retire('post-retirement-health', f'/api/v1/namespaces/{workload}/configmaps/s426-post-retirement',
-                                   written['metadata']['uid'])
+                                   project_resource(written))
         self.create({'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': 's426-post-retirement'}})
         time.sleep(15)
         created = self.native_read('/api/v1/namespaces/s426-post-retirement')
         managed = project_resource(created)
-        lifecycle = self.native_retire('post-retirement-namespace', '/api/v1/namespaces/s426-post-retirement',
-                                       created['metadata']['uid'])
+        lifecycle = self.native_retire('post-retirement-namespace', '/api/v1/namespaces/s426-post-retirement', managed)
         deadline, gone = time.monotonic() + 120, False
         while not gone and time.monotonic() < deadline:
             gone = self.native_read('/api/v1/namespaces/s426-post-retirement') is None
             if not gone:
                 time.sleep(5)
-        record = {'staleAdmissionOrApiServiceReferences': stale, 'managerRuntimeRemaining': runtime,
+        record = {'staleAdmissionOrApiServiceReferences': stale, 'staleRouteBackends': routes, 'managerRuntimeRemaining': runtime,
                   'completedManagerPodResidue': completed,
                   'nativeConfigMapWriteDelete': write, 'newNamespaceManagementLabels': managed['managementLabels'],
                   'newNamespaceFinalizers': managed['finalizers'], 'namespaceLifecycle': lifecycle,
                   'newNamespaceDeletionCompleted': gone, 'scope': 'fresh fixture only', 'productionAccepted': False}
         self.attempt.record('post-retirement-native-health.json', record)
-        if stale or runtime or managed['managementLabels'] or managed['finalizers'] or not gone:
+        if stale or routes or runtime or managed['managementLabels'] or managed['finalizers'] or not gone:
             raise ValueError('post-retirement-native-health-failed')
         return record
 
     def retire_kubesphere(self):
         """Dependency-first native retirement: controller lifecycles first, exact native removal, named finalizers last."""
         self.probe_workspace_propagation()
+        # Earlier diagnostics may have cached the served KubeSphere resources before later CRDs existed.
+        self.custom_resources = None
         baseline_crds = self.crd_inventory()
         before, settled = self.settled_inventory()
         if not settled:
@@ -1007,14 +1090,14 @@ class Fixture:
         self.attempt.record('owner-delete-phase.json', {'action': phase, 'originalUidUnchanged': phase['uid'] == owner['uid']})
         self.delete(phase, '/apis/qualification.hexalith.io/v1/workspaces/s426-owner')
         blocked = self.get('workspaces.qualification.hexalith.io', 's426-owner')
-        if not blocked['metadata'].get('deletionTimestamp') or blocked['metadata'].get('finalizers') != ['qualification.hexalith.io/hold']:
+        if not synthetic_hold_blocked(blocked):
             raise ValueError('finalizer-behavior-unexpected')
         named = {**project_resource(blocked), 'action': 'remove-named-finalizer', 'propagation': 'Foreground',
                  'finalizer': 'qualification.hexalith.io/hold'}
         validate_allowlist(self.inventory(), [named])
         self.attempt.record('named-finalizer-phase.json', {'action': named, 'scope': 'fixture-only synthetic finalizer'})
         # A specific UID/resourceVersion-bound replace; never blanket stripping of a production finalizer.
-        blocked['metadata']['finalizers'] = []
+        blocked['metadata']['finalizers'] = [v for v in blocked['metadata']['finalizers'] if v != SYNTHETIC_HOLD]
         self.kube('remove-synthetic-finalizer', 'replace', '-f', '-', obj=blocked)
         self.kube('owner-absent', 'wait', 'workspaces.qualification.hexalith.io/s426-owner', '--for=delete', '--timeout=20s')
         after = self.inventory()
@@ -1092,8 +1175,8 @@ class Fixture:
         outcomes['imageInspectionStates'] = {tag: inspect(['docker', 'image', 'inspect', tag], 'image', tag)
                                              for tag in self.image_tags}
         outcomes['fixtureImageTagsAbsent'] = all(state == 'absent' for state in outcomes['imageInspectionStates'].values())
-        outcomes['globalPruneUsed'] = False
-        outcomes['unrelatedDockerObjectsChanged'] = False
+        outcomes['unmeasuredDeclarations'] = {'globalPruneUsed': False, 'unrelatedDockerObjectsChanged': False,
+                                              'basis': 'procedure issues only exact named removals; not measured'}
         outcomes['passed'] = (outcomes['nodeAbsent'] and outcomes['networkAbsent'] and outcomes['freshCredentialFileAbsent']
                               and outcomes['fixtureVolumesAbsent'] and outcomes['fixtureImageTagsAbsent'])
         self.attempt.record('cleanup.json', outcomes)
@@ -1112,7 +1195,7 @@ class Fixture:
             self.kube('failed-fixture-pods', 'get', 'pods,replicasets.apps,events', '-n', 'kubesphere-system', '-o', 'json', allowed=(0, 1))
             self.kube('failed-console-log', 'logs', 'deployment/ks-console', '-n', 'kubesphere-system', '--all-containers', '--tail=80', allowed=(0, 1))
             self.kube('failed-controller-log', 'logs', 'deployment/ks-controller-manager', '-n', 'kubesphere-system', '--all-containers', '--tail=80', allowed=(0, 1))
-        except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError, IndexError):
+        except Exception:  # diagnostics never replace the original failure
             pass
 
 
@@ -1132,22 +1215,28 @@ def rehearse(args):
                     'mutationAuthorized': False, 'signed': False, 'productionAccepted': False})
     fixture, state = Fixture(args, attempt), 'failed-closed'
     try:
+        identities = tool_identities(args)
+        attempt.record('tools.json', identities)
+        if any(v['exitCode'] for v in identities['runtimeVersionOutput'].values()):
+            raise ValueError('runtime-version-preflight-failed')
         fixture.start()
         fixture.execute()
         state = 'passed-limited'
-    except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError, IndexError) as error:
+    except Exception as error:  # any parser/import/tooling error must still leave a receipt and cleanup
         failure_step = fixture.last_step
         fixture.diagnostics()
         attempt.record('failure.json', {'state': 'failed-closed', 'failureStep': failure_step,
                                      'reasonCode': (str(error) if isinstance(error, ValueError)
                                                     and re.fullmatch(r'[a-z0-9-]+', str(error)) else 'command-or-custody-error'),
                                      'reason': 'isolation, fixture command, drift or preservation failed',
-                                     'diagnostics': 'encrypted exports; source unchanged', 'productionAccepted': False})
+                                     'diagnostics': 'encrypted exports',
+                                     'sourceUnchanged': 'unmeasured declaration; the fixture holds no source credentials',
+                                     'productionAccepted': False})
     finally:
         try:
             if not fixture.cleanup():
                 state = 'failed-cleanup'
-        except (ValueError, OSError, subprocess.TimeoutExpired, TypeError, KeyError, AttributeError, IndexError):
+        except Exception:
             state = 'failed-cleanup'
         attempt.record('summary.json', {'state': state, 'productionRetirementAccepted': False,
                        'qualificationAccepted': False, 'licensedKubeSphereWritesUsed': False})
@@ -1163,12 +1252,13 @@ def main():
     p.add_argument('--operator', required=True)
     p.add_argument('--source-inventory', type=Path, required=True, help='Sanitized census only; no source kubeconfig is accepted')
     p.add_argument('--node-image', required=True, help='Existing local Docker sha256:<ID>; no unqualified pulls')
-    p.add_argument('--kubectl', type=Path, required=True, help='Local tool used only with fresh fixture kubeconfig')
+    p.add_argument('--kubectl', type=Path, required=True,
+                   help='Not executed: digest-recorded only; fixture commands use the new node\'s own kubectl')
     p.add_argument('--age', type=Path, required=True)
     p.add_argument('--recipient', required=True)
-    p.add_argument('--ks-chart', type=Path, help='Public retained ks-core1.2.4 archive; enables real core uninstall fixture')
+    p.add_argument('--ks-chart', type=Path, help='Public retained ks-core 1.2.4 archive; enables the actual-chart retirement fixture')
     p.add_argument('--ks-chart-sha256', help='Independently checked exact public chart SHA-256')
-    p.add_argument('--helm', type=Path, help='Retained fixture Helm3 binary, required with --ks-chart')
+    p.add_argument('--helm', type=Path, help='Retained fixture Helm 3 binary, required with --ks-chart')
     args = p.parse_args()
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', args.node_image):
         p.exit(2, 'Rehearsal refused: exact local Docker image ID required.\n')
@@ -1177,7 +1267,7 @@ def main():
         p.exit(2, 'Rehearsal refused: actual core fixture requires chart SHA-256 and retained Helm binary.\n')
     try:
         directory, state = rehearse(args)
-    except (ValueError, OSError):
+    except Exception:
         p.exit(2, 'Rehearsal refused: invalid source identity, tools or private custody.\n')
     print(f'Private fixture evidence: {directory}\nRehearsal: {state}; production retirement remains unaccepted')
     if state.startswith('failed'):

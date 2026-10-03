@@ -1,0 +1,249 @@
+{
+  "agentRoleOrPermissionGrants": false,
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "38ad0073499f56ec4426d5ffb100f282ac19a8257f31ceed89f68cd6634350da",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "e3fd959b3a13271e684cf5cd576e7786b5abbd27a13fc6515083e4b95a3ca3bc",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "8ed4eb3f8518ed1c7c41dac14e4ccfad026a644b5c69c16d8773cd4efdf0437d",
+    "eng/cluster-management/QUALIFICATION.md": "89485cd1c9656aad5da42f90ddbba16191b43ec71d51eb2ec51b6bb079c3de00",
+    "eng/cluster-management/RANCHER.md": "b849158c1562c25dd7e0168c13b5a5682dd2596feee855d98354ddf8f3e05644",
+    "eng/cluster-management/README.md": "96bd9cde3f2df233e86193e3c9e182827e892a7bfb953206e54c4cc197c9ccf0",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "0752105d51bf2f229ff258fa4d60414f5e8e54290286a855a9427c1f7eeef5fe",
+    "eng/cluster-management/evidence.py": "06820885d28935c05e84774fba3ba55e4dcf48f1ee45c992d32129f03ab5eba5",
+    "eng/cluster-management/qualify.py": "e24b76f467dc4090ed5a8eb98dc5476fbb590cda272252bd4a2a8fc1bf87752b",
+    "eng/cluster-management/rehearse.py": "42e8e6efc64ed6e383509ca461556d566ccf836473bbad208e6031ed47580b7c",
+    "eng/cluster-management/test_cleanup.py": "cdba94ce6166488ae6ebb4ffed3f46c554847135faddcaecbea54be5b96f5942",
+    "eng/cluster-management/test_evidence.py": "ab427aefc3214276f4d7164b10b02b69d91b2aa75d0458270034c265edb2d84e",
+    "eng/cluster-management/test_qualify.py": "811aa6d50bb757498b23aed78e47d961eec350ca65339a7444299a4c9ee9243f",
+    "eng/cluster-management/test_rehearse.py": "cc881d47221ef203d453ef8f2144eca29d6bcb06bb3f0bf40949a986d8ef8ab9",
+    "eng/kubernetes-upgrade/MAINTENANCE.md": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+  },
+  "attemptId": "20261002t125604z-dependency-first-verification",
+  "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+  "checkedAt": "2026-10-02T12:57:12Z",
+  "currentCommit": "3162b2d740bee137c90914e1329202668b1250cd",
+  "custody": {
+    "independentDecryptionVerified": false,
+    "offNodeCustodyAccepted": false,
+    "sameAgentReadbackVerified": false,
+    "signatureVerified": false
+  },
+  "dependencyFirstRehearsalAttempts": [
+    {
+      "attemptId": "20261002t093116z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "kind-create",
+      "procedureSha256": "b3b84e21327e486e4805076991bfc21734aa6d6d9e95bdcf957ad51bddfd3cfb",
+      "reasonCode": "command-or-custody-error",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t093503z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "get",
+      "procedureSha256": "2bac6986962410e3f272bdfad5ff3770074d2c47c6054fa9df213d1dbc22ad9f",
+      "reasonCode": "unexpected-or-incomplete-deletion",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t095302z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "get",
+      "procedureSha256": "c540bcf43bb4e2225b315a0fabab7f6b4fe98ce64a92920492de55e18299a143",
+      "reasonCode": "unexpected-or-incomplete-deletion",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t101306z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "native-read",
+      "procedureSha256": "a4c98a1ae9232bfcbc20c16ac15fec5f4a6e964c75161f78e077f14fbfa3d237",
+      "reasonCode": "workspace-probe-setup-incomplete",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t102420z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "get",
+      "procedureSha256": "9bbba2b1eaecd0c5da1654fa3021d379e69377242a664adfb4a010d4a4758dc9",
+      "reasonCode": "manager-runtime-present-before-controllers-and-services",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t104904z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "native-read",
+      "procedureSha256": "62f7791f515edb44c9327082b6407ddeabc7b7fa01b37b43329af75983e52bf9",
+      "reasonCode": "post-retirement-native-health-failed",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t113254z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "native-read",
+      "procedureSha256": "dfa76cbacda339d28a12c9201e51e83f918f9c8aef38a0d8a7354d7a093e4a34",
+      "reasonCode": "workspace-probe-setup-incomplete",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t114621z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": "get",
+      "procedureSha256": "46dcf20bd05a092d16c19c7996f48b88114708a94f41d1f4b8a7ecea4caa39e2",
+      "reasonCode": "controller-recreated-retired-object",
+      "state": "failed-closed"
+    },
+    {
+      "attemptId": "20261002t121114z-rehearsal",
+      "cleanupPassed": true,
+      "failureStep": null,
+      "procedureSha256": "42e8e6efc64ed6e383509ca461556d566ccf836473bbad208e6031ed47580b7c",
+      "reasonCode": null,
+      "state": "passed-limited"
+    }
+  ],
+  "diffVerification": {
+    "bytes": 60174,
+    "privateExport": {
+      "ciphertextBytes": 60386,
+      "ciphertextSha256": "0a2e60de3c451259ccd7dec5a91999a0b993ce622015f8667269c265e75da5b8",
+      "file": "working-tree-diff.age",
+      "plaintextSha256": "5add98085590c89d4afd0e6177fc9678c2793ee0b7d3b02b775f0542f81d9271"
+    },
+    "scope": "working tree against HEAD before commit",
+    "sha256": "5add98085590c89d4afd0e6177fc9678c2793ee0b7d3b02b775f0542f81d9271"
+  },
+  "finalRehearsal": {
+    "attemptId": "20261002t121114z-rehearsal",
+    "currentProcedureSha256": "42e8e6efc64ed6e383509ca461556d566ccf836473bbad208e6031ed47580b7c",
+    "executedEqualsCurrent": true,
+    "executedProcedureSha256": "42e8e6efc64ed6e383509ca461556d566ccf836473bbad208e6031ed47580b7c"
+  },
+  "frozenBlockSha256": "08afbc1f63a322ffc30ad9a49c342b56c85e1eaac0f5ec8d0bf39554aa759d7e",
+  "frozenBlockUnchanged": true,
+  "maintenanceUnchanged": true,
+  "nativeAuthorizationDependency": {
+    "agentChangedBindingOrGrant": false,
+    "binding": "ClusterRoleBinding/jpiquot-cluster-admin",
+    "credentialType": "cluster-CA client certificate CN=jpiquot (local kubeconfig)",
+    "kubesphereIndependent": false,
+    "onlyObservedBindingForPrincipal": true,
+    "ownerReferences": [
+      "GlobalRoleBinding/jpiquot-platform-admin"
+    ],
+    "principal": "jpiquot",
+    "roleRef": "cluster-admin"
+  },
+  "originalCriteriaAccepted": false,
+  "productionMutation": false,
+  "productionPlanningFromCommittedCensus": {
+    "census": "20261001t195141z-census",
+    "kubesphereFinalizerHoldersOutsideScope": {
+      "Category:categories.application.kubesphere.io/finalizer": 1,
+      "Cluster:finalizer.cluster.kubesphere.io": 1,
+      "GlobalRoleBinding:finalizers.kubesphere.io/globalrolebindings": 1,
+      "Namespace:kubesphere.io/cascading-deletion": 7,
+      "Secret:finalizers.kubesphere.io/cleanup": 20,
+      "User:finalizers.kubesphere.io/users": 1
+    },
+    "phases": [
+      [
+        "installed-extension",
+        11
+      ],
+      [
+        "global-role-bindings",
+        6
+      ],
+      [
+        "workspace-role-bindings",
+        8
+      ],
+      [
+        "workspace-roles",
+        8
+      ],
+      [
+        "kubesphere-cluster-role-bindings",
+        2
+      ],
+      [
+        "users",
+        3
+      ],
+      [
+        "global-roles",
+        7
+      ],
+      [
+        "kubesphere-service-accounts",
+        1
+      ],
+      [
+        "catalog-extension",
+        2
+      ],
+      [
+        "extension-repository",
+        125
+      ],
+      [
+        "application-store",
+        118
+      ],
+      [
+        "admission",
+        14
+      ],
+      [
+        "controllers-and-services",
+        32
+      ],
+      [
+        "reconciled-admission",
+        1
+      ],
+      [
+        "remaining-release-objects",
+        132
+      ],
+      [
+        "release-records",
+        4
+      ],
+      [
+        "system-workspace-finalizers",
+        2
+      ]
+    ],
+    "productionAllowlistApproved": false,
+    "proposalOnly": true,
+    "scopeObjects": 476,
+    "unrehearsedPhases": [
+      "application-store"
+    ]
+  },
+  "qualificationRecipientTagFirstAttempt": {
+    "8XlNQg": "20261001t173028z-census",
+    "bHCI3g": "20261001t205700z-current-procedure",
+    "yYjuKA": "20261002t051917z-resume-verification"
+  },
+  "qualificationRecipientTags": {
+    "8XlNQg": 14,
+    "bHCI3g": 1,
+    "yYjuKA": 12
+  },
+  "rancherProvisioned": false,
+  "schemaVersion": 1,
+  "storyStatus": "in-progress",
+  "thisReceiptRecipient": {
+    "source": "original production census recipient (Administrator signing public key)",
+    "tag": "8XlNQg"
+  },
+  "unitTests": {
+    "command": "python3 -m unittest discover -s eng/cluster-management -p test_*.py",
+    "exitCode": 0,
+    "passed": 60,
+    "skipped": 0
+  },
+  "whitespaceCheckPassed": true
+}

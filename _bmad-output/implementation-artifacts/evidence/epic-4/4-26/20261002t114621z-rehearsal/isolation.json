@@ -1,0 +1,47 @@
+{
+  "fixture": {
+    "clusterUid": "249b3540-d27a-49ba-8608-70f214375368",
+    "endpoint": "https://127.0.0.1:6443",
+    "sourceCredentialsImported": false,
+    "sourceDataImported": false,
+    "transport": "docker-exec into new fixture only; no host API published"
+  },
+  "internalNetwork": true,
+  "nativeVersion": "v1.34.9",
+  "nodeImage": "sha256:8a9be59e7b1d2c14ea21bd064dd8b4d803c97ab3e318f81aff39c874c05fb816",
+  "passed": true,
+  "probes": [
+    {
+      "blocked": true,
+      "port": 22,
+      "source": true
+    },
+    {
+      "blocked": true,
+      "port": 2379,
+      "source": true
+    },
+    {
+      "blocked": true,
+      "port": 2380,
+      "source": true
+    },
+    {
+      "blocked": true,
+      "port": 6443,
+      "source": true
+    },
+    {
+      "blocked": true,
+      "port": 443,
+      "source": true
+    },
+    {
+      "blocked": true,
+      "port": 443,
+      "source": false
+    }
+  ],
+  "serviceCidrRoute": "10.96.0.0/16 dev eth0, fixture only; no default/source route",
+  "sourceUidDifferent": true
+}

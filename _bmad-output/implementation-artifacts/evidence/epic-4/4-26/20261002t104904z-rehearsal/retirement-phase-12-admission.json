@@ -1,0 +1,134 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/defaulter.config.kubesphere.io",
+      "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/defaulter.installplan.kubesphere.io",
+      "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/defaulter.user.iam.kubesphere.io",
+      "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/extensions.kubesphere.io",
+      "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/serviceaccount.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/applications.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/extensions.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/license.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/protector.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/resourcequotas.quota.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.clusters.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.config.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.installplan.kubesphere.io",
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.user.iam.kubesphere.io"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 12,
+  "phase": "admission",
+  "phaseAllowlistSha256": "102a0a2e479e1686b67f4b23e0c0e019fa50f8a6e89a61eebecf23f113d76c90",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/defaulter.config.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1020",
+      "uid": "53a37c8b-015c-4e5f-a346-4a28cc056631"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/defaulter.installplan.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1021",
+      "uid": "ee7f57c2-c73d-476a-bac6-577c6dead2a7"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/defaulter.user.iam.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1025",
+      "uid": "5edb5a32-c6eb-485e-8744-fd5c81ec56dc"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/extensions.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1024",
+      "uid": "038edb63-e134-462f-a389-95e9f9cebf3e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/MutatingWebhookConfiguration/-/serviceaccount.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1023",
+      "uid": "946eebec-cc08-4ac0-8c32-20472f293350"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/applications.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1098",
+      "uid": "34af6335-6c1f-4fd4-b3af-fcc5d45fd35c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/extensions.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1105",
+      "uid": "b8b66f86-c059-4780-b6f7-02b8a566df3d"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/license.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1099",
+      "uid": "c4723d73-b673-426b-8d77-d6dcc5ea0683"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/protector.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1106",
+      "uid": "c11c2b01-7ef8-4bf0-a5a3-b7d806c58e6e"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/resourcequotas.quota.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1104",
+      "uid": "0c40b94b-e171-4b04-b70a-5382ae9926cb"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.clusters.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1102",
+      "uid": "7be99d0c-731d-4293-a702-b0c7f85a8030"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.config.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1101",
+      "uid": "1eaf9b09-c6ad-42a2-8cbc-874b7e11fe7f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.installplan.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1100",
+      "uid": "428462c3-c641-468b-949b-2f4e0b8290cc"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.user.iam.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1103",
+      "uid": "2816bfd7-2554-488a-9e8d-870ac4ffa4a3"
+    }
+  ],
+  "settled": true
+}

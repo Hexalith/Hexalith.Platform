@@ -1,0 +1,22 @@
+{
+  "completedManagerPodResidue": [],
+  "managerRuntimeRemaining": [],
+  "namespaceLifecycle": {
+    "conflictRetries": 0,
+    "outcome": "native-delete-accepted",
+    "resourceVersion": "5967"
+  },
+  "nativeConfigMapWriteDelete": {
+    "conflictRetries": 0,
+    "outcome": "native-delete-accepted",
+    "resourceVersion": "5949"
+  },
+  "newNamespaceDeletionCompleted": true,
+  "newNamespaceFinalizers": [],
+  "newNamespaceManagementLabels": {},
+  "productionAccepted": false,
+  "scope": "fresh fixture only",
+  "staleAdmissionOrApiServiceReferences": [
+    "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.license.kubesphere.io"
+  ]
+}

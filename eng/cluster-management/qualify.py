@@ -167,7 +167,11 @@ def project_resource(obj):
 
 
 def management_resource(item):
+    # Unlabeled admission/API/conversion registrations are management state when their backend runs in a manager namespace.
+    backends = [w.get('service') or {} for w in item.get('webhooks', [])]
+    backends += [item.get('service') or {}, (item.get('customResource') or {}).get('conversionService') or {}]
     return bool((item.get('namespace') or '').startswith('kubesphere')
+                or any((b.get('namespace') or '').startswith('kubesphere') for b in backends)
                 or '.kubesphere.io' in (item.get('apiVersion') or '')
                 or 'kubesphere.io' in (item.get('apiVersion') or '')
                 or (item.get('helmRelease', {}).get('release-namespace') or '').startswith('kubesphere')
@@ -257,6 +261,9 @@ def validate_authority(record):
         if (event.get('sequence') != sequence or event.get('previousSha256') != previous
                 or event.get('signatureVerified') is not True or not HEX.fullmatch(event.get('sha256', ''))):
             errors.append('gapped-or-unverified-authority-lineage')
+        # A declared digest is trusted only if it is the canonical digest of the event content itself.
+        if digest(canonical({k: v for k, v in event.items() if k != 'sha256'})) != event.get('sha256'):
+            errors.append('authority-event-digest-mismatch')
         if event.get('approvedBy') != 'Administrator' or event.get('action') not in ('grant', 'revoke'):
             errors.append('unapproved-authority-event')
         principal = event.get('principal')
@@ -417,11 +424,18 @@ class Capture:
                   'managementGrantLineageVerified': False, 'acceptance': 'incomplete'}
         tls = ssl.create_default_context(cadata=base64.b64decode(native['certificate-authority-data']).decode())
         # Credential-free HTTPS request; only a TLS-authenticated 401/403 proves denial.
+        access['anonymousReadAllowed'] = None
         try:
-            urllib.request.urlopen(urllib.request.Request(native['server'].rstrip('/') + '/api/v1/namespaces'), context=tls, timeout=10).close()
+            response = urllib.request.urlopen(urllib.request.Request(native['server'].rstrip('/') + '/api/v1/namespaces'),
+                                              context=tls, timeout=10)
+            access['unauthorizedHttpStatus'] = response.status
+            access['anonymousReadAllowed'] = True
+            response.close()
         except urllib.error.HTTPError as error:
             access['unauthorizedDenied'] = error.code in (401, 403)
             access['unauthorizedHttpStatus'] = error.code
+            access['anonymousReadAllowed'] = False if error.code in (401, 403) else None
+            error.close()
         except (urllib.error.URLError, TimeoutError, OSError):
             access['unauthorizedProbe'] = 'unreachable-or-unverified-tls; denial-not-proven'
         core = self.raw('core-discovery', '/api/v1')

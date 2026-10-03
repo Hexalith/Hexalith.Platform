@@ -1,0 +1,21 @@
+{
+  "attemptId": "20261003t062921z-check-expiration-diagnosis",
+  "capturedAt": "2026-10-03T06:29:22Z",
+  "command": "sudo -n kubeadm certs check-expiration --kubeconfig /nonexistent/kubeadm-credential-not-used",
+  "credentialUsedForApiAuthentication": false,
+  "fileOrBindingChanged": false,
+  "hostKeyMatchesPreviousPin": true,
+  "interpretation": "Without the cluster ClusterConfiguration, kubeadm falls back to defaults that assume stacked etcd and fails on the absent apiserver-etcd-client key (this cluster uses external etcd). Reading kubeadm-config would authenticate to the API with admin.conf, which is prohibited, so expiration rows were not produced.",
+  "kubeadmExitCode": 1,
+  "rawCiphertextSha256": "826cd8bbddde27e74fb5320559d2e0efaf01644bb616e050d7408c3341099afc",
+  "rawExport": "check-expiration-raw.age",
+  "recipient": {
+    "source": "Administrator signing public key",
+    "tag": "8XlNQg"
+  },
+  "relatedAttempt": "20261003t062816z-kubeadm-admin-credential",
+  "schemaVersion": 1,
+  "stackedEtcdClientKeyMissing": true,
+  "sudoNonInteractive": true,
+  "temporaryKnownHostsRemoved": true
+}
