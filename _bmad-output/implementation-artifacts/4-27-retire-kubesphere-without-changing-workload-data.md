@@ -34,3 +34,13 @@ Acceptance criteria:
 ## Implementation handoff
 
 Administrator approved the [course correction](../planning-artifacts/sprint-change-proposal-2026-10-01.md). This scoped input is backlog, not an executed qualification. Use the [migration spec](../specs/spec-kubesphere-to-rancher/SPEC.md) and [operations handoff](../../eng/cluster-management/README.md). Retain exact identities, sanitized attempt records and encrypted private inventories; require acceptance evidence and applicable exact procedure approvals before mutation or completion. No live inspection, deletion or installation is recorded by this file.
+
+## Administrator decisions from Story 4.26 — 2026-10-03
+
+- **Console route.** After the Story 4.2 closure, retirement removes the console Ingress, its Certificate and TLS Secret, and the manager Lease.
+- **Namespaces.** Remove only the KubeSphere finalizer from the seven finalized namespaces, and keep the namespaces.
+- **Inert archival objects.** The license Secrets, `Cluster/host` and the app Category stay inert, each with an owner and a cleanup date.
+- **Native administration first.** Before any deletion, a named one-year Administrator certificate with its own unowned ClusterRoleBinding replaces the KubeSphere-owned `jpiquot` path. Break-glass is `admin.conf` on node1 over SSH.
+- **Recovery.** A fresh production etcd restore through Story 4.0's route runs before mutation.
+
+The exact procedure and allowlist come from the Story 4.26 handoff. Each production change still needs its own approval.

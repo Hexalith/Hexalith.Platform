@@ -178,3 +178,7 @@ Status stays `in-progress`; planning approval neither opens the gate nor extends
 ## Maintenance end-time amendment — 2026-10-02
 
 The Administrator further amended the end with “set the end monday 2pm.” The **current effective end is Monday, 2026-10-05 14:00 Europe/Paris** (`2026-10-05T12:00:00Z`), recorded in the [new amendment](evidence/epic-4/4-1/20261002t111602z-maintenance-window-end-amendment.json). Earlier end-time records remain historical. The start, incident channel and acknowledged roles are unchanged. The signed backup gate expired at `2026-10-02T06:16:52Z`; fresh signed backup/restore validation and all other technical prerequisites are required before any hop. This amendment does not authorize production mutation; the hop gate remains closed.
+
+## Target decision — 2026-10-03
+
+The Administrator selected Kubernetes **1.36.5**, reached by way of 1.35 (currently 1.35.9), as the target. It is the newest minor that the qualified Rancher 2.15.2 supports for imported clusters. Kubernetes 1.37 follows once Rancher supports it. The hashed `MAINTENANCE.md` proposal is not modified; a successor procedure for the two hops is derived after retirement. Every existing gate stays in force: fresh Story 4.0 proofs, accepted Story 4.27 retirement and approval of the exact procedure.

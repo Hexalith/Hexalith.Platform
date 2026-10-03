@@ -30,7 +30,10 @@ if (bool.TryParse(builder.Configuration["Platform:Works:Enabled"], out bool enab
 string worksRoot = Path.GetFullPath(Path.Combine(builder.AppHostDirectory, "..", "works"));
 string eventStoreRoot = Path.Combine(worksRoot, "references", "Hexalith.EventStore");
 string worksProject = Path.Combine(worksRoot, "src", "Hexalith.Works", "Hexalith.Works.csproj");
-string eventStoreProject = Path.Combine(eventStoreRoot, "src", "Hexalith.EventStore", "Hexalith.EventStore.csproj");
+bool identityEnabled = bool.TryParse(builder.Configuration["Platform:Identity:Enabled"], out bool configuredIdentity) && configuredIdentity;
+string eventStoreProject = identityEnabled
+    ? Path.Combine(builder.AppHostDirectory, "src", "Hexalith.Platform.EventStoreHost", "Hexalith.Platform.EventStoreHost.csproj")
+    : Path.Combine(eventStoreRoot, "src", "Hexalith.EventStore", "Hexalith.EventStore.csproj");
 string adminProject = Path.Combine(eventStoreRoot, "src", "Hexalith.EventStore.Admin.Server.Host", "Hexalith.EventStore.Admin.Server.Host.csproj");
 string operationsProject = Path.Combine(eventStoreRoot, "src", "Hexalith.EventStore.Operations", "Hexalith.EventStore.Operations.csproj");
 foreach (string project in new[] { worksProject, eventStoreProject, adminProject, operationsProject })

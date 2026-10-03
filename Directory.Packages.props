@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally><CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled></PropertyGroup>
+  <Import Project="$(HexalithEventStoreRoot)/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' == 'true'" />
+  <Import Project="references/Hexalith.Builds/Props/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' != 'true'" />
+</Project>

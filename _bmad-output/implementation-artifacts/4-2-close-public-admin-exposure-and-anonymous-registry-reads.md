@@ -110,3 +110,7 @@ Full probe headers and operational records remain access controlled. Do not reta
 ## Approved management handoff — 2026-10-01
 
 The [approved Rancher correction](../planning-artifacts/sprint-change-proposal-2026-10-01.md) retains this story’s private-CLI/removal option. Story 4.27 owns retirement; this story owns public exposure closure and external negative tests. Close existing public administrative routes independently of Rancher installation. Revalidate exact route/DNS/UID state; preserve private authorized administration and approved public OIDC. Story 4.28 qualifies the later private Rancher UI/API/proxy and issued-credential path before accepting that endpoint. Keep registry-consumer, anonymous-denial and retained-digest GC criteria and `in-progress` status.
+
+## Administrator decision — 2026-10-03
+
+Close the public `kube.hexalith.com` KubeSphere console route now, before Story 4.27 retirement, by deleting the console Ingress or restricting it with a Traefik IP allowlist. Until retirement, use the console only through `kubectl port-forward`. Retirement later removes the remaining route objects. This records the decision only: the production change needs its own go, and the route's DNS record is removed separately.

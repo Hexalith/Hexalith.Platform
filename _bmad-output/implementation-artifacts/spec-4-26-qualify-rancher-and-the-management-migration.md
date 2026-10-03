@@ -25,6 +25,16 @@ context:
 
 **Decision (2026-10-03, Administrator):** The repository is public. Security-weakness narratives and host-access specifics go to encrypted private custody for the Administrator, and Git keeps only a neutral pointer. This covers which key or account reaches which privilege, authentication or sudo weaknesses, credential file locations, modes and validity, and the remediation status of those weaknesses. Future published projections omit them. Pushed history and committed immutable evidence attempts are not rewritten. Kubernetes RBAC facts from the census are not covered and stay public: which user or ServiceAccount holds which role, including the `jpiquot` binding finding.
 
+**Decisions (2026-10-03, Administrator, on the open qualification items):**
+- The repository stays public. The workstation key's current passphrase is accepted as set, with no rotation.
+- **Readback.** An agent-held readback key is a second recipient on every new private export, and each export is decrypted and checked automatically. The Administrator key remains the custody recipient. Exports encrypted before this rely on header tags and recorded digests; Administrator readback is not required.
+- **Console route.** The public `kube.hexalith.com` route is closed under Story 4.2 before retirement. Retirement then removes the Ingress, its Certificate and TLS Secret, and the manager Lease.
+- **Finalizer residue.** Only the KubeSphere finalizer is removed from the seven namespaces, which are kept. The license Secrets, `Cluster/host` and the app Category stay as inert archival objects with an owner and a cleanup date.
+- **Native administration.** A named one-year Administrator client certificate gets its own unowned ClusterRoleBinding and is revoked by deleting that binding. Break-glass is `admin.conf` on node1 over SSH; its off-node copy is expected inside Story 4.0's encrypted node archive, pending confirmation.
+- **MFA and scopes.** MFA is enforced at Rancher through Keycloak, and native certificate access is break-glass without MFA. The Administrator holds native cluster-admin and Rancher admin. There is no deputy until one is named. Grant and revocation records are signed commits in a private, off-site-mirrored operations repository.
+- **Recovery.** A fixture etcd snapshot-and-restore rollback is rehearsed now. A fresh production etcd restore through Story 4.0's route runs before 4.27. The Rancher authority restore belongs to 4.28.
+- **Upgrade target.** Kubernetes 1.36.5 by way of 1.35, moving to 1.37 once Rancher supports it.
+
 ## Boundaries & Constraints
 
 **Always:** Preserve cluster/namespace/workload/PVC identities, bindings and shared dependencies. Encrypt private exports outside Git; commit sanitized evidence. Revalidate skew, identity and currency. Preserve Administrator/deputy separation, MFA and independent grant/revocation lineage; missing authority fails closed. Distinguish observation, proposal, approval and acceptance.
@@ -71,6 +81,11 @@ context:
 - [x] Redaction (2026-10-03 decision) — move the matching passages from the swept files into one encrypted private attempt and replace each with a neutral pointer: attempt ID, ciphertext SHA-256 and a neutral reason such as "criterion 5 remains unmet". Leave committed evidence attempts and history unchanged.
 - [x] Review loop 3 patch groups G48–G50, G52, G54 and G56–G70 — apply each as its Review loop 3 row states, with tests for code changes. G50 and G52 apply to the redacted or neutral text.
 - [ ] Review loop 4 patch groups G72–G74 and G76–G83 — apply each as its Review loop 4 row states, with tests for code changes.
+- [ ] Readback key — generate an SSH ed25519 readback key without a passphrase, outside Git and the evidence roots (for example `~/.config/hexalith/agent-readback`). Add a second-recipient option to `qualify.py` and `rehearse.py`. In `evidence.py` `Attempt.encrypt`, decrypt each new export with it, compare the result with the recorded plaintext digest, and refuse on mismatch. Publish both stanza tags and `readbackVerified`, add tests, and drop Administrator readback and the passphrase from the criterion-1 ledger.
+- [ ] Retirement decisions — in `rehearse.py`, give the production plan a console-route phase (Ingress, Certificate, TLS Secret, Lease) and a named namespace-finalizer phase for the seven namespaces, each rehearsed with synthetic fixture equivalents. `RETIRE-KUBESPHERE.md` lists the inert archival objects with owner and cleanup date, the Story 4.2 closure prerequisite and the production etcd restore before 4.27.
+- [ ] Rollback rehearsal — in a fixture, take an etcd snapshot before retirement, restore it into a fresh fixture node and verify the baseline UIDs and KubeSphere runtime. Retain the evidence.
+- [ ] Access and authority handoff — `QUALIFICATION.md` and `RANCHER.md` record the named certificate, break-glass path, Rancher MFA, scopes and signed-commit ledger. Confirm from Story 4.0 evidence whether the node archive holds `admin.conf` and the PKI.
+- [ ] Upgrade ordering — the README and retirement handoffs record the 1.36.5 target by way of 1.35. Leave `MAINTENANCE.md` untouched.
 
 **Acceptance Criteria:**
 - Given qualification results, when assessed, then all eight criteria have traceable evidence or remain incomplete; proposals/checksums alone cannot pass.
