@@ -5,7 +5,7 @@
 #:package Aspire.Hosting.Docker@13.6.0
 #:package Aspire.Hosting.Redis@13.6.0
 #:package Aspire.Hosting.Keycloak@13.6.0-preview.1.26479.8
-#:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.0-beta.910
+#:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.0-preview.1.261001-0243
 #:package Hexalith.EventStore.Aspire@3.110.0
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
