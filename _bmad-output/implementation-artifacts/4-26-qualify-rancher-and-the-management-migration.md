@@ -4,7 +4,7 @@ type: story
 epic: 4
 story: 26
 created: 2026-10-01
-status: in-progress
+status: review
 route: dispatch
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
@@ -51,6 +51,12 @@ This **2026-10-04 current assessment** uses the original criteria above. All eig
 The [final original-criterion assessment](evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json) retains every original wording, evidence hashes, the explicit seven-source-namespace/synthetic-equivalent pairing and specific later checks. It accepts qualification only: production executable actions remain zero; production recovery, live retirement/upgrade, manager installation, actual Rancher authority restoration and independent external-vantage denial are not claimed. Optional host remeasurement timed out, and the approved dated budget remains subject to 4.28 remeasurement.
 
 The [independent final verification](evidence/epic-4/4-26/20261004t165516z-final-verification/verification.json) executes all 142 unit tests with zero skips, covers all five frozen matrix rows, and validates 291 local links and anchors. Its audit checks 110 published attempts and independently decrypts all 5,048 new exports against private digests. The frozen intent, baseline and protected upgrade proposal remain unchanged. The root also compared all seven raw namespace pairs and their native command trace: only the named finalizer changed, with seven PUTs and zero Namespace DELETEs.
+
+## Review correction verification, 2026-10-04
+
+G90–G102 are complete, including tracked synthetic catalog/seven-namespace drivers, retirement-guard corrections and accurate handoffs. Three fresh review layers completed; their 19 findings are individually recorded in the [implementation spec](spec-4-26-qualify-rancher-and-the-management-migration.md#resumed-build-review-2026-10-04). G104/G105 additionally cover retained Category content/finalizer refusal and bounded image-save timeout/cleanup. Two pre-existing unrelated platform issues are [deferred](deferred-work.md): the default package-dependency build fails with 26 missing identity/security type errors, and the global-login test does not bind its registry stub to the expected alias.
+
+The root independently passed all **155 tests** without skips, failures or errors, all five frozen matrix rows, all **303 local links/anchors** after this note and whitespace checks. Existing 111 published attempts cover 1,029 checksum-matching, parseable JSON records; immutable evidence, frozen intent, original baseline and the protected upgrade proposal are unchanged. The spec is `done`; story and sprint are `review`. Revised procedure/portable-driver bytes have unit/smoke coverage only; no new live fixture or production action ran, and later production execution gates remain explicit.
 
 ## Historical verification snapshot, 2026-10-04
 

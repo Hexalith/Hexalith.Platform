@@ -883,8 +883,8 @@ class Fixture:
                     'images', 'import', '--platform=linux/amd64', '--digests', '-'], stdin=source.stdout,
                     capture_output=True, timeout=180)
                 source.stdout.close()
-                source_error = source.stderr.read()
                 source_code = source.wait(timeout=30)
+                source_error = source.stderr.read()
                 self.attempt.encrypt('vendor-import-' + digest(image.encode())[:12], canonical({
                     'saveExit': source_code, 'importExit': imported.returncode,
                     'diagnosticBase64': __import__('base64').b64encode(source_error + imported.stdout + imported.stderr).decode()}),

@@ -271,6 +271,43 @@ class DriverSmokeTests(unittest.TestCase):
             fixture.populate_retirement_decisions()
         create.assert_not_called()
 
+    def test_application_store_phase_preserves_retained_category_before_passing_result(self):
+        counts = {'Repo': 1, 'Application': 27, 'ApplicationVersion': 90, 'Category': 1}
+        by_uid = {kind + '-' + str(index): {'kind': kind,
+                  'finalizers': ['application.kubesphere.io/cleanup'] if kind == 'ApplicationVersion' else []}
+                  for kind in ('Repo', 'Application', 'ApplicationVersion') for index in range(counts[kind])}
+        phase = {'phase': 'application-store', 'expected': list(by_uid)}
+        category = {'apiVersion': 'application.kubesphere.io/v2', 'kind': 'Category',
+            'metadata': {'name': 's426-catalog-category', 'uid': 'category', 'resourceVersion': '1',
+                         'finalizers': ['categories.application.kubesphere.io/finalizer']}, 'spec': {}}
+        for change in ('unchanged', 'spec', 'finalizers'):
+            records = {}
+            attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(),
+                                      record=lambda n, v: records.update({n: v}))
+            fixture = RepresentativeFixture(SimpleNamespace(attempt_id='catalog-phase-smoke'), attempt)
+            fixture.catalog_category, fixture.catalog_counts = copy.deepcopy(category), counts
+            current = copy.deepcopy(category)
+            current['metadata']['resourceVersion'] = '2'
+            current['status'] = {'synthetic': 'server-bookkeeping'}
+            if change == 'spec':
+                current['spec']['description'] = 'changed'
+            elif change == 'finalizers':
+                current['metadata']['finalizers'] = []
+            after = ['native-phase-result']
+            with self.subTest(change=change), patch.object(Fixture, 'retire_phase', return_value=after) as native_phase, \
+                 patch.object(fixture, 'get', return_value=current) as get:
+                if change == 'unchanged':
+                    self.assertIs(fixture.retire_phase(phase, set(by_uid), by_uid, {}), after)
+                    self.assertEqual(records['catalog-result.json']['state'], 'passed')
+                    self.assertTrue(records['catalog-result.json']['categoryIdentityContentAndFinalizerPreserved'])
+                    self.assertEqual(records['catalog-result.json']['exactRemovals'], 118)
+                else:
+                    with self.assertRaisesRegex(ValueError, 'catalog-archive-category-drift'):
+                        fixture.retire_phase(phase, set(by_uid), by_uid, {})
+                    self.assertNotIn('catalog-result.json', records)
+            native_phase.assert_called_once_with(phase, set(by_uid), by_uid, {})
+            get.assert_called_once_with('categories.application.kubesphere.io', 's426-catalog-category')
+
     def test_namespace_driver_executes_seven_native_interventions_and_checks_request_trace(self):
         raw = {}
         records = {}
@@ -303,6 +340,77 @@ class DriverSmokeTests(unittest.TestCase):
         phase_record = next(v for n, v in records.items() if n.startswith('retirement-phase-') and n.endswith('-namespace-finalizers.json'))
         self.assertTrue(all(v['privateFullContentVerified'] for v in phase_record['requests']))
         self.assertTrue(all(v['onlyKubeSphereMetadataFinalizerRemoved'] for v in result['namespaces']))
+
+
+class VendorImageStreamTests(unittest.TestCase):
+    def fixture(self):
+        records = {}
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), finish=Mock(),
+                                  record=lambda n, v: records.update({n: v}))
+        args = SimpleNamespace(attempt_id='vendor-stream-test', age='age', recipient='public', operator='unit')
+        return Fixture(args, attempt), records
+
+    def test_vendor_save_waits_with_timeout_before_reading_stderr(self):
+        fixture, _ = self.fixture()
+        source, events = Mock(), []
+        source.stdout.close.side_effect = lambda: events.append('stdout-closed')
+        def wait(timeout=None):
+            events.append(('wait', timeout))
+            return 0
+        source.wait.side_effect = wait
+        source.stderr.read.side_effect = lambda: events.append('stderr-read') or b'synthetic-save-diagnostic'
+        source.poll.return_value = 0
+        imported = SimpleNamespace(returncode=0, stdout=b'synthetic-import-output', stderr=b'')
+        with patch.object(fixture, 'run', return_value=SimpleNamespace(stdout=b'[{"Id":"sha256:synthetic"}]')), \
+             patch('rehearse.subprocess.Popen', return_value=source), \
+             patch('rehearse.subprocess.run', return_value=imported) as importer:
+            records = fixture.load_vendor_images(['synthetic:fixture'])
+        self.assertEqual(events, ['stdout-closed', ('wait', 30), 'stderr-read', ('wait', None)])
+        source.kill.assert_not_called()
+        self.assertIs(importer.call_args.kwargs['stdin'], source.stdout)
+        self.assertEqual(importer.call_args.kwargs['timeout'], 180)
+        self.assertEqual(records[0]['tag'], 'synthetic:fixture')
+        self.assertEqual(json.loads(fixture.attempt.encrypt.call_args.args[1])['saveExit'], 0)
+
+    def test_vendor_save_timeout_kills_reaps_and_reaches_fixture_cleanup_without_stderr_read(self):
+        from rehearse import rehearse
+        fixture, records = self.fixture()
+        source, events = Mock(), []
+        def wait(timeout=None):
+            events.append(('wait', timeout))
+            if timeout is not None:
+                raise subprocess.TimeoutExpired('docker image save', timeout)
+            return 0
+        source.wait.side_effect = wait
+        source.poll.return_value = None
+        source.kill.side_effect = lambda: events.append('kill')
+        source.stderr.read.side_effect = AssertionError('stderr read would block')
+        fixture.start = Mock()
+        fixture.execute = lambda: fixture.load_vendor_images(['synthetic:fixture'])
+        fixture.diagnostics = Mock()
+        fixture.cleanup = Mock(side_effect=lambda: events.append('fixture-cleanup') or True)
+        with tempfile.TemporaryDirectory() as temporary:
+            source_inventory = Path(temporary) / 'source.json'
+            source_inventory.write_bytes(canonical({'sourceClusterUid': 'synthetic-source', 'nativeEndpoint': 'https://192.0.2.10:6443'}))
+            fixture.args.source_inventory = source_inventory
+            fixture.args.project_root = Path(temporary)
+            fixture.args.evidence_root = Path(temporary) / 'private'
+            identities = {'runtimeVersionOutput': {'kind': {'exitCode': 0}, 'docker': {'exitCode': 0}}}
+            with patch('rehearse.Attempt', return_value=fixture.attempt), \
+                 patch('rehearse.tool_identities', return_value=identities), \
+                 patch.object(fixture, 'run', return_value=SimpleNamespace(stdout=b'[{"Id":"sha256:synthetic"}]')), \
+                 patch('rehearse.subprocess.Popen', return_value=source), \
+                 patch('rehearse.subprocess.run', return_value=SimpleNamespace(returncode=0, stdout=b'', stderr=b'')):
+                _, state = rehearse(fixture.args, fixture_type=lambda args, attempt: fixture)
+        self.assertEqual(events, [('wait', 30), 'kill', ('wait', None), 'fixture-cleanup'])
+        source.stderr.read.assert_not_called()
+        source.kill.assert_called_once()
+        source.stdout.close.assert_called_once()
+        fixture.cleanup.assert_called_once()
+        fixture.attempt.finish.assert_called_once()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(records['failure.json']['failureStep'], 'load-vendor-image')
+        self.assertEqual(records['summary.json']['state'], 'failed-closed')
 
 
 if __name__ == '__main__':

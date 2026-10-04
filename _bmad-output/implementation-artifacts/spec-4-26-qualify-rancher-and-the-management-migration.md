@@ -4,7 +4,7 @@ type: 'chore'
 epic: 4
 story: 26
 created: '2026-10-01'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: '98436a4cb884f8d11b4b5f3e6ae70e95ce687463'
@@ -121,6 +121,10 @@ Code review of fix commit `0e602ad..dc9a6ab` (story-4.26 code and documents; evi
 - [x] [Review][Patch] G102 Ledger row 2 omits that dynamic consumer usage rests on the owner's decision and was not mechanically enumerated (`allDynamicConsumerUsageMechanicallyProven: false`) [_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md:43]
 - [x] [Review][Defer] G103 Artifact signature and image SBOM/scanning verification is deferred to "later deployment hardening" with no owner [eng/cluster-management/RANCHER.md:35] — deferred: the fix assigns it to another story (likely 4.28, which has no signature/SBOM/scan item); recorded in deferred-work.md.
 
+
+- [x] [Review][Patch] G104 Add a routed retained-Category content/finalizer drift regression for `RepresentativeFixture.retire_phase`, refusing before a passing catalog result.
+- [x] [Review][Patch] G105 Bound the Docker image-save process before reading stderr after successful import; cover normal order and timeout cleanup.
+
 **Rejected**
 
 - Forced checkpoint transitions (a Category without a count annotation, a Lease without `renewTime`, a grant that is never cleared): low. These stops are fail-closed on states never demonstrated, which matches the stop-for-review design, and fixing them would add branches. The sub-claims (the discarded first `refreshed` value and the 30 s deadline) are cosmetic, and the deadline can still trigger when reads are slow.
@@ -194,6 +198,37 @@ Additional passing matrix coverage: Census — `CensusTests.test_collect_paginat
 ## Spec Change Log
 
 ## Review Triage Log
+
+### Resumed build review, 2026-10-04
+
+All three fresh reviewers completed before classification; no layer was skipped. The full preserved-baseline diff has 50,884.096 kB, giving `min(floor(sqrt(50,884.096) + 1), 10) = 10` blind findings. It includes older unrelated platform changes. Every finding receives its own verdict before grouping. Carried rows retain the prior verdict/route without new patches or duplicate deferrals; verification-gap rows are pre-verified.
+
+| Finding | Verdict | Evidence | Route |
+| --- | --- | --- | --- |
+| B77 retained raw configuration | low | carried: B67 explicitly rejected the broader raw-value preservation subclaim. The unchanged comparator checks projected workload fields and native identities/bindings; full production configuration/application checks remain 4.27 requirements. | reject (carried) |
+| B78 complete CRD schemas | low | carried: B68, same unchanged UID/name/served-storage/conversion comparison. No complete schema-digest acceptance is claimed, and a new private schema policy adds guards beyond a direct correction. | reject (carried) |
+| B79 incomplete authority metadata | low | The test-only metadata validator accepts incomplete event fields, but repository callers are exclusively unit tests; it never issues or reconciles live authority, and collector acceptance stays false. Actual signer/scope/time/current-head verification is explicitly required in 4.28. Extending the illustrative model introduces new semantic guards for an unobserved operational caller. | reject |
+| B80 catalog source patterns | low | The portable driver constructs the explicitly reviewed, source-sized synthetic cohort and checks exact counts; it is not a generic source-pattern qualifier. Its shared summary keeps qualification and production acceptance false. The dated source graph is separately assessed; future source-pattern changes require renewed assessment before 4.27. Generalizing the fixed fixture adds guards/state beyond a direct correction. | reject |
+| B81 namespace source patterns | low | The manager-free driver proves seven fixed synthetic equivalents; the separate dated qualification assessment binds the seven source pairs. The driver claims fixture-only outcomes and no qualification/production acceptance. A generic source-cohort validator adds behavior for a future unassessed source. | reject |
+| B82 non-preferred non-CRD discovery | maybe-false | carried: E40/G71, same collector path. Separate served-version evidence settles the retained census; mechanically integrating future discovery remains the earlier deferred question. | defer G71 (carried) |
+| B83 identity-less diagnostic entries | false | carried: E37, same explicit closed coverage. Virtual/default-profile/metrics entries cannot supply deletion UIDs; retaining them as gaps plus targeted follow-up is intentional and does not silently accept deletion objects. | reject (carried) |
+| B84 Docker cleanup identity race | low | carried: B75/E50/E78, same named-resource lifecycle and absent-at-start ownership checks. No concurrent same-attempt replacement occurred; retained-ID teardown adds new guard state. | reject (carried) |
+| B85 timeout partial diagnostics | low | carried: B76, same timeout path. Timeout remains an explicit failed observation, not accepted discovery; encrypting partial exception streams adds an error branch for an unobserved acceptance failure. | reject (carried) |
+| B86 default package dependency build | medium | The earlier identity project defaults to published Gateway dependencies lacking its consumed identity APIs. The reviewer reproduced 26 missing-type errors; the default package/source conditions confirm this is an older unrelated platform change. | defer G106 |
+| E85 release namespace collision | low | carried: E57, same name-only retirement/extension selectors. The retained census has no duplicate release names and the exact source proposal is reviewed separately; the proposed namespace guard adds behavior for an unobserved source collision. | reject (carried) |
+| E86 unprojected workload configuration | low | carried: B67's broader raw-value subclaim, same comparator. Literal environment/command/resource fields are outside the stated projected preservation proof; authenticated/full production application checks remain explicit. | reject (carried) |
+| E87 retained CRD schema drift | low | carried: B68, same schema-omitting comparison and bounded retained-CRD claim. A new complete desired-content policy is more than a direct correction. | reject (carried) |
+| E88 image-save post-import hang | medium | `load_vendor_images` reads stderr before its timed wait after import succeeds. A local producer closed stdout while remaining alive with stderr open; EOF was unavailable, so that read can block forever and prevent failure recording/cleanup. This differs from E54's importer backpressure timeout. Waiting with the existing 30-second bound before reading is a direct correction. | patch G105 |
+| E89 cleanup name replacement | low | carried: B75/E50/E78, same unchanged cleanup lifecycle and hypothetical concurrent name replacement. | reject (carried) |
+| E90 actor revision range | medium | carried: E84/G88, same older `GetInt64` admission path and missing FormatException catch. | defer G88 (carried) |
+| V36 retained Category regression | medium | Pre-verified: removing only the Category desired-content comparison leaves all 152 discovered tests passing. The setup smoke test never calls the representative subclass's retirement phase, allowing its preservation receipt to lose its only content/finalizer guard unnoticed. | patch G104 |
+| V37 concrete gateway execution | medium | carried: V35/G89, same older concrete admission provider with only mocked/interface coverage. | defer G89 (carried) |
+| V38 global-alias test stub | medium | Pre-verified: the older login test returns the same registry entry for any alias, so tenant-dependent alias derivation still passes. This separate identity test must assert actual alias lookups. | defer G107 |
+
+Survivors have distinct causes: G104 adds the missing retained-Category refusal test; G105 moves the existing image-save timeout before stderr EOF consumption. G106 and G107 are separate pre-existing platform problems. No intent/specification loopback is needed; both patches add no public interface and cover demonstrated states.
+
+**Resolution:** the original implementation worker fixed G104/G105 and passed 15 focused tests. The root independently ran all 155 discovered tests with zero failures, errors or skips. The Category subclass now has unchanged/spec-drift/finalizer-drift cases; stream tests prove the timed wait precedes stderr reading and a timeout terminates/reaps the producer, records failure and reaches fixture cleanup. Whitespace checks pass. The root separately reproduced the older default-package build failure with 26 missing identity/security type errors. G106/G107 are appended to the deferred ledger; carried G71/G88/G89 are not deferred again. Revised procedures remain unit/smoke verified only; historical evidence, frozen intent, original baseline and protected upgrade proposal are unchanged.
+
 
 ### Review, 2026-10-04
 
@@ -635,3 +670,7 @@ The root independently ran all **117 tests** with zero skips/failures/errors and
 | Authority | `test_proxy_credentials_are_refused_before_discovery`, `test_missing_gapped_conflicting_or_expanded_authority_fails_closed`, `test_post_cut_revocation_survives_source_loss` | Executed and passed, no skips |
 
 All implementation tasks are checked. All eight original operational criteria remain incomplete as the criterion ledger records; no production actions or authority were inferred from fixture success. Build remains at Step 3 under its requirement to satisfy every acceptance criterion before the completion review. No commit or push was made.
+
+## Resumed build completion, 2026-10-04
+
+G90–G102 and G104/G105 are complete. The root independently passed all 155 tests with zero skips/failures/errors, all five frozen matrix rows, all 303 local links/anchors and whitespace checks. The audit of 111 existing published attempts covered 1,029 checksum-matching, parseable JSON records; no immutable evidence changed. Three fresh review layers completed and all 19 findings have individual triage rows. New unrelated platform issues G106/G107 are deferred; earlier carried deferrals are not repeated. The spec is done; original story and sprint are review. Current portable drivers and revised procedure have unit/smoke coverage only, with no new live fixture or production action. Frozen intent, the full original baseline and MAINTENANCE.md digest are preserved.
