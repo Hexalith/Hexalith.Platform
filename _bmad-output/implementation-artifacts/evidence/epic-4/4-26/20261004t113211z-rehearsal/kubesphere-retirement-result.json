@@ -1,0 +1,340 @@
+{
+  "allowlistSha256": "ecc3704cb245d9038d0955fc4ff278eab18e82c88a773e645467d8fdeaba9fff",
+  "blanketFinalizerRemovalUsed": false,
+  "exactBaselineRemovals": 471,
+  "helmUninstallOrVendorHooksUsed": false,
+  "licensedApplicationWritesUsed": false,
+  "namespacePvcPvIdentitiesAndBindingsPreserved": true,
+  "phases": [
+    "installed-extension",
+    "global-role-bindings",
+    "workspace-role-bindings",
+    "workspace-roles",
+    "kubesphere-cluster-role-bindings",
+    "users",
+    "global-roles",
+    "kubesphere-service-accounts",
+    "catalog-extension",
+    "extension-repository",
+    "application-store",
+    "admission",
+    "controllers-and-services",
+    "reconciled-admission",
+    "console-route",
+    "remaining-release-objects",
+    "release-records",
+    "system-workspace-finalizers",
+    "namespace-finalizers"
+  ],
+  "postRetirementHealth": {
+    "completedManagerPodResidue": [],
+    "managerRuntimeRemaining": [],
+    "namespaceLifecycle": {
+      "conflictRetries": 0,
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": false,
+      "resourceVersion": "7060",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "765c74707523c7a4436d7bb13f3f883cf7c840174efc72ef67d464ea6605c323",
+      "reviewedResourceVersion": "7060",
+      "strictReviewedResourceVersion": true
+    },
+    "nativeConfigMapWriteDelete": {
+      "conflictRetries": 0,
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": false,
+      "resourceVersion": "7041",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "258aeda0a71483345fe85bd51dae68dba944f12e0b80cc2f81bab605ee46b40e",
+      "reviewedResourceVersion": "7041",
+      "strictReviewedResourceVersion": true
+    },
+    "newNamespaceDeletionCompleted": true,
+    "newNamespaceFinalizers": [],
+    "newNamespaceManagementLabels": {},
+    "productionAccepted": false,
+    "scope": "fresh fixture only",
+    "staleAdmissionOrApiServiceReferences": [],
+    "staleRouteBackends": []
+  },
+  "procedureSha256": "35d4724c8dcc6e7fbeabcd10f686219e06c3eba70d41ec88c05b9ab1a7fbf38b",
+  "productionAccepted": false,
+  "retainedCrdResourceVersionChanges": [],
+  "retainedCrds": 46,
+  "retainedKubeSphereMarkedObjects": [
+    {
+      "disposition": "protected; KubeSphere label/finalizer residual retained pending a named decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Namespace/-/default"
+    },
+    {
+      "disposition": "protected; KubeSphere label/finalizer residual retained pending a named decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Namespace/-/kube-node-lease"
+    },
+    {
+      "disposition": "protected; KubeSphere label/finalizer residual retained pending a named decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Namespace/-/kube-public"
+    },
+    {
+      "disposition": "protected; KubeSphere label/finalizer residual retained pending a named decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Namespace/-/kube-system"
+    },
+    {
+      "disposition": "protected; KubeSphere label/finalizer residual retained pending a named decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Namespace/-/kubesphere-controls-system"
+    },
+    {
+      "disposition": "protected; KubeSphere label/finalizer residual retained pending a named decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Namespace/-/kubesphere-system"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/ConfigMap/kubesphere-controls-system/kube-root-ca.crt"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/ConfigMap/kubesphere-system/kube-root-ca.crt"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.cluster"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.distributed"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.global"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "default"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.0cdd83e5-3066-4927-990c-d8a376d0c9e4"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "kube-node-lease"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.0e84b092-999b-4612-ad46-29072c0e75b0"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "kube-public"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.23d825e6-e3a3-41ea-a803-148bea84cfc9"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-4"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.276097cf-3a12-45d4-89a1-598515f8c1c3"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-7"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.2985464f-21f4-4bfe-b200-ddd87685ceb0"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-1"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.41b8f48f-f12e-4f80-bf1b-15903a0bbd4d"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-workload"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.4a83c2ec-64a2-44d6-9fd9-910d08065084"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-3"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.5533092d-0cd8-4c0e-9f1e-c1625a9d15d6"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-management"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.5f658357-f584-49a7-ae00-1fdccec18347"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-2"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.634ccfe5-9458-419e-bb72-44a6f792cbb6"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "kubesphere-controls-system"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.74c8cd1c-178e-434b-94a9-5c7f48773edf"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-probe-member"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.78a61f2f-9364-4938-9b45-59aefb1450c9"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "kube-system"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.7af37544-7152-45d5-a506-1d56c7f01ecb"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-6"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.92085a3d-6da9-4671-b794-4a799058941d"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "s426-residue-5"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.a0b8505a-a74d-4a15-9bcb-85d01ce40ce8"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "kubesphere-system"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.a79a7cd0-b76a-451e-88d3-d84a2860a4bf"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/namespace": "local-path-storage"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.namespace.ec2ad319-d23d-4a7b-8a45-415534260683"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/workspace": "s426-probe"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.workspace.0444821a-725d-4752-b5ba-5165b5d87b90"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "object": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.workspace.60444ecd-0f75-4877-b31a-d50915c284e5"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/ServiceAccount/kubesphere-controls-system/default"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [],
+      "managementLabels": {},
+      "object": "v1/ServiceAccount/kubesphere-system/default"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [
+        "categories.application.kubesphere.io/finalizer"
+      ],
+      "managementLabels": {},
+      "object": "application.kubesphere.io/v2/Category/-/s426-catalog-category"
+    },
+    {
+      "disposition": "retained inert instance pending owner decision",
+      "finalizers": [
+        "finalizer.cluster.kubesphere.io"
+      ],
+      "managementLabels": {
+        "cluster-role.kubesphere.io/host": null,
+        "kubesphere.io/managed": "true"
+      },
+      "object": "cluster.kubesphere.io/v1alpha1/Cluster/-/host"
+    }
+  ],
+  "state": "passed-dependency-first-native-retirement"
+}

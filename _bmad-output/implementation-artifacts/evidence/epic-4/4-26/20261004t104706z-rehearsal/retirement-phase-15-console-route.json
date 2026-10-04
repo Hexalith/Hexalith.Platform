@@ -1,0 +1,76 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "acme.cert-manager.io/v1/Order/kubesphere-system/kubesphere-console-letsencrypt-1-synthetic",
+      "cert-manager.io/v1/Certificate/kubesphere-system/kubesphere-console-letsencrypt",
+      "cert-manager.io/v1/CertificateRequest/kubesphere-system/kubesphere-console-letsencrypt-1",
+      "coordination.k8s.io/v1/Lease/kubesphere-system/ks-controller-manager-leader-election",
+      "networking.k8s.io/v1/Ingress/kubesphere-system/kubesphere-console",
+      "v1/Secret/kubesphere-system/kubesphere-console-letsencrypt-tls"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 15,
+  "phase": "console-route",
+  "phaseAllowlistSha256": "c98ddf29926cc0e2b4255c27a545059b04edd5861a5459e398a3b3f270abbde9",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "cert-manager.io/v1/Certificate/kubesphere-system/kubesphere-console-letsencrypt",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "2586",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "fa1781d1eafd582040dd96693b90e53c34d8e6bb6b97c46b144e632bd5f722cc",
+      "reviewedResourceVersion": "2586",
+      "strictReviewedResourceVersion": false,
+      "uid": "ec6ceb3c-ac27-40a9-94db-d54cb38da692"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "networking.k8s.io/v1/Ingress/kubesphere-system/kubesphere-console",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "2619",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "c4ba47bacd38ddb45e3ed9573c225844eaf9887818b3cd826ee533d435c24692",
+      "reviewedResourceVersion": "2619",
+      "strictReviewedResourceVersion": false,
+      "uid": "efca86bc-328d-4ead-b955-9d3cb0cdeb0f"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "coordination.k8s.io/v1/Lease/kubesphere-system/ks-controller-manager-leader-election",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "5063",
+      "resourceVersionChangedSinceReview": true,
+      "reviewedProjectionSha256": "455881c7d571a5c8cbc4c888fcbbeac46edcd6944d5a3adb81dd7643d6a8bab7",
+      "reviewedResourceVersion": "2897",
+      "strictReviewedResourceVersion": false,
+      "uid": "5f4ce584-c1b9-494d-8a2f-ececf5dee115"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/kubesphere-console-letsencrypt-tls",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "2612",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "bc286f8935f97a45f2117e9b698d9922a80220d2428d3668244a371aeb48a2e3",
+      "reviewedResourceVersion": "2612",
+      "strictReviewedResourceVersion": false,
+      "uid": "cfd76018-922a-4067-8b31-bebdbab8d5ce"
+    }
+  ],
+  "settled": true
+}

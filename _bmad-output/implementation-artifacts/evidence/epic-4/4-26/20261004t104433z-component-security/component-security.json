@@ -1,0 +1,218 @@
+{
+  "checkedAt": "2026-10-04T10:44:37Z",
+  "datedTargetSources": [
+    "20261004t095137z-target-review",
+    "20261004t100750z-target-assessment"
+  ],
+  "futureDeploymentHardening": [
+    "deployment artifact authenticity and image SBOM/scanning"
+  ],
+  "kubernetesCoreVersionDecisions": [
+    {
+      "advisory": "CVE-2026-76654",
+      "decision": "Exact selected patch equals published fixed version on each selected minor branch",
+      "publishedFixed135Boundary": "1.35.9",
+      "publishedFixed136Boundary": "1.36.5",
+      "selectedHopAndTargetMeetPublishedFix": true,
+      "sourceContentSha256": "29b52ef8ef25297ddc47a5c88bf3ee8ced4330e0681346594aa221f86798437f",
+      "url": "https://github.com/kubernetes/kubernetes/issues/142098"
+    },
+    {
+      "advisory": "CVE-2026-2270",
+      "decision": "Exact selected patch equals published fixed version on each selected minor branch",
+      "publishedFixed135Boundary": "1.35.9",
+      "publishedFixed136Boundary": "1.36.5",
+      "selectedHopAndTargetMeetPublishedFix": true,
+      "sourceContentSha256": "9d21a7af2f7a1aae0a9c412b278fc95a1cd7de58fa9a75b90b12953ca6118aa7",
+      "url": "https://github.com/kubernetes/kubernetes/issues/142097"
+    },
+    {
+      "advisory": "CVE-2026-19444",
+      "decision": "Exact selected patch equals published fixed version on each selected minor branch",
+      "publishedFixed135Boundary": "1.35.9",
+      "publishedFixed136Boundary": "1.36.5",
+      "selectedHopAndTargetMeetPublishedFix": true,
+      "sourceContentSha256": "1cb9e607eddb3d8ec9cc30953ba3126ced4e05bf5997a7eb22fd06a57f4e1164",
+      "url": "https://github.com/kubernetes/kubernetes/issues/141294"
+    }
+  ],
+  "kubernetesOfficialFeed": {
+    "actualComponentConfigurationAndUpgradeProcedureAssessmentStory": "4.1",
+    "capturedFeedUpdatedAt": "2026-10-04T01:11:10Z",
+    "entryCount": 94,
+    "otherOptionalPluginAndConfigurationAdvisoriesNotClaimedVersionResolved": true
+  },
+  "noUniversalSbomOrSignatureRequirementAddedToCriterion3": true,
+  "offlineEtcdTools": {
+    "componentAdvisoryDecisions": [
+      {
+        "advisory": "GHSA-6vch-q96h-7gc3",
+        "applicabilityDecisionIsSourceBasedInference": true,
+        "doesNotAcceptOrAssessAnyProductionServer": true,
+        "offlineEtcdutlSnapshotStatusRestoreAffected": false,
+        "patched36Boundary": "3.6.14",
+        "publishedServerSurface": "TLS server accept-loop/handshake",
+        "readOnlyEtcdctlSnapshotStatusEndpointOperationsAffected": false,
+        "reason": "Published vulnerability requires the server listener or server authorization handler; offline etcdutl opens no listener and the exercised etcdctl client does not implement the affected server handler",
+        "sourceDescriptionSha256": "77deb21103de841407e5ec127928e005c2d00c4135e317d6345161787c89f884",
+        "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-6vch-q96h-7gc3"
+      },
+      {
+        "advisory": "GHSA-xg4h-6gfc-h4m8",
+        "applicabilityDecisionIsSourceBasedInference": true,
+        "doesNotAcceptOrAssessAnyProductionServer": true,
+        "offlineEtcdutlSnapshotStatusRestoreAffected": false,
+        "patched36Boundary": "3.6.14",
+        "publishedServerSurface": "server Watch RPC RBAC authorization",
+        "readOnlyEtcdctlSnapshotStatusEndpointOperationsAffected": false,
+        "reason": "Published vulnerability requires the server listener or server authorization handler; offline etcdutl opens no listener and the exercised etcdctl client does not implement the affected server handler",
+        "sourceDescriptionSha256": "937618d68359e9497e852f2d38954c167654302653e34c54ec42e606aa088954",
+        "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-xg4h-6gfc-h4m8"
+      },
+      {
+        "advisory": "GHSA-3wh4-j44w-pg92",
+        "applicabilityDecisionIsSourceBasedInference": true,
+        "doesNotAcceptOrAssessAnyProductionServer": true,
+        "offlineEtcdutlSnapshotStatusRestoreAffected": false,
+        "patched36Boundary": "3.6.13",
+        "publishedServerSurface": "server gRPC certificate-revocation-list enforcement with split HTTP listener",
+        "readOnlyEtcdctlSnapshotStatusEndpointOperationsAffected": false,
+        "reason": "Published vulnerability requires the server listener or server authorization handler; offline etcdutl opens no listener and the exercised etcdctl client does not implement the affected server handler",
+        "sourceDescriptionSha256": "8b8504eb451a7df3beaffa42f2350a5cf4cf152be3aabf5262f1eea0816a6b4b",
+        "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-3wh4-j44w-pg92"
+      },
+      {
+        "advisory": "GHSA-x35m-3gp4-4fh5",
+        "applicabilityDecisionIsSourceBasedInference": true,
+        "doesNotAcceptOrAssessAnyProductionServer": true,
+        "offlineEtcdutlSnapshotStatusRestoreAffected": false,
+        "patched36Boundary": "3.6.11",
+        "publishedServerSurface": "server Txn PrevKv/lease RBAC authorization",
+        "readOnlyEtcdctlSnapshotStatusEndpointOperationsAffected": false,
+        "reason": "Published vulnerability requires the server listener or server authorization handler; offline etcdutl opens no listener and the exercised etcdctl client does not implement the affected server handler",
+        "sourceDescriptionSha256": "7b501829bc85c0a500bad9dd2147a28dac502b925fd5132eaeaf79530e1e0e64",
+        "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-x35m-3gp4-4fh5"
+      },
+      {
+        "advisory": "GHSA-rfx7-8w68-q57q",
+        "applicabilityDecisionIsSourceBasedInference": true,
+        "doesNotAcceptOrAssessAnyProductionServer": true,
+        "offlineEtcdutlSnapshotStatusRestoreAffected": false,
+        "patched36Boundary": "3.6.9",
+        "publishedServerSurface": "server nested Txn RBAC authorization",
+        "readOnlyEtcdctlSnapshotStatusEndpointOperationsAffected": false,
+        "reason": "Published vulnerability requires the server listener or server authorization handler; offline etcdutl opens no listener and the exercised etcdctl client does not implement the affected server handler",
+        "sourceDescriptionSha256": "843d75c1c5519938ff91253172233684649774173934acd740134ed2ebaacb07",
+        "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-rfx7-8w68-q57q"
+      },
+      {
+        "advisory": "GHSA-q8m4-xhhv-38mg",
+        "applicabilityDecisionIsSourceBasedInference": true,
+        "doesNotAcceptOrAssessAnyProductionServer": true,
+        "offlineEtcdutlSnapshotStatusRestoreAffected": false,
+        "patched36Boundary": "3.6.9",
+        "publishedServerSurface": "server MemberList/Alarm/Lease/Compaction authorization",
+        "readOnlyEtcdctlSnapshotStatusEndpointOperationsAffected": false,
+        "reason": "Published vulnerability requires the server listener or server authorization handler; offline etcdutl opens no listener and the exercised etcdctl client does not implement the affected server handler",
+        "sourceDescriptionSha256": "a180369479bad2caf73b6ad61818282482fee5f0a3f1df460759acf4c81681d9",
+        "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-q8m4-xhhv-38mg"
+      }
+    ],
+    "identityCheck": "20261004t100750z-target-assessment/target-assessment.json",
+    "operations": [
+      "authenticated fixture snapshot save/status",
+      "offline snapshot status/restore with bump-revision and mark-compacted"
+    ],
+    "serverBinaryNotSelectedForManagementDeployment": true,
+    "version": "3.6.5"
+  },
+  "productionAccepted": false,
+  "productionServerApplicabilityAndRemediation": "retained privately; separate accepted 4.1 procedure",
+  "proposedExternalEtcdServerCandidate": {
+    "archiveSha256": "b51d86e6bff2168de5ba8cd631c0fe6c785c7a1b32b083079f5677d6b7e2772c",
+    "atOrAfterAllSixPatchedBoundaries": true,
+    "executionQualificationStory": "4.1",
+    "installationOrServerChangeExecuted": false,
+    "latestObservedStable36Patch": true,
+    "license": "Apache-2.0",
+    "licenseObserved": true,
+    "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "proposalOnly": true,
+    "publishedAt": "2026-09-22T21:06:14Z",
+    "publishedChecksumMatches": true,
+    "publishedSha256": "b51d86e6bff2168de5ba8cd631c0fe6c785c7a1b32b083079f5677d6b7e2772c",
+    "releaseUrl": "https://github.com/etcd-io/etcd/releases/tag/v3.6.15",
+    "requiredPatchedBoundary": "3.6.14",
+    "upgradeOrRecoveryCompatibilityExecuted": false,
+    "version": "3.6.15"
+  },
+  "requiredEmbeddedProgramLicenses": [
+    {
+      "component": "kine",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "releaseLinkedVersion": "v0.16.5",
+      "sourceRepository": "k3s-io/kine"
+    },
+    {
+      "component": "embedded-etcd",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "releaseLinkedVersion": "v3.6.14-k3s3",
+      "sourceRepository": "k3s-io/etcd"
+    },
+    {
+      "component": "containerd",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "4bbe3b885e8cd1907ab4cf9a41e862e74e24b5422297a4f2fe524e6a30ada2b4",
+      "releaseLinkedVersion": "v2.2.7-k3s1",
+      "sourceRepository": "k3s-io/containerd"
+    },
+    {
+      "component": "runc",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "552a739c3b25792263f731542238b92f6f8d07e9a488eae27e6c4690038a8243",
+      "releaseLinkedVersion": "v1.4.2",
+      "sourceRepository": "opencontainers/runc"
+    },
+    {
+      "component": "flannel",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "releaseLinkedVersion": "v0.28.4",
+      "sourceRepository": "flannel-io/flannel"
+    },
+    {
+      "component": "helm-controller",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "releaseLinkedVersion": "v0.17.9",
+      "sourceRepository": "k3s-io/helm-controller"
+    }
+  ],
+  "selectedPlanningPair": {
+    "Rancher": "2.15.2",
+    "managementK3s": "1.35.9+k3s1",
+    "managerDatastorePlan": "single-node SQLite",
+    "supportedHostingAndImportedMinors": [
+      "1.34",
+      "1.35",
+      "1.36"
+    ],
+    "workloadHop": "1.35.9",
+    "workloadTarget": "1.36.5"
+  },
+  "sqliteProgramLicense": {
+    "publicDomainDeclarationObserved": true,
+    "sha256": "44ca9f793055c8e32fc65f65a4f5bcf813a33f5bdaaa084067dd617a4ed3cc70",
+    "source": "https://sqlite.org/copyright.html",
+    "spdx": "blessing",
+    "version": "3.53.4"
+  }
+}

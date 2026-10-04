@@ -1,0 +1,265 @@
+{
+  "actualRancherAuthorityRestoreDemonstrated": false,
+  "assessedAt": "2026-10-04T16:53:44Z",
+  "criteria": [
+    {
+      "basis": "Recorded native topology, versions, configuration and all required resource classes; 2,596 full raw UID baselines, 283 requests without failed states, 70 documented diagnostic/virtual/metrics views, 80 protected identities/bindings and verified encrypted custody outside Git.",
+      "evidence": [
+        {
+          "record": "20261004t085143z-census/inventory.json",
+          "sha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf"
+        },
+        {
+          "record": "20261004t100116z-native-followup/discovery.json",
+          "sha256": "b388c1071ee9f1cc183d2ba4018033d53420b37d91dd51b35d811760c7895823"
+        },
+        {
+          "record": "20261004t104433z-component-security/source-states.json",
+          "sha256": "92e4300c04d384cdf785dc4b004e58be45f4c311582bcab99ce0a1f20627c969"
+        },
+        {
+          "record": "20261004t154618z-capability-assessment/encrypted-exports.json",
+          "sha256": "225613041f08579fb0c421c3058518152760c71ad767478fe3ce58ba9a834a4c"
+        },
+        {
+          "record": "20261004t123937z-host-read/host-read.json",
+          "sha256": "23c53b17a88c3ecb0be0beb5f358891ae46e3da64646f7726df19e24bbd5a29d"
+        }
+      ],
+      "limitsAndLaterExecution": "API capture is sequential. Effective host binary observations remain dated; optional fresh host-budget measurements yielded no result, including a bounded SSH timeout that proves neither host reachability nor authentication denial. Fresh private content and UID/resourceVersion checks precede production action.",
+      "number": 1,
+      "originalWording": "Record the live workload-cluster identity/topology, effective kubeadm/client versions, KubeSphere chart/images/configuration, extensions, CRDs and instances, owners/finalizers, API services, webhooks, RBAC, routes, namespaces and native persistent-state inventory. Retain sensitive exports encrypted outside Git.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "Owner-approved classification of all 597 management entries: 56 native-owned, 215 replaced and 326 unused/retired. Structured consumers have no unresolved required references or management owners. Source-bound scope and representative native propagation are retained.",
+      "evidence": [
+        {
+          "record": "20261004t154618z-capability-assessment/capability-assessment.json",
+          "sha256": "86430072c22196ddcb453405810d7882cf99a37aa7616a7d589e68ddcaaaf396"
+        },
+        {
+          "record": "20261004t154618z-capability-assessment/production-plan.json",
+          "sha256": "2c695ac4edd581839aef63dc4242f13f50a4cbda79248390492f9ea1616e74b3"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/kubesphere-retirement-result.json",
+          "sha256": "d22249ea769c731fe82240a8bd09bc1ef5ff795ba9d8e431f0dd35aa0e895087"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/catalog-result.json",
+          "sha256": "c567328d530f2f0d5c666d7aee102d0a635c03b76210e1d0e11d3da7cee1534a"
+        }
+      ],
+      "limitsAndLaterExecution": "The sole-owner capability-use decision covers dynamic off-cluster usage; it is not claimed mechanically enumerated. New unknown ownership, functionality or effects stop production action.",
+      "number": 2,
+      "originalWording": "Classify every KubeSphere-managed capability as unused/retired, native-owned or replaced. Identify all consumers and approved replacements. Unknown ownership, deletion effects or required functionality blocks retirement.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "Dated exact Rancher community 2.15.2 and K3s 1.35.9+k3s1 identities, 13 required image manifests and required licenses; separate hosting/import matrices, management Helm and recovery-tool identities, advisory patch decisions and the 1.35.9 to 1.36.5 imported-workload direction with proposed patched external-etcd 3.6.15.",
+      "evidence": [
+        {
+          "record": "20261004t095137z-target-review/target-review.json",
+          "sha256": "29342d36b3c859eeab2e597b495b4deaa907108411bcb2a485634cc8bed4e10b"
+        },
+        {
+          "record": "20261004t100750z-target-assessment/target-assessment.json",
+          "sha256": "bd3aba5409187593b394f70118603d1fc08587925d5e7a69ad3dbd9f60a2a085"
+        },
+        {
+          "record": "20261004t104433z-component-security/component-security.json",
+          "sha256": "c892da05213cad73a67685ca98fff93fb2ba99471374c6fd3dcf5c422cba1626"
+        },
+        {
+          "record": "20261004t104652z-etcd-policy-correction/support-policy.json",
+          "sha256": "caf4cf33f2f96ca136be5d301b9795e6d7ac3e9664b8b57e0300fc985bca9d59"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/rollback-restore-result.json",
+          "sha256": "a86cb4d4bacd59358d4dbac726550c29548aa282e1d3224ff07c4d86099c711a"
+        }
+      ],
+      "limitsAndLaterExecution": "Maintained etcd 3.6 combines primary support policy and dated releases as an explicit inference. Actual workload/server upgrade and recovery compatibility remains 4.1. Future source freshness and installation checks remain 4.28; production security particulars stay encrypted.",
+      "number": 3,
+      "originalWording": "Select exact Rancher community chart/image identities, required dependency licenses and a security-current version pairing for the management cluster and target imported workload cluster. Retain dated version-specific matrices and release notes. Qualify the management installation Helm CLI and native recovery-tool identities separately from the application executor tool floor. No unqualified tag or claim that a generic import certifies manager hosting is accepted.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "Approved dedicated host/Ubuntu 24.04 VM plan: 4 vCPU, 16 GiB RAM and 80 GiB guest disk plus a total 4500m CPU, 18 GiB RAM and 100 GiB reservation; private DNS/TLS/CA/firewalls, distinct independent backups, Administrator ownership, cost/provisioning assumptions and single-node/shared-host limits.",
+      "evidence": [
+        {
+          "record": "20261004t085020z-owner-authorization/authorization.json",
+          "sha256": "24e894e4e84657e4745bfda22636e023a0ba9eaf3c0ca05133a6b91a8a3cb8f7"
+        },
+        {
+          "record": "20261004t123937z-host-read/host-read.json",
+          "sha256": "23c53b17a88c3ecb0be0beb5f358891ae46e3da64646f7726df19e24bbd5a29d"
+        }
+      ],
+      "limitsAndLaterExecution": "Actual allocation, address/CA reservation, performance/resource measurements and cost checks remain 4.28, as the original criterion permits.",
+      "number": 4,
+      "originalWording": "Specify the dedicated K3s VM's host, supported OS, CPU/RAM/storage budget, private DNS/TLS endpoint, route/firewall/CA requirements, independent backups and owner. Record costs, provisioning dependencies and single-node/shared-host limitations. Actual provisioning and console rollout may follow the workload upgrade.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "The existing recovered archived native client reads the same direct CA-verified cluster and its current unowned native authority. Unentitled impersonation is forbidden; public native namespace and RBAC routes return 403 without credentials and 401 for an invalid bearer. Existing native recovery configuration stays encrypted outside Git. No credential, grant or plaintext config file was created; unlock input is removed.",
+      "evidence": [
+        {
+          "record": "20261004t110223z-archive-unlock-readback/archive-unlock-readback.json",
+          "sha256": "5c8ae9eaf5b294045527f90b392fcb9ad8f6dd6fa2a0340180e1ae070eba157a"
+        },
+        {
+          "record": "20261004t112212z-independent-native-access/independent-native-access.json",
+          "sha256": "baf8fa62efc17835e00c2a546f8ba8dd98a8457ad85720ed21cfe097c606dec6"
+        }
+      ],
+      "limitsAndLaterExecution": "Denials are measured from the operator workstation. Independent external vantage, an independently authenticated unentitled client and MFA are not claimed. Public UI closure remains 4.2; new named-client and Rancher MFA deployment remains 4.28.",
+      "number": 5,
+      "originalWording": "Independently demonstrate authorized native Kubernetes administration and deny unauthorized/public access. Retain recovery kubeconfig/key custody independent of KubeSphere and Rancher. Do not substitute Rancher-proxy credentials for this path.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "Approved sole-Administrator/no-deputy scopes, least privilege, Keycloak MFA, independent native break-glass and no automatic mappings. Required signed scoped grant/revocation records and independent off-site custody define complete lineage, trusted current head and post-cut reconciliation with fail-closed fencing.",
+      "evidence": [
+        {
+          "record": "20261004t085020z-owner-authorization/authorization.json",
+          "sha256": "24e894e4e84657e4745bfda22636e023a0ba9eaf3c0ca05133a6b91a8a3cb8f7"
+        },
+        {
+          "record": "20261004t154618z-capability-assessment/authority-design.json",
+          "sha256": "fa6545e4fa267aeae760196d66596fb5a122ba774ba7dbd8c8303776748b03cd"
+        }
+      ],
+      "limitsAndLaterExecution": "Actual repository, mirror, trust root, current head, signatures, grants, MFA and quarantined Rancher authority restore are unexecuted 4.28 checks. Their approved design is the original 4.26 requirement.",
+      "number": 6,
+      "originalWording": "Map required operator accounts/roles to approved native/Rancher authority. Preserve the Administrator/deputy division, MFA requirement and least privilege; no automatic workspace-to-project, account-to-admin or staging-membership mapping is accepted. Define Administrator-approved management grant/revocation records and their independent off-site custody/complete lineage so restored authority can be reconciled after the cut; missing or conflicting authority fails closed.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "The current actual-chart native procedure completes 19 phases with private full-content guards and four exact controller transitions. It exercises 1 Repo, 27 Applications, 90 ApplicationVersions and 1 retained Category, exact allowlist/propagation/preservation/native health, seven namespace equivalents and fresh-node synthetic etcd recovery. No licensed application write, Helm uninstall, vendor hook or blanket finalizer removal is required.",
+      "evidence": [
+        {
+          "record": "20261004t154617z-rehearsal/attempt.json",
+          "sha256": "b87ae6d3be4eb75ab54384c7e6c8e8d390bcfbea9e503f086258572dbb6aa1df"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/kubesphere-retirement-allowlist.json",
+          "sha256": "bbdbe448e26e90009cf86c047252bb228ed54f4c4057799ba5cac297db834a37"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/kubesphere-retirement-result.json",
+          "sha256": "d22249ea769c731fe82240a8bd09bc1ef5ff795ba9d8e431f0dd35aa0e895087"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/catalog-result.json",
+          "sha256": "c567328d530f2f0d5c666d7aee102d0a635c03b76210e1d0e11d3da7cee1534a"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/rollback-restore-result.json",
+          "sha256": "a86cb4d4bacd59358d4dbac726550c29548aa282e1d3224ff07c4d86099c711a"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/rollback-canary-readback.json",
+          "sha256": "dd4927792274422f66d42f039bff2d6fc8f50b5935bd76fbccb48c16d7b0cfa3"
+        },
+        {
+          "record": "20261004t164501z-seven-namespace-probe/seven-namespace-result.json",
+          "sha256": "383f1d555764efbcc7a3fb85d6ecdf65a4ec41a927af2d89cca1c63949e8e35c"
+        },
+        {
+          "record": "20261004t112734z-category-diagnosis/category-diagnosis.json",
+          "sha256": "bcba49347f5dbab6f2e441488777f785a78c00caf838491c686f795b18026ff2"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/workspace-probe-quota-cleanup.json",
+          "sha256": "abe09afbf148f332491b8850c0956c49be5683a2cbb885aefcc5c7eaa25c4380"
+        },
+        {
+          "record": "20261004t154617z-rehearsal/cluster-grant-annotation-transition.json",
+          "sha256": "e1a3d0a8d31f69bf43b6de6e21c2cacb77aa50fd5a9ce1d90e08679e4359e830"
+        }
+      ],
+      "limitsAndLaterExecution": "The synthetic fixture differs from production CNI/runtime/values and uses synthetic certificate/data/credentials. Authenticated business-workload outcomes, actual cert-manager effects and fresh production restore remain pre-4.27 checks.",
+      "number": 7,
+      "originalWording": "Rehearse the version-specific uninstall against a representative isolated inventory. Produce an exact proposed resource allowlist, ownership/deletion-propagation result, dependency order, workload-preservation assertions and stop/recovery procedure. Demonstrate that licensed KubeSphere application writes are not needed to complete the qualified native retirement procedure.",
+      "status": "met-for-original-4.26-scope"
+    },
+    {
+      "basis": "Separately reviewable retirement, qualification, Rancher/access/backup and ordering documents define qualification, 4.2 closure plus fresh 4.0 recovery, 4.27 retirement, qualified 1.35 hop, 1.36.5, 4.28 and staging. VM procurement may wait for 4.28.",
+      "evidence": [
+        {
+          "record": "20261004t085020z-owner-authorization/authorization.json",
+          "sha256": "24e894e4e84657e4745bfda22636e023a0ba9eaf3c0ca05133a6b91a8a3cb8f7"
+        },
+        {
+          "record": "20261004t154618z-capability-assessment/production-plan.json",
+          "sha256": "2c695ac4edd581839aef63dc4242f13f50a4cbda79248390492f9ea1616e74b3"
+        }
+      ],
+      "limitsAndLaterExecution": "Qualification does not authorize live deletion or clear 4.1. Production mutation, credential issuance, VM installation, workload upgrade and actual Rancher restore did not execute.",
+      "number": 8,
+      "originalWording": "Deliver a separately reviewable retirement runbook, revised upgrade ordering and 4.28 installation/access/backup plan. Qualification evidence alone neither authorizes live deletion nor clears Story 4.1. Story 4.26's retirement deliverable may complete while management-VM procurement remains scheduled for 4.28.",
+      "status": "met-for-original-4.26-scope"
+    }
+  ],
+  "documentSha256": {
+    "eng/cluster-management/QUALIFICATION.md": "72f07dc10d15aa79e4518df454bf6d9e69390095a0277e2431320f51ed9987f2",
+    "eng/cluster-management/RANCHER.md": "8c409fca25c52cb8bc55b2e312f8ef04cd4ef41969bfdf7fd13763c270de3152",
+    "eng/cluster-management/README.md": "d4858e273ead6cda6735487da3c638dbc4f52c00ee6e87ee029ca9b351bc764f",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "d3081a3ae0850d026dd718c5e3795b5bdc711b4e6b5b3c2415b012b98b6e29c6"
+  },
+  "freshHostBudgetObserved": false,
+  "freshProductionRecoveryDemonstrated": false,
+  "fullFixture": "20261004t154617z-rehearsal",
+  "historicalFailuresPreserved": true,
+  "independentExternalVantageEstablished": false,
+  "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+  "managementInstallationAccepted": false,
+  "newCredentialsOrPersistentAuthorityIssued": false,
+  "productionExecutableActions": 0,
+  "productionRetirementAccepted": false,
+  "productionUpgradeAccepted": false,
+  "qualificationAcceptedForOriginalStoryScope": true,
+  "sevenNamespaceInterventionEquivalence": {
+    "actualNamespaceDeleteRequests": 0,
+    "actualNamespacePutRequests": 7,
+    "fixtureEquivalentCount": 7,
+    "labelsSpecFinalizersOtherMetadataFinalizersAndStoragePreserved": true,
+    "onlyKubeSphereMetadataFinalizerRemoved": true,
+    "pairs": [
+      {
+        "sourceNamespace": "default",
+        "syntheticEquivalent": "s426-residue-1"
+      },
+      {
+        "sourceNamespace": "kube-node-lease",
+        "syntheticEquivalent": "s426-residue-2"
+      },
+      {
+        "sourceNamespace": "kube-public",
+        "syntheticEquivalent": "s426-residue-3"
+      },
+      {
+        "sourceNamespace": "kube-system",
+        "syntheticEquivalent": "s426-residue-4"
+      },
+      {
+        "sourceNamespace": "kubekey-system",
+        "syntheticEquivalent": "s426-residue-5"
+      },
+      {
+        "sourceNamespace": "kubesphere-controls-system",
+        "syntheticEquivalent": "s426-residue-6"
+      },
+      {
+        "sourceNamespace": "kubesphere-system",
+        "syntheticEquivalent": "s426-residue-7"
+      }
+    ],
+    "scope": "representative named intervention equivalence; source and fixture UIDs are distinct",
+    "sourceNamespaceCount": 7
+  },
+  "sevenNamespaceProbe": "20261004t164501z-seven-namespace-probe",
+  "soleOwnerAuthorization": "20261004t085020z-owner-authorization/authorization.json"
+}

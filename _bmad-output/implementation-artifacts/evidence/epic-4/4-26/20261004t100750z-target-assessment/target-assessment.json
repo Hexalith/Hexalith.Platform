@@ -1,0 +1,4731 @@
+{
+  "advisoryAssessments": [
+    {
+      "advisory": "GHSA-6vpq-mf48-9794",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.15.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "v2.15.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=v2.15.0, <v2.15.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-6vpq-mf48-9794"
+    },
+    {
+      "advisory": "GHSA-992f-xh8r-jg2f",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.18",
+        "2.12.14",
+        "2.13.10",
+        "2.14.6",
+        "2.15.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "v2.15.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=v2.15.0, <v2.15.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "v2.14.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=v2.14.0, <v2.14.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "v2.13.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=v2.13.0, <v2.13.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "v2.12.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=v2.12.0, <v2.12.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "v2.11.18",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=v2.11.0, <v2.11.18"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-992f-xh8r-jg2f"
+    },
+    {
+      "advisory": "GHSA-h923-rr66-g2w5",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.9",
+        "2.14.5",
+        "2.15.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.15.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.15.0, <2.15.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.13"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-h923-rr66-g2w5"
+    },
+    {
+      "advisory": "GHSA-j637-8xgr-436x",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.9",
+        "2.14.5",
+        "2.15.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.15.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.15.0, <2.15.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.17"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-j637-8xgr-436x"
+    },
+    {
+      "advisory": "GHSA-5hf4-f4mp-g6h4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.12.13",
+        "2.13.9",
+        "2.14.5",
+        "2.15.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.15.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.15.0, <2.15.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.13"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-5hf4-f4mp-g6h4"
+    },
+    {
+      "advisory": "GHSA-92jp-phmj-wv65",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.9",
+        "2.14.5",
+        "2.15.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.15.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.15.0, <2.15.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.9"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-92jp-phmj-wv65"
+    },
+    {
+      "advisory": "GHSA-wfvm-w99r-cjgc",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.9",
+        "2.14.5",
+        "2.15.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.15.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.15.0, <2.15.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.9"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-wfvm-w99r-cjgc"
+    },
+    {
+      "advisory": "GHSA-v584-7w32-jwpq",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.16",
+        "2.12.12",
+        "2.13.8",
+        "2.14.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.12"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.16",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.16"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-v584-7w32-jwpq"
+    },
+    {
+      "advisory": "GHSA-g4f6-44g4-23xm",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.12.12",
+        "2.13.8",
+        "2.14.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.12"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-g4f6-44g4-23xm"
+    },
+    {
+      "advisory": "GHSA-23h9-rr79-r3gh",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.16",
+        "2.12.12",
+        "2.13.8",
+        "2.14.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.12"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.16",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.16"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-23h9-rr79-r3gh"
+    },
+    {
+      "advisory": "GHSA-9jxv-832x-45q9",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.16",
+        "2.12.12",
+        "2.13.8",
+        "2.14.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.12"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.16",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.16"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-9jxv-832x-45q9"
+    },
+    {
+      "advisory": "GHSA-7r53-jvhg-9jq4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.8",
+        "2.14.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.8"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-7r53-jvhg-9jq4"
+    },
+    {
+      "advisory": "GHSA-c4rp-wgqc-mfhc",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.7",
+        "2.14.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.3"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.7"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-c4rp-wgqc-mfhc"
+    },
+    {
+      "advisory": "GHSA-c5jm-xcmq-9j95",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.15",
+        "2.12.11",
+        "2.13.7",
+        "2.14.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.3"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.7"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.11",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.11"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.15",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.15"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-c5jm-xcmq-9j95"
+    },
+    {
+      "advisory": "GHSA-4j6x-2764-m8gh",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.13.6",
+        "2.14.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.6"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-4j6x-2764-m8gh"
+    },
+    {
+      "advisory": "GHSA-mhc6-2gfq-xx62",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.10.12",
+        "2.11.14",
+        "2.12.10",
+        "2.13.6",
+        "2.14.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.12"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-mhc6-2gfq-xx62"
+    },
+    {
+      "advisory": "GHSA-vx8h-4prv-g744",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.12.10",
+        "2.13.6",
+        "2.14.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0, <2.14.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.10"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-vx8h-4prv-g744"
+    },
+    {
+      "advisory": "GHSA-5v3h-x4wf-5c35",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.13",
+        "2.12.9",
+        "2.13.5",
+        "2.14.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.14.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.14.0,<2.14.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0,<2.13.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0,<2.12.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0,<2.11.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=v2.10.11"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-5v3h-x4wf-5c35"
+    },
+    {
+      "advisory": "GHSA-mc24-7m59-4q5p",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.10.11",
+        "2.11.10",
+        "2.12.6",
+        "2.13.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.13.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.13.0, <2.13.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.11",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.11"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-mc24-7m59-4q5p"
+    },
+    {
+      "advisory": "GHSA-mw39-9qc2-f7mg",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.12.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.3"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.11.0"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.10.0"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.9.0"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-mw39-9qc2-f7mg"
+    },
+    {
+      "advisory": "GHSA-j4vr-pcmw-hx59",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.11.7",
+        "2.12.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.3"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.7"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.10.0"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.9.0"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-j4vr-pcmw-hx59"
+    },
+    {
+      "advisory": "GHSA-mjcp-rj3c-36fr",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.9.12",
+        "2.10.10",
+        "2.11.6",
+        "2.12.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.11.0, <2.11.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.10.0, <2.10.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.12"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-mjcp-rj3c-36fr"
+    },
+    {
+      "advisory": "GHSA-v3vj-5868-2ch2",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.9.12",
+        "2.10.10",
+        "2.11.6",
+        "2.12.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.11.0, <2.11.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.10.0, <2.10.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.12"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-v3vj-5868-2ch2"
+    },
+    {
+      "advisory": "GHSA-q82v-h4rq-5c86",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.9.12",
+        "2.10.10",
+        "2.11.6",
+        "2.12.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.2"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.6",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.6"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.12"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-q82v-h4rq-5c86"
+    },
+    {
+      "advisory": "GHSA-4h45-jpvh-6p5j",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.9.12",
+        "2.10.9",
+        "2.11.5",
+        "2.12.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.12.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.12.0, <2.12.1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.12",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.12"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-4h45-jpvh-6p5j"
+    },
+    {
+      "advisory": "GHSA-8h6m-wv39-239m",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.9.9",
+        "2.10.5",
+        "2.11.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.8.0"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.11.0, <2.11.1"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-8h6m-wv39-239m"
+    },
+    {
+      "advisory": "GHSA-8p83-cpfg-fj3g",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.14",
+        "2.9.8",
+        "2.10.4",
+        "2.11.0"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.11.0",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<2.11.0"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-8p83-cpfg-fj3g"
+    },
+    {
+      "advisory": "GHSA-mq23-vvg7-xfm4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.13",
+        "2.9.7",
+        "2.10.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.7"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-mq23-vvg7-xfm4"
+    },
+    {
+      "advisory": "GHSA-xr9q-h9c7-xw8q",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.13",
+        "2.9.7",
+        "2.10.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.7"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-xr9q-h9c7-xw8q"
+    },
+    {
+      "advisory": "GHSA-5qmp-9x47-92q8",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.13",
+        "2.9.7",
+        "2.10.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.7"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.10.0, <2.10.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-5qmp-9x47-92q8"
+    },
+    {
+      "advisory": "GHSA-2v2w-8v8c-wcm9",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.9.4",
+        "2.10.0"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.10.0",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<2.10.0"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-2v2w-8v8c-wcm9"
+    },
+    {
+      "advisory": "GHSA-9c5p-35gj-jqp4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.10",
+        "2.9.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.4"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-9c5p-35gj-jqp4"
+    },
+    {
+      "advisory": "GHSA-7h8m-pvw3-5gh4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.9",
+        "2.9.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.7.0"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-7h8m-pvw3-5gh4"
+    },
+    {
+      "advisory": "GHSA-h99m-6755-rgwc",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.7.16",
+        "2.8.9",
+        "2.9.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.7.16",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.7.0, <2.7.16"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-h99m-6755-rgwc"
+    },
+    {
+      "advisory": "GHSA-xj7w-r753-vj8v",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.8.9",
+        "2.9.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0,<2.9.3"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0,<2.8.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">=2.7.0"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-xj7w-r753-vj8v"
+    },
+    {
+      "advisory": "GHSA-h4h5-9833-v2p4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.7.15",
+        "2.8.6",
+        "2.8.8",
+        "2.9.0",
+        "2.9.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.7.15",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, <2.7.15"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.8.8",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.9.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.9.0, <2.9.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-h4h5-9833-v2p4"
+    },
+    {
+      "advisory": "GHSA-9ghh-mmcq-8phc",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.7.14",
+        "2.8.5"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.7.0, < 2.7.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.8.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.5"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-9ghh-mmcq-8phc"
+    },
+    {
+      "advisory": "GHSA-64jq-m7rq-768h",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.7.14",
+        "2.8.5"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.8.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.5"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-64jq-m7rq-768h"
+    },
+    {
+      "advisory": "GHSA-q6c7-56cq-g2wm",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.7.14",
+        "2.8.5"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.8.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.5"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-q6c7-56cq-g2wm"
+    },
+    {
+      "advisory": "GHSA-c85r-fwc7-45vc",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.14",
+        "2.7.10",
+        "2.8.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.6.0, <2.6.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.7.0, < 2.7.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.8.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-c85r-fwc7-45vc"
+    },
+    {
+      "advisory": "GHSA-xfj7-qf8w-2gcr",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.14",
+        "2.7.10",
+        "2.8.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.6.0, <2.6.14"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.7.0, < 2.7.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.8.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.8.0, <2.8.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-xfj7-qf8w-2gcr"
+    },
+    {
+      "advisory": "GHSA-8vhc-hwhc-cpj4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.13",
+        "2.7.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.4"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-8vhc-hwhc-cpj4"
+    },
+    {
+      "advisory": "GHSA-p976-h52c-26p6",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.13",
+        "2.7.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": ">= 2.6.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": ">= 2.7.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.4"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-p976-h52c-26p6"
+    },
+    {
+      "advisory": "GHSA-46v3-ggjg-qq3x",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.13",
+        "2.7.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.4"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-46v3-ggjg-qq3x"
+    },
+    {
+      "advisory": "GHSA-vf6j-6739-78m8",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.13",
+        "2.7.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.6.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.7, < 2.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.7.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.4"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-vf6j-6739-78m8"
+    },
+    {
+      "advisory": "GHSA-6m9f-pj6w-w87g",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.7.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "= 2.7.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-6m9f-pj6w-w87g"
+    },
+    {
+      "advisory": "GHSA-c45c-39f6-6gw9",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.17",
+        "2.6.10",
+        "2.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.5.17",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.1"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-c45c-39f6-6gw9"
+    },
+    {
+      "advisory": "GHSA-7m72-mh5r-6j3r",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.17",
+        "2.6.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.5.17",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.10"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-7m72-mh5r-6j3r"
+    },
+    {
+      "advisory": "GHSA-34p5-jp77-fcrc",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.17",
+        "2.6.10",
+        "2.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.5.17",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.1"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-34p5-jp77-fcrc"
+    },
+    {
+      "advisory": "GHSA-cq4p-vp5q-4522",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.17",
+        "2.6.10",
+        "2.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.5.17",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.1"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-cq4p-vp5q-4522"
+    },
+    {
+      "advisory": "GHSA-8c69-r38j-rpfj",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.10",
+        "2.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.1"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-8c69-r38j-rpfj"
+    },
+    {
+      "advisory": "GHSA-g25r-gvq3-wrq7",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.17",
+        "2.6.10",
+        "2.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.5.17",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.6.10",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">= 2.7.0, < 2.7.1"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-g25r-gvq3-wrq7"
+    },
+    {
+      "advisory": "GHSA-g7j7-h4q8-8w2f",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.16",
+        "2.6.7"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patchedVersions": "2.5.16, 2.6.7 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "From 2.5.0 and 2.6.0 up to and including 2.5.15 and 2.6.6"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-g7j7-h4q8-8w2f"
+    },
+    {
+      "advisory": "GHSA-8w87-58w6-hfv8",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.13",
+        "2.6.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.6.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.6.0,<2.6.4"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.5.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.5.0,<2.5.13"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-8w87-58w6-hfv8"
+    },
+    {
+      "advisory": "GHSA-6x34-89p7-95wg",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.16",
+        "2.6.7"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.6.7",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.6.0,<2.6.7"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.5.16",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.5.0,<2.5.16"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-6x34-89p7-95wg"
+    },
+    {
+      "advisory": "GHSA-vrph-m5jj-c46c",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.14",
+        "2.6.5"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.6.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.6.0,<2.6.5"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.5.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.5.0,<2.5.14"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-vrph-m5jj-c46c"
+    },
+    {
+      "advisory": "GHSA-wm2r-rp98-8pmh",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.13",
+        "2.6.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patchedVersions": "2.5.13, 2.6.4 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "From 2.5.0 and 2.6.0 up to and including 2.5.12 and 2.6.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-wm2r-rp98-8pmh"
+    },
+    {
+      "advisory": "GHSA-hx8w-ghh8-r4xf",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.13",
+        "2.6.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patchedVersions": "2.5.13, 2.6.4 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "From 2.5.0 and 2.6.0 up to and including 2.5.12 and 2.6.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-hx8w-ghh8-r4xf"
+    },
+    {
+      "advisory": "GHSA-4fc7-hc63-7fjg",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.12",
+        "2.6.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patchedVersions": "2.5.12, 2.6.3 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "From 2.5.0 and 2.6.0 up to and including 2.5.11 and 2.6.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-4fc7-hc63-7fjg"
+    },
+    {
+      "advisory": "GHSA-jwvr-vv7p-gpwq",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.13",
+        "2.6.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patchedVersions": "2.5.13, 2.6.4 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "From 2.5.0 and 2.6.0 up to and including 2.5.12 and 2.6.3"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-jwvr-vv7p-gpwq"
+    },
+    {
+      "advisory": "GHSA-28g7-896h-695v",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.4.18",
+        "2.5.12",
+        "2.6.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patchedVersions": "2.4.18, 2.5.12, 2.6.3 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "Up to and including 2.4.17, 2.5.11 and 2.6.2"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-28g7-896h-695v"
+    },
+    {
+      "advisory": "GHSA-hwm2-4ph6-w6m5",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.6.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.6.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.0.0,<2.6.4"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-hwm2-4ph6-w6m5"
+    },
+    {
+      "advisory": "GHSA-gvh9-xgrq-r8hw",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.5.10",
+        "2.6.0"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patchedVersions": "2.5.10, 2.6.0 and later releases",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.5.0 up to and including 2.5.9"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-gvh9-xgrq-r8hw"
+    },
+    {
+      "advisory": "GHSA-f9xf-jq4j-vqw4",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.4.16",
+        "2.5.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": ""
+          },
+          "patchedVersions": "2.5.9 and 2.4.16",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0+"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-f9xf-jq4j-vqw4"
+    },
+    {
+      "advisory": "GHSA-pvxj-25m6-7vqr",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.4.16",
+        "2.5.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "rancher",
+            "name": ""
+          },
+          "patchedVersions": "2.5.9 and 2.4.16",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0+"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-pvxj-25m6-7vqr"
+    },
+    {
+      "advisory": "GHSA-gqf8-rvrh-g7w6",
+      "candidate": "2.15.2",
+      "component": "rancher",
+      "publishedPatchedBaselines": [
+        "2.4.16",
+        "2.5.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.5.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.5.0,<2.5.9"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patchedVersions": "2.4.16",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=2.2.0,<2.4.16"
+        }
+      ],
+      "url": "https://github.com/rancher/rancher/security/advisories/GHSA-gqf8-rvrh-g7w6"
+    },
+    {
+      "advisory": "GHSA-jxr7-mqhw-9p98",
+      "candidate": "1.35.9",
+      "component": "k3s",
+      "publishedPatchedBaselines": [
+        "1.33.10",
+        "1.34.6",
+        "1.35.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/k3s-io/k3s"
+          },
+          "patchedVersions": "v1.35.3+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "<=v1.35.2+k3s1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/k3s-io/k3s"
+          },
+          "patchedVersions": "v1.34.6+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "<=v1.34.5+k3s1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/k3s-io/k3s"
+          },
+          "patchedVersions": "v1.33.10+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "<=v1.33.9+k3s"
+        }
+      ],
+      "url": "https://github.com/k3s-io/k3s/security/advisories/GHSA-jxr7-mqhw-9p98"
+    },
+    {
+      "advisory": "GHSA-m4hf-6vgr-75r2",
+      "candidate": "1.35.9",
+      "component": "k3s",
+      "publishedPatchedBaselines": [
+        "1.24.17",
+        "1.25.13",
+        "1.26.8",
+        "1.27.5",
+        "1.28.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "k3s-io/k3s"
+          },
+          "patchedVersions": "v1.24.17+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "< v1.24.17+k3s1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "k3s-io/k3s"
+          },
+          "patchedVersions": "v1.25.13+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "< v1.25.13+k3s1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "k3s-io/k3s"
+          },
+          "patchedVersions": " v1.26.8+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "<  v1.26.8+k3s1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "k3s-io/k3s"
+          },
+          "patchedVersions": "v1.27.5+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "< v1.27.5+k3s1"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "k3s-io/k3s"
+          },
+          "patchedVersions": "v1.28.1+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "< v1.28.1+k3s1"
+        }
+      ],
+      "url": "https://github.com/k3s-io/k3s/security/advisories/GHSA-m4hf-6vgr-75r2"
+    },
+    {
+      "advisory": "GHSA-cxm9-4m6p-24mc",
+      "candidate": "1.35.9",
+      "component": "k3s",
+      "publishedPatchedBaselines": [
+        "1.19.13",
+        "1.20.9",
+        "1.21.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "v1.19.13+k3s1, v1.20.9+k3s1, v1.21.3+k3s1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "<= v1.19.12+k3s1, v1.20.8+k3s1, v1.21.2+k3s1"
+        }
+      ],
+      "url": "https://github.com/k3s-io/k3s/security/advisories/GHSA-cxm9-4m6p-24mc"
+    },
+    {
+      "advisory": "GHSA-vmx8-mqv2-9gmg",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "4.1.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "helm"
+          },
+          "patchedVersions": "4.1.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=4.0.0,<=4.1.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-vmx8-mqv2-9gmg"
+    },
+    {
+      "advisory": "GHSA-q5jf-9vfq-h4h7",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "4.1.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "4.1.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": ">=4.0.0,<=4.1.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-q5jf-9vfq-h4h7"
+    },
+    {
+      "advisory": "GHSA-hr2v-4r36-88hr",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.20.2",
+        "4.1.3",
+        "4.1.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "Helm"
+          },
+          "patchedVersions": "3.20.2,4.1.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.20.1,<=4.1.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-hr2v-4r36-88hr"
+    },
+    {
+      "advisory": "GHSA-f9f8-9pmf-xv68",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.18.5"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "3.18.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.18.4"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-f9f8-9pmf-xv68"
+    },
+    {
+      "advisory": "GHSA-9h84-qmv7-982p",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.18.5"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "3.18.5",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.18.4"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-9h84-qmv7-982p"
+    },
+    {
+      "advisory": "GHSA-557j-xg8c-q2mm",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.17.4",
+        "3.18.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "3.18.4, 3.17.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.17.3, >= 3.18.0, <= 3.18.3 "
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-557j-xg8c-q2mm"
+    },
+    {
+      "advisory": "GHSA-5xqw-8hwv-wg92",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.17.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "3.17.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "< 3.17.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-5xqw-8hwv-wg92"
+    },
+    {
+      "advisory": "GHSA-4hfp-h4cw-hj8p",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.17.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "3.17.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "< 3.17.2"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-4hfp-h4cw-hj8p"
+    },
+    {
+      "advisory": "GHSA-r53h-jv2g-vpx6",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.14.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3 "
+          },
+          "patchedVersions": "3.14.2",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.14.1"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-r53h-jv2g-vpx6"
+    },
+    {
+      "advisory": "GHSA-v53g-5gjp-272r",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.14.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "3.14.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "< 3.14.0"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-v53g-5gjp-272r"
+    },
+    {
+      "advisory": "GHSA-pwcw-6f5g-gxf8",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.11.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "v3.11.1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "v3.0.0 - v3.11.0"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-pwcw-6f5g-gxf8"
+    },
+    {
+      "advisory": "GHSA-6rx9-889q-vv2r",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.10.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "v3.10.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= v3.10.2"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-6rx9-889q-vv2r"
+    },
+    {
+      "advisory": "GHSA-53c4-hhmh-vw5q",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.10.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3 "
+          },
+          "patchedVersions": "v3.10.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=v3.10.2"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-53c4-hhmh-vw5q"
+    },
+    {
+      "advisory": "GHSA-67fx-wx78-jx33",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.10.3"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "v3.10.3",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=v3.10.2"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-67fx-wx78-jx33"
+    },
+    {
+      "advisory": "GHSA-7hfp-qfw3-5jxh",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.9.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "helm.sh/helm/v3"
+          },
+          "patchedVersions": "v3.9.4",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= v3.9.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-7hfp-qfw3-5jxh"
+    },
+    {
+      "advisory": "GHSA-56hp-xqp3-w2jf",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.6.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "Helm"
+          },
+          "patchedVersions": "3.6.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.0"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-56hp-xqp3-w2jf"
+    },
+    {
+      "advisory": "GHSA-c38g-469g-cmgx",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.5.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.5.1",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": ">3.0 and < 3.5.1"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-c38g-469g-cmgx"
+    },
+    {
+      "advisory": "GHSA-c52f-pq47-2r9j",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "2.16.11",
+        "3.3.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "2.16.11,3.3.2",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0-2.16.10, 3.0.0-3.3.1"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-c52f-pq47-2r9j"
+    },
+    {
+      "advisory": "GHSA-m54r-vrmv-hw33",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "2.16.11",
+        "3.3.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.3.2, 2.16.11",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0-2.16.10, 3.0.0-3.3.1"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-m54r-vrmv-hw33"
+    },
+    {
+      "advisory": "GHSA-jm56-5h66-w453",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "2.16.11",
+        "3.3.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.3.2, 2.16.11",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0-2.16.10, 3.0.0-3.3.1"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-jm56-5h66-w453"
+    },
+    {
+      "advisory": "GHSA-9vp5-m38w-j776",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "2.16.11",
+        "3.3.2"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.3.2, 2.16.11",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0-2.16.10, 3.0.0-3.3.1"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-9vp5-m38w-j776"
+    },
+    {
+      "advisory": "GHSA-qq3j-xp49-j73f",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.2.4"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": "Helm"
+          },
+          "patchedVersions": "3.2.4",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "3.0.0-3.2.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-qq3j-xp49-j73f"
+    },
+    {
+      "advisory": "GHSA-cjjc-xp8v-855w",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "2.16.8",
+        "3.1.0"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "2.16.8,3.1.0",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "2.0.0-2.16.7,3.0.0-3.0.3"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-cjjc-xp8v-855w"
+    },
+    {
+      "advisory": "GHSA-q8q8-93cv-v6h8",
+      "candidate": "3.22.0",
+      "component": "helm",
+      "publishedPatchedBaselines": [
+        "3.1.3",
+        "3.2.0"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": "Helm"
+          },
+          "patchedVersions": "3.1.3, 3.2.0",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "3.1.0-3.1.2"
+        }
+      ],
+      "url": "https://github.com/helm/helm/security/advisories/GHSA-q8q8-93cv-v6h8"
+    },
+    {
+      "advisory": "GHSA-6vch-q96h-7gc3",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.5.33",
+        "3.6.14",
+        "3.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.7.0"
+        },
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.33",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.32"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-6vch-q96h-7gc3"
+    },
+    {
+      "advisory": "GHSA-xg4h-6gfc-h4m8",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.5.33",
+        "3.6.14",
+        "3.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.7.0"
+        },
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.33",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.32"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-xg4h-6gfc-h4m8"
+    },
+    {
+      "advisory": "GHSA-3wh4-j44w-pg92",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.5.32",
+        "3.6.13"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.12"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.32",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.31"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-3wh4-j44w-pg92"
+    },
+    {
+      "advisory": "GHSA-x35m-3gp4-4fh5",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.44",
+        "3.5.30",
+        "3.6.11"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.11",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.30",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.29"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd"
+          },
+          "patchedVersions": "3.4.44",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.4.43"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-x35m-3gp4-4fh5"
+    },
+    {
+      "advisory": "GHSA-rfx7-8w68-q57q",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.42",
+        "3.5.28",
+        "3.6.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.28",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.27"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd"
+          },
+          "patchedVersions": "3.4.42",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.4.41"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-rfx7-8w68-q57q"
+    },
+    {
+      "advisory": "GHSA-q8m4-xhhv-38mg",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.42",
+        "3.5.28",
+        "3.6.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.28",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.27"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd"
+          },
+          "patchedVersions": "3.4.42",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.4.41"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-q8m4-xhhv-38mg"
+    },
+    {
+      "advisory": "GHSA-3p4g-rcw5-8298",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.26",
+        "3.5.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "at-or-after-published-patched-baseline",
+          "literalComparatorMatch": null,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "v3.4.26 and v3.5.9",
+          "usesPublishedPatchedBaselineInterpretation": true,
+          "vulnerableRange": "< v3.4.26 and < v3.5.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-3p4g-rcw5-8298"
+    },
+    {
+      "advisory": "GHSA-h8g9-6gvh-5mrc",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-h8g9-6gvh-5mrc"
+    },
+    {
+      "advisory": "GHSA-wr2v-9rpq-c35q",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-wr2v-9rpq-c35q"
+    },
+    {
+      "advisory": "GHSA-j86v-2vjr-fg8f",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-j86v-2vjr-fg8f"
+    },
+    {
+      "advisory": "GHSA-2xhq-gv6c-p224",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": ""
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-2xhq-gv6c-p224"
+    },
+    {
+      "advisory": "GHSA-528j-9r78-wffx",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "wal"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-528j-9r78-wffx"
+    },
+    {
+      "advisory": "GHSA-4993-m7g5-r9hh",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "auth"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-4993-m7g5-r9hh"
+    },
+    {
+      "advisory": "GHSA-5x4g-q5rc-36jp",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.22"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "pkg"
+          },
+          "patchedVersions": "3.4.22",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-5x4g-q5rc-36jp"
+    },
+    {
+      "advisory": "GHSA-9gp7-6833-wv89",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "etcdserver"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-9gp7-6833-wv89"
+    },
+    {
+      "advisory": "GHSA-pm3m-32r3-7mfh",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "embed"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-pm3m-32r3-7mfh"
+    },
+    {
+      "advisory": "GHSA-vjg6-93fv-qv64",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "auth"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-vjg6-93fv-qv64"
+    },
+    {
+      "advisory": "GHSA-p4g4-wgrh-qrg2",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "wal"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-p4g4-wgrh-qrg2"
+    },
+    {
+      "advisory": "GHSA-m332-53r6-2w93",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "wal"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-m332-53r6-2w93"
+    },
+    {
+      "advisory": "GHSA-chh6-ppwq-jh92",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.3.23",
+        "3.4.10"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "",
+            "name": "pkg, etcdmain"
+          },
+          "patchedVersions": "3.4.10, 3.3.23",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<= 3.4.9"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-chh6-ppwq-jh92"
+    }
+  ],
+  "busyboxExactReleaseLicense": {
+    "sha256": "bbfc9843646d483c334664f651c208b9839626891d8f17604db2146962f43548",
+    "spdx": "GPL-2.0-only",
+    "version": "1.37.0"
+  },
+  "checkedAt": "2026-10-04T10:07:57Z",
+  "futureExecutionChecks": [
+    "4.28 deployed OS/pin/private-CA/MFA and authority restore",
+    "4.27 production recovery before retirement"
+  ],
+  "hosting": {
+    "K3s": "1.35.9+k3s1",
+    "OS": "Ubuntu 24.04 LTS amd64",
+    "Rancher": "2.15.2",
+    "supported": true,
+    "supportedK3sMinors": [
+      "1.34",
+      "1.35",
+      "1.36"
+    ]
+  },
+  "import": {
+    "1.37Certified": false,
+    "distribution": "generic native kubeadm",
+    "hop": "1.35.9",
+    "supported": true,
+    "supportedImportedMinors": [
+      "1.34",
+      "1.35",
+      "1.36"
+    ],
+    "target": "1.36.5"
+  },
+  "licenseCorrections": [
+    {
+      "component": "klipper-helm",
+      "corrects": "20261004t095137z-target-review wrong source organization; earlier 404 retained",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "sourceRepository": "k3s-io/klipper-helm",
+      "tagObject": {
+        "sha": "09c52422fd0654369e3c24a2a971289d1bffd5cd",
+        "type": "commit",
+        "url": "https://api.github.com/repos/k3s-io/klipper-helm/git/commits/09c52422fd0654369e3c24a2a971289d1bffd5cd"
+      },
+      "version": "v0.13.3-build20260727"
+    },
+    {
+      "component": "klipper-lb",
+      "corrects": "20261004t095137z-target-review wrong source organization; earlier 404 retained",
+      "license": "Apache-2.0",
+      "licenseObserved": true,
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "sourceRepository": "k3s-io/klipper-lb",
+      "tagObject": {
+        "sha": "982e737d2eafc79f29fa30d429f7360260edcdc6",
+        "type": "commit",
+        "url": "https://api.github.com/repos/k3s-io/klipper-lb/git/commits/982e737d2eafc79f29fa30d429f7360260edcdc6"
+      },
+      "version": "v0.4.17"
+    }
+  ],
+  "olderUnboundedRangePolicy": "Use explicit published patched versions and patch-section branches; later supported release-line inheritance is an inference, retained as such",
+  "optionalFutureHardening": [
+    "image SBOM and deployment scanning",
+    "independent artifact-signature verification"
+  ],
+  "pauseProgramLicense": {
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "sourceKubernetesVersion": "1.35.9",
+    "spdx": "Apache-2.0"
+  },
+  "productionAccepted": false,
+  "productionInstallationOrRestoreExecuted": false,
+  "sourceReview": "20261004t095137z-target-review",
+  "supportSource": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-15-2/",
+  "toolIdentityChecks": [
+    {
+      "archiveDigestMatches": true,
+      "binaries": {
+        "age": {
+          "downloadedBinarySha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c",
+          "matches": true,
+          "retainedBinarySha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c"
+        }
+      },
+      "freshArchiveSha256": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "publishedSha256": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "signatureVerified": false,
+      "tool": "age"
+    },
+    {
+      "archiveDigestMatches": true,
+      "binaries": {
+        "etcd": {
+          "downloadedBinarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+          "matches": true,
+          "retainedBinarySha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2"
+        },
+        "etcdctl": {
+          "downloadedBinarySha256": "18416269c49d0f25624938b0b45d5bd5d3eb980ab92048dc4652c66a4246141e",
+          "matches": true,
+          "retainedBinarySha256": "18416269c49d0f25624938b0b45d5bd5d3eb980ab92048dc4652c66a4246141e"
+        },
+        "etcdutl": {
+          "downloadedBinarySha256": "226944e63398e1503791e23f7667041ad7782cab3787350f641f9b52fd4d2dd2",
+          "matches": true,
+          "retainedBinarySha256": "226944e63398e1503791e23f7667041ad7782cab3787350f641f9b52fd4d2dd2"
+        }
+      },
+      "freshArchiveSha256": "66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "publishedSha256": "66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "signatureVerified": false,
+      "tool": "etcd"
+    },
+    {
+      "archiveDigestMatches": true,
+      "binaries": {
+        "helm": {
+          "downloadedBinarySha256": "7a319dee5ea7a1f7d7a0d92d5c223586f3b65abc33163c9de2a85f083aa3df2b",
+          "matches": true,
+          "retainedBinarySha256": "7a319dee5ea7a1f7d7a0d92d5c223586f3b65abc33163c9de2a85f083aa3df2b"
+        }
+      },
+      "freshArchiveSha256": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+      "publishedSha256": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+      "signatureVerified": false,
+      "tool": "helm"
+    }
+  ],
+  "unresolvedApplicableAdvisories": [
+    {
+      "advisory": "GHSA-6vch-q96h-7gc3",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.5.33",
+        "3.6.14",
+        "3.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.7.0"
+        },
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.33",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.32"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-6vch-q96h-7gc3"
+    },
+    {
+      "advisory": "GHSA-xg4h-6gfc-h4m8",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.5.33",
+        "3.6.14",
+        "3.7.1"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.7.1",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.7.0"
+        },
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.14",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.13"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.33",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.32"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-xg4h-6gfc-h4m8"
+    },
+    {
+      "advisory": "GHSA-3wh4-j44w-pg92",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.5.32",
+        "3.6.13"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.13",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.12"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.32",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.31"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-3wh4-j44w-pg92"
+    },
+    {
+      "advisory": "GHSA-x35m-3gp4-4fh5",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.44",
+        "3.5.30",
+        "3.6.11"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.11",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.10"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.30",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.29"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd"
+          },
+          "patchedVersions": "3.4.44",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.4.43"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-x35m-3gp4-4fh5"
+    },
+    {
+      "advisory": "GHSA-rfx7-8w68-q57q",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.42",
+        "3.5.28",
+        "3.6.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.28",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.27"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd"
+          },
+          "patchedVersions": "3.4.42",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.4.41"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-rfx7-8w68-q57q"
+    },
+    {
+      "advisory": "GHSA-q8m4-xhhv-38mg",
+      "candidate": "3.6.5",
+      "component": "etcd",
+      "publishedPatchedBaselines": [
+        "3.4.42",
+        "3.5.28",
+        "3.6.9"
+      ],
+      "rangeDecisions": [
+        {
+          "candidateAffected": true,
+          "decision": "candidate-matches-range-without-confirmed-patched-baseline",
+          "literalComparatorMatch": true,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.6.9",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.6.8"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd/v3"
+          },
+          "patchedVersions": "3.5.28",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.5.27"
+        },
+        {
+          "candidateAffected": false,
+          "decision": "outside-published-vulnerable-range",
+          "literalComparatorMatch": false,
+          "package": {
+            "ecosystem": "go",
+            "name": "go.etcd.io/etcd"
+          },
+          "patchedVersions": "3.4.42",
+          "usesPublishedPatchedBaselineInterpretation": false,
+          "vulnerableRange": "<=3.4.41"
+        }
+      ],
+      "url": "https://github.com/etcd-io/etcd/security/advisories/GHSA-q8m4-xhhv-38mg"
+    }
+  ]
+}

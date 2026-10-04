@@ -1,0 +1,22 @@
+{
+  "allMatchingFixtureBindingsRetired": true,
+  "allOtherDesiredFieldsUnchanged": true,
+  "causeAssessment": "Measured single-field revocation annotation effect after matching KubeSphere cluster binding retirement; causal association inferred from native phase and exact matching subject/role.",
+  "changedDesiredField": "metadata.annotations.iam.kubesphere.io/granted-clusters",
+  "completedPhases": 5,
+  "correctionScope": "Bounded exact revocation checkpoint after reviewed cluster binding retirement and before User removal; all other private desired fields remain guarded.",
+  "exactCleanupPassed": true,
+  "exactClearToEmptyStringWithKeyRetained": true,
+  "executedRuntimeBytesMatched": true,
+  "executedRuntimeSha256": "1523a32edaf58ccf8828c6d502371210c6ba250248972f91c81f6f1273501f61",
+  "failedAttempt": "20261004t133748z-rehearsal",
+  "failedBeforePhase": "users",
+  "failedReceiptPreserved": true,
+  "failureReasonCode": "reviewed-full-content-drift",
+  "globalRoleCheckpointExpectedUserMatched": true,
+  "matchingReviewedClusterRoleBindingUid": "5e2374a4-9647-4351-a516-a34cf482c750",
+  "matchingReviewedUserUid": "2798319a-dabc-4f57-a425-6eb8b7cbb687",
+  "originalPrivateBaselineMatched": true,
+  "productionAccepted": false,
+  "recordedAt": "2026-10-04T14:02:54Z"
+}

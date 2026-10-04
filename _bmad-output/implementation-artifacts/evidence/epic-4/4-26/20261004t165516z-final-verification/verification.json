@@ -1,0 +1,104 @@
+{
+  "attemptId": "20261004t165516z-final-verification",
+  "auditExport": {
+    "ciphertextBytes": 88838,
+    "ciphertextSha256": "deda8ee2c8eaf7c522531787dbc128a4b6aa8d761d6b272620c54747e4063a08",
+    "file": "test-and-audit-output.age",
+    "readbackVerified": true,
+    "recipientStanzas": [
+      {
+        "tag": "8XlNQg",
+        "type": "ssh-ed25519"
+      },
+      {
+        "tag": "Xg/FRQ",
+        "type": "ssh-ed25519"
+      }
+    ]
+  },
+  "documents": {
+    "allTasksChecked": true,
+    "baselineCommitPreserved": true,
+    "diffCheckPassed": true,
+    "frozenBlockUnchanged": true,
+    "localLinksChecked": 291,
+    "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+  },
+  "inputArtifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "30cbe64faa5994d1041e034d35f4a4d54155b7c04742ca623fd47671cad6795e",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "144b002111d80e1863f9a58a6264630d089b4de05e123a96004ced3848ad98a7",
+    "eng/cluster-management/QUALIFICATION.md": "10d00d3543785c83d82c5f6a0ff913532a1ab1e7770f8fbca8d7ec07f7417dc9",
+    "eng/cluster-management/RANCHER.md": "48fdd8f071a239110520dafd72359107baf700cda191b288c8e7e589ca2b79d0",
+    "eng/cluster-management/README.md": "d57bd19074e3a7f9dccc4a5e0d55a76b552f2d7a901dfe3e9f3d8a1869dfb537",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "d3081a3ae0850d026dd718c5e3795b5bdc711b4e6b5b3c2415b012b98b6e29c6",
+    "eng/cluster-management/evidence.py": "41ce544a605c656076f50b78519365713a9ba343d48f38e63b213eeb323f8ea3",
+    "eng/cluster-management/qualify.py": "5e1e2646e5de08a4b328089fa60b07a7f2bd0d2dc2e2ca5f5925d642ff2c3c7f",
+    "eng/cluster-management/rehearse.py": "bb02c5e71be3c9ea781dfd9b99b892ca59ed5abdb82c26122c80f492b17dfac5",
+    "eng/cluster-management/test_rehearse.py": "71d8c3f642440910da8029a35736deb7eccf0965cdcc8fafa3e64c9acb18acd9",
+    "eng/cluster-management/test_review_loop4.py": "14a2b813072ce902834707bda9a4610a344c98502a77e4404f3402d7411d1ae8"
+  },
+  "inputHead": "0e602ad6a00cab4fa03e4d603f49e82d4b1173e3",
+  "kubernetesUpgraded": false,
+  "postReviewNativeProof": {
+    "actualBeforeAfterCanaryReadbacksEqual": true,
+    "allExactFixtureCleanupReceiptsPassed": true,
+    "allSevenFullRawNamespaceComparisonsPassed": true,
+    "clusterGrantRevocationPairsIndependentlyReplayed": 1,
+    "completedPhases": 19,
+    "exactRemovals": 471,
+    "executedDriverAndModuleBytesIndependentlyCompared": true,
+    "fullFixture": "20261004t154617z-rehearsal",
+    "fullPrivateBaselineFinalizerInterventions": 2,
+    "namespaceDeleteRequests": 0,
+    "namespacePutRequests": 7,
+    "sevenNamespaceProbe": "20261004t164501z-seven-namespace-probe",
+    "state": "passed",
+    "syntheticProbeQuotaCleanupAndStableAbsenceIndependentlyChecked": true,
+    "syntheticProbeQuotaExcludedBeforeBaselineWithoutRestoreExemption": true
+  },
+  "productionMutationPerformed": false,
+  "rancherProvisioned": false,
+  "retainedEvidenceAudit": {
+    "allChecksumsCoverageJsonModesRecipientsAndPrivateDigestReadbacksPassed": true,
+    "counts": {
+      "currentPrivateAttempts": 41,
+      "exportsIndependentlyDecrypted": 5048,
+      "jsonParsed": 1027,
+      "privateDirectories": 3,
+      "privateFiles": 5610,
+      "publicAttempts": 110,
+      "publicFiles": 1027
+    },
+    "state": "passed"
+  },
+  "roleGranted": false,
+  "schemaVersion": 1,
+  "scope": "Independent root verification of story 4.26 implementation, original matrix and retained evidence; no production execution approval",
+  "state": "passed",
+  "tests": {
+    "command": "python3 -m unittest discover -s eng/cluster-management -p 'test_*.py'",
+    "errors": 0,
+    "executedByRoot": true,
+    "failures": 0,
+    "matrixRows": {
+      "Authority": [
+        "test_qualify.PinAuthorityTests.test_missing_gapped_conflicting_or_expanded_authority_fails_closed"
+      ],
+      "Census": [
+        "test_qualify.CensusTests.test_failed_discovery_is_not_an_empty_accepted_census"
+      ],
+      "Ownership": [
+        "test_qualify.ProjectionTests.test_unknown_owner_consumer_and_deletion_effects_block_retirement"
+      ],
+      "Rehearsal": [
+        "test_rehearse.RehearsalTests.test_source_endpoint_uid_reachability_and_credentials_refused"
+      ],
+      "Target": [
+        "test_qualify.PinAuthorityTests.test_unqualified_tag_hosting_security_and_tools_fail_closed"
+      ]
+    },
+    "passed": true,
+    "skipped": 0,
+    "unitTestsRun": 142
+  }
+}

@@ -134,6 +134,9 @@ def assert_preserved(before, after, expected_deleted, named_finalizers=None):
         protected = ('owners', 'finalizers', 'namespaceFinalizers', 'managementLabels', 'storageClass', 'reclaimPolicy',
                      'storagePropertiesSha256', 'volumeMode', 'accessModes', 'provisioner', 'volumeBindingMode')
         fields = ('uid', 'binding', 'deletionTimestamp') + (protected if initial[k]['kind'] in PROTECTED_KINDS else ())
+        if initial[k]['kind'] in ('Deployment', 'StatefulSet', 'DaemonSet', 'Job', 'CronJob', 'Pod'):
+            fields += ('replicas', 'images', 'serviceAccount', 'claims', 'secretReferences',
+                       'configMapReferences', 'configReferences')
         expected = dict(initial[k])
         if k in (named_finalizers or {}):
             finalizer = named_finalizers[k]
@@ -361,6 +364,160 @@ def review_digest(projection):
     return digest(canonical({k: v for k, v in projection.items() if k != 'resourceVersion'}))
 
 
+def content_review_digest(raw):
+    """Private digest of complete desired content; only status and server bookkeeping may churn."""
+    content = copy.deepcopy(raw)
+    content.pop('status', None)
+    # CRDs without a status subresource also increment generation for status-only updates.
+    # Full desired fields remain in the digest, including spec/data/rules and other metadata.
+    for field in ('resourceVersion', 'managedFields', 'generation'):
+        content.get('metadata', {}).pop(field, None)
+    return digest(canonical(content))
+
+
+def role_annotation_transitions(reviewed, current, removed, retirement_uids):
+    """Only the exact User role annotation cleared by an already retired, matching GlobalRoleBinding."""
+    annotation = 'iam.kubesphere.io/globalrole'
+    transitions = []
+    for binding_uid in sorted(removed):
+        binding = reviewed.get(binding_uid, {})
+        if (binding.get('apiVersion'), binding.get('kind')) != ('iam.kubesphere.io/v1beta1', 'GlobalRoleBinding'):
+            continue
+        role_ref = binding.get('roleRef', {})
+        if (role_ref.get('apiGroup'), role_ref.get('kind')) != ('iam.kubesphere.io', 'GlobalRole'):
+            continue
+        role = role_ref.get('name')
+        users = {s.get('name') for s in binding.get('subjects', []) if s.get('kind') == 'User'
+                 and s.get('apiGroup') == 'iam.kubesphere.io'}
+        for uid, before in reviewed.items():
+            if (uid not in retirement_uids or (before.get('apiVersion'), before.get('kind')) != ('iam.kubesphere.io/v1beta1', 'User')
+                    or before.get('metadata', {}).get('name') not in users
+                    or before.get('metadata', {}).get('annotations', {}).get(annotation) != role):
+                continue
+            after = current.get(uid)
+            if after is None:
+                raise ValueError('expected-role-annotation-user-missing')
+            if content_review_digest(before) == content_review_digest(after):
+                continue
+            expected = copy.deepcopy(before)
+            annotations = expected['metadata']['annotations']
+            annotations[annotation] = ''
+            if content_review_digest(expected) != content_review_digest(after):
+                raise ValueError('unexpected-controller-role-annotation-transition')
+            transitions.append({'uid': uid, 'bindingUid': binding_uid, 'field': 'metadata.annotations.' + annotation,
+                                'expected': expected})
+    return transitions
+
+
+def cluster_grant_annotation_transition(reviewed, first, second, bindings, retirement_uids,
+                                        retired_binding_uids, phase, completed_phases):
+    """Only the reviewed host grant cleared after every matching IAM cluster binding retires."""
+    if phase != 'users' or 'kubesphere-cluster-role-bindings' not in completed_phases:
+        raise ValueError('cluster-grant-checkpoint-before-binding-retirement')
+    meta = reviewed.get('metadata', {})
+    identity = (reviewed.get('apiVersion'), reviewed.get('kind'), meta.get('namespace'), meta.get('name'), meta.get('uid'))
+    if (identity[:3] != ('iam.kubesphere.io/v1beta1', 'User', None) or not identity[3]
+            or identity[4] not in retirement_uids or identity[4] in bindings):
+        raise ValueError('cluster-grant-not-exact-reviewed-user')
+    if not bindings or not set(bindings) <= set(retirement_uids) & set(retired_binding_uids):
+        raise ValueError('cluster-grant-matching-binding-not-retired')
+    for uid, binding in bindings.items():
+        metadata = binding.get('metadata', {})
+        if ((binding.get('apiVersion'), binding.get('kind'), metadata.get('namespace'), metadata.get('uid')) !=
+                ('iam.kubesphere.io/v1beta1', 'ClusterRoleBinding', None, uid) or not metadata.get('name')
+                or metadata.get('labels', {}).get('iam.kubesphere.io/role-ref') != 'cluster-admin'
+                or metadata.get('labels', {}).get('iam.kubesphere.io/user-ref') != identity[3]
+                or binding.get('roleRef') != {'apiGroup': 'iam.kubesphere.io', 'kind': 'ClusterRole', 'name': 'cluster-admin'}
+                or binding.get('subjects') != [{'apiGroup': 'iam.kubesphere.io', 'kind': 'User', 'name': identity[3]}]):
+            raise ValueError('cluster-grant-reviewed-binding-mismatch')
+    annotation = 'iam.kubesphere.io/granted-clusters'
+    if meta.get('annotations', {}).get(annotation) != 'host':
+        raise ValueError('cluster-grant-reviewed-value-not-exact-host')
+    expected = copy.deepcopy(reviewed)
+    expected['metadata']['annotations'][annotation] = ''
+    for current in (first, second):
+        fields = (current or {}).get('metadata', {})
+        if ((current or {}).get('apiVersion'), (current or {}).get('kind'), fields.get('namespace'), fields.get('name'), fields.get('uid')) != identity:
+            raise ValueError('cluster-grant-user-identity-drift')
+        value = fields.get('annotations', {}).get(annotation)
+        if value not in ('host', ''):
+            raise ValueError('cluster-grant-missing-key-or-unexpected-grants')
+        if content_review_digest(current) != content_review_digest(reviewed if value == 'host' else expected):
+            raise ValueError('cluster-grant-other-desired-content-drift')
+    if content_review_digest(first) != content_review_digest(second):
+        raise ValueError('cluster-grant-not-stable')
+    return expected if second['metadata']['annotations'][annotation] == '' else None
+
+
+def lease_renewal_transition(reviewed, first, second, retirement_uids, phase, manager_absent):
+    """One exact final leader renewal, only after removal and two stable native reads."""
+    if phase != 'console-route':
+        raise ValueError('lease-renewal-checkpoint-wrong-phase')
+    if not manager_absent:
+        raise ValueError('lease-renewal-manager-still-present')
+    metadata = reviewed.get('metadata', {})
+    identity = (reviewed.get('apiVersion'), reviewed.get('kind'), metadata.get('namespace'), metadata.get('name'))
+    if identity != ('coordination.k8s.io/v1', 'Lease', 'kubesphere-system', 'ks-controller-manager-leader-election') or metadata.get('uid') not in retirement_uids:
+        raise ValueError('lease-renewal-not-exact-retirement-identity')
+    for current in (first, second):
+        fields = current.get('metadata', {})
+        if (current.get('apiVersion'), current.get('kind'), fields.get('namespace'), fields.get('name'), fields.get('uid')) != (*identity, metadata['uid']):
+            raise ValueError('lease-renewal-identity-drift')
+    if content_review_digest(first) != content_review_digest(second):
+        raise ValueError('lease-renewal-not-stable')
+    expected = copy.deepcopy(reviewed)
+    renewal = second.get('spec', {}).get('renewTime')
+    def timestamp(value):
+        if not isinstance(value, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})', value):
+            raise ValueError('lease-renewal-invalid-time')
+        try:
+            return datetime.fromisoformat(value.replace('Z', '+00:00'))
+        except ValueError:
+            raise ValueError('lease-renewal-invalid-time') from None
+    if timestamp(renewal) < timestamp(reviewed.get('spec', {}).get('renewTime')):
+        raise ValueError('lease-renewal-backwards-time')
+    expected['spec']['renewTime'] = renewal
+    if content_review_digest(expected) != content_review_digest(second):
+        raise ValueError('lease-renewal-other-desired-content-drift')
+    return None if content_review_digest(reviewed) == content_review_digest(second) else expected
+
+
+def category_count_transition(reviewed, first, second, reviewed_extensions, retirement_uids,
+                              phase, completed_phases, manager_absent, extensions_absent):
+    """The exact retired extension membership count, after its controllers and catalog are absent."""
+    if phase != 'remaining-release-objects':
+        raise ValueError('category-count-checkpoint-wrong-phase')
+    if not {'catalog-extension', 'controllers-and-services'} <= set(completed_phases):
+        raise ValueError('category-count-before-catalog-controller-retirement')
+    if not manager_absent or not extensions_absent:
+        raise ValueError('category-count-manager-or-extensions-present')
+    metadata = reviewed.get('metadata', {})
+    identity = (reviewed.get('apiVersion'), reviewed.get('kind'), metadata.get('namespace'), metadata.get('name'))
+    if identity[:3] != ('kubesphere.io/v1alpha1', 'Category', None) or not identity[3] or metadata.get('uid') not in retirement_uids:
+        raise ValueError('category-count-not-exact-retirement-identity')
+    for current in (first, second):
+        fields = (current or {}).get('metadata', {})
+        if ((current or {}).get('apiVersion'), (current or {}).get('kind'), fields.get('namespace'), fields.get('name'), fields.get('uid')) != (*identity, metadata['uid']):
+            raise ValueError('category-count-identity-drift')
+    if content_review_digest(first) != content_review_digest(second):
+        raise ValueError('category-count-not-stable')
+    members = [v for v in reviewed_extensions if (v.get('apiVersion'), v.get('kind')) ==
+               ('kubesphere.io/v1alpha1', 'Extension') and v.get('metadata', {}).get('labels', {}).get('kubesphere.io/category') == identity[3]]
+    member_uids = [v.get('metadata', {}).get('uid') for v in members]
+    if any(not uid or uid not in retirement_uids for uid in member_uids) or len(set(member_uids)) != len(member_uids):
+        raise ValueError('category-count-membership-not-retired')
+    annotation = 'kubesphere.io/count'
+    if metadata.get('annotations', {}).get(annotation) != str(len(members)):
+        raise ValueError('category-count-reviewed-membership-mismatch')
+    if second['metadata'].get('annotations', {}).get(annotation) != '0':
+        raise ValueError('category-count-current-not-zero')
+    expected = copy.deepcopy(reviewed)
+    expected['metadata']['annotations'][annotation] = '0'
+    if content_review_digest(expected) != content_review_digest(second):
+        raise ValueError('category-count-other-desired-content-drift')
+    return None if content_review_digest(reviewed) == content_review_digest(second) else expected
+
+
 def phase_delta(baseline_uids, before, after, expected_uids):
     """Explain a phase without exposing values; transients created during the attempt are reported separately."""
     tracked = lambda items: {key(v): v for v in items if v['uid'] in baseline_uids or v['kind'] in PROTECTED_KINDS}
@@ -465,6 +622,11 @@ class Fixture:
         self.custom_resources = None
         self.derived_tag = 'hexalith-s426-fenced:' + self.cluster
         self.rollback_fixture = None
+        self.raw_inventory_by_uid = {}
+        self.reviewed_content_digests = {}
+        self.reviewed_raw_by_uid = {}
+        self.retirement_uids = set()
+        self.completed_retirement_phases = set()
 
     def capture_volumes(self):
         """Keep volume identities before encryption or teardown can fail."""
@@ -779,7 +941,9 @@ class Fixture:
         return [project_resource(v) for v in self.get('customresourcedefinitions.apiextensions.k8s.io')['items']]
 
     def kubesphere_inventory(self):
-        return [project_resource(v) for v in self.get(self.resource_list())['items']]
+        raw = self.get(self.resource_list())['items']
+        self.raw_inventory_by_uid = {v['metadata']['uid']: v for v in raw}
+        return [project_resource(v) for v in raw]
 
     def uid_states(self):
         """Small UID/deletion-state polls; full projections are taken only once a phase settles."""
@@ -828,9 +992,8 @@ class Fixture:
 
     def native_retire(self, phase, path, reviewed):
         """Fresh read compared with the reviewed allowlist entry, then a DELETE carrying its UID and the read resourceVersion.
-        A resourceVersion that changed since review is accepted only when the sanitized reviewed projection is identical;
-        any projected difference stops for re-review. The projection omits spec, data, RBAC rules, status and
-        non-management labels/annotations, so a change confined to those fields is not detected here."""
+        Changed resourceVersions require identical private full-content and projected digests.
+        Without a private content baseline, the reviewed resourceVersion must remain unchanged."""
         uid = reviewed['uid']
         for retry in range(3):
             current = self.native_read(path)
@@ -842,8 +1005,11 @@ class Fixture:
             changed = version != reviewed['resourceVersion']
             if changed and review_digest(project_resource(current)) != review_digest(reviewed):
                 raise ValueError('reviewed-entry-drift-before-native-delete')
+            content_verified = self.verify_reviewed_content(current, reviewed)
             binding = {'reviewedResourceVersion': reviewed['resourceVersion'], 'resourceVersion': version,
-                       'resourceVersionChangedSinceReview': changed, 'reviewedProjectionSha256': review_digest(reviewed)}
+                       'resourceVersionChangedSinceReview': changed, 'reviewedProjectionSha256': review_digest(reviewed),
+                       'privateFullContentVerified': content_verified,
+                       'strictReviewedResourceVersion': not content_verified}
             result = self.kube('native-retire-' + phase, 'delete', '--raw', path, '-f', '-', allowed=(0, 1),
                                obj=native_delete_options({'uid': uid, 'resourceVersion': version, 'propagation': 'Foreground'}))
             if result.returncode == 0:
@@ -854,15 +1020,42 @@ class Fixture:
                 raise ValueError('native-delete-rejected')
         raise ValueError('native-delete-conflict-retries-exhausted')
 
+    def verify_reviewed_content(self, current, reviewed):
+        expected = self.reviewed_content_digests.get(reviewed['uid'])
+        if expected is not None:
+            if content_review_digest(current) != expected:
+                raise ValueError('reviewed-full-content-drift')
+            return True
+        if current['metadata']['resourceVersion'] != reviewed['resourceVersion']:
+            raise ValueError('reviewed-resource-version-drift-without-content-baseline')
+        return False
+
     def remove_named_finalizer(self, path, uid, finalizer):
         """One object, one named finalizer, only after deletion was requested and its reconciler is gone."""
+        reviewed = self.reviewed_raw_by_uid.get(uid)
+        if reviewed is None or reviewed.get('metadata', {}).get('uid') != uid:
+            raise ValueError('named-finalizer-reviewed-content-baseline-missing')
+        deleted_at = None
         for retry in range(3):
             current = self.native_read(path)
             meta = (current or {}).get('metadata', {})
             if (current is None or meta.get('uid') != uid or not meta.get('deletionTimestamp')
+                    or not isinstance(meta.get('resourceVersion'), str) or not meta['resourceVersion']
                     or finalizer not in meta.get('finalizers', [])):
                 raise ValueError('named-finalizer-precondition-failed')
-            projected = project_resource(current)
+            if deleted_at is not None and meta['deletionTimestamp'] != deleted_at:
+                raise ValueError('named-finalizer-deletion-state-drift')
+            deleted_at = meta['deletionTimestamp']
+            compared = copy.deepcopy(current)
+            reviewed_meta = reviewed['metadata']
+            if 'deletionTimestamp' not in reviewed_meta:
+                compared['metadata'].pop('deletionTimestamp', None)
+            if ('deletionGracePeriodSeconds' not in reviewed_meta
+                    and type(meta.get('deletionGracePeriodSeconds')) is int and meta['deletionGracePeriodSeconds'] == 0):
+                compared['metadata'].pop('deletionGracePeriodSeconds')
+            if content_review_digest(compared) != content_review_digest(reviewed):
+                raise ValueError('reviewed-full-content-drift')
+            projected = project_resource(reviewed)
             validate_allowlist([projected], [{**projected, 'action': 'remove-named-finalizer',
                                               'propagation': 'Foreground', 'finalizer': finalizer}])
             updated = copy.deepcopy(current)
@@ -871,7 +1064,8 @@ class Fixture:
             result = self.kube('named-finalizer-removal', 'replace', '--raw', path, '-f', '-', obj=updated, allowed=(0, 1))
             if result.returncode == 0:
                 return {'outcome': 'named-finalizer-removed', 'finalizer': finalizer, 'resourceVersion': meta['resourceVersion'],
-                        'otherFinalizersRetained': updated['metadata']['finalizers'], 'conflictRetries': retry}
+                        'otherFinalizersRetained': updated['metadata']['finalizers'], 'conflictRetries': retry,
+                        'privateFullContentVerified': True}
             if not native_conflict(result):
                 raise ValueError('named-finalizer-request-rejected')
         raise ValueError('named-finalizer-conflict-retries-exhausted')
@@ -884,6 +1078,7 @@ class Fixture:
         projected = project_resource(current)
         if review_digest(projected) != review_digest(reviewed):
             raise ValueError('namespace-finalizer-reviewed-entry-drift')
+        content_verified = self.verify_reviewed_content(current, reviewed)
         validate_allowlist([projected], [{**projected, 'action': 'remove-named-finalizer',
                            'finalizer': SYSTEM_WORKSPACE_FINALIZER, 'propagation': 'Foreground'}])
         updated = copy.deepcopy(current)
@@ -891,7 +1086,8 @@ class Fixture:
         self.kube('namespace-named-finalizer-removal', 'replace', '--raw', path, '-f', '-', obj=updated)
         return {'outcome': 'namespace-retained-named-finalizer-removed', 'finalizer': SYSTEM_WORKSPACE_FINALIZER,
                 'uid': reviewed['uid'], 'resourceVersion': current['metadata']['resourceVersion'],
-                'otherFinalizersRetained': updated['metadata']['finalizers'], 'deleteRequested': False}
+                'otherFinalizersRetained': updated['metadata']['finalizers'], 'deleteRequested': False,
+                'privateFullContentVerified': content_verified}
 
     def probe_workspace_propagation(self):
         """Observe controller-processed workspace deletion on a synthetic workspace only."""
@@ -941,7 +1137,69 @@ class Fixture:
         self.attempt.record('workspace-propagation-probe.json', record)
         if outcome == 'terminating' and member_after is not None:
             raise ValueError('workspace-probe-namespace-stuck')
+        if template_after is not None or workspace_after is not None:
+            raise ValueError('workspace-probe-parent-still-present')
+        self.cleanup_workspace_probe_quota(before)
         return record
+
+    def cleanup_workspace_probe_quota(self, template):
+        """Remove only the synthetic probe's exact UID-derived quota Secret before baseline/snapshot."""
+        meta = template.get('metadata', {})
+        template_uid = meta.get('uid')
+        if ((template.get('apiVersion'), template.get('kind'), meta.get('name'), meta.get('namespace'))
+                != ('tenant.kubesphere.io/v1beta1', 'WorkspaceTemplate', 's426-probe', None)
+                or not isinstance(template_uid, str) or re.fullmatch(r'[a-z0-9-]+', template_uid) is None):
+            raise ValueError('workspace-probe-template-identity-invalid')
+        parent_paths = ['/apis/tenant.kubesphere.io/v1beta1/workspacetemplates/s426-probe',
+                        '/apis/tenant.kubesphere.io/v1beta1/workspaces/s426-probe']
+        name = 'io.kubesphere.license.quota.v3.workspace.' + template_uid
+        path = '/api/v1/namespaces/kubesphere-system/secrets/' + name
+        record = {'scope': 'exact synthetic workspace-probe quota Secret only, before fixture baseline/snapshot',
+                  'templateUid': template_uid, 'namespace': 'kubesphere-system', 'name': name,
+                  'request': None, 'absenceSamples': [], 'state': 'failed-closed', 'productionAccepted': False}
+        self.last_step = 'workspace-probe-quota-cleanup'
+        try:
+            record['parentsAbsentBeforeCapture'] = [self.native_read(parent) is None for parent in parent_paths]
+            if not all(record['parentsAbsentBeforeCapture']):
+                raise ValueError('workspace-probe-parent-still-present')
+            current = self.native_read(path)
+            if current is not None:
+                secret_meta = current.get('metadata', {})
+                if ((current.get('apiVersion'), current.get('kind'), secret_meta.get('namespace'), secret_meta.get('name'))
+                        != ('v1', 'Secret', 'kubesphere-system', name)
+                        or not isinstance(secret_meta.get('labels'), dict)
+                        or secret_meta['labels'].get('kubesphere.io/workspace') != 's426-probe'
+                        or any(not isinstance(secret_meta.get(k), str) or not secret_meta[k] for k in ('uid', 'resourceVersion'))
+                        or secret_meta.get('ownerReferences') or secret_meta.get('finalizers')
+                        or secret_meta.get('deletionTimestamp') or 'deletionGracePeriodSeconds' in secret_meta):
+                    raise ValueError('workspace-probe-quota-identity-invalid')
+                self.attempt.encrypt('workspace-probe-quota-reviewed-content', canonical(current), self.args.age, self.args.recipient)
+                uid = secret_meta['uid']
+                record.update({'uid': uid, 'reviewedResourceVersion': secret_meta['resourceVersion']})
+                record['parentsAbsentBeforeRequest'] = [self.native_read(parent) is None for parent in parent_paths]
+                if not all(record['parentsAbsentBeforeRequest']):
+                    raise ValueError('workspace-probe-parent-recreated-before-quota-delete')
+                previous_digest = self.reviewed_content_digests.get(uid)
+                self.reviewed_content_digests[uid] = content_review_digest(current)
+                try:
+                    record['request'] = self.native_retire('workspace-probe-quota', path, project_resource(current))
+                finally:
+                    if previous_digest is None:
+                        self.reviewed_content_digests.pop(uid, None)
+                    else:
+                        self.reviewed_content_digests[uid] = previous_digest
+            # Two separated native samples must show both parents and the exact residue absent.
+            # Any lingering or recreated object stops; no wildcard cleanup or baseline exemption.
+            for _ in range(2):
+                time.sleep(2)
+                absent = [self.native_read(candidate) is None for candidate in [*parent_paths, path]]
+                record['absenceSamples'].append(dict(zip(('templateAbsent', 'workspaceAbsent', 'quotaAbsent'), absent)))
+                if not all(absent):
+                    raise ValueError('workspace-probe-quota-cleanup-not-stably-absent')
+            record['state'] = 'passed-synthetic-only-cleanup'
+            return record
+        finally:
+            self.attempt.record('workspace-probe-quota-cleanup.json', record)
 
     def retire_phase(self, phase, baseline, by_uid, resources):
         name, expected = phase['phase'], set(phase['expected'])
@@ -954,6 +1212,121 @@ class Fixture:
         if phase['mode'] == 'named-finalizer' and any(set(current.get(uid, {}).get('finalizers', [])) - {SYSTEM_WORKSPACE_FINALIZER}
                                                      for uid in phase['roots']):
             raise ValueError('unreviewed-finalizer-before-named-intervention')
+        if name == 'users':
+            transitions = []
+            for uid in phase['roots']:
+                reviewed = self.reviewed_raw_by_uid.get(uid, {})
+                if (reviewed.get('apiVersion'), reviewed.get('kind')) != ('iam.kubesphere.io/v1beta1', 'User'):
+                    continue
+                username = reviewed.get('metadata', {}).get('name')
+                if not isinstance(username, str) or not username or reviewed['metadata'].get('uid') != uid:
+                    raise ValueError('cluster-grant-not-exact-reviewed-user')
+                bindings = {binding_uid: binding for binding_uid, binding in self.reviewed_raw_by_uid.items()
+                    if (binding.get('apiVersion'), binding.get('kind')) == ('iam.kubesphere.io/v1beta1', 'ClusterRoleBinding')
+                    and (binding.get('metadata', {}).get('labels', {}).get('iam.kubesphere.io/user-ref') == username
+                         or binding.get('metadata', {}).get('name') == username + '-cluster-admin'
+                         or any(v.get('name') == username for v in binding.get('subjects', [])))}
+                if not bindings:
+                    continue
+                retired = set(bindings) - set(current)
+                cluster_grant_annotation_transition(reviewed, reviewed, reviewed, bindings, self.retirement_uids,
+                    retired, name, self.completed_retirement_phases)
+                self.last_step = 'cluster-grant-annotation-checkpoint'
+                for binding_uid in bindings:
+                    if self.native_read(api_path(resources, by_uid[binding_uid])) is not None:
+                        raise ValueError('cluster-grant-matching-binding-still-present')
+                path = api_path(resources, by_uid[uid])
+                deadline, previous = time.monotonic() + 30, None
+                for read_count in range(1, 11):
+                    observed = self.native_read(path)
+                    refreshed = cluster_grant_annotation_transition(reviewed, observed, observed, bindings,
+                        self.retirement_uids, retired, name, self.completed_retirement_phases)
+                    if previous is not None and previous['metadata']['annotations']['iam.kubesphere.io/granted-clusters'] == '':
+                        refreshed = cluster_grant_annotation_transition(reviewed, previous, observed, bindings,
+                            self.retirement_uids, retired, name, self.completed_retirement_phases)
+                        if refreshed is not None:
+                            break
+                    if time.monotonic() >= deadline or read_count == 10:
+                        raise ValueError('cluster-grant-transition-not-stable-within-bound')
+                    previous = observed
+                    time.sleep(2)
+                for binding_uid in bindings:
+                    if self.native_read(api_path(resources, by_uid[binding_uid])) is not None:
+                        raise ValueError('cluster-grant-matching-binding-still-present')
+                transitions.append({'uid': uid, 'bindingUids': sorted(bindings), 'reviewed': reviewed, 'bindings': bindings,
+                    'first': previous, 'second': observed, 'expected': refreshed, 'nativeUserReadCount': read_count,
+                    'field': 'metadata.annotations.iam.kubesphere.io/granted-clusters'})
+            if transitions:
+                self.attempt.encrypt('cluster-grant-annotation-transition', canonical({'transitions': transitions,
+                    'basis': 'exact host grant clear-to-empty-string after every matching reviewed IAM cluster binding retires; two stable native reads'}),
+                    self.args.age, self.args.recipient)
+                for transition in transitions:
+                    uid = transition['uid']
+                    self.reviewed_raw_by_uid[uid] = transition['expected']
+                    self.reviewed_content_digests[uid] = content_review_digest(transition['expected'])
+                self.attempt.record('cluster-grant-annotation-transition.json', {'phase': name,
+                    'clusterBindingRetirementPhaseCompleted': True, 'allMatchingReviewedBindingsRetired': True,
+                    'twoNativeReadsStable': True, 'clearToEmptyStringWithKeyRetained': True,
+                    'otherDesiredContentChangesAccepted': False,
+                    'transitions': [{k: t[k] for k in ('uid', 'bindingUids', 'field', 'nativeUserReadCount')} for t in transitions],
+                    'privateReadbackExport': 'cluster-grant-annotation-transition.age', 'productionAccepted': False})
+        if name == 'console-route':
+            for uid in phase['roots']:
+                reviewed = self.reviewed_raw_by_uid.get(uid, {})
+                if reviewed.get('kind') != 'Lease':
+                    continue
+                if 'controllers-and-services' not in self.completed_retirement_phases:
+                    raise ValueError('lease-renewal-before-controller-retirement')
+                manager_absent = not any(v['namespace'] in MANAGER_NAMESPACES and v['kind'] in
+                                        ('Pod', 'Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet') for v in before)
+                path = api_path(resources, by_uid[uid])
+                first = self.native_read(path)
+                second = self.native_read(path)
+                renewed = lease_renewal_transition(reviewed, first, second, self.retirement_uids, name, manager_absent)
+                if renewed is not None:
+                    self.attempt.encrypt('leader-lease-renewal-transition', canonical({
+                        'reviewed': reviewed, 'first': first, 'second': second, 'expected': renewed,
+                        'basis': 'exact allowlisted leader Lease final renewal after confirmed controller removal; two stable native reads'}),
+                        self.args.age, self.args.recipient)
+                    self.reviewed_raw_by_uid[uid] = renewed
+                    self.reviewed_content_digests[uid] = content_review_digest(renewed)
+                    self.attempt.record('leader-lease-renewal-transition.json', {
+                        'phase': name, 'uid': uid, 'name': reviewed['metadata']['name'], 'namespace': reviewed['metadata']['namespace'],
+                        'managerWorkloadsAndPodsAbsent': manager_absent, 'controllerRetirementPhaseCompleted': True,
+                        'twoNativeReadsStable': True, 'renewTimeMonotonic': True,
+                        'otherDesiredContentChangesAccepted': False, 'privateReadbackExport': 'leader-lease-renewal-transition.age',
+                        'productionAccepted': False})
+        if name == 'remaining-release-objects':
+            transitions = []
+            manager_absent = not any(v['namespace'] in MANAGER_NAMESPACES and v['kind'] in
+                                    ('Pod', 'Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet') for v in before)
+            extensions_absent = not any(v['kind'] == 'Extension' for v in before)
+            extensions = list(self.reviewed_raw_by_uid.values())
+            for uid in phase['roots']:
+                reviewed = self.reviewed_raw_by_uid.get(uid, {})
+                if (reviewed.get('apiVersion'), reviewed.get('kind')) != ('kubesphere.io/v1alpha1', 'Category'):
+                    continue
+                path = api_path(resources, by_uid[uid])
+                first, second = self.native_read(path), self.native_read(path)
+                refreshed = category_count_transition(reviewed, first, second, extensions, self.retirement_uids,
+                    name, self.completed_retirement_phases, manager_absent, extensions_absent)
+                if refreshed is not None:
+                    export = 'category-count-transition-' + uid
+                    self.attempt.encrypt(export, canonical({'reviewed': reviewed, 'first': first, 'second': second,
+                        'expected': refreshed, 'reviewedExtensions': extensions,
+                        'basis': 'exact category count after reviewed extension membership and manager retirement'}),
+                        self.args.age, self.args.recipient)
+                    self.reviewed_raw_by_uid[uid] = refreshed
+                    self.reviewed_content_digests[uid] = content_review_digest(refreshed)
+                    transitions.append({'uid': uid, 'name': reviewed['metadata']['name'],
+                        'field': 'metadata.annotations.kubesphere.io/count', 'currentCountZero': True,
+                        'reviewedExtensionMembershipMatchesCount': True, 'reviewedExtensionMembersRetired': True,
+                        'twoNativeReadsStable': True, 'otherDesiredContentChangesAccepted': False,
+                        'privateReadbackExport': export + '.age'})
+            if transitions:
+                self.attempt.record('category-count-transitions.json', {'phase': name,
+                    'catalogAndControllerRetirementPhasesCompleted': True, 'managerWorkloadsAndPodsAbsent': manager_absent,
+                    'extensionsAbsent': extensions_absent, 'transitions': transitions, 'productionAccepted': False})
         requests = []
         self.last_step = 'retire-' + name
         for uid in phase['roots']:
@@ -977,6 +1350,22 @@ class Fixture:
             raise ValueError('fixture-state-did-not-settle-after-' + name)
         modifications = {key(by_uid[uid]): phase['namedFinalizer'] for uid in phase.get('expectedModified', [])}
         assert_phase(baseline, before, after, expected, modifications)
+        if name == 'global-role-bindings':
+            transitions = role_annotation_transitions(self.reviewed_raw_by_uid, self.raw_inventory_by_uid,
+                                                      expected, self.retirement_uids)
+            if transitions:
+                self.attempt.encrypt('global-role-annotation-transition', canonical({'transitions': transitions,
+                    'basis': 'exact annotation clear-to-empty-string caused by matching allowlisted GlobalRoleBinding retirement'}),
+                    self.args.age, self.args.recipient)
+                for transition in transitions:
+                    uid = transition['uid']
+                    self.reviewed_raw_by_uid[uid] = transition['expected']
+                    self.reviewed_content_digests[uid] = content_review_digest(transition['expected'])
+                self.attempt.record('global-role-annotation-transition.json', {
+                    'phase': name, 'transitions': [{k: v for k, v in t.items() if k != 'expected'} for t in transitions],
+                    'privateReadbackExport': 'global-role-annotation-transition.age',
+                    'otherDesiredContentChangesAccepted': False, 'productionAccepted': False})
+        self.completed_retirement_phases.add(name)
         return after
 
     def post_retirement_checks(self, final, crds):
@@ -1037,11 +1426,20 @@ class Fixture:
         before, settled = self.settled_inventory()
         if not settled:
             raise ValueError('fixture-state-did-not-settle-before-retirement')
+        self.reviewed_content_digests = {uid: content_review_digest(raw)
+                                        for uid, raw in self.raw_inventory_by_uid.items()}
+        self.reviewed_raw_by_uid = copy.deepcopy(self.raw_inventory_by_uid)
+        if self.reviewed_content_digests:
+            self.attempt.encrypt('retirement-reviewed-content-digests', canonical({
+                'scope': 'fixture-only', 'digests': self.reviewed_content_digests,
+                'excludedFields': ['status', 'metadata.resourceVersion', 'metadata.managedFields', 'metadata.generation']}),
+                self.args.age, self.args.recipient)
         self.attempt.record('kubesphere-before-state.json', {'resources': before, 'crds': baseline_crds, 'scope': 'fixture-only'})
         if getattr(self.args, 'rollback', False):
             self.capture_rollback(before, baseline_crds)
         by_uid = {v['uid']: v for v in before}
         scope = retirement_scope(before)
+        self.retirement_uids = set(scope)
         plan = dependency_plan(before, scope)
         actions = [{**{k: by_uid[uid][k] for k in ('apiVersion', 'kind', 'namespace', 'name', 'uid', 'resourceVersion')},
                     'action': 'delete', 'propagation': 'Foreground', 'phase': phase['phase'], 'order': phase['order'],
@@ -1055,6 +1453,18 @@ class Fixture:
         validate_allowlist(before, [{k: v for k, v in a.items() if k not in ('phase', 'order', 'request')} for a in actions])
         allowlist = {'actions': actions, 'phases': plan, 'chartSha256': self.args.ks_chart_sha256,
                      'sourceInventorySha256': self.args.source_digest, 'procedureSha256': self.args.script_digest,
+                     'expectedControllerContentTransitions': [{'phase': 'global-role-bindings',
+                         'field': 'metadata.annotations.iam.kubesphere.io/globalrole', 'change': 'clear-to-empty-string',
+                         'condition': 'exact removed GlobalRoleBinding subject and role match an allowlisted User; all other raw desired fields unchanged'},
+                        {'phase': 'users', 'field': 'metadata.annotations.iam.kubesphere.io/granted-clusters',
+                         'change': 'clear-exact-host-grant-to-empty-string',
+                         'condition': 'matching reviewed User and IAM ClusterRoleBinding UIDs in retirement scope; exact subject, cluster-admin role and labels; cluster binding phase complete and all matching bindings absent; bounded native reads establish stable empty value with key retained; every other raw desired field unchanged'},
+                        {'phase': 'console-route', 'field': 'spec.renewTime',
+                         'change': 'capture-stable-final-renewal-after-confirmed-controller-removal',
+                         'condition': 'exact reviewed leader Lease UID/name/namespace in retirement scope; controllers-and-services phase complete, all manager workloads/Pods absent, two native reads stable and time monotonic; every other raw desired field unchanged'},
+                        {'phase': 'remaining-release-objects', 'field': 'metadata.annotations.kubesphere.io/count',
+                         'change': 'capture-zero-after-reviewed-extension-membership-retirement',
+                         'condition': 'exact reviewed extension Category UID/name in retirement scope; reviewed count equals exact retired Extension membership; catalog and controller phases complete, no manager workloads/Pods or Extensions remain, two native reads stable at zero; every other raw desired field unchanged'}],
                      'procedure': 'dependency-first native retirement; exact console residue and named namespace metadata finalizers; no Helm uninstall/hooks, wildcard, blanket finalizer or namespace/PVC deletion',
                      'namedFinalizerInterventions': [label(key(by_uid[uid])) + ':' + SYSTEM_WORKSPACE_FINALIZER
                                                      for phase in plan if phase['mode'] == 'named-finalizer' for uid in phase['roots']],
@@ -1163,6 +1573,15 @@ class Fixture:
             '--initial-cluster-token=' + target.cluster + '-rollback', '--bump-revision=1000000000', '--mark-compacted'])
         target.run('restore-synthetic-hostpath', ['docker', 'exec', target.node, 'mkdir', '-p', '/var/local/s426-synthetic'])
         target.run('restore-synthetic-canary', ['docker', 'exec', '-i', target.node, 'tee', '/var/local/s426-synthetic/canary'], input=self.rollback_canary)
+        canary = target.run('restored-synthetic-canary-readback', ['docker', 'exec', target.node, 'cat',
+                           '/var/local/s426-synthetic/canary'], allowed=(0, 1))
+        canary_matches = canary.returncode == 0 and canary.stdout == self.rollback_canary
+        self.attempt.record('rollback-canary-readback.json', {'scope': 'fresh synthetic fixture only',
+            'passed': canary_matches, 'readbackExitCode': canary.returncode,
+            'expectedSha256': digest(self.rollback_canary), 'readbackSha256': digest(canary.stdout),
+            'exactCapturedVolumeBytesRestored': canary_matches, 'productionRecoveryAccepted': False})
+        if not canary_matches:
+            raise ValueError('rollback-synthetic-canary-readback-mismatch')
         target.run('start-restored-kubelet', ['docker', 'exec', target.node, 'systemctl', 'start', 'kubelet'])
         deadline = time.monotonic() + 180
         while True:
@@ -1199,6 +1618,8 @@ class Fixture:
             'baselineIdentityCount': len(self.rollback_baseline), 'baselineUidMismatches': mismatched, 'crdUidMismatches': crd_mismatched,
             'runningKubeSphereContainers': sorted(expected & running), 'readyKubeSphereDeployments': sorted(expected),
             'freshEtcdClusterAndMemberIdentities': fresh_member, 'snapshotRevision': self.rollback_status['revision'],
+            'syntheticCanaryRestoredAndReadbackEqual': canary_matches,
+            'syntheticCanaryReadbackRecord': 'rollback-canary-readback.json',
             'revisionBump': 1000000000, 'markCompacted': True, 'skipHashCheck': False,
             'productionCredentialsOrDataImported': False, 'productionRecoveryAccepted': False})
         if mismatched or crd_mismatched or not fresh_member:

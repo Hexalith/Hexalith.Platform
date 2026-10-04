@@ -1,0 +1,64 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "named-finalizer",
+  "order": 18,
+  "phase": "system-workspace-finalizers",
+  "phaseAllowlistSha256": "676b8d597a539feba4eb18134be562e014cf448159721f2386b36b3f6bab868f",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "privateFullContentVerified": true,
+        "resourceVersion": "6953"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1434",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "9ecd55406e30792f5ced5a318e8dce3b4abef2e928c91bc5bac23b95d33aa6a1",
+      "reviewedResourceVersion": "1434",
+      "strictReviewedResourceVersion": false,
+      "uid": "73e5c39c-df22-4138-8a2e-27812c21445f"
+    },
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "privateFullContentVerified": true,
+        "resourceVersion": "6972"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1294",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "b0c2a64ceac412079e983848175ae2f58a1fda11bbcba2591cf9f4ee5832a356",
+      "reviewedResourceVersion": "1294",
+      "strictReviewedResourceVersion": false,
+      "uid": "7093026f-653f-41e0-b497-e3c3bbdba58c"
+    }
+  ],
+  "settled": true
+}

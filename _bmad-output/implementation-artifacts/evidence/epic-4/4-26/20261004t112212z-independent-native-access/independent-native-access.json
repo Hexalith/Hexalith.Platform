@@ -1,0 +1,50 @@
+{
+  "allPublicNativeProxyRequestsDenied": true,
+  "effectivePrincipalTestIsImpersonation": true,
+  "existingArchivedNativeCredentialRead": true,
+  "existingUnownedNativeReadDemonstrated": true,
+  "hostBudgetObserved": false,
+  "impersonatedEffectivePrincipalDenied": true,
+  "independentlyAuthenticatedUnentitledClientTested": false,
+  "noCredentialOrGrantIssued": true,
+  "noPlaintextConfigurationFileWritten": true,
+  "privateObservation": "independent-native-private.age",
+  "productionAccepted": false,
+  "publicNativeProxyChecks": [
+    {
+      "authorization": "credential-free",
+      "caVerified": true,
+      "denied": true,
+      "httpStatus": 403,
+      "independentExternalVantageEstablished": false,
+      "routeScope": "namespace-list"
+    },
+    {
+      "authorization": "invalid-bearer",
+      "caVerified": true,
+      "denied": true,
+      "httpStatus": 401,
+      "independentExternalVantageEstablished": false,
+      "routeScope": "namespace-list"
+    },
+    {
+      "authorization": "credential-free",
+      "caVerified": true,
+      "denied": true,
+      "httpStatus": 403,
+      "independentExternalVantageEstablished": false,
+      "routeScope": "native-rbac-list"
+    },
+    {
+      "authorization": "invalid-bearer",
+      "caVerified": true,
+      "denied": true,
+      "httpStatus": 401,
+      "independentExternalVantageEstablished": false,
+      "routeScope": "native-rbac-list"
+    }
+  ],
+  "sameClusterUid": true,
+  "temporaryUnlockInputRemoved": true,
+  "unownedNativeAuthorityReferenceVerified": true
+}

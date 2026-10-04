@@ -1,0 +1,38 @@
+{
+  "actualGrantOrRevocationIssued": false,
+  "actualSignedRepositoryOrOffsiteMirrorVerified": false,
+  "approvalRecordSha256": "24e894e4e84657e4745bfda22636e023a0ba9eaf3c0ca05133a6b91a8a3cb8f7",
+  "approvedScopes": {
+    "Administrator": {
+      "Rancher": "admin through Keycloak MFA",
+      "native": "cluster-admin with named one-year client and own unowned binding; existing independent break-glass retained"
+    },
+    "deputy": null,
+    "stagingExecutor": "no production management/proxy/kubeconfig authority"
+  },
+  "authorityRestoreAndMfaExecutionStory": "4.28",
+  "automaticWorkspaceAccountOrMembershipMappings": false,
+  "deputy": null,
+  "grantRevocationRecords": {
+    "approval": "Administrator",
+    "currentHead": "independently authenticated current head; complete chain and every post-cut revocation required",
+    "format": "signed commits in private off-site-mirrored operations repository",
+    "requiredFields": [
+      "principal",
+      "exact scope",
+      "grant or revoke",
+      "decision time",
+      "backup cut time",
+      "monotonic sequence",
+      "predecessor digest",
+      "content digest",
+      "verified signer"
+    ],
+    "restoreFailurePolicy": "fence manager UI/API/proxy/agents; deny restored authority on missing/stale/conflicting/gapped lineage"
+  },
+  "nativeBreakGlassMfa": false,
+  "owner": "Administrator",
+  "productionAccepted": false,
+  "productionRecoveryBeforeRetirementStory": "4.27 prerequisite through 4.0",
+  "soleContributor": true
+}

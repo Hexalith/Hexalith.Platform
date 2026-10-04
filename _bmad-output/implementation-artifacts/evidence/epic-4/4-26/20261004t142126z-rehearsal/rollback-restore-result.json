@@ -1,0 +1,34 @@
+{
+  "baselineIdentityCount": 821,
+  "baselineUidMismatches": [
+    "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.workspace.9a46678b-9820-42c5-a44f-2b7b9fcf550a"
+  ],
+  "crdUidMismatches": [],
+  "freshDockerNodeVerified": true,
+  "freshEtcdClusterAndMemberIdentities": true,
+  "markCompacted": true,
+  "productionCredentialsOrDataImported": false,
+  "productionRecoveryAccepted": false,
+  "readyKubeSphereDeployments": [
+    "extensions-museum",
+    "ks-apiserver",
+    "ks-console",
+    "ks-console-embed",
+    "ks-controller-manager"
+  ],
+  "revisionBump": 1000000000,
+  "runningKubeSphereContainers": [
+    "extensions-museum",
+    "ks-apiserver",
+    "ks-console",
+    "ks-console-embed",
+    "ks-controller-manager"
+  ],
+  "scope": "fresh synthetic fixture only",
+  "skipHashCheck": false,
+  "snapshotRevision": 2863,
+  "sourceNodeDestroyedBeforeRestore": true,
+  "state": "failed",
+  "syntheticCanaryReadbackRecord": "rollback-canary-readback.json",
+  "syntheticCanaryRestoredAndReadbackEqual": true
+}

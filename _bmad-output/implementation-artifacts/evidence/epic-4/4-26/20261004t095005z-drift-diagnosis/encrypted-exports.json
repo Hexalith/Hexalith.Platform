@@ -1,0 +1,60 @@
+{
+  "attemptId": "20261004t095005z-drift-diagnosis",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 110140,
+      "ciphertextSha256": "b0b433ee4492119211168a0a83fc501d95a7ab27967027975b31fed849a289aa",
+      "file": "failed-executed-rehearse.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 6140,
+      "ciphertextSha256": "f656c67f201a24892c0b02e949c6e38a7d388aa1446212c622ad807801eb2b0a",
+      "file": "drift-baseline-and-current.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 4997,
+      "ciphertextSha256": "f6c8f5a65ee3ab21805f053355819087172cb6ac8b6cbd4bcb79ad5267435bda",
+      "file": "executed-diagnosis-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

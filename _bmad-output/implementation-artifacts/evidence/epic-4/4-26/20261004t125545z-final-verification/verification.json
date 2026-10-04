@@ -1,0 +1,87 @@
+{
+  "attemptId": "20261004t125545z-final-verification",
+  "auditExport": {
+    "ciphertextBytes": 81070,
+    "ciphertextSha256": "9616b45aebc2ff0c81ba104964e4fedfc5926c28a2f60420ea365b589a03c619",
+    "file": "test-and-audit-output.age",
+    "readbackVerified": true,
+    "recipientStanzas": [
+      {
+        "tag": "8XlNQg",
+        "type": "ssh-ed25519"
+      },
+      {
+        "tag": "Xg/FRQ",
+        "type": "ssh-ed25519"
+      }
+    ]
+  },
+  "documents": {
+    "allTasksChecked": true,
+    "baselineCommitPreserved": true,
+    "diffCheckPassed": true,
+    "frozenBlockUnchanged": true,
+    "localLinksChecked": 280,
+    "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+  },
+  "inputArtifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "785d02cc55f051ad90d6d94cf4e0b9946aca9f39c77a48574b175aeb884eefea",
+    "_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md": "541fc20a927f6742c1df98de688a6771dd35fc741699e9acadbe416742dbf98d",
+    "eng/cluster-management/QUALIFICATION.md": "5683a59f2f045c0d62373cd8064bd0013b8e4c18d28efa38135b86f65feaea77",
+    "eng/cluster-management/RANCHER.md": "8c409fca25c52cb8bc55b2e312f8ef04cd4ef41969bfdf7fd13763c270de3152",
+    "eng/cluster-management/README.md": "b3eeeebceb407dc66cbfcb16517bb859d59ef8763366794778bb1d53a7c83331",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "ad95ef07eeecd901ae1b6a724b7303de3a99f29c666ae95679e146b7b88ead59",
+    "eng/cluster-management/evidence.py": "41ce544a605c656076f50b78519365713a9ba343d48f38e63b213eeb323f8ea3",
+    "eng/cluster-management/qualify.py": "5e1e2646e5de08a4b328089fa60b07a7f2bd0d2dc2e2ca5f5925d642ff2c3c7f",
+    "eng/cluster-management/rehearse.py": "95b16bc8365c2682a5d692f42fea0e8a64c0c545ac67665074cfb5a146271efd",
+    "eng/cluster-management/test_rehearse.py": "e2eadea91b5e8a49f4bb2a8b2893425fb2f985682ef44003d4c65b5f71d19a46",
+    "eng/cluster-management/test_review_loop4.py": "d6360f375cc53e66ef1b3eef9b622301a8f14a5aed762f08c3d234d3163dbcf7"
+  },
+  "inputHead": "0e602ad6a00cab4fa03e4d603f49e82d4b1173e3",
+  "kubernetesUpgraded": false,
+  "productionMutationPerformed": false,
+  "rancherProvisioned": false,
+  "retainedEvidenceAudit": {
+    "allChecksumsCoverageJsonModesRecipientsAndPrivateDigestReadbacksPassed": true,
+    "counts": {
+      "currentPrivateAttempts": 30,
+      "exportsIndependentlyDecrypted": 2973,
+      "jsonParsed": 851,
+      "privateDirectories": 1,
+      "privateFiles": 3323,
+      "publicAttempts": 99,
+      "publicFiles": 851
+    },
+    "state": "passed"
+  },
+  "roleGranted": false,
+  "schemaVersion": 1,
+  "scope": "Independent root verification of story 4.26 implementation, original matrix and retained evidence; no production execution approval",
+  "state": "passed",
+  "tests": {
+    "command": "python3 -m unittest discover -s eng/cluster-management -p 'test_*.py'",
+    "errors": 0,
+    "executedByRoot": true,
+    "failures": 0,
+    "matrixRows": {
+      "Authority": [
+        "test_qualify.PinAuthorityTests.test_missing_gapped_conflicting_or_expanded_authority_fails_closed"
+      ],
+      "Census": [
+        "test_qualify.CensusTests.test_failed_discovery_is_not_an_empty_accepted_census"
+      ],
+      "Ownership": [
+        "test_qualify.ProjectionTests.test_unknown_owner_consumer_and_deletion_effects_block_retirement"
+      ],
+      "Rehearsal": [
+        "test_rehearse.RehearsalTests.test_source_endpoint_uid_reachability_and_credentials_refused"
+      ],
+      "Target": [
+        "test_qualify.PinAuthorityTests.test_unqualified_tag_hosting_security_and_tools_fail_closed"
+      ]
+    },
+    "passed": true,
+    "skipped": 0,
+    "unitTestsRun": 126
+  }
+}

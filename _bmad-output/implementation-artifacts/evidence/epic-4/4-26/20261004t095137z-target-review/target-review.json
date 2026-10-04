@@ -1,0 +1,2544 @@
+{
+  "acceptedExecutionPins": false,
+  "approvedDirection": "1.34.9 -> a qualified 1.35 patch -> 1.36.5; 1.37 only when Rancher supports it",
+  "artifactAuthenticityAccepted": false,
+  "backupCharts": [
+    {
+      "checksumMatches": true,
+      "indexDigest": "aedaceec644a240eeda3c6a3c6cc211c45161981cc1bbe9631fa50308aebd6c2",
+      "package": "rancher-backup",
+      "sha256": "aedaceec644a240eeda3c6a3c6cc211c45161981cc1bbe9631fa50308aebd6c2",
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/assets/rancher-backup/rancher-backup-110.0.2+up11.0.3.tgz",
+      "version": "110.0.2+up11.0.3"
+    },
+    {
+      "checksumMatches": true,
+      "indexDigest": "523714ef630f9d1675f423bca8f7d7ece13034ac7876c276bb6792b11fd0301b",
+      "package": "rancher-backup-crd",
+      "sha256": "523714ef630f9d1675f423bca8f7d7ece13034ac7876c276bb6792b11fd0301b",
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/assets/rancher-backup-crd/rancher-backup-crd-110.0.2+up11.0.3.tgz",
+      "version": "110.0.2+up11.0.3"
+    }
+  ],
+  "chart": {
+    "checksumMatches": true,
+    "indexSha256": "f1783d48ad5be04b037a6a89beff1007334431a1188d88c9527170a50d87023a",
+    "repositoryDigest": "855cb9be954f65a31b9a8c77f7aebce125c2d7797425257d21d35e3380816ac8",
+    "sha256": "855cb9be954f65a31b9a8c77f7aebce125c2d7797425257d21d35e3380816ac8",
+    "version": "2.15.2"
+  },
+  "checkedAt": "2026-10-04T09:52:00Z",
+  "images": [
+    {
+      "expectedDigest": "sha256:5425a2b4613d2458dbdff99218e8d487ebb59c20e7a941f061c0777070f0aac1",
+      "image": "docker.io/rancher/klipper-helm:v0.13.3-build20260727",
+      "manifestDigest": "sha256:5425a2b4613d2458dbdff99218e8d487ebb59c20e7a941f061c0777070f0aac1",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:910944bb0bd94f060a82a56ca1ea1c577d3e49b3473a093a47a985f32e92d94a",
+      "image": "docker.io/rancher/klipper-lb:v0.4.17",
+      "manifestDigest": "sha256:910944bb0bd94f060a82a56ca1ea1c577d3e49b3473a093a47a985f32e92d94a",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:e757967a5ec338f6a9b371c5a9688bedaa8c3578ea3dd4db329ea0084be0a86f",
+      "image": "docker.io/rancher/local-path-provisioner:v0.0.37",
+      "manifestDigest": "sha256:e757967a5ec338f6a9b371c5a9688bedaa8c3578ea3dd4db329ea0084be0a86f",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:7efd3c635b03efd68c4e8398fc45f0d993d0e9ab016f72c1cefb0fd6d01aa286",
+      "image": "docker.io/rancher/mirrored-coredns-coredns:1.14.7",
+      "manifestDigest": "sha256:7efd3c635b03efd68c4e8398fc45f0d993d0e9ab016f72c1cefb0fd6d01aa286",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:101b4afd76732482eff9b95cae5f94bcf295e521fbec4e01b69c5421f3f3f3e5",
+      "image": "docker.io/rancher/mirrored-library-busybox:1.37.0",
+      "manifestDigest": "sha256:101b4afd76732482eff9b95cae5f94bcf295e521fbec4e01b69c5421f3f3f3e5",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:f86a2cab1b5c649070c49f883c743dd32d8485a56e3368c5f93b9e91f1e91259",
+      "image": "docker.io/rancher/mirrored-library-traefik:3.7.13",
+      "manifestDigest": "sha256:f86a2cab1b5c649070c49f883c743dd32d8485a56e3368c5f93b9e91f1e91259",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:d9862115e7c7881280d3d75ca26bda8ffc0fc213315979575bf23ce9826205c0",
+      "image": "docker.io/rancher/mirrored-metrics-server:v0.9.0",
+      "manifestDigest": "sha256:d9862115e7c7881280d3d75ca26bda8ffc0fc213315979575bf23ce9826205c0",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4",
+      "image": "docker.io/rancher/mirrored-pause:3.10.2",
+      "manifestDigest": "sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:0c3d8e5702555b2bfd2ec3fe7a6e5f95484a28fcb9787c498db3e5b0f62652ea",
+      "image": "rancher/rancher:v2.15.2",
+      "manifestDigest": "sha256:0c3d8e5702555b2bfd2ec3fe7a6e5f95484a28fcb9787c498db3e5b0f62652ea",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:1eeed72d4eda486de13403c4ae6e9d29a0842edc35d0f4a8fb7b0dab79d04be9",
+      "image": "rancher/shell:v0.8.2",
+      "manifestDigest": "sha256:1eeed72d4eda486de13403c4ae6e9d29a0842edc35d0f4a8fb7b0dab79d04be9",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:ba529dbe0772b79c543c103a981e17f931543e77b9a8d6d6cbb2ffcbb7189ed2",
+      "image": "rancher/backup-restore-operator:v11.0.3",
+      "manifestDigest": "sha256:ba529dbe0772b79c543c103a981e17f931543e77b9a8d6d6cbb2ffcbb7189ed2",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:64994ba062b10a732955d6f58d7a21a3f0fbf674bfc8f7aef4d1ef3f6354a109",
+      "image": "rancher/kuberlr-kubectl:v8.1.2",
+      "manifestDigest": "sha256:64994ba062b10a732955d6f58d7a21a3f0fbf674bfc8f7aef4d1ef3f6354a109",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    },
+    {
+      "expectedDigest": "sha256:fb006776b7ee42818ed1e2575bc2015e33ec64d6799545ba72e4297e43ce22a3",
+      "image": "rancher/rancher-agent:v2.15.2",
+      "manifestDigest": "sha256:fb006776b7ee42818ed1e2575bc2015e33ec64d6799545ba72e4297e43ce22a3",
+      "registryHeaderMatchesBytes": true,
+      "signatureVerified": false,
+      "transitiveLicenseSecurityAccepted": false,
+      "unchangedFromHistoricalIdentity": true
+    }
+  ],
+  "k3sChannel": null,
+  "kubernetesOfficialCveFeedObserved": true,
+  "latestRancherRelease": {
+    "draft": false,
+    "htmlUrl": "https://github.com/rancher/rancher/releases/tag/v2.15.2",
+    "prerelease": false,
+    "publishedAt": "2026-09-23T21:02:27Z",
+    "tag": "v2.15.2"
+  },
+  "managementK3s": {
+    "draft": false,
+    "htmlUrl": "https://github.com/k3s-io/k3s/releases/tag/v1.35.9%2Bk3s1",
+    "prerelease": false,
+    "publishedAt": "2026-09-30T16:09:21Z",
+    "tag": "v1.35.9+k3s1"
+  },
+  "managementToolReleaseReview": {
+    "helm": {
+      "draft": false,
+      "htmlUrl": "https://github.com/helm/helm/releases/tag/v3.22.0",
+      "prerelease": false,
+      "publishedAt": "2026-09-10T00:08:41Z",
+      "tag": "v3.22.0"
+    },
+    "helmAdvisoryCount": 24,
+    "latestAge": {
+      "draft": false,
+      "htmlUrl": "https://github.com/FiloSottile/age/releases/tag/v1.3.2",
+      "prerelease": false,
+      "publishedAt": "2026-08-29T17:55:36Z",
+      "tag": "v1.3.2"
+    },
+    "latestEtcd": {
+      "draft": false,
+      "htmlUrl": "https://github.com/etcd-io/etcd/releases/tag/v3.7.2",
+      "prerelease": false,
+      "publishedAt": "2026-09-22T21:22:39Z",
+      "tag": "v3.7.2"
+    },
+    "latestHelm": {
+      "draft": false,
+      "htmlUrl": "https://github.com/helm/helm/releases/tag/v4.3.0",
+      "prerelease": false,
+      "publishedAt": "2026-09-09T23:51:48Z",
+      "tag": "v4.3.0"
+    }
+  },
+  "productionAccepted": false,
+  "productionInstallationCompatibilityTested": false,
+  "rancher": {
+    "draft": false,
+    "htmlUrl": "https://github.com/rancher/rancher/releases/tag/v2.15.2",
+    "prerelease": false,
+    "publishedAt": "2026-09-23T21:02:27Z",
+    "tag": "v2.15.2"
+  },
+  "rancherAdvisories": [
+    {
+      "ghsa": "GHSA-6vpq-mf48-9794",
+      "publishedAt": "2026-09-23T22:29:20Z",
+      "updatedAt": "2026-09-23T22:29:20Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "v2.15.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.15.0, <v2.15.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-992f-xh8r-jg2f",
+      "publishedAt": "2026-09-23T22:29:23Z",
+      "updatedAt": "2026-10-02T16:10:12Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "v2.15.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.15.0, <v2.15.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "v2.14.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.14.0, <v2.14.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "v2.13.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.13.0, <v2.13.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "v2.12.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.12.0, <v2.12.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "v2.11.18",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.11.0, <v2.11.18"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-h923-rr66-g2w5",
+      "publishedAt": "2026-08-28T01:49:40Z",
+      "updatedAt": "2026-08-28T01:49:40Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.15.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.15.0, <2.15.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.13"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-j637-8xgr-436x",
+      "publishedAt": "2026-08-28T01:49:46Z",
+      "updatedAt": "2026-08-28T01:49:46Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.15.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.15.0, <2.15.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.17"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-5hf4-f4mp-g6h4",
+      "publishedAt": "2026-08-28T01:49:51Z",
+      "updatedAt": "2026-08-28T01:49:51Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.15.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.15.0, <2.15.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.13"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-92jp-phmj-wv65",
+      "publishedAt": "2026-08-28T01:49:57Z",
+      "updatedAt": "2026-08-28T01:49:57Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.15.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.15.0, <2.15.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.9"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-wfvm-w99r-cjgc",
+      "publishedAt": "2026-08-28T01:50:11Z",
+      "updatedAt": "2026-08-28T01:50:11Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.15.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.15.0, <2.15.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.9"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-v584-7w32-jwpq",
+      "publishedAt": "2026-07-31T00:00:33Z",
+      "updatedAt": "2026-07-31T00:00:33Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.8"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.12"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.16"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-g4f6-44g4-23xm",
+      "publishedAt": "2026-07-31T00:00:28Z",
+      "updatedAt": "2026-07-31T00:00:28Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.8"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.12"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-23h9-rr79-r3gh",
+      "publishedAt": "2026-07-31T00:00:25Z",
+      "updatedAt": "2026-08-03T18:15:41Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.8"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.12"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.16"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-9jxv-832x-45q9",
+      "publishedAt": "2026-07-31T00:00:21Z",
+      "updatedAt": "2026-07-31T00:00:21Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.8"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.12"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.16"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-7r53-jvhg-9jq4",
+      "publishedAt": "2026-07-31T00:00:16Z",
+      "updatedAt": "2026-09-18T16:06:45Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.8"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-c4rp-wgqc-mfhc",
+      "publishedAt": "2026-06-29T22:21:57Z",
+      "updatedAt": "2026-06-29T22:21:57Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.3"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.7"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-c5jm-xcmq-9j95",
+      "publishedAt": "2026-06-29T22:21:42Z",
+      "updatedAt": "2026-06-29T22:21:42Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.3"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.7"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.11",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.11"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.15",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.15"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-4j6x-2764-m8gh",
+      "publishedAt": "2026-05-27T23:30:05Z",
+      "updatedAt": "2026-05-27T23:30:05Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.6"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-mhc6-2gfq-xx62",
+      "publishedAt": "2026-05-27T23:28:51Z",
+      "updatedAt": "2026-08-03T18:16:59Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.12"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-vx8h-4prv-g744",
+      "publishedAt": "2026-05-27T23:30:17Z",
+      "updatedAt": "2026-05-27T23:30:17Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0, <2.14.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.10"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-5v3h-x4wf-5c35",
+      "publishedAt": "2026-04-30T20:47:23Z",
+      "updatedAt": "2026-04-30T20:47:23Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.14.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.14.0,<2.14.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0,<2.13.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0,<2.12.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0,<2.11.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=v2.10.11"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-mc24-7m59-4q5p",
+      "publishedAt": "2026-01-29T21:02:25Z",
+      "updatedAt": "2026-01-29T21:02:25Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.13.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.13.0, <2.13.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.11",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.11"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-mw39-9qc2-f7mg",
+      "publishedAt": "2025-10-24T00:00:39Z",
+      "updatedAt": "2025-10-31T17:36:11Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.3"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-j4vr-pcmw-hx59",
+      "publishedAt": "2025-10-23T23:44:56Z",
+      "updatedAt": "2025-10-23T23:44:56Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.3"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.7"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-mjcp-rj3c-36fr",
+      "publishedAt": "2025-09-25T19:19:25Z",
+      "updatedAt": "2025-09-25T19:19:25Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.11.0, <2.11.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.10.0, <2.10.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.12"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-v3vj-5868-2ch2",
+      "publishedAt": "2025-09-25T19:19:34Z",
+      "updatedAt": "2025-09-25T19:19:34Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.11.0, <2.11.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.10.0, <2.10.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.12"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-q82v-h4rq-5c86",
+      "publishedAt": "2025-09-25T19:19:43Z",
+      "updatedAt": "2025-09-25T19:19:43Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.2"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.6",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.6"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.12"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-4h45-jpvh-6p5j",
+      "publishedAt": "2025-08-28T22:39:51Z",
+      "updatedAt": "2025-08-28T22:39:51Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.12.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.12.0, <2.12.1"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.12",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.12"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-8h6m-wv39-239m",
+      "publishedAt": "2025-04-25T12:13:10Z",
+      "updatedAt": "2025-04-25T12:13:10Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.11.0, <2.11.1"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-8p83-cpfg-fj3g",
+      "publishedAt": "2025-03-31T11:36:27Z",
+      "updatedAt": "2025-04-11T12:26:33Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.8"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.11.0",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "<2.11.0"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-mq23-vvg7-xfm4",
+      "publishedAt": "2025-02-27T16:59:18Z",
+      "updatedAt": "2025-03-13T12:41:06Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.7"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-xr9q-h9c7-xw8q",
+      "publishedAt": "2025-02-27T16:59:14Z",
+      "updatedAt": "2025-02-27T16:59:14Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.7"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-5qmp-9x47-92q8",
+      "publishedAt": "2025-02-27T16:59:10Z",
+      "updatedAt": "2025-02-27T16:59:10Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.7"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.10.0, <2.10.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-2v2w-8v8c-wcm9",
+      "publishedAt": "2025-01-14T19:03:17Z",
+      "updatedAt": "2025-01-14T19:03:17Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.10.0",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "<2.10.0"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-9c5p-35gj-jqp4",
+      "publishedAt": "2024-11-19T23:40:44Z",
+      "updatedAt": "2024-11-19T23:40:44Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.4"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-7h8m-pvw3-5gh4",
+      "publishedAt": "2024-10-25T00:42:56Z",
+      "updatedAt": "2024-10-25T09:27:41Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.7.0"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-h99m-6755-rgwc",
+      "publishedAt": "2024-10-25T00:43:04Z",
+      "updatedAt": "2024-10-25T00:43:05Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.7.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.7.0, <2.7.16"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": " github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-xj7w-r753-vj8v",
+      "publishedAt": "2024-10-25T00:43:15Z",
+      "updatedAt": "2024-10-25T00:43:15Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0,<2.9.3"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0,<2.8.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.7.0"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-h4h5-9833-v2p4",
+      "publishedAt": "2024-09-26T17:19:30Z",
+      "updatedAt": "2024-09-26T17:19:30Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.7.15",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, <2.7.15"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.8.8",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.8"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.9.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.9.0, <2.9.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-9ghh-mmcq-8phc",
+      "publishedAt": "2024-06-17T20:59:05Z",
+      "updatedAt": "2024-06-26T16:29:03Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.7.0, < 2.7.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.8.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.5"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-64jq-m7rq-768h",
+      "publishedAt": "2024-06-17T20:59:01Z",
+      "updatedAt": "2024-06-24T13:28:59Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.8.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.5"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-q6c7-56cq-g2wm",
+      "publishedAt": "2024-06-17T20:58:54Z",
+      "updatedAt": "2024-06-17T20:58:54Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.8.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.5"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-c85r-fwc7-45vc",
+      "publishedAt": "2024-02-08T16:25:31Z",
+      "updatedAt": "2024-02-08T16:25:31Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.6.0, <2.6.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.7.0, < 2.7.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.8.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-xfj7-qf8w-2gcr",
+      "publishedAt": "2024-02-08T16:26:04Z",
+      "updatedAt": "2024-02-08T16:26:04Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.6.0, <2.6.14"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.7.0, < 2.7.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.8.2",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.8.0, <2.8.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-8vhc-hwhc-cpj4",
+      "publishedAt": "2023-06-01T01:14:00Z",
+      "updatedAt": "2023-06-01T01:14:00Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.4"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-p976-h52c-26p6",
+      "publishedAt": "2023-06-01T01:15:24Z",
+      "updatedAt": "2023-06-01T01:15:24Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": ">= 2.6.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": ">= 2.7.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.4"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-46v3-ggjg-qq3x",
+      "publishedAt": "2023-06-01T01:14:50Z",
+      "updatedAt": "2023-06-01T01:14:50Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.4"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-vf6j-6739-78m8",
+      "publishedAt": "2023-06-01T01:16:02Z",
+      "updatedAt": "2026-03-03T11:32:45Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.6.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.7, < 2.6.13"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.7.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.4"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-6m9f-pj6w-w87g",
+      "publishedAt": "2023-04-24T18:14:52Z",
+      "updatedAt": "2023-04-25T18:03:29Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.3",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "= 2.7.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-c45c-39f6-6gw9",
+      "publishedAt": "2023-01-25T03:24:24Z",
+      "updatedAt": "2023-01-25T03:24:24Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.5.17",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.1"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-7m72-mh5r-6j3r",
+      "publishedAt": "2023-01-25T03:24:45Z",
+      "updatedAt": "2023-01-25T03:24:45Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.5.17",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.10"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-34p5-jp77-fcrc",
+      "publishedAt": "2023-01-25T03:26:27Z",
+      "updatedAt": "2023-01-25T03:26:27Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.5.17",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.1"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-cq4p-vp5q-4522",
+      "publishedAt": "2023-01-25T03:26:53Z",
+      "updatedAt": "2023-01-25T03:26:53Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.5.17",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.1"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-8c69-r38j-rpfj",
+      "publishedAt": "2023-01-25T03:27:23Z",
+      "updatedAt": "2023-01-25T03:27:23Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.1"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-g25r-gvq3-wrq7",
+      "publishedAt": "2023-01-25T03:27:53Z",
+      "updatedAt": "2023-01-25T03:27:53Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.5.17",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.5.0, < 2.5.17"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.6.10",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.6.0, < 2.6.10"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.7.1",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">= 2.7.0, < 2.7.1"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-g7j7-h4q8-8w2f",
+      "publishedAt": "2022-08-19T03:50:03Z",
+      "updatedAt": "2022-09-20T13:33:52Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "rancher/rancher"
+          },
+          "patched_versions": "2.5.16, 2.6.7 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "From 2.5.0 and 2.6.0 up to and including 2.5.15 and 2.6.6"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-8w87-58w6-hfv8",
+      "publishedAt": "2022-08-19T03:50:29Z",
+      "updatedAt": "2026-03-03T11:33:49Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.6.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.6.0,<2.6.4"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.5.13",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.5.0,<2.5.13"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-6x34-89p7-95wg",
+      "publishedAt": "2022-08-19T03:51:04Z",
+      "updatedAt": "2026-03-03T11:34:55Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.6.7",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.6.0,<2.6.7"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.5.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.5.0,<2.5.16"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-vrph-m5jj-c46c",
+      "publishedAt": "2022-05-24T19:44:05Z",
+      "updatedAt": "2026-03-03T11:36:20Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.6.5",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.6.0,<2.6.5"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.5.14",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.5.0,<2.5.14"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-wm2r-rp98-8pmh",
+      "publishedAt": "2022-04-15T07:59:15Z",
+      "updatedAt": "2022-04-27T12:52:06Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patched_versions": "2.5.13, 2.6.4 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "From 2.5.0 and 2.6.0 up to and including 2.5.12 and 2.6.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-hx8w-ghh8-r4xf",
+      "publishedAt": "2022-04-15T07:59:53Z",
+      "updatedAt": "2022-04-29T12:06:57Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patched_versions": "2.5.13, 2.6.4 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "From 2.5.0 and 2.6.0 up to and including 2.5.12 and 2.6.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-4fc7-hc63-7fjg",
+      "publishedAt": "2022-04-15T08:00:11Z",
+      "updatedAt": "2022-04-29T12:01:47Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patched_versions": "2.5.12, 2.6.3 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "From 2.5.0 and 2.6.0 up to and including 2.5.11 and 2.6.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-jwvr-vv7p-gpwq",
+      "publishedAt": "2022-04-15T08:00:27Z",
+      "updatedAt": "2022-04-29T12:02:36Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patched_versions": "2.5.13, 2.6.4 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "From 2.5.0 and 2.6.0 up to and including 2.5.12 and 2.6.3"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-28g7-896h-695v",
+      "publishedAt": "2022-04-01T00:18:52Z",
+      "updatedAt": "2022-04-01T00:18:52Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patched_versions": "2.4.18, 2.5.12, 2.6.3 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "Up to and including 2.4.17, 2.5.11 and 2.6.2"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-hwm2-4ph6-w6m5",
+      "publishedAt": "2022-03-31T20:17:09Z",
+      "updatedAt": "2026-03-03T11:37:02Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.6.4",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.0.0,<2.6.4"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-gvh9-xgrq-r8hw",
+      "publishedAt": "2022-03-31T20:15:30Z",
+      "updatedAt": "2022-03-31T20:15:30Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": "Rancher"
+          },
+          "patched_versions": "2.5.10, 2.6.0 and later releases",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "2.5.0 up to and including 2.5.9"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-f9xf-jq4j-vqw4",
+      "publishedAt": "2021-07-15T03:42:40Z",
+      "updatedAt": "2021-09-10T19:45:24Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": ""
+          },
+          "patched_versions": "2.5.9 and 2.4.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "2.0.0+"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-pvxj-25m6-7vqr",
+      "publishedAt": "2021-07-15T03:43:22Z",
+      "updatedAt": "2021-07-15T03:43:22Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "rancher",
+            "name": ""
+          },
+          "patched_versions": "2.5.9 and 2.4.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": "2.0.0+"
+        }
+      ]
+    },
+    {
+      "ghsa": "GHSA-gqf8-rvrh-g7w6",
+      "publishedAt": "2021-07-15T03:43:01Z",
+      "updatedAt": "2026-03-03T11:37:55Z",
+      "vulnerabilities": [
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.5.9",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.5.0,<2.5.9"
+        },
+        {
+          "package": {
+            "ecosystem": "go",
+            "name": "github.com/rancher/rancher"
+          },
+          "patched_versions": "2.4.16",
+          "vulnerable_functions": [],
+          "vulnerable_version_range": ">=2.2.0,<2.4.16"
+        }
+      ]
+    }
+  ],
+  "repositoryAdvisoryCounts": {
+    "k3s": 3,
+    "kubernetes": 0,
+    "rancher": 66
+  },
+  "requiredTransitiveImageLicenseSecurityAccepted": false,
+  "sourceLicenses": [
+    {
+      "artifact": "rancher",
+      "licenseSha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/rancher/v2.15.2/LICENSE",
+      "version": "2.15.2"
+    },
+    {
+      "artifact": "k3s",
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/k3s-io/k3s/v1.35.9%2Bk3s1/LICENSE",
+      "version": "1.35.9+k3s1"
+    },
+    {
+      "artifact": "helm",
+      "licenseSha256": "881467e52efeb1807406134b0ec04b1c6f52dc9dc49382713ef9ac4e0cae42f8",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/helm/helm/v3.22.0/LICENSE",
+      "version": "3.22.0"
+    },
+    {
+      "artifact": "age",
+      "licenseSha256": "c5d65279d02955c0fc2294ae417c3add650d228f4f5c82bd6d531fc26c89cd96",
+      "sourceLicenseObserved": true,
+      "spdx": "BSD-3-Clause",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/FiloSottile/age/v1.3.2/LICENSE",
+      "version": "1.3.2"
+    },
+    {
+      "artifact": "etcd",
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.5/LICENSE",
+      "version": "3.6.5"
+    },
+    {
+      "artifact": "backup-restore-operator",
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/backup-restore-operator/v11.0.3/LICENSE",
+      "version": "11.0.3"
+    },
+    {
+      "artifact": "kuberlr-kubectl",
+      "licenseSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/kuberlr-kubectl/v8.1.2/LICENSE",
+      "version": "8.1.2"
+    },
+    {
+      "artifact": "kubernetes",
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.36.5/LICENSE",
+      "version": "1.36.5"
+    },
+    {
+      "artifact": "klipper-helm",
+      "licenseSha256": null,
+      "sourceLicenseObserved": false,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/klipper-helm/v0.13.3-build20260727/LICENSE",
+      "version": "0.13.3-build20260727"
+    },
+    {
+      "artifact": "klipper-lb",
+      "licenseSha256": null,
+      "sourceLicenseObserved": false,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/klipper-lb/v0.4.17/LICENSE",
+      "version": "0.4.17"
+    },
+    {
+      "artifact": "local-path-provisioner",
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.37/LICENSE",
+      "version": "0.0.37"
+    },
+    {
+      "artifact": "coredns",
+      "licenseSha256": "f0530760b1e2ffcf23df322db638ee06d06fc07fead0ed3ddd710f2e224698a9",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/coredns/coredns/v1.14.7/LICENSE",
+      "version": "1.14.7"
+    },
+    {
+      "artifact": "traefik",
+      "licenseSha256": "c33e29340498ccde22ba0ab9537d6eb0aa3a2eae0dda61bb6df31df6a032fa5b",
+      "sourceLicenseObserved": true,
+      "spdx": "MIT",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/traefik/traefik/v3.7.13/LICENSE.md",
+      "version": "3.7.13"
+    },
+    {
+      "artifact": "metrics-server",
+      "licenseSha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/kubernetes-sigs/metrics-server/v0.9.0/LICENSE",
+      "version": "0.9.0"
+    },
+    {
+      "artifact": "rancher-shell",
+      "licenseSha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "sourceLicenseObserved": true,
+      "spdx": "Apache-2.0",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://raw.githubusercontent.com/rancher/shell/v0.8.2/LICENSE",
+      "version": "0.8.2"
+    },
+    {
+      "artifact": "busybox",
+      "licenseSha256": "dd0965f2b7ed1db66bbe36b5f32f3eb9cfa7c87f3edc635d3c010532bfab0593",
+      "sourceLicenseObserved": true,
+      "spdx": "GPL-2.0-only",
+      "transitiveImageCoverageAccepted": false,
+      "url": "https://busybox.net/license.html",
+      "version": "1.37.0"
+    }
+  ],
+  "supportMatrix": {
+    "exactMatrixAssessment": "retained primary response; review captured table headings and row values",
+    "hostingAndImportMustBeAssessedSeparately": true,
+    "sha256": "eb1129d6c314f85673929d8cc2cc062709ffc93a8e6a5f95768504deabd17781",
+    "supportedOSCandidate": "Ubuntu 24.04 LTS",
+    "url": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-15-2/"
+  },
+  "tools": [
+    {
+      "binaries": {
+        "age": [
+          {
+            "sha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c",
+            "versionExit": 0
+          }
+        ]
+      },
+      "freshFixtureCompatibilityEvidence": "20261004t092508z-rehearsal",
+      "publishedAssetDigest": "sha256:cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "retainedArchives": [],
+      "signatureVerified": false,
+      "tool": "age",
+      "version": "v1.3.2"
+    },
+    {
+      "binaries": {
+        "etcd": [
+          {
+            "sha256": "030b4b2efd1bcc9ab043080c35f7bb68551e962b23efe62e2f2713429bd9e0f2",
+            "versionExit": 0
+          }
+        ],
+        "etcdctl": [
+          {
+            "sha256": "18416269c49d0f25624938b0b45d5bd5d3eb980ab92048dc4652c66a4246141e",
+            "versionExit": 0
+          }
+        ],
+        "etcdutl": [
+          {
+            "sha256": "226944e63398e1503791e23f7667041ad7782cab3787350f641f9b52fd4d2dd2",
+            "versionExit": 1
+          }
+        ]
+      },
+      "freshFixtureCompatibilityEvidence": "20261004t092508z-rehearsal",
+      "publishedAssetDigest": "sha256:66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "retainedArchives": [],
+      "signatureVerified": false,
+      "tool": "etcd",
+      "version": "v3.6.5"
+    },
+    {
+      "binarySha256": "7a319dee5ea7a1f7d7a0d92d5c223586f3b65abc33163c9de2a85f083aa3df2b",
+      "currentPublishedArchiveChecksum": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+      "freshChartRenderExecuted": false,
+      "retainedArchiveSha256": [],
+      "signatureVerified": false,
+      "tool": "helm",
+      "version": "v3.22.0"
+    },
+    {
+      "matchingRetainedBinary": true,
+      "publishedSha256": "90b7b9058ffeb5c10710bb1c73f541eaf426fb1b4e87df435db669de9a2564a2",
+      "signatureVerified": false,
+      "tool": "kubectl",
+      "version": "v1.34.12"
+    },
+    {
+      "matchingRetainedBinary": true,
+      "publishedSha256": "3cfeaf80be482b435b0aa214aff6e0b2c312ee23c0ff20810c75517b6004c6eb",
+      "signatureVerified": false,
+      "tool": "kubectl",
+      "version": "v1.35.9"
+    },
+    {
+      "matchingRetainedBinary": false,
+      "publishedSha256": "33bc88a24c3b09cf55bfd59e6ca977881b61fc3f25ab65bc80c65b430248648e",
+      "signatureVerified": false,
+      "tool": "kubectl",
+      "version": "v1.36.5"
+    },
+    {
+      "downloadOrInstallationExecuted": false,
+      "publishedSha256": "be2f2c73cd6d3414b37aafb05016bc3a1da3e17c8393aa75c34636198fefa77c",
+      "signatureVerified": false,
+      "tool": "kubeadm",
+      "version": "v1.36.5"
+    },
+    {
+      "downloadOrInstallationExecuted": false,
+      "publishedSha256": "2127c83a9a6ea4573e176ea42ba7415fadce0f05c998324b7154b4949dd2fdd0",
+      "signatureVerified": false,
+      "tool": "kubelet",
+      "version": "v1.36.5"
+    }
+  ],
+  "workloadHop": {
+    "draft": false,
+    "htmlUrl": "https://github.com/kubernetes/kubernetes/releases/tag/v1.35.9",
+    "prerelease": false,
+    "publishedAt": "2026-09-23T19:35:01Z",
+    "tag": "v1.35.9"
+  },
+  "workloadTarget": {
+    "draft": false,
+    "htmlUrl": "https://github.com/kubernetes/kubernetes/releases/tag/v1.36.5",
+    "prerelease": false,
+    "publishedAt": "2026-09-23T18:58:18Z",
+    "tag": "v1.36.5"
+  }
+}

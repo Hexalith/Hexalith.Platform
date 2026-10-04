@@ -1,0 +1,92 @@
+{
+  "attemptId": "20261004t142129z-capability-assessment",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 15937,
+      "ciphertextSha256": "c7d4cbaf5179c2fbd23f7db37a5d2196a5fefa13f496ba612ee95cb510fde17c",
+      "file": "executed-assessment-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 9547,
+      "ciphertextSha256": "be86623b3af70e3ed362cbf7909f8c279d50cd5370c87e0addb144a47f860ea8",
+      "file": "executed-evidence.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 38669,
+      "ciphertextSha256": "662806cca81d0628508464b2f94b9731e19ee3fce5b2d59e02c9ed6204161069",
+      "file": "executed-qualify.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 135069,
+      "ciphertextSha256": "61c70ef0abd3adbbc88633eb77c2217e7ef143ca3fa228950fc9ab00a21fdf3d",
+      "file": "executed-rehearse.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 291463,
+      "ciphertextSha256": "95dd0048ccb12ec869ac4df0d7358ac532d1cf1d16f4ef8511e2435724c9712f",
+      "file": "source-content-baseline.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

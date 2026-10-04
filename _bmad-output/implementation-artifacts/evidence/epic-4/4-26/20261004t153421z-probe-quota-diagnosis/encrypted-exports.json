@@ -1,0 +1,44 @@
+{
+  "attemptId": "20261004t153421z-probe-quota-diagnosis",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 4811,
+      "ciphertextSha256": "bef828bad7707777bfa1621ac4def2fb3bd40f84d3a9daf37be303d83fbbf595",
+      "file": "executed-diagnosis-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5322,
+      "ciphertextSha256": "b5d5e93527726cc674977234240aa423b9ebd63949d57de3f1e0057feb66b5dc",
+      "file": "actual-synthetic-probe-and-reviewed-quota-secret.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

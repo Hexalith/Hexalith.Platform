@@ -1,0 +1,140 @@
+{
+  "failedSources": [
+    {
+      "bodySha256": null,
+      "fetchedAt": "2026-10-04T10:44:33Z",
+      "source": "etcd-release-policy",
+      "status": 404,
+      "url": "https://etcd.io/docs/v3.6/dev-internal/release/"
+    }
+  ],
+  "productionAccepted": false,
+  "sources": [
+    {
+      "bodySha256": "a5ea45b1beadc288f0fa6cfcf3dc775514dbe3e1901e1e6322bb5902a986d5ad",
+      "fetchedAt": "2026-10-04T10:44:33Z",
+      "source": "etcd-releases",
+      "status": 200,
+      "url": "https://api.github.com/repos/etcd-io/etcd/releases?per_page=100"
+    },
+    {
+      "bodySha256": null,
+      "fetchedAt": "2026-10-04T10:44:33Z",
+      "source": "etcd-release-policy",
+      "status": 404,
+      "url": "https://etcd.io/docs/v3.6/dev-internal/release/"
+    },
+    {
+      "bodySha256": "35d07dc4ce8613267bc569ee9b722229134f125b59cd2b0c8f1d6cdb2ab3e8b1",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "k3s-single-node-datastore",
+      "status": 200,
+      "url": "https://docs.k3s.io/datastore"
+    },
+    {
+      "bodySha256": "84cfb3f9ff579e97ac5b3d820ef562170eb71b2df71b28011dec73c4b05fe7d8",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "k3s-tagged-go-mod",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/k3s/v1.35.9%2Bk3s1/go.mod"
+    },
+    {
+      "bodySha256": "e79d915afd94fa57c78a5c1783053c95b47ef224f66577deb30cbec1aff32a1d",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "calico-default-profile-source",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/projectcalico/calico/v3.31.3/libcalico-go/lib/backend/k8s/resources/profile.go"
+    },
+    {
+      "bodySha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "kine-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/kine/v0.16.5/LICENSE"
+    },
+    {
+      "bodySha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "embedded-etcd-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/etcd/v3.6.14-k3s3/LICENSE"
+    },
+    {
+      "bodySha256": "4bbe3b885e8cd1907ab4cf9a41e862e74e24b5422297a4f2fe524e6a30ada2b4",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "containerd-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/containerd/v2.2.7-k3s1/LICENSE"
+    },
+    {
+      "bodySha256": "552a739c3b25792263f731542238b92f6f8d07e9a488eae27e6c4690038a8243",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "runc-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/opencontainers/runc/v1.4.2/LICENSE"
+    },
+    {
+      "bodySha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "flannel-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/flannel-io/flannel/v0.28.4/LICENSE"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "helm-controller-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/helm-controller/v0.17.9/LICENSE"
+    },
+    {
+      "bodySha256": "44ca9f793055c8e32fc65f65a4f5bcf813a33f5bdaaa084067dd617a4ed3cc70",
+      "fetchedAt": "2026-10-04T10:44:34Z",
+      "source": "sqlite-copyright",
+      "status": 200,
+      "url": "https://sqlite.org/copyright.html"
+    },
+    {
+      "bodySha256": "c8d12ef674ac295edba47c341cb18b5913795ba94a78474c68e4213970d128ac",
+      "fetchedAt": "2026-10-04T10:44:35Z",
+      "source": "sqlite-exact-release",
+      "status": 200,
+      "url": "https://sqlite.org/releaselog/3_53_4.html"
+    },
+    {
+      "bodySha256": "a479a17cfabae6ddb1e752966e9e8493873719c16ff137a5d0cbcab9a318a146",
+      "fetchedAt": "2026-10-04T10:44:35Z",
+      "source": "kubeadm-1.35.9-constants",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.35.9/cmd/kubeadm/app/constants/constants.go"
+    },
+    {
+      "bodySha256": "4d761e887f86abcc784725e5b6c09bb0affbd36441fcde7bb95a03caa7c1aa1c",
+      "fetchedAt": "2026-10-04T10:44:35Z",
+      "source": "kubeadm-1.36.5-constants",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.36.5/cmd/kubeadm/app/constants/constants.go"
+    },
+    {
+      "bodySha256": "b51d86e6bff2168de5ba8cd631c0fe6c785c7a1b32b083079f5677d6b7e2772c",
+      "fetchedAt": "2026-10-04T10:44:35Z",
+      "source": "etcd-candidate-archive",
+      "status": 200,
+      "url": "https://github.com/etcd-io/etcd/releases/download/v3.6.15/etcd-v3.6.15-linux-amd64.tar.gz"
+    },
+    {
+      "bodySha256": "e04c47d7394f9b3d5e0976b411e31847288e663dad4589d03b1a9a628f6145c2",
+      "fetchedAt": "2026-10-04T10:44:36Z",
+      "source": "etcd-candidate-checksums",
+      "status": 200,
+      "url": "https://github.com/etcd-io/etcd/releases/download/v3.6.15/SHA256SUMS"
+    },
+    {
+      "bodySha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "fetchedAt": "2026-10-04T10:44:37Z",
+      "source": "etcd-candidate-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.15/LICENSE"
+    }
+  ]
+}

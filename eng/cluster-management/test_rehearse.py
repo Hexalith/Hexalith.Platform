@@ -15,8 +15,8 @@ from evidence import canonical, digest, file_digest
 from qualify import project_resource
 import rehearse as rehearse_module
 from rehearse import (Fixture, SYNTHETIC_HOLD, SYSTEM_WORKSPACE_FINALIZER, absence_state, api_path, assert_phase, assert_preserved,
-                      dependency_plan, extension_phase_actions, key, native_conflict, native_delete_options, native_not_found,
-                      phase_delta, probe_blocked, rehearse, retirement_scope, synthetic_hold_blocked, tool_identities,
+                      content_review_digest, dependency_plan, extension_phase_actions, key, native_conflict, native_delete_options, native_not_found,
+                      category_count_transition, cluster_grant_annotation_transition, lease_renewal_transition, phase_delta, probe_blocked, rehearse, retirement_scope, role_annotation_transitions, synthetic_hold_blocked, tool_identities,
                       validate_allowlist, validate_isolation)
 
 
@@ -61,6 +61,43 @@ class RehearsalTests(unittest.TestCase):
                         {'namespaceFinalizers': []}, {'owners': [{'uid': 'new-owner'}]}):
             with self.subTest(updates=updates), self.assertRaises(ValueError):
                 assert_preserved([namespace], [{**namespace, **updates}], set())
+
+    def test_surviving_workload_desired_images_replicas_and_references_cannot_drift(self):
+        pod = {'serviceAccountName': 'application-reader',
+               'containers': [{'name': 'app', 'image': 'registry.example/app:v1',
+                   'envFrom': [{'secretRef': {'name': 'app-secret'}}, {'configMapRef': {'name': 'app-config'}}]}],
+               'initContainers': [{'name': 'init', 'image': 'registry.example/init:v1'}],
+               'volumes': [{'name': 'data', 'persistentVolumeClaim': {'claimName': 'app-data'}}]}
+        for kind in ('Deployment', 'StatefulSet', 'DaemonSet', 'Job', 'CronJob', 'Pod'):
+            spec = copy.deepcopy(pod) if kind == 'Pod' else {'template': {'spec': copy.deepcopy(pod)}}
+            if kind == 'CronJob':spec = {'jobTemplate': {'spec': spec}}
+            if kind in ('Deployment', 'StatefulSet'):spec['replicas'] = 2
+            raw = {'apiVersion': 'v1' if kind == 'Pod' else 'batch/v1' if kind in ('Job', 'CronJob') else 'apps/v1',
+                   'kind': kind, 'metadata': {'name': 'application', 'namespace': 'workload', 'uid': 'workload-1',
+                                            'resourceVersion': '1'}, 'spec': spec}
+            changes = ('image', 'init-image', 'service-account', 'claim', 'secret', 'configmap')
+            if 'replicas' in spec:changes += ('replicas',)
+            for change in changes:
+                current = copy.deepcopy(raw)
+                current['metadata']['resourceVersion'] = '2'
+                current_pod = (current['spec'] if kind == 'Pod' else
+                    current['spec']['jobTemplate']['spec']['template']['spec'] if kind == 'CronJob' else
+                    current['spec']['template']['spec'])
+                if change == 'image':current_pod['containers'][0]['image'] = 'registry.example/app:v2'
+                elif change == 'init-image':current_pod['initContainers'][0]['image'] = 'registry.example/init:v2'
+                elif change == 'service-account':current_pod['serviceAccountName'] = 'privileged-writer'
+                elif change == 'claim':current_pod['volumes'][0]['persistentVolumeClaim']['claimName'] = 'other-data'
+                elif change == 'secret':current_pod['containers'][0]['envFrom'][0]['secretRef']['name'] = 'other-secret'
+                elif change == 'configmap':current_pod['containers'][0]['envFrom'][1]['configMapRef']['name'] = 'other-config'
+                else:current['spec']['replicas'] = 0
+                with self.subTest(kind=kind, change=change), self.assertRaisesRegex(ValueError, 'identity-or-binding'):
+                    assert_preserved([project_resource(raw)], [project_resource(current)], set())
+            # Status image IDs and server versions are observations, rather than projected desired content.
+            status_changed = copy.deepcopy(raw)
+            status_changed['metadata']['resourceVersion'] = '3'
+            status_changed['status'] = {'containerStatuses': [{'imageID': 'registry.example/app@sha256:' + 'a' * 64}]}
+            assert_preserved([project_resource(raw)], [project_resource(status_changed)], set())
+            assert_preserved([project_resource(raw)], [], {key(project_resource(raw))})
 
     def test_extension_phase_cannot_use_later_core_scope_to_allow_unexpected_deletion(self):
         plan = resource('InstallPlan', 'ks-console-embed', 'plan-1')
@@ -369,6 +406,7 @@ class NativeRequestTests(unittest.TestCase):
         conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): precondition failed')
         fixture, _ = self.fixture()
         reviewed = project_resource(self.obj(version='5'))
+        fixture.reviewed_content_digests[reviewed['uid']] = content_review_digest(self.obj(version='5'))
         with patch.object(fixture, 'native_read', side_effect=[self.obj(version='5'), self.obj(version='6')]), \
              patch.object(fixture, 'kube', side_effect=[conflict, SimpleNamespace(returncode=0, stdout=b'', stderr=b'')]) as kube:
             outcome = fixture.native_retire('users', '/apis/x', reviewed)
@@ -392,6 +430,7 @@ class NativeRequestTests(unittest.TestCase):
     def test_native_retire_stops_when_reviewed_fields_drift_after_review(self):
         fixture, _ = self.fixture()
         reviewed = project_resource(self.obj(version='5'))
+        fixture.reviewed_content_digests[reviewed['uid']] = content_review_digest(self.obj(version='5'))
         ok = SimpleNamespace(returncode=0, stdout=b'', stderr=b'')
         with patch.object(fixture, 'native_read', return_value=self.obj(version='5')), patch.object(fixture, 'kube', return_value=ok):
             outcome = fixture.native_retire('users', '/apis/x', reviewed)
@@ -411,9 +450,383 @@ class NativeRequestTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'reviewed-entry-drift'):fixture.native_retire('users', '/apis/x', reviewed)
         kube.assert_called_once()
 
+    def test_private_full_content_stops_spec_secret_data_and_rbac_rules_drift_before_delete(self):
+        examples = [
+            {'apiVersion': 'apps/v1', 'kind': 'Deployment', 'spec': {'replicas': 1}},
+            {'apiVersion': 'v1', 'kind': 'Secret', 'data': {'synthetic': 'c3ludGhldGlj'}},
+            {'apiVersion': 'rbac.authorization.k8s.io/v1', 'kind': 'ClusterRole',
+             'rules': [{'apiGroups': [''], 'resources': ['pods'], 'verbs': ['get']}]},
+        ]
+        for example in examples:
+            with self.subTest(kind=example['kind']):
+                raw = {**example, 'metadata': {'name': 'synthetic-review', 'uid': 'u-1', 'resourceVersion': '1'}}
+                reviewed = project_resource(raw)
+                fixture, _ = self.fixture()
+                fixture.reviewed_content_digests['u-1'] = content_review_digest(raw)
+                changed = copy.deepcopy(raw);changed['metadata'].update(resourceVersion='2', generation=2)
+                if 'spec' in changed:changed['spec']['strategy'] = {'type': 'Recreate'}
+                elif 'data' in changed:changed['data']['synthetic'] = 'ZHJpZnQ='
+                else:changed['rules'][0]['verbs'] = ['*']
+                # These fields are absent from the public projection; the private baseline must still refuse them.
+                self.assertEqual(rehearse_module.review_digest(project_resource(changed)), rehearse_module.review_digest(reviewed))
+                with patch.object(fixture, 'native_read', return_value=changed), patch.object(fixture, 'kube') as kube:
+                    with self.assertRaisesRegex(ValueError, 'reviewed-full-content-drift'):
+                        fixture.native_retire('synthetic', '/apis/synthetic', reviewed)
+                kube.assert_not_called()
+
+    def test_private_content_allows_only_status_bookkeeping_churn_and_rechecks_conflict(self):
+        fixture, _ = self.fixture();raw = self.obj(version='5')
+        fixture.reviewed_content_digests['u-1'] = content_review_digest(raw)
+        updated = copy.deepcopy(raw);updated['metadata'].update(resourceVersion='6', managedFields=[{'manager': 'status'}])
+        updated['status'] = {'ready': True}
+        with patch.object(fixture, 'native_read', return_value=updated), patch.object(fixture, 'kube',
+                return_value=SimpleNamespace(returncode=0, stdout=b'', stderr=b'')):
+            result = fixture.native_retire('synthetic', '/apis/synthetic', project_resource(raw))
+        self.assertTrue(result['privateFullContentVerified']);self.assertFalse(result['strictReviewedResourceVersion'])
+        drifted = copy.deepcopy(updated);drifted['spec'] = {'synthetic': 'changed'}
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): precondition failed')
+        with patch.object(fixture, 'native_read', side_effect=[updated, drifted]), patch.object(fixture, 'kube', return_value=conflict) as kube:
+            with self.assertRaisesRegex(ValueError, 'reviewed-full-content-drift'):
+                fixture.native_retire('synthetic', '/apis/synthetic', project_resource(raw))
+        kube.assert_called_once()
+
+    def test_server_generation_churn_keeps_full_desired_content_enforcement(self):
+        raw = self.obj(version='5')
+        raw.update(apiVersion='kubesphere.io/v1alpha1', kind='Extension', spec={'synthetic': 'keep'}, status={'state': 'installed'})
+        raw['metadata'].update(generation=11, annotations={'synthetic': 'keep'})
+        current = copy.deepcopy(raw)
+        current['metadata'].update(resourceVersion='6', generation=13)
+        current['status'] = {'state': 'uninstalled'}
+        fixture, _ = self.fixture()
+        fixture.reviewed_content_digests['u-1'] = content_review_digest(raw)
+        with patch.object(fixture, 'native_read', return_value=current), patch.object(fixture, 'kube',
+                return_value=SimpleNamespace(returncode=0, stdout=b'', stderr=b'')):
+            result = fixture.native_retire('synthetic', '/apis/synthetic', project_resource(raw))
+        self.assertTrue(result['privateFullContentVerified'])
+        for change in ('spec', 'annotations'):
+            changed = copy.deepcopy(current)
+            if change == 'spec':
+                changed['spec']['synthetic'] = 'drift'
+            else:
+                changed['metadata']['annotations']['synthetic'] = 'drift'
+            with self.subTest(change=change), patch.object(fixture, 'native_read', return_value=changed), patch.object(fixture, 'kube') as kube:
+                with self.assertRaisesRegex(ValueError, 'reviewed-full-content-drift'):
+                    fixture.native_retire('synthetic', '/apis/synthetic', project_resource(raw))
+            kube.assert_not_called()
+
+    def test_changed_resource_version_without_private_content_baseline_stops(self):
+        fixture, _ = self.fixture()
+        with patch.object(fixture, 'native_read', return_value=self.obj(version='6')), patch.object(fixture, 'kube') as kube:
+            with self.assertRaisesRegex(ValueError, 'reviewed-resource-version-drift-without-content-baseline'):
+                fixture.native_retire('synthetic', '/apis/synthetic', project_resource(self.obj(version='5')))
+        kube.assert_not_called()
+
+    def leader_lease(self):
+        return {'apiVersion': 'coordination.k8s.io/v1', 'kind': 'Lease',
+            'metadata': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager-leader-election',
+                         'uid': 'lease-1', 'resourceVersion': '1', 'annotations': {'synthetic': 'keep'}},
+            'spec': {'renewTime': '2026-10-04T10:00:00Z', 'acquireTime': '2026-10-04T09:59:00Z',
+                     'holderIdentity': 'synthetic-manager', 'leaseDurationSeconds': 15, 'leaseTransitions': 0}}
+
+    def test_final_lease_renewal_requires_exact_scope_absence_monotonic_stable_full_content(self):
+        before = self.leader_lease(); current = copy.deepcopy(before)
+        current['metadata']['resourceVersion'] = '2'; current['spec']['renewTime'] = '2026-10-04T10:01:00Z'
+        expected = lease_renewal_transition(before, current, current, {'lease-1'}, 'console-route', True)
+        self.assertEqual(content_review_digest(expected), content_review_digest(current))
+        self.assertIsNone(lease_renewal_transition(before, before, before, {'lease-1'}, 'console-route', True))
+        for scope, phase, absent, reason in [(set(), 'console-route', True, 'not-exact-retirement-identity'),
+                ({'lease-1'}, 'admission', True, 'wrong-phase'), ({'lease-1'}, 'console-route', False, 'manager-still-present')]:
+            with self.subTest(reason=reason), self.assertRaisesRegex(ValueError, reason):
+                lease_renewal_transition(before, current, current, scope, phase, absent)
+        for field, value in [('uid', 'other'), ('name', 'other'), ('namespace', 'other')]:
+            changed = copy.deepcopy(current); changed['metadata'][field] = value
+            with self.subTest(identity=field), self.assertRaisesRegex(ValueError, 'identity-drift'):
+                lease_renewal_transition(before, changed, changed, {'lease-1'}, 'console-route', True)
+        for field in ('holderIdentity', 'acquireTime', 'leaseDurationSeconds', 'leaseTransitions', 'other'):
+            changed = copy.deepcopy(current); changed['spec'][field] = 'drift'
+            with self.subTest(spec=field), self.assertRaisesRegex(ValueError, 'other-desired-content-drift'):
+                lease_renewal_transition(before, changed, changed, {'lease-1'}, 'console-route', True)
+        changed = copy.deepcopy(current); changed['metadata']['annotations']['synthetic'] = 'drift'
+        with self.assertRaisesRegex(ValueError, 'other-desired-content-drift'):
+            lease_renewal_transition(before, changed, changed, {'lease-1'}, 'console-route', True)
+        for value, reason in [('2026-10-04T09:58:00Z', 'backwards-time'), ('2026-10-04', 'invalid-time'),
+                              ('2026-99-04T10:00:00Z', 'invalid-time'), (None, 'invalid-time')]:
+            changed = copy.deepcopy(current); changed['spec']['renewTime'] = value
+            with self.subTest(time=value), self.assertRaisesRegex(ValueError, reason):
+                lease_renewal_transition(before, changed, changed, {'lease-1'}, 'console-route', True)
+        changed = copy.deepcopy(current); changed['spec']['renewTime'] = '2026-10-04T10:02:00Z'
+        with self.assertRaisesRegex(ValueError, 'not-stable'):
+            lease_renewal_transition(before, current, changed, {'lease-1'}, 'console-route', True)
+
+    def test_console_lease_checkpoint_requires_completed_controller_phase_and_absent_workloads(self):
+        before = self.leader_lease(); current = copy.deepcopy(before)
+        current['spec']['renewTime'] = '2026-10-04T10:01:00Z'
+        projected = project_resource(before)
+        phase = {'phase': 'console-route', 'expected': ['lease-1'], 'roots': ['lease-1'],
+                 'managerAbsentRequired': True, 'mode': 'native-delete'}
+        resources = {('coordination.k8s.io/v1', 'Lease'): ('leases', True)}
+        fixture, records = self.fixture(); fixture.args.age = 'age'; fixture.args.recipient = 'public'
+        fixture.reviewed_raw_by_uid = {'lease-1': before}; fixture.retirement_uids = {'lease-1'}
+        with patch.object(fixture, 'settled_inventory', return_value=([projected], True)), patch.object(fixture, 'native_read') as read:
+            with self.assertRaisesRegex(ValueError, 'before-controller-retirement'):
+                fixture.retire_phase(phase, {'lease-1'}, {'lease-1': projected}, resources)
+        read.assert_not_called()
+        fixture.completed_retirement_phases.add('controllers-and-services')
+        manager = project_resource({'apiVersion': 'apps/v1', 'kind': 'Deployment', 'metadata': {
+            'namespace': 'kubesphere-system', 'name': 'ks-controller-manager', 'uid': 'manager-1', 'resourceVersion': '1'}})
+        with patch.object(fixture, 'settled_inventory', return_value=([projected, manager], True)), \
+             patch.object(fixture, 'native_read', return_value=current), patch.object(fixture, 'native_retire') as retire:
+            with self.assertRaisesRegex(ValueError, 'manager-still-present'):
+                fixture.retire_phase(phase, {'lease-1'}, {'lease-1': projected}, resources)
+        retire.assert_not_called()
+        with patch.object(fixture, 'settled_inventory', return_value=([projected], True)), \
+             patch.object(fixture, 'native_read', return_value=current) as read, \
+             patch.object(fixture, 'native_retire', side_effect=ValueError('delete-sentinel')):
+            with self.assertRaisesRegex(ValueError, 'delete-sentinel'):
+                fixture.retire_phase(phase, {'lease-1'}, {'lease-1': projected}, resources)
+        self.assertEqual(read.call_count, 2)
+        self.assertEqual(fixture.reviewed_content_digests['lease-1'], content_review_digest(current))
+        self.assertTrue(records['leader-lease-renewal-transition.json']['twoNativeReadsStable'])
+
+    def category_count_inputs(self):
+        category = {'apiVersion': 'kubesphere.io/v1alpha1', 'kind': 'Category',
+            'metadata': {'name': 'synthetic', 'uid': 'category-1', 'resourceVersion': '1',
+                         'annotations': {'kubesphere.io/count': '2', 'synthetic': 'keep'}}, 'spec': {'synthetic': 'keep'}}
+        extensions = [{'apiVersion': 'kubesphere.io/v1alpha1', 'kind': 'Extension',
+            'metadata': {'name': 'extension-' + str(i), 'uid': 'extension-' + str(i),
+                         'labels': {'kubesphere.io/category': 'synthetic'}}} for i in range(2)]
+        current = copy.deepcopy(category); current['metadata']['annotations']['kubesphere.io/count'] = '0'
+        current['metadata']['resourceVersion'] = '2'
+        return category, current, extensions
+
+    def test_category_count_requires_exact_retired_membership_absence_stability_and_full_content(self):
+        before, current, extensions = self.category_count_inputs()
+        scope = {'category-1', 'extension-0', 'extension-1'}
+        phases = {'catalog-extension', 'controllers-and-services'}
+        def verify(a=before, b=current, c=current, members=extensions, uids=scope,
+                   phase='remaining-release-objects', completed=phases, manager_absent=True, extensions_absent=True):
+            return category_count_transition(a, b, c, members, uids, phase, completed, manager_absent, extensions_absent)
+        self.assertEqual(content_review_digest(verify()), content_review_digest(current))
+        empty = copy.deepcopy(before); empty['metadata']['annotations']['kubesphere.io/count'] = '0'
+        self.assertIsNone(verify(a=empty, b=empty, c=empty, members=[]))
+        for arguments, reason in [({'phase': 'console-route'}, 'wrong-phase'),
+                ({'completed': {'catalog-extension'}}, 'before-catalog-controller-retirement'),
+                ({'manager_absent': False}, 'manager-or-extensions-present'),
+                ({'extensions_absent': False}, 'manager-or-extensions-present'),
+                ({'uids': {'extension-0', 'extension-1'}}, 'not-exact-retirement-identity'),
+                ({'uids': {'category-1', 'extension-0'}}, 'membership-not-retired'),
+                ({'members': [extensions[0], extensions[0]]}, 'membership-not-retired'),
+                ({'members': extensions[:1]}, 'reviewed-membership-mismatch')]:
+            with self.subTest(arguments=arguments), self.assertRaisesRegex(ValueError, reason): verify(**arguments)
+        for field, value in [('uid', 'other'), ('name', 'other'), ('namespace', 'other')]:
+            changed = copy.deepcopy(current); changed['metadata'][field] = value
+            with self.subTest(identity=field), self.assertRaisesRegex(ValueError, 'identity-drift'): verify(b=changed, c=changed)
+        changed = copy.deepcopy(before); changed['apiVersion'] = 'application.kubesphere.io/v2'
+        with self.assertRaisesRegex(ValueError, 'not-exact-retirement-identity'): verify(a=changed)
+        for value in ('01', '-1', 2, None):
+            changed = copy.deepcopy(before); changed['metadata']['annotations']['kubesphere.io/count'] = value
+            with self.subTest(reviewed=value), self.assertRaisesRegex(ValueError, 'reviewed-membership-mismatch'): verify(a=changed)
+        changed = copy.deepcopy(current); changed['metadata']['annotations']['kubesphere.io/count'] = '1'
+        with self.assertRaisesRegex(ValueError, 'current-not-zero'): verify(b=changed, c=changed)
+        with self.assertRaisesRegex(ValueError, 'not-stable'): verify(c=changed)
+        for field in ('spec', 'data', 'rules', 'annotation'):
+            changed = copy.deepcopy(current)
+            if field == 'annotation': changed['metadata']['annotations']['synthetic'] = 'drift'
+            else: changed[field] = {'synthetic': 'drift'}
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'other-desired-content-drift'): verify(b=changed, c=changed)
+
+    def test_remaining_release_category_checkpoint_updates_only_verified_private_baseline(self):
+        before, current, extensions = self.category_count_inputs(); projected = project_resource(before)
+        fixture, records = self.fixture(); fixture.args.age = 'age'; fixture.args.recipient = 'public'
+        fixture.reviewed_raw_by_uid = {v['metadata']['uid']: v for v in [before, *extensions]}
+        fixture.retirement_uids = set(fixture.reviewed_raw_by_uid)
+        fixture.completed_retirement_phases.update({'catalog-extension', 'controllers-and-services'})
+        phase = {'phase': 'remaining-release-objects', 'expected': ['category-1'], 'roots': ['category-1'],
+                 'managerAbsentRequired': True, 'mode': 'native-delete'}
+        resources = {('kubesphere.io/v1alpha1', 'Category'): ('categories', False)}
+        with patch.object(fixture, 'settled_inventory', return_value=([projected], True)), \
+             patch.object(fixture, 'native_read', return_value=current) as read, \
+             patch.object(fixture, 'native_retire', side_effect=ValueError('delete-sentinel')):
+            with self.assertRaisesRegex(ValueError, 'delete-sentinel'):
+                fixture.retire_phase(phase, fixture.retirement_uids, {'category-1': projected}, resources)
+        self.assertEqual(read.call_count, 2)
+        self.assertEqual(fixture.reviewed_content_digests['category-1'], content_review_digest(current))
+        self.assertTrue(records['category-count-transitions.json']['extensionsAbsent'])
+        fixture.completed_retirement_phases.clear()
+        with patch.object(fixture, 'settled_inventory', return_value=([projected], True)), \
+             patch.object(fixture, 'native_read', return_value=current), patch.object(fixture, 'native_retire') as retire:
+            with self.assertRaisesRegex(ValueError, 'before-catalog-controller-retirement'):
+                fixture.retire_phase(phase, fixture.retirement_uids, {'category-1': projected}, resources)
+        retire.assert_not_called()
+
+    def test_expected_role_annotation_transition_is_bound_to_deleted_binding_and_exact_content(self):
+        user = self.obj();user.update(apiVersion='iam.kubesphere.io/v1beta1', kind='User')
+        user['metadata'].update(name='admin', annotations={'iam.kubesphere.io/globalrole': 'platform-admin', 'other': 'keep'})
+        binding = {'apiVersion': 'iam.kubesphere.io/v1beta1', 'kind': 'GlobalRoleBinding',
+                   'metadata': {'uid': 'binding-1'}, 'roleRef': {'apiGroup': 'iam.kubesphere.io', 'kind': 'GlobalRole', 'name': 'platform-admin'},
+                   'subjects': [{'apiGroup': 'iam.kubesphere.io', 'kind': 'User', 'name': 'admin'}]}
+        changed = copy.deepcopy(user);changed['metadata']['resourceVersion'] = '6'
+        changed['metadata']['annotations']['iam.kubesphere.io/globalrole'] = ''
+        reviewed = {'u-1': user, 'binding-1': binding}
+        transitions = role_annotation_transitions(reviewed, {'u-1': changed}, {'binding-1'}, {'u-1', 'binding-1'})
+        self.assertEqual([(t['uid'], t['bindingUid']) for t in transitions], [('u-1', 'binding-1')])
+        self.assertEqual(content_review_digest(transitions[0]['expected']), content_review_digest(changed))
+        self.assertEqual(role_annotation_transitions(reviewed, {'u-1': changed}, set(), {'u-1'}), [])
+        self.assertEqual(role_annotation_transitions(reviewed, {'u-1': changed}, {'binding-1'}, set()), [])
+        wrong_binding = copy.deepcopy(binding);wrong_binding['roleRef']['name'] = 'other-role'
+        self.assertEqual(role_annotation_transitions({'u-1': user, 'binding-1': wrong_binding}, {'u-1': changed}, {'binding-1'}, {'u-1'}), [])
+        for field, value in [('apiGroup', 'unrelated.example'), ('kind', 'Role')]:
+            wrong_binding = copy.deepcopy(binding);wrong_binding['roleRef'][field] = value
+            self.assertEqual(role_annotation_transitions({'u-1': user, 'binding-1': wrong_binding}, {'u-1': changed}, {'binding-1'}, {'u-1'}), [])
+        missing = copy.deepcopy(changed);missing['metadata']['annotations'].pop('iam.kubesphere.io/globalrole')
+        with self.assertRaisesRegex(ValueError, 'unexpected-controller-role-annotation-transition'):
+            role_annotation_transitions(reviewed, {'u-1': missing}, {'binding-1'}, {'u-1'})
+        for field, value in [('spec', {'changed': True}), ('data', {'synthetic': 'changed'}), ('rules', [{'verbs': ['*']}])]:
+            drifted = copy.deepcopy(changed);drifted[field] = value
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'unexpected-controller-role-annotation-transition'):
+                role_annotation_transitions(reviewed, {'u-1': drifted}, {'binding-1'}, {'u-1'})
+        unrelated = copy.deepcopy(changed);unrelated['metadata']['annotations']['other'] = 'changed'
+        with self.assertRaisesRegex(ValueError, 'unexpected-controller-role-annotation-transition'):
+            role_annotation_transitions(reviewed, {'u-1': unrelated}, {'binding-1'}, {'u-1'})
+
+    def cluster_grant_inputs(self):
+        user = self.obj();user.update(apiVersion='iam.kubesphere.io/v1beta1', kind='User', spec={'synthetic': 'keep'})
+        user['metadata'].update(name='admin', annotations={'iam.kubesphere.io/globalrole': '',
+            'iam.kubesphere.io/granted-clusters': 'host', 'synthetic': 'keep'})
+        binding = {'apiVersion': 'iam.kubesphere.io/v1beta1', 'kind': 'ClusterRoleBinding',
+            'metadata': {'name': 'admin-cluster-admin', 'uid': 'binding-1', 'resourceVersion': '1',
+                'labels': {'iam.kubesphere.io/role-ref': 'cluster-admin', 'iam.kubesphere.io/user-ref': 'admin'}},
+            'roleRef': {'apiGroup': 'iam.kubesphere.io', 'kind': 'ClusterRole', 'name': 'cluster-admin'},
+            'subjects': [{'apiGroup': 'iam.kubesphere.io', 'kind': 'User', 'name': 'admin'}]}
+        current = copy.deepcopy(user);current['metadata']['resourceVersion'] = '6'
+        current['metadata']['annotations']['iam.kubesphere.io/granted-clusters'] = ''
+        return user, current, {'binding-1': binding}
+
+    def test_cluster_grant_clear_requires_exact_reviewed_scope_role_subject_labels_and_stable_content(self):
+        before, current, bindings = self.cluster_grant_inputs()
+        def verify(a=before, b=current, c=current, refs=bindings, uids={'u-1', 'binding-1'},
+                   removed={'binding-1'}, phase='users', completed={'kubesphere-cluster-role-bindings'}):
+            return cluster_grant_annotation_transition(a, b, c, refs, uids, removed, phase, completed)
+        expected = verify()
+        self.assertEqual(content_review_digest(expected), content_review_digest(current))
+        self.assertEqual(expected['metadata']['annotations']['iam.kubesphere.io/granted-clusters'], '')
+        self.assertEqual(expected['metadata']['annotations']['iam.kubesphere.io/globalrole'], '')
+        self.assertIsNone(verify(b=before, c=before))
+        second_binding = copy.deepcopy(bindings['binding-1']);second_binding['metadata'].update(uid='binding-2', name='admin-additional')
+        refs = {**bindings, 'binding-2': second_binding}
+        self.assertIsNotNone(verify(refs=refs, uids={'u-1', 'binding-1', 'binding-2'}, removed={'binding-1', 'binding-2'}))
+        for arguments, reason in [({'phase': 'global-role-bindings'}, 'before-binding-retirement'),
+                ({'completed': set()}, 'before-binding-retirement'), ({'uids': {'binding-1'}}, 'exact-reviewed-user'),
+                ({'uids': {'u-1'}}, 'binding-not-retired'), ({'removed': set()}, 'binding-not-retired'),
+                ({'refs': {}}, 'binding-not-retired'),
+                ({'refs': refs, 'uids': {'u-1', 'binding-1', 'binding-2'}}, 'binding-not-retired')]:
+            with self.subTest(arguments=arguments), self.assertRaisesRegex(ValueError, reason):verify(**arguments)
+        mutations = [('apiVersion', 'rbac.authorization.k8s.io/v1'), ('kind', 'RoleBinding')]
+        for field, value in mutations:
+            wrong = copy.deepcopy(bindings);wrong['binding-1'][field] = value
+            with self.subTest(binding=field), self.assertRaisesRegex(ValueError, 'binding-mismatch'):verify(refs=wrong)
+        for field, value in [('uid', 'wrong-binding'), ('namespace', 'other'), ('name', '')]:
+            wrong = copy.deepcopy(bindings);wrong['binding-1']['metadata'][field] = value
+            with self.subTest(bindingIdentity=field), self.assertRaisesRegex(ValueError, 'binding-mismatch'):verify(refs=wrong)
+        for field, value in [('apiGroup', 'rbac.authorization.k8s.io'), ('kind', 'Role'), ('name', 'other-role')]:
+            wrong = copy.deepcopy(bindings);wrong['binding-1']['roleRef'][field] = value
+            with self.subTest(role=field), self.assertRaisesRegex(ValueError, 'binding-mismatch'):verify(refs=wrong)
+        for field, value in [('apiGroup', 'rbac.authorization.k8s.io'), ('kind', 'ServiceAccount'), ('name', 'other-user')]:
+            wrong = copy.deepcopy(bindings);wrong['binding-1']['subjects'][0][field] = value
+            with self.subTest(subject=field), self.assertRaisesRegex(ValueError, 'binding-mismatch'):verify(refs=wrong)
+        for label in ('iam.kubesphere.io/role-ref', 'iam.kubesphere.io/user-ref'):
+            wrong = copy.deepcopy(bindings);wrong['binding-1']['metadata']['labels'][label] = 'other'
+            with self.subTest(label=label), self.assertRaisesRegex(ValueError, 'binding-mismatch'):verify(refs=wrong)
+        for value in ('', 'other', 'host,other', None):
+            wrong = copy.deepcopy(before);wrong['metadata']['annotations']['iam.kubesphere.io/granted-clusters'] = value
+            with self.subTest(prior=value), self.assertRaisesRegex(ValueError, 'reviewed-value-not-exact-host'):verify(a=wrong)
+        missing_prior = copy.deepcopy(before);missing_prior['metadata']['annotations'].pop('iam.kubesphere.io/granted-clusters')
+        with self.assertRaisesRegex(ValueError, 'reviewed-value-not-exact-host'):verify(a=missing_prior)
+        wrong_user = copy.deepcopy(before);wrong_user['metadata']['uid'] = 'binding-1'
+        with self.assertRaisesRegex(ValueError, 'exact-reviewed-user'):verify(a=wrong_user)
+        for field, value in [('uid', 'other-user'), ('name', 'other'), ('namespace', 'other')]:
+            wrong = copy.deepcopy(current);wrong['metadata'][field] = value
+            with self.subTest(user=field), self.assertRaisesRegex(ValueError, 'identity-drift'):verify(b=wrong, c=wrong)
+        for value in ('other', 'host,other', None):
+            wrong = copy.deepcopy(current);wrong['metadata']['annotations']['iam.kubesphere.io/granted-clusters'] = value
+            with self.subTest(grants=value), self.assertRaisesRegex(ValueError, 'missing-key-or-unexpected-grants'):verify(b=wrong, c=wrong)
+        missing = copy.deepcopy(current);missing['metadata']['annotations'].pop('iam.kubesphere.io/granted-clusters')
+        with self.assertRaisesRegex(ValueError, 'missing-key-or-unexpected-grants'):verify(b=missing, c=missing)
+        with self.assertRaisesRegex(ValueError, 'not-stable'):verify(c=before)
+        for field in ('spec', 'data', 'rules', 'annotation'):
+            wrong = copy.deepcopy(current)
+            if field == 'annotation':wrong['metadata']['annotations']['synthetic'] = 'changed'
+            else:wrong[field] = {'synthetic': 'changed'}
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'other-desired-content-drift'):verify(b=wrong, c=wrong)
+
+    def cluster_grant_fixture(self):
+        before, current, bindings = self.cluster_grant_inputs()
+        fixture, records = self.fixture();fixture.args.age = 'age';fixture.args.recipient = 'public'
+        fixture.reviewed_raw_by_uid = {'u-1': before, **bindings}
+        fixture.reviewed_content_digests['u-1'] = content_review_digest(before)
+        fixture.retirement_uids = {'u-1', 'binding-1'}
+        fixture.completed_retirement_phases.add('kubesphere-cluster-role-bindings')
+        phase = {'phase': 'users', 'expected': ['u-1'], 'roots': ['u-1'], 'managerAbsentRequired': False, 'mode': 'native-delete'}
+        by_uid = {uid: project_resource(raw) for uid, raw in fixture.reviewed_raw_by_uid.items()}
+        resources = {('iam.kubesphere.io/v1beta1', 'User'): ('users', False),
+                     ('iam.kubesphere.io/v1beta1', 'ClusterRoleBinding'): ('clusterrolebindings', False)}
+        return fixture, records, before, current, phase, by_uid, resources
+
+    def test_users_checkpoint_waits_for_exact_async_clear_and_two_fresh_stable_reads(self):
+        fixture, records, before, current, phase, by_uid, resources = self.cluster_grant_fixture()
+        stable = copy.deepcopy(current);stable['metadata'].update(resourceVersion='7', generation=4, managedFields=[])
+        stable['status'] = {'state': 'ready'}
+        with patch.object(fixture, 'settled_inventory', return_value=([project_resource(current)], True)), \
+             patch.object(fixture, 'native_read', side_effect=[None, before, current, stable, None]) as read, \
+             patch.object(fixture, 'native_retire', side_effect=ValueError('delete-sentinel')) as retire, \
+             patch('rehearse.time.sleep') as sleep:
+            with self.assertRaisesRegex(ValueError, 'delete-sentinel'):
+                fixture.retire_phase(phase, fixture.retirement_uids, by_uid, resources)
+        self.assertEqual(read.call_count, 5);self.assertEqual(sleep.call_count, 2);retire.assert_called_once()
+        self.assertEqual(read.call_args_list[0].args[0], '/apis/iam.kubesphere.io/v1beta1/clusterrolebindings/admin-cluster-admin')
+        self.assertEqual(read.call_args_list[-1].args, read.call_args_list[0].args)
+        self.assertTrue(all(c.args[0].endswith('/users/admin') for c in read.call_args_list[1:-1]))
+        self.assertEqual(fixture.reviewed_content_digests['u-1'], content_review_digest(current))
+        self.assertEqual(fixture.reviewed_raw_by_uid['binding-1'], self.cluster_grant_inputs()[2]['binding-1'])
+        record = records['cluster-grant-annotation-transition.json']
+        self.assertTrue(record['allMatchingReviewedBindingsRetired']);self.assertTrue(record['twoNativeReadsStable'])
+        self.assertEqual(record['transitions'][0]['nativeUserReadCount'], 3)
+        self.assertEqual(fixture.attempt.encrypt.call_args.args[0], 'cluster-grant-annotation-transition')
+
+    def test_users_checkpoint_stops_on_bound_unstable_content_live_binding_and_incomplete_phase(self):
+        for case in ('timeout', 'deadline', 'unstable', 'other-content', 'live-binding', 'recreated-binding',
+                     'retained-binding', 'retained-extra-binding', 'wrong-phase'):
+            fixture, records, before, current, phase, by_uid, resources = self.cluster_grant_fixture()
+            initial_digest = fixture.reviewed_content_digests['u-1']
+            inventory = [project_resource(current)]
+            reads = [None, *([before] * 10)]
+            reason = 'within-bound'
+            if case == 'unstable':reads = [None, current, before];reason = 'not-stable'
+            elif case == 'other-content':
+                wrong = copy.deepcopy(current);wrong['spec']['synthetic'] = 'changed'
+                reads = [None, wrong];reason = 'other-desired-content-drift'
+            elif case == 'live-binding':reads = [fixture.reviewed_raw_by_uid['binding-1']];reason = 'still-present'
+            elif case == 'recreated-binding':reads = [None, current, current, fixture.reviewed_raw_by_uid['binding-1']];reason = 'still-present'
+            elif case == 'retained-binding':inventory.append(by_uid['binding-1']);reads = [];reason = 'binding-not-retired'
+            elif case == 'retained-extra-binding':
+                extra = copy.deepcopy(fixture.reviewed_raw_by_uid['binding-1']);extra['metadata'].update(uid='binding-2', name='admin-additional')
+                fixture.reviewed_raw_by_uid['binding-2'] = extra;fixture.retirement_uids.add('binding-2')
+                inventory.append(project_resource(extra));reads = [];reason = 'binding-not-retired'
+            elif case == 'wrong-phase':fixture.completed_retirement_phases.clear();reads = [];reason = 'before-binding-retirement'
+            with self.subTest(case=case), patch.object(fixture, 'settled_inventory', return_value=(inventory, True)), \
+                 patch.object(fixture, 'native_read', side_effect=reads) as read, patch.object(fixture, 'native_retire') as retire, \
+                 patch('rehearse.time.sleep'), patch('rehearse.time.monotonic', side_effect=itertools.count(0, 31) if case == 'deadline' else itertools.repeat(0)):
+                with self.assertRaisesRegex(ValueError, reason):fixture.retire_phase(phase, fixture.retirement_uids, by_uid, resources)
+            retire.assert_not_called();self.assertNotIn('cluster-grant-annotation-transition.json', records)
+            self.assertEqual(fixture.reviewed_content_digests['u-1'], initial_digest)
+            if case == 'timeout':self.assertEqual(read.call_count, 11)
+            if case == 'deadline':self.assertEqual(read.call_count, 2)
+
     def test_named_finalizer_removes_only_one_named_finalizer_after_deletion_request(self):
         fixture, _ = self.fixture()
+        fixture.reviewed_raw_by_uid['u-1'] = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER, 'foregroundDeletion'])
         current = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER, 'foregroundDeletion'], deleting=True)
+        current['metadata']['deletionGracePeriodSeconds'] = 0
         with patch.object(fixture, 'native_read', return_value=current), \
              patch.object(fixture, 'kube', return_value=SimpleNamespace(returncode=0, stdout=b'', stderr=b'')) as kube:
             outcome = fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
@@ -422,12 +835,13 @@ class NativeRequestTests(unittest.TestCase):
         self.assertEqual(body['metadata']['finalizers'], ['foregroundDeletion'])
         self.assertEqual((body['metadata']['uid'], body['metadata']['resourceVersion']), ('u-1', '5'))
         self.assertEqual(outcome['otherFinalizersRetained'], ['foregroundDeletion'])
+        self.assertTrue(outcome['privateFullContentVerified'])
         for candidate, reason in [(self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER]), 'precondition'),
                                   (self.obj(finalizers=['other/hold'], deleting=True), 'precondition'),
                                   (self.obj(uid='replacement', finalizers=[SYSTEM_WORKSPACE_FINALIZER], deleting=True), 'precondition'),
                                   (None, 'precondition'),
                                   (self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER], deleting=True,
-                                            owners=[{'apiVersion': 'v1', 'kind': 'X', 'name': 'x', 'uid': 'unseen'}]), 'owner-outside')]:
+                                            owners=[{'apiVersion': 'v1', 'kind': 'X', 'name': 'x', 'uid': 'unseen'}]), 'full-content-drift')]:
             with self.subTest(reason=reason), patch.object(fixture, 'native_read', return_value=candidate), \
                  patch.object(fixture, 'kube') as kube:
                 with self.assertRaisesRegex(ValueError, reason):fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
@@ -435,6 +849,71 @@ class NativeRequestTests(unittest.TestCase):
         with patch.object(fixture, 'native_read', return_value=current), patch.object(fixture, 'kube',
                 return_value=SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Forbidden): denied')):
             with self.assertRaisesRegex(ValueError, 'rejected'):fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+
+    def test_named_finalizer_requires_existing_raw_review_and_exact_native_preconditions(self):
+        fixture, _ = self.fixture()
+        current = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER], deleting=True)
+        with patch.object(fixture, 'native_read') as read, patch.object(fixture, 'kube') as kube:
+            with self.assertRaisesRegex(ValueError, 'baseline-missing'):
+                fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+        read.assert_not_called();kube.assert_not_called()
+        fixture.reviewed_raw_by_uid['u-1'] = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER])
+        for version in ('', None, 7):
+            changed = copy.deepcopy(current);changed['metadata']['resourceVersion'] = version
+            with self.subTest(version=version), patch.object(fixture, 'native_read', return_value=changed), patch.object(fixture, 'kube') as kube:
+                with self.assertRaisesRegex(ValueError, 'precondition'):
+                    fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+            kube.assert_not_called()
+        for update in ({'deletionGracePeriodSeconds': 1}, {'deletionGracePeriodSeconds': False},
+                       {'annotations': {'unreviewed': 'change'}}, {'finalizers': [SYSTEM_WORKSPACE_FINALIZER, 'other/hold']}):
+            changed = copy.deepcopy(current);changed['metadata'].update(update)
+            with self.subTest(update=update), patch.object(fixture, 'native_read', return_value=changed), patch.object(fixture, 'kube') as kube:
+                with self.assertRaisesRegex(ValueError, 'full-content-drift'):
+                    fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+            kube.assert_not_called()
+
+    def test_named_finalizer_refuses_spec_data_rules_drift_after_delete_and_on_conflict_retry(self):
+        examples = [('apps/v1', 'Deployment', 'spec', {'strategy': {'type': 'RollingUpdate'}}, {'strategy': {'type': 'Recreate'}}),
+                    ('v1', 'Secret', 'data', {'synthetic': 'c3ludGhldGlj'}, {'synthetic': 'ZHJpZnQ='}),
+                    ('rbac.authorization.k8s.io/v1', 'ClusterRole', 'rules', [{'verbs': ['get']}], [{'verbs': ['*']}])]
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): stale version')
+        for api, kind, field, original, changed_value in examples:
+            reviewed = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER]);reviewed.update(apiVersion=api, kind=kind)
+            reviewed[field] = original
+            current = copy.deepcopy(reviewed);current['metadata'].update(resourceVersion='6',
+                deletionTimestamp='2026-10-02T09:00:00Z', deletionGracePeriodSeconds=0)
+            changed = copy.deepcopy(current);changed['metadata']['resourceVersion'] = '7';changed[field] = changed_value
+            fixture, _ = self.fixture();fixture.reviewed_raw_by_uid['u-1'] = reviewed
+            for retry in (False, True):
+                reads = [current, changed] if retry else [changed]
+                with self.subTest(kind=kind, retry=retry), patch.object(fixture, 'native_read', side_effect=reads), \
+                     patch.object(fixture, 'kube', return_value=conflict) as kube:
+                    with self.assertRaisesRegex(ValueError, 'full-content-drift'):
+                        fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+                self.assertEqual(kube.call_count, int(retry))
+                if retry:self.assertEqual(kube.call_args.kwargs['obj']['metadata']['resourceVersion'], '6')
+            self.assertEqual(fixture.reviewed_raw_by_uid['u-1'], reviewed)
+
+    def test_named_finalizer_conflict_rechecks_full_content_and_binds_fresh_version(self):
+        fixture, _ = self.fixture();reviewed = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER, 'other/keep'])
+        reviewed['spec'] = {'synthetic': 'keep'};fixture.reviewed_raw_by_uid['u-1'] = reviewed
+        current = copy.deepcopy(reviewed);current['metadata'].update(resourceVersion='6',
+            deletionTimestamp='2026-10-02T09:00:00Z', deletionGracePeriodSeconds=0)
+        retried = copy.deepcopy(current);retried['metadata'].update(resourceVersion='7', generation=2, managedFields=[])
+        retried['status'] = {'ready': False}
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): stale version')
+        ok = SimpleNamespace(returncode=0, stdout=b'', stderr=b'')
+        with patch.object(fixture, 'native_read', side_effect=[current, retried]), patch.object(fixture, 'kube', side_effect=[conflict, ok]) as kube:
+            result = fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+        self.assertEqual(result['conflictRetries'], 1);self.assertTrue(result['privateFullContentVerified'])
+        self.assertEqual([c.kwargs['obj']['metadata']['resourceVersion'] for c in kube.call_args_list], ['6', '7'])
+        self.assertTrue(all(c.kwargs['obj']['metadata']['uid'] == 'u-1' and
+            c.kwargs['obj']['metadata']['finalizers'] == ['other/keep'] for c in kube.call_args_list))
+        changed_time = copy.deepcopy(retried);changed_time['metadata']['deletionTimestamp'] = '2026-10-02T10:00:00Z'
+        with patch.object(fixture, 'native_read', side_effect=[current, changed_time]), patch.object(fixture, 'kube', return_value=conflict) as kube:
+            with self.assertRaisesRegex(ValueError, 'deletion-state-drift'):
+                fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+        kube.assert_called_once()
 
     def test_phase_records_delta_before_stopping_and_refuses_post_controller_runtime(self):
         baseline = kubesphere_baseline()
@@ -510,13 +989,156 @@ class WorkspaceProbeTests(unittest.TestCase):
         bound = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': meta('s426-probe-member', 'n', finalizers=[SYSTEM_WORKSPACE_FINALIZER],
                  labels={'kubesphere.io/workspace': 's426-probe'})}
         unbound = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': meta('s426-probe-member', 'n')}
-        reads = iter([workspace, bound, template, None, None, unbound])
+        reads = iter([workspace, bound, template, None, None, unbound] + [None] * 9)
         with patch.object(fixture, 'create'), patch.object(fixture, 'native_read', side_effect=lambda path: next(reads)), \
              patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}), patch('rehearse.time.sleep'):
             record = fixture.probe_workspace_propagation()
         self.assertEqual(record['memberNamespaceOutcome'], 'retained-label-or-finalizer-changed')
         self.assertFalse(record['cascadeHazard']);self.assertFalse(record['procedurePart'])
         self.assertEqual(record['memberAfter']['finalizers'], [])
+
+    def quota_fixture(self):
+        records = {}
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(),
+                                  record=lambda name, value: records.update({name: copy.deepcopy(value)}))
+        fixture = Fixture(SimpleNamespace(attempt_id='synthetic-quota-test', age='age', recipient='synthetic-recipient'), attempt)
+        template = {'apiVersion': 'tenant.kubesphere.io/v1beta1', 'kind': 'WorkspaceTemplate',
+                    'metadata': {'name': 's426-probe', 'uid': 'synthetic-template-uid', 'resourceVersion': '1'}}
+        secret = {'apiVersion': 'v1', 'kind': 'Secret', 'type': 'Opaque',
+                  'metadata': {'name': 'io.kubesphere.license.quota.v3.workspace.synthetic-template-uid',
+                               'namespace': 'kubesphere-system', 'uid': 'synthetic-quota-uid', 'resourceVersion': '1',
+                               'labels': {'kubesphere.io/workspace': 's426-probe'}}, 'data': {'synthetic': 'cHJvYmU='}}
+        return fixture, records, template, secret
+
+    def test_quota_cleanup_derives_exact_name_and_binds_full_content_uid_and_fresh_rv(self):
+        fixture, records, template, secret = self.quota_fixture()
+        fresh = copy.deepcopy(secret);fresh['metadata'].update({'resourceVersion': '2', 'managedFields': [{'manager': 'synthetic'}]})
+        reads = [None, None, secret, None, None, fresh] + [None] * 6
+        with patch.object(fixture, 'native_read', side_effect=reads) as read, \
+             patch.object(fixture, 'kube', return_value=SimpleNamespace(returncode=0)) as kube, patch('rehearse.time.sleep') as sleep:
+            result = fixture.cleanup_workspace_probe_quota(template)
+        path = '/api/v1/namespaces/kubesphere-system/secrets/' + secret['metadata']['name']
+        self.assertEqual(kube.call_args.args, ('native-retire-workspace-probe-quota', 'delete', '--raw', path, '-f', '-'))
+        self.assertEqual(kube.call_args.kwargs['obj']['preconditions'], {'uid': 'synthetic-quota-uid', 'resourceVersion': '2'})
+        self.assertEqual(kube.call_args.kwargs['obj']['propagationPolicy'], 'Foreground')
+        self.assertTrue(result['request']['privateFullContentVerified'])
+        self.assertEqual(result['state'], 'passed-synthetic-only-cleanup')
+        self.assertEqual(result['parentsAbsentBeforeCapture'], [True, True])
+        self.assertEqual(result['parentsAbsentBeforeRequest'], [True, True])
+        self.assertEqual(result['absenceSamples'], [{'templateAbsent': True, 'workspaceAbsent': True, 'quotaAbsent': True}] * 2)
+        self.assertEqual(sleep.call_args_list, [unittest.mock.call(2)] * 2)
+        self.assertEqual(read.call_count, 12)
+        self.assertTrue(all('*' not in call.args[0] for call in read.call_args_list))
+        self.assertEqual(json.loads(fixture.attempt.encrypt.call_args.args[1]), secret)
+        self.assertEqual(fixture.reviewed_content_digests, {})
+        self.assertEqual(records['workspace-probe-quota-cleanup.json'], result)
+
+    def test_quota_cleanup_initial_absence_requires_two_separated_parent_and_residue_samples(self):
+        fixture, records, template, _ = self.quota_fixture()
+        with patch.object(fixture, 'native_read', side_effect=[None] * 9) as read, \
+             patch.object(fixture, 'kube') as kube, patch('rehearse.time.sleep') as sleep:
+            result = fixture.cleanup_workspace_probe_quota(template)
+        kube.assert_not_called();fixture.attempt.encrypt.assert_not_called()
+        self.assertIsNone(result['request']);self.assertEqual(len(result['absenceSamples']), 2)
+        self.assertEqual(read.call_count, 9);self.assertEqual(sleep.call_count, 2)
+        self.assertEqual(result['state'], 'passed-synthetic-only-cleanup')
+
+    def test_quota_cleanup_refuses_wrong_template_or_secret_identity_and_owned_or_deleting_content(self):
+        for field, value in (('apiVersion', 'other/v1'), ('kind', 'Workspace'), ('name', 'source'),
+                             ('namespace', 'source'), ('uid', '../source'), ('uid', '')):
+            with self.subTest(template_field=field, value=value):
+                fixture, _, template, _ = self.quota_fixture()
+                (template if field in ('apiVersion', 'kind') else template['metadata'])[field] = value
+                with patch.object(fixture, 'native_read') as read, patch.object(fixture, 'kube') as kube:
+                    with self.assertRaisesRegex(ValueError, 'template-identity-invalid'):fixture.cleanup_workspace_probe_quota(template)
+                read.assert_not_called();kube.assert_not_called()
+        changes = ({'apiVersion': 'other/v1'}, {'kind': 'ConfigMap'}, {'metadata': {'namespace': 'source'}},
+                   {'metadata': {'name': 'io.kubesphere.license.quota.v3.workspace.source-template-uid'}},
+                   {'metadata': {'labels': {'kubesphere.io/workspace': 'source'}}}, {'metadata': {'labels': None}},
+                   {'metadata': {'uid': ''}}, {'metadata': {'resourceVersion': ''}},
+                   {'metadata': {'ownerReferences': [{'uid': 'source'}]}}, {'metadata': {'finalizers': ['source/retain']}},
+                   {'metadata': {'deletionTimestamp': '2026-10-04T00:00:00Z'}}, {'metadata': {'deletionGracePeriodSeconds': 0}})
+        for change in changes:
+            with self.subTest(secret_change=change):
+                fixture, records, template, secret = self.quota_fixture()
+                secret['metadata'].update(change.get('metadata', {}));secret.update({k: v for k, v in change.items() if k != 'metadata'})
+                with patch.object(fixture, 'native_read', side_effect=[None, None, secret]), patch.object(fixture, 'kube') as kube:
+                    with self.assertRaisesRegex(ValueError, 'quota-identity-invalid'):fixture.cleanup_workspace_probe_quota(template)
+                kube.assert_not_called();self.assertEqual(records['workspace-probe-quota-cleanup.json']['state'], 'failed-closed')
+
+    def test_quota_cleanup_refuses_raw_drift_before_delete_and_on_conflict_retry(self):
+        changes = ({'data': {'synthetic': 'YWx0ZXJlZA=='}}, {'spec': {'unexpected': True}},
+                   {'rules': [{'verbs': ['*']}]}, {'metadata': {'annotations': {'unexpected': 'grant'}}})
+        for retry in (False, True):
+            for change in changes:
+                with self.subTest(retry=retry, change=change):
+                    fixture, records, template, secret = self.quota_fixture()
+                    changed = copy.deepcopy(secret)
+                    changed['metadata'].update(change.get('metadata', {}))
+                    changed.update({k: v for k, v in change.items() if k != 'metadata'})
+                    reads = [None, None, secret, None, None] + ([secret] if retry else []) + [changed]
+                    conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): synthetic conflict')
+                    with patch.object(fixture, 'native_read', side_effect=reads), patch.object(fixture, 'kube', return_value=conflict) as kube:
+                        with self.assertRaisesRegex(ValueError, 'reviewed-full-content-drift'):fixture.cleanup_workspace_probe_quota(template)
+                    self.assertEqual(kube.call_count, int(retry));self.assertEqual(fixture.reviewed_content_digests, {})
+                    self.assertEqual(records['workspace-probe-quota-cleanup.json']['state'], 'failed-closed')
+
+    def test_quota_cleanup_refuses_replacement_uid_and_native_delete_rejection(self):
+        for refusal in ('uid', 'delete'):
+            with self.subTest(refusal=refusal):
+                fixture, records, template, secret = self.quota_fixture()
+                observed = copy.deepcopy(secret)
+                if refusal == 'uid':observed['metadata']['uid'] = 'replacement'
+                rejected = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Forbidden): synthetic refusal')
+                with patch.object(fixture, 'native_read', side_effect=[None, None, secret, None, None, observed]), \
+                     patch.object(fixture, 'kube', return_value=rejected) as kube:
+                    with self.assertRaisesRegex(ValueError, 'uid-drift' if refusal == 'uid' else 'native-delete-rejected'):
+                        fixture.cleanup_workspace_probe_quota(template)
+                self.assertEqual(kube.call_count, int(refusal == 'delete'))
+                self.assertEqual(records['workspace-probe-quota-cleanup.json']['state'], 'failed-closed')
+
+    def test_quota_cleanup_refuses_lingering_or_recreated_parents_and_residue(self):
+        for stage in ('capture', 'request', 'first-sample', 'second-sample'):
+            for member in ('template', 'workspace', 'quota'):
+                if stage in ('capture', 'request') and member == 'quota':continue
+                with self.subTest(stage=stage, member=member):
+                    fixture, records, template, secret = self.quota_fixture()
+                    reads = [None, None, secret, None, None, secret] + [None] * 6
+                    index = {'capture': 0, 'request': 3, 'first-sample': 6, 'second-sample': 9}[stage]
+                    index += ('template', 'workspace', 'quota').index(member)
+                    reads[index] = secret if member == 'quota' else template
+                    with patch.object(fixture, 'native_read', side_effect=reads), \
+                         patch.object(fixture, 'kube', return_value=SimpleNamespace(returncode=0)) as kube, patch('rehearse.time.sleep'):
+                        with self.assertRaisesRegex(ValueError, 'parent-still-present|parent-recreated|not-stably-absent'):
+                            fixture.cleanup_workspace_probe_quota(template)
+                    self.assertEqual(kube.call_count, int(stage in ('first-sample', 'second-sample')))
+                    self.assertEqual(records['workspace-probe-quota-cleanup.json']['state'], 'failed-closed')
+
+    def test_quota_cleanup_refuses_residue_appearing_after_initial_absence(self):
+        fixture, records, template, secret = self.quota_fixture()
+        with patch.object(fixture, 'native_read', side_effect=[None] * 8 + [secret]), \
+             patch.object(fixture, 'kube') as kube, patch('rehearse.time.sleep'):
+            with self.assertRaisesRegex(ValueError, 'not-stably-absent'):fixture.cleanup_workspace_probe_quota(template)
+        kube.assert_not_called();self.assertEqual(len(records['workspace-probe-quota-cleanup.json']['absenceSamples']), 2)
+
+    def test_probe_refuses_lingering_parent_before_quota_cleanup_and_baseline(self):
+        for lingering in ('template', 'workspace'):
+            with self.subTest(parent=lingering):
+                fixture, records, template, _ = self.quota_fixture()
+                workspace = {**template, 'kind': 'Workspace'}
+                member = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': 's426-probe-member', 'uid': 'member',
+                          'resourceVersion': '1', 'finalizers': [SYSTEM_WORKSPACE_FINALIZER]}}
+                counts = {}
+                def read(path):
+                    counts[path] = counts.get(path, 0) + 1
+                    if path.endswith('/workspacetemplates/s426-probe'):return template if lingering == 'template' or counts[path] == 1 else None
+                    if path.endswith('/workspaces/s426-probe'):return workspace if lingering == 'workspace' or counts[path] == 1 else None
+                    return member
+                with patch.object(fixture, 'create'), patch.object(fixture, 'native_read', side_effect=read), \
+                     patch.object(fixture, 'native_retire', return_value={}), patch.object(fixture, 'cleanup_workspace_probe_quota') as cleanup, \
+                     patch('rehearse.time.sleep'), patch('rehearse.time.monotonic', side_effect=itertools.count(0, 20)):
+                    with self.assertRaisesRegex(ValueError, 'parent-still-present'):fixture.probe_workspace_propagation()
+                cleanup.assert_not_called();self.assertIn('workspace-propagation-probe.json', records)
 
 
 class PostRetirementTests(unittest.TestCase):

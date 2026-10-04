@@ -1,0 +1,78 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-admin",
+      "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-regular",
+      "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-self-provisioner",
+      "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-viewer",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:iam:system-workspace:system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:iam:system-workspace:system-workspace-regular",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:iam:system-workspace:system-workspace-self-provisioner",
+      "rbac.authorization.k8s.io/v1/ClusterRole/-/kubesphere:iam:system-workspace:system-workspace-viewer"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 4,
+  "phase": "workspace-roles",
+  "phaseAllowlistSha256": "06af5e5d73e043bca355204e7c853bcef9868430d9e39e2b6a5c4e0bc636c688",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-admin",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1289",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "4e386004b1e0c4a1779596b418af1c1f5e0583a5db1b2f0a8a25a83ab2b53c32",
+      "reviewedResourceVersion": "1289",
+      "strictReviewedResourceVersion": false,
+      "uid": "b126b8a0-5f8e-4fb3-b357-6e2f9c58c791"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-regular",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1297",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "62c67185d9bcfbe4bb763bb20cb9acd3dd2051d07372659a4bc0c92ca2dedaec",
+      "reviewedResourceVersion": "1297",
+      "strictReviewedResourceVersion": false,
+      "uid": "cb221e5a-2a10-4448-aebe-16ceabef70a6"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-self-provisioner",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1304",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "f946dcc46d0952092eb7f9bce17691758ae9e5072b2c7664d74cf2e2ce81cb35",
+      "reviewedResourceVersion": "1304",
+      "strictReviewedResourceVersion": false,
+      "uid": "1d9fcbb9-f079-47fd-8416-665408c4700c"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/WorkspaceRole/-/system-workspace-viewer",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1306",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "6b4f5c6a6bf038c10fed8324546f619b10cbf1ede3aab3d352bf2648dd9338a0",
+      "reviewedResourceVersion": "1306",
+      "strictReviewedResourceVersion": false,
+      "uid": "d40213dd-8b70-4f36-a72b-7733cc8c5109"
+    }
+  ],
+  "settled": true
+}

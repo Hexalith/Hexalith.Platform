@@ -1,0 +1,18 @@
+{
+  "actualBindingSubjectApiGroup": "iam.kubesphere.io",
+  "cause": "controller clears the matching User role annotation to an empty string after allowlisted GlobalRoleBinding retirement",
+  "changedDesiredField": "metadata.annotations.iam.kubesphere.io/globalrole",
+  "cleanupPassed": true,
+  "correction": "explicitly planned single-field transition after exact binding disappearance; all remaining raw fields compared",
+  "exactMatchingGlobalRoleBindingUid": "2ee14ad6-8fae-4d74-8f7c-e7804d62c8fe",
+  "failedAttempt": "20261004t085508z-rehearsal",
+  "failedAttemptScriptSha256": "8e5e577459f02cc4a4e9a93de95db39b6f63937a12396d02865ed0801ebc818e",
+  "failure": "reviewed-full-content-drift",
+  "firstAttemptPreserved": true,
+  "otherDesiredFieldsUnchanged": true,
+  "phaseAfterFiveCompletedPhases": "users",
+  "productionAccepted": false,
+  "reconstructedExecutedProcedureMatchesRecordedDigest": true,
+  "recordedAt": "2026-10-04T09:50:05Z",
+  "userUid": "39020edb-200d-4250-9eba-0f3ee89342f2"
+}

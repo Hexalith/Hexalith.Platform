@@ -1,0 +1,4556 @@
+{
+  "attemptId": "20261004t085143z-census",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 1414,
+      "ciphertextSha256": "64ab7b5ecbbfe3a5c2d2a8b25ce7958133eb16480bae262b6cdf623c82120ebc",
+      "file": "0001-versions.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8294,
+      "ciphertextSha256": "e23d5bc3e132eda82dc4c6416e99beac120a6fac18c8715e1734e0de9745f6e8",
+      "file": "0002-native-config.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 457,
+      "ciphertextSha256": "21e8c06bd2c0404e595c77be1a6616658adbdddbe4aeaec7f9dd5743868ff013",
+      "file": "native-credential-custody.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 9038,
+      "ciphertextSha256": "e235bea40ac3d4cc9bdddea560d668d5b0b6448ebfc5da9a014bde9c00dcc674",
+      "file": "0003-core-discovery.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 11530,
+      "ciphertextSha256": "044844e66a425e9b9fb0388ca46b6b29ee085b8d2fc33409fa0367b526586a69",
+      "file": "0004-group-discovery.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1006,
+      "ciphertextSha256": "a8d277f43b17dc806d18d47852f979b73f2d67006fb187d122916620f22b065c",
+      "file": "0005-discovery-apiregistration-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3394,
+      "ciphertextSha256": "4ed8490a7efe2787e9f2c24ad4e82be278bb8d501fbeb2dd66e609147794c561",
+      "file": "0006-discovery-apps-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 798,
+      "ciphertextSha256": "8440fe9ae835ed0bef7a966f197fbbea2b2882cbefb103f22090c0834c2b2490",
+      "file": "0007-discovery-events-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 846,
+      "ciphertextSha256": "fb28ac2a6eaed5d54e9e1f1bc02a63c0a1806cdb49c39efabd3a17a5cf43eaf1",
+      "file": "0008-discovery-authentication-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1294,
+      "ciphertextSha256": "3a10a8ccae64583e2e18e364f27d93c1f730b8b6913fd46917f3fe0fef3bcd12",
+      "file": "0009-discovery-authorization-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "f6fea868e740819259f1fc526bcc3299c4ec4390bbe40f41619ab42598dab2c7",
+      "file": "0010-discovery-autoscaling-v2.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1394,
+      "ciphertextSha256": "14131bbca016e79fce4a16fa2c0e6fdaf3f8d2aeff5d6651229f9ed6d86fff8d",
+      "file": "0011-discovery-batch-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1290,
+      "ciphertextSha256": "a9eee3930d85f781ce18e1fb8a7d687bf11d6a74d8ce2f020b6265886a51b9b0",
+      "file": "0012-discovery-certificates-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2334,
+      "ciphertextSha256": "11e1fee1417bef319d82f2a58cbfad8f02f56e8fb9625aea42b538275205aee0",
+      "file": "0013-discovery-networking-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1030,
+      "ciphertextSha256": "a0eb564561a25d0ff3754034c52b7bc16ddbac733224368dc5e84d0cc8bdf2a1",
+      "file": "0014-discovery-policy-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1666,
+      "ciphertextSha256": "ec59d007454488bb16c645b6e9a7eeac3db755da87f55e9f1f3035cf087d0cb9",
+      "file": "0015-discovery-rbac-authorization-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2526,
+      "ciphertextSha256": "6f4555b626a7d3c90378d922a81691d4a28fc382c4ebdd5d35fd9df6f9b1ed0b",
+      "file": "0016-discovery-storage-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2330,
+      "ciphertextSha256": "debc8b1662bc378b5662088faf8b94e5791d371f3cd95b3a1e7b79f017135a46",
+      "file": "0017-discovery-admissionregistration-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1134,
+      "ciphertextSha256": "cc457695811c467cfea85c7872cf50eb1159fc21ffc7dc761657a28e1a83d022",
+      "file": "0018-discovery-apiextensions-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 838,
+      "ciphertextSha256": "4a3f1726609a1a94353ea5a6a79f1e8f29a0c1dc18d7e214885f7b6dc75588a5",
+      "file": "0019-discovery-scheduling-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 778,
+      "ciphertextSha256": "1f90d2dfbbeb2d755bf978aa37ec28bc08d0e85895ed68208be5005e6b88696c",
+      "file": "0020-discovery-coordination-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 798,
+      "ciphertextSha256": "d7d0c588cf36035fa53ad80519fa7cfe582886cca10831503ecb954980934bbe",
+      "file": "0021-discovery-node-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 806,
+      "ciphertextSha256": "c8db366a283ecaa2f178e1cfec2d8ddcd0c4a6d16eefd8afbe80858cb6fed5e2",
+      "file": "0022-discovery-discovery-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1878,
+      "ciphertextSha256": "639e319ba6f0059380131db8534544b15dc4207a112c21a8c004c47e7481b18b",
+      "file": "0023-discovery-resource-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1522,
+      "ciphertextSha256": "6abb80ad8598faa9a157310323d3d4179d467e40274974fbd83420af818d3707",
+      "file": "0024-discovery-flowcontrol-apiserver-k8s-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 6678,
+      "ciphertextSha256": "a8b49e664eb4020b3ba96ff8c872f9d3889e7daa1b01af6d5c17c961c7daee76",
+      "file": "0025-discovery-projectcalico-org-v3.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1490,
+      "ciphertextSha256": "9a4213dd572ee43f242446be8f574fd0afb0f21a731e474bf14e5fe3705cc8f0",
+      "file": "0026-discovery-acme-cert-manager-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 966,
+      "ciphertextSha256": "fb041d80b5d910fa571235087321aaef1f475399234e1cb60aa0636a25425ad7",
+      "file": "0027-discovery-barmancloud-cnpg-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2618,
+      "ciphertextSha256": "1a736edc8e089b0366f05638836fe81f5f89563175f51a8cc5326dec4b8000f1",
+      "file": "0028-discovery-cert-manager-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7114,
+      "ciphertextSha256": "56a1118972c9974e6c53812291034d8dc11753c074ba82ee55bef998d0b866b1",
+      "file": "0029-discovery-crd-projectcalico-org-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3978,
+      "ciphertextSha256": "0b0366dfe23c5ad256b892ed90b503d911aa3c1ec677f0109b61aa3559bcc4c0",
+      "file": "0030-discovery-operator-tigera-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5470,
+      "ciphertextSha256": "ed9d29676fdc66ab23f8712ed8ca41e8e43b7cb4e9a1045848cc56d96e481dea",
+      "file": "0031-discovery-postgresql-cnpg-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1598,
+      "ciphertextSha256": "354a50a704847b83fa432f6729ae2dfcac2dcdb9167f955b3611f2c82f7e65cb",
+      "file": "0032-discovery-tenant-kubesphere-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3886,
+      "ciphertextSha256": "98e93200861cdf2e566fc7b83025131f6bda3dcc8adb9a1dcf4a03a361fe2200",
+      "file": "0033-discovery-velero-io-v1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1062,
+      "ciphertextSha256": "04c6677533ae0b9a7b693e750fae0a2822031eb1f44c5e1b0e7467354367dfa4",
+      "file": "0034-discovery-cluster-kubesphere-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 798,
+      "ciphertextSha256": "1628558efb4b57f34394602c727a6f95dd5a7685773075276db6308c0bf3b9cc",
+      "file": "0035-discovery-dapr-io-v2alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1678,
+      "ciphertextSha256": "0ed5011247072272fdf3831ac3e0485cf7d4a0e7f5ca96db897cad642b0005ce",
+      "file": "0036-discovery-extensions-kubesphere-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 6706,
+      "ciphertextSha256": "0737fd5a972f1d04a3f2ba066ba65c352ff6d851e3dc1543433595b83d31b2e7",
+      "file": "0037-discovery-hub-traefik-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2426,
+      "ciphertextSha256": "afc3c09ff547c4fb48d2d7c6dfced0c503f8eab3e94011ebe70b960bb0192f75",
+      "file": "0038-discovery-kubesphere-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 862,
+      "ciphertextSha256": "b00dd8f2e0dea7e10a95825de9bf23b5db70c5d48164487fd5750c2a7ee91695",
+      "file": "0039-discovery-marketplace-kubesphere-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1638,
+      "ciphertextSha256": "60b2d0de778c281618ef4b760235221ceb9380e94011c54fb18cb39a0dc46c36",
+      "file": "0040-discovery-policy-networking-k8s-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1186,
+      "ciphertextSha256": "4915ef5cda6404b109ddb1461271699ee04ddb3fbbc762056e4d3bdd5697280d",
+      "file": "0041-discovery-storage-kubesphere-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3438,
+      "ciphertextSha256": "4ee2edd396fac3bab9bb007c99b6218bca818b2264153c83345fce85b56df3fb",
+      "file": "0042-discovery-traefik-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 838,
+      "ciphertextSha256": "dff5b89184645b9c5a5d8cf40f374bc891b6c30360210e43b856f7446e69db4d",
+      "file": "0043-discovery-gateway-kubesphere-io-v1alpha2.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5234,
+      "ciphertextSha256": "8a8901efbb211a427edcb13f8953084142394de7ed7f7ebb974e345f3aaecce5",
+      "file": "0044-discovery-iam-kubesphere-io-v1beta1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1018,
+      "ciphertextSha256": "0960b5303d5998adb813107555db3a99ec278c1e44ed60dd5cd17f999eeea62e",
+      "file": "0045-discovery-quota-kubesphere-io-v1alpha2.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1014,
+      "ciphertextSha256": "b99dc6741cdfa48cce362568f5a7270b5b082bf90924006c5e08d33acf28d083",
+      "file": "0046-discovery-app-k8s-io-v1beta1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2950,
+      "ciphertextSha256": "98affecb3bb067e7d24d834b17754fdcb7b8c32e7c66e27e137f27ff08815cb8",
+      "file": "0047-discovery-application-kubesphere-io-v2.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 778,
+      "ciphertextSha256": "d90c39ef5ae6a75d66bf7b5fd9d344d7801b0edba70e3c3098fba3f7173ab2b9",
+      "file": "0048-discovery-metrics-k8s-io-v1beta1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 962,
+      "ciphertextSha256": "1352c5c921e32d97c31424923c68babd19a7a7a0717f436407f09f67d161edee",
+      "file": "0049-list-v1-componentstatuses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566082,
+      "ciphertextSha256": "2dfa44ec53d3c1881aef6314db0b2766a0afc1bcf681832260b5c919ac2e787f",
+      "file": "0050-list-v1-configmaps-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 90874,
+      "ciphertextSha256": "7e3f948a71422c5c3c40cc73441c457071a96d943560cd924298e399036de0ec",
+      "file": "0051-list-v1-endpoints-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 48174,
+      "ciphertextSha256": "55a606b66dc666a0398befbc384786892ee85d569e0dba8465115dc25b495ee9",
+      "file": "0052-list-v1-events-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 518,
+      "ciphertextSha256": "57cfb5a4f6c77966d5315be1e89e1179afa9527f9614b950ce35a2245947bb69",
+      "file": "0053-list-v1-limitranges-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 36142,
+      "ciphertextSha256": "76ad70cdbca45db1e7e1d764a3be7378d538dc81b38e48eb36ea367cf98218b8",
+      "file": "0054-list-v1-namespaces-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 18234,
+      "ciphertextSha256": "c5c0ff210aa935e597f1719c3274c0754208244939698aab14adb0bd6c9c409d",
+      "file": "0055-list-v1-nodes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 78862,
+      "ciphertextSha256": "e79371542644010370ede80f05cea49a67609555cda6af1204006f69eb5e27bd",
+      "file": "0056-list-v1-persistentvolumeclaims-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 81202,
+      "ciphertextSha256": "a35d7adb7ebebb56dd547b14d923e21d77f0469e95a89a996e08b037471caedf",
+      "file": "0057-list-v1-persistentvolumes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1487050,
+      "ciphertextSha256": "f3d46f5680a4a2a17c0992feb528006d65f7683f2e1d0ce5e9d452686f930fc2",
+      "file": "0058-list-v1-pods-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 518,
+      "ciphertextSha256": "139f4955b8e771140c60382b10118ed2f8ab42a021612b2256eb0401e0dadebf",
+      "file": "0059-list-v1-podtemplates-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 530,
+      "ciphertextSha256": "fa7299053660182e2f81bf421d2b21ec86cc9013a255d2597635778566909baf",
+      "file": "0060-list-v1-replicationcontrollers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 522,
+      "ciphertextSha256": "122da26a8821e9e78d283056f3563bae82f9e5226298609a71f1cdfbf5efe947",
+      "file": "0061-list-v1-resourcequotas-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 9278078,
+      "ciphertextSha256": "947fade1adc8798751552fbcb7f637d76e6ec7e39aed01fc08b6c5fa2616e202",
+      "file": "0062-list-v1-secrets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 62782,
+      "ciphertextSha256": "e17e36e1ba2e4559eeb2e3323c02d0b4f354c9b40a1421c4820c2b5d13ecb640",
+      "file": "0063-list-v1-serviceaccounts-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 122594,
+      "ciphertextSha256": "17720b3fe8fd6aa857fb4fd8316e7f0b7b2b6bdc165d17026454dd03c5803122",
+      "file": "0064-list-v1-services-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 66578,
+      "ciphertextSha256": "98db837ae5a2cdc55a7290fb58ffe8982532f17748b4ec3d6992b32176225974",
+      "file": "0065-list-apiregistration-k8s-io-v1-apiservices-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 255918,
+      "ciphertextSha256": "928b96fc38a4e3a23d01f22e7ad87e0a136be3fa8cc4c65124aa7d4216218bb5",
+      "file": "0066-list-apps-v1-controllerrevisions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 59086,
+      "ciphertextSha256": "2c1f06aad2f5741a5c52ac18ea42e24e630e71b920aa8f025734936ba14e1eee",
+      "file": "0067-list-apps-v1-daemonsets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 414726,
+      "ciphertextSha256": "2f0dcdee305494ffa329890c3d0592ac993cffe3bf8ce96963ff5f0dd77a02c6",
+      "file": "0068-list-apps-v1-deployments-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1034230,
+      "ciphertextSha256": "15952be7454cc4d58d6b8d6455df6b174633046d4f22ad453336376670321c93",
+      "file": "0069-list-apps-v1-replicasets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 83254,
+      "ciphertextSha256": "cd8e2c6ca0310b5908ffb5bb89f2a893887f7184cb18640536c88c10f475c541",
+      "file": "0070-list-apps-v1-statefulsets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 48854,
+      "ciphertextSha256": "3d57f295eadb58e5fbe4fb0d34125ddd8ec9f9fde0abe67a7b74252075cf6c7d",
+      "file": "0071-list-events-k8s-io-v1-events-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 550,
+      "ciphertextSha256": "9e8064dff9ff1afdce23a4bfa9534529bcd5b3648acb34f87acd52b4a487dda9",
+      "file": "0072-list-autoscaling-v2-horizontalpodautoscalers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 29042,
+      "ciphertextSha256": "6f46f9978dc0927feb969fb078712ee71a1eed897425764e056299ea6ac3277f",
+      "file": "0073-list-batch-v1-cronjobs-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 352886,
+      "ciphertextSha256": "175c79ee8dbfdaa029b86ce1b00ba16ed96d97aa235f58d48a0d95c49dfbdcc4",
+      "file": "0074-list-batch-v1-jobs-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "66546d16a25850f731dc5292cc85cbd768e0d0c09d7627ed74f651f0e127844e",
+      "file": "0075-list-certificates-k8s-io-v1-certificatesigningrequests-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1566,
+      "ciphertextSha256": "cf2a75395956bd60f8e2596d891f3a178b5572614712d538109302a321eebc71",
+      "file": "0076-list-networking-k8s-io-v1-ingressclasses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 28702,
+      "ciphertextSha256": "77155020355db4404390610d5aa15b5ad4fc30db3a5e0c5c95d4f21bc5274126",
+      "file": "0077-list-networking-k8s-io-v1-ingresses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 44174,
+      "ciphertextSha256": "b38c7f3b1467c75b6ab4fd5dbb04309a75c86c8cfefbe069391d54ba93da5641",
+      "file": "0078-list-networking-k8s-io-v1-ipaddresses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 50318,
+      "ciphertextSha256": "44c24cc0f738742b78eb240592be8abc6a8a997adf35dd0491b687e54de344fb",
+      "file": "0079-list-networking-k8s-io-v1-networkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2490,
+      "ciphertextSha256": "97b3f8d01cc3092feb639e85236b095a8801e55278f8c99c3dd911c6cb85d669",
+      "file": "0080-list-networking-k8s-io-v1-servicecidrs-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 28022,
+      "ciphertextSha256": "4a5a9790510a4261b23b0237497901ab5a05b5ca404a2f7fa223ef8462386322",
+      "file": "0081-list-policy-v1-poddisruptionbudgets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 121358,
+      "ciphertextSha256": "c9860e4026a522cf6ad9f1d16df1b3c3fab1b93b10e1b33771f5d0e9838d857e",
+      "file": "0082-list-rbac-authorization-k8s-io-v1-clusterrolebindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 216198,
+      "ciphertextSha256": "5e472f1a26e202bd2a1468eb509e6e22038d04742b7e22f571ec8f81007a37a9",
+      "file": "0083-list-rbac-authorization-k8s-io-v1-clusterroles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 64022,
+      "ciphertextSha256": "c423a967b4185190ede8e34d8f673a33fc1cf09db635d9b1a96ce9053e494708",
+      "file": "0084-list-rbac-authorization-k8s-io-v1-rolebindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 56966,
+      "ciphertextSha256": "2acfc340007954a18cd3ab08fb259189215b4322841f700adaed5a653bda9d38",
+      "file": "0085-list-rbac-authorization-k8s-io-v1-roles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "00e419924b8a53851dd13267017d556ae3444f945b8e0ba0890a6f09b0cb93af",
+      "file": "0086-list-storage-k8s-io-v1-csidrivers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1678,
+      "ciphertextSha256": "82a0a536d1b33bb453ffc5c3e7a3926f474e5165f4624041925f06c476d9477a",
+      "file": "0087-list-storage-k8s-io-v1-csinodes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 546,
+      "ciphertextSha256": "a85efea9b3454a4b5cf230607222997e6a9a65ffca27428b2bb630f2224d640d",
+      "file": "0088-list-storage-k8s-io-v1-csistoragecapacities-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 4910,
+      "ciphertextSha256": "98bf749de869f6eab8f6f507b0e422076e07fa1dd4b34bad3e5526638e33436a",
+      "file": "0089-list-storage-k8s-io-v1-storageclasses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 546,
+      "ciphertextSha256": "fad6c5383bb5ac21c189cf9a9dd52b7417f1ac22358823bb83826326970a2ae9",
+      "file": "0090-list-storage-k8s-io-v1-volumeattachments-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 550,
+      "ciphertextSha256": "ed9a259f17953847dba1c469409c67df10c5fc4b30e976844574960ce7d26add",
+      "file": "0091-list-storage-k8s-io-v1-volumeattributesclasses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 43722,
+      "ciphertextSha256": "7c62bd207bfd8f55776b3ef3450a5a6c8c949ae7ab0ba2e5826f0ee431daded6",
+      "file": "0092-list-admissionregistration-k8s-io-v1-mutatingwebhookconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "130a6523d6882a4207e38af2c7dfc6f8d751f6b4e0b6966af217fa00e62593f7",
+      "file": "0093-list-admissionregistration-k8s-io-v1-validatingadmissionpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 586,
+      "ciphertextSha256": "5260f1f961f02f641ec1bff5d44965a171be5c2ec7b35f9052afde79b66cdab3",
+      "file": "0094-list-admissionregistration-k8s-io-v1-validatingadmissionpolicybindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 70310,
+      "ciphertextSha256": "bded3a6d94e7b7849250d97b12e373ea34c6352f9738ef849ddca09bc1c46319",
+      "file": "0095-list-admissionregistration-k8s-io-v1-validatingwebhookconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 4598210,
+      "ciphertextSha256": "0a6fac0fb9f37f0b7cb8cf8d979a2c046ff300c790859562f4ef4273a9ccd14f",
+      "file": "0096-list-apiextensions-k8s-io-v1-customresourcedefinitions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2062,
+      "ciphertextSha256": "2404e1208bb2a17a4ae327bcbdf4c08b4e789cfecc29399696c577ffafe94664",
+      "file": "0097-list-scheduling-k8s-io-v1-priorityclasses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 13934,
+      "ciphertextSha256": "3691b8b1cab1e7f7da811f981585aa1e52717cdc5c7208839b16bbbe435cf78f",
+      "file": "0098-list-coordination-k8s-io-v1-leases-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "53397d0fb5eb95edccb44747404c95b17c5ca2db9b93022b2619bb18cab588ac",
+      "file": "0099-list-node-k8s-io-v1-runtimeclasses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 135250,
+      "ciphertextSha256": "f3e09696e33af52339562cafc7a729f8bbb4bf5a3bf19de275255ce104dce765",
+      "file": "0100-list-discovery-k8s-io-v1-endpointslices-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 538,
+      "ciphertextSha256": "2ed471666fcfdac0fc2d5a5d03b917a65ea96c9b862f57865dd57217cc010289",
+      "file": "0101-list-resource-k8s-io-v1-deviceclasses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 542,
+      "ciphertextSha256": "ebb9466d46d4b81db6099e15132df49ea8c0ee0068b63627ae10f792828cf605",
+      "file": "0102-list-resource-k8s-io-v1-resourceclaims-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "f9ef62185bd6711a411de8b553e3031096fce8279fadf4823312257c8eb771a6",
+      "file": "0103-list-resource-k8s-io-v1-resourceclaimtemplates-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 542,
+      "ciphertextSha256": "82b4fbfb21f0788b4c7cfe90f646b53694172ab13a6657850b02db896603579f",
+      "file": "0104-list-resource-k8s-io-v1-resourceslices-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 24702,
+      "ciphertextSha256": "45f1a8639764c800e0866afcf8f3fa32a40d2f26d353e5764a945b9e18d15902",
+      "file": "0105-list-flowcontrol-apiserver-k8s-io-v1-flowschemas-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 9926,
+      "ciphertextSha256": "6ed3453e62a0cd0b748f3bbb576842d514d9df2be020636109ccfa2ea764093e",
+      "file": "0106-list-flowcontrol-apiserver-k8s-io-v1-prioritylevelconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 550,
+      "ciphertextSha256": "f2fd45c64ae04883aaf2434bb8751ebec63364e96111c42bd8d25d439c61be12",
+      "file": "0107-list-projectcalico-org-v3-bgpconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 538,
+      "ciphertextSha256": "1ace317d4c20d334dd2f3d9bdf987fb1bb4e7ea5a9b43b5f6e39a84bd02e670a",
+      "file": "0108-list-projectcalico-org-v3-bgpfilters-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 538,
+      "ciphertextSha256": "a340698197bf510ea54c0b55112a52e2882f2775706c37047bf38e7a4efb59f6",
+      "file": "0109-list-projectcalico-org-v3-bgppeers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1166,
+      "ciphertextSha256": "43cc26a9bd3d48722ccba89caea280b25e1568bc664de477e3f740fae7b973bc",
+      "file": "0110-list-projectcalico-org-v3-blockaffinities-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 550,
+      "ciphertextSha256": "b9f8e7fd5fd594c7bc84738ea0d30880f81c8db32ea5d1e3e6952d5e8269a11c",
+      "file": "0111-list-projectcalico-org-v3-caliconodestatuses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1038,
+      "ciphertextSha256": "013aa70c40e5ea48af853980ac7ccc996d238074bb997d002433dc57defdcf40",
+      "file": "0112-list-projectcalico-org-v3-clusterinformations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2238,
+      "ciphertextSha256": "d323ea6655853e25d45d4f23faba31a03bfe23d08d61cb52383f67a5035e4638",
+      "file": "0113-list-projectcalico-org-v3-felixconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "37722ffeae1f5e8bc3ffe02972185f11aedf18fa36b66e13a2215d26f025a782",
+      "file": "0114-list-projectcalico-org-v3-globalnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 550,
+      "ciphertextSha256": "cf7fc96ea19e2ead61221fc18258c7a5b35227fdfd86a7739230876a9770cc23",
+      "file": "0115-list-projectcalico-org-v3-globalnetworksets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 542,
+      "ciphertextSha256": "6f14e31f689957d33795aa291011d1acda993c168a475a4ff9defe7f97df3a4e",
+      "file": "0116-list-projectcalico-org-v3-hostendpoints-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 866,
+      "ciphertextSha256": "bcf8b66600ac314ee3658fc3377643a79b3eb4e572521c9d819224a63579db9f",
+      "file": "0117-list-projectcalico-org-v3-ipamconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1174,
+      "ciphertextSha256": "8172e29c890a548adc74cc6a3c49dcf690961ff7eec69e9f6a0d97b9b0337da7",
+      "file": "0118-list-projectcalico-org-v3-ippools-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 546,
+      "ciphertextSha256": "8428d4f04b36be076f7019eb9ed9d01aa11b79701b4677594f411f5ae2944b14",
+      "file": "0119-list-projectcalico-org-v3-ipreservations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2078,
+      "ciphertextSha256": "b5602cda986fa39bcff6cb65b627b1f2fe40c15d1a2ecb2f109f0d035b6369f9",
+      "file": "0120-list-projectcalico-org-v3-kubecontrollersconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 546,
+      "ciphertextSha256": "e0aa164b23d4e8cd92478111723763c51d77bcbe7780a2c40f383cd78a0688f1",
+      "file": "0121-list-projectcalico-org-v3-networkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 542,
+      "ciphertextSha256": "8cfb449d75c318cd85127b143e7492af5037c56fea957f2aabdc62ab03e5a6f5",
+      "file": "0122-list-projectcalico-org-v3-networksets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 66190,
+      "ciphertextSha256": "6efc125c730a07c093898a6eee22e05195600e8eb6a82515315554709baa551e",
+      "file": "0123-list-projectcalico-org-v3-profiles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "b2c5ea0d251f9e1dcd19d9f7268a33f3acd013f70b2f9cb543aaba14094cc2e7",
+      "file": "0124-list-projectcalico-org-v3-stagedglobalnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "f195dc745846d4188a1b2bc3f0c4493c29d6da9582fbbf02f3372cd6e8f795ee",
+      "file": "0125-list-projectcalico-org-v3-stagedkubernetesnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "5b3f58505c17da78063b368d616764ddeb9bdf658ed4ed1dfcdc09657e4c39ea",
+      "file": "0126-list-projectcalico-org-v3-stagednetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1538,
+      "ciphertextSha256": "eb693f137670e0b1c05e950b995bb224f5fe85390208af934baf8cb45448aaa2",
+      "file": "0127-list-projectcalico-org-v3-tiers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "68f511fac23a149436f0480593244955b08d9a3021ac70d96df7a0988818f334",
+      "file": "0128-list-acme-cert-manager-io-v1-challenges-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 103898,
+      "ciphertextSha256": "fbcd49994c9a585944153b082064278cda308fb8cadede0cadc7aab48d02692b",
+      "file": "0129-list-acme-cert-manager-io-v1-orders-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 4050,
+      "ciphertextSha256": "467964d2b9b1c48ac74eb1071a9c731da1c8f1d3f4457f78e10ee70fae85f164",
+      "file": "0130-list-barmancloud-cnpg-io-v1-objectstores-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 154026,
+      "ciphertextSha256": "172ee19a67995a4b4fec0eaabe1c9d372bfc46b63eda4d0e8c6b57a0f667cd27",
+      "file": "0131-list-cert-manager-io-v1-certificaterequests-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 11510,
+      "ciphertextSha256": "fb262070648bfb1444ebd7d1dcc119cdc8a5c0f5825042aadefe1d7dfd9e9101",
+      "file": "0132-list-cert-manager-io-v1-clusterissuers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7602,
+      "ciphertextSha256": "f4b970a727e5419cb82f308409581d419755594f1a7c0928ff4be1124c35ebaa",
+      "file": "0133-list-cert-manager-io-v1-issuers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 49142,
+      "ciphertextSha256": "78b763772e3fa6ccf767283ef35bc8145f3759ce4fe0e3c97d8f10883fc9e347",
+      "file": "0134-list-cert-manager-io-v1-certificates-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "bb3887325f4e27dddb30eb5745725b9579adf5b9993a281a7af4211a6b73c3a7",
+      "file": "0135-list-crd-projectcalico-org-v1-bgpconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 578,
+      "ciphertextSha256": "ef9b9454b3c3dc23f9b585652f55feefb25a7c217f0199f83d6faed2d96b54f5",
+      "file": "0136-list-crd-projectcalico-org-v1-globalnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 586,
+      "ciphertextSha256": "844aa5d46bddeaa3b03cc5187367131165a3594fc3b51c7216fce57a1c9308c0",
+      "file": "0137-list-crd-projectcalico-org-v1-stagedglobalnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2266,
+      "ciphertextSha256": "e578fb1a3c8b3a04c1b43c6fedb26cb879501bbe4f6856880f8acaf1827a4180",
+      "file": "0138-list-crd-projectcalico-org-v1-felixconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2234,
+      "ciphertextSha256": "768a44991f6dff04363eb5d3a7e396a504152817a5ba06634876619ee1c4445b",
+      "file": "0139-list-crd-projectcalico-org-v1-blockaffinities-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 23390,
+      "ciphertextSha256": "e586b9d55847bb0d4aa1cdb28a50601601dcb29a6d7d2e2315b01410e9489190",
+      "file": "0140-list-crd-projectcalico-org-v1-ipamblocks-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 67562,
+      "ciphertextSha256": "245db639a14c67d68dcb97ccc2974ddfc427b7b4a2488649dd7adec76a0b0d3a",
+      "file": "0141-list-crd-projectcalico-org-v1-ipamhandles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2106,
+      "ciphertextSha256": "e1addc521eed47d45eb2f5efbe5da67faa6dd2f9cf31eaab4a86bfc95600e1f0",
+      "file": "0142-list-crd-projectcalico-org-v1-ippools-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1454,
+      "ciphertextSha256": "b5c983d1e88913e3bd50c110e78153c2e343b352a3996bb2dfbc6e4aabf14e98",
+      "file": "0143-list-crd-projectcalico-org-v1-ipamconfigs-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 570,
+      "ciphertextSha256": "0c56649f6873c21d611a56c1a474955a3c0a11e4d19e88539551212b6e9df65b",
+      "file": "0144-list-crd-projectcalico-org-v1-networkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "2861d7932119e5d647fac064463a80f8fa82bf8569154bab269533530861846f",
+      "file": "0145-list-crd-projectcalico-org-v1-bgppeers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "39678848dcec0accdf96043b08b06e4d4e83b44a11ec0fba59d3cec12c9f4c18",
+      "file": "0146-list-crd-projectcalico-org-v1-caliconodestatuses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 578,
+      "ciphertextSha256": "c8e167fdeaab8c13b2b635acfef59c1ac809cb4bbb6b06641e59b265f6ffe273",
+      "file": "0147-list-crd-projectcalico-org-v1-stagednetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "4eff0ee2d8e2921960ae65da9477a3eaed7cbe583a8fc4e1753ac106b50703d8",
+      "file": "0148-list-crd-projectcalico-org-v1-networksets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 590,
+      "ciphertextSha256": "204c4a35e0ed63b5ca3ae85c28768728a2b73e0313c32710aca57a5609e049d5",
+      "file": "0149-list-crd-projectcalico-org-v1-stagedkubernetesnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "d2ddf2547c6d48772233ba59884295d37526e9e8f68f20e9240ed6edefebc321",
+      "file": "0150-list-crd-projectcalico-org-v1-hostendpoints-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "c62290102460e0d72d6a7a39bcf1c70a31dafaf198ed6827e5f927b7cff38c78",
+      "file": "0151-list-crd-projectcalico-org-v1-bgpfilters-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "786daae2575b43d48c52f59d68b6913f09ec1de96f15f2598fad75163cae4dbd",
+      "file": "0152-list-crd-projectcalico-org-v1-globalnetworksets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1678,
+      "ciphertextSha256": "dcb2405715a02ac6c7f42c64cd91cf8575ea645a1fc3b7ce207714499ae55644",
+      "file": "0153-list-crd-projectcalico-org-v1-clusterinformations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3854,
+      "ciphertextSha256": "2bded46687eb3e8694d58c2eb8b85e02172bddef6ee5bf85c703128061aeedbc",
+      "file": "0154-list-crd-projectcalico-org-v1-kubecontrollersconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3226,
+      "ciphertextSha256": "244912861d93073ef36539c64b7695bf92bdd396b77f88cfe1760b5524b66476",
+      "file": "0155-list-crd-projectcalico-org-v1-tiers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 570,
+      "ciphertextSha256": "b6101f0aa1b2bcd6e0294762f7ac55a918cdf5602e70dd22dfc2995e4046747f",
+      "file": "0156-list-crd-projectcalico-org-v1-ipreservations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1514,
+      "ciphertextSha256": "daee29dc2587fb18c0c160176b0f4ef69086f780a8e420ac34eeb37d62b26b30",
+      "file": "0157-list-operator-tigera-io-v1-goldmanes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2550,
+      "ciphertextSha256": "776954f8e0e3e0c5baf6ecddcb6396171898a1b1386f15ee0817fcb5a4d91e64",
+      "file": "0158-list-operator-tigera-io-v1-apiservers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8266,
+      "ciphertextSha256": "cb4463cd1b2af2dfacc7fce5be30c860562db2f8a20b6d236b66f2c733f5243e",
+      "file": "0159-list-operator-tigera-io-v1-tigerastatuses-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "3d36816033c556a8528a0c58d9dea8183af698bd5fecda8034a30e9812e9180d",
+      "file": "0160-list-operator-tigera-io-v1-gatewayapis-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1786,
+      "ciphertextSha256": "a8ede71ac3d774bd33ef43fe4a0fa4977e55522e200820be7fd02a703f76929d",
+      "file": "0161-list-operator-tigera-io-v1-whiskers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8466,
+      "ciphertextSha256": "884536a7c1c1f30a2dc27fc03d7a7ef2368ca134e0adaeaece79ef07335eae03",
+      "file": "0162-list-operator-tigera-io-v1-installations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 582,
+      "ciphertextSha256": "45dde6f6c4f951328b51dc0b345ef963bfa21cc167d2b5a3694b0a9545939d1b",
+      "file": "0163-list-operator-tigera-io-v1-managementclusterconnections-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "790a71a6f86197390a02ee663b0228ddf011cc3d72f05b43381b9cf9f85689b4",
+      "file": "0164-list-operator-tigera-io-v1-imagesets-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "b41c33984cbf4807625003fc9a830e91ba3b7c1b2551e9f4cff068087f32ef02",
+      "file": "0165-list-postgresql-cnpg-io-v1-databases-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3658,
+      "ciphertextSha256": "747e5fdecc143b3811b6170f3fa498fbdbcca4dfb6dbfa2d6a538cabeaf78015",
+      "file": "0166-list-postgresql-cnpg-io-v1-scheduledbackups-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "5492dd727b7ef59f5b4d935d45947c31db825f843c0433636e1b102a11bda438",
+      "file": "0167-list-postgresql-cnpg-io-v1-publications-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "01a62518d87314803214bc6f75aa55b6ad6d41d3a25b85659fdbed177be73930",
+      "file": "0168-list-postgresql-cnpg-io-v1-databaseroles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 26318,
+      "ciphertextSha256": "aff0f594225b584592652f5abcb401202bc5de9012a0e1497ae13c90b10b3412",
+      "file": "0169-list-postgresql-cnpg-io-v1-backups-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 17938,
+      "ciphertextSha256": "73c8c6536b9393c6b6d3e67dae472680bdcb705f6c4e91ed42148f6d0f174099",
+      "file": "0170-list-postgresql-cnpg-io-v1-clusters-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "0d7651ea112bce8eb20c4e39a6d0b2d70d06328d69c461bbed8f5070018c72bb",
+      "file": "0171-list-postgresql-cnpg-io-v1-poolers-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "f9e43fb878e162da9287c603e8532e6502771a3c070d698308ea588e9e8f376c",
+      "file": "0172-list-postgresql-cnpg-io-v1-failoverquorums-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "5751fb3a2c1534928c66a42290932951a8c774ff18e176527eb46e671bb76ec0",
+      "file": "0173-list-postgresql-cnpg-io-v1-imagecatalogs-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "18203976386f594a73011c9566988fdea3b7a0e57df628693031e65006370b76",
+      "file": "0174-list-postgresql-cnpg-io-v1-subscriptions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "6da6b280e38a85c54553db09b2cb794179b39291ee273e64a9c8614ae6335828",
+      "file": "0175-list-postgresql-cnpg-io-v1-clusterimagecatalogs-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 578,
+      "ciphertextSha256": "7d4be4ac59cb9c2de6b82a1f06b173071fcb3545fd09c92283c0f4cbd3a4fe80",
+      "file": "0176-list-tenant-kubesphere-io-v1-workspaceconfigurations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "cd76486dd14627c63aade379b0097c584cf54dd9db16db6ae3a4eb909d35d083",
+      "file": "0177-list-tenant-kubesphere-io-v1-subnamespaceanchors-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3238,
+      "ciphertextSha256": "bc2c1ea5f167248c785fc5ad9e46dc7ef312c75de0fd9c2d227bf9e2dd8daeda",
+      "file": "0178-list-velero-io-v1-backupstoragelocations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2502,
+      "ciphertextSha256": "122443e94bc0fde2f0c079cbcd05874ba6191d4cb05eeffe7f82fb1f04e091a3",
+      "file": "0179-list-velero-io-v1-backuprepositories-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "8de8abe3a94bc7c5284dcb43f3d9e6172bb237d75016edcc65e51f052d4160ae",
+      "file": "0180-list-velero-io-v1-serverstatusrequests-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 658246,
+      "ciphertextSha256": "2047585bd469b216479230f1307109d59e3c9ac1e92b19b8c1e4d66b56b205eb",
+      "file": "0181-list-velero-io-v1-backups-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3290,
+      "ciphertextSha256": "9841d3d37d705f2041337a334cc44b7d35537dfd8241df6ce774d940d9e9c90e",
+      "file": "0182-list-velero-io-v1-schedules-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 546,
+      "ciphertextSha256": "988b29a3fdd507486ec53c60f0897bab52d6b20a4fe75783139274d493f08e57",
+      "file": "0183-list-velero-io-v1-restores-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "bfe010575f96bd493e5dbaa74466e41005f3b3bf9c9afb8801eb6bbb38a4395c",
+      "file": "0184-list-velero-io-v1-downloadrequests-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "87abab90692022db32a61ab24fea22590cc01b76939533245fde3a0cbea9788d",
+      "file": "0185-list-velero-io-v1-deletebackuprequests-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 596746,
+      "ciphertextSha256": "e9b8cf467bb7791e3f9f9ac7acd8805e153fee13c9571146221035e35674bc78",
+      "file": "0186-list-velero-io-v1-podvolumebackups-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "1c479a9b2dbd04d5c38773dc5246cb75bc6f752e29ff52d30c99ee11692453b0",
+      "file": "0187-list-velero-io-v1-volumesnapshotlocations-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "8a99e87780750e627121a3233b953345742ad236a245a1f0b64a1eb520d7638a",
+      "file": "0188-list-velero-io-v1-podvolumerestores-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8354,
+      "ciphertextSha256": "18e13c9c090597614aaf30ca601d5c5bf50c3bbe391976827818b9007f2320a8",
+      "file": "0189-list-cluster-kubesphere-io-v1alpha1-clusters-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "e7f670f7ef399158c6d8b236f1f73e2be82687b09d55c3041a0c927cf273a0e5",
+      "file": "0190-list-cluster-kubesphere-io-v1alpha1-labels-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "0a4c8c3735e172bf1877f728b9bf2770eb191bf843aa3a91f9c6828fc1506551",
+      "file": "0191-list-dapr-io-v2alpha1-subscriptions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "84f2091852648b0bc44038d70a564a70b35f90b6a61168a5966f9d37874db88a",
+      "file": "0192-list-extensions-kubesphere-io-v1alpha1-jsbundles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 582,
+      "ciphertextSha256": "a040a48ad05b1cb2cc38070279b2b443e7929dad1749cc12924129dec0b3e87c",
+      "file": "0193-list-extensions-kubesphere-io-v1alpha1-extensionentries-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 578,
+      "ciphertextSha256": "3c4adbf273f6e851a61e9e5d793b8ca66ff00cd9f6a9891a9b4e12f94790b416",
+      "file": "0194-list-extensions-kubesphere-io-v1alpha1-apiservices-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2430,
+      "ciphertextSha256": "f9ffc26bfc0eb6f97518074ea8b212853aa2527313464d066a45048311871063",
+      "file": "0195-list-extensions-kubesphere-io-v1alpha1-reverseproxies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "ab919d051b161be43774f2d063ad4eff441da7e1ab4c541b8ef888992d01a3c2",
+      "file": "0196-list-hub-traefik-io-v1alpha1-apiportalauths-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "ffd1cc52c246ca960b66a05a143743d3dedc67a6027386fb2935819b52bf9329",
+      "file": "0197-list-hub-traefik-io-v1alpha1-apis-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "6e3d9e5b464cb7d373c0fbf91337a95f83e7fe041f21449e4682a44476e7ddeb",
+      "file": "0198-list-hub-traefik-io-v1alpha1-accesscontrolpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "1309c40c662e8d7137258ac2881e5a765e3e8733181179d789419653443f5f9d",
+      "file": "0199-list-hub-traefik-io-v1alpha1-apibundles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "ae188434f249a3a28c814cbcc2077418eca49f84f8f45dc0f7004e52cae91c1c",
+      "file": "0200-list-hub-traefik-io-v1alpha1-uplinks-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "a9d1badcfd053ae0d1ca58581dc35d01f19a59fa80c99b3458bcc692621d17c8",
+      "file": "0201-list-hub-traefik-io-v1alpha1-aiservices-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 570,
+      "ciphertextSha256": "d229cbe6094b0d0c9c84285232dad56d16c9c3508224acda6dcdffaf504907d1",
+      "file": "0202-list-hub-traefik-io-v1alpha1-apicatalogitems-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "552ba5dcce84e374ea4539d2ba169e56afbb847b6cc5c2e9520933576a3c823a",
+      "file": "0203-list-hub-traefik-io-v1alpha1-contentitems-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "c05877ee8a617baee99dc1e5d933ba6e57cd303e921948126c9494e8cfaeb36c",
+      "file": "0204-list-hub-traefik-io-v1alpha1-managedsubscriptions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "0eda60cb75cdf155f5157aa507244ca1aa77d82110d73fc0f0ab9f863a5141c0",
+      "file": "0205-list-hub-traefik-io-v1alpha1-apiplans-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "a551f0f9225b77e4305122d83424a8c9c25e8608d369fbcedffdcfe34f6f15a0",
+      "file": "0206-list-hub-traefik-io-v1alpha1-apiportals-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "04bd7abd935bea4dcde96c86453f895cbe274fb59a32f03817f5d4f103e5ab8a",
+      "file": "0207-list-hub-traefik-io-v1alpha1-apiratelimits-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "b32d326522dc97f4cb1fdbd7fda7045458ceeda387e26f12227054a0be40c680",
+      "file": "0208-list-hub-traefik-io-v1alpha1-apiversions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "2d2c75d39d17be6124fd20ea479756d41a9368a2379599c7c9666cf2a09f9302",
+      "file": "0209-list-hub-traefik-io-v1alpha1-apiauths-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "83ce096340a796c4b3a7e85382cc3e3da73feafd081172dbe10152d8f68b9cf4",
+      "file": "0210-list-hub-traefik-io-v1alpha1-managedapplications-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1792590,
+      "ciphertextSha256": "25520a7804503a937e35771e91d698659d6d4815139985749cda47864bb747f8",
+      "file": "0211-list-kubesphere-io-v1alpha1-extensions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2086,
+      "ciphertextSha256": "5946ccb6329ffd63164c6fa109cc0fb887cdbf0a27dc70a55a7abc94d2bb3e1a",
+      "file": "0212-list-kubesphere-io-v1alpha1-serviceaccounts-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 4250,
+      "ciphertextSha256": "7de609f55878c1c19ef48e3efca93a6e0a6e10042ab7ac837b32bb19ddbdb419",
+      "file": "0213-list-kubesphere-io-v1alpha1-repositories-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 16446,
+      "ciphertextSha256": "90c1eae9e3ce2f66229800a13819466a9141d0d9ae18ced880f9fe9ce89fcdab",
+      "file": "0214-list-kubesphere-io-v1alpha1-categories-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2460698,
+      "ciphertextSha256": "a6bc9488e6b5cf9392402b28ba441bc8a50eea4ac6ad1034580274f10b19b4e9",
+      "file": "0215-list-kubesphere-io-v1alpha1-extensionversions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3738,
+      "ciphertextSha256": "f2fa76bf6a08b35abdf2c03ade08a463a9615a823505522c27e5202cb64cbfe4",
+      "file": "0216-list-kubesphere-io-v1alpha1-installplans-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 582,
+      "ciphertextSha256": "cb6cbf42e31ea4422f4a0a859b8154040fe09e65513c61540d006741f02e0a09",
+      "file": "0217-list-marketplace-kubesphere-io-v1alpha1-subscriptions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 598,
+      "ciphertextSha256": "e6247d1844eec019c4e966f39a3e8c4fb2a2b557f827b5d65b81af654ff4b587",
+      "file": "0218-list-policy-networking-k8s-io-v1alpha1-baselineadminnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 586,
+      "ciphertextSha256": "51c906394267c2e3bc3a0f63be280a1bc8ea5a39a90ec392bd901ccb05762af2",
+      "file": "0219-list-policy-networking-k8s-io-v1alpha1-adminnetworkpolicies-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 586,
+      "ciphertextSha256": "c4918a74d9604a1b25227ba10fe2260e2b984a66f20a47dc03c7609dbdd361d7",
+      "file": "0220-list-storage-kubesphere-io-v1alpha1-provisionercapabilities-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 590,
+      "ciphertextSha256": "458ea61e84eaf719984bcaaa352c6d576e77e4ad1a88a6a8586b6b6992e64c83",
+      "file": "0221-list-storage-kubesphere-io-v1alpha1-storageclasscapabilities-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 570,
+      "ciphertextSha256": "0c5918398ac6d80d6e06ca8a7b1eeb6f319179556b23c1f0a5d401437fc05ba6",
+      "file": "0222-list-traefik-io-v1alpha1-serverstransporttcps-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5050,
+      "ciphertextSha256": "f33f01f6783d0b4c693701f17c319591f41348260a65108aeee584561e79495a",
+      "file": "0223-list-traefik-io-v1alpha1-ingressroutetcps-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7998,
+      "ciphertextSha256": "8fa0dac3f175bca65ca2381c4b4d390bcc2e61aa201b3da09a0dfe72d4420358",
+      "file": "0224-list-traefik-io-v1alpha1-middlewares-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2370,
+      "ciphertextSha256": "0e503edb95e69e3632abd77b5e76e9f22dcd606bd0672b4e5e36b958ae52ab21",
+      "file": "0225-list-traefik-io-v1alpha1-middlewaretcps-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "8f02225cbd60946f7a9c3fc0e8381f5b09695b3b151f874e49da98982ddbafe9",
+      "file": "0226-list-traefik-io-v1alpha1-tlsstores-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "893023c81dca7a1cbe7a0811acbd8137d693ea5f1e3357e72df371e18e8049ab",
+      "file": "0227-list-traefik-io-v1alpha1-serverstransports-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 562,
+      "ciphertextSha256": "85f5b6a869a91ec9c67c614f125d0224d3464a665e64e4b417ede7dcf9367950",
+      "file": "0228-list-traefik-io-v1alpha1-traefikservices-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7638,
+      "ciphertextSha256": "571cf35b5aa57aebb9afd814e7efc0fcc009e9d95d16f1792bf4c359320429f8",
+      "file": "0229-list-traefik-io-v1alpha1-ingressroutes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "b2977150ef78910a86a7bc50c7574f6744a806207d541d7abe6555ac4c703bba",
+      "file": "0230-list-traefik-io-v1alpha1-ingressrouteudps-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "e197aea8df91df9be93683d1b90aeda85fb91cf9143c107f8d25c4bfac84b801",
+      "file": "0231-list-traefik-io-v1alpha1-tlsoptions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 582,
+      "ciphertextSha256": "7fe53574ec99e0a7093bb56713e8d3782593aa32a2819cdf23a4540130193c01",
+      "file": "0232-list-gateway-kubesphere-io-v1alpha2-ingressclassscopes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 570,
+      "ciphertextSha256": "f82a34cd029e8dd06e2e4e481bfb4d45ef720fd49e278ba836ee17a1591def34",
+      "file": "0233-list-iam-kubesphere-io-v1beta1-groupbindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 19314,
+      "ciphertextSha256": "f484d68e4977341f04424087858d11a9de3327f3085bcdde6a1c67025903d643",
+      "file": "0234-list-iam-kubesphere-io-v1beta1-builtinroles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "460e8ce63897e6c08278f5617d12625bb8fb0f74a7e844337d06542e98c690bd",
+      "file": "0235-list-iam-kubesphere-io-v1beta1-groups-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 6338,
+      "ciphertextSha256": "4befd922b2506afdcc71b6dcfdfba7c222f637d61812172282780c086b7d774c",
+      "file": "0236-list-iam-kubesphere-io-v1beta1-users-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 11242,
+      "ciphertextSha256": "01a4e106f32b1174fbd236d813cbcb5a0df18c0f877f6ed9f37ee22d0ab25020",
+      "file": "0237-list-iam-kubesphere-io-v1beta1-roles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 10570,
+      "ciphertextSha256": "0007d9d61b124309cb38a5fa3a03bbe6a9fbd28fd010b55639ee203ac3a87070",
+      "file": "0238-list-iam-kubesphere-io-v1beta1-globalrolebindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 28022,
+      "ciphertextSha256": "c37c26115d38ab4fef10e0fb843fc0ff74752532d0b3b5efbe9583a68b0fb115",
+      "file": "0239-list-iam-kubesphere-io-v1beta1-categories-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 19018,
+      "ciphertextSha256": "426d75024bd627161394a9e9729255e9fc64d2b2ef3d07bd7b6c489f7285bd42",
+      "file": "0240-list-iam-kubesphere-io-v1beta1-globalroles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2386,
+      "ciphertextSha256": "b18332e814945ca86d4745548d00aebab03986bab7954030edbf16882106e56a",
+      "file": "0241-list-iam-kubesphere-io-v1beta1-workspacerolebindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1650,
+      "ciphertextSha256": "722107e00ee6647593fbedc8617463a13bb6315b3c4023e73878d93e6fa12cc9",
+      "file": "0242-list-iam-kubesphere-io-v1beta1-clusterrolebindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 153486,
+      "ciphertextSha256": "ffc2ceaaa8337b62d758db535d85ed082a97e363dbb709ba7d22c75ed1a8815d",
+      "file": "0243-list-iam-kubesphere-io-v1beta1-roletemplates-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 14014,
+      "ciphertextSha256": "ca6e3d4c31006a75b7e5984c751dae1f4e8984299e66a609362e643db545780f",
+      "file": "0244-list-iam-kubesphere-io-v1beta1-workspaceroles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1734,
+      "ciphertextSha256": "5048b59bae2d66a1ecd6a8979d52870d157fa0b9a5061696fdfcabfa4b873619",
+      "file": "0245-list-iam-kubesphere-io-v1beta1-loginrecords-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7314,
+      "ciphertextSha256": "150cd609975c205368849f71765dd6506f41d34f6907e579837dd9e478b14203",
+      "file": "0246-list-iam-kubesphere-io-v1beta1-clusterroles-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "374b49f41110f265951693643fea7f27cc0de4e99f5f3537272d034329002cfc",
+      "file": "0247-list-iam-kubesphere-io-v1beta1-rolebindings-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 574,
+      "ciphertextSha256": "363e98b09dfb32d233cb17ec0919aa07b4523b75ddc1d092b59d5bd7471b17c9",
+      "file": "0248-list-quota-kubesphere-io-v1alpha2-resourcequotas-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "9843938099742a2ce3b2b5bbbcec8bba317e0e764adf706fca70a70764a37525",
+      "file": "0249-list-app-k8s-io-v1beta1-applications-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 85054,
+      "ciphertextSha256": "6d62e5a792fd0ca1f9b5d9262109ca188996da421055092d95ef4dee43644cb0",
+      "file": "0250-list-application-kubesphere-io-v2-applications-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1382,
+      "ciphertextSha256": "943587f65e78fe2753b840fac4f02ff7be5a9c60363c469ddd9c0b159b1a904a",
+      "file": "0251-list-application-kubesphere-io-v2-categories-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2578,
+      "ciphertextSha256": "bf409ba63420a91355b356aedc9161ca0771469691e8b046ad0f32cf239fbf7b",
+      "file": "0252-list-application-kubesphere-io-v2-repos-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 291006,
+      "ciphertextSha256": "8908b410e12585818cfe2c3f53e2bd02d4166527abc1d58f860d41ca439a32e9",
+      "file": "0253-list-application-kubesphere-io-v2-applicationversions-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 582,
+      "ciphertextSha256": "1c95d0a5621c232a6ecdcf938709c965ac6857b1ca9a013c29b5cb2b4dffaec0",
+      "file": "0254-list-application-kubesphere-io-v2-applicationreleases-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1154,
+      "ciphertextSha256": "ff853d27a63e200fed1c839c5754a9b4d11c512de81ff3f29d29638bd01dfd8f",
+      "file": "0255-list-metrics-k8s-io-v1beta1-nodes-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 42770,
+      "ciphertextSha256": "ab6ce36b290acbb69192de0b9fc586e8b522f9e3e954833954fd118bd9f10869",
+      "file": "0256-list-metrics-k8s-io-v1beta1-pods-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2534,
+      "ciphertextSha256": "28568ff35b93b058454b7e73c154a7b87c12ad50ea7930a1a0ff949a44ca4ca4",
+      "file": "0257-crd-discovery-dapr-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 18482,
+      "ciphertextSha256": "7c5cc257908ea38d863b0f5ee852ae17b2a2da429966f97f8df5993da30e029f",
+      "file": "0258-crd-list-components-dapr-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2534,
+      "ciphertextSha256": "c456e775d041bc916e9cae46f3af47f86fd82a16df79ee8264f033f650710ba8",
+      "file": "0259-crd-discovery-dapr-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 14478,
+      "ciphertextSha256": "08e0c07776f455a02b36449ffe9c0cd65b2abf2155065568abeb71a0ef901b22",
+      "file": "0260-crd-list-configurations-dapr-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1082,
+      "ciphertextSha256": "73490a152a7830ed34e5d051c50e61639769e4c8dcdacca1cb9f19e66fb220a7",
+      "file": "0261-crd-discovery-velero-io-v2alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "ce1a2ce89326be3ffee9813eaed77f9efbf65eacd00ead50b20550d20bf7f196",
+      "file": "0262-crd-list-datadownloads-velero-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1082,
+      "ciphertextSha256": "2ec9be69ac231e8f16224aaea4a327c9ca2282c279d35b0f335ed89068ba3a60",
+      "file": "0263-crd-discovery-velero-io-v2alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "a5a52b259a208cac151f2a641ff3cc39a6f4c7aa5ea22fde8da215b3351e8d18",
+      "file": "0264-crd-list-datauploads-velero-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2534,
+      "ciphertextSha256": "d27771eb90bdb05dbe1f245d5467593b80394339f2963b63a48e4dd2e8ca8dc7",
+      "file": "0265-crd-discovery-dapr-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 558,
+      "ciphertextSha256": "f065f5d749a9eeed8f750a4340c55c36e2fbe44a7f6c3e9e6ec3fea0abd832a2",
+      "file": "0266-crd-list-httpendpoints-dapr-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2534,
+      "ciphertextSha256": "dd0b1ef7a7d73e39cc8188286f4ac0b210da55f1ddd6d59e372a3e9bfc6f8a86",
+      "file": "0267-crd-discovery-dapr-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "65a9197df7a13953616c80e92079b55ce3365600a12b7535418ad390551d6945",
+      "file": "0268-crd-list-mcpservers-dapr-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2534,
+      "ciphertextSha256": "4781cea860206be8f5941681181b004a78ba2406e0ae4de66dab2fa6359684f9",
+      "file": "0269-crd-discovery-dapr-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 554,
+      "ciphertextSha256": "43dd61b832ac5591921b67efb02c73e79796ea10d5ccbb80f2765e7e817e089a",
+      "file": "0270-crd-list-resiliencies-dapr-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2534,
+      "ciphertextSha256": "5fff09bcc9fcab2d54f616b7157e5a01734e3a28a22cef2f51b39319894b5547",
+      "file": "0271-crd-discovery-dapr-io-v1alpha1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 566,
+      "ciphertextSha256": "28e29e9b815aa3302f33740e7a2bda70d8c3271dc2b8b2d76a0dc47e5e1de433",
+      "file": "0272-crd-list-workflowaccesspolicies-dapr-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1178,
+      "ciphertextSha256": "4d2bf5bd7b1ebdab6273ba6bce31f2a09347c9c1df57a8e79fa3b47eda96e59e",
+      "file": "0273-crd-discovery-tenant-kubesphere-io-v1beta1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1630,
+      "ciphertextSha256": "b4a7c9e4ce7abf4a863965b820fa8d5de60647d030bae085b15b4850b4e22392",
+      "file": "0274-crd-list-workspaces-tenant-kubesphere-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1178,
+      "ciphertextSha256": "b4abb6b1ef92c87db35b5684b4a024a0fe70b43d6bdeb5b3536039e7f109f26d",
+      "file": "0275-crd-discovery-tenant-kubesphere-io-v1beta1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2674,
+      "ciphertextSha256": "c0050403d479ff647ceb28ae5d17818a9e1ae6f90f211654524d28465038a727",
+      "file": "0276-crd-list-workspacetemplates-tenant-kubesphere-io-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2638,
+      "ciphertextSha256": "d3bc8a63e26b1981d1d6e96d49355a8d2bb2837ee82eb9984c71b947f3714557",
+      "file": "0277-helm-releases-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 722,
+      "ciphertextSha256": "105eab0014a11c340473b972a7e2956a755a4b4e65b681ad038d6fb9639b1491",
+      "file": "0278-helm-values-ks-console-embed.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3194,
+      "ciphertextSha256": "47ea48de5af36bd3b2c9684a0edb1d38cfc4b7e7552170e993db6c92f423c46b",
+      "file": "0279-helm-manifest-ks-console-embed.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "d5a3817450fbc71e462db4ee7b1294e583d269623a90c74e9237a1df8b22b9fd",
+      "file": "0280-helm-hooks-ks-console-embed.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 9882,
+      "ciphertextSha256": "ebe03894d979e3ec8a3119de6869b80214e20e2747a9e067a55986e7140dae29",
+      "file": "0281-helm-values-ks-core.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 221194,
+      "ciphertextSha256": "38212a7467eef4aaa5e97d83ccf2781fe35ba5b836ba30d4e639ff3603b6034e",
+      "file": "0282-helm-manifest-ks-core.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 12126,
+      "ciphertextSha256": "cad3e8f8875173c9705626f772b4f191aaee90dd24cb5314338d63d9dd824de4",
+      "file": "0283-helm-hooks-ks-core.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

@@ -1,0 +1,568 @@
+{
+  "failedSources": [
+    {
+      "bodySha256": null,
+      "fetchedAt": "2026-10-04T09:51:56Z",
+      "source": "license-klipper-helm",
+      "status": 404,
+      "url": "https://raw.githubusercontent.com/rancher/klipper-helm/v0.13.3-build20260727/LICENSE"
+    },
+    {
+      "bodySha256": null,
+      "fetchedAt": "2026-10-04T09:51:56Z",
+      "source": "license-klipper-lb",
+      "status": 404,
+      "url": "https://raw.githubusercontent.com/rancher/klipper-lb/v0.4.17/LICENSE"
+    }
+  ],
+  "primarySourceOnly": true,
+  "productionAccepted": false,
+  "sources": [
+    {
+      "bodySha256": "eb1129d6c314f85673929d8cc2cc062709ffc93a8e6a5f95768504deabd17781",
+      "fetchedAt": "2026-10-04T09:51:37Z",
+      "source": "rancher-support-matrix",
+      "status": 200,
+      "url": "https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/rancher-v2-15-2/"
+    },
+    {
+      "bodySha256": "a7bd34da292071dfbca3ba628a251f8b9016377dfc3bf8012237485743d16893",
+      "fetchedAt": "2026-10-04T09:51:38Z",
+      "source": "rancher-release",
+      "status": 200,
+      "url": "https://api.github.com/repos/rancher/rancher/releases/tags/v2.15.2"
+    },
+    {
+      "bodySha256": "a7bd34da292071dfbca3ba628a251f8b9016377dfc3bf8012237485743d16893",
+      "fetchedAt": "2026-10-04T09:51:38Z",
+      "source": "rancher-latest",
+      "status": 200,
+      "url": "https://api.github.com/repos/rancher/rancher/releases/latest"
+    },
+    {
+      "bodySha256": "9132b3e61533fc7641bdc03fdf11a653e067ad13ed78deabf62173b421136ca0",
+      "fetchedAt": "2026-10-04T09:51:38Z",
+      "source": "k3s-release",
+      "status": 200,
+      "url": "https://api.github.com/repos/k3s-io/k3s/releases/tags/v1.35.9%2Bk3s1"
+    },
+    {
+      "bodySha256": "c511a12b4ac8538a7022680ca5e5a26e3dc4dce4d4ccd42693c8d3fe9953212e",
+      "fetchedAt": "2026-10-04T09:51:38Z",
+      "source": "k3s-channel",
+      "status": 200,
+      "url": "https://update.k3s.io/v1-release/channels/v1.35"
+    },
+    {
+      "bodySha256": "f5d38b1cc8a292fa428ef3e8044b256ef65fa78e5639cbc35699dabc611088e8",
+      "fetchedAt": "2026-10-04T09:51:40Z",
+      "source": "kubernetes-hop",
+      "status": 200,
+      "url": "https://api.github.com/repos/kubernetes/kubernetes/releases/tags/v1.35.9"
+    },
+    {
+      "bodySha256": "a39328b05c988929ed8291b499fede0b84727d5faa56dc2794fbbd0ae64b4840",
+      "fetchedAt": "2026-10-04T09:51:40Z",
+      "source": "kubernetes-target",
+      "status": 200,
+      "url": "https://api.github.com/repos/kubernetes/kubernetes/releases/tags/v1.36.5"
+    },
+    {
+      "bodySha256": "e8548d8015f62af4ee2dea6610a88898fad44a2cf3165c9ec4b79d23834aa507",
+      "fetchedAt": "2026-10-04T09:51:40Z",
+      "source": "kubernetes-releases",
+      "status": 200,
+      "url": "https://kubernetes.io/releases/"
+    },
+    {
+      "bodySha256": "8c8fcb0097f5b49dd43af4f0e2472f1dbb2f504340fa592dffe3788ba6b3b022",
+      "fetchedAt": "2026-10-04T09:51:40Z",
+      "source": "kubernetes-version-skew",
+      "status": 200,
+      "url": "https://kubernetes.io/releases/version-skew-policy/"
+    },
+    {
+      "bodySha256": "268e3ab5c044f536b1add272f5971d55cc3ace7c42d0afee1810a8ae56a5d1cb",
+      "fetchedAt": "2026-10-04T09:51:40Z",
+      "source": "helm-release",
+      "status": 200,
+      "url": "https://api.github.com/repos/helm/helm/releases/tags/v3.22.0"
+    },
+    {
+      "bodySha256": "0db9d620da0bdb5eb3f9c01ad1a54716293aaba311756abc05bc352087e9da03",
+      "fetchedAt": "2026-10-04T09:51:40Z",
+      "source": "helm-latest",
+      "status": 200,
+      "url": "https://api.github.com/repos/helm/helm/releases/latest"
+    },
+    {
+      "bodySha256": "4beec1421cc05939b6a75354ab8b854c0289720e3cb7efbf308cf47d74d52a12",
+      "fetchedAt": "2026-10-04T09:51:41Z",
+      "source": "age-latest",
+      "status": 200,
+      "url": "https://api.github.com/repos/FiloSottile/age/releases/latest"
+    },
+    {
+      "bodySha256": "71b69dbf08ba8578e1ae94b4ec4add9694ad3d15847faecf493011b6f51cdda6",
+      "fetchedAt": "2026-10-04T09:51:41Z",
+      "source": "etcd-latest",
+      "status": 200,
+      "url": "https://api.github.com/repos/etcd-io/etcd/releases/latest"
+    },
+    {
+      "bodySha256": "f0effed75ce5fddf95453d33124a9c143ec22d877e10a56a9b942e3ebea1da73",
+      "fetchedAt": "2026-10-04T09:51:41Z",
+      "source": "helm-security-advisories",
+      "status": 200,
+      "url": "https://api.github.com/repos/helm/helm/security-advisories?per_page=100"
+    },
+    {
+      "bodySha256": "bca57a3fa21d0e8c28583ee411511df8e4096f2ba54c92ad6b4069d5512af39b",
+      "fetchedAt": "2026-10-04T09:51:42Z",
+      "source": "rancher-security-advisories",
+      "status": 200,
+      "url": "https://api.github.com/repos/rancher/rancher/security-advisories?per_page=100"
+    },
+    {
+      "bodySha256": "5f52f8261e2f8308687ac45f267dae0eb3a711be9e1b96152a14ca6478e951d0",
+      "fetchedAt": "2026-10-04T09:51:42Z",
+      "source": "k3s-security-advisories",
+      "status": 200,
+      "url": "https://api.github.com/repos/k3s-io/k3s/security-advisories?per_page=100"
+    },
+    {
+      "bodySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "fetchedAt": "2026-10-04T09:51:43Z",
+      "source": "kubernetes-security-advisories",
+      "status": 200,
+      "url": "https://api.github.com/repos/kubernetes/kubernetes/security-advisories?per_page=100"
+    },
+    {
+      "bodySha256": "a344a5368c3f8933cbcccfca99ea4e8233f7a3f7c9359b4f831e3ecc52be0aca",
+      "fetchedAt": "2026-10-04T09:51:43Z",
+      "source": "kubernetes-official-cve-feed",
+      "status": 200,
+      "url": "https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json"
+    },
+    {
+      "bodySha256": "36207f271b9f568a3e8934127c39f403636b60346431ee0250f94c6ccec68162",
+      "fetchedAt": "2026-10-04T09:51:43Z",
+      "source": "componentstatus-reference",
+      "status": 200,
+      "url": "https://kubernetes.io/docs/reference/kubernetes-api/core/component-status-v1/"
+    },
+    {
+      "bodySha256": "2e47760e2aeae3774d468d29139a1deccb0890874bc88922f958b3372f90c11e",
+      "fetchedAt": "2026-10-04T09:51:44Z",
+      "source": "metrics-api-reference",
+      "status": 200,
+      "url": "https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/"
+    },
+    {
+      "bodySha256": "a645524a27592dcce15d93e47b6136de2d8e7c75f86a25120f59eac2ff29c929",
+      "fetchedAt": "2026-10-04T09:51:44Z",
+      "source": "calico-profile-reference",
+      "status": 200,
+      "url": "https://docs.tigera.io/calico/latest/network-policy/hosts/kubernetes-nodes"
+    },
+    {
+      "bodySha256": "f1783d48ad5be04b037a6a89beff1007334431a1188d88c9527170a50d87023a",
+      "fetchedAt": "2026-10-04T09:51:45Z",
+      "source": "rancher-stable-index",
+      "status": 200,
+      "url": "https://releases.rancher.com/server-charts/stable/index.yaml"
+    },
+    {
+      "bodySha256": "855cb9be954f65a31b9a8c77f7aebce125c2d7797425257d21d35e3380816ac8",
+      "fetchedAt": "2026-10-04T09:51:45Z",
+      "source": "rancher-chart",
+      "status": 200,
+      "url": "https://releases.rancher.com/server-charts/stable/rancher-2.15.2.tgz"
+    },
+    {
+      "bodySha256": "0a258f121a0e0a27c8bba6a6ff6bf77ab8f248301499c1554225481ca016bbe1",
+      "fetchedAt": "2026-10-04T09:51:45Z",
+      "source": "backup-chart-index",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/index.yaml"
+    },
+    {
+      "bodySha256": "aedaceec644a240eeda3c6a3c6cc211c45161981cc1bbe9631fa50308aebd6c2",
+      "fetchedAt": "2026-10-04T09:51:47Z",
+      "source": "rancher-backup",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/assets/rancher-backup/rancher-backup-110.0.2+up11.0.3.tgz"
+    },
+    {
+      "bodySha256": "523714ef630f9d1675f423bca8f7d7ece13034ac7876c276bb6792b11fd0301b",
+      "fetchedAt": "2026-10-04T09:51:47Z",
+      "source": "rancher-backup-crd",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/charts/release-v2.15/assets/rancher-backup-crd/rancher-backup-crd-110.0.2+up11.0.3.tgz"
+    },
+    {
+      "bodySha256": "b6a1a49b8dc3d672dbf9908548eea082ed6cc2db12f546a6809f7a8a4ef97ad1",
+      "fetchedAt": "2026-10-04T09:51:47Z",
+      "source": "k3s-amd64-checksums",
+      "status": 200,
+      "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/sha256sum-amd64.txt"
+    },
+    {
+      "bodySha256": "377307d4039ccd04f0e27d2906595a8c7b7d49a79f7553c311f6f960ff3efb58",
+      "fetchedAt": "2026-10-04T09:51:47Z",
+      "source": "k3s-images",
+      "status": 200,
+      "url": "https://github.com/k3s-io/k3s/releases/download/v1.35.9%2Bk3s1/k3s-images.txt"
+    },
+    {
+      "bodySha256": "db086fb956592d70e858cfc33c06d196a2a6f85fc979c65a70fdaee6fb1af30b",
+      "fetchedAt": "2026-10-04T09:51:48Z",
+      "source": "image-1-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/klipper-helm:pull"
+    },
+    {
+      "bodySha256": "5425a2b4613d2458dbdff99218e8d487ebb59c20e7a941f061c0777070f0aac1",
+      "fetchedAt": "2026-10-04T09:51:48Z",
+      "source": "image-1-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/klipper-helm/manifests/v0.13.3-build20260727"
+    },
+    {
+      "bodySha256": "733de50db963990c5a09a2eb70a1c6c73a14c5603c57ce061c3263e109e028b6",
+      "fetchedAt": "2026-10-04T09:51:48Z",
+      "source": "image-2-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/klipper-lb:pull"
+    },
+    {
+      "bodySha256": "910944bb0bd94f060a82a56ca1ea1c577d3e49b3473a093a47a985f32e92d94a",
+      "fetchedAt": "2026-10-04T09:51:48Z",
+      "source": "image-2-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/klipper-lb/manifests/v0.4.17"
+    },
+    {
+      "bodySha256": "429d235c70fb141492f6fdbe598b6e5f87bdd42971c21370521eb3e6c0bd4f45",
+      "fetchedAt": "2026-10-04T09:51:49Z",
+      "source": "image-3-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/local-path-provisioner:pull"
+    },
+    {
+      "bodySha256": "e757967a5ec338f6a9b371c5a9688bedaa8c3578ea3dd4db329ea0084be0a86f",
+      "fetchedAt": "2026-10-04T09:51:49Z",
+      "source": "image-3-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/local-path-provisioner/manifests/v0.0.37"
+    },
+    {
+      "bodySha256": "c13d0a47d807b2f31eff7c0b06c7a0a2801a59cbecbf8663e68b887590724fa0",
+      "fetchedAt": "2026-10-04T09:51:49Z",
+      "source": "image-4-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/mirrored-coredns-coredns:pull"
+    },
+    {
+      "bodySha256": "7efd3c635b03efd68c4e8398fc45f0d993d0e9ab016f72c1cefb0fd6d01aa286",
+      "fetchedAt": "2026-10-04T09:51:49Z",
+      "source": "image-4-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/mirrored-coredns-coredns/manifests/1.14.7"
+    },
+    {
+      "bodySha256": "969f5df18c5f099b636e06fd3b92d908c85c05171b97a01285f122d04857d448",
+      "fetchedAt": "2026-10-04T09:51:50Z",
+      "source": "image-5-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/mirrored-library-busybox:pull"
+    },
+    {
+      "bodySha256": "101b4afd76732482eff9b95cae5f94bcf295e521fbec4e01b69c5421f3f3f3e5",
+      "fetchedAt": "2026-10-04T09:51:50Z",
+      "source": "image-5-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/mirrored-library-busybox/manifests/1.37.0"
+    },
+    {
+      "bodySha256": "7ca3b6da3e8c88f27c632b1d4da4e40f54100bf1a9ed36902dbf6fb44c20d968",
+      "fetchedAt": "2026-10-04T09:51:50Z",
+      "source": "image-6-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/mirrored-library-traefik:pull"
+    },
+    {
+      "bodySha256": "f86a2cab1b5c649070c49f883c743dd32d8485a56e3368c5f93b9e91f1e91259",
+      "fetchedAt": "2026-10-04T09:51:50Z",
+      "source": "image-6-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/mirrored-library-traefik/manifests/3.7.13"
+    },
+    {
+      "bodySha256": "ef2d8de02a5a21a774610d4900e79c5e604d2c5fe7e3039d0375b3db7919becb",
+      "fetchedAt": "2026-10-04T09:51:51Z",
+      "source": "image-7-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/mirrored-metrics-server:pull"
+    },
+    {
+      "bodySha256": "d9862115e7c7881280d3d75ca26bda8ffc0fc213315979575bf23ce9826205c0",
+      "fetchedAt": "2026-10-04T09:51:51Z",
+      "source": "image-7-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/mirrored-metrics-server/manifests/v0.9.0"
+    },
+    {
+      "bodySha256": "f1125d58c2f668cac8a246cd494f84521ebf71c32298fd03ccb5d898621b80c2",
+      "fetchedAt": "2026-10-04T09:51:51Z",
+      "source": "image-8-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/mirrored-pause:pull"
+    },
+    {
+      "bodySha256": "f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4",
+      "fetchedAt": "2026-10-04T09:51:51Z",
+      "source": "image-8-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/mirrored-pause/manifests/3.10.2"
+    },
+    {
+      "bodySha256": "1b9ad242bca8d2be045f0592eeba6d347c03260c741ea10dd03f581dec0fd133",
+      "fetchedAt": "2026-10-04T09:51:52Z",
+      "source": "image-9-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/rancher:pull"
+    },
+    {
+      "bodySha256": "0c3d8e5702555b2bfd2ec3fe7a6e5f95484a28fcb9787c498db3e5b0f62652ea",
+      "fetchedAt": "2026-10-04T09:51:52Z",
+      "source": "image-9-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/rancher/manifests/v2.15.2"
+    },
+    {
+      "bodySha256": "deb91c7d5989e2e4826731a7cbe8396861f1bc95e4777731bd2328342dc6a6f8",
+      "fetchedAt": "2026-10-04T09:51:52Z",
+      "source": "image-10-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/shell:pull"
+    },
+    {
+      "bodySha256": "1eeed72d4eda486de13403c4ae6e9d29a0842edc35d0f4a8fb7b0dab79d04be9",
+      "fetchedAt": "2026-10-04T09:51:52Z",
+      "source": "image-10-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/shell/manifests/v0.8.2"
+    },
+    {
+      "bodySha256": "9a7a1fe38d6636c1ca5e4a1691520a952e02a43a043bec4a370da3245f11e812",
+      "fetchedAt": "2026-10-04T09:51:53Z",
+      "source": "image-11-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/backup-restore-operator:pull"
+    },
+    {
+      "bodySha256": "ba529dbe0772b79c543c103a981e17f931543e77b9a8d6d6cbb2ffcbb7189ed2",
+      "fetchedAt": "2026-10-04T09:51:53Z",
+      "source": "image-11-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/backup-restore-operator/manifests/v11.0.3"
+    },
+    {
+      "bodySha256": "824e357e45599f7d34fdaac895d69ce06c34ebb7dadc1c8c7fe2c650f58f537f",
+      "fetchedAt": "2026-10-04T09:51:53Z",
+      "source": "image-12-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/kuberlr-kubectl:pull"
+    },
+    {
+      "bodySha256": "64994ba062b10a732955d6f58d7a21a3f0fbf674bfc8f7aef4d1ef3f6354a109",
+      "fetchedAt": "2026-10-04T09:51:53Z",
+      "source": "image-12-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/kuberlr-kubectl/manifests/v8.1.2"
+    },
+    {
+      "bodySha256": "60f019a86492ab8fabba91c06a2aa41f26c91b6e21d3f42c26361bd528641e0f",
+      "fetchedAt": "2026-10-04T09:51:53Z",
+      "source": "image-13-public-token",
+      "status": 200,
+      "url": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/rancher-agent:pull"
+    },
+    {
+      "bodySha256": "fb006776b7ee42818ed1e2575bc2015e33ec64d6799545ba72e4297e43ce22a3",
+      "fetchedAt": "2026-10-04T09:51:54Z",
+      "source": "image-13-manifest",
+      "status": 200,
+      "url": "https://registry-1.docker.io/v2/rancher/rancher-agent/manifests/v2.15.2"
+    },
+    {
+      "bodySha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "fetchedAt": "2026-10-04T09:51:54Z",
+      "source": "license-rancher",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/rancher/v2.15.2/LICENSE"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T09:51:54Z",
+      "source": "license-k3s",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/k3s/v1.35.9%2Bk3s1/LICENSE"
+    },
+    {
+      "bodySha256": "881467e52efeb1807406134b0ec04b1c6f52dc9dc49382713ef9ac4e0cae42f8",
+      "fetchedAt": "2026-10-04T09:51:55Z",
+      "source": "license-helm",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/helm/helm/v3.22.0/LICENSE"
+    },
+    {
+      "bodySha256": "c5d65279d02955c0fc2294ae417c3add650d228f4f5c82bd6d531fc26c89cd96",
+      "fetchedAt": "2026-10-04T09:51:55Z",
+      "source": "license-age",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/FiloSottile/age/v1.3.2/LICENSE"
+    },
+    {
+      "bodySha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "fetchedAt": "2026-10-04T09:51:55Z",
+      "source": "license-etcd",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.5/LICENSE"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T09:51:55Z",
+      "source": "license-backup-restore-operator",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/backup-restore-operator/v11.0.3/LICENSE"
+    },
+    {
+      "bodySha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "fetchedAt": "2026-10-04T09:51:55Z",
+      "source": "license-kuberlr-kubectl",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/kuberlr-kubectl/v8.1.2/LICENSE"
+    },
+    {
+      "bodySha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "fetchedAt": "2026-10-04T09:51:56Z",
+      "source": "license-kubernetes",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.36.5/LICENSE"
+    },
+    {
+      "bodySha256": null,
+      "fetchedAt": "2026-10-04T09:51:56Z",
+      "source": "license-klipper-helm",
+      "status": 404,
+      "url": "https://raw.githubusercontent.com/rancher/klipper-helm/v0.13.3-build20260727/LICENSE"
+    },
+    {
+      "bodySha256": null,
+      "fetchedAt": "2026-10-04T09:51:56Z",
+      "source": "license-klipper-lb",
+      "status": 404,
+      "url": "https://raw.githubusercontent.com/rancher/klipper-lb/v0.4.17/LICENSE"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T09:51:56Z",
+      "source": "license-local-path-provisioner",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.37/LICENSE"
+    },
+    {
+      "bodySha256": "f0530760b1e2ffcf23df322db638ee06d06fc07fead0ed3ddd710f2e224698a9",
+      "fetchedAt": "2026-10-04T09:51:57Z",
+      "source": "license-coredns",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/coredns/coredns/v1.14.7/LICENSE"
+    },
+    {
+      "bodySha256": "c33e29340498ccde22ba0ab9537d6eb0aa3a2eae0dda61bb6df31df6a032fa5b",
+      "fetchedAt": "2026-10-04T09:51:57Z",
+      "source": "license-traefik",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/traefik/traefik/v3.7.13/LICENSE.md"
+    },
+    {
+      "bodySha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "fetchedAt": "2026-10-04T09:51:57Z",
+      "source": "license-metrics-server",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/kubernetes-sigs/metrics-server/v0.9.0/LICENSE"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T09:51:57Z",
+      "source": "license-rancher-shell",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/rancher/shell/v0.8.2/LICENSE"
+    },
+    {
+      "bodySha256": "dd0965f2b7ed1db66bbe36b5f32f3eb9cfa7c87f3edc635d3c010532bfab0593",
+      "fetchedAt": "2026-10-04T09:51:57Z",
+      "source": "license-busybox",
+      "status": 200,
+      "url": "https://busybox.net/license.html"
+    },
+    {
+      "bodySha256": "add1eecde6be7a347d61353c2476a3dbd9f4397ddc7b6427a391eec2a3d4451f",
+      "fetchedAt": "2026-10-04T09:51:58Z",
+      "source": "age-release",
+      "status": 200,
+      "url": "https://api.github.com/repos/FiloSottile/age/releases/tags/v1.3.2"
+    },
+    {
+      "bodySha256": "8c23e4e2130f12fcdbca64539414c7c6062bb61c71cfb6c15870c231fddbc4f0",
+      "fetchedAt": "2026-10-04T09:51:58Z",
+      "source": "etcd-release",
+      "status": 200,
+      "url": "https://api.github.com/repos/etcd-io/etcd/releases/tags/v3.6.5"
+    },
+    {
+      "bodySha256": "a29228c647c8235c0fac443dc3e4744fd1a10692f3baf34a0b4887cab6688bd3",
+      "fetchedAt": "2026-10-04T09:51:59Z",
+      "source": "helm-checksum",
+      "status": 200,
+      "url": "https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz.sha256sum"
+    },
+    {
+      "bodySha256": "8fba32eac676a42f55d04fa89b2aca4332f3c5075a7761c5bf7082064d954820",
+      "fetchedAt": "2026-10-04T09:51:59Z",
+      "source": "kubectl-v1-34-12",
+      "status": 200,
+      "url": "https://dl.k8s.io/release/v1.34.12/bin/linux/amd64/kubectl.sha256"
+    },
+    {
+      "bodySha256": "de79dcf74d6cf4a7346d17ffa054d2111b3f7bb4b48cc6bf368091e850e5760b",
+      "fetchedAt": "2026-10-04T09:51:59Z",
+      "source": "kubectl-v1-35-9",
+      "status": 200,
+      "url": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubectl.sha256"
+    },
+    {
+      "bodySha256": "012d82d320f3afd564b495c4dc6f78f695e2bb7d840791b19a5a3e0f3ef96c53",
+      "fetchedAt": "2026-10-04T09:51:59Z",
+      "source": "kubectl-v1-36-5",
+      "status": 200,
+      "url": "https://dl.k8s.io/release/v1.36.5/bin/linux/amd64/kubectl.sha256"
+    },
+    {
+      "bodySha256": "e0c2652c5c1cb9d95f846cbd70aacc05dbd8c6283f3a0bf0c33eaefe8b6a2390",
+      "fetchedAt": "2026-10-04T09:51:59Z",
+      "source": "kubeadm-target",
+      "status": 200,
+      "url": "https://dl.k8s.io/release/v1.36.5/bin/linux/amd64/kubeadm.sha256"
+    },
+    {
+      "bodySha256": "698b91e43898033a27008b48d2856b03b0fa56cecf8c147c6e11bea51569677a",
+      "fetchedAt": "2026-10-04T09:52:00Z",
+      "source": "kubelet-target",
+      "status": 200,
+      "url": "https://dl.k8s.io/release/v1.36.5/bin/linux/amd64/kubelet.sha256"
+    }
+  ]
+}

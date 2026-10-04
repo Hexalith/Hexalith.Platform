@@ -1,0 +1,62 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "named-finalizer",
+  "order": 18,
+  "phase": "system-workspace-finalizers",
+  "phaseAllowlistSha256": "5eedcedcd3bde3f57aa88017108df6e6dd6bbf16c555f490cc71aa64cd3b7693",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "resourceVersion": "6828"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1381",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "87028906602b650352fed81c7eeb200b198ecdb5f792de6500876d9fb7d032be",
+      "reviewedResourceVersion": "1381",
+      "strictReviewedResourceVersion": false,
+      "uid": "5654bb50-ccf0-4d58-b41a-723935b8eb65"
+    },
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "resourceVersion": "6848"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1218",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "426e291d307602e7e15a08505433d7062baed62f8f9f7ab68338529725b1d567",
+      "reviewedResourceVersion": "1218",
+      "strictReviewedResourceVersion": false,
+      "uid": "60444ecd-0f75-4877-b31a-d50915c284e5"
+    }
+  ],
+  "settled": true
+}

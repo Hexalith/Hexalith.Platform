@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from evidence import Attempt, canonical, digest, file_digest, ssh_recipient_tag
 from qualify import Capture, classify, collect, management_resource, project_resource, validate_ownership
 from rehearse import (Fixture, FIXTURE_FINALIZER_NAMES, PRODUCTION_FINALIZER_NAMES, SYSTEM_WORKSPACE_FINALIZER,
-                      assert_phase, dependency_plan, key, retirement_scope, validate_allowlist)
+                      assert_phase, content_review_digest, dependency_plan, key, retirement_scope, validate_allowlist)
 import test_rehearse as existing
 
 
@@ -190,6 +190,15 @@ class FixtureRegressionTests(unittest.TestCase):
                 self.assertEqual(record['memberNamespaceOutcome'], 'deleted' if final == 'deleted' else 'terminating')
                 self.assertTrue(record['cascadeHazard'])
                 self.assertEqual(record['memberNamespaceFinallyAbsent'], final != 'stuck')
+                if final == 'stuck':
+                    self.assertNotIn('workspace-probe-quota-cleanup.json', records)
+                else:
+                    cleanup = records['workspace-probe-quota-cleanup.json']
+                    self.assertEqual(cleanup['state'], 'passed-synthetic-only-cleanup')
+                    self.assertEqual(cleanup['name'], 'io.kubesphere.license.quota.v3.workspace.t')
+                    self.assertEqual(cleanup['templateUid'], template['metadata']['uid'])
+                    self.assertEqual(cleanup['absenceSamples'], [
+                        {'templateAbsent': True, 'workspaceAbsent': True, 'quotaAbsent': True}] * 2)
 
     def test_console_phase_contains_exact_roots_and_certificate_cascade_then_namespaces_are_kept(self):
         baseline = existing.kubesphere_baseline()
@@ -217,6 +226,7 @@ class FixtureRegressionTests(unittest.TestCase):
                    'finalizers': [SYSTEM_WORKSPACE_FINALIZER, 'other/retain'], 'labels': {'application': 'keep'}},
                    'spec': {'finalizers': ['kubernetes']}}
         reviewed = project_resource(current);reviewed['resourceVersion'] = '7'
+        fixture.reviewed_content_digests['ns'] = content_review_digest(current)
         with patch.object(fixture, 'native_read', return_value=current), patch.object(fixture, 'kube') as kube:
             result = fixture.remove_namespace_finalizer('/api/v1/namespaces/default', reviewed)
         self.assertFalse(result['deleteRequested']);self.assertEqual(kube.call_args.args[1], 'replace')
@@ -310,10 +320,26 @@ class RollbackTests(unittest.TestCase):
             stdout=canonical([{'Status': {'header': {'cluster_id': 3 if mismatch != 'datastore' else 1, 'member_id': 4}}}]))
         live = {'containers': [{'metadata': {'name': n}, 'state': 'CONTAINER_RUNNING'} for n in (
             'ks-apiserver', 'ks-controller-manager', 'ks-console', 'extensions-museum', 'ks-console-embed')]}
+        canary_state = {}
         def run(name, *argv, **kwargs):
+            if name == 'restore-synthetic-canary':
+                canary_state['bytes'] = kwargs.get('input')
+            if name == 'restored-synthetic-canary-readback':
+                stored = canary_state.get('bytes')
+                if mismatch == 'missing-canary':stored = None
+                elif mismatch == 'changed-canary' and isinstance(stored, bytes):stored += b'\n'
+                exists = isinstance(stored, bytes)
+                return SimpleNamespace(returncode=0 if exists else 1, stdout=stored if exists else b'',
+                    stderr=b'' if exists else b'missing synthetic file')
             return SimpleNamespace(returncode=0, stdout=b'a' * 64 + b'\n' if name == 'fresh-pod-sandboxes' else
                                    canonical(live) if name == 'restored-live-containers' else b'', stderr=b'')
-        target.run.side_effect = run
+        def receive_run(name, *argv, **kwargs):
+            # Inject mutations before the fake write receives its input; readback still observes only stored bytes.
+            if name == 'restore-synthetic-canary':
+                if mismatch == 'missing-write-input':kwargs.pop('input', None)
+                elif mismatch == 'changed-write-input':kwargs['input'] = b'altered-write-input'
+            return run(name, *argv, **kwargs)
+        target.run.side_effect = receive_run
         with patch.object(fixture, 'cleanup', return_value=mismatch != 'cleanup') as cleanup, \
              patch('rehearse.Fixture', return_value=target) as allocation:
             try:fixture.restore_rollback();error = None
@@ -337,10 +363,30 @@ class RollbackTests(unittest.TestCase):
                 self.assertEqual(error, None if mismatch is None else 'rollback-baseline-or-datastore-identity-mismatch')
                 self.assertEqual(len(record['runningKubeSphereContainers']), 5)
                 self.assertEqual(len(record['readyKubeSphereDeployments']), 5)
+                self.assertTrue(record['syntheticCanaryRestoredAndReadbackEqual'])
+                self.assertEqual(record['syntheticCanaryReadbackRecord'], 'rollback-canary-readback.json')
+                self.assertTrue(records['rollback-canary-readback.json']['exactCapturedVolumeBytesRestored'])
                 restore_call = next(c for c in target.run.call_args_list if c.args[0] == 'etcd-snapshot-restore')
                 self.assertIn('--bump-revision=1000000000', restore_call.args[1]);self.assertIn('--mark-compacted', restore_call.args[1])
                 self.assertNotIn('--skip-hash-check', restore_call.args[1])
                 self.assertFalse(record['productionRecoveryAccepted'])
+
+    def test_restore_refuses_missing_or_changed_fresh_target_canary_and_retains_readback(self):
+        for mismatch, code in (('missing-canary', 1), ('changed-canary', 0),
+                               ('missing-write-input', 1), ('changed-write-input', 0)):
+            with self.subTest(mismatch=mismatch), tempfile.TemporaryDirectory() as temp:
+                error, records, _, _, target = self.restore(temp, mismatch)
+                self.assertEqual(error, 'rollback-synthetic-canary-readback-mismatch')
+                self.assertNotIn('rollback-restore-result.json', records)
+                readback = records['rollback-canary-readback.json']
+                self.assertFalse(readback['passed']);self.assertFalse(readback['exactCapturedVolumeBytesRestored'])
+                self.assertEqual(readback['readbackExitCode'], code)
+                self.assertNotEqual(readback['expectedSha256'], readback['readbackSha256'])
+                read_call = next(c for c in target.run.call_args_list if c.args[0] == 'restored-synthetic-canary-readback')
+                self.assertEqual(read_call.args[1], ['docker', 'exec', target.node, 'cat', '/var/local/s426-synthetic/canary'])
+                self.assertEqual(read_call.kwargs['allowed'], (0, 1))
+                target.kube.assert_not_called()
+                self.assertFalse(any(c.args[0] == 'start-restored-kubelet' for c in target.run.call_args_list))
 
     def test_final_cleanup_reaches_owned_rollback_node_after_restore_failure_and_keeps_failed_cleanup_closed(self):
         records = {};attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))

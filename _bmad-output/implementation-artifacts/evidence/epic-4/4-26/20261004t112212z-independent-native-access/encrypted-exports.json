@@ -1,0 +1,172 @@
+{
+  "attemptId": "20261004t112212z-independent-native-access",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 12558,
+      "ciphertextSha256": "29f35c4575b21ef2571d57b66ea2f771b56ce4ec4c10b23c833c6a8ca0969fdd",
+      "file": "executed-native-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5946,
+      "ciphertextSha256": "f268450508847db8693ea697c7cff63dc02a40bcbe58d94063185f6e0e3b4cda",
+      "file": "existing-native-configuration-used.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1334,
+      "ciphertextSha256": "970ea4b8976d43fe687e5a2e6a9369dc32863e639dee44bbfe725623304bb1f5",
+      "file": "native-existing-break-glass-read.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1190,
+      "ciphertextSha256": "5c6007ea0eac118e90cc4766277861a05c63411de556c7a0e55cada6100d1a60",
+      "file": "native-current-unowned-binding-1.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 682,
+      "ciphertextSha256": "aff237bee40c191d210fd63b3d95622e5232ceb7f7a0aadc1d1c9bb036db384e",
+      "file": "native-unentitled-effective-principal.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1113,
+      "ciphertextSha256": "1f94cee0df213ba78097a34077f0e5cd95f16480b57dd8795775fbc0876c7b88",
+      "file": "public-proxy-namespace-list-credential-free.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 923,
+      "ciphertextSha256": "d00c540cba480e3bc77d39d87339207c9fc2a0b934185aa613445dfef2154556",
+      "file": "public-proxy-namespace-list-invalid-bearer.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1301,
+      "ciphertextSha256": "83403173cf201fffb321655a4ff8f447875f2074444c6cb7f318f0a1892c5f96",
+      "file": "public-proxy-native-rbac-list-credential-free.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 959,
+      "ciphertextSha256": "daf5b2507b13adcc33e926c3842c0423284a8e59be165fbc487e4aa6145668bd",
+      "file": "public-proxy-native-rbac-list-invalid-bearer.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1242,
+      "ciphertextSha256": "97f3ec271d978ec791e38d1953f986dc6e6cbb42c14ec66ff79b004c31597278",
+      "file": "independent-native-private.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

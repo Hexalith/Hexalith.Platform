@@ -1,0 +1,44 @@
+{
+  "attemptId": "20261004t123031z-host-read",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 6169,
+      "ciphertextSha256": "6f7f611d3351c481354b4f9543629fdae4fca1ce8ede67628f590209173c3d22",
+      "file": "executed-host-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1379,
+      "ciphertextSha256": "1af5644f1ad5d23fef4fa6fa0ebeb77ed984d4d7f44ea0081e332cbbb3b44fe5",
+      "file": "host-private.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

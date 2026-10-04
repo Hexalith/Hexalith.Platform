@@ -1,0 +1,36 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/ClusterRoleBinding/-/admin-cluster-admin",
+      "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/kubesphere:iam:admin-cluster-admin"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 5,
+  "phase": "kubesphere-cluster-role-bindings",
+  "phaseAllowlistSha256": "e5feb73c2bf0b5512e0c9b31608a04991378b931669544e09eda4b9feda48666",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/ClusterRoleBinding/-/admin-cluster-admin",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1390",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "c385c9050dae66886db9ae4dbf14292a2a086fe5c60370cb130ed7633eeb3fe6",
+      "reviewedResourceVersion": "1390",
+      "strictReviewedResourceVersion": false,
+      "uid": "10eba0bf-22eb-45ca-bfdc-c6576eb860c5"
+    }
+  ],
+  "settled": true
+}

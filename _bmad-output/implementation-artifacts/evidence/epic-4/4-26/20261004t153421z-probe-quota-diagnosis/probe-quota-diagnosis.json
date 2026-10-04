@@ -1,0 +1,22 @@
+{
+  "allExactCleanupReceiptsPassed": true,
+  "causeAssessment": "Synthetic workspace propagation probe left its generated quota Secret in the recovery baseline. Captured API observations do not distinguish snapshot-cut timing from subsequent restored-controller cleanup.",
+  "correctionScope": "Clean only the exact synthetic probe quota Secret before baseline/snapshot, with native UID/resourceVersion/full-content guards and bounded stable parent/object absence; preserve strict restore UID equality and retained source license Secrets.",
+  "crdUidMismatches": 0,
+  "executedRuntimeBytesMatched": true,
+  "executedRuntimeSha256": "e9e05f94ff6622621e92575273d8790d258c824086a830865140af340311d7da",
+  "failedAttempt": "20261004t142126z-rehearsal",
+  "failedReceiptPreserved": true,
+  "fiveDeploymentsRunningAndReady": true,
+  "missingQuotaSecretUid": "4fb66b4d-36c4-465b-a8bb-ec43489db862",
+  "nameSuffixExactlyMatchesSyntheticWorkspaceTemplateUid": true,
+  "originalPrivateBaselineMatched": true,
+  "otherBaselineUidMismatches": 0,
+  "productionAccepted": false,
+  "recordedAt": "2026-10-04T15:34:21Z",
+  "retirementPhasesPassed": 19,
+  "singleMissingBaselineIdentity": "v1/Secret/kubesphere-system/io.kubesphere.license.quota.v3.workspace.9a46678b-9820-42c5-a44f-2b7b9fcf550a",
+  "syntheticCanaryReadbackPassed": true,
+  "syntheticParentsRemovedBeforeBaseline": true,
+  "syntheticWorkspaceLabelMatched": true
+}

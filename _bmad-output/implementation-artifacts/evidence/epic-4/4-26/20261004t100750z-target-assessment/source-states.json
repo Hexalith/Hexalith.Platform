@@ -1,0 +1,76 @@
+{
+  "failedSources": [],
+  "productionAccepted": false,
+  "sources": [
+    {
+      "bodySha256": "593c7d553785a000add189f41f952b8735add6fd0c77e253c3529d18f14b56f9",
+      "fetchedAt": "2026-10-04T10:07:50Z",
+      "source": "klipper-helm-tag",
+      "status": 200,
+      "url": "https://api.github.com/repos/k3s-io/klipper-helm/git/ref/tags/v0.13.3-build20260727"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T10:07:50Z",
+      "source": "klipper-helm-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/klipper-helm/v0.13.3-build20260727/LICENSE"
+    },
+    {
+      "bodySha256": "627a40c7e4f726240c6b1b1fd3f50664d3ecae575cd9bdc76761075ae5c51374",
+      "fetchedAt": "2026-10-04T10:07:50Z",
+      "source": "klipper-lb-tag",
+      "status": 200,
+      "url": "https://api.github.com/repos/k3s-io/klipper-lb/git/ref/tags/v0.4.17"
+    },
+    {
+      "bodySha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "fetchedAt": "2026-10-04T10:07:50Z",
+      "source": "klipper-lb-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/k3s-io/klipper-lb/v0.4.17/LICENSE"
+    },
+    {
+      "bodySha256": "cbe24006683f8eb669266162894b9a522a1af52f2665fbc63a4bb032ed26ac10",
+      "fetchedAt": "2026-10-04T10:07:51Z",
+      "source": "age-fresh-archive",
+      "status": 200,
+      "url": "https://github.com/FiloSottile/age/releases/download/v1.3.2/age-v1.3.2-linux-amd64.tar.gz"
+    },
+    {
+      "bodySha256": "66bad39ed920f6fc15fd74adcb8bfd38ba9a6412f8c7852d09eb11670e88cac3",
+      "fetchedAt": "2026-10-04T10:07:52Z",
+      "source": "etcd-fresh-archive",
+      "status": 200,
+      "url": "https://github.com/etcd-io/etcd/releases/download/v3.6.5/etcd-v3.6.5-linux-amd64.tar.gz"
+    },
+    {
+      "bodySha256": "1e4ab49e429626cf6c6958d914248b78c9730803c2751b87627e171dc800e7bb",
+      "fetchedAt": "2026-10-04T10:07:53Z",
+      "source": "helm-fresh-archive",
+      "status": 200,
+      "url": "https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz"
+    },
+    {
+      "bodySha256": "b770606cbf786f4ba8b7ce920c22227d954aa92209d60477dd3b24eb532609c1",
+      "fetchedAt": "2026-10-04T10:07:54Z",
+      "source": "etcd-advisories",
+      "status": 200,
+      "url": "https://api.github.com/repos/etcd-io/etcd/security-advisories?per_page=100"
+    },
+    {
+      "bodySha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "fetchedAt": "2026-10-04T10:07:55Z",
+      "source": "pause-upstream-license",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.35.9/LICENSE"
+    },
+    {
+      "bodySha256": "3311dff32e746499f4df0d5df04d7eb396382d7e108bb9250e7b519b837043a4",
+      "fetchedAt": "2026-10-04T10:07:55Z",
+      "source": "busybox-release",
+      "status": 200,
+      "url": "https://busybox.net/downloads/busybox-1.37.0.tar.bz2"
+    }
+  ]
+}

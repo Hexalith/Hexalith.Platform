@@ -1,0 +1,42 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "kubesphere.io/v1alpha1/Extension/-/ks-console-embed",
+      "kubesphere.io/v1alpha1/ExtensionVersion/-/ks-console-embed-1.2.0"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 9,
+  "phase": "catalog-extension",
+  "phaseAllowlistSha256": "609ed0ad96e1147b24fa8954cc053aa109b5841fc3e3c0bdb4668a0b50e12f3d",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/Extension/-/ks-console-embed",
+      "outcome": "native-delete-accepted",
+      "privateFullContentVerified": true,
+      "resourceVersion": "3031",
+      "resourceVersionChangedSinceReview": true,
+      "reviewedProjectionSha256": "717982c987de244c213e5c61e270976f0275ddd0ca5e054a8543460c93ed6673",
+      "reviewedResourceVersion": "1713",
+      "strictReviewedResourceVersion": false,
+      "uid": "8da2b708-df39-4dc2-ae51-86a3f0f63659"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "kubesphere.io/v1alpha1/ExtensionVersion/-/ks-console-embed-1.2.0",
+      "outcome": "absent-before-request",
+      "uid": "d6448b16-a2d8-4423-ba75-e05caa8ddbd0"
+    }
+  ],
+  "settled": true
+}

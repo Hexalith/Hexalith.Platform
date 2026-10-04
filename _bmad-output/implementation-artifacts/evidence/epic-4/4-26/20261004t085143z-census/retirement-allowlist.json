@@ -1,0 +1,1941 @@
+{
+  "actions": [],
+  "protectedResources": [
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "calico-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [
+        {
+          "apiVersion": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "name": "default",
+          "uid": "aaeaed22-c115-4d18-a22e-fb5b570c8d2c"
+        }
+      ],
+      "resourceVersion": "599",
+      "uid": "42958036-c1b3-4d34-9d2d-7377597af7e0"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "cert-manager",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "11324",
+      "uid": "97817f62-8343-40bf-a394-ec50788ddb9e"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "cnpg-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "22422940",
+      "uid": "295a5c06-468f-464a-8f54-dcc4e6bdaae0"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "dapr-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "848488",
+      "uid": "d34bd740-5550-4990-a065-649cfba4a2b8"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "default",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "7489",
+      "uid": "85863d93-4721-4181-8de1-19d26528cf72"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "forgejo",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "20783",
+      "uid": "03865066-cf21-4d75-a392-1592c72647f5"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "forgejo-actions"
+      },
+      "name": "forgejo-runner",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "5811670",
+      "uid": "fe61971b-ebec-4aaa-8550-bdd3b8737db2"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "hexalith-memories",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "883131",
+      "uid": "b4890577-70a6-4296-8025-d1e43de1e0e4"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "keycloak",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "12902024",
+      "uid": "22744997-bdad-4ac5-85bf-631fc700d4ea"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "kube-node-lease",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "7530",
+      "uid": "d072cec3-e83f-4108-b2db-fbabe4d00b49"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "kube-public",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "7547",
+      "uid": "104e6456-019d-478b-a930-e864cdeac9e5"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "kube-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "7573",
+      "uid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "kubekey-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "8326",
+      "uid": "0918ddf7-5d87-4cc2-83ae-a0c5f9aabb78"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "kubesphere-controls-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "7458",
+      "uid": "219b0323-e99b-4053-9fe4-df9d90f9bc7c"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubesphere.io/cascading-deletion"
+      ],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "kubesphere.io/managed": "true",
+        "kubesphere.io/protected-resource": "true",
+        "kubesphere.io/workspace": "system-workspace"
+      },
+      "name": "kubesphere-system",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "7429",
+      "uid": "6ef44069-08e0-4caa-8dc0-55296d8599f2"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "app.kubernetes.io/managed-by": "hexalith-memories"
+      },
+      "name": "llm",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "20798",
+      "uid": "2ae562fd-a05f-44f0-a51b-7644e7199c91"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "openbao",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "883133",
+      "uid": "76fac957-024c-4028-a832-d528dcd40068"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "registries"
+      },
+      "name": "registry-distribution",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "12893605",
+      "uid": "4eed62db-7d25-4d17-98ab-bf4989a21537"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "registries"
+      },
+      "name": "registry-private",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "12893607",
+      "uid": "544ef3fd-185d-44cb-a520-5327e51442fd"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "stalwart",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "20788",
+      "uid": "121af2b0-b461-427e-96dd-a3a18d247f68"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "tigera-operator",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "499",
+      "uid": "4e5eae4a-3bd5-43aa-9036-359c2eabf393"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "traefik",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "11755",
+      "uid": "c9aac11d-22e0-4712-b238-23d790dbe1d2"
+    },
+    {
+      "apiVersion": "v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "Namespace",
+      "managementLabels": {},
+      "name": "velero",
+      "namespace": null,
+      "namespaceFinalizers": [
+        "kubernetes"
+      ],
+      "owners": [],
+      "resourceVersion": "15463",
+      "uid": "9f5ab700-41dd-4315-bfac-13eb7150d127"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-e9424aeb-3e08-401f-9d39-821e9028f6bf"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "dapr-scheduler-data-dir-dapr-scheduler-server-0",
+      "namespace": "dapr-system",
+      "owners": [],
+      "resourceVersion": "849076",
+      "storagePropertiesSha256": "5a092ff0610848e0cce1c1ea6f27a6a2787687639be8e3423f5931ff121fd821",
+      "uid": "e9424aeb-3e08-401f-9d39-821e9028f6bf",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-d93414a2-cc0d-454c-843a-6abefafe1470"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "dapr-scheduler-data-dir-dapr-scheduler-server-1",
+      "namespace": "dapr-system",
+      "owners": [],
+      "resourceVersion": "849198",
+      "storagePropertiesSha256": "b5a6c9fc2c98d8d201bf6078b5c8ffd1cf422b3681ee38a4258306533d8bc69b",
+      "uid": "d93414a2-cc0d-454c-843a-6abefafe1470",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-75dd73cb-9b11-415f-b161-9b06d5dc3347"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "dapr-scheduler-data-dir-dapr-scheduler-server-2",
+      "namespace": "dapr-system",
+      "owners": [],
+      "resourceVersion": "849092",
+      "storagePropertiesSha256": "c600901f62a932711bc4d8c5a31ea79c7ad50f6e6d3a5a213be4d759be32eed9",
+      "uid": "75dd73cb-9b11-415f-b161-9b06d5dc3347",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-bff6336f-66a4-4924-9d01-fd6ed620c49e"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "raft-log-dapr-placement-server-0",
+      "namespace": "dapr-system",
+      "owners": [],
+      "resourceVersion": "849018",
+      "storagePropertiesSha256": "96c9184361db2a2edc1f91715b90e4d03d2f5202f749af59a467abf6181a013c",
+      "uid": "bff6336f-66a4-4924-9d01-fd6ed620c49e",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-69558e7e-2469-4789-a07d-2aa38061ba5e"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "raft-log-dapr-placement-server-1",
+      "namespace": "dapr-system",
+      "owners": [],
+      "resourceVersion": "849080",
+      "storagePropertiesSha256": "ce348a918697f919a5a300a8280315859cf7e21b6e2d5364a9c5e3f8a16a61c4",
+      "uid": "69558e7e-2469-4789-a07d-2aa38061ba5e",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-f74fdb7d-eb17-44c6-bdcc-20b55c157de4"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "raft-log-dapr-placement-server-2",
+      "namespace": "dapr-system",
+      "owners": [],
+      "resourceVersion": "849157",
+      "storagePropertiesSha256": "4a1c93ebd3f0ef1078a1ef937214d4ff428cb534294e67ab987a3858e88b1cb6",
+      "uid": "f74fdb7d-eb17-44c6-bdcc-20b55c157de4",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "pvc-cad494a2-800e-405b-977e-ee1eed463e09"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "forgejo-runner-actions-cache",
+      "namespace": "forgejo-runner",
+      "owners": [],
+      "resourceVersion": "5811884",
+      "storagePropertiesSha256": "980cde161f8172f721579f447fd0e808c071e7d3f25a0e5553ff288f0180b6d6",
+      "uid": "cad494a2-800e-405b-977e-ee1eed463e09",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "pvc-c2506af5-c314-4ede-9992-c6998c0fbb3f"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "forgejo-runner-docker-cache",
+      "namespace": "forgejo-runner",
+      "owners": [],
+      "resourceVersion": "5811881",
+      "storagePropertiesSha256": "be0e84c04c411d16110af118639c77b7130116d5be860f67d2d97c00880aff47",
+      "uid": "c2506af5-c314-4ede-9992-c6998c0fbb3f",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-651ebd76-284c-4d15-9d75-0ce5172c6299"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "forgejo-data",
+      "namespace": "forgejo",
+      "owners": [],
+      "resourceVersion": "65536",
+      "storagePropertiesSha256": "f889fa00bad1f0dc41696d92dae53964ffd1405b5e73008dfdfaafb878a432ed",
+      "uid": "ba484bc3-6b66-4548-bd32-1fbd8dda6b7a",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-31258a19-5814-48c5-8209-1d92f2e6f8ed"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "data-access-telemetry-postgresql-0",
+      "namespace": "hexalith-memories",
+      "owners": [],
+      "resourceVersion": "1115750",
+      "storagePropertiesSha256": "6b735b862f7c928784d2587ae069dd92bac6313c61cf6367755e8b43892609b2",
+      "uid": "31258a19-5814-48c5-8209-1d92f2e6f8ed",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-bca95598-d97b-4822-8b1b-ae5d74a2b749"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "data-falkordb-0",
+      "namespace": "hexalith-memories",
+      "owners": [],
+      "resourceVersion": "855390",
+      "storagePropertiesSha256": "135de1e67e110e00428fb6dd1659f861f050e672e1995a9b198890296ce19e64",
+      "uid": "bca95598-d97b-4822-8b1b-ae5d74a2b749",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-e168aa15-d103-4669-9395-2fcbb05dece6"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "data-redis-stack-0",
+      "namespace": "hexalith-memories",
+      "owners": [],
+      "resourceVersion": "855393",
+      "storagePropertiesSha256": "7692fa09665aa60880a2bce5dbe797c3b107968922c48680bc96834083c8c036",
+      "uid": "e168aa15-d103-4669-9395-2fcbb05dece6",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "pvc-8f7094af-1209-4257-9219-2147bb599a53"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/managed-by": "cloudnative-pg"
+      },
+      "name": "keycloak-postgres-1",
+      "namespace": "keycloak",
+      "owners": [
+        {
+          "apiVersion": "postgresql.cnpg.io/v1",
+          "kind": "Cluster",
+          "name": "keycloak-postgres",
+          "uid": "56d8d39c-d688-48f2-aa27-a549400352ce"
+        }
+      ],
+      "resourceVersion": "22424968",
+      "storagePropertiesSha256": "66a40ba47a4611fadce0e2377e79f6c981a4dc10a8c8ef4dba7311fd824d1dd8",
+      "uid": "8f7094af-1209-4257-9219-2147bb599a53",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "pvc-f3a85864-d12f-48ae-9604-bcb083129eb7"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/managed-by": "cloudnative-pg"
+      },
+      "name": "keycloak-postgres-2",
+      "namespace": "keycloak",
+      "owners": [
+        {
+          "apiVersion": "postgresql.cnpg.io/v1",
+          "kind": "Cluster",
+          "name": "keycloak-postgres",
+          "uid": "56d8d39c-d688-48f2-aa27-a549400352ce"
+        }
+      ],
+      "resourceVersion": "22424969",
+      "storagePropertiesSha256": "37197f3f5186962761a89fc78645b9653166f87bba437fd640d5fe7c0668914e",
+      "uid": "f3a85864-d12f-48ae-9604-bcb083129eb7",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-315f8a4c-020e-4df6-b548-04a3a58800b9"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "keycloak-pvc",
+      "namespace": "keycloak",
+      "owners": [],
+      "resourceVersion": "12912158",
+      "storagePropertiesSha256": "ca5119494d814ded54b9048fbaaeab617b594fbd47d6abfb8026fddfa7dc698d",
+      "uid": "1402ff87-4056-4576-8dad-b82fe5f7185e",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-7fdb7c7b-c9fe-4917-96a9-bb534edb8c7e"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "postgres-pvc",
+      "namespace": "keycloak",
+      "owners": [],
+      "resourceVersion": "65523",
+      "storagePropertiesSha256": "d6e13ff4deb1bcdfd1436c10641f4f5d5b236d524ecd7e08069db6dc4eb0792d",
+      "uid": "5076bb25-a113-4978-82b3-77969cfad9d0",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-961c71e1-2f65-44f3-8b8e-26dcf50bb5e5"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "ollama-models-pvc",
+      "namespace": "llm",
+      "owners": [],
+      "resourceVersion": "65696",
+      "storagePropertiesSha256": "1b87de405478938b81d460e43e0b7f3762bbb1ae30d80583780a22a7dd83e6f0",
+      "uid": "71d83877-34a2-4c39-b941-faf8addc3233",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-269cac67-811e-4e12-8e34-ff1cb998d8b2"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "audit-hexalith-keys-0",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "879578",
+      "storagePropertiesSha256": "acd81b948741d58fcb6bea6f241edbd6fa65ddf4aa268bbfbce1627848a4c36a",
+      "uid": "269cac67-811e-4e12-8e34-ff1cb998d8b2",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-b172a66f-a75c-4845-9d20-59915334e6e3"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "audit-hexalith-keys-1",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "1200193",
+      "storagePropertiesSha256": "5bd41ea0584112996579fee15c4a090c2f17815a2013806de9f1dae9118d136c",
+      "uid": "b172a66f-a75c-4845-9d20-59915334e6e3",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-9550e626-8ac7-4d4d-8873-80ab24ba2c59"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "audit-hexalith-keys-2",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "1200445",
+      "storagePropertiesSha256": "2277a2391debe5bd0492880f5cb30fdb256b5c3c33eb1c6de66c4ce5a3136932",
+      "uid": "9550e626-8ac7-4d4d-8873-80ab24ba2c59",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-42e01d8e-d500-4ce8-8e84-945f9266af93"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "data-hexalith-keys-0",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "879575",
+      "storagePropertiesSha256": "1c8c9d811409893d3f0a3201bfcb4bab6bd86d672d1a8ee28e5f6a009b881682",
+      "uid": "42e01d8e-d500-4ce8-8e84-945f9266af93",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-e35a833f-6c05-4b71-9a43-c95308a19153"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "data-hexalith-keys-1",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "1200196",
+      "storagePropertiesSha256": "9c517eaca52441773cdb81ca5b9faf4ed2d834e39f7065788f02bc14bb640c5a",
+      "uid": "e35a833f-6c05-4b71-9a43-c95308a19153",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-be46e78a-12d8-41ca-b89d-94555b3eb8d4"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "data-hexalith-keys-2",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "1200442",
+      "storagePropertiesSha256": "b9b0d4dfbf407b9c72b11d85a3e8ead9a0548c476eecf65959b43065de7eb7ed",
+      "uid": "be46e78a-12d8-41ca-b89d-94555b3eb8d4",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath-retain",
+        "volumeName": "pvc-da142de4-dec5-4519-880d-b7ede4000283"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "hexalith-memories"
+      },
+      "name": "openbao-snapshots",
+      "namespace": "openbao",
+      "owners": [],
+      "resourceVersion": "1194872",
+      "storagePropertiesSha256": "f5b7139edd8f18044d16d05155f220f64ae74b47032494d3fdac0e6d5d4f2e50",
+      "uid": "da142de4-dec5-4519-880d-b7ede4000283",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-c105c628-fbf8-422f-bff9-9cda98414df3"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "deployment-registry"
+      },
+      "name": "distribution-registry-storage",
+      "namespace": "registry-distribution",
+      "owners": [],
+      "resourceVersion": "65479",
+      "storagePropertiesSha256": "1e35a7e57fc6e813f1c689d2273c507bf3b7f403318b93231a6a94aef770dacd",
+      "uid": "5a6bd702-e419-4cfe-8d18-046666ba3ffc",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-f09bc317-db98-4b34-81bf-7e501ad6d3c2"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "deployment-registry"
+      },
+      "name": "private-registry-storage",
+      "namespace": "registry-private",
+      "owners": [],
+      "resourceVersion": "65490",
+      "storagePropertiesSha256": "aea18e63ada8e60aa7003a60f832861c364e8d8ceb5099daa384b54f55cbcdc8",
+      "uid": "6db2113f-245b-4c43-86b5-ea9b2e097299",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "phase": "Bound",
+        "storageClass": "openebs-hostpath",
+        "volumeName": "bm-dfc1358c-4e3d-4d8f-ae84-64af817b61e1"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pvc-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolumeClaim",
+      "managementLabels": {},
+      "name": "stalwart-data",
+      "namespace": "stalwart",
+      "owners": [],
+      "resourceVersion": "65587",
+      "storagePropertiesSha256": "55dd7eaf25ad2169e293125ca5646c256bd4be72c3a6659bfe6a01a276e5fae5",
+      "uid": "2fce117e-63d5-440a-9625-8ed29b9edfbc",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "keycloak-pvc",
+        "namespace": "keycloak",
+        "uid": "1402ff87-4056-4576-8dad-b82fe5f7185e"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "bm-315f8a4c-020e-4df6-b548-04a3a58800b9",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "65498",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "8494024b4dcb454fe9ca41735e390fb213da79382775c67596d259d4a0b3927d",
+      "uid": "54fbdf7c-0f2f-4bfe-88bc-aac50af9e0b9",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "forgejo-data",
+        "namespace": "forgejo",
+        "uid": "ba484bc3-6b66-4548-bd32-1fbd8dda6b7a"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "bm-651ebd76-284c-4d15-9d75-0ce5172c6299",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "65534",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "b0dfb638f70a185278efe174809c2b06329ac312d7ead5d430c1c69626bb5a1a",
+      "uid": "a5f14c7d-decb-446a-8f94-30f8ef2dac63",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "postgres-pvc",
+        "namespace": "keycloak",
+        "uid": "5076bb25-a113-4978-82b3-77969cfad9d0"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "bm-7fdb7c7b-c9fe-4917-96a9-bb534edb8c7e",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "65508",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "ad14bd759f8856b7f11367364f7026794ef291e11d08413758568106dd08c0f9",
+      "uid": "922c88b6-9499-4e57-b370-470f96029457",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "ollama-models-pvc",
+        "namespace": "llm",
+        "uid": "71d83877-34a2-4c39-b941-faf8addc3233"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "bm-961c71e1-2f65-44f3-8b8e-26dcf50bb5e5",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "65651",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "5535752519b1eae98919372a0d52f35960ff456a643a4d371f70fe1fb765f733",
+      "uid": "1b944ebd-e0bb-4888-a458-716a5141a64b",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "distribution-registry-storage",
+        "namespace": "registry-distribution",
+        "uid": "5a6bd702-e419-4cfe-8d18-046666ba3ffc"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "registries"
+      },
+      "name": "bm-c105c628-fbf8-422f-bff9-9cda98414df3",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "12893615",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "6beb9afae8bd9e4f94f2a48d62c09a6d5b13f1efcbeb4248d1a059b96b3fbcb7",
+      "uid": "06956481-8ae2-4ecc-b948-ec36c8e8ac4e",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "wireguard-config",
+        "namespace": "wireguard",
+        "uid": "cec0cb61-2394-4afa-a81a-4d7203359369"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "bm-ca7554e9-7796-437a-a34f-f8969b88d14a",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "6657525",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "48731b653392f0b82d4cf913f136bc083d474c59690d6b3b26310e6826104735",
+      "uid": "d5a4e993-fa69-47c3-8ee5-c2936f7c0cfe",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "stalwart-data",
+        "namespace": "stalwart",
+        "uid": "2fce117e-63d5-440a-9625-8ed29b9edfbc"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "bm-dfc1358c-4e3d-4d8f-ae84-64af817b61e1",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "65543",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "7f1ea1a3c104445948e2f8ea9b37e15cbfe0fb6361da213e37f9735219adb2f5",
+      "uid": "7c8effd0-7902-4d96-8537-84a4be03a402",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "private-registry-storage",
+        "namespace": "registry-private",
+        "uid": "6db2113f-245b-4c43-86b5-ea9b2e097299"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {
+        "app.kubernetes.io/part-of": "registries"
+      },
+      "name": "bm-f09bc317-db98-4b34-81bf-7e501ad6d3c2",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "12893616",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "9521bdbe67734a5e4122bd2b267563ea972f064acf57e87bda31404835591b89",
+      "uid": "36c1bfb7-8ebb-4aa1-9cb9-1ff588543006",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "audit-hexalith-keys-0",
+        "namespace": "openbao",
+        "uid": "269cac67-811e-4e12-8e34-ff1cb998d8b2"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-269cac67-811e-4e12-8e34-ff1cb998d8b2",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "879576",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "065886baf05ffb67857fe9937738aa9552e45ee7cda45f392f4e5154b619532e",
+      "uid": "b239cc9f-5e25-4ed0-8203-0017af3d8f24",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "data-access-telemetry-postgresql-0",
+        "namespace": "hexalith-memories",
+        "uid": "31258a19-5814-48c5-8209-1d92f2e6f8ed"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-31258a19-5814-48c5-8209-1d92f2e6f8ed",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1115748",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "3913ac5a4497f0d802e8864abae8f18efdd7bb16ce23ed3b197d4e8abffde08a",
+      "uid": "6f97eb8b-47d6-4eeb-ad58-59ad4938d6ed",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "data-hexalith-keys-0",
+        "namespace": "openbao",
+        "uid": "42e01d8e-d500-4ce8-8e84-945f9266af93"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-42e01d8e-d500-4ce8-8e84-945f9266af93",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "879572",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "9af831516e78124ae1b044d01970220e1dd29f7c40752f2be0ac9c78b9ff6899",
+      "uid": "9c2f5127-a96e-4ed2-a1be-b60b5f4f0fa4",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "raft-log-dapr-placement-server-1",
+        "namespace": "dapr-system",
+        "uid": "69558e7e-2469-4789-a07d-2aa38061ba5e"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-69558e7e-2469-4789-a07d-2aa38061ba5e",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "849078",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "e68d50f25920943d632c9ad6865ee7371a9fc7abac88153a119bac3c6e180336",
+      "uid": "520a84f5-68a3-47a2-baa3-9c6f01102731",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "dapr-scheduler-data-dir-dapr-scheduler-server-2",
+        "namespace": "dapr-system",
+        "uid": "75dd73cb-9b11-415f-b161-9b06d5dc3347"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-75dd73cb-9b11-415f-b161-9b06d5dc3347",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "849090",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "8e5a7db164ff22415aa022b23759ed3f9b7fc157a14d701524833f41d123ea9a",
+      "uid": "c7ea77de-451a-442f-9617-8643ae2d1ca7",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "keycloak-postgres-1",
+        "namespace": "keycloak",
+        "uid": "8f7094af-1209-4257-9219-2147bb599a53"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-8f7094af-1209-4257-9219-2147bb599a53",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Delete",
+      "resourceVersion": "22423609",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "884ce56e5bee099ba6f142782557c32efd90f6a1a2a703b91b096e7ed68ac7d2",
+      "uid": "aef99179-6e69-4bda-b9b9-9969ffed2236",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "audit-hexalith-keys-2",
+        "namespace": "openbao",
+        "uid": "9550e626-8ac7-4d4d-8873-80ab24ba2c59"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-9550e626-8ac7-4d4d-8873-80ab24ba2c59",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1200443",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "2b51394ab4b6bda0d00b55e838bd0bdcfcb9decbef088c20606a18de7940105b",
+      "uid": "7abca3c6-e6c2-49bb-b288-7396b9f36ad6",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "audit-hexalith-keys-1",
+        "namespace": "openbao",
+        "uid": "b172a66f-a75c-4845-9d20-59915334e6e3"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-b172a66f-a75c-4845-9d20-59915334e6e3",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1200188",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "d7db3aee6a43985fdbacf8df65c1dc82a31399a500f2952e57753bc7f8ce8e7e",
+      "uid": "10f1809d-ffb1-465a-9f6e-3e1ccb100689",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "data-falkordb-0",
+        "namespace": "hexalith-memories",
+        "uid": "bca95598-d97b-4822-8b1b-ae5d74a2b749"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-bca95598-d97b-4822-8b1b-ae5d74a2b749",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "855387",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "f7db35f6471bee6778968018c88d3a3e1a938289bf86882c6ae254d12cb00108",
+      "uid": "484be38f-008b-4415-99d8-eed44fce7142",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "data-hexalith-keys-2",
+        "namespace": "openbao",
+        "uid": "be46e78a-12d8-41ca-b89d-94555b3eb8d4"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-be46e78a-12d8-41ca-b89d-94555b3eb8d4",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1200439",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "7687cb7c20ef8f3dd10af502fcb184546d063f10a1998f67df4e34aca0f98881",
+      "uid": "81482fe6-ddc8-4fdf-b7ea-f1ecdfad3d2e",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "raft-log-dapr-placement-server-0",
+        "namespace": "dapr-system",
+        "uid": "bff6336f-66a4-4924-9d01-fd6ed620c49e"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-bff6336f-66a4-4924-9d01-fd6ed620c49e",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "849016",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "3d747b4710be18b0ae30e0975a0db93e4c607d20d2e0846b42016be0028fc38f",
+      "uid": "3b0c69a8-6645-4b3c-b23d-9462fe160836",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "forgejo-runner-docker-cache",
+        "namespace": "forgejo-runner",
+        "uid": "c2506af5-c314-4ede-9992-c6998c0fbb3f"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-c2506af5-c314-4ede-9992-c6998c0fbb3f",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Delete",
+      "resourceVersion": "5811878",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "b7b1d276502ad1c5732e489a39e6d84a4d2e78e166d890daaddcb7fa83ce01df",
+      "uid": "9df83548-4402-4905-9af3-d20fdb07117e",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "forgejo-runner-actions-cache",
+        "namespace": "forgejo-runner",
+        "uid": "cad494a2-800e-405b-977e-ee1eed463e09"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-cad494a2-800e-405b-977e-ee1eed463e09",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Delete",
+      "resourceVersion": "5811882",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "4ae48751e1e4a053d78ce57f71f48764a6151661855b6a6566171ed718708da8",
+      "uid": "0153a102-26ba-4744-abff-f3baff349c82",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "dapr-scheduler-data-dir-dapr-scheduler-server-1",
+        "namespace": "dapr-system",
+        "uid": "d93414a2-cc0d-454c-843a-6abefafe1470"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-d93414a2-cc0d-454c-843a-6abefafe1470",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "849196",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "ffba2360a0f2a746e9eb944eb6ffe1fe2b7db27e6847f135426d3635d50ce414",
+      "uid": "4d0c51ae-5042-4562-81eb-ae4e7f947582",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "openbao-snapshots",
+        "namespace": "openbao",
+        "uid": "da142de4-dec5-4519-880d-b7ede4000283"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-da142de4-dec5-4519-880d-b7ede4000283",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1194870",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "5089af026be0f31caa18ef8397f853ce6bf98c7b41ce467afcca61d8d57912ed",
+      "uid": "24c7f826-7682-41d5-82ae-344c8c16d873",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "data-redis-stack-0",
+        "namespace": "hexalith-memories",
+        "uid": "e168aa15-d103-4669-9395-2fcbb05dece6"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-e168aa15-d103-4669-9395-2fcbb05dece6",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "855391",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "509036d2f7dacee2d325138662620f560d25d4a9297eeb8b239835cfa8a44ce2",
+      "uid": "a5c0de52-96d3-440c-baa6-565980310ec4",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "data-hexalith-keys-1",
+        "namespace": "openbao",
+        "uid": "e35a833f-6c05-4b71-9a43-c95308a19153"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-e35a833f-6c05-4b71-9a43-c95308a19153",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "1200194",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "f23d87a3f653960b788456e8b2f10496623023846c53bf9967685bddefe54835",
+      "uid": "72f36c97-8125-481a-b6a9-cc9e237fe854",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "dapr-scheduler-data-dir-dapr-scheduler-server-0",
+        "namespace": "dapr-system",
+        "uid": "e9424aeb-3e08-401f-9d39-821e9028f6bf"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-e9424aeb-3e08-401f-9d39-821e9028f6bf",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "849074",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "34062b0f090d8778535acaaa3f8cbacb913650cea0dd147f4e0f4eef06d18981",
+      "uid": "6a5dd6a6-68cb-497f-9908-81ca09b23623",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "keycloak-postgres-2",
+        "namespace": "keycloak",
+        "uid": "f3a85864-d12f-48ae-9604-bcb083129eb7"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-f3a85864-d12f-48ae-9604-bcb083129eb7",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Delete",
+      "resourceVersion": "22423814",
+      "storageClass": "openebs-hostpath",
+      "storagePropertiesSha256": "0c5170620effaac10d96db8fc668f3d3bb0a12025f53149fea6e1bf51ee5d1b4",
+      "uid": "b1616824-acb8-4796-96e8-d508cb8e81c8",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "accessModes": [
+        "ReadWriteOnce"
+      ],
+      "apiVersion": "v1",
+      "binding": {
+        "name": "raft-log-dapr-placement-server-2",
+        "namespace": "dapr-system",
+        "uid": "f74fdb7d-eb17-44c6-bdcc-20b55c157de4"
+      },
+      "deletionTimestamp": null,
+      "finalizers": [
+        "kubernetes.io/pv-protection"
+      ],
+      "helmRelease": {},
+      "kind": "PersistentVolume",
+      "managementLabels": {},
+      "name": "pvc-f74fdb7d-eb17-44c6-bdcc-20b55c157de4",
+      "namespace": null,
+      "owners": [],
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "849155",
+      "storageClass": "openebs-hostpath-retain",
+      "storagePropertiesSha256": "c175234f5e211c0c0d8941a4d80de1a237d7d5251cea990169be6b351dadebb9",
+      "uid": "eda45aac-d6bf-4c06-8204-59b234fc8cf0",
+      "volumeMode": "Filesystem"
+    },
+    {
+      "apiVersion": "storage.k8s.io/v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {
+        "release-name": "localpv-provisioner",
+        "release-namespace": "kube-system"
+      },
+      "kind": "StorageClass",
+      "managementLabels": {
+        "app.kubernetes.io/managed-by": "Helm"
+      },
+      "name": "openebs-hostpath",
+      "namespace": null,
+      "owners": [],
+      "provisioner": "openebs.io/local",
+      "reclaimPolicy": "Delete",
+      "resourceVersion": "25287354",
+      "storagePropertiesSha256": "ab8eb9077d0dc53ae52756a735ef5fe024727428e2c36a4e650678ceb1c635d9",
+      "uid": "d1f619db-ee58-467e-8bf3-bd26dc86486e",
+      "volumeBindingMode": "WaitForFirstConsumer"
+    },
+    {
+      "apiVersion": "storage.k8s.io/v1",
+      "deletionTimestamp": null,
+      "finalizers": [],
+      "helmRelease": {},
+      "kind": "StorageClass",
+      "managementLabels": {},
+      "name": "openebs-hostpath-retain",
+      "namespace": null,
+      "owners": [],
+      "provisioner": "openebs.io/local",
+      "reclaimPolicy": "Retain",
+      "resourceVersion": "25287562",
+      "storagePropertiesSha256": "8e6b03361823eabed94d5e8aa3f21d50497cbcbc8b514f8559f6e2101df03a16",
+      "uid": "4a4fbc60-281b-494c-9646-8a9b049abae0",
+      "volumeBindingMode": "WaitForFirstConsumer"
+    }
+  ],
+  "reason": "Ownership, consumers, installed-controller finalizers and propagation are unaccepted",
+  "state": "no-production-removals-approved"
+}

@@ -1,0 +1,28 @@
+{
+  "attemptId": "20261004t165344z-qualification-assessment",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 14370,
+      "ciphertextSha256": "af06c31c19c0171f5ca7ea9af4ad5aea36f5126f839394e1d2bb12ac324fb94c",
+      "file": "executed-assessment-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

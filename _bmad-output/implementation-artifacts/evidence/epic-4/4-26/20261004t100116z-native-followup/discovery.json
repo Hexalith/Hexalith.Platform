@@ -1,0 +1,2117 @@
+{
+  "completePreferredScopeInferredFromRequestSuccess": false,
+  "coverageGaps": [],
+  "exclusiveResources": [
+    {
+      "groupVersion": "tenant.kubesphere.io/v1beta1",
+      "identityGaps": 0,
+      "kind": "WorkspaceTemplate",
+      "listSucceeded": true,
+      "observedItems": 1,
+      "resource": "workspacetemplates"
+    },
+    {
+      "groupVersion": "tenant.kubesphere.io/v1beta1",
+      "identityGaps": 0,
+      "kind": "Workspace",
+      "listSucceeded": true,
+      "observedItems": 1,
+      "resource": "workspaces"
+    },
+    {
+      "groupVersion": "tenant.kubesphere.io/v1alpha2",
+      "identityGaps": 0,
+      "kind": "WorkspaceTemplate",
+      "listSucceeded": true,
+      "observedItems": 1,
+      "resource": "workspacetemplates"
+    },
+    {
+      "groupVersion": "tenant.kubesphere.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "Workspace",
+      "listSucceeded": true,
+      "observedItems": 1,
+      "resource": "workspaces"
+    },
+    {
+      "groupVersion": "velero.io/v2alpha1",
+      "identityGaps": 0,
+      "kind": "DataDownload",
+      "listSucceeded": true,
+      "observedItems": 0,
+      "resource": "datadownloads"
+    },
+    {
+      "groupVersion": "velero.io/v2alpha1",
+      "identityGaps": 0,
+      "kind": "DataUpload",
+      "listSucceeded": true,
+      "observedItems": 0,
+      "resource": "datauploads"
+    },
+    {
+      "groupVersion": "dapr.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "Configuration",
+      "listSucceeded": true,
+      "observedItems": 5,
+      "resource": "configurations"
+    },
+    {
+      "groupVersion": "dapr.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "Component",
+      "listSucceeded": true,
+      "observedItems": 7,
+      "resource": "components"
+    },
+    {
+      "groupVersion": "dapr.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "MCPServer",
+      "listSucceeded": true,
+      "observedItems": 0,
+      "resource": "mcpservers"
+    },
+    {
+      "groupVersion": "dapr.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "HTTPEndpoint",
+      "listSucceeded": true,
+      "observedItems": 0,
+      "resource": "httpendpoints"
+    },
+    {
+      "groupVersion": "dapr.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "WorkflowAccessPolicy",
+      "listSucceeded": true,
+      "observedItems": 0,
+      "resource": "workflowaccesspolicies"
+    },
+    {
+      "groupVersion": "dapr.io/v1alpha1",
+      "identityGaps": 0,
+      "kind": "Resiliency",
+      "listSucceeded": true,
+      "observedItems": 0,
+      "resource": "resiliencies"
+    }
+  ],
+  "identityViewKinds": {
+    "ComponentStatus": 3,
+    "NodeMetrics": 1,
+    "PodMetrics": 66,
+    "Profile": 126
+  },
+  "identityViews": [
+    {
+      "apiVersion": "v1",
+      "kind": "ComponentStatus",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "scheduler",
+      "namespace": null,
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "ComponentStatus",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "controller-manager",
+      "namespace": null,
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "ComponentStatus",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "etcd-0",
+      "namespace": null,
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "projectcalico-default-allow",
+      "namespace": null,
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": true,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.calico-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.cert-manager",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.cnpg-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.dapr-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.forgejo",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.forgejo-runner",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.hexalith-memories",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.keycloak",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.kube-node-lease",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.kube-public",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.kube-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.kubekey-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.kubesphere-controls-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.kubesphere-system",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.llm",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.openbao",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.registry-distribution",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.registry-private",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.stalwart",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.tigera-operator",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.traefik",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "kns.velero",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.calico-apiserver",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.calico-cni-plugin",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.calico-kube-controllers",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.calico-node",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.calico-typha",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.goldmane",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.calico-system.whisker",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cert-manager.cert-manager",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cert-manager.cert-manager-cainjector",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cert-manager.cert-manager-webhook",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cert-manager.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cert-manager.openbao-pki-issuer",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cnpg-system.cnpg-manager",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cnpg-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.cnpg-system.plugin-barman-cloud",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.dapr-system.dapr-injector",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.dapr-system.dapr-operator",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.dapr-system.dapr-placement",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.dapr-system.dapr-scheduler",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.dapr-system.dapr-sentry",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.dapr-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.default.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.forgejo-runner.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.forgejo-runner.forgejo-runner",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.forgejo.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.access-telemetry-postgresql",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.eventstore",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.memories",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.memories-access-telemetry",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.memories-access-telemetry-clock",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.memories-mcp",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.hexalith-memories.postgresql-tls-reloader",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.keycloak.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.keycloak.keycloak-postgres",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-node-lease.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-public.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.attachdetach-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.bootstrap-signer",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.certificate-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.clusterrole-aggregation-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.coredns",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.cronjob-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.daemon-set-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.deployment-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.disruption-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.endpoint-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.endpointslice-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.endpointslicemirroring-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.ephemeral-volume-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.expand-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.generic-garbage-collector",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.horizontal-pod-autoscaler",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.job-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.kube-proxy",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.legacy-service-account-token-cleaner",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.localpv-provisioner",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.metrics-server",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.namespace-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.node-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.nodelocaldns",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.persistent-volume-binder",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.pod-garbage-collector",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.pv-protection-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.pvc-protection-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.replicaset-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.replication-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.resource-claim-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.resourcequota-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.root-ca-cert-publisher",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.service-account-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.service-cidrs-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.statefulset-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.token-cleaner",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.ttl-after-finished-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.ttl-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.validatingadmissionpolicy-status-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kube-system.volumeattributesclass-protection-controller",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kubekey-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kubesphere-controls-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kubesphere-system.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kubesphere-system.helm-executor.ks-console-embed",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.kubesphere-system.kubesphere",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.llm.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.openbao.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.openbao.deployment-seal-runner",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.openbao.hexalith-keys",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.openbao.openbao-snapshot",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.registry-distribution.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.registry-distribution.distribution-registry-sa",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.registry-private.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.registry-private.private-registry-sa",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.stalwart.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.stalwart.stalwart-tls-reloader",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.tigera-operator.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.tigera-operator.tigera-operator",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.traefik.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.traefik.traefik",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.velero.default",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "projectcalico.org/v3",
+      "kind": "Profile",
+      "kindInferredFromExactListEndpoint": false,
+      "name": "ksa.velero.velero-server",
+      "namespace": null,
+      "nativeDeletionIdentity": true,
+      "resourceVersionPresent": true,
+      "uidPresent": true
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "node1",
+      "namespace": null,
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "calico-apiserver-5497f697fb-f2b4r",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "calico-apiserver-5497f697fb-zstzs",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "calico-kube-controllers-64f84946d-b7mgl",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "calico-node-8swc5",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "calico-typha-774c8dc76-5lf8p",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "goldmane-7449f766bd-2s4hj",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "whisker-6c7f4c4844-7ffkw",
+      "namespace": "calico-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "cert-manager-58b9ddb94b-q7br4",
+      "namespace": "cert-manager",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "cert-manager-cainjector-7f8cd56994-bbhnx",
+      "namespace": "cert-manager",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "cert-manager-webhook-54797cd4c8-2n5jx",
+      "namespace": "cert-manager",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "barman-cloud-54568989bf-ldqv7",
+      "namespace": "cnpg-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "cnpg-controller-manager-5d78fcc98c-w5jmn",
+      "namespace": "cnpg-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-operator-58bfcd4f54-kvg9q",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-operator-58bfcd4f54-s6bxk",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-operator-58bfcd4f54-zqj95",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-placement-server-0",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-placement-server-1",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-placement-server-2",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-scheduler-server-0",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-scheduler-server-1",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-scheduler-server-2",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-sentry-68fc6cf899-59gqp",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-sentry-68fc6cf899-8fn2c",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-sentry-68fc6cf899-k7tww",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-sidecar-injector-c46dfc499-vxjsg",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-sidecar-injector-c46dfc499-xlqnm",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "dapr-sidecar-injector-c46dfc499-zmjz2",
+      "namespace": "dapr-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "forgejo-7995c56876-8bgnz",
+      "namespace": "forgejo",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "forgejo-runner-bc8b8dfc5-f4hq2",
+      "namespace": "forgejo-runner",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "access-telemetry-postgresql-0",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "falkordb-0",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "memories-675fd5d64-5zqpv",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "memories-675fd5d64-jtd8v",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "memories-access-telemetry-cb49f44d-7q5qs",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "memories-mcp-55d65d86d6-gwlj9",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "memories-mcp-55d65d86d6-wz9n5",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "redis-stack-0",
+      "namespace": "hexalith-memories",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "keycloak-7bfc8979b8-rjk5k",
+      "namespace": "keycloak",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "keycloak-7bfc8979b8-vc4cn",
+      "namespace": "keycloak",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "keycloak-postgres-1",
+      "namespace": "keycloak",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "keycloak-postgres-2",
+      "namespace": "keycloak",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "coredns-57cbfcd5b7-qw8w8",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "coredns-57cbfcd5b7-wtx2m",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "kube-apiserver-node1",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "kube-controller-manager-node1",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "kube-proxy-6fxfx",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "kube-scheduler-node1",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "localpv-provisioner-69bbbc59bf-k5756",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "metrics-server-5bc456dd79-zb6g8",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "nodelocaldns-l6v88",
+      "namespace": "kube-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "extensions-museum-74b7ddbdc4-7rwfd",
+      "namespace": "kubesphere-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "ks-apiserver-5cc56cf596-gczzj",
+      "namespace": "kubesphere-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "ks-console-77c96c4765-fm25w",
+      "namespace": "kubesphere-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "ks-console-embed-675c98bc58-hdkxj",
+      "namespace": "kubesphere-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "ks-controller-manager-c87b45dbd-w264z",
+      "namespace": "kubesphere-system",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "hexalith-keys-0",
+      "namespace": "openbao",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "hexalith-keys-1",
+      "namespace": "openbao",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "hexalith-keys-2",
+      "namespace": "openbao",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "distribution-registry-7459574665-qh725",
+      "namespace": "registry-distribution",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "private-registry-58bfc64f6-z27bt",
+      "namespace": "registry-private",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "stalwart-df97b564c-5tzgw",
+      "namespace": "stalwart",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "tigera-operator-85979684d8-lpw88",
+      "namespace": "tigera-operator",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "hexalith-tache-ai-relay-78df5dbc99-vdrhb",
+      "namespace": "traefik",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "traefik-x8j6k",
+      "namespace": "traefik",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "node-agent-g5dnl",
+      "namespace": "velero",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    },
+    {
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "PodMetrics",
+      "kindInferredFromExactListEndpoint": true,
+      "name": "velero-669d4c75cd-sbm6d",
+      "namespace": "velero",
+      "nativeDeletionIdentity": false,
+      "resourceVersionPresent": false,
+      "uidPresent": false
+    }
+  ],
+  "nonPreferredVersions": [
+    {
+      "exclusiveResourceTypes": 0,
+      "groupVersion": "autoscaling/v1",
+      "listableResourceTypes": 1,
+      "preferredVersion": "autoscaling/v2"
+    },
+    {
+      "exclusiveResourceTypes": 2,
+      "groupVersion": "tenant.kubesphere.io/v1beta1",
+      "listableResourceTypes": 2,
+      "preferredVersion": "tenant.kubesphere.io/v1"
+    },
+    {
+      "exclusiveResourceTypes": 1,
+      "groupVersion": "tenant.kubesphere.io/v1alpha2",
+      "listableResourceTypes": 1,
+      "preferredVersion": "tenant.kubesphere.io/v1"
+    },
+    {
+      "exclusiveResourceTypes": 1,
+      "groupVersion": "tenant.kubesphere.io/v1alpha1",
+      "listableResourceTypes": 1,
+      "preferredVersion": "tenant.kubesphere.io/v1"
+    },
+    {
+      "exclusiveResourceTypes": 2,
+      "groupVersion": "velero.io/v2alpha1",
+      "listableResourceTypes": 2,
+      "preferredVersion": "velero.io/v1"
+    },
+    {
+      "exclusiveResourceTypes": 6,
+      "groupVersion": "dapr.io/v1alpha1",
+      "listableResourceTypes": 7,
+      "preferredVersion": "dapr.io/v2alpha1"
+    },
+    {
+      "exclusiveResourceTypes": 0,
+      "groupVersion": "iam.kubesphere.io/v1alpha2",
+      "listableResourceTypes": 8,
+      "preferredVersion": "iam.kubesphere.io/v1beta1"
+    }
+  ],
+  "productionAccepted": false,
+  "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf",
+  "virtualViewsAcceptedAsRetirementObjects": false
+}
