@@ -30,7 +30,7 @@ class CleanupTests(unittest.TestCase):
     def absent(self, fixture, argv, **kwargs):
         self.assertGreater(kwargs['timeout'], 0)
         if argv[:2] == ['docker', 'inspect']:
-            return result(argv, 1, f'Error: No such object: {fixture.node}\n'.encode())
+            return result(argv, 1, f'Error: No such object: {argv[-1]}\n'.encode())
         if argv[:3] == ['docker', 'network', 'inspect']:
             return result(argv, 1, f'Error response from daemon: network {fixture.network} not found\n'.encode())
         if argv[:3] == ['docker', 'volume', 'inspect']:
@@ -38,6 +38,102 @@ class CleanupTests(unittest.TestCase):
         if argv[:3] == ['docker', 'image', 'inspect']:
             return result(argv, 1, f'Error response from daemon: No such image: {argv[-1]}\n'.encode())
         return result(argv)
+
+    def unstarted_fixture(self, directory):
+        fixture = self.fixture(directory)
+        fixture.created = fixture.network_created = False
+        fixture.volume_capture_verified = True
+        fixture.image_tags = []
+        fixture.args.node_image = 'sha256:' + 'a' * 64
+        fixture.args.age, fixture.args.recipient = 'age', 'public'
+        fixture.attempt.encrypt = Mock()
+        return fixture
+
+    def test_entrypoint_reader_timeout_is_owned_removed_and_verified_absent(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = self.unstarted_fixture(temp)
+            helper_present = False
+            def run(argv, **kwargs):
+                nonlocal helper_present
+                self.assertGreater(kwargs['timeout'], 0)
+                if argv[:3] == ['docker', 'container', 'inspect']:
+                    return result(argv, 1, f'Error: No such object: {argv[-1]}\n'.encode())
+                if argv[:3] == ['docker', 'image', 'inspect'] and argv[-1] == fixture.args.node_image:
+                    return subprocess.CompletedProcess(argv, 0, stdout=canonical([{'Id': fixture.args.node_image}]), stderr=b'')
+                if argv[:2] == ['docker', 'run']:
+                    self.assertEqual(argv[argv.index('--name') + 1], fixture.entrypoint_reader)
+                    self.assertIn('--rm', argv)
+                    self.assertEqual(argv[argv.index('--network') + 1], 'none')
+                    helper_present = True
+                    raise subprocess.TimeoutExpired(argv, kwargs['timeout'])
+                if argv[:3] == ['docker', 'container', 'rm']:
+                    self.assertEqual(argv, ['docker', 'container', 'rm', '--force', '--volumes', fixture.entrypoint_reader])
+                    self.assertTrue(helper_present)
+                    helper_present = False
+                    return result(argv)
+                if argv[:2] == ['docker', 'inspect'] and argv[-1] == fixture.entrypoint_reader and helper_present:
+                    return result(argv)
+                return self.absent(fixture, argv, **kwargs)
+            with patch('rehearse.subprocess.run', side_effect=run) as runner:
+                with self.assertRaises(subprocess.TimeoutExpired):
+                    fixture.start()
+                self.assertTrue(fixture.entrypoint_reader_started)
+                self.assertFalse(fixture.created)
+                self.assertTrue(fixture.cleanup())
+            receipt = fixture.attempt.record.call_args.args[1]
+            self.assertTrue(receipt['entrypointReaderStarted'] and receipt['entrypointReaderAbsent'])
+            self.assertEqual(receipt['entrypointReaderDeleteState'], 'completed')
+            self.assertEqual(receipt['inspectionStates']['entrypointReader'], 'absent')
+            self.assertFalse(helper_present)
+            self.assertTrue(any(c.args[0] == ['docker', 'inspect', fixture.entrypoint_reader]
+                                for c in runner.call_args_list))
+
+    def test_existing_or_unverified_entrypoint_reader_is_refused_and_never_removed(self):
+        for state in ('present', 'unverified'):
+            with self.subTest(state=state), tempfile.TemporaryDirectory() as temp:
+                fixture = self.unstarted_fixture(temp)
+                def run(argv, **kwargs):
+                    if argv[:3] == ['docker', 'container', 'inspect']:
+                        if argv[-1] == fixture.entrypoint_reader:
+                            return result(argv) if state == 'present' else result(argv, 1, b'Cannot connect to daemon')
+                        return result(argv, 1, f'Error: No such object: {argv[-1]}\n'.encode())
+                    if argv[:2] == ['docker', 'inspect'] and argv[-1] == fixture.entrypoint_reader:
+                        return result(argv) if state == 'present' else result(argv, 1, b'Cannot connect to daemon')
+                    return self.absent(fixture, argv, **kwargs)
+                with patch('rehearse.subprocess.run', side_effect=run) as runner:
+                    with self.assertRaisesRegex(ValueError, 'fixture-name-exists-or-absence-unverified'):
+                        fixture.start()
+                    self.assertFalse(fixture.entrypoint_reader_started)
+                    self.assertFalse(fixture.cleanup())
+                self.assertFalse(any(c.args[0][:2] == ['docker', 'run'] or c.args[0][:3] == ['docker', 'container', 'rm']
+                                     for c in runner.call_args_list))
+                receipt = fixture.attempt.record.call_args.args[1]
+                self.assertFalse(receipt['entrypointReaderAbsent'])
+                self.assertEqual(receipt['inspectionStates']['entrypointReader'], state)
+
+    def test_remaining_or_unverified_entrypoint_reader_prevents_cleanup_success(self):
+        for state in ('present', 'unverified'):
+            with self.subTest(state=state), tempfile.TemporaryDirectory() as temp:
+                fixture = self.fixture(temp)
+                fixture.volume_capture_verified = fixture.entrypoint_reader_started = True
+                def run(argv, **kwargs):
+                    self.assertGreater(kwargs['timeout'], 0)
+                    if argv[:3] == ['docker', 'container', 'rm']:
+                        self.assertEqual(argv[-1], fixture.entrypoint_reader)
+                        if state == 'unverified':
+                            raise subprocess.TimeoutExpired(argv, kwargs['timeout'])
+                        return result(argv, 1, b'fixture helper removal failed')
+                    if argv[:2] == ['docker', 'inspect'] and argv[-1] == fixture.entrypoint_reader:
+                        return result(argv) if state == 'present' else result(argv, 1, b'Cannot connect to daemon')
+                    return self.absent(fixture, argv, **kwargs)
+                with patch('rehearse.subprocess.run', side_effect=run):
+                    self.assertFalse(fixture.cleanup())
+                receipt = fixture.attempt.record.call_args.args[1]
+                self.assertFalse(receipt['passed'] or receipt['entrypointReaderAbsent'])
+                self.assertEqual(receipt['inspectionStates']['entrypointReader'], state)
+                self.assertEqual(receipt['entrypointReaderDeleteState'], 'completed' if state == 'present' else 'timed-out')
+                self.assertTrue(receipt['nodeAbsent'] and receipt['networkAbsent'] and receipt['fixtureImageTagsAbsent']
+                                and receipt['fixtureVolumesAbsent'] and receipt['freshCredentialFileAbsent'])
 
     def test_early_failure_discovers_volumes_before_teardown(self):
         with tempfile.TemporaryDirectory() as temp:

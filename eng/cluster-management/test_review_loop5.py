@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 from evidence import canonical, digest
 from qualify import project_resource
 from rehearse import (Fixture, SYSTEM_WORKSPACE_FINALIZER, content_review_digest,
-                      lease_renewal_transition)
+                      dependency_plan, lease_renewal_transition, retirement_scope)
 from rehearse_catalog import RepresentativeFixture, catalog_counts
 from rehearse_namespaces import SevenNamespaceFixture
 import test_rehearse as existing
@@ -200,6 +200,41 @@ class FinalizerCheckpointTests(unittest.TestCase):
 
 
 class DriverSmokeTests(unittest.TestCase):
+    def test_retirement_decisions_plan_exact_console_chain_without_unused_namespace_equivalents(self):
+        records, objects = {}, []
+        attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(),
+                                  record=lambda name, value: records.update({name: value}))
+        fixture = Fixture(SimpleNamespace(attempt_id='decision-fixture-test'), attempt)
+        def create(raw):
+            value = copy.deepcopy(raw)
+            value['metadata'].update(uid='uid-' + value['metadata']['name'], resourceVersion='1')
+            objects.append(value)
+        def get(resource, name, namespace):
+            kinds = {'certificates.cert-manager.io': 'Certificate', 'certificaterequests.cert-manager.io': 'CertificateRequest'}
+            return next(v for v in objects if v['kind'] == kinds[resource] and v['metadata']['name'] == name
+                        and v['metadata']['namespace'] == namespace)
+        create({'apiVersion': 'coordination.k8s.io/v1', 'kind': 'Lease', 'metadata': {
+            'name': 'ks-controller-manager-leader-election', 'namespace': 'kubesphere-system'}})
+        with patch.object(fixture, 'create', side_effect=create), patch.object(fixture, 'get', side_effect=get), \
+             patch.object(fixture, 'kube') as kube:
+            fixture.populate_retirement_decisions()
+        self.assertEqual(kube.call_count, 3)
+        self.assertFalse(any(v['kind'] == 'Namespace' for v in objects))
+        self.assertNotIn('namespaceFinalizerEquivalents', records['retirement-decision-fixtures.json'])
+        self.assertIn('rehearse_namespaces.py', records['retirement-decision-fixtures.json']['namespaceFinalizerCoverage'])
+        baseline = [project_resource(v) for v in objects]
+        phases = {p['phase']: p for p in dependency_plan(baseline, retirement_scope(baseline))}
+        self.assertEqual(set(phases), {'console-route'})
+        roots = {v['uid'] for v in baseline if v['kind'] in ('Ingress', 'Certificate', 'Secret', 'Lease')}
+        self.assertEqual(set(phases['console-route']['roots']), roots)
+        self.assertEqual(set(phases['console-route']['expected']), {v['uid'] for v in baseline
+                         if v['kind'] != 'CustomResourceDefinition'})
+        certificate = next(v for v in baseline if v['kind'] == 'Certificate')
+        request = next(v for v in baseline if v['kind'] == 'CertificateRequest')
+        order = next(v for v in baseline if v['kind'] == 'Order')
+        self.assertEqual(request['owners'][0]['uid'], certificate['uid'])
+        self.assertEqual(order['owners'][0]['uid'], request['uid'])
+
     def test_shared_driver_lifecycle_binds_and_encrypts_executed_driver_before_start(self):
         from rehearse import rehearse
         with tempfile.TemporaryDirectory() as temporary:
@@ -308,7 +343,7 @@ class DriverSmokeTests(unittest.TestCase):
             native_phase.assert_called_once_with(phase, set(by_uid), by_uid, {})
             get.assert_called_once_with('categories.application.kubesphere.io', 's426-catalog-category')
 
-    def test_namespace_driver_executes_seven_native_interventions_and_checks_request_trace(self):
+    def namespace_driver(self, canary_reads, expected_error=None):
         raw = {}
         records = {}
         attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
@@ -332,14 +367,30 @@ class DriverSmokeTests(unittest.TestCase):
              patch.object(fixture, 'discover', return_value={('v1', 'Namespace'): ('namespaces', False)}), \
              patch.object(fixture, 'native_read', side_effect=lambda path: copy.deepcopy(raw[path.rsplit('/', 1)[-1]])), \
              patch.object(Fixture, 'kube', side_effect=kube), patch.object(fixture, 'wait_absent', return_value=True), \
-             patch.object(fixture, 'run', return_value=SimpleNamespace(stdout=b'synthetic-426-canary')):
-            fixture.execute()
+             patch.object(fixture, 'run', side_effect=[SimpleNamespace(stdout=value) for value in canary_reads]) as run:
+            if expected_error:
+                with self.assertRaisesRegex(ValueError, expected_error):
+                    fixture.execute()
+            else:
+                fixture.execute()
+        self.assertEqual(run.call_count, 2)
+        return records
+
+    def test_namespace_driver_executes_seven_native_interventions_and_checks_request_trace(self):
+        records = self.namespace_driver((b'synthetic-426-canary', b'synthetic-426-canary'))
         result = records['seven-namespace-result.json']
         self.assertEqual(result['actualNamespaceUidResourceVersionBoundPutRequests'], 7)
         self.assertEqual(result['actualNamespaceDeleteRequests'], 0)
         phase_record = next(v for n, v in records.items() if n.startswith('retirement-phase-') and n.endswith('-namespace-finalizers.json'))
         self.assertTrue(all(v['privateFullContentVerified'] for v in phase_record['requests']))
         self.assertTrue(all(v['onlyKubeSphereMetadataFinalizerRemoved'] for v in result['namespaces']))
+
+    def test_namespace_driver_refuses_incorrect_initial_or_changed_final_canary(self):
+        for case, values in (('incorrect-initial', (b'incorrect-initial-canary', b'incorrect-initial-canary')),
+                             ('changed-final', (b'synthetic-426-canary', b'changed-final-canary'))):
+            with self.subTest(case=case):
+                records = self.namespace_driver(values, 'seven-namespace-canary-changed')
+                self.assertNotIn('seven-namespace-result.json', records)
 
 
 class VendorImageStreamTests(unittest.TestCase):
@@ -371,6 +422,26 @@ class VendorImageStreamTests(unittest.TestCase):
         self.assertEqual(importer.call_args.kwargs['timeout'], 180)
         self.assertEqual(records[0]['tag'], 'synthetic:fixture')
         self.assertEqual(json.loads(fixture.attempt.encrypt.call_args.args[1])['saveExit'], 0)
+
+    def test_nonzero_vendor_save_or_import_refuses_after_export_and_reaps_source(self):
+        for save_exit, import_exit in ((1, 0), (0, 1), (1, 1)):
+            with self.subTest(saveExit=save_exit, importExit=import_exit):
+                fixture, _ = self.fixture()
+                source = Mock()
+                source.wait.return_value = save_exit
+                source.poll.return_value = save_exit
+                source.stderr.read.return_value = b'synthetic-save-error'
+                imported = SimpleNamespace(returncode=import_exit, stdout=b'', stderr=b'synthetic-import-error')
+                with patch.object(fixture, 'run', return_value=SimpleNamespace(stdout=b'[{"Id":"sha256:synthetic"}]')), \
+                     patch('rehearse.subprocess.Popen', return_value=source), \
+                     patch('rehearse.subprocess.run', return_value=imported):
+                    with self.assertRaisesRegex(ValueError, 'vendor-amd64-import-failed'):
+                        fixture.load_vendor_images(['synthetic:fixture'])
+                export = json.loads(fixture.attempt.encrypt.call_args.args[1])
+                self.assertEqual((export['saveExit'], export['importExit']), (save_exit, import_exit))
+                source.stdout.close.assert_called_once()
+                self.assertEqual(source.wait.call_args_list, [unittest.mock.call(timeout=30), unittest.mock.call()])
+                source.kill.assert_not_called()
 
     def test_vendor_save_timeout_kills_reaps_and_reaches_fixture_cleanup_without_stderr_read(self):
         from rehearse import rehearse

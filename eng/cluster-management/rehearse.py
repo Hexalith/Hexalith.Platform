@@ -611,6 +611,8 @@ class Fixture:
         self.cluster = 's426-' + digest(args.attempt_id.encode())[:12]
         self.network = self.cluster + '-internal'
         self.node = self.cluster + '-control-plane'
+        self.entrypoint_reader = self.cluster + '-entrypoint-reader'
+        self.entrypoint_reader_started = False
         self.kubeconfig = attempt.directory / 'fixture-kubeconfig'
         self.sequence = 0
         self.created = False
@@ -685,6 +687,7 @@ class Fixture:
     def start(self):
         # Refuse existing names, and require an already retained local image by immutable Docker ID.
         for kind, name, command in [('container', self.node, ['docker', 'container', 'inspect', self.node]),
+                ('container', self.entrypoint_reader, ['docker', 'container', 'inspect', self.entrypoint_reader]),
                 ('network', self.network, ['docker', 'network', 'inspect', self.network]),
                 ('image', self.base_tag, ['docker', 'image', 'inspect', self.base_tag]),
                 ('image', self.derived_tag, ['docker', 'image', 'inspect', self.derived_tag])]:
@@ -695,7 +698,9 @@ class Fixture:
             raise ValueError('node-image-must-be-local-sha256-identity')
         # Stock kind assumes a default gateway. Internal Docker networks deliberately
         # have none; use the container's own IP for its DNS rewrite without adding a route.
-        original = self.run('read-public-entrypoint', ['docker', 'run', '--rm', '--network', 'none', '--entrypoint',
+        self.entrypoint_reader_started = True  # clean the exact helper even when launch, encryption or waiting fails
+        original = self.run('read-public-entrypoint', ['docker', 'run', '--rm', '--name', self.entrypoint_reader,
+                             '--network', 'none', '--entrypoint',
                              'cat', self.args.node_image, '/usr/local/bin/entrypoint']).stdout
         needle = b"docker_host_ip=$(ip -4 route show default | cut -d' ' -f3)"
         if original.count(needle) != 1:
@@ -1634,7 +1639,7 @@ class Fixture:
             raise ValueError('rollback-baseline-or-datastore-identity-mismatch')
 
     def populate_retirement_decisions(self):
-        """Synthetic equivalents of the approved console certificate chain and seven kept namespace interventions."""
+        """Synthetic console certificate chain; seven namespace equivalents use the manager-free driver."""
         for group, plural, kind in (('cert-manager.io', 'certificates', 'Certificate'),
                                      ('cert-manager.io', 'certificaterequests', 'CertificateRequest'),
                                      ('acme.cert-manager.io', 'orders', 'Order')):
@@ -1665,13 +1670,10 @@ class Fixture:
             'rules': [{'host': 'fixture.invalid', 'http': {'paths': [{'path': '/', 'pathType': 'Prefix',
                        'backend': {'service': {'name': 'ks-console', 'port': {'number': 80}}}}]}}],
             'tls': [{'hosts': ['fixture.invalid'], 'secretName': 'kubesphere-console-letsencrypt-tls'}]}})
-        for name in FIXTURE_FINALIZER_NAMES:
-            self.create({'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': name,
-                         'finalizers': [SYSTEM_WORKSPACE_FINALIZER, 'qualification.hexalith.io/retain']}})
         self.attempt.record('retirement-decision-fixtures.json', {
             'consoleRoute': 'fixture.invalid, no ingress controller/public route',
             'certificateController': 'synthetic owner-reference chain; real cert-manager reconciliation untested',
-            'namespaceFinalizerEquivalents': list(FIXTURE_FINALIZER_NAMES), 'sourceDataImported': False,
+            'namespaceFinalizerCoverage': 'separate manager-free rehearse_namespaces.py driver', 'sourceDataImported': False,
             'productionPrerequisite': 'Story 4.2 closes kube.hexalith.com before retirement', 'productionAccepted': False})
 
     def inventory(self):
@@ -1840,6 +1842,12 @@ class Fixture:
             result, _ = command(argv, 30)
             return absence_state(result, kind, name) if result is not None else 'unverified'
 
+        outcomes['entrypointReaderName'] = self.entrypoint_reader
+        outcomes['entrypointReaderStarted'] = self.entrypoint_reader_started
+        if self.entrypoint_reader_started:
+            _, result = command(['docker', 'container', 'rm', '--force', '--volumes', self.entrypoint_reader], 30)
+            outcomes['entrypointReaderDeleteExit'] = result['exitCode']
+            outcomes['entrypointReaderDeleteState'] = result['state']
         # Capture mounts before deleting an owned node, even when startup failed
         # before its normal inspection. Unknown coverage never proves absence.
         if self.created:
@@ -1862,9 +1870,11 @@ class Fixture:
             outcomes['networkDeleteExit'] = result['exitCode']
             outcomes['networkDeleteState'] = result['state']
         inspections = {'node': inspect(['docker', 'inspect', self.node], 'container', self.node),
+                       'entrypointReader': inspect(['docker', 'inspect', self.entrypoint_reader], 'container', self.entrypoint_reader),
                        'network': inspect(['docker', 'network', 'inspect', self.network], 'network', self.network)}
         outcomes['inspectionStates'] = inspections
         outcomes['nodeAbsent'] = inspections['node'] == 'absent'
+        outcomes['entrypointReaderAbsent'] = inspections['entrypointReader'] == 'absent'
         outcomes['networkAbsent'] = inspections['network'] == 'absent'
         outcomes['volumeInventoryVerified'] = self.volume_capture_verified
         outcomes['volumeInspectionStates'] = {volume: inspect(['docker', 'volume', 'inspect', volume], 'volume', volume)
@@ -1881,7 +1891,8 @@ class Fixture:
         outcomes['fixtureImageTagsAbsent'] = all(state == 'absent' for state in outcomes['imageInspectionStates'].values())
         outcomes['unmeasuredDeclarations'] = {'globalPruneUsed': False, 'unrelatedDockerObjectsChanged': False,
                                               'basis': 'procedure issues only exact named removals; not measured'}
-        outcomes['passed'] = (outcomes['nodeAbsent'] and outcomes['networkAbsent'] and outcomes['freshCredentialFileAbsent']
+        outcomes['passed'] = (outcomes['nodeAbsent'] and outcomes['entrypointReaderAbsent']
+                              and outcomes['networkAbsent'] and outcomes['freshCredentialFileAbsent']
                               and outcomes['fixtureVolumesAbsent'] and outcomes['fixtureImageTagsAbsent'])
         self.attempt.record(record_name, outcomes)
         return outcomes['passed']
@@ -1967,8 +1978,8 @@ def parse_args(argv=None):
     p.add_argument('--kubectl', type=Path, required=True,
                    help='Not executed: digest-recorded only; fixture commands use the new node\'s own kubectl')
     p.add_argument('--age', type=Path, required=True)
-    p.add_argument('--recipient', required=True)
-    p.add_argument('--readback-recipient', required=True, help='Distinct agent-held SSH public recipient')
+    p.add_argument('--recipient', required=True, help='Administrator-owned ssh-ed25519 public recipient; no private key')
+    p.add_argument('--readback-recipient', required=True, help='Distinct agent-held ssh-ed25519 public recipient')
     p.add_argument('--readback-identity', type=Path, required=True, help='Owner-only readback key outside Git and evidence custody')
     p.add_argument('--ks-chart', type=Path, help='Public retained ks-core 1.2.4 archive; enables the actual-chart retirement fixture')
     p.add_argument('--ks-chart-sha256', help='Independently checked exact public chart SHA-256')

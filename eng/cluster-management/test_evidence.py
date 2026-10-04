@@ -206,6 +206,39 @@ class AttemptPublicationTests(unittest.TestCase):
             Attempt(self.project, root, 'valid-id', 'recovery')
         self.assertFalse(root.exists())
 
+    def test_readback_identity_custody_is_refused_before_attempt_allocation(self):
+        for case in ('0640', '0644', 'symlink', 'project', 'evidence', 'missing', 'owner'):
+            with self.subTest(case=case):
+                root = self.base / ('private-' + case)
+                identity = self.base / ('identity-' + case)
+                if case == 'project':
+                    identity = self.project / 'identity'
+                elif case == 'evidence':
+                    root.mkdir(mode=0o700)
+                    identity = root / 'identity'
+                if case == 'symlink':
+                    identity.symlink_to(self.identity)
+                elif case != 'missing':
+                    identity.write_bytes(b'synthetic test identity')
+                    identity.chmod(int(case, 8) if case.startswith('0') else 0o600)
+                owner = self.identity.stat().st_uid
+                with patch('evidence.os.getuid', return_value=owner + (case == 'owner')):
+                    with self.assertRaisesRegex(ValueError, 'readback-identity-custody-invalid'):
+                        Attempt(self.project, root, 'attempt', readback_recipient=READBACK,
+                                readback_identity=identity)
+                self.assertFalse((root / 'qualification').exists())
+                self.assertFalse((root / 'qualification' / 'attempt').exists())
+
+    def test_readback_pair_refusal_does_not_consume_attempt_id(self):
+        root = self.base / 'pair-private'
+        for recipient, identity in ((READBACK, None), (None, self.identity)):
+            with self.subTest(recipient=recipient is not None):
+                with self.assertRaisesRegex(ValueError, 'readback-recipient-and-identity-required-together'):
+                    Attempt(self.project, root, 'attempt', readback_recipient=recipient, readback_identity=identity)
+                self.assertFalse(root.exists())
+        attempt = Attempt(self.project, root, 'attempt', readback_recipient=READBACK, readback_identity=self.identity)
+        self.assertTrue(attempt.directory.is_dir())
+
     def test_existing_root_or_category_that_is_not_owner_only_is_refused(self):
         for case in ('root', 'category'):
             with self.subTest(case=case):

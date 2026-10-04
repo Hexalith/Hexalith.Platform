@@ -588,8 +588,8 @@ def parser():
     p.add_argument('--kubectl', type=Path, required=True)
     p.add_argument('--helm', type=Path, required=True)
     p.add_argument('--age', type=Path, required=True)
-    p.add_argument('--recipient', required=True, help='Administrator-owned age/SSH public recipient; no private key')
-    p.add_argument('--readback-recipient', required=True, help='Distinct agent-held SSH public recipient')
+    p.add_argument('--recipient', required=True, help='Administrator-owned ssh-ed25519 public recipient; no private key')
+    p.add_argument('--readback-recipient', required=True, help='Distinct agent-held ssh-ed25519 public recipient')
     p.add_argument('--readback-identity', type=Path, required=True, help='Owner-only readback key outside Git and evidence custody')
     return p
 

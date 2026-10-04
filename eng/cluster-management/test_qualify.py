@@ -146,6 +146,52 @@ class ProjectionTests(unittest.TestCase):
 
 
 class CensusTests(unittest.TestCase):
+    def test_malformed_discovery_entry_retains_valid_resource_and_finalizes_failed_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            project = base / 'repo'
+            maintenance = project / 'eng/kubernetes-upgrade/MAINTENANCE.md'
+            maintenance.parent.mkdir(parents=True)
+            maintenance.write_text('existing proposal')
+            tool = base / 'tool'
+            tool.write_text('retained tool')
+            args = SimpleNamespace(project_root=project, evidence_root=base / 'private', attempt_id='malformed-discovery',
+                operator='unit', context='local', kubectl=tool, helm=tool, age=tool, kubeconfig=tool, recipient='public-only')
+            records = {}
+            attempt = SimpleNamespace(directory=base / 'attempt', encrypt=Mock(), finish=Mock(),
+                                      record=lambda name, value: records.update({name: value}))
+            namespace = {'metadata': {'name': 'kube-system', 'uid': 'ns-1', 'resourceVersion': '1'}}
+            config = {'clusters': [{'cluster': {'server': 'https://192.0.2.10:6443',
+                'certificate-authority-data': base64.b64encode(b'synthetic-ca').decode()}}]}
+            requests = []
+            def command(argv, **kwargs):
+                if 'config' in argv:
+                    data = config
+                elif argv[0] == str(tool) and '--raw' in argv:
+                    path = argv[argv.index('--raw') + 1]
+                    requests.append(path)
+                    data = {'/api/v1': {'resources': [
+                        {'name': 'namespaces', 'kind': 'Namespace', 'verbs': ['list']},
+                        {'name': 'broken', 'kind': 'ConfigMap', 'verbs': 'list'}]},
+                        '/apis': {'groups': []}, '/api/v1/namespaces?limit=500': {'items': [namespace]}}[path]
+                elif 'version' in argv and '-o' in argv:
+                    data = {'clientVersion': {'gitVersion': 'v1.34.12'}, 'serverVersion': {'gitVersion': 'v1.34.9'}}
+                elif 'list' in argv:
+                    data = []
+                else:
+                    data = {}
+                return SimpleNamespace(returncode=0, stdout=json.dumps(data).encode(), stderr=b'')
+            with patch('qualify.Attempt', return_value=attempt), patch('qualify.subprocess.run', side_effect=command), \
+                 patch('qualify.ssl.create_default_context'), patch('qualify.urllib.request.urlopen', side_effect=OSError):
+                _, state = collect(args)
+            self.assertEqual(state, 'failed-closed')
+            self.assertEqual([v['uid'] for v in records['inventory.json']['resources']], ['ns-1'])
+            self.assertIn('/api/v1/namespaces?limit=500', requests)
+            self.assertTrue(any(v['step'] == 'discovery-v1' and v['state'] == 'invalid-schema'
+                                for v in records['capture-failure.json']['coverage']))
+            self.assertTrue(all(v['state'] == 'failed-closed' for v in records['criteria.json']['criteria']))
+            attempt.finish.assert_called_once()
+
     def test_malformed_successful_lists_are_coverage_failures(self):
         resource = {'name': 'configmaps', 'kind': 'ConfigMap', 'verbs': ['list']}
         for malformed in ({}, [], {'items': [] , 'metadata': []}, {'items': [], 'metadata': {'continue': 1}},

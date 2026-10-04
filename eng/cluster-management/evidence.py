@@ -92,14 +92,6 @@ class Attempt:
             if part.exists() and (part.stat().st_uid != os.getuid()
                                   or stat.S_IMODE(part.stat().st_mode) & 0o077):
                 raise ValueError('evidence-custody-must-be-owner-only')
-        old = os.umask(0o077)
-        try:
-            self.directory.mkdir(parents=True, mode=0o700, exist_ok=False)
-        finally:
-            os.umask(old)
-        self.attempt_id = attempt_id
-        self.records = {}
-        self.exports = []
         if bool(readback_recipient) != bool(readback_identity):
             raise ValueError('readback-recipient-and-identity-required-together')
         self.readback_recipient = readback_recipient
@@ -110,6 +102,14 @@ class Attempt:
                     or identity.stat().st_uid != os.getuid() or stat.S_IMODE(identity.stat().st_mode) & 0o077
                     or self.project in identity.resolve().parents or root.resolve() in identity.resolve().parents):
                 raise ValueError('readback-identity-custody-invalid')
+        old = os.umask(0o077)
+        try:
+            self.directory.mkdir(parents=True, mode=0o700, exist_ok=False)
+        finally:
+            os.umask(old)
+        self.attempt_id = attempt_id
+        self.records = {}
+        self.exports = []
 
     def record(self, name, record):
         if not re.fullmatch(r'[a-z0-9-]+\.json', name):
@@ -125,33 +125,28 @@ class Attempt:
         if not self.readback_recipient or not self.readback_identity:
             raise ValueError('export-readback-configuration-required')
         # Encryption runs before any export bytes reach the filesystem.
-        argv = [str(age), '--encrypt', '--recipient', recipient]
-        if self.readback_recipient:
-            if self.readback_recipient == recipient:
-                raise ValueError('readback-recipient-must-be-distinct')
-            argv += ['--recipient', self.readback_recipient]
+        if self.readback_recipient == recipient:
+            raise ValueError('readback-recipient-must-be-distinct')
+        argv = [str(age), '--encrypt', '--recipient', recipient, '--recipient', self.readback_recipient]
         result = subprocess.run(argv,
                                 input=plaintext, capture_output=True, timeout=120)
         if result.returncode or not result.stdout.startswith(b'age-encryption.org/v1\n'):
             raise ValueError('export-encryption-failed')
         # Recorded so Git readers can check which recipient each export names.
         stanzas = recipient_stanzas(result.stdout)
-        readback_verified = False
-        if self.readback_identity:
-            tags = {s['tag'] for s in stanzas if s['type'] == 'ssh-ed25519'}
-            expected_tags = {ssh_recipient_tag(recipient), ssh_recipient_tag(self.readback_recipient)}
-            if len(expected_tags) != 2 or not expected_tags <= tags:
-                raise ValueError('export-second-recipient-missing')
-            readback = subprocess.run([str(age), '--decrypt', '--identity', str(self.readback_identity)],
-                                      input=result.stdout, capture_output=True, timeout=120)
-            if readback.returncode or digest(readback.stdout) != digest(plaintext):
-                raise ValueError('export-readback-failed')
-            readback_verified = True
+        tags = {s['tag'] for s in stanzas if s['type'] == 'ssh-ed25519'}
+        expected_tags = {ssh_recipient_tag(recipient), ssh_recipient_tag(self.readback_recipient)}
+        if len(expected_tags) != 2 or not expected_tags <= tags:
+            raise ValueError('export-second-recipient-missing')
+        readback = subprocess.run([str(age), '--decrypt', '--identity', str(self.readback_identity)],
+                                  input=result.stdout, capture_output=True, timeout=120)
+        if readback.returncode or digest(readback.stdout) != digest(plaintext):
+            raise ValueError('export-readback-failed')
         filename = name + '.age'
         write_new(self.directory / filename, result.stdout)
         entry = {'file': filename, 'plaintextSha256': digest(plaintext),
                  'ciphertextSha256': digest(result.stdout), 'ciphertextBytes': len(result.stdout),
-                 'recipientStanzas': stanzas, 'readbackVerified': readback_verified}
+                 'recipientStanzas': stanzas, 'readbackVerified': True}
         self.exports.append(entry)
         return entry
 
