@@ -4,7 +4,7 @@ type: story
 epic: 4
 story: 26
 created: 2026-10-01
-status: review
+status: in-progress
 route: dispatch
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'

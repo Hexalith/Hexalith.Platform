@@ -4,7 +4,7 @@ type: 'chore'
 epic: 4
 story: 26
 created: '2026-10-01'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: '98436a4cb884f8d11b4b5f3e6ae70e95ce687463'
@@ -208,6 +208,53 @@ Carried: B15 (no authenticity step in 4.28 install) is G103, still deferred; B18
 
 - [x] [Review][Patch] G124 Add incorrect-initial and changed-final canary cases for `SevenNamespaceFixture.execute`; require `seven-namespace-canary-changed` and no passing `seven-namespace-result.json` [eng/cluster-management/test_review_loop5.py].
 - [x] [Review][Patch] G125 Track the temporary entrypoint-reader container under an exact attempt name, refuse a pre-existing helper, and remove/verify its absence during cleanup after timeout or failure; a remaining or unverified helper must prevent cleanup success [eng/cluster-management/rehearse.py; eng/cluster-management/test_cleanup.py].
+
+### Review Findings — code review of the G108–G125 correction round, 2026-10-05
+
+This review covers `fad560f..6130bbe` (16 files, +396/−80): the G108–G122 and G124/G125 corrections. Four layers ran: blind, edge-case, verification-gap and acceptance. None failed. They produced 37 raw findings (B97–B112, V40, E95–E103, A9–A19). Triage left 0 decision-needed, 9 patch and 2 defer findings, and rejected 19. IDs continue from G125. The verification-gap layer found no gap: all 10 of its targeted mutations of the changed behavior failed at least one test, and real Docker 29.8.1 confirms that removing a missing container exits 0.
+
+- [ ] [Review][Patch] G126 Pin the four exact console-route roots in the G113 regression. `test_retirement_decisions_plan_exact_console_chain_without_unused_namespace_equivalents` builds its expected roots from whatever the method created, so the check cannot fail. The root's mutation check confirmed this: removing the Ingress or the TLS Secret `create` from `populate_retirement_decisions` still passes all 164 tests. Assert the exact kind/namespace/name set: Ingress `kubesphere-console`, Certificate `kubesphere-console-letsencrypt`, Secret `kubesphere-console-letsencrypt-tls` and Lease `ks-controller-manager-leader-election` [eng/cluster-management/test_review_loop5.py:457]
+- [ ] [Review][Patch] G127 Mark the cited "final" and "current" evidence as predating this correction round. The story, README, QUALIFICATION and RANCHER all cite the [final assessment](evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json) as current, but its basis text is stale:
+  - Criterion 7 says the full procedure "exercises … seven namespace equivalents". G113 showed it does not; the separate probe does.
+  - Criterion 8 still reads "fresh 4.0 recovery" and has no 4.3 gate, which G111 and G122 superseded.
+  - Ledger row 7 calls the `bb02c5e7…` run the "current full procedure", but committed `rehearse.py` has since changed under G91/G97/G98/G113/G125.
+
+  Add one superseding note next to the assessment link and a clause to row 7. The immutable record itself stays unchanged [_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md:51]
+- [ ] [Review][Patch] G128 Require the named certificate to carry no organization (O) group. "No O group that has an existing binding" is checked only once, at issuance. If a group the certificate carries is bound later, that grant survives deletion of the certificate's own ClusterRoleBinding, so "revoked by deleting that binding" no longer holds. Say "no organization (O) group" in QUALIFICATION, RANCHER and the 4.28 handoff [eng/cluster-management/QUALIFICATION.md:29]
+- [ ] [Review][Patch] G129 State that the sealed MFA-less local-admin option amends the frozen MFA decision. `RANCHER.md:11` and the 4.28 handoff offer to "seal it as MFA-less break-glass". The 2026-10-03 decision enforces MFA at Rancher through Keycloak and names native certificate access as the only break-glass path without MFA. Add that choosing the sealed option amends that decision and must be recorded as an amendment [eng/cluster-management/RANCHER.md:11]
+- [ ] [Review][Patch] G130 Record the KubeSphere finalizer of `User/jpiquot` in its archive row. The census shows `finalizers.kubesphere.io/users` on `User/jpiquot`, but only the GlobalRoleBinding row names the exact native finalizer cleanup decision it needs. Without that decision, the 4.28 deletion of the User stays Terminating [eng/cluster-management/RETIRE-KUBESPHERE.md:16]
+- [ ] [Review][Patch] G131 Stop calling the retained `jpiquot` cluster-admin binding "inert". The table heading "Inert archival objects" and the matching 4.27 bullet now include `ClusterRoleBinding/jpiquot-cluster-admin`, which actively grants cluster-admin until 4.28. Mark the five `jpiquot` objects as retained, active authority [eng/cluster-management/RETIRE-KUBESPHERE.md:11]
+- [ ] [Review][Patch] G132 Keep the 2026-10-04 additions apart from the dated 2026-10-03 Administrator decisions. Two places mix them:
+  - The 4.27 heading "Administrator decisions from Story 4.26 — 2026-10-03" now contains the 2026-10-04 G108 decision and the review-derived G109 "Exact execution bytes" bullet.
+  - QUALIFICATION's "Approved … decisions, 2026-10-03" paragraph now contains the G120 CN/O constraint and the 4.28 timing, yet still closes with "These are approved design decisions".
+
+  Label each addition with its date and origin [_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md:38]
+- [ ] [Review][Patch] G133 Finish the G121 sweep. `RETIRE-KUBESPHERE.md:72` still says to "capture a fresh native recovery point for **1.35 → 1.36.5**". Change it to 1.34.9 → 1.35.9 → 1.36.5, with recovery points before each hop [eng/cluster-management/RETIRE-KUBESPHERE.md:72]
+- [ ] [Review][Patch] G134 Refuse an incorrect initial canary before the seven namespace PUTs. `SevenNamespaceFixture.execute` reads `canary_before` at line 39 but checks it only at line 73, after `retire_phase` has issued all seven PUTs. Raise immediately after the read, and make the G124 incorrect-initial case assert that no namespace `replace` request was issued [eng/cluster-management/rehearse_namespaces.py:39]
+- [x] [Review][Defer] G135 The new 4.28 obligations exist only as handoff prose: removing the `jpiquot` path, the local-admin decision with its Keycloak-unavailable test, and the CN/O subject constraint. None of them is among 4.28's numbered acceptance criteria [_bmad-output/implementation-artifacts/4-28-deploy-rancher-and-register-the-existing-cluster.md:29] — deferred: the fix edits another story's epics-derived acceptance criteria.
+- [x] [Review][Defer] G136 4.28 AC4 still requires "narrowly scoped deputy recovery access", and AC8 keeps a deputy prohibition. Both conflict with the 2026-10-03 "no deputy until one is named" decision [_bmad-output/implementation-artifacts/4-28-deploy-rancher-and-register-the-existing-cluster.md:29] — deferred: pre-existing; the fix edits another story's acceptance criteria.
+
+**Rejected**
+
+- B98/E97/E98 A readback recipient other than ssh-ed25519 still uses up an attempt ID, and `Capture.command` reports custody errors as `invalid-or-inaccessible`. Low: the census still fails closed, and both CLIs' help now names ssh-ed25519. The fix would add a new validation guard or coverage state.
+- B99/E101 The dangling ServiceAccount cluster-admin grant stays in place through 4.27 with no interim control. Low: the Administrator's G108 option-a decision accepted this interim and named the risk, and the 2026-11-03 review date is the control. The fresh census before 4.27 would expose a new ServiceAccount. Removing the subject now would be a production mutation, which 4.26 forbids.
+- B101 Removing the binding does not retire the `jpiquot` credential, and the username is not reserved. Low: the never-reused-CN rule already excludes `jpiquot` for the new certificate, credential validity stays private, and a username reservation would be new policy rather than a direct correction.
+- B103 The exact-byte prerequisite cannot be met. False: an executor that does not depend on its target can be rehearsed against the fixture and then run against production. The text requires that and does not forbid it.
+- B104 The `jpiquot-cluster-admin` classification was not updated. False: the classification governs the 4.27 disposition, which preserves the binding. The 4.28 removal is recorded in the archive table and the 4.28 handoff, and the assessment is immutable.
+- B106 subclaims: adding 4.1 to 4.27 `depends_on` is false, because 4.1's upgrade follows 4.27, so the dependency would be circular. The claim that the ACs lack exact bytes is false, because AC1/AC4 bind approval to the exact rehearsed procedure. The "1.35 path" wording in AC5 is false, because 1.35 remains the next hop. The heading part is routed to G132.
+- B105 subclaim: the Keycloak-unavailable test is undefined when the local admin is disabled. False: in that case the approved recovery path is native break-glass, which RANCHER names.
+- B107 subclaim: a singular "successor" leaves per-hop approval unclear. Low: 4.1 owns proposal derivation, and "every existing gate before each hop" already implies per-hop approval.
+- B108/A19 Triage row B96 says "in-review" while the spec frontmatter says `done`. Rejected because the fix edits the spec under review.
+- B109 The spec is `done` while chunk 2 of the tests was never reviewed. False: the later review of the G108–G122 corrections covered the full preserved-baseline diff, test files included, and this review covers G124/G125.
+- B110 The normal path of G125 is untested, and `docker inspect` does not filter by object type. Low: the verification-gap layer confirmed that real Docker 29.8.1 exits 0 when removing a missing container. A non-container object with the same name makes cleanup fail closed, a loud failure on a state never observed.
+- B111 The completion summary is duplicated and there is a double blank line. Low: duplication in records is not a defect, consolidating them is more than a direct correction, and the blank line is in the spec under review.
+- B112 The custody test does not assert that `root` is absent. False: the only directory creation in `Attempt.__init__` is one `mkdir(parents=True)`, so the absence of `root/qualification` already proves it never ran.
+- V40/E95 A concurrent container with the reader's name could be force-removed. Low: this is the same race class as carried E50/E78/E89/E94, the name is derived from the attempt, and a cidfile would add state for a race never observed.
+- E96 A `docker run` timeout between create and start could leave a helper behind. Low: never observed, the command timeout leaves ample time for create to finish, and settle/retry loops would add guards.
+- A11 G111 reinterprets the frozen Recovery decision without a change-log entry. Rejected because the fix edits the spec under review. The reinterpretation corrects a route that does not cover etcd and keeps the fresh pre-4.27 production restore.
+- A12 subclaim: "qualified planning candidate" covers the current 1.34.9. False: the phrase qualifies the path, which begins at the current version. The stale-path part is routed to G133.
+- A14 New public text describes an open escalation path. False: the frozen 2026-10-03 decision keeps census RBAC facts public, "including the `jpiquot` binding finding".
+- A16 subclaim: ledger rows 5 and 6 do not carry the new 4.28 obligations. Low: both rows already assign MFA, the new credential and the authority tests to 4.28, and the 4.28 story carries the obligations. The acceptance-criteria part is G135.
 
 ## Implementation Notes
 
