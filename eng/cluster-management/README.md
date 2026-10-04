@@ -21,7 +21,7 @@ The [dated target review](../../_bmad-output/implementation-artifacts/evidence/e
 
 The [current full retirement](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t154617z-rehearsal/kubesphere-retirement-result.json) passes 471 exact removals in 19 phases, preserves native state and 46 CRDs, and needs no licensed application writes. Its [fresh-node synthetic restore](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t154617z-rehearsal/rollback-restore-result.json) recovers all 820 baseline identities and five running/Ready deployments; source, target and final cleanup pass. The [current seven-namespace equivalent](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t164501z-seven-namespace-probe/seven-namespace-result.json) passes seven actual UID/resourceVersion-bound PUTs and zero Namespace DELETEs with full native namespace/storage/canary preservation and exact cleanup.
 
-The current retirement guard checks full private desired content—including spec, data, RBAC rules and arbitrary metadata—before every DELETE/namespace PUT and conflict retry. Strictly bound checkpoints permit the matching retired User's global-role annotation clear and the exact leader Lease's stable final renewal after confirmed controller absence, and exact extension Category count-to-zero after its reviewed membership and controllers retire; all other desired fields remain checked. Preserved failed attempts demonstrate the stops and bounded corrections. Full native phase/propagation/health/recovery and seven-namespace outcomes are recorded in [RETIRE-KUBESPHERE](RETIRE-KUBESPHERE.md).
+The current retirement guard checks full private desired content—including spec, data, RBAC rules and arbitrary metadata—before every DELETE/namespace PUT and conflict retry. Four strictly bound checkpoints permit the retired User's matching global-role annotation clear, its exact `iam.kubesphere.io/granted-clusters` host grant clear after every matching IAM ClusterRoleBinding retires, the exact leader Lease's stable final renewal after confirmed controller absence, and extension Category count-to-zero after its reviewed membership and controllers retire; all other desired fields remain checked. Lease and Category read pairs are separated by 2 seconds. Preserved failed attempts demonstrate the stops and bounded corrections. Full native phase/propagation/health/recovery and seven-namespace outcomes are recorded in [RETIRE-KUBESPHERE](RETIRE-KUBESPHERE.md).
 
 The approved authority design has one Administrator, no deputy, native break-glass without MFA and Keycloak-MFA Rancher admin; no automatic workspace/account/staging mappings. Required signed grant/revocation events and independent off-site complete lineage are defined. Actual repository/current-head/signature, MFA and quarantined Rancher authority tests are 4.28. Fresh production recovery is the pre-4.27 prerequisite, distinct from synthetic fixture recovery.
 
@@ -33,7 +33,28 @@ Private immutable attempts live outside Git in owner-only custody; raw API/Helm/
 
 The collector requires explicit native `--context`, `--kubeconfig`, compatible `--kubectl`, separate management `--helm`, `--age`, Administrator `--recipient`, distinct `--readback-recipient` and owner-only `--readback-identity` outside Git/evidence custody. [QUALIFICATION](QUALIFICATION.md#repeatable-collection-and-validation) gives the repeatable command. Secrets, arbitrary specs/annotations, credential metadata and full error output remain encrypted; inaccessible discovery or unknown ownership stays closed.
 
-The fixture requires Python 3/PyYAML, Docker, kind, age, retained Helm and a pinned existing node image. It accepts sanitized source inventory; production credentials/data never enter it. A fresh internal Docker network/node and fresh native credentials enforce source API/etcd/SSH/HTTPS and external-egress refusal. The actual-chart mode runs core 1.2.4/application 4.2.1 and console 1.2.0 with synthetic configuration, tests workspace propagation, then performs dependency-first native retirement. Each phase has an exact expected set and protected-state comparison; no Helm uninstall or vendor hook runs. The source-matching synthetic catalog exercises actual v2 schemas and application cleanup finalizers. `--rollback --etcdctl <tool> --etcdutl <tool>` snapshots the fixture and restores into a fresh fenced node with exact cleanup. The separate manager-free probe supplies seven-namespace equivalence when the chart baseline has six native finalizers.
+The fixture requires Python 3/PyYAML, Docker, kind, age, retained Helm and a pinned existing node image. It accepts sanitized source inventory; production credentials/data never enter it. A fresh internal Docker network/node and fresh native credentials enforce source API/etcd/SSH/HTTPS and external-egress refusal. The actual-chart mode runs core 1.2.4/application 4.2.1 and console 1.2.0 with synthetic configuration, tests workspace propagation, then performs dependency-first native retirement. Each phase has an exact expected set and protected-state comparison; no Helm uninstall or vendor hook runs. The [catalog driver](rehearse_catalog.py) adds the source-matching 1 Repo / 27 Applications / 90 ApplicationVersions / 1 retained Category with actual v2 schemas and application cleanup finalizers; plain `rehearse.py` does not create that catalog. The [namespace driver](rehearse_namespaces.py) supplies the separate manager-free seven-namespace equivalence when the chart baseline has six native finalizers. Both were recovered and digest-checked against their encrypted executed originals; their synthetic code contains no production private data. Local setup is now supplied through the explicit CLI, and new attempts retain the driver digest and encrypted driver bytes. Historical receipts bind the original driver bytes, not these portable revisions.
+
+Set the tool, recipient and identity variables below from private operator configuration. Supply new attempt IDs for each invocation. The source inventory is public sanitized evidence; the drivers read no production credentials or configuration.
+
+```bash
+fixture_args=(
+  --operator Administrator
+  --source-inventory _bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t085143z-census/inventory.json
+  --node-image sha256:8a9be59e7b1d2c14ea21bd064dd8b4d803c97ab3e318f81aff39c874c05fb816
+  --kubectl "$KUBECTL" --age "$AGE"
+  --recipient "$ADMINISTRATOR_RECIPIENT" --readback-recipient "$READBACK_RECIPIENT"
+  --readback-identity "$READBACK_IDENTITY"
+)
+python3 eng/cluster-management/rehearse_catalog.py "${fixture_args[@]}" \
+  --attempt-id "$CATALOG_ATTEMPT_ID" \
+  --ks-chart "$KS_CHART" --ks-chart-sha256 a5c87fe18477bacf9032eb9cf2968b73d73465aa3652b99eede865fe3ba7fbdd \
+  --helm "$HELM" --rollback --etcdctl "$ETCDCTL" --etcdutl "$ETCDUTL"
+python3 eng/cluster-management/rehearse_namespaces.py "${fixture_args[@]}" \
+  --attempt-id "$NAMESPACE_ATTEMPT_ID"
+```
+
+The catalog command requires `--ks-chart` and `--rollback`; the namespace command requires a manager-free fixture and refuses those options. `--help` allocates no fixture. The portable drivers have smoke verification only; the linked historical live fixture outcomes retain their recorded source identities.
 
 ```bash
 python3 -m unittest discover -s eng/cluster-management -p 'test_*.py'

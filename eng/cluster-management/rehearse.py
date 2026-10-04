@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import time
 import urllib.parse
 
@@ -460,8 +461,8 @@ def lease_renewal_transition(reviewed, first, second, retirement_uids, phase, ma
     if identity != ('coordination.k8s.io/v1', 'Lease', 'kubesphere-system', 'ks-controller-manager-leader-election') or metadata.get('uid') not in retirement_uids:
         raise ValueError('lease-renewal-not-exact-retirement-identity')
     for current in (first, second):
-        fields = current.get('metadata', {})
-        if (current.get('apiVersion'), current.get('kind'), fields.get('namespace'), fields.get('name'), fields.get('uid')) != (*identity, metadata['uid']):
+        fields = (current or {}).get('metadata', {})
+        if ((current or {}).get('apiVersion'), (current or {}).get('kind'), fields.get('namespace'), fields.get('name'), fields.get('uid')) != (*identity, metadata['uid']):
             raise ValueError('lease-renewal-identity-drift')
     if content_review_digest(first) != content_review_digest(second):
         raise ValueError('lease-renewal-not-stable')
@@ -1053,6 +1054,10 @@ class Fixture:
             if ('deletionGracePeriodSeconds' not in reviewed_meta
                     and type(meta.get('deletionGracePeriodSeconds')) is int and meta['deletionGracePeriodSeconds'] == 0):
                 compared['metadata'].pop('deletionGracePeriodSeconds')
+            # Foreground DELETE adds this server finalizer. Ignore only its new presence
+            # for comparison; the PUT below retains it and every other finalizer.
+            if 'foregroundDeletion' not in reviewed_meta.get('finalizers', []):
+                compared['metadata']['finalizers'] = [v for v in meta['finalizers'] if v != 'foregroundDeletion']
             if content_review_digest(compared) != content_review_digest(reviewed):
                 raise ValueError('reviewed-full-content-drift')
             projected = project_resource(reviewed)
@@ -1281,6 +1286,7 @@ class Fixture:
                                         ('Pod', 'Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet') for v in before)
                 path = api_path(resources, by_uid[uid])
                 first = self.native_read(path)
+                time.sleep(2)
                 second = self.native_read(path)
                 renewed = lease_renewal_transition(reviewed, first, second, self.retirement_uids, name, manager_absent)
                 if renewed is not None:
@@ -1307,7 +1313,9 @@ class Fixture:
                 if (reviewed.get('apiVersion'), reviewed.get('kind')) != ('kubesphere.io/v1alpha1', 'Category'):
                     continue
                 path = api_path(resources, by_uid[uid])
-                first, second = self.native_read(path), self.native_read(path)
+                first = self.native_read(path)
+                time.sleep(2)
+                second = self.native_read(path)
                 refreshed = category_count_transition(reviewed, first, second, extensions, self.retirement_uids,
                     name, self.completed_retirement_phases, manager_absent, extensions_absent)
                 if refreshed is not None:
@@ -1895,7 +1903,7 @@ class Fixture:
             pass
 
 
-def rehearse(args):
+def rehearse(args, fixture_type=None, driver_path=None):
     args.script_digest = file_digest(Path(__file__))
     # Imported helpers (including project_resource) are part of the executed procedure.
     args.module_digests = {name: file_digest(Path(__file__).with_name(name)) for name in ('evidence.py', 'qualify.py')}
@@ -1909,12 +1917,16 @@ def rehearse(args):
     attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id, 'rehearsal',
                       readback_recipient=getattr(args, 'readback_recipient', None),
                       readback_identity=getattr(args, 'readback_identity', None))
+    driver_binding = {'driverSha256': file_digest(driver_path)} if driver_path else {}
     attempt.record('attempt.json', {'attemptId': args.attempt_id, 'recordedAt': now(), 'operator': safe(args.operator),
                     'scriptSha256': args.script_digest, 'moduleSha256': args.module_digests,
+                    **driver_binding,
                     'sourceInventorySha256': args.source_digest, 'scope': 'isolated synthetic native operations only',
                     'mutationAuthorized': False, 'signed': False, 'productionAccepted': False})
-    fixture, state = Fixture(args, attempt), 'failed-closed'
+    fixture, state = (fixture_type or Fixture)(args, attempt), 'failed-closed'
     try:
+        if driver_path:
+            attempt.encrypt('executed-driver', Path(driver_path).read_bytes(), args.age, args.recipient)
         identities = tool_identities(args)
         attempt.record('tools.json', identities)
         if any(v['exitCode'] != 0 for v in identities['runtimeVersionOutput'].values()):
@@ -1944,7 +1956,7 @@ def rehearse(args):
     return attempt.directory, state
 
 
-def main():
+def parse_args(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--project-root', type=Path, default=Path(__file__).resolve().parents[2])
     p.add_argument('--evidence-root', type=Path, default=Path.home() / 'hexalith-management-evidence')
@@ -1964,7 +1976,7 @@ def main():
     p.add_argument('--rollback', action='store_true', help='Snapshot before retirement and restore onto a fresh isolated fixture node')
     p.add_argument('--etcdctl', type=Path, help='Retained matching etcdctl for the fixture rollback')
     p.add_argument('--etcdutl', type=Path, help='Retained matching etcdutl for the fixture rollback')
-    args = p.parse_args()
+    args = p.parse_args(argv)
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', args.node_image):
         p.exit(2, 'Rehearsal refused: exact local Docker image ID required.\n')
     if args.ks_chart and (not args.helm or not args.ks_chart_sha256
@@ -1973,10 +1985,16 @@ def main():
     if args.rollback and (not args.ks_chart or not args.etcdctl or not args.etcdutl
                           or not args.etcdctl.is_file() or not args.etcdutl.is_file()):
         p.exit(2, 'Rehearsal refused: rollback requires the actual core fixture and retained etcd tools.\n')
+    return args
+
+
+def main():
+    args = parse_args()
     try:
         directory, state = rehearse(args)
     except Exception:
-        p.exit(2, 'Rehearsal refused: invalid source identity, tools or private custody.\n')
+        sys.stderr.write('Rehearsal refused: invalid source identity, tools or private custody.\n')
+        raise SystemExit(2) from None
     print(f'Private fixture evidence: {directory}\nRehearsal: {state}; production retirement remains unaccepted')
     if state.startswith('failed'):
         raise SystemExit(2)
