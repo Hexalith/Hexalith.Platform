@@ -4,7 +4,7 @@ type: 'chore'
 epic: 4
 story: 26
 created: '2026-10-01'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: '98436a4cb884f8d11b4b5f3e6ae70e95ce687463'
@@ -101,6 +101,47 @@ The Administrator answered the request for new approved capability-disposition, 
 - Given qualification results, when assessed, then all eight criteria have traceable evidence or remain incomplete; proposals/checksums alone cannot pass.
 - Given the proposed retirement scope, when reviewed, then exact ownership, native uninstall, propagation, workload preservation and recovery are demonstrated without licensed KubeSphere writes or production mutation.
 - Given qualified plans, when handed to 4.28, then hosting/import support, tools/licenses, capacity, private/MFA access and independent recovery/authority are evidenced.
+
+### Review Findings
+
+Code review of fix commit `0e602ad..dc9a6ab` (story-4.26 code and documents; evidence JSON excluded), 2026-10-04. Four layers ran: blind, edge-case, verification-gap and acceptance. 50 raw findings: 1 decision-needed, which the Administrator resolved as patch G90, 12 patch, 1 defer and 25 rejected. IDs continue from G89.
+
+- [ ] [Review][Patch] G90 Commit the uncommitted rehearsal driver (Administrator decision, 2026-10-04) — the 19-phase run binds `scriptSha256` `35d4724c…` and the seven-namespace probe binds `probeDriverSha256` `3b608412…`. Neither is tracked, and `rehearse.py` cannot build the 1 Repo / 27 Application / 90 ApplicationVersion catalog that `README.md:36` describes. Decrypt the drivers with the readback key, confirm they hold no private data, and commit them beside `rehearse.py` with a smoke test and accurate README run instructions. If either holds private data, instead document that it is driver-built and held in private custody [eng/cluster-management/README.md:36]
+- [ ] [Review][Patch] G91 Named-finalizer guard refuses the `foregroundDeletion` finalizer added by its own Foreground DELETE [eng/cluster-management/rehearse.py:1056]
+- [ ] [Review][Patch] G92 Namespace-finalizer full-content guard has no refusal test or `privateFullContentVerified` assertion [eng/cluster-management/rehearse.py:1081]
+- [ ] [Review][Patch] G93 The `global-role-bindings` annotation checkpoint wiring in `retire_phase` is never executed by a test [eng/cluster-management/rehearse.py:1354]
+- [ ] [Review][Patch] G94 Nothing tests that `retire_kubesphere` seeds or exports the private reviewed baseline, `retirement_uids` or completed phases [eng/cluster-management/rehearse.py:1429]
+- [ ] [Review][Patch] G95 README and runbook step 4 list three permitted controller transitions; the code declares four and omits `granted-clusters` [eng/cluster-management/RETIRE-KUBESPHERE.md:117]
+- [ ] [Review][Patch] G96 Required kubelet disk-eviction decision dropped from the public plan and from ledger row 4; restore a neutral required-decision line and keep the specifics private [eng/cluster-management/RANCHER.md:85]
+- [ ] [Review][Patch] G97 Lease and Category "two stable native reads" are taken back to back; add the users checkpoint's 2 s separation and a test [eng/cluster-management/rehearse.py:1283]
+- [ ] [Review][Patch] G98 `lease_renewal_transition` raises `AttributeError` on an absent Lease; use `(current or {})` like its siblings and add a test [eng/cluster-management/rehearse.py:463]
+- [ ] [Review][Patch] G99 Story section dated 2026-10-04 ("remain `in-progress`", 117 tests) sits under "Historical implementation through 2026-10-03" [_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md:148]
+- [ ] [Review][Patch] G100 RETIRE-KUBESPHERE credits the census with the 482-object proposal and drops `productionApproved: false` / `sourceAtomic: false`; link `20261004t154618z-capability-assessment/production-plan.json` [eng/cluster-management/RETIRE-KUBESPHERE.md:19]
+- [ ] [Review][Patch] G101 Ledger row 1 drops the pending original-ciphertext/custody decision that QUALIFICATION.md:193 still records [_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md:42]
+- [ ] [Review][Patch] G102 Ledger row 2 omits that dynamic consumer usage rests on the owner's decision and was not mechanically enumerated (`allDynamicConsumerUsageMechanicallyProven: false`) [_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md:43]
+- [x] [Review][Defer] G103 Artifact signature and image SBOM/scanning verification is deferred to "later deployment hardening" with no owner [eng/cluster-management/RANCHER.md:35] — deferred: the fix assigns it to another story (likely 4.28, which has no signature/SBOM/scan item); recorded in deferred-work.md.
+
+**Rejected**
+
+- Forced checkpoint transitions (a Category without a count annotation, a Lease without `renewTime`, a grant that is never cleared): low. These stops are fail-closed on states never demonstrated, which matches the stop-for-review design, and fixing them would add branches. The sub-claims (the discarded first `refreshed` value and the 30 s deadline) are cosmetic, and the deadline can still trigger when reads are slow.
+- Global-role annotation captured with a single read after settle: low. `settled_inventory` waits at least 10 s with stable UIDs first, and a later clear still stops fail-closed at the users DELETE. The fix would need a polling loop.
+- `roleRef` without a name matching a User that has no annotation: low. The state is unreachable under the CRD's required `roleRef`, the result is still an error, and the fix adds a guard.
+- Users-phase binding selection by name or subject: low. A non-cluster-admin IAM ClusterRoleBinding for a scoped User has not been observed, and the outcome is fail-closed.
+- Category checkpoint requires the `catalog-extension` phase: low. Both the fixture and the production plan include that phase, and the outcome is fail-closed otherwise.
+- `replicas`/`images` false stops from HPAs or ephemeral containers: low. `rehearse.py` is fixture-only, and its synthetic survivors have neither.
+- Strict resourceVersion when there is no content baseline: low. The strictness is intended and documented, the affected objects are fresh synthetic ones, and the outcome is fail-closed.
+- Quota Secret `foregroundDeletion` delaying absence: low. The first sample is taken 2 s after the DELETE, a GC-latency stop is fail-closed, and none has been observed.
+- Vacuous canary equality: false. `populate` writes the fixed constant (`rehearse.py:1709`), and nothing rewrites it before capture.
+- Canary readback proves only the write: false. The synthetic volume is that hostPath file, so the target readback is the restored content that G86/V34 required. The zero-replica consumer was accepted earlier (B70).
+- Criterion 5 marked met on internal-only denial: false. Row 5 states the operator-workstation, no-external-vantage limit, and the 401/403 responses come from the API server's own authentication and authorization on the public route.
+- Criterion 4 marked met while the VM is unqualified: false. AC4 and AC8 let provisioning and procurement follow in 4.28, row 4 lists the remaining 4.28 checks, and the owner approved the plan.
+- Census "zero failed requests" while the attempt failed closed: false. All 283 requests were observed, and the 70 non-observed entries are the identity-less views that the same cell says the follow-up covers.
+- Grant checkpoint and probe cleanup never reviewed: false. This review covers `dc9a6ab`, including both, and the spec records their basis.
+- Approval and assessment digests differ from the committed docs: low. The sole-owner approval is directional ("I approve, make the needed evidence"), the final records necessarily come before the notes that cite them, and re-binding would be another ceremony round.
+- 482 production versus 471 fixture removals never reconciled: low. Only the counts differ, in five phases (for example `release-records` 4 vs 1 and `controllers-and-services` 32 vs 25). Story 4.27 re-reviews production anyway, and a kind-level mapping would be new analysis.
+- Spec triage-log heading, the stale "verification follows" note and stale `review_loop_iteration`: rejected because the fix edits the spec under review.
+- G87–G89 `source_spec`: false. `source_spec` records the originating review, as every other ledger entry does, and the summaries name the EventStore host and the identity provider.
+- `chore:` commit type for a behaviour change: low. It is cosmetic, and fixing it would rewrite a recorded commit.
 
 ## Implementation Notes
 
