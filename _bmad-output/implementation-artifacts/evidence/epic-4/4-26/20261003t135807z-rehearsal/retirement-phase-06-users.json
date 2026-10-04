@@ -1,0 +1,34 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/User/-/admin",
+      "v1/Secret/kubesphere-system/kubeconfig-admin"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 6,
+  "phase": "users",
+  "phaseAllowlistSha256": "fa7214e81902202c88bcf2fc8b2aff1a647410f8d3b9a3e27ff351d3eaaed47e",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/User/-/admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "3031",
+      "resourceVersionChangedSinceReview": true,
+      "reviewedProjectionSha256": "03fc845ab5c68d7ed5092c0f7115d840665882f61c7f4c9b9449f1902d594d6d",
+      "reviewedResourceVersion": "1211",
+      "uid": "aad30998-9610-441c-afbc-06b3d7b97214"
+    }
+  ],
+  "settled": true
+}

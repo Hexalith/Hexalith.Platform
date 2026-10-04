@@ -1,0 +1,39 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/WorkspaceRoleBinding/-/system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/RoleBinding/default/kubesphere:iam:system-workspace:system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/RoleBinding/kube-node-lease/kubesphere:iam:system-workspace:system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/RoleBinding/kube-public/kubesphere:iam:system-workspace:system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/RoleBinding/kube-system/kubesphere:iam:system-workspace:system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/RoleBinding/kubesphere-controls-system/kubesphere:iam:system-workspace:system-workspace-admin",
+      "rbac.authorization.k8s.io/v1/RoleBinding/kubesphere-system/kubesphere:iam:system-workspace:system-workspace-admin"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 3,
+  "phase": "workspace-role-bindings",
+  "phaseAllowlistSha256": "cdd0e028540ba33742cd0fa6182012fac84221bcdf11e5ab6052bd5780522cce",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/WorkspaceRoleBinding/-/system-workspace-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1285",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "7d82060b7c15bb025183c0750d3686ec124261cbac2ce9f76aae8febcda9d636",
+      "reviewedResourceVersion": "1285",
+      "uid": "22e526e6-6f0a-4e40-aa09-b5a286991413"
+    }
+  ],
+  "settled": true
+}

@@ -1,0 +1,34 @@
+{
+  "controllersRunning": true,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "iam.kubesphere.io/v1beta1/ClusterRoleBinding/-/admin-cluster-admin",
+      "rbac.authorization.k8s.io/v1/ClusterRoleBinding/-/kubesphere:iam:admin-cluster-admin"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 5,
+  "phase": "kubesphere-cluster-role-bindings",
+  "phaseAllowlistSha256": "0ff7e4ea4325543d3de26846bbffaf3aa6b0b32048e87f13d607ed4885feb2f2",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "iam.kubesphere.io/v1beta1/ClusterRoleBinding/-/admin-cluster-admin",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1142",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "90a5bc77549e38079d7e9f9c4cb57503ff24a464fdd573dd09c6bdc13e1da2c8",
+      "reviewedResourceVersion": "1142",
+      "uid": "6c75b311-c8bb-416a-91ad-c044118afd2c"
+    }
+  ],
+  "settled": true
+}

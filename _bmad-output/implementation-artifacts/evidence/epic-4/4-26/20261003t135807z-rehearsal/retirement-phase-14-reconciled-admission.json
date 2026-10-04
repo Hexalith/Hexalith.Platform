@@ -1,0 +1,33 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.license.kubesphere.io"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 14,
+  "phase": "reconciled-admission",
+  "phaseAllowlistSha256": "1e039e7375251b78038cfa4c9bd8217ca5e558ff4b87caf77cee27547d2ead28",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "admissionregistration.k8s.io/v1/ValidatingWebhookConfiguration/-/validator.license.kubesphere.io",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1238",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "18dc1eb33209e8192dcc4cfbb41266f16a14e7f0a3a4393f2cc52a710b0dc7c0",
+      "reviewedResourceVersion": "1238",
+      "uid": "33a6ca0e-6dc2-4ba3-95e6-e1d1a77bb657"
+    }
+  ],
+  "settled": true
+}

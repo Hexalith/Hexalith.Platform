@@ -1,0 +1,28 @@
+{
+  "attemptId": "20261003t134235z-recovery-archive-confirmation",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 49502,
+      "ciphertextSha256": "e0cd13830becea3ccdda73289fe945bc4ce987d3ce749d7842e6aeec12a1d36a",
+      "file": "archive-confirmation-private.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

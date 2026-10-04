@@ -1,5 +1,6 @@
 """Restricted immutable attempts and explicit projections; no side effects on import."""
 from datetime import datetime, timezone
+import base64
 import hashlib
 import json
 import os
@@ -53,9 +54,20 @@ def recipient_stanzas(ciphertext):
     return stanzas
 
 
+def ssh_recipient_tag(recipient):
+    parts = recipient.split()
+    if len(parts) < 2 or parts[0] != 'ssh-ed25519':
+        raise ValueError('readback-requires-ssh-ed25519-recipients')
+    try:
+        return base64.b64encode(hashlib.sha256(base64.b64decode(parts[1], validate=True)).digest()[:4]).decode().rstrip('=')
+    except ValueError:
+        raise ValueError('readback-requires-ssh-ed25519-recipients') from None
+
+
 class Attempt:
     """Never reuse an attempt, follow a symlink, or write into recovery custody."""
-    def __init__(self, project, root, attempt_id, category='qualification'):
+    def __init__(self, project, root, attempt_id, category='qualification', *,
+                 readback_recipient=None, readback_identity=None):
         self.project = Path(project).resolve()
         root = Path(root).absolute()
         if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,79}', attempt_id):
@@ -88,6 +100,16 @@ class Attempt:
         self.attempt_id = attempt_id
         self.records = {}
         self.exports = []
+        if bool(readback_recipient) != bool(readback_identity):
+            raise ValueError('readback-recipient-and-identity-required-together')
+        self.readback_recipient = readback_recipient
+        self.readback_identity = Path(readback_identity) if readback_identity else None
+        if self.readback_identity:
+            identity = self.readback_identity.absolute()
+            if (identity.is_symlink() or not identity.is_file()
+                    or identity.stat().st_uid != os.getuid() or stat.S_IMODE(identity.stat().st_mode) & 0o077
+                    or self.project in identity.resolve().parents or root.resolve() in identity.resolve().parents):
+                raise ValueError('readback-identity-custody-invalid')
 
     def record(self, name, record):
         if not re.fullmatch(r'[a-z0-9-]+\.json', name):
@@ -100,18 +122,36 @@ class Attempt:
     def encrypt(self, name, plaintext, age, recipient):
         if not re.fullmatch(r'[a-z0-9-]+', name):
             raise ValueError('invalid-export-name')
+        if not self.readback_recipient or not self.readback_identity:
+            raise ValueError('export-readback-configuration-required')
         # Encryption runs before any export bytes reach the filesystem.
-        result = subprocess.run([str(age), '--encrypt', '--recipient', recipient],
+        argv = [str(age), '--encrypt', '--recipient', recipient]
+        if self.readback_recipient:
+            if self.readback_recipient == recipient:
+                raise ValueError('readback-recipient-must-be-distinct')
+            argv += ['--recipient', self.readback_recipient]
+        result = subprocess.run(argv,
                                 input=plaintext, capture_output=True, timeout=120)
         if result.returncode or not result.stdout.startswith(b'age-encryption.org/v1\n'):
             raise ValueError('export-encryption-failed')
         # Recorded so Git readers can check which recipient each export names.
         stanzas = recipient_stanzas(result.stdout)
+        readback_verified = False
+        if self.readback_identity:
+            tags = {s['tag'] for s in stanzas if s['type'] == 'ssh-ed25519'}
+            expected_tags = {ssh_recipient_tag(recipient), ssh_recipient_tag(self.readback_recipient)}
+            if len(expected_tags) != 2 or not expected_tags <= tags:
+                raise ValueError('export-second-recipient-missing')
+            readback = subprocess.run([str(age), '--decrypt', '--identity', str(self.readback_identity)],
+                                      input=result.stdout, capture_output=True, timeout=120)
+            if readback.returncode or digest(readback.stdout) != digest(plaintext):
+                raise ValueError('export-readback-failed')
+            readback_verified = True
         filename = name + '.age'
         write_new(self.directory / filename, result.stdout)
         entry = {'file': filename, 'plaintextSha256': digest(plaintext),
                  'ciphertextSha256': digest(result.stdout), 'ciphertextBytes': len(result.stdout),
-                 'recipientStanzas': stanzas}
+                 'recipientStanzas': stanzas, 'readbackVerified': readback_verified}
         self.exports.append(entry)
         return entry
 
@@ -121,9 +161,11 @@ class Attempt:
                   'exports': self.exports, 'published': False}))
         self.record('encrypted-exports.json', {'schemaVersion': 1, 'attemptId': self.attempt_id,
                     'encryption': 'age', 'exports': [{k: e[k] for k in ('file', 'ciphertextSha256', 'ciphertextBytes',
-                                                                        'recipientStanzas')}
+                                                                        'recipientStanzas', 'readbackVerified')}
                                                      for e in self.exports],
                     'plaintextDigests': 'private-export-digests.json (private custody only)',
+                    'readbackVerified': bool(self.exports) and all(e['readbackVerified'] for e in self.exports),
+                    'readbackScope': 'agent-held second recipient; does not prove off-node custody',
                     'independentReadbackVerified': False, 'offNodeCustodyAccepted': False})
         sums = ''.join(f'{file_digest(p)}  {p.name}\n' for p in sorted(self.directory.iterdir()) if p.is_file())
         write_new(self.directory / 'SHA256SUMS', sums.encode())

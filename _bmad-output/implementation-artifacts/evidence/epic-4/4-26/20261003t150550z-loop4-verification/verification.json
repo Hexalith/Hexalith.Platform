@@ -1,0 +1,177 @@
+{
+  "allOriginalOperationalCriteriaAccepted": false,
+  "currentProcedureSha256": {
+    "evidence.py": "41ce544a605c656076f50b78519365713a9ba343d48f38e63b213eeb323f8ea3",
+    "qualify.py": "5e1e2646e5de08a4b328089fa60b07a7f2bd0d2dc2e2ca5f5925d642ff2c3c7f",
+    "rehearse.py": "72c9760266a6cfc86d9c705d7514be43dbec51a0c7becd2e74abeca65e88d633"
+  },
+  "evidenceChecks": [
+    {
+      "attemptId": "20261003t134150z-rehearsal",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 85,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    },
+    {
+      "attemptId": "20261003t134235z-recovery-archive-confirmation",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 1,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    },
+    {
+      "attemptId": "20261003t135807z-failed-procedure-binding",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 1,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    },
+    {
+      "attemptId": "20261003t135922z-decided-retirement-plan",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 1,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    },
+    {
+      "attemptId": "20261003t142400z-executed-procedure-binding",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 3,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    },
+    {
+      "attemptId": "20261003t135807z-rehearsal",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 772,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    },
+    {
+      "attemptId": "20261003t145655z-seven-namespace-probe",
+      "bothRecipientTagsVerified": true,
+      "exportCount": 87,
+      "privateAndPublicChecksumsVerified": true,
+      "privateModesVerified": true,
+      "retainedCiphertextDecryptionDigestVerified": true
+    }
+  ],
+  "executedFullRehearsalProcedureSha256": {
+    "evidence.py": "94b4e2d084019c072745a0b37deed192882686a7d734e3266e8fd2276c10e9c7",
+    "qualify.py": "5e1e2646e5de08a4b328089fa60b07a7f2bd0d2dc2e2ca5f5925d642ff2c3c7f",
+    "rehearse.py": "72c9760266a6cfc86d9c705d7514be43dbec51a0c7becd2e74abeca65e88d633"
+  },
+  "executedProcedureSourceBinding": "20261003t142400z-executed-procedure-binding/procedure-binding.json",
+  "failedTenantSyncAttemptRetained": "20261003t134150z-rehearsal",
+  "finalHelperDelta": "evidence.py now refuses direct-library exports without configured automatic readback; actual full rehearsal supplied and verified both recipients",
+  "fullVendorRehearsal": "20261003t135807z-rehearsal",
+  "historicalRecoveryArchiveConfirmation": "20261003t134235z-recovery-archive-confirmation",
+  "independentReadbackVerified": false,
+  "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+  "mutationChecks": [
+    {
+      "guard": "G76-Helm-annotations",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G77-custom-list",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G78-probe",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G78-health",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G79-outcome",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G80-exit",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G81-owners",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G81-dependents",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G81-empty",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G82-crd",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G82-namespace",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G83-owner",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G83-finalizer",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G83-namespace",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G83-preferred",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G83-helm-entry",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    },
+    {
+      "guard": "G83-helm-get",
+      "mutatedModuleCompiles": true,
+      "mutationDetected": true
+    }
+  ],
+  "offNodeCustodyAccepted": false,
+  "productionPlan": "20261003t135922z-decided-retirement-plan",
+  "productionRecoveryAccepted": false,
+  "productionRetirementAccepted": false,
+  "recordedAt": "2026-10-03T15:05:50Z",
+  "scopedWhitespaceCheckPassed": true,
+  "sevenNamespaceProbe": "20261003t145655z-seven-namespace-probe",
+  "signed": false,
+  "state": "passed-implementation-verification",
+  "unitCommand": "python3 -m unittest discover -s eng/cluster-management -p test_*.py",
+  "unitTestsPassed": 117,
+  "unitTestsSkipped": 0
+}

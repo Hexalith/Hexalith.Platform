@@ -1,0 +1,28 @@
+{
+  "attemptId": "20261003t150903z-residual-custody",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 6291,
+      "ciphertextSha256": "95d5e7d5a3cd600cdee5d9787f14bba54f9eb4e4a055e75fdd816d128a69eff2",
+      "file": "residual-certificate-metadata.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

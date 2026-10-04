@@ -215,7 +215,7 @@ class DependencyRetirementTests(unittest.TestCase):
         self.assertEqual([p['phase'] for p in plan], ['installed-extension', 'global-role-bindings', 'workspace-role-bindings',
                          'workspace-roles', 'kubesphere-cluster-role-bindings', 'users', 'kubesphere-service-accounts',
                          'extension-repository', 'admission', 'controllers-and-services', 'reconciled-admission',
-                         'remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
+                         'remaining-release-objects', 'release-records', 'system-workspace-finalizers', 'namespace-finalizers'])
         self.assertEqual(set(phases['workspace-role-bindings']['expected']), {'wrb', 'wrb-projection'})
         self.assertEqual(phases['workspace-role-bindings']['roots'], ['wrb'])
         self.assertEqual(set(phases['kubesphere-cluster-role-bindings']['expected']), {'iam-crb', 'iam-crb-projection'})
@@ -249,7 +249,7 @@ class DependencyRetirementTests(unittest.TestCase):
                 (lambda b: b.append({**ks('apiregistration.k8s.io/v1', 'APIService', 'v1.iam.kubesphere.io', 'reconciled-api'),
                                      'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}), 'blocking-registration'),
                 # An operator-created console Ingress or HTTPRoute outside the release still routes to a retired Service.
-                (lambda b: b.append({**ks('networking.k8s.io/v1', 'Ingress', 'kubesphere-console', 'console-route', 'kubesphere-system'),
+                (lambda b: b.append({**ks('networking.k8s.io/v1', 'Ingress', 'another-console-route', 'console-route', 'kubesphere-system'),
                                      'backends': [{'kind': 'Service', 'name': 'ks-controller-manager', 'namespace': 'kubesphere-system'}]}),
                  'route-consumer-of-retired-service'),
                 (lambda b: b.append({**ks('gateway.networking.k8s.io/v1', 'HTTPRoute', 'console', 'console-http', 'kubesphere-system'),
@@ -459,7 +459,7 @@ class NativeRequestTests(unittest.TestCase):
         retire.assert_not_called()
         # The controller-removal phase starts while the manager still runs; it must not be refused for that.
         self.assertEqual([p['phase'] for p in plan.values() if p['managerAbsentRequired']],
-                         ['reconciled-admission', 'remaining-release-objects', 'release-records', 'system-workspace-finalizers'])
+                         ['reconciled-admission', 'remaining-release-objects', 'release-records', 'system-workspace-finalizers', 'namespace-finalizers'])
         removal = plan['controllers-and-services']
         after = [v for v in baseline if v['uid'] not in removal['expected']]
         observed = [{**v, 'resourceVersion': '2'} for v in baseline]  # status churn seen at phase start
@@ -687,7 +687,7 @@ class ReviewFollowUpTests(unittest.TestCase):
 
     def test_main_refusal_covers_unexpected_errors(self):
         argv = ['rehearse.py', '--operator', 'unit', '--source-inventory', 'source.json', '--node-image', 'sha256:' + 'a' * 64,
-                '--kubectl', 'kubectl', '--age', 'age', '--recipient', 'public-only']
+                '--kubectl', 'kubectl', '--age', 'age', '--recipient', 'public-only', '--readback-recipient', 'second-public', '--readback-identity', 'readback-key']
         for error in (StopIteration(), ImportError('yaml'), RuntimeError('unexpected')):
             with self.subTest(error=type(error).__name__), patch('sys.argv', argv), \
                  patch('rehearse.rehearse', side_effect=error), patch('sys.stderr'):
@@ -713,7 +713,7 @@ class ReviewFollowUpTests(unittest.TestCase):
                'customResource': {'group': 'tenant.kubesphere.io', 'plural': 'workspaces', 'scope': 'Cluster',
                                   'versions': [{'name': 'v1beta1', 'served': True, 'storage': True}]}}
         fixture, records = self.fixture(ks_chart_sha256='c' * 64, source_digest='s' * 64, script_digest='p' * 64)
-        with patch.object(fixture, 'probe_workspace_propagation'), patch.object(fixture, 'crd_inventory', return_value=[crd]), \
+        with patch.object(fixture, 'probe_workspace_propagation'), patch.object(fixture, 'populate_retirement_decisions'), patch.object(fixture, 'crd_inventory', return_value=[crd]), \
              patch.object(fixture, 'settled_inventory', side_effect=[(baseline, settles[0]), (final(baseline), settles[1])]), \
              patch.object(fixture, 'discover', return_value={}), patch.object(fixture, 'retire_phase') as phases, \
              patch.object(fixture, 'post_retirement_checks', return_value={}) as health:
@@ -725,7 +725,7 @@ class ReviewFollowUpTests(unittest.TestCase):
         return error, records, phases, health
 
     def test_retirement_settle_gates_and_final_exact_comparison_stop_before_result(self):
-        retired = lambda b: [v for v in b if v['uid'] not in retirement_scope(b)]
+        retired = lambda b: [{**v, 'finalizers': [f for f in v['finalizers'] if f != SYSTEM_WORKSPACE_FINALIZER]} if v['kind'] == 'Namespace' else v for v in b if v['uid'] not in retirement_scope(b)]
         error, records, phases, health = self.retire((True, True), retired)
         self.assertIsNone(error)
         self.assertEqual(records['kubesphere-retirement-result.json']['state'], 'passed-dependency-first-native-retirement')
@@ -747,14 +747,14 @@ class ReviewFollowUpTests(unittest.TestCase):
     def test_changed_retained_crd_stops_before_any_result_record(self):
         baseline = kubesphere_baseline()
         scope = retirement_scope(baseline)
-        final = [v for v in baseline if v['uid'] not in scope]
+        final = [{**v, 'finalizers': [f for f in v['finalizers'] if f != SYSTEM_WORKSPACE_FINALIZER]} if v['kind'] == 'Namespace' else v for v in baseline if v['uid'] not in scope]
         crd = {**ks('apiextensions.k8s.io/v1', 'CustomResourceDefinition', 'workspaces.tenant.kubesphere.io', 'crd-1'),
                'customResource': {'group': 'tenant.kubesphere.io', 'plural': 'workspaces', 'scope': 'Cluster',
                                   'versions': [{'name': 'v1beta1', 'served': True, 'storage': True}]}}
         changed = {**crd, 'customResource': {**crd['customResource'], 'versions': [{'name': 'v1beta1', 'served': False, 'storage': True}]}}
         fixture, records = self.fixture(ks_chart_sha256='c' * 64, source_digest='s' * 64, script_digest='p' * 64)
         fixture.custom_resources = ['stale-cache']
-        with patch.object(fixture, 'probe_workspace_propagation'), \
+        with patch.object(fixture, 'probe_workspace_propagation'), patch.object(fixture, 'populate_retirement_decisions'), \
              patch.object(fixture, 'crd_inventory', side_effect=[[crd], [changed]]), \
              patch.object(fixture, 'settled_inventory', side_effect=[(baseline, True), (final, True)]), \
              patch.object(fixture, 'discover', return_value={}), patch.object(fixture, 'retire_phase') as phases, \
@@ -894,7 +894,7 @@ class FixtureBoundaryTests(unittest.TestCase):
                 if first:
                     return SimpleNamespace(returncode=1, stdout=b'[]',
                                            stderr=f'Error response from daemon: network {tag} not found'.encode())
-                return ok([{'Internal': internal}])
+                return ok([{'Internal': internal, 'IPAM': {'Config': [{'Subnet': '172.30.0.0/16', 'Gateway': '172.30.0.1'}]}}])
             if argv[:3] == ['docker', 'image', 'inspect']:
                 if tag in (fixture.base_tag, fixture.derived_tag) and first:
                     return SimpleNamespace(returncode=1, stdout=b'[]', stderr=f'Error response from daemon: No such image: {tag}'.encode())
@@ -903,7 +903,7 @@ class FixtureBoundaryTests(unittest.TestCase):
                 return ok(b"docker_host_ip=$(ip -4 route show default | cut -d' ' -f3)")
             if argv[:2] == ['docker', 'inspect']:
                 return ok([{'Mounts': [{'Type': 'volume', 'Name': 'owned-kind-volume'}],
-                            'NetworkSettings': {'Networks': {name: {} for name in networks}}}])
+                            'Id': 'fresh-docker-id', 'NetworkSettings': {'Networks': {name: {'IPAddress': '172.30.0.2'} for name in networks}}}])
             if argv[:3] == ['kind', 'create', 'cluster']:
                 return ok(b'created')
             if argv[:2] == ['docker', 'exec'] and 'bash' in argv:
@@ -984,7 +984,7 @@ class FixtureBoundaryTests(unittest.TestCase):
             return SimpleNamespace(returncode=0, stdout=b'', stderr=b'')
         def kube(name, *argv, obj=None, allowed=(0,)):
             failed = name == 'kubesphere-runtime-ready' and argv[2].split('/')[-1] in unready
-            return SimpleNamespace(returncode=1 if failed else 0, stdout=b'{}', stderr=b'')
+            return SimpleNamespace(returncode=1 if failed else 0, stdout=b'{"gitVersion":"v4.2.1"}' if name == 'kubesphere-native-version-ready' else b'{}', stderr=b'')
         source = Mock();source.stderr.read.return_value = b'';source.wait.return_value = 0;source.poll.return_value = 0
         with patch.object(fixture, 'run', side_effect=run) as runs, patch.object(fixture, 'kube', side_effect=kube), \
              patch.object(fixture, 'diagnostics') as diagnostics, patch.object(fixture, 'record_runtime') as runtime, \

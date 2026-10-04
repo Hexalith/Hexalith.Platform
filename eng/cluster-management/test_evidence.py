@@ -1,23 +1,31 @@
 """Private attempt destinations cannot be redirected into forbidden custody."""
+import base64
 import json
 from pathlib import Path
+import shlex
 import stat
 import tempfile
 import unittest
 from unittest.mock import patch
 
-from evidence import Attempt, digest, file_digest
+from evidence import Attempt, digest, file_digest, ssh_recipient_tag
 
 
-def fake_age(directory, body):
+def fake_age(directory, body, plaintext='PRIVATE'):
     path = directory / 'fake-age'
-    path.write_text('#!/bin/sh\ncat >/dev/null\n' + body)
+    path.write_text('#!/bin/sh\ncat >/dev/null\n'
+                    'if [ "$1" = "--decrypt" ]; then printf %s ' + shlex.quote(plaintext) + '; exit 0; fi\n' + body)
     path.chmod(0o700)
     return path
 
 
-VALID = 'printf "age-encryption.org/v1\\n-> X25519 ephemeral-share\\nwrapped-key\\n--- mac\\nciphertext"\n'
-SSH = 'printf "age-encryption.org/v1\\n-> ssh-ed25519 8XlNQg ssh-ephemeral-share\\nwrapped-key\\n--- mac\\nciphertext"\n'
+ADMINISTRATOR = 'ssh-ed25519 ' + base64.b64encode(b'administrator-public-test-blob').decode()
+READBACK = 'ssh-ed25519 ' + base64.b64encode(b'readback-public-test-blob').decode()
+SSH_STANZAS = [{'type': 'ssh-ed25519', 'tag': ssh_recipient_tag(value)} for value in (ADMINISTRATOR, READBACK)]
+SSH_HEADER = 'age-encryption.org/v1\n' + ''.join(
+    '-> ssh-ed25519 ' + value['tag'] + ' ssh-ephemeral-share\nwrapped-key\n' for value in SSH_STANZAS)
+SSH = 'printf %s ' + shlex.quote(SSH_HEADER + '--- mac\nciphertext') + '\n'
+VALID = 'printf %s ' + shlex.quote(SSH_HEADER + '-> X25519 ephemeral-share\nwrapped-key\n--- mac\nciphertext') + '\n'
 
 
 class DestinationTests(unittest.TestCase):
@@ -84,16 +92,23 @@ class AttemptPublicationTests(unittest.TestCase):
         home.mkdir(mode=0o700)
         self.home = patch('evidence.Path.home', return_value=home)
         self.home.start()
+        self.identity = self.base / 'readback-test-identity'
+        self.identity.write_bytes(b'synthetic private test identity')
+        self.identity.chmod(0o600)
+
+    def configured_attempt(self, attempt_id):
+        return Attempt(self.project, self.base / 'private', attempt_id,
+                       readback_recipient=READBACK, readback_identity=self.identity)
 
     def tearDown(self):
         self.home.stop()
         self.temp.cleanup()
 
     def test_finish_publishes_exactly_records_and_matching_sums_without_plaintext_digests(self):
-        age = fake_age(self.base, VALID)
-        attempt = Attempt(self.project, self.base / 'private', 'publish-test')
+        age = fake_age(self.base, VALID, 'PRIVATE-PLAINTEXT')
+        attempt = self.configured_attempt('publish-test')
         attempt.record('observation.json', {'accepted': False})
-        attempt.encrypt('raw-export', b'PRIVATE-PLAINTEXT', age, 'public-only')
+        attempt.encrypt('raw-export', b'PRIVATE-PLAINTEXT', age, ADMINISTRATOR)
         (attempt.directory / 'Dockerfile').write_text('fixture-only file')
         attempt.finish()
         published = self.project / '_bmad-output/implementation-artifacts/evidence/epic-4/4-26/publish-test'
@@ -104,7 +119,7 @@ class AttemptPublicationTests(unittest.TestCase):
         self.assertEqual(set(sums), {'encrypted-exports.json', 'observation.json'})
         self.assertTrue(all(file_digest(published / name) == value for name, value in sums.items()))
         exports = json.loads((published / 'encrypted-exports.json').read_text())
-        self.assertEqual(set(exports['exports'][0]), {'file', 'ciphertextSha256', 'ciphertextBytes', 'recipientStanzas'})
+        self.assertEqual(set(exports['exports'][0]), {'file', 'ciphertextSha256', 'ciphertextBytes', 'recipientStanzas', 'readbackVerified'})
         self.assertNotIn('plaintextSha256', json.dumps(exports))
         self.assertNotIn(digest(b'PRIVATE-PLAINTEXT'), ''.join(p.read_text() for p in published.iterdir()))
         private = json.loads((attempt.directory / 'private-export-digests.json').read_text())
@@ -114,8 +129,8 @@ class AttemptPublicationTests(unittest.TestCase):
             self.assertIn(name, private_sums)
 
     def test_encrypt_writes_valid_output_and_refuses_failed_or_headerless_output(self):
-        attempt = Attempt(self.project, self.base / 'private', 'encrypt-test')
-        entry = attempt.encrypt('valid-export', b'PRIVATE', fake_age(self.base, VALID), 'public-only')
+        attempt = self.configured_attempt('encrypt-test')
+        entry = attempt.encrypt('valid-export', b'PRIVATE', fake_age(self.base, VALID), ADMINISTRATOR)
         written = attempt.directory / 'valid-export.age'
         self.assertTrue(written.read_bytes().startswith(b'age-encryption.org/v1\n'))
         self.assertEqual(stat.S_IMODE(written.stat().st_mode), 0o600)
@@ -127,27 +142,27 @@ class AttemptPublicationTests(unittest.TestCase):
                 age = self.base / ('age-' + name)
                 age.write_text('#!/bin/sh\ncat >/dev/null\n' + body);age.chmod(0o700)
                 with self.assertRaisesRegex(ValueError, 'export-encryption-failed'):
-                    attempt.encrypt(name + '-export', b'PRIVATE', age, 'public-only')
+                    attempt.encrypt(name + '-export', b'PRIVATE', age, ADMINISTRATOR)
                 self.assertFalse((attempt.directory / (name + '-export.age')).exists())
                 self.assertEqual(attempt.exports, [entry])
 
     def test_recipient_stanza_type_and_ssh_tag_are_recorded_and_published_without_shares(self):
-        attempt = Attempt(self.project, self.base / 'private', 'recipient-test')
-        ssh = attempt.encrypt('ssh-export', b'PRIVATE', fake_age(self.base, SSH), 'public-only')
-        self.assertEqual(ssh['recipientStanzas'], [{'type': 'ssh-ed25519', 'tag': '8XlNQg'}])
-        native = attempt.encrypt('x25519-export', b'PRIVATE', fake_age(self.base, VALID), 'public-only')
-        self.assertEqual(native['recipientStanzas'], [{'type': 'X25519', 'tag': None}])
+        attempt = self.configured_attempt('recipient-test')
+        ssh = attempt.encrypt('ssh-export', b'PRIVATE', fake_age(self.base, SSH), ADMINISTRATOR)
+        self.assertEqual(ssh['recipientStanzas'], SSH_STANZAS)
+        native = attempt.encrypt('x25519-export', b'PRIVATE', fake_age(self.base, VALID), ADMINISTRATOR)
+        self.assertEqual(native['recipientStanzas'], SSH_STANZAS + [{'type': 'X25519', 'tag': None}])
         attempt.finish()
         published = (self.project / '_bmad-output/implementation-artifacts/evidence/epic-4/4-26/recipient-test'
                      / 'encrypted-exports.json').read_text()
         self.assertEqual([e['recipientStanzas'] for e in json.loads(published)['exports']],
-                         [[{'type': 'ssh-ed25519', 'tag': '8XlNQg'}], [{'type': 'X25519', 'tag': None}]])
+                         [SSH_STANZAS, SSH_STANZAS + [{'type': 'X25519', 'tag': None}]])
         # Ephemeral shares and wrapped keys never leave the ciphertext.
         for value in ('ephemeral-share', 'wrapped-key'):
             self.assertNotIn(value, published)
 
     def test_headers_without_recipient_stanza_terminator_or_valid_ssh_tag_are_refused(self):
-        attempt = Attempt(self.project, self.base / 'private', 'stanza-test')
+        attempt = self.configured_attempt('stanza-test')
         for name, body in (('no-stanza', 'printf "age-encryption.org/v1\\n--- mac\\nciphertext"\n'),
                            ('no-terminator', 'printf "age-encryption.org/v1\\n-> X25519 share\\nciphertext"\n'),
                            ('no-tag', 'printf "age-encryption.org/v1\\n-> ssh-ed25519\\nwrapped\\n--- mac\\nx"\n'),
@@ -156,9 +171,21 @@ class AttemptPublicationTests(unittest.TestCase):
                 age = self.base / ('age-' + name)
                 age.write_text('#!/bin/sh\ncat >/dev/null\n' + body);age.chmod(0o700)
                 with self.assertRaisesRegex(ValueError, 'export-encryption-failed'):
-                    attempt.encrypt(name, b'PRIVATE', age, 'public-only')
+                    attempt.encrypt(name, b'PRIVATE', age, ADMINISTRATOR)
                 self.assertFalse((attempt.directory / (name + '.age')).exists())
         self.assertEqual(attempt.exports, [])
+
+    def test_direct_library_export_requires_readback_but_metadata_only_attempt_is_allowed(self):
+        attempt = Attempt(self.project, self.base / 'private', 'metadata-only-test')
+        with patch('evidence.subprocess.run') as run:
+            with self.assertRaisesRegex(ValueError, 'export-readback-configuration-required'):
+                attempt.encrypt('raw', b'PRIVATE', 'age', ADMINISTRATOR)
+            run.assert_not_called()
+        self.assertFalse((attempt.directory / 'raw.age').exists())
+        self.assertEqual(attempt.exports, [])
+        attempt.record('observation.json', {'metadataOnly': True})
+        attempt.finish()
+        self.assertEqual(json.loads((attempt.directory / 'encrypted-exports.json').read_text())['exports'], [])
 
     def test_existing_upgrade_and_recovery_evidence_roots_are_refused(self):
         home = self.base / 'home'  # Path.home() is patched to this directory in setUp

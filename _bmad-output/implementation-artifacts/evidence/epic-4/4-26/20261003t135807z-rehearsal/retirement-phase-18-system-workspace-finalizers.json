@@ -1,0 +1,58 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "named-finalizer",
+  "order": 18,
+  "phase": "system-workspace-finalizers",
+  "phaseAllowlistSha256": "72aa4ec66a24bfc62156e4a6716c69e4335a4de431955336e65a2437a1f3b16d",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "resourceVersion": "6355"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/Workspace/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1911",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "e87ab2e5c9b38c0c2b5581e68b8871b4715392db11eb75dbe2c86062f55c6e9a",
+      "reviewedResourceVersion": "1911",
+      "uid": "c104d1be-d792-4d31-b7aa-942b2497ec85"
+    },
+    {
+      "conflictRetries": 0,
+      "intervention": {
+        "conflictRetries": 0,
+        "finalizer": "kubesphere.io/cascading-deletion",
+        "otherFinalizersRetained": [],
+        "outcome": "named-finalizer-removed",
+        "resourceVersion": "6374"
+      },
+      "object": "tenant.kubesphere.io/v1beta1/WorkspaceTemplate/-/system-workspace",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1252",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "8aa90bce0abdfadbd96e9156dfde000a82830dce8fcca09a9e611b952edf74e8",
+      "reviewedResourceVersion": "1252",
+      "uid": "c6065f2e-7a02-48df-8652-ec60904a4826"
+    }
+  ],
+  "settled": true
+}

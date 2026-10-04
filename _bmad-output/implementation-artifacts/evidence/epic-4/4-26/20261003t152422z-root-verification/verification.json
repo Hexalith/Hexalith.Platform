@@ -1,0 +1,166 @@
+{
+  "allOriginalOperationalCriteriaAccepted": false,
+  "artifactSha256": {
+    "_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md": "484ac9da55396a066370051bc0c67327e334c94e6946b7d2a6e48331fa3a7ccd",
+    "eng/cluster-management/QUALIFICATION.md": "8dbc3f4f2b6329e416337617a13df520424c76a1a282e8650696a64ac805eb9a",
+    "eng/cluster-management/RANCHER.md": "69bb9c3df6f620c78b4c16b614aaff0788796d3c5c84cab729c044f3aeeb66d8",
+    "eng/cluster-management/README.md": "f76a54f7e7e700fd3b3ecd48e7947371a12792bb749502426f1e7947a065c960",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "9541fa05e95260dfa1d8487f95c346835628e44f9d708fe0c967f3517e8b9d5e",
+    "eng/cluster-management/evidence.py": "41ce544a605c656076f50b78519365713a9ba343d48f38e63b213eeb323f8ea3",
+    "eng/cluster-management/qualify.py": "5e1e2646e5de08a4b328089fa60b07a7f2bd0d2dc2e2ca5f5925d642ff2c3c7f",
+    "eng/cluster-management/rehearse.py": "72c9760266a6cfc86d9c705d7514be43dbec51a0c7becd2e74abeca65e88d633",
+    "eng/cluster-management/test_evidence.py": "1ca20795e1555a1998025d87ad1793b9f9d7b6b048fe410336de8788b2edaf1f",
+    "eng/cluster-management/test_rehearse.py": "62b3832b891fadf2f58669999222ac9d3fedc754eb8351286d66fc6b4fa832d4",
+    "eng/cluster-management/test_review_loop4.py": "fc192228c41d0663da234ef7acdd16e11ca3e2d3e0e9390f7045d9aadca6c8c5"
+  },
+  "baselineCommit": "98436a4cb884f8d11b4b5f3e6ae70e95ce687463",
+  "buildStep": 3,
+  "diffAudit": {
+    "completeBaselineDiffCaptured": true,
+    "includesUntrackedAndConcurrentChanges": true,
+    "inspectionScope": "Current implementation/text diff inspected and structured evidence parsed; formal completion review not entered.",
+    "parsedHistoricalEvidenceJsonFiles": 572,
+    "realIndexUnchanged": true,
+    "usedTemporaryIndex": true
+  },
+  "documentChecks": {
+    "allImplementationTasksChecked": true,
+    "baselinePreserved": true,
+    "frozenIntentUnchanged": true,
+    "issues": [],
+    "localLinksChecked": 237,
+    "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+    "sprintInProgress": true
+  },
+  "fullVendorRehearsal": "20261003t135807z-rehearsal",
+  "historicalArchiveProvenance": "complementary Story 4.1 node archive; no Story 4.0 node-archive reference",
+  "newEvidenceIntegrity": {
+    "checkedAttempts": [
+      {
+        "attemptId": "20261003t134150z-rehearsal",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 85
+      },
+      {
+        "attemptId": "20261003t134235z-recovery-archive-confirmation",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 1
+      },
+      {
+        "attemptId": "20261003t135807z-failed-procedure-binding",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 1
+      },
+      {
+        "attemptId": "20261003t135807z-rehearsal",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 772
+      },
+      {
+        "attemptId": "20261003t135922z-decided-retirement-plan",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 1
+      },
+      {
+        "attemptId": "20261003t142400z-executed-procedure-binding",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 3
+      },
+      {
+        "attemptId": "20261003t145655z-seven-namespace-probe",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 87
+      },
+      {
+        "attemptId": "20261003t150550z-loop4-verification",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 7
+      },
+      {
+        "attemptId": "20261003t150903z-residual-custody",
+        "checksumsModesTagsAndDecryptedDigestsVerified": true,
+        "exports": 1
+      }
+    ],
+    "offNodeCustodyAccepted": false,
+    "signed": false,
+    "totalExports": 958
+  },
+  "offNodeCustodyAccepted": false,
+  "productionMutationAuthorized": false,
+  "productionRecoveryAccepted": false,
+  "qualificationAccepted": false,
+  "recordedAt": "2026-10-03T15:24:22.229107+00:00",
+  "sevenNamespaceProbe": "20261003t145655z-seven-namespace-probe",
+  "signed": false,
+  "state": "passed-implementation-verification",
+  "storyStatus": "in-progress",
+  "tests": {
+    "command": "unittest.defaultTestLoader.discover('eng/cluster-management', pattern='test_*.py'); unittest.TextTestRunner(verbosity=2).run(suite)",
+    "coveringTests": {
+      "Authority": [
+        "test_proxy_credentials_are_refused_before_discovery",
+        "test_missing_gapped_conflicting_or_expanded_authority_fails_closed",
+        "test_post_cut_revocation_survives_source_loss"
+      ],
+      "Census": [
+        "test_secret_and_configuration_values_never_enter_projection",
+        "test_failed_discovery_is_not_an_empty_accepted_census",
+        "test_private_attempts_immutable_and_no_recovery_overwrite"
+      ],
+      "Ownership": [
+        "test_ownership_storage_and_installed_catalog_distinction",
+        "test_unknown_owner_consumer_and_deletion_effects_block_retirement",
+        "test_unknown_cascade_blocks_and_child_first_allows_explicit_scope"
+      ],
+      "Rehearsal": [
+        "test_source_endpoint_uid_reachability_and_credentials_refused",
+        "test_named_finalizer_only_and_drift_stop",
+        "test_unexpected_deletion_incomplete_deletion_or_uid_binding_change_stops"
+      ],
+      "Target": [
+        "test_unqualified_tag_hosting_security_and_tools_fail_closed",
+        "test_github_prerelease_and_stale_review_rejected"
+      ]
+    },
+    "errors": 0,
+    "failures": 0,
+    "frozenMatrixCoverage": {
+      "Authority": true,
+      "Census": true,
+      "Ownership": true,
+      "Rehearsal": true,
+      "Target": true
+    },
+    "skipped": 0,
+    "unitTestsPassed": true,
+    "unitTestsRun": 117
+  },
+  "whitespace": {
+    "newTestWhitespacePassed": true,
+    "scopedWhitespaceCheckPassed": true,
+    "wholeWorkspaceIssueFiles": [
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "Hexalith.Platform.slnx",
+      "apphost.cs",
+      "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+      "src/Hexalith.Platform.EventStoreHost/Program.cs",
+      "src/Hexalith.Platform.Identity/FixedOptionsMonitor.cs",
+      "src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj",
+      "src/Hexalith.Platform.Identity/PlatformActorRegistry.cs",
+      "src/Hexalith.Platform.Identity/PlatformBootstrapVerifier.cs",
+      "src/Hexalith.Platform.Identity/PlatformIdentityEnrollmentService.cs",
+      "src/Hexalith.Platform.Identity/PlatformIdentityGatewayAdmission.cs",
+      "src/Hexalith.Platform.Identity/PlatformIdentityOptions.cs",
+      "src/Hexalith.Platform.Identity/PlatformIdentityServiceCollectionExtensions.cs",
+      "src/Hexalith.Platform.Identity/PlatformLoginAliasDigest.cs",
+      "src/Hexalith.Platform.Identity/PlatformOperatorProvenanceVerifier.cs",
+      "tests/Hexalith.Platform.Identity.Tests/Hexalith.Platform.Identity.Tests.csproj",
+      "tests/Hexalith.Platform.Identity.Tests/PlatformIdentityAdmissionTests.cs"
+    ],
+    "wholeWorkspaceIssueReason": "CRLF line endings in concurrent unrelated apphost/.NET edits; left untouched",
+    "wholeWorkspaceWhitespacePassed": false
+  },
+  "workerVerification": "20261003t150550z-loop4-verification"
+}

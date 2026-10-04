@@ -1,0 +1,33 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "v1/Secret/kubesphere-system/sh.helm.release.v1.ks-core.v1"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 17,
+  "phase": "release-records",
+  "phaseAllowlistSha256": "839f435741eedf43e5af3d0b55eb2611313dcf6c99ad5b74010f68c86eeec36a",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "v1/Secret/kubesphere-system/sh.helm.release.v1.ks-core.v1",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1864",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "3b76f5759326d25c0be8e895555f9d093f1bea8da76ce1c1a23452e1125bed84",
+      "reviewedResourceVersion": "1864",
+      "uid": "6e9fc00e-81e0-4d8a-9a11-3b1e3a928709"
+    }
+  ],
+  "settled": true
+}

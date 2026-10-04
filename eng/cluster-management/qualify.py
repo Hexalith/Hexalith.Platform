@@ -531,11 +531,15 @@ def collect(args):
         if not path.is_file():
             raise ValueError('missing-tool-or-native-kubeconfig')
     maintenance_digest = file_digest(args.project_root / 'eng/kubernetes-upgrade/MAINTENANCE.md')
-    attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id)
+    attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id,
+                      readback_recipient=getattr(args, 'readback_recipient', None),
+                      readback_identity=getattr(args, 'readback_identity', None))
     attempt.record('attempt.json', {'schemaVersion': 1, 'story': '4.26', 'attemptId': args.attempt_id,
                     'capturedAt': now(), 'operator': safe(args.operator), 'context': safe(args.context),
                     'mode': 'read-only-observation', 'mutationAuthorized': False, 'signed': False,
-                    'maintenanceProposalSha256': maintenance_digest})
+                    'maintenanceProposalSha256': maintenance_digest,
+                    'scriptSha256': file_digest(Path(__file__)),
+                    'moduleSha256': {'evidence.py': file_digest(Path(__file__).with_name('evidence.py'))}})
     tools = []
     state = 'incomplete'
     capture = Capture(args, attempt)
@@ -560,7 +564,7 @@ def collect(args):
                                'reason': 'tools, schema, discovery, identity, skew, encryption or access failed; inspect private diagnostics'})
     attempt.record('criteria.json', {'criteria': [{'criterion': n, 'state': state,
                      'reason': reason} for n, reason in enumerate([
-                     'Native census is an observation; node/etcd/coverage/currency and independent export readback require acceptance',
+                     'Native census is an observation; node/etcd/coverage/currency and off-node export custody require acceptance',
                      'Capability dispositions and consumers/deletion effects require explicit owner review',
                      'Current stable charts/images/matrices/licenses/security/tool authenticity require acceptance',
                      'Host virtualization, spare capacity, endpoint and cost need qualification; procurement may follow',
@@ -585,6 +589,8 @@ def parser():
     p.add_argument('--helm', type=Path, required=True)
     p.add_argument('--age', type=Path, required=True)
     p.add_argument('--recipient', required=True, help='Administrator-owned age/SSH public recipient; no private key')
+    p.add_argument('--readback-recipient', required=True, help='Distinct agent-held SSH public recipient')
+    p.add_argument('--readback-identity', type=Path, required=True, help='Owner-only readback key outside Git and evidence custody')
     return p
 
 

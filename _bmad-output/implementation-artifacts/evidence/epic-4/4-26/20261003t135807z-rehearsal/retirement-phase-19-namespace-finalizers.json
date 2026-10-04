@@ -1,0 +1,75 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "namespace-finalizer",
+  "order": 19,
+  "phase": "namespace-finalizers",
+  "phaseAllowlistSha256": "4e7a079bb726865324f16e31a43ae6e2e46d3cfb51f6bbfb692ae8570dd57d70",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kube-public",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "resourceVersion": "1424",
+      "uid": "1543257a-5cb8-4033-973d-6a15f08fc3b4"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/default",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "resourceVersion": "1314",
+      "uid": "30718275-f2ce-4022-9cb5-1cb828921c9c"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kube-system",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "resourceVersion": "1433",
+      "uid": "4c127ec5-5979-40ba-ae36-bd4950ebdfd5"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kubesphere-controls-system",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "resourceVersion": "1226",
+      "uid": "7e4ca33d-56a1-486d-9f2d-9514746fcf49"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kubesphere-system",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "resourceVersion": "1192",
+      "uid": "83b9c2f0-ede5-4161-bea6-bcca4110acd6"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kube-node-lease",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "resourceVersion": "1385",
+      "uid": "e03810b1-d91f-4301-8ab2-c247907622da"
+    }
+  ],
+  "settled": true
+}

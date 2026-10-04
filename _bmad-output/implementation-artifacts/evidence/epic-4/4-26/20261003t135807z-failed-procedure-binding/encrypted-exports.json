@@ -1,0 +1,28 @@
+{
+  "attemptId": "20261003t135807z-failed-procedure-binding",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 107207,
+      "ciphertextSha256": "1aa376f5b5906bc317f53f6055142cddda3f9d24bd895594961927b24bb28578",
+      "file": "executed-rehearse.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

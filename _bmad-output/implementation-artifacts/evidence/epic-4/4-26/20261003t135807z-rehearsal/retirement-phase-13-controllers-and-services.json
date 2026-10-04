@@ -1,0 +1,127 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [
+      "apps/v1/Deployment/kubesphere-system/extensions-museum",
+      "apps/v1/Deployment/kubesphere-system/ks-apiserver",
+      "apps/v1/Deployment/kubesphere-system/ks-console",
+      "apps/v1/Deployment/kubesphere-system/ks-controller-manager",
+      "apps/v1/ReplicaSet/kubesphere-system/extensions-museum-7ddd5d8484",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-apiserver-7976f5b86",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-console-765c9458fd",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-console-f5b799454",
+      "apps/v1/ReplicaSet/kubesphere-system/ks-controller-manager-bc5d9ff54",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/extensions-museum-gg5pb",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-apiserver-t954q",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-console-q4n4v",
+      "discovery.k8s.io/v1/EndpointSlice/kubesphere-system/ks-controller-manager-jwknp",
+      "v1/Endpoints/kubesphere-system/extensions-museum",
+      "v1/Endpoints/kubesphere-system/ks-apiserver",
+      "v1/Endpoints/kubesphere-system/ks-console",
+      "v1/Endpoints/kubesphere-system/ks-controller-manager",
+      "v1/Pod/kubesphere-system/extensions-museum-7ddd5d8484-9xq4k",
+      "v1/Pod/kubesphere-system/ks-apiserver-7976f5b86-lf4nn",
+      "v1/Pod/kubesphere-system/ks-console-765c9458fd-wph8m",
+      "v1/Pod/kubesphere-system/ks-controller-manager-bc5d9ff54-wgdvc",
+      "v1/Service/kubesphere-system/extensions-museum",
+      "v1/Service/kubesphere-system/ks-apiserver",
+      "v1/Service/kubesphere-system/ks-console",
+      "v1/Service/kubesphere-system/ks-controller-manager"
+    ],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "delete",
+  "order": 13,
+  "phase": "controllers-and-services",
+  "phaseAllowlistSha256": "b75c1ef430954bb80652593564f9d139846952104f8e0c4ea4300400a331ec27",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/extensions-museum",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1444",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "f865f6919290461dff493b8e426096312cd14e7eaad766d06d969e3189ae6ba8",
+      "reviewedResourceVersion": "1444",
+      "uid": "7aae316a-74a8-496f-a36d-ca5bee6677d1"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/ks-apiserver",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1264",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "bdb745fe5159274ae9a2a4246a2f9983df94f3770ec1dbb13eb20b5681c5084a",
+      "reviewedResourceVersion": "1264",
+      "uid": "516711f9-ecf4-4b44-b418-bc8075854d60"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1505",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "b8ff29ae54942b800792b9bc6119aed93fe8debbc1988b9f0b470835bf4f85ce",
+      "reviewedResourceVersion": "1505",
+      "uid": "212f1b59-45b4-4453-9dc7-11ce2b1f6422"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "apps/v1/Deployment/kubesphere-system/ks-controller-manager",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "1277",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "05acb5959fca435e0eaf54b47db51e859c517d8c7f0ff666e0d7817e9d98c7d1",
+      "reviewedResourceVersion": "1277",
+      "uid": "7c59bb16-d067-46e9-b715-aec681403362"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/extensions-museum",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "879",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "c6b3a36d19f132c6d100ba644b03fe52d8ea85481266579e5c7fc2ae3c81fee5",
+      "reviewedResourceVersion": "879",
+      "uid": "a55711c3-815d-46a3-8103-3b3e1be2eded"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/ks-apiserver",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "885",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "5b90362a4de7560a0862849f58ea78670b34727dc4d33b6e7092c1e4e0cbd2b6",
+      "reviewedResourceVersion": "885",
+      "uid": "52dda694-506f-4b1c-81ef-7b69ac88d316"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/ks-console",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "878",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "41dd527c7dc7eb35a6116e5df32a32c1f2e7f0107dc32ea248694371a6514436",
+      "reviewedResourceVersion": "878",
+      "uid": "3dea69a8-c837-4875-81c4-6687ba0af6bb"
+    },
+    {
+      "conflictRetries": 0,
+      "object": "v1/Service/kubesphere-system/ks-controller-manager",
+      "outcome": "native-delete-accepted",
+      "resourceVersion": "872",
+      "resourceVersionChangedSinceReview": false,
+      "reviewedProjectionSha256": "93697a71a6117f95496d994ade68ea13074b08be682612b8cd4c3be6ec033388",
+      "reviewedResourceVersion": "872",
+      "uid": "d46ce338-20e8-4a50-a089-e2c397735240"
+    }
+  ],
+  "settled": true
+}
