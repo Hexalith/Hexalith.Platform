@@ -46,6 +46,7 @@ Publish an immutable, attested Helm package, composed image, McpCli candidate an
 - Close public Keycloak admin/master-realm and management routes independently of console replacement; prove private administration/public denial while public OIDC works. Disable anonymous registry reads after consumer credentials work; preserve retained digests through garbage collection.
 - Move the privileged Forgejo runner onto a separate machine/VM shared with no executor. Publication/operations repositories and release tags require the approved named-writer controls.
 - Staging cannot claim production data, secrets, trust, hostnames or administration. Prove negative isolation across users, pods, identities, networking, storage, restored copies and management UI/API/proxy credentials.
+- Data-service connections use native TLS where the provider supports it, including CloudNativePG PostgreSQL; other data traffic stays within the environment data namespace under default-deny network policy.
 
 ## Technical Decisions
 
@@ -63,6 +64,6 @@ Operators use the tested private native path during transition, then the qualifi
 
 ## Cross-Story Dependencies
 
-- 4.0, 4.2, 4.3, 4.4 and read-only 4.26 preparation proceed independently. Execution follows **4.26 qualification → 4.27 accepted retirement → 4.1 supported native hop → 4.28 private Rancher/access/initial restore qualification → 4.14 staging foundations**. Current validated 4.0 proofs gate retirement and the hop; every existing per-hop gate remains. Rancher procurement/availability does not block native retirement or upgrade.
+- 4.0, 4.2, 4.3, 4.4 and read-only 4.26 preparation proceed independently. Execution follows **4.26 qualification and accepted 4.2 console closure → 4.27 retirement with fresh production recovery through 4.0 → 4.1 supported native hop → 4.28 private Rancher/access/initial restore qualification → 4.14 staging foundations**. Current validated 4.0 proofs gate retirement and the hop; every existing per-hop gate remains. Rancher procurement/availability does not block native retirement or upgrade.
 - Record/store, intake, runtime/identity, recovery and check-suite contracts precede retained publication and deployment. Early Helm qualification excludes future publication/replication checks. Environment isolation, secrets, Dapr, broker, Gateway, realm, executor and telemetry precede reference deployment; data-restore and McpCli/isolation verification precede accepted candidate evidence.
 - Rancher qualification enters the shared profile inventory and G1 prerequisites. Epic 8 extends initial management restore proof into integrated retention, fencing/revocation and measured RPO/RTO; native workload recovery remains manager-independent. Epic 9 adds the management stack to infrastructure currency checks.
