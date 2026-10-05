@@ -220,6 +220,10 @@ class FixtureRegressionTests(unittest.TestCase):
         self.assertEqual(phase['expected'], []);self.assertEqual(set(phase['expectedModified']), {'ns', *FIXTURE_FINALIZER_NAMES})
         self.assertTrue(set(phase['expectedModified']).isdisjoint(scope))
 
+    def test_production_finalizer_namespaces_are_exactly_the_seven_decided_on_2026_10_03(self):
+        self.assertEqual(PRODUCTION_FINALIZER_NAMES, ('default', 'kube-node-lease', 'kube-public', 'kube-system',
+                                                      'kubekey-system', 'kubesphere-controls-system', 'kubesphere-system'))
+
     def test_named_namespace_intervention_preserves_identity_and_other_metadata_and_never_deletes(self):
         fixture, _ = self.fixture()
         current = {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': 'default', 'uid': 'ns', 'resourceVersion': '9',

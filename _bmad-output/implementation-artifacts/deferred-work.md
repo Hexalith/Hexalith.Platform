@@ -103,3 +103,12 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Bind issuer and subject to one authenticated login identity in the separate identity workstream (G143).
   evidence: ResolveLoginAsync uses ClaimsPrincipal.FindFirst for each claim, which can combine the authenticated identity's issuer with a second identity's subject in a composite principal.
+
+## Deferred from: code review of spec-4-26-qualify-rancher-and-the-management-migration.md, chunk 2: tests (2026-10-05)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+  summary: Add table-driven refusal tests for the cluster-management guards that no test reaches (G166).
+  evidence: Verification-gap V52 in the chunk 2 test review. Coverage shows that the `raise` lines at `eng/cluster-management/rehearse.py:106`, `108`, `298`, `310`, `319`, `321`, `344`, `1081`, `1223-1224`, `1233`, `1766` and `rehearse_catalog.py:49` never run, and no test names their error codes. Every one of them fails closed, so this is deferred rather than patched. The catalog refusals that a passing record depends on are covered by patch G159.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+  summary: Run the `eng/cluster-management` unit tests automatically in CI (G167).
+  evidence: Blind B126 and verification-gap V54. The repository has no `.github/workflows`, so the 166 tests run only when someone runs the README command (`eng/cluster-management/README.md:62`) by hand. This is pre-existing repository-level infrastructure, outside Story 4.26.

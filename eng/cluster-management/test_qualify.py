@@ -120,6 +120,11 @@ class ProjectionTests(unittest.TestCase):
         self.assertEqual(claim['binding']['volumeName'], 'pv-1')
         self.assertEqual(claim['uid'], 'claim-1')
 
+    def test_namespace_spec_finalizers_project_as_namespace_finalizers(self):
+        namespace = project_resource({'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': 'kube-system', 'uid': 'ns-1'},
+                                      'spec': {'finalizers': ['kubernetes']}})
+        self.assertEqual(namespace['namespaceFinalizers'], ['kubernetes'])
+
     def test_unlabeled_registrations_backed_by_manager_services_are_management_state(self):
         hook = project_resource({'apiVersion': 'admissionregistration.k8s.io/v1', 'kind': 'ValidatingWebhookConfiguration',
             'metadata': {'name': 'validator.license.example', 'uid': 'hook-1'},
@@ -143,6 +148,19 @@ class ProjectionTests(unittest.TestCase):
         self.assertIn('unresolved-owner-or-consumer', errors)
         self.assertIn('unverified-propagation', errors)
         self.assertIn('unresolved-disposition', errors)
+
+    def test_resolved_entry_is_accepted_and_each_unresolved_term_reports_its_own_error(self):
+        resolved = {'disposition': 'native-owned', 'ownersResolved': True, 'consumerCoverage': 'verified',
+                    'deletionEffects': 'verified-preserve', 'approvedReplacement': None}
+        self.assertEqual(validate_ownership([resolved]), [])
+        for change, expected in (({'ownersResolved': False}, ['unresolved-owner-or-consumer']),
+                                 ({'consumerCoverage': 'owner-references-only'}, ['unresolved-owner-or-consumer']),
+                                 ({'deletionEffects': 'unverified'}, ['unverified-propagation']),
+                                 ({'disposition': 'unresolved'}, ['unresolved-disposition']),
+                                 ({'disposition': 'replaced'}, ['missing-approved-replacement']),
+                                 ({'disposition': 'replaced', 'approvedReplacement': 'rancher-managed'}, [])):
+            with self.subTest(change=change):
+                self.assertEqual(validate_ownership([{**resolved, **change}]), expected)
 
 
 class CensusTests(unittest.TestCase):
@@ -234,10 +252,13 @@ class CensusTests(unittest.TestCase):
                    {'name': 'v1alpha1', 'served': True, 'storage': True}]}}
         widget = native('installed', 'widget-1', ownerReferences=[{'uid': 'ns-1', 'kind': 'Namespace', 'name': 'kube-system'}],
                         finalizers=['sample.kubesphere.io/protect'])
-        raw = {'/api/v1': {'resources': [{'name': 'namespaces', 'kind': 'Namespace', 'verbs': ['list']}]},
+        # A subresource is skipped even if it advertises list; a create-only resource is never listed.
+        raw = {'/api/v1': {'resources': [{'name': 'namespaces', 'kind': 'Namespace', 'verbs': ['list']},
+                                         {'name': 'pods/log', 'kind': 'Pod', 'verbs': ['get', 'list']},
+                                         {'name': 'tokenreviews', 'kind': 'TokenReview', 'verbs': ['create']}]},
                '/apis': {'groups': [{'preferredVersion': {'groupVersion': 'apiextensions.k8s.io/v1'}},
                                    {'preferredVersion': {'groupVersion': 'sample.kubesphere.io/v1beta1'}}]},
-               '/api/v1/namespaces?limit=500': {'items': [namespace], 'metadata': {'continue': 'a+/='}},
+               '/api/v1/namespaces?limit=500': {'items': [native('default', 'ns-0'), namespace], 'metadata': {'continue': 'a+/='}},
                '/api/v1/namespaces?limit=500&continue=a%2B%2F%3D': {'items': [native('app', 'ns-2')]},
                '/apis/apiextensions.k8s.io/v1': {'resources': [
                    {'name': 'customresourcedefinitions', 'kind': 'CustomResourceDefinition', 'verbs': ['list']}]},
@@ -273,7 +294,10 @@ class CensusTests(unittest.TestCase):
                      patch('qualify.urllib.request.urlopen', side_effect=OSError):
                     capture.collect()
                 observed = {v['uid']: v for v in capture.inventory}
-                self.assertEqual(set(observed), {'ns-1', 'ns-2', 'crd-1', 'widget-1'})
+                self.assertEqual(set(observed), {'ns-0', 'ns-1', 'ns-2', 'crd-1', 'widget-1'})
+                self.assertEqual(records['inventory.json']['sourceClusterUid'], 'ns-1')
+                self.assertFalse([p for p in requests if p.startswith(('/api/v1/pods', '/api/v1/tokenreviews'))])
+                self.assertFalse([v for v in capture.coverage if 'pods' in v['step'] or 'tokenreviews' in v['step']])
                 self.assertEqual(observed['widget-1']['apiVersion'], 'sample.kubesphere.io/v1alpha1')
                 self.assertEqual(observed['widget-1']['kind'], 'Widget')
                 self.assertEqual(observed['widget-1']['owners'][0]['uid'], 'ns-1')
@@ -301,6 +325,7 @@ class CensusTests(unittest.TestCase):
                     directory, state = collect(args)
                 self.assertEqual(state, 'failed-closed')
                 if index < 3:census.assert_not_called()
+                else:census.assert_called_once()
                 criteria = json.loads((directory / 'criteria.json').read_text())
                 self.assertFalse(criteria['qualificationAccepted'])
                 self.assertEqual(criteria['upgradeGate'], 'closed')
@@ -433,6 +458,13 @@ class CensusTests(unittest.TestCase):
                              (code, stdout, stderr))
             self.assertEqual(data, {'data': {'token': 'PRIVATE-TOKEN'}} if code == 0 else None)
             self.assertNotIn('PRIVATE', json.dumps(capture.coverage))
+        # Unparseable successful output is still encrypted raw before parsing fails closed.
+        with patch('qualify.subprocess.run', return_value=SimpleNamespace(returncode=0, stdout=b'not-json', stderr=b'')):
+            self.assertIsNone(capture.command('secrets', ['kubectl', 'get', 'secrets']))
+        name, payload, _, _ = encrypt.call_args.args
+        self.assertEqual(name, f'{capture.counter:04d}-secrets')
+        self.assertEqual(base64.b64decode(json.loads(payload)['stdoutBase64']), b'not-json')
+        self.assertEqual(capture.coverage[-1], {'step': 'secrets', 'state': 'invalid-or-inaccessible', 'exitCode': None})
         encrypt.side_effect = ValueError('export-encryption-failed')
         with patch('qualify.subprocess.run', return_value=SimpleNamespace(returncode=0, stdout=b'{"x": 1}', stderr=b'')):
             self.assertIsNone(capture.command('secrets', ['kubectl', 'get', 'secrets']))

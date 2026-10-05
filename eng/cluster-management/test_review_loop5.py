@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 
 from evidence import canonical, digest
 from qualify import project_resource
-from rehearse import (Fixture, SYSTEM_WORKSPACE_FINALIZER, content_review_digest,
+from rehearse import (FIXTURE_FINALIZER_NAMES, Fixture, SYSTEM_WORKSPACE_FINALIZER, content_review_digest,
                       dependency_plan, lease_renewal_transition, retirement_scope)
 from rehearse_catalog import RepresentativeFixture, catalog_counts
 from rehearse_namespaces import SevenNamespaceFixture
@@ -134,11 +134,14 @@ class FinalizerCheckpointTests(unittest.TestCase):
             by_uid = {uid: project_resource(v) for uid, v in raw.items()}
             phase = {'phase': 'global-role-bindings', 'order': 1, 'expected': ['binding'], 'roots': ['binding'],
                      'mode': 'native-delete', 'managerAbsentRequired': False, 'controllersRunning': True}
-            def settled_after():
-                fixture.raw_inventory_by_uid = {'user': after}
-                return [project_resource(after)], True
+            # Each settled read refreshes the raw inventory when it runs, as the native read does; the
+            # pre-phase read must leave the reviewed state so a stale transition source is detected.
+            def settled(items):
+                fixture.raw_inventory_by_uid = copy.deepcopy(items)
+                return [project_resource(v) for v in items.values()], True
+            reads = iter([raw, {'user': after}])
             with self.subTest(drift=drift), patch.object(fixture, 'settled_inventory',
-                    side_effect=[(list(by_uid.values()), True), settled_after()]), \
+                    side_effect=lambda: settled(next(reads))), \
                  patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}), \
                  patch.object(fixture, 'wait_absent', return_value=True):
                 if drift:
@@ -158,6 +161,48 @@ class FinalizerCheckpointTests(unittest.TestCase):
                 self.assertEqual(content_review_digest(fixture.reviewed_raw_by_uid['user']), content_review_digest(after))
                 self.assertEqual(records['global-role-annotation-transition.json']['privateReadbackExport'], 'global-role-annotation-transition.age')
                 self.assertIn('global-role-bindings', fixture.completed_retirement_phases)
+
+    def test_system_workspace_phase_removes_named_finalizer_only_after_each_accepted_native_delete(self):
+        template = existing.NativeRequestTests().obj(uid='template', version='1', finalizers=[SYSTEM_WORKSPACE_FINALIZER])
+        workspace = copy.deepcopy(template)
+        workspace['kind'], workspace['metadata']['uid'] = 'Workspace', 'workspace'
+        by_uid = {v['metadata']['uid']: project_resource(v) for v in (template, workspace)}
+        phase, = dependency_plan(list(by_uid.values()), set(by_uid))
+        self.assertEqual((phase['phase'], phase['mode'], phase['namedFinalizer'], phase['managerAbsentRequired']),
+                         ('system-workspace-finalizers', 'named-finalizer', SYSTEM_WORKSPACE_FINALIZER, True))
+        resources = {('tenant.kubesphere.io/v1beta1', 'WorkspaceTemplate'): ('workspacetemplates', False),
+                     ('tenant.kubesphere.io/v1beta1', 'Workspace'): ('workspaces', False)}
+        paths = {'workspace': '/apis/tenant.kubesphere.io/v1beta1/workspaces/system-workspace',
+                 'template': '/apis/tenant.kubesphere.io/v1beta1/workspacetemplates/system-workspace'}
+        for accepted in ('native-delete-accepted', 'absent-before-request'):
+            fixture, records = self.fixture()
+            events = []
+            def retire(name, path, reviewed):
+                events.append(('delete', reviewed['uid'], path))
+                return {'outcome': accepted}
+            def remove(path, uid, finalizer):
+                events.append(('finalizer', uid, path))
+                return {'outcome': 'named-finalizer-removed', 'finalizer': finalizer, 'privateFullContentVerified': True}
+            with self.subTest(outcome=accepted), \
+                 patch.object(fixture, 'settled_inventory', side_effect=[(list(by_uid.values()), True), ([], True)]), \
+                 patch.object(fixture, 'native_retire', side_effect=retire), \
+                 patch.object(fixture, 'remove_named_finalizer', side_effect=remove) as named, \
+                 patch.object(fixture, 'wait_absent', return_value=True):
+                self.assertEqual(fixture.retire_phase(phase, set(by_uid), by_uid, resources), [])
+                requests = records['retirement-phase-18-system-workspace-finalizers.json']['requests']
+                self.assertEqual([v['uid'] for v in requests], ['workspace', 'template'])
+                if accepted == 'native-delete-accepted':
+                    self.assertEqual(events, [(step, uid, paths[uid]) for uid in ('workspace', 'template')
+                                              for step in ('delete', 'finalizer')])
+                    self.assertEqual([c.args for c in named.call_args_list],
+                                     [(paths[uid], uid, SYSTEM_WORKSPACE_FINALIZER) for uid in ('workspace', 'template')])
+                    for request in requests:
+                        self.assertEqual(request['intervention'], {'outcome': 'named-finalizer-removed',
+                            'finalizer': SYSTEM_WORKSPACE_FINALIZER, 'privateFullContentVerified': True})
+                else:
+                    named.assert_not_called()
+                    self.assertFalse(any('intervention' in v for v in requests))
+                self.assertIn('system-workspace-finalizers', fixture.completed_retirement_phases)
 
     def test_retirement_seeds_private_baseline_and_scope_before_actual_phase_and_exports_it(self):
         fixture, records = self.fixture()
@@ -350,7 +395,44 @@ class DriverSmokeTests(unittest.TestCase):
             native_phase.assert_called_once_with(phase, set(by_uid), by_uid, {})
             get.assert_called_once_with('categories.application.kubesphere.io', 's426-catalog-category')
 
-    def namespace_driver(self, canary_reads, expected_error=None, expected_puts=7):
+    def test_application_store_phase_refuses_inexact_members_or_cleanup_pattern_before_native_phase(self):
+        category = {'apiVersion': 'application.kubesphere.io/v2', 'kind': 'Category',
+            'metadata': {'name': 's426-catalog-category', 'uid': 'category', 'resourceVersion': '1',
+                         'finalizers': ['categories.application.kubesphere.io/finalizer']}, 'spec': {}}
+        for case in ('missing-version', 'repo-for-application', 'extra-member', 'version-without-cleanup'):
+            counts = {'Repo': 1, 'Application': 27, 'ApplicationVersion': 90}
+            if case == 'missing-version':
+                counts['ApplicationVersion'] = 89
+            elif case == 'repo-for-application':
+                counts.update(Repo=2, Application=26)
+            by_uid = {kind + '-' + str(index): {'kind': kind,
+                      'finalizers': ['application.kubesphere.io/cleanup'] if kind == 'ApplicationVersion' else []}
+                      for kind in counts for index in range(counts[kind])}
+            if case == 'extra-member':
+                by_uid['Category-0'] = {'kind': 'Category', 'finalizers': ['categories.application.kubesphere.io/finalizer']}
+            elif case == 'version-without-cleanup':
+                by_uid['ApplicationVersion-0']['finalizers'] = []
+            phase = {'phase': 'application-store', 'expected': list(by_uid)}
+            records = {}
+            attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(),
+                                      record=lambda n, v: records.update({n: v}))
+            fixture = RepresentativeFixture(SimpleNamespace(attempt_id='catalog-phase-refusal'), attempt)
+            fixture.catalog_category = copy.deepcopy(category)
+            fixture.catalog_counts = {'Repo': 1, 'Application': 27, 'ApplicationVersion': 90, 'Category': 1}
+            error = ('catalog-version-finalizer-pattern-not-represented' if case == 'version-without-cleanup'
+                     else 'catalog-phase-not-exact')
+            with self.subTest(case=case), patch.object(Fixture, 'retire_phase', return_value=['native-phase-result']) as native_phase, \
+                 patch.object(fixture, 'get', return_value=copy.deepcopy(category)) as get:
+                with self.assertRaisesRegex(ValueError, error):
+                    fixture.retire_phase(phase, set(by_uid), by_uid, {})
+                native_phase.assert_not_called()
+                get.assert_not_called()
+                self.assertNotIn('catalog-result.json', records)
+
+    def namespace_driver(self, canary_reads, expected_error=None, expected_puts=7, expected_runs=None,
+                         before=None, after_read=None, delete=False):
+        """before rewrites each settled raw inventory; after_read changes raw namespace reads once the phase
+        completed; delete sends one namespace DELETE through the recording kube wrapper during the phase."""
         raw = {}
         records = {}
         attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
@@ -360,27 +442,39 @@ class DriverSmokeTests(unittest.TestCase):
             value['spec'] = {'finalizers': ['kubernetes']}
             raw[value['metadata']['name']] = value
         def get(resource, name):
-            return copy.deepcopy(raw[name])
+            value = copy.deepcopy(raw[name])
+            if after_read and 'namespace-finalizers' in fixture.completed_retirement_phases:
+                after_read(value)
+            return value
         def settled():
-            fixture.raw_inventory_by_uid = {v['metadata']['uid']: copy.deepcopy(v) for v in raw.values()}
-            return [project_resource(v) for v in raw.values()], True
+            items, stable = [copy.deepcopy(v) for v in raw.values()], True
+            if before:
+                items, stable = before(items)
+            fixture.raw_inventory_by_uid = {v['metadata']['uid']: v for v in items}
+            return [project_resource(v) for v in items], stable
         def kube(name, *argv, **kwargs):
+            if name == 'synthetic-namespace-delete':
+                return
             self.assertEqual(argv[:2], ('replace', '--raw'))
             value = kwargs['obj']
             self.assertEqual(value['metadata']['resourceVersion'], '1')
             raw[value['metadata']['name']] = copy.deepcopy(value)
+        def absent(uids, timeout):
+            if delete:
+                fixture.kube('synthetic-namespace-delete', 'delete', '--raw', '/api/v1/namespaces/' + FIXTURE_FINALIZER_NAMES[0])
+            return True
         with patch.object(fixture, 'populate'), patch.object(fixture, 'create', side_effect=create), \
              patch.object(fixture, 'get', side_effect=get), patch.object(fixture, 'settled_inventory', side_effect=settled), \
              patch.object(fixture, 'discover', return_value={('v1', 'Namespace'): ('namespaces', False)}), \
              patch.object(fixture, 'native_read', side_effect=lambda path: copy.deepcopy(raw[path.rsplit('/', 1)[-1]])), \
-             patch.object(Fixture, 'kube', side_effect=kube), patch.object(fixture, 'wait_absent', return_value=True), \
+             patch.object(Fixture, 'kube', side_effect=kube), patch.object(fixture, 'wait_absent', side_effect=absent), \
              patch.object(fixture, 'run', side_effect=[SimpleNamespace(stdout=value) for value in canary_reads]) as run:
             if expected_error:
                 with self.assertRaisesRegex(ValueError, expected_error):
                     fixture.execute()
             else:
                 fixture.execute()
-        self.assertEqual(run.call_count, 1 if expected_puts == 0 else 2)
+        self.assertEqual(run.call_count, (1 if expected_puts == 0 else 2) if expected_runs is None else expected_runs)
         self.assertEqual(sum(call['argv'][0] == 'replace' for call in fixture.native_calls), expected_puts)
         return records
 
@@ -399,6 +493,45 @@ class DriverSmokeTests(unittest.TestCase):
             with self.subTest(case=case):
                 records = self.namespace_driver(values, 'seven-namespace-canary-changed',
                                                 expected_puts=0 if case == 'incorrect-initial' else 7)
+                self.assertNotIn('seven-namespace-result.json', records)
+
+    def test_namespace_driver_refuses_namespace_delete_in_request_trace(self):
+        records = self.namespace_driver((b'synthetic-426-canary', b'synthetic-426-canary'),
+                                        'seven-namespace-request-trace-failed', delete=True)
+        self.assertNotIn('seven-namespace-result.json', records)
+
+    def test_namespace_driver_refuses_failed_raw_preservation_check(self):
+        retained = 'qualification.hexalith.io/retain'
+        for case, change in (('labels', lambda v: v['metadata']['labels'].update({'qualification.hexalith.io/retained': 'changed'})),
+                             ('unrelated-finalizer', lambda v: v['metadata']['finalizers'].remove(retained))):
+            with self.subTest(case=case):
+                records = self.namespace_driver((b'synthetic-426-canary', b'synthetic-426-canary'),
+                                                'seven-namespace-preservation-failed', expected_runs=1, after_read=change)
+                self.assertNotIn('seven-namespace-result.json', records)
+
+    def test_namespace_driver_refuses_unsettled_manager_or_inexact_plan_and_identities_before_any_put(self):
+        def namespace(name):
+            return {'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': name, 'uid': 'uid-' + name,
+                    'resourceVersion': '1', 'finalizers': [SYSTEM_WORKSPACE_FINALIZER]}, 'spec': {'finalizers': ['kubernetes']}}
+        manager = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': 'ks-controller-manager-0',
+                   'namespace': 'kubesphere-system', 'uid': 'pod', 'resourceVersion': '1'}, 'spec': {}}
+        release = {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'synthetic', 'namespace': 'kubesphere-system',
+                   'uid': 'cm', 'resourceVersion': '1', 'annotations': {'meta.helm.sh/release-name': 'ks-core'}}, 'data': {}}
+        def swapped_identity(items):
+            # Still seven planned roots, but a production namespace replaces one fixture namespace.
+            last = next(v for v in items if v['metadata']['name'] == FIXTURE_FINALIZER_NAMES[-1])
+            last['metadata']['finalizers'].remove(SYSTEM_WORKSPACE_FINALIZER)
+            return items + [namespace('default')], True
+        cases = (('unsettled', 'before-not-settled', lambda items: (items, False), 0),
+                 ('manager-pod', 'manager-present', lambda items: (items + [manager], True), 0),
+                 ('eighth-root', 'plan-not-exact', lambda items: (items + [namespace('default')], True), 1),
+                 ('release-object-in-scope', 'plan-not-exact', lambda items: (items + [release], True), 1),
+                 ('swapped-identity', 'identities-not-exact', swapped_identity, 1))
+        for case, error, before, runs in cases:
+            with self.subTest(case=case):
+                records = self.namespace_driver((b'synthetic-426-canary', b'synthetic-426-canary'), 'seven-namespace-' + error,
+                                                expected_puts=0, expected_runs=runs, before=before)
+                self.assertNotIn('seven-namespace-allowlist.json', records)
                 self.assertNotIn('seven-namespace-result.json', records)
 
 

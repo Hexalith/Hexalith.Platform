@@ -187,6 +187,30 @@ class AttemptPublicationTests(unittest.TestCase):
         attempt.finish()
         self.assertEqual(json.loads((attempt.directory / 'encrypted-exports.json').read_text())['exports'], [])
 
+    def test_same_key_as_both_recipients_is_refused_before_any_write(self):
+        attempt = self.configured_attempt('same-key-test')
+        with patch('evidence.subprocess.run') as run:
+            with self.assertRaisesRegex(ValueError, 'readback-recipient-must-be-distinct'):
+                attempt.encrypt('x', b'PRIVATE', 'age', READBACK)
+            run.assert_not_called()
+        # The same key under another comment still names a single recipient.
+        with self.assertRaisesRegex(ValueError, 'export-second-recipient-missing'):
+            attempt.encrypt('y', b'PRIVATE', fake_age(self.base, SSH), READBACK + ' other-comment')
+        self.assertEqual(list(attempt.directory.iterdir()), [])
+        self.assertEqual(attempt.exports, [])
+
+    def test_traversal_record_and_export_names_are_refused_before_any_write(self):
+        attempt = self.configured_attempt('name-test')
+        with self.assertRaisesRegex(ValueError, 'invalid-record-name'):
+            attempt.record('../x.json', {})
+        with patch('evidence.subprocess.run') as run:
+            with self.assertRaisesRegex(ValueError, 'invalid-export-name'):
+                attempt.encrypt('../x', b'PRIVATE', 'age', ADMINISTRATOR)
+            run.assert_not_called()
+        self.assertEqual(list(attempt.directory.iterdir()), [])
+        self.assertEqual(sorted(p.name for p in attempt.directory.parent.iterdir()), ['name-test'])
+        self.assertEqual((attempt.records, attempt.exports), ({}, []))
+
     def test_existing_upgrade_and_recovery_evidence_roots_are_refused(self):
         home = self.base / 'home'  # Path.home() is patched to this directory in setUp
         for name in ('hexalith-upgrade-evidence', 'hexalith-recovery-evidence'):
