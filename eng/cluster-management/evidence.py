@@ -72,7 +72,7 @@ class Attempt:
         root = Path(root).absolute()
         if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,79}', attempt_id):
             raise ValueError('invalid-attempt-id')
-        if category not in ('qualification', 'rehearsal'):
+        if category not in ('qualification', 'rehearsal', 'retirement'):
             raise ValueError('invalid-attempt-category')
         self.directory = root / category / attempt_id
         for part in [self.directory, *self.directory.parents]:
@@ -108,8 +108,10 @@ class Attempt:
         finally:
             os.umask(old)
         self.attempt_id = attempt_id
+        self.category = category
         self.records = {}
         self.exports = []
+        self.signatures = {}
 
     def record(self, name, record):
         if not re.fullmatch(r'[a-z0-9-]+\.json', name):
@@ -150,6 +152,33 @@ class Attempt:
         self.exports.append(entry)
         return entry
 
+    def signed_record(self, name, record, ssh_keygen, signing_key, namespace='hexalith-retirement', *,
+                      allowed_signers=None, principal=None, before_record=None):
+        """Sign the exact sanitized receipt bytes; retain detached signatures with their records."""
+        data = canonical(record)
+        result = subprocess.run([str(ssh_keygen), '-Y', 'sign', '-n', namespace, '-f', str(signing_key)],
+                                input=data, capture_output=True, timeout=30)
+        if result.returncode or not result.stdout.startswith(b'-----BEGIN SSH SIGNATURE-----'):
+            raise ValueError('receipt-signing-failed')
+        if allowed_signers or principal:
+            if not allowed_signers or not principal or not re.fullmatch(r'[a-z0-9-]+\.json', name):
+                raise ValueError('receipt-verification-inputs-required')
+            signature = self.directory / (name + '.sig')
+            write_new(signature, result.stdout)
+            verified = subprocess.run([str(ssh_keygen), '-Y', 'verify', '-f', str(allowed_signers),
+                '-I', principal, '-n', namespace, '-s', str(signature)], input=data, capture_output=True, timeout=30)
+            if verified.returncode:
+                raise ValueError('receipt-signature-unverified')
+            # Never persist an accepted outcome before its exact signature passes.
+            if before_record:
+                before_record()
+            sha = self.record(name, record)
+        else:
+            sha = self.record(name, record)
+            write_new(self.directory / (name + '.sig'), result.stdout)
+        self.signatures[name] = result.stdout
+        return sha
+
     def finish(self, publish=True):
         # Plaintext digests stay in private custody; only ciphertext identities are published.
         write_new(self.directory / 'private-export-digests.json', canonical({'schemaVersion': 1, 'attemptId': self.attempt_id,
@@ -166,10 +195,13 @@ class Attempt:
         write_new(self.directory / 'SHA256SUMS', sums.encode())
         if not publish:
             return
-        target = self.project / '_bmad-output/implementation-artifacts/evidence/epic-4/4-26' / self.attempt_id
+        story = '4-27' if self.category == 'retirement' else '4-26'
+        target = self.project / '_bmad-output/implementation-artifacts/evidence/epic-4' / story / self.attempt_id
         target.mkdir(parents=True, exist_ok=False)
         # Only records explicitly built from allowlisted fields are projected.
         for name, record in self.records.items():
             write_new(target / name, canonical(record))
+            if name in self.signatures:
+                write_new(target / (name + '.sig'), self.signatures[name])
         write_new(target / 'SHA256SUMS', ''.join(
             f'{file_digest(p)}  {p.name}\n' for p in sorted(target.iterdir())).encode())

@@ -1,0 +1,46 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t105545z-s427-lease-handoff",
+  "boundBytes": {},
+  "cleanupPassed": {},
+  "encryptedExportCount": 4,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "synthetic-native-lease-observation-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "lease-handoff-observation.json": {
+      "checks": {
+        "allOtherDesiredContentUnchanged": true,
+        "fullDesiredContentDigestChanged": true,
+        "renewTimeChanged": true,
+        "sameUid": true
+      },
+      "executorSha256": "9dfd47ae6fbeeac935f6849ff133598f5834566f018eb065e8a75b655af21ba7",
+      "handoffBehavior": "plan-full-content-drift; production activation remains gated",
+      "mutationRequests": 0,
+      "newLiveLeaseExceptionApproved": false,
+      "observedResponseIntervalSeconds": 15.205,
+      "procedureSha256": "fb556b53cb505868ec877bd41f44085279990926793fdc034775272f39674950",
+      "productionRetirementAccepted": false,
+      "productionSourceObserved": false,
+      "reasonCode": "normal-renewal-invalidates-strict-plan-baseline",
+      "requestedWaitSeconds": 12,
+      "state": "observed",
+      "upgradeGate": "closed"
+    }
+  },
+  "privateAttemptChecksumSha256": "2560b5baf74ff5c4f3b5d09bb1254cda2d46c9870b3ec1254e41b8405c410d6d",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "encrypted-exports.json": "b9336b6e37b58a817797f971240733166a41d3478714a5006027e3386911a5c0",
+    "lease-handoff-observation.json": "bb6c7cb844a49f5684088084108e1eaade88d947eed6ffa6fd7df157338cb59b"
+  },
+  "recordedAt": "2026-10-05T10:56:04Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

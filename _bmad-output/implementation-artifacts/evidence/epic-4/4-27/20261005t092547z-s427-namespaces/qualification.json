@@ -1,0 +1,58 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t092547z-s427-namespaces",
+  "boundBytes": {
+    "driverSha256": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
+    "moduleSha256": {
+      "evidence.py": "d018c8693ee005a30131a7274e01b83e20a39da0e54fc8a946112de0c8fa70fb",
+      "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0"
+    },
+    "productionExecutorSha256": "299259c3675d22789ca0da203c3a2963d640292cc927fc50535b00c10500e6b7",
+    "productionProcedureSha256": "e3aecf22b2053d45a66ed0fa478a770d1b8ebbde526524126908252b5100db53",
+    "scriptSha256": "d6e542c0ddd98531d294c918a9ad0c5ff1a77e77bcd477b025291eddaf7cb1f3",
+    "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf"
+  },
+  "cleanupPassed": {
+    "cleanup.json": true
+  },
+  "encryptedExportCount": 85,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "isolated-retirement-qualification-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "seven-namespace-result.json": {
+      "actualDependencyPlanAndRetirePhaseUsed": true,
+      "actualNamespaceDeleteRequests": 0,
+      "actualNamespaceUidResourceVersionBoundPutRequests": 7,
+      "allBaselineIdentitiesAndProtectedStoragePreserved": true,
+      "namespaceCount": 7,
+      "productionAccepted": false,
+      "productionCredentialsOrDataImported": false,
+      "state": "passed",
+      "syntheticCanaryBeforeAfterEqual": true
+    },
+    "summary.json": {
+      "licensedKubeSphereWritesUsed": false,
+      "productionRetirementAccepted": false,
+      "qualificationAccepted": false,
+      "state": "passed-limited"
+    }
+  },
+  "privateAttemptChecksumSha256": "6b1610d12a4bf8cb75574a13c4e0e294a0b6ee6f1c5ca09e2073eee20567c20b",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "attempt.json": "9cd22767f9b59bd4f87082bd15da7059b51ec26074e96b88f59b1da123897608",
+    "cleanup.json": "22483223c3b2c7abd087b6ba527708ccb5446a5d192996829d4df0392edfb804",
+    "encrypted-exports.json": "fa6255b56f10db051ebb795d125c1204d15bc550099fa844999b48648ed3b6ee",
+    "seven-namespace-result.json": "383f1d555764efbcc7a3fb85d6ecdf65a4ec41a927af2d89cca1c63949e8e35c",
+    "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
+  },
+  "recordedAt": "2026-10-05T09:25:47Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

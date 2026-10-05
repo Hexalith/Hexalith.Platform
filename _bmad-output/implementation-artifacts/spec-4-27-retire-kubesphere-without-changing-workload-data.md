@@ -4,7 +4,8 @@ type: 'feature'
 epic: 4
 story: 27
 created: '2026-10-05'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: '54920908f15a99b48e69861baf306365353fc6df'
 route: 'dispatch'
 review_loop_iteration: 0
 context:
@@ -49,10 +50,10 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `eng/cluster-management/rehearse.py` — extract transport-independent phase execution and preserve all exact deletion, transition, namespace-finalizer and full-content guards for fixture and production use.
-- [ ] `eng/cluster-management/retire.py` — add explicit native context/tool/credential inputs, fresh census and plan construction, independent preflight evidence validation, exact signed approval binding, default non-mutating mode and an explicitly armed production path; record every request/phase and stop at the first refusal.
-- [ ] `eng/cluster-management/evidence.py` — support immutable 4.27 private attempts and sanitized publication without changing 4.26 receipts; encrypt/read back raw before/after inventories, commands and diagnostics.
-- [ ] `eng/cluster-management/test_retire.py` and existing fixture tests — exercise stale gate/approval, drift, conflict, unexpected deletion, retained authority, protected namespace/storage and failed health paths; verify zero requests before a complete gate and fail-closed mid-phase behavior.
+- [x] `eng/cluster-management/rehearse.py` — extract transport-independent phase execution and preserve all exact deletion, transition, namespace-finalizer and full-content guards for fixture and production use.
+- [x] `eng/cluster-management/retire.py` — add explicit native context/tool/credential inputs, fresh census and plan construction, independent preflight evidence validation, exact signed approval binding, default non-mutating mode and an explicitly armed production path; record every request/phase and stop at the first refusal.
+- [x] `eng/cluster-management/evidence.py` — support immutable 4.27 private attempts and sanitized publication without changing 4.26 receipts; encrypt/read back raw before/after inventories, commands and diagnostics.
+- [x] `eng/cluster-management/test_retire.py` and existing fixture tests — exercise stale gate/approval, drift, conflict, unexpected deletion, retained authority, protected namespace/storage and failed health paths; verify zero requests before a complete gate and fail-closed mid-phase behavior.
 - [ ] `eng/cluster-management/RETIRE-KUBESPHERE.md`, `README.md` — document exact command inputs, plan/approval handoff, per-phase stop/recovery and post-retirement checks. Rerun catalog, seven-namespace and fresh-node fixtures with final executor/shared-module bytes; bind receipts to the fresh production plan.
 - [ ] `_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md`, `sprint-status.yaml` — record current gate and attempt evidence; mark done only after signed production preservation and retirement acceptance. Hand fresh post-retirement recovery inputs to 4.1.
 
@@ -62,6 +63,14 @@ context:
 - Given any missing prerequisite or failed/unobserved outcome, when the handoff is evaluated, then 4.27 remains incomplete and 4.1's upgrade gate stays closed.
 
 ## Implementation Notes
+
+- `PhaseExecutor` shares the existing reviewed guards between kind and the explicit native production transport. Production dispatch independently checks action kind, approved phase root, UID/resourceVersion and exact named-finalizer body; it stops at the first refusal. Protected and retained state, source/tool/credential/trust/code/evidence identities and gate expiry are checked before subsequent requests.
+- Immutable planning custody names a different future execution attempt. Original signatures and exact plan/receipt/procedure/allowlist/outage/owner/window bindings precede arming. A separate read-only assessment requires new signed postflight health/external-denial/recovery inputs and exact Administrator acceptance; successful deletion alone keeps the story open and the 4.1 gate closed.
+- Verification: all **224** cluster-management tests pass, including 47 new executor tests with real SSH signatures and native transport refusal cases. Verbose local audit: `/tmp/story-4-27-full-suite.log`. The final-byte [catalog and fresh-node rehearsal](evidence/epic-4/4-27/20261005t104023z-s427-catalog/qualification.json) completed all nineteen phases and 471 exact removals with 46 CRDs retained, then restored all 798 baseline identities with zero baseline/CRD UID mismatches, canary readback, hash checking, five ready manager deployments, 845 verified encrypted readbacks and cleanup. The final-byte [seven-namespace rehearsal](evidence/epic-4/4-27/20261005t104023z-s427-namespaces/qualification.json) passed seven guarded PUTs, zero Namespace DELETEs, preservation, 85 verified encrypted readbacks and cleanup. Both remain `passed-limited` synthetic outcomes; production acceptance remains unobserved.
+- The current-executor [unmocked native census smoke](evidence/epic-4/4-27/20261005t104956z-s427-native-census/qualification.json) passed inside the isolated node with synthetic credentials: 295 observed resources, zero mutations, 89 verified encrypted readbacks and temporary-input cleanup. The [local binding audit](evidence/epic-4/4-27/20261005t104023z-s427-verification/verification.json) ran the real `validate_rehearsals` against both final authoritative private manifests and current code/procedure digests. Pure `dependency_plan` / `actions_for` / `validate_production_scope` checks on the actual historical fixture census passed: 2,596 resources, nineteen phases, 482 deletion identities, seven namespace interventions, five retained authority objects and none in scope. These checks created no fresh production plan, approval, mutation or acceptance. Superseded completed fixtures and earlier smoke/setup refusals remain immutable under their original identities in compact 4.27 projections; authoritative attempts stay private, and existing 4.26 evidence stays untouched.
+- Remaining operational work: fresh native production plan bound to final-byte receipts, accepted 4.2 closure, fresh signed production 4.0/4.1 recovery/readback and matching node/configuration, separate exact execution approval, actual production retirement/preservation and signed postflight acceptance/4.1 recovery handoff. No production attempt was armed or run; story and sprint remain `in-progress`.
+
+- **Measured operability gate:** the historical census includes 13 Leases. The retained [synthetic native observation](evidence/epic-4/4-27/20261005t105545z-s427-lease-handoff/qualification.json) requested a 12-second pause and measured a 15.205-second response interval: the Node-Lease UID and every other desired-content field stayed unchanged while `spec.renewTime` and its full desired-content digest changed. Both actual command/results remain in four encrypted exports with verified two-recipient readback. The strict plan-to-execution comparison refuses normal renewal with zero mutations. Production activation remains gated pending an explicit intent decision; no live-Lease exception was added and the qualified post-controller manager Lease checkpoint remains unchanged.
 
 ## Spec Change Log
 
@@ -74,8 +83,19 @@ The production executor must call the same reviewed phase guards as the syntheti
 ## Verification
 
 **Commands:**
-- `python3 -m unittest discover -s eng/cluster-management -p 'test_*.py'` — retirement and existing fixture refusal cases pass.
-- `git diff --check` — no whitespace errors.
+- `python3 -m unittest discover -s eng/cluster-management -p 'test_*.py' -v` — 224 tests pass; full output retained at `/tmp/story-4-27-full-suite.log`.
+- `git diff --check HEAD` — no whitespace errors.
+
+- Actual private final catalog/namespace manifests accepted by `validate_rehearsals` under frozen code and procedure digests; historical-source phase/action/scope validation also passes. Exact manifest/code/source/test-log digests and measured outcomes are retained in the [local binding audit](evidence/epic-4/4-27/20261005t104023z-s427-verification/verification.json). No fresh production gate is claimed.
+
+**Matrix audit:** all covering tests ran and passed (`... ok`) in the 224-test verbose output; none was skipped. This verifies software behavior; live operational acceptance remains unobserved.
+
+| Matrix row | Passing covering tests |
+| --- | --- |
+| Approved attempt | `test_shared_phase_execution_and_real_plan_to_execute_handoff` |
+| Stale or incomplete prerequisite | `test_stale_approval_is_zero_mutations`, `test_missing_recovery_or_console_gate_is_zero_mutations`, `test_caller_verified_flag_cannot_replace_actual_signature` |
+| Partial retirement | `test_conflict_stops_first_request_without_retry`, `test_unexpected_protected_deletion_stops_before_next_request`, `test_recreated_controller_stops_before_next_request` |
+| Completion | `test_signed_postflight_and_exact_administrator_acceptance`, `test_failed_post_retirement_health_leaves_acceptance_and_hop_closed` |
 
 **Manual checks (if no CLI):**
 - Inspect exact signed approvals, independent external denial, fresh recovery/readback and authenticated production outcomes before recording completion.

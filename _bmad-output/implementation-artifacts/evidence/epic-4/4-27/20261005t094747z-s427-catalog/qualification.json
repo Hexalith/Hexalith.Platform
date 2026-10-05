@@ -1,0 +1,135 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t094747z-s427-catalog",
+  "boundBytes": {
+    "driverSha256": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+    "moduleSha256": {
+      "evidence.py": "6b0eac55b13c9f9b78227065238aacfd9941f293974f1d1592d5ef5b6797ac7b",
+      "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0"
+    },
+    "productionExecutorSha256": "73aab8cca02ad8eec370d5ed789f8454bdb2c594ee95c65d9d4122c596a889fc",
+    "productionProcedureSha256": "b1be7771823476c7542c9a4b40dafdf2cda7971eaea8c5b38f44c5f0eb3b3509",
+    "scriptSha256": "d6e542c0ddd98531d294c918a9ad0c5ff1a77e77bcd477b025291eddaf7cb1f3",
+    "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf"
+  },
+  "cleanupPassed": {
+    "cleanup.json": true,
+    "retired-node-cleanup.json": true,
+    "rollback-cleanup.json": true
+  },
+  "encryptedExportCount": 844,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "isolated-retirement-qualification-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "catalog-result.json": {
+      "applicationVersionCleanupFinalizersProcessed": 90,
+      "categoryIdentityContentAndFinalizerPreserved": true,
+      "exactRemovals": 118,
+      "manualFinalizerRemovalUsed": false,
+      "productionAccepted": false,
+      "protectedStorageAndNamespacesPreserved": true,
+      "sourceCounts": {
+        "Application": 27,
+        "ApplicationVersion": 90,
+        "Category": 1,
+        "Repo": 1
+      },
+      "state": "passed",
+      "syntheticCounts": {
+        "Application": 27,
+        "ApplicationVersion": 90,
+        "Repo": 1
+      }
+    },
+    "kubesphere-retirement-result.json": {
+      "blanketFinalizerRemovalUsed": false,
+      "exactBaselineRemovals": 471,
+      "helmUninstallOrVendorHooksUsed": false,
+      "licensedApplicationWritesUsed": false,
+      "namespacePvcPvIdentitiesAndBindingsPreserved": true,
+      "phases": [
+        "installed-extension",
+        "global-role-bindings",
+        "workspace-role-bindings",
+        "workspace-roles",
+        "kubesphere-cluster-role-bindings",
+        "users",
+        "global-roles",
+        "kubesphere-service-accounts",
+        "catalog-extension",
+        "extension-repository",
+        "application-store",
+        "admission",
+        "controllers-and-services",
+        "reconciled-admission",
+        "console-route",
+        "remaining-release-objects",
+        "release-records",
+        "system-workspace-finalizers",
+        "namespace-finalizers"
+      ],
+      "productionAccepted": false,
+      "retainedCrds": 46,
+      "state": "passed-dependency-first-native-retirement"
+    },
+    "rollback-restore-result.json": {
+      "baselineIdentityCount": 798,
+      "baselineUidMismatches": [],
+      "crdUidMismatches": [],
+      "freshDockerNodeVerified": true,
+      "freshEtcdClusterAndMemberIdentities": true,
+      "markCompacted": true,
+      "productionRecoveryAccepted": false,
+      "readyKubeSphereDeployments": [
+        "extensions-museum",
+        "ks-apiserver",
+        "ks-console",
+        "ks-console-embed",
+        "ks-controller-manager"
+      ],
+      "revisionBump": 1000000000,
+      "runningKubeSphereContainers": [
+        "extensions-museum",
+        "ks-apiserver",
+        "ks-console",
+        "ks-console-embed",
+        "ks-controller-manager"
+      ],
+      "skipHashCheck": false,
+      "snapshotRevision": 2836,
+      "sourceNodeDestroyedBeforeRestore": true,
+      "state": "passed",
+      "syntheticCanaryRestoredAndReadbackEqual": true
+    },
+    "summary.json": {
+      "licensedKubeSphereWritesUsed": false,
+      "productionRetirementAccepted": false,
+      "qualificationAccepted": false,
+      "state": "passed-limited"
+    }
+  },
+  "privateAttemptChecksumSha256": "f2666586388235fb029d726751cf9c0f20bcf868cba913be86cc0f497ae65097",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "attempt.json": "bed0da55dccbf195b6f7ae06f9eda190abaa1f7ae5e8d21eb7cb9cbb31e98a07",
+    "catalog-result.json": "c567328d530f2f0d5c666d7aee102d0a635c03b76210e1d0e11d3da7cee1534a",
+    "cleanup.json": "76a970cc42b3e4aec3803c0ef0f20a5aedad6a0766480c456df1687a35c324cf",
+    "encrypted-exports.json": "82c5f36256232b02620651722f056f20fa8a4fdb521ddd5b512496e1239634be",
+    "kubesphere-retirement-result.json": "5827a15b0379bc4a4b0d804a8718c1e789049ac239c3eea9b9ca41b49f982762",
+    "post-retirement-native-health.json": "373887063ec714857f3f9d35b425c758a18f128ff90c8d876b1caebd4038aea0",
+    "retired-node-cleanup.json": "893ed7d83663d19498c845ba8c3b57243d7a3bf84cca651f8d80001f10420808",
+    "rollback-cleanup.json": "c281f371f8516ba84b6d54104a16a4356b7f10c916412e14a5b8b94d987eb493",
+    "rollback-restore-result.json": "71c069af9b63d87de8c5979469da9a5dea77c37cb796ef4a3a43b7b71c21bb13",
+    "rollback-snapshot.json": "975e78db8e31e111ea6812ea90a3515630bde886316ed7df2c39a7b414b8d109",
+    "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
+  },
+  "recordedAt": "2026-10-05T09:47:48Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

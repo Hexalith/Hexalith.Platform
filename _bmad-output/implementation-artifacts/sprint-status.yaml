@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 10-05-2026 09:18
+last_updated: 10-05-2026 09:59
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -107,7 +107,8 @@ development_status:
   4-24-use-mcpcli-against-staging: backlog
   4-25-prove-staging-side-isolation-controls: backlog
   4-26-qualify-rancher-and-the-management-migration: done
-  4-27-retire-kubesphere-without-changing-workload-data: backlog
+  # 2026-10-05: guarded executor implemented; live retirement/acceptance and fresh 4.1 handoff remain gated.
+  4-27-retire-kubesphere-without-changing-workload-data: in-progress
   4-28-deploy-rancher-and-register-the-existing-cluster: backlog
   epic-4-retrospective: optional
 

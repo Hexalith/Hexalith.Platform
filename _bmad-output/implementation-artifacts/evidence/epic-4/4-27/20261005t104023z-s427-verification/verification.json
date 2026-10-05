@@ -1,0 +1,126 @@
+{
+  "automatedTests": {
+    "matrix": {
+      "approved-attempt": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_shared_phase_execution_and_real_plan_to_execute_handoff"
+        ]
+      },
+      "completion": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_signed_postflight_and_exact_administrator_acceptance",
+          "test_failed_post_retirement_health_leaves_acceptance_and_hop_closed"
+        ]
+      },
+      "partial-retirement": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_conflict_stops_first_request_without_retry",
+          "test_unexpected_protected_deletion_stops_before_next_request",
+          "test_recreated_controller_stops_before_next_request"
+        ]
+      },
+      "stale-or-incomplete": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_stale_approval_is_zero_mutations",
+          "test_missing_recovery_or_console_gate_is_zero_mutations",
+          "test_caller_verified_flag_cannot_replace_actual_signature"
+        ]
+      }
+    },
+    "result": "OK",
+    "testsRun": 224,
+    "verboseAuditPath": "/tmp/story-4-27-full-suite.log",
+    "verboseAuditSha256": "a6e7cf3ee3491aedfc1e5856f58bd9a69953adf154ba8549d5aa7bbdffbd95d8"
+  },
+  "codeSha256": {
+    "evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+    "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+    "rehearse.py": "d6e542c0ddd98531d294c918a9ad0c5ff1a77e77bcd477b025291eddaf7cb1f3",
+    "rehearse_catalog.py": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+    "rehearse_namespaces.py": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
+    "retire.py": "9dfd47ae6fbeeac935f6849ff133598f5834566f018eb065e8a75b655af21ba7"
+  },
+  "fixtureReceiptValidation": {
+    "receipts": {
+      "catalog": {
+        "attemptId": "20261005t104023z-s427-catalog",
+        "checksumsSha256": "4c59318cf243bd2378eb86c2b57329ee879c91610980902323c7b2629bb95d50",
+        "records": {
+          "attempt.json": "c4dfc784335b5e6cec504dd6f2047668862713e039ec00815204d2b00537a4cc",
+          "catalog-result.json": "c567328d530f2f0d5c666d7aee102d0a635c03b76210e1d0e11d3da7cee1534a",
+          "cleanup.json": "76a970cc42b3e4aec3803c0ef0f20a5aedad6a0766480c456df1687a35c324cf",
+          "encrypted-exports.json": "eb1cc17fbddd46b1af6dd86af4ac65bd9fe4f80016b51f435c8c35755abeeb4c",
+          "kubesphere-retirement-result.json": "4698dd4b4194410d1e504c761a5c19599988cc8e9e62d7dbd2038d8d65668002",
+          "rollback-restore-result.json": "0ceb6bc2af7ee16879766507d450d9d6b08b01b1fe9879510de9378656535076",
+          "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
+        }
+      },
+      "namespaces": {
+        "attemptId": "20261005t104023z-s427-namespaces",
+        "checksumsSha256": "306024e5684d019b14c9f8c0658ce802229a1daac57539da557168b9fed9f0f4",
+        "records": {
+          "attempt.json": "15c6befe26690781423fb060f32819690e230f24a0a74ad8f0a7384e9e49ae24",
+          "cleanup.json": "7572915930e7736fc738fcadf7385c6fe4f90b8df702043ec9abd498cee47958",
+          "encrypted-exports.json": "d421373fd8a59d0f556c9019aa734fbdb5f2daf964ed495ef1301e7cca5532ee",
+          "seven-namespace-result.json": "383f1d555764efbcc7a3fb85d6ecdf65a4ec41a927af2d89cca1c63949e8e35c",
+          "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
+        }
+      }
+    },
+    "state": "passed"
+  },
+  "historicalSourceShape": {
+    "authorityObjectsInScope": 0,
+    "deletionObjectCount": 482,
+    "freshProductionCensus": false,
+    "inventoryResourceCount": 2596,
+    "mutationRequests": 0,
+    "namespaceInterventionCount": 7,
+    "phaseCount": 19,
+    "retainedAuthorityCount": 5,
+    "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf",
+    "state": "passed"
+  },
+  "kind": "local-retirement-implementation-verification",
+  "liveOperationalAcceptance": "unobserved",
+  "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+  "measuredOperabilityGate": {
+    "allOtherDesiredContentUnchanged": true,
+    "fullDesiredContentDigestChanged": true,
+    "mutationRequests": 0,
+    "newLiveLeaseExceptionApproved": false,
+    "observationAttemptId": "20261005t105545z-s427-lease-handoff",
+    "observationProjectionSha256": "a40f7885b468ffab71f45b0618e29d8e1ed0ac2cf3681c3f2f07c336e0a8b5f5",
+    "observedResponseIntervalSeconds": 15.205,
+    "productionSourceObserved": false,
+    "renewTimeChanged": true,
+    "requestedWaitSeconds": 12,
+    "sameUid": true,
+    "state": "closed-pending-explicit-intent-decision"
+  },
+  "procedureSha256": "fb556b53cb505868ec877bd41f44085279990926793fdc034775272f39674950",
+  "productionAttemptArmed": false,
+  "productionPlanCreated": false,
+  "productionRetirementAccepted": false,
+  "remainingOperationalRequirements": [
+    "explicit intent decision for normal Lease renewal under strict plan-content handoff",
+    "fresh source-bound production plan",
+    "accepted independent 4.2 closure",
+    "fresh signed 4.0/4.1 production recovery and independent readback plus matching node/configuration",
+    "exact-attempt Administrator execution approval",
+    "actual production retirement/preservation and signed postflight acceptance",
+    "fresh post-retirement 4.1 recovery handoff"
+  ],
+  "schemaVersion": 1,
+  "scope": "Software tests, immutable synthetic fixtures, and pure historical-source checks only.",
+  "state": "passed-software-and-isolated-checks",
+  "upgradeGate": "closed"
+}

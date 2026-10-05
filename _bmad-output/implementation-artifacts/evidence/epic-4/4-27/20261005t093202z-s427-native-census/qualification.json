@@ -1,0 +1,37 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t093202z-s427-native-census",
+  "boundBytes": {},
+  "cleanupPassed": {},
+  "encryptedExportCount": 152,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "isolated-retirement-qualification-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "native-census-smoke.json": {
+      "executorSha256": "299259c3675d22789ca0da203c3a2963d640292cc927fc50535b00c10500e6b7",
+      "mutationRequests": 0,
+      "productionRetirementAccepted": false,
+      "reasonCode": "complete-native-census",
+      "resourcesObserved": 756,
+      "state": "observed",
+      "syntheticCredentialCopyRemoved": true,
+      "syntheticCredentialsOnly": true,
+      "upgradeGate": "closed"
+    }
+  },
+  "privateAttemptChecksumSha256": "1854a92a02a5db916cbf9b2dcc9502a10bf718d20ce37bdda85c674b802614c0",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "encrypted-exports.json": "9635c67374d43bc1f9eacfb6af6e4abc14afde2afbde30f4bdd222c051649fab",
+    "native-census-smoke.json": "625c880ae37e87bf4c68e70340db098ca3da988b054f457a21e0d6c3f94784b3"
+  },
+  "recordedAt": "2026-10-05T09:32:55Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

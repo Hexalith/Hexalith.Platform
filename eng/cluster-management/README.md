@@ -1,11 +1,15 @@
 # Cluster-management migration operations
 
+The [4.27 executor handoff](RETIRE-KUBESPHERE.md#production-executor-and-exact-attempt-handoff-2026-10-05) documents every command input, signed prerequisite schema, plan/approval transfer, phase stop and postflight acceptance. `python3 eng/cluster-management/retire.py --help` lists the inputs; its default mode only proposes a plan. Renew the full catalog/fresh-node restore and seven-namespace fixtures with `--production-executor` after any bound executor, procedure, driver or shared-module change. Keep each failed attempt, require a new incident decision after a partial stop, and leave 4.27 incomplete and the 4.1 gate closed until their distinct signed outcomes are accepted.
+
+Production activation also remains gated by the measured live-Lease handoff limit: normal `spec.renewTime` changes fail the strict approved full-content baseline with zero mutations. The runbook records this limit and preserves the exact post-controller Lease checkpoint; a new live-renewal exception requires an explicit intent decision.
+
 The [approved migration spec](../../_bmad-output/specs/spec-kubesphere-to-rancher/SPEC.md) governs this package. The Administrator's [2026-10-04 sole-owner approval](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t085020z-owner-authorization/authorization.json) settles the documented capability, host/endpoint/backup/cost and operator designs. The current [eight-criterion assessment](../../_bmad-output/implementation-artifacts/4-26-qualify-rancher-and-the-management-migration.md#criterion-evidence-and-remaining-gates) records all eight original 4.26 criteria as met and keeps measured limits and later executions explicit. No production retirement, credential issuance, VM creation or upgrade occurred.
 
 | Procedure | Story | Current handoff |
 | --- | --- | --- |
 | [Qualification](QUALIFICATION.md) / [collector](qualify.py) | 4.26 | Fresh direct-native census, two-recipient encrypted exports, dated supported identities/licenses and original-criterion assessment |
-| [Native KubeSphere retirement](RETIRE-KUBESPHERE.md) / [fixture](rehearse.py) | 4.27 | Owner-approved source-bound proposal; executable production actions stay empty until current recovery, closure, content and exact execution checks |
+| [Native KubeSphere retirement](RETIRE-KUBESPHERE.md) / [executor](retire.py) / [shared phase guards and fixture](rehearse.py) | 4.27 | Explicit native planning, signed exact-attempt gate, separately armed execution and read-only postflight acceptance; production remains unaccepted |
 | [Native Kubernetes upgrade](../kubernetes-upgrade/README.md) | 4.1 | Separately qualified 1.34.9 → 1.35.9 → 1.36.5 direction and external-etcd server procedure; fresh recovery point and existing gates before each hop |
 | [Private Rancher plan](RANCHER.md) | 4.28 | Approved concrete single-node VM, private DNS/CA/TLS/firewalls, resources/costs/owners and separate manager/authority backups and restore tests |
 
