@@ -1396,7 +1396,16 @@ class Fixture:
         routes = sorted(f'{label(key(v))} -> {namespace or "-"}/{name}' for v in final
                         for namespace, name in route_service_backends(v) if (namespace, name) not in services)
         runtime = [label(key(v)) for v in final if v['namespace'] in MANAGER_NAMESPACES
-                   and v['kind'] in ('Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet')]
+                   and v['kind'] in ('Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet', 'CronJob')]
+        completed_jobs = []
+        for job in (v for v in final if v['namespace'] in MANAGER_NAMESPACES and v['kind'] == 'Job'):
+            current = self.get('jobs.batch', job['name'], job['namespace'])
+            conditions = current.get('status', {}).get('conditions', [])
+            terminal = (current.get('metadata', {}).get('uid') == job['uid']
+                        and current.get('status', {}).get('active', 0) == 0
+                        and any(c.get('type') in ('Complete', 'Failed') and c.get('status') == 'True'
+                                for c in conditions))
+            (completed_jobs if terminal else runtime).append(label(key(job)))
         completed = []
         for pod in self.get('pods')['items']:
             if pod['metadata'].get('namespace') in MANAGER_NAMESPACES:
@@ -1406,9 +1415,14 @@ class Fixture:
         workload = 's426-workload'
         self.create({'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 's426-post-retirement', 'namespace': workload},
                      'data': {'synthetic': 'post-retirement-native-write'}})
-        written = self.native_read(f'/api/v1/namespaces/{workload}/configmaps/s426-post-retirement')
-        write = self.native_retire('post-retirement-health', f'/api/v1/namespaces/{workload}/configmaps/s426-post-retirement',
-                                   project_resource(written))
+        config_path = f'/api/v1/namespaces/{workload}/configmaps/s426-post-retirement'
+        written = self.native_read(config_path)
+        write = self.native_retire('post-retirement-health', config_path, project_resource(written))
+        config_deadline, config_gone = time.monotonic() + 30, False
+        while not config_gone and time.monotonic() < config_deadline:
+            config_gone = self.native_read(config_path) is None
+            if not config_gone:
+                time.sleep(2)
         self.create({'apiVersion': 'v1', 'kind': 'Namespace', 'metadata': {'name': 's426-post-retirement'}})
         time.sleep(15)
         created = self.native_read('/api/v1/namespaces/s426-post-retirement')
@@ -1420,12 +1434,13 @@ class Fixture:
             if not gone:
                 time.sleep(5)
         record = {'staleAdmissionOrApiServiceReferences': stale, 'staleRouteBackends': routes, 'managerRuntimeRemaining': runtime,
-                  'completedManagerPodResidue': completed,
-                  'nativeConfigMapWriteDelete': write, 'newNamespaceManagementLabels': managed['managementLabels'],
+                  'completedManagerPodResidue': completed, 'completedManagerJobResidue': completed_jobs,
+                  'nativeConfigMapWriteDelete': write, 'nativeConfigMapDeletionCompleted': config_gone,
+                  'newNamespaceManagementLabels': managed['managementLabels'],
                   'newNamespaceFinalizers': managed['finalizers'], 'namespaceLifecycle': lifecycle,
                   'newNamespaceDeletionCompleted': gone, 'scope': 'fresh fixture only', 'productionAccepted': False}
         self.attempt.record('post-retirement-native-health.json', record)
-        if stale or routes or runtime or managed['managementLabels'] or managed['finalizers'] or not gone:
+        if stale or routes or runtime or not config_gone or managed['managementLabels'] or managed['finalizers'] or not gone:
             raise ValueError('post-retirement-native-health-failed')
         return record
 

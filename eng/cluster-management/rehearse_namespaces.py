@@ -37,6 +37,8 @@ class SevenNamespaceFixture(Fixture):
         if manager:
             raise ValueError('seven-namespace-manager-present')
         canary_before = fixture.run('seven-namespace-canary-before', ['docker', 'exec', fixture.node, 'cat', '/var/local/s426-synthetic/canary']).stdout
+        if canary_before != b'synthetic-426-canary':
+            raise ValueError('seven-namespace-canary-changed')
         fixture.reviewed_content_digests = {uid: content_review_digest(raw) for uid, raw in fixture.raw_inventory_by_uid.items()}
         attempt.encrypt('reviewed-full-content-digests', canonical(fixture.reviewed_content_digests), args.age, args.recipient)
         by_uid = {v['uid']: v for v in before}
@@ -70,7 +72,7 @@ class SevenNamespaceFixture(Fixture):
                 raise ValueError('seven-namespace-preservation-failed')
             comparison.append({'namespace': name, **checks})
         canary_after = fixture.run('seven-namespace-canary-after', ['docker', 'exec', fixture.node, 'cat', '/var/local/s426-synthetic/canary']).stdout
-        if canary_before != b'synthetic-426-canary' or canary_after != canary_before:
+        if canary_after != canary_before:
             raise ValueError('seven-namespace-canary-changed')
         def is_namespace_request(call, verb):
             argv = call['argv']

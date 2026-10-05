@@ -225,8 +225,15 @@ class DriverSmokeTests(unittest.TestCase):
         baseline = [project_resource(v) for v in objects]
         phases = {p['phase']: p for p in dependency_plan(baseline, retirement_scope(baseline))}
         self.assertEqual(set(phases), {'console-route'})
-        roots = {v['uid'] for v in baseline if v['kind'] in ('Ingress', 'Certificate', 'Secret', 'Lease')}
-        self.assertEqual(set(phases['console-route']['roots']), roots)
+        self.assertEqual(len(phases['console-route']['roots']), 4)
+        roots = {(v['kind'], v['namespace'], v['name']) for v in baseline
+                 if v['uid'] in phases['console-route']['roots']}
+        self.assertEqual(roots, {
+            ('Ingress', 'kubesphere-system', 'kubesphere-console'),
+            ('Certificate', 'kubesphere-system', 'kubesphere-console-letsencrypt'),
+            ('Secret', 'kubesphere-system', 'kubesphere-console-letsencrypt-tls'),
+            ('Lease', 'kubesphere-system', 'ks-controller-manager-leader-election'),
+        })
         self.assertEqual(set(phases['console-route']['expected']), {v['uid'] for v in baseline
                          if v['kind'] != 'CustomResourceDefinition'})
         certificate = next(v for v in baseline if v['kind'] == 'Certificate')
@@ -343,7 +350,7 @@ class DriverSmokeTests(unittest.TestCase):
             native_phase.assert_called_once_with(phase, set(by_uid), by_uid, {})
             get.assert_called_once_with('categories.application.kubesphere.io', 's426-catalog-category')
 
-    def namespace_driver(self, canary_reads, expected_error=None):
+    def namespace_driver(self, canary_reads, expected_error=None, expected_puts=7):
         raw = {}
         records = {}
         attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
@@ -373,7 +380,8 @@ class DriverSmokeTests(unittest.TestCase):
                     fixture.execute()
             else:
                 fixture.execute()
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, 1 if expected_puts == 0 else 2)
+        self.assertEqual(sum(call['argv'][0] == 'replace' for call in fixture.native_calls), expected_puts)
         return records
 
     def test_namespace_driver_executes_seven_native_interventions_and_checks_request_trace(self):
@@ -389,7 +397,8 @@ class DriverSmokeTests(unittest.TestCase):
         for case, values in (('incorrect-initial', (b'incorrect-initial-canary', b'incorrect-initial-canary')),
                              ('changed-final', (b'synthetic-426-canary', b'changed-final-canary'))):
             with self.subTest(case=case):
-                records = self.namespace_driver(values, 'seven-namespace-canary-changed')
+                records = self.namespace_driver(values, 'seven-namespace-canary-changed',
+                                                expected_puts=0 if case == 'incorrect-initial' else 7)
                 self.assertNotIn('seven-namespace-result.json', records)
 
 

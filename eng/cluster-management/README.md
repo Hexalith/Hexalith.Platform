@@ -27,7 +27,7 @@ The current retirement guard checks full private desired content—including spe
 
 The approved authority design has one Administrator, no deputy, native break-glass without MFA and Keycloak-MFA Rancher admin; no automatic workspace/account/staging mappings. Required signed grant/revocation events and independent off-site complete lineage are defined. Actual repository/current-head/signature, MFA and quarantined Rancher authority tests are 4.28. Fresh production recovery is the pre-4.27 prerequisite, distinct from synthetic fixture recovery.
 
-The [final assessment](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json) binds all eight original criteria, exact evidence hashes and seven-source-namespace equivalence. Historical attempts and their failures remain immutable; later production and management execution gates remain explicit.
+The [final assessment](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t165344z-qualification-assessment/qualification-assessment.json) binds all eight original criteria, exact evidence hashes and seven-source-namespace equivalence. It predates the later G108–G134 and G141/G142 corrections: criterion 7's seven-equivalent phrase applies to the separate probe, while the full run exercised six; criterion 8's 4.0 recovery shorthand and omitted 4.3 staging gate are superseded by the order above. Historical attempts and their failures remain immutable; later production and management execution gates remain explicit.
 
 ## Collection, isolated rehearsal and checks
 

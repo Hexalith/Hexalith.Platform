@@ -1142,7 +1142,8 @@ class WorkspaceProbeTests(unittest.TestCase):
 
 
 class PostRetirementTests(unittest.TestCase):
-    def run_checks(self, final, crds=(), pods=(), namespace_labels=None, namespace_gone=True, namespace_finalizers=()):
+    def run_checks(self, final, crds=(), pods=(), namespace_labels=None, namespace_gone=True, namespace_finalizers=(),
+                   config_gone=True, job_status=None):
         records = {}
         attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))
         fixture = Fixture(SimpleNamespace(attempt_id='post-retirement-test'), attempt)
@@ -1150,9 +1151,16 @@ class PostRetirementTests(unittest.TestCase):
                    'resourceVersion': '1', 'labels': namespace_labels or {}, 'finalizers': list(namespace_finalizers)}}
         written = {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 's426-post-retirement', 'namespace': 's426-workload',
                    'uid': 'c-1', 'resourceVersion': '1'}}
-        reads = {'/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement': [written],
+        reads = {'/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement':
+                 [written] + [None if config_gone else written] * 30,
                  '/api/v1/namespaces/s426-post-retirement': [created] + [None if namespace_gone else created] * 30}
-        with patch.object(fixture, 'create'), patch.object(fixture, 'get', return_value={'items': list(pods)}), \
+        def get(resource, name=None, namespace=None):
+            if resource == 'pods':
+                return {'items': list(pods)}
+            self.assertEqual(resource, 'jobs.batch')
+            job = next(v for v in final if v['kind'] == 'Job' and v['name'] == name and v['namespace'] == namespace)
+            return {'metadata': {'uid': job['uid']}, 'status': job_status or {}}
+        with patch.object(fixture, 'create'), patch.object(fixture, 'get', side_effect=get), \
              patch.object(fixture, 'native_read', side_effect=lambda path: reads[path].pop(0)), \
              patch.object(fixture, 'native_retire', return_value={'outcome': 'native-delete-accepted'}) as retire, \
              patch('rehearse.time.sleep'), patch('rehearse.time.monotonic', side_effect=itertools.count(0, 10)):
@@ -1168,6 +1176,7 @@ class PostRetirementTests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(retire.call_args_list[0].args[1], '/api/v1/namespaces/s426-workload/configmaps/s426-post-retirement')
         self.assertEqual([c.args[2]['uid'] for c in retire.call_args_list], ['c-1', 'n-1'])
+        self.assertTrue(record['nativeConfigMapDeletionCompleted'])
         self.assertTrue(record['newNamespaceDeletionCompleted'])
         hook = {**ks('admissionregistration.k8s.io/v1', 'ValidatingWebhookConfiguration', 'users', 'h'),
                 'webhooks': [{'service': {'namespace': 'kubesphere-system', 'name': 'ks-controller-manager'}}]}
@@ -1204,6 +1213,33 @@ class PostRetirementTests(unittest.TestCase):
         error, record, _ = self.run_checks([], pods=[done])
         self.assertIsNone(error)
         self.assertEqual(record['completedManagerPodResidue'], ['v1/Pod/kubesphere-system/installer-x'])
+
+    def test_native_health_refuses_configmap_left_after_accepted_delete(self):
+        error, record, retire = self.run_checks([], config_gone=False)
+        self.assertEqual(error, 'post-retirement-native-health-failed')
+        self.assertFalse(record['nativeConfigMapDeletionCompleted'])
+        self.assertEqual(record['nativeConfigMapWriteDelete']['outcome'], 'native-delete-accepted')
+        self.assertEqual(retire.call_count, 2)
+
+    def test_native_health_refuses_manager_cronjob_and_active_podless_job(self):
+        for kind, status in (('CronJob', None), ('Job', {'active': 1})):
+            with self.subTest(kind=kind):
+                manager = ks('batch/v1', kind, 'manager-task', 'task-1', 'kubesphere-system')
+                error, record, _ = self.run_checks([manager], job_status=status)
+                self.assertEqual(error, 'post-retirement-native-health-failed')
+                self.assertEqual(record['managerRuntimeRemaining'],
+                                 [f'batch/v1/{kind}/kubesphere-system/manager-task'])
+        finished = ks('batch/v1', 'Job', 'finished-task', 'task-2', 'kubesphere-system')
+        error, record, _ = self.run_checks([finished], job_status={
+            'conditions': [{'type': 'Complete', 'status': 'True'}]})
+        self.assertIsNone(error)
+        self.assertEqual(record['completedManagerJobResidue'],
+                         ['batch/v1/Job/kubesphere-system/finished-task'])
+        error, record, _ = self.run_checks([finished], job_status={
+            'active': 1, 'conditions': [{'type': 'Complete', 'status': 'True'}]})
+        self.assertEqual(error, 'post-retirement-native-health-failed')
+        self.assertEqual(record['managerRuntimeRemaining'],
+                         ['batch/v1/Job/kubesphere-system/finished-task'])
 
 
 class ReviewFollowUpTests(unittest.TestCase):
