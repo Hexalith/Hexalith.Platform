@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>Closed HMAC purposes; approval-signing authority is deliberately absent.</summary>
 public enum PlatformHmacPurpose
 {

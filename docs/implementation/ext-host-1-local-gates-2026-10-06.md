@@ -1,0 +1,9 @@
+# EXT-HOST-1 local gate corrections
+
+Full H1–H4 remains undelivered, Uncommitted and unavailable. The default verifier now refuses full qualification before invoking build or live commands; no accepted manifest can unlock missing implementation. Explicit LocalScaffold builds Debug into isolated artifacts with AspireUseCliBundle=true, zero warnings/errors, and no compatibility/availability claim.
+
+Script syntax passed. Six executable negative cases (default, Full, unknown mode/argument and missing mode/artifacts value) failed with zero build/live calls. An exact-source copied isolated AppHost started with Agents/Works disabled; describe reported zero application resources and one hidden Aspire dashboard. That exact owned path was stopped. Enabling Agents and Works together then refused with DependencyNotAvailable: EXT-HOST-1 before Works lookup/resource composition (CLI exit 2, AppHost exit 134). Describe found no running AppHost and exact-path cleanup ran. The existing Works/Identity source block remained byte-equivalent after line-ending normalization.
+
+The Aspire CLI runtime compilation emitted the existing CLI-bundle warning ASPIRE010 and a developer-certificate/OpenSSL trust warning; the explicit local verifier build is warning-free. Runtime refusal is executed evidence, not a text-only assertion. Dashboard connection values are omitted from captured evidence. No other AppHost was stopped.
+
+[Source evidence](ext-host-1-source-evidence-2026-10-06.json) contains original baseline/current observations, exact commands, hashes, runtime limits and missing work. Required owner decisions include production custody/profile, replicated spool failure model/retention, private credentials, independent authority, production protection/FR-34 and complete S3/S4/H3/H4 persisted race/restore qualification. Local cryptographic tests or an empty host cannot close those records. No service, database, provider or production credential was invented.

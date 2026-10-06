@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>Explicit current issuance and retained verification lifecycle.</summary>
 public enum PlatformHmacKeyState
 {

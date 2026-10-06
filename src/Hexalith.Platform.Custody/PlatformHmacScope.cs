@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>An exact tenant and purpose, never inferred from an opaque key version.</summary>
 /// <param name="TenantId">The authoritative tenant; security observations use system.</param>
 /// <param name="Purpose">The independent key family.</param>

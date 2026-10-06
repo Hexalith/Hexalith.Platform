@@ -1,0 +1,192 @@
+{
+  "dependency": "EXT-HOST-1",
+  "status": "PartialLocal",
+  "available": false,
+  "productionReady": false,
+  "initialBaseline": "3d8eaf400582f0698297d393f4330a54709c9a07",
+  "beforeObservedHead": "608db824a7f7c39147eaab6d81194234960c6cba",
+  "currentObservedHead": "608db824a7f7c39147eaab6d81194234960c6cba",
+  "gitMutationsPerformed": false,
+  "sourceFiles": [
+    {
+      "path": "apphost.cs",
+      "bytes": 11129,
+      "sha256": "7c140eb97bbc45e6ab0589ba3f186ea8eccc623bac9f8850bf2b42aadf136f9a"
+    },
+    {
+      "path": "eng/verify-agents-host.sh",
+      "bytes": 1917,
+      "sha256": "dd65e6a86a28315b8d22298e9e654e1c27426de1640ebcb698d539b4f43b3fb2"
+    },
+    {
+      "path": "docs/ext-host-1-agents-composition.md",
+      "bytes": 2072,
+      "sha256": "6ac3bb48b7556ed551f4bace705f87a4ae5255808c9a98d00e2d758a787a8c5d"
+    }
+  ],
+  "beforeSourceHashes": {
+    "apphost.cs": "29e3a625f9203f042cf2b96158e9f32060a144e10a332b615a6f97d6c3902e36",
+    "eng/verify-agents-host.sh": "fc2ea7c4a003917abeee4668afa5c87a7c09047fccb08bface0e0ff64ace1df4",
+    "docs/ext-host-1-agents-composition.md": "72d005156e8d35876372f4e5c7cdb263a1e209f00909c3732f435ac00b23bf15",
+    "worksBlockSha256": "97f1dd8ddfdddf139b184d40e0180cc42d1ace5481563e3d056970c6a006e9f1"
+  },
+  "worksBlockUnchanged": true,
+  "runtimeCopyMatchesSource": true,
+  "artifacts": [
+    {
+      "path": "/tmp/agents54-host-before.json",
+      "bytes": 480,
+      "sha256": "6b4fa7376bbe57e51ebcbf67ead95ff8b6d19b982a50fcc3e7773f0961fef71a"
+    },
+    {
+      "path": "/tmp/agents54-host-local-build.log",
+      "bytes": 328,
+      "sha256": "be505d085f98424c5a588cc861b3648eae859f8e6cc56a6a861f043ab44ca4d3"
+    },
+    {
+      "path": "/tmp/agents54-host-whitespace.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/agents54-host-negative.py",
+      "bytes": 973,
+      "sha256": "10c5ff2c4682ac2e469afb63eda51424f7b7c57ee83954dccc5863b766078a3c"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/missing-path.log",
+      "bytes": 40,
+      "sha256": "85f8f72675b0c314998a551ce3bb03cf07216964091dc623d1edbe32d0a36ae5"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/missing-mode.log",
+      "bytes": 45,
+      "sha256": "71c8d3196e288a6062c9dc2f9b468fbbf109436c0ab16b1e1efee57dac4ccb68"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/unknown-arg.log",
+      "bytes": 38,
+      "sha256": "52fda763ca06031c328284b757b28522eb9c35f1b4cbe1d70d17a30981c9e25a"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/unknown-mode.log",
+      "bytes": 27,
+      "sha256": "5c2688e49fbf72869a1e6c55315572ec687c45eda1f486fcfe62933c9182dbfb"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/full.log",
+      "bytes": 164,
+      "sha256": "4f6950206f72a8ce027e5e17c969e68f4495c4a6fc1a3800eba4df38b16a5029"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/default.log",
+      "bytes": 164,
+      "sha256": "4f6950206f72a8ce027e5e17c969e68f4495c4a6fc1a3800eba4df38b16a5029"
+    },
+    {
+      "path": "/tmp/agents54-host-negative/results.json",
+      "bytes": 541,
+      "sha256": "2c2ecf626e11cac0cdc5343c6ebd132d2c1559371af2e3f38d74a296287e2869"
+    },
+    {
+      "path": "/tmp/agents54-host-default-start.log",
+      "bytes": 305,
+      "sha256": "5d47602cf8c2e9e747eef2557e03e48de7afa076de89259f1dcbb65552b10d4e"
+    },
+    {
+      "path": "/tmp/agents54-host-default-describe.json",
+      "bytes": 197,
+      "sha256": "f66708719148beaac5972b47353f0d4a749f5e6ca3da57a36ab0bdb2f400f45f"
+    },
+    {
+      "path": "/tmp/agents54-host-default-stop.log",
+      "bytes": 355,
+      "sha256": "3d49c6227db74ebeb2a0dc8b6b67d38889ebaca67a2654033aea142078c1707a"
+    },
+    {
+      "path": "/tmp/agents54-host-enabled-start.log",
+      "bytes": 1440,
+      "sha256": "b1bed1cb7b2823b0fef2a82d5a4e8bd5238cd7c4257ccc6ef7af46be4bacac20"
+    },
+    {
+      "path": "/tmp/agents54-host-enabled-describe.log",
+      "bytes": 152,
+      "sha256": "e8ad1761aaa117b8ab12be96403cba92ff88f7ed4d3e107b7c6f5ae382210a65"
+    },
+    {
+      "path": "/tmp/agents54-host-enabled-cleanup.log",
+      "bytes": 152,
+      "sha256": "e8ad1761aaa117b8ab12be96403cba92ff88f7ed4d3e107b7c6f5ae382210a65"
+    }
+  ],
+  "commands": [
+    {
+      "command": "bash -n eng/verify-agents-host.sh",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0
+    },
+    {
+      "command": "./eng/verify-agents-host.sh --mode LocalScaffold --artifacts-path /tmp/hexalith-agents54-host-artifacts",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "command": "python3 /tmp/agents54-host-negative.py",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0,
+      "cases": 6,
+      "buildAndLiveCalls": 0
+    },
+    {
+      "command": "Platform__Works__Enabled=false Platform__Agents__Enabled=false aspire start --apphost /tmp/hexalith-agents54-host-runtime-20261006/apphost.cs --isolated --format Json --non-interactive",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0,
+      "outputSanitized": true
+    },
+    {
+      "command": "aspire describe --apphost /tmp/hexalith-agents54-host-runtime-20261006/apphost.cs --format Json --include-hidden --non-interactive",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0,
+      "applicationResources": 0,
+      "hiddenDashboardResources": 1,
+      "outputSanitized": true
+    },
+    {
+      "command": "aspire stop --apphost /tmp/hexalith-agents54-host-runtime-20261006/apphost.cs --non-interactive",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0
+    },
+    {
+      "command": "Platform__Works__Enabled=true Platform__Agents__Enabled=true aspire start --apphost /tmp/hexalith-agents54-host-runtime-20261006/apphost.cs --isolated --format Json --non-interactive",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 2,
+      "appHostExit": 134,
+      "expected": "DependencyNotAvailable before Works resource lookup"
+    },
+    {
+      "command": "aspire describe --apphost /tmp/hexalith-agents54-host-runtime-20261006/apphost.cs --format Json --non-interactive",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0,
+      "expected": "No running AppHost"
+    },
+    {
+      "command": "aspire stop --apphost /tmp/hexalith-agents54-host-runtime-20261006/apphost.cs --non-interactive",
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exit": 0,
+      "expected": "Cleanup exact owned path only"
+    }
+  ],
+  "runtimeToolWarnings": [
+    "Aspire CLI file-based runtime build reports ASPIRE010 (CLI-bundle setting) and OpenSSL developer certificate trust warning. The explicit LocalScaffold build uses AspireUseCliBundle=true and has zero warnings/errors; neither warning changes the observed guard refusal."
+  ],
+  "remainingGates": [
+    "Full H1-H4 composition and accepted owner targets/date/commands",
+    "Replicated spool technology, failure model, retention and actual failover/restore evidence",
+    "Private exact replay/recorder/worker credentials and ACL enforcement",
+    "Production protection target and persisted FR-34 startup/every-readiness attestation",
+    "S3/S4 export, independent authority, migration/capability signing and v23 compromise",
+    "H3/H4 atomic guards/dispatch/block/reserve/activation/completion and restore"
+  ]
+}

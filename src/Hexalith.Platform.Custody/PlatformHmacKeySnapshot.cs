@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>Owns a short-lived key copy which cannot be exported or serialized.</summary>
 public sealed class PlatformHmacKeySnapshot : IDisposable
 {
@@ -16,7 +17,9 @@ public sealed class PlatformHmacKeySnapshot : IDisposable
         ArgumentNullException.ThrowIfNull(metadata);
         if (!scope.IsValid || string.IsNullOrWhiteSpace(metadata.Version) || key.Length < 32
             || !Enum.IsDefined(metadata.State) || metadata.VerifyUntil <= metadata.NotBefore
-            || (metadata.State == PlatformHmacKeyState.Retained && metadata.RetiredAt is null))
+            || (metadata.State == PlatformHmacKeyState.Retained && (metadata.RetiredAt is null
+                || metadata.RetiredAt < metadata.NotBefore || metadata.RetiredAt >= metadata.VerifyUntil))
+            || (metadata.State == PlatformHmacKeyState.Active && metadata.RetiredAt is not null))
         {
             throw new ArgumentException("Custody key snapshot is invalid.");
         }
@@ -31,6 +34,9 @@ public sealed class PlatformHmacKeySnapshot : IDisposable
 
     /// <summary>Gets content-free lifecycle facts.</summary>
     public PlatformHmacKeyMetadata Metadata { get; }
+
+    /// <summary>Gets whether this owned capability has been cleared.</summary>
+    public bool IsDisposed => _disposed;
 
     /// <summary>Computes a tag without exporting the key.</summary>
     internal byte[] ComputeTag(ReadOnlySpan<byte> canonicalBytes)

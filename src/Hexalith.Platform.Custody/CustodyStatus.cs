@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>Content-free failure classes; these do not expose provider diagnostics.</summary>
 public enum CustodyStatus
 {

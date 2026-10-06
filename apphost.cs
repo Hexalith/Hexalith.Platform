@@ -21,6 +21,13 @@ using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+// Full Agents composition requires the accepted owner providers and qualification.
+if (bool.TryParse(builder.Configuration["Platform:Agents:Enabled"], out bool enableAgents) && enableAgents)
+{
+    throw new InvalidOperationException(
+        "DependencyNotAvailable: EXT-HOST-1. Full Agents composition and accepted owner prerequisites are unavailable.");
+}
+
 // The Platform AppHost is also the clean-checkout Agents composition root. Enable the Works migration
 // lane explicitly so its sibling source dependency cannot break that independent contract.
 if (bool.TryParse(builder.Configuration["Platform:Works:Enabled"], out bool enableWorks) && enableWorks)

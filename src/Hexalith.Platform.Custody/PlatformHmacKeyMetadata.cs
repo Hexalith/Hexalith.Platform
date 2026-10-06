@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>Public lifecycle facts for one version, with no secret material.</summary>
 /// <param name="Version">The opaque key version.</param>
 /// <param name="State">The current lifecycle state.</param>

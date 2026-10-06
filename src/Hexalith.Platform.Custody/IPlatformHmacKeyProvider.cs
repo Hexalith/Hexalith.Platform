@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Custody;
 
+
 /// <summary>Resolves an authorized, fresh exact-purpose key; implementations never cache revocation state.</summary>
 public interface IPlatformHmacKeyProvider
 {
