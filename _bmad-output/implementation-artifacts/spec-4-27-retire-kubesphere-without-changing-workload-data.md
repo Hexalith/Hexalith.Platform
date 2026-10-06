@@ -66,6 +66,7 @@ context:
 
 ## Implementation Notes
 
+- Resume checkpoint: [20261006t091552z-s427-resume-verification](evidence/epic-4/4-27/20261006t091552z-s427-resume-verification/verification.json) reran all 253 cluster-management tests with no skips and audited every acceptance-matrix covering test. The actual `retire.validate_rehearsals` again accepted the unchanged final-byte catalog and namespace receipts; all 905 catalog and 98 namespace private-manifest files matched their checksums, including 846 and 85 encrypted exports and their retained two-recipient readback receipts. No fixture or decryption was repeated in this audit because execution bytes remain unchanged. Frozen intent, baseline `MAINTENANCE.md`, historical removal scope and retained authority passed comparison. Local metadata still shows an expired 4.0 gate and no exact-named current retirement-policy or console-closure record in the inspected retained roots. The unsigned local receipt supplies no production observation, plan, approval or acceptance; 4.27 remains `in-progress` and 4.1 stays closed.
 - `PhaseExecutor` shares the existing reviewed guards between kind and the explicit native production transport. Production dispatch independently checks action kind, approved phase root, UID/resourceVersion and exact named-finalizer body; it stops at the first refusal. Protected and retained state, source/tool/credential/trust/code/evidence identities and gate expiry are checked before subsequent requests.
 - Immutable planning custody names a different future execution attempt. Original signatures and exact plan/receipt/procedure/allowlist/outage/owner/window bindings precede arming. A separate read-only assessment requires new signed postflight health/external-denial/recovery inputs and exact Administrator acceptance; successful deletion alone keeps the story open and the 4.1 gate closed.
 - Continuation verification: all **253** cluster-management tests passed with no skips, including all 73 retirement tests and the two new original-exception/custody-refusal checks. Verbose output is retained at `/tmp/story-4-27-final-suite.log`; [current-byte local audit](evidence/epic-4/4-27/20261006t085341z-s427-verification/verification.json) records its checksum and every matrix row's actual passing test. A fixture timeout now retains its original exception, stack, exact command and partial output only in encrypted custody. Diagnostic custody refusal still seals a failed receipt and performs exact owned-resource cleanup; no command retry or phase-guard relaxation was added.
@@ -80,6 +81,8 @@ context:
 - Local prerequisite metadata inspection found the retained 4.0 gate `20261001t061620z` expired at `2026-10-02T06:16:52Z`, and 4.1 records remain historical `20261001t075120z-backup-verified`. No current console-closure record, retirement policy or exact execution approval was found in the inspected retained roots. This read-only local discovery checked metadata/signature-file existence, performed no cryptographic signature validation and made zero remote operations; these historical records supply no current execution gate.
 
 ## Spec Change Log
+
+- 2026-10-06: Revalidated unchanged software and complete current-byte private fixture manifests in the [resume checkpoint](evidence/epic-4/4-27/20261006t091552z-s427-resume-verification/verification.json). Refreshed local verification and gate metadata without changing frozen intent or executor/procedure bytes. Production prerequisites and acceptance remain pending.
 
 - 2026-10-06: Continued implementation without changing frozen intent. Preserved original encrypted fixture failure diagnostics, renewed exact-byte namespace/catalog/fresh-node qualification, and completed the current local audit. Fresh production planning, prerequisite acceptance and exact execution approval remain pending.
 
@@ -102,7 +105,7 @@ The production executor must call the same reviewed phase guards as the syntheti
 ## Verification
 
 **Commands:**
-- `python3 -m unittest discover -s eng/cluster-management -p 'test_*.py' -v` — 253 tests pass with no skips; full output retained at `/tmp/story-4-27-final-suite.log`.
+- `python3 -m unittest discover -s eng/cluster-management -p 'test_*.py' -v` — latest resume run: 253 tests pass with no skips in 10.661 seconds; full output retained at `/tmp/story-4-27-resume-suite.log`. Its checksum and passing matrix tests are recorded in the [resume checkpoint](evidence/epic-4/4-27/20261006t091552z-s427-resume-verification/verification.json).
 - `git diff --check HEAD` — no whitespace errors.
 
 - [current-byte local audit](evidence/epic-4/4-27/20261006t085341z-s427-verification/verification.json) passed actual current-byte `validate_rehearsals`, complete private-manifest/readback verification, historical source-scope validation, the 253-test matrix audit, frozen-intent comparison and baseline maintenance preservation. The earlier [local audit](evidence/epic-4/4-27/20261005t104023z-s427-verification/verification.json) retains only its original prior-byte meaning. No audit supplies a fresh production gate.
