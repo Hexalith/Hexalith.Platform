@@ -104,6 +104,11 @@ class Fixtures:
     def recovery(self, captured=-180):
         return {'operator': 'jpiquot', 'pathId': 'fixture-native', 'custodyId': 'fixture-recovery-custody',
                 'accountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
+                'qualificationScope': 'isolated-client-session', 'testSessionId': 'fixture-recovery-session',
+                'isolationEvidenceSha256': H, 'productionAvailabilityEvidenceSha256': H,
+                'productionAccountsAvailableToOtherClients': True,
+                'productionPublicOidcAvailableToOtherClients': True,
+                'productionAuthenticationUnchangedDuringQualification': True,
                 'ordinaryCredentialsUnavailable': True, 'publicOidcUnavailable': True,
                 'separatelyProtectedRecoveryAccess': True, 'independentOfOrdinaryCredentials': True,
                 'credentialLineageEvidenceSha256': H, 'nativeClusterAuthentication': True,
@@ -241,7 +246,10 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         self.assertIsNone(decisions['recoveryCustodyId'])
         self.assertTrue(all(v is None for v in decisions['recoveryAccountBindings'].values()))
         result = json.loads((directory / 'admin-exposure-result.json').read_text())
-        self.assertIsNone(result['postChangeBreakGlass'])
+        proof = json.loads((directory / 'admin-path-proof.json').read_text())
+        for recovery in (proof['breakGlass'], result['postChangeBreakGlass']):
+            self.assertEqual(recovery, prepare.pending_recovery())
+            self.assertTrue(all(v is None for v in recovery.values()))
         for line in (directory / 'SHA256SUMS').read_text().splitlines():
             expected, name = line.split('  ')
             self.assertEqual(prepare.file_digest(directory / name), expected)
@@ -394,6 +402,32 @@ class BoundaryTests(Fixtures, unittest.TestCase):
             with self.subTest(change=change), self.assertRaisesRegex(ValueError, 'recovery'):
                 prepare.admin_result('console', decisions, proof, result,
                                      {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_recovery_requires_an_isolated_identified_session_before_and_after_closure(self):
+        for stage in ('before', 'after'):
+            for field, value in (('qualificationScope', None), ('qualificationScope', 'production'),
+                                 ('testSessionId', None), ('testSessionId', ''),
+                                 ('isolationEvidenceSha256', None), ('isolationEvidenceSha256', 'invalid')):
+                _, decisions, current, proof, result = self.admin_records()
+                recovery = proof['breakGlass'] if stage == 'before' else result['postChangeBreakGlass']
+                recovery[field] = value
+                with self.subTest(stage=stage, field=field, value=value), self.assertRaisesRegex(
+                        ValueError, 'recovery-isolation-or-production-availability'):
+                    prepare.admin_result('console', decisions, proof, result,
+                                         {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_recovery_requires_measured_production_availability_without_authentication_changes(self):
+        for stage in ('before', 'after'):
+            for field in ('productionAccountsAvailableToOtherClients', 'productionPublicOidcAvailableToOtherClients',
+                          'productionAuthenticationUnchangedDuringQualification', 'productionAvailabilityEvidenceSha256'):
+                for value in (None, False):
+                    _, decisions, current, proof, result = self.admin_records()
+                    recovery = proof['breakGlass'] if stage == 'before' else result['postChangeBreakGlass']
+                    recovery[field] = value
+                    with self.subTest(stage=stage, field=field, value=value), self.assertRaisesRegex(
+                            ValueError, 'recovery-isolation-or-production-availability'):
+                        prepare.admin_result('console', decisions, proof, result,
+                                             {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
 
     def test_post_change_recovery_is_required_and_must_follow_closure(self):
         for change in ('missing', 'before-closure', 'outside-window'):
@@ -738,6 +772,27 @@ class SignatureTests(Fixtures, unittest.TestCase):
         self.assertEqual(report['verificationResult'], 'fail', report)
         self.assertEqual(report['failures'], [
             {'condition': 'independent-recovery-custody-authentication-and-reads-unproved'}])
+
+    def test_signed_global_authentication_outage_cannot_qualify_recovery(self):
+        for stage in ('before', 'after'):
+            args = self.signed_console_bundle()
+            name = 'admin-path-proof.json' if stage == 'before' else 'admin-exposure-result.json'
+            record = json.loads((self.bundle / name).read_bytes())
+            recovery = record['breakGlass'] if stage == 'before' else record['postChangeBreakGlass']
+            recovery['productionPublicOidcAvailableToOtherClients'] = False
+            record_hash = self.sign(name, record)
+            if stage == 'before':
+                decisions = json.loads((self.bundle / 'administrator-decisions.json').read_bytes())
+                decisions['privateProofSha256'] = record_hash
+                self.sign('administrator-decisions.json', decisions)
+                result = json.loads((self.bundle / 'admin-exposure-result.json').read_bytes())
+                result['privateProofSha256'] = record_hash
+                self.sign('admin-exposure-result.json', result)
+            report = prepare.check_bundle(args)
+            with self.subTest(stage=stage):
+                self.assertEqual(report['verificationResult'], 'fail', report)
+                self.assertEqual(report['failures'], [
+                    {'condition': 'recovery-isolation-or-production-availability-unproved'}])
 
     def test_wrong_principal_invalid_signature_or_changed_bytes_fail(self):
         args = self.signed_console_bundle()

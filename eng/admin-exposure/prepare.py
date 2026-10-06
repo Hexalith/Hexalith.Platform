@@ -34,6 +34,7 @@ ADMIN_PATHS = ('/admin', '/admin/', '/admin/master/console/', '/realms/master',
                '/realms/master/protocol/openid-connect/token')
 ADMINISTRATOR = 'jpiquot'
 ADMINISTRATION_POLICY = 'sole-administrator'
+RECOVERY_SCOPE = 'isolated-client-session'
 
 
 def require(condition, reason):
@@ -118,6 +119,17 @@ def unique(records, field):
     return result
 
 
+def pending_recovery():
+    return {name: None for name in ('operator', 'pathId', 'custodyId', 'accountBindings',
+        'qualificationScope', 'testSessionId', 'ordinaryCredentialsUnavailable', 'publicOidcUnavailable',
+        'isolationEvidenceSha256', 'productionAccountsAvailableToOtherClients',
+        'productionPublicOidcAvailableToOtherClients', 'productionAuthenticationUnchangedDuringQualification',
+        'productionAvailabilityEvidenceSha256', 'separatelyProtectedRecoveryAccess',
+        'independentOfOrdinaryCredentials', 'credentialLineageEvidenceSha256',
+        'nativeClusterAuthentication', 'nativeClusterNonDestructiveRead', 'keycloakAdminLogin',
+        'keycloakNonDestructiveRead', 'result', 'evidenceSha256', 'capturedAt')}
+
+
 def templates(attempt_id, operator, source_hashes):
     base = {'schemaVersion': 1, 'story': '4.2', 'attemptId': attempt_id,
             'classification': 'local-preparation', 'operator': operator, 'capturedAt': None,
@@ -150,12 +162,12 @@ def templates(attempt_id, operator, source_hashes):
             'resources': [], 'routes': [], 'registryGeneration': generation},
         'admin-path-proof.json': {**base, 'privatePathId': None, 'testedOperators': [],
             'administrationPolicy': None, 'administrator': None,
-            'unauthorizedPrivateCheck': None, 'breakGlass': None, 'publicOidcChecks': []},
+            'unauthorizedPrivateCheck': None, 'breakGlass': pending_recovery(), 'publicOidcChecks': []},
         'admin-exposure-result.json': {**base, 'closedSurface': None, 'baselineSha256': None,
             'administrationPolicy': None, 'administrator': None,
             'privateProofSha256': None, 'externalProbes': [], 'closedAdminPaths': [],
             'consoleMode': 'port-forward', 'publicOidcChecks': [], 'removedConsoleObjects': None,
-            'postChangePrivateChecks': [], 'postChangeBreakGlass': None,
+            'postChangePrivateChecks': [], 'postChangeBreakGlass': pending_recovery(),
             'mutationStartedAt': None, 'mutationFinishedAt': None, 'accepted': False},
         'registry-consumer-inventory.json': {**base, 'generation': generation,
             'inventoryComplete': False, 'coverage': {k: False for k in (
@@ -360,6 +372,13 @@ def recovery_proof(decisions, recovery, parent, *, after=None):
                 'nativeClusterAuthentication', 'nativeClusterNonDestructiveRead',
                 'keycloakAdminLogin', 'keycloakNonDestructiveRead')),
             'independent-recovery-custody-authentication-and-reads-unproved')
+    require(recovery.get('qualificationScope') == RECOVERY_SCOPE
+            and identifier(recovery.get('testSessionId'))
+            and sha(recovery.get('isolationEvidenceSha256'))
+            and sha(recovery.get('productionAvailabilityEvidenceSha256'))
+            and all(recovery.get(k) is True for k in ('productionAccountsAvailableToOtherClients',
+                'productionPublicOidcAvailableToOtherClients', 'productionAuthenticationUnchangedDuringQualification')),
+            'recovery-isolation-or-production-availability-unproved')
     in_record_time(recovery, parent, after=after)
 
 

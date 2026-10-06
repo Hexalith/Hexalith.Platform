@@ -1,0 +1,89 @@
+{
+  "attemptId": "20261006t112439z-recovery-isolation-verification",
+  "capturedAt": "2026-10-06T11:24:40+00:00",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s eng/admin-exposure -p 'test_*.py' -v",
+      "condition": "focused synthetic boundary tests",
+      "exitCode": 0,
+      "result": "pass",
+      "skippedCount": 0,
+      "testCount": 45,
+      "testLogSha256": "f0308ba6e52dba8dfa7742429afc9611f65abcb53e199be4d3ae043394e18965"
+    },
+    {
+      "condition": "real local SSH signature verification with ephemeral synthetic keys",
+      "productionSignaturesVerified": false,
+      "result": "pass"
+    },
+    {
+      "condition": "pre/post recovery requires isolated session identity, measured isolation and production availability hashes",
+      "result": "pass"
+    },
+    {
+      "condition": "signed global production authentication outage cannot qualify recovery before or after closure",
+      "result": "pass"
+    },
+    {
+      "condition": "sole Administrator, independent recovery, prior approval, resource drift, OIDC, registry and GC gates retained",
+      "result": "pass"
+    },
+    {
+      "condition": "new immutable private preparation with explicit null recovery structures",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "result": "pass"
+    },
+    {
+      "condition": "CLI help",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Local signatures, booleans and hashes cannot independently establish session isolation, authentication or production availability.",
+    "Every existing historical private attempt and committed receipt remains unchanged.",
+    "Story and sprint remain in-progress; no live task or acceptance criterion was marked complete."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "privateEvidenceLocation": "dedicated owner-only exposure evidence custody outside Git; exact path held by operator",
+  "recoveryQualificationScope": "isolated test client/session; production authentication remains available and unchanged",
+  "remainingProductionRequirements": [
+    "Fresh signed private administration and separately protected native cluster/Keycloak recovery qualification for jpiquot before and after closure.",
+    "Contemporaneous measured isolated-client/session proof and availability of unchanged production authentication to other clients.",
+    "Unauthorized private refusal, public OIDC smoke flows and independent external administrative negative routing tests.",
+    "Fresh signed route/configuration/DNS/UID/resourceVersion/backend baseline and prior exact-attempt production go.",
+    "Complete signed-generation registry consumer/writer/replicator and rollback inventory, secret-store ownership and cutover window.",
+    "Uncached audited least-privilege operations before and after anonymous catalog/tag/manifest/blob denial.",
+    "Signed exhaustive retained OCI closure, approved GC policy, successful rehearsal and held writer/replication lock.",
+    "Measured signed results and independently accepted exact-plan 4.27 console closure handoff."
+  ],
+  "remoteOperationsPerformed": false,
+  "retainedTestLog": {
+    "location": "dedicated owner-only local-verification custody outside Git; exact path held by operator",
+    "sha256": "f0308ba6e52dba8dfa7742429afc9611f65abcb53e199be4d3ae043394e18965"
+  },
+  "schemaVersion": 1,
+  "selectedAdministrationPolicy": "sole-administrator",
+  "selectedAdministrator": "jpiquot",
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "ee5005b70edade833076a68f4699a8e8e0f18006d1a5bde419af3fa38676cf8a",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "415ac6b389a3c76980c2a76ea0ab2504201240de4c6c2d904bbe3eec27e464f5",
+    "eng/admin-exposure/prepare.py": "c45d0a3d93b0fd768fa7409f697693420a233271e8b8c29c7073c252cfeccc2d",
+    "eng/admin-exposure/test_prepare.py": "d79cb391ee6812f859dc50d84ad63eb24b9c9695ae80e6972c3d3bb1991cca4d"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local preparation and synthetic tests only"
+}
