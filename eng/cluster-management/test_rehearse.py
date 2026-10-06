@@ -1,4 +1,5 @@
 """Source refusal, exact retirement scope, drift and preservation assertions."""
+import base64
 import copy
 import io
 import itertools
@@ -1846,7 +1847,26 @@ class FixtureBoundaryTests(unittest.TestCase):
             with self.subTest(error=type(error).__name__):
                 self.assert_failure_receipt_and_cleanup(error)
 
-    def assert_failure_receipt_and_cleanup(self, error):
+    def test_command_timeout_retains_original_private_diagnostics_without_retry(self):
+        error = subprocess.TimeoutExpired(['docker', 'exec', 'private-node', 'kubectl', 'get', 'private-name'],
+                                          120, output=b'private-partial-output', stderr=b'private-partial-error')
+        records, fixture = self.assert_failure_receipt_and_cleanup(error)
+        export = next(c.args for c in fixture.attempt.encrypt.call_args_list
+                      if c.args[0] == 'fixture-failure-diagnostics')
+        diagnostic = json.loads(export[1])
+        self.assertEqual(diagnostic['failedStep'], 'native-fixture-schema')
+        self.assertEqual(diagnostic['exceptionType'], 'TimeoutExpired')
+        self.assertEqual(diagnostic['command'], error.cmd)
+        self.assertEqual(diagnostic['timeoutSeconds'], 120)
+        self.assertEqual(base64.b64decode(diagnostic['stdoutBase64']), error.stdout)
+        self.assertEqual(base64.b64decode(diagnostic['stderrBase64']), error.stderr)
+        self.assertIn('TimeoutExpired', diagnostic['traceback'])
+        self.assertNotIn('private-', json.dumps(records))
+
+    def test_failure_diagnostic_custody_refusal_still_seals_failure_and_cleans(self):
+        self.assert_failure_receipt_and_cleanup(KeyError('private-native-value'), refuse_diagnostics=True)
+
+    def assert_failure_receipt_and_cleanup(self, error, refuse_diagnostics=False):
         with tempfile.TemporaryDirectory() as temp:
             fixture, _ = self.fixture(temp)
             fixture.created = True
@@ -1858,11 +1878,13 @@ class FixtureBoundaryTests(unittest.TestCase):
             fixture.args.evidence_root = Path(temp) / 'private'
             fixture.args.operator = 'operator'
             fixture.attempt.record = Mock();fixture.attempt.finish = Mock()
+            if refuse_diagnostics:
+                fixture.attempt.encrypt = Mock(side_effect=ValueError('private-custody-failure'))
             fixture.last_step = 'native-fixture-schema'
             with patch('rehearse.Attempt', return_value=fixture.attempt), \
                  patch('rehearse.Fixture', return_value=fixture), patch.object(fixture, 'start'), \
                  patch('rehearse.tool_identities', return_value={'runtimeVersionOutput': {}}), \
-                 patch.object(fixture, 'execute', side_effect=error), \
+                 patch.object(fixture, 'execute', side_effect=error) as execute, \
                  patch.object(fixture, 'get', return_value={'items': [None]}), \
                  patch.object(fixture, 'cleanup', return_value=True) as cleanup:
                 _, state = rehearse(fixture.args)
@@ -1871,7 +1893,9 @@ class FixtureBoundaryTests(unittest.TestCase):
             self.assertEqual(records['failure.json']['failureStep'], 'native-fixture-schema')
             self.assertNotIn('private-native-value', json.dumps(records))
             self.assertEqual(records['summary.json']['state'], 'failed-closed')
+            execute.assert_called_once()
             cleanup.assert_called_once();fixture.attempt.finish.assert_called_once()
+            return records, fixture
 
     def test_native_delete_request_contains_both_preconditions_on_fixture_only(self):
         action = {'uid': 'observed-uid', 'resourceVersion': '7', 'propagation': 'Foreground'}

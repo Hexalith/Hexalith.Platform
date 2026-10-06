@@ -1,6 +1,6 @@
 {
   "allTwoRecipientReadbacksPassed": true,
-  "attemptId": "20261005t170204z-s427-namespaces",
+  "attemptId": "20261006t074119z-s427-namespaces",
   "boundBytes": {
     "driverSha256": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
     "moduleSha256": {
@@ -8,8 +8,8 @@
       "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0"
     },
     "productionExecutorSha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
-    "productionProcedureSha256": "8f5732954f267c0d59af77eb1a93e87621ff32d71c2450ad4244f0095a82960b",
-    "scriptSha256": "73582be7be06cf2debbe8ec009a370fb98185bf6f95866908fa31015bb3afcda",
+    "productionProcedureSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60",
+    "scriptSha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
     "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf"
   },
   "cleanupPassed": {
@@ -18,7 +18,7 @@
   "encryptedExportCount": 85,
   "independentOffNodeCustodyAccepted": false,
   "kind": "isolated-retirement-qualification-summary",
-  "matchesCurrentExecutorAndProcedure": false,
+  "matchesCurrentExecutorAndProcedure": true,
   "measuredOutcomes": {
     "seven-namespace-result.json": {
       "actualDependencyPlanAndRetirePhaseUsed": true,
@@ -38,19 +38,19 @@
       "state": "passed-limited"
     }
   },
-  "privateAttemptChecksumSha256": "c4d6bf2e9556374b9cbe06b4f4882824e1fc7b436a646ad9db433842536f4431",
+  "privateAttemptChecksumSha256": "ea266036418fa8cea2db15417c0184ac7f0022fca6ac3c5b24000f931f91e16d",
   "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
   "privateChecksumsVerified": true,
   "productionRetirementAccepted": false,
   "readbackScope": "agent-held second recipient; does not prove off-node custody",
   "recordSha256": {
-    "attempt.json": "f588f82b733ac5de803d769378967d02e8a340bf03455b5103b9a819ee289695",
-    "cleanup.json": "fe975bb0ea7ef31d6900849f867846daecaf451b6c30311275d086f6f500dd4c",
-    "encrypted-exports.json": "cc7b7e2177c9f1285b8accaa52faa3edb144b704abed4c3f8c2bf1e4e7677774",
+    "attempt.json": "616817e64c8a048a13fb8bfc9c9cb89859b001b39eaecbed35bacb1f4eba7ad9",
+    "cleanup.json": "53db78ad0611c52de3dde4ec56a93ae8a22aee3454b390284bd2ad9f88054021",
+    "encrypted-exports.json": "9d6355c0d61bad2a2503af4967f505512c1a82a620190ffbd46f04f6fdc5d48f",
     "seven-namespace-result.json": "383f1d555764efbcc7a3fb85d6ecdf65a4ec41a927af2d89cca1c63949e8e35c",
     "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
   },
-  "recordedAt": "2026-10-05T17:02:04Z",
+  "recordedAt": "2026-10-06T07:41:19Z",
   "schemaVersion": 1,
   "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
   "signed": false,

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise bounded native deletion on a disposable source-fenced synthetic cluster."""
 import argparse
+import base64
 import copy
 from datetime import datetime, timezone
 import ipaddress
@@ -12,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import time
+import traceback
 import urllib.parse
 
 from evidence import Attempt, canonical, digest, file_digest, now
@@ -1975,6 +1977,19 @@ def rehearse(args, fixture_type=None, driver_path=None):
         state = 'passed-limited'
     except Exception as error:  # any parser/import/tooling error must still leave a receipt and cleanup
         failure_step = fixture.last_step
+        # Keep the original exception before later diagnostics can fail or change
+        # last_step. TimeoutExpired includes the exact command and partial output;
+        # these private details must never enter the sanitized failure receipt.
+        diagnostic = {'failedStep': failure_step, 'exceptionType': type(error).__name__,
+                      'message': str(error), 'traceback': traceback.format_exc()}
+        if isinstance(error, subprocess.TimeoutExpired):
+            diagnostic.update(command=error.cmd, timeoutSeconds=error.timeout,
+                              stdoutBase64=base64.b64encode(error.stdout or b'').decode(),
+                              stderrBase64=base64.b64encode(error.stderr or b'').decode())
+        try:
+            attempt.encrypt('fixture-failure-diagnostics', canonical(diagnostic), args.age, args.recipient)
+        except Exception:  # custody failure cannot skip the closed receipt or exact cleanup
+            pass
         fixture.diagnostics()
         attempt.record('failure.json', {'state': 'failed-closed', 'failureStep': failure_step,
                                      'reasonCode': (str(error) if isinstance(error, ValueError)

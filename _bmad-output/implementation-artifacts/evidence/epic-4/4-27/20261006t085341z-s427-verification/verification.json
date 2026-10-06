@@ -1,0 +1,161 @@
+{
+  "baselineCommit": "54920908f15a99b48e69861baf306365353fc6df",
+  "continuationStartCommit": "577f132008edc521c16a199ec639750433ab5383",
+  "currentBytes": {
+    "codeSha256": {
+      "evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+      "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+      "rehearse.py": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+      "rehearse_catalog.py": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+      "rehearse_namespaces.py": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
+      "retire.py": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355"
+    },
+    "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+    "procedureSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60"
+  },
+  "frozenIntentComparedWithCommit": "577f132008edc521c16a199ec639750433ab5383",
+  "frozenIntentUnchanged": true,
+  "historicalPlanner": {
+    "authorityObjectsInScope": 0,
+    "deletionObjectCount": 482,
+    "freshProductionCensus": false,
+    "inventoryResourceCount": 2596,
+    "mutationRequests": 0,
+    "namespaceInterventionCount": 7,
+    "phaseCount": 19,
+    "retainedAuthorityCount": 5,
+    "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf",
+    "state": "passed"
+  },
+  "isolatedRehearsals": {
+    "actualValidateRehearsalsPassed": true,
+    "independentOffNodeCustodyAccepted": false,
+    "privateManifestChecks": {
+      "catalog": {
+        "allFilesVerified": true,
+        "allTwoRecipientReadbacksPassed": true,
+        "encryptedExportCount": 846,
+        "recordCount": 905
+      },
+      "namespaces": {
+        "allFilesVerified": true,
+        "allTwoRecipientReadbacksPassed": true,
+        "encryptedExportCount": 85,
+        "recordCount": 98
+      }
+    },
+    "receipts": {
+      "catalog": {
+        "attemptId": "20261006t074119z-s427-catalog",
+        "checksumsSha256": "444e4de224f4b84ef317f75a76f8800b50d5099a10e95d165902b00d2358e074",
+        "records": {
+          "attempt.json": "126a692c50d6d2967120bda31c6a27a3279d952cd5d553e12d5f150e5cdc5261",
+          "catalog-result.json": "c567328d530f2f0d5c666d7aee102d0a635c03b76210e1d0e11d3da7cee1534a",
+          "cleanup.json": "76a970cc42b3e4aec3803c0ef0f20a5aedad6a0766480c456df1687a35c324cf",
+          "encrypted-exports.json": "8461df503ce783c3e16b7803a6174f3d99f9e4667dd7872dab7e73b116b9c26a",
+          "kubesphere-retirement-result.json": "1c24363c708539459d0fc014cb907eec1859e97190d0c809c2e50e16fce101e2",
+          "rollback-restore-result.json": "85b5b1ccd013ddfe2381e09d345d9f98f9e5e79cc78bc53ea887109f574dc839",
+          "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
+        }
+      },
+      "namespaces": {
+        "attemptId": "20261006t074119z-s427-namespaces",
+        "checksumsSha256": "ea266036418fa8cea2db15417c0184ac7f0022fca6ac3c5b24000f931f91e16d",
+        "records": {
+          "attempt.json": "616817e64c8a048a13fb8bfc9c9cb89859b001b39eaecbed35bacb1f4eba7ad9",
+          "cleanup.json": "53db78ad0611c52de3dde4ec56a93ae8a22aee3454b390284bd2ad9f88054021",
+          "encrypted-exports.json": "9d6355c0d61bad2a2503af4967f505512c1a82a620190ffbd46f04f6fdc5d48f",
+          "seven-namespace-result.json": "383f1d555764efbcc7a3fb85d6ecdf65a4ec41a927af2d89cca1c63949e8e35c",
+          "summary.json": "66f39c48117de25f9b92cac068e3ed4d0e4fa3f907a9b540f4f7dde62de68ff5"
+        }
+      }
+    }
+  },
+  "kind": "story-4-27-local-verification",
+  "maintenanceUnchangedFromBaseline": true,
+  "productionAttemptArmed": false,
+  "productionMutationRequests": 0,
+  "productionPlanCreated": false,
+  "productionRetirementAccepted": false,
+  "productionSourceObserved": false,
+  "recordedAt": "2026-10-06T08:53:41.514892Z",
+  "remainingOperationalEvidence": [
+    "Fresh explicit-native production census and plan bound to the current-byte rehearsal receipts",
+    "Accepted independent external console closure under story 4.2",
+    "Fresh signed production 4.0 recovery proofs and independent immutable off-node readback",
+    "Fresh production external-etcd point, fenced isolated restore, and matching node/configuration recovery under 4.1",
+    "Separate exact plan/allowlist/procedure/tools/receipts/outage/owner/window/stop-condition execution approval",
+    "Actual production preservation, retirement, authenticated health and external-denial checks",
+    "Signed postflight acceptance and fresh post-retirement 4.1 recovery handoff"
+  ],
+  "schemaVersion": 1,
+  "scope": "Local software checks and isolated synthetic fixtures only; historical input is not a fresh production census.",
+  "signed": false,
+  "softwareVerification": {
+    "additionalFailureDiagnosticsTests": [
+      "test_command_timeout_retains_original_private_diagnostics_without_retry",
+      "test_failure_diagnostic_custody_refusal_still_seals_failure_and_cleans"
+    ],
+    "coveringTestsSkipped": false,
+    "matrix": {
+      "approved-attempt": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_shared_phase_execution_and_real_plan_to_execute_handoff"
+        ]
+      },
+      "bound-lease-renewal": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_bound_node_lease_renewal_accepts_signed_handoff_without_lease_mutation",
+          "test_manager_checkpoint_object_get_refuses_nanosecond_regression_below_observed_floor",
+          "test_bound_lease_holder_drift_after_accepted_delete_stops_further_requests",
+          "test_assessment_accepts_validated_renewed_execution_baseline_and_later_renewal"
+        ]
+      },
+      "completion": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_signed_postflight_and_exact_administrator_acceptance",
+          "test_failed_post_retirement_health_leaves_acceptance_and_hop_closed"
+        ]
+      },
+      "partial-retirement": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_conflict_stops_first_request_without_retry",
+          "test_unexpected_protected_deletion_stops_before_next_request",
+          "test_recreated_controller_stops_before_next_request"
+        ]
+      },
+      "stale-or-incomplete": {
+        "coveringTestsSkipped": false,
+        "result": "ran-and-passed",
+        "tests": [
+          "test_stale_approval_is_zero_mutations",
+          "test_missing_recovery_or_console_gate_is_zero_mutations",
+          "test_caller_verified_flag_cannot_replace_actual_signature"
+        ]
+      }
+    },
+    "result": "OK",
+    "testsRun": 253,
+    "verboseAuditPath": "/tmp/story-4-27-final-suite.log",
+    "verboseAuditSha256": "2cadfa65d32d132a54df1d810d64305b70568c227860ca0b6652b5e7fc22cb83"
+  },
+  "state": "local-checks-passed-production-gate-closed",
+  "testFileSha256": {
+    "test_cleanup.py": "e914cd76185593d9ca591a8b8e550db3c7599f5637ec08f511cba6e9d2834052",
+    "test_evidence.py": "4f06fe073138945affa81ea0fa6405d812a94b39d1d35c07d2e740208e781cc6",
+    "test_qualify.py": "651dd4ad1747a444e5e5fe7d9fb5686f592aaf41bd2047bb8594d127878260e1",
+    "test_rehearse.py": "47fef78e6c97d1b7a879516a2708de3ba9b5503c7f90667450d47aa3d6ccd182",
+    "test_retire.py": "6705b87c0366c1f9370ffdcb480bb4980ffe00b0a2034cc51fbb59b04bc5a49f",
+    "test_review_loop4.py": "8792cc4f5b9588461301f4cc538c5c5b167ffcc736e5b5d71babc824e2589c90",
+    "test_review_loop5.py": "34c053402433ce76dc8debc24aa4b5599b8d7ce8e8e0a164236682e574d6a600"
+  },
+  "upgradeGate": "closed"
+}

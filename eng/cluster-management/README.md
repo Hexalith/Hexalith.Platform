@@ -47,20 +47,21 @@ Set the tool, recipient and identity variables below from private operator confi
 fixture_args=(
   --operator Administrator
   --source-inventory _bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t085143z-census/inventory.json
+  --production-executor /absolute/project/eng/cluster-management/retire.py
   --node-image sha256:8a9be59e7b1d2c14ea21bd064dd8b4d803c97ab3e318f81aff39c874c05fb816
   --kubectl "$KUBECTL" --age "$AGE"
   --recipient "$ADMINISTRATOR_RECIPIENT" --readback-recipient "$READBACK_RECIPIENT"
   --readback-identity "$READBACK_IDENTITY"
 )
+python3 eng/cluster-management/rehearse_namespaces.py "${fixture_args[@]}" \
+  --attempt-id "$NAMESPACE_ATTEMPT_ID"
 python3 eng/cluster-management/rehearse_catalog.py "${fixture_args[@]}" \
   --attempt-id "$CATALOG_ATTEMPT_ID" \
   --ks-chart "$KS_CHART" --ks-chart-sha256 a5c87fe18477bacf9032eb9cf2968b73d73465aa3652b99eede865fe3ba7fbdd \
   --helm "$HELM" --rollback --etcdctl "$ETCDCTL" --etcdutl "$ETCDUTL"
-python3 eng/cluster-management/rehearse_namespaces.py "${fixture_args[@]}" \
-  --attempt-id "$NAMESPACE_ATTEMPT_ID"
 ```
 
-The catalog command requires `--ks-chart` and `--rollback`; the namespace command requires a manager-free fixture and refuses those options. `--help` allocates no fixture. The portable drivers have smoke verification only; the linked historical live fixture outcomes retain their recorded source identities.
+Run these fixtures sequentially after the bound code and runbook bytes settle. The catalog command requires `--ks-chart` and `--rollback`; the namespace command requires a manager-free fixture and refuses those options. `--help` allocates no fixture. Current-byte qualification is recorded in the [4.27 story](../../_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md); the linked historical fixtures retain their original bytes and outcomes. A new production planning census and matching exact-attempt prerequisites/approval are still required.
 
 ```bash
 python3 -m unittest discover -s eng/cluster-management -p 'test_*.py'
