@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><GenerateDocumentationFile>true</GenerateDocumentationFile></PropertyGroup>
+  <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
+  <ItemGroup><PackageReference Include="Dapr.Client" /></ItemGroup>
+</Project>
