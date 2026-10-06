@@ -1,0 +1,108 @@
+{
+  "attemptId": "20261006t105730z-sole-administrator-verification",
+  "capturedAt": "2026-10-06T11:01:03+00:00",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s eng/admin-exposure -p 'test_*.py' -v",
+      "condition": "focused synthetic boundary tests",
+      "exitCode": 0,
+      "result": "pass",
+      "skippedCount": 0,
+      "testCount": 42,
+      "testLogSha256": "b840b85e85b45a90bfb902cdfb3bbfb5b57778da80907b40b3d77b9ec3eebebf"
+    },
+    {
+      "condition": "real local SSH signature verification against ephemeral synthetic keys",
+      "productionSignaturesVerified": false,
+      "result": "pass"
+    },
+    {
+      "condition": "explicit sole-administrator/jpiquot policy, exact normal/recovery account and custody bindings",
+      "result": "pass"
+    },
+    {
+      "condition": "native cluster and Keycloak authentication/non-destructive recovery reads with ordinary credentials and public OIDC unavailable to an isolated test session, before and after closure",
+      "result": "pass"
+    },
+    {
+      "condition": "second account, copied ordinary access, incomplete recovery, extra operator and wrong recovery timing denied",
+      "result": "pass"
+    },
+    {
+      "condition": "prior approval/signatures, UID/resourceVersion/config/DNS drift, OIDC/unauthorized denial, registry/GC and pending retirement gates retained",
+      "result": "pass"
+    },
+    {
+      "condition": "new private immutable preparation attempt and checksums",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "result": "pass"
+    },
+    {
+      "condition": "CLI help",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Requirements/design approval is not an exact-attempt production mutation go.",
+    "Operational private authentication and independently protected recovery remain unqualified.",
+    "Signatures authenticate statements; local checks do not independently prove authentication, client isolation, credential independence, signing chronology or measured routing behavior.",
+    "The sole Administrator remains the only person available to intervene; no second person or deputy is claimed.",
+    "Historical attempts/receipts and unrelated user custody source/test directories were preserved.",
+    "A first retained synthetic run exposed an ambient-umask-dependent test fixture; it was corrected to set actual shared-directory permissions, and its failed log was retained separately.",
+    "Story and sprint status stay in-progress; no production task was marked complete by this implementation."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "pendingEvidenceFiles": [
+    "admin-exposure-result.json",
+    "admin-path-proof.json",
+    "administrator-decisions.json",
+    "console-closure.json",
+    "pre-mutation-state.json",
+    "registry-auth-result.json",
+    "registry-consumer-inventory.json",
+    "registry-gc-result.json",
+    "retained-oci-closure.json",
+    "signed-baseline.json"
+  ],
+  "privateEvidenceLocation": "dedicated owner-only evidence custody outside Git; exact path held by operator",
+  "recoveryQualificationScope": "isolated test client/session; production accounts/public OIDC available to other clients",
+  "remainingProductionRequirements": [
+    "fresh signed native/private and separately protected recovery account/path/custody qualification before and after closure for jpiquot",
+    "unauthorized private refusal, approved public OIDC smoke flows and independent external negative routing checks",
+    "fresh signed route/configuration/DNS/UID/resourceVersion/backend baseline and prior exact-attempt production go",
+    "complete signed-generation registry consumer/writer/replicator and rollback inventory plus secret-store owner/rotation policy and cutover window",
+    "uncached audited authenticated least-privilege operations before and after anonymous denial",
+    "signed exhaustive retained OCI closure, approved GC configuration, prior successful rehearsal and held writer/replication lock",
+    "measured signed results and independently accepted exact-plan 4.27 console-closure handoff"
+  ],
+  "remoteOperationsPerformed": false,
+  "retainedTestLog": {
+    "location": "dedicated owner-only local-verification custody outside Git; exact path held by operator",
+    "sha256": "b840b85e85b45a90bfb902cdfb3bbfb5b57778da80907b40b3d77b9ec3eebebf"
+  },
+  "schemaVersion": 1,
+  "selectedAdministrationPolicy": "sole-administrator",
+  "selectedAdministrator": "jpiquot",
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "ee5005b70edade833076a68f4699a8e8e0f18006d1a5bde419af3fa38676cf8a",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "9f352bd9c6e90b4b2302f8804c5d94216fc746e5ca0484d233eb93425961f568",
+    "eng/admin-exposure/prepare.py": "1fd9672d49b385e1a5df4020d1d85652816e38a0584a919603f44ce97a26f8c4",
+    "eng/admin-exposure/test_prepare.py": "2410237a89be5b062ee9ec58df6869f786f32f8cced4851091828d19aca2a147"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local preparation and synthetic tests only"
+}

@@ -40,10 +40,12 @@ The Administrator must approve:
 
 ## Ordered tasks
 
+The approved sole-Administrator correction below supersedes the earlier two-operator requirement and all historical two-operator handoff statements. Previously collected attempts remain unchanged.
+
 - [x] Record the sanitized ingress and external-probe baseline.
-- [ ] Create `evidence/epic-4/4-2/<attempt-id>/` in the access-controlled evidence store and record DNS, ingress resource UIDs/config digests, source address category, timestamps and operator without cookies, tokens or response bodies.
+- [x] Create `evidence/epic-4/4-2/<attempt-id>/` in the access-controlled evidence store and record DNS, ingress resource UIDs/config digests, source address category, timestamps and operator without cookies, tokens or response bodies.
 - [ ] Immediately before each route, registry-auth or GC mutation, re-read the affected resource UID, resourceVersion, effective config digest, DNS answer and ingress/backend identity. Abort and produce a fresh inventory/approval if any value differs from the signed attempt baseline.
-- [ ] Build the approved Administrator path in parallel with public access. Prove two authorized operators can reach Keycloak administration and the required cluster administration surface, and prove an unauthorized client on that path is refused.
+- [ ] Build the approved Administrator path in parallel with public access. Prove the sole named Administrator (`jpiquot`) can reach Keycloak administration and the required cluster administration surface, and prove an unauthorized client on that path is refused. Independently qualify native cluster and Keycloak break-glass login/non-destructive reads using separately protected recovery access while ordinary credentials and public OIDC are unavailable to an isolated recovery test client/session; production accounts/public OIDC remain available to other clients. Repeat recovery checks after closure. No second operator or deputy is required under the approved correction below.
 - [ ] Restrict Keycloak administration:
   1. Preserve only Administrator-approved public realm/OIDC endpoints.
   2. Move or deny `/admin`, `/admin/*`, master-realm administration and master-realm token access on `nginx-public`; cover the catch-all `Ingress/keycloak-ingress`, not only the rate-limit ingresses.
@@ -69,7 +71,7 @@ The Administrator must approve:
 
 ## Evidence outputs
 
-- `admin-path-proof.json`: approved path identity, tested operators, resource/config digests, positive private checks, negative external checks and public OIDC regression checks.
+- `admin-path-proof.json`: explicitly approved sole-Administrator policy, named Administrator, independent recovery path/custody and measured native cluster/Keycloak recovery checks with ordinary credentials and public OIDC unavailable only to the isolated recovery test client/session; resource/config digests, positive private checks, negative external checks and public OIDC regression checks.
 - `registry-consumer-inventory.json`: reader, writer and replication identities, least-privilege results and uncached audited operations, with only Secret names/references where needed and never Secret data.
 - `registry-auth-result.json`: signed configuration/generation identity, anonymous status results for catalog/tag/manifest/blob plus uncached authenticated reader/writer/replication results.
 - `registry-gc-result.json`: signed reachability-closure hash, write-lock/generation evidence, rehearsal outcome, GC configuration digest and uncached audited post-GC pulls.
@@ -87,6 +89,11 @@ Full probe headers and operational records remain access controlled. Do not reta
 - Never classify a rate limit, login page or redirect as closed exposure; the external request must be refused or not routed.
 
 ## Acceptance criteria
+
+**Given** the approved sole-Administrator model and separately protected recovery access
+**When** ordinary credentials and public OIDC are unavailable to an isolated recovery test client/session during a controlled qualification while production accounts/public OIDC remain available to other clients
+**Then** the same named Administrator can independently authenticate and perform non-destructive native cluster and Keycloak administration reads
+**And** measured recovery checks pass before and after public route closure; a second account or copied everyday credentials alone cannot satisfy recovery
 
 **Given** the public Keycloak administration/master-realm routes and a retained KubeSphere console
 **When** this story completes
@@ -125,3 +132,35 @@ The [4.2 preparation helper](../../eng/admin-exposure/prepare.py) and [operation
 The reviewable early console procedure deletes only the freshly inventoried public Ingress through a native DELETE bound to **both UID and resourceVersion**, preserves a loopback-only private port-forward and independent native administration, and requires post-change external refusal/private access/OIDC checks. All fresh resource/configuration/DNS/route identities and private-path proofs still need collection and a separate exact-attempt production go. Its accepted production result must produce a new `console-closure.json` bound to the exact 4.27 retirement attempt/plan/source cluster and signed under `hexalith-retirement`; the pending template cannot unblock retirement. Console acceptance can proceed independently while other 4.2 criteria remain open.
 
 Remaining Administrator inputs are the named Keycloak/private administration path, **two authorized operators**, break-glass/monitoring and approved public OIDC checks; complete registry reader/writer/replicator and live/rollback inventory, secret-store owner/rotation and cutover window; and the signed retained-digest source plus Zot retention/GC policy. The story's two-operator requirement remains in force unless explicitly corrected. Missing exhaustive retained source, rehearsal or held registry-wide writer/replication lock leaves GC disabled. Story and sprint status stay `in-progress`; all uncompleted live tasks and acceptance criteria remain pending.
+
+## Local approval-boundary hardening — 2026-10-06
+
+The Administrator delegated routine design choices for private administration. The selected design uses existing native CLI administration plus loopback-only SSH tunnels and `kubectl port-forward`, preserving existing non-master realm/OIDC client flows. Actual endpoint/context/host bindings, the exact public-flow inventory, **two verified existing authorized operators**, break-glass/monitoring and measured access proofs remain pending. No operator identities or successful checks were invented, and this design delegation is not the separate exact-attempt production go.
+
+The preparation checker now binds that prior go to completed private-path or registry-consumer proof bytes. GC approval additionally binds the exact retained-closure record and successful rehearsal evidence. Approval must follow the completed baseline/prerequisites and precede a newly collected pre-mutation checkpoint and the mutation; approval or proof collected afterward fails. Pre-cutover audit operations must name their inventoried consumer. Post-GC preservation proof accepts only authenticated reader/source-replication fetches, rejecting writer pushes and destination replication. Signed records with duplicate JSON keys or a shared attempt-directory mode are refused. The operations procedure documents the added bindings and sequence.
+
+[Local verification](evidence/epic-4/4-2/20261006t094705z-approval-boundaries/verification.json) records 33 passing synthetic boundary tests, including actual local SSH verification of ephemeral signatures and regressions that previously accepted a late go, late prerequisites, ambiguous signed JSON and non-read GC operations. A new immutable owner-only preparation attempt exists in dedicated custody outside Git. Its operational templates remain unsigned, pending and unaccepted. No remote discovery, credential issuance, route change, registry policy cutover or GC occurred; no live task or acceptance criterion was marked complete. The existing `baseline_commit`, `in-progress` status and exact-plan signed 4.27 handoff requirement are preserved.
+
+## Authorized read-only discovery and proposals — 2026-10-06
+
+The Administrator answered **yes** to fresh live read-only discovery. The [discovery summary](evidence/epic-4/4-2/20261006t102707z-change-proposals/summary.md) records compatible direct-native reads, fresh DNS/Ingress UID/resourceVersion/backend/configuration projections, the current Traefik compatibility provider, workload/ServiceAccount and local workflow references, and read-only Keycloak realm/client metadata. The evidence-custody/discovery task is complete; it is unsigned inventory, not a signed mutation baseline or operational acceptance.
+
+Both private loopback transports were tested and cleaned up. Authentication, two authorized operators, break-glass, public OIDC regression and independent external routing acceptance are unproved. Current anonymous catalog/tag/manifest/blob reads succeed from the operator workstation. Zot is already configured for daily GC; the approved retained-source/rehearsal/lock prerequisites remain absent and no GC action was taken.
+
+Exact console DELETE/restoration, candidate Keycloak public-path/obsolete-admin-route requests, and a separate scheduled-GC pause proposal are reviewable in dedicated private custody. All execution/approval/acceptance flags are false. The preserved `tache` realm has 11 client configurations; that inventory is not a successful authentication flow. No route, registry configuration, DNS, credential, grant or workload was changed. Read-only authorization does not supply the separate production go, and the story's two-operator requirement remains pending. Keep story and sprint `in-progress`.
+
+## Approved sole-Administrator correction — 2026-10-06
+
+The Administrator instructed **“do recommended”** after reviewing the two-operator alternative and the recommendation to use one named Administrator plus independent tested recovery. This explicitly corrects this story to the existing sole-owner/no-deputy management policy. `jpiquot` is the selected Administrator identity; actual per-system account bindings and authenticated checks still need qualification. There is no claim of a second person, newly issued credential or completed recovery test.
+
+Use existing private native CLI access, temporary loopback-only port-forwards and Keycloak Admin CLI/API access. Reuse the approved separately protected native emergency access and qualify an independent Keycloak recovery procedure. Recovery must work with ordinary credentials and public OIDC unavailable only to an isolated recovery test client/session, cover authenticated native cluster and Keycloak non-destructive reads, and pass again after closure. Production accounts/public OIDC remain available to other clients; qualification does not disable, revoke or mutate them. Recovery custody, path identity, monitoring, timestamps and sanitized evidence digests must be bound to the exact signed attempt. This protects credential/authentication lockout; the sole Administrator remains the only person available to intervene.
+
+Apply this correction in `eng/admin-exposure/prepare.py`, `eng/admin-exposure/test_prepare.py` and `eng/admin-exposure/README.md`: require an explicitly approved sole-Administrator policy and exactly one named tested Administrator before and after closure; require measured independent recovery for both administration surfaces before and after closure. Keep unauthorized refusal, public OIDC regressions, fresh UID/resourceVersion/configuration/DNS checkpoints, exact prerequisite hash/signature/approval ordering, registry-consumer and GC gates, and the exact signed 4.27 handoff unchanged. Empty templates and local synthetic checks remain unaccepted for production. Historical private attempts and committed evidence are immutable; create a new preparation/verification attempt for this correction.
+
+This is requirements/design approval and authorizes the corresponding local implementation and qualification preparation. It is not a route/configuration/credential/grant/DNS mutation go. Story and sprint remain `in-progress` until actual operational criteria pass.
+
+## Sole-Administrator implementation handoff — 2026-10-06
+
+The preparation checker, pending templates and procedure now implement the approved `sole-administrator` policy for `jpiquot`. Signed private-path and result records require exactly one tested Administrator, approved native cluster/Keycloak account bindings and independently protected recovery custody. Both the prior `breakGlass` proof and the new `postChangeBreakGlass` result must prove native cluster authentication/non-destructive reads and Keycloak login/non-destructive reads while ordinary credentials and public OIDC are unavailable to the isolated recovery test client/session, with sanitized measurement and credential-independence evidence hashes. Production accounts/public OIDC stay available to other clients. Another account or copied everyday access alone cannot satisfy recovery. Unauthorized refusal, normal access, OIDC regressions, prior exact-hash approval/checkpoint sequencing, registry/GC gates and the existing signed 4.27 handoff remain required.
+
+[Local verification](evidence/epic-4/4-2/20261006t105730z-sole-administrator-verification/verification.json) records 42 passing synthetic tests with zero skips and a retained verbose test-log hash. A new immutable owner-only preparation attempt uses the corrected pending schema; previous private attempts and committed receipts remain unchanged. All operational template acceptance/signature fields remain pending, and local verification does not establish production authentication or recovery. This implementation performed no remote discovery or production mutation. Fresh signed private/recovery qualification, exact-attempt production go, route denial/OIDC acceptance and the registry/retained-content criteria remain incomplete; story and sprint stay `in-progress`.

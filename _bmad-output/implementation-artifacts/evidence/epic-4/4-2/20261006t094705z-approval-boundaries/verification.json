@@ -1,0 +1,88 @@
+{
+  "attemptId": "20261006t094705z-approval-boundaries",
+  "capturedAt": "2026-10-06T09:48:54+00:00",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s eng/admin-exposure -p 'test_*.py'",
+      "condition": "focused synthetic boundary tests",
+      "result": "pass",
+      "testCount": 33
+    },
+    {
+      "condition": "real local SSH signature verification against ephemeral synthetic keys",
+      "productionSignaturesVerified": false,
+      "result": "pass"
+    },
+    {
+      "condition": "prior go and exact prerequisite bindings; late approval, late proof and late rehearsal denied",
+      "result": "pass"
+    },
+    {
+      "condition": "duplicate signed JSON keys, shared attempt directory, wrong audit consumer and non-read post-GC operation denied",
+      "result": "pass"
+    },
+    {
+      "condition": "new private immutable preparation attempt and checksums",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "result": "pass"
+    },
+    {
+      "condition": "CLI help",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Design delegation is not a production go or two-operator proof.",
+    "Operational signatures and live exposure closure were not collected or performed.",
+    "Signatures authenticate statements; this checker cannot independently prove collection or signing chronology or measured routing behavior.",
+    "GC remains disabled without operational retained-source, rehearsal and lock evidence.",
+    "Story and sprint status stay in-progress; no live task or acceptance criterion was marked complete."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "pendingEvidenceFiles": [
+    "admin-exposure-result.json",
+    "admin-path-proof.json",
+    "administrator-decisions.json",
+    "console-closure.json",
+    "pre-mutation-state.json",
+    "registry-auth-result.json",
+    "registry-consumer-inventory.json",
+    "registry-gc-result.json",
+    "retained-oci-closure.json",
+    "signed-baseline.json"
+  ],
+  "privateEvidenceLocation": "dedicated owner-only evidence custody outside Git; exact path held by operator",
+  "remainingProductionRequirements": [
+    "fresh exact route/configuration/DNS/UID/resourceVersion/backend baseline and prior exact-attempt production go",
+    "actual private-path bindings, two verified existing authorized operators, break-glass, monitoring and measured public OIDC inventory",
+    "complete signed-generation registry consumer/writer/replicator and rollback inventory plus secret-store owner/rotation policy and cutover window",
+    "uncached audited authenticated least-privilege operations before and after anonymous denial",
+    "signed exhaustive retained OCI closure, approved GC configuration, prior successful rehearsal and held writer/replication lock",
+    "measured signed results and independently accepted exact-plan 4.27 console-closure handoff"
+  ],
+  "remoteOperationsPerformed": false,
+  "schemaVersion": 1,
+  "selectedPrivatePathDesign": "existing native CLI plus loopback-only SSH tunnels and kubectl port-forward",
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "86f4fde281ea91c1f11626c055406531d753d7c83b07223e1d5f989d2be4bb3c",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "e4d3f6ea2c153ecfa2ae62e629f0333fd935200ae0ce0e3be1c181deb971fb49",
+    "eng/admin-exposure/prepare.py": "cbc0d185db5a15412bdd93f6ab37dc494a843442b888b290d54685a43b154237",
+    "eng/admin-exposure/test_prepare.py": "cf7435982948caec546b6977e44275e5cd39abd4268eccc6a51e538b4ea76c49"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local preparation and synthetic tests only"
+}

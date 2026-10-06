@@ -72,7 +72,11 @@ class Fixtures:
 
     def decisions(self, phase='console'):
         return {**self.base(captured=-250), 'approvedBy': 'Administrator', 'privatePathId': 'fixture-private',
-                'operators': ['operator-one', 'operator-two'], 'breakGlassPathId': 'fixture-native',
+                'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
+                'operators': ['jpiquot'], 'breakGlassPathId': 'fixture-native',
+                'recoveryCustodyId': 'fixture-recovery-custody',
+                'administratorAccountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
+                'recoveryAccountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
                 'monitoringOwner': 'fixture-owner', 'approvedPublicOidcChecks': ['fixture-oidc'],
                 'consoleMode': 'port-forward', 'publicConsoleHostnames': ['kube.hexalith.com'],
                 'keycloakHostname': 'auth.tache.ai', 'registryHostname': 'registry.hexalith.com',
@@ -92,19 +96,30 @@ class Fixtures:
         return [{'id': 'fixture-oidc', 'result': 'pass', 'evidenceSha256': H, 'capturedAt': self.time(captured)}]
 
     def operators(self, captured=-180):
-        return [{'operator': v, 'keycloakAdminLogin': True, 'keycloakNonDestructiveRead': True,
+        return [{'operator': 'jpiquot', 'keycloakAdminLogin': True, 'keycloakNonDestructiveRead': True,
                  'clusterAdminRead': True, 'consolePortForward': True, 'evidenceSha256': H,
-                 'capturedAt': self.time(captured)} for v in ('operator-one', 'operator-two')]
+                 'accountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
+                 'capturedAt': self.time(captured)}]
+
+    def recovery(self, captured=-180):
+        return {'operator': 'jpiquot', 'pathId': 'fixture-native', 'custodyId': 'fixture-recovery-custody',
+                'accountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
+                'ordinaryCredentialsUnavailable': True, 'publicOidcUnavailable': True,
+                'separatelyProtectedRecoveryAccess': True, 'independentOfOrdinaryCredentials': True,
+                'credentialLineageEvidenceSha256': H, 'nativeClusterAuthentication': True,
+                'nativeClusterNonDestructiveRead': True, 'keycloakAdminLogin': True,
+                'keycloakNonDestructiveRead': True, 'result': 'pass', 'evidenceSha256': H,
+                'capturedAt': self.time(captured)}
 
     def admin_records(self, phase='console'):
         baseline = self.snapshot(phase)
-        current = {**copy.deepcopy(baseline), **self.base(captured=-90), 'forMutation': phase,
+        current = {**copy.deepcopy(baseline), **self.base(captured=-90, start=-100), 'forMutation': phase,
                    'observedImmediatelyBeforeMutation': True}
         decisions = self.decisions(phase)
         proof = {**self.base(captured=-150), 'privatePathId': 'fixture-private',
+                 'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
                  'testedOperators': self.operators(), 'unauthorizedPrivateCheck': self.denial(public=False, captured=-180),
-                 'breakGlass': {'pathId': 'fixture-native', 'result': 'pass', 'evidenceSha256': H,
-                               'capturedAt': self.time(-180)}, 'publicOidcChecks': self.oidc(-180)}
+                 'breakGlass': self.recovery(), 'publicOidcChecks': self.oidc(-180)}
         host = decisions['keycloakHostname'] if phase == 'keycloak' else 'kube.hexalith.com'
         paths = prepare.ADMIN_PATHS if phase == 'keycloak' else ('/', '/login')
         probes = [self.denial(host=host, path=path) for path in paths]
@@ -112,9 +127,11 @@ class Fixtures:
             if probe['path'].endswith('/token'):
                 probe['method'] = 'POST'
         result = {**self.base(), 'closedSurface': phase, 'baselineSha256': H, 'privateProofSha256': H,
+                  'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
                   'externalProbes': probes, 'closedAdminPaths': list(prepare.ADMIN_PATHS),
                   'consoleMode': 'port-forward', 'publicOidcChecks': self.oidc(),
                   'postChangePrivateChecks': self.operators(-20),
+                  'postChangeBreakGlass': self.recovery(-20),
                   'mutationStartedAt': self.time(-60), 'mutationFinishedAt': self.time(-40)}
         return baseline, decisions, current, proof, result
 
@@ -217,6 +234,14 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         handoff = json.loads((directory / 'console-closure.json').read_text())
         self.assertFalse(handoff['accepted'])
         self.assertIsNone(handoff['planSha256'])
+        decisions = json.loads((directory / 'administrator-decisions.json').read_text())
+        self.assertIsNone(decisions['administrationPolicy'])
+        self.assertIsNone(decisions['administrator'])
+        self.assertEqual(decisions['operators'], [])
+        self.assertIsNone(decisions['recoveryCustodyId'])
+        self.assertTrue(all(v is None for v in decisions['recoveryAccountBindings'].values()))
+        result = json.loads((directory / 'admin-exposure-result.json').read_text())
+        self.assertIsNone(result['postChangeBreakGlass'])
         for line in (directory / 'SHA256SUMS').read_text().splitlines():
             expected, name = line.split('  ')
             self.assertEqual(prepare.file_digest(directory / name), expected)
@@ -228,6 +253,7 @@ class BoundaryTests(Fixtures, unittest.TestCase):
             with self.assertRaises(ValueError):
                 prepare.prepare(self.project, root, attempt, 'operator')
         self.evidence.mkdir(mode=0o755)
+        self.evidence.chmod(0o755)
         with self.assertRaisesRegex(ValueError, 'owner-only'):
             prepare.prepare(self.project, self.evidence, 'valid', 'operator')
         link = self.root / 'linked'
@@ -290,7 +316,7 @@ class BoundaryTests(Fixtures, unittest.TestCase):
             with self.subTest(status=status), self.assertRaises(ValueError):
                 prepare.refused(probe)
 
-    def test_console_requires_second_operator_break_glass_oidc_and_post_access(self):
+    def test_console_requires_named_administrator_break_glass_oidc_and_post_access(self):
         for field in ('testedOperators', 'breakGlass', 'publicOidcChecks'):
             _, decisions, _, proof, _ = self.admin_records()
             proof[field] = [] if field != 'breakGlass' else None
@@ -301,6 +327,99 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'post-change-private'):
             prepare.admin_result('console', decisions, proof, result,
                                  {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_sole_administrator_with_same_accounts_and_independent_recovery_passes(self):
+        _, decisions, current, proof, result = self.admin_records()
+        prepare.admin_result('console', decisions, proof, result,
+                             {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_explicit_sole_policy_and_exact_selected_administrator_are_required(self):
+        for field, value in (('administrationPolicy', None), ('administrationPolicy', 'two-operators'),
+                             ('administrator', 'other-administrator'), ('operators', []),
+                             ('operators', ['jpiquot', 'jpiquot']), ('operators', ['jpiquot', 'deputy'])):
+            _, decisions, _, proof, _ = self.admin_records()
+            decisions[field] = value
+            with self.subTest(field=field, value=value), self.assertRaisesRegex(ValueError, 'sole-administrator-policy'):
+                prepare.admin_proof(decisions, proof)
+
+    def test_pre_and_post_proofs_cannot_substitute_or_add_an_administrator(self):
+        for record_field in ('testedOperators', 'postChangePrivateChecks'):
+            for change in ('different', 'second'):
+                _, decisions, current, proof, result = self.admin_records()
+                checks = proof[record_field] if record_field == 'testedOperators' else result[record_field]
+                if change == 'different':
+                    checks[0]['operator'] = 'other-administrator'
+                else:
+                    checks.append({**checks[0], 'operator': 'deputy'})
+                with self.subTest(field=record_field, change=change), self.assertRaises(ValueError):
+                    prepare.admin_result('console', decisions, proof, result,
+                                         {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_recovery_requires_both_authentication_and_non_destructive_reads_pre_and_post(self):
+        for stage in ('before', 'after'):
+            for field in ('nativeClusterAuthentication', 'nativeClusterNonDestructiveRead',
+                          'keycloakAdminLogin', 'keycloakNonDestructiveRead'):
+                _, decisions, current, proof, result = self.admin_records()
+                recovery = proof['breakGlass'] if stage == 'before' else result['postChangeBreakGlass']
+                recovery[field] = False
+                with self.subTest(stage=stage, field=field), self.assertRaisesRegex(ValueError, 'independent-recovery'):
+                    prepare.admin_result('console', decisions, proof, result,
+                                         {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_recovery_requires_ordinary_credentials_and_public_oidc_unavailable_pre_and_post(self):
+        for stage in ('before', 'after'):
+            for field in ('ordinaryCredentialsUnavailable', 'publicOidcUnavailable',
+                          'separatelyProtectedRecoveryAccess', 'independentOfOrdinaryCredentials',
+                          'credentialLineageEvidenceSha256'):
+                _, decisions, current, proof, result = self.admin_records()
+                recovery = proof['breakGlass'] if stage == 'before' else result['postChangeBreakGlass']
+                recovery[field] = False if field != 'credentialLineageEvidenceSha256' else None
+                with self.subTest(stage=stage, field=field), self.assertRaisesRegex(ValueError, 'independent-recovery'):
+                    prepare.admin_result('console', decisions, proof, result,
+                                         {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_recovery_requires_approved_custody_accounts_path_and_administrator(self):
+        for change in ('missing-custody', 'wrong-custody', 'missing-account', 'wrong-account', 'wrong-path', 'wrong-operator'):
+            _, decisions, current, proof, result = self.admin_records()
+            if change == 'missing-custody':
+                decisions.pop('recoveryCustodyId')
+            elif change == 'wrong-custody':
+                proof['breakGlass']['custodyId'] = 'unapproved-custody'
+            elif change == 'missing-account':
+                decisions['recoveryAccountBindings'].pop('keycloak')
+            elif change == 'wrong-account':
+                proof['breakGlass']['accountBindings']['nativeCluster'] = 'unapproved-principal'
+            else:
+                proof['breakGlass'][{'wrong-path': 'pathId', 'wrong-operator': 'operator'}[change]] = 'unapproved'
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, 'recovery'):
+                prepare.admin_result('console', decisions, proof, result,
+                                     {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_post_change_recovery_is_required_and_must_follow_closure(self):
+        for change in ('missing', 'before-closure', 'outside-window'):
+            _, decisions, current, proof, result = self.admin_records()
+            if change == 'missing':
+                result.pop('postChangeBreakGlass')
+            else:
+                result['postChangeBreakGlass']['capturedAt'] = self.time(-180 if change == 'before-closure' else 10000)
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                prepare.admin_result('console', decisions, proof, result,
+                                     {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_second_account_or_copied_daily_access_alone_does_not_prove_recovery(self):
+        for change in ('second-account', 'copied-daily-access'):
+            _, decisions, current, proof, result = self.admin_records()
+            if change == 'second-account':
+                decisions['recoveryAccountBindings'] = {'nativeCluster': 'fixture-second-native', 'keycloak': 'fixture-second-keycloak'}
+                for recovery in (proof['breakGlass'], result['postChangeBreakGlass']):
+                    recovery['accountBindings'] = decisions['recoveryAccountBindings']
+                    recovery.pop('credentialLineageEvidenceSha256')
+            else:
+                for recovery in (proof['breakGlass'], result['postChangeBreakGlass']):
+                    recovery['independentOfOrdinaryCredentials'] = False
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, 'independent-recovery'):
+                prepare.admin_result('console', decisions, proof, result,
+                                     {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
 
     def test_removed_console_uses_native_access_and_requires_all_removal_proof(self):
         _, decisions, current, proof, result = self.admin_records()
@@ -336,6 +455,12 @@ class BoundaryTests(Fixtures, unittest.TestCase):
             inventory['consumers'][0]['beforeCutoverOperation'][field] = value
             with self.subTest(field=field), self.assertRaises(ValueError):
                 prepare.registry_inventory(inventory)
+
+    def test_pre_cutover_audit_must_name_the_inventoried_consumer(self):
+        inventory = self.inventory()
+        inventory['consumers'][0]['beforeCutoverOperation']['consumerId'] = 'unrelated-reader'
+        with self.assertRaisesRegex(ValueError, 'authenticated-audit-operation'):
+            prepare.registry_inventory(inventory)
 
     def test_missing_consumer_rollback_coverage_or_least_privilege_fails(self):
         inventory = self.inventory()
@@ -377,9 +502,17 @@ class BoundaryTests(Fixtures, unittest.TestCase):
                 prepare.registry_result(decisions, inventory, result, {'registry-consumer-inventory.json': H}, current)
 
     def test_full_oci_graph_and_post_gc_manifest_referrer_and_blob_fetches_pass(self):
-        decisions, inventory, closure, result = self.gc_records()
-        prepare.gc_result(decisions, inventory, closure, result, {'registry-consumer-inventory.json': H},
-                          self.admin_records('registry-gc')[2])
+        for consumer_index in (0, 2):
+            decisions, inventory, closure, result = self.gc_records()
+            consumer = inventory['consumers'][consumer_index]
+            for index, obj in enumerate(closure['objects']):
+                operation = self.operation(consumer, -20, obj['digest'])
+                if obj['kind'] in ('config', 'layer'):
+                    operation['blobTransferred'] = True
+                result['postGcOperations'][index] = operation
+            with self.subTest(role=consumer['role']):
+                prepare.gc_result(decisions, inventory, closure, result, {'registry-consumer-inventory.json': H},
+                                  self.admin_records('registry-gc')[2])
 
     def test_missing_platform_config_layer_referrer_or_bad_closure_hash_fails(self):
         for removed_kind in ('manifest', 'config', 'layer', 'referrer'):
@@ -421,6 +554,22 @@ class BoundaryTests(Fixtures, unittest.TestCase):
                 prepare.gc_result(decisions, inventory, closure, result, {'registry-consumer-inventory.json': H},
                                   self.admin_records('registry-gc')[2])
 
+    def test_post_gc_writer_push_and_destination_replication_cannot_prove_retained_reads(self):
+        for consumer_index in (1, 2):
+            decisions, inventory, closure, result = self.gc_records()
+            consumer = inventory['consumers'][consumer_index]
+            if consumer['role'] == 'replicator':
+                consumer['replicationDirection'] = 'destination'
+                consumer['beforeCutoverOperation']['replicationDirection'] = 'destination'
+            for index, obj in enumerate(closure['objects']):
+                operation = self.operation(consumer, -20, obj['digest'])
+                if obj['kind'] in ('config', 'layer'):
+                    operation['blobTransferred'] = True
+                result['postGcOperations'][index] = operation
+            with self.subTest(role=consumer['role']), self.assertRaisesRegex(ValueError, 'post-gc-operation'):
+                prepare.gc_result(decisions, inventory, closure, result, {'registry-consumer-inventory.json': H},
+                                  self.admin_records('registry-gc')[2])
+
     def test_unsigned_pending_bundle_never_passes_or_exposes_input_values(self):
         directory = prepare.prepare(self.project, self.evidence, 'fixture-attempt', 'operator')
         args = SimpleNamespace(project_root=self.project, bundle=directory, phase='console',
@@ -455,6 +604,7 @@ class SignatureTests(Fixtures, unittest.TestCase):
         path = self.bundle / name
         path.write_bytes(prepare.canonical(record))
         path.chmod(0o600)
+        Path(str(path) + '.sig').unlink(missing_ok=True)
         subprocess.run([str(self.tool), '-Y', 'sign', '-n', namespace, '-f', str(self.signing_key), str(path)],
                        check=True, capture_output=True)
         Path(str(path) + '.sig').chmod(0o600)
@@ -464,12 +614,112 @@ class SignatureTests(Fixtures, unittest.TestCase):
         baseline, decisions, current, proof, result = self.admin_records()
         baseline_sha = self.sign('signed-baseline.json', baseline)
         decisions['baselineSha256'] = result['baselineSha256'] = baseline_sha
+        decisions['capturedAt'] = self.time(-120)
+        decisions['privateProofSha256'] = result['privateProofSha256'] = self.sign('admin-path-proof.json', proof)
         self.sign('administrator-decisions.json', decisions)
         self.sign('pre-mutation-state.json', current)
-        result['privateProofSha256'] = self.sign('admin-path-proof.json', proof)
         self.sign('admin-exposure-result.json', result)
         return SimpleNamespace(project_root=self.project, bundle=self.bundle, phase='console',
             allowed_signers=self.trust, administrator_principal='fixture-administrator', ssh_keygen=self.tool)
+
+    def signed_registry_bundle(self, phase):
+        baseline = self.snapshot(phase)
+        current = self.admin_records(phase)[2]
+        decisions = self.decisions(phase)
+        decisions['capturedAt'] = self.time(-120)
+        decisions['baselineSha256'] = self.sign('signed-baseline.json', baseline)
+        if phase == 'registry-auth':
+            _, inventory, result, _ = self.registry_records()
+        else:
+            _, inventory, closure, result = self.gc_records()
+            decisions['retainedClosureRecordSha256'] = self.sign('retained-oci-closure.json', closure)
+            decisions['gcRehearsalEvidenceSha256'] = result['rehearsal']['evidenceSha256']
+        decisions['inventorySha256'] = result['inventorySha256'] = self.sign('registry-consumer-inventory.json', inventory)
+        self.sign('administrator-decisions.json', decisions)
+        self.sign('pre-mutation-state.json', current)
+        self.sign('registry-auth-result.json' if phase == 'registry-auth' else 'registry-gc-result.json', result)
+        return SimpleNamespace(project_root=self.project, bundle=self.bundle, phase=phase,
+            allowed_signers=self.trust, administrator_principal='fixture-administrator', ssh_keygen=self.tool)
+
+    def test_production_go_must_precede_fresh_reread_and_mutation(self):
+        for captured in (-80, -30):
+            args = self.signed_console_bundle()
+            decisions = json.loads((self.bundle / 'administrator-decisions.json').read_bytes())
+            decisions['capturedAt'] = self.time(captured)
+            self.sign('administrator-decisions.json', decisions)
+            report = prepare.check_bundle(args)
+            with self.subTest(captured=captured):
+                self.assertEqual(report['verificationResult'], 'fail', report)
+                self.assertEqual(report['failures'], [
+                    {'condition': 'production-approval-not-before-fresh-checkpoint-and-mutation'}])
+
+    def test_admin_approval_binds_completed_private_proof(self):
+        for change in ('hash', 'late-proof'):
+            args = self.signed_console_bundle()
+            decisions = json.loads((self.bundle / 'administrator-decisions.json').read_bytes())
+            if change == 'hash':
+                decisions['privateProofSha256'] = H
+            else:
+                proof = json.loads((self.bundle / 'admin-path-proof.json').read_bytes())
+                proof['capturedAt'] = self.time(-110)
+                decisions['privateProofSha256'] = self.sign('admin-path-proof.json', proof)
+                result = json.loads((self.bundle / 'admin-exposure-result.json').read_bytes())
+                result['privateProofSha256'] = decisions['privateProofSha256']
+                self.sign('admin-exposure-result.json', result)
+            self.sign('administrator-decisions.json', decisions)
+            report = prepare.check_bundle(args)
+            with self.subTest(change=change):
+                self.assertEqual(report['verificationResult'], 'fail', report)
+                self.assertEqual(report['failures'], [{'condition':
+                    'production-approval-prerequisite-binding-mismatch' if change == 'hash' else
+                    'production-approval-precedes-completed-prerequisite'}])
+
+    def test_gc_approval_binds_prior_inventory_closure_and_rehearsal(self):
+        for change in ('inventory', 'closure', 'rehearsal'):
+            args = self.signed_registry_bundle('registry-gc')
+            decisions = json.loads((self.bundle / 'administrator-decisions.json').read_bytes())
+            result = json.loads((self.bundle / 'registry-gc-result.json').read_bytes())
+            if change == 'rehearsal':
+                result['rehearsal']['capturedAt'] = self.time(-110)
+                self.sign('registry-gc-result.json', result)
+            else:
+                name = 'registry-consumer-inventory.json' if change == 'inventory' else 'retained-oci-closure.json'
+                record = json.loads((self.bundle / name).read_bytes())
+                record['capturedAt'] = self.time(-110)
+                record_hash = self.sign(name, record)
+                decisions['inventorySha256' if change == 'inventory' else 'retainedClosureRecordSha256'] = record_hash
+                if change == 'inventory':
+                    result['inventorySha256'] = record_hash
+                    self.sign('registry-gc-result.json', result)
+                self.sign('administrator-decisions.json', decisions)
+            report = prepare.check_bundle(args)
+            with self.subTest(change=change):
+                self.assertEqual(report['verificationResult'], 'fail', report)
+                self.assertEqual(report['failures'], [{'condition':
+                    'production-gc-approval-before-successful-rehearsal-unproved' if change == 'rehearsal' else
+                    'production-approval-precedes-completed-prerequisite'}])
+
+    def test_signed_duplicate_json_keys_are_rejected(self):
+        for duplicate in (b'"productionGo": false, "productionGo": true',
+                          b'"productionGo": true, "nested": {"result": "fail", "result": "pass"}'):
+            args = self.signed_console_bundle()
+            path = self.bundle / 'administrator-decisions.json'
+            original = path.read_bytes()
+            path.write_bytes(original.replace(b'"productionGo": true', duplicate))
+            Path(str(path) + '.sig').unlink()
+            subprocess.run([str(self.tool), '-Y', 'sign', '-n', 'hexalith-admin-exposure', '-f', str(self.signing_key), str(path)],
+                           check=True, capture_output=True)
+            Path(str(path) + '.sig').chmod(0o600)
+            report = prepare.check_bundle(args)
+            self.assertEqual(report['verificationResult'], 'fail', report)
+            self.assertEqual(report['failures'], [{'file': 'administrator-decisions.json',
+                                                 'condition': 'signed-fresh-production-input-required'}])
+
+    def test_signed_evidence_in_shared_directory_is_refused(self):
+        args = self.signed_console_bundle()
+        self.bundle.chmod(0o755)
+        report = prepare.check_bundle(args)
+        self.assertEqual(report['verificationResult'], 'fail', report)
 
     def test_valid_signatures_and_synthetic_statements_only_pass_offline_consistency(self):
         report = prepare.check_bundle(self.signed_console_bundle())
@@ -478,6 +728,16 @@ class SignatureTests(Fixtures, unittest.TestCase):
         self.assertFalse(report['operationalAcceptance'])
         self.assertFalse(report['complete'])
         self.assertEqual(report['allowedSignersSha256'], prepare.file_digest(self.trust))
+
+    def test_signed_sole_admin_result_requires_post_closure_recovery(self):
+        args = self.signed_console_bundle()
+        result = json.loads((self.bundle / 'admin-exposure-result.json').read_bytes())
+        result.pop('postChangeBreakGlass')
+        self.sign('admin-exposure-result.json', result)
+        report = prepare.check_bundle(args)
+        self.assertEqual(report['verificationResult'], 'fail', report)
+        self.assertEqual(report['failures'], [
+            {'condition': 'independent-recovery-custody-authentication-and-reads-unproved'}])
 
     def test_wrong_principal_invalid_signature_or_changed_bytes_fail(self):
         args = self.signed_console_bundle()
@@ -508,23 +768,7 @@ class SignatureTests(Fixtures, unittest.TestCase):
                 previous = self.bundle
                 self.bundle = phase_directory
                 try:
-                    baseline = self.snapshot(phase)
-                    current = self.admin_records(phase)[2]
-                    decisions = self.decisions(phase)
-                    decisions['baselineSha256'] = self.sign('signed-baseline.json', baseline)
-                    self.sign('administrator-decisions.json', decisions)
-                    self.sign('pre-mutation-state.json', current)
-                    if phase == 'registry-auth':
-                        _, inventory, result, _ = self.registry_records()
-                        result['inventorySha256'] = self.sign('registry-consumer-inventory.json', inventory)
-                        self.sign('registry-auth-result.json', result)
-                    else:
-                        _, inventory, closure, result = self.gc_records()
-                        result['inventorySha256'] = self.sign('registry-consumer-inventory.json', inventory)
-                        self.sign('retained-oci-closure.json', closure)
-                        self.sign('registry-gc-result.json', result)
-                    args = SimpleNamespace(project_root=self.project, bundle=self.bundle, phase=phase,
-                        allowed_signers=self.trust, administrator_principal='fixture-administrator', ssh_keygen=self.tool)
+                    args = self.signed_registry_bundle(phase)
                     report = prepare.check_bundle(args)
                     self.assertEqual(report['verificationResult'], 'pass', report)
                     self.assertFalse(report['operationalAcceptance'])

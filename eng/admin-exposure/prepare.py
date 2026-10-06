@@ -32,6 +32,8 @@ FORBIDDEN_FIELDS = {'authorization', 'cookie', 'cookies', 'set-cookie', 'token',
 ADMIN_PATHS = ('/admin', '/admin/', '/admin/master/console/', '/realms/master',
                '/realms/master/.well-known/openid-configuration',
                '/realms/master/protocol/openid-connect/token')
+ADMINISTRATOR = 'jpiquot'
+ADMINISTRATION_POLICY = 'sole-administrator'
 
 
 def require(condition, reason):
@@ -131,6 +133,9 @@ def templates(attempt_id, operator, source_hashes):
                          'liveEvidenceCollected': False, 'complete': False},
         'signed-baseline.json': {**base, 'resources': [], 'routes': [], 'registryGeneration': generation},
         'administrator-decisions.json': {**base, 'approvedBy': None, 'privatePathId': None,
+            'administrationPolicy': None, 'administrator': None, 'recoveryCustodyId': None,
+            'administratorAccountBindings': {'nativeCluster': None, 'keycloak': None},
+            'recoveryAccountBindings': {'nativeCluster': None, 'keycloak': None},
             'operators': [], 'breakGlassPathId': None, 'monitoringOwner': None,
             'approvedPublicOidcChecks': [], 'consoleMode': 'port-forward',
             'publicConsoleHostnames': ['kube.hexalith.com'], 'keycloakHostname': 'auth.tache.ai',
@@ -138,15 +143,19 @@ def templates(attempt_id, operator, source_hashes):
             'affectedRouteUids': {}, 'publicCatchAllIngressUid': None,
             'credentialRotationPolicySha256': None, 'cutoverWindowStart': None, 'cutoverWindowEnd': None,
             'retainedDigestSourceSha256': None, 'gcPolicySha256': None,
+            'privateProofSha256': None, 'inventorySha256': None,
+            'retainedClosureRecordSha256': None, 'gcRehearsalEvidenceSha256': None,
             'baselineSha256': None, 'productionGo': False},
         'pre-mutation-state.json': {**base, 'forMutation': None, 'observedImmediatelyBeforeMutation': False,
             'resources': [], 'routes': [], 'registryGeneration': generation},
         'admin-path-proof.json': {**base, 'privatePathId': None, 'testedOperators': [],
+            'administrationPolicy': None, 'administrator': None,
             'unauthorizedPrivateCheck': None, 'breakGlass': None, 'publicOidcChecks': []},
         'admin-exposure-result.json': {**base, 'closedSurface': None, 'baselineSha256': None,
+            'administrationPolicy': None, 'administrator': None,
             'privateProofSha256': None, 'externalProbes': [], 'closedAdminPaths': [],
             'consoleMode': 'port-forward', 'publicOidcChecks': [], 'removedConsoleObjects': None,
-            'postChangePrivateChecks': [],
+            'postChangePrivateChecks': [], 'postChangeBreakGlass': None,
             'mutationStartedAt': None, 'mutationFinishedAt': None, 'accepted': False},
         'registry-consumer-inventory.json': {**base, 'generation': generation,
             'inventoryComplete': False, 'coverage': {k: False for k in (
@@ -162,6 +171,7 @@ def templates(attempt_id, operator, source_hashes):
             'referrerEnumerationComplete': False},
         'registry-gc-result.json': {**base, 'generation': generation, 'inventorySha256': None,
             'closureSha256': None, 'gcConfigSha256': None, 'excludedObjectDigests': [],
+            'gcStartedAt': None, 'gcFinishedAt': None,
             'rehearsal': None, 'writeReplicationLock': None, 'postGcOperations': [], 'accepted': False},
         # This is the existing 4.27 contract, deliberately unusable until an actual accepted closure.
         'console-closure.json': {**base, 'attemptId': None, 'planSha256': None, 'accepted': False,
@@ -270,6 +280,35 @@ def mutation_times(result, current):
     return started, finished
 
 
+def prior_approval(phase, records, hashes):
+    """A later signed production go cannot approve an earlier checkpoint or mutation."""
+    baseline, decisions, current = (records[name] for name in COMMON_FILES)
+    result = records[PHASE_FILES[phase][-1]]
+    started = timestamp(result.get('gcStartedAt' if phase == 'registry-gc' else 'mutationStartedAt'))
+    finished = timestamp(result.get('gcFinishedAt' if phase == 'registry-gc' else 'mutationFinishedAt'))
+    approved = timestamp(decisions.get('capturedAt'))
+    require(timestamp(baseline.get('capturedAt')) <= approved
+            <= timestamp(current.get('observationStartedAt')) <= timestamp(current.get('capturedAt'))
+            <= started <= finished, 'production-approval-not-before-fresh-checkpoint-and-mutation')
+    prerequisites = [('admin-path-proof.json', 'privateProofSha256')] if phase in ('console', 'keycloak') else [
+        ('registry-consumer-inventory.json', 'inventorySha256')]
+    if phase == 'registry-gc':
+        prerequisites.append(('retained-oci-closure.json', 'retainedClosureRecordSha256'))
+    for name, binding in prerequisites:
+        require(decisions.get(binding) == hashes[name], 'production-approval-prerequisite-binding-mismatch')
+        require(timestamp(records[name].get('capturedAt')) <= approved,
+                'production-approval-precedes-completed-prerequisite')
+    if phase == 'registry-gc':
+        rehearsal = result.get('rehearsal')
+        require(isinstance(rehearsal, dict) and sha(decisions.get('gcRehearsalEvidenceSha256'))
+                and decisions['gcRehearsalEvidenceSha256'] == rehearsal.get('evidenceSha256')
+                and timestamp(rehearsal.get('capturedAt')) <= approved,
+                'production-gc-approval-before-successful-rehearsal-unproved')
+    require(all(finished < timestamp(records[name].get('expiresAt'))
+                for name in (*COMMON_FILES, *(name for name, _ in prerequisites))),
+            'production-approval-or-prerequisite-expired-during-mutation')
+
+
 def compare_baseline(baseline, current):
     """No relaxed resourceVersion or UID handling for 4.2 mutations."""
     validate_snapshot(baseline)
@@ -302,10 +341,35 @@ def oidc_checks(decisions, checks):
             sha(v.get('evidenceSha256')) for v in results.values()), 'public-oidc-regression-stop-and-rollback')
 
 
+def account_bindings(value):
+    return (isinstance(value, dict) and set(value) == {'nativeCluster', 'keycloak'}
+            and all(identifier(v) for v in value.values()))
+
+
+def recovery_proof(decisions, recovery, parent, *, after=None):
+    require(identifier(decisions.get('breakGlassPathId')) and identifier(decisions.get('recoveryCustodyId'))
+            and account_bindings(decisions.get('recoveryAccountBindings'))
+            and isinstance(recovery, dict) and recovery.get('operator') == ADMINISTRATOR
+            and recovery.get('pathId') == decisions['breakGlassPathId']
+            and recovery.get('custodyId') == decisions['recoveryCustodyId']
+            and recovery.get('accountBindings') == decisions['recoveryAccountBindings']
+            and recovery.get('result') == 'pass' and sha(recovery.get('evidenceSha256'))
+            and sha(recovery.get('credentialLineageEvidenceSha256'))
+            and all(recovery.get(k) is True for k in ('ordinaryCredentialsUnavailable', 'publicOidcUnavailable',
+                'separatelyProtectedRecoveryAccess', 'independentOfOrdinaryCredentials',
+                'nativeClusterAuthentication', 'nativeClusterNonDestructiveRead',
+                'keycloakAdminLogin', 'keycloakNonDestructiveRead')),
+            'independent-recovery-custody-authentication-and-reads-unproved')
+    in_record_time(recovery, parent, after=after)
+
+
 def admin_proof(decisions, proof):
     operators = decisions.get('operators')
-    require(isinstance(operators, list) and len(set(operators)) >= 2
-            and all(identifier(v) for v in operators), 'two-approved-operators-required')
+    require(decisions.get('administrationPolicy') == ADMINISTRATION_POLICY
+            and decisions.get('administrator') == ADMINISTRATOR and operators == [ADMINISTRATOR],
+            'approved-sole-administrator-policy-required')
+    require(proof.get('administrationPolicy') == ADMINISTRATION_POLICY
+            and proof.get('administrator') == ADMINISTRATOR, 'sole-administrator-proof-binding-mismatch')
     require(identifier(decisions.get('privatePathId')) and proof.get('privatePathId') == decisions['privatePathId']
             and identifier(decisions.get('monitoringOwner')), 'approved-private-path-or-monitoring-missing')
     tested = unique(proof.get('testedOperators'), 'operator')
@@ -314,16 +378,15 @@ def admin_proof(decisions, proof):
     if decisions['consoleMode'] == 'port-forward':
         checks += ('consolePortForward',)
     require(set(tested) == set(operators) and all(all(v.get(k) is True for k in checks)
-        and sha(v.get('evidenceSha256')) for v in tested.values()), 'authorized-administration-unproved')
+        and sha(v.get('evidenceSha256')) for v in tested.values())
+        and account_bindings(decisions.get('administratorAccountBindings'))
+        and all(v.get('accountBindings') == decisions['administratorAccountBindings'] for v in tested.values()),
+        'authorized-administration-unproved')
     for check in tested.values():
         in_record_time(check, proof)
     refused(proof.get('unauthorizedPrivateCheck'), external=False)
     in_record_time(proof['unauthorizedPrivateCheck'], proof)
-    glass = proof.get('breakGlass')
-    require(isinstance(glass, dict) and identifier(decisions.get('breakGlassPathId'))
-            and glass.get('pathId') == decisions['breakGlassPathId'] and glass.get('result') == 'pass'
-            and sha(glass.get('evidenceSha256')), 'break-glass-unproved')
-    in_record_time(glass, proof)
+    recovery_proof(decisions, proof.get('breakGlass'), proof)
     oidc_checks(decisions, proof.get('publicOidcChecks'))
     for check in proof['publicOidcChecks']:
         in_record_time(check, proof)
@@ -336,7 +399,9 @@ def admin_result(phase, decisions, proof, result, hashes, current):
                   *proof['publicOidcChecks']):
         in_record_time(check, proof, before=started)
     require(result.get('closedSurface') == phase and result.get('baselineSha256') == hashes['signed-baseline.json']
-            and result.get('privateProofSha256') == hashes['admin-path-proof.json'], 'admin-result-binding-mismatch')
+            and result.get('privateProofSha256') == hashes['admin-path-proof.json']
+            and result.get('administrationPolicy') == ADMINISTRATION_POLICY
+            and result.get('administrator') == ADMINISTRATOR, 'admin-result-binding-mismatch')
     probes = result.get('externalProbes')
     require(isinstance(probes, list) and probes, 'external-probes-missing')
     observed = set()
@@ -373,9 +438,11 @@ def admin_result(phase, decisions, proof, result, hashes, current):
     if decisions['consoleMode'] == 'port-forward':
         required += ('consolePortForward',)
     require(set(operators) == set(decisions['operators']) and all(all(v.get(k) is True for k in required)
-            and sha(v.get('evidenceSha256')) for v in operators.values()), 'post-change-private-administration-unproved')
+            and sha(v.get('evidenceSha256')) and v.get('accountBindings') == decisions['administratorAccountBindings']
+            for v in operators.values()), 'post-change-private-administration-unproved')
     for check in operators.values():
         in_record_time(check, result, after=finished)
+    recovery_proof(decisions, result.get('postChangeBreakGlass'), result, after=finished)
 
 
 def registry_generation(generation):
@@ -386,7 +453,8 @@ def registry_generation(generation):
 
 
 def audited_operation(operation, consumer, generation, *, transfer=True, blob=False):
-    require(isinstance(operation, dict) and operation.get('principal') == consumer.get('principal')
+    require(isinstance(operation, dict) and operation.get('consumerId') == consumer.get('id')
+            and operation.get('principal') == consumer.get('principal')
             and operation.get('generationSha256') == generation['generationSha256']
             and operation.get('result') == 'pass' and sha(operation.get('auditEvidenceSha256'))
             and identifier(operation.get('auditCorrelationId')), 'authenticated-audit-operation-missing')
@@ -534,10 +602,14 @@ def gc_result(decisions, inventory, closure, result, hashes, current):
     for operation in operations:
         require(isinstance(operation, dict) and operation.get('consumerId') in consumers,
                 'unknown-post-gc-consumer')
+        consumer = consumers[operation['consumerId']]
+        require(consumer['role'] == 'reader' or (consumer['role'] == 'replicator'
+                and consumer.get('replicationDirection') == 'source'),
+                'post-gc-operation-is-not-an-authenticated-read')
         object_digest = operation.get('requestedDigest')
         object_kind = next((v['kind'] for v in closure['objects'] if v['digest'] == object_digest), None)
         require(object_kind is not None, 'unexpected-post-gc-object')
-        audited_operation(operation, consumers[operation['consumerId']], inventory['generation'],
+        audited_operation(operation, consumer, inventory['generation'],
                           blob=object_kind in ('config', 'layer'))
         require(timestamp(result['gcFinishedAt']) <= timestamp(operation['capturedAt']) <= released,
                 'post-gc-proof-outside-held-verification-lock')
@@ -545,7 +617,17 @@ def gc_result(decisions, inventory, closure, result, hashes, current):
     require(objects <= fetched, 'retained-object-uncached-post-gc-fetch-missing')
 
 
+def unique_json_object(pairs):
+    result = {}
+    for name, value in pairs:
+        require(name not in result, 'duplicate-evidence-json-key')
+        result[name] = value
+    return result
+
+
 def signed_input(path, project, allowed_signers, principal, ssh_keygen):
+    directory = private_path(Path(path).parent, project)
+    require(directory.is_dir(), 'missing-private-bundle-directory')
     path = private_path(path, project, file=True)
     signature = private_path(str(path) + '.sig', project, file=True)
     trust = private_path(allowed_signers, project, file=True)
@@ -556,7 +638,7 @@ def signed_input(path, project, allowed_signers, principal, ssh_keygen):
         '-n', 'hexalith-admin-exposure', '-s', str(signature)], input=data, capture_output=True, timeout=30)
     require(verified.returncode == 0, 'unverified-evidence-signature')
     try:
-        record = json.loads(data)
+        record = json.loads(data, object_pairs_hook=unique_json_object)
     except (ValueError, UnicodeError):
         raise ValueError('malformed-evidence-json') from None
     require(isinstance(record, dict), 'invalid-evidence-record')
@@ -598,6 +680,7 @@ def check_bundle(args):
             require(decisions.get('approvedBy') == 'Administrator' and decisions.get('productionGo') is True
                     and decisions.get('baselineSha256') == hashes['signed-baseline.json'], 'production-approval-missing')
             require(current.get('forMutation') == args.phase, 'reread-bound-to-wrong-mutation')
+            prior_approval(args.phase, records, hashes)
             compare_baseline(baseline, current)
             target_baseline(args.phase, baseline, decisions)
             if args.phase in ('console', 'keycloak'):
