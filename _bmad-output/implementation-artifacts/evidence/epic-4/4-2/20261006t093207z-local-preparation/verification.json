@@ -1,0 +1,78 @@
+{
+  "attemptId": "20261006t093207z-local-preparation",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s eng/admin-exposure -p 'test_*.py'",
+      "condition": "focused synthetic boundary tests",
+      "result": "pass",
+      "testCount": 26
+    },
+    {
+      "condition": "real local SSH signature verification against ephemeral synthetic keys",
+      "productionSignaturesVerified": false,
+      "result": "pass"
+    },
+    {
+      "condition": "private immutable attempt and checksums",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "result": "pass"
+    },
+    {
+      "condition": "CLI help",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Historical ingress observations were not refreshed.",
+    "A signature authenticates an operator statement; local consistency checks do not independently measure it.",
+    "GC checking supports the registry-wide lock form; an atomic-generation alternative needs concrete approved equivalence.",
+    "Story 4.2 remains in-progress and no live ordered task was marked complete."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "pendingEvidenceFiles": [
+    "admin-exposure-result.json",
+    "admin-path-proof.json",
+    "administrator-decisions.json",
+    "console-closure.json",
+    "pre-mutation-state.json",
+    "registry-auth-result.json",
+    "registry-consumer-inventory.json",
+    "registry-gc-result.json",
+    "retained-oci-closure.json",
+    "signed-baseline.json"
+  ],
+  "privateEvidenceLocation": "dedicated owner-only evidence custody outside Git; exact path held by operator",
+  "remainingProductionRequirements": [
+    "fresh signed route/configuration/DNS/UID/resourceVersion/backend baseline and exact-attempt production go",
+    "approved private path with two tested authorized operators, unauthorized denial, break-glass and monitoring",
+    "approved public Keycloak realm/OIDC checks and measured post-change regressions/denials",
+    "complete signed-generation registry consumer/writer/replicator inventory and secret-store credential policy",
+    "uncached authenticated least-privilege and correlated audit proofs before and after registry cutover",
+    "signed retained OCI closure, approved GC configuration, rehearsal and held write/replication lock",
+    "measured signed results and independently accepted exact-plan 4.27 console-closure handoff"
+  ],
+  "remoteOperationsPerformed": false,
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "2de90ba7fb0106ba2cba2d55e65415a8b0943f596bc8231591ba198bf0da848b",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "14498e2b24b87c3bc793b2ebc65293960dde462a09d09ecdb85af5f148c9032c",
+    "eng/admin-exposure/prepare.py": "e94582beaf568080cc7c4d0bfd3d5e61a5060c454ab842a92a9a41dac63ac340",
+    "eng/admin-exposure/test_prepare.py": "e75563210f62e335e6497eee56ce5fcec49613e9c20cd3f7971415897cb96564"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local preparation and synthetic tests only"
+}

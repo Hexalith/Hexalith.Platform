@@ -5,6 +5,7 @@ epic: 4
 story: 2
 created: '2026-09-28'
 status: 'in-progress'
+baseline_commit: '904e0f18736575d0605d08da6252b33bd0202224'
 route: 'dispatch'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
@@ -114,3 +115,13 @@ The [approved Rancher correction](../planning-artifacts/sprint-change-proposal-2
 ## Administrator decision — 2026-10-03
 
 Close the public `kube.hexalith.com` KubeSphere console route now, before Story 4.27 retirement, by deleting the console Ingress or restricting it with a Traefik IP allowlist. Until retirement, use the console only through `kubectl port-forward`. Retirement later removes the remaining route objects. This records the decision only: the production change needs its own go, and the route's DNS record is removed separately.
+
+## Local implementation handoff — 2026-10-06
+
+The [4.2 preparation helper](../../eng/admin-exposure/prepare.py) and [operations procedure](../../eng/admin-exposure/README.md) now create immutable owner-only private attempts with unsigned pending templates for every required output. They also check externally supplied detached Administrator SSH signatures and the consistency of resource/DNS/backend identities, approved route coverage, two-operator/private/break-glass proof, pre/post-change administration and OIDC, complete consumer scopes, uncached audited operations, OCI reachability, retention, rehearsal and GC lock sequencing. Local checks never authorize production mutation or independently establish operational acceptance. The existing 4.26/4.27 executors and exact-byte rehearsal bindings are unchanged.
+
+[Local verification](evidence/epic-4/4-2/20261006t093207z-local-preparation/verification.json) records 26 passing synthetic boundary tests, including actual local verification of ephemeral SSH signatures. A private preparation attempt exists at `evidence/epic-4/4-2/20261006t093207z-local-preparation/` within dedicated owner-only custody outside Git. Its operational records remain unsigned, pending and unaccepted; their presence is not a completed ordered task or production proof. No cluster/DNS/HTTP/registry discovery, credential issuance, route change, policy cutover or GC occurred.
+
+The reviewable early console procedure deletes only the freshly inventoried public Ingress through a native DELETE bound to **both UID and resourceVersion**, preserves a loopback-only private port-forward and independent native administration, and requires post-change external refusal/private access/OIDC checks. All fresh resource/configuration/DNS/route identities and private-path proofs still need collection and a separate exact-attempt production go. Its accepted production result must produce a new `console-closure.json` bound to the exact 4.27 retirement attempt/plan/source cluster and signed under `hexalith-retirement`; the pending template cannot unblock retirement. Console acceptance can proceed independently while other 4.2 criteria remain open.
+
+Remaining Administrator inputs are the named Keycloak/private administration path, **two authorized operators**, break-glass/monitoring and approved public OIDC checks; complete registry reader/writer/replicator and live/rollback inventory, secret-store owner/rotation and cutover window; and the signed retained-digest source plus Zot retention/GC policy. The story's two-operator requirement remains in force unless explicitly corrected. Missing exhaustive retained source, rehearsal or held registry-wide writer/replication lock leaves GC disabled. Story and sprint status stay `in-progress`; all uncompleted live tasks and acceptance criteria remain pending.
