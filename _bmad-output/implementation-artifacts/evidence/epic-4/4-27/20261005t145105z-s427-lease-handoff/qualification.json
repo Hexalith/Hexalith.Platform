@@ -1,0 +1,50 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t145105z-s427-lease-handoff",
+  "boundBytes": {},
+  "cleanupPassed": {},
+  "encryptedExportCount": 5,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "synthetic-native-lease-observation-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "lease-handoff-observation.json": {
+      "bindingValidation": "accepted-monotonic-renewal-with-all-other-content-bound",
+      "checks": {
+        "allOtherDesiredContentUnchanged": true,
+        "fullDesiredContentDigestChanged": true,
+        "renewTimeChanged": true,
+        "sameUid": true
+      },
+      "executorSha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+      "handoffBehavior": "explicit bound monotonic renewal accepted; production prerequisites and exact-attempt approval remain required",
+      "leaseRenewalBindingsSha256": "a009eec64cb0e75b134f115ccfd3ae48d49b0a39449c73850f542d9de4f952c0",
+      "mutationAuthorityGranted": false,
+      "mutationRequests": 0,
+      "newLiveLeaseExceptionApproved": true,
+      "observedResponseIntervalSeconds": 15.151,
+      "procedureSha256": "8f5732954f267c0d59af77eb1a93e87621ff32d71c2450ad4244f0095a82960b",
+      "productionPlanCreated": false,
+      "productionRetirementAccepted": false,
+      "productionSourceObserved": false,
+      "reasonCode": "bound-monotonic-renewal-accepted",
+      "requestedWaitSeconds": 12,
+      "state": "observed",
+      "upgradeGate": "closed"
+    }
+  },
+  "privateAttemptChecksumSha256": "67133720cd5da74d6d9d9f0c0e755e2640e3fcff8cd24e2f59866357d1ac46dc",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "encrypted-exports.json": "28f555bb9ed2964107bde688f8b0694674552d6b129bbec8f590a2a13cdcd1c2",
+    "lease-handoff-observation.json": "da9e41da0d400703e8726316da0e58427a69ad1aa8a73204ad9b7dac72fef82e"
+  },
+  "recordedAt": "2026-10-05T14:51:24Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

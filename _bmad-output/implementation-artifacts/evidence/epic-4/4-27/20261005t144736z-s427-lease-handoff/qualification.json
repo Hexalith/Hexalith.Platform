@@ -1,0 +1,45 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t144736z-s427-lease-handoff",
+  "boundBytes": {},
+  "cleanupPassed": {},
+  "encryptedExportCount": 3,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "synthetic-native-lease-observation-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "lease-handoff-observation.json": {
+      "bindingValidation": "unobserved",
+      "checks": {},
+      "executorSha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+      "handoffBehavior": "explicit bound monotonic renewal accepted; production prerequisites and exact-attempt approval remain required",
+      "leaseRenewalBindingsSha256": null,
+      "mutationAuthorityGranted": false,
+      "mutationRequests": 0,
+      "newLiveLeaseExceptionApproved": true,
+      "observedResponseIntervalSeconds": null,
+      "procedureSha256": "8f5732954f267c0d59af77eb1a93e87621ff32d71c2450ad4244f0095a82960b",
+      "productionPlanCreated": false,
+      "productionRetirementAccepted": false,
+      "productionSourceObserved": false,
+      "reasonCode": "synthetic-native-lease-api-identity-unverified",
+      "requestedWaitSeconds": 12,
+      "state": "failed-closed",
+      "upgradeGate": "closed"
+    }
+  },
+  "privateAttemptChecksumSha256": "c9a17879702ba9c50c626feb28310bb19aa7c0b69c4c71d0adc9343c616b3ea0",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "encrypted-exports.json": "a3fab08c1cb1772e27b2f2745ced066695c201754257d076d425e96ac59ebc55",
+    "lease-handoff-observation.json": "b3757516a857f5f801a53b95b890b68404667c1a6a5a76ca06bec3f2705150a5"
+  },
+  "recordedAt": "2026-10-05T14:47:39Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

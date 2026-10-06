@@ -1,0 +1,74 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t142929z-s427-catalog",
+  "boundBytes": {
+    "driverSha256": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+    "moduleSha256": {
+      "evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+      "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0"
+    },
+    "productionExecutorSha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+    "productionProcedureSha256": "8f5732954f267c0d59af77eb1a93e87621ff32d71c2450ad4244f0095a82960b",
+    "scriptSha256": "d6e542c0ddd98531d294c918a9ad0c5ff1a77e77bcd477b025291eddaf7cb1f3",
+    "sourceInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf"
+  },
+  "cleanupPassed": {
+    "cleanup.json": false
+  },
+  "encryptedExportCount": 761,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "isolated-retirement-qualification-summary",
+  "matchesCurrentExecutorAndProcedure": false,
+  "measuredOutcomes": {
+    "catalog-result.json": {
+      "applicationVersionCleanupFinalizersProcessed": 90,
+      "categoryIdentityContentAndFinalizerPreserved": true,
+      "exactRemovals": 118,
+      "manualFinalizerRemovalUsed": false,
+      "productionAccepted": false,
+      "protectedStorageAndNamespacesPreserved": true,
+      "sourceCounts": {
+        "Application": 27,
+        "ApplicationVersion": 90,
+        "Category": 1,
+        "Repo": 1
+      },
+      "state": "passed",
+      "syntheticCounts": {
+        "Application": 27,
+        "ApplicationVersion": 90,
+        "Repo": 1
+      }
+    },
+    "failure.json": {
+      "reason": "isolation, fixture command, drift or preservation failed",
+      "reasonCode": "command-or-custody-error",
+      "state": "failed-closed"
+    },
+    "summary.json": {
+      "licensedKubeSphereWritesUsed": false,
+      "productionRetirementAccepted": false,
+      "qualificationAccepted": false,
+      "state": "failed-cleanup"
+    }
+  },
+  "privateAttemptChecksumSha256": "1439944ab7dff928ab63d37f46ef76332b997e9e7f869a4d028250bda38fda9b",
+  "privateAuthoritativeAttempt": "Owner-only custody retains every original record and encrypted export; this is a compact projection.",
+  "privateChecksumsVerified": true,
+  "productionRetirementAccepted": false,
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "recordSha256": {
+    "attempt.json": "1f6ea6aacf2cb79b6757ce0ed25b142a07c8ead50bb51f5299fa2fb84933ea70",
+    "catalog-result.json": "c567328d530f2f0d5c666d7aee102d0a635c03b76210e1d0e11d3da7cee1534a",
+    "cleanup.json": "f92c8a96ef6d267bafbb0ca6197b255b992a43117594e0cb1a7b21ee308c0a13",
+    "encrypted-exports.json": "451283e7640a649845fe4138ccc01c654e1182e06cb10b81868c76ff2f0f69c4",
+    "failure.json": "8cd97cc8e30b942f2b6e75138a954728646bf4c7a99700115715455fdda5c425",
+    "rollback-snapshot.json": "bbb114bb8d4f4e6a44a656195266e27e0afae1102496979b738db8bce029166b",
+    "summary.json": "bbd6b42881417ef085a386fe0d6636dd3b8ec85cf8a0afadecd9741f8d59832a"
+  },
+  "recordedAt": "2026-10-05T14:40:43Z",
+  "schemaVersion": 1,
+  "scope": "isolated fixture with synthetic credentials/data only; no production mutation or approval",
+  "signed": false,
+  "upgradeGate": "closed"
+}

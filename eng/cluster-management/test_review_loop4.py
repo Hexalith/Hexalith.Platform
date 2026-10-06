@@ -324,7 +324,7 @@ class RollbackTests(unittest.TestCase):
             stdout=canonical([{'Status': {'header': {'cluster_id': 3 if mismatch != 'datastore' else 1, 'member_id': 4}}}]))
         live = {'containers': [{'metadata': {'name': n}, 'state': 'CONTAINER_RUNNING'} for n in (
             'ks-apiserver', 'ks-controller-manager', 'ks-console', 'extensions-museum', 'ks-console-embed')]}
-        canary_state = {}
+        canary_state = {};sandbox_stops = []
         def run(name, *argv, **kwargs):
             if name == 'restore-synthetic-canary':
                 canary_state['bytes'] = kwargs.get('input')
@@ -335,9 +335,14 @@ class RollbackTests(unittest.TestCase):
                 exists = isinstance(stored, bytes)
                 return SimpleNamespace(returncode=0 if exists else 1, stdout=stored if exists else b'',
                     stderr=b'' if exists else b'missing synthetic file')
-            return SimpleNamespace(returncode=0, stdout=b'a' * 64 + b'\n' if name == 'fresh-pod-sandboxes' else
+            sandbox_ids = [character * 64 for character in 'abcd'] if mismatch == 'stop-sandbox' else ['a' * 64]
+            return SimpleNamespace(returncode=0, stdout=('\n'.join(sandbox_ids) + '\n').encode() if name == 'fresh-pod-sandboxes' else
                                    canonical(live) if name == 'restored-live-containers' else b'', stderr=b'')
         def receive_run(name, *argv, **kwargs):
+            if name == 'stop-fresh-pod':
+                sandbox_stops.append(argv[0][-1])
+                if mismatch == 'stop-sandbox' and len(sandbox_stops) == 3:
+                    raise ValueError('fixture-command-failed-stop-fresh-pod')
             # Inject mutations before the fake write receives its input; readback still observes only stored bytes.
             if name == 'restore-synthetic-canary':
                 if mismatch == 'missing-write-input':kwargs.pop('input', None)
@@ -391,6 +396,22 @@ class RollbackTests(unittest.TestCase):
                 self.assertEqual(read_call.kwargs['allowed'], (0, 1))
                 target.kube.assert_not_called()
                 self.assertFalse(any(c.args[0] == 'start-restored-kubelet' for c in target.run.call_args_list))
+
+    def test_fresh_sandbox_stop_has_bounded_cri_timeout_and_first_failure_prevents_restore_or_later_stops(self):
+        with tempfile.TemporaryDirectory() as temp:
+            error, records, _, _, target = self.restore(temp, 'stop-sandbox')
+            self.assertEqual(error, 'fixture-command-failed-stop-fresh-pod')
+            stops = [c for c in target.run.call_args_list if c.args[0] == 'stop-fresh-pod']
+            self.assertEqual(len(stops), 3)
+            self.assertEqual([c.args[1][-1] for c in stops], [character * 64 for character in 'abc'])
+            for call in stops:
+                self.assertEqual(call.args[1][:-1], ['docker', 'exec', target.node, 'crictl', '--timeout', '30s', 'stopp'])
+                self.assertNotIn('timeout', call.kwargs)  # Keep run()'s existing 120-second subprocess bound.
+            attempted = {c.args[0] for c in target.run.call_args_list}
+            self.assertFalse(attempted & {'remove-fresh-node-inputs', 'restore-fixture-node-inputs',
+                                         'restore-snapshot-input', 'etcd-snapshot-restore', 'start-restored-kubelet'})
+            self.assertNotIn('rollback-restore-result.json', records)
+            target.kube.assert_not_called()
 
     def test_final_cleanup_reaches_owned_rollback_node_after_restore_failure_and_keeps_failed_cleanup_closed(self):
         records = {};attempt = SimpleNamespace(directory=Path('/nonexistent'), encrypt=Mock(), record=lambda n, v: records.update({n: v}))

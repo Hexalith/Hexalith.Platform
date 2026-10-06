@@ -1598,7 +1598,7 @@ class Fixture(PhaseExecutor):
         if not pods or any(not re.fullmatch(r'[0-9a-f]{12,64}', pod) for pod in pods):
             raise ValueError('rollback-fresh-pod-identities-invalid')
         for pod in pods:
-            target.run('stop-fresh-pod', ['docker', 'exec', target.node, 'crictl', 'stopp', pod])
+            target.run('stop-fresh-pod', ['docker', 'exec', target.node, 'crictl', '--timeout', '30s', 'stopp', pod])
         target.run('remove-fresh-node-inputs', ['docker', 'exec', target.node, 'rm', '-rf',
             '/etc/kubernetes', '/var/lib/kubelet/pki', '/var/lib/etcd'])
         target.run('restore-fixture-node-inputs', ['docker', 'exec', '-i', target.node, 'tar', '-C', '/', '-xzf', '-'], input=self.rollback_archive)

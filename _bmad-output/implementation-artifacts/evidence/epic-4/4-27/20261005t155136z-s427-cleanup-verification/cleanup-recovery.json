@@ -1,0 +1,29 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t155136z-s427-cleanup-verification",
+  "capturedAt": "2026-10-05T15:51:37Z",
+  "checks": {
+    "finalDockerTransportResponded": true,
+    "initialDockerTransportResponded": true,
+    "onlyExactOwnedResourceIdentitiesUsed": true,
+    "originalAuthoritativeChecksumManifestUnchanged": true,
+    "ownedImageAliasesAbsent": true,
+    "ownedNetworkAbsent": true,
+    "ownedNodeAbsent": true,
+    "ownedVolumesAbsent": true,
+    "temporarySyntheticCredentialAlreadyAbsent": true
+  },
+  "encryptedExportCount": 12,
+  "failedAttemptId": "20261005t142929z-s427-catalog",
+  "failedAttemptPrivateChecksumSha256": "1439944ab7dff928ab63d37f46ef76332b997e9e7f869a4d028250bda38fda9b",
+  "independentOffNodeCustodyAccepted": false,
+  "mutationRequests": 0,
+  "privateAttemptChecksumSha256": "b5e4ba6ac539af0310a33a8e8a84775486750d6ec04e7e1cab3251cfae432d7e",
+  "productionRetirementAccepted": false,
+  "reasonCode": "exact-owned-resources-absent",
+  "schemaVersion": 1,
+  "scope": "Read-only shared-predicate absence verification of exact synthetic resources owned by the named failed fixture; no removals, global prune, unrelated process cleanup, production inputs or operations.",
+  "signed": false,
+  "state": "passed",
+  "upgradeGate": "closed"
+}

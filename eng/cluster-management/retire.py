@@ -46,6 +46,8 @@ GATE_FILES = ('recovery-validation.json', 'console-closure.json',
               'external-etcd-recovery-point.json', 'external-etcd-isolated-restore.json',
               'node-recovery-bundle.json', 'native-access.json', 'pre-retirement-health.json')
 HEX = re.compile(r'[0-9a-f]{64}')
+TOOL_NAMES = ('kubectl', 'helm', 'age', 'ssh_keygen')
+LEASE_IDENTITY_FIELDS = ('apiVersion', 'kind', 'namespace', 'name', 'uid')
 
 
 def require(condition, reason):
@@ -96,6 +98,100 @@ def code_binding(project):
     return {'codeSha256': {name: file_digest(directory / name) for name in CODE_FILES},
             'procedureSha256': file_digest(directory / 'RETIRE-KUBESPHERE.md'),
             'maintenanceSha256': file_digest(Path(project) / 'eng/kubernetes-upgrade/MAINTENANCE.md')}
+
+
+def tool_binding(args):
+    """Hash the exact absolute executable path that subprocess will invoke, never a PATH basename."""
+    identities = {}
+    for name in TOOL_NAMES:
+        path = Path(getattr(args, name))
+        require(path.is_absolute(), 'absolute-execution-tool-required')
+        require(path.is_file() and os.access(path, os.X_OK), 'missing-execution-tool')
+        identities[name] = file_digest(path)
+    return identities
+
+
+def lease_time(value):
+    """Validate RFC3339 and compare all nine fractional digits without float or microsecond truncation."""
+    match = re.fullmatch(r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,9}))?(Z|[+-]\d{2}:\d{2})',
+                         value) if isinstance(value, str) else None
+    require(match is not None, 'lease-renewal-invalid-time')
+    require(match[3] == 'Z' or int(match[3][1:3]) <= 23 and int(match[3][4:6]) <= 59,
+            'lease-renewal-invalid-time')
+    try:
+        parsed = datetime.fromisoformat(match[1] + match[3].replace('Z', '+00:00'))
+    except ValueError:
+        raise ValueError('lease-renewal-invalid-time') from None
+    delta = parsed - datetime(1970, 1, 1, tzinfo=timezone.utc)
+    return (delta.days * 86400 + delta.seconds) * 1_000_000_000 + int((match[2] or '').ljust(9, '0'))
+
+
+def nonfuture_lease_time(value):
+    observed = lease_time(value)
+    clock = datetime.now(timezone.utc) - datetime(1970, 1, 1, tzinfo=timezone.utc)
+    current = (clock.days * 86400 + clock.seconds) * 1_000_000_000 + clock.microseconds * 1000
+    require(observed <= current, 'lease-renewal-future-time')
+    return observed
+
+
+def lease_content_digest(raw):
+    expected = copy.deepcopy(raw)
+    require(isinstance(expected.get('spec'), dict), 'lease-renewal-invalid-time')
+    expected['spec'].pop('renewTime', None)
+    return content_review_digest(expected)
+
+
+def make_lease_bindings(raw):
+    bindings = {}
+    for uid, v in raw.items():
+        if (v.get('apiVersion'), v.get('kind')) != ('coordination.k8s.io/v1', 'Lease'):
+            continue
+        renewal = v['spec'].get('renewTime') if isinstance(v.get('spec'), dict) else None
+        nonfuture_lease_time(renewal)
+        bindings[uid] = {**{field: project_resource(v)[field] for field in LEASE_IDENTITY_FIELDS},
+                         'originalRenewTime': renewal, 'contentWithoutRenewTimeSha256': lease_content_digest(v)}
+    return bindings
+
+
+def lease_bindings(plan):
+    bindings = plan.get('leaseRenewalBindings', {})
+    require(isinstance(bindings, dict), 'invalid-lease-renewal-binding')
+    baseline = {v['uid']: v for v in plan['resources']}
+    for uid, binding in bindings.items():
+        require(isinstance(binding, dict) and set(binding) == {*LEASE_IDENTITY_FIELDS, 'originalRenewTime',
+                'contentWithoutRenewTimeSha256'} and uid in baseline and binding['uid'] == uid
+                and (binding['apiVersion'], binding['kind']) == ('coordination.k8s.io/v1', 'Lease')
+                and all(binding[field] == baseline[uid][field] for field in LEASE_IDENTITY_FIELDS)
+                and isinstance(binding['contentWithoutRenewTimeSha256'], str)
+                and HEX.fullmatch(binding['contentWithoutRenewTimeSha256']), 'invalid-lease-renewal-binding')
+        nonfuture_lease_time(binding['originalRenewTime'])
+    return bindings
+
+
+def validate_bound_lease(plan, uid, raw, binding, floor=None):
+    projected = project_resource(raw)
+    require(all(projected[field] == binding[field] for field in LEASE_IDENTITY_FIELDS), 'lease-renewal-identity-drift')
+    renewal = nonfuture_lease_time(raw['spec'].get('renewTime') if isinstance(raw.get('spec'), dict) else None)
+    require(renewal >= (lease_time(binding['originalRenewTime']) if floor is None else floor),
+            'lease-renewal-backwards-time')
+    require(lease_content_digest(raw) == binding['contentWithoutRenewTimeSha256'], 'lease-renewal-other-content-drift')
+    original = copy.deepcopy(raw)
+    original['spec']['renewTime'] = binding['originalRenewTime']
+    require(content_review_digest(original) == plan['fullContentSha256'][uid], 'lease-renewal-binding-content-mismatch')
+    return renewal
+
+
+def validate_plan_content(plan, raw):
+    """Original plans remain strict; only their explicit native Lease bindings permit renewal."""
+    require(set(raw) == set(plan['fullContentSha256']), 'execution-before-content-binding-mismatch')
+    bindings = lease_bindings(plan)
+    floors = {}
+    for uid, v in raw.items():
+        if uid in bindings:
+            floors[uid] = validate_bound_lease(plan, uid, v, bindings[uid])
+        else:
+            require(content_review_digest(v) == plan['fullContentSha256'][uid], 'plan-full-content-drift')
+    return floors
 
 
 class SignedInputs:
@@ -212,13 +308,14 @@ def make_plan(args, inventory, raw, source, rehearsals):
             'sourceInventorySha256': digest(canonical(source)), **code_binding(args.project_root),
             'rehearsalSourceInventorySha256': file_digest(args.rehearsal_source_inventory)
                 if getattr(args, 'rehearsal_source_inventory', None) else digest(canonical(source)),
-            'toolSha256': {name: file_digest(getattr(args, name)) for name in ('kubectl', 'helm', 'age', 'ssh_keygen')},
+            'toolSha256': tool_binding(args),
             'nativeKubeconfigSha256': file_digest(args.kubeconfig),
             'resolvedNativeConfigurationSha256': source['resolvedNativeConfigurationSha256'],
             'receiptSigningKeySha256': file_digest(args.receipt_key),
             'trustRootSha256': file_digest(args.allowed_signers),
             'administratorPrincipal': args.administrator_principal,
             'resources': inventory, 'fullContentSha256': {uid: content_review_digest(v) for uid, v in raw.items()},
+            'leaseRenewalBindings': make_lease_bindings(raw),
             'actions': actions, 'phases': phases, 'rehearsals': rehearsals,
             'retainedAuthorityUids': sorted(retained), 'productionApproved': False,
             'sourceAtomic': False, 'upgradeGate': 'closed'}
@@ -232,7 +329,7 @@ def validate_plan(args, plan, current, raw, source):
     require(plan['resolvedNativeConfigurationSha256'] == source['resolvedNativeConfigurationSha256'],
             'resolved-native-configuration-changed')
     require(all(plan[k] == v for k, v in code_binding(args.project_root).items()), 'execution-bytes-changed')
-    require(plan['toolSha256'] == {name: file_digest(getattr(args, name)) for name in ('kubectl', 'helm', 'age', 'ssh_keygen')}
+    require(plan['toolSha256'] == tool_binding(args)
             and plan['nativeKubeconfigSha256'] == file_digest(args.kubeconfig)
             and plan['receiptSigningKeySha256'] == file_digest(args.receipt_key)
             and plan['trustRootSha256'] == file_digest(args.allowed_signers)
@@ -241,8 +338,8 @@ def validate_plan(args, plan, current, raw, source):
     require(set(baseline) == {v['uid'] for v in current} == set(raw), 'census-identity-drift')
     for v in current:
         uid = v['uid']
-        require(key(v) == key(baseline[uid]) and content_review_digest(raw[uid]) == plan['fullContentSha256'][uid],
-                'plan-full-content-drift')
+        require(key(v) == key(baseline[uid]), 'plan-full-content-drift')
+    validate_plan_content(plan, raw)
     # Reconstruct every phase and closure from the approved baseline, never promote a caller's actions.
     scope = retirement_scope(plan['resources'])
     require(not scope & set(plan['retainedAuthorityUids']), 'retained-authority-in-removal-scope')
@@ -528,6 +625,8 @@ class Native(PhaseExecutor):
         self.signed_inputs = None
         self.accepted_deletes = set()
         self.configuration_sequence = 0
+        self.lease_renewal_floors = {}
+        self.lease_delete_states = {}
 
     def resolved_configuration(self):
         """Resolve static certificate/key references without any network or credential hook execution."""
@@ -556,6 +655,7 @@ class Native(PhaseExecutor):
         raw = {v['uid']: capture.raw_by_uid[v['uid']] for v in inventory}
         require(all(project_resource(raw[v['uid']]) == v for v in inventory), 'inconsistent-native-census')
         self.raw_inventory_by_uid, self.discovery = raw, capture.discovery
+        self.observe_bound_leases()
         source = sink.records['inventory.json']
         source['resources'] = inventory
         source['resolvedNativeConfigurationSha256'] = before_config
@@ -580,6 +680,69 @@ class Native(PhaseExecutor):
                 return False
             time.sleep(2)
 
+    def observe_bound_leases(self):
+        """Every census observation advances a validated renewal floor, including settled read pairs."""
+        if self.plan is None:
+            return
+        for uid, binding in lease_bindings(self.plan).items():
+            if uid in self.raw_inventory_by_uid:
+                self.observe_bound_lease(self.raw_inventory_by_uid[uid], bindings={uid: binding})
+
+    def observe_bound_lease(self, raw, bindings=None):
+        """Exact object GETs at the unchanged shared checkpoint obey the same renewal floor."""
+        if self.plan is None or not isinstance(raw, dict):
+            return
+        uid = raw.get('metadata', {}).get('uid')
+        binding = (lease_bindings(self.plan) if bindings is None else bindings).get(uid)
+        if binding is None:
+            return
+        require(all(project_resource(raw)[field] == binding[field] for field in LEASE_IDENTITY_FIELDS),
+                'lease-renewal-identity-drift')
+        if uid in self.accepted_deletes:
+            raw = self.lease_delete_view(uid, raw)
+        renewal = validate_bound_lease(self.plan, uid, raw, binding, self.lease_renewal_floors.get(uid))
+        self.lease_renewal_floors[uid] = renewal
+
+    def lease_delete_view(self, uid, raw):
+        """Only this accepted Foreground DELETE's terminating metadata may differ from its baseline."""
+        action = next((v for v in self.plan['actions'] if v['uid'] == uid), {})
+        require(action.get('action') == 'delete' and action.get('propagation') == 'Foreground'
+                and uid in self.original_raw, 'lease-delete-state-unapproved')
+        expected = copy.deepcopy(raw)
+        metadata, original = expected['metadata'], self.original_raw[uid]['metadata']
+        deletion = metadata.get('deletionTimestamp')
+        if deletion is None:
+            # A successful request alone never excuses any content difference.
+            require(uid not in self.lease_delete_states, 'lease-delete-state-changed')
+            return expected
+        nonfuture_lease_time(deletion)
+        require(lease_time(deletion) >= lease_time(self.original_raw[uid]['spec']['renewTime']),
+                'lease-delete-state-unverified')
+        if uid in self.lease_delete_states:
+            require(deletion == self.lease_delete_states[uid], 'lease-delete-state-changed')
+        else:
+            self.lease_delete_states[uid] = deletion
+        if original.get('deletionTimestamp') is not None:
+            require(deletion == original['deletionTimestamp'], 'lease-delete-state-changed')
+        for field in ('deletionTimestamp', 'deletionGracePeriodSeconds', 'finalizers'):
+            if field == 'deletionGracePeriodSeconds' and field in metadata:
+                require(type(metadata[field]) is int and metadata[field] == 0
+                        and (field not in original or metadata[field] == original[field]), 'lease-delete-state-unverified')
+            if field == 'deletionGracePeriodSeconds' and field in original:
+                require(metadata.get(field) == original[field], 'lease-delete-state-unverified')
+            if field == 'finalizers':
+                finalizers = metadata.get(field, [])
+                require(isinstance(finalizers, list) and len(finalizers) == len(set(finalizers))
+                        and [v for v in finalizers if v != 'foregroundDeletion'] ==
+                            [v for v in (original.get('finalizers') or []) if v != 'foregroundDeletion']
+                        and ('foregroundDeletion' not in (original.get('finalizers') or [])
+                             or 'foregroundDeletion' in finalizers), 'lease-delete-state-unverified')
+            if field in original:
+                metadata[field] = copy.deepcopy(original[field])
+            else:
+                metadata.pop(field, None)
+        return expected
+
     def check_preservation(self, inventory):
         baseline = self.plan['resources']
         require(not (self.active_phase or {}).get('managerAbsentRequired') or not any(
@@ -600,6 +763,8 @@ class Native(PhaseExecutor):
                 v['deletionTimestamp'] = initial[v['uid']].get('deletionTimestamp')
         assert_phase({v['uid'] for v in baseline}, baseline, compared, deleted, modifications)
         current = {v['uid']: v for v in inventory}
+        bindings = lease_bindings(self.plan)
+        self.observe_bound_leases()
         account = ('v1', 'ServiceAccount', 'kubesphere-system', 'kubesphere.users.jpiquot')
         require(not any(key(v) == account for v in inventory) or any(key(v) == account for v in baseline),
                 'retained-authority-subject-activated')
@@ -607,7 +772,11 @@ class Native(PhaseExecutor):
                 'controller-recreated-retired-object')
         for v in baseline:
             uid = v['uid']
-            if uid not in current or uid in self.retirement_uids or v['kind'] in ('Lease', 'EndpointSlice', 'Endpoints'):
+            if uid not in current:
+                continue
+            if uid in bindings and uid not in self.accepted_deletes:
+                continue
+            if uid in self.retirement_uids or v['kind'] in ('EndpointSlice', 'Endpoints'):
                 continue
             expected = copy.deepcopy(self.original_raw[uid])
             if uid in self.namespace_modified:
@@ -682,6 +851,8 @@ class Native(PhaseExecutor):
             'stderrBase64': base64.b64encode(result.stderr).decode()}), self.args.age, self.args.recipient)
         # Production stops at the first refusal, including a Conflict or NotFound after a request.
         require(result.returncode in allowed and (not mutating or result.returncode == 0), 'native-request-refused')
+        if not mutating and result.returncode == 0:
+            self.observe_bound_lease(json.loads(result.stdout))
         if mutating and argv[0] == 'delete':
             self.accepted_deletes.add(reviewed['uid'])
         if mutating and self.active_phase['mode'] == 'namespace-finalizer':
@@ -691,15 +862,24 @@ class Native(PhaseExecutor):
     def check_execution_inputs(self):
         fresh(self.approval, self.policy['maximumValidationAgeSeconds'])
         require(datetime.now(timezone.utc) < timestamp(self.policy['gateDeadline']), 'approved-gate-expired')
+        self.check_execution_bindings()
+        require(self.resolved_configuration() == self.plan['resolvedNativeConfigurationSha256'],
+                'resolved-native-configuration-changed')
+        # Offline config resolution and encrypted readback can block: nothing checked
+        # before them may extend an approval/window or hide drift at request dispatch.
+        self.check_execution_bindings()
+        if self.signed_inputs is not None:
+            self.signed_inputs.assert_unchanged()
+        fresh(self.approval, self.policy['maximumValidationAgeSeconds'])
+        require(datetime.now(timezone.utc) < timestamp(self.policy['gateDeadline']), 'approved-gate-expired')
+
+    def check_execution_bindings(self):
         require(all(self.plan[k] == v for k, v in code_binding(self.args.project_root).items()), 'execution-bytes-changed')
-        require(self.plan['toolSha256'] == {name: file_digest(getattr(self.args, name)) for name in
-            ('kubectl', 'helm', 'age', 'ssh_keygen')}
+        require(self.plan['toolSha256'] == tool_binding(self.args)
             and self.plan['nativeKubeconfigSha256'] == file_digest(private_file(self.args.kubeconfig, self.args.project_root))
             and self.plan['receiptSigningKeySha256'] == file_digest(private_file(self.args.receipt_key, self.args.project_root))
             and self.plan['trustRootSha256'] == file_digest(private_file(self.args.allowed_signers, self.args.project_root)),
             'execution-input-changed')
-        require(self.resolved_configuration() == self.plan['resolvedNativeConfigurationSha256'],
-                'resolved-native-configuration-changed')
 
     def retire_phase(self, phase, baseline, by_uid, resources):
         self.active_phase = phase
@@ -748,8 +928,7 @@ def validate_assessment_inputs(args, native, plan, source=None):
             and plan['administratorPrincipal'] == args.administrator_principal
             and plan['trustRootSha256'] == file_digest(private_file(args.allowed_signers, args.project_root)),
             'assessment-trust-context-or-principal-changed')
-    require(plan['toolSha256'] == {name: file_digest(getattr(args, name)) for name in
-                ('kubectl', 'helm', 'age', 'ssh_keygen')}
+    require(plan['toolSha256'] == tool_binding(args)
             and plan['nativeKubeconfigSha256'] == file_digest(private_file(args.kubeconfig, args.project_root))
             and plan['receiptSigningKeySha256'] == file_digest(private_file(args.receipt_key, args.project_root)),
             'assessment-execution-input-changed')
@@ -783,8 +962,7 @@ def assess(args, signed, native, inventory, source):
                                input=ciphertext, capture_output=True, timeout=120)
     require(decrypted.returncode == 0, 'execution-before-inventory-unreadable')
     native.original_raw = json.loads(decrypted.stdout)
-    require({uid: content_review_digest(v) for uid, v in native.original_raw.items()} == plan['fullContentSha256'],
-            'execution-before-content-binding-mismatch')
+    native.lease_renewal_floors = validate_plan_content(plan, native.original_raw)
     native.plan = plan
     native.retirement_uids = {uid for p in plan['phases'] for uid in p['expected']}
     native.completed_retirement_phases = {p['phase'] for p in plan['phases']}
@@ -856,8 +1034,7 @@ def validate_accepted_persistence(args, signed, native, source):
 
 
 def run(args):
-    for name in ('kubectl', 'helm', 'age', 'ssh_keygen'):
-        require(getattr(args, name).is_file() and os.access(getattr(args, name), os.X_OK), 'missing-execution-tool')
+    tool_binding(args)
     for name in ('kubeconfig', 'allowed_signers', 'receipt_key'):
         private_file(getattr(args, name), args.project_root)
     attempt = Attempt(args.project_root, args.evidence_root, args.attempt_id, 'retirement',
@@ -909,7 +1086,10 @@ def run(args):
             native.original_raw = raw
             native.namespace_modified = set()
             native.reviewed_raw_by_uid = copy.deepcopy(raw)
-            native.reviewed_content_digests = plan['fullContentSha256'].copy()
+            # The signed bindings validate this fresh baseline; the shared exact manager Lease
+            # checkpoint starts from its observed execution renewal rather than the proposal time.
+            native.lease_renewal_floors = validate_plan_content(plan, raw)
+            native.reviewed_content_digests = {uid: content_review_digest(v) for uid, v in raw.items()}
             native.retirement_uids = {uid for p in plan['phases'] for uid in p['expected']}
             attempt.encrypt('production-before-inventory', canonical(raw), args.age, args.recipient)
             attempt.signed_record('preflight-result.json', {'state': 'accepted-for-this-attempt',

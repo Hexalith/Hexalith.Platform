@@ -1,0 +1,28 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t155006z-s427-fixture-cleanup",
+  "capturedAt": "2026-10-05T15:50:14Z",
+  "checks": {
+    "finalDockerTransportResponded": true,
+    "initialDockerTransportResponded": true,
+    "onlyExactOwnedResourceIdentitiesUsed": true,
+    "originalAuthoritativeChecksumManifestUnchanged": true,
+    "ownedImageAliasesAbsent": true,
+    "ownedNetworkAbsent": false,
+    "ownedNodeAbsent": true,
+    "ownedVolumesAbsent": true,
+    "temporarySyntheticCredentialAlreadyAbsent": true
+  },
+  "encryptedExportCount": 15,
+  "failedAttemptId": "20261005t142929z-s427-catalog",
+  "failedAttemptPrivateChecksumSha256": "1439944ab7dff928ab63d37f46ef76332b997e9e7f869a4d028250bda38fda9b",
+  "independentOffNodeCustodyAccepted": false,
+  "privateAttemptChecksumSha256": "71523ede0ca026d3d4795eb169dcd1e9952d800f8d4971c78dc386c05f2f27ee",
+  "productionRetirementAccepted": false,
+  "reasonCode": "cleanup-or-inspection-unverified",
+  "schemaVersion": 1,
+  "scope": "Only the exact synthetic resources owned by the named failed fixture; no global prune, unrelated process cleanup, production inputs or operations.",
+  "signed": false,
+  "state": "failed-closed",
+  "upgradeGate": "closed"
+}

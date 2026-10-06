@@ -2,6 +2,7 @@
 import copy
 from datetime import datetime, timedelta, timezone
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -35,6 +36,7 @@ class MemoryNative(retire.Native):
 
     def census(self):
         self.raw_inventory_by_uid = copy.deepcopy(self.live)
+        self.observe_bound_leases()
         inventory = [project_resource(v) for v in self.live.values()]
         self.discovery = {(v['apiVersion'], v['kind']): (v['kind'].lower() + 's', bool(v['namespace'])) for v in inventory}
         source = {'sourceClusterUid': 'Namespace-kube-system', 'nativeEndpoint': 'https://native.test:6443',
@@ -422,8 +424,10 @@ class RetirementTests(unittest.TestCase):
         self.assertEqual(len(MemoryNative.sent), 1)
         self.assertEqual(result['reasonCode'], 'live-source-identity-changed')
 
-    def postflight(self):
+    def postflight(self, before_execute=None):
         self.plan()
+        if before_execute:
+            before_execute()
         state, execution = self.result()
         self.assertEqual(state, 'retired-awaiting-acceptance', execution)
         MemoryNative.live = copy.deepcopy(self.created_native[-1].live)
@@ -674,17 +678,415 @@ class RetirementTests(unittest.TestCase):
         self.assertEqual(result['mutationRequests'], 0)
         self.assertEqual(MemoryNative.sent, [])
 
-    def test_live_node_lease_renewal_during_plan_handoff_remains_zero_mutations(self):
+    def add_node_lease(self):
         lease = object_('coordination.k8s.io/v1', 'Lease', 'synthetic-node', 'kube-node-lease',
-                        spec={'holderIdentity': 'synthetic-node', 'renewTime': '2026-10-05T10:00:00Z'})
+                        spec={'holderIdentity': 'synthetic-node', 'renewTime': '2026-10-05T10:00:00Z',
+                              'leaseDurationSeconds': 40, 'leaseTransitions': 1, 'acquireTime': '2026-10-05T09:00:00Z'})
         MemoryNative.live[lease['metadata']['uid']] = lease
-        self.plan()
-        MemoryNative.live[lease['metadata']['uid']]['spec']['renewTime'] = '2026-10-05T10:00:10Z'
+        return lease['metadata']['uid']
+
+    def test_signed_plan_binds_exact_native_lease_identity_and_other_content(self):
+        uid = self.add_node_lease()
+        plan = self.plan()
+        binding = plan['leaseRenewalBindings'][uid]
+        self.assertEqual({field: binding[field] for field in retire.LEASE_IDENTITY_FIELDS},
+                         {field: project_resource(MemoryNative.live[uid])[field] for field in retire.LEASE_IDENTITY_FIELDS})
+        self.assertEqual(binding['originalRenewTime'], '2026-10-05T10:00:00Z')
+        self.assertEqual(binding['contentWithoutRenewTimeSha256'], retire.lease_content_digest(MemoryNative.live[uid]))
+        self.assertFalse(any(v['uid'] == uid for v in plan['actions']))
+
+    def test_bound_node_lease_renewal_accepts_signed_handoff_without_lease_mutation(self):
+        uid = self.add_node_lease()
+        plan = self.plan()
+        MemoryNative.live[uid]['spec']['renewTime'] = '2026-10-05T10:00:10.123456789Z'
+        state, result = self.result()
+        self.assertEqual(state, 'retired-awaiting-acceptance', result)
+        self.assertEqual(len(MemoryNative.sent), 2)
+        self.assertFalse(any('/leases/' in path for _, path, _ in MemoryNative.sent))
+        native = self.created_native[-1]
+        self.assertNotEqual(native.reviewed_content_digests[uid], plan['fullContentSha256'][uid])
+        self.assertEqual(native.reviewed_content_digests[uid], retire.content_review_digest(native.original_raw[uid]))
+
+    def test_unbound_legacy_node_lease_renewal_stays_strict_and_zero_mutations(self):
+        uid = self.add_node_lease()
+        with patch('retire.make_lease_bindings', return_value={}):
+            self.plan()
+        MemoryNative.live[uid]['spec']['renewTime'] = '2026-10-05T10:00:10Z'
         state, result = self.result()
         self.assertEqual(state, 'failed-closed')
         self.assertEqual(result['reasonCode'], 'plan-full-content-drift')
         self.assertEqual(result['mutationRequests'], 0)
         self.assertEqual(MemoryNative.sent, [])
+
+    def test_legacy_plan_without_renewal_field_uses_full_content_digest(self):
+        uid = self.add_node_lease()
+        plan = self.plan()
+        plan.pop('leaseRenewalBindings')
+        retire.validate_plan_content(plan, MemoryNative.live)
+        MemoryNative.live[uid]['spec']['renewTime'] = '2026-10-05T10:00:01Z'
+        with self.assertRaisesRegex(ValueError, 'plan-full-content-drift'):
+            retire.validate_plan_content(plan, MemoryNative.live)
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_bound_lease_holder_change_at_handoff_is_zero_mutations(self):
+        uid = self.add_node_lease()
+        self.plan()
+        MemoryNative.live[uid]['spec']['renewTime'] = '2026-10-05T10:00:10Z'
+        MemoryNative.live[uid]['spec']['holderIdentity'] = 'unapproved-holder'
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(result['reasonCode'], 'lease-renewal-other-content-drift')
+        self.assertEqual(result['mutationRequests'], 0)
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_bound_lease_invalid_or_missing_time_refuses_read_only_validation(self):
+        uid = self.add_node_lease()
+        plan = self.plan()
+        for value in [None, False, '', '2026-10-05', '2026-10-05T10:00:00',
+                      '2026-10-05T10:00:00.1234567890Z', '2026-10-05T10:00:00+00:99',
+                      '2026-02-30T10:00:00Z', '2026-10-05T10:00:60Z']:
+            with self.subTest(value=value):
+                raw = copy.deepcopy(MemoryNative.live)
+                raw[uid]['spec']['renewTime'] = value
+                with self.assertRaisesRegex(ValueError, 'lease-renewal-invalid-time'):
+                    retire.validate_plan_content(plan, raw)
+                self.assertEqual(MemoryNative.sent, [])
+
+    def test_bound_lease_future_time_is_zero_mutations(self):
+        uid = self.add_node_lease()
+        self.plan()
+        MemoryNative.live[uid]['spec']['renewTime'] = (datetime.now(timezone.utc) + timedelta(minutes=1)).isoformat()
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(result['reasonCode'], 'lease-renewal-future-time')
+        self.assertEqual(result['mutationRequests'], 0)
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_bound_lease_nanosecond_regression_is_zero_mutations(self):
+        uid = self.add_node_lease()
+        MemoryNative.live[uid]['spec']['renewTime'] = '2026-10-05T10:00:00.123456789Z'
+        self.plan()
+        MemoryNative.live[uid]['spec']['renewTime'] = '2026-10-05T10:00:00.123456788Z'
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(result['reasonCode'], 'lease-renewal-backwards-time')
+        self.assertEqual(result['mutationRequests'], 0)
+
+    def test_bound_lease_cannot_change_other_spec_owner_metadata_or_identity(self):
+        uid = self.add_node_lease()
+        plan = self.plan()
+        changes=[('spec', 'leaseDurationSeconds', 41), ('spec', 'leaseTransitions', 2),
+                 ('spec', 'acquireTime', '2026-10-05T09:00:01Z'),
+                 ('metadata', 'ownerReferences', [{'uid': 'new-owner', 'kind': 'Node', 'name': 'new-node'}]),
+                 ('metadata', 'labels', {'promoted': 'true'}), ('metadata', 'annotations', {'unknown': 'changed'}),
+                 ('metadata', 'finalizers', ['unapproved-finalizer']), ('metadata', 'name', 'other-node'),
+                 ('metadata', 'namespace', 'kube-system'), ('metadata', 'uid', 'recreated-lease')]
+        for section, field, value in changes:
+            with self.subTest(field=field):
+                raw=copy.deepcopy(MemoryNative.live);raw[uid][section][field]=value
+                with self.assertRaises(ValueError):
+                    retire.validate_plan_content(plan, raw)
+                self.assertEqual(MemoryNative.sent, [])
+
+    def test_renewal_binding_cannot_promote_custom_lease_or_change_approved_digest(self):
+        uid = self.add_node_lease()
+        plan = self.plan()
+        for update in [{'apiVersion':'example.test/v1'}, {'uid':'new-uid'}, {'originalRenewTime':'invalid'},
+                       {'contentWithoutRenewTimeSha256':'1'*64}, {'extraExcludedField':'holderIdentity'}]:
+            with self.subTest(update=update):
+                changed=copy.deepcopy(plan);changed['leaseRenewalBindings'][uid].update(update)
+                with self.assertRaises(ValueError):
+                    retire.validate_plan_content(changed, MemoryNative.live)
+                self.assertEqual(MemoryNative.sent, [])
+        changed=copy.deepcopy(plan)
+        changed['leaseRenewalBindings'][uid]['originalRenewTime']='2026-10-05T09:59:00Z'
+        with self.assertRaisesRegex(ValueError, 'lease-renewal-binding-content-mismatch'):
+            retire.validate_plan_content(changed, MemoryNative.live)
+
+    def test_bound_retained_lease_renewal_is_checked_between_writes(self):
+        uid = self.add_node_lease()
+        self.plan()
+        original=MemoryNative.census
+        def renew(native):
+            if len(MemoryNative.sent)==1:
+                native.live[uid]['spec']['renewTime']='2026-10-05T10:00:10Z'
+            return original(native)
+        with patch.object(MemoryNative,'census',renew):
+            state,result=self.result()
+        self.assertEqual(state,'retired-awaiting-acceptance',result)
+        self.assertEqual(len(MemoryNative.sent),2)
+
+    def test_bound_retained_lease_other_content_drift_stops_before_second_write(self):
+        uid=self.add_node_lease();self.plan();original=MemoryNative.census
+        def drift(native):
+            if len(MemoryNative.sent)==1:
+                native.live[uid]['spec']['holderIdentity']='other-holder'
+            return original(native)
+        with patch.object(MemoryNative,'census',drift):
+            state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'lease-renewal-other-content-drift')
+        self.assertEqual(len(MemoryNative.sent),1)
+
+    def test_bound_retained_lease_cannot_regress_below_previously_observed_renewal(self):
+        uid=self.add_node_lease();self.plan();original=MemoryNative.census;advanced=[]
+        def regress(native):
+            if native.armed and not advanced:
+                native.live[uid]['spec']['renewTime']='2026-10-05T10:00:20Z'
+                advanced.append(True)
+            elif len(MemoryNative.sent)==1:
+                native.live[uid]['spec']['renewTime']='2026-10-05T10:00:10Z'
+            return original(native)
+        with patch.object(MemoryNative,'census',regress):
+            state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'lease-renewal-backwards-time')
+        self.assertEqual(len(MemoryNative.sent),1)
+
+    def test_expired_approval_is_not_bypassed_by_bound_lease_renewal(self):
+        uid=self.add_node_lease();self.plan()
+        MemoryNative.live[uid]['spec']['renewTime']='2026-10-05T10:00:10Z'
+        self.modify_signed(self.args.approval,{'expiresAt':'2000-01-01T00:00:00Z'})
+        state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'stale-or-future-evidence')
+        self.assertEqual(MemoryNative.sent,[])
+
+    def test_assessment_accepts_validated_renewed_execution_baseline_and_later_renewal(self):
+        uid=self.add_node_lease()
+        self.postflight(before_execute=lambda:MemoryNative.live[uid]['spec'].update(renewTime='2026-10-05T10:00:10Z'))
+        MemoryNative.live[uid]['spec']['renewTime']='2026-10-05T10:00:20Z'
+        self.accepted_assessment(setup=False)
+        MemoryNative.live[uid]['spec']['renewTime']='2026-10-05T10:00:30Z'
+        prior=len(MemoryNative.sent);state,result=self.result()
+        self.assertEqual(state,'accepted',result)
+        self.assertEqual(len(MemoryNative.sent),prior)
+        self.assertEqual(result['mutationRequests'],0)
+
+    def test_assessment_refuses_renewal_regression_from_encrypted_execution_baseline(self):
+        uid=self.add_node_lease()
+        self.postflight(before_execute=lambda:MemoryNative.live[uid]['spec'].update(renewTime='2026-10-05T10:00:20Z'))
+        MemoryNative.live[uid]['spec']['renewTime']='2026-10-05T10:00:10Z'
+        prior=len(MemoryNative.sent);state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'lease-renewal-backwards-time')
+        self.assertEqual(result['mutationRequests'],0)
+        self.assertEqual(len(MemoryNative.sent),prior)
+
+    def test_assessment_refuses_other_content_change_in_encrypted_execution_baseline(self):
+        uid=self.add_node_lease();self.postflight()
+        execution=json.loads(self.args.assess_result.read_bytes())
+        export=next(v for v in execution['rawExports'] if v['file']=='production-before-inventory.age')
+        cipher=(self.args.assess_result.parent/export['file']).read_bytes()
+        raw=json.loads(type(self).sealed[cipher]);raw[uid]['spec']['holderIdentity']='unapproved-holder'
+        type(self).sealed[cipher]=canonical(raw)
+        prior=len(MemoryNative.sent);state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'lease-renewal-other-content-drift')
+        self.assertEqual(result['mutationRequests'],0)
+        self.assertEqual(len(MemoryNative.sent),prior)
+
+    def test_relative_tool_basename_is_refused_before_native_access_or_path_lookup(self):
+        local=self.root/'true';local.write_text('#!/bin/sh\nexit 99\n');local.chmod(0o700)
+        self.args.kubectl=Path('true');original=Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.dict(os.environ,{'PATH':'/usr/bin'}),patch.object(MemoryNative,'census',side_effect=AssertionError('no native access')):
+                with self.assertRaisesRegex(ValueError,'absolute-execution-tool-required'):
+                    retire.run(self.args)
+        finally:
+            os.chdir(original)
+        self.assertEqual(MemoryNative.sent,[])
+        self.assertEqual(self.created_native,[])
+
+    def add_manager_lease(self):
+        raw=object_('coordination.k8s.io/v1','Lease','ks-controller-manager-leader-election','kubesphere-system',
+                    spec={'holderIdentity':'ks-controller-manager','renewTime':'2026-10-05T10:00:00Z',
+                          'leaseDurationSeconds':15,'leaseTransitions':1,'acquireTime':'2026-10-05T09:00:00Z'})
+        MemoryNative.live[raw['metadata']['uid']]=raw
+        return raw['metadata']['uid']
+
+    def test_manager_lease_keeps_exact_checkpoint_after_validated_handoff_renewal(self):
+        uid=self.add_manager_lease();self.plan()
+        MemoryNative.live[uid]['spec']['renewTime']='2026-10-05T10:00:10Z'
+        original=MemoryNative.transport
+        def final_renewal(native,argv,**kwargs):
+            if 'get' in argv and '/leases/ks-controller-manager-leader-election' in argv[argv.index('--raw')+1]:
+                native.live[uid]['spec']['renewTime']='2026-10-05T10:00:20.123456789Z'
+            return original(native,argv,**kwargs)
+        with patch.object(MemoryNative,'transport',final_renewal),patch('rehearse.time.sleep',return_value=None):
+            state,result=self.result()
+        self.assertEqual(state,'retired-awaiting-acceptance',result)
+        self.assertEqual(len(MemoryNative.sent),3)
+        self.assertEqual(MemoryNative.sent[-1][0],'delete')
+        native=self.created_native[-1]
+        self.assertEqual(native.original_raw[uid]['spec']['renewTime'],'2026-10-05T10:00:10Z')
+        self.assertEqual(native.reviewed_raw_by_uid[uid]['spec']['renewTime'],'2026-10-05T10:00:20.123456789Z')
+        self.assertTrue((native.attempt.directory/'leader-lease-renewal-transition.json').is_file())
+
+    def test_manager_checkpoint_object_get_refuses_nanosecond_regression_below_observed_floor(self):
+        uid=self.add_manager_lease();self.plan();original=MemoryNative.transport;reads=[]
+        def regressing_get(native,argv,**kwargs):
+            if 'get' in argv and '/leases/ks-controller-manager-leader-election' in argv[argv.index('--raw')+1]:
+                native.live[uid]['spec']['renewTime']='2026-10-05T10:00:20.123456789Z' if not reads else '2026-10-05T10:00:20.123456788Z'
+                reads.append(True)
+            return original(native,argv,**kwargs)
+        with patch.object(MemoryNative,'transport',regressing_get),patch('rehearse.time.sleep',return_value=None):
+            state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'lease-renewal-backwards-time')
+        self.assertEqual(len(reads),2)
+        self.assertEqual(len(MemoryNative.sent),2)
+        self.assertFalse(any('/leases/' in path for _,path,_ in MemoryNative.sent))
+
+    def manager_delete_termination(self, holder_changed=False):
+        uid=self.add_manager_lease()
+        config=object_('v1','ConfigMap','manager-config','kubesphere-system',data={'setting':'reviewed'})
+        config['metadata']['annotations']={'meta.helm.sh/release-name':'ks-core',
+                                            'meta.helm.sh/release-namespace':'kubesphere-system'}
+        MemoryNative.live[config['metadata']['uid']]=config
+        self.plan();original=MemoryNative.transport
+        def terminating(native,argv,**kwargs):
+            deleting='delete' in argv and '/leases/ks-controller-manager-leader-election' in argv[argv.index('--raw')+1]
+            saved=copy.deepcopy(native.live[uid]) if deleting else None
+            result=original(native,argv,**kwargs)
+            if deleting:
+                saved['metadata'].update(deletionTimestamp=retire.now(),deletionGracePeriodSeconds=0,
+                                         finalizers=['foregroundDeletion'])
+                if holder_changed:
+                    saved['spec']['holderIdentity']='unapproved-holder'
+                native.live[uid]=saved
+            return result
+        return uid,terminating
+
+    def test_bound_lease_holder_drift_after_accepted_delete_stops_further_requests(self):
+        uid,terminating=self.manager_delete_termination(holder_changed=True)
+        with patch.object(MemoryNative,'transport',terminating),patch('rehearse.time.sleep',return_value=None):
+            state,result=self.result()
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'lease-renewal-other-content-drift')
+        self.assertEqual(len(MemoryNative.sent),3)
+        self.assertFalse(any('/configmaps/' in path for _,path,_ in MemoryNative.sent))
+
+    def test_bound_lease_legitimate_foreground_termination_preserves_content_until_absent(self):
+        uid,terminating=self.manager_delete_termination();original=MemoryNative.census;seen=[]
+        def collect(native):
+            result=original(native)
+            if uid in native.accepted_deletes and uid in native.live:
+                seen.append(True)
+                native.live.pop(uid)
+            return result
+        with patch.object(MemoryNative,'transport',terminating),patch.object(MemoryNative,'census',collect),patch('rehearse.time.sleep',return_value=None):
+            state,result=self.result()
+        self.assertEqual(state,'retired-awaiting-acceptance',result)
+        self.assertEqual(len(seen),1)
+        self.assertEqual(len(MemoryNative.sent),4)
+        self.assertTrue(any('/configmaps/' in path for _,path,_ in MemoryNative.sent))
+
+    def bound_terminating_lease_guard(self):
+        uid=self.add_manager_lease()
+        plan=self.plan();native=self.created_native[-1];native.plan=plan
+        native.original_raw=copy.deepcopy(MemoryNative.live)
+        # Isolate retention normalization: planning independently rejects an unreviewed
+        # manager finalizer, while this guard must still preserve every original finalizer.
+        native.original_raw[uid]['metadata']['finalizers']=['retained.example/finalizer']
+        plan['fullContentSha256'][uid]=retire.content_review_digest(native.original_raw[uid])
+        plan['leaseRenewalBindings'][uid]=retire.make_lease_bindings({uid:native.original_raw[uid]})[uid]
+        native.accepted_deletes.add(uid)
+        raw=copy.deepcopy(native.original_raw[uid])
+        raw['metadata'].update(deletionTimestamp=retire.now(),deletionGracePeriodSeconds=0,
+                               finalizers=['retained.example/finalizer','foregroundDeletion'])
+        native.observe_bound_lease(raw)
+        return native,uid,raw
+
+    def test_bound_lease_termination_cannot_remove_original_finalizers(self):
+        native,uid,raw=self.bound_terminating_lease_guard()
+        for value in [None,[],['foregroundDeletion']]:
+            with self.subTest(finalizers=value):
+                changed=copy.deepcopy(raw)
+                if value is None:
+                    changed['metadata'].pop('finalizers')
+                else:
+                    changed['metadata']['finalizers']=value
+                with self.assertRaisesRegex(ValueError,'lease-delete-state-unverified'):
+                    native.observe_bound_lease(changed)
+        self.assertEqual(MemoryNative.sent,[])
+
+    def test_bound_lease_locked_termination_timestamp_cannot_disappear(self):
+        native,uid,raw=self.bound_terminating_lease_guard()
+        for present in [False,True]:
+            with self.subTest(explicitNone=present):
+                changed=copy.deepcopy(native.original_raw[uid])
+                if present:
+                    changed['metadata']['deletionTimestamp']=None
+                with self.assertRaisesRegex(ValueError,'lease-delete-state-changed'):
+                    native.observe_bound_lease(changed)
+        self.assertEqual(MemoryNative.sent,[])
+
+    def test_expiry_during_final_configuration_validation_blocks_first_write(self):
+        self.plan();original=MemoryNative.resolved_configuration;delayed=[]
+        class Clock(datetime):
+            current=datetime.now(timezone.utc)
+            @classmethod
+            def now(cls,tz=None):
+                return cls.current.astimezone(tz) if tz else cls.current.replace(tzinfo=None)
+        def resolve(native):
+            result=original(native)
+            if native.armed and native.last_step.startswith('native-retire-') and not delayed:
+                delayed.append(True);Clock.current+=timedelta(minutes=20)
+            return result
+        with patch('retire.datetime',Clock),patch.object(MemoryNative,'resolved_configuration',resolve):
+            state,result=self.result()
+        self.assertEqual(delayed,[True])
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'stale-or-future-evidence')
+        self.assertEqual(result['mutationRequests'],0)
+        self.assertEqual(MemoryNative.sent,[])
+
+    def test_window_expiry_during_final_configuration_validation_blocks_first_write(self):
+        self.plan()
+        self.modify_signed(self.args.approval,{'windowEnd':(datetime.now(timezone.utc)+timedelta(seconds=20)).isoformat()})
+        original=MemoryNative.resolved_configuration;delayed=[]
+        class Clock(datetime):
+            current=datetime.now(timezone.utc)
+            @classmethod
+            def now(cls,tz=None):
+                return cls.current.astimezone(tz) if tz else cls.current.replace(tzinfo=None)
+        def resolve(native):
+            result=original(native)
+            if native.armed and native.last_step.startswith('native-retire-') and not delayed:
+                delayed.append(True);Clock.current+=timedelta(seconds=30)
+            return result
+        with patch('retire.datetime',Clock),patch.object(MemoryNative,'resolved_configuration',resolve):
+            state,result=self.result()
+        self.assertEqual(delayed,[True])
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'approved-gate-expired')
+        self.assertEqual(result['mutationRequests'],0)
+        self.assertEqual(MemoryNative.sent,[])
+
+    def test_window_expiry_during_final_configuration_validation_stops_second_write(self):
+        self.plan()
+        self.modify_signed(self.args.approval,{'windowEnd':(datetime.now(timezone.utc)+timedelta(seconds=20)).isoformat()})
+        original=MemoryNative.resolved_configuration;delayed=[]
+        class Clock(datetime):
+            current=datetime.now(timezone.utc)
+            @classmethod
+            def now(cls,tz=None):
+                return cls.current.astimezone(tz) if tz else cls.current.replace(tzinfo=None)
+        def resolve(native):
+            result=original(native)
+            if native.armed and len(MemoryNative.sent)==1 and native.last_step.startswith('native-retire-') and not delayed:
+                delayed.append(True);Clock.current+=timedelta(seconds=30)
+            return result
+        with patch('retire.datetime',Clock),patch.object(MemoryNative,'resolved_configuration',resolve):
+            state,result=self.result()
+        self.assertEqual(delayed,[True])
+        self.assertEqual(state,'failed-closed')
+        self.assertEqual(result['reasonCode'],'approved-gate-expired')
+        self.assertEqual(len(MemoryNative.sent),1)
+        self.assertEqual(result['mutationRequests'],1)
+        self.assertTrue(result['incidentDecisionRequired'])
 
     def namespace_only_plan(self):
         MemoryNative.live = {uid: v for uid, v in MemoryNative.live.items() if v['kind'] != 'Deployment'}

@@ -1,0 +1,40 @@
+{
+  "allTwoRecipientReadbacksPassed": true,
+  "attemptId": "20261005t165533z-s427-cri-timeout-probe",
+  "capturedAt": "2026-10-05T16:55:34Z",
+  "checks": {
+    "configContainerAbsent": true,
+    "configOwnedVolumesAbsent": true,
+    "helpContainerAbsent": true,
+    "helpOwnedVolumesAbsent": true,
+    "noProductionCredentialsImported": true,
+    "onlyOfflineHelpAndConfigurationReads": true,
+    "retainedImageIdentityVerified": true
+  },
+  "encryptedExportCount": 15,
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "isolated-retained-cri-timeout-observation",
+  "nativeMutationRequests": 0,
+  "privateAttemptChecksumSha256": "f5ea17e6e53e0027310fac583451857e790dd1e5d3aff2d6bf8b26c3cbc0a1b6",
+  "productionCredentialsImported": false,
+  "productionRetirementAccepted": false,
+  "reasonCode": "retained-cri-timeout-observed",
+  "results": {
+    "config": {
+      "exitCode": 0,
+      "timeoutLines": []
+    },
+    "help": {
+      "exitCode": 0,
+      "timeoutLines": [
+        "--timeout value, -t value                  Timeout of connecting to the server in seconds (e.g. 2s, 20s.). 0 or less is set to default (default: 2s)"
+      ]
+    }
+  },
+  "retainedNodeImage": "sha256:8a9be59e7b1d2c14ea21bd064dd8b4d803c97ab3e318f81aff39c874c05fb816",
+  "schemaVersion": 1,
+  "scope": "Offline CLI help/configuration in exact local retained image; only separately owned containers and volumes created/removed.",
+  "signed": false,
+  "state": "passed",
+  "upgradeGate": "closed"
+}
