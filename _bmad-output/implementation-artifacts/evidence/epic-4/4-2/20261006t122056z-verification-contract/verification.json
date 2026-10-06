@@ -1,0 +1,116 @@
+{
+  "attemptId": "20261006t122056z-verification-contract",
+  "capturedAt": "2026-10-06T12:23:07+00:00",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s eng/admin-exposure -p 'test_*.py' -v",
+      "condition": "focused synthetic boundary tests",
+      "exitCode": 0,
+      "result": "pass",
+      "skippedCount": 0,
+      "testCount": 72,
+      "testLogSha256": "22dc57c1da51ab99fa784cf98a90a75d855e46a2853b4fe18c3d43c39baa5691"
+    },
+    {
+      "condition": "real local SSH signature verification with ephemeral synthetic keys",
+      "productionSignaturesVerified": false,
+      "result": "pass"
+    },
+    {
+      "condition": "signed malformed Ingress/repository arrays and route maps yield fixed sanitized failure reports",
+      "result": "pass"
+    },
+    {
+      "condition": "every approved console hostname binds its exact DNS/route/backend snapshot and route UID union; replacement drift is refused",
+      "result": "pass"
+    },
+    {
+      "condition": "exact pre/post private refusal targets for both administration surfaces; missing, duplicate and unrelated checks are refused",
+      "result": "pass"
+    },
+    {
+      "condition": "each role has measured pre/post permission timestamps within the matching interval and post-mutation bounds",
+      "result": "pass"
+    },
+    {
+      "condition": "GET and POST refusal are required for every declared Keycloak administrative path and alias",
+      "result": "pass"
+    },
+    {
+      "condition": "expiry during real SSH verification and normalized access/refresh/ID-token fields are refused",
+      "result": "pass"
+    },
+    {
+      "condition": "correctly signed false/absent production go and failed pre/post public OIDC are refused with valid prerequisite byte bindings",
+      "result": "pass"
+    },
+    {
+      "condition": "sole Administrator, isolated independent recovery, prior exact-hash approval, drift, registry and GC lock-before-checkpoint/held-lock gates retained",
+      "result": "pass"
+    },
+    {
+      "condition": "new immutable private preparation with pending operational templates",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "preparationManifestSha256": "6648073de788104937b39fb00af1920ec1ad55004d4ab7fdb6cd423395da13aa",
+      "result": "pass"
+    },
+    {
+      "condition": "CLI help for root and both subcommands",
+      "logSha256": "4597e0d5a793334be33246a8ee87e37361dc36d28051c3b61537b0873325550a",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "condition": "historical 47-test GC receipt byte identity preserved",
+      "receiptSha256": "3500a1939bba41b0f624b1f612061e2671018edd95817ff6df742da7bd058314",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Local signatures, timestamps, booleans and hashes cannot independently establish production endpoints, route coverage, access, lock enforcement or measured acceptance.",
+    "Historical private attempts and receipts retain their original bytes and meaning.",
+    "Story and sprint remain in-progress; no live task or acceptance criterion was marked complete."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "privateEvidenceLocation": "dedicated owner-only exposure evidence custody outside Git; exact path held by operator",
+  "remainingProductionRequirements": [
+    "Approved actual native cluster/Keycloak private targets, accounts, monitoring and separately protected recovery custody for jpiquot.",
+    "Fresh measured pre/post authorized administration, isolated recovery and unauthorized refusal for both private targets, with unchanged production authentication for other clients.",
+    "Successful approved public OIDC authentication flows and independently measured external refusal for complete effective administrative routes and aliases.",
+    "Fresh signed UID/resourceVersion/configuration/DNS/backend baseline and separate prior exact-attempt production go.",
+    "Complete signed-generation reader/writer/replicator and live/rollback inventory, secret-store owner/rotation and cutover window.",
+    "Fresh uncached audited least-privilege operations before and after anonymous catalog/tag/manifest/blob denial.",
+    "Signed exhaustive retained OCI closure, approved GC policy, successful retained/disposable rehearsal and enforced write/replication lock before checkpoint through retained-object verification.",
+    "Signed measured results and independently accepted exact-plan hexalith-retirement console closure handoff for 4.27."
+  ],
+  "remoteOperationsPerformed": false,
+  "retainedTestLog": {
+    "location": "dedicated owner-only local-verification custody outside Git; exact path held by operator",
+    "sha256": "22dc57c1da51ab99fa784cf98a90a75d855e46a2853b4fe18c3d43c39baa5691"
+  },
+  "schemaVersion": 1,
+  "selectedAdministrationPolicy": "sole-administrator",
+  "selectedAdministrator": "jpiquot",
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "8474d6e8b8fd2571d2aaff5bfcd0661b79abf936b04789fd615b79416bcb5910",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "21eb01acf660298e303beccd8232bd5c08d97924f1887afdc71329c1a3046c01",
+    "eng/admin-exposure/prepare.py": "72771309fe00ecea1eacbd3190b517c08410f00915d571b53c00e799f4c420a3",
+    "eng/admin-exposure/test_prepare.py": "8a57fad5738865e98e7afd67a18ad81d9bdcc8efa199f53eb704c207956b45d6"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local preparation and synthetic tests only"
+}

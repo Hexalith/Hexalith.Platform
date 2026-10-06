@@ -16,7 +16,8 @@ ARTIFACTS = Path('_bmad-output/implementation-artifacts')
 STORY = ARTIFACTS / '4-2-close-public-admin-exposure-and-anonymous-registry-reads.md'
 SOURCES = (STORY, ARTIFACTS / 'epic-4-context.md',
            ARTIFACTS / 'evidence/epic-4/initial-cluster-inventory.md',
-           Path('eng/admin-exposure/prepare.py'), Path('eng/admin-exposure/README.md'))
+           Path('eng/admin-exposure/prepare.py'), Path('eng/admin-exposure/test_prepare.py'),
+           Path('eng/admin-exposure/README.md'))
 HEX = re.compile(r'[0-9a-f]{64}')
 OCI_DIGEST = re.compile(r'sha256:[0-9a-f]{64}')
 ID = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.@:-]{0,127}')
@@ -28,13 +29,16 @@ PHASE_FILES = {
 }
 COMMON_FILES = ('signed-baseline.json', 'administrator-decisions.json', 'pre-mutation-state.json')
 FORBIDDEN_FIELDS = {'authorization', 'cookie', 'cookies', 'set-cookie', 'token', 'password',
-                    'clientsecret', 'secretdata', 'credentials', 'responsebody', 'headers'}
+                    'accesstoken', 'refreshtoken', 'idtoken', 'clientsecret', 'secretdata',
+                    'credentials', 'responsebody', 'headers'}
 ADMIN_PATHS = ('/admin', '/admin/', '/admin/master/console/', '/realms/master',
                '/realms/master/.well-known/openid-configuration',
                '/realms/master/protocol/openid-connect/token')
 ADMINISTRATOR = 'jpiquot'
 ADMINISTRATION_POLICY = 'sole-administrator'
 RECOVERY_SCOPE = 'isolated-client-session'
+ADMINISTRATION_SURFACES = {'nativeCluster', 'keycloak'}
+HTTP_METHODS = {'GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'CONNECT', 'TRACE'}
 
 
 def require(condition, reason):
@@ -43,7 +47,7 @@ def require(condition, reason):
 
 
 def canonical(record):
-    return (json.dumps(record, indent=2, sort_keys=True) + '\n').encode()
+    return (json.dumps(record, indent=2, sort_keys=True, allow_nan=False) + '\n').encode()
 
 
 def digest(data):
@@ -100,6 +104,22 @@ def identifier(value):
     return isinstance(value, str) and ID.fullmatch(value) is not None
 
 
+def hostname(value):
+    return (isinstance(value, str) and len(value) <= 253
+            and all(re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?', label)
+                    for label in value.split('.')))
+
+
+def absolute_http_path(value):
+    return (isinstance(value, str) and value.startswith('/')
+            and not any(v.isspace() or ord(v) < 32 or ord(v) == 127 for v in value)
+            and '#' not in value)
+
+
+def string_array(value, validator):
+    return isinstance(value, list) and bool(value) and all(validator(v) for v in value)
+
+
 def no_sensitive_fields(value):
     if isinstance(value, dict):
         for name, child in value.items():
@@ -111,8 +131,8 @@ def no_sensitive_fields(value):
             no_sensitive_fields(child)
 
 
-def unique(records, field):
-    require(isinstance(records, list) and all(isinstance(v, dict) and identifier(v.get(field)) for v in records),
+def unique(records, field, validator=identifier):
+    require(isinstance(records, list) and all(isinstance(v, dict) and validator(v.get(field)) for v in records),
             'invalid-evidence-list')
     result = {v[field]: v for v in records}
     require(len(result) == len(records), 'duplicate-evidence-identity')
@@ -148,6 +168,8 @@ def templates(attempt_id, operator, source_hashes):
             'administrationPolicy': None, 'administrator': None, 'recoveryCustodyId': None,
             'administratorAccountBindings': {'nativeCluster': None, 'keycloak': None},
             'recoveryAccountBindings': {'nativeCluster': None, 'keycloak': None},
+            'privateAdministrationTargets': {surface: {'hostname': None, 'path': None, 'method': None}
+                for surface in sorted(ADMINISTRATION_SURFACES)},
             'operators': [], 'breakGlassPathId': None, 'monitoringOwner': None,
             'approvedPublicOidcChecks': [], 'consoleMode': 'port-forward',
             'publicConsoleHostnames': ['kube.hexalith.com'], 'keycloakHostname': 'auth.tache.ai',
@@ -162,12 +184,13 @@ def templates(attempt_id, operator, source_hashes):
             'resources': [], 'routes': [], 'registryGeneration': generation},
         'admin-path-proof.json': {**base, 'privatePathId': None, 'testedOperators': [],
             'administrationPolicy': None, 'administrator': None,
-            'unauthorizedPrivateCheck': None, 'breakGlass': pending_recovery(), 'publicOidcChecks': []},
+            'unauthorizedPrivateChecks': [], 'breakGlass': pending_recovery(), 'publicOidcChecks': []},
         'admin-exposure-result.json': {**base, 'closedSurface': None, 'baselineSha256': None,
             'administrationPolicy': None, 'administrator': None,
             'privateProofSha256': None, 'externalProbes': [], 'closedAdminPaths': [],
             'consoleMode': 'port-forward', 'publicOidcChecks': [], 'removedConsoleObjects': None,
             'postChangePrivateChecks': [], 'postChangeBreakGlass': pending_recovery(),
+            'postChangeUnauthorizedPrivateChecks': [],
             'mutationStartedAt': None, 'mutationFinishedAt': None, 'accepted': False},
         'registry-consumer-inventory.json': {**base, 'generation': generation,
             'inventoryComplete': False, 'coverage': {k: False for k in (
@@ -234,11 +257,16 @@ def validate_snapshot(snapshot):
         key = tuple(resource.get(k) for k in ('apiVersion', 'kind', 'namespace', 'name'))
         require(key not in identities, 'duplicate-resource-baseline')
         identities.add(key)
-    routes = unique(snapshot.get('routes'), 'hostname')
+        if resource['kind'] == 'Ingress':
+            require(string_array(resource.get('hostnames'), lambda v: hostname(v.removeprefix('*.'))
+                        if isinstance(v, str) else False)
+                    and string_array(resource.get('paths'), absolute_http_path),
+                    'invalid-ingress-hostname-or-path-array')
+    routes = unique(snapshot.get('routes'), 'hostname', hostname)
     require(routes, 'empty-route-baseline')
     for route in routes.values():
         uids = route.get('ingressUids')
-        require(isinstance(uids, list) and uids and len(set(uids)) == len(uids)
+        require(string_array(uids, identifier) and len(set(uids)) == len(uids)
                 and all(v in resources for v in uids) and identifier(route.get('ingressClass'))
                 and isinstance(route.get('dnsAnswers'), list) and route['dnsAnswers'], 'incomplete-route-baseline')
         try:
@@ -255,25 +283,48 @@ def validate_snapshot(snapshot):
                 'backend-not-bound-to-reviewed-resource')
 
 
+def ingress_hostname_matches(rule, target):
+    return (rule == target or rule.startswith('*.') and target.endswith(rule[1:])
+            and target.count('.') == rule.count('.'))
+
+
 def target_baseline(phase, baseline, decisions):
-    host = decisions.get('keycloakHostname') if phase == 'keycloak' else (
-        'kube.hexalith.com' if phase == 'console' else decisions.get('registryHostname'))
-    require(identifier(host), 'approved-target-hostname-missing')
-    routes = unique(baseline['routes'], 'hostname')
+    validate_snapshot(baseline)
+    if phase == 'console':
+        hosts = decisions.get('publicConsoleHostnames')
+        require(string_array(hosts, hostname) and 'kube.hexalith.com' in hosts
+                and len(set(hosts)) == len(hosts), 'console-hostname-inventory-missing')
+    else:
+        hosts = [decisions.get('keycloakHostname') if phase == 'keycloak' else decisions.get('registryHostname')]
+        require(all(hostname(v) for v in hosts), 'approved-target-hostname-missing')
+    routes = unique(baseline['routes'], 'hostname', hostname)
     resources = unique(baseline['resources'], 'uid')
-    expected = decisions.get('affectedRouteUids', {}).get(phase)
-    require(host in routes and isinstance(expected, list) and expected
-            and len(set(expected)) == len(expected) and set(expected) == set(routes[host]['ingressUids']),
+    approvals = decisions.get('affectedRouteUids')
+    require(isinstance(approvals, dict), 'invalid-affected-route-approval-map')
+    expected = approvals.get(phase)
+    require(string_array(expected, identifier) and len(set(expected)) == len(expected),
             'approved-target-route-baseline-missing')
     namespace = 'keycloak' if phase == 'keycloak' else (
         'kubesphere-system' if phase == 'console' else 'registry-distribution')
+    require(all(uid in resources and resources[uid]['namespace'] == namespace
+                and resources[uid]['kind'] == 'Ingress' for uid in expected),
+            'approved-target-resource-identity-mismatch')
+    if phase == 'keycloak':
+        hosts = sorted(set(hosts) | {host for uid in expected for host in resources[uid]['hostnames']
+                                   if not host.startswith('*.')}
+                       | {host for host, route in routes.items() if set(route['ingressUids']) & set(expected)})
+    require(all(host in routes for host in hosts)
+            and set(expected) == {uid for host in hosts for uid in routes[host]['ingressUids']},
+            'approved-target-route-baseline-missing')
     require(all(resources[uid]['namespace'] == namespace and resources[uid]['kind'] == 'Ingress'
-                and host in resources[uid].get('hostnames', []) for uid in expected),
+                and any(ingress_hostname_matches(rule, host) for rule in resources[uid]['hostnames'])
+                for host in hosts for uid in routes[host]['ingressUids']),
             'approved-target-resource-identity-mismatch')
     if phase == 'keycloak':
         catch_all = decisions.get('publicCatchAllIngressUid')
         require(catch_all in expected and '/' in resources[catch_all].get('paths', []),
                 'public-keycloak-catch-all-not-reviewed')
+    return hosts
 
 
 def in_record_time(child, parent, *, after=None, before=None):
@@ -358,6 +409,24 @@ def account_bindings(value):
             and all(identifier(v) for v in value.values()))
 
 
+def unauthorized_private_checks(decisions, checks, parent, *, after=None, before=None):
+    targets = decisions.get('privateAdministrationTargets')
+    require(isinstance(targets, dict) and set(targets) == ADMINISTRATION_SURFACES
+            and all(isinstance(v, dict) and hostname(v.get('hostname'))
+                    and absolute_http_path(v.get('path')) and isinstance(v.get('method'), str)
+                    and v['method'] in HTTP_METHODS
+                    for v in targets.values()), 'approved-private-administration-targets-missing')
+    by_surface = unique(checks, 'surface')
+    require(set(by_surface) == ADMINISTRATION_SURFACES, 'private-refusal-surface-coverage-incomplete')
+    for surface, check in by_surface.items():
+        target = targets[surface]
+        require(check.get('privatePathId') == decisions.get('privatePathId')
+                and all(check.get(k) == target[k] for k in ('hostname', 'path', 'method')),
+                'private-refusal-target-binding-mismatch')
+        refused(check, external=False)
+        in_record_time(check, parent, after=after, before=before)
+
+
 def recovery_proof(decisions, recovery, parent, *, after=None):
     require(identifier(decisions.get('breakGlassPathId')) and identifier(decisions.get('recoveryCustodyId'))
             and account_bindings(decisions.get('recoveryAccountBindings'))
@@ -403,8 +472,8 @@ def admin_proof(decisions, proof):
         'authorized-administration-unproved')
     for check in tested.values():
         in_record_time(check, proof)
-    refused(proof.get('unauthorizedPrivateCheck'), external=False)
-    in_record_time(proof['unauthorizedPrivateCheck'], proof)
+    unauthorized_private_checks(decisions, proof.get('unauthorizedPrivateChecks'), proof,
+                                before=decisions.get('capturedAt'))
     recovery_proof(decisions, proof.get('breakGlass'), proof)
     oidc_checks(decisions, proof.get('publicOidcChecks'))
     for check in proof['publicOidcChecks']:
@@ -414,7 +483,7 @@ def admin_proof(decisions, proof):
 def admin_result(phase, decisions, proof, result, hashes, current):
     admin_proof(decisions, proof)
     started, finished = mutation_times(result, current)
-    for check in (*proof['testedOperators'], proof['unauthorizedPrivateCheck'], proof['breakGlass'],
+    for check in (*proof['testedOperators'], *proof['unauthorizedPrivateChecks'], proof['breakGlass'],
                   *proof['publicOidcChecks']):
         in_record_time(check, proof, before=started)
     require(result.get('closedSurface') == phase and result.get('baselineSha256') == hashes['signed-baseline.json']
@@ -427,12 +496,12 @@ def admin_result(phase, decisions, proof, result, hashes, current):
     for probe in probes:
         refused(probe)
         in_record_time(probe, result, after=finished)
-        require(isinstance(probe.get('path'), str) and probe['path'].startswith('/')
-                and identifier(probe.get('hostname')), 'probe-target-missing')
+        require(absolute_http_path(probe.get('path')) and hostname(probe.get('hostname'))
+                and isinstance(probe.get('method'), str), 'probe-target-missing')
         observed.add((probe['hostname'], probe['path'], probe.get('method')))
     if phase == 'console':
         hosts = decisions.get('publicConsoleHostnames')
-        require(isinstance(hosts, list) and 'kube.hexalith.com' in hosts and all(identifier(v) for v in hosts),
+        require(string_array(hosts, hostname) and 'kube.hexalith.com' in hosts and len(set(hosts)) == len(hosts),
                 'console-hostname-inventory-missing')
         require(all((host, path, 'GET') in observed for host in hosts for path in ('/', '/login')),
                 'console-external-negative-coverage-incomplete')
@@ -444,10 +513,11 @@ def admin_result(phase, decisions, proof, result, hashes, current):
                     ('ingressAbsent', 'serviceAbsent', 'workloadAbsent', 'publicDnsAbsent'))
                     and sha(removed.get('evidenceSha256')), 'removed-console-surface-still-present')
     else:
-        host = decisions.get('keycloakHostname')
+        hosts = target_baseline('keycloak', current, decisions)
         paths = result.get('closedAdminPaths')
-        require(isinstance(paths, list) and set(ADMIN_PATHS) <= set(paths), 'master-or-admin-path-coverage-incomplete')
-        require(all((host, path, 'POST' if path.endswith('/token') else 'GET') in observed for path in paths),
+        require(string_array(paths, absolute_http_path) and set(ADMIN_PATHS) <= set(paths),
+                'master-or-admin-path-coverage-incomplete')
+        require(all((host, path, method) in observed for host in hosts for path in paths for method in ('GET', 'POST')),
                 'master-or-admin-external-negative-coverage-incomplete')
     oidc_checks(decisions, result.get('publicOidcChecks'))
     for check in result['publicOidcChecks']:
@@ -461,6 +531,7 @@ def admin_result(phase, decisions, proof, result, hashes, current):
             for v in operators.values()), 'post-change-private-administration-unproved')
     for check in operators.values():
         in_record_time(check, result, after=finished)
+    unauthorized_private_checks(decisions, result.get('postChangeUnauthorizedPrivateChecks'), result, after=finished)
     recovery_proof(decisions, result.get('postChangeBreakGlass'), result, after=finished)
 
 
@@ -477,7 +548,9 @@ def audited_operation(operation, consumer, generation, *, transfer=True, blob=Fa
             and operation.get('generationSha256') == generation['generationSha256']
             and operation.get('result') == 'pass' and sha(operation.get('auditEvidenceSha256'))
             and identifier(operation.get('auditCorrelationId')), 'authenticated-audit-operation-missing')
-    require(operation.get('repository') in consumer.get('approvedRepositories', [])
+    require(string_array(consumer.get('approvedRepositories'), lambda v: isinstance(v, str)
+                        and re.fullmatch(r'[a-z0-9][a-z0-9._/-]*', v) is not None), 'invalid-repository-scope')
+    require(operation.get('repository') in consumer['approvedRepositories']
             and operation.get('operation') == {'reader': 'pull', 'writer': 'push', 'replicator': 'replicate'}.get(consumer.get('role')),
             'audited-operation-outside-approved-scope')
     if consumer.get('role') == 'replicator':
@@ -497,6 +570,7 @@ def audited_operation(operation, consumer, generation, *, transfer=True, blob=Fa
 def least_privilege(role, permissions):
     require(isinstance(permissions, dict) and sha(permissions.get('evidenceSha256')),
             'least-privilege-tests-missing')
+    timestamp(permissions.get('capturedAt'))
     if role == 'reader':
         require(permissions.get('pushDenied') is True and permissions.get('deleteDenied') is True,
                 'reader-write-or-delete-not-denied')
@@ -520,11 +594,18 @@ def registry_inventory(inventory):
                 and identifier(consumer.get('credentialSecretReference'))
                 and consumer.get('approvedRepositories') and consumer.get('retainedDeleteDenied') is True,
                 'least-privilege-consumer-incomplete')
-        require(all(isinstance(v, str) and re.fullmatch(r'[a-z0-9][a-z0-9._/-]*', v)
-                    for v in consumer['approvedRepositories']), 'invalid-repository-scope')
+        require(string_array(consumer['approvedRepositories'], lambda v: isinstance(v, str)
+                        and re.fullmatch(r'[a-z0-9][a-z0-9._/-]*', v) is not None), 'invalid-repository-scope')
         least_privilege(role, consumer.get('leastPrivilege'))
+        in_record_time(consumer['leastPrivilege'], inventory)
         audited_operation(consumer.get('beforeCutoverOperation'), consumer, generation, transfer=role != 'writer')
         in_record_time(consumer['beforeCutoverOperation'], inventory)
+    for reader in (v for v in consumers.values() if v['role'] == 'reader'):
+        for writer in (v for v in consumers.values() if v['role'] == 'writer'):
+            require(not (reader['principal'] == writer['principal']
+                    and reader['credentialSecretReference'] == writer['credentialSecretReference']
+                    and set(reader['approvedRepositories']) & set(writer['approvedRepositories'])),
+                    'inconsistent-reader-writer-grant')
     return consumers
 
 
@@ -533,6 +614,7 @@ def registry_result(decisions, inventory, result, hashes, current):
     started, finished = mutation_times(result, current)
     for consumer in consumers.values():
         in_record_time(consumer['beforeCutoverOperation'], inventory, before=started)
+        in_record_time(consumer['leastPrivilege'], inventory, before=started)
     require(result.get('generation') == inventory['generation'] and
             result.get('inventorySha256') == hashes['registry-consumer-inventory.json'], 'registry-generation-drift')
     probes = unique(result.get('anonymousProbes'), 'kind')
@@ -556,6 +638,7 @@ def registry_result(decisions, inventory, result, hashes, current):
     for identity, operation in operations.items():
         audited_operation(operation, consumers[identity], inventory['generation'], transfer=consumers[identity]['role'] != 'writer')
         least_privilege(consumers[identity]['role'], operation.get('leastPrivilege'))
+        in_record_time(operation['leastPrivilege'], result, after=finished)
         in_record_time(operation, result, after=finished)
 
 
@@ -615,6 +698,9 @@ def gc_result(decisions, inventory, closure, result, hashes, current):
             'gc-outside-write-lock')
     require(timestamp(current['capturedAt']) <= timestamp(result['gcStartedAt']) < timestamp(current['expiresAt']),
             'gc-before-current-mutation-checkpoint')
+    require(held <= timestamp(current.get('observationStartedAt'))
+            <= timestamp(current['capturedAt']) <= timestamp(result['gcStartedAt']),
+            'gc-checkpoint-not-collected-under-held-write-replication-lock')
     operations = result.get('postGcOperations')
     require(isinstance(operations, list) and operations, 'post-gc-uncached-pulls-missing')
     fetched = set()
@@ -644,6 +730,10 @@ def unique_json_object(pairs):
     return result
 
 
+def reject_json_constant(value):
+    raise ValueError('nonfinite-evidence-json')
+
+
 def signed_input(path, project, allowed_signers, principal, ssh_keygen):
     directory = private_path(Path(path).parent, project)
     require(directory.is_dir(), 'missing-private-bundle-directory')
@@ -657,11 +747,11 @@ def signed_input(path, project, allowed_signers, principal, ssh_keygen):
         '-n', 'hexalith-admin-exposure', '-s', str(signature)], input=data, capture_output=True, timeout=30)
     require(verified.returncode == 0, 'unverified-evidence-signature')
     try:
-        record = json.loads(data, object_pairs_hook=unique_json_object)
-    except (ValueError, UnicodeError):
+        record = json.loads(data, object_pairs_hook=unique_json_object, parse_constant=reject_json_constant)
+        require(isinstance(record, dict), 'invalid-evidence-record')
+        no_sensitive_fields(record)
+    except (ValueError, UnicodeError, RecursionError):
         raise ValueError('malformed-evidence-json') from None
-    require(isinstance(record, dict), 'invalid-evidence-record')
-    no_sensitive_fields(record)
     return record, digest(data)
 
 
@@ -681,7 +771,8 @@ def check_bundle(args):
             require(file_digest(args.allowed_signers) == trust_sha and file_digest(args.ssh_keygen) == tool_sha,
                     'signature-trust-or-verifier-drift')
             records[name], hashes[name] = record, record_hash
-            require(record.get('story') == '4.2' and record.get('classification') == 'measured-production'
+            require(type(record.get('schemaVersion')) is int and record['schemaVersion'] == 1
+                    and record.get('story') == '4.2' and record.get('classification') == 'measured-production'
                     and record.get('verificationResult') == 'pass', 'pending-or-nonproduction-evidence')
             require(identifier(record.get('sourceClusterUid')) and identifier(record.get('attemptId')),
                     'missing-attempt-or-cluster-identity')
@@ -727,6 +818,13 @@ def check_bundle(args):
         except (ValueError, KeyError, TypeError) as error:
             condition = str(error) if isinstance(error, ValueError) else 'incomplete-evidence-schema'
             failures.append({'condition': condition})
+    completion_clock = datetime.now(timezone.utc)
+    for name, record in records.items():
+        try:
+            fresh(record, completion_clock)
+        except ValueError:
+            if not any(failure.get('file') == name for failure in failures):
+                failures.append({'file': name, 'condition': 'signed-fresh-production-input-required'})
     return {'schemaVersion': 1, 'story': '4.2', 'phase': args.phase,
             'verificationResult': 'fail' if failures else 'pass',
             'scope': 'offline signatures and evidence consistency; no independent measurement',

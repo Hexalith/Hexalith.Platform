@@ -1,0 +1,92 @@
+{
+  "attemptId": "20261006t115747z-gc-lock-verification",
+  "capturedAt": "2026-10-06T11:59:00+00:00",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s eng/admin-exposure -p 'test_*.py' -v",
+      "condition": "focused synthetic boundary tests",
+      "exitCode": 0,
+      "result": "pass",
+      "skippedCount": 0,
+      "testCount": 47,
+      "testLogSha256": "83a64802e8cf81256e5e21c006b0c705bcbbd773134b9bd96710544ca3f50037"
+    },
+    {
+      "condition": "real local SSH signature verification with ephemeral synthetic keys",
+      "productionSignaturesVerified": false,
+      "result": "pass"
+    },
+    {
+      "condition": "GC checkpoint collection completed before lock acquisition or spanning acquisition is refused",
+      "regressionReproducedBeforeFix": true,
+      "result": "pass"
+    },
+    {
+      "condition": "valid detached signatures cannot bypass GC lock-before-checkpoint ordering",
+      "regressionReproducedBeforeFix": true,
+      "result": "pass"
+    },
+    {
+      "condition": "sole Administrator, isolated independent recovery, exact prior approval, resource drift, OIDC, registry and post-GC lock gates retained",
+      "result": "pass"
+    },
+    {
+      "condition": "new immutable private preparation with unchanged pending operational templates",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "preparationManifestSha256": "256bd86faa6fcf6205d0e82485499f638d7edbd1043e88cff3c0dd799cbaf002",
+      "result": "pass"
+    },
+    {
+      "condition": "CLI help",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Local signatures, timestamps, booleans and hashes cannot independently establish actual lock enforcement, operational measurements or acceptance.",
+    "All historical private attempts and committed receipts remain unchanged.",
+    "Story and sprint remain in-progress; no live task or acceptance criterion was marked complete."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "privateEvidenceLocation": "dedicated owner-only exposure evidence custody outside Git; exact path held by operator",
+  "remainingProductionRequirements": [
+    "Fresh signed private administration and separately protected native cluster/Keycloak recovery qualification for jpiquot before and after closure.",
+    "Measured isolated-client/session proof, independent recovery custody and continued unchanged production authentication for other clients.",
+    "Unauthorized private refusal, successful approved public OIDC authentication flows and independent external administrative denial tests.",
+    "Fresh signed UID/resourceVersion/configuration/DNS/backend baseline and separate prior exact-attempt production go.",
+    "Complete signed-generation registry reader/writer/replicator and live/rollback inventory, secret-store owner/rotation and cutover window.",
+    "Uncached audited least-privilege operations before and after anonymous catalog/tag/manifest/blob denial.",
+    "Signed exhaustive live/rollback/retained OCI closure, approved GC policy and successful retained/disposable rehearsal.",
+    "Enforced registry-wide write/replication lock acquired before fresh generation checkpoint and held through audited uncached retained-object fetches.",
+    "Signed measured results and independently accepted exact-plan hexalith-retirement console closure handoff for 4.27."
+  ],
+  "remoteOperationsPerformed": false,
+  "retainedTestLog": {
+    "location": "dedicated owner-only local-verification custody outside Git; exact path held by operator",
+    "sha256": "83a64802e8cf81256e5e21c006b0c705bcbbd773134b9bd96710544ca3f50037"
+  },
+  "schemaVersion": 1,
+  "selectedAdministrationPolicy": "sole-administrator",
+  "selectedAdministrator": "jpiquot",
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "1148117eda4e340e3b0fb60e57f8f56e91308969e7cf9e941dc1423bbfedbb8e",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "50be2ad1cf943894d987e488be35b5f2b56560af0e0c6e185bffba56c630a62c",
+    "eng/admin-exposure/prepare.py": "35817fa830324c24bd09127f146724a25d5d3dd53a4e3decaab582cd954958b1",
+    "eng/admin-exposure/test_prepare.py": "a64092ea101fe230f79118b0bcd429e5932c04bac943922afaa7efc1b98d0632"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local preparation and synthetic tests only"
+}

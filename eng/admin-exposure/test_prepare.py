@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import stat
 import subprocess
+import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -71,12 +72,15 @@ class Fixtures:
             'registryGeneration': self.generation()}
 
     def decisions(self, phase='console'):
-        return {**self.base(captured=-250), 'approvedBy': 'Administrator', 'privatePathId': 'fixture-private',
+        return {**self.base(captured=-120), 'approvedBy': 'Administrator', 'privatePathId': 'fixture-private',
                 'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
                 'operators': ['jpiquot'], 'breakGlassPathId': 'fixture-native',
                 'recoveryCustodyId': 'fixture-recovery-custody',
                 'administratorAccountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
                 'recoveryAccountBindings': {'nativeCluster': 'fixture-native-user', 'keycloak': 'fixture-keycloak-user'},
+                'privateAdministrationTargets': {
+                    'nativeCluster': {'hostname': 'cluster.private.example', 'path': '/native', 'method': 'GET'},
+                    'keycloak': {'hostname': 'keycloak.private.example', 'path': '/admin', 'method': 'GET'}},
                 'monitoringOwner': 'fixture-owner', 'approvedPublicOidcChecks': ['fixture-oidc'],
                 'consoleMode': 'port-forward', 'publicConsoleHostnames': ['kube.hexalith.com'],
                 'keycloakHostname': 'auth.tache.ai', 'registryHostname': 'registry.hexalith.com',
@@ -94,6 +98,11 @@ class Fixtures:
 
     def oidc(self, captured=-20):
         return [{'id': 'fixture-oidc', 'result': 'pass', 'evidenceSha256': H, 'capturedAt': self.time(captured)}]
+
+    def private_denials(self, captured=-180):
+        return [{**self.denial(public=False, captured=captured, host=target['hostname'], path=target['path']),
+                 'surface': surface, 'privatePathId': 'fixture-private', 'method': target['method']}
+                for surface, target in self.decisions()['privateAdministrationTargets'].items()]
 
     def operators(self, captured=-180):
         return [{'operator': 'jpiquot', 'keycloakAdminLogin': True, 'keycloakNonDestructiveRead': True,
@@ -123,22 +132,48 @@ class Fixtures:
         decisions = self.decisions(phase)
         proof = {**self.base(captured=-150), 'privatePathId': 'fixture-private',
                  'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
-                 'testedOperators': self.operators(), 'unauthorizedPrivateCheck': self.denial(public=False, captured=-180),
+                 'testedOperators': self.operators(), 'unauthorizedPrivateChecks': self.private_denials(),
                  'breakGlass': self.recovery(), 'publicOidcChecks': self.oidc(-180)}
         host = decisions['keycloakHostname'] if phase == 'keycloak' else 'kube.hexalith.com'
         paths = prepare.ADMIN_PATHS if phase == 'keycloak' else ('/', '/login')
-        probes = [self.denial(host=host, path=path) for path in paths]
-        for probe in probes:
-            if probe['path'].endswith('/token'):
-                probe['method'] = 'POST'
+        probes = [{**self.denial(host=host, path=path), 'method': method} for path in paths
+                  for method in (('GET', 'POST') if phase == 'keycloak' else ('GET',))]
         result = {**self.base(), 'closedSurface': phase, 'baselineSha256': H, 'privateProofSha256': H,
                   'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
                   'externalProbes': probes, 'closedAdminPaths': list(prepare.ADMIN_PATHS),
                   'consoleMode': 'port-forward', 'publicOidcChecks': self.oidc(),
                   'postChangePrivateChecks': self.operators(-20),
+                  'postChangeUnauthorizedPrivateChecks': self.private_denials(-20),
                   'postChangeBreakGlass': self.recovery(-20),
                   'mutationStartedAt': self.time(-60), 'mutationFinishedAt': self.time(-40)}
         return baseline, decisions, current, proof, result
+
+    def add_console_hostname(self, baseline, decisions, result):
+        host = 'replacement.public.example'
+        ingress = copy.deepcopy(baseline['resources'][0])
+        ingress.update(name='replacement-ingress', uid='replacement-uid', hostnames=[host])
+        route = copy.deepcopy(baseline['routes'][0])
+        route.update(hostname=host, ingressUids=['replacement-uid'], dnsAnswers=['192.0.2.20'])
+        baseline['resources'].append(ingress)
+        baseline['routes'].append(route)
+        decisions['publicConsoleHostnames'].append(host)
+        decisions['affectedRouteUids']['console'].append('replacement-uid')
+        result['externalProbes'].extend(self.denial(host=host, path=path) for path in ('/', '/login'))
+
+    def add_keycloak_hostname(self, records, host='other-auth.public.example', *, approved=True):
+        baseline, decisions, current, _, _ = records
+        if approved:
+            baseline['resources'][0]['hostnames'].append(host)
+            uid = baseline['resources'][0]['uid']
+        else:
+            ingress = copy.deepcopy(baseline['resources'][0])
+            ingress.update(uid='unrelated-uid', name='unrelated-ingress', hostnames=[host])
+            baseline['resources'].append(ingress)
+            uid = ingress['uid']
+        route = copy.deepcopy(baseline['routes'][0])
+        route.update(hostname=host, ingressUids=[uid])
+        baseline['routes'].append(route)
+        current.update(resources=copy.deepcopy(baseline['resources']), routes=copy.deepcopy(baseline['routes']))
 
     def operation(self, consumer, captured=-180, requested=None):
         result = {'consumerId': consumer['id'], 'principal': consumer['principal'],
@@ -149,6 +184,7 @@ class Fixtures:
                   'emptyDisposableContentStore': True, 'manifestTransferred': True, 'blobsTransferred': True,
                   'requestedDigest': requested or oci('a'), 'returnedDigest': requested or oci('a'),
                   'leastPrivilege': copy.deepcopy(consumer['leastPrivilege'])}
+        result['leastPrivilege']['capturedAt'] = self.time(captured)
         if consumer['role'] == 'replicator':
             result['replicationDirection'] = consumer['replicationDirection']
         return result
@@ -157,7 +193,8 @@ class Fixtures:
         consumers = []
         for role in ('reader', 'writer', 'replicator'):
             permissions = {'evidenceSha256': H, 'pushDenied': True, 'deleteDenied': True,
-                           'approvedOperationPassed': True, 'outOfScopeDenied': True, 'retainedDeleteDenied': True}
+                           'approvedOperationPassed': True, 'outOfScopeDenied': True, 'retainedDeleteDenied': True,
+                           'capturedAt': self.time(-180)}
             consumer = {'id': role, 'principal': f'fixture-{role}', 'role': role,
                         'credentialSecretReference': f'fixture-{role}-secret',
                         'approvedRepositories': ['fixture/repository'], 'retainedDeleteDenied': True,
@@ -213,7 +250,7 @@ class Fixtures:
                   'writeReplicationLock': {'id': 'fixture-lock', 'registryWide': True,
                      'heldThroughPostGcVerification': True, 'concurrentMutationObserved': False,
                      'generationBefore': H, 'generationAfter': H, 'evidenceSha256': H,
-                     'acquiredAt': self.time(-90), 'releasedAt': self.time(-10)},
+                     'acquiredAt': self.time(-110), 'releasedAt': self.time(-10)},
                   'gcStartedAt': self.time(-60), 'gcFinishedAt': self.time(-40), 'postGcOperations': pulls}
         return self.decisions('registry-gc'), inventory, closure, result
 
@@ -245,8 +282,13 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         self.assertEqual(decisions['operators'], [])
         self.assertIsNone(decisions['recoveryCustodyId'])
         self.assertTrue(all(v is None for v in decisions['recoveryAccountBindings'].values()))
+        self.assertEqual(set(decisions['privateAdministrationTargets']), prepare.ADMINISTRATION_SURFACES)
+        self.assertTrue(all(v is None for target in decisions['privateAdministrationTargets'].values()
+                            for v in target.values()))
         result = json.loads((directory / 'admin-exposure-result.json').read_text())
         proof = json.loads((directory / 'admin-path-proof.json').read_text())
+        self.assertEqual(proof['unauthorizedPrivateChecks'], [])
+        self.assertEqual(result['postChangeUnauthorizedPrivateChecks'], [])
         for recovery in (proof['breakGlass'], result['postChangeBreakGlass']):
             self.assertEqual(recovery, prepare.pending_recovery())
             self.assertTrue(all(v is None for v in recovery.values()))
@@ -310,6 +352,134 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         baseline['resources'][0]['paths'] = ['/admin']
         with self.assertRaisesRegex(ValueError, 'catch-all'):
             prepare.target_baseline('keycloak', baseline, decisions)
+
+    def test_ingress_hostname_and_path_scopes_are_nonempty_valid_string_arrays(self):
+        for field, values in (('hostnames', ('kube.hexalith.com', [], [None], ['bad hostname'])),
+                              ('paths', ('/admin', [], [None], ['admin'], ['/admin\n']))):
+            for value in values:
+                baseline = self.snapshot('keycloak')
+                baseline['resources'][0][field] = value
+                with self.subTest(field=field, value=value), self.assertRaisesRegex(ValueError, 'ingress'):
+                    prepare.validate_snapshot(baseline)
+
+    def test_affected_route_approvals_must_be_an_object(self):
+        for value in (None, [], ['route-uid'], 'console'):
+            baseline, decisions, _, _, _ = self.admin_records()
+            decisions['affectedRouteUids'] = value
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'affected-route-approval-map'):
+                prepare.target_baseline('console', baseline, decisions)
+
+    def test_all_console_hostnames_bind_snapshot_and_exact_route_uid_union(self):
+        baseline, decisions, _, _, result = self.admin_records()
+        self.add_console_hostname(baseline, decisions, result)
+        prepare.target_baseline('console', baseline, decisions)
+        for change in ('missing-route', 'missing-uid', 'extra-uid', 'unbound-host', 'unbound-backend'):
+            changed_baseline, changed_decisions = copy.deepcopy(baseline), copy.deepcopy(decisions)
+            if change == 'missing-route':
+                changed_baseline['routes'].pop()
+            elif change == 'missing-uid':
+                changed_decisions['affectedRouteUids']['console'].pop()
+            elif change == 'extra-uid':
+                changed_decisions['affectedRouteUids']['console'].append('service-uid')
+            elif change == 'unbound-host':
+                changed_baseline['resources'][-1]['hostnames'] = ['unrelated.example']
+            else:
+                changed_baseline['routes'][-1]['backends'][0]['effectiveConfigSha256'] = 'b' * 64
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                prepare.target_baseline('console', changed_baseline, changed_decisions)
+
+    def test_private_targets_require_exact_surfaces_and_valid_approved_targets(self):
+        for change in ('absent', 'list', 'missing-surface', 'extra-surface', 'hostname', 'path', 'method'):
+            _, decisions, _, proof, _ = self.admin_records()
+            targets = decisions['privateAdministrationTargets']
+            if change == 'absent':
+                decisions.pop('privateAdministrationTargets')
+            elif change == 'list':
+                decisions['privateAdministrationTargets'] = []
+            elif change == 'missing-surface':
+                targets.pop('nativeCluster')
+            elif change == 'extra-surface':
+                targets['console'] = targets['nativeCluster']
+            else:
+                targets['nativeCluster'][change] = {'hostname': '', 'path': 'relative', 'method': 'get'}[change]
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, 'private-administration-targets'):
+                prepare.admin_proof(decisions, proof)
+
+    def test_pre_and_post_private_refusal_bind_each_surface_path_and_target(self):
+        for stage in ('before', 'after'):
+            for field, value in (('hostname', 'unrelated.example'), ('path', '/unrelated'),
+                                 ('method', 'POST'), ('privatePathId', 'unapproved-path')):
+                for surface in prepare.ADMINISTRATION_SURFACES:
+                    _, decisions, current, proof, result = self.admin_records()
+                    checks = proof['unauthorizedPrivateChecks'] if stage == 'before' else result['postChangeUnauthorizedPrivateChecks']
+                    next(v for v in checks if v['surface'] == surface)[field] = value
+                    with self.subTest(stage=stage, field=field, surface=surface), self.assertRaisesRegex(ValueError, 'private-refusal-target'):
+                        prepare.admin_result('console', decisions, proof, result,
+                                             {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_pre_and_post_private_refusal_require_one_measured_check_per_surface(self):
+        for stage in ('before', 'after'):
+            for change in ('absent', 'missing', 'duplicate', 'unrelated-surface', 'backend-reached'):
+                _, decisions, current, proof, result = self.admin_records()
+                parent, field = (proof, 'unauthorizedPrivateChecks') if stage == 'before' else (result, 'postChangeUnauthorizedPrivateChecks')
+                checks = parent[field]
+                if change == 'absent':
+                    parent.pop(field)
+                elif change == 'missing':
+                    checks.pop()
+                elif change == 'duplicate':
+                    checks.append(copy.deepcopy(checks[0]))
+                elif change == 'unrelated-surface':
+                    checks[0]['surface'] = 'console'
+                else:
+                    checks[0]['backendReached'] = True
+                with self.subTest(stage=stage, change=change), self.assertRaises(ValueError):
+                    prepare.admin_result('console', decisions, proof, result,
+                                         {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_private_refusal_precedes_approval_and_follows_closure(self):
+        _, decisions, current, proof, result = self.admin_records()
+        proof['capturedAt'] = self.time(-100)
+        proof['unauthorizedPrivateChecks'][0]['capturedAt'] = self.time(-110)
+        with self.assertRaisesRegex(ValueError, 'nested-evidence'):
+            prepare.admin_result('console', decisions, proof, result,
+                                 {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+        _, decisions, current, proof, result = self.admin_records()
+        result['postChangeUnauthorizedPrivateChecks'][0]['capturedAt'] = self.time(-50)
+        with self.assertRaisesRegex(ValueError, 'nested-evidence'):
+            prepare.admin_result('console', decisions, proof, result,
+                                 {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_keycloak_requires_get_and_post_for_all_declared_paths_and_aliases(self):
+        _, decisions, current, proof, result = self.admin_records('keycloak')
+        aliases = ('/realms/master/protocol/openid-connect/%74oken/',
+                   '/realms/master/protocol/openid-connect/./token', '/admin//')
+        result['closedAdminPaths'].extend(aliases)
+        result['externalProbes'].extend({**self.denial(host='auth.tache.ai', path=path), 'method': method}
+                                       for path in aliases for method in ('GET', 'POST'))
+        prepare.admin_result('keycloak', decisions, proof, result,
+                             {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+        for path in result['closedAdminPaths']:
+            for method in ('GET', 'POST'):
+                changed = copy.deepcopy(result)
+                changed['externalProbes'] = [v for v in changed['externalProbes'] if (v['path'], v['method']) != (path, method)]
+                with self.subTest(path=path, method=method), self.assertRaisesRegex(ValueError, 'external-negative-coverage'):
+                    prepare.admin_result('keycloak', decisions, proof, changed,
+                                         {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_hostname_index_accepts_long_dns_names_without_relaxing_identifiers(self):
+        host = 'a' * 63 + '.' + 'b' * 63 + '.example.com'
+        baseline = self.snapshot('keycloak')
+        baseline['resources'][0]['hostnames'] = [host]
+        baseline['routes'][0]['hostname'] = host
+        prepare.validate_snapshot(baseline)
+        with self.assertRaisesRegex(ValueError, 'invalid-evidence-list'):
+            prepare.unique([{'uid': host}], 'uid')
+
+    def test_canonical_json_refuses_nonfinite_numbers(self):
+        for value in (float('nan'), float('inf'), float('-inf')):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                prepare.canonical({'number': value})
 
     def test_positive_console_and_master_get_post_evidence_passes(self):
         for phase in ('console', 'keycloak'):
@@ -477,9 +647,55 @@ class BoundaryTests(Fixtures, unittest.TestCase):
                 prepare.admin_result('console', decisions, proof, result,
                                      {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
 
+    def test_failed_public_oidc_checks_fail_before_and_after_closure(self):
+        for stage in ('before', 'after'):
+            _, decisions, current, proof, result = self.admin_records()
+            (proof if stage == 'before' else result)['publicOidcChecks'][0]['result'] = 'fail'
+            with self.subTest(stage=stage), self.assertRaisesRegex(ValueError, 'public-oidc-regression'):
+                prepare.admin_result('console', decisions, proof, result,
+                                     {'signed-baseline.json': H, 'admin-path-proof.json': H}, current)
+
+    def test_freshness_rejects_expiry_at_check_completion(self):
+        record = self.base()
+        prepare.fresh(record, self.clock)
+        for clock in (prepare.timestamp(record['expiresAt']), self.clock + timedelta(hours=2)):
+            with self.subTest(clock=clock), self.assertRaisesRegex(ValueError, 'stale-or-future-evidence'):
+                prepare.fresh(record, clock)
+
     def test_complete_registry_reader_writer_replication_evidence_passes(self):
         decisions, inventory, result, current = self.registry_records()
         prepare.registry_result(decisions, inventory, result, {'registry-consumer-inventory.json': H}, current)
+
+    def test_repository_scopes_require_nonempty_valid_string_arrays_and_exact_membership(self):
+        for scope in ('fixturerepository', [], [None], ['Invalid/repository']):
+            inventory = self.inventory()
+            inventory['consumers'][0]['approvedRepositories'] = scope
+            inventory['consumers'][0]['beforeCutoverOperation']['repository'] = 'fixture'
+            with self.subTest(scope=scope), self.assertRaises(ValueError):
+                prepare.registry_inventory(inventory)
+        inventory = self.inventory()
+        consumer = inventory['consumers'][0]
+        consumer['beforeCutoverOperation']['repository'] = 'fixture'
+        with self.assertRaisesRegex(ValueError, 'outside-approved-scope'):
+            prepare.registry_inventory(inventory)
+        consumer['approvedRepositories'] = 'fixturerepository'
+        with self.assertRaisesRegex(ValueError, 'invalid-repository-scope'):
+            prepare.audited_operation(consumer['beforeCutoverOperation'], consumer, inventory['generation'])
+
+    def test_least_privilege_measurements_require_pre_and_post_interval_timestamps(self):
+        for role in ('reader', 'writer', 'replicator'):
+            for captured in (None, self.time(-10000), self.time(-50), self.time(10000)):
+                inventory = self.inventory()
+                consumer = next(v for v in inventory['consumers'] if v['role'] == role)
+                consumer['leastPrivilege']['capturedAt'] = captured
+                with self.subTest(stage='before', role=role, captured=captured), self.assertRaises(ValueError):
+                    prepare.registry_inventory(inventory)
+            for captured in (None, self.time(-10000), self.time(-180), self.time(-50), self.time(10000)):
+                decisions, inventory, result, current = self.registry_records()
+                operation = next(v for v in result['authenticatedOperations'] if v['consumerId'] == role)
+                operation['leastPrivilege']['capturedAt'] = captured
+                with self.subTest(stage='after', role=role, captured=captured), self.assertRaises(ValueError):
+                    prepare.registry_result(decisions, inventory, result, {'registry-consumer-inventory.json': H}, current)
 
     def test_cached_unaudited_or_digest_mismatched_pull_fails(self):
         for field, value in (('emptyDisposableContentStore', False), ('auditEvidenceSha256', None),
@@ -575,6 +791,14 @@ class BoundaryTests(Fixtures, unittest.TestCase):
                 prepare.gc_result(decisions, inventory, closure, result, {'registry-consumer-inventory.json': H},
                                   self.admin_records('registry-gc')[2])
 
+    def test_gc_checkpoint_must_be_collected_entirely_under_acquired_lock(self):
+        for acquired in (-85, -95):
+            decisions, inventory, closure, result = self.gc_records()
+            result['writeReplicationLock']['acquiredAt'] = self.time(acquired)
+            with self.subTest(acquired=acquired), self.assertRaisesRegex(ValueError, 'checkpoint-not-collected-under-held'):
+                prepare.gc_result(decisions, inventory, closure, result, {'registry-consumer-inventory.json': H},
+                                  self.admin_records('registry-gc')[2])
+
     def test_post_gc_missing_blob_or_before_gc_or_after_lock_release_fails(self):
         for change in ('missing', 'before-gc', 'after-lock', 'cached'):
             decisions, inventory, closure, result = self.gc_records()
@@ -615,7 +839,8 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         self.assertEqual(len(report['failures']), 5)
 
     def test_prohibited_fields_fail_without_retaining_values(self):
-        for field in ('Authorization', 'Set-Cookie', 'password', 'client_secret', 'secretData', 'responseBody'):
+        for field in ('Authorization', 'Set-Cookie', 'password', 'client_secret', 'secretData', 'responseBody',
+                      'access_token', 'refresh_token', 'id_token', 'Access-Token', 'refreshToken', 'ID_TOKEN'):
             with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'prohibited-evidence-field'):
                 prepare.no_sensitive_fields({'nested': [{field: 'DO-NOT-RETAIN'}]})
 
@@ -635,8 +860,11 @@ class SignatureTests(Fixtures, unittest.TestCase):
         self.bundle.mkdir(mode=0o700)
 
     def sign(self, name, record, namespace='hexalith-admin-exposure'):
+        return self.sign_raw(name, prepare.canonical(record), namespace)
+
+    def sign_raw(self, name, data, namespace='hexalith-admin-exposure'):
         path = self.bundle / name
-        path.write_bytes(prepare.canonical(record))
+        path.write_bytes(data)
         path.chmod(0o600)
         Path(str(path) + '.sig').unlink(missing_ok=True)
         subprocess.run([str(self.tool), '-Y', 'sign', '-n', namespace, '-f', str(self.signing_key), str(path)],
@@ -644,8 +872,8 @@ class SignatureTests(Fixtures, unittest.TestCase):
         Path(str(path) + '.sig').chmod(0o600)
         return prepare.file_digest(path)
 
-    def signed_console_bundle(self):
-        baseline, decisions, current, proof, result = self.admin_records()
+    def signed_console_bundle(self, phase='console', records=None):
+        baseline, decisions, current, proof, result = records or self.admin_records(phase)
         baseline_sha = self.sign('signed-baseline.json', baseline)
         decisions['baselineSha256'] = result['baselineSha256'] = baseline_sha
         decisions['capturedAt'] = self.time(-120)
@@ -653,19 +881,19 @@ class SignatureTests(Fixtures, unittest.TestCase):
         self.sign('administrator-decisions.json', decisions)
         self.sign('pre-mutation-state.json', current)
         self.sign('admin-exposure-result.json', result)
-        return SimpleNamespace(project_root=self.project, bundle=self.bundle, phase='console',
+        return SimpleNamespace(project_root=self.project, bundle=self.bundle, phase=phase,
             allowed_signers=self.trust, administrator_principal='fixture-administrator', ssh_keygen=self.tool)
 
-    def signed_registry_bundle(self, phase):
+    def signed_registry_bundle(self, phase, records=None):
         baseline = self.snapshot(phase)
-        current = self.admin_records(phase)[2]
-        decisions = self.decisions(phase)
+        if phase == 'registry-auth':
+            decisions, inventory, result, current = records or self.registry_records()
+        else:
+            decisions, inventory, closure, result = records or self.gc_records()
+            current = self.admin_records(phase)[2]
         decisions['capturedAt'] = self.time(-120)
         decisions['baselineSha256'] = self.sign('signed-baseline.json', baseline)
-        if phase == 'registry-auth':
-            _, inventory, result, _ = self.registry_records()
-        else:
-            _, inventory, closure, result = self.gc_records()
+        if phase == 'registry-gc':
             decisions['retainedClosureRecordSha256'] = self.sign('retained-oci-closure.json', closure)
             decisions['gcRehearsalEvidenceSha256'] = result['rehearsal']['evidenceSha256']
         decisions['inventorySha256'] = result['inventorySha256'] = self.sign('registry-consumer-inventory.json', inventory)
@@ -674,6 +902,364 @@ class SignatureTests(Fixtures, unittest.TestCase):
         self.sign('registry-auth-result.json' if phase == 'registry-auth' else 'registry-gc-result.json', result)
         return SimpleNamespace(project_root=self.project, bundle=self.bundle, phase=phase,
             allowed_signers=self.trust, administrator_principal='fixture-administrator', ssh_keygen=self.tool)
+
+    def assert_consistency_failure(self, args, condition):
+        report = prepare.check_bundle(args)
+        self.assertEqual(report['verificationResult'], 'fail', report)
+        self.assertEqual(report['failures'], [{'condition': condition}])
+        self.assertFalse(report['mutationAuthorized'])
+        self.assertFalse(report['operationalAcceptance'])
+        self.assertFalse(report['complete'])
+
+    def test_correctly_signed_false_or_absent_production_go_is_rejected(self):
+        for value in (False, None):
+            args = self.signed_console_bundle()
+            decisions = json.loads((self.bundle / 'administrator-decisions.json').read_bytes())
+            if value is None:
+                decisions.pop('productionGo')
+            else:
+                decisions['productionGo'] = value
+            self.sign('administrator-decisions.json', decisions)
+            with self.subTest(value=value):
+                self.assert_consistency_failure(args, 'production-approval-missing')
+
+    def test_correctly_signed_failed_pre_and_post_public_oidc_is_rejected(self):
+        for stage in ('before', 'after'):
+            records = self.admin_records()
+            record = records[3] if stage == 'before' else records[4]
+            record['publicOidcChecks'][0]['result'] = 'fail'
+            with self.subTest(stage=stage):
+                self.assert_consistency_failure(self.signed_console_bundle(records=records),
+                                                'public-oidc-regression-stop-and-rollback')
+
+    def test_signed_malformed_route_map_and_ingress_arrays_report_fixed_failures(self):
+        for change in ('route-map', 'hostname-string', 'path-string', 'empty-hostnames', 'invalid-path-element'):
+            phase = 'keycloak' if change == 'path-string' else 'console'
+            records = self.admin_records(phase)
+            baseline, decisions, current, _, _ = records
+            if change == 'route-map':
+                decisions['affectedRouteUids'] = []
+            else:
+                field = 'hostnames' if change in ('hostname-string', 'empty-hostnames') else 'paths'
+                value = {'hostname-string': 'prefix-kube.hexalith.com', 'path-string': '/admin',
+                         'empty-hostnames': [], 'invalid-path-element': [None]}[change]
+                for snapshot in (baseline, current):
+                    snapshot['resources'][0][field] = value
+            with self.subTest(change=change):
+                self.assert_consistency_failure(self.signed_console_bundle(phase, records),
+                    'invalid-affected-route-approval-map' if change == 'route-map' else
+                    'invalid-ingress-hostname-or-path-array')
+
+    def test_signed_console_replacement_hostname_requires_its_snapshot_and_uid_union(self):
+        for change in ('missing-snapshot', 'missing-uid'):
+            records = self.admin_records()
+            baseline, decisions, current, _, result = records
+            self.add_console_hostname(baseline, decisions, result)
+            if change == 'missing-snapshot':
+                baseline['resources'].pop()
+                baseline['routes'].pop()
+            decisions['affectedRouteUids']['console'].pop()
+            current.update(resources=copy.deepcopy(baseline['resources']), routes=copy.deepcopy(baseline['routes']))
+            with self.subTest(change=change):
+                self.assert_consistency_failure(self.signed_console_bundle(records=records),
+                                                'approved-target-route-baseline-missing')
+
+    def test_signed_all_console_hostname_snapshots_pass_and_replacement_drift_stops(self):
+        records = self.admin_records()
+        baseline, decisions, current, _, result = records
+        self.add_console_hostname(baseline, decisions, result)
+        current.update(resources=copy.deepcopy(baseline['resources']), routes=copy.deepcopy(baseline['routes']))
+        args = self.signed_console_bundle(records=records)
+        report = prepare.check_bundle(args)
+        self.assertEqual(report['verificationResult'], 'pass', report)
+        current['routes'][-1]['dnsAnswers'] = ['192.0.2.21']
+        self.sign('pre-mutation-state.json', current)
+        self.assert_consistency_failure(args, 'baseline-drift-reinventory-and-reapprove')
+
+    def test_signed_pre_and_post_private_denials_cannot_use_unrelated_targets(self):
+        for stage in ('before', 'after'):
+            for surface in prepare.ADMINISTRATION_SURFACES:
+                for field, value in (('hostname', 'unrelated.example'), ('path', '/unrelated'),
+                                     ('method', 'POST'), ('privatePathId', 'unapproved-path')):
+                    records = self.admin_records()
+                    checks = records[3]['unauthorizedPrivateChecks'] if stage == 'before' else records[4]['postChangeUnauthorizedPrivateChecks']
+                    next(v for v in checks if v['surface'] == surface)[field] = value
+                    with self.subTest(stage=stage, surface=surface, field=field):
+                        self.assert_consistency_failure(self.signed_console_bundle(records=records),
+                                                        'private-refusal-target-binding-mismatch')
+
+    def test_signed_private_denials_require_targets_and_one_check_per_surface(self):
+        for change in ('no-targets', 'missing-pre', 'missing-post', 'duplicate-pre', 'duplicate-post'):
+            records = self.admin_records()
+            if change == 'no-targets':
+                records[1].pop('privateAdministrationTargets')
+                condition = 'approved-private-administration-targets-missing'
+            else:
+                checks = records[3]['unauthorizedPrivateChecks'] if change.endswith('pre') else records[4]['postChangeUnauthorizedPrivateChecks']
+                if change.startswith('missing'):
+                    checks.pop()
+                    condition = 'private-refusal-surface-coverage-incomplete'
+                else:
+                    checks.append(copy.deepcopy(checks[0]))
+                    condition = 'duplicate-evidence-identity'
+            with self.subTest(change=change):
+                self.assert_consistency_failure(self.signed_console_bundle(records=records), condition)
+
+    def test_signed_repository_string_cannot_grant_substring_repository_scope(self):
+        records = self.registry_records()
+        consumer = records[1]['consumers'][0]
+        consumer['approvedRepositories'] = 'fixturerepository'
+        consumer['beforeCutoverOperation']['repository'] = 'fixture'
+        records[2]['authenticatedOperations'][0]['repository'] = 'fixture'
+        self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
+                                        'invalid-repository-scope')
+
+    def test_signed_stale_permission_tests_fail_for_every_role_before_and_after_cutover(self):
+        for stage in ('before', 'after'):
+            for role in ('reader', 'writer', 'replicator'):
+                records = self.registry_records()
+                permissions = (next(v for v in records[1]['consumers'] if v['role'] == role)['leastPrivilege']
+                    if stage == 'before' else next(v for v in records[2]['authenticatedOperations']
+                                                 if v['consumerId'] == role)['leastPrivilege'])
+                permissions['capturedAt'] = '2000-01-01T00:00:00Z'
+                with self.subTest(stage=stage, role=role):
+                    self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
+                                                    'nested-evidence-outside-record-or-operation')
+
+    def test_signed_post_cutover_permission_tests_cannot_precede_mutation_completion(self):
+        records = self.registry_records()
+        records[2]['authenticatedOperations'][0]['leastPrivilege']['capturedAt'] = self.time(-50)
+        self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
+                                        'nested-evidence-outside-record-or-operation')
+
+    def test_signed_keycloak_aliases_require_both_get_and_post_without_suffix_inference(self):
+        for method in ('GET', 'POST'):
+            records = self.admin_records('keycloak')
+            alias = '/realms/master/protocol/openid-connect/%74oken/'
+            records[4]['closedAdminPaths'].append(alias)
+            records[4]['externalProbes'].append({**self.denial(host='auth.tache.ai', path=alias),
+                                                 'method': method})
+            with self.subTest(method=method):
+                self.assert_consistency_failure(self.signed_console_bundle('keycloak', records),
+                                                'master-or-admin-external-negative-coverage-incomplete')
+
+    def test_signed_keycloak_denial_covers_every_concrete_hostname_on_approved_routes(self):
+        for change in ('missing-denial', 'missing-route', 'missing-method'):
+            records = self.admin_records('keycloak')
+            host = 'other-auth.public.example'
+            self.add_keycloak_hostname(records, host)
+            if change == 'missing-route':
+                records[0]['routes'].pop()
+                records[2]['routes'].pop()
+                condition = 'approved-target-route-baseline-missing'
+            else:
+                condition = 'master-or-admin-external-negative-coverage-incomplete'
+                if change == 'missing-method':
+                    records[4]['externalProbes'].extend(self.denial(host=host, path=path)
+                                                        for path in records[4]['closedAdminPaths'])
+            with self.subTest(change=change):
+                self.assert_consistency_failure(self.signed_console_bundle('keycloak', records), condition)
+
+    def test_signed_keycloak_related_hosts_pass_without_requiring_unrelated_ingress_denial(self):
+        records = self.admin_records('keycloak')
+        host = 'other-auth.public.example'
+        self.add_keycloak_hostname(records, host)
+        self.add_keycloak_hostname(records, 'unrelated.public.example', approved=False)
+        records[4]['externalProbes'].extend({**self.denial(host=host, path=path), 'method': method}
+                                           for path in records[4]['closedAdminPaths'] for method in ('GET', 'POST'))
+        report = prepare.check_bundle(self.signed_console_bundle('keycloak', records))
+        self.assertEqual(report['verificationResult'], 'pass', report)
+
+    def test_signed_keycloak_hosts_on_additional_approved_uids_require_denial(self):
+        records = self.admin_records('keycloak')
+        host = 'other-auth.public.example'
+        self.add_keycloak_hostname(records, host, approved=False)
+        records[1]['affectedRouteUids']['keycloak'].append('unrelated-uid')
+        self.assert_consistency_failure(self.signed_console_bundle('keycloak', records),
+                                        'master-or-admin-external-negative-coverage-incomplete')
+
+    def test_signed_valid_long_keycloak_hostname_passes(self):
+        records = self.admin_records('keycloak')
+        host = 'a' * 63 + '.' + 'b' * 63 + '.example.com'
+        records[1]['keycloakHostname'] = host
+        for snapshot in (records[0], records[2]):
+            snapshot['resources'][0]['hostnames'] = [host]
+            snapshot['routes'][0]['hostname'] = host
+        for probe in records[4]['externalProbes']:
+            probe['hostname'] = host
+        report = prepare.check_bundle(self.signed_console_bundle('keycloak', records))
+        self.assertEqual(report['verificationResult'], 'pass', report)
+
+    def test_signed_wildcard_ingress_matches_only_one_concrete_subdomain_label(self):
+        for host in ('auth.tache.ai', 'tache.ai', 'deep.auth.tache.ai'):
+            records = self.admin_records('keycloak')
+            records[1]['keycloakHostname'] = host
+            for snapshot in (records[0], records[2]):
+                snapshot['resources'][0]['hostnames'] = ['*.tache.ai']
+                snapshot['routes'][0]['hostname'] = host
+            for probe in records[4]['externalProbes']:
+                probe['hostname'] = host
+            args = self.signed_console_bundle('keycloak', records)
+            with self.subTest(host=host):
+                if host == 'auth.tache.ai':
+                    report = prepare.check_bundle(args)
+                    self.assertEqual(report['verificationResult'], 'pass', report)
+                else:
+                    self.assert_consistency_failure(args, 'approved-target-resource-identity-mismatch')
+
+    def test_signed_wildcard_related_concrete_route_requires_its_own_denial(self):
+        records = self.admin_records('keycloak')
+        self.add_keycloak_hostname(records, 'admin.tache.ai')
+        for snapshot in (records[0], records[2]):
+            snapshot['resources'][0]['hostnames'] = ['*.tache.ai']
+        self.assert_consistency_failure(self.signed_console_bundle('keycloak', records),
+                                        'master-or-admin-external-negative-coverage-incomplete')
+
+    def test_signed_overlapping_reader_writer_grant_is_inconsistent(self):
+        records = self.registry_records()
+        reader, writer = records[1]['consumers'][:2]
+        writer['principal'] = reader['principal']
+        writer['credentialSecretReference'] = reader['credentialSecretReference']
+        writer['beforeCutoverOperation']['principal'] = writer['principal']
+        records[2]['authenticatedOperations'][1]['principal'] = writer['principal']
+        self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
+                                        'inconsistent-reader-writer-grant')
+
+    def test_signed_distinct_credentials_or_nonoverlapping_repository_scopes_remain_valid(self):
+        for change in ('distinct-credentials', 'nonoverlapping-scopes'):
+            records = self.registry_records()
+            reader, writer = records[1]['consumers'][:2]
+            writer['principal'] = reader['principal']
+            writer['beforeCutoverOperation']['principal'] = writer['principal']
+            operation = records[2]['authenticatedOperations'][1]
+            operation['principal'] = writer['principal']
+            if change == 'nonoverlapping-scopes':
+                writer['credentialSecretReference'] = reader['credentialSecretReference']
+                writer['approvedRepositories'] = ['fixture/other']
+                writer['beforeCutoverOperation']['repository'] = operation['repository'] = 'fixture/other'
+            with self.subTest(change=change):
+                report = prepare.check_bundle(self.signed_registry_bundle('registry-auth', records))
+                self.assertEqual(report['verificationResult'], 'pass', report)
+
+    def test_signed_writer_and_replicator_nested_retained_delete_denial_is_required_pre_and_post(self):
+        for stage in ('before', 'after'):
+            for role in ('writer', 'replicator'):
+                for value in (False, None):
+                    records = self.registry_records()
+                    permissions = (next(v for v in records[1]['consumers'] if v['role'] == role)['leastPrivilege']
+                        if stage == 'before' else next(v for v in records[2]['authenticatedOperations']
+                                                     if v['consumerId'] == role)['leastPrivilege'])
+                    if value is None:
+                        permissions.pop('retainedDeleteDenied')
+                    else:
+                        permissions['retainedDeleteDenied'] = value
+                    with self.subTest(stage=stage, role=role, value=value):
+                        self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
+                                                        'writer-or-replicator-scope-unproved')
+
+    def test_signed_nonfinite_json_constants_fail_the_input_gate(self):
+        for value in (b'NaN', b'Infinity', b'-Infinity'):
+            args = self.signed_console_bundle()
+            data = (self.bundle / 'admin-exposure-result.json').read_bytes()
+            self.sign_raw('admin-exposure-result.json', data[:-2] + b', "number": ' + value + b'}\n')
+            report = prepare.check_bundle(args)
+            with self.subTest(value=value):
+                self.assertEqual(report['failures'], [{'file': 'admin-exposure-result.json',
+                                                       'condition': 'signed-fresh-production-input-required'}])
+
+    def test_all_signed_records_require_integer_schema_version_one(self):
+        for name in (*prepare.COMMON_FILES, *prepare.PHASE_FILES['console']):
+            for value in (None, False, True, 1.0, '1', 0, 2, {}, []):
+                args = self.signed_console_bundle()
+                record = json.loads((self.bundle / name).read_bytes())
+                if value is None:
+                    record.pop('schemaVersion')
+                else:
+                    record['schemaVersion'] = value
+                self.sign(name, record)
+                report = prepare.check_bundle(args)
+                with self.subTest(name=name, value=value):
+                    self.assertEqual(report['failures'], [{'file': name,
+                                                           'condition': 'signed-fresh-production-input-required'}])
+
+    def test_raw_byte_signed_excessive_json_nesting_returns_input_failure(self):
+        args = self.signed_console_bundle()
+        depth = sys.getrecursionlimit() + 100
+        data = b'{"nested":' + b'[' * depth + b'null' + b']' * depth + b'}\n'
+        self.sign_raw('admin-exposure-result.json', data)
+        report = prepare.check_bundle(args)
+        self.assertEqual(report['failures'], [{'file': 'admin-exposure-result.json',
+                                               'condition': 'signed-fresh-production-input-required'}])
+        completed = self.check_cli(args)
+        self.assertEqual(completed.returncode, 1)
+        self.assertNotIn('Traceback', completed.stderr)
+        self.assertEqual(json.loads(completed.stdout)['failures'], report['failures'])
+
+    def check_cli(self, args):
+        return subprocess.run([sys.executable, str(Path(__file__).with_name('prepare.py')),
+            '--project-root', str(args.project_root), 'check', '--bundle', str(args.bundle),
+            '--phase', args.phase, '--allowed-signers', str(args.allowed_signers),
+            '--administrator-principal', args.administrator_principal, '--ssh-keygen', str(args.ssh_keygen)],
+            capture_output=True, text=True)
+
+    def test_check_cli_returns_zero_for_valid_and_one_for_false_production_go(self):
+        args = self.signed_console_bundle()
+        for production_go, expected_exit in ((True, 0), (False, 1)):
+            decisions = json.loads((self.bundle / 'administrator-decisions.json').read_bytes())
+            decisions['productionGo'] = production_go
+            self.sign('administrator-decisions.json', decisions)
+            completed = self.check_cli(args)
+            report = json.loads(completed.stdout)
+            with self.subTest(production_go=production_go):
+                self.assertEqual(completed.returncode, expected_exit, completed.stderr)
+                self.assertEqual(report['verificationResult'], 'pass' if production_go else 'fail')
+                self.assertEqual(report['failures'], [] if production_go else [{'condition': 'production-approval-missing'}])
+                for flag in ('mutationAuthorized', 'operationalAcceptance', 'complete'):
+                    self.assertFalse(report[flag])
+
+    def test_evidence_expiring_during_real_ssh_verification_cannot_pass(self):
+        args = self.signed_console_bundle()
+        completed = self.clock + timedelta(hours=2)
+        real_signed_input = prepare.signed_input
+        with patch.object(prepare, 'datetime', wraps=datetime) as measured_clock:
+            measured_clock.now.return_value = self.clock
+            verified_count = 0
+
+            def verify_then_advance_clock(*arguments):
+                nonlocal verified_count
+                result = real_signed_input(*arguments)
+                verified_count += 1
+                if verified_count == 5:
+                    measured_clock.now.return_value = completed
+                return result
+
+            with patch.object(prepare, 'signed_input', side_effect=verify_then_advance_clock):
+                report = prepare.check_bundle(args)
+        self.assertEqual(verified_count, 5)
+        self.assertEqual(report['verificationResult'], 'fail', report)
+        self.assertEqual({v.get('file') for v in report['failures']}, set(prepare.COMMON_FILES) | set(prepare.PHASE_FILES['console']))
+        self.assertTrue(all(v['condition'] == 'signed-fresh-production-input-required' for v in report['failures']))
+
+    def test_signed_normalized_token_fields_fail_without_exposing_values(self):
+        for field in ('access_token', 'refresh_token', 'id_token', 'Access-Token', 'refreshToken', 'ID_TOKEN'):
+            args = self.signed_console_bundle()
+            result = json.loads((self.bundle / 'admin-exposure-result.json').read_bytes())
+            result['nested'] = [{field: 'DO-NOT-RETAIN'}]
+            self.sign('admin-exposure-result.json', result)
+            report = prepare.check_bundle(args)
+            with self.subTest(field=field):
+                self.assertEqual(report['failures'], [{'file': 'admin-exposure-result.json',
+                                                       'condition': 'signed-fresh-production-input-required'}])
+                self.assertNotIn('DO-NOT-RETAIN', prepare.canonical(report).decode())
+                self.assertNotIn(field, prepare.canonical(report).decode())
+
+    def test_signed_gc_checkpoint_before_or_spanning_lock_acquisition_is_rejected(self):
+        for acquired in (-85, -95):
+            records = self.gc_records()
+            records[3]['writeReplicationLock']['acquiredAt'] = self.time(acquired)
+            with self.subTest(acquired=acquired):
+                self.assert_consistency_failure(self.signed_registry_bundle('registry-gc', records),
+                                                'gc-checkpoint-not-collected-under-held-write-replication-lock')
 
     def test_production_go_must_precede_fresh_reread_and_mutation(self):
         for captured in (-80, -30):
