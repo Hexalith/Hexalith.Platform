@@ -1,0 +1,267 @@
+{
+  "baseline_sha256": "25df1bba3f77787ab5896730b01f1d340f66bb9233966a9f5c92d4855493b5d1",
+  "complete": false,
+  "custody_sha256": null,
+  "desired_state_sha256": "999862398d67d201f74a679f61d2c3b560dd9a925f88ed7a15177a6449bf4376",
+  "discovery_sha256": "25df1bba3f77787ab5896730b01f1d340f66bb9233966a9f5c92d4855493b5d1",
+  "issues": [
+    {
+      "condition": "fresh-read-only-discovery-required"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "current_user"
+    },
+    {
+      "condition": "administrator-observation-required"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization"
+    },
+    {
+      "condition": "organization-identity-mismatch"
+    },
+    {
+      "condition": "organization-base-permission-not-read"
+    },
+    {
+      "condition": "github-free-plan-required"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization_owners"
+    },
+    {
+      "condition": "private-writer-owner-boundary-mismatch"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization_members"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization_outside_collaborators"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization_teams"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization_repositories"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "Hexalith.Platform.repository"
+    },
+    {
+      "condition": "platform-identity-mismatch"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "Hexalith.Platform.rulesets"
+    },
+    {
+      "condition": "required-platform-ruleset-missing-or-ambiguous",
+      "observation": "Platform main reviewed changes"
+    },
+    {
+      "condition": "required-platform-ruleset-missing-or-ambiguous",
+      "observation": "Platform tag creation authorization"
+    },
+    {
+      "condition": "required-platform-ruleset-missing-or-ambiguous",
+      "observation": "Platform immutable tags"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "Hexalith.Platform.main_effective_rules"
+    },
+    {
+      "condition": "main-effective-rules-incomplete"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Platform.codeowners"
+    },
+    {
+      "condition": "administrator-codeowners-not-published"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Platform.codeowners_errors"
+    },
+    {
+      "condition": "codeowners-resolution-errors-or-unproved"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "Hexalith.Builds.repository"
+    },
+    {
+      "condition": "builds-identity-mismatch"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "Builds.main_ruleset_detail"
+    },
+    {
+      "condition": "builds-reviewed-baseline-or-readback-incomplete"
+    },
+    {
+      "condition": "incomplete-pagination-or-observation",
+      "observation": "organization_installations"
+    },
+    {
+      "condition": "installed-app-set-changed-from-reviewed-baseline"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "observation": "fine_grained_pat_grants"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "observation": "fine_grained_pat_requests"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.repository"
+    },
+    {
+      "condition": "private-repository-unproved",
+      "observation": "Hexalith.Operations"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.workflow_permissions"
+    },
+    {
+      "condition": "private-workflow-token-settings-unsafe",
+      "observation": "Hexalith.Operations"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.collaborators"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.teams"
+    },
+    {
+      "condition": "effective-private-writers-mismatch",
+      "observation": "Hexalith.Operations"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.deploy_keys"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.refs.heads"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Operations.refs.tags"
+    },
+    {
+      "condition": "private-workflow-content-inventory-unproved",
+      "observation": "Hexalith.Operations"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.repository"
+    },
+    {
+      "condition": "private-repository-unproved",
+      "observation": "Hexalith.Notifications"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.workflow_permissions"
+    },
+    {
+      "condition": "private-workflow-token-settings-unsafe",
+      "observation": "Hexalith.Notifications"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.collaborators"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.teams"
+    },
+    {
+      "condition": "effective-private-writers-mismatch",
+      "observation": "Hexalith.Notifications"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.deploy_keys"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.refs.heads"
+    },
+    {
+      "condition": "missing-observation",
+      "observation": "Hexalith.Notifications.refs.tags"
+    },
+    {
+      "condition": "private-workflow-content-inventory-unproved",
+      "observation": "Hexalith.Notifications"
+    },
+    {
+      "condition": "fresh-owner-custody-evidence-required"
+    }
+  ],
+  "mutation_authorized": false,
+  "operational_acceptance": false,
+  "retained_api_errors": [
+    {
+      "condition": "api-observation-unavailable",
+      "name": "organization_rulesets",
+      "status": "403"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "fine_grained_pat_grants",
+      "status": "404"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "fine_grained_pat_requests",
+      "status": "404"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "Hexalith.Platform.legacy_main_protection",
+      "status": "404"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "Hexalith.Builds.legacy_main_protection",
+      "status": "404"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "Hexalith.CiCd.legacy_main_protection",
+      "status": "404"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "Hexalith.Operations.candidate_repository",
+      "status": "404"
+    },
+    {
+      "condition": "api-observation-unavailable",
+      "name": "Hexalith.Notifications.candidate_repository",
+      "status": "404"
+    }
+  ],
+  "schema_version": 1,
+  "story": "4.4",
+  "verification_result": "blocked",
+  "verification_scope": "local consistency of supplied observations and owner statements"
+}
