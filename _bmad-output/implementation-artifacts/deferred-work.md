@@ -164,3 +164,19 @@
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Review the second Keycloak master-realm user `qdassivignon@itaneo.com` and the unused `keycloak-admin-api` service client against the sole-Administrator policy (found during 4.2 live closure).
   evidence: A read-only master-realm listing on 2026-10-07 showed users jpiquot and qdassivignon@itaneo.com, plus the service-account client keycloak-admin-api, whose credentials sit in Secret keycloak/keycloak-admin-api with no workload consumer. The approved policy names one Administrator.
+
+
+## Deferred from: code review of 4-2-close-public-admin-exposure-and-anonymous-registry-reads.md (2026-10-07), split 1: local preparation
+
+- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+  summary: Carry LP-F1: verify authenticated known-content evidence behind anonymous registry targets.
+  evidence: Unverified, medium if true. Blind B2 and Edge E2 repeat the existing 4.2 known-content entry: signed synthetic targets outside representative consumer pulls are accepted, but protected collector operations can supply the authenticated measurement. Inspect each target's referenced authenticated records before declaring the actual content absent or untested.
+- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+  summary: Carry LP-F2: verify the exact approved GC rehearsal generation, configuration and closure.
+  evidence: Unverified, medium if true. Blind B5 repeats the existing 4.2 rehearsal entry. Additional fields are outside the local schema; approval binds the protected rehearsal bytes. Inspect their actual identities before adding new automatic fields.
+- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+  summary: Verify SHA-256 computation of transferred retained manifest/blob bytes in protected collector and audit records (LP-F3).
+  evidence: Unverified, medium if true. Blind B6: the local helper compares requested/returned digests and binds audit hashes but does not inspect transferred bytes. Check whether the referenced measured records contain actual byte hashing and matching for each retained object; a new supplied assertion alone cannot independently establish it.
+- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+  summary: Verify affected controller/configuration dependencies in actual exposure mutation snapshots (LP-F4).
+  evidence: Unverified, medium if true. Blind B7: an Ingress/Service-only synthetic baseline passes. Inspect signed operational snapshots and effective-config collector scope to determine whether an affected mutable controller dependency is omitted from UID/resourceVersion/config drift checks; completeness is separately required by the procedure.

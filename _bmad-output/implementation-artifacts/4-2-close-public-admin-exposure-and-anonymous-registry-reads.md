@@ -4,7 +4,7 @@ type: 'story'
 epic: 4
 story: 2
 created: '2026-09-28'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '904e0f18736575d0605d08da6252b33bd0202224'
 route: 'dispatch'
 context:
@@ -69,6 +69,58 @@ The approved sole-Administrator correction below supersedes the earlier two-oper
   4. Acquire the approved registry-wide write/replication lock (or an equivalent atomic repository generation that prevents concurrent mutation), verify the live generation equals the signed generation, run GC, and release the lock only after verification. Abort on any concurrent write or generation change.
   5. From empty disposable content stores, pull every retained index/manifest and each reachable platform child/referrer; correlate authenticated audit events and record returned content digests before releasing the lock.
 - [x] Sign `admin-exposure-result.json`, `registry-auth-result.json` and `registry-gc-result.json`; commit only sanitized summaries.
+
+### Review Findings
+
+Review date: 2026-10-07. Split 1 covers `eng/admin-exposure/prepare.py`, `eng/admin-exposure/test_prepare.py` and `eng/admin-exposure/README.md` from baseline `904e0f18736575d0605d08da6252b33bd0202224` to `9cb2dc13f8e993293810ccbd984772a1e2feb019`: 3 files, 2,447 additions. All four review layers completed; the Acceptance Auditor reported no additional local-contract violations. Live scripts, execution/preparation evidence and story/tracking changes remain in split 2. No production operation or implementation correction was performed.
+
+The existing 87 local tests pass with zero skips; CLI help and the scoped diff check pass. Parent-run, real SSH-signed fixtures reproduce the conflicting destination-replicator grant, raw Secret data, numeric DNS answers and POST-only anonymous probes. Isolated source mutations independently confirm that all 87 tests remain green when the mandatory master-token path, human-reader coverage category or trust/verifier drift guard is removed.
+
+Decision resolved: the Administrator selected option 1, mandatory explicit `method: GET` for signed anonymous catalog/tag/manifest/blob probes. The former LP-D1 is now LP-P8 below; historical evidence remains unchanged. There are no unresolved review decisions and eight pending patch findings.
+
+Patch disposition: the Administrator selected option 2, leave all eight patches as action items. Split 1 review actions are complete: one decision resolved, zero patches applied, eight open action items, four deferred findings and three rejected reports. Story and sprint status are `in-progress` because the patches remain unresolved. Split 2 (live checks, execution/preparation evidence and story/tracking changes) remains unreviewed.
+
+- [ ] [Review][Patch] **LP-P1 — Reject conflicting reader/destination-replicator grants** [eng/admin-exposure/prepare.py:603] — **medium**, blind-hunter B3 + edge-case-hunter E3. The same principal, credential reference and overlapping repository scope can claim reader push denial and successful destination replication; a real signed bundle passes. Extend the existing contradictory-grant check to destination replicators and add signed regressions, preserving source replication and distinct scopes/credentials.
+- [ ] [Review][Patch] **LP-P2 — Refuse raw Kubernetes Secret payloads in signed evidence** [eng/admin-exposure/prepare.py:123] — **medium**, blind-hunter B4. A resource with `kind: Secret` and standard `data` keys passes both sensitive-field filtering and the full signed bundle check. Reject resource-specific `data`/`stringData` payloads, including nested native Secret representations, without banning ordinary nonsensitive metadata. Use synthetic values in the regression.
+- [ ] [Review][Patch] **LP-P3 — Keep private evidence outside every Git worktree** [eng/admin-exposure/prepare.py:67] — **medium**, blind-hunter B8. Preparation under a second owner-only Git checkout succeeds and `git status` exposes `custody/` as untracked. The current exclusion covers only `project_root`, despite the outside-Git custody requirement. Detect enclosing Git worktrees from filesystem metadata without adding network or production commands; preserve ordinary private temporary directories.
+- [ ] [Review][Patch] **LP-P4 — Specify mandatory Keycloak endpoints independently in tests** [eng/admin-exposure/test_prepare.py:138] — **medium**, verification-gap V1. Fixtures derive probes and closed paths from `prepare.ADMIN_PATHS`. Removing the public master token endpoint from that production constant leaves all 87 tests passing. Add independently specified signed coverage cases for each mandatory endpoint and GET/POST method.
+- [ ] [Review][Patch] **LP-P5 — Specify required registry inventory categories independently in tests** [eng/admin-exposure/test_prepare.py:204] — **medium**, verification-gap V2. Fixtures and the checker take their category set from the same production template. Removing `humanReaders` leaves all 87 tests passing. Use an independently specified complete category set and signed omission cases for every required category.
+- [ ] [Review][Patch] **LP-P6 — Exercise trust-root and verifier drift during signature checks** [eng/admin-exposure/prepare.py:771] — **medium**, verification-gap V3. Deleting the drift guard leaves all 87 tests passing. Add cases that change owner-only trusted inputs during real verification while signatures remain otherwise valid, assert the fixed failure, and preserve the reported original hashes.
+- [ ] [Review][Patch] **LP-P7 — Bind documented live port-forwards to the approved native context** [eng/admin-exposure/README.md:121] — **low**, blind-hunter B10. The two live commands omit the explicit context/kubeconfig required by the procedure and therefore target the current default cluster. Add the existing native-context and kubeconfig placeholders to both commands.
+- [ ] [Review][Patch] **LP-P8 — Require explicit GET in signed anonymous read probes** [eng/admin-exposure/prepare.py:623] — **medium**, edge-case-hunter E1; former LP-D1, resolved by Administrator option 1. Every anonymous probe can explicitly declare `method: POST` and the real signed registry-auth bundle still reports `pass`. Require `method: GET` for catalog/tag/manifest/blob probes, reject missing or non-GET methods, update the documented signed-record contract and synthetic fixtures, and add real signed negative regressions for every probe kind. This applies to newly checked signed records; preserve historical receipts and live measurements.
+
+- [x] [Review][Defer] **LP-F1 — Verify known-content evidence behind anonymous targets** [eng/admin-exposure/prepare.py:629] — **maybe-false; medium if confirmed**, blind-hunter B2 + edge-case-hunter E2; carried from the existing 4.2 deferred entry. Synthetic targets outside representative consumer operations pass, but the contract permits protected authenticated collector evidence beyond those representative pulls. Inspect the authenticated records behind each `knownExistingContent`/`evidenceSha256` before asserting that an actual target is absent or untested.
+- [x] [Review][Defer] **LP-F2 — Verify the protected GC rehearsal's exact input identities** [eng/admin-exposure/prepare.py:688] — **maybe-false; medium if confirmed**, blind-hunter B5; carried from the existing 4.2 deferred entry. Additional rehearsal hash fields are ignored because they are not in the current local schema; approval binds the protected rehearsal evidence bytes. Inspect those bytes for the actual production generation, configuration and closure before defining new fields.
+- [x] [Review][Defer] **LP-F3 — Verify byte hashing in protected retained-fetch audit evidence** [eng/admin-exposure/prepare.py:562] — **maybe-false; medium if confirmed**, blind-hunter B6. The helper compares supplied requested/returned digests and cannot independently inspect transferred content. The signed audit reference may contain the required SHA-256 verification. Inspect those collector/audit records to determine whether actual manifest/blob bytes were hashed and matched before adding a redundant assertion field.
+- [x] [Review][Defer] **LP-F4 — Verify controller dependency coverage in operational snapshots** [eng/admin-exposure/prepare.py:247] — **maybe-false; medium if confirmed**, blind-hunter B7. An Ingress/Service-only synthetic snapshot passes. The procedure separately requires all affected controller/configuration identities and effective-routing hashes; the helper does not discover their completeness. Inspect actual signed snapshots and the effective-configuration collector to establish an omitted mutable dependency before extending the baseline schema.
+
+Individual triage evidence (before grouping):
+
+| Source finding | Verdict | Route/evidence |
+| --- | --- | --- |
+| B1: writer transfer/digest fields | false | Rejected: audited writer publication and negative privilege proof are required; uncached transfer/digest fields are deliberately the reader/replicator contract. This is the previously refuted writer-field claim. |
+| B2: anonymous target content linkage | maybe-false | LP-F1; protected authenticated target evidence is needed, beyond the representative consumer operation. |
+| B3: reader/destination replication conflict | medium | LP-P1; parent reproduced a passing real signed bundle with contradictory grants. |
+| B4: raw Secret.data | medium | LP-P2; parent reproduced standard Secret data passing filtering and the real signed check. |
+| B5: rehearsal input hashes | maybe-false | LP-F2; actual approved protected rehearsal bytes are unavailable in this group. |
+| B6: computed transfer hash | maybe-false | LP-F3; inspect the referenced collector/audit byte-hash measurements. |
+| B7: controller resource coverage | maybe-false | LP-F4; inspect actual dependency inventory and effective-config digest scope. |
+| B8: another Git checkout | medium | LP-P3; a private attempt was accepted as untracked content in a disposable second Git worktree. |
+| B9: numeric DNS answers | low | Rejected: parent confirmed `[true, 2]` passes because the IP parser accepts integers. Native DNS collectors produce textual addresses; this unusual malformed-input case adds another guard for negligible everyday benefit. |
+| B10: omitted native context | low | LP-P7; direct command correction prevents use of the current default cluster. |
+| B11: live/signed closure verdict differences | false | Rejected: the later approved live procedure is a separate unsigned collection flow, and the retirement consumer validates its own signed receipt. Redirects count only when the HTTPS target is closed; approved-prefix backend refusal does not accept an exposed admin endpoint. No consumer converts those live records through the older signed preparation schema. |
+| E1: POST-only anonymous probes | medium | LP-P8, formerly LP-D1; parent reproduced a passing real signed bundle. Administrator option 1 resolved the contract choice: require explicit GET. |
+| E2: unqualified anonymous repository | maybe-false | LP-F1; same protected-content question as B2, not proof that an actual target lacks an authenticated collector measurement. |
+| E3: destination replicator grant conflict | medium | LP-P1; same demonstrated contradictory-grant defect as B3. |
+| V1: required endpoint coverage derives from implementation | medium | LP-P4; filed searches and isolated mutation verified; parent independently reproduced 87 passing tests after removing the master-token requirement. |
+| V2: required inventory coverage derives from implementation | medium | LP-P5; filed searches and isolated mutation verified; parent independently reproduced 87 passing tests after removing human-reader coverage. |
+| V3: untested trust/verifier drift guard | medium | LP-P6; filed searches and isolated mutation verified; parent independently reproduced 87 passing tests after removing the guard. |
+
+Rejected:
+
+- B1 — **false**: the writer contract requires audited publication/permission evidence; adding reader transfer fields would change that contract.
+- B9 — **low**: numeric DNS payloads are accepted, but the normal collector produces strings; another defensive branch has negligible everyday benefit.
+- B11 — **false**: the approved live flow and the older signed helper have separate consumers/contracts, and a redirect alone never counts as closed.
 
 ## Evidence outputs
 
