@@ -1,0 +1,80 @@
+{
+  "captured_at_utc": "2026-10-07T15:40:46.992452+00:00",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "eng/repository-controls",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stderr": "........................................................\n----------------------------------------------------------------------\nRan 56 tests in 1.006s\n\nOK\n",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stderr": "warning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\n",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "python3",
+        "eng/repository-controls/controls.py",
+        "preflight",
+        "--baseline",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T153815Z-implementation-verification/discovery.json",
+        "--proposal",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T153815Z-implementation-verification/proposed-changes.json",
+        "--discovery",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T153815Z-implementation-verification/discovery.json",
+        "--output",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T153815Z-implementation-verification/preflight.json"
+      ],
+      "exit_code": 1,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "python3",
+        "eng/repository-controls/controls.py",
+        "verify",
+        "--baseline",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T135137Z-live/discovery-01.json",
+        "--discovery",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T153815Z-implementation-verification/discovery.json",
+        "--output",
+        "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T153815Z-implementation-verification/verification.json"
+      ],
+      "exit_code": 1,
+      "stderr": "",
+      "stdout": ""
+    }
+  ],
+  "head": "2d99dafcf98a96df719adf6361091f3733878b88",
+  "mutation_authorized": false,
+  "operational_acceptance": false,
+  "owner_custody_asserted": false,
+  "source_sha256": {
+    ".github/CODEOWNERS": "2b338e90f00d9d29582065320a7a7d38bd68e7b33598516d894be9d966eefc21",
+    "_bmad-output/implementation-artifacts/spec-4-4-apply-publication-and-operations-repository-controls.md": "a0d93d7b35cb3cf6033665c946c1f2e0e25c0783101bfec172e01d800c722137",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "0457c05d2c108340ac21bd8133262e08dbb23837d894cf24bc55f0f510fe0613",
+    "eng/repository-controls/README.md": "d9a7e088a7389a6a75c5956e4b12cebcb41a12593421da93565ed296e73aa54a",
+    "eng/repository-controls/controls.py": "e200c61a1e1b45cc279e7fc3b202ae8ac985a1d71746550d77e224c5efeac039",
+    "eng/repository-controls/desired-state.json": "c90a2660fedf6533f102469a87a25abe54aa7703190d5c287bf7132d8554cf74",
+    "eng/repository-controls/test_controls.py": "9e7ed085ce65000e95221475b5a205b1919c63b8fc6d221f214f492a17a6d050"
+  },
+  "sprint_yaml_parsed": true,
+  "story_status": "in-progress",
+  "test_count": 56
+}

@@ -201,9 +201,20 @@ hashes. Boolean assertions and synthetic fixtures alone cannot establish custody
 
 Successful PAT API inventories must include permission extent and writable
 grant/request repository coverage. Unauthorized writable owners are rejected;
-missing permission or scope data stays blocked. Writable deploy keys are rejected
+missing, empty or undocumented permission values and missing scope data stay
+blocked. Sanitization that discards any permission metadata blocks the observation;
+it cannot manufacture a read-only result. Unknown effective permission levels are
+also unproved, and positive collaborator push/maintain/admin flags still count as
+writable authority when a separate permission response omits those capabilities.
+Writable deploy keys are rejected
 because their custody is not tied to the named owners by the repository API. App
 exclusion is required even for read-only installed Apps.
+
+Builds and App preservation comparisons require successful, complete historical
+GET baselines, including the complete installation inventory. Historical baselines
+do not expire: the 900-second freshness window applies to the current discovery
+and pre-change checkpoints. A partial or failed historical response cannot prove
+that a later change preserved all previous settings or access.
 
 ## Rollback and Administrator recovery
 

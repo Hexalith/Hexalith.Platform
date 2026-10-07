@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "story": "4.3",
+  "observationStartedAt": "2026-10-07T15:36:45.316017+00:00",
+  "observationCompletedAt": "2026-10-07T15:36:46.927735+00:00",
+  "scope": "User-directed read-only check of existing runner on 192.168.1.30",
+  "localSanitizedSummary": true,
+  "signed": false,
+  "remoteMutationPerformed": false,
+  "sshLoginVerified": false,
+  "sshAccessObservation": "Documented quentindv account rejected available existing keys; no host commands executed.",
+  "clusterApiReadVerified": true,
+  "clusterApiEndpoint": "https://192.168.1.30:6443",
+  "node": {
+    "name": "node1",
+    "uid": "46d8d528-420d-4501-a6d8-12680d8a6ac6",
+    "resourceVersion": "28092973",
+    "addresses": [
+      {
+        "address": "192.168.1.30",
+        "type": "InternalIP"
+      },
+      {
+        "address": "node1",
+        "type": "Hostname"
+      }
+    ],
+    "kubeletVersion": "v1.34.9"
+  },
+  "namespace": {
+    "name": "forgejo-runner",
+    "uid": "fe61971b-ebec-4aaa-8550-bdd3b8737db2",
+    "resourceVersion": "5811670",
+    "podSecurityEnforce": "privileged"
+  },
+  "deployment": {
+    "name": "forgejo-runner",
+    "uid": "7721f550-9873-487f-a617-e827b5c9f0c9",
+    "resourceVersion": "28004542",
+    "replicas": 1,
+    "readyReplicas": 1,
+    "podTemplateSha256": "1d05beceed16ec0d76d19e1935f2d62af83c59d834679699ca6cacbce44a7fc5",
+    "serviceAccountName": "forgejo-runner",
+    "automountServiceAccountToken": false,
+    "projectedServiceAccountTokenVolumePresent": false,
+    "containers": [
+      {
+        "name": "runner",
+        "image": "data.forgejo.org/forgejo/runner@sha256:eb6e7bc21973382d261e6eb883dbd27b8cb56939d33a3bfd79a1352b7f9a33a0",
+        "privileged": false
+      },
+      {
+        "name": "dind",
+        "image": "docker.io/library/docker@sha256:084e385b0c9b7ab35d5a46dfedd033721448c000dbec71adcf13da8a9e71baa8",
+        "privileged": true
+      },
+      {
+        "name": "docker-gc",
+        "image": "docker.io/library/docker@sha256:084e385b0c9b7ab35d5a46dfedd033721448c000dbec71adcf13da8a9e71baa8",
+        "privileged": false
+      }
+    ]
+  },
+  "pods": [
+    {
+      "name": "forgejo-runner-bc8b8dfc5-f4hq2",
+      "uid": "e2779a1c-e5f4-4b52-8724-e3c866e6087d",
+      "resourceVersion": "28004540",
+      "node": "node1",
+      "phase": "Running"
+    }
+  ],
+  "storageInventory": [
+    {
+      "claim": {
+        "name": "forgejo-runner-actions-cache",
+        "uid": "cad494a2-800e-405b-977e-ee1eed463e09",
+        "resourceVersion": "5811884"
+      },
+      "claimPhase": "Bound",
+      "capacity": {
+        "storage": "10Gi"
+      },
+      "volume": {
+        "name": "pvc-cad494a2-800e-405b-977e-ee1eed463e09",
+        "uid": "0153a102-26ba-4744-abff-f3baff349c82",
+        "resourceVersion": "5811882"
+      },
+      "storageClassName": "openebs-hostpath",
+      "reclaimPolicy": "Delete",
+      "volumePhase": "Bound",
+      "storageBackendTypes": [
+        "local"
+      ],
+      "storageErasureVerified": false,
+      "providerResidualCheckPerformed": false
+    },
+    {
+      "claim": {
+        "name": "forgejo-runner-docker-cache",
+        "uid": "c2506af5-c314-4ede-9992-c6998c0fbb3f",
+        "resourceVersion": "5811881"
+      },
+      "claimPhase": "Bound",
+      "capacity": {
+        "storage": "40Gi"
+      },
+      "volume": {
+        "name": "pvc-c2506af5-c314-4ede-9992-c6998c0fbb3f",
+        "uid": "9df83548-4402-4905-9af3-d20fdb07117e",
+        "resourceVersion": "5811878"
+      },
+      "storageClassName": "openebs-hostpath",
+      "reclaimPolicy": "Delete",
+      "volumePhase": "Bound",
+      "storageBackendTypes": [
+        "local"
+      ],
+      "storageErasureVerified": false,
+      "providerResidualCheckPerformed": false
+    }
+  ],
+  "targetPlacementQualified": false,
+  "placementReason": "192.168.1.30 is the designated application cluster node node1; the current privileged runner is the source to relocate.",
+  "externalTargetIdentified": false,
+  "registeredRunnerIdentityVerified": false,
+  "activeForgejoJobSetVerified": false,
+  "completeClusterPathInventoryVerified": false,
+  "hostHardeningVerified": false,
+  "externalRunnerJobMatrixPassed": false,
+  "sourceRemoved": false,
+  "storyAcceptanceSatisfied": false,
+  "queries": [
+    {
+      "resourceQuery": [
+        "get",
+        "node",
+        "node1"
+      ],
+      "exitCode": 0
+    },
+    {
+      "resourceQuery": [
+        "get",
+        "namespace",
+        "forgejo-runner"
+      ],
+      "exitCode": 0
+    },
+    {
+      "resourceQuery": [
+        "get",
+        "deployment",
+        "forgejo-runner",
+        "-n",
+        "forgejo-runner"
+      ],
+      "exitCode": 0
+    },
+    {
+      "resourceQuery": [
+        "get",
+        "pods",
+        "-n",
+        "forgejo-runner"
+      ],
+      "exitCode": 0
+    },
+    {
+      "resourceQuery": [
+        "get",
+        "pvc",
+        "-n",
+        "forgejo-runner"
+      ],
+      "exitCode": 0
+    },
+    {
+      "resourceQuery": [
+        "get",
+        "pv",
+        "pvc-cad494a2-800e-405b-977e-ee1eed463e09"
+      ],
+      "exitCode": 0
+    },
+    {
+      "resourceQuery": [
+        "get",
+        "pv",
+        "pvc-c2506af5-c314-4ede-9992-c6998c0fbb3f"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

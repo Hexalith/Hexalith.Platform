@@ -35,7 +35,7 @@ class PolicyTests(unittest.TestCase):
         self.custody = self.owner_custody()
 
     def put(self, discovery, name, data, **extra):
-        item = {"name": name, "endpoint": "https://api.github.com/synthetic", "method": "GET", "data": data,
+        item = {"name": name, "endpoint": "https://api.github.com/synthetic", "method": "GET", "data": copy.deepcopy(data),
                 "exit_code": 0, "observed_at_utc": self.time, "pagination": {"complete": True, "page_count": 1}}
         item.update(extra)
         discovery["observations"] = [o for o in discovery["observations"] if o["name"] != name] + [item]
@@ -162,6 +162,30 @@ class PolicyTests(unittest.TestCase):
         self.item("Builds.main_ruleset_detail")["data"]["rules"].pop()
         self.assertIn("builds-settings-or-checks-changed", self.conditions(self.verify()))
 
+    def test_builds_preservation_requires_complete_successful_reviewed_baseline(self):
+        for defect in ("failed", "partial", "mutation", "wrong-id"):
+            baseline = copy.deepcopy(self.baseline)
+            observation = controls.index(baseline)["Builds.main_ruleset_detail"]
+            if defect == "failed":
+                observation.update(exit_code=1, error={"status": 403})
+            elif defect == "partial":
+                observation["pagination"]["complete"] = False
+            elif defect == "mutation":
+                observation["method"] = "PUT"
+            else:
+                observation["data"]["id"] = 77
+            with self.subTest(defect=defect):
+                report = controls.verify(self.discovery, self.policy, baseline, self.custody, self.now)
+                self.assertIn("builds-reviewed-baseline-or-readback-incomplete", self.conditions(report))
+
+    def test_preservation_baseline_may_be_historical_when_current_readback_is_fresh(self):
+        baseline = copy.deepcopy(self.baseline)
+        baseline["captured_at_utc"] = "2020-01-01T00:00:00Z"
+        for observation in baseline["observations"]:
+            observation["observed_at_utc"] = baseline["captured_at_utc"]
+        report = controls.verify(self.discovery, self.policy, baseline, self.custody, self.now)
+        self.assertEqual(report["verification_result"], "pass", report)
+
     def test_inherited_organization_member_writer_fails_even_without_direct_collaboration(self):
         stranger = {"id": 77, "login": "inherited-writer"}
         self.item("organization_members")["data"].append(stranger)
@@ -181,6 +205,20 @@ class PolicyTests(unittest.TestCase):
         stranger = {"id": 77, "login": "custom-writer", "permissions": {"push": True}}
         self.item("Hexalith.Operations.collaborators")["data"].append(stranger)
         self.put(self.discovery, "Hexalith.Operations.permission.77", {"user": stranger, "permission": "read", "role_name": "custom-role"})
+        self.assertIn("effective-private-writers-mismatch", self.conditions(self.verify()))
+
+    def test_unknown_effective_permission_extent_is_not_read_access(self):
+        stranger = {"id": 77, "login": "unproved-role"}
+        self.item("organization_members")["data"].append(stranger)
+        for repo in self.policy["private_repositories"]:
+            self.put(self.discovery, f"{repo['name']}.permission.77", {"user": stranger, "permission": "future-role"})
+        self.assertIn("effective-permission-extent-unproved", self.conditions(self.verify()))
+
+    def test_collaborator_write_capability_cannot_be_erased_by_permission_readback(self):
+        stranger = {"id": 77, "login": "custom-writer", "permissions": {"push": True}}
+        self.item("Hexalith.Operations.collaborators")["data"].append(stranger)
+        self.put(self.discovery, "Hexalith.Operations.permission.77",
+                 {"user": {"id": 77, "login": "custom-writer"}, "permission": "read", "role_name": "custom-role"})
         self.assertIn("effective-private-writers-mismatch", self.conditions(self.verify()))
 
     def test_read_defaults_do_not_mask_writable_workflow_override(self):
@@ -247,6 +285,20 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("app-repository-access-preservation-unproved", self.conditions(report))
         self.assertNotIn("unrelated-app-repository-access-changed", self.conditions(report))
 
+    def test_app_preservation_requires_complete_reviewed_installation_inventory(self):
+        for defect in ("failed", "partial", "mutation"):
+            baseline = copy.deepcopy(self.baseline)
+            observation = controls.index(baseline)["organization_installations"]
+            if defect == "failed":
+                observation.update(exit_code=1, error={"status": 403})
+            elif defect == "partial":
+                observation["pagination"]["complete"] = False
+            else:
+                observation["method"] = "PUT"
+            with self.subTest(defect=defect):
+                report = controls.verify(self.discovery, self.policy, baseline, self.custody, self.now)
+                self.assertIn("app-preservation-installation-baseline-incomplete", self.conditions(report))
+
     def test_unknown_pat_inventory_and_unauthorized_writable_grant_fail(self):
         for name in ("fine_grained_pat_grants", "fine_grained_pat_requests"):
             self.item(name)["data"] = [{"id": 321, "owner": {"id": 77, "login": "outside-owner"},
@@ -263,6 +315,14 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(self.verify()["verification_result"], "pass")
         self.custody["owners"][0]["inventories"][0]["complete"] = False
         self.assertIn("credential-custody-inventory-incomplete", self.conditions(self.verify()))
+
+    def test_unknown_empty_or_malformed_pat_permissions_are_unproved(self):
+        for permission in ({}, {"contents": "admin"}, {"contents": True}, {"repository": {}},
+                           {"contents": ["read", "write"]}, {"repository": {"contents": "future-value"}}):
+            self.item("fine_grained_pat_grants")["data"] = [{"id": 11, "owner": self.policy["administrator"],
+                                                           "permissions": permission}]
+            with self.subTest(permissions=permission):
+                self.assertIn("pat-permission-extent-unproved", self.conditions(self.verify()))
 
     def test_inaccessible_pat_inventory_is_not_absence(self):
         self.item("fine_grained_pat_grants").update(exit_code=1, data=None, error={"status": 404})
@@ -553,6 +613,18 @@ class CollectorTests(unittest.TestCase):
         proposal = controls.propose(baseline, self.policy)
         change = next(c for c in proposal["changes"] if c["id"] == "builds-administrator-bypass")
         self.assertIsNone(change["payload"])
+
+    def test_discarded_permission_values_block_collected_access_evidence(self):
+        cases = [([{ "id": 11, "permissions": {"contents": "admin"}}], None),
+                 ({"user": {"id": 11, "permissions": {"push": "future-value"}}}, None),
+                 ({"installations": [{"id": 11, "permissions": {"future-scope": "write"}}],
+                   "total_count": 1}, "installations")]
+        for raw, list_key in cases:
+            with self.subTest(raw=raw):
+                collector = controls.Collector(self.policy, lambda _: (200, {}, raw))
+                self.assertIsNone(collector.get("items", "items", list_key))
+                self.assertEqual(collector.observations[0]["error"]["condition"], "lossy-permission-projection")
+                self.assertEqual(collector.observations[0]["exit_code"], 1)
 
     def test_duplicate_paginated_items_block_observation(self):
         collector = controls.Collector(self.policy, lambda _: (200, {}, [{"id": 1}, {"id": 1}]))

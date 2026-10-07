@@ -1,0 +1,43 @@
+{
+  "attemptId": "20261007t153936z-local-preparation",
+  "capturedAt": "2026-10-07T15:40:23.797606+00:00",
+  "classification": "sanitized local preparation only",
+  "complete": false,
+  "directoryMode": "0700",
+  "externalTargetIdentified": false,
+  "fileModes": "0600",
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "operationalEvidenceSigned": false,
+  "privateChecksumsVerified": true,
+  "privateFileCount": 13,
+  "privatePreparationCreated": true,
+  "privatePreparationManifestSha256": "8c6628b1182ec7e79bf9ea4e7ad1ed56dcff24dec933d41374479eb72a620c57",
+  "remaining": [
+    "Separate approved destination host and all five Administrator decision groups",
+    "Complete fresh signed source identity/configuration/registered-runner and job census",
+    "External hardening, pinned enrollment, complete route denies and in-job isolation proof",
+    "Validation and normal-trigger matrices, exclusive production label cutover",
+    "Source credential revocation, verified secure erasure/residual checks and source removal",
+    "Signed accepted runner-relocation-result.json"
+  ],
+  "remoteMutationPerformed": false,
+  "signed": false,
+  "sourceHashes": {
+    "_bmad-output/implementation-artifacts/4-3-relocate-the-privileged-forgejo-runner.md": "0e415614d26f1bfa515f802d981a34182b9d321c4959fce1353044b1832c7e33",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/runner-relocation/README.md": "b6afff8e1bfa645526d1c553e4c1a4b84c20b854631723104249028f5c0a0197",
+    "eng/runner-relocation/prepare.py": "7ae8bb6403517b9a99696d3adae0f148eaba1a33b35458e6e0d2527162352672",
+    "eng/runner-relocation/test_prepare.py": "ac14b9616123bae2815a2e40fbb3239f4366e6f3558435b38b91d403e0da64b5"
+  },
+  "sourceObservationSha256": "a718e947304470af88873183996715844610d8c2732a89b8538066a6fad67ab2",
+  "story": "4.3",
+  "validation": {
+    "actualFixtureSshSignaturesVerified": true,
+    "command": "python3 -m unittest discover -s eng/runner-relocation -p 'test_*.py'",
+    "gitDiffCheck": "pass",
+    "result": "pass",
+    "testsRun": 15
+  }
+}

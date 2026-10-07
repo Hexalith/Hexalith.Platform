@@ -94,6 +94,45 @@ def sanitize(value, field=None):
     return value
 
 
+def permission_projection_complete(raw, retained):
+    """Discarded permission metadata cannot become evidence of read-only access."""
+    if isinstance(raw, dict):
+        if not isinstance(retained, dict):
+            return False
+        if "permissions" in raw and raw["permissions"] != retained.get("permissions"):
+            return False
+        return all(permission_projection_complete(value, retained.get(key))
+                   for key, value in raw.items() if key in SAFE_FIELDS and key != "content")
+    if isinstance(raw, list):
+        return isinstance(retained, list) and len(raw) == len(retained) and all(
+            permission_projection_complete(value, kept) for value, kept in zip(raw, retained))
+    return True
+
+
+def complete_observation(item):
+    """Historical preservation baselines need successful complete GET evidence."""
+    return (isinstance(item, dict) and item.get("method") == "GET" and
+            item.get("exit_code") == 0 and not item.get("error") and
+            item.get("pagination", {}).get("complete") is True and item.get("data") is not None)
+
+
+def pat_permission_extent(value):
+    """Return whether documented permission values write; reject unknown extent."""
+    if not isinstance(value, dict) or not value:
+        raise ValueError("pat-permission-extent-unproved")
+    writable = False
+    for key, permission in value.items():
+        if not isinstance(key, str) or not re.fullmatch(r"[a-z_]+", key):
+            raise ValueError("pat-permission-extent-unproved")
+        if isinstance(permission, dict):
+            writable = pat_permission_extent(permission) or writable
+        elif permission in ("read", "write", "none") and isinstance(permission, str):
+            writable = permission == "write" or writable
+        else:
+            raise ValueError("pat-permission-extent-unproved")
+    return writable
+
+
 def workflow_audit(content):
     """Conservative YAML subset; uncertain syntax requires manual review.
 
@@ -218,6 +257,9 @@ class Collector:
                     break
             else:
                 data = sanitize(raw)
+                if not permission_projection_complete(raw, data):
+                    error = {"condition": "lossy-permission-projection", "status": status}
+                    break
                 # Replacing a ruleset from a projection must never remove an
                 # unfamiliar parameter/rule. Preserve the error, not a PUT.
                 if isinstance(raw, dict) and "rules" in raw and any(data.get(k) != raw.get(k) for k in RULESET_FIELDS):
@@ -638,7 +680,10 @@ def verify(discovery, policy, baseline, custody=None, now=None):
     if metadata.get("id") != builds["id"] or metadata.get("full_name") != builds["full_name"]:
         issue("builds-identity-mismatch")
     current = need("Builds.main_ruleset_detail") or {}
-    original = index(baseline).get("Builds.main_ruleset_detail", {}).get("data") or {}
+    original_observation = index(baseline).get("Builds.main_ruleset_detail", {})
+    original = original_observation.get("data") or {}
+    if not complete_observation(original_observation) or original.get("id") != builds["ruleset_id"]:
+        issue("builds-reviewed-baseline-or-readback-incomplete")
     try:
         expected = ruleset_payload(original)
         expected["bypass_actors"] = builds["bypass_actors"]
@@ -651,6 +696,8 @@ def verify(discovery, policy, baseline, custody=None, now=None):
     app_coverage = {}
     original_observed = index(baseline)
     old_installations = original_observed.get("organization_installations", {}).get("data") or {}
+    if not complete_observation(original_observed.get("organization_installations")):
+        issue("app-preservation-installation-baseline-incomplete")
     old_apps = {a["id"]: a for a in old_installations.get("installations", [])}
     if {a.get("id") for a in apps.get("installations", [])} != set(old_apps):
         issue("installed-app-set-changed-from-reviewed-baseline")
@@ -669,7 +716,7 @@ def verify(discovery, policy, baseline, custody=None, now=None):
         coverage_name = ("organization_repositories" if old_app.get("repository_selection") == "all"
                          else f"installation.{app['id']}.repositories")
         old_observation = original_observed.get(coverage_name, {})
-        baseline_complete = old_observation.get("exit_code") == 0 and old_observation.get("pagination", {}).get("complete")
+        baseline_complete = complete_observation(old_observation)
         if not baseline_complete:
             issue("app-preservation-baseline-incomplete", str(app["id"]))
         old_data = old_observation.get("data") or ([] if coverage_name == "organization_repositories" else {})
@@ -689,13 +736,12 @@ def verify(discovery, policy, baseline, custody=None, now=None):
         for grant in grants or []:
             owner = grant.get("owner", {})
             permissions = grant.get("permissions")
-            if not isinstance(permissions, dict):
+            try:
+                writable = pat_permission_extent(permissions)
+            except ValueError:
                 issue("pat-permission-extent-unproved", name)
                 continue
-            def writable(value):
-                return (any(writable(v) for v in value.values()) if isinstance(value, dict)
-                        else value == "write")
-            if writable(permissions):
+            if writable:
                 if (owner.get("id"), owner.get("login")) not in {(a["id"], a["login"]) for a in writers}:
                     issue("unauthorized-writable-pat-grant-or-request", name)
                 # Selected and all-repository PAT grants can both carry private
@@ -727,7 +773,13 @@ def verify(discovery, policy, baseline, custody=None, now=None):
             if measured_user.get("id") != actor_id or measured_user.get("login") != actor.get("login"):
                 issue("effective-actor-identity-unproved", f"{name}:{actor_id}")
             flags = measured_user.get("permissions", {})
-            if permission.get("permission") in ("write", "admin", "maintain") or any(flags.get(key) is True for key in ("push", "maintain", "admin")):
+            if permission.get("permission") not in ("none", "read", "pull", "triage", "write", "push", "admin", "maintain"):
+                issue("effective-permission-extent-unproved", f"{name}:{actor_id}")
+            if permission.get("permission") in ("write", "push", "admin", "maintain") or any(flags.get(key) is True for key in ("push", "maintain", "admin")):
+                effective_writers.add(actor_id)
+            # A list response can carry custom-role capabilities omitted from
+            # the user's permission response. Preserve that positive authority.
+            if any(actor.get("permissions", {}).get(key) is True for key in ("push", "maintain", "admin")):
                 effective_writers.add(actor_id)
         if effective_writers != writer_ids:
             issue("effective-private-writers-mismatch", name)

@@ -1,0 +1,3216 @@
+{
+  "authenticated_actor": "jpiquot",
+  "captured_at_utc": "2026-10-07T15:38:43.177510+00:00",
+  "collection_mode": "GitHub REST GET only",
+  "limits": [
+    "Owner device and classic PAT custody require separate owner evidence.",
+    "Organization rulesets may be unavailable on Free; inherited repository rules still require complete readback.",
+    "An API error or 404 is never evidence of absence.",
+    "GET only; no mutation or operational acceptance."
+  ],
+  "observations": [
+    {
+      "data": {
+        "created_at": "2014-02-24T19:45:31Z",
+        "id": 6775094,
+        "login": "jpiquot",
+        "name": "J\u00e9r\u00f4me Piquot",
+        "type": "User",
+        "updated_at": "2026-09-20T20:39:25Z"
+      },
+      "endpoint": "https://api.github.com/user",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "current_user",
+      "observed_at_utc": "2026-10-07T15:38:27.971764+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:27.971663+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "created_at": "2021-03-14T06:12:12Z",
+        "default_repository_permission": "read",
+        "id": 80614290,
+        "login": "Hexalith",
+        "name": "Hexalith",
+        "plan": {
+          "name": "free"
+        },
+        "type": "Organization",
+        "updated_at": "2025-09-20T07:54:53Z"
+      },
+      "endpoint": "https://api.github.com/orgs/Hexalith",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization",
+      "observed_at_utc": "2026-10-07T15:38:28.396087+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:28.396019+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "id": 6775094,
+          "login": "jpiquot",
+          "type": "User"
+        },
+        {
+          "id": 183023925,
+          "login": "tinouit",
+          "type": "User"
+        }
+      ],
+      "endpoint": "https://api.github.com/orgs/Hexalith/members?role=admin&per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization_owners",
+      "observed_at_utc": "2026-10-07T15:38:28.761744+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/members?role=admin&per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:28.761667+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "id": 6775094,
+          "login": "jpiquot",
+          "type": "User"
+        },
+        {
+          "id": 183023925,
+          "login": "tinouit",
+          "type": "User"
+        }
+      ],
+      "endpoint": "https://api.github.com/orgs/Hexalith/members?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization_members",
+      "observed_at_utc": "2026-10-07T15:38:29.085028+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/members?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:29.084961+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [],
+      "endpoint": "https://api.github.com/orgs/Hexalith/outside_collaborators?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization_outside_collaborators",
+      "observed_at_utc": "2026-10-07T15:38:29.399435+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/outside_collaborators?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:29.399382+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [],
+      "endpoint": "https://api.github.com/orgs/Hexalith/teams?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization_teams",
+      "observed_at_utc": "2026-10-07T15:38:29.702572+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/teams?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:29.702517+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "archived": false,
+          "created_at": "2022-11-20T10:21:20Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith_old",
+          "id": 568370439,
+          "name": "Hexalith_old",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": true,
+          "size": 13382,
+          "updated_at": "2024-09-03T08:54:30Z",
+          "visibility": "private"
+        },
+        {
+          "archived": false,
+          "created_at": "2023-04-18T14:38:34Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.AI",
+          "id": 629551223,
+          "name": "Hexalith.AI",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 267,
+          "updated_at": "2023-04-20T06:17:24Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2023-05-30T15:15:21Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/semantic-kernel",
+          "id": 647343286,
+          "name": "semantic-kernel",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 66549,
+          "updated_at": "2025-03-06T15:23:30Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-04-14T12:05:54Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/HexalithApp_old",
+          "id": 786418755,
+          "name": "HexalithApp_old",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": true,
+          "size": 328,
+          "updated_at": "2024-09-03T17:10:01Z",
+          "visibility": "private"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-05T07:59:46Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Inventories",
+          "id": 796191088,
+          "name": "Hexalith.Inventories",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 101,
+          "updated_at": "2024-06-11T14:44:34Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-05T08:41:57Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/HexalithAspire",
+          "id": 796201155,
+          "name": "HexalithAspire",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 4,
+          "updated_at": "2024-05-05T08:42:01Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-05T15:47:21Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Dynamics365Finance",
+          "id": 796320664,
+          "name": "Hexalith.Dynamics365Finance",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 203,
+          "updated_at": "2024-07-10T08:48:42Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-10T17:06:10Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Parties.Old",
+          "id": 798880730,
+          "name": "Hexalith.Parties.Old",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": true,
+          "size": 213,
+          "updated_at": "2026-03-01T16:55:14Z",
+          "visibility": "private"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-10T17:07:08Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.ExternalSystems",
+          "id": 798881062,
+          "name": "Hexalith.ExternalSystems",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 167,
+          "updated_at": "2024-06-10T11:33:24Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-10T17:25:16Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Sales",
+          "id": 798887497,
+          "name": "Hexalith.Sales",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 165,
+          "updated_at": "2024-06-10T11:33:36Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-10T17:26:14Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Identities",
+          "id": 798887842,
+          "name": "Hexalith.Identities",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 217,
+          "updated_at": "2024-05-26T14:55:02Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-05-31T08:11:39Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Oidc_old",
+          "id": 808510301,
+          "name": "Hexalith.Oidc_old",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": true,
+          "size": 103,
+          "updated_at": "2024-09-08T12:43:46Z",
+          "visibility": "private"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-07-28T06:38:41Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.EasyAuthentication_old",
+          "id": 834719990,
+          "name": "Hexalith.EasyAuthentication_old",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": true,
+          "size": 96,
+          "updated_at": "2024-09-04T10:48:16Z",
+          "visibility": "private"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-09-03T08:53:26Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith",
+          "id": 851523569,
+          "name": "Hexalith",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 5157,
+          "updated_at": "2026-01-10T09:44:21Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-09-03T17:15:16Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/HexalithApp",
+          "id": 851770509,
+          "name": "HexalithApp",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 288,
+          "updated_at": "2026-01-10T10:03:29Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-09-04T10:49:06Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Security_OLD",
+          "id": 852168913,
+          "name": "Hexalith.Security_OLD",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 864,
+          "updated_at": "2025-04-15T15:56:14Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-09-08T12:43:08Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Oidc",
+          "id": 854107919,
+          "name": "Hexalith.Oidc",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 36,
+          "updated_at": "2024-09-08T13:47:40Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-11T08:44:04Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Projects",
+          "id": 871087402,
+          "name": "Hexalith.Projects",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 11806,
+          "updated_at": "2026-10-07T10:08:10Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-11T08:46:22Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Tasks",
+          "id": 871088314,
+          "name": "Hexalith.Tasks",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 5,
+          "updated_at": "2024-10-11T09:02:37Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-11T08:48:07Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Contacts",
+          "id": 871088977,
+          "name": "Hexalith.Contacts",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 9938,
+          "updated_at": "2024-10-29T09:04:01Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-11T08:53:04Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Documents_OLD",
+          "id": 871091034,
+          "name": "Hexalith.Documents_OLD",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 9248,
+          "updated_at": "2025-04-15T15:55:41Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-11T09:45:27Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Docs",
+          "id": 871112728,
+          "name": "Hexalith.Docs",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 42,
+          "updated_at": "2024-10-29T09:47:39Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-12T12:27:47Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Templates",
+          "id": 871603551,
+          "name": "Hexalith.Templates",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 4,
+          "updated_at": "2024-10-12T12:27:51Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-10-22T12:54:26Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.UrlToText",
+          "id": 876719824,
+          "name": "Hexalith.UrlToText",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 15,
+          "updated_at": "2024-10-22T16:57:54Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2024-11-18T15:45:22Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.DaprIdentityStore",
+          "id": 890456345,
+          "name": "Hexalith.DaprIdentityStore",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 301,
+          "updated_at": "2026-01-04T14:01:59Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-06T08:09:21Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/ollama",
+          "id": 943757274,
+          "name": "ollama",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 47469,
+          "updated_at": "2025-03-06T08:09:22Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-06T08:09:57Z",
+          "default_branch": "master",
+          "full_name": "Hexalith/qdrant",
+          "id": 943757505,
+          "name": "qdrant",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 31477,
+          "updated_at": "2025-03-06T08:09:57Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-06T15:49:20Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/kernel-memory",
+          "id": 943990311,
+          "name": "kernel-memory",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 26763,
+          "updated_at": "2025-03-06T15:49:20Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-06T15:50:17Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/open-webui",
+          "id": 943990893,
+          "name": "open-webui",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 182279,
+          "updated_at": "2025-03-06T15:50:17Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-22T07:56:09Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Builds",
+          "id": 952945989,
+          "name": "Hexalith.Builds",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 5000,
+          "updated_at": "2026-10-07T12:35:17Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-22T08:41:41Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Commons",
+          "id": 952960148,
+          "name": "Hexalith.Commons",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 5192,
+          "updated_at": "2026-10-03T09:05:14Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-28T16:20:06Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.MyNewPackage",
+          "id": 956657445,
+          "name": "Hexalith.MyNewPackage",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 184,
+          "updated_at": "2026-01-04T18:19:49Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-03-29T17:30:50Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.PolymorphicSerializations",
+          "id": 957156862,
+          "name": "Hexalith.PolymorphicSerializations",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 415,
+          "updated_at": "2026-10-03T11:24:27Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-01T08:31:58Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Streams",
+          "id": 958460421,
+          "name": "Hexalith.Streams",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 73,
+          "updated_at": "2026-01-04T13:37:05Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-04T07:55:59Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.KeyValueStorages",
+          "id": 960307124,
+          "name": "Hexalith.KeyValueStorages",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 1165,
+          "updated_at": "2026-01-10T10:59:26Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-09T13:07:22Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.EventStores",
+          "id": 963292804,
+          "name": "Hexalith.EventStores",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 226,
+          "updated_at": "2026-01-04T13:51:53Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-15T15:57:06Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Security",
+          "id": 966892135,
+          "name": "Hexalith.Security",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 245,
+          "updated_at": "2026-01-04T13:53:41Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-16T07:51:22Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.NetAspire",
+          "id": 967276766,
+          "name": "Hexalith.NetAspire",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 90,
+          "updated_at": "2026-01-04T13:55:19Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-16T13:57:18Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.IdentityStores",
+          "id": 967469113,
+          "name": "Hexalith.IdentityStores",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 218,
+          "updated_at": "2026-01-10T10:11:03Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-17T17:22:32Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Documents",
+          "id": 968206525,
+          "name": "Hexalith.Documents",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 479,
+          "updated_at": "2026-01-04T14:00:27Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-04-18T13:51:32Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Domains",
+          "id": 968662765,
+          "name": "Hexalith.Domains",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 66,
+          "updated_at": "2026-01-04T13:59:54Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-07-27T11:11:48Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.ChatClient",
+          "id": 1027122874,
+          "name": "Hexalith.ChatClient",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 25,
+          "updated_at": "2026-01-04T14:01:07Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-07-27T13:58:24Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.MyNewModule",
+          "id": 1027188474,
+          "name": "Hexalith.MyNewModule",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 399,
+          "updated_at": "2026-01-10T10:03:27Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-11-30T18:07:43Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.GitStorage",
+          "id": 1107174746,
+          "name": "Hexalith.GitStorage",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 1985,
+          "updated_at": "2026-04-25T04:27:57Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2025-12-21T11:31:56Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Applications",
+          "id": 1120511943,
+          "name": "Hexalith.Applications",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 140,
+          "updated_at": "2026-01-04T13:54:39Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-01-10T12:58:05Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.MarkdownEditor",
+          "id": 1131658602,
+          "name": "Hexalith.MarkdownEditor",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 5421,
+          "updated_at": "2026-01-10T15:33:32Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-02-10T07:55:23Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.GitDocumentStorage",
+          "id": 1154280248,
+          "name": "Hexalith.GitDocumentStorage",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": true,
+          "size": 2892,
+          "updated_at": "2026-04-26T07:47:47Z",
+          "visibility": "private"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-02-11T07:23:23Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.EventStore",
+          "id": 1155154671,
+          "name": "Hexalith.EventStore",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 76278,
+          "updated_at": "2026-10-07T15:38:11Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-03-01T16:56:29Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Parties",
+          "id": 1170072276,
+          "name": "Hexalith.Parties",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 17839,
+          "updated_at": "2026-10-07T15:30:43Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-03-06T08:50:02Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Tenants",
+          "id": 1174267565,
+          "name": "Hexalith.Tenants",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 26454,
+          "updated_at": "2026-10-07T07:33:56Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-03-10T09:28:11Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.FrontShell",
+          "id": 1177697182,
+          "name": "Hexalith.FrontShell",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 5903,
+          "updated_at": "2026-04-05T14:10:12Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-03-21T14:19:00Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Memories",
+          "id": 1188027961,
+          "name": "Hexalith.Memories",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 29586,
+          "updated_at": "2026-10-07T14:29:30Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-04-06T06:47:20Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.FrontComposer",
+          "id": 1202567471,
+          "name": "Hexalith.FrontComposer",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 55239,
+          "updated_at": "2026-10-05T11:04:32Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-04-26T07:52:08Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.AI.Tools",
+          "id": 1221438803,
+          "name": "Hexalith.AI.Tools",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 261,
+          "updated_at": "2026-09-27T20:52:49Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-04-26T08:23:52Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.AI.Project",
+          "id": 1221455078,
+          "name": "Hexalith.AI.Project",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 1558,
+          "updated_at": "2026-05-11T20:37:18Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-05-05T05:02:10Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Folders",
+          "id": 1229485448,
+          "name": "Hexalith.Folders",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 14873,
+          "updated_at": "2026-10-07T07:36:46Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-05-07T04:15:20Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Conversations",
+          "id": 1231551514,
+          "name": "Hexalith.Conversations",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 18725,
+          "updated_at": "2026-10-07T15:30:00Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-05-10T15:37:48Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.ChatBot",
+          "id": 1234748496,
+          "name": "Hexalith.ChatBot",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 24746,
+          "updated_at": "2026-10-07T15:28:16Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-06-09T16:18:30Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Works",
+          "id": 1264171182,
+          "name": "Hexalith.Works",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 16561,
+          "updated_at": "2026-10-05T15:25:33Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-06-10T10:20:16Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Todos",
+          "id": 1264947605,
+          "name": "Hexalith.Todos",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 1334,
+          "updated_at": "2026-07-12T09:57:35Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-06-17T07:01:06Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/slide-video-producer",
+          "id": 1271966197,
+          "name": "slide-video-producer",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 4,
+          "updated_at": "2026-06-17T07:01:14Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-06-17T13:03:04Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Timesheets",
+          "id": 1272275109,
+          "name": "Hexalith.Timesheets",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 4182,
+          "updated_at": "2026-10-05T13:58:58Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-06-23T05:29:00Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Agents",
+          "id": 1277685416,
+          "name": "Hexalith.Agents",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 10003,
+          "updated_at": "2026-10-07T14:47:17Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-07-13T07:47:48Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.BmadSkills",
+          "id": 1299011770,
+          "name": "Hexalith.BmadSkills",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 20339,
+          "updated_at": "2026-07-13T18:48:28Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-08-09T08:24:59Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.Platform",
+          "id": 1328589450,
+          "name": "Hexalith.Platform",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 7403,
+          "updated_at": "2026-10-07T15:33:12Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-09-21T09:12:37Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.McpCli",
+          "id": 1379417482,
+          "name": "Hexalith.McpCli",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 3797,
+          "updated_at": "2026-10-05T13:35:01Z",
+          "visibility": "public"
+        },
+        {
+          "archived": false,
+          "created_at": "2026-09-21T09:23:13Z",
+          "default_branch": "main",
+          "full_name": "Hexalith/Hexalith.CiCd",
+          "id": 1379430755,
+          "name": "Hexalith.CiCd",
+          "owner": {
+            "id": 80614290,
+            "login": "Hexalith",
+            "type": "Organization"
+          },
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "private": false,
+          "size": 1716,
+          "updated_at": "2026-10-04T13:56:44Z",
+          "visibility": "public"
+        }
+      ],
+      "endpoint": "https://api.github.com/orgs/Hexalith/repos?type=all&per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization_repositories",
+      "observed_at_utc": "2026-10-07T15:38:30.581719+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/repos?type=all&per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:30.580840+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/orgs/Hexalith/rulesets?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "organization_rulesets",
+      "observed_at_utc": "2026-10-07T15:38:30.860789+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/rulesets?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:30.860764+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "installations": [
+          {
+            "app_id": 67,
+            "app_slug": "travis-ci",
+            "created_at": "2022-11-27T11:12:52.000+01:00",
+            "id": 31615326,
+            "permissions": {
+              "checks": "write",
+              "contents": "read",
+              "deployments": "write",
+              "members": "read",
+              "metadata": "read",
+              "pull_requests": "read",
+              "repository_hooks": "write",
+              "statuses": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "selected",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2024-06-26T15:50:52.000+02:00"
+          },
+          {
+            "app_id": 60555,
+            "app_slug": "semgrep-app",
+            "created_at": "2022-11-27T12:40:45.000+01:00",
+            "id": 31617019,
+            "permissions": {
+              "actions": "write",
+              "checks": "read",
+              "members": "read",
+              "metadata": "read",
+              "pull_requests": "write",
+              "secrets": "write",
+              "security_events": "write",
+              "single_file": "write",
+              "workflows": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          },
+          {
+            "app_id": 56611,
+            "app_slug": "codacy-production",
+            "created_at": "2022-11-27T18:30:45.000+01:00",
+            "id": 31626264,
+            "permissions": {
+              "checks": "write",
+              "contents": "read",
+              "issues": "write",
+              "members": "read",
+              "metadata": "read",
+              "organization_custom_properties": "read",
+              "organization_hooks": "write",
+              "pull_requests": "write",
+              "repository_custom_properties": "read",
+              "repository_hooks": "write",
+              "statuses": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          },
+          {
+            "app_id": 254,
+            "app_slug": "codecov",
+            "created_at": "2022-11-28T08:16:43.000+01:00",
+            "id": 31641834,
+            "permissions": {
+              "administration": "read",
+              "checks": "write",
+              "contents": "read",
+              "issues": "read",
+              "members": "read",
+              "metadata": "read",
+              "pull_requests": "write",
+              "statuses": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          },
+          {
+            "app_id": 1210556,
+            "app_slug": "cursor",
+            "created_at": "2025-06-14T10:28:38.000+02:00",
+            "id": 71268337,
+            "permissions": {
+              "actions": "write",
+              "administration": "read",
+              "checks": "write",
+              "contents": "write",
+              "deployments": "read",
+              "discussions": "write",
+              "issues": "write",
+              "members": "read",
+              "metadata": "read",
+              "organization_custom_org_roles": "read",
+              "organization_custom_properties": "read",
+              "organization_custom_roles": "read",
+              "packages": "read",
+              "pages": "read",
+              "pull_requests": "write",
+              "statuses": "read",
+              "workflows": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          },
+          {
+            "app_id": 1144995,
+            "app_slug": "chatgpt-codex-connector",
+            "created_at": "2025-07-27T11:50:58.000+02:00",
+            "id": 77847816,
+            "permissions": {
+              "actions": "write",
+              "checks": "read",
+              "contents": "write",
+              "issues": "write",
+              "metadata": "read",
+              "pull_requests": "write",
+              "statuses": "read",
+              "workflows": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          },
+          {
+            "app_id": 1236702,
+            "app_slug": "claude",
+            "created_at": "2025-11-07T14:45:03.000+01:00",
+            "id": 93548476,
+            "permissions": {
+              "actions": "write",
+              "checks": "write",
+              "contents": "write",
+              "discussions": "write",
+              "issues": "write",
+              "members": "read",
+              "metadata": "read",
+              "pull_requests": "write",
+              "repository_hooks": "write",
+              "workflows": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          },
+          {
+            "app_id": 12526,
+            "app_slug": "sonarqubecloud",
+            "created_at": "2025-11-30T17:31:00.000+01:00",
+            "id": 97329264,
+            "permissions": {
+              "checks": "write",
+              "contents": "read",
+              "members": "read",
+              "metadata": "read",
+              "organization_copilot_seat_management": "read",
+              "pull_requests": "write",
+              "security_events": "write",
+              "statuses": "write"
+            },
+            "repositories_url": "https://api.github.com/installation/repositories",
+            "repository_selection": "all",
+            "suspended_at": null,
+            "target_type": "Organization",
+            "updated_at": "2026-09-21T11:23:17.000+02:00"
+          }
+        ],
+        "total_count": 8
+      },
+      "endpoint": "https://api.github.com/orgs/Hexalith/installations?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization_installations",
+      "observed_at_utc": "2026-10-07T15:38:31.229801+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/installations?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:31.229619+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/31615326/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.31615326.repositories",
+      "observed_at_utc": "2026-10-07T15:38:31.589805+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/31615326/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:31.589779+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/31617019/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.31617019.repositories",
+      "observed_at_utc": "2026-10-07T15:38:31.888144+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/31617019/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:31.888118+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/31626264/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.31626264.repositories",
+      "observed_at_utc": "2026-10-07T15:38:32.210501+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/31626264/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:32.210477+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/31641834/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.31641834.repositories",
+      "observed_at_utc": "2026-10-07T15:38:32.547919+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/31641834/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:32.547897+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/71268337/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.71268337.repositories",
+      "observed_at_utc": "2026-10-07T15:38:32.868490+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/71268337/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:32.868468+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/77847816/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.77847816.repositories",
+      "observed_at_utc": "2026-10-07T15:38:33.193387+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/77847816/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:33.193363+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/93548476/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.93548476.repositories",
+      "observed_at_utc": "2026-10-07T15:38:33.490134+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/93548476/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:33.490108+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/user/installations/97329264/repositories?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 403
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "installation.97329264.repositories",
+      "observed_at_utc": "2026-10-07T15:38:33.792402+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/user/installations/97329264/repositories?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:33.792378+00:00",
+            "status": 403
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/orgs/Hexalith/personal-access-tokens?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 404
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "fine_grained_pat_grants",
+      "observed_at_utc": "2026-10-07T15:38:34.099430+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/personal-access-tokens?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:34.099407+00:00",
+            "status": 404
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/orgs/Hexalith/personal-access-token-requests?per_page=100",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 404
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "fine_grained_pat_requests",
+      "observed_at_utc": "2026-10-07T15:38:34.400101+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith/personal-access-token-requests?per_page=100",
+            "observed_at_utc": "2026-10-07T15:38:34.400076+00:00",
+            "status": 404
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "archived": false,
+        "created_at": "2026-08-09T08:24:59Z",
+        "default_branch": "main",
+        "full_name": "Hexalith/Hexalith.Platform",
+        "id": 1328589450,
+        "name": "Hexalith.Platform",
+        "owner": {
+          "id": 80614290,
+          "login": "Hexalith",
+          "type": "Organization"
+        },
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "pull": true,
+          "push": true,
+          "triage": true
+        },
+        "private": false,
+        "size": 7403,
+        "updated_at": "2026-10-07T15:33:12Z",
+        "visibility": "public"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.repository",
+      "observed_at_utc": "2026-10-07T15:38:34.862869+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:34.862788+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "created_at": "2026-10-07T16:10:23.263+02:00",
+          "enforcement": "active",
+          "id": 24657570,
+          "name": "Platform immutable tags",
+          "source": "Hexalith/Hexalith.Platform",
+          "source_type": "Repository",
+          "target": "tag",
+          "updated_at": "2026-10-07T16:10:23.295+02:00"
+        },
+        {
+          "created_at": "2026-10-07T16:02:23.904+02:00",
+          "enforcement": "active",
+          "id": 24657106,
+          "name": "Platform main reviewed changes",
+          "source": "Hexalith/Hexalith.Platform",
+          "source_type": "Repository",
+          "target": "branch",
+          "updated_at": "2026-10-07T16:02:23.997+02:00"
+        },
+        {
+          "created_at": "2026-10-07T16:03:35.050+02:00",
+          "enforcement": "active",
+          "id": 24657217,
+          "name": "Platform tag creation authorization",
+          "source": "Hexalith/Hexalith.Platform",
+          "source_type": "Repository",
+          "target": "tag",
+          "updated_at": "2026-10-07T16:03:35.087+02:00"
+        }
+      ],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets?includes_parents=true&per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.rulesets",
+      "observed_at_utc": "2026-10-07T15:38:35.213217+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets?includes_parents=true&per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:35.213111+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "bypass_actors": [],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "created_at": "2026-10-07T16:10:23.263+02:00",
+        "current_user_can_bypass": "never",
+        "enforcement": "active",
+        "id": 24657570,
+        "name": "Platform immutable tags",
+        "rules": [
+          {
+            "type": "update"
+          },
+          {
+            "type": "deletion"
+          }
+        ],
+        "source": "Hexalith/Hexalith.Platform",
+        "source_type": "Repository",
+        "target": "tag",
+        "updated_at": "2026-10-07T16:10:23.295+02:00"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657570",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.ruleset.24657570",
+      "observed_at_utc": "2026-10-07T15:38:35.566934+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657570",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:35.566849+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "refs/heads/main"
+            ]
+          }
+        },
+        "created_at": "2026-10-07T16:02:23.904+02:00",
+        "current_user_can_bypass": "always",
+        "enforcement": "active",
+        "id": 24657106,
+        "name": "Platform main reviewed changes",
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "parameters": {
+              "allowed_merge_methods": [
+                "merge",
+                "squash",
+                "rebase"
+              ],
+              "dismiss_stale_reviews_on_push": false,
+              "dismissal_restriction": {
+                "allowed_actors": [],
+                "enabled": false
+              },
+              "require_code_owner_review": true,
+              "require_extra_approval_for_unattributed_changes": true,
+              "require_last_push_approval": false,
+              "required_approving_review_count": 1,
+              "required_review_thread_resolution": false,
+              "required_reviewers": []
+            },
+            "type": "pull_request"
+          }
+        ],
+        "source": "Hexalith/Hexalith.Platform",
+        "source_type": "Repository",
+        "target": "branch",
+        "updated_at": "2026-10-07T16:02:23.997+02:00"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657106",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.ruleset.24657106",
+      "observed_at_utc": "2026-10-07T15:38:35.940192+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657106",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:35.940087+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "created_at": "2026-10-07T16:03:35.050+02:00",
+        "current_user_can_bypass": "always",
+        "enforcement": "active",
+        "id": 24657217,
+        "name": "Platform tag creation authorization",
+        "rules": [
+          {
+            "type": "creation"
+          }
+        ],
+        "source": "Hexalith/Hexalith.Platform",
+        "source_type": "Repository",
+        "target": "tag",
+        "updated_at": "2026-10-07T16:03:35.087+02:00"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657217",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.ruleset.24657217",
+      "observed_at_utc": "2026-10-07T15:38:36.288238+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657217",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:36.288154+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "ruleset_id": 24657106,
+          "ruleset_source": "Hexalith/Hexalith.Platform",
+          "ruleset_source_type": "Repository",
+          "type": "deletion"
+        },
+        {
+          "ruleset_id": 24657106,
+          "ruleset_source": "Hexalith/Hexalith.Platform",
+          "ruleset_source_type": "Repository",
+          "type": "non_fast_forward"
+        },
+        {
+          "parameters": {
+            "allowed_merge_methods": [
+              "merge",
+              "squash",
+              "rebase"
+            ],
+            "dismiss_stale_reviews_on_push": false,
+            "dismissal_restriction": {
+              "allowed_actors": [],
+              "enabled": false
+            },
+            "require_code_owner_review": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "require_last_push_approval": false,
+            "required_approving_review_count": 1,
+            "required_review_thread_resolution": false,
+            "required_reviewers": []
+          },
+          "ruleset_id": 24657106,
+          "ruleset_source": "Hexalith/Hexalith.Platform",
+          "ruleset_source_type": "Repository",
+          "type": "pull_request"
+        }
+      ],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rules/branches/main",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.main_effective_rules",
+      "observed_at_utc": "2026-10-07T15:38:36.641278+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rules/branches/main",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:36.641178+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "audit": {
+          "content_sha256": "2b338e90f00d9d29582065320a7a7d38bd68e7b33598516d894be9d966eefc21",
+          "result": "pass"
+        },
+        "content_observed": true,
+        "path": ".github/CODEOWNERS",
+        "sha": "76ce00da97d6221aa11b6a127681b4bca5b9d480"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/.github/CODEOWNERS?ref=main",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.codeowners",
+      "observed_at_utc": "2026-10-07T15:38:36.966145+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/.github/CODEOWNERS?ref=main",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:36.966042+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "errors": []
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/codeowners/errors?ref=main",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.codeowners_errors",
+      "observed_at_utc": "2026-10-07T15:38:37.313127+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/codeowners/errors?ref=main",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:37.313083+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "can_approve_pull_request_reviews": true,
+        "default_workflow_permissions": "read"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/permissions/workflow",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.workflow_permissions",
+      "observed_at_utc": "2026-10-07T15:38:37.656819+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/permissions/workflow",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:37.656771+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "id": 6775094,
+          "login": "jpiquot",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        },
+        {
+          "id": 183023925,
+          "login": "tinouit",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        }
+      ],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators?affiliation=all&per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.collaborators",
+      "observed_at_utc": "2026-10-07T15:38:38.017837+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators?affiliation=all&per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:38.017753+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/teams?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.teams",
+      "observed_at_utc": "2026-10-07T15:38:38.365340+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/teams?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:38.365294+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/keys?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.deploy_keys",
+      "observed_at_utc": "2026-10-07T15:38:38.691456+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/keys?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:38.691409+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "permission": "admin",
+        "role_name": "admin",
+        "user": {
+          "id": 6775094,
+          "login": "jpiquot",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        }
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators/jpiquot/permission",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.permission.6775094",
+      "observed_at_utc": "2026-10-07T15:38:39.023957+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators/jpiquot/permission",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:39.023880+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "permission": "admin",
+        "role_name": "admin",
+        "user": {
+          "id": 183023925,
+          "login": "tinouit",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        }
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators/tinouit/permission",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Platform.permission.183023925",
+      "observed_at_utc": "2026-10-07T15:38:39.415882+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators/tinouit/permission",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:39.415817+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "archived": false,
+        "created_at": "2025-03-22T07:56:09Z",
+        "default_branch": "main",
+        "full_name": "Hexalith/Hexalith.Builds",
+        "id": 952945989,
+        "name": "Hexalith.Builds",
+        "owner": {
+          "id": 80614290,
+          "login": "Hexalith",
+          "type": "Organization"
+        },
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "pull": true,
+          "push": true,
+          "triage": true
+        },
+        "private": false,
+        "size": 5000,
+        "updated_at": "2026-10-07T12:35:17Z",
+        "visibility": "public"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.repository",
+      "observed_at_utc": "2026-10-07T15:38:39.905545+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:39.905455+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "created_at": "2026-07-20T09:31:13.745+02:00",
+          "enforcement": "active",
+          "id": 19196298,
+          "name": "Protect main",
+          "source": "Hexalith/Hexalith.Builds",
+          "source_type": "Repository",
+          "target": "branch",
+          "updated_at": "2026-10-07T16:10:50.202+02:00"
+        }
+      ],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/rulesets?includes_parents=true&per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.rulesets",
+      "observed_at_utc": "2026-10-07T15:38:40.222979+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/rulesets?includes_parents=true&per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:40.222904+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~DEFAULT_BRANCH"
+            ]
+          }
+        },
+        "created_at": "2026-07-20T09:31:13.745+02:00",
+        "current_user_can_bypass": "always",
+        "enforcement": "active",
+        "id": 19196298,
+        "name": "Protect main",
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "parameters": {
+              "allowed_merge_methods": [
+                "squash"
+              ],
+              "dismiss_stale_reviews_on_push": false,
+              "dismissal_restriction": {
+                "allowed_actors": [],
+                "enabled": false
+              },
+              "require_code_owner_review": false,
+              "require_extra_approval_for_unattributed_changes": true,
+              "require_last_push_approval": false,
+              "required_approving_review_count": 0,
+              "required_review_thread_resolution": false,
+              "required_reviewers": []
+            },
+            "type": "pull_request"
+          },
+          {
+            "parameters": {
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "Codacy Static Code Analysis",
+                  "integration_id": 56611
+                },
+                {
+                  "context": "SonarCloud Code Analysis",
+                  "integration_id": 12526
+                },
+                {
+                  "context": "commitlint / commitlint",
+                  "integration_id": 15368
+                }
+              ],
+              "strict_required_status_checks_policy": true
+            },
+            "type": "required_status_checks"
+          }
+        ],
+        "source": "Hexalith/Hexalith.Builds",
+        "source_type": "Repository",
+        "target": "branch",
+        "updated_at": "2026-10-07T16:10:50.202+02:00"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/rulesets/19196298",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Builds.main_ruleset_detail",
+      "observed_at_utc": "2026-10-07T15:38:40.565253+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/rulesets/19196298",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:40.565144+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "can_approve_pull_request_reviews": true,
+        "default_workflow_permissions": "read"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/permissions/workflow",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.workflow_permissions",
+      "observed_at_utc": "2026-10-07T15:38:40.890420+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/permissions/workflow",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:40.890369+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [
+        {
+          "id": 6775094,
+          "login": "jpiquot",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        },
+        {
+          "id": 183023925,
+          "login": "tinouit",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        }
+      ],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators?affiliation=all&per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.collaborators",
+      "observed_at_utc": "2026-10-07T15:38:41.251255+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators?affiliation=all&per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:41.251176+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/teams?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.teams",
+      "observed_at_utc": "2026-10-07T15:38:41.584042+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/teams?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:41.583986+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": [],
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/keys?per_page=100",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.deploy_keys",
+      "observed_at_utc": "2026-10-07T15:38:41.934977+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/keys?per_page=100",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:41.934924+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "permission": "admin",
+        "role_name": "admin",
+        "user": {
+          "id": 6775094,
+          "login": "jpiquot",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        }
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators/jpiquot/permission",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.permission.6775094",
+      "observed_at_utc": "2026-10-07T15:38:42.290614+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators/jpiquot/permission",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:42.290543+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "permission": "admin",
+        "role_name": "admin",
+        "user": {
+          "id": 183023925,
+          "login": "tinouit",
+          "permissions": {
+            "admin": true,
+            "maintain": true,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "role_name": "admin",
+          "type": "User"
+        }
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators/tinouit/permission",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "Hexalith.Builds.permission.183023925",
+      "observed_at_utc": "2026-10-07T15:38:42.590448+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators/tinouit/permission",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T15:38:42.590385+00:00",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Operations",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 404
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "Hexalith.Operations.repository",
+      "observed_at_utc": "2026-10-07T15:38:42.875171+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Operations",
+            "observed_at_utc": "2026-10-07T15:38:42.875150+00:00",
+            "status": 404
+          }
+        ]
+      }
+    },
+    {
+      "data": null,
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Notifications",
+      "error": {
+        "condition": "api-observation-unavailable",
+        "status": 404
+      },
+      "exit_code": 1,
+      "method": "GET",
+      "name": "Hexalith.Notifications.repository",
+      "observed_at_utc": "2026-10-07T15:38:43.177500+00:00",
+      "pagination": {
+        "complete": false,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Notifications",
+            "observed_at_utc": "2026-10-07T15:38:43.177476+00:00",
+            "status": 404
+          }
+        ]
+      }
+    }
+  ],
+  "root_repository": "Hexalith/Hexalith.Platform",
+  "sanitization": "Allowlisted metadata and content hashes/audits only; no credentials or workflow source.",
+  "schema_version": 2,
+  "started_at_utc": "2026-10-07T15:38:27.638988+00:00",
+  "story": "4.4"
+}

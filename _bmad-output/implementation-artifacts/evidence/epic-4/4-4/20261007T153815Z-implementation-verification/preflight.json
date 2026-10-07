@@ -1,0 +1,147 @@
+{
+  "changes": [
+    {
+      "id": "organization-read-default",
+      "problems": [],
+      "result": "ready-for-human-review"
+    },
+    {
+      "id": "Platform main reviewed changes",
+      "problems": [],
+      "result": "ready-for-human-review"
+    },
+    {
+      "id": "Platform tag creation authorization",
+      "problems": [],
+      "result": "ready-for-human-review"
+    },
+    {
+      "id": "Platform immutable tags",
+      "problems": [],
+      "result": "ready-for-human-review"
+    },
+    {
+      "id": "builds-administrator-bypass",
+      "problems": [],
+      "result": "ready-for-human-review"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31615326",
+      "problems": [
+        "incomplete-observation:installation.31615326.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31617019",
+      "problems": [
+        "incomplete-observation:installation.31617019.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31626264",
+      "problems": [
+        "incomplete-observation:installation.31626264.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31641834",
+      "problems": [
+        "incomplete-observation:installation.31641834.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-71268337",
+      "problems": [
+        "incomplete-observation:installation.71268337.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-77847816",
+      "problems": [
+        "incomplete-observation:installation.77847816.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-93548476",
+      "problems": [
+        "incomplete-observation:installation.93548476.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-97329264",
+      "problems": [
+        "incomplete-observation:installation.97329264.repositories",
+        "manual-installation-selection-and-readback-required"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "create-Hexalith.Operations",
+      "problems": [
+        "exclude-all-repository-apps-first",
+        "incomplete-observation:installation.31615326.repositories",
+        "incomplete-observation:installation.31617019.repositories",
+        "incomplete-observation:installation.31626264.repositories",
+        "incomplete-observation:installation.31641834.repositories",
+        "incomplete-observation:installation.71268337.repositories",
+        "incomplete-observation:installation.77847816.repositories",
+        "incomplete-observation:installation.93548476.repositories",
+        "incomplete-observation:installation.97329264.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "read-only-workflow-token-Hexalith.Operations",
+      "problems": [
+        "incomplete-observation:Hexalith.Operations.repository",
+        "incomplete-observation:Hexalith.Operations.workflow_permissions",
+        "stale-or-missing-baseline:Hexalith.Operations.workflow_permissions"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "create-Hexalith.Notifications",
+      "problems": [
+        "exclude-all-repository-apps-first",
+        "incomplete-observation:installation.31615326.repositories",
+        "incomplete-observation:installation.31617019.repositories",
+        "incomplete-observation:installation.31626264.repositories",
+        "incomplete-observation:installation.31641834.repositories",
+        "incomplete-observation:installation.71268337.repositories",
+        "incomplete-observation:installation.77847816.repositories",
+        "incomplete-observation:installation.93548476.repositories",
+        "incomplete-observation:installation.97329264.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "read-only-workflow-token-Hexalith.Notifications",
+      "problems": [
+        "incomplete-observation:Hexalith.Notifications.repository",
+        "incomplete-observation:Hexalith.Notifications.workflow_permissions",
+        "stale-or-missing-baseline:Hexalith.Notifications.workflow_permissions"
+      ],
+      "result": "blocked"
+    }
+  ],
+  "discovery_sha256": "a6dda68171ad12ce3543ae61ddcc045e52420b7c12f94271c91823789d727aad",
+  "issues": [],
+  "mutation_authorized": false,
+  "operational_acceptance": false,
+  "proposal_sha256": "4903735b319cc855d0390947ac5e70ae2d09f8d9eece36febd1400652adb2fea",
+  "verification_result": "blocked"
+}

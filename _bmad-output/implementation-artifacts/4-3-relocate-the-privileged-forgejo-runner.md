@@ -93,3 +93,11 @@ Evidence must not contain runner registration tokens, job secrets, registry cred
 **Then** the old credentials are revoked and namespace `forgejo-runner` plus its runner resources are absent
 **And** revalidated source identity, secure-erasure receipts and provider residual checks prove no replacement runner or recoverable retained runner data was removed or left behind
 **And** no privileged CI workload remains on `node1`
+
+## Implementation progress — 2026-10-07
+
+The user-directed [fresh source observation](evidence/epic-4/4-3/20261007t153645z-source-observation/source-observation.json) confirms that `192.168.1.30` is the designated application node `node1`, with the privileged `dind` runner still running there. Its current pod template disables ServiceAccount token automount. This is unsigned read-only discovery, not external-host qualification, credential-absence proof or a cutover baseline. Both runner cache PVs are Bound local OpenEBS volumes with `Delete` reclaim policy; secure erasure and independent provider residual checks are unverified.
+
+[Local preparation tooling and procedure](../../eng/runner-relocation/README.md) create owner-only pending evidence attempts outside Git and verify signed source checkpoints for identity/configuration drift, expiry, approval chronology, current active jobs and exact source-deletion lineage. The [local validation summary](evidence/epic-4/4-3/20261007t153936z-local-preparation/summary.md) records 15 passing focused tests, including actual SSH signature verification and failure cases. Local checks authorize no mutation and satisfy no operational acceptance criterion.
+
+The separate destination host, Administrator policy/job/credential/storage decisions, registered source runner identity, active-job census and complete cluster-path inventory remain outstanding. No host was provisioned, runner enrolled, job matrix executed, labels cut over, credential revoked, storage erased or source resource removed. All operational tasks above remain open and this story remains `in-progress`.

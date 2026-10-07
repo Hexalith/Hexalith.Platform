@@ -84,6 +84,7 @@ development_status:
   4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu: in-progress
   4-2-close-public-admin-exposure-and-anonymous-registry-reads: in-progress
   4-3-relocate-the-privileged-forgejo-runner: in-progress
+  # 4.4: 2026-10-07 fresh discovery passes public controls; App/PAT/private repository/custody acceptance remains blocked.
   4-4-apply-publication-and-operations-repository-controls: in-progress
   # 2026-10-07: 44 local repository-control tests pass; live application, CODEOWNERS publication and owner custody evidence remain outstanding.
   4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi: backlog
@@ -91,7 +92,7 @@ development_status:
   4-7-provide-the-staging-attempt-lock-and-promotion-stop-store: backlog
   4-8-maintain-the-module-intake-manifest: backlog
   4-9-ratify-the-hosted-runtime-and-identity-event-contracts: backlog
-  4-10-define-the-recovery-hook-contract: backlog
+  4-10-define-the-recovery-hook-contract: ready-for-dev
   4-11-define-the-check-suite-contract-and-own-the-reference-suites: backlog
   4-12-publish-retained-releases-with-provenance: backlog
   4-13-retain-artifacts-off-the-primary-failure-domain: backlog
