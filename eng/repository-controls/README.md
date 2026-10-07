@@ -72,6 +72,10 @@ timestamp, or treat candidate lookup 404s as authoritative absence.
    policy's 900-second window. Drift stops the affected action. Regenerate and
    review a proposal for the new state; do not edit a reviewed payload in place.
    Payloads, endpoints, methods and baseline bindings are checked together.
+   Every action binds fresh, complete GET observations of the Administrator,
+   organization identity/Free plan and the two owners. The Platform main action
+   also binds successful published CODEOWNERS and an empty resolution-error
+   inventory; missing, changed or stale publication evidence blocks that action.
 4. Publish this change's `.github/CODEOWNERS` on Platform `main` through a reviewed
    PR. Have a different author, for example `tinouit`, obtain Administrator's
    approval: GitHub does not allow the PR author to approve their own PR.

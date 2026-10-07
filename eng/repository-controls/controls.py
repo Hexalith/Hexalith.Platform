@@ -397,7 +397,7 @@ def ruleset_payload(detail):
 def propose(discovery, policy):
     observed, changes = index(discovery), []
     org, platform, builds = policy["organization"], policy["platform"], policy["builds"]
-    common = ["current_user", "organization_owners"]
+    common = ["current_user", "organization", "organization_owners"]
 
     def add(change_id, method, endpoint, payload, dependencies, manual=False):
         preconditions = {name: state_hash(observed[name]) if name in observed else None
@@ -406,7 +406,8 @@ def propose(discovery, policy):
                         "manual_only": manual, "status": "review-required",
                         "preconditions": preconditions,
                         "baseline_observation_gaps": [name for name in preconditions if name not in observed or
-                         observed[name].get("exit_code") != 0 or not observed[name].get("pagination", {}).get("complete")]})
+                         observed[name].get("method") != "GET" or observed[name].get("exit_code") != 0 or
+                         not observed[name].get("pagination", {}).get("complete")]})
 
     add("organization-read-default", "PATCH", f"/orgs/{org['login']}",
         {"default_repository_permission": org["default_repository_permission"]}, ["organization"])
@@ -414,6 +415,9 @@ def propose(discovery, policy):
         existing = [r for r in observed.get(f"{platform['name']}.rulesets", {}).get("data") or []
                     if r.get("name") == ruleset["name"]]
         dependencies = [f"{platform['name']}.repository", f"{platform['name']}.rulesets"]
+        if any(rule.get("type") == "pull_request" and rule.get("parameters", {}).get("require_code_owner_review")
+               for rule in ruleset["rules"]):
+            dependencies.extend([f"{platform['name']}.codeowners", f"{platform['name']}.codeowners_errors"])
         if len(existing) == 1 and existing[0].get("source_type") == "Repository":
             rule_id = existing[0]["id"]
             dependencies.append(f"{platform['name']}.ruleset.{rule_id}")
@@ -485,10 +489,18 @@ def preflight(proposal, discovery, policy, baseline, now=None):
             observation = observed.get(name)
             if expected is None or observation is None or state_hash(observation) != expected:
                 problems.append(f"stale-or-missing-baseline:{name}")
-            if observation is None or observation.get("exit_code") != 0 or not observation.get("pagination", {}).get("complete"):
+            if observation is None or observation.get("method") != "GET" or observation.get("exit_code") != 0 or not observation.get("pagination", {}).get("complete"):
                 problems.append(f"incomplete-observation:{name}")
             elif not fresh(observation.get("observed_at_utc"), now, policy["evidence_max_age_seconds"]):
                 problems.append(f"stale-observation:{name}")
+        codeowners_name = f"{policy['platform']['name']}.codeowners"
+        if codeowners_name in change["preconditions"]:
+            codeowners = observed.get(codeowners_name, {}).get("data") or {}
+            if codeowners.get("content_observed") is not True or codeowners.get("audit", {}).get("result") != "pass":
+                problems.append("publish-administrator-codeowners-first")
+            errors = observed.get(f"{policy['platform']['name']}.codeowners_errors", {}).get("data")
+            if not isinstance(errors, dict) or errors.get("errors") != []:
+                problems.append("resolve-codeowners-errors-first")
         if change["id"].startswith("create-"):
             existing = observed.get("organization_repositories", {}).get("data") or []
             if any(repo.get("full_name") == policy["organization"]["login"] + "/" + change["payload"]["name"] for repo in existing):

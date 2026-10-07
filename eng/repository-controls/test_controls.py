@@ -310,6 +310,73 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(checks["builds-administrator-bypass"]["result"], "blocked")
         self.assertEqual(checks["organization-read-default"]["result"], "ready-for-human-review")
 
+    def test_every_settings_change_requires_fresh_complete_get_identity_observations(self):
+        baseline = copy.deepcopy(self.discovery)
+        proposal = controls.propose(baseline, self.policy)
+        mutable = [change["id"] for change in proposal["changes"]
+                   if not change["manual_only"] and not change["id"].startswith("create-")]
+        ready = controls.preflight(proposal, baseline, self.policy, baseline, self.now)
+        self.assertTrue(all(change["result"] == "ready-for-human-review"
+                            for change in ready["changes"] if change["id"] in mutable))
+        for name in ("current_user", "organization", "organization_owners"):
+            for defect in ("missing", "failed", "stale", "incomplete", "not-get"):
+                changed = copy.deepcopy(baseline)
+                observation = controls.index(changed)[name]
+                if defect == "missing":
+                    changed["observations"].remove(observation)
+                elif defect == "failed":
+                    observation.update(exit_code=1, error={"status": 403})
+                elif defect == "stale":
+                    observation["observed_at_utc"] = (self.now - timedelta(minutes=16)).isoformat()
+                elif defect == "incomplete":
+                    observation["pagination"]["complete"] = False
+                else:
+                    observation["method"] = "PATCH"
+                with self.subTest(name=name, defect=defect):
+                    report = controls.preflight(proposal, changed, self.policy, baseline, self.now)
+                    self.assertTrue(all(change["result"] == "blocked"
+                                        for change in report["changes"] if change["id"] in mutable))
+
+    def test_main_change_requires_published_codeowners_without_resolution_errors(self):
+        main_name = self.policy["platform"]["rulesets"][0]["name"]
+        for observation_name, data, expected in (
+                ("Hexalith.Platform.codeowners", {"content_observed": False}, "publish-administrator-codeowners-first"),
+                ("Hexalith.Platform.codeowners", {"content_observed": True, "audit": {"result": "fail"}}, "publish-administrator-codeowners-first"),
+                ("Hexalith.Platform.codeowners_errors", {"errors": [{"line": 1}]}, "resolve-codeowners-errors-first"),
+                ("Hexalith.Platform.codeowners_errors", None, "resolve-codeowners-errors-first")):
+            baseline = copy.deepcopy(self.discovery)
+            self.put(baseline, observation_name, data)
+            proposal = controls.propose(baseline, self.policy)
+            report = controls.preflight(proposal, baseline, self.policy, baseline, self.now)
+            checks = {change["id"]: change for change in report["changes"]}
+            with self.subTest(observation=observation_name, data=data):
+                self.assertIn(expected, checks[main_name]["problems"])
+                self.assertEqual(checks[main_name]["result"], "blocked")
+                self.assertEqual(checks["Platform tag creation authorization"]["result"], "ready-for-human-review")
+
+    def test_main_proposal_binds_codeowners_observation_and_freshness(self):
+        baseline = copy.deepcopy(self.discovery)
+        proposal = controls.propose(baseline, self.policy)
+        main_name = self.policy["platform"]["rulesets"][0]["name"]
+        main_change = next(change for change in proposal["changes"] if change["id"] == main_name)
+        for name in ("Hexalith.Platform.codeowners", "Hexalith.Platform.codeowners_errors"):
+            self.assertIn(name, main_change["preconditions"])
+            for defect in ("missing", "failed", "stale", "changed"):
+                changed = copy.deepcopy(baseline)
+                observation = controls.index(changed)[name]
+                if defect == "missing":
+                    changed["observations"].remove(observation)
+                elif defect == "failed":
+                    observation.update(exit_code=1, error={"status": 403})
+                elif defect == "stale":
+                    observation["observed_at_utc"] = (self.now - timedelta(minutes=16)).isoformat()
+                else:
+                    observation["data"]["sha"] = "changed-after-review"
+                with self.subTest(name=name, defect=defect):
+                    report = controls.preflight(proposal, changed, self.policy, baseline, self.now)
+                    check = next(change for change in report["changes"] if change["id"] == main_name)
+                    self.assertEqual(check["result"], "blocked")
+
     def test_tampered_reviewed_method_endpoint_payload_or_removed_changes_cannot_pass(self):
         original = controls.propose(self.baseline, self.policy)
         for field, value in (("method", "DELETE"), ("endpoint", "/orgs/other"), ("payload", {"default_repository_permission": "write"})):
