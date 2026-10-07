@@ -1,0 +1,16 @@
+{
+  "captured_at_utc": "2026-10-07T14:15:41.315306+00:00",
+  "command": "python3 -m unittest discover -s eng/repository-controls -p 'test_*.py' -v",
+  "errors": 0,
+  "evidence_binding_audit": "pass: all five mutation payload/method/endpoint bindings, preflight and discovery/proposal/policy hashes; Builds full writable model preserved; connected App coverage matches complete organization inventory",
+  "failures": 0,
+  "frozen_intent_sha256": "b886e8b8d43fafe63d2ff492e3089d887cc646aed34f5985e823797e636932b1",
+  "historical_baseline_sha256": "6fd2ee8c52cf4178a105fbc9f5442e8aa10dd226b71f86431ac5c1a95a95a2fe",
+  "scope": "Local policy and failure-path tests; no operational acceptance",
+  "skipped": 0,
+  "tests_run": 46,
+  "verified_file_sha256": {
+    "eng/repository-controls/controls.py": "5c5ded1c6d9db8b2d06c840f22b3dc8dbb09b7d96f7b2aa5a0e53c8d2ca32e10",
+    "eng/repository-controls/test_controls.py": "970f5bd216baac91eb6034b78b5a78024e8e92e6a70a0de01dd0217d3b94ef60"
+  }
+}

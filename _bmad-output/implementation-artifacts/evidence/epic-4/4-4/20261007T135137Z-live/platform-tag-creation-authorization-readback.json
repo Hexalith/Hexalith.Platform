@@ -1,0 +1,55 @@
+{
+  "captured_at_utc": "2026-10-07T14:03:36.928117+00:00",
+  "observations": [
+    {
+      "data": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "created_at": "2026-10-07T16:03:35.050+02:00",
+        "current_user_can_bypass": "always",
+        "enforcement": "active",
+        "id": 24657217,
+        "name": "Platform tag creation authorization",
+        "rules": [
+          {
+            "type": "creation"
+          }
+        ],
+        "source": "Hexalith/Hexalith.Platform",
+        "source_type": "Repository",
+        "target": "tag",
+        "updated_at": "2026-10-07T16:03:35.087+02:00"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657217",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "platform-tag-creation-authorization.readback",
+      "observed_at_utc": "2026-10-07T14:03:36.928108+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657217",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T14:03:36.928033+00:00",
+            "status": 200
+          }
+        ]
+      }
+    }
+  ]
+}

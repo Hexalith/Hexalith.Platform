@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "story": "4.4",
+  "source": "GitHub connector authenticated read-only observations",
+  "captured_at_utc": "2026-10-07 14:12:41 UTC",
+  "installations": [
+    {
+      "id": 77847816,
+      "account_login": "Hexalith",
+      "account_id": 80614290,
+      "account_type": "Organization",
+      "account_avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+      "html_url": "https://github.com/organizations/Hexalith/settings/installations/77847816",
+      "events": [
+        "check_run",
+        "check_suite",
+        "commit_comment",
+        "issues",
+        "issue_comment",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "pull_request_review_thread",
+        "repository",
+        "status",
+        "sub_issues"
+      ],
+      "repository_selection": "all",
+      "viewer_can_administer": null
+    }
+  ],
+  "coverage": {
+    "installation_id": 77847816,
+    "tool": "github_list_repositories_by_installation",
+    "requests": [
+      {
+        "page_offset": 0,
+        "page_size": 100,
+        "result_count": 67
+      },
+      {
+        "page_offset": 100,
+        "page_size": 100,
+        "result_count": 0
+      }
+    ],
+    "repositories": [
+      {
+        "id": 568370439,
+        "full_name": "Hexalith/Hexalith_old",
+        "owner_id": 80614290
+      },
+      {
+        "id": 629551223,
+        "full_name": "Hexalith/Hexalith.AI",
+        "owner_id": 80614290
+      },
+      {
+        "id": 647343286,
+        "full_name": "Hexalith/semantic-kernel",
+        "owner_id": 80614290
+      },
+      {
+        "id": 786418755,
+        "full_name": "Hexalith/HexalithApp_old",
+        "owner_id": 80614290
+      },
+      {
+        "id": 796191088,
+        "full_name": "Hexalith/Hexalith.Inventories",
+        "owner_id": 80614290
+      },
+      {
+        "id": 796201155,
+        "full_name": "Hexalith/HexalithAspire",
+        "owner_id": 80614290
+      },
+      {
+        "id": 796320664,
+        "full_name": "Hexalith/Hexalith.Dynamics365Finance",
+        "owner_id": 80614290
+      },
+      {
+        "id": 798880730,
+        "full_name": "Hexalith/Hexalith.Parties.Old",
+        "owner_id": 80614290
+      },
+      {
+        "id": 798881062,
+        "full_name": "Hexalith/Hexalith.ExternalSystems",
+        "owner_id": 80614290
+      },
+      {
+        "id": 798887497,
+        "full_name": "Hexalith/Hexalith.Sales",
+        "owner_id": 80614290
+      },
+      {
+        "id": 798887842,
+        "full_name": "Hexalith/Hexalith.Identities",
+        "owner_id": 80614290
+      },
+      {
+        "id": 808510301,
+        "full_name": "Hexalith/Hexalith.Oidc_old",
+        "owner_id": 80614290
+      },
+      {
+        "id": 834719990,
+        "full_name": "Hexalith/Hexalith.EasyAuthentication_old",
+        "owner_id": 80614290
+      },
+      {
+        "id": 851523569,
+        "full_name": "Hexalith/Hexalith",
+        "owner_id": 80614290
+      },
+      {
+        "id": 851770509,
+        "full_name": "Hexalith/HexalithApp",
+        "owner_id": 80614290
+      },
+      {
+        "id": 852168913,
+        "full_name": "Hexalith/Hexalith.Security_OLD",
+        "owner_id": 80614290
+      },
+      {
+        "id": 854107919,
+        "full_name": "Hexalith/Hexalith.Oidc",
+        "owner_id": 80614290
+      },
+      {
+        "id": 871087402,
+        "full_name": "Hexalith/Hexalith.Projects",
+        "owner_id": 80614290
+      },
+      {
+        "id": 871088314,
+        "full_name": "Hexalith/Hexalith.Tasks",
+        "owner_id": 80614290
+      },
+      {
+        "id": 871088977,
+        "full_name": "Hexalith/Hexalith.Contacts",
+        "owner_id": 80614290
+      },
+      {
+        "id": 871091034,
+        "full_name": "Hexalith/Hexalith.Documents_OLD",
+        "owner_id": 80614290
+      },
+      {
+        "id": 871112728,
+        "full_name": "Hexalith/Hexalith.Docs",
+        "owner_id": 80614290
+      },
+      {
+        "id": 871603551,
+        "full_name": "Hexalith/Hexalith.Templates",
+        "owner_id": 80614290
+      },
+      {
+        "id": 876719824,
+        "full_name": "Hexalith/Hexalith.UrlToText",
+        "owner_id": 80614290
+      },
+      {
+        "id": 890456345,
+        "full_name": "Hexalith/Hexalith.DaprIdentityStore",
+        "owner_id": 80614290
+      },
+      {
+        "id": 943757274,
+        "full_name": "Hexalith/ollama",
+        "owner_id": 80614290
+      },
+      {
+        "id": 943757505,
+        "full_name": "Hexalith/qdrant",
+        "owner_id": 80614290
+      },
+      {
+        "id": 943990311,
+        "full_name": "Hexalith/kernel-memory",
+        "owner_id": 80614290
+      },
+      {
+        "id": 943990893,
+        "full_name": "Hexalith/open-webui",
+        "owner_id": 80614290
+      },
+      {
+        "id": 952945989,
+        "full_name": "Hexalith/Hexalith.Builds",
+        "owner_id": 80614290
+      },
+      {
+        "id": 952960148,
+        "full_name": "Hexalith/Hexalith.Commons",
+        "owner_id": 80614290
+      },
+      {
+        "id": 956657445,
+        "full_name": "Hexalith/Hexalith.MyNewPackage",
+        "owner_id": 80614290
+      },
+      {
+        "id": 957156862,
+        "full_name": "Hexalith/Hexalith.PolymorphicSerializations",
+        "owner_id": 80614290
+      },
+      {
+        "id": 958460421,
+        "full_name": "Hexalith/Hexalith.Streams",
+        "owner_id": 80614290
+      },
+      {
+        "id": 960307124,
+        "full_name": "Hexalith/Hexalith.KeyValueStorages",
+        "owner_id": 80614290
+      },
+      {
+        "id": 963292804,
+        "full_name": "Hexalith/Hexalith.EventStores",
+        "owner_id": 80614290
+      },
+      {
+        "id": 966892135,
+        "full_name": "Hexalith/Hexalith.Security",
+        "owner_id": 80614290
+      },
+      {
+        "id": 967276766,
+        "full_name": "Hexalith/Hexalith.NetAspire",
+        "owner_id": 80614290
+      },
+      {
+        "id": 967469113,
+        "full_name": "Hexalith/Hexalith.IdentityStores",
+        "owner_id": 80614290
+      },
+      {
+        "id": 968206525,
+        "full_name": "Hexalith/Hexalith.Documents",
+        "owner_id": 80614290
+      },
+      {
+        "id": 968662765,
+        "full_name": "Hexalith/Hexalith.Domains",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1027122874,
+        "full_name": "Hexalith/Hexalith.ChatClient",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1027188474,
+        "full_name": "Hexalith/Hexalith.MyNewModule",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1107174746,
+        "full_name": "Hexalith/Hexalith.GitStorage",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1120511943,
+        "full_name": "Hexalith/Hexalith.Applications",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1131658602,
+        "full_name": "Hexalith/Hexalith.MarkdownEditor",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1154280248,
+        "full_name": "Hexalith/Hexalith.GitDocumentStorage",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1155154671,
+        "full_name": "Hexalith/Hexalith.EventStore",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1170072276,
+        "full_name": "Hexalith/Hexalith.Parties",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1174267565,
+        "full_name": "Hexalith/Hexalith.Tenants",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1177697182,
+        "full_name": "Hexalith/Hexalith.FrontShell",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1188027961,
+        "full_name": "Hexalith/Hexalith.Memories",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1202567471,
+        "full_name": "Hexalith/Hexalith.FrontComposer",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1221438803,
+        "full_name": "Hexalith/Hexalith.AI.Tools",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1221455078,
+        "full_name": "Hexalith/Hexalith.AI.Project",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1229485448,
+        "full_name": "Hexalith/Hexalith.Folders",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1231551514,
+        "full_name": "Hexalith/Hexalith.Conversations",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1234748496,
+        "full_name": "Hexalith/Hexalith.ChatBot",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1264171182,
+        "full_name": "Hexalith/Hexalith.Works",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1264947605,
+        "full_name": "Hexalith/Hexalith.Todos",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1271966197,
+        "full_name": "Hexalith/slide-video-producer",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1272275109,
+        "full_name": "Hexalith/Hexalith.Timesheets",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1277685416,
+        "full_name": "Hexalith/Hexalith.Agents",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1299011770,
+        "full_name": "Hexalith/Hexalith.BmadSkills",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1328589450,
+        "full_name": "Hexalith/Hexalith.Platform",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1379417482,
+        "full_name": "Hexalith/Hexalith.McpCli",
+        "owner_id": 80614290
+      },
+      {
+        "id": 1379430755,
+        "full_name": "Hexalith/Hexalith.CiCd",
+        "owner_id": 80614290
+      }
+    ]
+  },
+  "other_installation_attempt": {
+    "installation_id": 31615326,
+    "error": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/apps/installations#list-repositories-accessible-to-the-user-access-token\",\"status\":\"403\"}",
+    "error_code": "FORBIDDEN",
+    "error_data": {
+      "message": "Resource not accessible by integration",
+      "documentation_url": "https://docs.github.com/rest/apps/installations#list-repositories-accessible-to-the-user-access-token",
+      "status": "403"
+    }
+  },
+  "scope": "Supplemental evidence for this connector's own installation only; does not change CLI observations or prove any other App selection.",
+  "mutation_performed": false,
+  "operational_acceptance": false
+}

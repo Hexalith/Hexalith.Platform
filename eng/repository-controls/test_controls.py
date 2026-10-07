@@ -225,6 +225,28 @@ class PolicyTests(unittest.TestCase):
         app["permissions"]["contents"] = "write"
         self.assertIn("unrelated-app-permissions-or-state-changed", self.conditions(self.verify()))
 
+    def test_unavailable_app_coverage_does_not_claim_repository_access_changed(self):
+        app = self.item("organization_installations")["data"]["installations"][1]
+        item = self.item(f"installation.{app['id']}.repositories")
+        item["exit_code"] = 1
+        item["status"] = 403
+        item["data"] = {"message": "Resource not accessible by integration"}
+        report = self.verify()
+        self.assertEqual("blocked", report["verification_result"])
+        self.assertIn("api-observation-unavailable", self.conditions(report))
+        self.assertIn("app-repository-access-preservation-unproved", self.conditions(report))
+        self.assertNotIn("unrelated-app-repository-access-changed", self.conditions(report))
+
+    def test_incomplete_app_baseline_does_not_claim_repository_access_changed(self):
+        item = controls.index(self.baseline)["organization_repositories"]
+        item["pagination"]["complete"] = False
+        item["data"] = []
+        report = self.verify()
+        self.assertEqual("blocked", report["verification_result"])
+        self.assertIn("app-preservation-baseline-incomplete", self.conditions(report))
+        self.assertIn("app-repository-access-preservation-unproved", self.conditions(report))
+        self.assertNotIn("unrelated-app-repository-access-changed", self.conditions(report))
+
     def test_unknown_pat_inventory_and_unauthorized_writable_grant_fail(self):
         for name in ("fine_grained_pat_grants", "fine_grained_pat_requests"):
             self.item(name)["data"] = [{"id": 321, "owner": {"id": 77, "login": "outside-owner"},

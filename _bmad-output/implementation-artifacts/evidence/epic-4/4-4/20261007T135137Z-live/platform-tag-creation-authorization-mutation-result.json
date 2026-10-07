@@ -1,0 +1,41 @@
+{
+  "captured_at_utc": "2026-10-07T14:03:36.320837+00:00",
+  "change": "Platform tag creation authorization",
+  "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+  "exit_code": 0,
+  "method": "POST",
+  "payload_sha256": "fe9c92a06722c1fea81d1c01653efb91369c993abdfc98ea8ae229532a50ee2b",
+  "response": {
+    "bypass_actors": [
+      {
+        "actor_id": 6775094,
+        "actor_type": "User",
+        "bypass_mode": "always"
+      }
+    ],
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "~ALL"
+        ]
+      }
+    },
+    "created_at": "2026-10-07T16:03:35.050+02:00",
+    "current_user_can_bypass": "always",
+    "enforcement": "active",
+    "id": 24657217,
+    "name": "Platform tag creation authorization",
+    "rules": [
+      {
+        "type": "creation"
+      }
+    ],
+    "source": "Hexalith/Hexalith.Platform",
+    "source_type": "Repository",
+    "target": "tag",
+    "updated_at": "2026-10-07T16:03:35.087+02:00"
+  },
+  "status": 201,
+  "user_authorized": true
+}

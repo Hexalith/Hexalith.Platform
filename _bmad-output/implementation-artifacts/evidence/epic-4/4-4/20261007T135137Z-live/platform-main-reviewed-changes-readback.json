@@ -1,0 +1,79 @@
+{
+  "captured_at_utc": "2026-10-07T14:02:25.746828+00:00",
+  "observations": [
+    {
+      "data": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "refs/heads/main"
+            ]
+          }
+        },
+        "created_at": "2026-10-07T16:02:23.904+02:00",
+        "current_user_can_bypass": "always",
+        "enforcement": "active",
+        "id": 24657106,
+        "name": "Platform main reviewed changes",
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "parameters": {
+              "allowed_merge_methods": [
+                "merge",
+                "squash",
+                "rebase"
+              ],
+              "dismiss_stale_reviews_on_push": false,
+              "dismissal_restriction": {
+                "allowed_actors": [],
+                "enabled": false
+              },
+              "require_code_owner_review": true,
+              "require_extra_approval_for_unattributed_changes": true,
+              "require_last_push_approval": false,
+              "required_approving_review_count": 1,
+              "required_review_thread_resolution": false,
+              "required_reviewers": []
+            },
+            "type": "pull_request"
+          }
+        ],
+        "source": "Hexalith/Hexalith.Platform",
+        "source_type": "Repository",
+        "target": "branch",
+        "updated_at": "2026-10-07T16:02:23.997+02:00"
+      },
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657106",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "platform-main-reviewed-changes.readback",
+      "observed_at_utc": "2026-10-07T14:02:25.746819+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657106",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T14:02:25.746725+00:00",
+            "status": 200
+          }
+        ]
+      }
+    }
+  ]
+}

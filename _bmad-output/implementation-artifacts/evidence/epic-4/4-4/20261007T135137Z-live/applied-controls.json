@@ -1,0 +1,53 @@
+{
+  "acceptance_scope": "Inspected organization read default, Platform main/tags/CODEOWNERS and preserved Builds rules/checks only.",
+  "captured_at_utc": "2026-10-07T14:15:41.315306+00:00",
+  "changes": [
+    {
+      "change": "builds-administrator-bypass",
+      "endpoint": "/repos/Hexalith/Hexalith.Builds/rulesets/19196298",
+      "immediate_readback": "pass",
+      "mutation_receipt": "builds-administrator-bypass-mutation-result.json",
+      "payload_sha256": "1c0c090d5cc0f64fd0604c6d3751587864be791ee6e4f2c3ed01d878fe77bbc9",
+      "status": 200
+    },
+    {
+      "change": "organization-read-default",
+      "endpoint": "/orgs/Hexalith",
+      "immediate_readback": "pass",
+      "mutation_receipt": "organization-read-default-mutation-result.json",
+      "payload_sha256": "4bffc681bc8a44dba55088a6acb2fa02c20c6b730a34345057dbf7230183f98a",
+      "status": 200
+    },
+    {
+      "change": "Platform immutable tags",
+      "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+      "immediate_readback": "pass",
+      "mutation_receipt": "platform-immutable-tags-mutation-result.json",
+      "payload_sha256": "422528e790e0bae00b9402ddeee831368132a078d8cca9b77fe06abfd2ff5b0d",
+      "status": 201
+    },
+    {
+      "change": "Platform main reviewed changes",
+      "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+      "immediate_readback": "pass",
+      "mutation_receipt": "platform-main-reviewed-changes-mutation-result.json",
+      "payload_sha256": "7af29406ebc29e5c1247f9d1ffb5a6a41876fe13678ca5b5314e2fea5e745a58",
+      "status": 201
+    },
+    {
+      "change": "Platform tag creation authorization",
+      "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+      "immediate_readback": "pass",
+      "mutation_receipt": "platform-tag-creation-authorization-mutation-result.json",
+      "payload_sha256": "fe9c92a06722c1fea81d1c01653efb91369c993abdfc98ea8ae229532a50ee2b",
+      "status": 201
+    }
+  ],
+  "operational_acceptance": false,
+  "schema_version": 1,
+  "story_complete": false,
+  "user_authorization": [
+    "proceed",
+    "provide it yourself"
+  ]
+}
