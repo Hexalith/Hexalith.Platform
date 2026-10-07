@@ -177,8 +177,14 @@ Status stays `in-progress`; planning approval neither opens the gate nor extends
 
 ## Maintenance end-time amendment — 2026-10-02
 
-The Administrator further amended the end with “set the end monday 2pm.” The **current effective end is Monday, 2026-10-05 14:00 Europe/Paris** (`2026-10-05T12:00:00Z`), recorded in the [new amendment](evidence/epic-4/4-1/20261002t111602z-maintenance-window-end-amendment.json). Earlier end-time records remain historical. The start, incident channel and acknowledged roles are unchanged. The signed backup gate expired at `2026-10-02T06:16:52Z`; fresh signed backup/restore validation and all other technical prerequisites are required before any hop. This amendment does not authorize production mutation; the hop gate remains closed.
+The Administrator further amended the end with “set the end monday 2pm.” The **effective end for that amendment was Monday, 2026-10-05 14:00 Europe/Paris** (`2026-10-05T12:00:00Z`), recorded in the [amendment](evidence/epic-4/4-1/20261002t111602z-maintenance-window-end-amendment.json). Earlier end-time records remain historical. That amendment left the start, incident channel and acknowledged roles unchanged. The signed backup gate expired at `2026-10-02T06:16:52Z`; fresh signed backup/restore validation and all other technical prerequisites are required before any hop. This amendment does not authorize production mutation; the hop gate remains closed.
 
 ## Target decision — 2026-10-03
 
 The Administrator selected Kubernetes **1.36.5**, reached by way of 1.35 (currently 1.35.9), as the target. It is the newest minor that the qualified Rancher 2.15.2 supports for imported clusters. Kubernetes 1.37 follows once Rancher supports it. The hashed `MAINTENANCE.md` proposal is not modified; a successor procedure for the two hops is derived after retirement. Every existing gate stays in force: fresh Story 4.0 proofs, accepted Story 4.27 retirement and approval of the exact procedure.
+
+## Maintenance window amendment — 2026-10-07
+
+The Administrator instructed: “maintenance window starts now and finish at the end of the month”. The **current window starts immediately**, recorded at `2026-10-07T16:44:45+02:00` (`2026-10-07T14:44:45Z`), and runs **through October 31, 2026 in Europe/Paris**. Its exclusive end is `2026-11-01T00:00:00+01:00` (`2026-10-31T23:00:00Z`); the UTC offset changes before month-end. The [new window amendment](evidence/epic-4/4-1/20261007t144445z-maintenance-window-amendment.json) supersedes both the earlier start and end, while preserving historical authorization records and the existing incident channel and role acknowledgements.
+
+This instruction updates the maintenance dates. Fresh signed backup/restore validation and every other technical prerequisite remain required before a hop; the backup gate expired at `2026-10-02T06:16:52Z` and the hop gate remains closed. The amendment is local unsigned evidence and does not approve the historical SHA-bound maintenance/recovery proposal.
