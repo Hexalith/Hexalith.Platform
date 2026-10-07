@@ -1,3 +1,5 @@
+using Hexalith.EventStore.Contracts.Security;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -15,6 +17,8 @@ public static class PlatformCustodyServiceCollectionExtensions
         services.TryAddSingleton<IPlatformSigningProfileProvider, UnavailablePlatformSigningProfileProvider>();
         services.TryAddSingleton<PlatformHmacService>();
         services.TryAddSingleton<TrustedEnvelopeAuthenticator>();
+        services.TryAddScoped<IdentityHistoryCleanup>(provider => new(
+            provider.GetRequiredService<TimeProvider>(), provider.GetService<IIdentityHistoryCustody>()));
         return services;
     }
 }
