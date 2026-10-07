@@ -1,0 +1,59 @@
+{
+  "authenticated_github_identity": {
+    "id": 6775094,
+    "login": "jpiquot",
+    "source": "discovery-after-controls.json:current_user"
+  },
+  "browser": {
+    "observed_window_title": "Sign in to GitHub \u00b7 GitHub - Google Chrome",
+    "owner_settings_session_available": false,
+    "settings_url": "https://github.com/organizations/Hexalith/settings/installations"
+  },
+  "captured_at_utc": "2026-10-07T14:15:41.315306+00:00",
+  "credential_values_or_hashes_collected": false,
+  "evidence_type": "Agent-observed metadata; not owner custody attestations",
+  "inventories_unproved": [
+    "classic-pat",
+    "fine-grained-pat",
+    "app-credentials",
+    "deploy-keys",
+    "cached-credentials",
+    "workflow-and-admin-credentials"
+  ],
+  "observed_credential_store_metadata": [
+    {
+      "contents_inspected": false,
+      "gid": 1000,
+      "kind": "directory",
+      "mode": "0o751",
+      "path": "/home/administrator/.config/gh",
+      "uid": 1000
+    },
+    {
+      "contents_inspected": false,
+      "gid": 1000,
+      "kind": "file",
+      "mode": "0o600",
+      "path": "/home/administrator/.config/gh/hosts.yml",
+      "uid": 1000
+    }
+  ],
+  "operational_acceptance": false,
+  "owner_device_ownership_established": false,
+  "owners": [
+    {
+      "authenticated_custody_statement_available": false,
+      "complete_device_inventory_available": false,
+      "id": 6775094,
+      "login": "jpiquot"
+    },
+    {
+      "authenticated_custody_statement_available": false,
+      "complete_device_inventory_available": false,
+      "id": 183023925,
+      "login": "tinouit"
+    }
+  ],
+  "related_historical_evidence": "../../4-26/20261003t150903z-residual-custody/custody-pointer.json is backup/certificate custody metadata, not Story 4.4 owner-device credential evidence.",
+  "schema_version": 1
+}

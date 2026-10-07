@@ -47,12 +47,12 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `.github/CODEOWNERS` -- assign `*`, `/.github/workflows/**` and `/.github/CODEOWNERS` to `@jpiquot`; publish to Platform `main` through a reviewed change so ownership is effective. Local file prepared; reviewed publication remains outstanding.
+- [x] `.github/CODEOWNERS` -- assign `*`, `/.github/workflows/**` and `/.github/CODEOWNERS` to `@jpiquot`; publish to Platform `main` through a reviewed change so ownership is effective. Published by user-authorized, operator-reviewed PR #3; live content audit passes and GitHub returns no ownership errors. GitHub review submissions were empty; no formal PR approval is claimed.
 - [x] `eng/repository-controls/desired-state.json` -- encode explicit repository names/actor IDs, main protection, separate tag creation/immutability rules, read base permissions and private-repository access policy.
 - [x] `eng/repository-controls/controls.py` -- implement sanitized, paginated discovery, exact change payload proposals and effective-state verification; retain errors and detect stale baselines. Never auto-apply during discovery/verification.
 - [x] `eng/repository-controls/test_controls.py` -- test the matrix plus broader bypass, missing CODEOWNERS, inherited writers, writable workflow overrides and partial API results.
 - [x] `eng/repository-controls/README.md` -- document ordered application, App selection changes preserving existing access, credential custody collection, rollback and Administrator recovery. Read-only defaults do not prevent workflow permission overrides; verify workflow contents too.
-- [ ] `_bmad-output/implementation-artifacts/evidence/epic-4/4-4/` -- retain reviewed payloads, fresh pre-change checks and readbacks. Apply Platform rulesets, Builds bypass and organization read default; create private repositories and verify App exclusion, only named writers, token settings and credential custody. Record manual-only or inaccessible steps as outstanding. Draft payloads and blocked historical-evidence checks retained in `20261007T111755Z-local-preparation/`; all live steps remain outstanding.
+- [ ] `_bmad-output/implementation-artifacts/evidence/epic-4/4-4/` -- retain reviewed payloads, fresh pre-change checks and readbacks. Apply Platform rulesets, Builds bypass and organization read default; create private repositories and verify App exclusion, only named writers, token settings and credential custody. Five live settings changes passed immediate readback, recorded in `20261007T135137Z-live/`. Seven all-repository App selections, Travis's selected coverage, PAT inventories, private repository creation/configuration and both owners' custody evidence remain outstanding.
 - [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` -- synchronize 4.4 status; mark done only after operational acceptance. Remains `in-progress`.
 
 **Acceptance Criteria:**
@@ -65,25 +65,28 @@ context:
 
 - 2026-10-07: After reviewing the prepared artifacts and being asked to authorize live discovery, CODEOWNERS publication and application of the prepared controls, the user replied "proceed". This supersedes the no-push/no-remote restriction for those Story 4.4 operations. Preserve the frozen policy; record unsupported/manual checks and incomplete custody as outstanding.
 
-- This build run follows the rendered step-03 rule: "No push. No remote ops." Prepare and verify local artifacts using retained discovery; do not call GitHub or publish changes. Live application, fresh remote observations, publication of CODEOWNERS and owner credential custody evidence remain outstanding for a separately authorized operational run. Do not mark the story done on local verification alone.
+- The initial preparation followed the rendered step-03 rule: "No push. No remote ops." Its retained discovery checks remain historical blocked evidence. The later explicit authorization above enabled the scoped live operations. Local verification alone never marks the story done.
+- 2026-10-07: The user replied "provide it yourself" to the evidence request. Collected fresh CLI discovery, the connected App's 67-repository inventory, credential-store file metadata and browser sign-in state. These observations are not authenticated custody statements from either owner. No private repository was created because App exclusion prerequisites remain unproved; no integration, unrelated credential, ownership or billing setting was changed.
 
 ## Spec Change Log
 
 ## Review Triage Log
 
 - 2026-10-07 parent implementation audit (not a completed workflow review): resolved lossy Builds rule/parameter projection, successful PAT grant/request authorization and scope checking, reviewed proposal method/endpoint/payload integrity binding, preservation of unrelated App repository access, missing creation prerequisites and pinned actor/organization/owner checks, and shared annotated-tag traversal. Mocked traversal now retains each repository's shared or nested tag object once, including failed observations.
-- All four live acceptance criteria and the two operational execution tasks (reviewed CODEOWNERS publication and live controls/evidence application) remain unmet. Rendered step-03's "No push. No remote ops." rule prevents proceeding to step-04 or operational acceptance in this run; the story remains `in-progress`.
+- Live inspection satisfies the Platform main/tag settings and Builds preservation criteria. The private repository/access/custody criterion remains unmet. Step-03 tasks and acceptance verification therefore remain incomplete; step-04 has not started and the story stays `in-progress`.
+- Live failed App queries revealed a diagnostic issue: unavailable coverage was compared as an empty selection and described as changed access. Verification now reports unproved preservation without alleging a change; two regression tests pass. It still blocks acceptance.
 
 ## Design Notes
 
-Repository names and all-tag coverage are implementation choices. Owners retain power to edit rulesets. GitHub configuration changes and repository creation have external effects; local preparation does not authorize them.
+Repository names and all-tag coverage are implementation choices. Owners retain power to edit rulesets. GitHub configuration changes and repository creation have external effects; the live operations use the user's subsequent explicit authorization.
 
 - Local verification establishes consistency of supplied observations and owner statements only; it never asserts operational acceptance or authorizes a mutation. Workflow source is audited in memory and retained as hashes/results; ambiguous YAML is blocked. Annotated tags are peeled to commit/tree objects, and initially empty repository workflow inventories remain unproved until complete usable refs/trees are observed after App exclusion.
 
 ## Verification
 
 - `python3 -m unittest discover -s eng/repository-controls -p 'test_*.py'` -- meaningful policy/error cases pass.
-- Run `controls.py` verification against fresh GitHub discovery and owner custody evidence -- every acceptance criterion has measured evidence; unsupported observations remain blocked.
+- Run `controls.py` verification against fresh GitHub discovery and owner custody evidence -- require measured evidence for every acceptance criterion; unsupported observations remain blocked.
 - `git diff --check` -- no whitespace errors; sprint YAML parses with unrelated statuses preserved.
 - API contracts: [rulesets](https://docs.github.com/en/rest/repos/rules), [workflow permissions](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization).
 - Local preparation: 44 tests pass. Retained-baseline preflight and verification both return `blocked` (exit 1); no fresh GitHub or owner custody evidence was collected. See `evidence/epic-4/4-4/20261007T111755Z-local-preparation/summary.md`.
+- Authorized live run: 46 tests pass after the diagnostic correction. Each of the five settings mutations passed fresh preflight and immediate readback. Post-change full verification returns `blocked` (exit 1), `complete: false`, `operational_acceptance: false`. See [live evidence](evidence/epic-4/4-4/20261007T135137Z-live/summary.md).

@@ -1,0 +1,36 @@
+{
+  "captured_at_utc": "2026-10-07T14:01:09.166485+00:00",
+  "observations": [
+    {
+      "data": {
+        "created_at": "2021-03-14T06:12:12Z",
+        "default_repository_permission": "read",
+        "id": 80614290,
+        "login": "Hexalith",
+        "name": "Hexalith",
+        "plan": {
+          "name": "free"
+        },
+        "type": "Organization",
+        "updated_at": "2025-09-20T07:54:53Z"
+      },
+      "endpoint": "https://api.github.com/orgs/Hexalith",
+      "exit_code": 0,
+      "method": "GET",
+      "name": "organization-read-default.readback",
+      "observed_at_utc": "2026-10-07T14:01:09.166471+00:00",
+      "pagination": {
+        "complete": true,
+        "page_count": 1,
+        "pages": [
+          {
+            "endpoint": "https://api.github.com/orgs/Hexalith",
+            "next_endpoint": null,
+            "observed_at_utc": "2026-10-07T14:01:09.166386+00:00",
+            "status": 200
+          }
+        ]
+      }
+    }
+  ]
+}

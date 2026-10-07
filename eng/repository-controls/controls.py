@@ -643,7 +643,11 @@ def verify(discovery, policy, baseline, custody=None, now=None):
     if {a.get("id") for a in apps.get("installations", [])} != set(old_apps):
         issue("installed-app-set-changed-from-reviewed-baseline")
     for app in apps.get("installations", []):
-        coverage = need(f"installation.{app['id']}.repositories") or {}
+        coverage = need(f"installation.{app['id']}.repositories")
+        coverage_complete = isinstance(coverage, dict) and isinstance(coverage.get("repositories"), list)
+        if not coverage_complete:
+            issue("app-repository-coverage-unproved", str(app["id"]))
+            coverage = {}
         app_coverage[app["id"]] = coverage.get("repositories", [])
         if app.get("repository_selection") != "selected":
             issue("all-repository-app-can-access-private-repositories", str(app["id"]))
@@ -653,14 +657,17 @@ def verify(discovery, policy, baseline, custody=None, now=None):
         coverage_name = ("organization_repositories" if old_app.get("repository_selection") == "all"
                          else f"installation.{app['id']}.repositories")
         old_observation = original_observed.get(coverage_name, {})
-        if old_observation.get("exit_code") != 0 or not old_observation.get("pagination", {}).get("complete"):
+        baseline_complete = old_observation.get("exit_code") == 0 and old_observation.get("pagination", {}).get("complete")
+        if not baseline_complete:
             issue("app-preservation-baseline-incomplete", str(app["id"]))
         old_data = old_observation.get("data") or ([] if coverage_name == "organization_repositories" else {})
         old_repos = old_data if coverage_name == "organization_repositories" else old_data.get("repositories", [])
         private_names = {r["full_name"] for r in policy["private_repositories"]}
         old_ids = {r["id"] for r in old_repos if r.get("full_name") not in private_names}
         current_ids = {r["id"] for r in coverage.get("repositories", []) if r.get("full_name") not in private_names}
-        if old_ids != current_ids:
+        if not coverage_complete or not baseline_complete:
+            issue("app-repository-access-preservation-unproved", str(app["id"]))
+        elif old_ids != current_ids:
             issue("unrelated-app-repository-access-changed", str(app["id"]))
     for name in ("fine_grained_pat_grants", "fine_grained_pat_requests"):
         grants = need(name)  # Inaccessible inventories are an unresolved dependency.

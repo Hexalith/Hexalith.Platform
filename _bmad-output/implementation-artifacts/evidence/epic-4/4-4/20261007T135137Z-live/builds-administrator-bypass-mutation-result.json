@@ -1,0 +1,84 @@
+{
+  "captured_at_utc": "2026-10-07T14:10:51.726200+00:00",
+  "change": "builds-administrator-bypass",
+  "endpoint": "/repos/Hexalith/Hexalith.Builds/rulesets/19196298",
+  "exit_code": 0,
+  "method": "PUT",
+  "payload_sha256": "1c0c090d5cc0f64fd0604c6d3751587864be791ee6e4f2c3ed01d878fe77bbc9",
+  "response": {
+    "bypass_actors": [
+      {
+        "actor_id": 6775094,
+        "actor_type": "User",
+        "bypass_mode": "always"
+      }
+    ],
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "~DEFAULT_BRANCH"
+        ]
+      }
+    },
+    "created_at": "2026-07-20T09:31:13.745+02:00",
+    "current_user_can_bypass": "always",
+    "enforcement": "active",
+    "id": 19196298,
+    "name": "Protect main",
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "parameters": {
+          "allowed_merge_methods": [
+            "squash"
+          ],
+          "dismiss_stale_reviews_on_push": false,
+          "dismissal_restriction": {
+            "allowed_actors": [],
+            "enabled": false
+          },
+          "require_code_owner_review": false,
+          "require_extra_approval_for_unattributed_changes": true,
+          "require_last_push_approval": false,
+          "required_approving_review_count": 0,
+          "required_review_thread_resolution": false,
+          "required_reviewers": []
+        },
+        "type": "pull_request"
+      },
+      {
+        "parameters": {
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "Codacy Static Code Analysis",
+              "integration_id": 56611
+            },
+            {
+              "context": "SonarCloud Code Analysis",
+              "integration_id": 12526
+            },
+            {
+              "context": "commitlint / commitlint",
+              "integration_id": 15368
+            }
+          ],
+          "strict_required_status_checks_policy": true
+        },
+        "type": "required_status_checks"
+      }
+    ],
+    "source": "Hexalith/Hexalith.Builds",
+    "source_type": "Repository",
+    "target": "branch",
+    "updated_at": "2026-10-07T16:10:50.202+02:00"
+  },
+  "status": 200,
+  "user_authorized": true
+}
