@@ -2,7 +2,8 @@
 title: 'Apply publication and operations repository controls'
 type: 'chore'
 created: '2026-10-07'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: 'bed37580a4213edb3e4698525e530b85aa4a80ea'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '4-4-apply-publication-and-operations-repository-controls'
@@ -46,13 +47,13 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `.github/CODEOWNERS` -- assign `*`, `/.github/workflows/**` and `/.github/CODEOWNERS` to `@jpiquot`; publish to Platform `main` through a reviewed change so ownership is effective.
-- [ ] `eng/repository-controls/desired-state.json` -- encode explicit repository names/actor IDs, main protection, separate tag creation/immutability rules, read base permissions and private-repository access policy.
-- [ ] `eng/repository-controls/controls.py` -- implement sanitized, paginated discovery, exact change payload proposals and effective-state verification; retain errors and detect stale baselines. Never auto-apply during discovery/verification.
-- [ ] `eng/repository-controls/test_controls.py` -- test the matrix plus broader bypass, missing CODEOWNERS, inherited writers, writable workflow overrides and partial API results.
-- [ ] `eng/repository-controls/README.md` -- document ordered application, App selection changes preserving existing access, credential custody collection, rollback and Administrator recovery. Read-only defaults do not prevent workflow permission overrides; verify workflow contents too.
-- [ ] `_bmad-output/implementation-artifacts/evidence/epic-4/4-4/` -- retain reviewed payloads, fresh pre-change checks and readbacks. Apply Platform rulesets, Builds bypass and organization read default; create private repositories and verify App exclusion, only named writers, token settings and credential custody. Record manual-only or inaccessible steps as outstanding.
-- [ ] `_bmad-output/implementation-artifacts/sprint-status.yaml` -- synchronize 4.4 status; mark done only after operational acceptance.
+- [ ] `.github/CODEOWNERS` -- assign `*`, `/.github/workflows/**` and `/.github/CODEOWNERS` to `@jpiquot`; publish to Platform `main` through a reviewed change so ownership is effective. Local file prepared; reviewed publication remains outstanding.
+- [x] `eng/repository-controls/desired-state.json` -- encode explicit repository names/actor IDs, main protection, separate tag creation/immutability rules, read base permissions and private-repository access policy.
+- [x] `eng/repository-controls/controls.py` -- implement sanitized, paginated discovery, exact change payload proposals and effective-state verification; retain errors and detect stale baselines. Never auto-apply during discovery/verification.
+- [x] `eng/repository-controls/test_controls.py` -- test the matrix plus broader bypass, missing CODEOWNERS, inherited writers, writable workflow overrides and partial API results.
+- [x] `eng/repository-controls/README.md` -- document ordered application, App selection changes preserving existing access, credential custody collection, rollback and Administrator recovery. Read-only defaults do not prevent workflow permission overrides; verify workflow contents too.
+- [ ] `_bmad-output/implementation-artifacts/evidence/epic-4/4-4/` -- retain reviewed payloads, fresh pre-change checks and readbacks. Apply Platform rulesets, Builds bypass and organization read default; create private repositories and verify App exclusion, only named writers, token settings and credential custody. Record manual-only or inaccessible steps as outstanding. Draft payloads and blocked historical-evidence checks retained in `20261007T111755Z-local-preparation/`; all live steps remain outstanding.
+- [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` -- synchronize 4.4 status; mark done only after operational acceptance. Remains `in-progress`.
 
 **Acceptance Criteria:**
 - Given Platform `main`, when controls are inspected, then PR/code-owner review, force-push/deletion denial and only Administrator bypass are active, and workflow/CODEOWNERS ownership resolves to Administrator.
@@ -62,13 +63,22 @@ context:
 
 ## Implementation Notes
 
+- 2026-10-07: After reviewing the prepared artifacts and being asked to authorize live discovery, CODEOWNERS publication and application of the prepared controls, the user replied "proceed". This supersedes the no-push/no-remote restriction for those Story 4.4 operations. Preserve the frozen policy; record unsupported/manual checks and incomplete custody as outstanding.
+
+- This build run follows the rendered step-03 rule: "No push. No remote ops." Prepare and verify local artifacts using retained discovery; do not call GitHub or publish changes. Live application, fresh remote observations, publication of CODEOWNERS and owner credential custody evidence remain outstanding for a separately authorized operational run. Do not mark the story done on local verification alone.
+
 ## Spec Change Log
 
 ## Review Triage Log
 
+- 2026-10-07 parent implementation audit (not a completed workflow review): resolved lossy Builds rule/parameter projection, successful PAT grant/request authorization and scope checking, reviewed proposal method/endpoint/payload integrity binding, preservation of unrelated App repository access, missing creation prerequisites and pinned actor/organization/owner checks, and shared annotated-tag traversal. Mocked traversal now retains each repository's shared or nested tag object once, including failed observations.
+- All four live acceptance criteria and the two operational execution tasks (reviewed CODEOWNERS publication and live controls/evidence application) remain unmet. Rendered step-03's "No push. No remote ops." rule prevents proceeding to step-04 or operational acceptance in this run; the story remains `in-progress`.
+
 ## Design Notes
 
 Repository names and all-tag coverage are implementation choices. Owners retain power to edit rulesets. GitHub configuration changes and repository creation have external effects; local preparation does not authorize them.
+
+- Local verification establishes consistency of supplied observations and owner statements only; it never asserts operational acceptance or authorizes a mutation. Workflow source is audited in memory and retained as hashes/results; ambiguous YAML is blocked. Annotated tags are peeled to commit/tree objects, and initially empty repository workflow inventories remain unproved until complete usable refs/trees are observed after App exclusion.
 
 ## Verification
 
@@ -76,3 +86,4 @@ Repository names and all-tag coverage are implementation choices. Owners retain 
 - Run `controls.py` verification against fresh GitHub discovery and owner custody evidence -- every acceptance criterion has measured evidence; unsupported observations remain blocked.
 - `git diff --check` -- no whitespace errors; sprint YAML parses with unrelated statuses preserved.
 - API contracts: [rulesets](https://docs.github.com/en/rest/repos/rules), [workflow permissions](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization).
+- Local preparation: 44 tests pass. Retained-baseline preflight and verification both return `blocked` (exit 1); no fresh GitHub or owner custody evidence was collected. See `evidence/epic-4/4-4/20261007T111755Z-local-preparation/summary.md`.

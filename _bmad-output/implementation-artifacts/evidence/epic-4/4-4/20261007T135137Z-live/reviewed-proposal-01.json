@@ -1,0 +1,1042 @@
+{
+  "baseline_sha256": "002673e92403b0c82cb20b50bfd271f2ef4236c95f0d318e0b8be3bda60dae9b",
+  "changes": [
+    {
+      "baseline_observation_gaps": [],
+      "endpoint": "/orgs/Hexalith",
+      "id": "organization-read-default",
+      "manual_only": false,
+      "method": "PATCH",
+      "payload": {
+        "default_repository_permission": "read"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization": "f9e3c0d9cae047befdb905a95c4cbce4086568ab979efb1871fe584122893883",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [],
+      "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+      "id": "Platform main reviewed changes",
+      "manual_only": false,
+      "method": "POST",
+      "payload": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "refs/heads/main"
+            ]
+          }
+        },
+        "enforcement": "active",
+        "name": "Platform main reviewed changes",
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "parameters": {
+              "dismiss_stale_reviews_on_push": false,
+              "require_code_owner_review": true,
+              "require_last_push_approval": false,
+              "required_approving_review_count": 1,
+              "required_review_thread_resolution": false
+            },
+            "type": "pull_request"
+          }
+        ],
+        "target": "branch"
+      },
+      "preconditions": {
+        "Hexalith.Platform.repository": "db38389134d32cec8753d1507ab55210d7d7ed7977fef556160252461ca54d29",
+        "Hexalith.Platform.rulesets": "ad0db944f13236e71b62a5154ef87a0a42510017664cc0efa34e9dc3d710ec5d",
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [],
+      "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+      "id": "Platform tag creation authorization",
+      "manual_only": false,
+      "method": "POST",
+      "payload": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "enforcement": "active",
+        "name": "Platform tag creation authorization",
+        "rules": [
+          {
+            "type": "creation"
+          }
+        ],
+        "target": "tag"
+      },
+      "preconditions": {
+        "Hexalith.Platform.repository": "db38389134d32cec8753d1507ab55210d7d7ed7977fef556160252461ca54d29",
+        "Hexalith.Platform.rulesets": "ad0db944f13236e71b62a5154ef87a0a42510017664cc0efa34e9dc3d710ec5d",
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [],
+      "endpoint": "/repos/Hexalith/Hexalith.Platform/rulesets",
+      "id": "Platform immutable tags",
+      "manual_only": false,
+      "method": "POST",
+      "payload": {
+        "bypass_actors": [],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "enforcement": "active",
+        "name": "Platform immutable tags",
+        "rules": [
+          {
+            "type": "update"
+          },
+          {
+            "type": "deletion"
+          }
+        ],
+        "target": "tag"
+      },
+      "preconditions": {
+        "Hexalith.Platform.repository": "db38389134d32cec8753d1507ab55210d7d7ed7977fef556160252461ca54d29",
+        "Hexalith.Platform.rulesets": "ad0db944f13236e71b62a5154ef87a0a42510017664cc0efa34e9dc3d710ec5d",
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [],
+      "endpoint": "/repos/Hexalith/Hexalith.Builds/rulesets/19196298",
+      "id": "builds-administrator-bypass",
+      "manual_only": false,
+      "method": "PUT",
+      "payload": {
+        "bypass_actors": [
+          {
+            "actor_id": 6775094,
+            "actor_type": "User",
+            "bypass_mode": "always"
+          }
+        ],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~DEFAULT_BRANCH"
+            ]
+          }
+        },
+        "enforcement": "active",
+        "name": "Protect main",
+        "rules": [
+          {
+            "type": "deletion"
+          },
+          {
+            "type": "non_fast_forward"
+          },
+          {
+            "parameters": {
+              "allowed_merge_methods": [
+                "squash"
+              ],
+              "dismiss_stale_reviews_on_push": false,
+              "dismissal_restriction": {
+                "allowed_actors": [],
+                "enabled": false
+              },
+              "require_code_owner_review": false,
+              "require_extra_approval_for_unattributed_changes": true,
+              "require_last_push_approval": false,
+              "required_approving_review_count": 0,
+              "required_review_thread_resolution": false,
+              "required_reviewers": []
+            },
+            "type": "pull_request"
+          },
+          {
+            "parameters": {
+              "do_not_enforce_on_create": false,
+              "required_status_checks": [
+                {
+                  "context": "Codacy Static Code Analysis",
+                  "integration_id": 56611
+                },
+                {
+                  "context": "SonarCloud Code Analysis",
+                  "integration_id": 12526
+                },
+                {
+                  "context": "commitlint / commitlint",
+                  "integration_id": 15368
+                }
+              ],
+              "strict_required_status_checks_policy": true
+            },
+            "type": "required_status_checks"
+          }
+        ],
+        "target": "branch"
+      },
+      "preconditions": {
+        "Builds.main_ruleset_detail": "639be3ef010d77fb5606a6105023440a8708df8226d126ed83a53282f29b05e9",
+        "Hexalith.Builds.repository": "8606e4277a70d7d22579d4297745fde34ef00b4153b7d52c19baaa6f6124b1e0",
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.31615326.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/31615326",
+      "id": "exclude-private-repositories-from-app-31615326",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 31615326,
+        "preserve_repository_ids": [],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.31615326.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.31617019.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/31617019",
+      "id": "exclude-private-repositories-from-app-31617019",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 31617019,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.31617019.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.31626264.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/31626264",
+      "id": "exclude-private-repositories-from-app-31626264",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 31626264,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.31626264.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.31641834.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/31641834",
+      "id": "exclude-private-repositories-from-app-31641834",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 31641834,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.31641834.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.71268337.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/71268337",
+      "id": "exclude-private-repositories-from-app-71268337",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 71268337,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.71268337.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.77847816.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/77847816",
+      "id": "exclude-private-repositories-from-app-77847816",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 77847816,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.77847816.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.93548476.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/93548476",
+      "id": "exclude-private-repositories-from-app-93548476",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 93548476,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.93548476.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.97329264.repositories"
+      ],
+      "endpoint": "/organizations/Hexalith/settings/installations/97329264",
+      "id": "exclude-private-repositories-from-app-97329264",
+      "manual_only": true,
+      "method": "MANUAL",
+      "payload": {
+        "exclude_full_names": [
+          "Hexalith/Hexalith.Operations",
+          "Hexalith/Hexalith.Notifications"
+        ],
+        "installation_id": 97329264,
+        "preserve_repository_ids": [
+          568370439,
+          629551223,
+          647343286,
+          786418755,
+          796191088,
+          796201155,
+          796320664,
+          798880730,
+          798881062,
+          798887497,
+          798887842,
+          808510301,
+          834719990,
+          851523569,
+          851770509,
+          852168913,
+          854107919,
+          871087402,
+          871088314,
+          871088977,
+          871091034,
+          871112728,
+          871603551,
+          876719824,
+          890456345,
+          943757274,
+          943757505,
+          943990311,
+          943990893,
+          952945989,
+          952960148,
+          956657445,
+          957156862,
+          958460421,
+          960307124,
+          963292804,
+          966892135,
+          967276766,
+          967469113,
+          968206525,
+          968662765,
+          1027122874,
+          1027188474,
+          1107174746,
+          1120511943,
+          1131658602,
+          1154280248,
+          1155154671,
+          1170072276,
+          1174267565,
+          1177697182,
+          1188027961,
+          1202567471,
+          1221438803,
+          1221455078,
+          1229485448,
+          1231551514,
+          1234748496,
+          1264171182,
+          1264947605,
+          1271966197,
+          1272275109,
+          1277685416,
+          1299011770,
+          1328589450,
+          1379417482,
+          1379430755
+        ],
+        "repository_selection": "selected"
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.97329264.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.31615326.repositories",
+        "installation.31617019.repositories",
+        "installation.31626264.repositories",
+        "installation.31641834.repositories",
+        "installation.71268337.repositories",
+        "installation.77847816.repositories",
+        "installation.93548476.repositories",
+        "installation.97329264.repositories"
+      ],
+      "endpoint": "/orgs/Hexalith/repos",
+      "id": "create-Hexalith.Operations",
+      "manual_only": false,
+      "method": "POST",
+      "payload": {
+        "auto_init": false,
+        "name": "Hexalith.Operations",
+        "private": true
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.31615326.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.31617019.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.31626264.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.31641834.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.71268337.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.77847816.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.93548476.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.97329264.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization": "f9e3c0d9cae047befdb905a95c4cbce4086568ab979efb1871fe584122893883",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "Hexalith.Operations.repository",
+        "Hexalith.Operations.workflow_permissions"
+      ],
+      "endpoint": "/repos/Hexalith/Hexalith.Operations/actions/permissions/workflow",
+      "id": "read-only-workflow-token-Hexalith.Operations",
+      "manual_only": false,
+      "method": "PUT",
+      "payload": {
+        "can_approve_pull_request_reviews": false,
+        "default_workflow_permissions": "read"
+      },
+      "preconditions": {
+        "Hexalith.Operations.repository": "b26dacd37ae41aa27dd861b1b1b53dae61b4eb58380676374123710ac44ae23b",
+        "Hexalith.Operations.workflow_permissions": null,
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "installation.31615326.repositories",
+        "installation.31617019.repositories",
+        "installation.31626264.repositories",
+        "installation.31641834.repositories",
+        "installation.71268337.repositories",
+        "installation.77847816.repositories",
+        "installation.93548476.repositories",
+        "installation.97329264.repositories"
+      ],
+      "endpoint": "/orgs/Hexalith/repos",
+      "id": "create-Hexalith.Notifications",
+      "manual_only": false,
+      "method": "POST",
+      "payload": {
+        "auto_init": false,
+        "name": "Hexalith.Notifications",
+        "private": true
+      },
+      "preconditions": {
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "installation.31615326.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.31617019.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.31626264.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.31641834.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.71268337.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.77847816.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.93548476.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "installation.97329264.repositories": "f805dae1ffadc89de1e489d62c21202be7058f9d9aba6db17cccaa552070cde5",
+        "organization": "f9e3c0d9cae047befdb905a95c4cbce4086568ab979efb1871fe584122893883",
+        "organization_installations": "6b11b26a3b1b6f7a803e9a90b5c8fa8086c47c54149aad9fd9054d052f0be4ea",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7",
+        "organization_repositories": "ed02ca0e2dc2b3b5251167306b6573f67753ffa6cbc2a2bac63424fb42b4640d"
+      },
+      "status": "review-required"
+    },
+    {
+      "baseline_observation_gaps": [
+        "Hexalith.Notifications.repository",
+        "Hexalith.Notifications.workflow_permissions"
+      ],
+      "endpoint": "/repos/Hexalith/Hexalith.Notifications/actions/permissions/workflow",
+      "id": "read-only-workflow-token-Hexalith.Notifications",
+      "manual_only": false,
+      "method": "PUT",
+      "payload": {
+        "can_approve_pull_request_reviews": false,
+        "default_workflow_permissions": "read"
+      },
+      "preconditions": {
+        "Hexalith.Notifications.repository": "b26dacd37ae41aa27dd861b1b1b53dae61b4eb58380676374123710ac44ae23b",
+        "Hexalith.Notifications.workflow_permissions": null,
+        "current_user": "3208eaac4a4a48623cf8616b096c50fd7bf0087d0ea02a966cbeffad5e255f69",
+        "organization_owners": "23f73bc71053619e28910b0f8f1ad618664c32b6b260601567764f7def6182b7"
+      },
+      "status": "review-required"
+    }
+  ],
+  "desired_state_sha256": "999862398d67d201f74a679f61d2c3b560dd9a925f88ed7a15177a6449bf4376",
+  "mutation_authorized": false,
+  "operational_acceptance": false,
+  "outstanding": [
+    "Review payloads; rediscover before each affected change.",
+    "Publish CODEOWNERS on Platform main through a reviewed PR.",
+    "Manually preserve installation coverage and exclude both private repositories before executable content.",
+    "Creation and post-creation token settings need separate fresh checkpoints.",
+    "Collect owner custody and PAT evidence; API errors cannot qualify absence."
+  ],
+  "schema_version": 1,
+  "story": "4.4"
+}

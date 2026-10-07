@@ -1,0 +1,264 @@
+{
+  "changes": [
+    {
+      "id": "organization-read-default",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization",
+        "incomplete-observation:organization_owners"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "Platform main reviewed changes",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:Hexalith.Platform.repository",
+        "incomplete-observation:Hexalith.Platform.rulesets",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization_owners"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "Platform tag creation authorization",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:Hexalith.Platform.repository",
+        "incomplete-observation:Hexalith.Platform.rulesets",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization_owners"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "Platform immutable tags",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:Hexalith.Platform.repository",
+        "incomplete-observation:Hexalith.Platform.rulesets",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization_owners"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "builds-administrator-bypass",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:Builds.main_ruleset_detail",
+        "incomplete-observation:Hexalith.Builds.repository",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization_owners"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31615326",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.31615326.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.31615326.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31617019",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.31617019.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.31617019.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31626264",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.31626264.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.31626264.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-31641834",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.31641834.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.31641834.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-71268337",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.71268337.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.71268337.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-77847816",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.77847816.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.77847816.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-93548476",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.93548476.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.93548476.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "exclude-private-repositories-from-app-97329264",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.97329264.repositories",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "manual-installation-selection-and-readback-required",
+        "stale-or-missing-baseline:installation.97329264.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "create-Hexalith.Operations",
+      "problems": [
+        "exclude-all-repository-apps-first",
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.31615326.repositories",
+        "incomplete-observation:installation.31617019.repositories",
+        "incomplete-observation:installation.31626264.repositories",
+        "incomplete-observation:installation.31641834.repositories",
+        "incomplete-observation:installation.71268337.repositories",
+        "incomplete-observation:installation.77847816.repositories",
+        "incomplete-observation:installation.93548476.repositories",
+        "incomplete-observation:installation.97329264.repositories",
+        "incomplete-observation:organization",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "set-organization-read-default-first",
+        "stale-or-missing-baseline:installation.31615326.repositories",
+        "stale-or-missing-baseline:installation.31617019.repositories",
+        "stale-or-missing-baseline:installation.31626264.repositories",
+        "stale-or-missing-baseline:installation.31641834.repositories",
+        "stale-or-missing-baseline:installation.71268337.repositories",
+        "stale-or-missing-baseline:installation.77847816.repositories",
+        "stale-or-missing-baseline:installation.93548476.repositories",
+        "stale-or-missing-baseline:installation.97329264.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "read-only-workflow-token-Hexalith.Operations",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:Hexalith.Operations.repository",
+        "incomplete-observation:Hexalith.Operations.workflow_permissions",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization_owners",
+        "stale-or-missing-baseline:Hexalith.Operations.repository",
+        "stale-or-missing-baseline:Hexalith.Operations.workflow_permissions"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "create-Hexalith.Notifications",
+      "problems": [
+        "exclude-all-repository-apps-first",
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:current_user",
+        "incomplete-observation:installation.31615326.repositories",
+        "incomplete-observation:installation.31617019.repositories",
+        "incomplete-observation:installation.31626264.repositories",
+        "incomplete-observation:installation.31641834.repositories",
+        "incomplete-observation:installation.71268337.repositories",
+        "incomplete-observation:installation.77847816.repositories",
+        "incomplete-observation:installation.93548476.repositories",
+        "incomplete-observation:installation.97329264.repositories",
+        "incomplete-observation:organization",
+        "incomplete-observation:organization_installations",
+        "incomplete-observation:organization_owners",
+        "incomplete-observation:organization_repositories",
+        "set-organization-read-default-first",
+        "stale-or-missing-baseline:installation.31615326.repositories",
+        "stale-or-missing-baseline:installation.31617019.repositories",
+        "stale-or-missing-baseline:installation.31626264.repositories",
+        "stale-or-missing-baseline:installation.31641834.repositories",
+        "stale-or-missing-baseline:installation.71268337.repositories",
+        "stale-or-missing-baseline:installation.77847816.repositories",
+        "stale-or-missing-baseline:installation.93548476.repositories",
+        "stale-or-missing-baseline:installation.97329264.repositories"
+      ],
+      "result": "blocked"
+    },
+    {
+      "id": "read-only-workflow-token-Hexalith.Notifications",
+      "problems": [
+        "fresh-read-only-discovery-required",
+        "incomplete-observation:Hexalith.Notifications.repository",
+        "incomplete-observation:Hexalith.Notifications.workflow_permissions",
+        "incomplete-observation:current_user",
+        "incomplete-observation:organization_owners",
+        "stale-or-missing-baseline:Hexalith.Notifications.repository",
+        "stale-or-missing-baseline:Hexalith.Notifications.workflow_permissions"
+      ],
+      "result": "blocked"
+    }
+  ],
+  "discovery_sha256": "25df1bba3f77787ab5896730b01f1d340f66bb9233966a9f5c92d4855493b5d1",
+  "issues": [
+    "fresh-read-only-discovery-required"
+  ],
+  "mutation_authorized": false,
+  "operational_acceptance": false,
+  "proposal_sha256": "c93c89ba94e10fb08e90aae257859e4a0a5a32cc58ac14efd99806dabc3cb3b9",
+  "verification_result": "blocked"
+}

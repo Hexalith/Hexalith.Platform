@@ -1,0 +1,21 @@
+{
+  "captured_at_utc": "2026-10-07T11:23:09.955247+00:00",
+  "classification": "local-only-preparation",
+  "complete": false,
+  "file_sha256": {
+    ".github/CODEOWNERS": "2b338e90f00d9d29582065320a7a7d38bd68e7b33598516d894be9d966eefc21",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-4/20261007T101349Z/discovery.json": "6fd2ee8c52cf4178a105fbc9f5442e8aa10dd226b71f86431ac5c1a95a95a2fe",
+    "eng/repository-controls/README.md": "3a00622c2fdabe99057619fbf31ec4b6e2c3becb801e78daa6964729d780bc82",
+    "eng/repository-controls/controls.py": "b421cb3dd92a80f90a110b0c7ea76507cb05711b86dd4f45af698ef35f988020",
+    "eng/repository-controls/desired-state.json": "c90a2660fedf6533f102469a87a25abe54aa7703190d5c287bf7132d8554cf74",
+    "eng/repository-controls/test_controls.py": "92d3556ab2e66e9604590e91f176062b0c9e2b8a813da685765aaa81e5ecfe52"
+  },
+  "fresh_remote_discovery_retained": false,
+  "github_requests_performed": 0,
+  "operational_acceptance": false,
+  "owner_custody_received": false,
+  "remote_mutations_performed": 0,
+  "test_command": "python3 -m unittest discover -s eng/repository-controls -p test_*.py",
+  "test_count": 44,
+  "test_result": "pass"
+}

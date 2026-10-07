@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "organization": {
+    "login": "Hexalith",
+    "id": 80614290,
+    "plan": "free",
+    "default_repository_permission": "read"
+  },
+  "administrator": {"login": "jpiquot", "id": 6775094},
+  "private_repository_writers": [
+    {"login": "jpiquot", "id": 6775094},
+    {"login": "tinouit", "id": 183023925}
+  ],
+  "platform": {
+    "name": "Hexalith.Platform",
+    "full_name": "Hexalith/Hexalith.Platform",
+    "id": 1328589450,
+    "main": "main",
+    "codeowners": [
+      "* @jpiquot",
+      "/.github/workflows/** @jpiquot",
+      "/.github/CODEOWNERS @jpiquot"
+    ],
+    "rulesets": [
+      {
+        "name": "Platform main reviewed changes",
+        "target": "branch",
+        "enforcement": "active",
+        "bypass_actors": [{"actor_id": 6775094, "actor_type": "User", "bypass_mode": "always"}],
+        "conditions": {"ref_name": {"include": ["refs/heads/main"], "exclude": []}},
+        "rules": [
+          {"type": "deletion"},
+          {"type": "non_fast_forward"},
+          {
+            "type": "pull_request",
+            "parameters": {
+              "required_approving_review_count": 1,
+              "require_code_owner_review": true,
+              "dismiss_stale_reviews_on_push": false,
+              "require_last_push_approval": false,
+              "required_review_thread_resolution": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "Platform tag creation authorization",
+        "target": "tag",
+        "enforcement": "active",
+        "bypass_actors": [{"actor_id": 6775094, "actor_type": "User", "bypass_mode": "always"}],
+        "conditions": {"ref_name": {"include": ["~ALL"], "exclude": []}},
+        "rules": [{"type": "creation"}]
+      },
+      {
+        "name": "Platform immutable tags",
+        "target": "tag",
+        "enforcement": "active",
+        "bypass_actors": [],
+        "conditions": {"ref_name": {"include": ["~ALL"], "exclude": []}},
+        "rules": [{"type": "update"}, {"type": "deletion"}]
+      }
+    ]
+  },
+  "builds": {
+    "name": "Hexalith.Builds",
+    "full_name": "Hexalith/Hexalith.Builds",
+    "id": 952945989,
+    "ruleset_id": 19196298,
+    "bypass_actors": [{"actor_id": 6775094, "actor_type": "User", "bypass_mode": "always"}]
+  },
+  "private_repositories": [
+    {"name": "Hexalith.Operations", "full_name": "Hexalith/Hexalith.Operations"},
+    {"name": "Hexalith.Notifications", "full_name": "Hexalith/Hexalith.Notifications"}
+  ],
+  "private_repository_policy": {
+    "private": true,
+    "auto_init": false,
+    "default_workflow_permissions": "read",
+    "can_approve_pull_request_reviews": false,
+    "installed_apps": "excluded-before-executable-content",
+    "writable_credential_custody": "named-writer-devices-only",
+    "workflow_write_overrides": "forbidden"
+  },
+  "evidence_max_age_seconds": 900
+}
