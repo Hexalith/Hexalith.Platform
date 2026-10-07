@@ -1,0 +1,119 @@
+{
+  "attemptId": "20261007t073929z-local-patch-verification",
+  "capturedAt": "2026-10-07T07:40:56+00:00",
+  "checks": [
+    {
+      "command": "/usr/bin/python3 -m unittest discover -s eng/admin-exposure -p test_*.py -v",
+      "exitCode": 0,
+      "result": "pass",
+      "skippedCount": 0,
+      "testCount": 102,
+      "testLogSha256": "3cb2278598ea813e43963dda727b0cb8465a3c91a1c43913366cd33c0c7069b3"
+    },
+    {
+      "command": "/usr/bin/python3 -m unittest discover -s eng/admin-exposure/live -p test_*.py -v",
+      "exitCode": 0,
+      "result": "pass",
+      "skippedCount": 0,
+      "testCount": 17,
+      "testLogSha256": "ad96b8073d64ef3f3f6b893981d67eb6a95581a835718e1ed54de3e911d11d41"
+    },
+    {
+      "condition": "CLI help for root and both subcommands",
+      "logSha256": "4597e0d5a793334be33246a8ee87e37361dc36d28051c3b61537b0873325550a",
+      "result": "pass"
+    },
+    {
+      "condition": "git diff --check",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "cases": [
+        {
+          "exitCode": 1,
+          "expectedRegressionFailureObserved": true,
+          "logSha256": "18413ffbc7b9a9dedddd4ce08ddfe9c75683a17b0474c929ed74bb3946f50895",
+          "mutatedSourceSha256": "8ae266d73ae2b06ba67cc1ddebdfc3d9ecf0becd8ae4065d1d3eca3c4b8b8644",
+          "mutation": "mandatory-master-token-path",
+          "selectedTest": "test_prepare.SignatureTests.test_signed_keycloak_closed_paths_require_each_independently_specified_mandatory_endpoint"
+        },
+        {
+          "exitCode": 1,
+          "expectedRegressionFailureObserved": true,
+          "logSha256": "ca88049d48a140077bc097e4c29de5571fcf2dbf3a8f6a25c07c4eae4950caab",
+          "mutatedSourceSha256": "df441a209d3903b5ffe8c749c8f28197fec2ab5af6d07c94aa69c6217385b37d",
+          "mutation": "human-reader-coverage",
+          "selectedTest": "test_prepare.SignatureTests.test_signed_inventory_requires_each_independently_specified_coverage_category"
+        },
+        {
+          "exitCode": 1,
+          "expectedRegressionFailureObserved": true,
+          "logSha256": "02f5743f96327f6603018e91372eddd54b51521e865ebf79d3fb62402c1f3984",
+          "mutatedSourceSha256": "7219a2c77ad749002f7d95e9ad5026b0a26af07a3f2d7f822b3b6ac17ccb3997",
+          "mutation": "trust-and-verifier-drift",
+          "selectedTest": "test_prepare.SignatureTests.test_trust_root_and_verifier_drift_during_real_verification_fail_with_original_hashes"
+        }
+      ],
+      "condition": "isolated source mutations of the three previously uncovered guards are detected",
+      "result": "pass"
+    },
+    {
+      "condition": "new immutable owner-only private preparation with pending unsigned operational templates",
+      "directoryMode": "0700",
+      "fileMode": "0600",
+      "operationalTemplatesSigned": false,
+      "preparationManifestSha256": "7d6cd7f89e623e504d1f3e18cfbac37207b2d1b3ba6a68d6a615be331156e250",
+      "result": "pass"
+    },
+    {
+      "condition": "historical committed evidence bytes preserved",
+      "evidenceFileCount": 16,
+      "evidenceHashesSha256": "813bd5f6b8c1b028843b0e5aae1cfb342a38bdb8fb5f2ebf90cf6592a48dd97c",
+      "result": "pass"
+    }
+  ],
+  "classification": "sanitized local preparation verification",
+  "complete": false,
+  "limits": [
+    "Real ephemeral SSH signatures qualify local evidence consistency only; no production signatures or operational acceptance were established.",
+    "Historical attempts, receipts and live measurements retain their original bytes and meaning.",
+    "Existing live operational follow-ups and deferred protected-evidence reviews remain unchanged; story and sprint completion are not asserted."
+  ],
+  "liveEvidenceCollected": false,
+  "mutationAuthorized": false,
+  "operationalAcceptance": false,
+  "patchFindingsImplemented": [
+    "LP-P1",
+    "LP-P2",
+    "LP-P3",
+    "LP-P4",
+    "LP-P5",
+    "LP-P6",
+    "LP-P7",
+    "LP-P8"
+  ],
+  "privateEvidenceLocation": "dedicated owner-only exposure custody outside every Git worktree; exact path held by operator",
+  "remainingFollowups": [
+    "Confirm the next nightly eventstore GC completes.",
+    "Synchronize registry and Keycloak deployment sources with live configuration.",
+    "Remove the public kube.hexalith.com DNS record and move recovery credentials into long-term custody.",
+    "Complete the protected-evidence reviews and split-2 live/evidence review recorded by the story."
+  ],
+  "remoteOperationsPerformed": false,
+  "schemaVersion": 1,
+  "selectedAdministrationPolicy": "sole-administrator",
+  "selectedAdministrator": "jpiquot",
+  "signed": false,
+  "sourceSha256": {
+    "_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md": "ff6e20358bd0bff3189979db964cc953441fe414a895d2aedcb2465023a4c86c",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "eng/admin-exposure/README.md": "8046b9a4dd13af275a5e289c7a92f3bc1f3f3c792ca03d860fc63a776ba8c52f",
+    "eng/admin-exposure/prepare.py": "96eeb0fe6d1162c67e4825b8d804e83e30ba05b1f95b4b6914527773633f5375",
+    "eng/admin-exposure/test_prepare.py": "b96fe28e029e04dcd9d8e695aa25ae0c7d4e69da3049a107fb803f5b9005daa8"
+  },
+  "story": "4.2",
+  "verificationResult": "pass",
+  "verificationScope": "local LP-P1 through LP-P8 implementation and synthetic checks only"
+}

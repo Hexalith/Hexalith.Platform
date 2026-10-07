@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "story": "4.2",
+  "attemptId": "20261007t093420z-gc-confirmation",
+  "capturedAt": "2026-10-07T09:56:21.004223+00:00",
+  "authority": "Administrator instruction: do all GC confirmation steps yourself",
+  "sourceRevision": "f45d1cff8444b25d1dd8fb3018964e0372daa8b9",
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "registryConfigSha256": "90805228cf4ac16752d3bb1ca15b47b92f8c24f1a572b5275f1e54c9eecb0317",
+  "registryReady": true,
+  "baselineClosureSha256": "c9775c03792d95a56518fa855309ec12178c2022c2efd6f8b54bb9b5458af812",
+  "baselineSummary": {
+    "eventstore": {
+      "tags": 203,
+      "objects": 560,
+      "missing": 0
+    },
+    "memories": {
+      "tags": 88,
+      "objects": 294,
+      "missing": 0
+    },
+    "memories-access-telemetry": {
+      "tags": 50,
+      "objects": 174,
+      "missing": 0
+    },
+    "memories-access-telemetry-clock": {
+      "tags": 50,
+      "objects": 174,
+      "missing": 0
+    },
+    "memories-mcp": {
+      "tags": 83,
+      "objects": 273,
+      "missing": 0
+    },
+    "parties": {
+      "tags": 20,
+      "objects": 85,
+      "missing": 0
+    },
+    "parties-mcp": {
+      "tags": 17,
+      "objects": 78,
+      "missing": 0
+    },
+    "parties-ui": {
+      "tags": 12,
+      "objects": 63,
+      "missing": 0
+    },
+    "tenants": {
+      "tags": 47,
+      "objects": 150,
+      "missing": 0
+    }
+  },
+  "baselineMatchesPriorReferrerClosure": true,
+  "currentEventstoreGcAfterCleanupObserved": false,
+  "collectorQualification": {
+    "gcFailureMissingStartAndStaleRunRejected": true,
+    "authorizationHeadersDropped": true,
+    "streamingContentHashMatchAndMismatchChecksPassed": true,
+    "liveUncachedIndexDigestVerified": "sha256:88e26093e1383ebb2f14a4208b8e59bd821f7574b0ab4823e3dd3dc23dd1e7db",
+    "liveAuthenticatedAuditCorrelationPassed": true
+  },
+  "scheduler": {
+    "timer": "hexalith-4-2-gc-confirmation-20261007t093420z.timer",
+    "service": "hexalith-4-2-gc-confirmation-20261007t093420z.service",
+    "enabled": true,
+    "active": true,
+    "persistent": true,
+    "collectorStartsAt": "2026-10-08T01:55:00Z",
+    "expectedGcWindowStart": "2026-10-08T02:00:00Z",
+    "expectedGcWindowEnd": "2026-10-08T05:00:00Z",
+    "deadline": "2026-10-08T06:00:00+00:00"
+  },
+  "plannedConfirmation": [
+    "Verify a successful post-cleanup eventstore GC with start/completion and no run failure.",
+    "Compare all repository closures with the preserved referrer-inclusive and fresh confirmation baselines.",
+    "GET every reachable EventStore object and content in the previously qualified live/rollback repositories without a content cache; verify every SHA-256.",
+    "Match every authenticated transfer with a unique per-request Zot audit marker.",
+    "Revalidate the native cluster, registry configuration, Pod identity, image and readiness; write a new sanitized receipt and story note on success."
+  ],
+  "finalReceipt": "registry-gc-confirmation.json",
+  "incompleteReceipt": "registry-gc-confirmation-incomplete.json",
+  "privateEvidenceSha256": {
+    "config-baseline.json": "088c48d8606e4b3104a19ea4f35291378cd839bfe0af898b47039f7b2c0423ab",
+    "pre-confirmation-closure.json": "95bef9123e21c12765c0749d7573555debdf995cffd97b01eca513317180ddf8",
+    "initial-gc-log-check.json": "2431aed57a3fad004e131d26e64e53184e1ff5240211c691aa17e987a18613c5",
+    "preflight-log-projection.json": "441fe7f11e45a347c219ba9f0c29984076ae6b2010004c2e9d93b9cedd22750d",
+    "collector-qualification.json": "708a31011d37b4e2e278140778393949990626915e7e5367c3ae686005d72acb",
+    "collector-settings.json": "438066c8bddca6fc5685f8e25c6c55a50dd9104b7e43d993932e244c3732168d",
+    "confirm_gc.py": "6230a614838da67e1fabe91c0efd68d0898fa0af06defbee5fa59b3a956a71c8",
+    "oci.py": "ca842d059f7d613ece0b0731ea393780591b7bd2324ff900da163999de33f19b",
+    "registry_closure.py": "29c6f2ab47d07b0c2bfceda5c325bb58c5f71d0a82c8316e826a5c0e27c08cb5",
+    "hexalith-4-2-gc-confirmation-20261007t093420z.service": "aee0043cd1ea9c80e17eb75de01187257842fe1dbb22577969e08ccc16b1e4ae",
+    "hexalith-4-2-gc-confirmation-20261007t093420z.timer": "5a3c8cb685cc4430d8d68a3292c0a413ae2110b89df4e10ef0953d5dff9b9544"
+  },
+  "productionMutationsPerformed": false,
+  "gcManuallyTriggered": false,
+  "operationalAcceptance": false,
+  "complete": false,
+  "result": "pending-scheduled-gc"
+}

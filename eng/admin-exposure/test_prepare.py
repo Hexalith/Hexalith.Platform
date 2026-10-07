@@ -19,6 +19,14 @@ SPEC = importlib.util.spec_from_file_location('exposure_prepare', Path(__file__)
 prepare = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(prepare)
 H = 'a' * 64
+# These contract lists come from Story 4.2, independently of the implementation.
+REQUIRED_ADMIN_PATHS = ('/admin', '/admin/', '/admin/master/console/', '/realms/master',
+                        '/realms/master/.well-known/openid-configuration',
+                        '/realms/master/protocol/openid-connect/token')
+REQUIRED_REGISTRY_COVERAGE = ('imagePullSecretsAndServiceAccounts', 'nodesAndRuntimes', 'forgejoWorkflows',
+                              'deploymentExecutors', 'humanReaders', 'publicationAndOperationsWriters',
+                              'replicationAndOffsiteRobots', 'liveAndRollbackAndRetainedReleases')
+ANONYMOUS_READ_KINDS = ('catalog', 'tag', 'manifest', 'blob')
 
 
 def oci(letter):
@@ -135,12 +143,12 @@ class Fixtures:
                  'testedOperators': self.operators(), 'unauthorizedPrivateChecks': self.private_denials(),
                  'breakGlass': self.recovery(), 'publicOidcChecks': self.oidc(-180)}
         host = decisions['keycloakHostname'] if phase == 'keycloak' else 'kube.hexalith.com'
-        paths = prepare.ADMIN_PATHS if phase == 'keycloak' else ('/', '/login')
+        paths = REQUIRED_ADMIN_PATHS if phase == 'keycloak' else ('/', '/login')
         probes = [{**self.denial(host=host, path=path), 'method': method} for path in paths
                   for method in (('GET', 'POST') if phase == 'keycloak' else ('GET',))]
         result = {**self.base(), 'closedSurface': phase, 'baselineSha256': H, 'privateProofSha256': H,
                   'administrationPolicy': 'sole-administrator', 'administrator': 'jpiquot',
-                  'externalProbes': probes, 'closedAdminPaths': list(prepare.ADMIN_PATHS),
+                  'externalProbes': probes, 'closedAdminPaths': list(REQUIRED_ADMIN_PATHS),
                   'consoleMode': 'port-forward', 'publicOidcChecks': self.oidc(),
                   'postChangePrivateChecks': self.operators(-20),
                   'postChangeUnauthorizedPrivateChecks': self.private_denials(-20),
@@ -201,9 +209,8 @@ class Fixtures:
                         'leastPrivilege': permissions, 'replicationDirection': 'source'}
             consumer['beforeCutoverOperation'] = self.operation(consumer)
             consumers.append(consumer)
-        coverage = prepare.templates('fixture', 'fixture', {})['registry-consumer-inventory.json']['coverage']
         return {**self.base(captured=-150), 'generation': self.generation(), 'inventoryComplete': True,
-                'coverage': {k: True for k in coverage}, 'consumers': consumers}
+                'coverage': {k: True for k in REQUIRED_REGISTRY_COVERAGE}, 'consumers': consumers}
 
     def registry_records(self):
         inventory = self.inventory()
@@ -216,7 +223,7 @@ class Fixtures:
                  'blob': '/v2/fixture/repository/blobs/' + oci('b')}
         for kind, path in paths.items():
             result['anonymousProbes'].append({'kind': kind, 'hostname': 'registry.hexalith.com', 'path': path,
-                'status': 401, 'result': 'refused', 'sourceAddressCategory': 'external-public',
+                'method': 'GET', 'status': 401, 'result': 'refused', 'sourceAddressCategory': 'external-public',
                 'knownExistingContent': True, 'evidenceSha256': H, 'capturedAt': self.time(-20)})
         return self.decisions('registry-auth'), inventory, result, self.admin_records('registry-auth')[2]
 
@@ -315,6 +322,22 @@ class BoundaryTests(Fixtures, unittest.TestCase):
         with patch.object(Path, 'home', return_value=self.root):
             with self.assertRaisesRegex(ValueError, 'recovery-custody'):
                 prepare.prepare(self.project, self.root / 'hexalith-recovery-evidence', 'valid', 'operator')
+
+    def test_refuse_private_custody_in_other_checkouts_worktrees_and_submodules_without_commands(self):
+        for kind in ('checkout', 'linked-worktree', 'submodule'):
+            checkout = self.root / kind
+            checkout.mkdir(mode=0o700)
+            marker = checkout / '.git'
+            if kind == 'checkout':
+                marker.mkdir(mode=0o700)
+            else:
+                marker.write_text('gitdir: /synthetic/private/git-metadata\n')
+                marker.chmod(0o600)
+            with self.subTest(kind=kind), patch('subprocess.run', side_effect=AssertionError('external command')), \
+                 patch('socket.socket', side_effect=AssertionError('network')):
+                with self.assertRaisesRegex(ValueError, 'outside-git-worktree'):
+                    prepare.prepare(self.project, checkout / 'custody', 'valid', 'operator')
+                self.assertFalse((checkout / 'custody').exists())
 
     def test_real_ingress_api_version_and_exact_snapshot_pass(self):
         baseline, decisions, current, _, _ = self.admin_records()
@@ -724,6 +747,24 @@ class BoundaryTests(Fixtures, unittest.TestCase):
             with self.subTest(role=role), self.assertRaises(ValueError):
                 prepare.registry_inventory(inventory)
 
+    def test_pending_inventory_template_preserves_all_independently_required_categories(self):
+        coverage = prepare.templates('fixture', 'fixture', {})['registry-consumer-inventory.json']['coverage']
+        self.assertEqual(set(coverage), set(REQUIRED_REGISTRY_COVERAGE))
+        self.assertTrue(all(value is False for value in coverage.values()))
+
+    def test_anonymous_read_probes_require_explicit_get_for_every_kind(self):
+        for kind in ANONYMOUS_READ_KINDS:
+            for method in (None, 'POST', 'HEAD', 'get'):
+                decisions, inventory, result, current = self.registry_records()
+                probe = next(value for value in result['anonymousProbes'] if value['kind'] == kind)
+                if method is None:
+                    probe.pop('method')
+                else:
+                    probe['method'] = method
+                with self.subTest(kind=kind, method=method), self.assertRaisesRegex(ValueError, 'explicit-get'):
+                    prepare.registry_result(decisions, inventory, result,
+                                            {'registry-consumer-inventory.json': H}, current)
+
     def test_anonymous_success_wrong_host_missing_blob_or_nonexisting_target_fails(self):
         for field, value in (('status', 200), ('hostname', 'unrelated.example'),
                              ('path', '/v2/'), ('knownExistingContent', False)):
@@ -843,6 +884,20 @@ class BoundaryTests(Fixtures, unittest.TestCase):
                       'access_token', 'refresh_token', 'id_token', 'Access-Token', 'refreshToken', 'ID_TOKEN'):
             with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'prohibited-evidence-field'):
                 prepare.no_sensitive_fields({'nested': [{field: 'DO-NOT-RETAIN'}]})
+
+    def test_raw_native_secret_payloads_are_refused_at_every_nesting_depth(self):
+        for field in ('data', 'stringData'):
+            secret = {'apiVersion': 'v1', 'kind': 'Secret', 'metadata': {'name': 'synthetic-secret'},
+                      field: {'synthetic': 'c3ludGhldGlj'}}
+            for record in (secret, {'resources': [secret]}, {'nested': [{'nativeResource': secret}]},
+                           {'kind': 'SecretList', 'items': [{field: {'synthetic': 'c3ludGhldGlj'}}]}):
+                with self.subTest(field=field, record=record), self.assertRaisesRegex(ValueError, 'prohibited-evidence-field'):
+                    prepare.no_sensitive_fields(record)
+
+    def test_secret_references_and_ordinary_nonsensitive_data_metadata_remain_valid(self):
+        prepare.no_sensitive_fields({'resources': [{'apiVersion': 'v1', 'kind': 'Secret',
+            'metadata': {'name': 'synthetic-secret'}, 'effectiveConfigSha256': H}],
+            'metadata': {'data': {'description': 'synthetic metadata'}, 'stringData': {'note': 'synthetic note'}}})
 
 
 @unittest.skipUnless(shutil.which('ssh-keygen'), 'local SSH signature verifier unavailable')
@@ -1043,6 +1098,25 @@ class SignatureTests(Fixtures, unittest.TestCase):
                 self.assert_consistency_failure(self.signed_console_bundle('keycloak', records),
                                                 'master-or-admin-external-negative-coverage-incomplete')
 
+    def test_signed_keycloak_closed_paths_require_each_independently_specified_mandatory_endpoint(self):
+        for path in REQUIRED_ADMIN_PATHS:
+            records = self.admin_records('keycloak')
+            records[4]['closedAdminPaths'].remove(path)
+            records[4]['externalProbes'] = [value for value in records[4]['externalProbes'] if value['path'] != path]
+            with self.subTest(path=path):
+                self.assert_consistency_failure(self.signed_console_bundle('keycloak', records),
+                                                'master-or-admin-path-coverage-incomplete')
+
+    def test_signed_keycloak_requires_get_and_post_for_each_independently_specified_endpoint(self):
+        for path in REQUIRED_ADMIN_PATHS:
+            for method in ('GET', 'POST'):
+                records = self.admin_records('keycloak')
+                records[4]['externalProbes'] = [value for value in records[4]['externalProbes']
+                    if (value['path'], value['method']) != (path, method)]
+                with self.subTest(path=path, method=method):
+                    self.assert_consistency_failure(self.signed_console_bundle('keycloak', records),
+                                                    'master-or-admin-external-negative-coverage-incomplete')
+
     def test_signed_keycloak_denial_covers_every_concrete_hostname_on_approved_routes(self):
         for change in ('missing-denial', 'missing-route', 'missing-method'):
             records = self.admin_records('keycloak')
@@ -1125,6 +1199,39 @@ class SignatureTests(Fixtures, unittest.TestCase):
         self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
                                         'inconsistent-reader-writer-grant')
 
+    def test_signed_overlapping_reader_destination_replication_grant_is_inconsistent(self):
+        for phase in ('registry-auth', 'registry-gc'):
+            records = self.registry_records() if phase == 'registry-auth' else self.gc_records()
+            reader, _, replicator = records[1]['consumers']
+            replicator['principal'] = reader['principal']
+            replicator['credentialSecretReference'] = reader['credentialSecretReference']
+            replicator['replicationDirection'] = 'destination'
+            replicator['beforeCutoverOperation'].update(principal=reader['principal'], replicationDirection='destination')
+            if phase == 'registry-auth':
+                records[2]['authenticatedOperations'][2].update(principal=reader['principal'], replicationDirection='destination')
+            with self.subTest(phase=phase):
+                self.assert_consistency_failure(self.signed_registry_bundle(phase, records),
+                                                'inconsistent-reader-destination-replicator-grant')
+
+    def test_signed_source_replication_and_distinct_destination_grants_remain_valid(self):
+        for change in ('source', 'distinct-principals', 'distinct-credentials', 'nonoverlapping-scopes'):
+            records = self.registry_records()
+            reader, _, replicator = records[1]['consumers']
+            replicator['principal'] = reader['principal'] if change != 'distinct-principals' else 'fixture-other'
+            replicator['credentialSecretReference'] = (reader['credentialSecretReference']
+                if change != 'distinct-credentials' else 'fixture-other-secret')
+            replicator['replicationDirection'] = 'source' if change == 'source' else 'destination'
+            operation = records[2]['authenticatedOperations'][2]
+            for measured in (replicator['beforeCutoverOperation'], operation):
+                measured.update(principal=replicator['principal'], replicationDirection=replicator['replicationDirection'])
+                if change == 'nonoverlapping-scopes':
+                    measured['repository'] = 'fixture/other'
+            if change == 'nonoverlapping-scopes':
+                replicator['approvedRepositories'] = ['fixture/other']
+            with self.subTest(change=change):
+                report = prepare.check_bundle(self.signed_registry_bundle('registry-auth', records))
+                self.assertEqual(report['verificationResult'], 'pass', report)
+
     def test_signed_distinct_credentials_or_nonoverlapping_repository_scopes_remain_valid(self):
         for change in ('distinct-credentials', 'nonoverlapping-scopes'):
             records = self.registry_records()
@@ -1140,6 +1247,28 @@ class SignatureTests(Fixtures, unittest.TestCase):
             with self.subTest(change=change):
                 report = prepare.check_bundle(self.signed_registry_bundle('registry-auth', records))
                 self.assertEqual(report['verificationResult'], 'pass', report)
+
+    def test_signed_inventory_requires_each_independently_specified_coverage_category(self):
+        for category in REQUIRED_REGISTRY_COVERAGE:
+            for phase in ('registry-auth', 'registry-gc'):
+                records = self.registry_records() if phase == 'registry-auth' else self.gc_records()
+                records[1]['coverage'].pop(category)
+                with self.subTest(category=category, phase=phase):
+                    self.assert_consistency_failure(self.signed_registry_bundle(phase, records),
+                                                    'registry-consumer-inventory-incomplete')
+
+    def test_signed_anonymous_read_probes_require_explicit_get_for_every_kind(self):
+        for kind in ANONYMOUS_READ_KINDS:
+            for method in (None, 'POST', 'HEAD', 'get'):
+                records = self.registry_records()
+                probe = next(value for value in records[2]['anonymousProbes'] if value['kind'] == kind)
+                if method is None:
+                    probe.pop('method')
+                else:
+                    probe['method'] = method
+                with self.subTest(kind=kind, method=method):
+                    self.assert_consistency_failure(self.signed_registry_bundle('registry-auth', records),
+                                                    'anonymous-read-requires-explicit-get')
 
     def test_signed_writer_and_replicator_nested_retained_delete_denial_is_required_pre_and_post(self):
         for stage in ('before', 'after'):
@@ -1252,6 +1381,90 @@ class SignatureTests(Fixtures, unittest.TestCase):
                                                        'condition': 'signed-fresh-production-input-required'}])
                 self.assertNotIn('DO-NOT-RETAIN', prepare.canonical(report).decode())
                 self.assertNotIn(field, prepare.canonical(report).decode())
+
+    def test_signed_native_secret_payloads_fail_without_exposing_synthetic_values(self):
+        for field in ('data', 'stringData'):
+            for placement in ('resource', 'nested-resource', 'secret-list'):
+                records = self.admin_records()
+                secret = {'apiVersion': 'v1', 'kind': 'Secret', 'metadata': {'name': 'synthetic-secret'},
+                          field: {'synthetic': 'c3ludGhldGlj'}}
+                if placement == 'resource':
+                    secret.update(namespace='kubesphere-system', name='synthetic-secret', uid='secret-uid',
+                                  resourceVersion='789', effectiveConfigSha256=H)
+                    for snapshot in (records[0], records[2]):
+                        snapshot['resources'].append(copy.deepcopy(secret))
+                    failed_files = ['signed-baseline.json', 'pre-mutation-state.json']
+                else:
+                    records[4]['evidenceItems'] = ({'nested': [{'nativeResource': secret}]}
+                        if placement == 'nested-resource' else
+                        {'kind': 'SecretList', 'items': [{field: secret[field]}]})
+                    failed_files = ['admin-exposure-result.json']
+                report = prepare.check_bundle(self.signed_console_bundle(records=records))
+                with self.subTest(field=field, placement=placement):
+                    self.assertEqual(report['failures'], [{'file': name,
+                        'condition': 'signed-fresh-production-input-required'} for name in failed_files])
+                    self.assertEqual(report['verificationResult'], 'fail')
+                    serialized = prepare.canonical(report).decode()
+                    for value in ('c3ludGhldGlj', 'synthetic-secret', 'secret-uid'):
+                        self.assertNotIn(value, serialized)
+
+    def test_signed_secret_metadata_and_ordinary_nonsensitive_data_remain_valid(self):
+        records = self.admin_records()
+        records[4]['evidenceItems'] = {'kind': 'Secret', 'metadata': {'name': 'synthetic-reference'},
+                                     'effectiveConfigSha256': H}
+        records[4]['nonsensitiveMetadata'] = {'data': {'description': 'synthetic metadata'}}
+        report = prepare.check_bundle(self.signed_console_bundle(records=records))
+        self.assertEqual(report['verificationResult'], 'pass', report)
+
+    def test_signed_input_in_another_git_worktree_is_refused(self):
+        args = self.signed_console_bundle()
+        (self.bundle / '.git').write_text('gitdir: /synthetic/private/git-metadata\n')
+        report = prepare.check_bundle(args)
+        self.assertEqual(report['verificationResult'], 'fail')
+        self.assertEqual(report['failures'], [{'file': name,
+            'condition': 'signed-fresh-production-input-required'}
+            for name in (*prepare.COMMON_FILES, *prepare.PHASE_FILES['console'])])
+
+    def test_trust_root_and_verifier_drift_during_real_verification_fail_with_original_hashes(self):
+        for target_kind in ('trust-root', 'verifier'):
+            args = self.signed_console_bundle()
+            verifier = self.root / 'owner-only-ssh-keygen'
+            shutil.copyfile(self.tool, verifier)
+            verifier.chmod(0o700)
+            args.ssh_keygen = verifier
+            original_trust_hash = prepare.file_digest(args.allowed_signers)
+            original_verifier_hash = prepare.file_digest(verifier)
+            files = (*prepare.COMMON_FILES, *prepare.PHASE_FILES['console'])
+            expected_input_hashes = {name: prepare.file_digest(self.bundle / name) for name in files[:-1]}
+            real_run = subprocess.run
+            verified_count = 0
+
+            def mutate_then_verify(*arguments, **kwargs):
+                nonlocal verified_count
+                if verified_count == len(files) - 1:
+                    target = args.allowed_signers if target_kind == 'trust-root' else verifier
+                    with target.open('ab') as stream:
+                        stream.write(b'\n' if target_kind == 'trust-root' else b'\0')
+                completed = real_run(*arguments, **kwargs)
+                self.assertEqual(completed.returncode, 0, 'otherwise-valid real signature verification failed')
+                verified_count += 1
+                return completed
+
+            with self.subTest(target=target_kind), patch.object(prepare.subprocess, 'run', side_effect=mutate_then_verify):
+                report = prepare.check_bundle(args)
+            self.assertEqual(verified_count, len(files))
+            self.assertEqual(report['verificationResult'], 'fail', report)
+            self.assertEqual(report['failures'], [{'file': files[-1],
+                                                   'condition': 'signed-fresh-production-input-required'}])
+            self.assertEqual(report['allowedSignersSha256'], original_trust_hash)
+            self.assertEqual(report['signatureVerifierSha256'], original_verifier_hash)
+            self.assertEqual(report['inputSha256'], expected_input_hashes)
+            changed = args.allowed_signers if target_kind == 'trust-root' else verifier
+            self.assertNotEqual(prepare.file_digest(changed),
+                                original_trust_hash if target_kind == 'trust-root' else original_verifier_hash)
+            self.assertEqual(stat.S_IMODE(changed.stat().st_mode), 0o600 if target_kind == 'trust-root' else 0o700)
+            for flag in ('mutationAuthorized', 'operationalAcceptance', 'complete'):
+                self.assertFalse(report[flag])
 
     def test_signed_gc_checkpoint_before_or_spanning_lock_acquisition_is_rejected(self):
         for acquired in (-85, -95):

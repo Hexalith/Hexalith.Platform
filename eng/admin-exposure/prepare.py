@@ -69,6 +69,9 @@ def private_path(path, project, *, file=False):
     require(not any(p.is_symlink() for p in (path, *path.parents)), 'symlink-in-private-path')
     require(path.resolve() != project.resolve() and project.resolve() not in path.resolve().parents,
             'private-evidence-must-be-outside-repository')
+    require(not any((parent / '.git').exists() or (parent / '.git').is_symlink()
+                    for parent in (path, *path.parents)),
+            'private-evidence-must-be-outside-git-worktree')
     if file:
         require(path.is_file(), 'missing-private-input')
     if path.exists():
@@ -122,6 +125,11 @@ def string_array(value, validator):
 
 def no_sensitive_fields(value):
     if isinstance(value, dict):
+        if value.get('kind') == 'Secret':
+            require(not any(name in value for name in ('data', 'stringData')), 'prohibited-evidence-field')
+        elif value.get('kind') == 'SecretList' and isinstance(value.get('items'), list):
+            require(not any(isinstance(item, dict) and any(name in item for name in ('data', 'stringData'))
+                            for item in value['items']), 'prohibited-evidence-field')
         for name, child in value.items():
             require(name.lower().replace('_', '').replace('-', '') not in
                     {v.replace('-', '') for v in FORBIDDEN_FIELDS}, 'prohibited-evidence-field')
@@ -601,11 +609,13 @@ def registry_inventory(inventory):
         audited_operation(consumer.get('beforeCutoverOperation'), consumer, generation, transfer=role != 'writer')
         in_record_time(consumer['beforeCutoverOperation'], inventory)
     for reader in (v for v in consumers.values() if v['role'] == 'reader'):
-        for writer in (v for v in consumers.values() if v['role'] == 'writer'):
+        for writer in (v for v in consumers.values() if v['role'] == 'writer' or
+                       v['role'] == 'replicator' and v['replicationDirection'] == 'destination'):
             require(not (reader['principal'] == writer['principal']
                     and reader['credentialSecretReference'] == writer['credentialSecretReference']
                     and set(reader['approvedRepositories']) & set(writer['approvedRepositories'])),
-                    'inconsistent-reader-writer-grant')
+                    'inconsistent-reader-writer-grant' if writer['role'] == 'writer' else
+                    'inconsistent-reader-destination-replicator-grant')
     return consumers
 
 
@@ -620,6 +630,7 @@ def registry_result(decisions, inventory, result, hashes, current):
     probes = unique(result.get('anonymousProbes'), 'kind')
     require(set(probes) == {'catalog', 'tag', 'manifest', 'blob'}, 'anonymous-read-coverage-incomplete')
     for probe in probes.values():
+        require(probe.get('method') == 'GET', 'anonymous-read-requires-explicit-get')
         require(probe.get('status') in (401, 403) and probe.get('result') == 'refused'
                 and probe.get('sourceAddressCategory') == 'external-public'
                 and sha(probe.get('evidenceSha256')), 'anonymous-read-still-succeeds-or-unproved')
