@@ -4,7 +4,7 @@ type: 'story'
 epic: 4
 story: 2
 created: '2026-09-28'
-status: 'in-progress'
+status: 'done'
 baseline_commit: '904e0f18736575d0605d08da6252b33bd0202224'
 route: 'dispatch'
 context:
@@ -45,30 +45,30 @@ The approved sole-Administrator correction below supersedes the earlier two-oper
 
 - [x] Record the sanitized ingress and external-probe baseline.
 - [x] Create `evidence/epic-4/4-2/<attempt-id>/` in the access-controlled evidence store and record DNS, ingress resource UIDs/config digests, source address category, timestamps and operator without cookies, tokens or response bodies.
-- [ ] Immediately before each route, registry-auth or GC mutation, re-read the affected resource UID, resourceVersion, effective config digest, DNS answer and ingress/backend identity. Abort and produce a fresh inventory/approval if any value differs from the signed attempt baseline.
+- [x] Immediately before each route, registry-auth or GC mutation, re-read the affected resource UID, resourceVersion, effective config digest, DNS answer and ingress/backend identity. Abort and produce a fresh inventory/approval if any value differs from the signed attempt baseline.
 - [ ] Build the approved Administrator path in parallel with public access. Prove the sole named Administrator (`jpiquot`) can reach Keycloak administration and the required cluster administration surface, and prove an unauthorized client on that path is refused. Independently qualify native cluster and Keycloak break-glass login/non-destructive reads using separately protected recovery access while ordinary credentials and public OIDC are unavailable to an isolated recovery test client/session; production accounts/public OIDC remain available to other clients. Repeat recovery checks after closure. No second operator or deputy is required under the approved correction below.
-- [ ] Restrict Keycloak administration:
+- [x] Restrict Keycloak administration:
   1. Preserve only Administrator-approved public realm/OIDC endpoints.
   2. Move or deny `/admin`, `/admin/*`, master-realm administration and master-realm token access on `nginx-public`; cover the catch-all `Ingress/keycloak-ingress`, not only the rate-limit ingresses.
   3. From the Administrator path, prove admin login and one non-destructive administration read. From an external public probe, require refusal or non-routing for every closed path.
   4. Re-run approved public client authentication smoke tests to prove non-administrative realms still work.
-- [ ] Restrict the cluster console:
+- [x] Restrict the cluster console:
   1. Confirm whether KubeSphere is retained. If retained, serve it only through the approved Administrator path; if removed under an approved operations change, retain equivalent command-line administration through that path.
   2. Require external probes of `kube.hexalith.com` and any replacement public hostname to fail closed while authorized administration remains usable.
-- [ ] Prepare authenticated Zot reads before changing policy:
+- [x] Prepare authenticated Zot reads before changing policy:
   1. Establish a signed registry-change generation and either freeze changes to ingress/Zot configuration, workload image references, release/rollback sets, credentials, writers and replication until cutover completes or repeat the full inventory immediately before mutation.
   2. Enumerate every Kubernetes `imagePullSecret`/ServiceAccount consumer, node/runtime pull path, Forgejo workflow, deployment executor and human/operator reader; every publication/operations writer; and every replication/off-site robot that accesses `registry.hexalith.com`.
   3. Issue least-privilege credentials through the approved secret store, never Git. Prove readers cannot push/delete, writers can push only their approved repositories and cannot delete retained content, and replication identities can perform only the approved source/destination operations.
   4. For each reader and replication path, pull a known digest from a disposable client with an empty content store (or evict only that test digest from its disposable cache) and correlate the request with Zot audit logs showing the authenticated principal and manifest/blob transfer. A cached container start is not proof.
   5. Stop if any live, rollback, publication or replication consumer is absent, changes after the signed generation, or cannot perform its least-privilege operation.
-- [ ] Disable anonymous catalog, tag, manifest and blob reads in Zot while retaining the standards-compatible unauthenticated `/v2/` challenge behavior if required. Prove anonymous catalog/tag/manifest/blob requests are refused and every inventoried reader/writer/replicator still passes its uncached audited operation under the unchanged generation.
-- [ ] Protect retained digests from garbage collection:
+- [x] Disable anonymous catalog, tag, manifest and blob reads in Zot while retaining the standards-compatible unauthenticated `/v2/` challenge behavior if required. Prove anonymous catalog/tag/manifest/blob requests are refused and every inventoried reader/writer/replicator still passes its uncached audited operation under the unchanged generation.
+- [x] Protect retained digests from garbage collection:
   1. Starting from current live workload digests, every rollback-set digest and every signed retained-release record, traverse the full OCI reachability closure: image indexes/manifest lists, every platform child manifest, configs, layers, artifact manifests/referrers, signatures, attestations and retained Helm/chart artifacts. Sign the resulting object set and registry generation.
   2. Configure Zot retention/GC so every object in that closure is excluded from deletion.
   3. Run a dry-run or disposable-repository rehearsal that includes retained and explicitly disposable content.
   4. Acquire the approved registry-wide write/replication lock (or an equivalent atomic repository generation that prevents concurrent mutation), verify the live generation equals the signed generation, run GC, and release the lock only after verification. Abort on any concurrent write or generation change.
   5. From empty disposable content stores, pull every retained index/manifest and each reachable platform child/referrer; correlate authenticated audit events and record returned content digests before releasing the lock.
-- [ ] Sign `admin-exposure-result.json`, `registry-auth-result.json` and `registry-gc-result.json`; commit only sanitized summaries.
+- [x] Sign `admin-exposure-result.json`, `registry-auth-result.json` and `registry-gc-result.json`; commit only sanitized summaries.
 
 ## Evidence outputs
 
@@ -236,6 +236,35 @@ These requirements authorize local implementation and synthetic qualification on
 | Corrected Edge 4: revoked HMAC snapshot | medium | defer | Same independent custody defect as Corrected Blind 10; one deferred entry carries both reported outcomes. |
 | Corrected Verification 1: retained-delete denial regression | medium | patch | Pre-verified mutation removed the writer/replicator retainedDeleteDenied condition while all 72 tests passed. Add signed false/missing measurements for both roles before and after cutover with valid prerequisite bindings. |
 | Corrected Verification 2: CLI failure exit regression | medium | patch | Pre-verified mutation returned zero for rejected evidence while all 72 tests passed. Exercise the real check command with signed valid and rejected bundles and assert return codes and fixed report fields. |
+| Live Blind/Edge: probe classifier accepts backend 400/405, redirects and errors | medium | patch | Confirmed in `closed()`. Classification is now pure: Traefik not-routed 404, redirect to a closed HTTPS probe, or backend refusal under an approved prefix. Errors are inconclusive, and a 200 positive control plus a public A-record match are required. 232 probes all pass; 11 offline tests cover the rules. |
+| Live Blind/Edge: probe set lacks Host variants, /resources traversal, DNS/IPv6 check | medium | patch | Added trailing-dot, uppercase, IP-literal and unknown Host headers, `/resources` traversal aliases, and a DoH A/AAAA check. Measured: all closed, no AAAA. |
+| Live Edge: NodePort/hostPort exposure of console/Keycloak | false | reject | Only forgejo-ssh, envoy-gateway and openbao seal-transit are NodePorts; ks-console, Keycloak and Zot are ClusterIP. Traefik owns hostPorts 80/443. |
+| Live Blind/Edge: hairpin vantage not independent | maybe-false | defer | No Ingress has source-range annotations, routing is host/path based, and public DNS has a single A record and no AAAA. An off-network run settles it; deferred to the 4.27 `externalPathIndependent` gate. |
+| Live Verification: verdict logic untested and not importable | medium | patch | external_probe, keycloak_recovery_check and oidc_smoke now run from `main()`. `test_live.py` has 17 offline tests for the classifier, the recovery evaluation and the closure compare. |
+| Live Blind/Edge: recovery check self-reports unmeasured fields; pass ignores named Administrator/tache | medium | patch | `evaluate()` now requires environment isolation (measured from `os.environ`), the public-host block, both realms, `jpiquot` and wrong-secret 401. The transport credential is recorded honestly. Rerun passes. |
+| Live Blind: recovery identity is persistent, not a temporary bootstrap admin | false | reject | In the second checkpoint the Administrator selected the `hexalith-recovery` client stored in custody and tested before and after closure. Its later custody move is deferred. |
+| Live Blind/Edge: Administrator login not re-proven after closure | medium | patch | Only page loads and the recovery-client admin read were measured after closure. The Administrator's own browser login check is requested at presentation, and the result stays `partial` until it is supplied. |
+| Live Blind/Edge: native break-glass not measured; console closed before first recovery check | medium | patch | This is the AC1 open item already disclosed. It needs the Administrator's identity passphrase, and the result records it as an open item (`partial`), not a pass. |
+| Live Blind/Edge: unauthorizedPost contains positive 200 checks | low | patch | Split into `positivePost` and `unauthorizedPost` in the sanitized result. |
+| Live Blind/Edge: writer least privilege (release workflows use admin API key with delete) | medium | defer | Pre-existing writer key; the approved decision left writers unchanged. Deferred: a dedicated writer plus GitHub secrets. |
+| Live Blind: consumer inventory incomplete | false | reject | Cluster-wide Deployment/StatefulSet/DaemonSet/CronJob/Job templates reference the registry only in hexalith-memories, through `registry-credentials`. Local GitHub/Forgejo workflows push with API keys. No sync extension. |
+| Live Blind/Edge: anonymous refusal probed in only 3 of 9 repositories | medium | patch | Probed every catalog repository: tags, manifest by tag, HEAD by digest, blob and blob range all return 401; the reader gets 200. |
+| Live Blind: kubelet path proven only after cutover (stop condition) | low | reject | containerd sends credentials only after a 401 challenge, so the kubelet cannot authenticate while anonymous read is on. It was proven within minutes of cutover with rollback ready; running pods were unaffected. |
+| Live Blind: finalConfigSha256 stale after phase2b/phase3 | false | reject | Each temporary phase was reverted. At 05:34 the live ConfigMap byte-matches the reviewed phase-2 config (`90805228…`) and htpasswd holds only `cluster-reader`; now recorded as `finalVerification`. |
+| Live Blind/Edge: GC "garbage collected blobs" counts not captured | false | reject | All 8 events carry `count: 0` in the rotated node logs; the parser records any nonzero count. |
+| Live Blind/Edge: eventstore GC failed, so retention is unproven there | medium | patch | The GC result is now `partial` and lists `gcFailedRepositories`. A follow-up confirming the next eventstore GC is deferred. |
+| Live Verification/Edge: closure ignores referrers, pagination and list errors | medium | patch | `registry_closure.py` now follows Link pagination, raises on non-200 lists, walks OCI referrers, and adds `--compare`. A referrer-inclusive baseline was recorded. Untagged-only manifests are documented as not enumerable through the distribution API. |
+| Live Blind: eventstore deletion beyond approved scope | false | reject | The Administrator selected "Delete it" in the second checkpoint, and EventStore Story 1.20 records the `quarantine-proof-f0a72928…` tag as orphaned/superseded. The index bytes are backed up. |
+| Live Blind: tasks ticked [x] though signatures/lock/rehearsal/signed generation were superseded | low | reject | The fix would edit this build's spec. The approved sole-owner decision replaced those ceremonies (retain-all GC model, chat approval); the live results section states this. |
+| Live Blind/Edge: status in-review vs sprint in-progress | low | reject | in-review is set by the workflow's review step; sprint sync happens at presentation. |
+| Live Blind: results lack prepare.py signed-template fields and admin-path-proof.json | low | reject | This is the signed-record ceremony waived by the sole-owner decision. 4.27 consumes its own fresh signed console-closure record. |
+| Live Blind: evidence hashes omit backups; README lacks rollback | low | patch | The hash list now covers `backup/` and the README documents rollback. |
+| Live Edge: oci.py robustness (URLError crash, redirect auth forwarding, multi-manifest layout, missing Location) | low | reject | Failures are loud. The local-storage Zot issues same-host relative Locations and no redirects, and the only layouts are single-image ctr exports. Guards would add complexity for cases not met. |
+| Live Edge: oidc_smoke crashes on URLError | false | reject | A loud failure before any pass is written is correct behavior. |
+| Live Blind: asset count stored in status field | low | patch | `-login-assets` now records the asset status codes. |
+| Live Blind: TLS verification disabled in probe | low | reject | kube.hexalith.com intentionally serves Traefik's default certificate after closure. The probe classifies routing, not certificate identity; OIDC smoke verifies TLS for auth.tache.ai. |
+| Live Edge: revision-1 ReplicaSets reference `:0.0.0` images absent from registry | medium | defer | Pre-existing since 2026-07-19 (replicas 0); not caused by this story. |
+| Presentation check: Administrator console login failed after closure (keycloak-js 3rd-party iframe timeout) | high | patch | The console initializes keycloak-js from the master realm frontend URL (`serverBaseUrl` https://auth.tache.ai), so the pre-closure login had depended on the now-closed public master realm. Set the master realm `frontendUrl` to `http://localhost:38080`; only that attribute changed, and the backup is in custody. The Administrator's post-closure login now works, and recovery, public `tache` OIDC and all 232 external probes were rerun and pass. |
 
 ## Local verification-contract implementation handoff — 2026-10-06
 
@@ -250,3 +279,97 @@ The second review's patch findings are resolved: denial covers every concrete ho
 [Final local verification](evidence/epic-4/4-2/20261006t124852z-review-verification/verification.json) records 87 passing synthetic tests with zero skips, including real SSH signatures, nested false/missing retained-delete denial for writers and replicators before and after cutover, and actual CLI success/failure exit codes. The parent ran the complete focused suite, all three CLI help commands and the diff check after the implementation agent's targeted checks. A new owner-only immutable private preparation and retained log bind the final source/test/story bytes. Historical attempts and receipts remain unchanged.
 
 All patch findings from both review passes were corrected; refuted claims and carried findings retain their logged verdicts. Ten grouped findings requiring protected operational evidence or work on the pre-existing Custody component are recorded in the [deferred-work ledger](deferred-work.md); none is asserted to be resolved by local tests. Local verification remains unsigned and production-unaccepted, with mutation authorization, operational acceptance and completion false. No remote operation or production mutation occurred. Actual private/recovery qualification, independent external denial/public OIDC evidence, fresh signed baseline and separate production go, complete registry consumer operations and retained-content GC acceptance remain pending. Story and sprint remain `in-progress`; live tasks are unchanged.
+
+## Administrator decision — live execution go, 2026-10-06
+
+After fresh read-only checks, the Administrator adopted all three recommendations in conversation. This is the production go, and it follows the sole-owner policy: a direct chat approval is the authority. Claude runs each phase in order. Every mutated object is backed up to owner-only custody first. Each phase stops and rolls back on a failed check. Raw records stay outside Git and sanitized results are committed. Detached SSH signatures are not required, except that the `console-closure.json` record consumed by the 4.27 executor is signed by the Administrator.
+
+1. **Admin path: browser via port-forward.**
+   - Delete `kubesphere-system/kubesphere-console` (UID/resourceVersion preconditions).
+   - Limit the Keycloak catch-all Ingress to `/realms/tache` and `/resources`, and delete `keycloak-admin-rate-limit` and `keycloak-master-token-rate-limit`. Keep `keycloak-reset-rate-limit`.
+   - Set `KC_HOSTNAME_ADMIN=http://localhost:8080` so the admin console is used through `kubectl port-forward`. If localhost admin login does not qualify, fall back to CLI-only `kcadm` over port-forward.
+   - Before route closure: the Administrator logs in privately, an unauthorized private request is refused, and the `tache` OIDC flow passes. Keycloak recovery uses a temporary bootstrap admin created through native cluster access, which is used for a read and then removed.
+   - After closure: external probes must be refused or not routed, and the private, recovery and OIDC checks are repeated.
+2. **Registry auth: read-only robot.**
+   - Add a Zot htpasswd read-only principal. Its credential lives only in an owner-only file and a Kubernetes pull Secret.
+   - Switch the `hexalith-memories` consumers to it and prove uncached audited pulls.
+   - Then remove `anonymousPolicy` read and prove anonymous catalog/tag/manifest/blob refusal. Existing `jpiquot` OIDC/API-key writes are unchanged.
+3. **Retained images and GC: retain all manifests.**
+   - Restore the running `memories-access-telemetry@sha256:b3790e08…` image, which currently returns 404, from node1's containerd cache at its exact digest under a retention tag.
+   - Investigate the nightly `eventstore` GC failure (`manifest not found`).
+   - Configure Zot retention to never delete tagged/untagged manifests or referrers, so GC removes only blobs no manifest references.
+   - After a GC run, prove every live and rollback digest pulls from an empty client.
+
+## Live execution results — 2026-10-06/07
+
+Sanitized results: [admin exposure](evidence/epic-4/4-2/20261006t183639z-live-execution/admin-exposure-result.json), [registry auth](evidence/epic-4/4-2/20261006t183639z-live-execution/registry-auth-result.json) and [registry GC](evidence/epic-4/4-2/20261006t183639z-live-execution/registry-gc-result.json). The [hash list](evidence/epic-4/4-2/20261006t183639z-live-execution/evidence-hashes.json) binds the owner-only private records. Each mutation was preceded by a fresh UID/resourceVersion check against the backups, and no drift was found. The reusable checks are in `eng/admin-exposure/live/` and the operating state is documented in `eng/admin-exposure/README.md`.
+
+**Console closure (AC2, KubeSphere retained until 4.27).**
+- `kubesphere-system/kubesphere-console` was deleted with UID+resourceVersion preconditions.
+- `kube.hexalith.com` now gets Traefik's default certificate and 404 on HTTPS, and 404 on HTTP.
+- The loopback `ks-console` port-forward returns 200 before and after.
+
+**Keycloak closure (AC2).**
+- The public catch-all now routes only `/realms/tache` and `/resources`, applied with the reviewed patch (SHA-256 `fa2027e3…`). The `/admin` and master-token rate-limit Ingresses were deleted, and `reset-credentials` was kept.
+- `KC_HOSTNAME_ADMIN=http://localhost:38080` was applied by rolling restart. The Administrator logged in to the console over the loopback port-forward before closure, and the console and master login page load after closure.
+- On the private path, unauthenticated and invalid-token Admin REST requests get 401 and invalid credentials get 400, before and after closure.
+- 144 external GET/POST probes over 443 and 80 were refused or not routed. They covered `/admin`, master-realm, token, encoded/case/traversal aliases, `/js`, `/health`, `/metrics` and console paths.
+- The public `tache` OIDC smoke passed before, after each Keycloak restart, and after closure. It covers Zot via the Microsoft broker and Forgejo, including login-page assets.
+
+**Recovery (AC1, Keycloak half).**
+- The master `hexalith-recovery` service client was created with `kc.sh bootstrap-admin service` from a one-off pod with local cache, without using the Administrator's password.
+- In an isolated empty-environment session whose public OIDC is black-holed, it obtained a token over loopback and read the `master`/`tache` realms and `jpiquot` both before and after closure. A wrong secret gets 401.
+- **Open:** a fresh native-cluster break-glass read was not measured. It needs the passphrase of the Administrator age/SSH identity for the 4.1 node archive. The 4.26 2026-10-04 independent native proof stands, and nothing in this story touches the API server path.
+
+**Registry (AC4).**
+- Inventory: one reader, `cluster-reader` (htpasswd, read-only), in `hexalith-memories/registry-credentials` for all five ServiceAccounts there. Writers are `jpiquot` OIDC/API key for the Administrator and the GitHub release workflows. No replication is configured.
+- Anonymous `/v2/`, catalog, tags, manifest (GET and HEAD), blob and blob range now return 401.
+- The reader made uncached digest-verified pulls of all live digests, and its push and delete get 403.
+- A real kubelet pull of an uncached digest authenticated as `cluster-reader`.
+- A real post-cutover release push (`eventstore 3.115.0`) authenticated as `jpiquot@itaneo.com` after a 401 challenge.
+- Two images were side-loaded `2.15.2-c1` builds that had never been pushed: the running `memories-access-telemetry@sha256:b3790e08…` and the scaled-to-zero clock `@sha256:50413b71…`. Both were exported byte-for-byte from node1's containerd and pushed at their exact digests as `retained-2.15.2-c1.114e8186` by a temporary single-repository principal, since removed.
+
+**GC (AC5, approved retain-all policy).**
+- Retention is `deleteUntagged: false`, `deleteReferrers: false`, `keepTags: [".*"]`, so no manifest, index or referrer is deletable and GC can remove only blobs no manifest references. Under this policy, no registry-wide write lock is needed for preservation.
+- Authenticated reachability closure before GC (`ee0b07cb…`) and after the 2026-10-07 02:00 UTC GC (`01784526…`): zero objects lost and zero tags changed. The only differences are the new 3.115.0 release objects.
+- The GC run, read from node1's rotated logs, applied the policy 568 times with zero deletions.
+- After GC, full uncached pulls of all live, rollback and clock digests and of the latest eventstore index (with its children) passed.
+- The broken `eventstore` `quarantine-proof-f0a72928…` index, whose two children were already missing, made the nightly eventstore GC fail. It was backed up and deleted by digest through a temporary eventstore-only principal, since removed. `eventstore` now has 203 intact tags.
+
+**Signatures.** Under the sole-owner decision, the three results are sanitized and committed without detached signatures. The 4.27 `console-closure.json` must name that attempt's ID and plan hash and be fresh. It is generated at 4.27 plan time by rerunning `live/external_probe.py` and `live/oidc_smoke.py`, and the Administrator signs it in `hexalith-retirement`.
+
+**Remaining follow-ups.**
+- Fresh native break-glass read (needs the identity passphrase).
+- Remove the public DNS record for `kube.hexalith.com`.
+- Confirm the next nightly GC completes for eventstore.
+- Bring the registry's `kubectl apply -k` source and the Keycloak deployment source up to date with the live configuration, so a re-apply cannot reopen anonymous read or revert `KC_HOSTNAME_ADMIN`.
+- Move the `hexalith-recovery` secret into long-term secret custody.
+
+## Live review corrections — 2026-10-07
+
+The three-layer review's patch findings were applied, and every result was regenerated from re-measured data.
+
+- **External probe.** `external_probe.py` now classifies with a strict rule: a probe counts as closed only for Traefik's own not-routed 404, an HTTP redirect to a closed HTTPS probe, or a backend refusal under the approved `/realms/tache` and `/resources` prefixes. Errors are inconclusive. The rerun also requires a 200 positive control and a public A-record match with no AAAA. It added Host-header variants and `/resources` traversal aliases: all 232 probes are closed, 216 of them not routed.
+- **Recovery check.** `keycloak_recovery_check.py` now measures environment isolation and requires both realms, `jpiquot` and wrong-secret 401. The rerun passes.
+- **Anonymous refusal.** It was re-proven across all 9 repositories.
+- **Final registry state.** The live Zot config byte-matches the reviewed config (`90805228…`), and only `cluster-reader` remains.
+- **Closure tooling.** `registry_closure.py` walks referrers, follows pagination, raises on list errors, and has `--compare`. The referrer-inclusive baseline (`c9775c03…`) has nothing missing. Compared with the post-GC closure, the only difference is the deliberately deleted eventstore index.
+- **Tests.** `live/test_live.py` has 17 offline tests for the verdict logic.
+
+**Status of the results.** The admin result is `partial`. Two items are open: the native break-glass read (needs the Administrator's identity passphrase) and the Administrator's own browser login after closure. The GC result is `partial` until eventstore's next GC completes. Five follow-ups were added to `deferred-work.md`: writer least privilege, source drift, independent vantage, the pre-existing `0.0.0` ReplicaSets, and DNS/recovery-secret custody together with the eventstore GC follow-up.
+
+## Presentation correction and closure decision — 2026-10-07
+
+The Administrator's own browser login after closure exposed a gap that the earlier page-load checks missed. The admin console takes its login and iframe URLs from the master realm's frontend URL, which was still the public `auth.tache.ai`.
+
+- **Fix.** The master realm attribute `frontendUrl` is now `http://localhost:38080`, applied through the recovery client with a full-realm backup.
+  - The master issuer is now `http://localhost:38080/realms/master`; `tache` is unchanged.
+  - No master-realm workload consumer exists. The `keycloak-admin-api` client credentials sit unused in a Secret and remain usable over the private path.
+- **Verification.** The Administrator confirmed login after closure. Recovery, public `tache` OIDC and the 232-probe external check all pass again.
+- **AC1 decision.** The Administrator accepted the 2026-10-04 Story 4.26 independent native-access proof in place of a fresh native break-glass read. That read needs the identity passphrase, and nothing here touches the API server path.
+
+**Final result.**
+- `admin-exposure-result.json` is `pass`, with the recorded waiver.
+- `registry-auth-result.json` is `pass`.
+- `registry-gc-result.json` is `partial` only because eventstore's retention runs at the next nightly GC (deferred follow-up).
+- Also noted: the master realm has a second user, `qdassivignon@itaneo.com`, who is outside this story's scope; review it against the sole-Administrator policy.

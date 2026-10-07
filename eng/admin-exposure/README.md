@@ -110,3 +110,52 @@ All signed records require integer `schemaVersion: 1`; missing, boolean or other
 After actual measured console closure is accepted, issue a **new** `console-closure.json` for the exact pending 4.27 retirement plan with that retirement `attemptId`, `planSha256`, `sourceClusterUid`, fresh `capturedAt`/`expiresAt`, `story: 4.2`, `verificationResult: pass`, and `accepted`, `externalPathIndependent`, `publicConsoleDenied`, `publicOidcPassed` all true. Include exact accepted admin-result/private-proof hashes for lineage. The existing [retirement validator](../cluster-management/retire.py) requires these fields and an Administrator signature under **`hexalith-retirement`** in the selected preflight directory. Its attempt ID is the retirement attempt, not the exposure attempt. Renew the exact-plan receipt when the plan or freshness changes; preserve the original accepted production evidence. An unsigned pending helper template cannot unblock retirement.
 
 Commit only reviewed sanitized summaries/hashes of actual measured evidence. Full operational records and approved signatures remain in access-controlled custody. Do not publish these pending template files as proof. The separate local verification receipt may be committed only with its preparation-only, unsigned and production-unaccepted labels intact.
+
+## Live state after the 2026-10-06/07 execution
+
+The Administrator approved this execution in conversation under the sole-owner policy. Sanitized results are in [`20261006t183639z-live-execution`](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-2/20261006t183639z-live-execution/admin-exposure-result.json). Raw records, backups and credentials stay in owner-only `~/hexalith-admin-exposure-evidence`.
+
+**Private administration** works over loopback only:
+
+```bash
+kubectl -n kubesphere-system port-forward --address 127.0.0.1 svc/ks-console 18080:80   # console until 4.27 retires it
+kubectl -n keycloak port-forward --address 127.0.0.1 svc/keycloak 38080:8080            # then open http://localhost:38080/admin
+```
+
+Keycloak serves its admin console at `KC_HOSTNAME_ADMIN=http://localhost:38080`, because port 8080 is used locally by Aspire `dcp`. The master realm's Frontend URL is also `http://localhost:38080`, so admin-console login, the master issuer and keycloak-js iframes stay on the private path. Without it, the console tries the closed public master realm and fails with a 3rd-party check iframe timeout. The public `auth.tache.ai` routes only `/realms/tache` and `/resources`, plus the existing `reset-credentials` rate-limit Ingress. `kube.hexalith.com` has no Ingress; its public DNS record still has to be removed separately.
+
+**Keycloak recovery** uses the master-realm `hexalith-recovery` service client. It was created with `kc.sh bootstrap-admin service` from a one-off pod labelled `keycloak-db-client: "true"` with `KC_CACHE=local`. Its secret is in `credentials/keycloak-hexalith-recovery.json` in custody. It needs only native cluster access: run `live/keycloak_recovery_check.py` under `env -i` against the 38080 forward. Move the secret to your long-term secret store.
+
+**Registry.** Zot `registry.hexalith.com` has `anonymousPolicy: []`.
+- **Readers:** the read-only htpasswd principal `cluster-reader` (custody `credentials/registry-hexalith-cluster-reader.json`) fills the `hexalith-memories/registry-credentials` pull Secret that all five ServiceAccounts there reference.
+- **Writers:** `jpiquot` OIDC/API-key writers are unchanged.
+- **Retention:** keep every tagged and untagged manifest and every referrer, so GC removes only blobs no manifest references.
+- **Drift risk:** the registry was originally applied with `kubectl apply -k` from a source that is not in the local repositories. Update that source before re-applying it, or anonymous read and the htpasswd mount would return.
+
+**Re-verification scripts** are in `live/`:
+- `external_probe.py`: GET/POST over 443 and 80 for closed admin paths and aliases, via the public IP.
+- `oidc_smoke.py`: public `tache` login flows.
+- `registry_closure.py`: authenticated reachability closure, for comparing across GC runs.
+- `oci.py`: exact-byte push and digest-verified pulls.
+
+For the 4.27 gate, rerun `external_probe.py` and `oidc_smoke.py` at plan time and write the fresh `console-closure.json` bound to that attempt. The Administrator signs it in namespace `hexalith-retirement`.
+
+`external_probe.py` counts a probe as closed only for three outcomes:
+- Traefik's own "not routed" 404.
+- An HTTP redirect to an HTTPS probe that was itself closed.
+- A backend 400/404/405 for an alias under the approved public prefixes `/realms/tache` and `/resources`.
+
+It also requires a 200 positive control and public A records that match. Network errors are inconclusive. Run the offline verdict tests with `python3 -m unittest discover -s eng/admin-exposure/live -p 'test_*.py'`.
+
+This live run follows the sole-owner decision: sanitized results are unsigned, and the signed-record checks above apply only where a consumer such as the 4.27 executor requires them.
+
+**Rollback.** Pre-change copies of every mutated object are in the attempt's `backup/` folder in custody:
+- Ingresses, the Keycloak Deployment and Service, and the Zot ConfigMap, Deployment and Ingress.
+- The empty `registry-credentials` placeholder.
+- The deleted `eventstore` index bytes.
+
+Restoring anonymous registry read means:
+1. Set `anonymousPolicy: ["read"]` on `**` in `distribution-registry-config`.
+2. Bump the `registries.hexalith.com/config-revision` annotation to restart Zot.
+
+Running pods keep their cached images. Reverting Keycloak means three steps: re-apply the backed-up Ingresses, remove `KC_HOSTNAME_ADMIN`, and clear the master realm `frontendUrl` attribute. The full pre-change realm representation is `backup/keycloak-master-realm.json`.

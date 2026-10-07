@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "story": "4.2",
+  "attemptId": "20261006t183639z-live-execution",
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "authority": "Administrator chat approval 2026-10-06 (sole-owner policy); live execution by Claude Code; unsigned by decision",
+  "privateCustody": "owner-only ~/hexalith-admin-exposure-evidence/evidence/epic-4/4-2/20261006t183639z-live-execution",
+  "policy": {
+    "gc": true,
+    "gcDelay": "24h",
+    "gcInterval": "24h",
+    "gcTimeWindow": "02:00-05:00",
+    "configSha256": "90805228cf4ac16752d3bb1ca15b47b92f8c24f1a572b5275f1e54c9eecb0317",
+    "retention": {
+      "dryRun": false,
+      "delay": "24h",
+      "policies": [
+        {
+          "repositories": [
+            "**"
+          ],
+          "deleteReferrers": false,
+          "deleteUntagged": false,
+          "keepTags": [
+            {
+              "patterns": [
+                ".*"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "meaning": "every tagged and untagged manifest, index and referrer is retained; GC removes only blobs no manifest references"
+  },
+  "safetyModel": "No manifest/index/referrer is deletable under this retention policy, so no registry-wide write lock is needed for manifest preservation; in-flight blob uploads are protected by gcDelay 24h.",
+  "preGcClosure": {
+    "capturedAt": "2026-10-06T19:13:05.456720+00:00",
+    "closureSha256": "ee0b07cb769b734d526302fb2431bea3cd608db226848c586edcd2c89f61ef92",
+    "summary": {
+      "eventstore": {
+        "tags": 201,
+        "objects": 554,
+        "missing": 2
+      },
+      "memories": {
+        "tags": 88,
+        "objects": 294,
+        "missing": 0
+      },
+      "memories-access-telemetry": {
+        "tags": 50,
+        "objects": 174,
+        "missing": 0
+      },
+      "memories-access-telemetry-clock": {
+        "tags": 50,
+        "objects": 174,
+        "missing": 0
+      },
+      "memories-mcp": {
+        "tags": 83,
+        "objects": 273,
+        "missing": 0
+      },
+      "parties": {
+        "tags": 20,
+        "objects": 85,
+        "missing": 0
+      },
+      "parties-mcp": {
+        "tags": 17,
+        "objects": 78,
+        "missing": 0
+      },
+      "parties-ui": {
+        "tags": 12,
+        "objects": 63,
+        "missing": 0
+      },
+      "tenants": {
+        "tags": 47,
+        "objects": 150,
+        "missing": 0
+      }
+    }
+  },
+  "gcRun": {
+    "source": "node1 /var/log/pods rotated Zot container logs",
+    "firstEvent": "2026-10-07T02:00:00.020838303Z",
+    "lastEvent": "2026-10-07T02:02:20.43308225Z",
+    "messageCounts": {
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/eventstore": 1,
+      "applied policy": 568,
+      "failed to run GC for /var/lib/zot/distribution/eventstore": 1,
+      "gc unsuccessfully completed for /var/lib/zot/distribution/eventstore": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/memories": 1,
+      "garbage collected blobs": 8,
+      "gc successfully completed for /var/lib/zot/distribution/memories": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/memories-access-telemetry": 1,
+      "gc successfully completed for /var/lib/zot/distribution/memories-access-telemetry": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/memories-access-telemetry-clock": 1,
+      "gc successfully completed for /var/lib/zot/distribution/memories-access-telemetry-clock": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/memories-mcp": 1,
+      "gc successfully completed for /var/lib/zot/distribution/memories-mcp": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/parties": 1,
+      "gc successfully completed for /var/lib/zot/distribution/parties": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/parties-mcp": 1,
+      "gc successfully completed for /var/lib/zot/distribution/parties-mcp": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/parties-ui": 1,
+      "gc successfully completed for /var/lib/zot/distribution/parties-ui": 1,
+      "executing gc of orphaned blobs for /var/lib/zot/distribution/tenants": 1,
+      "gc successfully completed for /var/lib/zot/distribution/tenants": 1
+    },
+    "errors": [
+      {
+        "time": "2026-10-07T02:00:00",
+        "message": "failed to run GC for /var/lib/zot/distribution/eventstore",
+        "error": "manifest not found"
+      }
+    ],
+    "deletions": [],
+    "zeroDeletions": true
+  },
+  "gcFailedRepositories": [
+    "eventstore"
+  ],
+  "postGcClosure": {
+    "capturedAt": "2026-10-07T05:10:33.761664+00:00",
+    "closureSha256": "01784526d3e8e18165b97b0e971a05998f714d37b1107009de270052fbbb8833",
+    "summary": {
+      "eventstore": {
+        "tags": 204,
+        "objects": 561,
+        "missing": 2
+      },
+      "memories": {
+        "tags": 88,
+        "objects": 294,
+        "missing": 0
+      },
+      "memories-access-telemetry": {
+        "tags": 50,
+        "objects": 174,
+        "missing": 0
+      },
+      "memories-access-telemetry-clock": {
+        "tags": 50,
+        "objects": 174,
+        "missing": 0
+      },
+      "memories-mcp": {
+        "tags": 83,
+        "objects": 273,
+        "missing": 0
+      },
+      "parties": {
+        "tags": 20,
+        "objects": 85,
+        "missing": 0
+      },
+      "parties-mcp": {
+        "tags": 17,
+        "objects": 78,
+        "missing": 0
+      },
+      "parties-ui": {
+        "tags": 12,
+        "objects": 63,
+        "missing": 0
+      },
+      "tenants": {
+        "tags": 47,
+        "objects": 150,
+        "missing": 0
+      }
+    }
+  },
+  "comparison": {
+    "objectsLost": {},
+    "tagsChanged": {},
+    "newObjects": {
+      "eventstore": 7
+    },
+    "newTags": {
+      "eventstore": 3
+    },
+    "pass": true
+  },
+  "postGcUncachedPulls": {
+    "capturedAt": "2026-10-07T05:15:33.057212+00:00",
+    "principal": "cluster-reader",
+    "client": "empty in-memory client (no content store)",
+    "pulls": [
+      {
+        "repository": "memories",
+        "digest": "sha256:71e49b6e806ec2fa7c221e58600ba02115693923db05915663396be01b1c042c",
+        "ok": true,
+        "blobs": 8,
+        "children": 0,
+        "bytes": 272711152
+      },
+      {
+        "repository": "memories",
+        "digest": "sha256:aff15b4307033bc389ee87dfc4bbc62f185a02d6c11ae82d6eb87400d9e2776b",
+        "ok": true,
+        "blobs": 8,
+        "children": 0,
+        "bytes": 278058469
+      },
+      {
+        "repository": "memories-mcp",
+        "digest": "sha256:4d5cd738a89fdca71b7202d7661cecea8bab6b6e45d4fe505670cf7287205bb7",
+        "ok": true,
+        "blobs": 8,
+        "children": 0,
+        "bytes": 60737487
+      },
+      {
+        "repository": "memories-access-telemetry",
+        "digest": "sha256:b3790e08c0091dfb723f6819e4706a6b1ef36a051b8c4afe38f5e362c5bdf8ea",
+        "ok": true,
+        "blobs": 8,
+        "children": 0,
+        "bytes": 57513840
+      },
+      {
+        "repository": "memories-access-telemetry-clock",
+        "digest": "sha256:50413b716ca051fad7c4d68119527a1fc5f64c566eea22827769fd85d9de4c70",
+        "ok": true,
+        "blobs": 8,
+        "children": 0,
+        "bytes": 57326947
+      },
+      {
+        "repository": "eventstore",
+        "digest": "sha256:88e26093e1383ebb2f14a4208b8e59bd821f7574b0ab4823e3dd3dc23dd1e7db",
+        "ok": true,
+        "blobs": 16,
+        "children": 2,
+        "bytes": 119583307
+      }
+    ],
+    "pass": true
+  },
+  "eventstoreCleanup": {
+    "at": "2026-10-07T05:11:34.593789+00:00",
+    "repository": "eventstore",
+    "tag": "quarantine-proof-f0a7292894776fabd293b2138b2979d63a01f1ae",
+    "indexDigest": "sha256:fbb5664f1b0e9c95b508244b69b7ef4c3ccecd0cd7ecaf3020d9c4cf4269bbae",
+    "missingChildren": [
+      "sha256:abc7e264be642125b1f3617467aaa8708656d1cf5da577c58cd78d2fd73203a6",
+      "sha256:afdf922bcd824ae47d363944b9d5b5e4bd56354cea7e740b60289d3efc68b8e9"
+    ],
+    "backup": "owner-only custody backup/eventstore-broken-index-fbb5664f1b0e9c95b508244b69b7ef4c3ccecd0cd7ecaf3020d9c4cf4269bbae.json",
+    "cleanupPrincipalOtherRepoDelete": 403,
+    "deleteStatus": 202,
+    "afterTagStatus": 404,
+    "afterDigestStatus": 404
+  },
+  "eventstoreIntegrityAfterCleanup": {
+    "capturedAt": "2026-10-07T05:15:04.630679+00:00",
+    "tags": 203,
+    "brokenTags": {},
+    "pass": true
+  },
+  "closureTooling": "pre/post closures walked tags, index children, configs and layers; referrer walking was added afterwards (see referrerBaseline)",
+  "referrerBaseline": {
+    "capturedAt": "2026-10-07T05:42:23.175691+00:00",
+    "closureSha256": "c9775c03792d95a56518fa855309ec12178c2022c2efd6f8b54bb9b5458af812",
+    "summary": {
+      "eventstore": {
+        "tags": 203,
+        "objects": 560,
+        "missing": 0
+      },
+      "memories": {
+        "tags": 88,
+        "objects": 294,
+        "missing": 0
+      },
+      "memories-access-telemetry": {
+        "tags": 50,
+        "objects": 174,
+        "missing": 0
+      },
+      "memories-access-telemetry-clock": {
+        "tags": 50,
+        "objects": 174,
+        "missing": 0
+      },
+      "memories-mcp": {
+        "tags": 83,
+        "objects": 273,
+        "missing": 0
+      },
+      "parties": {
+        "tags": 20,
+        "objects": 85,
+        "missing": 0
+      },
+      "parties-mcp": {
+        "tags": 17,
+        "objects": 78,
+        "missing": 0
+      },
+      "parties-ui": {
+        "tags": 12,
+        "objects": 63,
+        "missing": 0
+      },
+      "tenants": {
+        "tags": 47,
+        "objects": 150,
+        "missing": 0
+      }
+    }
+  },
+  "result": "partial",
+  "retentionExercisedRepositories": [
+    "memories",
+    "memories-access-telemetry",
+    "memories-access-telemetry-clock",
+    "memories-mcp",
+    "parties",
+    "parties-mcp",
+    "parties-ui",
+    "tenants"
+  ],
+  "followUp": "Confirm the next nightly GC completes for eventstore now that the broken index is removed, and compare closures with registry_closure.py --compare."
+}

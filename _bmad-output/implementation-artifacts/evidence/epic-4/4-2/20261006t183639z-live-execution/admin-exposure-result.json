@@ -1,0 +1,482 @@
+{
+  "schemaVersion": 1,
+  "story": "4.2",
+  "attemptId": "20261006t183639z-live-execution",
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "authority": "Administrator chat approval 2026-10-06 (sole-owner policy); live execution by Claude Code; unsigned by decision",
+  "privateCustody": "owner-only ~/hexalith-admin-exposure-evidence/evidence/epic-4/4-2/20261006t183639z-live-execution",
+  "result": "pass",
+  "openItems": [],
+  "waivers": [
+    {
+      "capturedAt": "2026-10-07T06:34:15Z",
+      "decision": "Administrator accepted the 2026-10-04 Story 4.26 independent native-access proof in place of a fresh native break-glass read for AC1",
+      "reason": "no change in this story touches the API server path; fresh read needs the Administrator identity passphrase"
+    }
+  ],
+  "consoleClosure": {
+    "deletedIngress": "kubesphere-system/kubesphere-console",
+    "uid": "d48a09e7-8b3b-4d5d-b27a-c86aafdf58cb",
+    "resourceVersion": "22082270",
+    "preconditions": "uid+resourceVersion, propagationPolicy Orphan",
+    "at": "2026-10-06T18:40:37Z",
+    "privateAccess": "kubectl port-forward 127.0.0.1 -> svc/ks-console:80 /login 200 before and after"
+  },
+  "keycloakClosure": {
+    "at": "2026-10-07T05:05:25Z",
+    "catchAllPatchSha256": "fa2027e3ba04132dc8bd5984e63b033f51a1c15b83b577abfd8a99dad368ea3b",
+    "publicPaths": [
+      "/realms/tache",
+      "/resources",
+      "/realms/tache/login-actions/reset-credentials (retained rate-limit Ingress)"
+    ],
+    "deletedIngresses": [
+      {
+        "name": "keycloak-admin-rate-limit",
+        "uid": "b5543d69-7def-4912-87be-8b01b2616e00",
+        "resourceVersion": "22082272"
+      },
+      {
+        "name": "keycloak-master-token-rate-limit",
+        "uid": "554c7bf5-b71e-4b68-8891-a4918af6a0a0",
+        "resourceVersion": "22082271"
+      }
+    ],
+    "adminHostname": "KC_HOSTNAME_ADMIN=http://localhost:38080 (8080 is used locally by Aspire dcp)",
+    "masterRealmFrontendUrl": {
+      "value": "http://localhost:38080",
+      "at": "2026-10-07T05:58:42Z",
+      "reason": "the admin console initializes keycloak-js from the master realm frontend URL; without it, login depended on the closed public master realm",
+      "onlyAttributeChanged": "frontendUrl"
+    }
+  },
+  "privateAdministration": {
+    "administrator": "jpiquot",
+    "policy": "sole-administrator",
+    "administratorLoginPre": "Administrator confirmed browser admin-console login via loopback port-forward 127.0.0.1:38080 before closure",
+    "administratorLoginPost": {
+      "capturedAt": "2026-10-07T06:34:15Z",
+      "administrator": "jpiquot",
+      "path": "http://localhost:38080/admin via loopback kubectl port-forward",
+      "result": "pass",
+      "observation": "Administrator confirmed browser login and realm list after closure, following the master realm frontendUrl correction",
+      "firstAttempt": "failed after closure with keycloak-js 3rd-party check iframe timeout because the console used the public master realm (serverBaseUrl)"
+    },
+    "positivePost": [
+      {
+        "name": "admin-console",
+        "status": 200
+      },
+      {
+        "name": "master-login-page",
+        "status": 200
+      }
+    ],
+    "unauthorizedPre": [
+      {
+        "name": "admin-rest-no-token",
+        "status": 401
+      },
+      {
+        "name": "admin-rest-invalid-bearer",
+        "status": 401
+      },
+      {
+        "name": "master-token-invalid-credentials",
+        "status": 400
+      }
+    ],
+    "unauthorizedPost": [
+      {
+        "name": "admin-rest-no-token",
+        "status": 401
+      },
+      {
+        "name": "admin-rest-invalid-bearer",
+        "status": 401
+      },
+      {
+        "name": "master-token-invalid-credentials",
+        "status": 400
+      }
+    ],
+    "nativeCluster": "jpiquot native kubeconfig cluster-admin verified before and after (same cluster UID)"
+  },
+  "recovery": {
+    "keycloak": {
+      "pre": {
+        "phase": "pre-closure",
+        "capturedAt": "2026-10-07T05:05:00.741361+00:00",
+        "qualificationScope": "isolated-client-session",
+        "testSessionId": "7fc37fa2-f99f-4ebb-a709-ba4c7f12f98e",
+        "recoveryTokenStatus": 200,
+        "adminReadStatus": 200,
+        "realmNames": [
+          "master",
+          "tache"
+        ],
+        "namedAdministratorPresent": true,
+        "wrongSecretStatus": 401,
+        "pass": true
+      },
+      "post": {
+        "phase": "post-closure",
+        "capturedAt": "2026-10-07T05:06:22.168548+00:00",
+        "qualificationScope": "isolated-client-session",
+        "testSessionId": "652f3960-e142-4823-b2b5-8cd473dfc737",
+        "recoveryTokenStatus": 200,
+        "adminReadStatus": 200,
+        "realmNames": [
+          "master",
+          "tache"
+        ],
+        "namedAdministratorPresent": true,
+        "wrongSecretStatus": 401,
+        "pass": true
+      }
+    },
+    "keycloakFinal": {
+      "phase": "post-closure-final",
+      "capturedAt": "2026-10-07T05:58:54.194244+00:00",
+      "qualificationScope": "isolated-client-session",
+      "testSessionId": "d133c19b-2d16-437b-b37b-8282eb9ef1fc",
+      "recoveryTokenStatus": 200,
+      "adminReadStatus": 200,
+      "realmNames": [
+        "master",
+        "tache"
+      ],
+      "namedAdministratorPresent": true,
+      "wrongSecretStatus": 401,
+      "pass": true,
+      "environmentIsolated": true,
+      "publicOidcBlockedInSession": true,
+      "sessionCredential": "recovery client hexalith-recovery only",
+      "transport": "loopback port-forward 127.0.0.1:38080 -> svc/keycloak:8080, opened by the operator with native cluster access"
+    },
+    "keycloakIdentity": "standing master client hexalith-recovery (bootstrap-admin service; client_credentials), approved in the 2026-10-07 recovery-client decision; secret in owner-only custody",
+    "keycloakTransportCredential": "the loopback port-forward was opened with the Administrator's everyday native kubeconfig; the break-glass kubeconfig transport is part of the open native item",
+    "nativeCluster": "not freshly measured; waived by the Administrator in favour of the 2026-10-04 Story 4.26 independent native-access proof"
+  },
+  "externalDenial": {
+    "vantage": "LAN client via public IP 82.67.127.189 (hairpin)",
+    "capturedAt": "2026-10-07T05:59:01.090210+00:00",
+    "publicDns": {
+      "auth.tache.ai": {
+        "A": [
+          "82.67.127.189"
+        ],
+        "AAAA": []
+      },
+      "kube.hexalith.com": {
+        "A": [
+          "82.67.127.189"
+        ],
+        "AAAA": []
+      }
+    },
+    "publicDnsMatches": true,
+    "positiveControl": {
+      "path": "/realms/tache/.well-known/openid-configuration",
+      "status": 200,
+      "pass": true
+    },
+    "probeCount": 232,
+    "verdictCounts": {
+      "not-routed": 216,
+      "approved-prefix-backend-refusal": 8,
+      "redirect-to-closed-https": 8
+    },
+    "notClosed": [],
+    "pass": true
+  },
+  "externalDenialClassifier": "closed = Traefik not-routed 404, HTTP redirect to a closed HTTPS probe, or backend 400/404/405 under an approved public prefix (/realms/tache, /resources); errors are inconclusive",
+  "publicOidc": {
+    "oidc-pre.json": {
+      "capturedAt": "2026-10-06T18:42:09.446865+00:00",
+      "pass": true,
+      "checks": [
+        {
+          "name": "discovery",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "jwks",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "token-endpoint-routed",
+          "status": 405,
+          "pass": true
+        },
+        {
+          "name": "zot-login-start",
+          "status": 302,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-handoff",
+          "status": 303,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-callback-routed",
+          "status": 400,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-start",
+          "status": 307,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-page",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-assets",
+          "status": 5,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-post-invalid-user",
+          "status": 200,
+          "pass": true
+        }
+      ]
+    },
+    "oidc-after-hostname-admin.json": {
+      "capturedAt": "2026-10-06T18:44:33.710357+00:00",
+      "pass": true,
+      "checks": [
+        {
+          "name": "discovery",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "jwks",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "token-endpoint-routed",
+          "status": 405,
+          "pass": true
+        },
+        {
+          "name": "zot-login-start",
+          "status": 302,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-handoff",
+          "status": 303,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-callback-routed",
+          "status": 400,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-start",
+          "status": 307,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-page",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-assets",
+          "status": 5,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-post-invalid-user",
+          "status": 200,
+          "pass": true
+        }
+      ]
+    },
+    "oidc-after-hostname-admin-38080.json": {
+      "capturedAt": "2026-10-07T04:57:29.701312+00:00",
+      "pass": true,
+      "checks": [
+        {
+          "name": "discovery",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "jwks",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "token-endpoint-routed",
+          "status": 405,
+          "pass": true
+        },
+        {
+          "name": "zot-login-start",
+          "status": 302,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-handoff",
+          "status": 303,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-callback-routed",
+          "status": 400,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-start",
+          "status": 307,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-page",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-assets",
+          "status": 5,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-post-invalid-user",
+          "status": 200,
+          "pass": true
+        }
+      ]
+    },
+    "oidc-post-closure.json": {
+      "capturedAt": "2026-10-07T05:05:37.902561+00:00",
+      "pass": true,
+      "checks": [
+        {
+          "name": "discovery",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "jwks",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "token-endpoint-routed",
+          "status": 405,
+          "pass": true
+        },
+        {
+          "name": "zot-login-start",
+          "status": 302,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-handoff",
+          "status": 303,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-callback-routed",
+          "status": 400,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-start",
+          "status": 307,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-page",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-assets",
+          "status": 5,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-post-invalid-user",
+          "status": 200,
+          "pass": true
+        }
+      ]
+    },
+    "oidc-final.json": {
+      "capturedAt": "2026-10-07T05:58:54.603375+00:00",
+      "pass": true,
+      "checks": [
+        {
+          "name": "discovery",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "jwks",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "token-endpoint-routed",
+          "status": 405,
+          "pass": true
+        },
+        {
+          "name": "zot-login-start",
+          "status": 302,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-handoff",
+          "status": 303,
+          "pass": true
+        },
+        {
+          "name": "zot-broker-callback-routed",
+          "status": 400,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-start",
+          "status": 307,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-page",
+          "status": 200,
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-assets",
+          "status": [
+            200
+          ],
+          "pass": true
+        },
+        {
+          "name": "forgejo-login-post-invalid-user",
+          "status": 200,
+          "pass": true
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "External probes use the LAN client through the public IP (router hairpin), not an independent internet vantage. Closure is route removal and no Ingress has source-range rules, so the source address does not change routing.",
+    "Public DNS for kube.hexalith.com still resolves (separate DNS change)."
+  ]
+}

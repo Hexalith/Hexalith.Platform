@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "story": "4.2",
+  "attemptId": "20261006t183639z-live-execution",
+  "sourceClusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "authority": "Administrator chat approval 2026-10-06 (sole-owner policy); live execution by Claude Code; unsigned by decision",
+  "privateCustody": "owner-only ~/hexalith-admin-exposure-evidence/evidence/epic-4/4-2/20261006t183639z-live-execution",
+  "result": "pass",
+  "configuration": {
+    "phase1At": "2026-10-06T18:54:34Z",
+    "phase2At": "2026-10-06T18:56:39Z",
+    "finalVerification": {
+      "capturedAt": "2026-10-07T05:34:33.185057+00:00",
+      "liveConfigSha256": "90805228cf4ac16752d3bb1ca15b47b92f8c24f1a572b5275f1e54c9eecb0317",
+      "matchesReviewedConfig": true,
+      "htpasswdPrincipals": [
+        "cluster-reader"
+      ],
+      "configRevision": "hardened-v2-story-4-2-phase2",
+      "readyReplicas": 1,
+      "repositoryPolicies": [
+        "**"
+      ],
+      "anonymousPolicy": []
+    },
+    "oidcAndApiKeyWritersUnchanged": [
+      "jpiquot",
+      "jpiquot@itaneo.com"
+    ]
+  },
+  "consumerInventory": {
+    "readers": [
+      {
+        "principal": "cluster-reader",
+        "use": "kubelet pulls in hexalith-memories via Secret registry-credentials (SAs memories, memories-mcp, memories-access-telemetry, memories-access-telemetry-clock, eventstore); no other workload template in the cluster references the registry"
+      },
+      {
+        "principal": "jpiquot (OIDC/API key)",
+        "use": "Administrator and GitHub release workflows (HEXALITH_ZOT_USERNAME/API key)"
+      }
+    ],
+    "writers": [
+      {
+        "principal": "jpiquot API key",
+        "use": "GitHub release workflows push (builds domain-release, eventstore, memories); this key also has delete rights (deferred least-privilege writer)"
+      }
+    ],
+    "replication": "none configured (no Zot sync extension)",
+    "otherRegistryOutOfScope": "registry.tache.ai (registry-private) is a separate registry"
+  },
+  "anonymous": {
+    "memories": {
+      "v2": 401,
+      "catalog": 401,
+      "tags": 401,
+      "manifestByDigest": 401,
+      "manifestHead": 401,
+      "blob": 401,
+      "blobRange": 401
+    },
+    "memories-mcp": {
+      "v2": 401,
+      "catalog": 401,
+      "tags": 401,
+      "manifestByDigest": 401,
+      "manifestHead": 401,
+      "blob": 401,
+      "blobRange": 401
+    },
+    "memories-access-telemetry": {
+      "v2": 401,
+      "catalog": 401,
+      "tags": 401,
+      "manifestByDigest": 401,
+      "manifestHead": 401,
+      "blob": 401,
+      "blobRange": 401
+    }
+  },
+  "anonymousAllRefused": true,
+  "anonymousAllRepositories": {
+    "capturedAt": "2026-10-07T05:33:57.506713+00:00",
+    "repositories": {
+      "eventstore": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "memories": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "memories-access-telemetry": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "memories-access-telemetry-clock": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "memories-mcp": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "parties": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "parties-mcp": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "parties-ui": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      },
+      "tenants": {
+        "tags": 401,
+        "manifestByTag": 401,
+        "manifestByDigestHead": 401,
+        "blob": 401,
+        "blobRange": 401,
+        "readerManifest": 200
+      }
+    },
+    "catalog": 401,
+    "pass": true
+  },
+  "readerUncachedPulls": {
+    "memories": {
+      "uncachedPull": true,
+      "blobs": 8,
+      "bytes": 272711152,
+      "manifestDigest": "sha256:71e49b6e806ec2fa7c221e58600ba02115693923db05915663396be01b1c042c"
+    },
+    "memories-mcp": {
+      "uncachedPull": true,
+      "blobs": 8,
+      "bytes": 60737487,
+      "manifestDigest": "sha256:4d5cd738a89fdca71b7202d7661cecea8bab6b6e45d4fe505670cf7287205bb7"
+    },
+    "memories-access-telemetry": {
+      "uncachedPull": true,
+      "blobs": 8,
+      "bytes": 57513840,
+      "manifestDigest": "sha256:b3790e08c0091dfb723f6819e4706a6b1ef36a051b8c4afe38f5e362c5bdf8ea"
+    }
+  },
+  "readerPushDenied": 403,
+  "readerDeleteDenied": 403,
+  "kubeletUncachedPull": {
+    "pod": "hexalith-memories/story42-uncached-pull-proof (deleted)",
+    "image": "registry.hexalith.com/memories@sha256:403f4ab59c4c195286ea32dcd3a6e00d8846d082c7057a72f1e39ccdc2768c71",
+    "result": "Successfully pulled",
+    "audit": [
+      "1 <anonymous> containerd/v2.3.3 GET manifest 401",
+      "1 <anonymous> containerd/v2.3.3 HEAD manifest 401",
+      "1 <anonymous> curl/8.18.0 GET /v2/ 401",
+      "2 cluster-reader containerd/v2.3.3 GET blob 200",
+      "1 cluster-reader containerd/v2.3.3 GET manifest 200",
+      "1 cluster-reader containerd/v2.3.3 HEAD manifest 200"
+    ]
+  },
+  "writerPostCutover": [
+    "2026-10-07T04:49:53 6 jpiquot@itaneo.com .NET Container Library v1 POST eventstore blob 202",
+    "2026-10-07T04:49:56 4 jpiquot@itaneo.com .NET Container Library v1 PATCH eventstore blob 202",
+    "2026-10-07T04:49:56 4 jpiquot@itaneo.com .NET Container Library v1 PUT eventstore blob 201",
+    "2026-10-07T04:49:57 1 jpiquot@itaneo.com .NET Container Library v1 PUT eventstore manifest:3.115.0-linux-musl-arm64 201",
+    "2026-10-07T04:49:57 1 jpiquot@itaneo.com .NET Container Library v1 PUT eventstore manifest:3.115.0-linux-musl-x64 201",
+    "2026-10-07T04:49:58 1 <anonymous> .NET Container Library v1 PUT eventstore manifest:3.115.0 401",
+    "2026-10-07T04:49:58 1 jpiquot@itaneo.com .NET Container Library v1 PUT eventstore manifest:3.115.0 201"
+  ],
+  "restoredSideLoadedImages": [
+    {
+      "repository": "memories-access-telemetry",
+      "digest": "sha256:b3790e08c0091dfb723f6819e4706a6b1ef36a051b8c4afe38f5e362c5bdf8ea",
+      "tag": "retained-2.15.2-c1.114e8186",
+      "push": 201,
+      "readerPull": true
+    },
+    {
+      "repository": "memories-access-telemetry-clock",
+      "digest": "sha256:50413b716ca051fad7c4d68119527a1fc5f64c566eea22827769fd85d9de4c70",
+      "tag": "retained-2.15.2-c1.114e8186",
+      "push": 201,
+      "readerPull": true
+    }
+  ],
+  "temporaryPrincipalsRemoved": [
+    "story-4-2-restore",
+    "story-4-2-eventstore-cleanup"
+  ],
+  "limitations": [
+    "Pre-cutover kubelet pulls could not prove authentication while anonymous read was on (containerd only authenticates after a 401); proved immediately after cutover with rollback ready.",
+    "Writer path was exercised by a real GitHub release push (eventstore 3.115.0) after cutover: anonymous PUT 401 challenge, then authenticated 201."
+  ]
+}
