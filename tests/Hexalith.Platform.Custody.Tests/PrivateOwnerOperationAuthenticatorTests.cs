@@ -1,0 +1,87 @@
+using System.Security.Claims;
+using NSubstitute;
+using Shouldly;
+
+namespace Hexalith.Platform.Custody.Tests;
+
+/// <summary>Actual private candidate credential canonical HMAC/current machine boundary with synthetic independent enrollment/custody; no installed ACL or live identity proof.</summary>
+public sealed class PrivateOwnerOperationAuthenticatorTests
+{
+    private static PrivateOwnerOperationScope Scope() => new("system", "replay/issuer/nonce", "RegisterTrustedEnvelopeFirstSeen", "TrustedEnvelopeFirstSeenV1", new string('A', 64), "digest-v1", "tenant-a");
+    private static ClaimsPrincipal Caller(string subject = "dedicated-machine", string client = "private-verifier", string audience = "private-owner")
+        => new(new ClaimsIdentity(new[] { new Claim("iss", "machine-issuer"), new Claim("sub", subject), new Claim("azp", client), new Claim("aud", audience) }, "independently-authenticated-jwt"));
+    private static PrivateOwnerOperationGrant Grant(CustodyFixtureClock clock) => new("machine-issuer", "dedicated-machine", "private-verifier", "private-owner", Scope(),
+        "independent-enrollment/acl", 4, true, clock.Now.AddDays(-1), clock.Now.AddDays(1));
+
+    /// <summary>Actual custody tag permits only the authenticated dedicated exact machine and immutable owner operation; it is a separate candidate format.</summary>
+    [Fact]
+    public async Task ExactPrivateCredentialBindsAuthenticatedMachineAndOperation()
+    {
+        var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock); var keys = new CustodyFixtureKeyProvider(clock);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>(); grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var authorizer = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants);
+        var credential = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!;
+        credential.ShouldNotBeNull(); (await authorizer.AuthorizeAsync(Caller(), Scope(), credential, TestContext.Current.CancellationToken)).ShouldBeTrue();
+        var second = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!; second.DeliveryNonce.ShouldNotBe(credential.DeliveryNonce);
+        keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+    /// <summary>Wrong service/subject/audience, public unauthenticated caller, human classification, or operation substitution cannot release owner evidence.</summary>
+    [Theory]
+    [InlineData("subject")][InlineData("client")][InlineData("audience")][InlineData("unauthenticated")][InlineData("duplicate-sub")][InlineData("mixed-identities")]
+    [InlineData("human")][InlineData("tenant")][InlineData("target-tenant")][InlineData("resource")][InlineData("method")][InlineData("contract")][InlineData("payload")]
+    public async Task WrongCallerOrExactRequestAlwaysDenies(string vector)
+    {
+        var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock); var keys = new CustodyFixtureKeyProvider(clock);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        grants.ResolveCurrentAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<PrivateOwnerOperationScope>(), Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var authorizer = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants); var credential = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!;
+        var caller = vector switch { "subject" => Caller("human-or-other-service"), "client" => Caller(client: "workflow-or-public"), "audience" => Caller(audience: "public-api"),
+            "unauthenticated" => new ClaimsPrincipal(new ClaimsIdentity()), _ => Caller() };
+        if (vector == "mixed-identities") { caller = new ClaimsPrincipal(new[] { new ClaimsIdentity(authenticationType: "authenticated-unrelated-machine"), new ClaimsIdentity(Caller().Claims) }); }
+        if (vector == "duplicate-sub") { ((ClaimsIdentity)caller.Identity!).AddClaim(new("sub", "other")); }
+        if (vector == "human") { grants.ResolveCurrentAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<PrivateOwnerOperationScope>(), Arg.Any<CancellationToken>()).Returns(Grant(clock) with { IsDedicatedServiceAccount = false }); }
+        var scope = vector switch { "tenant" => Scope() with { TenantId = "tenant-a" }, "target-tenant" => Scope() with { AuthenticatedTargetTenantId = "tenant-b" },
+            "resource" => Scope() with { ResourceId = "target/general-command" }, "method" => Scope() with { Method = "ExecuteTargetCommand" },
+            "contract" => Scope() with { Contract = "GeneralCommandV1" }, "payload" => Scope() with { PayloadFingerprint = new string('B', 64) }, _ => Scope() };
+        (await authorizer.AuthorizeAsync(caller, scope, credential, TestContext.Current.CancellationToken)).ShouldBeFalse(); keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+    /// <summary>Changed tag/header/profile or current enrollment/key revocation and exclusive expiry deny; no credential manufactures private grant authority.</summary>
+    [Theory]
+    [InlineData("tag")][InlineData("profile")][InlineData("issuer")][InlineData("nonce")][InlineData("binding")][InlineData("revocation")][InlineData("expiry")]
+    public async Task ForgedOrStaleCredentialCannotAuthorize(string vector)
+    {
+        var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock); var keys = new CustodyFixtureKeyProvider(clock);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>(); grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var authorizer = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants); var credential = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!;
+        credential = vector switch { "tag" => credential with { Tag = new string('0', 64) }, "profile" => credential with { ProfileVersion = "changed" },
+            "issuer" => credential with { Issuer = "self-issued" }, "nonce" => credential with { DeliveryNonce = new string('0', 64) }, "binding" => credential with { BindingRevision = 5 }, _ => credential };
+        if (vector == "revocation") { keys.RevokedVersion = credential.SigningKeyVersion; }
+        if (vector == "expiry") { clock.Now = credential.ExclusiveExpiry; }
+        (await authorizer.AuthorizeAsync(Caller(), Scope(), credential, TestContext.Current.CancellationToken)).ShouldBeFalse();
+    }
+    /// <summary>Missing configuration/current grant denies before key resolution; withdrawal during final grant read withholds an otherwise valid tag.</summary>
+    [Fact]
+    public async Task MissingOrWithdrawnCurrentGrantFailsClosed()
+    {
+        var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock); var keys = new CustodyFixtureKeyProvider(clock);
+        (await new PrivateOwnerOperationAuthenticator(keys, profiles, clock).IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken)).ShouldBeNull(); keys.Calls.ShouldBe(0);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>(); int reads = 0;
+        grants.ResolveCurrentAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<PrivateOwnerOperationScope>(), Arg.Any<CancellationToken>()).Returns(_ => ++reads == 1 ? Grant(clock) : null);
+        (await new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants).IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken)).ShouldBeNull(); keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+    /// <summary>Cancellation after private provider entry completes independently and disposes the actual late owned key.</summary>
+    [Fact]
+    public async Task CancellationDuringPrivateKeyReadPreservesOriginalTokenAndClearsLateKey()
+    {
+        var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock); var keys = new CustodyFixtureKeyProvider(clock);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>(); grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously); var pending = new TaskCompletionSource<PlatformHmacKeyResolution>(TaskCreationOptions.RunContinuationsAsynchronously);
+        keys.Hook = (_, _, _, _) => { entered.TrySetResult(); return new(pending.Task); }; using var cancellation = new CancellationTokenSource();
+        var read = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants).IssueAsync(Caller(), Scope(), cancellation.Token);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); cancellation.Cancel();
+        var exception = await Should.ThrowAsync<OperationCanceledException>(() => read.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)); exception.CancellationToken.ShouldBe(cancellation.Token);
+        var late = keys.Create(new("system", PlatformHmacPurpose.TrustedEnvelope), null); pending.SetResult(late);
+        using var watchdog = new CancellationTokenSource(TimeSpan.FromSeconds(5)); while (!late.Key!.IsDisposed) { await Task.Delay(10, watchdog.Token); }
+        late.Key.IsDisposed.ShouldBeTrue();
+    }
+}

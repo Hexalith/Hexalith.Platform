@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><GenerateDocumentationFile>true</GenerateDocumentationFile></PropertyGroup>
-  <ItemGroup><PackageReference Include="Dapr.Actors" /></ItemGroup>
+  <ItemGroup><PackageReference Include="Dapr.Actors" /><PackageReference Include="Dapr.Client" /></ItemGroup>
   <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />

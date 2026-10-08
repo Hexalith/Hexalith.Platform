@@ -1,0 +1,106 @@
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Globalization;
+
+namespace Hexalith.Platform.Custody;
+
+/// <summary>Private candidate exact-operation credential implementation using current machine enrollment plus purpose-separated custody HMAC.
+/// No HTTP route, actor registration or issuer/ACL policy is enabled by this library; unavailable grant/profile/key always denies.</summary>
+public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider keys, IPlatformSigningProfileProvider profiles,
+    TimeProvider clock, IPrivateOwnerOperationGrantSource? grants = null)
+{
+    /// <summary>Issues only for an already authenticated dedicated current machine and its exact configured private-owner grant.</summary>
+    public Task<PrivateOwnerOperationCredential?> IssueAsync(ClaimsPrincipal authenticatedMachine, PrivateOwnerOperationScope expected, CancellationToken cancellationToken = default)
+        => ExecuteAsync(authenticatedMachine, expected, null, cancellationToken);
+    /// <summary>Checks the original transport machine plus exact current owner request before lookup/effect; retained terminal evidence is never renewed or mutated.</summary>
+    public async Task<bool> AuthorizeAsync(ClaimsPrincipal authenticatedMachine, PrivateOwnerOperationScope expected,
+        PrivateOwnerOperationCredential credential, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(credential);
+        return await ExecuteAsync(authenticatedMachine, expected, credential, cancellationToken).ConfigureAwait(false) is not null;
+    }
+    private async Task<PrivateOwnerOperationCredential?> ExecuteAsync(ClaimsPrincipal caller, PrivateOwnerOperationScope expected,
+        PrivateOwnerOperationCredential? input, CancellationToken token)
+    {
+        long start = clock.GetTimestamp(); byte[]? canonical = null; byte[]? tag = null; byte[]? supplied = null;
+        try
+        {
+            token.ThrowIfCancellationRequested(); ArgumentNullException.ThrowIfNull(caller); ArgumentNullException.ThrowIfNull(expected);
+            if (grants is null || caller.Identities.Count(i => i.IsAuthenticated) != 1 || profiles.GetCurrent() is not { } profile || !profile.IsValid(clock.GetUtcNow())) { return null; }
+            ClaimsIdentity machine = caller.Identities.Single(i => i.IsAuthenticated);
+            string? issuer = One(machine, "iss"), subject = One(machine, "sub"), client = One(machine, "azp"), audience = One(machine, "aud");
+            if (issuer is null || subject is null || client is null || audience is null) { return null; }
+            var grant = await AwaitAsync(() => grants.ResolveCurrentAsync(issuer, subject, client, expected, CancellationToken.None), start, token).ConfigureAwait(false);
+            if (!ValidGrant(grant, issuer, subject, client, audience, expected, clock.GetUtcNow())) { return null; }
+            byte[] scopeValidation = ScopeBytes(expected); CryptographicOperations.ZeroMemory(scopeValidation);
+            DateTimeOffset now = clock.GetUtcNow(); bool issue = input is null;
+            if (!issue && (input!.ProfileVersion != profile.Version || input.Issuer != profile.Issuer || input.Audience != profile.Audience
+                || input.MachineIssuer != issuer || input.MachineSubject != subject || input.MachineClient != client || input.MachineAudience != audience
+                || input.AuthorityReference != grant!.AuthorityReference || input.BindingRevision != grant.BindingRevision || input.Scope != expected
+                || !ValidTime(input, profile, now) || input.DeliveryNonce is not { Length: 64 } || input.DeliveryNonce.Any(c => !char.IsAsciiHexDigit(c))
+                || input.Tag is not { Length: 64 } || input.Tag.Any(c => !char.IsAsciiHexDigit(c)))) { return null; }
+            var scope = new PlatformHmacScope(expected.TenantId, PlatformHmacPurpose.TrustedEnvelope);
+            using var first = await ResolveAsync(scope, input?.SigningKeyVersion, start, token).ConfigureAwait(false);
+            if (first is null || PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, first), scope, input?.SigningKeyVersion, clock.GetUtcNow(), issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
+            var credential = input ?? new(profile.Version, profile.Issuer, profile.Audience, issuer, subject, client, audience,
+                grant!.AuthorityReference, grant.BindingRevision, expected, now, now.Add(profile.MaximumLifetime), Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)), first.Metadata.Version, string.Empty);
+            canonical = Bytes(credential); tag = first.ComputeTag(canonical);
+            if (!issue) { supplied = Convert.FromHexString(input!.Tag); if (!CryptographicOperations.FixedTimeEquals(tag, supplied)) { return null; } }
+            using var confirmed = await ResolveAsync(scope, credential.SigningKeyVersion, start, token).ConfigureAwait(false);
+            if (confirmed is null || PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, confirmed), scope, credential.SigningKeyVersion, clock.GetUtcNow(), issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
+            byte[] currentTag = confirmed.ComputeTag(canonical);
+            try { if (!CryptographicOperations.FixedTimeEquals(tag, currentTag)) { return null; } } finally { CryptographicOperations.ZeroMemory(currentTag); }
+            var currentGrant = await AwaitAsync(() => grants.ResolveCurrentAsync(issuer, subject, client, expected, CancellationToken.None), start, token).ConfigureAwait(false);
+            if (currentGrant != grant || !ValidGrant(currentGrant, issuer, subject, client, audience, expected, clock.GetUtcNow())
+                || profiles.GetCurrent() != profile || !profile.IsValid(clock.GetUtcNow()) || !ValidTime(credential, profile, clock.GetUtcNow())) { return null; }
+            token.ThrowIfCancellationRequested(); return credential with { Tag = Convert.ToHexStringLower(tag) };
+        }
+        catch (Exception) { token.ThrowIfCancellationRequested(); return null; }
+        finally { if (canonical is not null) { CryptographicOperations.ZeroMemory(canonical); } if (tag is not null) { CryptographicOperations.ZeroMemory(tag); } if (supplied is not null) { CryptographicOperations.ZeroMemory(supplied); } }
+    }
+    private static bool ValidGrant(PrivateOwnerOperationGrant? grant, string issuer, string subject, string client, string audience, PrivateOwnerOperationScope expected, DateTimeOffset now)
+        => grant is not null && grant.IsDedicatedServiceAccount && grant.MachineIssuer == issuer && grant.MachineSubject == subject && grant.MachineClient == client
+            && grant.MachineAudience == audience && grant.Scope == expected && !string.IsNullOrWhiteSpace(grant.AuthorityReference) && grant.BindingRevision > 0
+            && grant.NotBefore.Offset == TimeSpan.Zero && grant.ValidUntil.Offset == TimeSpan.Zero && grant.NotBefore <= now && now < grant.ValidUntil;
+    private static string? One(ClaimsIdentity caller, string name)
+    { var values = caller.FindAll(name).ToArray(); return values.Length == 1 && !string.IsNullOrWhiteSpace(values[0].Value) ? values[0].Value : null; }
+    private static bool ValidTime(PrivateOwnerOperationCredential credential, PlatformSigningProfile profile, DateTimeOffset now)
+        => credential.IssuedAt.Offset == TimeSpan.Zero && credential.ExclusiveExpiry.Offset == TimeSpan.Zero && credential.IssuedAt < credential.ExclusiveExpiry
+            && credential.ExclusiveExpiry - credential.IssuedAt <= profile.MaximumLifetime && credential.IssuedAt <= now + profile.ClockSkew && now < credential.ExclusiveExpiry;
+    private static byte[] ScopeBytes(PrivateOwnerOperationScope scope)
+    {
+        if (scope.PayloadFingerprint is not { Length: 64 } || scope.PayloadFingerprint.Any(c => !char.IsAsciiHexDigit(c))) { throw new ArgumentException("Invalid private keyed request fingerprint."); }
+        foreach (string field in new[] { scope.TenantId, scope.ResourceId, scope.Method, scope.Contract, scope.DigestKeyVersion, scope.AuthenticatedTargetTenantId })
+        { ArgumentException.ThrowIfNullOrWhiteSpace(field); }
+        return PlatformCanonicalBytes.Components([scope.TenantId, scope.ResourceId, scope.Method, scope.Contract, scope.PayloadFingerprint, scope.DigestKeyVersion, scope.AuthenticatedTargetTenantId]);
+    }
+    private static byte[] Bytes(PrivateOwnerOperationCredential c)
+    {
+        byte[] scope = ScopeBytes(c.Scope);
+        try { return PlatformCanonicalBytes.Components(["PrivateOwnerOperation.candidate.v1", c.ProfileVersion, c.Issuer, c.Audience, c.MachineIssuer, c.MachineSubject, c.MachineClient,
+            c.MachineAudience, c.AuthorityReference, c.BindingRevision.ToString(CultureInfo.InvariantCulture), Convert.ToHexString(scope),
+            c.IssuedAt.ToString("O", CultureInfo.InvariantCulture), c.ExclusiveExpiry.ToString("O", CultureInfo.InvariantCulture), c.DeliveryNonce, c.SigningKeyVersion]); }
+        finally { CryptographicOperations.ZeroMemory(scope); }
+    }
+    private async Task<PlatformHmacKeySnapshot?> ResolveAsync(PlatformHmacScope scope, string? version, long start, CancellationToken token)
+    {
+        var result = await AwaitAsync(() => keys.ResolveAsync(scope, version, CancellationToken.None).AsTask(), start, token, static value => value.Key?.Dispose()).ConfigureAwait(false);
+        if (result.Status == CustodyStatus.Succeeded) { return result.Key; } result.Key?.Dispose(); return null;
+    }
+    private async Task<T> AwaitAsync<T>(Func<Task<T>> operation, long start, CancellationToken token, Action<T>? abandoned = null)
+    {
+        token.ThrowIfCancellationRequested(); var pending = Task.Run(operation, CancellationToken.None);
+        try
+        {
+            TimeSpan remaining = TimeSpan.FromSeconds(30) - clock.GetElapsedTime(start); if (remaining <= TimeSpan.Zero) { throw new TimeoutException(); }
+            var result = await pending.WaitAsync(remaining, clock, token).ConfigureAwait(false);
+            if (token.IsCancellationRequested || clock.GetElapsedTime(start) >= TimeSpan.FromSeconds(30)) { abandoned?.Invoke(result); token.ThrowIfCancellationRequested(); throw new TimeoutException(); }
+            return result;
+        }
+        catch (Exception)
+        {
+            _ = pending.ContinueWith(task => { try { if (task.IsCompletedSuccessfully) { abandoned?.Invoke(task.Result); } else { _ = task.Exception; } } catch (Exception) { /* Cleanup failure is observed; it cannot release evidence. */ } },
+                CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default); token.ThrowIfCancellationRequested(); throw;
+        }
+    }
+}

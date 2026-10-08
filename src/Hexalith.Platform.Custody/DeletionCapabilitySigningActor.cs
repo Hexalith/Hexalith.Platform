@@ -10,9 +10,11 @@ namespace Hexalith.Platform.Custody;
 /// <param name="host">Exact private tenant/request actor.</param>
 /// <param name="authority">Independent recorded guard authorization.</param>
 /// <param name="provider">Qualified per-tenant deletion-only key backend with exact retained outcome.</param>
-/// <param name="trustProvider">Independently published current tenant/family/version trust authority.</param>
+/// <param name="trustProvider">Independently published current/retained tenant/family/version trust authority.</param>
+/// <param name="originalReceiptAuthority">Independent original historic provider receipt verifier, mandatory for unresolved results after revocation.</param>
 public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapabilitySigningAuthority? authority = null,
-    IDeletionCapabilitySigningProvider? provider = null, IDeletionCapabilitySigningTrustProvider? trustProvider = null) : Actor(host), IDeletionCapabilitySigningActor
+    IDeletionCapabilitySigningProvider? provider = null, IDeletionCapabilitySigningTrustProvider? trustProvider = null,
+    IDeletionCapabilityOriginalSigningReceiptAuthority? originalReceiptAuthority = null) : Actor(host), IDeletionCapabilitySigningActor
 {
     private const string KeyFamily = "DeletionBatchCapabilitySigningKey";
     private const string StateKey = "deletion-capability-signing-v1";
@@ -75,10 +77,10 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         if (existing.Payload != payload || existing.SigningRequestId != id) { return new(id, payload, DeletionCapabilitySigningState.Conflict); }
         if (existing.State is DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied) { return existing; }
         if (provider is null || trustProvider is null) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
-        try { return await RetainAsync(payload, id, await provider.LookupAsync(payload, id).ConfigureAwait(false)).ConfigureAwait(false); }
+        try { return await RetainAsync(payload, id, await provider.LookupAsync(payload, id).ConfigureAwait(false), recoveringOriginal: true).ConfigureAwait(false); }
         catch (Exception) { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
     }
-    private async Task<DeletionCapabilitySigningOutcome> RetainAsync(DeletionBatchCapabilityV1 payload, string id, DeletionCapabilitySigningResult result)
+    private async Task<DeletionCapabilitySigningOutcome> RetainAsync(DeletionBatchCapabilityV1 payload, string id, DeletionCapabilitySigningResult result, bool recoveringOriginal = false)
     {
         if (result.Outcome is not { } outcome || outcome.Payload != payload || outcome.SigningRequestId != id)
         { return new(id, payload, DeletionCapabilitySigningState.Conflict); }
@@ -87,9 +89,18 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
             || outcome.PublicAnchorId.Length > 2048 || string.IsNullOrWhiteSpace(outcome.PublicAnchorVersion) || outcome.PublicAnchorVersion.Length > 2048
             || result.PublicAnchorSubjectPublicKeyInfo is not { Length: > 0 and <= 512 } supplied)
         { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
-        var trust = await ResolveTrustAsync(payload).ConfigureAwait(false);
+        var trust = await ResolveTrustAsync(payload, requireCurrent: false, allowRevokedHistory: recoveringOriginal).ConfigureAwait(false);
         if (trust is null || outcome.PublicAnchorId != trust.PublicAnchorId || outcome.PublicAnchorVersion != trust.PublicAnchorVersion
             || !CryptographicOperations.FixedTimeEquals(supplied, trust.SubjectPublicKeyInfo))
+        { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
+        if (result.OriginalIssuanceReceiptId is { } receipt)
+        {
+            try { if (string.IsNullOrWhiteSpace(receipt) || receipt.Length > 2048 || new UTF8Encoding(false, true).GetByteCount(receipt) > 2048)
+                { return new(id, payload, DeletionCapabilitySigningState.Unknown); } }
+            catch (EncoderFallbackException) { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
+        }
+        if (trust.IsRevoked && (originalReceiptAuthority is null || string.IsNullOrWhiteSpace(result.OriginalIssuanceReceiptId)
+            || !await originalReceiptAuthority.VerifyOriginalIssuanceAsync(payload, id, result, trust).ConfigureAwait(false)))
         { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
         byte[] ownedAnchor = trust.SubjectPublicKeyInfo; using var key = ECDsa.Create();
         key.ImportSubjectPublicKeyInfo(ownedAnchor, out int consumed);
@@ -99,11 +110,11 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
         return await SaveAsync(outcome).ConfigureAwait(false);
     }
-    private async Task<DeletionCapabilityPublishedTrust?> ResolveTrustAsync(DeletionBatchCapabilityV1 payload)
+    private async Task<DeletionCapabilityPublishedTrust?> ResolveTrustAsync(DeletionBatchCapabilityV1 payload, bool requireCurrent = true, bool allowRevokedHistory = false)
     {
         if (trustProvider is null) { return null; }
         var trust = await trustProvider.ResolveAsync(payload.TenantId, KeyFamily, payload.CapabilityKeyVersion).ConfigureAwait(false);
-        if (trust is null || !trust.IsCurrentNonRevoked || trust.TrustProfileRevision <= 0 || trust.TenantId != payload.TenantId
+        if (trust is null || trust.IsRevoked && !allowRevokedHistory || requireCurrent && !trust.IsCurrentNonRevoked || trust.TrustProfileRevision <= 0 || trust.TenantId != payload.TenantId
             || trust.KeyFamily != KeyFamily || trust.CapabilityKeyVersion != payload.CapabilityKeyVersion
             || trust.Issuer != payload.Issuer || trust.Audience != payload.Audience
             || trust.SubjectPublicKeyInfo is not { Length: > 0 and <= 512 }) { return null; }

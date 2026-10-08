@@ -22,10 +22,10 @@ public sealed class DeletionCapabilitySigningActorTests
     }
     private static DeletionCapabilitySigningActor Actor(DeletionBatchCapabilityV1 payload, IActorStateManager backend,
         IDeletionCapabilitySigningAuthority? authority = null, IDeletionCapabilitySigningProvider? provider = null,
-        IDeletionCapabilitySigningTrustProvider? trust = null)
+        IDeletionCapabilitySigningTrustProvider? trust = null, IDeletionCapabilityOriginalSigningReceiptAuthority? originalAuthority = null)
     {
         var actor = new DeletionCapabilitySigningActor(ActorHost.CreateForTest<DeletionCapabilitySigningActor>(new ActorTestOptions
-            { ActorId = new(DeletionCapabilitySigningActor.GetActorId(payload)) }), authority, provider, trust);
+            { ActorId = new(DeletionCapabilitySigningActor.GetActorId(payload)) }), authority, provider, trust, originalAuthority);
         typeof(Dapr.Actors.Runtime.Actor).GetProperty("StateManager", BindingFlags.Public | BindingFlags.Instance)!.SetValue(actor, backend); return actor;
     }
     private static IDeletionCapabilitySigningTrustProvider Trust(DeletionBatchCapabilityV1 payload, ECDsa key)
@@ -62,6 +62,28 @@ public sealed class DeletionCapabilitySigningActorTests
         (await Actor(payload, restored, Authority()).LookupAsync(payload)).ShouldBe(signed.Outcome);
         await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>()); await provider.Received(1).LookupAsync(payload, id, Arg.Any<CancellationToken>());
         JsonSerializer.Serialize(saved.Value).ShouldNotContain("CommittedIssuedGuardRevision");
+    }
+
+    /// <summary>Healthy routine rotation cannot strand an original lost signing result; retained verifier recovers it without fresh signing authority.</summary>
+    [Fact]
+    public async Task LostSigningResultAfterHealthyRotationUsesRetainedIndependentAnchor()
+    {
+        var payload = Payload(); string id = DeletionBatchCapabilityCodec.SigningRequestId(payload); var backend = new InMemoryStateManager();
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256); var signed = Signed(payload, key); var trust = Trust(payload, key);
+        var current = await trust.ResolveAsync(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion, TestContext.Current.CancellationToken);
+        var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
+        provider.SignAsync(payload, id, Arg.Any<CancellationToken>()).Returns(Task.FromException<DeletionCapabilitySigningResult>(new HttpRequestException("Controlled lost signature response.")));
+        provider.LookupAsync(payload, id, Arg.Any<CancellationToken>()).Returns(signed);
+        var actor = Actor(payload, backend, Authority(), provider, trust); (await actor.SignAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unknown);
+        trust.ResolveAsync(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion, Arg.Any<CancellationToken>())
+            .Returns(current! with { IsCurrentNonRevoked = false, IsRevoked = false, TrustProfileRevision = 2 });
+        (await actor.LookupAsync(payload)).ShouldBe(signed.Outcome);
+        backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>().ShouldBe(signed.Outcome);
+        await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>()); await provider.Received(1).LookupAsync(payload, id, Arg.Any<CancellationToken>());
+        // A fresh request under that healthy retained version still cannot call the signer.
+        var fresh = payload with { SigningAttemptOrdinal = 2 }; var freshBackend = new InMemoryStateManager();
+        (await Actor(fresh, freshBackend, Authority(), provider, trust).SignAsync(fresh)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
+        freshBackend.CommittedState.ShouldBeEmpty(); await provider.DidNotReceive().SignAsync(fresh, Arg.Any<string>(), Arg.Any<CancellationToken>());
     }
 
     /// <summary>Missing or denied independent recorded authorization never invokes signing; healthy key configuration alone grants nothing.</summary>
@@ -153,7 +175,7 @@ public sealed class DeletionCapabilitySigningActorTests
         var expected = new DeletionCapabilityPublishedTrust(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion,
             payload.Issuer, payload.Audience, "anchor-1", "anchor-v1", key.ExportSubjectPublicKeyInfo(), 1, true);
         expected = vector switch {
-            "revoked" => expected with { IsCurrentNonRevoked = false }, "version" => expected with { CapabilityKeyVersion = "v2" },
+            "revoked" => expected with { IsCurrentNonRevoked = false, IsRevoked = true }, "version" => expected with { CapabilityKeyVersion = "v2" },
             "tenant" => expected with { TenantId = "tenant-b" }, "family" => expected with { KeyFamily = "ManifestSigningKey" },
             "anchor" => expected with { PublicAnchorId = "independent-anchor" }, _ => expected with { SubjectPublicKeyInfo = other.ExportSubjectPublicKeyInfo() }
         };
@@ -175,7 +197,7 @@ public sealed class DeletionCapabilitySigningActorTests
         var trust = Trust(payload, key); var current = await trust.ResolveAsync(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion, TestContext.Current.CancellationToken);
         var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
         provider.SignAsync(payload, Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ => {
-            trust.ResolveAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(current! with { IsCurrentNonRevoked = false });
+            trust.ResolveAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(current! with { IsCurrentNonRevoked = false, IsRevoked = true });
             return Signed(payload, key);
         });
         (await Actor(payload, backend, Authority(), provider, trust).SignAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unknown);
@@ -194,5 +216,31 @@ public sealed class DeletionCapabilitySigningActorTests
         (await actor.LookupAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
         backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>().ShouldBe(result.Outcome);
         await provider.Received(1).SignAsync(payload, Arg.Any<string>(), Arg.Any<CancellationToken>());
+    }
+    /// <summary>After revocation only independent proof of the original committed issuance can recover a lost result; its revoked signature alone grants nothing.</summary>
+    [Theory]
+    [InlineData("valid")][InlineData("missing")][InlineData("wrong-receipt")]
+    public async Task RevokedOriginalLostResultRequiresIndependentHistoricIssuanceProof(string vector)
+    {
+        var payload = Payload(); string id = DeletionBatchCapabilityCodec.SigningRequestId(payload); var backend = new InMemoryStateManager();
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256); var signed = Signed(payload, key) with { OriginalIssuanceReceiptId = "original-committed-provider-receipt" };
+        var trust = Trust(payload, key); var current = await trust.ResolveAsync(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion, TestContext.Current.CancellationToken);
+        var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
+        provider.SignAsync(payload, id, Arg.Any<CancellationToken>()).Returns(Task.FromException<DeletionCapabilitySigningResult>(new HttpRequestException("Controlled original response loss.")));
+        provider.LookupAsync(payload, id, Arg.Any<CancellationToken>()).Returns(vector == "wrong-receipt" ? signed with { OriginalIssuanceReceiptId = "different-receipt" } : signed);
+        var history = Substitute.For<IDeletionCapabilityOriginalSigningReceiptAuthority>();
+        history.VerifyOriginalIssuanceAsync(payload, id, Arg.Is<DeletionCapabilitySigningResult>(r => r.OriginalIssuanceReceiptId == signed.OriginalIssuanceReceiptId),
+            Arg.Any<DeletionCapabilityPublishedTrust>(), Arg.Any<CancellationToken>()).Returns(true);
+        var actor = Actor(payload, backend, Authority(), provider, trust, vector == "missing" ? null : history);
+        (await actor.SignAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unknown);
+        trust.ResolveAsync(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion, Arg.Any<CancellationToken>())
+            .Returns(current! with { IsCurrentNonRevoked = false, IsRevoked = true, TrustProfileRevision = 2 });
+        var recovered = await actor.LookupAsync(payload); recovered.State.ShouldBe(vector == "valid" ? DeletionCapabilitySigningState.Signed : DeletionCapabilitySigningState.Unknown);
+        var persisted = backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>(); persisted.State.ShouldBe(recovered.State);
+        if (vector == "valid") { recovered.ShouldBe(signed.Outcome); (await actor.LookupAsync(payload)).ShouldBe(signed.Outcome); }
+        await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>());
+        var fresh = payload with { SigningAttemptOrdinal = 2 }; var freshBackend = new InMemoryStateManager();
+        (await Actor(fresh, freshBackend, Authority(), provider, trust, history).SignAsync(fresh)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
+        freshBackend.CommittedState.ShouldBeEmpty(); await provider.DidNotReceive().SignAsync(fresh, Arg.Any<string>(), Arg.Any<CancellationToken>());
     }
 }
