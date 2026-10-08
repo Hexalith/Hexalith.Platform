@@ -60,6 +60,21 @@ public sealed class IdentityHistoryCustodyPolicyTests
         unit.Identity.Domain.ShouldBe("party");
     }
 
+    /// <summary>A zero or negative admission revision does not produce a unit.</summary>
+    [Theory]
+    [InlineData(0L)]
+    [InlineData(-1L)]
+    public void NonPositiveAdmissionRevision_ThrowsArgumentException(long admissionRevision)
+    {
+        DateTimeOffset expiresAt = IdentityHistoryCustodyOptions.DeriveDeadline(EffectiveAt);
+        Should.Throw<ArgumentException>(() => new IdentityHistoryCustodyUnit(
+            Identity, "env-a", "instance-a", IdentityHistoryCustodyOptions.PolicyId, IdentityHistoryCustodyOptions.Purpose,
+            EffectiveAt, expiresAt, "evidence-7", admissionRevision)).ShouldBeOfType<ArgumentException>();
+        IdentityHistoryCustodyOptions options = new(Policy, IdentityHistoryCustodyOptions.Purpose);
+        Should.Throw<ArgumentException>(() => options.Admit(
+            Identity, "env-a", "instance-a", EffectiveAt, Now, "evidence-7", admissionRevision)).ShouldBeOfType<ArgumentException>();
+    }
+
     /// <summary>Wrong or blank policy, purpose, trigger, or retention does not construct a gate.</summary>
     [Theory]
     [InlineData("id")]

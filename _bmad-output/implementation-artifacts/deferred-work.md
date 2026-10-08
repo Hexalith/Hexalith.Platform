@@ -226,3 +226,81 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Decide whether provider tenancy may be `shared`.
   evidence: R4-W2, unverified; medium if true. The v2 `tenancy.mode` enum admits `shared`, while the spine defines the field as "external providers needing per-environment tenancy" and AD-8 separates hosted state by environment. To settle it, the owner states whether any declared external provider may be shared across environments.
+
+## Deferred from: code review of spec-plat-actor-history-1-t1-immutable-custody-contracts.md (2026-10-08)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Reconcile the Builds R5 note with the moved Builds gitlink and the other submodule pointer updates in the dirty tree.
+  evidence: BH01. The R5 verification text still describes uncommitted patches on 50b0257 while the gitlink is 0097b5a. This is other in-progress submodule work, not the actor-history contracts.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Pin whether a fresh deletion-capability signature is stored after healthy rotation.
+  evidence: BH03, EH06, VG02. RetainAsync resolves trust with requireCurrent false for SignAsync. No test rotates a successful sign to non-current and non-revoked. The signing actor was already dirty before this story.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Re-check trust and the original issuance receipt when a stored Signed deletion outcome is read again.
+  evidence: BH04. ResolveAsync returns a Signed outcome without consulting trust or OriginalIssuanceReceiptId, and that receipt id is not stored on the outcome. Pre-existing signing work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Treat a still-current emergency revocation as a denial of fresh deletion-capability issuance.
+  evidence: BH05, VG01. IsRevoked defaults to false, and no test sets IsRevoked true while IsCurrentNonRevoked stays true. Deleting the new revocation clause leaves the current signing tests green. Pre-existing signing work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Separate the private-owner credential MAC purpose from TrustedEnvelope.
+  evidence: BH06. PrivateOwnerOperationAuthenticator tags PlatformHmacPurpose.TrustedEnvelope. Separate authenticator work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Reconcile a security-spool anti-rollback anchor when the durable save is lost.
+  evidence: BH07. TryWriteAsync records the next revision before TrySaveStateAsync and ignores a false or thrown save. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Keep an empty or missing security spool from reporting ready.
+  evidence: BH08, EH01. A null component read becomes revision 0 with no records, and Records.All is true for that empty list when the authority attests the digest. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Define what happens when the security spool reaches its 10000-record bound.
+  evidence: BH09. ObserveAsync drops the new observation at the bound, and a fully receipted spool can remain ready. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Stop security-spool drain from reporting success for a bad count or malformed state.
+  evidence: BH10. ArgumentOutOfRangeException and malformed-state exceptions are caught and returned as a normal count. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Give security-spool digests a stable domain so serializer changes do not move restore anchors.
+  evidence: BH12. StateDigest and IntentDigest hash default JsonSerializer output with no domain prefix. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Accept offset-equivalent UTC instants on private-owner grants and credentials.
+  evidence: BH14. Those checks require Offset == TimeSpan.Zero and reject an equivalent non-zero offset. Separate authenticator work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Keep a near-max observation time from aborting the rest of a security-spool drain.
+  evidence: EH02. ObservedAt plus the recovery horizon can throw, and the drain catch then returns without later records. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Reject a security-spool observation whose observed time is in the future.
+  evidence: EH03. Capture accepts that time, and the horizon comparison then leaves automatic append open. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Reject a security-spool routing tenant that cannot form an aggregate identity before drain.
+  evidence: EH04. SourceStream constructs AggregateIdentity, and Text does not apply that regex, so an illegal tenant throws out of the batch. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Reject an unpaired surrogate in a security-spool identity as a normal argument error.
+  evidence: EH05. Text calls UTF8Encoding.GetByteCount without catching EncoderFallbackException, so IntentDigest throws. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Refuse a private-owner credential when the signing profile is missing or expired.
+  evidence: VG03, pre-verified. Removing both IsValid checks leaves the authenticator tests green because they use a valid fixture profile. Separate authenticator work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Refuse a private-owner credential when the second grant read returns a different still-valid grant.
+  evidence: VG04, pre-verified. The withdrawal test returns null on the second read, so deleting the grant inequality stays green. Separate authenticator work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Stop a security spool from observing after its qualification ValidUntil.
+  evidence: VG05, pre-verified. Current tests keep ValidUntil two days ahead, so removing the expiry comparison stays green. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+  summary: Leave security-spool state unchanged when the anti-rollback anchor refuses the next revision.
+  evidence: VG06, pre-verified. No test makes RecordRevisionAsync return false for the revision about to be written. Spool work.
