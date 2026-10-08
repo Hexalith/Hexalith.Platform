@@ -180,3 +180,27 @@
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify affected controller/configuration dependencies in actual exposure mutation snapshots (LP-F4).
   evidence: Unverified, medium if true. Blind B7: an Ingress/Service-only synthetic baseline passes. Inspect signed operational snapshots and effective-config collector scope to determine whether an affected mutable controller dependency is omitted from UID/resourceVersion/config drift checks; completeness is separately required by the procedure.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Resolve composition-stage symbolic references
+  evidence: Review BH02/BH04/BH06/BH08/EH04 confirms structural validation retains unresolved references; frozen intent reserves stage-specific rules. Composition, recovery-hook and critical-flow stories must define admissible target scopes.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Enforce stage-specific uniqueness for task, hook, interface and operation names
+  evidence: BH03 demonstrates duplicate task names; execution/catalog stages must apply collection-specific identity rules, which the frozen intent reserves for later stories.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Decide authoritative-restore hook requirements
+  evidence: BH05 is unverified: current declarations allow omitted restoreHook; the future recovery contract must decide whether native/operator hooks satisfy restoration before requiring a module-local reference.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Validate resource requests against limits during composition
+  evidence: BH09/EH06 confirms schema-valid requests can exceed limits; the later allocation stage must reject these inputs before provisioning.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Define resource quantity conversion types and bounds
+  evidence: BH10/EH05 is unverified: resource numbers remain JsonElement here, with no double conversion. A downstream conversion/provisioning test and chosen quantity types would establish required bounds.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Reject invalid dependency graphs when constructing compositions
+  evidence: BH11 shows self-dependencies are retained structurally; the later composition graph must reject self-links/cycles before launch.
