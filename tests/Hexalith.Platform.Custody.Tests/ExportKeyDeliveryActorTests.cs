@@ -140,4 +140,23 @@ public sealed class ExportKeyDeliveryActorTests
         backend.CommittedState.Single().Value.ShouldBeOfType<ExportKeyDeliveryOutcome>().ShouldBe(delivered);
         await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
     }
+    /// <summary>Still-unknown delivery survives serialized restart and recovers original historical Delivered after expiry/fresh-authority withdrawal, without another release.</summary>
+    [Fact]
+    public async Task UnresolvedOriginalReleaseRecoversAfterExpiryAndFreshAuthorityWithdrawal()
+    {
+        var clock = new CustodyFixtureClock(); var identity = Identity(clock); var backend = new InMemoryStateManager(); var authority = Authority();
+        var provider = Substitute.For<IExportKeyDirectDeliveryProvider>(); var delivered = new ExportKeyDeliveryOutcome(identity, ExportKeyDeliveryState.Delivered, clock.Now);
+        provider.ReleaseAsync(identity, Arg.Any<CancellationToken>()).Returns(Task.FromException<ExportKeyDeliveryOutcome>(new HttpRequestException("Controlled original delivery response loss.")));
+        provider.LookupAsync(identity, Arg.Any<CancellationToken>()).Returns(delivered);
+        (await Actor(identity, backend, clock, authority, provider).DeliverAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unknown);
+        var saved = backend.CommittedState.Single(); ((ExportKeyDeliveryOutcome)saved.Value).State.ShouldBe(ExportKeyDeliveryState.Unknown);
+        var restored = new InMemoryStateManager();
+        await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<ExportKeyDeliveryOutcome>(JsonSerializer.SerializeToUtf8Bytes(saved.Value))!, TestContext.Current.CancellationToken);
+        await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        clock.Now = identity.ExclusiveExpiry.AddDays(1); authority.AuthorizeAsync(identity, Arg.Any<CancellationToken>()).Returns(false);
+        (await Actor(identity, restored, clock, authority, provider).LookupAsync(identity)).ShouldBe(delivered);
+        restored.CommittedState.Single().Value.ShouldBe(delivered);
+        await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>()); await provider.Received(1).LookupAsync(identity, Arg.Any<CancellationToken>());
+    }
+
 }
