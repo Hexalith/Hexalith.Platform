@@ -247,7 +247,7 @@ This record supersedes the earlier blocked verification for the current checkout
 - Required Debug build: exit 0, zero warnings/errors.
 - Focused declaration/schema/CLI cases: 141 passed, zero failed/skipped/not-run/errors. All new parsing, quantity, credential, path and exact-argument regressions ran.
 - Required full module suite: 355 passed, zero failed/skipped, exit 0. The catalog consistency test passes.
-- Package gate: exit 0, all 34 artifact-validator scenarios and existing failure/cleanup assertions pass, including the updated qualification consumers.
+- Package gate: exit 0, all 34 artifact-validator scenarios and existing failure/cleanup assertions pass.
 - Fresh installed-tool contracts: exit 0 for `0.0.0-story11.20261008.9`. Both output formats, multi-file identity rejection, legacy-major rejection, shipped schema bytes and validation outside the checkout pass. The official package script ran through an ephemeral dotnet wrapper adding `-m:1` to MSBuild operations; a serialized solution restore independently passed in 5.76 seconds after the parallel attempts stalled. The executed expanded commands and wrapper are retained.
 - Package source-validation and qualification-control lanes remain outside this verification invocation (`-SkipSourceValidation`, no `-RequireControls`). The recorded inventory correctly sets `releaseEligible: false`; no fresh tuple acceptance, publication eligibility or Platform tool acceptance is granted.
 
