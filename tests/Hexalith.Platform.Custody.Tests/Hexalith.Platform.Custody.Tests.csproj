@@ -2,5 +2,7 @@
   <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
   <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /><PackageReference Include="NSubstitute" /></ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'"><ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Testing/Hexalith.EventStore.Testing.csproj" /></ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'"><PackageReference Include="Hexalith.EventStore.Testing" /></ItemGroup>
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
 </Project>

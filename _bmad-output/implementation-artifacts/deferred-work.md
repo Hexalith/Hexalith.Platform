@@ -216,3 +216,13 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.
   evidence: R3-BH09; authenticate_review passes the entire GitHub envelope through strict_json, whose 4096-character per-string limit rejects the body string even when the independently retained JSON body is otherwise admissible. This is unrelated custody work preserved by Story 1.1.
+
+## Deferred from: code review of spec-1-1-validate-module-declarations.md (2026-10-08)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Bound startup override budgets and integer forms for typed consumers.
+  evidence: R4-W1, medium. `lifecycle.startup.override.timeoutSeconds` of `1e308` or `1e-300` satisfies the frozen "positive finite" rule, but TimeSpan conversion overflows or truncates. `replicas`, `memoryMiB` and `sizeMiB` written as `1.0`/`1e3` pass JSON Schema `integer` but fail `GetInt32()`. Story 1.8 must define the representable or policy budget cap. Composition (Story 1.6) must normalize or reject non-canonical integers. Extends the resource quantity-conversion entry.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Decide whether provider tenancy may be `shared`.
+  evidence: R4-W2, unverified; medium if true. The v2 `tenancy.mode` enum admits `shared`, while the spine defines the field as "external providers needing per-environment tenancy" and AD-8 separates hosted state by environment. To settle it, the owner states whether any declared external provider may be shared across environments.
