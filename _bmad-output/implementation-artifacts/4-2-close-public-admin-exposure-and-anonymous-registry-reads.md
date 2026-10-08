@@ -446,3 +446,8 @@ The read-only collector passed failed/stale/missing-start GC verdict checks, sen
 The enabled persistent system timer `hexalith-4-2-gc-confirmation-20261007t093420z.timer` starts collection on **2026-10-08 at 01:55 UTC / 03:55 Europe/Paris**, before the unchanged 02:00–05:00 UTC GC window. It watches until 06:00 UTC, requires a complete successful post-cleanup EventStore run, compares all repository closures, verifies SHA-256 bytes for every reachable EventStore object and objects in the previously qualified live/rollback repositories, correlates every transfer with the authenticated reader's audit entry, and revalidates configuration/cluster/Pod/image/readiness. It writes a new `registry-gc-confirmation.json` and appends the measured outcome here on success; failure or timeout writes a separate `registry-gc-confirmation-incomplete.json`. The host must be available for execution; the persistent timer catches a missed invocation after restart.
 
 GC confirmation remains pending and story/sprint remain `in-progress`. No registry policy, credential, workload or manual GC trigger was changed. Full workflow review remains separate from this operational confirmation.
+
+
+## EventStore GC confirmation — 2026-10-08
+
+[GC confirmation](evidence/epic-4/4-2/20261007t093420z-gc-confirmation/registry-gc-confirmation.json) records a successful post-cleanup EventStore GC, unchanged approved retention configuration, no lost retained objects or changed existing tag bindings, and 1475 uncached, SHA-256-verified authenticated transfers with matched Zot audit records. This resolves the deferred next-GC confirmation. Historical partial results are preserved. Story remains `in-progress` pending full workflow review; no production mutation was performed.

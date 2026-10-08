@@ -29,14 +29,14 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 10-07-2026 13:18
+last_updated: 10-07-2026 17:43
 project: platform
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 development_status:
   epic-1: backlog
-  1-1-validate-module-declarations-against-the-platform-declaratio: backlog
+  1-1-validate-module-declarations-against-the-platform-declaratio: ready-for-dev
   1-2-make-the-builds-catalog-the-single-version-authority: backlog
   1-3-resolve-one-active-root-source-mapping: backlog
   1-4-enforce-the-platform-identity-and-support-package-mode: backlog
@@ -92,7 +92,7 @@ development_status:
   4-7-provide-the-staging-attempt-lock-and-promotion-stop-store: backlog
   4-8-maintain-the-module-intake-manifest: backlog
   4-9-ratify-the-hosted-runtime-and-identity-event-contracts: backlog
-  4-10-define-the-recovery-hook-contract: ready-for-dev
+  4-10-define-the-recovery-hook-contract: in-progress
   4-11-define-the-check-suite-contract-and-own-the-reference-suites: backlog
   4-12-publish-retained-releases-with-provenance: backlog
   4-13-retain-artifacts-off-the-primary-failure-domain: backlog

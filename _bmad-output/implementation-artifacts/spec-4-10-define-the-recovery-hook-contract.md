@@ -4,7 +4,8 @@ type: 'feature'
 epic: 4
 story: 10
 created: '2026-10-07'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: '332a7d8104e3f6c9aaa57cbc7f07afb5fa0859de'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '4-10-define-the-recovery-hook-contract'

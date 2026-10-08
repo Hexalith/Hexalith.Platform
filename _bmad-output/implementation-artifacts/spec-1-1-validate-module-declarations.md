@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 1
 created: '2026-10-07'
-status: 'draft'
+status: 'ready-for-dev'
 route: 'dispatch'
 review_loop_iteration: 0
 context:

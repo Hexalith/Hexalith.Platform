@@ -1,0 +1,1261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hexalith.dev/schemas/hexalith.recovery-hook.v1.json",
+  "title": "Hexalith recovery hook contract 1.0.0",
+  "description": "Language-neutral recovery messages. Context and chain are offline conformance sidecars; schema validity is not runtime authorization or recovery qualification.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/declaration"
+    },
+    {
+      "$ref": "#/$defs/invocation"
+    },
+    {
+      "$ref": "#/$defs/result"
+    },
+    {
+      "$ref": "#/$defs/context"
+    },
+    {
+      "$ref": "#/$defs/chain"
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "recoveryClass": {
+      "enum": [
+        "authoritative-restore",
+        "rebuild-only",
+        "live-authority-only"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "fence",
+        "admission-purge",
+        "credentials",
+        "rebuild",
+        "integrity",
+        "external-effect-reconciliation"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "disaster-recovery",
+        "in-place"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "positionDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "positionId",
+        "ownerModule",
+        "scope",
+        "kind",
+        "recoveryClass",
+        "encoding"
+      ],
+      "properties": {
+        "positionId": {
+          "$ref": "#/$defs/id"
+        },
+        "ownerModule": {
+          "$ref": "#/$defs/id"
+        },
+        "scope": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "eventstore-position",
+            "memories-register-sequence",
+            "module-owned-position"
+          ]
+        },
+        "recoveryClass": {
+          "$ref": "#/$defs/recoveryClass"
+        },
+        "encoding": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "positionId",
+        "ownerModule",
+        "scope",
+        "kind",
+        "recoveryClass",
+        "encoding",
+        "value",
+        "relationToCut"
+      ],
+      "properties": {
+        "positionId": {
+          "$ref": "#/$defs/id"
+        },
+        "ownerModule": {
+          "$ref": "#/$defs/id"
+        },
+        "scope": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "eventstore-position",
+            "memories-register-sequence",
+            "module-owned-position"
+          ]
+        },
+        "recoveryClass": {
+          "$ref": "#/$defs/recoveryClass"
+        },
+        "encoding": {
+          "$ref": "#/$defs/id"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "relationToCut": {
+          "enum": [
+            "at-cut",
+            "before-cut"
+          ]
+        }
+      }
+    },
+    "cut": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cutId",
+        "positions"
+      ],
+      "properties": {
+        "cutId": {
+          "$ref": "#/$defs/id"
+        },
+        "positions": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "$ref": "#/$defs/position"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "recoveryClass"
+                ],
+                "properties": {
+                  "recoveryClass": {
+                    "const": "authoritative-restore"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "recoveryClass"
+                ],
+                "properties": {
+                  "recoveryClass": {
+                    "const": "rebuild-only"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "recoveryClass"
+                ],
+                "properties": {
+                  "recoveryClass": {
+                    "const": "live-authority-only"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "eventstore-position"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "memories-register-sequence"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "hook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hookId",
+        "phase",
+        "implementation"
+      ],
+      "properties": {
+        "hookId": {
+          "$ref": "#/$defs/id"
+        },
+        "phase": {
+          "$ref": "#/$defs/phase"
+        },
+        "implementation": {
+          "enum": [
+            "implemented",
+            "missing",
+            "not-applicable"
+          ]
+        },
+        "reasonCode": {
+          "$ref": "#/$defs/id"
+        },
+        "authorityId": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "implementation": {
+                "enum": [
+                  "missing",
+                  "not-applicable"
+                ]
+              }
+            },
+            "required": [
+              "implementation"
+            ]
+          },
+          "then": {
+            "required": [
+              "reasonCode"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "fence"
+              }
+            },
+            "required": [
+              "phase"
+            ]
+          },
+          "then": {
+            "required": [
+              "authorityId"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "authorityId"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorityId",
+        "fenceHookId",
+        "reissueProcedureRef"
+      ],
+      "properties": {
+        "authorityId": {
+          "$ref": "#/$defs/id"
+        },
+        "fenceHookId": {
+          "$ref": "#/$defs/id"
+        },
+        "reissueProcedureRef": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "recordType",
+        "releaseId",
+        "moduleId",
+        "dependencies",
+        "positionDefinitions",
+        "reopenBeforeReplay",
+        "endpoint",
+        "survivingAuthorities",
+        "hooks"
+      ],
+      "properties": {
+        "contractVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "recordType": {
+          "const": "declaration"
+        },
+        "releaseId": {
+          "$ref": "#/$defs/digest"
+        },
+        "moduleId": {
+          "$ref": "#/$defs/id"
+        },
+        "dependencies": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "positionDefinitions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/positionDescriptor"
+          }
+        },
+        "reopenBeforeReplay": {
+          "type": "boolean"
+        },
+        "endpoint": {
+          "const": "/_internal/recovery/v1"
+        },
+        "survivingAuthorities": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/authority"
+          }
+        },
+        "hooks": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "$ref": "#/$defs/hook"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "const": "admission-purge"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "const": "credentials"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "const": "rebuild"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "const": "integrity"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "const": "external-effect-reconciliation"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issuerId",
+        "generationId",
+        "origin",
+        "keySource"
+      ],
+      "properties": {
+        "issuerId": {
+          "$ref": "#/$defs/id"
+        },
+        "generationId": {
+          "$ref": "#/$defs/id"
+        },
+        "origin": {
+          "enum": [
+            "replacement-capacity",
+            "current-environment"
+          ]
+        },
+        "keySource": {
+          "enum": [
+            "fresh",
+            "live"
+          ]
+        }
+      }
+    },
+    "quarantine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "userIngress",
+        "externalEffectWorkers",
+        "destructiveRetentionWorkers",
+        "executorId",
+        "recoveryWorkloadIds",
+        "probeSourceIds",
+        "admittedSources"
+      ],
+      "properties": {
+        "userIngress": {
+          "const": "closed"
+        },
+        "externalEffectWorkers": {
+          "const": "disabled"
+        },
+        "destructiveRetentionWorkers": {
+          "const": "disabled"
+        },
+        "executorId": {
+          "$ref": "#/$defs/id"
+        },
+        "recoveryWorkloadIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "probeSourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "admittedSources": {
+          "const": "owning-executor-recovery-workloads-and-probes-only"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "recordType",
+        "releaseId",
+        "environmentId",
+        "instanceId",
+        "attemptId",
+        "attemptKind",
+        "epoch",
+        "recoveryMode",
+        "cut",
+        "validatedAt",
+        "recoveryPrincipal",
+        "audience",
+        "issuer",
+        "quarantine",
+        "survivingAuthorityReissue"
+      ],
+      "properties": {
+        "contractVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "recordType": {
+          "const": "context"
+        },
+        "releaseId": {
+          "$ref": "#/$defs/digest"
+        },
+        "environmentId": {
+          "$ref": "#/$defs/id"
+        },
+        "instanceId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptKind": {
+          "const": "recovery"
+        },
+        "epoch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "recoveryMode": {
+          "$ref": "#/$defs/mode"
+        },
+        "cut": {
+          "$ref": "#/$defs/cut"
+        },
+        "validatedAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "recoveryPrincipal": {
+          "$ref": "#/$defs/id"
+        },
+        "audience": {
+          "$ref": "#/$defs/id"
+        },
+        "issuer": {
+          "$ref": "#/$defs/issuer"
+        },
+        "priorIssuerGenerationId": {
+          "$ref": "#/$defs/id"
+        },
+        "quarantine": {
+          "$ref": "#/$defs/quarantine"
+        },
+        "survivingAuthorityReissue": {
+          "enum": [
+            "complete",
+            "pending",
+            "not-applicable"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "recoveryMode"
+            ],
+            "properties": {
+              "recoveryMode": {
+                "const": "disaster-recovery"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "priorIssuerGenerationId"
+            ],
+            "properties": {
+              "issuer": {
+                "properties": {
+                  "origin": {
+                    "const": "replacement-capacity"
+                  },
+                  "keySource": {
+                    "const": "fresh"
+                  }
+                }
+              },
+              "survivingAuthorityReissue": {
+                "enum": [
+                  "complete",
+                  "pending"
+                ]
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "required": [
+                "priorIssuerGenerationId"
+              ]
+            },
+            "properties": {
+              "issuer": {
+                "properties": {
+                  "origin": {
+                    "const": "current-environment"
+                  },
+                  "keySource": {
+                    "const": "live"
+                  }
+                }
+              },
+              "survivingAuthorityReissue": {
+                "const": "not-applicable"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credentialRef",
+        "issuerId",
+        "issuerGenerationId",
+        "principal",
+        "audience",
+        "environmentId",
+        "instanceId",
+        "attemptId",
+        "attemptKind",
+        "epoch",
+        "scope",
+        "issuedAt",
+        "expiresAt"
+      ],
+      "properties": {
+        "credentialRef": {
+          "$ref": "#/$defs/id"
+        },
+        "issuerId": {
+          "$ref": "#/$defs/id"
+        },
+        "issuerGenerationId": {
+          "$ref": "#/$defs/id"
+        },
+        "principal": {
+          "$ref": "#/$defs/id"
+        },
+        "audience": {
+          "$ref": "#/$defs/id"
+        },
+        "environmentId": {
+          "$ref": "#/$defs/id"
+        },
+        "instanceId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptKind": {
+          "const": "recovery"
+        },
+        "epoch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scope": {
+          "const": "recovery-hook"
+        },
+        "issuedAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "location",
+        "executorId"
+      ],
+      "properties": {
+        "location": {
+          "enum": [
+            "owning-workload",
+            "recovery-executor-sandbox"
+          ]
+        },
+        "executorId": {
+          "$ref": "#/$defs/id"
+        },
+        "authorityId": {
+          "$ref": "#/$defs/id"
+        },
+        "custodianMaterialRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "location"
+            ],
+            "properties": {
+              "location": {
+                "const": "recovery-executor-sandbox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "authorityId",
+              "custodianMaterialRef"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "authorityId"
+                  ]
+                },
+                {
+                  "required": [
+                    "custodianMaterialRef"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "invocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "recordType",
+        "releaseId",
+        "environmentId",
+        "instanceId",
+        "attemptId",
+        "attemptKind",
+        "epoch",
+        "recoveryMode",
+        "cut",
+        "moduleId",
+        "hookId",
+        "taskId",
+        "invocationId",
+        "retry",
+        "invokedAt",
+        "endpoint",
+        "dependsOn",
+        "targetPositions",
+        "execution",
+        "authorization"
+      ],
+      "properties": {
+        "contractVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "recordType": {
+          "const": "invocation"
+        },
+        "releaseId": {
+          "$ref": "#/$defs/digest"
+        },
+        "environmentId": {
+          "$ref": "#/$defs/id"
+        },
+        "instanceId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptKind": {
+          "const": "recovery"
+        },
+        "epoch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "recoveryMode": {
+          "$ref": "#/$defs/mode"
+        },
+        "cut": {
+          "$ref": "#/$defs/cut"
+        },
+        "moduleId": {
+          "$ref": "#/$defs/id"
+        },
+        "hookId": {
+          "$ref": "#/$defs/id"
+        },
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "invocationId": {
+          "$ref": "#/$defs/id"
+        },
+        "retry": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retryOf": {
+          "$ref": "#/$defs/id"
+        },
+        "invokedAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "endpoint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "dependsOn": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "targetPositions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/position"
+          }
+        },
+        "execution": {
+          "$ref": "#/$defs/execution"
+        },
+        "authorization": {
+          "$ref": "#/$defs/authorization"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "retry"
+            ],
+            "properties": {
+              "retry": {
+                "const": 0
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "retryOf"
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "retryOf"
+            ]
+          }
+        }
+      ]
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "unknown",
+            "not-run"
+          ]
+        },
+        "evidenceRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "passed",
+                  "failed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "evidenceRef"
+            ]
+          }
+        }
+      ]
+    },
+    "externalEffects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "reconciled",
+            "unknown",
+            "not-run",
+            "not-applicable"
+          ]
+        },
+        "evidenceRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "reconciled",
+                  "not-applicable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "evidenceRef"
+            ]
+          }
+        }
+      ]
+    },
+    "replay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "pending",
+            "not-run",
+            "not-applicable"
+          ]
+        },
+        "evidenceRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "complete",
+                  "pending",
+                  "not-applicable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "evidenceRef"
+            ]
+          }
+        }
+      ]
+    },
+    "achieved": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position",
+        "targetReached"
+      ],
+      "properties": {
+        "position": {
+          "$ref": "#/$defs/position"
+        },
+        "targetReached": {
+          "type": "boolean"
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "recordType",
+        "releaseId",
+        "environmentId",
+        "instanceId",
+        "attemptId",
+        "attemptKind",
+        "epoch",
+        "recoveryMode",
+        "cut",
+        "moduleId",
+        "hookId",
+        "taskId",
+        "invocationId",
+        "status",
+        "completedAt",
+        "achievedPositions",
+        "integrity",
+        "externalEffects",
+        "replay",
+        "reopeningEligible"
+      ],
+      "properties": {
+        "contractVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "recordType": {
+          "const": "result"
+        },
+        "releaseId": {
+          "$ref": "#/$defs/digest"
+        },
+        "environmentId": {
+          "$ref": "#/$defs/id"
+        },
+        "instanceId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/id"
+        },
+        "attemptKind": {
+          "const": "recovery"
+        },
+        "epoch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "recoveryMode": {
+          "$ref": "#/$defs/mode"
+        },
+        "cut": {
+          "$ref": "#/$defs/cut"
+        },
+        "moduleId": {
+          "$ref": "#/$defs/id"
+        },
+        "hookId": {
+          "$ref": "#/$defs/id"
+        },
+        "taskId": {
+          "$ref": "#/$defs/id"
+        },
+        "invocationId": {
+          "$ref": "#/$defs/id"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "incomplete",
+            "unqualified"
+          ]
+        },
+        "reasonCode": {
+          "$ref": "#/$defs/id"
+        },
+        "completedAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "achievedPositions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/achieved"
+          }
+        },
+        "integrity": {
+          "$ref": "#/$defs/integrity"
+        },
+        "externalEffects": {
+          "$ref": "#/$defs/externalEffects"
+        },
+        "replay": {
+          "$ref": "#/$defs/replay"
+        },
+        "reopeningEligible": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "failed",
+                  "incomplete",
+                  "unqualified"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reasonCode"
+            ],
+            "properties": {
+              "reopeningEligible": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "recordType",
+        "synthetic",
+        "declarations",
+        "invocations",
+        "results"
+      ],
+      "properties": {
+        "contractVersion": {
+          "$ref": "#/$defs/version"
+        },
+        "recordType": {
+          "const": "chain"
+        },
+        "synthetic": {
+          "type": "boolean"
+        },
+        "declarations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/declaration"
+          }
+        },
+        "invocations": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/invocation"
+          }
+        },
+        "results": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/result"
+          }
+        }
+      }
+    }
+  }
+}
