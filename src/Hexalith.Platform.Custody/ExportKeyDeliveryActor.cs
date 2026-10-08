@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text.Json;
 using Dapr.Actors.Runtime;
 
 namespace Hexalith.Platform.Custody;
@@ -88,7 +90,11 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
     {
         await StateManager.ClearCacheAsync().ConfigureAwait(false);
         var state = await StateManager.TryGetStateAsync<ExportKeyDeliveryOutcome>(StateKey).ConfigureAwait(false);
-        if (!state.HasValue) { return null; }
+        if (!state.HasValue)
+        {
+            if (authority is null || !await authority.ValidateStateAsync(identity, Digest((ExportKeyDeliveryOutcome?)null)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent delivery outcome anchor is absent or stale."); }
+            return null;
+        }
         var value = state.Value;
         if (value.Identity is null || value.Identity.ActorId != identity.ActorId
             || value.State is not (ExportKeyDeliveryState.Delivered or ExportKeyDeliveryState.NotDelivered or ExportKeyDeliveryState.Unknown)
@@ -97,14 +103,19 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
             || value.Reason is not (null or "expired" or "authority-denied" or "authority-or-expiry-changed" or "provider-not-delivered")
             || value.State != ExportKeyDeliveryState.NotDelivered && value.Reason is not null)
         { throw new InvalidOperationException("Malformed persisted delivery outcome."); }
+        if (authority is null || !await authority.ValidateStateAsync(identity, Digest(value)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent delivery outcome anchor is absent or stale."); }
         return value;
     }
     private async Task<ExportKeyDeliveryOutcome> SaveAsync(ExportKeyDeliveryOutcome outcome)
     {
+        var previous = await ReadAsync(outcome.Identity).ConfigureAwait(false);
+        if (authority is null || !await authority.RecordStateAsync(outcome.Identity, Digest(previous), Digest(outcome)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent delivery outcome anchor compare failed."); }
         await StateManager.SetStateAsync(StateKey, outcome).ConfigureAwait(false);
         await StateManager.SaveStateAsync().ConfigureAwait(false);
         ExportKeyDeliveryOutcome? persisted = await ReadAsync(outcome.Identity).ConfigureAwait(false);
         if (persisted != outcome) { throw new InvalidOperationException("Delivery outcome is not confirmed durable."); }
         return outcome;
     }
+    private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
+
 }

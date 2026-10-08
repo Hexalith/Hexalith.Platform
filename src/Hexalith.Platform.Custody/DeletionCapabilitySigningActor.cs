@@ -1,5 +1,6 @@
-using Hexalith.EventStore.Contracts.Security;
 using System.Security.Cryptography;
+using System.Text.Json;
+using Hexalith.EventStore.Contracts.Security;
 using System.Text;
 using Dapr.Actors.Runtime;
 using Hexalith.EventStore.Contracts.Identity;
@@ -132,7 +133,11 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     {
         await StateManager.ClearCacheAsync().ConfigureAwait(false);
         var state = await StateManager.TryGetStateAsync<DeletionCapabilitySigningOutcome>(StateKey).ConfigureAwait(false);
-        if (!state.HasValue) { return null; }
+        if (!state.HasValue)
+        {
+            if (authority is null || !await authority.ValidateStateAsync(payload, id, Digest((DeletionCapabilitySigningOutcome?)null)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent signing outcome anchor is absent or stale."); }
+            return null;
+        }
         var value = state.Value;
         if (value.Payload != payload || value.SigningRequestId != id || DeletionBatchCapabilityCodec.SigningRequestId(value.Payload) != id
             || value.State is not (DeletionCapabilitySigningState.Unknown or DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied)
@@ -140,13 +145,18 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
                 || value.DetachedJws.Length > 16384 || string.IsNullOrWhiteSpace(value.PublicAnchorId) || string.IsNullOrWhiteSpace(value.PublicAnchorVersion))
             || value.State != DeletionCapabilitySigningState.Signed && (value.DetachedJws is not null || value.PublicAnchorId is not null || value.PublicAnchorVersion is not null))
         { throw new InvalidOperationException("Malformed persisted deletion signing outcome."); }
+        if (authority is null || !await authority.ValidateStateAsync(payload, id, Digest(value)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent signing outcome anchor is absent or stale."); }
         return value;
     }
     private async Task<DeletionCapabilitySigningOutcome> SaveAsync(DeletionCapabilitySigningOutcome outcome)
     {
+        var previous = await ReadAsync(outcome.Payload, outcome.SigningRequestId).ConfigureAwait(false);
+        if (authority is null || !await authority.RecordStateAsync(outcome.Payload, outcome.SigningRequestId, Digest(previous), Digest(outcome)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent signing outcome anchor compare failed."); }
         await StateManager.SetStateAsync(StateKey, outcome).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
         var persisted = await ReadAsync(outcome.Payload, outcome.SigningRequestId).ConfigureAwait(false);
         if (persisted != outcome) { throw new InvalidOperationException("Signing result is not confirmed durable."); }
         return outcome;
     }
+    private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
+
 }

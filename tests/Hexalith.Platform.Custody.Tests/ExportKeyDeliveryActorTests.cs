@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text.Json;
 using Dapr.Actors.Runtime;
 using Hexalith.EventStore.Testing.Fakes;
@@ -20,7 +21,11 @@ public sealed class ExportKeyDeliveryActorTests
     }
     private static IExportKeyDeliveryAuthority Authority()
     {
-        var authority = Substitute.For<IExportKeyDeliveryAuthority>();
+        var authority = Substitute.For<IExportKeyDeliveryAuthority>(); string anchor = Digest((ExportKeyDeliveryOutcome?)null);
+        authority.ValidateStateAsync(Arg.Any<ExportKeyDeliveryIdentity>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => call.Arg<string>() == anchor);
+        authority.RecordStateAsync(Arg.Any<ExportKeyDeliveryIdentity>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => {
+            if (call.ArgAt<string>(1) != anchor) { return false; } anchor = call.ArgAt<string>(2); return true;
+        });
         authority.AuthorizeOperationAsync(Arg.Any<ExportKeyDeliveryIdentity>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         authority.AuthorizeAsync(Arg.Any<ExportKeyDeliveryIdentity>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
     }
@@ -55,10 +60,10 @@ public sealed class ExportKeyDeliveryActorTests
         var provider = Substitute.For<IExportKeyDirectDeliveryProvider>();
         provider.ReleaseAsync(identity, Arg.Any<CancellationToken>()).Returns(new ExportKeyDeliveryOutcome(identity, ExportKeyDeliveryState.Unknown));
         provider.LookupAsync(identity, Arg.Any<CancellationToken>()).Returns(new ExportKeyDeliveryOutcome(identity, ExportKeyDeliveryState.Unavailable));
-        var actor = Actor(identity, backend, clock, Authority(), provider);
+        var authority = Authority(); var actor = Actor(identity, backend, clock, authority, provider);
         (await actor.DeliverAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unknown);
         (await actor.DeliverAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unknown);
-        (await Actor(identity, backend, clock, Authority(), provider).LookupAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unknown);
+        (await Actor(identity, backend, clock, authority, provider).LookupAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unknown);
         await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
         backend.CommittedState.Single().Value.ShouldBeOfType<ExportKeyDeliveryOutcome>().Identity.ShouldBe(identity);
     }
@@ -175,5 +180,7 @@ public sealed class ExportKeyDeliveryActorTests
         await restored.SetStateAsync(latest.Key, JsonSerializer.Deserialize<ExportKeyDeliveryOutcome>(JsonSerializer.Serialize(latest.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
         (await restarted.LookupAsync(identity)).ShouldBe(original); await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
     }
+
+    private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
 
 }

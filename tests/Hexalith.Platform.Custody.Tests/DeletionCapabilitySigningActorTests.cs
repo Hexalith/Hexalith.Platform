@@ -38,7 +38,11 @@ public sealed class DeletionCapabilitySigningActorTests
     }
     private static IDeletionCapabilitySigningAuthority Authority()
     {
-        var authority = Substitute.For<IDeletionCapabilitySigningAuthority>();
+        var authority = Substitute.For<IDeletionCapabilitySigningAuthority>(); string anchor = Digest((DeletionCapabilitySigningOutcome?)null);
+        authority.ValidateStateAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => call.ArgAt<string>(2) == anchor);
+        authority.RecordStateAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => {
+            if (call.ArgAt<string>(2) != anchor) { return false; } anchor = call.ArgAt<string>(3); return true;
+        });
         authority.AuthorizeOperationAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         authority.AuthorizeAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
     }
@@ -52,14 +56,14 @@ public sealed class DeletionCapabilitySigningActorTests
         var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
         provider.SignAsync(payload, id, Arg.Any<CancellationToken>()).Returns(Task.FromException<DeletionCapabilitySigningResult>(new HttpRequestException("Controlled response lost after backend signature retention.")));
         provider.LookupAsync(payload, id, Arg.Any<CancellationToken>()).Returns(signed);
-        var actor = Actor(payload, backend, Authority(), provider, Trust(payload, key));
+        var authority = Authority(); var actor = Actor(payload, backend, authority, provider, Trust(payload, key));
         (await actor.SignAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unknown);
         backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>().State.ShouldBe(DeletionCapabilitySigningState.Unknown);
         (await actor.SignAsync(payload)).ShouldBe(signed.Outcome);
         var saved = backend.CommittedState.Single(); var restored = new InMemoryStateManager();
         await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<DeletionCapabilitySigningOutcome>(JsonSerializer.SerializeToUtf8Bytes(saved.Value))!, TestContext.Current.CancellationToken);
         await restored.SaveStateAsync(TestContext.Current.CancellationToken);
-        (await Actor(payload, restored, Authority()).LookupAsync(payload)).ShouldBe(signed.Outcome);
+        (await Actor(payload, restored, authority).LookupAsync(payload)).ShouldBe(signed.Outcome);
         await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>()); await provider.Received(1).LookupAsync(payload, id, Arg.Any<CancellationToken>());
         JsonSerializer.Serialize(saved.Value).ShouldNotContain("CommittedIssuedGuardRevision");
     }
@@ -258,5 +262,7 @@ public sealed class DeletionCapabilitySigningActorTests
         await restored.SetStateAsync(latest.Key, JsonSerializer.Deserialize<DeletionCapabilitySigningOutcome>(JsonSerializer.Serialize(latest.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
         (await restarted.LookupAsync(payload)).ShouldBe(original.Outcome); await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>());
     }
+
+    private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
 
 }
