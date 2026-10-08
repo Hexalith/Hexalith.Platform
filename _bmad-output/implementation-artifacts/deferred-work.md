@@ -204,3 +204,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Reject invalid dependency graphs when constructing compositions
   evidence: BH11 shows self-dependencies are retained structurally; the later composition graph must reject self-links/cycles before launch.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Complete v1 package qualification consumers and requalify the separately migrated EventStore 3.117.1 / FrontComposer 4.6.0 tuple before promotion.
+  evidence: R3-BH01 and R3-EH04; owner commit 6f07763bd955d22ace0123798add528dc933bf51 migrated pins and synthetic fixtures, but the package control assertion and publication default still require EventStore 3.110.0. Historical retained acceptance does not qualify the migrated tuple.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Define command-readiness execution and interpreter rules at the runtime execution stage.
+  evidence: R3-BH08, medium unverified; local validation admits an existing readable file, but no v2 execution consumer yet establishes admissible script, DLL, interpreter or platform execution semantics. Verify against the later command launcher without launching during enrollment.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+  summary: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.
+  evidence: R3-BH09; authenticate_review passes the entire GitHub envelope through strict_json, whose 4096-character per-string limit rejects the body string even when the independently retained JSON body is otherwise admissible. This is unrelated custody work preserved by Story 1.1.

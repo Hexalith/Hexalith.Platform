@@ -1,12 +1,12 @@
 #!/usr/bin/env dotnet
-#:sdk Aspire.AppHost.Sdk@13.6.0
+#:sdk Aspire.AppHost.Sdk@13.6.1
 #:property ManagePackageVersionsCentrally=false
 #:include DaprSelfHostedMtls.cs
-#:package Aspire.Hosting.Docker@13.6.0
-#:package Aspire.Hosting.Redis@13.6.0
-#:package Aspire.Hosting.Keycloak@13.6.0-preview.1.26479.8
+#:package Aspire.Hosting.Docker@13.6.1
+#:package Aspire.Hosting.Redis@13.6.1
+#:package Aspire.Hosting.Keycloak@13.6.1-preview.1.26506.6
 #:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.0-preview.1.261001-0243
-#:package Hexalith.EventStore.Aspire@3.110.0
+#:package Hexalith.EventStore.Aspire@3.117.1
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 

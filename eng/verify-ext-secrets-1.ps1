@@ -31,7 +31,8 @@ if ($buildOutput -notmatch '(?m)^\s*0 Warning\(s\)\s*$' -or $buildOutput -notmat
 }
 $assemblyPath = Join-Path $ArtifactsDirectory 'bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll'
 $requiredClasses = @('Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
-    'Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests')
+    'Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests',
+    'Hexalith.Platform.Custody.Tests.ExportCustodyCryptographyTests')
 $testArgs = @($assemblyPath)
 foreach ($class in $requiredClasses) { $testArgs += @('-class', $class) }
 $testArgs += @('-result-xml', $xmlPath)
@@ -54,7 +55,7 @@ foreach ($class in $requiredClasses) {
 }
 @{
     Mode = 'Local'; LiveReady = $false; DependencyAvailable = $false
-    Scope = 'S1/S2 cryptographic fixtures and accepted-policy cleanup source simulations'; RequiredClasses = $classEvidence
+    Scope = 'S1/S2 and private stateless S3 cryptographic prerequisites plus accepted-policy cleanup source simulations'; RequiredClasses = $classEvidence
     Total = [int]$assembly.total
     Passed = [int]$assembly.passed; BuildArguments = $buildArgs; TestArguments = $testArgs
     XmlSha256 = (Get-FileHash $xmlPath -Algorithm SHA256).Hash.ToLowerInvariant()

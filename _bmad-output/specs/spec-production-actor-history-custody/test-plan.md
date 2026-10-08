@@ -1,0 +1,38 @@
+# Verification and persisted end states
+
+Local tests prove deterministic contracts and refusal behavior. Installed tests must use the selected real production-class backend and owner persistence, isolated authorized synthetic units, controlled clocks/faults and authenticated probes. No in-memory fixture can satisfy the installed rows. Complete P-01–P-10 remains F2.
+
+| Test lane | Scenario | Required assertions | Story criteria |
+| --- | --- | --- | --- |
+| Local policy | Missing/wrong ID, duration, purpose/trigger; overflow; offset-equivalent instants; leap-year boundary; one tick before/at/after expiry | Exactly 365 fixed days; exclusive deadline; no calendar-year rule or implicit defaults. Invalid input never calls admission/key writers. | AC-1/2 |
+| Local envelopes/codecs | Events and typed/persisted JSON snapshots; malformed versions, altered evidence/deadline/type/key/scope; duplicate snapshot history paths; differing unit deadlines | Existing format/metadata contract; authenticated failures; no plaintext in persisted output; no renewed predecessor in a successor segment; original profile ciphertext preserved. Unsupported snapshots deny. | AC-2 |
+| Actual host composition | Start selected Parties and EventStore hosts with valid/invalid/missing backend, policy, key generation, admission or lifecycle authority | Correct provider and Party protection adapter in persistence/replay/query paths; retained reader/admission present; relevant readiness/refusals; no permissive fallback, conflicting registration or synthetic provider activation. Preserve current auth/Consumer tests. | AC-1 |
+| Local bounded waits | Provider exception/stall, token ignored, cancellation callback blocking, late completion, policy/authority withdrawal during await | Existing five-second cleanup waits; caller cancellation propagates; unknown cleanup remains Pending; no late plaintext release or leaked diagnostic/key buffer. | AC-1/3 |
+| Installed admission | Concurrent duplicate admission; crash after reservation/key creation; lost acknowledgement then restart/retry | Independently read one original unit/evidence/deadline and reconciled key generations; no duplicate live unit or untracked orphan; changed/foreign scope cannot retrieve authority. | AC-1/3 |
+| Installed profile erasure | Persist binding event/snapshot, destroy profile key, restart, authorize retained action-time read before expiry | Retained actor/version/interval matches original; profile key is gone and no profile plaintext is returned; current eligibility is denied. Compare source/snapshot/derived persisted state, not just query success. | AC-2 |
+| Installed expiry and rotation | Read before expiry; expire during backend/decrypt await; exact deadline and after; multiple rotated generations | No release at/after deadline. Independently prove every expired decrypting generation and inventoried copy unavailable irreversibly, including pre-expiry key backups. Original deadline remains unchanged. | AC-2/3 |
+| Installed destruction recovery | Failure before/after each destructive step; crash after final receipt commit; lost acknowledgement; concurrent cleanup/retry | Partial work is durably Pending. Restart/retry recovers exactly one original final receipt/operation; terminal revision does not regress. No replacement key/evidence or extended deadline. | AC-3 |
+| Installed race/isolation | Copy write in flight at expiry; changed inventory during cleanup; wrong tenant/unit/evidence; outage during fresh read check | Final receipt covers or invalidates every in-flight copy; unknown copy blocks completion. Foreign records/keys/copies do not change. Fresh denial failure keeps owner work pending despite previous destruction acknowledgement. | AC-3 |
+| Installed backup/restore | Capture genuine pre-expiry data/key/lifecycle backup, destroy/expire, restore old cut into quarantine; attempt stale-writer, stale-epoch and unavailable-anchor release | Expired evidence cannot decrypt through events, snapshots, raw key restore or derived rebuild. Old authority never becomes current. Current anchor/receipt is reconciled; unknown lineage keeps quarantine closed. Live control units recover through the same real restore. | AC-4 |
+| Installed successor control | X expires while Y in the same Party and another tenant remain within their windows | X and all its generations/copies are irrecoverable; Y's own ciphertext/key/deadline and foreign state remain intact. A failing current successor history query is recorded as F1 outstanding, never reported as an availability pass. | AC-3/4 |
+
+## Persisted assertion packet
+
+Each installed scenario retains before/after observations from authenticated owner/backend probes, independent of the tested provider's return values:
+
+- Unit: full authorized scope, original policy/effective instant/deadline/evidence/admission revision, lifecycle state and current revision/epoch/fence.
+- Keys: exact unit generations, rotation lineage, backup/escrow coverage and backend irreversible-destruction evidence. A 404, soft-delete marker or denied API read alone does not prove destruction.
+- Copies: closed inventory generation/digest, class/owner/location references and per-class irreversible outcomes; signed/otherwise authenticated absence where a class is unused. No actor plaintext or key material in the packet.
+- Work/receipt: stable pending operation, durable completion, one original final receipt and caller receipt reference recovered after lost acknowledgement/restart.
+- Restore: actual backup/cut and target identities, current surviving anchor, old-writer denial, quarantine/epoch checks, denied expired decryptions and a successful unexpired restore control.
+- Isolation: unchanged foreign records and still-retained unit ciphertext/key/expiry. Compare durable records and owner-observed counts/digests; public errors/logs reveal no foreign existence or protected data.
+
+Tests must inspect actual persisted event/snapshot representations, including history duplicated in `HumanActorBindings` and `HumanActorTransitions.OriginalEvidence`; include ordinary broker/cache/replay and historical backup paths present in the selected deployment. Direct backend reads must not record protected payloads or secret material.
+
+## Execution and verdict
+
+For T1, run the focused `IdentityHistoryCustodyPolicyTests` in `tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj`. For provider changes, run the meaningful provider/registration/cleanup tests and owner Parties/EventStore protection, retained-source, query and admission suites. Source validation uses the normal `UseHexalithProjectReferences=true` path with explicit sibling `HexalithEventStoreRoot`; verify the selected package path when the hosted release consumes packages. Preserve unrelated source/dependency failures as failed evidence; do not hide them with exclusions.
+
+Retain exact commands, source/package identities, backend/version/profile/configuration digest, environment/target/cut, operator/probe identities, raw results, logs, XML/probe receipts and artifact hashes. Every required lane must actually execute, with no failed, skipped or unrun cases. Unavailable targets yield incomplete qualification. No test count or healthy empty host overrides missing persisted assertions.
+
+Provider acceptance requires all installed rows relevant to the selected deployment and independent evidence for every claimed capability flag. Branch B availability additionally requires F1/F2 and the existing source/authorization owner commitments. A ReadinessOnly or Local packet labels its limits explicitly and leaves the Live gate closed.

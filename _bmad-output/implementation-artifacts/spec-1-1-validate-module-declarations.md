@@ -86,8 +86,14 @@ Paths below are relative to `references/Hexalith.Builds`.
 - Atomic results carry immutable JSON declarations with replicas/startup defaults applied. Diagnostics aggregate source, full indexed field path and reason across files.
 - The standalone command preserves cancellation/output contracts. Existing v1 loader, schema, runtime command parser, pins and retained fixtures are unchanged.
 - Updated the package-gate test double for the new schema and validation probes; its original cleanup/failure assertions still pass.
+- Resumed review patches reject embedded URI credentials, authority-bearing readiness endpoints and control characters in executable paths. Task/readiness arguments retain empty and whitespace-only values; every diagnostic has an explicit root or property path.
+- Added quantity, byte/depth-boundary and diagnostic-metadata redaction coverage in schema, atomic enrollment and public CLI formats.
 
 ## Spec Change Log
+
+- 2026-10-08: Third review resumed on Builds commit 6f07763bd955d22ace0123798add528dc933bf51, whose owner-authored pin/fixture migration independently resolves the old consistency blocker. Corrected the existing v2 field and diagnostic contracts and added the R3 regression coverage without editing the frozen intent or any legacy paths. This run preserves v1 bytes from that migrated checkout; it does not claim preservation against the older pre-migration baseline or grant migrated-tuple acceptance.
+
+- 2026-10-08: User requested "use eventstore 3.117.1". Applied that selection to the shared catalog EventStore property (13 package rows) and the active Platform AppHost integration. Its SDK, Docker, Redis and Keycloak references were aligned to the existing catalog to satisfy the new integration dependencies. This supersedes the version freeze for the requested active EventStore selection and required AppHost dependency alignment; retained legacy runner pins and byte-bound qualification fixtures remain unchanged. Migration of that legacy qualification set and its FrontComposer alignment were presented as a separate scope choice.
 
 ## Review Triage Log
 
@@ -135,6 +141,24 @@ Paths below are relative to `references/Hexalith.Builds`.
 | R2-EH06 | medium | patch: property paths | Confirmed the same numeric and punctuation path ambiguity as R2-BH12; one path-formatting correction addresses this shared defect. |
 | R2-VG01 | medium | patch: readiness coverage | Pre-verified gap: rejecting valid gRPC or command readiness leaves existing tests passing. Cover successful required-server enrollment and empty diagnostics in both CLI formats. |
 | R2-VG02 | medium | patch: file-bound coverage | Pre-verified gap: increasing or removing the 256-file bound leaves existing tests passing. Cover acceptance at 256, atomic rejection at 257 and the CLI overflow diagnostic. |
+
+| R3-BH01 | medium | defer: separate pin migration | The package control assertion still requires EventStore 3.110.0 and the publication helper defaults to it. The owner migrated pins in commit 6f07763bd955d22ace0123798add528dc933bf51 before this run; completing that qualification migration is separate from declaration validation. |
+| R3-BH02 | medium | patch: embedded URI credentials | Reproduced successful enrollment with a credential-bearing URI embedded in a task argument. Extend the private Platform detector while preserving the legacy detector. |
+| R3-BH03 | medium | patch: readiness authority | Reproduced success for //evil.example/health. HTTP readiness declares a path on the required server; reject authority-bearing URI references in the endpoint pattern. |
+| R3-BH04 | low | reject: uncommon special files | Reproduced a deliberately supplied FIFO blocking through SIGINT; the stream-length access can also reject nonseekable streams without a diagnostic. Ordinary local JSON files do not encounter this, and a portable cancellation-safe special-file contract requires more than a direct correction. |
+| R3-BH05 | low | reject: pathological diagnostic amplification | A deliberately constructed 23,562-byte document with a 5,000-character unknown key and 500 credential strings emits 2,652,319 bytes. This unusual malformed input requires a separate diagnostic-budget policy; adding limits or truncation would complicate the full-path aggregation contract. |
+| R3-BH06 | medium | patch: exact command arguments | Empty and whitespace-only arguments fail the schema, although they are ordinary argument values. Preserve string contents in both readiness and task argument arrays while retaining the existing length bound. |
+| R3-BH07 | medium | patch: repository path controls | Reproduced successful command-readiness enrollment using an existing filename ending in a newline. Make the v2 repository-path pattern fully anchored and reject control characters. |
+| R3-BH08 | maybe-false | defer: command execution contract | A readable README.md passes local readiness metadata validation. The later execution stage must settle interpreter, DLL, script and platform execution rules before deciding executability; this story explicitly reserves stage-specific rules and does not launch commands. |
+| R3-BH09 | medium | defer: unrelated review transport | The separate custody review transport applies the 4,096-character scalar budget to its complete envelope body. A larger otherwise admissible review is rejected; the frozen intent preserves this unrelated work. |
+| R3-BH10 | false | reject: already corrected externally | The current custody verifier checks the exact header plus 88-character envelope length and framing before decoding. This disproves the snapshot's oversized-signature claim at the cited allocation. |
+| R3-BH11 | medium | patch: parsing boundary coverage | Existing tests cover an oversized file but do not accept exactly 1 MiB or distinguish depth 64 from depth 65. Add validator and both-format CLI boundary assertions. |
+| R3-EH01 | medium | patch: embedded URI credentials | Independently reproduced the same task-argument credential bypass as R3-BH02; one private detector correction addresses both reports. |
+| R3-EH02 | low | reject: uncommon special files | Confirmed the same deliberately supplied FIFO cancellation failure as R3-BH04; retain that verdict and its nontrivial portable-correction rationale. |
+| R3-EH03 | low | patch: root diagnostic path | Reproduced invalid credential and placeholder root strings producing field="". Use $ for root diagnostics so every returned field is actionable. |
+| R3-EH04 | medium | defer: separate pin migration | The external owner commit 6f07763bd955d22ace0123798add528dc933bf51 changed v1 pins and synthetic fixture bytes. Historical byte-preservation statements predate that migration; this run must preserve the migrated checkout and must not claim fresh tuple acceptance. |
+| R3-VG01 | medium | patch: quantity boundary coverage | Pre-verified gap: removing CPU, memory or volume minimums leaves existing positive-fixture and rejection tests passing. Cover zero and negative requests, limits and volume sizes in schema, atomic enrollment and both CLI formats. |
+| R3-VG02 | medium | patch: diagnostic redaction coverage | Pre-verified gap: credential-bearing filename and property-name redaction can regress while value-redaction tests pass. Assert complete output redaction and actionable failures in both CLI formats. |
 
 ## Verification
 
@@ -201,3 +225,13 @@ The resumed three-layer review identified three local defects and two verificati
 During this run, external work advanced the Builds checkout and changed the catalog EventStore version from 3.115.0 to 3.117.0; the unrelated catalog/audit changes are preserved. The frozen legacy runner still pins EventStore 3.110.0 and FrontComposer 4.5.0, while the catalog pins FrontComposer 4.6.0. The failing consistency test and legacy pins are untouched.
 
 The review step requires a halt when required verification cannot be fixed within scope. Story 1.1 remains `in-review`, and its sprint entry remains `in-progress`. A separate catalog/legacy-pin resolution is required before completion; the failure is neither skipped nor treated as a passing gate.
+
+### User-selected EventStore 3.117.1 (2026-10-08)
+
+The shared `references/Hexalith.Builds/Props/Directory.Packages.props` catalog now selects EventStore `3.117.1` for all 13 family packages. Central catalog validation passed for 304 entries, package-authority checks passed, and the EventStore host restored its EventStore dependencies at `3.117.1` and built in Debug with zero warnings/errors. [Verification record](../../references/Hexalith.Builds/artifacts/eventstore-3.117.1/verification.json).
+
+The targeted legacy consistency test still fails: its retained runner pin is `3.110.0`, while the catalog now selects `3.117.1`. Retained qualification fixtures and the FrontComposer legacy pin remain unchanged. Story status remains `in-review`; this catalog change does not close the legacy qualification mismatch.
+
+Audit refresh was attempted with `pwsh -NoProfile -File Tools/audit-central-package-versions.ps1 -PriorAuditPath Tools/package-version-audit.json -Family hexalith-eventstore -OutputPath artifacts/eventstore-3.117.1/catalog-audit.json`. It exited 1 because the edited catalog is dirty relative to the recorded committed revision. The existing audit was preserved; refresh must follow a commit of the selected catalog bytes. [Exact audit output](../../references/Hexalith.Builds/artifacts/eventstore-3.117.1/audit-refresh.log).
+
+The active Platform `apphost.cs` now uses `Hexalith.EventStore.Aspire@3.117.1`. Its Aspire SDK, Docker and Redis references are `13.6.1`, and Keycloak is `13.6.1-preview.1.26506.6`, matching the existing catalog and avoiding the reproduced NU1605 transitive downgrades. `dotnet build apphost.cs -c Debug` passed with the existing CLI-bundle configuration warning `ASPIRE010`; no runtime resources were launched. The docs API lookup completed without results for the Hexalith extension; unchanged API calls were verified by compilation.
