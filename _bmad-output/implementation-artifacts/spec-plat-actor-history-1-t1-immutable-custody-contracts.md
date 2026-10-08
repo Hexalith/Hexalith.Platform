@@ -2,7 +2,7 @@
 title: 'Validate exact actor-history custody contracts'
 type: 'feature'
 created: '2026-10-08'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '2c4f788a6ffde2646de1686492dc817f5505c922'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -52,12 +52,12 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `src/Hexalith.Platform.Custody/IdentityHistoryCustodyOptions.cs` -- Add the approved policy, UTC deadline, exclusive read, and admission rejection.
-- [ ] `src/Hexalith.Platform.Custody/IdentityHistoryCustodyUnit.cs` -- Add the party unit, evidence, admission revision, and derived expiry.
-- [ ] `src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs` -- Add forward-only state, separate authority, generations, and receipt linkage.
-- [ ] `src/Hexalith.Platform.Custody/IdentityHistoryCopyRecord.cs` -- Bind generation, class, location, owner, registration, and the original deadline.
-- [ ] `src/Hexalith.Platform.Custody/IdentityHistoryDestructionReceipt.cs` -- Add the content-free original receipt.
-- [ ] `tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs` -- Cover the matrix, including absent history registration.
+- [x] `src/Hexalith.Platform.Custody/IdentityHistoryCustodyOptions.cs` -- Add the approved policy, UTC deadline, exclusive read, and admission rejection.
+- [x] `src/Hexalith.Platform.Custody/IdentityHistoryCustodyUnit.cs` -- Add the party unit, evidence, admission revision, and derived expiry.
+- [x] `src/Hexalith.Platform.Custody/IdentityHistoryLifecycleRecord.cs` -- Add forward-only state, separate authority, generations, and receipt linkage.
+- [x] `src/Hexalith.Platform.Custody/IdentityHistoryCopyRecord.cs` -- Bind generation, class, location, owner, registration, and the original deadline.
+- [x] `src/Hexalith.Platform.Custody/IdentityHistoryDestructionReceipt.cs` -- Add the content-free original receipt.
+- [x] `tests/Hexalith.Platform.Custody.Tests/IdentityHistoryCustodyPolicyTests.cs` -- Cover the matrix, including absent history registration.
 
 **Acceptance Criteria:**
 - Given the contracts, when built and serialized, then scope, evidence, admission revision, and UTC expiry survive retry and JSON round-trip.
