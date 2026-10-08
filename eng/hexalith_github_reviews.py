@@ -8,9 +8,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import http.client
+import io
 import json
 import math
 import multiprocessing
+from multiprocessing import context as process_context, popen_spawn_posix, reduction, spawn
+import os
 import re
 import selectors
 import socket
@@ -24,6 +27,7 @@ PRODUCTION_ISSUER = "https://api.github.com"
 API_VERSION = "2026-03-10"
 MAX_RESPONSE_BYTES = 1_048_576
 _MAX_REQUEST_BYTES = 409_600
+_MAX_BOOTSTRAP_BYTES = 4096
 _OWNER = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})\Z")
 _REPOSITORY = re.compile(r"[A-Za-z0-9_.-]{1,100}\Z")
 _TOKEN = re.compile(r"[A-Za-z0-9_.-]{1,4096}\Z")
@@ -100,6 +104,64 @@ class RequestLimits:
             _refuse("request-deadline-invalid")
 
 
+class _BootstrapHandle:
+    """Measure socket serialization without duplicating or sharing descriptors."""
+
+    DupFd = popen_spawn_posix._DupFd
+
+    def duplicate_for_child(self, descriptor: int) -> int:
+        return descriptor
+
+
+def _require_bounded_bootstrap(process: multiprocessing.Process) -> None:
+    """Refuse oversized inherited spawn state before its blocking launch pipe.
+
+    Linux pipes hold at least PIPE_BUF (4096) bytes without a child reader.
+    Application input never enters this bootstrap. The supported caller keeps
+    its process/import metadata stable while launching a request worker.
+    """
+    if len(sys.path) > 256 or len(sys.argv) > 256:
+        _refuse("review-transport-unavailable")
+    preparation = spawn.get_preparation_data(process.name)
+    budget = [_MAX_BOOTSTRAP_BYTES, 256]
+
+    def check(value: object, depth: int = 0) -> None:
+        budget[1] -= 1
+        if budget[1] < 0 or depth > 8:
+            _refuse("review-transport-unavailable")
+        if isinstance(value, (str, bytes)):
+            budget[0] -= len(value)
+            if budget[0] < 0:
+                _refuse("review-transport-unavailable")
+        elif type(value) is dict:
+            if len(value) > 256:
+                _refuse("review-transport-unavailable")
+            for key, item in value.items():
+                check(key, depth + 1)
+                check(item, depth + 1)
+        elif type(value) in (list, tuple):
+            if len(value) > 256:
+                _refuse("review-transport-unavailable")
+            for item in value:
+                check(item, depth + 1)
+        elif value is not None and (type(value) not in (int, bool)
+                                   or type(value) is int and value.bit_length() > 64):
+            _refuse("review-transport-unavailable")
+
+    check((preparation, process._config, process._identity, process._parent_name))
+    # The spawning marker is thread-local; the probe creates no IPC resources.
+    previous = process_context.get_spawning_popen()
+    process_context.set_spawning_popen(_BootstrapHandle())
+    try:
+        stream = io.BytesIO()
+        reduction.dump(preparation, stream)
+        reduction.dump(process, stream)
+        if stream.tell() > _MAX_BOOTSTRAP_BYTES:
+            _refuse("review-transport-unavailable")
+    finally:
+        process_context.set_spawning_popen(previous)
+
+
 def _receive_exact(channel: socket.socket, size: int) -> bytes:
     """Child-only bounded receive; the parent can terminate it at its deadline."""
     raw = bytearray()
@@ -121,6 +183,9 @@ def _request_worker(channel: socket.socket) -> None:
         request = json.loads(_receive_exact(channel, size))
         host, port, ca_pem, path, token = (request[field] for field in ("host", "port", "ca", "path", "token"))
         limits = RequestLimits(request["bytes"], request["seconds"])
+        # This disposable child owns its environment; suppress logging before
+        # the standard context constructor can open any keylog destination.
+        os.environ.pop("SSLKEYLOGFILE", None)
         context = ssl.create_default_context(cadata=ca_pem)
         context.keylog_filename = None
         context.minimum_version = ssl.TLSVersion.TLSv1_2
@@ -230,10 +295,13 @@ class GitHubReviewClient:
                 _refuse("review-request-deadline-exceeded")
             packet = memoryview(struct.pack("!I", len(payload)) + payload)
             parent_channel, child_channel = socket.socketpair()
-            # Only the socket is in multiprocessing's blocking bootstrap pipe.
-            # All application request parameters use the deadline-bound channel.
+            # The socket is the only application input in the bounded bootstrap.
+            # All request parameters use the deadline-bound channel.
             process = multiprocessing.get_context("spawn").Process(
-                target=_request_worker, args=(child_channel,), daemon=True)
+                name="HexalithReviewRequest", target=_request_worker, args=(child_channel,), daemon=True)
+            _require_bounded_bootstrap(process)
+            if _elapsed() >= deadline:
+                _refuse("review-request-deadline-exceeded")
             process.start()
             child_channel.close()
             parent_channel.setblocking(False)
