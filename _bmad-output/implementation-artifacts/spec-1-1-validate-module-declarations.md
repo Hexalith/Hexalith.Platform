@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 1
 created: '2026-10-07'
-status: 'in-review'
+status: 'done'
 baseline_commit: 'f043a2f242762233091abdaa5bbe1ab777bd0f12'
 builds_baseline_commit: '520abb5898ad44b30c0744e707b53cd94741e6b1'
 route: 'dispatch'
@@ -160,6 +160,8 @@ Paths below are relative to `references/Hexalith.Builds`.
 | R3-VG01 | medium | patch: quantity boundary coverage | Pre-verified gap: removing CPU, memory or volume minimums leaves existing positive-fixture and rejection tests passing. Cover zero and negative requests, limits and volume sizes in schema, atomic enrollment and both CLI formats. |
 | R3-VG02 | medium | patch: diagnostic redaction coverage | Pre-verified gap: credential-bearing filename and property-name redaction can regress while value-redaction tests pass. Assert complete output redaction and actionable failures in both CLI formats. |
 
+| R3-BH01-follow-up | false | reject: corrected externally | Owner commit 57a3167dcf6a4855c195fc1029856b5251e16ac3 aligned both qualification consumers and their test expectation to EventStore 3.117.1. The current mismatch is resolved; fresh migrated-tuple acceptance remains a separate follow-up. |
+
 ## Verification
 
 Run from Builds:
@@ -235,3 +237,18 @@ The targeted legacy consistency test still fails: its retained runner pin is `3.
 Audit refresh was attempted with `pwsh -NoProfile -File Tools/audit-central-package-versions.ps1 -PriorAuditPath Tools/package-version-audit.json -Family hexalith-eventstore -OutputPath artifacts/eventstore-3.117.1/catalog-audit.json`. It exited 1 because the edited catalog is dirty relative to the recorded committed revision. The existing audit was preserved; refresh must follow a commit of the selected catalog bytes. [Exact audit output](../../references/Hexalith.Builds/artifacts/eventstore-3.117.1/audit-refresh.log).
 
 The active Platform `apphost.cs` now uses `Hexalith.EventStore.Aspire@3.117.1`. Its Aspire SDK, Docker and Redis references are `13.6.1`, and Keycloak is `13.6.1-preview.1.26506.6`, matching the existing catalog and avoiding the reproduced NU1605 transitive downgrades. `dotnet build apphost.cs -c Debug` passed with the existing CLI-bundle configuration warning `ASPIRE010`; no runtime resources were launched. The docs API lookup completed without results for the Hexalith extension; unchanged API calls were verified by compilation.
+
+### Completed review and current verification (2026-10-08)
+
+This record supersedes the earlier blocked verification for the current checkout. The owner independently migrated the legacy pin/fixture tuple in `6f07763bd955d22ace0123798add528dc933bf51`, aligned the qualification consumers in `57a3167dcf6a4855c195fc1029856b5251e16ac3`, and committed this run's four validation patch files in `f717a87c26a8266bdde95d18f998ef2ab366d43a`. This build preserved all 289 protected legacy, catalog and fixture paths against the initial migrated owner checkout.
+
+[Completion verification record](../../references/Hexalith.Builds/artifacts/story-1-1-validation/closure-20261008-287o7ox5/final-verification.json) retains exact commands, revisions, source/log hashes, all 141 focused executed cases and the package inventory.
+
+- Required Debug build: exit 0, zero warnings/errors.
+- Focused declaration/schema/CLI cases: 141 passed, zero failed/skipped/not-run/errors. All new parsing, quantity, credential, path and exact-argument regressions ran.
+- Required full module suite: 355 passed, zero failed/skipped, exit 0. The catalog consistency test passes.
+- Package gate: exit 0, all 34 artifact-validator scenarios and existing failure/cleanup assertions pass, including the updated qualification consumers.
+- Fresh installed-tool contracts: exit 0 for `0.0.0-story11.20261008.9`. Both output formats, multi-file identity rejection, legacy-major rejection, shipped schema bytes and validation outside the checkout pass. The official package script ran through an ephemeral dotnet wrapper adding `-m:1` to MSBuild operations; a serialized solution restore independently passed in 5.76 seconds after the parallel attempts stalled. The executed expanded commands and wrapper are retained.
+- Package source-validation and qualification-control lanes remain outside this verification invocation (`-SkipSourceValidation`, no `-RequireControls`). The recorded inventory correctly sets `releaseEligible: false`; no fresh tuple acceptance, publication eligibility or Platform tool acceptance is granted.
+
+All three review layers completed and every finding is triaged above. Eight distinct declaration/verification corrections were applied. Follow-ups cover migrated-tuple qualification, later command execution semantics and the unrelated custody review transport; the consumer-pin mismatch was independently corrected. The implementation spec is `done`, with Story 1.1 moved to sprint `review` for human review.
