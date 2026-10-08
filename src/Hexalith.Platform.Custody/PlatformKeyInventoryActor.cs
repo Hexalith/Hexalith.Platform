@@ -36,6 +36,7 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
         if (state.Revision != change.ExpectedInventoryRevision || authority is null || !await authority.AuthorizeAsync(change).ConfigureAwait(false)) { return null; }
         var found = state.Versions.SingleOrDefault(v => v.Key.Version == change.Key.Version);
         if (found is not null && found.Key != change.Key) { return null; }
+        if (state.Signals.Count >= 10000 || change.Action == PlatformKeyInventoryAction.InstallCurrent && state.Versions.Count >= 1000) { return null; }
         long revision = checked(state.Revision + 1); var versions = state.Versions.ToList();
         if (change.Action == PlatformKeyInventoryAction.InstallCurrent)
         {
@@ -50,6 +51,8 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
         }
         var signal = new PlatformKeyInventorySignal(change.OperationId, digest, revision, change.Action, change.Key);
         var next = state with { Revision = revision, Versions = Array.AsReadOnly(versions.ToArray()), Signals = Array.AsReadOnly(state.Signals.Append(signal).ToArray()) };
+        if (!await authority.RecordRevisionAsync(change.Key, state.Revision, next.Revision, Digest(next)).ConfigureAwait(false))
+        { throw new InvalidOperationException("Independent inventory anchor compare failed."); }
         await StateManager.SetStateAsync(StateKey, next).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
         if (Digest(await ReadStateAsync(change.Key).ConfigureAwait(false)) != Digest(next)) { throw new InvalidOperationException("Inventory outcome not confirmed durable."); }
         return signal;
@@ -72,10 +75,15 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
     private async Task<PlatformKeyInventorySnapshot> ReadStateAsync(PlatformKeyVersion scope)
     {
         Check(scope); await StateManager.ClearCacheAsync().ConfigureAwait(false); var result = await StateManager.TryGetStateAsync<PlatformKeyInventorySnapshot>(StateKey).ConfigureAwait(false);
-        if (!result.HasValue) { return new(scope.TenantId, scope.Purpose, scope.KeyAlias, 0, [], []); }
+        if (!result.HasValue)
+        {
+            var initial = new PlatformKeyInventorySnapshot(scope.TenantId, scope.Purpose, scope.KeyAlias, 0, [], []);
+            if (authority is null || !await authority.ValidateStateAsync(scope, 0, Digest(initial)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent inventory anchor is absent or stale."); }
+            return initial;
+        }
         var state = result.Value;
         if (state.TenantId != scope.TenantId || state.Purpose != scope.Purpose || state.KeyAlias != scope.KeyAlias || state.Revision <= 0
-            || state.Versions is null || state.Signals is null || state.Signals.Count != state.Revision
+            || state.Versions is null || state.Signals is null || state.Versions.Count > 1000 || state.Signals.Count > 10000 || state.Signals.Count != state.Revision
             || state.Versions.Count(v => v.State == PlatformHmacKeyState.Active) > 1 || state.Versions.Select(v => v.Key.Version).Distinct(StringComparer.Ordinal).Count() != state.Versions.Count)
         { throw new InvalidOperationException("Malformed durable key inventory."); }
         foreach (var entry in state.Versions)
@@ -88,7 +96,9 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
                 || s.Key.KeyAlias != state.KeyAlias || !Enum.IsDefined(s.Action)).Any()
             || state.Signals.Select(s => s.OperationId).Distinct(StringComparer.Ordinal).Count() != state.Signals.Count)
         { throw new InvalidOperationException("Malformed durable key signals."); }
-        return state with { Versions = Array.AsReadOnly(state.Versions.ToArray()), Signals = Array.AsReadOnly(state.Signals.ToArray()) };
+        var owned = state with { Versions = Array.AsReadOnly(state.Versions.ToArray()), Signals = Array.AsReadOnly(state.Signals.ToArray()) };
+        if (authority is null || !await authority.ValidateStateAsync(scope, owned.Revision, Digest(owned)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent inventory anchor is absent or stale."); }
+        return owned;
     }
     private void Check(PlatformKeyVersion key)
     {

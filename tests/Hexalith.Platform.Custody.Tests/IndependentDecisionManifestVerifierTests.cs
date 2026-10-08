@@ -19,6 +19,7 @@ public sealed class IndependentDecisionManifestVerifierTests
         var authority = Substitute.For<IIndependentDecisionAuthority>();
         authority.ResolveAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(profile);
         authority.VerifyExpectedBasisAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>()).Returns(true);
+        authority.VerifyAuthorityBoundaryAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityManifest>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>()).Returns(true);
         authority.VerifyApproverAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityApprover>(), Arg.Any<DateTimeOffset>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
     }
     private static string Signed(DecisionAuthorityManifest m, DecisionAuthorityPublishedProfile p, ECDsa issuer) => DetachedEs256JwsCore.Sign(DecisionAuthorityManifestCodec.Header(p), DecisionAuthorityManifestCodec.Canonical(m), issuer);
@@ -96,6 +97,36 @@ public sealed class IndependentDecisionManifestVerifierTests
         a.VerifyApproverAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityApprover>(), Arg.Any<DateTimeOffset>(), Arg.Any<CancellationToken>()).Returns(_ => { visited++; caller.Cancel(); return true; });
         var exception = await Should.ThrowAsync<OperationCanceledException>(() => new IndependentDecisionManifestVerifier(clock, a).VerifyAsync(m, Signed(m, p, issuer), Basis(m), caller.Token));
         exception.CancellationToken.ShouldBe(caller.Token); visited.ShouldBe(1);
+    }
+
+    /// <summary>Final independent policy suspension cannot release validity after manifest or profile exclusive expiry.</summary>
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task ExpiryDuringFinalPolicyAwaitDeniesAtTerminalRelease(bool profileExpiry)
+    {
+        var clock = new CustodyFixtureClock(); using var issuer = ECDsa.Create(ECCurve.NamedCurves.nistP256); var m = Manifest(clock); var p = Profile(clock, issuer);
+        if (profileExpiry) { p = p with { ValidUntil = clock.Now.AddSeconds(10) }; } else { m = m with { ExclusiveExpiry = clock.Now.AddSeconds(10) }; }
+        var authority = Authority(p); int checks = 0; var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        authority.VerifyExpectedBasisAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>()).Returns(_ => {
+            if (++checks == 2) { entered.TrySetResult(); return release.Task; } return Task.FromResult(true);
+        });
+        var pending = new IndependentDecisionManifestVerifier(clock, authority).VerifyAsync(m, Signed(m, p, issuer), Basis(m), TestContext.Current.CancellationToken);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); clock.Now = profileExpiry ? p.ValidUntil : m.ExclusiveExpiry; release.TrySetResult(true);
+        (await pending.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)).ShouldBeFalse();
+    }
+
+    /// <summary>A role revoked during a later profile read cannot be authorized by a static unchanged public anchor revision.</summary>
+    [Fact]
+    public async Task LaterRoleRevocationRequiresCoherentFinalAuthorityBoundary()
+    {
+        var clock = new CustodyFixtureClock(); using var issuer = ECDsa.Create(ECCurve.NamedCurves.nistP256); var m = Manifest(clock); var p = Profile(clock, issuer); var authority = Authority(p);
+        bool roleRevoked = false; int profiles = 0;
+        authority.ResolveAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ => { if (++profiles == 2) { roleRevoked = true; } return p; });
+        authority.VerifyAuthorityBoundaryAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityManifest>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>()).Returns(_ => !roleRevoked);
+        (await new IndependentDecisionManifestVerifier(clock, authority).VerifyAsync(m, Signed(m, p, issuer), Basis(m), TestContext.Current.CancellationToken)).ShouldBeFalse();
+        await authority.Received(5).VerifyApproverAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityApprover>(), m.IssuedAt, Arg.Any<CancellationToken>());
+        await authority.Received(1).VerifyAuthorityBoundaryAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityManifest>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>());
     }
 
 }

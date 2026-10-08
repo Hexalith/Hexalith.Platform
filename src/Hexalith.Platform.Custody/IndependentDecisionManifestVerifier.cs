@@ -25,7 +25,10 @@ public sealed class IndependentDecisionManifestVerifier(TimeProvider clock, IInd
                 && final.SubjectPublicKeyInfo.AsSpan().SequenceEqual(profile.SubjectPublicKeyInfo) && final.ForbiddenApprovalActors.SequenceEqual(profile.ForbiddenApprovalActors)
                 && final.MaximumManifestLifetime == profile.MaximumManifestLifetime && final.ValidFrom == profile.ValidFrom && final.ValidUntil == profile.ValidUntil && Current(final, owned);
             bool result = same && await budget.ReadAsync(() => authority.VerifyExpectedBasisAsync(basis, Capture(final)!, CancellationToken.None)).ConfigureAwait(false);
-            budget.Check(); return result;
+            if (result) { result = await budget.ReadAsync(() => authority.VerifyAuthorityBoundaryAsync(basis, owned, Capture(final)!, CancellationToken.None)).ConfigureAwait(false); }
+            // Time is checked after the last authority await. Coherent role revocation is independently attested,
+            // never inferred from the static public-anchor publication revision.
+            budget.Check(); return result && final is not null && Current(final, owned);
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return false; }
     }

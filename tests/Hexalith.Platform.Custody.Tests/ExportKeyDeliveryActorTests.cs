@@ -159,4 +159,21 @@ public sealed class ExportKeyDeliveryActorTests
         await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>()); await provider.Received(1).LookupAsync(identity, Arg.Any<CancellationToken>());
     }
 
+    /// <summary>Absent, older unknown or divergent terminal restore cannot authorize outcome release or a second physical call under unchanged private credentials.</summary>
+    [Theory]
+    [InlineData("absent")][InlineData("unknown")][InlineData("divergent")]
+    public async Task RestoredDeliveryStateCannotReplaceOriginalTerminalOutcome(string restore)
+    {
+        var clock = new CustodyFixtureClock(); var identity = Identity(clock); var backend = new InMemoryStateManager(); var authority = Authority(); var provider = Substitute.For<IExportKeyDirectDeliveryProvider>();
+        var original = new ExportKeyDeliveryOutcome(identity, ExportKeyDeliveryState.Delivered, clock.Now);
+        provider.ReleaseAsync(identity, Arg.Any<CancellationToken>()).Returns(Task.FromException<ExportKeyDeliveryOutcome>(new HttpRequestException("Controlled original delivery loss.")));
+        provider.LookupAsync(identity, Arg.Any<CancellationToken>()).Returns(original); var actor = Actor(identity, backend, clock, authority, provider);
+        await actor.DeliverAsync(identity); var pending = backend.CommittedState.Single(); await actor.LookupAsync(identity); var latest = backend.CommittedState.Single();
+        var restored = new InMemoryStateManager();
+        if (restore != "absent") { await restored.SetStateAsync(latest.Key, restore == "unknown" ? pending.Value : original with { ObservedAt = clock.Now.AddSeconds(-1) }, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken); }
+        var restarted = Actor(identity, restored, clock, authority, provider); await Should.ThrowAsync<InvalidOperationException>(() => restarted.LookupAsync(identity));
+        await restored.SetStateAsync(latest.Key, JsonSerializer.Deserialize<ExportKeyDeliveryOutcome>(JsonSerializer.Serialize(latest.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        (await restarted.LookupAsync(identity)).ShouldBe(original); await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
+    }
+
 }

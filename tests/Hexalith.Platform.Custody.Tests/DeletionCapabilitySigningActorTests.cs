@@ -243,4 +243,20 @@ public sealed class DeletionCapabilitySigningActorTests
         (await Actor(fresh, freshBackend, Authority(), provider, trust, history).SignAsync(fresh)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
         freshBackend.CommittedState.ShouldBeEmpty(); await provider.DidNotReceive().SignAsync(fresh, Arg.Any<string>(), Arg.Any<CancellationToken>());
     }
+    /// <summary>Missing, unknown or forged terminal restoration cannot replace independently anchored original signing history or restart signing.</summary>
+    [Theory]
+    [InlineData("absent")][InlineData("unknown")][InlineData("divergent")]
+    public async Task RestoredSigningStateCannotReplaceOriginalArtifact(string restore)
+    {
+        var payload = Payload(); string id = DeletionBatchCapabilityCodec.SigningRequestId(payload); var backend = new InMemoryStateManager(); var authority = Authority();
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256); var original = Signed(payload, key); var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
+        provider.SignAsync(payload, id, Arg.Any<CancellationToken>()).Returns(Task.FromException<DeletionCapabilitySigningResult>(new HttpRequestException("Controlled original signing loss.")));
+        provider.LookupAsync(payload, id, Arg.Any<CancellationToken>()).Returns(original); var actor = Actor(payload, backend, authority, provider, Trust(payload, key));
+        await actor.SignAsync(payload); var pending = backend.CommittedState.Single(); await actor.LookupAsync(payload); var latest = backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+        if (restore != "absent") { await restored.SetStateAsync(latest.Key, restore == "unknown" ? pending.Value : original.Outcome with { DetachedJws = "forged-terminal-artifact" }, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken); }
+        var restarted = Actor(payload, restored, authority, provider, Trust(payload, key)); await Should.ThrowAsync<InvalidOperationException>(() => restarted.LookupAsync(payload));
+        await restored.SetStateAsync(latest.Key, JsonSerializer.Deserialize<DeletionCapabilitySigningOutcome>(JsonSerializer.Serialize(latest.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        (await restarted.LookupAsync(payload)).ShouldBe(original.Outcome); await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>());
+    }
+
 }

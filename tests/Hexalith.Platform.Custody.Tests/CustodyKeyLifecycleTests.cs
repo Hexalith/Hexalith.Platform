@@ -92,4 +92,47 @@ public sealed class CustodyKeyLifecycleTests
         var request = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1); await f.Actor.ApplyAsync(request);
         (await f.Actor.ApplyAsync(request with { DecisionVersion = "changed-decision" })).Status.ShouldBe(CustodyKeyLifecycleStatus.Conflict); f.Effects.ShouldBe(1); f.Persisted.Keys.Count.ShouldBe(1);
     }
+    /// <summary>At either existing technical bound no next item mutates state/anchor or invokes a physical provider, and exact original terminal evidence remains readable.</summary>
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task LifecycleCollectionBoundPreservesOriginalTerminalOutcome(bool operationBound)
+    {
+        var f = new CustodyKeyLifecycleFixture(); await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration());
+        var pin = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "original-pin"); var original = await f.Actor.ApplyAsync(pin);
+        var state = f.Persisted; var keys = state.Keys.ToList();
+        for (int n = 1; n < 1000; n++)
+        {
+            var identity = CustodyKeyLifecycleFixture.Identity() with { ObjectId = "capacity-object-" + n };
+            var registration = CustodyKeyLifecycleFixture.Registration(identity) with { OperationId = "capacity-wrap-" + n };
+            var requests = operationBound ? Enumerable.Range(0, 10).Select(i => CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, 1, "capacity-op-" + i, identity)).ToArray() : [];
+            keys.Add(new(registration, [], requests, requests.Select(req => new CustodyKeyLifecycleOutcome(identity, req.OperationId, CustodyKeyLifecycleFixture.Digest(req), CustodyKeyLifecycleStatus.NotPerformed, "independent-never-performed-" + req.OperationId)).ToArray()));
+        }
+        if (operationBound)
+        {
+            var prior = keys[0]; var extra = Enumerable.Range(1, 9).Select(n => CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, 1, "prior-negative-" + n)).ToArray();
+            keys[0] = prior with { Requests = prior.Requests.Concat(extra).ToArray(), Outcomes = prior.Outcomes.Concat(extra.Select(req => new CustodyKeyLifecycleOutcome(req.Identity, req.OperationId, CustodyKeyLifecycleFixture.Digest(req), CustodyKeyLifecycleStatus.NotPerformed, "original-negative-" + req.OperationId))).ToArray() };
+        }
+        state = state with { Revision = 11002, Keys = keys.ToArray() }; var saved = f.Backend.CommittedState.Single();
+        await f.Backend.SetStateAsync(saved.Key, state, TestContext.Current.CancellationToken); await f.Backend.SaveStateAsync(TestContext.Current.CancellationToken);
+        f.Anchor = state.Revision; f.AnchorDigest = CustodyKeyLifecycleFixture.Digest(state); string before = f.AnchorDigest;
+        if (operationBound) { (await f.Actor.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Unpin, state.Revision, "next-unpin"))).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable); }
+        else { (await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration(CustodyKeyLifecycleFixture.Identity() with { ObjectId = "one-too-many" }) with { ExpectedRevision = state.Revision })).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable); }
+        CustodyKeyLifecycleFixture.Digest(f.Persisted).ShouldBe(before); f.AnchorDigest.ShouldBe(before); (await f.Actor.LookupAsync(pin)).ShouldBe(original); f.Effects.ShouldBe(1);
+    }
+    /// <summary>Failed/lost acknowledgement of a reservation never sends a physical effect from staged cache; precommit anchor divergence remains unavailable.</summary>
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task ReservationSaveFailureNeverUsesStagedStateForEffect(bool commitBeforeFault)
+    {
+        var f = new CustodyKeyLifecycleFixture(); await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration()); var manager = Substitute.For<IActorStateManager>();
+        manager.ClearCacheAsync(Arg.Any<CancellationToken>()).Returns(call => f.Backend.ClearCacheAsync(call.Arg<CancellationToken>()));
+        manager.TryGetStateAsync<CustodyKeyLifecycleLedger>(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => f.Backend.TryGetStateAsync<CustodyKeyLifecycleLedger>(call.Arg<string>(), call.Arg<CancellationToken>()));
+        manager.SetStateAsync(Arg.Any<string>(), Arg.Any<CustodyKeyLifecycleLedger>(), Arg.Any<CancellationToken>()).Returns(call => f.Backend.SetStateAsync(call.Arg<string>(), call.Arg<CustodyKeyLifecycleLedger>(), call.Arg<CancellationToken>()));
+        manager.SaveStateAsync(Arg.Any<CancellationToken>()).Returns(async call => { if (commitBeforeFault) { await f.Backend.SaveStateAsync(call.Arg<CancellationToken>()); } throw new HttpRequestException("Controlled original reservation save failure."); });
+        var request = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, 1);
+        await Should.ThrowAsync<HttpRequestException>(() => CustodyKeyLifecycleFixture.Create(manager, f.Authority, f).ApplyAsync(request));
+        f.Persisted.Revision.ShouldBe(commitBeforeFault ? 2 : 1); f.Persisted.Keys.Single().Outcomes.Count.ShouldBe(commitBeforeFault ? 1 : 0);
+        (await f.Actor.LookupAsync(request)).Status.ShouldBe(commitBeforeFault ? CustodyKeyLifecycleStatus.Unknown : CustodyKeyLifecycleStatus.Unavailable); f.Effects.ShouldBe(0);
+    }
+
 }

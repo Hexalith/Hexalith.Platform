@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text.Json;
 using Dapr.Actors.Runtime;
 using Hexalith.EventStore.Testing.Fakes;
@@ -18,7 +19,17 @@ public sealed class PlatformKeyInventoryActorTests
         typeof(Dapr.Actors.Runtime.Actor).GetProperty("StateManager", BindingFlags.Public | BindingFlags.Instance)!.SetValue(actor, state); return actor;
     }
     private static IPlatformKeyInventoryAuthority Authority()
-    { var authority = Substitute.For<IPlatformKeyInventoryAuthority>(); authority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true); authority.AuthorizeAsync(Arg.Any<PlatformKeyInventoryChange>(), Arg.Any<CancellationToken>()).Returns(true); return authority; }
+    {
+        var authority = Substitute.For<IPlatformKeyInventoryAuthority>(); long revision = 0;
+        string digest = Digest(new PlatformKeyInventorySnapshot("tenant-a", Key().Purpose, Key().KeyAlias, 0, [], []));
+        authority.ValidateStateAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => call.Arg<long>() == revision && call.Arg<string>() == digest);
+        authority.RecordRevisionAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => {
+            if (call.ArgAt<long>(1) != revision || call.ArgAt<long>(2) != revision + 1) { return false; } revision++; digest = call.Arg<string>(); return true;
+        });
+        authority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
+        authority.AuthorizeAsync(Arg.Any<PlatformKeyInventoryChange>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
+    }
+    private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
     /// <summary>Routine rotation retains old verifier metadata; emergency revocation is irreversible and exact outcomes survive serialized restart.</summary>
     [Fact]
     public async Task RotationRetainsVersionsAndRevocationCannotBeUndone()
@@ -32,7 +43,7 @@ public sealed class PlatformKeyInventoryActorTests
         (await actor.ApplyAsync(first)).ShouldBe(original); (await actor.ApplyAsync(new("reinstall-v1", 3, PlatformKeyInventoryAction.InstallCurrent, Key(), "self-restore"))).ShouldBeNull();
         var saved = state.CommittedState.Single(); var restored = new InMemoryStateManager(); await restored.SetStateAsync(saved.Key,
             JsonSerializer.Deserialize<PlatformKeyInventorySnapshot>(JsonSerializer.Serialize(saved.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
-        (await Actor(restored, Authority()).ApplyAsync(first)).ShouldBe(original); (await Actor(restored, Authority()).ReadAsync(Key())).Signals.Count.ShouldBe(3);
+        (await Actor(restored, authority).ApplyAsync(first)).ShouldBe(original); (await Actor(restored, authority).ReadAsync(Key())).Signals.Count.ShouldBe(3);
     }
     /// <summary>Missing independent provision authority never installs configured metadata or a key.</summary>
     [Fact]
@@ -65,4 +76,40 @@ public sealed class PlatformKeyInventoryActorTests
         await Should.ThrowAsync<UnauthorizedAccessException>(() => actor.ReadAsync(Key()));
         state.CommittedState.Single().Value.ShouldBeOfType<PlatformKeyInventorySnapshot>().Revision.ShouldBe(1);
     }
+    /// <summary>Restoring current metadata before revocation, including a forged equal revision, cannot emit current key health under unchanged read credentials.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task RestoredInventoryCannotUndoRevocation(bool equalRevision)
+    {
+        var backend = new InMemoryStateManager(); var authority = Authority(); var actor = Actor(backend, authority);
+        await actor.ApplyAsync(new("install", 0, PlatformKeyInventoryAction.InstallCurrent, Key(), "original-provision"));
+        var original = JsonSerializer.Deserialize<PlatformKeyInventorySnapshot>(JsonSerializer.Serialize(backend.CommittedState.Single().Value))!;
+        await actor.ApplyAsync(new("revoke", 1, PlatformKeyInventoryAction.Revoke, Key(), "original-revocation")); var latest = backend.CommittedState.Single();
+        var divergent = equalRevision ? original with { Revision = 2, Signals = ((PlatformKeyInventorySnapshot)latest.Value).Signals } : original;
+        var restored = new InMemoryStateManager(); await restored.SetStateAsync(latest.Key, divergent, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        var restarted = Actor(restored, authority); await Should.ThrowAsync<InvalidOperationException>(() => restarted.ReadAsync(Key()));
+        await restored.SetStateAsync(latest.Key, JsonSerializer.Deserialize<PlatformKeyInventorySnapshot>(JsonSerializer.Serialize(latest.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        (await restarted.ReadAsync(Key())).Versions.Single().State.ShouldBe(PlatformHmacKeyState.Revoked);
+    }
+
+    /// <summary>Capacity denial does not advance the independent anchor or persist unreadable metadata; prior original signals remain readable.</summary>
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task InventoryCollectionBoundPreservesOriginalReadableSignals(bool signalBound)
+    {
+        var backend = new InMemoryStateManager(); var authority = Authority(); var actor = Actor(backend, authority);
+        await actor.ApplyAsync(new("install", 0, PlatformKeyInventoryAction.InstallCurrent, Key(), "original-provision")); var saved = backend.CommittedState.Single();
+        int count = signalBound ? 10000 : 1000;
+        var versions = signalBound ? new[] { new PlatformKeyInventoryEntry(Key(), PlatformHmacKeyState.Active, 1) }
+            : Enumerable.Range(1, count).Select(n => new PlatformKeyInventoryEntry(Key("v" + n), n == count ? PlatformHmacKeyState.Active : PlatformHmacKeyState.Retained, n)).ToArray();
+        var signals = Enumerable.Range(1, count).Select(n => new PlatformKeyInventorySignal("install-" + n, new string('A', 64), n, PlatformKeyInventoryAction.InstallCurrent, Key("v" + n))).ToArray();
+        var state = new PlatformKeyInventorySnapshot("tenant-a", Key().Purpose, Key().KeyAlias, count, versions, signals); string before = Digest(state);
+        authority.ValidateStateAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => call.Arg<long>() == count && call.Arg<string>() == before);
+        await backend.SetStateAsync(saved.Key, state, TestContext.Current.CancellationToken); await backend.SaveStateAsync(TestContext.Current.CancellationToken);
+        (await actor.ApplyAsync(new("next-install", count, PlatformKeyInventoryAction.InstallCurrent, Key("new-version"), "new-provision"))).ShouldBeNull();
+        Digest(backend.CommittedState.Single().Value).ShouldBe(before); (await actor.ReadAsync(Key())).Signals.Count.ShouldBe(count);
+        await authority.Received(1).RecordRevisionAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
+    }
+
 }

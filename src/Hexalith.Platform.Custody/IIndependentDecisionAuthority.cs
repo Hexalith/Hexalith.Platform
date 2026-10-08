@@ -9,4 +9,7 @@ public interface IIndependentDecisionAuthority
     Task<bool> VerifyExpectedBasisAsync(DecisionAuthorityExpectedBasis expected, DecisionAuthorityPublishedProfile profile, CancellationToken cancellationToken = default);
     /// <summary>Authenticates the exact historic stable actor/role/source/binding/evidence at original issuance and current applicable revocation.</summary>
     Task<bool> VerifyApproverAsync(DecisionAuthorityExpectedBasis expected, DecisionAuthorityApprover approver, DateTimeOffset issuedAt, CancellationToken cancellationToken = default);
+    /// <summary>Performs a final independently current, coherent authority check for the complete policy/predecessor/evaluation/role cohort and exact published key profile. It must observe applicable role revocations together with those facts at one authenticated authority boundary; a static public-anchor revision or separate earlier role reads do not implement it. Missing coherent policy/role authority denies validity.</summary>
+    Task<bool> VerifyAuthorityBoundaryAsync(DecisionAuthorityExpectedBasis expected, DecisionAuthorityManifest manifest, DecisionAuthorityPublishedProfile profile, CancellationToken cancellationToken = default);
+
 }
