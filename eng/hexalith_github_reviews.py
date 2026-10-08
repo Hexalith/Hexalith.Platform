@@ -8,18 +8,22 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import http.client
+import json
 import math
 import multiprocessing
 import re
 import selectors
 import socket
 import ssl
+import struct
+import sys
 import time
 
 
 PRODUCTION_ISSUER = "https://api.github.com"
 API_VERSION = "2026-03-10"
 MAX_RESPONSE_BYTES = 1_048_576
+_MAX_REQUEST_BYTES = 409_600
 _OWNER = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})\Z")
 _REPOSITORY = re.compile(r"[A-Za-z0-9_.-]{1,100}\Z")
 _TOKEN = re.compile(r"[A-Za-z0-9_.-]{1,4096}\Z")
@@ -31,6 +35,25 @@ class GitHubReviewRetrievalError(ValueError):
 
 def _refuse(code: str) -> None:
     raise GitHubReviewRetrievalError(code) from None
+
+
+def _finite_number(value: object) -> bool:
+    """Check representability without letting enormous integers escape refusal."""
+    try:
+        return type(value) in (int, float) and math.isfinite(value)
+    except OverflowError:
+        return False
+
+
+def _elapsed() -> float:
+    """Linux CLOCK_BOOTTIME includes host suspension; unsupported clocks refuse."""
+    try:
+        clock = getattr(time, "CLOCK_BOOTTIME", None)
+        if sys.platform != "linux" or clock is None:
+            _refuse("review-transport-unavailable")
+        return time.clock_gettime(clock)
+    except Exception:
+        _refuse("review-transport-unavailable")
 
 
 @dataclass(frozen=True, slots=True)
@@ -73,17 +96,33 @@ class RequestLimits:
     def __post_init__(self) -> None:
         if type(self.max_response_bytes) is not int or not 0 < self.max_response_bytes <= MAX_RESPONSE_BYTES:
             _refuse("response-byte-limit-invalid")
-        if (type(self.deadline_seconds) not in (int, float)
-                or not math.isfinite(self.deadline_seconds) or self.deadline_seconds <= 0):
+        if not _finite_number(self.deadline_seconds) or self.deadline_seconds <= 0:
             _refuse("request-deadline-invalid")
 
 
-def _request_worker(channel: socket.socket, host: str, port: int, ca_pem: str | None,
-                    path: str, token: str, limits: RequestLimits) -> None:
+def _receive_exact(channel: socket.socket, size: int) -> bytes:
+    """Child-only bounded receive; the parent can terminate it at its deadline."""
+    raw = bytearray()
+    while len(raw) < size:
+        chunk = channel.recv(size - len(raw))
+        if not chunk:
+            _refuse("review-transport-unavailable")
+        raw.extend(chunk)
+    return bytes(raw)
+
+
+def _request_worker(channel: socket.socket) -> None:
     """Private child entry point. Send bounded bytes or one closed refusal code."""
     connection = None
     try:
+        size = struct.unpack("!I", _receive_exact(channel, 4))[0]
+        if not 0 < size <= _MAX_REQUEST_BYTES:
+            _refuse("review-transport-unavailable")
+        request = json.loads(_receive_exact(channel, size))
+        host, port, ca_pem, path, token = (request[field] for field in ("host", "port", "ca", "path", "token"))
+        limits = RequestLimits(request["bytes"], request["seconds"])
         context = ssl.create_default_context(cadata=ca_pem)
+        context.keylog_filename = None
         context.minimum_version = ssl.TLSVersion.TLSv1_2
         connection = http.client.HTTPSConnection(host, port, timeout=limits.deadline_seconds, context=context)
         connection.request("GET", path, headers={
@@ -100,6 +139,9 @@ def _request_worker(channel: socket.socket, host: str, port: int, ca_pem: str | 
         if response.getheader("Content-Encoding", "identity").lower() != "identity":
             _refuse("review-content-encoding-refused")
         length = response.getheader("Content-Length")
+        transfer = response.getheader("Transfer-Encoding")
+        if transfer is not None and (transfer.strip().lower() != "chunked" or length is not None):
+            _refuse("review-transport-unavailable")
         if length is not None and (not length.isascii() or not length.isdecimal()
                                    or len(length) > 10 or int(length) > limits.max_response_bytes):
             _refuse("review-response-byte-budget-exceeded")
@@ -121,9 +163,12 @@ def _request_worker(channel: socket.socket, host: str, port: int, ca_pem: str | 
         except OSError:
             pass
     finally:
-        if connection is not None:
-            connection.close()
-        channel.close()
+        for resource in (connection, channel):
+            if resource is not None:
+                try:
+                    resource.close()
+                except Exception:
+                    pass
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,7 +186,7 @@ class GitHubReviewClient:
         if self.fixture_port is None and self.fixture_ca_pem is None:
             return
         if (type(self.fixture_port) is not int or not 0 < self.fixture_port < 65536
-                or type(self.fixture_ca_pem) is not str or not self.fixture_ca_pem
+                or type(self.fixture_ca_pem) is not str or not self.fixture_ca_pem or not self.fixture_ca_pem.isascii()
                 or len(self.fixture_ca_pem) > 65_536):
             _refuse("loopback-tls-fixture-invalid")
 
@@ -165,39 +210,62 @@ class GitHubReviewClient:
         Spawn-based callers must use Python's usual guarded main entry point.
         No credential is retained in the client, result, command line or errors.
         """
-        started = time.monotonic()
-        if type(locator) is not ReviewLocator or type(limits) is not RequestLimits:
-            _refuse("review-locator-and-limits-required")
-        if type(token) is not str or _TOKEN.fullmatch(token) is None:
-            _refuse("review-credential-required")
-        deadline = started + limits.deadline_seconds
-        parent_channel, child_channel = socket.socketpair()
-        process = multiprocessing.get_context("spawn").Process(
-            target=_request_worker,
-            args=(child_channel, "api.github.com" if self.fixture_port is None else "127.0.0.1",
-                  443 if self.fixture_port is None else self.fixture_port, self.fixture_ca_pem,
-                  locator.review_path, token, limits),
-            daemon=True,
-        )
+        parent_channel = child_channel = process = None
         try:
+            started = _elapsed()
+            if type(locator) is not ReviewLocator or type(limits) is not RequestLimits:
+                _refuse("review-locator-and-limits-required")
+            if type(token) is not str or _TOKEN.fullmatch(token) is None:
+                _refuse("review-credential-required")
+            deadline = started + limits.deadline_seconds
+            payload = json.dumps({
+                "host": "api.github.com" if self.fixture_port is None else "127.0.0.1",
+                "port": 443 if self.fixture_port is None else self.fixture_port, "ca": self.fixture_ca_pem,
+                "path": locator.review_path, "token": token,
+                "bytes": limits.max_response_bytes, "seconds": limits.deadline_seconds,
+            }, separators=(",", ":")).encode("ascii")
+            if len(payload) > _MAX_REQUEST_BYTES:
+                _refuse("review-transport-unavailable")
+            if _elapsed() >= deadline:
+                _refuse("review-request-deadline-exceeded")
+            packet = memoryview(struct.pack("!I", len(payload)) + payload)
+            parent_channel, child_channel = socket.socketpair()
+            # Only the socket is in multiprocessing's blocking bootstrap pipe.
+            # All application request parameters use the deadline-bound channel.
+            process = multiprocessing.get_context("spawn").Process(
+                target=_request_worker, args=(child_channel,), daemon=True)
             process.start()
             child_channel.close()
             parent_channel.setblocking(False)
             raw = bytearray()
             channel_budget = max(limits.max_response_bytes + 1, 80)
             with selectors.DefaultSelector() as selector:
+                selector.register(parent_channel, selectors.EVENT_WRITE)
+                while packet:
+                    remaining = deadline - _elapsed()
+                    if remaining <= 0:
+                        _refuse("review-request-deadline-exceeded")
+                    if not selector.select(min(remaining, 0.05)):
+                        continue
+                    sent = parent_channel.send(packet)
+                    if sent <= 0:
+                        _refuse("review-transport-unavailable")
+                    packet = packet[sent:]
+                selector.unregister(parent_channel)
                 selector.register(parent_channel, selectors.EVENT_READ)
                 while True:
-                    remaining = deadline - time.monotonic()
-                    if remaining <= 0 or not selector.select(remaining):
+                    remaining = deadline - _elapsed()
+                    if remaining <= 0:
                         _refuse("review-request-deadline-exceeded")
+                    if not selector.select(min(remaining, 0.05)):
+                        continue
                     chunk = parent_channel.recv(min(65_536, channel_budget + 1 - len(raw)))
                     if not chunk:
                         break
                     raw.extend(chunk)
                     if len(raw) > channel_budget:
                         _refuse("review-response-byte-budget-exceeded")
-            if time.monotonic() >= deadline:
+            if _elapsed() >= deadline:
                 _refuse("review-request-deadline-exceeded")
             if raw[:1] == b"O":
                 if len(raw) - 1 > limits.max_response_bytes:
@@ -214,11 +282,19 @@ class GitHubReviewClient:
         except Exception:
             _refuse("review-transport-unavailable")
         finally:
-            parent_channel.close()
-            child_channel.close()
-            if process.pid is not None:
-                if process.is_alive():
-                    process.kill()
-                process.join(timeout=0.1)
-                if not process.is_alive():
-                    process.close()
+            for channel in (parent_channel, child_channel):
+                if channel is not None:
+                    try:
+                        channel.close()
+                    except Exception:
+                        pass
+            if process is not None:
+                try:
+                    if process.pid is not None:
+                        if process.is_alive():
+                            process.kill()
+                        process.join(timeout=0.1)
+                        if not process.is_alive():
+                            process.close()
+                except Exception:
+                    pass
