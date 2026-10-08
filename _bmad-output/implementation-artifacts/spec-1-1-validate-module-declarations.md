@@ -115,6 +115,27 @@ Paths below are relative to `references/Hexalith.Builds`.
 | VG01 | medium | patch: enablement coverage | Pre-verified gap: removing required:true/enabled:false rejection would leave existing tests passing. Add assertions in both CLI formats. |
 | VG02 | medium | patch: command readiness coverage | Pre-verified gap: removing readiness executable existence checks would leave tests passing. Cover a canonical nonexistent command probe in both formats. |
 
+| R2-BH01 | medium | defer: stage references | carried from BH02: server references are preserved; the frozen intent reserves composition binding rules for later stories. |
+| R2-BH02 | maybe-false | defer: stage references | carried from BH07: secret references require environment binding policy that this local declaration input does not supply. |
+| R2-BH03 | medium | defer: stage references | carried from BH08: topic/Dapr role resolution and capability matching belong to the reserved Dapr composition stage. |
+| R2-BH04 | medium | defer: stage references | carried from BH04: hook target resolution is unchanged and belongs to the future recovery contract. |
+| R2-BH05 | medium | defer: stage references | carried from BH06: critical-flow and smoke references remain deferred to story 5.3. |
+| R2-BH06 | medium | defer: named collections | carried from BH03: collection-name uniqueness beyond server IDs is reserved for execution and catalog stages. |
+| R2-BH07 | maybe-false | defer: quantity conversion | carried from BH10: the validator retains JsonElement quantities; representable target types and conversion bounds remain a downstream policy question. |
+| R2-BH08 | medium | defer: allocation policy | carried from BH09: requests-versus-limits checks belong to the reserved scheduling stage. |
+| R2-BH09 | maybe-false | reject: reserved recovery policy | Empty inventory and unresolved restore-hook metadata are accepted, but the frozen intent permits empty collections and reserves recovery-stage rules. The future recovery contract must establish which volume inventory entries and local hooks are mandatory. |
+| R2-BH10 | medium | patch: path controls | Reproduced CLI success for a route prefix with a newline and a mount path with NUL. Reject controls in both v2 path patterns, using the existing readiness restriction. |
+| R2-BH11 | medium | patch: URI credentials | Reproduced a usable declaration containing HTTPS userinfo credentials. Extend secret detection privately within Platform validation so the legacy v1 detector and behavior remain unchanged. |
+| R2-BH12 | medium | patch: property paths | Reproduced numeric keys yielding both object and array paths, and dotted keys yielding fictitious nesting. Resolve pointer segments using their actual container and escape unusual property names. |
+| R2-EH01 | medium | defer: stage references | carried from BH02/EH04: undeclared server-reference checks are reserved for composition binding. |
+| R2-EH02 | medium | defer: stage references | carried from BH04/EH04: hook-to-task resolution remains reserved for the recovery contract. |
+| R2-EH03 | maybe-false | defer: quantity conversion | carried from BH10/EH05: CPU conversion can overflow or underflow downstream, but this validator never converts resource quantities to double. |
+| R2-EH04 | medium | defer: allocation policy | carried from BH09/EH06: request/limit scheduling checks are explicitly reserved for later stages. |
+| R2-EH05 | medium | patch: path controls | Confirmed the same route-control acceptance as R2-BH10; one schema correction addresses this shared defect. |
+| R2-EH06 | medium | patch: property paths | Confirmed the same numeric and punctuation path ambiguity as R2-BH12; one path-formatting correction addresses this shared defect. |
+| R2-VG01 | medium | patch: readiness coverage | Pre-verified gap: rejecting valid gRPC or command readiness leaves existing tests passing. Cover successful required-server enrollment and empty diagnostics in both CLI formats. |
+| R2-VG02 | medium | patch: file-bound coverage | Pre-verified gap: increasing or removing the 256-file bound leaves existing tests passing. Cover acceptance at 256, atomic rejection at 257 and the CLI overflow diagnostic. |
+
 ## Verification
 
 Run from Builds:
@@ -163,3 +184,20 @@ All covering tests below ran and passed in the final focused XML:
 | Enrolled MCP endpoint | `EnrolledHostCannotMapMcpForAnyExposure`, `McpEndpointsFailUnderEveryExposureAsync` (all exposures, both formats) |
 
 Parent diff audit confirms preservation of v1 schemas/loaders, existing qualification fixture bytes and pins. The confirmed baseline failure remains a verification limitation.
+
+### Resumed review and final verification (2026-10-08)
+
+The resumed three-layer review identified three local defects and two verification gaps. The v2 schema now rejects controls in route prefixes and mount paths; Platform validation rejects URI userinfo credentials without changing the shared legacy detector; diagnostic paths preserve numeric and punctuation-containing object keys. New tests cover both output formats, valid gRPC/command readiness without execution, and the 256-file acceptance/257-file atomic rejection boundary. All findings are recorded individually above; earlier deferred findings were carried without duplicate ledger entries.
+
+[Resumed verification record](../../references/Hexalith.Builds/artifacts/story-1-1-validation/resumed-20261008/final-verification.json) retains exact commands, current revisions, final source/log hashes and all executed test methods. This record supersedes the earlier final evidence for the current patched source.
+
+- Required Debug build: exit 0, zero warnings/errors.
+- Focused declaration validation and CLI tests: 112 passed, zero failed/skipped/not-run/errors. [Executed cases](../../references/Hexalith.Builds/artifacts/story-1-1-validation/resumed-20261008/final-tests.xml).
+- Package-gate tests: exit 0, all 34 artifact-validator scenarios and existing failure/cleanup assertions passed.
+- Fresh local package contract probes: exit 0, version `0.0.0-story11.20261008.5`, with `-SkipSourceValidation -RetainPackageDirectory`; shipped-schema and outside-checkout validation probes passed. No publication eligibility or Platform acceptance is granted.
+- Required complete module suite: 325 passed, one failed, zero skipped, exit 2. The sole failure remains `SupportedPlatformPinsCatalogTests.CatalogDefaultsMatchSupportedPlatformPins`. [Full suite output](../../references/Hexalith.Builds/artifacts/story-1-1-validation/resumed-20261008/final-module-tests.log).
+- Both staged and unstaged diffs pass `git diff --check`. All 293 protected legacy paths other than the externally updated catalog remain unchanged from the recorded baseline.
+
+During this run, external work advanced the Builds checkout and changed the catalog EventStore version from 3.115.0 to 3.117.0; the unrelated catalog/audit changes are preserved. The frozen legacy runner still pins EventStore 3.110.0 and FrontComposer 4.5.0, while the catalog pins FrontComposer 4.6.0. The failing consistency test and legacy pins are untouched.
+
+The review step requires a halt when required verification cannot be fixed within scope. Story 1.1 remains `in-review`, and its sprint entry remains `in-progress`. A separate catalog/legacy-pin resolution is required before completion; the failure is neither skipped nor treated as a passing gate.
