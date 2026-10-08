@@ -13,4 +13,6 @@ public enum DeletionCapabilitySigningState
     Unavailable,
     /// <summary>Immutable signer identity/result differs.</summary>
     Conflict,
+    /// <summary>Original public signature is retained, but the guard durably proved this exact attempt can never issue.</summary>
+    SignedAttestationObsoleteUnissued,
 }

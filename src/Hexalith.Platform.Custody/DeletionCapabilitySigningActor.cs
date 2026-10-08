@@ -13,12 +13,16 @@ namespace Hexalith.Platform.Custody;
 /// <param name="provider">Qualified per-tenant deletion-only key backend with exact retained outcome.</param>
 /// <param name="trustProvider">Independently published current/retained tenant/family/version trust authority.</param>
 /// <param name="originalReceiptAuthority">Independent original historic provider receipt verifier, mandatory for unresolved results after revocation.</param>
+/// <param name="noIssueAuthority">Independent exact terminal guard no-issue authority; omitted means obsolescence unavailable.</param>
+/// <param name="timeProvider">Current exclusive proof clock.</param>
 public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapabilitySigningAuthority? authority = null,
     IDeletionCapabilitySigningProvider? provider = null, IDeletionCapabilitySigningTrustProvider? trustProvider = null,
-    IDeletionCapabilityOriginalSigningReceiptAuthority? originalReceiptAuthority = null) : Actor(host), IDeletionCapabilitySigningActor
+    IDeletionCapabilityOriginalSigningReceiptAuthority? originalReceiptAuthority = null,
+    IDeletionCapabilityNoIssueAuthority? noIssueAuthority = null, TimeProvider? timeProvider = null) : Actor(host), IDeletionCapabilitySigningActor
 {
     private const string KeyFamily = "DeletionBatchCapabilitySigningKey";
     private const string StateKey = "deletion-capability-signing-v1";
+    private readonly TimeProvider _clock = timeProvider ?? TimeProvider.System;
     /// <summary>Gets the exact private actor registration name.</summary>
     public const string ActorTypeName = "DeletionCapabilitySigningActor";
     /// <summary>Gets the exact tenant/canonical-request actor address; successful committed issue revision is absent by construction.</summary>
@@ -76,7 +80,8 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     private async Task<DeletionCapabilitySigningOutcome> ResolveAsync(DeletionBatchCapabilityV1 payload, string id, DeletionCapabilitySigningOutcome existing)
     {
         if (existing.Payload != payload || existing.SigningRequestId != id) { return new(id, payload, DeletionCapabilitySigningState.Conflict); }
-        if (existing.State is DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied) { return existing; }
+        if (existing.State is DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied
+            or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued) { return existing; }
         if (provider is null || trustProvider is null) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
         try { return await RetainAsync(payload, id, await provider.LookupAsync(payload, id).ConfigureAwait(false), recoveringOriginal: true).ConfigureAwait(false); }
         catch (Exception) { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
@@ -140,10 +145,15 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         }
         var value = state.Value;
         if (value.Payload != payload || value.SigningRequestId != id || DeletionBatchCapabilityCodec.SigningRequestId(value.Payload) != id
-            || value.State is not (DeletionCapabilitySigningState.Unknown or DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied)
-            || value.State == DeletionCapabilitySigningState.Signed && (string.IsNullOrWhiteSpace(value.DetachedJws)
+            || value.State is not (DeletionCapabilitySigningState.Unknown or DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied
+                or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued)
+            || value.State is DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued && (string.IsNullOrWhiteSpace(value.DetachedJws)
                 || value.DetachedJws.Length > 16384 || string.IsNullOrWhiteSpace(value.PublicAnchorId) || string.IsNullOrWhiteSpace(value.PublicAnchorVersion))
-            || value.State != DeletionCapabilitySigningState.Signed && (value.DetachedJws is not null || value.PublicAnchorId is not null || value.PublicAnchorVersion is not null))
+            || value.State is not (DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued)
+                && (value.DetachedJws is not null || value.PublicAnchorId is not null || value.PublicAnchorVersion is not null)
+            || value.State == DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued
+                && (value.NoIssueProof is null || !DeletionCapabilitySigningSuccessor.Valid(value, value.NoIssueProof, value.NoIssueProof.ObservedAt))
+            || value.State != DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued && value.NoIssueProof is not null)
         { throw new InvalidOperationException("Malformed persisted deletion signing outcome."); }
         if (authority is null || !await authority.ValidateStateAsync(payload, id, Digest(value)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent signing outcome anchor is absent or stale."); }
         return value;
@@ -158,5 +168,28 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         return outcome;
     }
     private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
+
+    /// <inheritdoc/>
+    public async Task<DeletionCapabilitySigningOutcome> ObsoleteUnissuedAsync(DeletionBatchCapabilityV1 payload)
+    {
+        string id = Check(payload); var unavailable = new DeletionCapabilitySigningOutcome(id, payload, DeletionCapabilitySigningState.Unavailable);
+        if (authority is null || noIssueAuthority is null || !await authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued").ConfigureAwait(false)) { return unavailable; }
+        var existing = await ReadAsync(payload, id).ConfigureAwait(false);
+        if (existing is null) { return unavailable; }
+        if (existing.State == DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued)
+        { return await authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued").ConfigureAwait(false) ? existing : unavailable; }
+        // Unknown signer state is resolved only by original lookup; no signing retry occurs.
+        existing = await ResolveAsync(payload, id, existing).ConfigureAwait(false);
+        if (existing.State != DeletionCapabilitySigningState.Signed) { return unavailable; }
+        string digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(existing.DetachedJws!)));
+        var proof = await noIssueAuthority.ReadAsync(payload, id, digest).ConfigureAwait(false);
+        if (proof is null || !DeletionCapabilitySigningSuccessor.Valid(existing, proof, _clock.GetUtcNow())) { return unavailable; }
+        var confirmed = await noIssueAuthority.ReadAsync(payload, id, digest).ConfigureAwait(false);
+        if (confirmed is null || confirmed with { ObservedAt = proof.ObservedAt } != proof
+            || !DeletionCapabilitySigningSuccessor.Valid(existing, confirmed, _clock.GetUtcNow())
+            || !await authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued").ConfigureAwait(false)) { return unavailable; }
+        var obsolete = await SaveAsync(existing with { State = DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued, NoIssueProof = proof }).ConfigureAwait(false);
+        return await authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued").ConfigureAwait(false) && proof.ValidUntil > _clock.GetUtcNow() ? obsolete : unavailable;
+    }
 
 }

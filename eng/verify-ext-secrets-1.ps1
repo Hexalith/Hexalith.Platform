@@ -30,9 +30,24 @@ if ($buildOutput -notmatch '(?m)^\s*0 Warning\(s\)\s*$' -or $buildOutput -notmat
     throw "Local custody build was not warning/error free; see $buildLog"
 }
 $assemblyPath = Join-Path $ArtifactsDirectory 'bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll'
-$requiredClasses = @('Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
+$requiredClasses = @(
+    'Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests',
+    'Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
+    'Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests',
+    'Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests',
+    'Hexalith.Platform.Custody.Tests.DeletionCapabilitySigningActorTests',
+    'Hexalith.Platform.Custody.Tests.ExportCustodyCryptographyTests',
+    'Hexalith.Platform.Custody.Tests.ExportKeyDeliveryActorTests',
+    'Hexalith.Platform.Custody.Tests.Fr34ProtectionGateTests',
     'Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests',
-    'Hexalith.Platform.Custody.Tests.ExportCustodyCryptographyTests')
+    'Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests',
+    'Hexalith.Platform.Custody.Tests.IndependentDecisionManifestVerifierTests',
+    'Hexalith.Platform.Custody.Tests.PlatformAcceptedEnvelopeTimingTests',
+    'Hexalith.Platform.Custody.Tests.PlatformKeyInventoryActorTests',
+    'Hexalith.Platform.Custody.Tests.PlatformSecurityDenialRecorderTests',
+    'Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests',
+    'Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests',
+    'Hexalith.Platform.Custody.Tests.TrustedEnvelopeReplayVerifierTests')
 $testArgs = @($assemblyPath)
 foreach ($class in $requiredClasses) { $testArgs += @('-class', $class) }
 $testArgs += @('-result-xml', $xmlPath)
@@ -55,9 +70,9 @@ foreach ($class in $requiredClasses) {
 }
 @{
     Mode = 'Local'; LiveReady = $false; DependencyAvailable = $false
-    Scope = 'S1/S2 and private stateless S3 cryptographic prerequisites plus accepted-policy cleanup source simulations'; RequiredClasses = $classEvidence
+    Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations; no live qualification'; RequiredClasses = $classEvidence
     Total = [int]$assembly.total
     Passed = [int]$assembly.passed; BuildArguments = $buildArgs; TestArguments = $testArgs
     XmlSha256 = (Get-FileHash $xmlPath -Algorithm SHA256).Hash.ToLowerInvariant()
 } | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $EvidenceDirectory 'local-evidence.json')
-Write-Output "Local custody cryptographic/cleanup source checks passed: $($assembly.passed). Full EXT-SECRETS-1 remains unavailable."
+Write-Output "Local custody and host technical source checks passed: $($assembly.passed). Full EXT-SECRETS-1 remains unavailable."

@@ -1,4 +1,5 @@
 using Hexalith.EventStore.Contracts.Security;
+using System.Text.Json.Serialization;
 namespace Hexalith.Platform.Custody;
 
 /// <summary>Durable exact signer result containing public artifacts only; actual issue revision remains guard-owned separate evidence.</summary>
@@ -9,4 +10,9 @@ namespace Hexalith.Platform.Custody;
 /// <param name="PublicAnchorId">Independently recorded public anchor reference.</param>
 /// <param name="PublicAnchorVersion">Exact public verifier version retained through referenced batch/outcome lifetime.</param>
 public sealed record DeletionCapabilitySigningOutcome(string SigningRequestId, DeletionBatchCapabilityV1 Payload,
-    DeletionCapabilitySigningState State, string? DetachedJws = null, string? PublicAnchorId = null, string? PublicAnchorVersion = null);
+    DeletionCapabilitySigningState State, string? DetachedJws = null, string? PublicAnchorId = null, string? PublicAnchorVersion = null)
+{
+    /// <summary>Original immutable independently authenticated guard no-issue proof; absent for every other state.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public DeletionCapabilityNoIssueProof? NoIssueProof { get; init; }
+}

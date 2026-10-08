@@ -148,6 +148,47 @@ Code review R4 (2026-10-08): four layers (Blind Hunter, Edge Case Hunter, Verifi
 - `low`: nested placeholder, `deadLetter: none` and README/fixture-sync tests (BH). Nested strings already go through the same recursive inspection that the R3 task-argument tests cover.
 - `low`: a 1 MiB buffer is allocated per file (BH). Allocation is bounded and transient.
 
+Code review R6 (2026-10-08): four layers (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the cumulative Builds story diff `520abb5..58d9b54`, filtered to story paths. Owner pin, audit and catalog commits are excluded; one owner hunk from `57a3167` remains in `Tools/test-g4-tool-package-contracts.ps1`. Paths are relative to `references/Hexalith.Builds`.
+
+- [x] [Review][Patch] R6-D1 `identityNeed` cannot declare required claims. The owner chose option A on 2026-10-08: add an optional, empty-allowed, unique `claims[]`. Each entry uses a new `claimName` format (`^[a-z][a-z0-9_]*(?:[:.-][a-z0-9_]+)*$`, at most 128 characters), not `identifier`, because EventStore claim names such as `eventstore:tenant` and `client_id` contain `:` and `_`. Medium (AA). Spine AD-6 says "Modules declare required clients, audiences, roles and claims." The `identityNeed` definition (`schemas/hexalith.module-manifest.v2.json:636`) is closed (`additionalProperties: false`) and allows only `name`, `audience`, `roles` and `applicationPrincipal`. A module that needs a claim forces a structural addition to v2, which goes against "avoid later structural additions". This is the same kind of gap as R4-D1. Option A: add an optional, empty-allowed `claims[]` of unique identifiers; EventStore keeps ownership of claim names and semantics, and resolution stays with the realm-contract stage. Option B: record that required claims are declared outside the module declaration, for example derived from roles in the realm contract, and leave v2 unchanged.
+- [x] [Review][Patch] R6-P1 The CI gate self-test fails since the R5 contract asserts [Tools/test-g4-tool-package-contract-gate.ps1:39]. High (BH+VG+EH, reproduced). `pwsh -NoProfile -File ./Tools/test-g4-tool-package-contract-gate.ps1` exits 1 with "The property 'ruleId' cannot be found on this object" at `Tools/test-g4-tool-package-contracts.ps1:1006`. In `58d9b54`, `Assert-JsonToolResult` now requires `outcome.phase`, `category` and `ruleId`, plus three `HXP003` diagnostics for the duplicate case. The fake `validate` outputs still return only `outcome.exitCode` and a single `HXP003`. `.github/workflows/ci.yml:137` and `build-release.yml:146` run this gate before the build and tests, so PR CI and the release pipeline stop there. Fix: emit complete outcomes in the stubs. Success uses `None`/`None` with a null `ruleId`; the duplicate uses `Manifest`/`Manifest`/`HXP003` with three `HXP003` diagnostics for module, app and resource; the legacy case uses `Manifest`/`Manifest`/`HXP001`.
+- [x] [Review][Patch] R6-P2 Executable resolution from the repository root is untested [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:580]. Medium (VG, pre-verified). Every test saves its manifest beside its executables in a workspace with no `.git` folder, so `FindRepositoryRoot` always falls back to the manifest's own directory. Replacing that call with `Path.GetDirectoryName(fullPath)` keeps every test green, even though real manifests under `module/` resolve executables against the repository root. Add a case with `<Root>/.git/` and `<Root>/module/manifest.json`: a root-level executable must pass, and one present only under `module/` must return `HXM005`.
+- [x] [Review][Patch] R6-P3 `HXP015` for a missing required field is never asserted [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:300]. Medium (VG, pre-verified). The README calls rule IDs stable, and `outcome.ruleId` comes from the first diagnostic. The `<missing>` matrix rows check only the field, source and message, so changing the literal to `HXP002` keeps every test green. Assert `ruleId == "HXP015"` for the missing-field rows.
+- [x] [Review][Patch] R6-P4 Errors from `false` subschemas fall through to the generic reason [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:327]. Low (EH+BH, reproduced). Two symptoms:
+  - Every unknown field produces two `HXP002` diagnostics at the same path: "Remove the unknown field…" and "The field violates the Platform declaration schema." Reproduced with `modules[0].identity.bogus`.
+  - A field that doesn't apply to the declared kind (`service` on an `http` readiness probe, `topic` with `deadLetter.strategy: none`) gets only the generic reason.
+
+  Fix: suppress the child error when the parent's `additionalProperties` diagnostic already covers it, and say that the field does not apply to the declared `kind` or `strategy` in the `then`-branch case.
+- [x] [Review][Patch] R6-P5 `mountPath` accepts `/` [schemas/hexalith.module-manifest.v2.json:315]. Low (EH+BH). The pattern allows `/` followed by zero characters. Container runtimes refuse a volume destination of `/`, so the declaration enrolls but cannot be provisioned. Require at least one segment character after the leading slash; `routePrefix` keeps `/`.
+- [x] [Review][Patch] R6-P6 The published example still points the extension input at the secret's name [test/fixtures/module/platform/valid.json:34]. Low (AA+BH). After R4-P12, `configurationInputs[0]` has `source: configuration` but `reference: provider-access`, which is the logical secret declared at `integration.secrets[0]`. The example still models an extension reading secret material. Rename the reference to a non-secret configuration name in both the fixture and `README.md:300`.
+- [x] [Review][Patch] R6-P7 Worker kind `background` is outside the spine vocabulary [schemas/hexalith.module-manifest.v2.json:781]. Low (AA). The spine and epic context define only external-effect and destructive-retention workers with their disable control, and recovery mode disables exactly those two classes. A third, undefined class lets a module put a worker in a class the recovery rules never mention. No test, fixture or README uses it. Remove the enum value.
+- [x] [Review][Patch] R6-P8 The FIFO and deleted-working-directory tests have no Windows guard [test/Hexalith.Builds.Module.Tests/PlatformManifestTestWorkspace.cs:99]. Low (BH+EH). `UseNonSeekableManifestAsync` starts `mkfifo`. `DeletedWorkingDirectoryReturnsStructuredPathFailure` (`PlatformManifestValidationTests.cs:624`) and `DeletedWorkingDirectoryCommandReturnsStructuredFailureAsync` (`PlatformManifestCommandTests.cs:742`) delete the current directory. Both fail on Windows developer machines. Sibling composition tests skip with `if (OperatingSystem.IsWindows()) Assert.Skip(...)`; apply the same guard to the FIFO and deleted-directory tests.
+- [x] [Review][Patch] R6-P9 The README calls the JSON syntax location a column, but it is a UTF-8 byte offset [README.md:498]. Low (BH+EH). `FormatJsonLocation` (`PlatformManifestValidator.cs:432`) reports `BytePositionInLine + 1`. Any non-ASCII text before the error on the same line, such as accented French descriptions, shifts it from the character column. Document it as the 1-based line and byte offset within the line.
+
+**Rejected (R6):**
+
+- `low`: unresolved cross-field references, self- or unknown dependencies and an undeclared dead-letter topic (BH, EH). Already deferred as composition-stage symbolic references and the dependency-graph entry.
+- `low`: name uniqueness within collections (BH, EH). Already deferred as stage-specific uniqueness.
+- `low`: requests above limits, `1e999`/`1e-999` quantities, `1e308`/`1e-300` startup overrides and an unbounded `replicas` (BH, EH ×3). Already deferred as allocation policy, quantity conversion and R4-W1. Empty `limits: {}` is `false`: empty quantities are the allowed form for unused capabilities.
+- `low`: MCP over a plain `http` interface validates (BH). Reproduced, but the R4 rejection stands: a declaration that does not state MCP cannot be recognized as MCP, and adding route heuristics is new policy.
+- `low`: the previous-major window has one embedded schema (BH). R4 rejection unchanged.
+- `low`: the same file passed twice gives single-location duplicates (BH). R4 rejection unchanged.
+- `low`: no rule-ID catalog (BH). R4 rejection unchanged.
+- `false`: an unhandled `TypeInitializationException` and an unreachable blank-path guard (BH). The exception needs a build that is missing its embedded resource, which fails loudly by design. The extra guard is defensive and causes no wrong outcome.
+- `low`: the headline `ruleId` is the first diagnostic in sorted order (BH). That is deterministic, and ranking by significance needs a policy that does not exist.
+- `low`: `$schema` rejected at the root (BH). R4 rejection unchanged.
+- `false`: `providerExceptions` is optional with a Memories-specific enum (BH). The owner decided this shape in R4-D1.
+- `low`: a 1 MiB buffer per file and a repository-root walk per executable (BH). Bounded and negligible; R4 rejection unchanged.
+- `false`: an unrelated pin bump is bundled into the story (BH, AA). The hunk comes from owner commit `57a3167` and is in the review diff only because of the path filter; Story 1.1 does not own it.
+- `low`: the isolated-process probe matches xUnit console text (BH). It works today, and the fix needs a new runner protocol.
+- `low`: README example executables are `README.md` (BH). This is deliberate: an existing file that the contract probe can resolve.
+- `low`: FIFO manifest or executable hangs (EH). R3/R4/R5 rejection unchanged.
+- `low`: `ssh://git@host` is flagged as a credential (EH). R4 rejection unchanged.
+- `low`: a non-object root reports `HXP001` (EH). Cosmetic wording, the same as the R4 rejection for a missing `schema`.
+- `low`: the README example omits overrides, `providerExceptions`, `e2eChecks`, `tenantLifecycle` and explicit `replicas` (AA). The schema documents these fields. Adding Memories' exceptions to a sample module would model a wrong declaration, and the fixture change would cascade into the default-value assertions.
+- `low`: AC5 never compares the packed schema with the embedded one (AA). Both come from the same source path in a single pack.
+- `false`: `HXP020` names `lifecycle.readiness` instead of the server (AA). That field is where the missing entry belongs, and the message gives the server's full path. Tests lock the current form.
+
 ## Implementation Notes
 
 - Tooling embeds the shipped Draft 2020-12 schema; an isolated registry refuses remote fetches. The tool also packs the published schema.
@@ -358,3 +399,18 @@ Review patches remain uncommitted in Builds on top of `50b0257001fe91f14bf16c7ea
 - Required Debug build exited 0 with zero warnings and errors.
 - Full module suite: 395 passed, zero failed, skipped, or not run.
 - Fresh installed-tool contracts for `0.0.0-story11.20261008.12` exited 0, including exact JSON `outcome` checks for success, duplicate rejection, and legacy rejection. MSBuild operations used `-m:1`. No publication eligibility or Platform tool acceptance is granted.
+
+### R6 patch verification (2026-10-08)
+
+The R6 patches remain uncommitted in Builds on top of `58d9b546b4741a246121ab40fc3945703db2e19b`. They cover the claims option the owner chose (R6-D1) and R6-P1 through R6-P9. Before the patches, `pwsh -NoProfile -File ./Tools/test-g4-tool-package-contract-gate.ps1` exited 1 at `Tools/test-g4-tool-package-contracts.ps1:1006`. R5 had not re-run that gate.
+
+- Required Debug build: `dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1` exited 0 with zero warnings and errors.
+- Focused declaration and CLI tests: 198 passed, zero failed, skipped, or not run. Command: `dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class '*PlatformManifest*'`.
+- Full module suite: 412 passed, zero failed, skipped, or not run.
+- Package-gate self-test: exit 0. All 34 artifact-validator scenarios and the gate's existing failure and cleanup checks pass.
+- Fresh installed-tool contracts for `0.0.0-story11.20261008.13` exited 0. Command: `pwsh -NoProfile -File Tools/test-g4-tool-package-contracts.ps1 -Version 0.0.0-story11.20261008.13 -PackageDirectory artifacts/story-1-1-validation/packages-0.0.0-story11.20261008.13 -SkipSourceValidation -RetainPackageDirectory`. It ran through an ephemeral dotnet wrapper that adds `-m:1` to restore, build and pack. No publication eligibility or Platform tool acceptance is granted.
+- `git diff --check` passes. With the rebuilt CLI, the reviewers' reproductions now give these results:
+  - An unknown field returns one diagnostic.
+  - `mountPath: "/"` is rejected.
+  - Worker kind `background` is rejected.
+  - Fields that don't apply to the declared kind or strategy report the specific reason.
