@@ -21,6 +21,7 @@ public sealed class ExportKeyDeliveryActorTests
     private static IExportKeyDeliveryAuthority Authority()
     {
         var authority = Substitute.For<IExportKeyDeliveryAuthority>();
+        authority.AuthorizeOperationAsync(Arg.Any<ExportKeyDeliveryIdentity>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         authority.AuthorizeAsync(Arg.Any<ExportKeyDeliveryIdentity>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
     }
 
@@ -122,5 +123,21 @@ public sealed class ExportKeyDeliveryActorTests
     {
         var clock = new CustodyFixtureClock(); var identity = Identity(clock); var backend = new InMemoryStateManager();
         (await Actor(identity, backend, clock).DeliverAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unavailable); backend.CommittedState.ShouldBeEmpty();
+    }
+
+    /// <summary>Immutable delivered evidence does not grant a missing/withdrawn caller permission to read or retry the private method.</summary>
+    [Fact]
+    public async Task DeliveredOutcomeRequiresSeparateCurrentExactMethodCredential()
+    {
+        var clock = new CustodyFixtureClock(); var identity = Identity(clock); var backend = new InMemoryStateManager(); var authority = Authority();
+        var provider = Substitute.For<IExportKeyDirectDeliveryProvider>(); provider.ReleaseAsync(identity, Arg.Any<CancellationToken>()).Returns(new ExportKeyDeliveryOutcome(identity, ExportKeyDeliveryState.Delivered, clock.Now));
+        var actor = Actor(identity, backend, clock, authority, provider); var delivered = await actor.DeliverAsync(identity);
+        (await Actor(identity, backend, clock).LookupAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unavailable);
+        authority.AuthorizeOperationAsync(identity, "LookupExportKey", Arg.Any<CancellationToken>()).Returns(false);
+        (await actor.LookupAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unavailable);
+        authority.AuthorizeOperationAsync(identity, "DeliverExportKey", Arg.Any<CancellationToken>()).Returns(false);
+        (await actor.DeliverAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unavailable);
+        backend.CommittedState.Single().Value.ShouldBeOfType<ExportKeyDeliveryOutcome>().ShouldBe(delivered);
+        await provider.Received(1).ReleaseAsync(identity, Arg.Any<CancellationToken>());
     }
 }

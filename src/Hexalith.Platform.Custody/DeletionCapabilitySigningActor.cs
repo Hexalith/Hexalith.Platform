@@ -24,7 +24,16 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     /// <inheritdoc/>
     public async Task<DeletionCapabilitySigningOutcome> SignAsync(DeletionBatchCapabilityV1 payload)
     {
+        string id = Check(payload);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(payload, id, "SignDeletionCapability").ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
+        var result = await SignAsyncCoreAsync(payload).ConfigureAwait(false);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(payload, id, "SignDeletionCapability").ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
+        return result;
+    }
+    private async Task<DeletionCapabilitySigningOutcome> SignAsyncCoreAsync(DeletionBatchCapabilityV1 payload)
+    {
         string requestId = Check(payload);
+        if (authority is null || !await authority.AuthorizeOperationAsync(payload, requestId, "SignDeletionCapability").ConfigureAwait(false)) { return new(requestId, payload, DeletionCapabilitySigningState.Unavailable); }
         var existing = await ReadAsync(payload, requestId).ConfigureAwait(false);
         if (existing is not null) { return await ResolveAsync(payload, requestId, existing).ConfigureAwait(false); }
         if (authority is null || provider is null || trustProvider is null) { return new(requestId, payload, DeletionCapabilitySigningState.Unavailable); }
@@ -41,7 +50,17 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     /// <inheritdoc/>
     public async Task<DeletionCapabilitySigningOutcome> LookupAsync(DeletionBatchCapabilityV1 payload)
     {
-        string requestId = Check(payload); var existing = await ReadAsync(payload, requestId).ConfigureAwait(false);
+        string id = Check(payload);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(payload, id, "LookupDeletionCapability").ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
+        var result = await LookupAsyncCoreAsync(payload).ConfigureAwait(false);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(payload, id, "LookupDeletionCapability").ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
+        return result;
+    }
+    private async Task<DeletionCapabilitySigningOutcome> LookupAsyncCoreAsync(DeletionBatchCapabilityV1 payload)
+    {
+        string requestId = Check(payload);
+        if (authority is null || !await authority.AuthorizeOperationAsync(payload, requestId, "LookupDeletionCapability").ConfigureAwait(false)) { return new(requestId, payload, DeletionCapabilitySigningState.Unavailable); }
+        var existing = await ReadAsync(payload, requestId).ConfigureAwait(false);
         return existing is null ? new(requestId, payload, DeletionCapabilitySigningState.Unavailable)
             : await ResolveAsync(payload, requestId, existing).ConfigureAwait(false);
     }

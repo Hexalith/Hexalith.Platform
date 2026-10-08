@@ -39,6 +39,7 @@ public sealed class DeletionCapabilitySigningActorTests
     private static IDeletionCapabilitySigningAuthority Authority()
     {
         var authority = Substitute.For<IDeletionCapabilitySigningAuthority>();
+        authority.AuthorizeOperationAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         authority.AuthorizeAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
     }
 
@@ -58,7 +59,7 @@ public sealed class DeletionCapabilitySigningActorTests
         var saved = backend.CommittedState.Single(); var restored = new InMemoryStateManager();
         await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<DeletionCapabilitySigningOutcome>(JsonSerializer.SerializeToUtf8Bytes(saved.Value))!, TestContext.Current.CancellationToken);
         await restored.SaveStateAsync(TestContext.Current.CancellationToken);
-        (await Actor(payload, restored).LookupAsync(payload)).ShouldBe(signed.Outcome);
+        (await Actor(payload, restored, Authority()).LookupAsync(payload)).ShouldBe(signed.Outcome);
         await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>()); await provider.Received(1).LookupAsync(payload, id, Arg.Any<CancellationToken>());
         JsonSerializer.Serialize(saved.Value).ShouldNotContain("CommittedIssuedGuardRevision");
     }
@@ -179,5 +180,19 @@ public sealed class DeletionCapabilitySigningActorTests
         });
         (await Actor(payload, backend, Authority(), provider, trust).SignAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unknown);
         backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>().DetachedJws.ShouldBeNull();
+    }
+
+    /// <summary>Retained immutable signature cannot be read through a guessed actor address or withdrawn exact operation credential.</summary>
+    [Fact]
+    public async Task SignedOutcomeRequiresIndependentCurrentExactReadCredential()
+    {
+        var payload = Payload(); var backend = new InMemoryStateManager(); using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256); var authority = Authority();
+        var result = Signed(payload, key); var provider = Substitute.For<IDeletionCapabilitySigningProvider>(); provider.SignAsync(payload, Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(result);
+        var actor = Actor(payload, backend, authority, provider, Trust(payload, key)); (await actor.SignAsync(payload)).ShouldBe(result.Outcome);
+        (await Actor(payload, backend).LookupAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
+        authority.AuthorizeOperationAsync(payload, Arg.Any<string>(), "LookupDeletionCapability", Arg.Any<CancellationToken>()).Returns(false);
+        (await actor.LookupAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
+        backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>().ShouldBe(result.Outcome);
+        await provider.Received(1).SignAsync(payload, Arg.Any<string>(), Arg.Any<CancellationToken>());
     }
 }

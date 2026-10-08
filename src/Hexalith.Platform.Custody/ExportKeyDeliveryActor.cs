@@ -17,6 +17,15 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
     public async Task<ExportKeyDeliveryOutcome> DeliverAsync(ExportKeyDeliveryIdentity identity)
     {
         Check(identity);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(identity, "DeliverExportKey").ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
+        var result = await DeliverAsyncCoreAsync(identity).ConfigureAwait(false);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(identity, "DeliverExportKey").ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
+        return result;
+    }
+    private async Task<ExportKeyDeliveryOutcome> DeliverAsyncCoreAsync(ExportKeyDeliveryIdentity identity)
+    {
+        Check(identity);
+        if (authority is null || !await authority.AuthorizeOperationAsync(identity, "DeliverExportKey").ConfigureAwait(false)) { return new(identity, ExportKeyDeliveryState.Unavailable); }
         ExportKeyDeliveryOutcome? existing = await ReadAsync(identity).ConfigureAwait(false);
         if (existing is not null) { return await ResolveAsync(identity, existing).ConfigureAwait(false); }
         if (provider is null || authority is null) { return new(identity, ExportKeyDeliveryState.Unavailable); }
@@ -39,6 +48,15 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
     public async Task<ExportKeyDeliveryOutcome> LookupAsync(ExportKeyDeliveryIdentity identity)
     {
         Check(identity);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(identity, "LookupExportKey").ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
+        var result = await LookupAsyncCoreAsync(identity).ConfigureAwait(false);
+        if (!(authority is not null && await authority.AuthorizeOperationAsync(identity, "LookupExportKey").ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
+        return result;
+    }
+    private async Task<ExportKeyDeliveryOutcome> LookupAsyncCoreAsync(ExportKeyDeliveryIdentity identity)
+    {
+        Check(identity);
+        if (authority is null || !await authority.AuthorizeOperationAsync(identity, "LookupExportKey").ConfigureAwait(false)) { return new(identity, ExportKeyDeliveryState.Unavailable); }
         var existing = await ReadAsync(identity).ConfigureAwait(false);
         return existing is null ? new(identity, ExportKeyDeliveryState.Unavailable)
             : await ResolveAsync(identity, existing).ConfigureAwait(false);
