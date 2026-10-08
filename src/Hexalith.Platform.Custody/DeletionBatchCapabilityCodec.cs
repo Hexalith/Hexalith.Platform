@@ -10,42 +10,8 @@ namespace Hexalith.Platform.Custody;
 internal static class DeletionBatchCapabilityCodec
 {
     private static readonly UTF8Encoding StrictUtf8 = new(false, true);
-    private const long MaximumExactInteger = 9007199254740991;
-    internal static byte[] CanonicalPayload(DeletionBatchCapabilityV1 payload)
-    {
-        ArgumentNullException.ThrowIfNull(payload);
-        var fields = new SortedDictionary<string, object>(StringComparer.Ordinal)
-        {
-            ["Issuer"] = payload.Issuer, ["Audience"] = payload.Audience, ["TenantId"] = payload.TenantId,
-            ["DeletionRequestId"] = payload.DeletionRequestId, ["DestructionSealId"] = payload.DestructionSealId,
-            ["BatchKind"] = payload.BatchKind, ["BatchOrdinal"] = payload.BatchOrdinal, ["BatchId"] = payload.BatchId,
-            ["ManifestDigest"] = payload.ManifestDigest, ["GuardStreamId"] = payload.GuardStreamId,
-            ["IntendedIssuedGuardRevision"] = payload.IntendedIssuedGuardRevision, ["AttestationOrdinal"] = payload.AttestationOrdinal,
-            ["SigningAttemptOrdinal"] = payload.SigningAttemptOrdinal, ["CapabilityKeyVersion"] = payload.CapabilityKeyVersion,
-        };
-        if (payload.BatchOrdinal < 0 || payload.IntendedIssuedGuardRevision <= 0 || payload.AttestationOrdinal <= 0 || payload.SigningAttemptOrdinal <= 0)
-        { throw new ArgumentException("Invalid capability ordinal."); }
-        var text = new StringBuilder("{"); bool first = true;
-        foreach (var field in fields)
-        {
-            if (!first) { text.Append(','); } first = false;
-            String(text, field.Key); text.Append(':');
-            if (field.Value is long number)
-            {
-                if (number > MaximumExactInteger) { throw new ArgumentException("Capability number is not exactly representable in I-JSON."); }
-                text.Append(number.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                if (field.Value is not string value || string.IsNullOrWhiteSpace(value) || value.Length > 2048)
-                { throw new ArgumentException("Malformed capability identity."); }
-                String(text, value);
-            }
-        }
-        text.Append('}'); return StrictUtf8.GetBytes(text.ToString());
-    }
-    internal static string SigningRequestId(DeletionBatchCapabilityV1 payload)
-        => Convert.ToHexString(SHA256.HashData(CanonicalPayload(payload)));
+    internal static byte[] CanonicalPayload(DeletionBatchCapabilityV1 payload) => DeletionBatchCapabilityIdentity.CanonicalPayload(payload);
+    internal static string SigningRequestId(DeletionBatchCapabilityV1 payload) => DeletionBatchCapabilityIdentity.SigningRequestId(payload);
     internal static string Sign(DeletionBatchCapabilityV1 payload, DeletionCapabilityTrustProfile profile, ECDsa key)
         => DetachedEs256JwsCore.Sign(Header(payload, profile), CanonicalPayload(payload), key);
     internal static bool Verify(DeletionBatchCapabilityV1 payload, DeletionCapabilityTrustProfile profile, string signature, ECDsa publicAnchor)

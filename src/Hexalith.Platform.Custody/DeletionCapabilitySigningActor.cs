@@ -192,4 +192,20 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         return await authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued").ConfigureAwait(false) && proof.ValidUntil > _clock.GetUtcNow() ? obsolete : unavailable;
     }
 
+    /// <inheritdoc/>
+    public async Task<DeletionCapabilityNoIssueProof?> ReadSuccessorProofAsync(DeletionBatchCapabilityV1 payload)
+    {
+        string id = Check(payload);
+        if (authority is null || noIssueAuthority is null || !await authority.AuthorizeOperationAsync(payload, id, "RecoverSigningSuccessor").ConfigureAwait(false)) { return null; }
+        var original = await ReadAsync(payload, id).ConfigureAwait(false);
+        if (original?.State != DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued) { return null; }
+        var proof = await noIssueAuthority.ReadAsync(payload, id, original.NoIssueProof!.DetachedJwsDigest).ConfigureAwait(false);
+        if (proof is null || DeletionCapabilitySigningSuccessor.Create(original, proof, _clock.GetUtcNow()) is null) { return null; }
+        var final = await noIssueAuthority.ReadAsync(payload, id, original.NoIssueProof.DetachedJwsDigest).ConfigureAwait(false);
+        if (final is null || final with { ObservedAt = proof.ObservedAt } != proof
+            || !await authority.AuthorizeOperationAsync(payload, id, "RecoverSigningSuccessor").ConfigureAwait(false)
+            || DeletionCapabilitySigningSuccessor.Create(original, final, _clock.GetUtcNow()) is null) { return null; }
+        return final;
+    }
+
 }

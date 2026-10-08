@@ -12,4 +12,6 @@ public interface IDeletionCapabilitySigningActor : IActor
     Task<DeletionCapabilitySigningOutcome> LookupAsync(DeletionBatchCapabilityV1 payload);
     /// <summary>Terminalizes only an exact resolved Signed artifact with independently authenticated irreversible guard no-issue proof; never signs a successor.</summary>
     Task<DeletionCapabilitySigningOutcome> ObsoleteUnissuedAsync(DeletionBatchCapabilityV1 payload);
+    /// <summary>Reads a fresh independent successor basis for the immutable original obsolete outcome, without changing its artifact or retained terminal proof.</summary>
+    Task<DeletionCapabilityNoIssueProof?> ReadSuccessorProofAsync(DeletionBatchCapabilityV1 payload);
 }

@@ -302,4 +302,28 @@ public sealed class DeletionCapabilitySigningActorTests
 
     private static string Digest<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
 
+    /// <summary>Restart after the original proof lease expires retains that original artifact/proof and recovers only a fresh independent exact successor basis.</summary>
+    [Theory]
+    [InlineData(true)][InlineData(false)]
+    public async Task ObsoleteRestartReadsCurrentSuccessorWithoutChangingOriginalOutcome(bool currentAvailable)
+    {
+        var payload = Payload(); string id = DeletionBatchCapabilityCodec.SigningRequestId(payload); var clock = new CustodyFixtureClock(); var backend = new InMemoryStateManager(); var authority = Authority();
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256); var signed = Signed(payload, key); var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
+        provider.SignAsync(payload, id, Arg.Any<CancellationToken>()).Returns(signed); var noIssue = Substitute.For<IDeletionCapabilityNoIssueAuthority>();
+        string digest = Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(signed.Outcome!.DetachedJws!)));
+        var proof = new DeletionCapabilityNoIssueProof(payload, id, digest, "original-no-issue", 9, "key-b", "authority-a", clock.Now, clock.Now.AddMinutes(1));
+        noIssue.ReadAsync(payload, id, digest, Arg.Any<CancellationToken>()).Returns(_ => proof);
+        var actor = Actor(payload, backend, authority, provider, Trust(payload, key), noIssueAuthority: noIssue, clock: clock);
+        await actor.SignAsync(payload); var original = await actor.ObsoleteUnissuedAsync(payload); var persisted = backend.CommittedState.Single();
+        clock.Now += TimeSpan.FromMinutes(2); proof = proof with { CurrentGuardRevision = 17, CurrentHealthyKeyVersion = "key-c", AuthorityRevision = "authority-b", ObservedAt = clock.Now, ValidUntil = clock.Now.AddMinutes(1) };
+        noIssue.ReadAsync(payload, id, digest, Arg.Any<CancellationToken>()).Returns(_ => currentAvailable ? proof : null);
+        var restarted = Actor(payload, backend, authority, provider, Trust(payload, key), noIssueAuthority: noIssue, clock: clock);
+        (await restarted.SignAsync(payload)).ShouldBe(original); var current = await restarted.ReadSuccessorProofAsync(payload);
+        var successor = DeletionCapabilitySigningSuccessor.Create(original, current, clock.Now);
+        if (currentAvailable) { successor.ShouldBe(payload with { SigningAttemptOrdinal = 2, IntendedIssuedGuardRevision = 17, CapabilityKeyVersion = "key-c" }); }
+        else { successor.ShouldBeNull(); }
+        backend.CommittedState.Single().ShouldBe(persisted); (await restarted.LookupAsync(payload)).ShouldBe(original);
+        await provider.Received(1).SignAsync(payload, id, Arg.Any<CancellationToken>());
+    }
+
 }

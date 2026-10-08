@@ -4,7 +4,7 @@ namespace Hexalith.Platform.Custody;
 
 /// <summary>Exact durable guard mirror after the protection-owner block, with no signing or batch-dispatch authority.</summary>
 /// <remarks>The owning guard must independently authenticate the complete receipt and persist it under its current revision.
-/// This port is not an implemented GovernanceScopeGuard or a qualification claim.</remarks>
+/// The EventStore adapter provides source implementation; independent authority and installation still require qualification.</remarks>
 public interface IDeletionCapabilityGuardRevocationMirror
 {
     /// <summary>Conditionally mirrors the exact original complete block result; duplicate retry does not mint another fact.</summary>
