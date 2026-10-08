@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 1
 created: '2026-10-07'
-status: 'in-progress'
+status: 'done'
 baseline_commit: 'f043a2f242762233091abdaa5bbe1ab777bd0f12'
 builds_baseline_commit: '520abb5898ad44b30c0744e707b53cd94741e6b1'
 route: 'dispatch'
@@ -84,36 +84,36 @@ Paths below are relative to `references/Hexalith.Builds`.
 
 Code review R4 (2026-10-08): four layers (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over the Builds story commits `305742f`, `34c63c5`, `80e7a3c`, `f717a87` on `520abb5`. Owner pin commits and Platform-side changes are excluded. Paths are relative to `references/Hexalith.Builds`.
 
-- [ ] [Review][Patch] R4-D1 Schema cannot express fields that Stories 1.5, 5.3 and 5.4 require [schemas/hexalith.module-manifest.v2.json:659]. Owner resolved on 2026-10-08 (option A): add optional, empty-allowed `runtime.providerExceptions[]` (`name` enum of the three AD-9 exceptions plus `memories-redis-coordination`, `capability`, `owner`, `surface`, `transitional`), `criticalFlows[].e2eChecks[]` and `criticalFlows[].tenantLifecycle`; stage validation stays with Stories 1.5/5.3/5.4. Medium (AA). The `provider`, `dapr`, `criticalFlow` and `operation` definitions are closed (`additionalProperties: false`) and have no field for:
+- [x] [Review][Patch] R4-D1 Schema cannot express fields that Stories 1.5, 5.3 and 5.4 require [schemas/hexalith.module-manifest.v2.json:659]. Owner resolved on 2026-10-08 (option A): add optional, empty-allowed `runtime.providerExceptions[]` (`name` enum of the three AD-9 exceptions plus `memories-redis-coordination`, `capability`, `owner`, `surface`, `transitional`), `criticalFlows[].e2eChecks[]` and `criticalFlows[].tenantLifecycle`; stage validation stays with Stories 1.5/5.3/5.4. Medium (AA). The `provider`, `dapr`, `criticalFlow` and `operation` definitions are closed (`additionalProperties: false`) and have no field for:
   - AD-9 provider-SDK exceptions or Memories' transitional Redis coordination. Story 1.5 requires both.
   - A flow-to-E2E check mapping. Story 5.3 refuses releases whose flows have no required E2E check.
   - A tenant-lifecycle flow marker. Story 5.4 needs it.
 
   Either v2 grows structurally later, against "avoid later structural additions", or those stories cannot declare what they need. The auditor's agent-eligibility gap is excluded: eligibility belongs to the Contracts schema digest served by the gateway (AD-11 Availability; epics Story 3.3 route entries).
-- [ ] [Review][Patch] R4-D2 `surfaceClass` is an open identifier, and the "complete" example uses a class that does not exist [schemas/hexalith.module-manifest.v2.json:391]. Owner resolved on 2026-10-08 (option A): enum `[ui, agent, service]`; the fixture and README example use `agent`. Medium (AA+BH). AD-14 defines the realm-contract classes `ui`, `agent` and `service`. The schema (`schemas/hexalith.module-manifest.v2.json:391`) accepts any identifier, including `mcp`. `test/fixtures/module/platform/valid.json:70` and `README.md:336` publish `"gateway"`.
-- [ ] [Review][Patch] R4-P1 `classification.changeClass` uses `patch` and lacks the spine's `none` [schemas/hexalith.module-manifest.v2.json:1046]. Medium (AA). Module intake defines breaking, additive, or none; reproduced rejection of `"none"`.
-- [ ] [Review][Patch] R4-P2 Required-server readiness binding and the `required` gate are untested [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:499]. Medium (VG pre-verified, plus BH). Nothing fails if either of these regresses:
+- [x] [Review][Patch] R4-D2 `surfaceClass` is an open identifier, and the "complete" example uses a class that does not exist [schemas/hexalith.module-manifest.v2.json:391]. Owner resolved on 2026-10-08 (option A): enum `[ui, agent, service]`; the fixture and README example use `agent`. Medium (AA+BH). AD-14 defines the realm-contract classes `ui`, `agent` and `service`. The schema (`schemas/hexalith.module-manifest.v2.json:391`) accepts any identifier, including `mcp`. `test/fixtures/module/platform/valid.json:70` and `README.md:336` publish `"gateway"`.
+- [x] [Review][Patch] R4-P1 `classification.changeClass` uses `patch` and lacks the spine's `none` [schemas/hexalith.module-manifest.v2.json:1046]. Medium (AA). Module intake defines breaking, additive, or none; reproduced rejection of `"none"`.
+- [x] [Review][Patch] R4-P2 Required-server readiness binding and the `required` gate are untested [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:499]. Medium (VG pre-verified, plus BH). Nothing fails if either of these regresses:
   - The `probe.server == id` condition. Cover it with a required server whose only usable probe targets another server; it must fail.
   - The `required == true` guard. Cover it with a non-required, disabled server that has no readiness; it must pass.
 
   Cover both cases in the validator and in both CLI formats.
-- [ ] [Review][Patch] R4-P3 CLI invalid-matrix assertions can pass vacuously [test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs:583]. Medium (BH+AA). `ShouldContain(field)` is satisfied by message text for `schema` and `$`. `ShouldNotContain("declarations")` can never fail. JSON mode only checks that fields are nonblank. Assert the exact `field`/`source` in JSON diagnostics, a field-labelled match in human output, and the `failed` status.
-- [ ] [Review][Patch] R4-P4 A non-seekable manifest or unusable working directory crashes with a stack trace [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:127]. Medium (EH+BH). Reproduced: `--manifest <(cat valid.json)` throws an unhandled `NotSupportedException` from `FileStream.Length`. A deleted working directory also escapes the path catch at line 117. Fix: map both to structured HXP004/HXP005. This is distinct from the rejected R3-BH04 FIFO hang.
-- [ ] [Review][Patch] R4-P5 A scheme-relative credential URI bypasses the Platform credential detector [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:420]. Medium (EH). Reproduced: task argument `--endpoint=//user:pw@host.example` validates. Make the scheme optional in `CredentialUriAnywhereRegex`.
-- [ ] [Review][Patch] R4-P6 `routePrefix` and `mountPath` accept `//` and `.`/`..` segments [schemas/hexalith.module-manifest.v2.json:378]. Low (BH). Reproduced: `/api/../admin//x` validates, but hosted Gateway API HTTPRoute path validation rejects these forms. Mirror the `repositoryPath` lookaheads.
-- [ ] [Review][Patch] R4-P7 Kind-specific fields are not forbidden for other kinds [schemas/hexalith.module-manifest.v2.json:809]. Low (BH). Reproduced: an `http` readiness probe that also has `service`/`arguments` validates. `executable` on an `http` probe is still path-checked. `deadLetter` with `strategy: none` accepts `topic`. Forbid inapplicable properties in each `then` branch.
-- [ ] [Review][Patch] R4-P8 Placeholders and credentials in executable paths produce duplicate HXM006/HXM007 diagnostics with a runner-oriented hint [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:557]. Low (BH). Reproduced two HXM006 entries for `$TOOLS/run.sh`, one with the hint "Resolve placeholders before invoking the runner." `InspectValues` already covers every string, so drop those rule IDs from the path diagnostics.
-- [ ] [Review][Patch] R4-P9 JSON syntax errors report only `field: "$"` with no location [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:203]. Low (EH). Populate the existing `ToolDiagnostic.Location` from `JsonException.LineNumber`/`BytePositionInLine`.
-- [ ] [Review][Patch] R4-P10 The README diagnostic contract overstates `source`/`field` guarantees [README.md:495]. Low (BH+AA+EH). The actual behavior differs from the README in four cases:
+- [x] [Review][Patch] R4-P3 CLI invalid-matrix assertions can pass vacuously [test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs:583]. Medium (BH+AA). `ShouldContain(field)` is satisfied by message text for `schema` and `$`. `ShouldNotContain("declarations")` can never fail. JSON mode only checks that fields are nonblank. Assert the exact `field`/`source` in JSON diagnostics, a field-labelled match in human output, and the `failed` status.
+- [x] [Review][Patch] R4-P4 A non-seekable manifest or unusable working directory crashes with a stack trace [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:127]. Medium (EH+BH). Reproduced: `--manifest <(cat valid.json)` throws an unhandled `NotSupportedException` from `FileStream.Length`. A deleted working directory also escapes the path catch at line 117. Fix: map both to structured HXP004/HXP005. This is distinct from the rejected R3-BH04 FIFO hang.
+- [x] [Review][Patch] R4-P5 A scheme-relative credential URI bypasses the Platform credential detector [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:420]. Medium (EH). Reproduced: task argument `--endpoint=//user:pw@host.example` validates. Make the scheme optional in `CredentialUriAnywhereRegex`.
+- [x] [Review][Patch] R4-P6 `routePrefix` and `mountPath` accept `//` and `.`/`..` segments [schemas/hexalith.module-manifest.v2.json:378]. Low (BH). Reproduced: `/api/../admin//x` validates, but hosted Gateway API HTTPRoute path validation rejects these forms. Mirror the `repositoryPath` lookaheads.
+- [x] [Review][Patch] R4-P7 Kind-specific fields are not forbidden for other kinds [schemas/hexalith.module-manifest.v2.json:809]. Low (BH). Reproduced: an `http` readiness probe that also has `service`/`arguments` validates. `executable` on an `http` probe is still path-checked. `deadLetter` with `strategy: none` accepts `topic`. Forbid inapplicable properties in each `then` branch.
+- [x] [Review][Patch] R4-P8 Placeholders and credentials in executable paths produce duplicate HXM006/HXM007 diagnostics with a runner-oriented hint [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:557]. Low (BH). Reproduced two HXM006 entries for `$TOOLS/run.sh`, one with the hint "Resolve placeholders before invoking the runner." `InspectValues` already covers every string, so drop those rule IDs from the path diagnostics.
+- [x] [Review][Patch] R4-P9 JSON syntax errors report only `field: "$"` with no location [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:203]. Low (EH). Populate the existing `ToolDiagnostic.Location` from `JsonException.LineNumber`/`BytePositionInLine`.
+- [x] [Review][Patch] R4-P10 The README diagnostic contract overstates `source`/`field` guarantees [README.md:495]. Low (BH+AA+EH). The actual behavior differs from the README in four cases:
   - Set-level diagnostics use `source: manifest`: file count (HXP013) and empty request (HXP015).
   - Cancellation (HXC130) and usage (HXC001) diagnostics have no `source`.
   - A redacted path becomes `[redacted manifest path]`.
   - On Windows, a manifest on another volume is reported by its absolute path.
 
   Document these exceptions.
-- [ ] [Review][Patch] R4-P11 The exact cwd-relative `source` value is never asserted [Tools/test-g4-tool-package-contracts.ps1:1015]. Low (VG pre-verified). Emitting absolute paths would pass every `Contains`/`EndsWith` check. Parse the JSON probe output and assert `source -ceq 'platform-valid.json'`.
-- [ ] [Review][Patch] R4-P12 The published "complete" extension example declares a secret input, which AD-13 forbids [test/fixtures/module/platform/valid.json:33]. Low (AA). AD-13 forbids extension secrets outside a named AD-9 exception. Switch the extension input in the fixture and in `README.md:299` to a `configuration` source.
-- [ ] [Review][Patch] R4-P13 UTF-8 BOM acceptance is untested [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:149]. Low (BH). Removing the explicit BOM branch would break BOM-prefixed (Windows-editor) manifests without any test failing. Add a BOM-prefixed fixture case.
+- [x] [Review][Patch] R4-P11 The exact cwd-relative `source` value is never asserted [Tools/test-g4-tool-package-contracts.ps1:1015]. Low (VG pre-verified). Emitting absolute paths would pass every `Contains`/`EndsWith` check. Parse the JSON probe output and assert `source -ceq 'platform-valid.json'`.
+- [x] [Review][Patch] R4-P12 The published "complete" extension example declares a secret input, which AD-13 forbids [test/fixtures/module/platform/valid.json:33]. Low (AA). AD-13 forbids extension secrets outside a named AD-9 exception. Switch the extension input in the fixture and in `README.md:299` to a `configuration` source.
+- [x] [Review][Patch] R4-P13 UTF-8 BOM acceptance is untested [src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs:149]. Low (BH). Removing the explicit BOM branch would break BOM-prefixed (Windows-editor) manifests without any test failing. Add a BOM-prefixed fixture case.
 - [x] [Review][Defer] R4-W1 Bound startup override budgets and integer forms for typed consumers [schemas/hexalith.module-manifest.v2.json:985]. Deferred, medium (EH+BH). Reproducible inputs:
   - `timeoutSeconds` of `1e308` or `1e-300` passes the frozen "positive finite" rule, but `TimeSpan` conversion overflows or truncates.
   - `replicas`, `memoryMiB` and `sizeMiB` written as `1.0` or `1e3` pass JSON Schema `integer` but fail `GetInt32()`.
@@ -230,6 +230,25 @@ Code review R4 (2026-10-08): four layers (Blind Hunter, Edge Case Hunter, Verifi
 
 | R3-BH01-follow-up | false | reject: corrected externally | Owner commit 57a3167dcf6a4855c195fc1029856b5251e16ac3 aligned both qualification consumers and their test expectation to EventStore 3.117.1. The current mismatch is resolved; fresh migrated-tuple acceptance remains a separate follow-up. |
 
+| R5-BH01 | medium | patch: readiness endpoint canonical form | The endpoint pattern rejects only a leading `//`. `/health/../admin` and `/health//ready` match it, and `IsUsableReadiness` accepts any `/` path, so a required server enrolls. |
+| R5-EH01 | medium | patch: readiness endpoint canonical form | Same defect as R5-BH01: dot and empty segments in the readiness endpoint still enroll as usable. |
+| R5-BH02 | low | reject: encoded traversal needs a decoder | `/sample/%2e%2e/admin` passes the literal lookaheads. This validator stores the path and does not decode it, so no traversal occurs here. Everyday declarations do not use percent-encoded dots, and decoding them is a new path policy rather than a direct correction. |
+| R5-EH02 | low | reject: encoded traversal needs a decoder | Same claim as R5-BH02. |
+| R5-BH03 | medium | patch: encoded userinfo | `Uri.TryCreate` returns false for `https://user:pw%40host.example`, and the regex requires a literal `@`, so both that value and `//user:pw%40host.example` enroll. |
+| R5-BH04 | low | reject: stage rule reserved | Extension `source: secret` still validates. The frozen intent leaves stage-specific rules to later stories, and the resolved R4-P12 change was the published example, which now uses `configuration`. |
+| R5-BH05 | low | patch: diagnostic id wording | The new README sentence assigns HXP013 only to the 256-file limit and HXP015 only to an empty request. The same IDs also report the 1 MiB file limit and a missing required field. |
+| R5-BH06 | low | reject: location contract already met | Location is the requested 1-based line and `BytePositionInLine`. Translating nested `JsonException.Path` JSONPath into dotted fields is a separate parser, and syntax failures already identify the location. |
+| R5-BH07 | medium | patch: process working directory | The deleted-cwd tests call `Directory.SetCurrentDirectory` while the assembly has no parallelization disable. Other collections can observe that process-wide directory. |
+| R5-BH08 | low | patch: optional server coverage | Readiness is required only when `required` is true. No test enrolls an enabled, non-required server with an empty readiness list, so widening that gate to every enabled server stays green. |
+| R5-BH09 | false | reject: fields already retained | Unknown `providerExceptions[].name` values fail the closed enum. `ApplyDefaults` re-parses the whole module and only fills omitted replicas and the default startup timeout, so `providerExceptions`, `e2eChecks`, and `tenantLifecycle` remain. Empty `e2eChecks` is the allowed stage-deferred form. |
+| R5-BH10 | medium | defer: quantity conversion | carried. R4-W1 already records that `1e308` and `1e-300` satisfy the frozen positive-finite rule while `TimeSpan` cannot represent them, and that non-canonical integers remain a composition concern. The acceptance test still locks that frozen rule. |
+| R5-EH04 | medium | defer: quantity conversion | carried. Same startup-budget claim as R4-W1. |
+| R5-EH05 | medium | defer: quantity conversion | carried. `memoryMiB` and `sizeMiB` above `Int32` maximum are the same deferred quantity-bound claim; this validator still does not convert those quantities. |
+| R5-BH11 | low | reject: spec wording | The contradictory completion sentence is text in this spec. The review route does not edit the spec to close a finding. |
+| R5-BH12 | false | reject: json source is exact | The package loop runs human and JSON. The JSON iteration requires `source` to equal `platform-valid.json`, so an absolute path fails the script even though the human check uses `Contains`. |
+| R5-EH03 | low | reject: uncommon special files | carried. Opening a FIFO still blocks before `CanSeek`, which is the same deliberately supplied special-file hang rejected as R3-BH04 and R3-EH02. The new check runs only after open returns. |
+| R5-VG01 | medium | patch: validate outcome contract | Pre-verified. Success, failure, and cancellation JSON results do not assert `outcome` exit, phase, category, or rule id, so those fields can change while the current command and package checks stay green. |
+
 ## Verification
 
 Run from Builds:
@@ -320,3 +339,22 @@ This record supersedes the earlier blocked verification for the current checkout
 - Package source-validation and qualification-control lanes remain outside this verification invocation (`-SkipSourceValidation`, no `-RequireControls`). The recorded inventory correctly sets `releaseEligible: false`; no fresh tuple acceptance, publication eligibility or Platform tool acceptance is granted.
 
 All three review layers completed and every finding is triaged above. Eight distinct declaration/verification corrections were applied. Follow-ups cover migrated-tuple qualification, later command execution semantics and the unrelated custody review transport; the consumer-pin mismatch was independently corrected. The implementation spec is `done`, with Story 1.1 moved to sprint `review` for human review.
+
+### R4 patch verification (2026-10-08)
+
+Builds commit `50b0257001fe91f14bf16c7ea877d3e92bdfdf08` applies the open R4 patch findings. Deferred findings R4-W1, R4-W2, and the carried stage-rule items stay deferred. Parent verification re-ran the gates after that commit.
+
+- Required Debug build: `dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1` exited 0 with zero warnings and errors.
+- Focused declaration and CLI tests: `dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class '*PlatformManifest*'` — 175 passed, zero failed, skipped, or not run.
+- Required full module suite: the same assembly with no class filter — 389 passed, zero failed, skipped, or not run.
+- Fresh installed-tool contracts: `pwsh -NoProfile -File Tools/test-g4-tool-package-contracts.ps1 -Version 0.0.0-story11.20261008.11 -PackageDirectory artifacts/story-1-1-validation/packages-0.0.0-story11.20261008.11 -SkipSourceValidation -RetainPackageDirectory` exited 0. MSBuild operations used `-m:1`. The JSON duplicate probe asserts `source` equals `platform-valid.json`. No publication eligibility or Platform tool acceptance is granted.
+
+The Windows other-volume path exception is documented and was not exercised on this machine.
+
+### R5 patch verification (2026-10-08)
+
+Review patches remain uncommitted in Builds on top of `50b0257001fe91f14bf16c7ea877d3e92bdfdf08`.
+
+- Required Debug build exited 0 with zero warnings and errors.
+- Full module suite: 395 passed, zero failed, skipped, or not run.
+- Fresh installed-tool contracts for `0.0.0-story11.20261008.12` exited 0, including exact JSON `outcome` checks for success, duplicate rejection, and legacy rejection. MSBuild operations used `-m:1`. No publication eligibility or Platform tool acceptance is granted.
