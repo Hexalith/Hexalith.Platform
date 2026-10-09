@@ -14,7 +14,16 @@ public static class P1ReceiptVerifier
         P1SignedDocument? receiptDocument, string? retrievalUri, P1SignedDocument? statusDocument, string? statusUri,
         P1ReceiptClaims? expected, byte[]? subjectBytes, P1AuthenticatedEnrollment? authenticatedEnrollment, string? requestNonce,
         DateTimeOffset authenticatedNowUtc)
+        => TryVerify(receiptDocument, retrievalUri, statusDocument, statusUri, expected, subjectBytes,
+            authenticatedEnrollment, requestNonce, authenticatedNowUtc, out _);
+
+    /// <summary>Returns immutable exact-byte evidence only after the complete offline verification succeeds.</summary>
+    public static bool TryVerify(
+        P1SignedDocument? receiptDocument, string? retrievalUri, P1SignedDocument? statusDocument, string? statusUri,
+        P1ReceiptClaims? expected, byte[]? subjectBytes, P1AuthenticatedEnrollment? authenticatedEnrollment, string? requestNonce,
+        DateTimeOffset authenticatedNowUtc, out P1VerifiedReceiptEvidence? evidence)
     {
+        evidence = null;
         try
         {
             P1ReceiptEnrollment? enrollment = authenticatedEnrollment?.Enrollment;
@@ -47,8 +56,20 @@ public static class P1ReceiptVerifier
                 return false;
             }
 
-            return VerifySignature(receiptSnapshot, enrollment.ReceiptPublicKeySpki, enrollment.ReceiptKeyFingerprint)
-                && VerifySignature(statusSnapshot, enrollment.StatusPublicKeySpki, enrollment.StatusKeyFingerprint);
+            if (!VerifySignature(receiptSnapshot, enrollment.ReceiptPublicKeySpki, enrollment.ReceiptKeyFingerprint)
+                || !VerifySignature(statusSnapshot, enrollment.StatusPublicKeySpki, enrollment.StatusKeyFingerprint))
+            {
+                return false;
+            }
+
+            evidence = new(
+                Convert.ToHexStringLower(SHA256.HashData(receiptSnapshot.Payload)),
+                Convert.ToHexStringLower(SHA256.HashData(receiptSnapshot.Signature)),
+                Convert.ToHexStringLower(SHA256.HashData(statusSnapshot.Payload)),
+                Convert.ToHexStringLower(SHA256.HashData(statusSnapshot.Signature)),
+                Convert.ToHexStringLower(SHA256.HashData(subjectSnapshot)), subjectSnapshot.LongLength,
+                authenticatedEnrollment!.BootstrapSha256, retrievalUri!, statusUri!, requestNonce!);
+            return true;
         }
         catch (Exception exception) when (exception is ArgumentException or CryptographicException or InvalidOperationException or EncoderFallbackException)
         {

@@ -312,6 +312,123 @@ public sealed class P1ReceiptVerifierTests
         allocated.ShouldBeLessThan(256L * 1024);
     }
 
+    [Fact]
+    public void SignedEnvelope_ExactFramingAndTransportLimit()
+    {
+        byte[] signature = Enumerable.Range(0, 64).Select(i => (byte)i).ToArray();
+        byte[] independent = [0, 0, 0, 3, 0xa1, 0xb2, 0xc3, .. signature];
+        P1SignedEnvelopeV1.TryDecode(independent, out P1SignedDocument? decoded).ShouldBeTrue();
+        decoded.ShouldNotBeNull();
+        decoded.Payload.ShouldBe(new byte[] { 0xa1, 0xb2, 0xc3 });
+        decoded.Signature.ShouldBe(signature);
+        P1SignedEnvelopeV1.Encode(decoded).ShouldBe(independent);
+
+        byte[] maxPayload = new byte[1_048_508];
+        byte[] maxBody = P1SignedEnvelopeV1.Encode(new(maxPayload, signature));
+        maxBody.Length.ShouldBe(1_048_576);
+        P1SignedEnvelopeV1.TryDecode(maxBody, out P1SignedDocument? maxDecoded).ShouldBeTrue();
+        maxDecoded.ShouldNotBeNull();
+        maxDecoded.Payload.Length.ShouldBe(maxPayload.Length);
+        Should.Throw<ArgumentException>(() => P1SignedEnvelopeV1.Encode(new(new byte[maxPayload.Length + 1], signature)));
+        P1SignedEnvelopeV1.TryDecode(new byte[1_048_577], out P1SignedDocument? oversized).ShouldBeFalse();
+        oversized.ShouldBeNull();
+    }
+
+    [Fact]
+    public void SignedEnvelope_TruncationTrailingAndMalformedLengths_Refuse()
+    {
+        byte[] valid = P1SignedEnvelopeV1.Encode(new([1, 2, 3], new byte[64]));
+        P1SignedEnvelopeV1.TryDecode(valid[..^1], out _).ShouldBeFalse();
+        P1SignedEnvelopeV1.TryDecode([.. valid, 0], out _).ShouldBeFalse();
+        P1SignedEnvelopeV1.TryDecode(valid[..3], out _).ShouldBeFalse();
+        byte[] zeroLength = valid.ToArray();
+        BinaryPrimitives.WriteUInt32BigEndian(zeroLength, 0);
+        P1SignedEnvelopeV1.TryDecode(zeroLength, out _).ShouldBeFalse();
+        byte[] tooLong = valid.ToArray();
+        BinaryPrimitives.WriteUInt32BigEndian(tooLong, (uint)P1SignedEnvelopeV1.MaxTransportPayloadLength + 1);
+        P1SignedEnvelopeV1.TryDecode(tooLong, out _).ShouldBeFalse();
+        byte[] highBitLength = valid.ToArray();
+        BinaryPrimitives.WriteUInt32BigEndian(highBitLength, uint.MaxValue);
+        P1SignedEnvelopeV1.TryDecode(highBitLength, out _).ShouldBeFalse();
+        Should.Throw<ArgumentException>(() => P1SignedEnvelopeV1.Encode(new([1], new byte[63])));
+    }
+
+    [Fact]
+    public void Transport_ExactTypesAndSignedFixtureComposeWithEvidence()
+    {
+        using var keys = new Fixture();
+        byte[] receiptBody = P1SignedEnvelopeV1.Encode(keys.Receipt);
+        byte[] statusBody = P1SignedEnvelopeV1.Encode(keys.Status);
+        P1ReceiptTransportV1.TryDecodeReceipt("application/vnd.hexalith.p1-receipt.v1", receiptBody, out P1SignedDocument? receipt).ShouldBeTrue();
+        P1ReceiptTransportV1.TryDecodeStatus("application/vnd.hexalith.p1-status.v1", statusBody, out P1SignedDocument? status).ShouldBeTrue();
+        receipt.ShouldNotBeNull();
+        status.ShouldNotBeNull();
+        string retrievalUri = keys.Enrollment.RetrievalOrigin + "/v1/receipts/" + keys.Claims.ReceiptId;
+        string statusUri = keys.Enrollment.StatusOrigin + "/v1/status/" + keys.Claims.ReceiptId + "?nonce=" + Nonce;
+        P1ReceiptVerifier.TryVerify(receipt, retrievalUri, status, statusUri, keys.Claims, keys.Subject,
+            keys.AuthenticatedEnrollment, Nonce, Now, out P1VerifiedReceiptEvidence? evidence).ShouldBeTrue();
+        evidence.ShouldNotBeNull();
+        keys.Verify().ShouldBeTrue();
+        evidence.ReceiptPayloadSha256.ShouldBe(Fingerprint(keys.Receipt.Payload));
+        evidence.ReceiptSignatureSha256.ShouldBe(Fingerprint(keys.Receipt.Signature));
+        evidence.StatusPayloadSha256.ShouldBe(Fingerprint(keys.Status.Payload));
+        evidence.StatusSignatureSha256.ShouldBe(Fingerprint(keys.Status.Signature));
+        evidence.SubjectSha256.ShouldBe(Fingerprint(keys.Subject));
+        evidence.SubjectLength.ShouldBe(keys.Subject.LongLength);
+        evidence.BootstrapSha256.ShouldBe(Fingerprint(keys.Bootstrap.Payload));
+        evidence.RetrievalUri.ShouldBe(retrievalUri);
+        evidence.StatusUri.ShouldBe(statusUri);
+        evidence.RequestNonce.ShouldBe(Nonce);
+
+        receiptBody[4] ^= 1;
+        statusBody[4] ^= 1;
+        receipt.Payload.ShouldBe(keys.Receipt.Payload);
+        status.Payload.ShouldBe(keys.Status.Payload);
+        receipt.Payload[0] ^= 1;
+        status.Signature[0] ^= 1;
+        keys.Subject[0] ^= 1;
+        evidence.ReceiptPayloadSha256.ShouldBe(Fingerprint(keys.Receipt.Payload));
+        evidence.StatusSignatureSha256.ShouldBe(Fingerprint(keys.Status.Signature));
+        evidence.SubjectSha256.ShouldNotBe(Fingerprint(keys.Subject));
+        P1ReceiptVerifier.TryVerify(receipt, retrievalUri, status, statusUri, keys.Claims, keys.Subject,
+            keys.AuthenticatedEnrollment, Nonce, Now, out P1VerifiedReceiptEvidence? changedEvidence).ShouldBeFalse();
+        changedEvidence.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Transport_WrongTypeMalformedPayloadAndChangedSignature_Refuse()
+    {
+        using var keys = new Fixture();
+        byte[] receiptBody = P1SignedEnvelopeV1.Encode(keys.Receipt);
+        byte[] statusBody = P1SignedEnvelopeV1.Encode(keys.Status);
+        P1ReceiptTransportV1.TryDecodeReceipt(null, receiptBody, out _).ShouldBeFalse();
+        P1ReceiptTransportV1.TryDecodeReceipt("application/vnd.hexalith.p1-receipt.v2", receiptBody, out P1SignedDocument? wrongVersion).ShouldBeFalse();
+        wrongVersion.ShouldBeNull();
+        P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.StatusMediaType, receiptBody, out P1SignedDocument? wrongType).ShouldBeFalse();
+        wrongType.ShouldBeNull();
+        P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.ReceiptMediaType + "; charset=utf-8", receiptBody, out _).ShouldBeFalse();
+        P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.ReceiptMediaType.ToUpperInvariant(), receiptBody, out _).ShouldBeFalse();
+        P1ReceiptTransportV1.TryDecodeStatus(P1ReceiptTransportV1.ReceiptMediaType, statusBody, out _).ShouldBeFalse();
+        P1ReceiptTransportV1.TryDecodeStatus(P1ReceiptTransportV1.StatusMediaType, receiptBody, out _).ShouldBeFalse();
+        byte[] malformedReceipt = receiptBody.ToArray();
+        malformedReceipt[4] ^= 1;
+        P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.ReceiptMediaType, malformedReceipt, out P1SignedDocument? malformed).ShouldBeFalse();
+        malformed.ShouldBeNull();
+        P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.ReceiptMediaType, receiptBody[..^1], out P1SignedDocument? truncated).ShouldBeFalse();
+        truncated.ShouldBeNull();
+        P1ReceiptTransportV1.TryDecodeStatus(P1ReceiptTransportV1.StatusMediaType, [.. statusBody, 0], out _).ShouldBeFalse();
+
+        byte[] changedSignature = receiptBody.ToArray();
+        changedSignature[^1] ^= 1;
+        P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.ReceiptMediaType, changedSignature, out P1SignedDocument? decoded).ShouldBeTrue();
+        decoded.ShouldNotBeNull();
+        string retrievalUri = keys.Enrollment.RetrievalOrigin + "/v1/receipts/" + keys.Claims.ReceiptId;
+        string statusUri = keys.Enrollment.StatusOrigin + "/v1/status/" + keys.Claims.ReceiptId + "?nonce=" + Nonce;
+        P1ReceiptVerifier.TryVerify(decoded, retrievalUri, keys.Status, statusUri, keys.Claims, keys.Subject,
+            keys.AuthenticatedEnrollment, Nonce, Now, out P1VerifiedReceiptEvidence? evidence).ShouldBeFalse();
+        evidence.ShouldBeNull();
+    }
+
     private static P1SignedDocument Sign(P1ReceiptClaims claims, ECDsa key) => Sign(P1ReceiptWireV1.Encode(claims), key);
     private static P1SignedDocument Sign(P1StatusClaims claims, ECDsa key) => Sign(P1ReceiptWireV1.Encode(claims), key);
     private static P1SignedDocument Sign(P1BootstrapClaims claims, ECDsa key) => Sign(P1BootstrapWireV1.Encode(claims), key);
