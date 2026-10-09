@@ -275,7 +275,16 @@ public sealed class DeletionBatchExecutionCoordinatorTests
             "deletion-a", null, f.ViolationFacts, null, null, null, null, "", f.ViolationResource);
         f.OriginalAcceptance = (await f.Guard.ExecuteAsync(append, [new("original-content-cell", 0, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData([])), "sealed-original-content"u8.ToArray())], TestContext.Current.CancellationToken))!;
         f.OriginalAcceptance.Status.ShouldBe("Accepted");
-        f.SetState(f.State with { Deletions = installed.Deletions });
+        var scope = installed.Deletions.Single().Scope;
+        var authorize = new GovernanceGuardTransition("tenant-a", "authorize-original-fence", GovernanceGuardOperation.AuthorizeAdmissionFence, f.State.Revision, f.State.EpochId,
+            "deletion-a", scope, null, null, null, null, null, "fixture-original-fence", "");
+        (await f.Guard.ExecuteAsync(authorize, [], TestContext.Current.CancellationToken))!.Status.ShouldBe("Committed");
+        var commit = new GovernanceGuardTransition("tenant-a", "commit-original-fence", GovernanceGuardOperation.CommitAdmissionFence, f.State.Revision, f.State.EpochId,
+            "deletion-a", scope, null, null, null, null, null, "fixture-original-fence", "");
+        (await f.Guard.ExecuteAsync(commit, [], TestContext.Current.CancellationToken))!.Status.ShouldBe("Committed");
+        long installedRevision = f.State.Deletions.Single().AdmissionFenceGuardRevision;
+        installedRevision.ShouldBeGreaterThan(f.OriginalAcceptance.GuardHighWater);
+        f.SetState(f.State with { Deletions = installed.Deletions.Select(value => value with { AdmissionFenceGuardRevision = installedRevision }).ToArray() });
         var payload = f.Payload with { IntendedIssuedGuardRevision = f.State.Revision };
         var first = await f.Coordinator.ExecuteAsync(payload, cancellationToken: TestContext.Current.CancellationToken); first.Status.ShouldBe("CompletionSealed"); var originalCompletion = first.Guard!;
         var ordinal = new GovernanceOrdinalCommand(1, "", "", "", "", "post-seal-content", "Content", f.OriginalAcceptance.AcceptedAtAdmissionFenceOrdinal, f.OriginalAcceptance.GuardHighWater, f.ViolationResource, [], "");

@@ -182,6 +182,22 @@ public sealed class Fr34ProtectionGateTests
         await f.Engine.DidNotReceiveWithAnyArgs().UnsealAsync(default!, TestContext.Current.CancellationToken); operation.IsCanceled.ShouldBeTrue();
     }
 
+    /// <summary>The independent proof receives one detached scan snapshot after the reader transfers and clears its byte array.</summary>
+    [Fact]
+    public async Task CarrierProofUsesDetachedReaderSnapshot()
+    {
+        var f = Arrange("valid"); bool checkedSnapshot = false;
+        f.Authority.VerifyCarrierAsync(Arg.Any<Fr34ProtectionTarget>(), Arg.Any<string>(), Arg.Any<Fr34CanaryReference>(),
+            Arg.Any<Fr34PersistedCanary>(), Arg.Any<Fr34CanaryAuthorization>(), Arg.Any<CancellationToken>()).Returns(call =>
+        {
+            byte[] supplied = f.ReturnedBytes()!; byte[] owned = call.Arg<Fr34PersistedCanary>().Bytes;
+            ReferenceEquals(supplied, owned).ShouldBeFalse(); supplied.All(value => value == 0).ShouldBeTrue();
+            owned.Any(value => value != 0).ShouldBeTrue(); checkedSnapshot = true; return false;
+        });
+        (await f.Gate.EvaluateAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        checkedSnapshot.ShouldBeTrue();
+    }
+
     /// <summary>Actually suspended provider metadata Count/traversal releases cancellation/deadline and cannot reach independent proof or content admission after late completion.</summary>
     [Theory]
     [InlineData(false, false)][InlineData(false, true)][InlineData(true, false)][InlineData(true, true)]

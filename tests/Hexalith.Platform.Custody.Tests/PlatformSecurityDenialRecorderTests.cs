@@ -71,6 +71,35 @@ public sealed class PlatformSecurityDenialRecorderTests
         fixture.Read()!.Records.Count.ShouldBe(1);
     }
 
+    /// <summary>An expired authenticated origin replays the exact original through the immutable archive lookup after head rollover.</summary>
+    [Fact]
+    public async Task ExpiredOriginReplayFindsArchivedOriginalWithoutNewRoutingDecision()
+    {
+        var fixture = new SecuritySpoolFixture(); var profiles = new CustodyFixtureProfileProvider(fixture.Clock); var keys = new CustodyFixtureKeyProvider(fixture.Clock);
+        var auth = new TrustedEnvelopeAuthenticator(keys, profiles, fixture.Clock);
+        var recorder = new PlatformSecurityDenialRecorder(auth, new(keys, profiles, fixture.Clock), fixture.Spool, fixture.Clock);
+        var principal = new TrustedPrincipal(TrustedPrincipalKind.User, "tenant-a", "actor", "party", 1, "roles", null, null, null, null);
+        var identity = new TrustedEnvelopeIdentity(1, "fixture-r1", "fixture-issuer", principal, "Contracts.Exact", "Exact", "tenant-a", "resource", "c", "c", ["logical"], "fingerprint", "digest-v1", "fixture-audience", "logical");
+        var envelope = (await auth.IssueAsync(identity, TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken)).Envelope!;
+        var original = await recorder.ObserveAsync("archived-server-receipt", "invalid-tag", ["secret"], "key-v1", envelope, identity, TestContext.Current.CancellationToken);
+        original.ShouldNotBeNull(); (await fixture.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
+        var acknowledged = fixture.Read()!; var exact = acknowledged.Records.Single(); exact.Receipt.ShouldNotBeNull();
+        var page = new SecuritySpoolArchivePage(0, acknowledged, null);
+        string digest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(page)));
+        var head = acknowledged with { Revision = acknowledged.Revision + 1, PageIndex = 1, ArchivedObservedCount = 1,
+            ArchivedAcknowledgedCount = 1, ArchiveHeadDigest = digest, Records = [] };
+        fixture.Archives[0] = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(page);
+        fixture.Persisted = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(head); fixture.Anchor = head.Revision;
+        fixture.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        fixture.Clock.Now += TimeSpan.FromMinutes(3);
+        (await auth.VerifyAsync(envelope, identity, TestContext.Current.CancellationToken)).Status.ShouldNotBe(CustodyStatus.Succeeded);
+        var restarted = new PlatformSecurityDenialRecorder(auth, new(keys, profiles, fixture.Clock),
+            new ReplicatedSecurityObservationSpool(fixture.Client, fixture.Clock, fixture.Authority, fixture.Recorder), fixture.Clock);
+        (await restarted.ObserveAsync("archived-server-receipt", "invalid-tag", ["secret"], "key-v1", envelope, identity, TestContext.Current.CancellationToken)).ShouldBe(exact);
+        (await restarted.ObserveAsync("archived-server-receipt", "invalid-tag", ["changed"], "key-v1", envelope, identity, TestContext.Current.CancellationToken)).ShouldBeNull();
+        fixture.Read()!.Records.ShouldBeEmpty(); fixture.Archives.Count.ShouldBe(1); fixture.PhysicalAppends.ShouldBe(1);
+    }
+
     /// <summary>Independent first observations bind the full retained receipt, safe reason, original authenticated route and keyed fields; receipt-only identity cannot pass these vectors.</summary>
     [Theory]
     [InlineData("route")][InlineData("reason")][InlineData("fields")]

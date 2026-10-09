@@ -38,7 +38,7 @@ internal sealed class DeletionBatchExecutionFixture : IDisposable
         var scope = new GovernanceScopeV1("tenant-a", "SourceDeletionExactConversation", "", "conversation-a");
         var obligations = new[] { "original-obligation" };
         var deletion = new GovernanceDeletionState("deletion-a", scope, GovernanceScopeGuardReducer.PredicateDigest(scope), 1, ["owner-a"], obligations,
-            [new(1, "owner-a", GovernanceScopeGuardReducer.ObligationDigest(obligations), "effective-a")], [], [new(1, "cut-a", "token-a", "binding-a", "")], "seal-a", [batch], false, false);
+            [new(1, "owner-a", GovernanceScopeGuardReducer.ObligationDigest(obligations), "effective-a")], [], [new(1, "cut-a", "token-a", "binding-a", "")], "seal-a", [batch], false, false) { AdmissionFenceGuardRevision = 5 };
         State = new("tenant-a", "installed-source", 10, "current-epoch", "legacy-revoked", "all-writers-installed", null, [], [deletion], [], [], [], []);
         Payload = new("issuer-a", "protection-a", "tenant-a", "deletion-a", "seal-a", "AcceptedSet", 0, "batch-a", batch.ManifestDigest, "guard-a", 10, 1, 1, "key-a");
         Source.ReadAsync("tenant-a", Arg.Any<CancellationToken>()).Returns(_ => Copy(State));

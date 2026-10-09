@@ -17,6 +17,7 @@ internal sealed class SecuritySpoolFixture
     internal ReplicatedSecuritySpoolTarget Target { get; }
     internal ReplicatedSecurityObservationSpool Spool { get; }
     internal byte[]? Persisted { get; set; }
+    internal Dictionary<long, byte[]> Archives { get; } = [];
     internal byte[]? PendingBytes { get; set; }
     internal long PendingEtag { get; set; }
     internal int FailSaveStage { get; set; } = 1;
@@ -63,6 +64,20 @@ internal sealed class SecuritySpoolFixture
                 if (!fail || CommitBeforeSaveFault) { Persisted = JsonSerializer.SerializeToUtf8Bytes(call.Arg<SecuritySpoolSnapshot>()); }
                 return fail ? Task.FromException<bool>(new HttpRequestException("Controlled component save fault.")) : Task.FromResult(true);
             });
+        Client.GetStateAndETagAsync<SecuritySpoolArchivePage>(Target.ComponentName, Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(call =>
+            {
+                long index = ArchiveIndex(call.ArgAt<string>(1));
+                return (Archives.TryGetValue(index, out var bytes) ? JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)! : null!, Archives.ContainsKey(index) ? "1" : "0");
+            });
+        Client.TrySaveStateAsync(Target.ComponentName, Arg.Any<string>(), Arg.Any<SecuritySpoolArchivePage>(), Arg.Any<string>(), Arg.Any<StateOptions>(),
+            Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(call =>
+            {
+                long index = ArchiveIndex(call.ArgAt<string>(1));
+                if (call.ArgAt<string>(3) != "0" || Archives.ContainsKey(index)) { return Task.FromResult(false); }
+                Archives[index] = JsonSerializer.SerializeToUtf8Bytes(call.Arg<SecuritySpoolArchivePage>());
+                return Task.FromResult(true);
+            });
         Recorder.LookupAsync(Arg.Any<SecurityObservationRecord>(), Arg.Any<CancellationToken>()).Returns(call => {
             var record = call.Arg<SecurityObservationRecord>(); return Recorded.TryGetValue(record.Intent.ObservationId, out var receipt)
                 ? new SecurityEventRecorderLookup(SecurityEventRecorderLookupState.Recorded, receipt) : new(SecurityEventRecorderLookupState.NotRecorded);
@@ -104,6 +119,7 @@ internal sealed class SecuritySpoolFixture
     internal void InstallJournal() => AnchoredFixtureJournal.Attach(Authority, Target.ComponentName + "|system/security-observations/" + Target.InstallationEpoch,
         () => (Anchor, AnchorDigest), (next, digest) => { Anchor = next; AnchorDigest = digest; }, Journal);
     internal SecuritySpoolSnapshot? Read() => Persisted is null ? null : JsonSerializer.Deserialize<SecuritySpoolSnapshot>(Persisted);
+    private static long ArchiveIndex(string key) => long.Parse(key[(key.LastIndexOf('/') + 1)..], CultureInfo.InvariantCulture);
     internal static SecurityObservationIntent Intent(string id = "observation-1") => new(id, "tenant-a", "invalid-tag",
         Convert.ToHexString(HMACSHA256.HashData(new byte[32], "synthetic-untrusted-secret"u8)), "system-observation-key-v1");
     internal static SecurityEventRecordReceipt Receipt(SecurityObservationRecord record) => new(record.Intent.ObservationId, record.Intent.RoutingTenantId, record.UtcDay,
