@@ -169,11 +169,73 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await first).ShouldBeNull();
         var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
         var observedA = await restarted.ObserveAsync(a, TestContext.Current.CancellationToken);
-        if (observedA is null) { throw new InvalidOperationException($"Competing rollover retry unavailable: headPage={f.Read()?.PageIndex}, headCount={f.Read()?.Records.Count}, headRevision={f.Read()?.Revision}, anchor={f.Anchor}, pending={f.PendingBytes is not null}, archives={string.Join(',', f.Archives.Select(pair => $"{pair.Key}:{JsonSerializer.Deserialize<SecuritySpoolArchivePage>(pair.Value)!.Snapshot.Records.Count}"))}"); }
-        observedA.Sequence.ShouldBe(10002);
+        observedA.ShouldNotBeNull(); observedA.Sequence.ShouldBe(10002);
         (await restarted.ObserveAsync(b, TestContext.Current.CancellationToken)).ShouldBe(observedB);
         f.Archives.Count.ShouldBe(1); f.Read()!.Records.Count.ShouldBe(2);
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
+    }
+
+    /// <summary>Pending admission reserves enough bytes for a later maximal exact recorder receipt, so drain can acknowledge and archive the original.</summary>
+    [Fact]
+    public async Task NearByteLimitAdmissionReservesFutureReceiptBeforeAcknowledgment()
+    {
+        var f = new SecuritySpoolFixture();
+        SecurityObservationRecord Seed(int sequence)
+        {
+            var intent = SecuritySpoolFixture.Intent("seed-" + sequence + new string('o', 1600)) with
+            { RetainedServerReceiptKey = "server-" + sequence + new string('r', 1600), DigestKeyVersion = new string('k', 1600) };
+            var pending = new SecurityObservationRecord(intent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) with { EventId = "e" } };
+        }
+        var nextIntent = SecuritySpoolFixture.Intent("pending-after-near-full-head");
+        int bound = RecoverableAnchoredState.MaximumPendingBytes;
+        int perRecord = JsonSerializer.SerializeToUtf8Bytes(Seed(1)).Length + 1;
+        int count = (bound - 20000) / perRecord;
+        var records = Enumerable.Range(1, count).Select(Seed).ToList();
+        int CandidateBytes()
+        {
+            var pending = new SecurityObservationRecord(nextIntent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), records.Count + 1L, null);
+            return JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolSnapshot(f.Target.InstallationEpoch, records.Count * 2L + 1, records.Append(pending).ToArray())).Length;
+        }
+        while (CandidateBytes() > bound - 500) { records.RemoveAt(records.Count - 1); }
+        int remaining = bound - 500 - CandidateBytes();
+        for (int index = records.Count - 1; remaining > 0 && index >= 0; index--)
+        {
+            int fill = Math.Min(remaining, 2047);
+            var record = records[index];
+            records[index] = record with { Receipt = record.Receipt! with { EventId = "e" + new string('e', fill) } };
+            remaining -= fill;
+        }
+        remaining.ShouldBe(0); records.Count.ShouldBeLessThan(10000); CandidateBytes().ShouldBe(bound - 500);
+        var wouldBePending = new SecurityObservationRecord(nextIntent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), records.Count + 1L, null);
+        var maximalReceipt = SecuritySpoolFixture.Receipt(wouldBePending) with { EventId = new string('\0', 2048) };
+        var stranded = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, records.Count * 2L + 2,
+            records.Append(wouldBePending with { Receipt = maximalReceipt }).ToArray());
+        JsonSerializer.SerializeToUtf8Bytes(stranded).Length.ShouldBeGreaterThan(bound);
+        var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, records.Count * 2L, records.ToArray());
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        var observed = await f.Spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken);
+        observed.ShouldNotBeNull(); observed.Sequence.ShouldBe(records.Count + 1L);
+        f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.Records.Single().ShouldBe(observed);
+        f.Recorded[nextIntent.ObservationId] = SecuritySpoolFixture.Receipt(observed) with { EventId = maximalReceipt.EventId };
+        (await f.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
+        f.Read()!.Records.Single().Receipt.ShouldBe(f.Recorded[nextIntent.ObservationId]);
+        f.PendingBytes.ShouldBeNull();
+        (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
+    }
+
+    /// <summary>An out-of-contract recorder event identity cannot be acknowledged or used to mutate the pending original.</summary>
+    [Fact]
+    public async Task OversizedRecorderEventIdFailsClosedWithoutChangingPendingOriginal()
+    {
+        var f = new SecuritySpoolFixture();
+        var original = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent(), TestContext.Current.CancellationToken);
+        original.ShouldNotBeNull();
+        f.Recorded[original.Intent.ObservationId] = SecuritySpoolFixture.Receipt(original) with { EventId = new string('e', 2049) };
+        (await f.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(0);
+        f.Read()!.Records.Single().Receipt.ShouldBeNull();
+        f.PendingBytes.ShouldBeNull();
     }
 
     /// <summary>An acknowledged carrier rolls over when the exact next pending bytes exceed 32 MiB before its record count is full.</summary>

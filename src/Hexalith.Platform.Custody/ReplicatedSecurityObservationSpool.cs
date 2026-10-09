@@ -14,6 +14,9 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
 {
     private const int RecordBound = 10000;
     private const int ArchivePageBound = 16;
+    private const int ReceiptEventIdByteBound = 2048;
+    private static readonly System.Text.UTF8Encoding StrictUtf8 = new(false, true);
+    private static readonly string MaximumEscapedEventId = new('\0', ReceiptEventIdByteBound);
     private static string Key(ReplicatedSecuritySpoolTarget target) => "system/security-observations/" + target.InstallationEpoch;
     /// <summary>Retains an original safe observation before processed-denial can be reported; duplicates reuse stored first-seen/day/sequence.</summary>
     public async Task<SecurityObservationRecord?> ObserveAsync(SecurityObservationIntent intent, CancellationToken cancellationToken = default)
@@ -32,7 +35,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
             SecurityObservationRecord record = new(intent, observed, observed.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), checked(state.ArchivedObservedCount + state.Records.Count + 1L), null);
             var next = state with { Revision = checked(state.Revision + 1), Records = state.Records.Append(record).ToArray() };
             budget.Check();
-            if (next.Records.Count > RecordBound || JsonSerializer.SerializeToUtf8Bytes(next).Length > RecoverableAnchoredState.MaximumPendingBytes)
+            if (!FitsWithReceiptReserve(next, budget))
             {
                 if (!await ArchiveAcknowledgedPageAsync(target, state, etag, budget).ConfigureAwait(false)) { return null; }
                 (state, etag) = await ReadAsync(target, budget, true).ConfigureAwait(false);
@@ -40,7 +43,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
                 record = record with { Sequence = checked(state.ArchivedObservedCount + state.Records.Count + 1L) };
                 next = state with { Revision = checked(state.Revision + 1), Records = state.Records.Append(record).ToArray() };
                 budget.Check();
-                if (next.Records.Count > RecordBound || JsonSerializer.SerializeToUtf8Bytes(next).Length > RecoverableAnchoredState.MaximumPendingBytes) { return null; }
+                if (!FitsWithReceiptReserve(next, budget)) { return null; }
             }
             var (retainedStage, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
             if (retainedStage is not null)
@@ -273,6 +276,9 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         }
         var (confirmed, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName, key, ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
         if (confirmed is null || Digest(confirmed) != digest) { return false; }
+        // A competing rollover may have advanced the head while this caller confirmed the same immutable page.
+        var (current, currentEtag) = await ReadAsync(target, budget).ConfigureAwait(false);
+        if (current is null || currentEtag != etag || StateDigest(current) != StateDigest(state)) { return false; }
         var next = state with { Revision = checked(state.Revision + 1), PageIndex = checked(state.PageIndex + 1),
             ArchivedObservedCount = checked(state.ArchivedObservedCount + state.Records.Count),
             ArchivedAcknowledgedCount = checked(state.ArchivedAcknowledgedCount + state.Records.Count),
@@ -365,6 +371,11 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
             pendingEtag = freshEtag; return pending;
         }, async value =>
         {
+            var (latest, latestEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName,
+                Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var predecessor = latest is null ? new SecuritySpoolSnapshot(target.InstallationEpoch, 0, Array.Empty<SecurityObservationRecord>()) : Capture(latest, budget);
+            if (latestEtag != etag || StateDigest(predecessor) != StateDigest(previous))
+            { throw new InvalidOperationException("Spool predecessor advanced before pending stage."); }
             bool saved = await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, PendingKey(target), value, pendingEtag,
                 new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
             if (!saved) { throw new InvalidOperationException("Another original spool stage won the conditional write."); }
@@ -395,9 +406,31 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         { throw new InvalidOperationException("Malformed private spool revision."); }
         return source with { Records = Array.AsReadOnly(owned.ToArray()) };
     }
+    // Reserve the worst JSON representation of every future exact receipt before admitting a pending original.
+    // The authoritative recorder must return an EventId within the same UTF-8 bound; larger proofs fail closed.
+    private static bool FitsWithReceiptReserve(SecuritySpoolSnapshot snapshot, PrivateOwnerOperationDeadline budget)
+    {
+        if (snapshot.Records.Count > RecordBound) { return false; }
+        var records = snapshot.Records.Select(record =>
+        {
+            budget.Check();
+            return record.Receipt is not null ? record : record with { Receipt = new SecurityEventRecordReceipt(
+                record.Intent.ObservationId, record.Intent.RoutingTenantId, record.UtcDay, IntentDigest(record.Intent),
+                SourceStream(record), long.MaxValue, MaximumEscapedEventId) };
+        }).ToArray();
+        var upper = snapshot with { Revision = long.MaxValue, DrainRevision = long.MaxValue, DrainAfterSequence = long.MaxValue, Records = records };
+        budget.Check();
+        return JsonSerializer.SerializeToUtf8Bytes(upper).Length <= RecoverableAnchoredState.MaximumPendingBytes;
+    }
+    private static bool ValidReceiptEventId(string? eventId)
+    {
+        if (string.IsNullOrWhiteSpace(eventId) || eventId.Length > ReceiptEventIdByteBound) { return false; }
+        try { return StrictUtf8.GetByteCount(eventId) <= ReceiptEventIdByteBound; }
+        catch (System.Text.EncoderFallbackException) { return false; }
+    }
     private static bool Exact(SecurityObservationRecord record, SecurityEventRecordReceipt? receipt) => receipt is not null
         && receipt.ObservationId == record.Intent.ObservationId && receipt.RoutingTenantId == record.Intent.RoutingTenantId && receipt.UtcDay == record.UtcDay
-        && receipt.OriginalIntentDigest == IntentDigest(record.Intent) && receipt.SourceStreamId == SourceStream(record) && receipt.SourceRevision > 0 && !string.IsNullOrWhiteSpace(receipt.EventId);
+        && receipt.OriginalIntentDigest == IntentDigest(record.Intent) && receipt.SourceStreamId == SourceStream(record) && receipt.SourceRevision > 0 && ValidReceiptEventId(receipt.EventId);
     private static void ValidateIntent(SecurityObservationIntent intent)
     {
         ArgumentNullException.ThrowIfNull(intent); foreach (string field in new[] { intent.ObservationId, intent.RoutingTenantId, intent.DigestKeyVersion }) { Text(field); }
