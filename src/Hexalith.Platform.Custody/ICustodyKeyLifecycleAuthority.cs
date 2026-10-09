@@ -1,7 +1,8 @@
+using Hexalith.EventStore.Contracts.Security;
 namespace Hexalith.Platform.Custody;
 
 /// <summary>Independent current exact private credentials, lifecycle/fence/hold/reservation/physical-receipt and restore-anchor verification; absent defaults deny.</summary>
-public interface ICustodyKeyLifecycleAuthority
+public interface ICustodyKeyLifecycleAuthority : IAnchoredStateTransitionAuthority
 {
     /// <summary>Authenticates exact tenant/object/operation/method/request digest before release/effect.</summary>
     Task<bool> AuthorizeOperationAsync(CustodyKeyObjectIdentity identity, string operationId, string method, string requestDigest, CancellationToken cancellationToken = default);
@@ -13,6 +14,9 @@ public interface ICustodyKeyLifecycleAuthority
     Task<bool> VerifyOutcomeAsync(CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome outcome, CancellationToken cancellationToken = default);
     /// <summary>Validates exact captured durable tenant/revision/digest against independently installed antirollback state.</summary>
     Task<bool> ValidateStateAsync(string tenantId, long revision, string exactStateDigest, CancellationToken cancellationToken = default);
-    /// <summary>Advances independent conditional anchor before metadata save; precommit/unknown loss closes availability pending reconciliation.</summary>
+    /// <summary>Deprecated compatibility-only legacy anchor hook; current recoverable actors do not invoke it.
+    /// Qualified implementations must implement the mandatory inherited IAnchoredStateTransitionAuthority admitted-original admission/recovery
+    /// and conditional exact transition journal, including independent staging ownership, current permission and final durable-state/anchor confirmation.
+    /// Implementing this legacy hook alone never enables an actor; omitted inherited proof defaults deny.</summary>
     Task<bool> RecordRevisionAsync(string tenantId, long expectedRevision, long nextRevision, string exactStateDigest, CancellationToken cancellationToken = default);
 }

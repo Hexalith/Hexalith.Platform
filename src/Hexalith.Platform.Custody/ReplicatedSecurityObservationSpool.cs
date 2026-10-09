@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using Dapr.Client;
 using Hexalith.EventStore.Contracts.Identity;
+using Hexalith.EventStore.Contracts.Security;
 
 namespace Hexalith.Platform.Custody;
 
@@ -20,12 +21,26 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         try
         {
             ValidateIntent(intent); var target = await CurrentAsync("Observe", intent, budget).ConfigureAwait(false); if (target is null) { return null; }
-            var (state, etag) = await ReadAsync(target, budget).ConfigureAwait(false); if (state is null) { return null; }
-            var prior = state.Records.SingleOrDefault(record => record.Intent.ObservationId == intent.ObservationId);
+            var (state, etag) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return null; }
+            var prior = state.Records.SingleOrDefault(record => record.Intent.ObservationId == intent.ObservationId
+                || intent.RetainedServerReceiptKey is not null && record.Intent.RetainedServerReceiptKey == intent.RetainedServerReceiptKey);
             if (prior is not null) { return prior.Intent == intent && await StillCurrentAsync(target, "Observe", intent, budget).ConfigureAwait(false) ? prior : null; }
             if (state.Records.Count >= RecordBound) { return null; }
             DateTimeOffset observed = clock.GetUtcNow(); var record = new SecurityObservationRecord(intent, observed, observed.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), state.Records.Count + 1L, null);
             var next = state with { Revision = checked(state.Revision + 1), Records = state.Records.Append(record).ToArray() };
+            var (retainedStage, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            if (retainedStage is not null)
+            {
+                // An admitted original retry retains its first-seen facts. Another intent cannot replace this slot or advance its anchor.
+                if (retainedStage.TargetBytes is not { Length: > 0 and <= RecoverableAnchoredState.MaximumPendingBytes }) { return null; }
+                var staged = Capture(JsonSerializer.Deserialize<SecuritySpoolSnapshot>(retainedStage.TargetBytes) ?? throw new InvalidOperationException("Missing original spool stage."), budget);
+                if (staged.InstallationEpoch != state.InstallationEpoch || staged.Revision != state.Revision + 1 || staged.Records.Count != state.Records.Count + 1
+                    || staged.Records[^1].Intent != intent || staged.Records[^1].Receipt is not null || staged.Records[^1].ObservedAt > clock.GetUtcNow()
+                    || StateDigest(state with { Records = staged.Records.Take(state.Records.Count).ToArray() }) != StateDigest(state)) { return null; }
+                var exact = RecoverableAnchoredState.Prepare(PendingScope(target), state.Revision, staged.Revision, state, staged);
+                if (JsonSerializer.Serialize(exact) != JsonSerializer.Serialize(retainedStage)) { return null; }
+                next = staged;
+            }
             await TryWriteAsync(target, state, next, etag, budget).ConfigureAwait(false);
             var (confirmed, _) = await ReadAsync(target, budget).ConfigureAwait(false); var original = confirmed?.Records.SingleOrDefault(r => r.Intent.ObservationId == intent.ObservationId);
             return original?.Intent == intent && await StillCurrentAsync(target, "Observe", intent, budget).ConfigureAwait(false) ? original : null;
@@ -45,6 +60,31 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return null; }
     }
+    /// <summary>Recovers original authenticated routing by exact opaque retained-server-receipt identity, without observing or acknowledging anything. Unknown lookup never certifies absence.</summary>
+    public async Task<SecurityObservationOriginalLookupResult> LookupOriginalAsync(SecurityObservationOriginalLookup lookup, CancellationToken cancellationToken = default)
+    {
+        var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
+        try
+        {
+            ValidateIntent(new(lookup.RetainedServerReceiptKey, "system", lookup.ReasonCode, lookup.UntrustedFieldsHmac, lookup.DigestKeyVersion));
+            if (authority is null) { return new(false); }
+            var target = await CurrentLookupAsync().ConfigureAwait(false); if (target is null) { return new(false); }
+            var (state, _) = await ReadAsync(target, budget).ConfigureAwait(false); if (state is null) { return new(false); }
+            var original = state.Records.SingleOrDefault(value => value.Intent.RetainedServerReceiptKey == lookup.RetainedServerReceiptKey);
+            if (original is not null && (original.Intent.ReasonCode != lookup.ReasonCode || original.Intent.UntrustedFieldsHmac != lookup.UntrustedFieldsHmac
+                || original.Intent.DigestKeyVersion != lookup.DigestKeyVersion)) { return new(false); }
+            var final = await CurrentLookupAsync().ConfigureAwait(false); budget.Check();
+            return final == target && ValidTarget(target) ? new(true, original) : new(false);
+
+            async Task<ReplicatedSecuritySpoolTarget?> CurrentLookupAsync()
+            {
+                var current = await budget.ReadAsync(() => authority.GetCurrentAsync(CancellationToken.None)).ConfigureAwait(false);
+                if (current is null || !ValidTarget(current) || !await budget.ReadAsync(() => authority.AuthorizeOriginalLookupAsync(current, lookup, CancellationToken.None)).ConfigureAwait(false)) { return null; }
+                budget.Check(); return ValidTarget(current) ? current : null;
+            }
+        }
+        catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return new(false); }
+    }
     /// <summary>Recovers only exact durable source evidence; unknown lookup/append/ack retains pending records and cannot pass readiness.</summary>
     public async Task<int> DrainAsync(int maximumCount, CancellationToken cancellationToken = default)
     {
@@ -53,10 +93,20 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         {
             if (maximumCount is < 1 or > RecordBound) { throw new ArgumentOutOfRangeException(nameof(maximumCount)); }
             var target = await CurrentAsync("Drain", null, budget).ConfigureAwait(false); if (target is null || recorder is null) { return 0; }
-            var (state, _) = await ReadAsync(target, budget).ConfigureAwait(false); if (state is null) { return 0; }
-            foreach (var record in state.Records.Where(record => record.Receipt is null).Take(maximumCount))
+            var (state, _) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return 0; }
+            for (int selected = 0; selected < maximumCount; selected++)
             {
                 budget.Check();
+                var (scheduledState, scheduledEtag) = await ReadAsync(target, budget).ConfigureAwait(false); if (scheduledState is null) { return acknowledged; }
+                // Only each source's earliest unresolved original is routable; rotate across those streams without skipping their order.
+                var candidates = scheduledState.Records.Where(r => r.Receipt is null).GroupBy(SourceStream, StringComparer.Ordinal).Select(group => group.First()).OrderBy(r => r.Sequence).ToArray();
+                if (candidates.Length == 0) { return acknowledged; }
+                var record = candidates.FirstOrDefault(r => r.Sequence > scheduledState.DrainAfterSequence) ?? candidates[0];
+                if (!await StillCurrentAsync(target, "Drain", record.Intent, budget).ConfigureAwait(false)) { return acknowledged; }
+                var scheduled = scheduledState with { Revision = checked(scheduledState.Revision + 1), DrainRevision = checked(scheduledState.DrainRevision + 1), DrainAfterSequence = record.Sequence };
+                await TryWriteAsync(target, scheduledState, scheduled, scheduledEtag, budget).ConfigureAwait(false);
+                var (confirmedSchedule, _) = await ReadAsync(target, budget).ConfigureAwait(false);
+                if (confirmedSchedule is null || StateDigest(confirmedSchedule) != StateDigest(scheduled)) { return acknowledged; }
                 if (!await StillCurrentAsync(target, "Drain", record.Intent, budget).ConfigureAwait(false)) { return acknowledged; }
                 var found = await budget.ReadAsync(() => recorder.LookupAsync(record, CancellationToken.None)).ConfigureAwait(false);
                 if (found.State == SecurityEventRecorderLookupState.NotRecorded && found.Receipt is null
@@ -82,15 +132,79 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return acknowledged; }
     }
-    /// <summary>Readiness requires qualified current complete spool state with every original observation durably recorded; missing/stale/unknown state always blocks.</summary>
+    /// <summary>Separately authorized recovery of one retained aged original. Automatic drain remains bounded by H; missing fresh independent permission or uncertain source proof denies every new effect.</summary>
+    public async Task<SecurityObservationRecord?> RecoverOriginalAsync(SecurityObservationIntent intent, CancellationToken cancellationToken = default)
+    {
+        var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
+        try
+        {
+            ValidateIntent(intent); var target = await CurrentAsync("RecoverOriginal", intent, budget).ConfigureAwait(false);
+            if (target is null || recorder is null || authority is null) { return null; }
+            // Ordinary lookup cannot elevate an unanchored stage before separate exact-original mutation admission.
+            var (state, _) = await ReadAsync(target, budget).ConfigureAwait(false);
+            var retained = state?.Records.SingleOrDefault(record => record.Intent.ObservationId == intent.ObservationId);
+            if (retained?.Intent != intent || clock.GetUtcNow() < retained.ObservedAt + PlatformAcceptedEnvelopeTiming.RecoveryHorizon
+                || state!.Records.Any(record => record.Receipt is null && record.Sequence < retained.Sequence && SourceStream(record) == SourceStream(retained))) { return null; }
+            var original = retained with { Receipt = null };
+            var found = await budget.ReadAsync(() => recorder.LookupAsync(original, CancellationToken.None)).ConfigureAwait(false);
+            if (!OriginalProof(original, found)) { return null; }
+            var grant = await budget.ReadAsync(() => authority.AuthorizeAgedOriginalRecoveryAsync(target, original, found, CancellationToken.None)).ConfigureAwait(false);
+            if (!ValidRecoveryGrant(grant, target, original) || grant!.OriginalProof != found || !await StillGrantedAsync(found).ConfigureAwait(false)) { return null; }
+            // The original source may have recorded between admission and this lookup; never issue a second effect from stale absence.
+            found = await budget.ReadAsync(() => recorder.LookupAsync(original, CancellationToken.None)).ConfigureAwait(false);
+            if (!OriginalProof(original, found) || !await StillGrantedAsync(found).ConfigureAwait(false)) { return null; }
+            if (found.State == SecurityEventRecorderLookupState.NotRecorded)
+            {
+                try { await budget.ReadAsync(async () => { await recorder.RecoverOriginalAsync(original, grant, CancellationToken.None).ConfigureAwait(false); return true; }).ConfigureAwait(false); }
+                catch (Exception) { budget.Check(); }
+                found = await budget.ReadAsync(() => recorder.LookupAsync(original, CancellationToken.None)).ConfigureAwait(false);
+            }
+            if (found.State != SecurityEventRecorderLookupState.Recorded || !Exact(original, found.Receipt) || !await StillGrantedAsync(found).ConfigureAwait(false)) { return null; }
+            var (current, etag) = await ReadAsync(target, budget, true).ConfigureAwait(false);
+            var existing = current?.Records.SingleOrDefault(record => record.Intent.ObservationId == intent.ObservationId);
+            if (existing is null || existing with { Receipt = null } != original || existing.Receipt is not null && existing.Receipt != found.Receipt) { return null; }
+            if (existing.Receipt is null)
+            {
+                if (!await StillGrantedAsync(found).ConfigureAwait(false)) { return null; }
+                var next = current! with { Revision = checked(current.Revision + 1), Records = current.Records.Select(record => record.Sequence == original.Sequence ? record with { Receipt = found.Receipt } : record).ToArray() };
+                await TryWriteAsync(target, current, next, etag, budget).ConfigureAwait(false);
+            }
+            var (saved, _) = await ReadAsync(target, budget).ConfigureAwait(false);
+            var confirmed = saved?.Records.SingleOrDefault(record => record.Sequence == original.Sequence);
+            return confirmed is not null && confirmed with { Receipt = null } == original && confirmed.Receipt == found.Receipt
+                && await StillGrantedAsync(found).ConfigureAwait(false) ? confirmed : null;
+
+            async Task<bool> StillGrantedAsync(SecurityEventRecorderLookup proof)
+            {
+                if (!ValidRecoveryGrant(grant, target, original) || !OriginalProof(original, proof)) { return false; }
+                if (!await budget.ReadAsync(() => authority.VerifyAgedOriginalRecoveryAsync(grant!, proof, CancellationToken.None)).ConfigureAwait(false)
+                    || !await StillCurrentAsync(target, "RecoverOriginal", intent, budget).ConfigureAwait(false)) { return false; }
+                bool verified = await budget.ReadAsync(() => authority.VerifyAgedOriginalRecoveryAsync(grant!, proof, CancellationToken.None)).ConfigureAwait(false);
+                budget.Check(); return verified && ValidRecoveryGrant(grant, target, original);
+            }
+        }
+        catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return null; }
+    }
+    private bool ValidRecoveryGrant(SecurityObservationRecoveryGrant? grant, ReplicatedSecuritySpoolTarget target, SecurityObservationRecord original)
+        => grant is not null && grant.Target == target && grant.Original == original && grant.Original.Receipt is null
+            && OriginalProof(original, grant.OriginalProof) && !string.IsNullOrWhiteSpace(grant.RecoveryAuthorityRevision) && grant.RecoveryAuthorityRevision.Length <= 256
+            && grant.ObservedAt.Offset == TimeSpan.Zero && grant.ObservedAt != default && grant.ObservedAt <= clock.GetUtcNow()
+            && grant.ValidUntil.Offset == TimeSpan.Zero && grant.ValidUntil > clock.GetUtcNow() && grant.ValidUntil <= target.ValidUntil && ValidTarget(target);
+    private static bool OriginalProof(SecurityObservationRecord original, SecurityEventRecorderLookup? proof)
+        => proof is not null && (proof.State == SecurityEventRecorderLookupState.NotRecorded && proof.Receipt is null
+            || proof.State == SecurityEventRecorderLookupState.Recorded && Exact(original, proof.Receipt));
+
+    /// <summary>Readiness requires a recorder, remaining admission capacity and qualified current complete acknowledged state; missing/stale/unknown state always blocks.</summary>
     public async Task<bool> IsReadyAsync(CancellationToken cancellationToken = default)
     {
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
         try
         {
+            budget.Check(); if (recorder is null) { return false; }
             var target = await CurrentAsync("Readiness", null, budget).ConfigureAwait(false); if (target is null) { return false; }
             var (state, _) = await ReadAsync(target, budget).ConfigureAwait(false);
-            return state is not null && state.Records.All(record => record.Receipt is not null) && await StillCurrentAsync(target, "Readiness", null, budget).ConfigureAwait(false);
+            var (pending, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            return state is not null && pending is null && state.Records.Count < RecordBound && state.Records.All(record => record.Receipt is not null) && await StillCurrentAsync(target, "Readiness", null, budget).ConfigureAwait(false);
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return false; }
     }
@@ -102,39 +216,70 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private async Task<ReplicatedSecuritySpoolTarget?> CurrentAsync(string method, SecurityObservationIntent? intent, PrivateOwnerOperationDeadline budget)
     {
         if (authority is null) { return null; } var target = await budget.ReadAsync(() => authority.GetCurrentAsync(CancellationToken.None)).ConfigureAwait(false);
-        if (target is null || !ValidTarget(target) || !await budget.ReadAsync(() => authority.AuthorizeAsync(target, method, intent, CancellationToken.None)).ConfigureAwait(false)) { return null; } return target;
+        if (target is null || !ValidTarget(target) || !await budget.ReadAsync(() => authority.AuthorizeAsync(target, method, intent, CancellationToken.None)).ConfigureAwait(false)) { return null; }
+        budget.Check(); return ValidTarget(target) ? target : null;
     }
     private async Task<bool> StillCurrentAsync(ReplicatedSecuritySpoolTarget original, string method, SecurityObservationIntent? intent, PrivateOwnerOperationDeadline budget)
         => await CurrentAsync(method, intent, budget).ConfigureAwait(false) == original;
     private bool ValidTarget(ReplicatedSecuritySpoolTarget target)
     { Text(target.ComponentName); Text(target.InstallationEpoch); Text(target.AuthorityRevision); return target.ValidUntil.Offset == TimeSpan.Zero && clock.GetUtcNow() < target.ValidUntil; }
-    private async Task<(SecuritySpoolSnapshot? State, string Etag)> ReadAsync(ReplicatedSecuritySpoolTarget target, PrivateOwnerOperationDeadline budget)
+    private static string PendingKey(ReplicatedSecuritySpoolTarget target) => Key(target) + "-pending-transition-v1";
+    private static string PendingScope(ReplicatedSecuritySpoolTarget target) => target.ComponentName + "|" + Key(target);
+    private async Task<(SecuritySpoolSnapshot? State, string Etag)> ReadAsync(ReplicatedSecuritySpoolTarget target, PrivateOwnerOperationDeadline budget, bool recoverAdmittedOriginal = false)
     {
         var (read, etag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName, Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
         var state = read is null ? new(target.InstallationEpoch, 0, Array.Empty<SecurityObservationRecord>()) : Capture(read, budget);
-        if (state.InstallationEpoch != target.InstallationEpoch || authority is null || !await budget.ReadAsync(() => authority.ValidateStateAsync(target, state.Revision, StateDigest(state), CancellationToken.None)).ConfigureAwait(false)) { return (null, etag); }
-        return (state, etag);
+        if (state.InstallationEpoch != target.InstallationEpoch || authority is null) { return (null, etag); }
+        var (pending, pendingEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+        var reconciled = await RecoverableAnchoredState.ReconcileAsync(PendingScope(target), state, pending, value => Capture(value, budget),
+            value => budget.ReadAsync(() => authority.ValidateStateAsync(target, value.Revision, StateDigest(value), CancellationToken.None)), new DeadlineAnchoredStateAuthority(authority, budget), async value =>
+            {
+                // CAS keeps both the retained stage and the main predecessor owned by the admitted original operation.
+                if (StateDigest(state) != StateDigest(value))
+                { _ = await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, Key(target), value, etag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false); }
+                var (durable, durableEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName, Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+                if (durable is null || StateDigest(Capture(durable, budget)) != StateDigest(value)) { throw new InvalidOperationException("Prospective spool target is not durable."); }
+                etag = durableEtag;
+                // Conditional tombstone cannot remove a stage installed by another caller.
+                _ = await budget.ReadAsync(() => client.TrySaveStateAsync<AnchoredStateTransition?>(target.ComponentName, PendingKey(target), null, pendingEtag,
+                    new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+                // Read the main bytes again after the final persistence await.
+                var (final, finalEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName, Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+                etag = finalEtag; return final ?? throw new InvalidOperationException("Spool target is missing.");
+            }, recoverAdmittedOriginal).ConfigureAwait(false);
+        budget.Check(); return ValidTarget(target) ? (reconciled, etag) : (null, etag);
     }
     private async Task TryWriteAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot previous, SecuritySpoolSnapshot next, string etag, PrivateOwnerOperationDeadline budget)
     {
-        _ = Capture(next, budget);
-        if (authority is null || !await budget.ReadAsync(() => authority.RecordRevisionAsync(target, previous.Revision, next.Revision, StateDigest(next), CancellationToken.None)).ConfigureAwait(false)) { return; }
-        try { await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, Key(target), next, etag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false); }
-        catch (Exception) { budget.Check(); } // Read-back, never the save acknowledgement, decides durability.
+        next = Capture(next, budget); if (authority is null || !ValidTarget(target)) { return; }
+        var transition = RecoverableAnchoredState.Prepare(PendingScope(target), previous.Revision, next.Revision, previous, next);
+        string pendingEtag = string.Empty;
+        _ = await RecoverableAnchoredState.CommitAsync(transition, new DeadlineAnchoredStateAuthority(authority, budget), async () =>
+        {
+            var (pending, freshEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            pendingEtag = freshEtag; return pending;
+        }, async value =>
+        {
+            bool saved = await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, PendingKey(target), value, pendingEtag,
+                new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            if (!saved) { throw new InvalidOperationException("Another original spool stage won the conditional write."); }
+        }).ConfigureAwait(false);
+        budget.Check();
     }
     private static SecuritySpoolSnapshot Capture(SecuritySpoolSnapshot source, PrivateOwnerOperationDeadline budget)
     {
         if (source.Revision < 0 || source.Records is null || source.Records.Count > RecordBound) { throw new InvalidOperationException("Malformed private spool state."); }
-        Text(source.InstallationEpoch); var owned = new List<SecurityObservationRecord>(); var ids = new HashSet<string>(StringComparer.Ordinal);
+        Text(source.InstallationEpoch); var owned = new List<SecurityObservationRecord>(); var ids = new HashSet<string>(StringComparer.Ordinal); var receiptKeys = new HashSet<string>(StringComparer.Ordinal);
         foreach (var record in source.Records)
         {
             budget.Check(); if (owned.Count >= RecordBound || record is null) { throw new InvalidOperationException("Malformed private spool state."); }
             ValidateIntent(record.Intent);
-            if (!ids.Add(record.Intent.ObservationId) || record.Sequence != owned.Count + 1L || record.ObservedAt.Offset != TimeSpan.Zero
+            if (!ids.Add(record.Intent.ObservationId) || record.Intent.RetainedServerReceiptKey is { } key && !receiptKeys.Add(key) || record.Sequence != owned.Count + 1L || record.ObservedAt.Offset != TimeSpan.Zero
                 || record.UtcDay != record.ObservedAt.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) || record.Receipt is not null && !Exact(record, record.Receipt))
             { throw new InvalidOperationException("Malformed private spool record."); } owned.Add(record);
         }
-        if (source.Revision < owned.Count || source.Revision > owned.Count * 2L || source.Revision != owned.Count + owned.Count(r => r.Receipt is not null))
+        if (source.DrainRevision < 0 || source.DrainAfterSequence < 0 || source.DrainAfterSequence > owned.Count || source.DrainRevision == 0 && source.DrainAfterSequence != 0
+            || source.Revision != checked(owned.Count + owned.Count(r => r.Receipt is not null) + source.DrainRevision))
         { throw new InvalidOperationException("Malformed private spool revision."); }
         return source with { Records = Array.AsReadOnly(owned.ToArray()) };
     }
@@ -144,6 +289,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private static void ValidateIntent(SecurityObservationIntent intent)
     {
         ArgumentNullException.ThrowIfNull(intent); foreach (string field in new[] { intent.ObservationId, intent.RoutingTenantId, intent.DigestKeyVersion }) { Text(field); }
+        if (intent.RetainedServerReceiptKey is not null) { Text(intent.RetainedServerReceiptKey); }
         if (intent.UntrustedFieldsHmac is not { Length: 64 } || intent.UntrustedFieldsHmac.Any(c => !char.IsAsciiHexDigit(c))
             || intent.ReasonCode is not ("invalid-tag" or "scope-mismatch" or "unknown-principal" or "stale-authority" or "replay-conflict" or "unavailable-owner"))
         { throw new ArgumentException("Malformed safe security observation."); }

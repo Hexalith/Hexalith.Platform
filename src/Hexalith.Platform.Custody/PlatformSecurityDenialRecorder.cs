@@ -27,9 +27,24 @@ public sealed class PlatformSecurityDenialRecorder(TrustedEnvelopeAuthenticator 
                 || string.IsNullOrWhiteSpace(originalDigestKeyVersion) || originalDigestKeyVersion.Length > 2048
                 || untrustedFields is null || untrustedFields.Count > 128
                 || reasonCode is not ("invalid-tag" or "scope-mismatch" or "unknown-principal" or "stale-authority" or "replay-conflict" or "unavailable-owner")) { return null; }
-            var owned = new List<string?>();
-            foreach (var field in untrustedFields)
-            { budget.Check(); if (owned.Count >= 128 || field?.Length > 4096) { return null; } owned.Add(field); }
+            var owned = await budget.ReadAsync(() =>
+            {
+                var fields = new List<string?>();
+                foreach (var field in untrustedFields)
+                { budget.Check(); if (fields.Count >= 128 || field?.Length > 4096) { throw new ArgumentException("Oversized denied fields."); } fields.Add(field); }
+                return Task.FromResult(fields);
+            }).ConfigureAwait(false);
+            var identity = await budget.ReadAsync(() => digests.DigestAsync(new("system", PlatformHmacPurpose.SecurityObservation),
+                ["SecurityObservation.server-receipt.v2", retainedServerReceiptId], originalDigestKeyVersion, CancellationToken.None)).ConfigureAwait(false);
+            var digest = await budget.ReadAsync(() => digests.DigestAsync(new("system", PlatformHmacPurpose.SecurityObservation),
+                new string?[] { "SecurityObservation.fields.v2", retainedServerReceiptId, reasonCode }.Concat(owned).ToArray(),
+                originalDigestKeyVersion, CancellationToken.None)).ConfigureAwait(false);
+            if (identity.Status != CustodyStatus.Succeeded || identity.Digest is not { Length: 64 } || identity.KeyVersion != originalDigestKeyVersion
+                || digest.Status != CustodyStatus.Succeeded || digest.Digest is not { Length: 64 } || digest.KeyVersion != originalDigestKeyVersion) { return null; }
+            var lookup = new SecurityObservationOriginalLookup("server-receipt-" + identity.Digest, reasonCode, digest.Digest, originalDigestKeyVersion);
+            var original = await budget.ReadAsync(() => spool.LookupOriginalAsync(lookup, CancellationToken.None)).ConfigureAwait(false);
+            if (!original.IsAvailable) { return null; }
+            if (original.Record is not null) { budget.Check(); return original.Record; }
             string routing = "system";
             if (envelope is not null && expected is not null)
             {
@@ -44,11 +59,10 @@ public sealed class PlatformSecurityDenialRecorder(TrustedEnvelopeAuthenticator 
                     };
                 }
             }
-            var digest = await budget.ReadAsync(() => digests.DigestAsync(new("system", PlatformHmacPurpose.SecurityObservation),
-                new string?[] { "SecurityObservation.v1", retainedServerReceiptId, reasonCode, routing }.Concat(owned).ToArray(),
-                originalDigestKeyVersion, CancellationToken.None)).ConfigureAwait(false);
-            if (digest.Status != CustodyStatus.Succeeded || digest.Digest is not { Length: 64 } || digest.KeyVersion != originalDigestKeyVersion) { return null; }
-            var intent = new SecurityObservationIntent("security-observation-" + digest.Digest, routing, reasonCode, digest.Digest, digest.KeyVersion);
+            var observation = await budget.ReadAsync(() => digests.DigestAsync(new("system", PlatformHmacPurpose.SecurityObservation),
+                ["SecurityObservation.identity.v2", retainedServerReceiptId, reasonCode, routing, digest.Digest], originalDigestKeyVersion, CancellationToken.None)).ConfigureAwait(false);
+            if (observation.Status != CustodyStatus.Succeeded || observation.Digest is not { Length: 64 } || observation.KeyVersion != originalDigestKeyVersion) { return null; }
+            var intent = new SecurityObservationIntent("security-observation-" + observation.Digest, routing, reasonCode, digest.Digest, digest.KeyVersion) { RetainedServerReceiptKey = lookup.RetainedServerReceiptKey };
             var result = await budget.ReadAsync(() => spool.ObserveAsync(intent, CancellationToken.None)).ConfigureAwait(false);
             budget.Check(); return result?.Intent == intent ? result : null;
         }

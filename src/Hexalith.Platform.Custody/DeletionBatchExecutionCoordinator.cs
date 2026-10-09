@@ -43,15 +43,34 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
             if (snapshot is null || snapshot.Batch.Capability != payload || snapshot.Batch.DetachedJws != signed.DetachedJws
                 || snapshot.Batch.SigningRequestId != id || snapshot.Batch.IssuedGuardRevision <= 0 || snapshot.Batch.DispatchGuardRevision <= 0
                 || string.IsNullOrWhiteSpace(snapshot.Batch.DispatchReceiptId)) { return new("DispatchUnverified", signed); }
+            var targets = await WaitAsync(() =>
+            {
+                var captured = new List<ProtectionTarget>();
+                foreach (var value in snapshot.Batch.Targets)
+                { deadline.Check(); if (captured.Count >= 1000 || value is null) { throw new ArgumentException("Oversized exact protection manifest."); } captured.Add(new(value.TenantId, value.AgentInteractionId, value.TargetProtectionKeyAlias)); }
+                if (DeletionBatchCapabilityIdentity.TargetManifestDigest(captured) != payload.ManifestDigest) { throw new ArgumentException("Mismatched exact protection manifest."); }
+                return Task.FromResult<IReadOnlyList<ProtectionTarget>>(captured.AsReadOnly());
+            }).ConfigureAwait(false);
             var request = new DeletionBatchConsumptionRequest(payload, signed.DetachedJws!, snapshot.Batch.IssuedGuardRevision,
                 snapshot.Batch.DispatchReceiptId, snapshot.Batch.DispatchGuardRevision,
-                snapshot.Batch.Targets.Select(value => new ProtectionTarget(value.TenantId, value.AgentInteractionId, value.TargetProtectionKeyAlias)).ToArray());
+                targets);
             var protection = protectionOwners(payload.TenantId);
             if (replacement && snapshot.Batch.ProtectionOutcome == "ReplacementAwaitingActivation")
             {
                 if (snapshot.Batch.BlockSetRevision <= 0 || string.IsNullOrWhiteSpace(snapshot.Batch.ProtectionReceiptId) || string.IsNullOrWhiteSpace(snapshot.Batch.IssueReceiptId)) { return new("ReplacementBlockUnverified", signed); }
-                var activation = new DeletionReattestationActivation("activation-" + id, snapshot.Batch.ProtectionReceiptId, snapshot.Batch.BlockSetRevision, snapshot.Batch.IssueReceiptId, request);
-                var activated = await RecoverAsync(() => protection.ActivateAsync(activation, providerCancellation.Token), protection).ConfigureAwait(false);
+                DeletionConsumptionOutcome? activated = null;
+                for (int attempt = 0; attempt < 3; attempt++)
+                {
+                    var comparison = await WaitAsync(() => protection.ReadActivationComparisonAsync(payload.TenantId, payload.BatchId, payload.CapabilityKeyVersion, providerCancellation.Token)).ConfigureAwait(false);
+                    if (comparison is null || comparison.TenantId != payload.TenantId || comparison.BatchId != payload.BatchId || comparison.OwnerRevision <= 0
+                        || comparison.CompromiseBlockReceiptId != snapshot.Batch.ProtectionReceiptId || comparison.ReplacementKeyVersion != payload.CapabilityKeyVersion
+                        || comparison.KeyBlockSetRevision < snapshot.Batch.BlockSetRevision) { return new("ReplacementComparisonUnavailable", signed); }
+                    string comparisonId = comparison.KeyBlockSetRevision.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    var activation = new DeletionReattestationActivation("activation-" + id + "-compare-" + comparisonId, snapshot.Batch.ProtectionReceiptId,
+                        comparison.KeyBlockSetRevision, snapshot.Batch.IssueReceiptId, request);
+                    activated = await RecoverAsync(() => protection.ActivateAsync(activation, providerCancellation.Token), protection).ConfigureAwait(false);
+                    if (activated?.Status != DeletionConsumptionStatus.Conflict) { break; }
+                }
                 if (!Exact(activated)) { return new("ActivationUnknown", signed); }
                 var activationMirror = await WaitAsync(() => guard.RecordProtectionAsync(signed, activated!, true, providerCancellation.Token)).ConfigureAwait(false);
                 if (activationMirror?.Status != "Committed" || activated!.Status != DeletionConsumptionStatus.Unconsumed)

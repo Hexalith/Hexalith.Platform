@@ -70,7 +70,7 @@ public sealed class EventStoreDeletionBatchGuardPort(IGovernanceScopeGuard guard
     public async Task<GovernanceProtocolReceipt?> CompleteAsync(DeletionBatchCapabilityV1 payload, CancellationToken cancellationToken = default)
     {
         var snapshot = await ReadAsync(payload, cancellationToken).ConfigureAwait(false); if (snapshot is null) { return null; }
-        if (snapshot.Deletion.Completed) { return snapshot.State.Receipts.SingleOrDefault(value => value.Status == "CompletionSealed" && value.ReferenceId == payload.DeletionRequestId); }
+        if (snapshot.Deletion.Completed) { return snapshot.State.Receipts.Where(value => value.Status == "CompletionSealed" && value.ReferenceId == payload.DeletionRequestId).OrderByDescending(value => value.GuardHighWater).FirstOrDefault(); }
         string id = "completion-" + Hash(new[] { payload.DeletionRequestId, snapshot.State.Revision.ToString(System.Globalization.CultureInfo.InvariantCulture) });
         var authorization = await guard.ExecuteAsync(Command(payload, GovernanceGuardOperation.AuthorizeCompletion, snapshot.State.Revision, "authorize-" + id, null, id), [], cancellationToken).ConfigureAwait(false);
         if (authorization?.Status != "Committed") { return authorization; }

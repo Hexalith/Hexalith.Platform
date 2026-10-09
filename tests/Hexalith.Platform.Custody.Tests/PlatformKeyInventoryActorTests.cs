@@ -1,3 +1,4 @@
+using Hexalith.EventStore.Contracts.Security;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -11,9 +12,27 @@ namespace Hexalith.Platform.Custody.Tests;
 /// <summary>Actual durable opaque inventory with synthetic independent authority; no physical custody/publication qualification.</summary>
 public sealed class PlatformKeyInventoryActorTests
 {
+    /// <summary>A separately authorized mutation recovers the independently admitted exact stage after restart without the original caller; read-only evidence cannot advance it and physical effects are not duplicated.</summary>
+    [Fact]
+    public async Task LaterMutationRecoversPreJournalOriginalWithoutItsCaller()
+    {
+        var backend = new InMemoryStateManager(); var authority = Authority();
+        var original = new PlatformKeyInventoryChange("original-install", 0, PlatformKeyInventoryAction.InstallCurrent, Key(), "original-independent-provision");
+        AnchoredFixtureJournal.SetAvailable(authority, false);
+        await Should.ThrowAsync<InvalidOperationException>(() => Actor(backend, authority).ApplyAsync(original));
+        var pending = backend.CommittedState.Single().Value.ShouldBeOfType<AnchoredStateTransition>(); authority.ClearReceivedCalls();
+        (await Actor(backend, authority).ReadAsync(Key())).Revision.ShouldBe(0);
+        await authority.DidNotReceive().RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>());
+        backend.CommittedState.Single().Value.ShouldBe(pending); AnchoredFixtureJournal.SetAvailable(authority, true);
+        (await Actor(backend, authority).ApplyAsync(new("later-revocation", 1, PlatformKeyInventoryAction.Revoke, Key(), "authenticated-later-revocation"))).ShouldNotBeNull();
+        var saved = backend.CommittedState.Single().Value.ShouldBeOfType<PlatformKeyInventorySnapshot>();
+        saved.Revision.ShouldBe(2); saved.Signals.Count.ShouldBe(2); saved.Signals[0].OperationId.ShouldBe(original.OperationId);
+        saved.Versions.Single().State.ShouldBe(PlatformHmacKeyState.Revoked);
+    }
+
     private static PlatformKeyVersion Key(string version = "v1") => new("tenant-a", PlatformKeyPurpose.DeletionBatchCapabilitySigningKey, "deletion-signing", version,
         "qualified-backend-candidate", "independent-profile", "anchor", "anchor-" + version);
-    private static PlatformKeyInventoryActor Actor(InMemoryStateManager state, IPlatformKeyInventoryAuthority? authority = null)
+    private static PlatformKeyInventoryActor Actor(IActorStateManager state, IPlatformKeyInventoryAuthority? authority = null)
     {
         var actor = new PlatformKeyInventoryActor(ActorHost.CreateForTest<PlatformKeyInventoryActor>(new ActorTestOptions { ActorId = new(PlatformKeyInventoryActor.GetActorId(Key())) }), authority);
         typeof(Dapr.Actors.Runtime.Actor).GetProperty("StateManager", BindingFlags.Public | BindingFlags.Instance)!.SetValue(actor, state); return actor;
@@ -26,6 +45,7 @@ public sealed class PlatformKeyInventoryActorTests
         authority.RecordRevisionAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => {
             if (call.ArgAt<long>(1) != revision || call.ArgAt<long>(2) != revision + 1) { return false; } revision++; digest = call.Arg<string>(); return true;
         });
+        AnchoredFixtureJournal.Attach(authority, PlatformKeyInventoryActor.GetActorId(Key()) + "|platform-key-inventory-v1", () => (revision, digest), (next, value) => { revision = next; digest = value; });
         authority.AuthorizeOperationAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
         authority.AuthorizeAsync(Arg.Any<PlatformKeyInventoryChange>(), Arg.Any<CancellationToken>()).Returns(true); return authority;
     }
@@ -109,7 +129,21 @@ public sealed class PlatformKeyInventoryActorTests
         await backend.SetStateAsync(saved.Key, state, TestContext.Current.CancellationToken); await backend.SaveStateAsync(TestContext.Current.CancellationToken);
         (await actor.ApplyAsync(new("next-install", count, PlatformKeyInventoryAction.InstallCurrent, Key("new-version"), "new-provision"))).ShouldBeNull();
         Digest(backend.CommittedState.Single().Value).ShouldBe(before); (await actor.ReadAsync(Key())).Signals.Count.ShouldBe(count);
-        await authority.Received(1).RecordRevisionAsync(Arg.Any<PlatformKeyVersion>(), Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
+        await authority.Received(1).RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>());
     }
 
+
+    /// <summary>Either pending or target save failure is recovered from exact owned stage/current independent anchor; retry and serialized restart retain one immutable inventory signal.</summary>
+    [Theory]
+    [InlineData(1, false)][InlineData(1, true)][InlineData(2, false)][InlineData(2, true)]
+    public async Task FailedInventoryPendingAndMainSaveRecoverOriginalExactSignal(int failSave, bool committed)
+    {
+        var backend = new InMemoryStateManager(); var authority = Authority(); var change = new PlatformKeyInventoryChange("original-install", 0, PlatformKeyInventoryAction.InstallCurrent, Key(), "independent-original-provision");
+        var manager = ActorPendingFixture.Faulting<PlatformKeyInventorySnapshot>(backend, failSave, committed);
+        await Should.ThrowAsync<HttpRequestException>(() => Actor(manager, authority).ApplyAsync(change)); await backend.ClearCacheAsync(TestContext.Current.CancellationToken);
+        var recovered = await Actor(backend, authority).ApplyAsync(change); recovered.ShouldNotBeNull(); recovered.InventoryRevision.ShouldBe(1);
+        var saved = backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+        await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<PlatformKeyInventorySnapshot>(JsonSerializer.Serialize(saved.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        (await Actor(restored, authority).ApplyAsync(change)).ShouldBe(recovered); (await Actor(restored, authority).ReadAsync(Key())).Signals.Single().ShouldBe(recovered);
+    }
 }

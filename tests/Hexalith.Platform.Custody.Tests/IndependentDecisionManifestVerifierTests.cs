@@ -129,4 +129,84 @@ public sealed class IndependentDecisionManifestVerifierTests
         await authority.Received(1).VerifyAuthorityBoundaryAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityManifest>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>());
     }
 
+
+    /// <summary>Manifest/basis and first/final public-profile collection capture cannot retain cancellation/deadline or continue into late approval.</summary>
+    [Theory]
+    [InlineData("manifest-evaluations", false, false)]
+    [InlineData("manifest-evaluations", false, true)]
+    [InlineData("manifest-evaluations", true, false)]
+    [InlineData("manifest-evaluations", true, true)]
+    [InlineData("manifest-approvers", false, false)]
+    [InlineData("manifest-approvers", false, true)]
+    [InlineData("manifest-approvers", true, false)]
+    [InlineData("manifest-approvers", true, true)]
+    [InlineData("basis-evaluations", false, false)]
+    [InlineData("basis-evaluations", false, true)]
+    [InlineData("basis-evaluations", true, false)]
+    [InlineData("basis-evaluations", true, true)]
+    [InlineData("basis-roles", false, false)]
+    [InlineData("basis-roles", false, true)]
+    [InlineData("basis-roles", true, false)]
+    [InlineData("basis-roles", true, true)]
+    [InlineData("initial-profile", false, false)]
+    [InlineData("initial-profile", false, true)]
+    [InlineData("initial-profile", true, false)]
+    [InlineData("initial-profile", true, true)]
+    [InlineData("final-profile", false, false)]
+    [InlineData("final-profile", false, true)]
+    [InlineData("final-profile", true, false)]
+    [InlineData("final-profile", true, true)]
+    public async Task SuspendedDecisionCollectionsReleaseCallerWithoutLateApproval(string vector, bool traversal, bool cancelCaller)
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+        var (clock, advance) = PrivateOwnerDeadlineTestClock.Create(); var sourceClock = new CustodyFixtureClock { Now = clock.GetUtcNow() };
+        using var issuer = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var manifest = Manifest(sourceClock); var basis = Basis(manifest); var profile = Profile(sourceClock, issuer);
+        string signature = Signed(manifest, profile, issuer);
+        string originalManifest = System.Text.Json.JsonSerializer.Serialize(manifest);
+        string originalBasis = System.Text.Json.JsonSerializer.Serialize(basis);
+        string originalProfile = System.Text.Json.JsonSerializer.Serialize(profile);
+        using var release = new ManualResetEventSlim();
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var returned = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        void Suspend() { entered.TrySetResult(); release.Wait(); returned.TrySetResult(); }
+        IReadOnlyList<T> Suspended<T>(IReadOnlyList<T> original)
+        {
+            var supplied = Substitute.For<IReadOnlyList<T>>();
+            supplied.Count.Returns(_ => { if (!traversal) { Suspend(); } return original.Count; });
+            supplied.GetEnumerator().Returns(_ => { if (traversal) { Suspend(); } return original.GetEnumerator(); }); return supplied;
+        }
+        var input = manifest; var expected = basis;
+        if (vector == "manifest-evaluations") { input = manifest with { AffectedEvaluations = Suspended(manifest.AffectedEvaluations) }; }
+        if (vector == "manifest-approvers") { input = manifest with { Approvers = Suspended(manifest.Approvers) }; }
+        if (vector == "basis-evaluations") { expected = basis with { AffectedEvaluations = Suspended(basis.AffectedEvaluations) }; }
+        if (vector == "basis-roles") { expected = basis with { RequiredRoles = Suspended(basis.RequiredRoles) }; }
+        var authority = Authority(profile); int reads = 0;
+        authority.ResolveAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ =>
+        {
+            int read = Interlocked.Increment(ref reads);
+            return read == (vector == "initial-profile" ? 1 : vector == "final-profile" ? 2 : 0)
+                ? profile with { ForbiddenApprovalActors = Suspended(profile.ForbiddenApprovalActors) } : profile;
+        });
+        using var caller = new CancellationTokenSource();
+        var operation = Task.Run(() => new IndependentDecisionManifestVerifier(clock, authority).VerifyAsync(input, signature, expected, caller.Token), TestContext.Current.CancellationToken);
+        try
+        {
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            if (cancelCaller)
+            {
+                caller.Cancel(); var denied = await Should.ThrowAsync<OperationCanceledException>(() => operation.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken));
+                denied.CancellationToken.ShouldBe(caller.Token);
+            }
+            else { advance(TimeSpan.FromSeconds(30)); (await operation.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).ShouldBeFalse(); }
+            int calls = authority.ReceivedCalls().Count(); release.Set();
+            await returned.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            authority.ReceivedCalls().Count().ShouldBe(calls);
+            System.Text.Json.JsonSerializer.Serialize(manifest).ShouldBe(originalManifest);
+            System.Text.Json.JsonSerializer.Serialize(basis).ShouldBe(originalBasis);
+            System.Text.Json.JsonSerializer.Serialize(profile).ShouldBe(originalProfile);
+            await authority.DidNotReceive().VerifyAuthorityBoundaryAsync(Arg.Any<DecisionAuthorityExpectedBasis>(), Arg.Any<DecisionAuthorityManifest>(), Arg.Any<DecisionAuthorityPublishedProfile>(), Arg.Any<CancellationToken>());
+        }
+        finally { release.Set(); }
+    }
 }

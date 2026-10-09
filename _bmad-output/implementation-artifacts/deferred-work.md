@@ -304,3 +304,17 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Leave security-spool state unchanged when the anti-rollback anchor refuses the next revision.
   evidence: VG06, pre-verified. No test makes RecordRevisionAsync return false for the revision about to be written. Spool work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
+  summary: Observe Aspire SDK declarations supplied only through active ordinary imports in the SDK scanner import closure.
+  evidence: Review B3-1/E3-1 and parent reproduction: a consumer importing a props file containing its sole Aspire.AppHost.Sdk/99.0.0 declaration returns no pins. Source-start G6/runtime/exception scanners also inspect only the consumer XML, so this gap predates Story 1.2. Add active/inactive transitive-import controls through each actual scanner when extending that existing contract.
+
+## Deferred from: code review of spec-1-2-make-the-builds-catalog-the-single-version-authority.md (2026-10-09)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
+  summary: Derive or validate workflow and action CLI/runtime defaults against the catalog's HexalithDaprCliVersion, HexalithDaprRuntimeVersion and HexalithAspireAppHostSdkVersion fields.
+  evidence: Review BH6+AA4. Builds `Github/workflows/domain-ci.yml` (28/33), `domain-release.yml` (22/26) and `Github/dapr-init/action.yml` (8) default Dapr CLI 1.18.0 and runtime 1.18.2 as literals. G6 `effective_tuple` reads Aspire/Dapr CLI versions from the Projects `ci.yml`, and nothing compares them with the catalog fields. This duplication predates Story 1.2 and is outside its Code Map; runtime HXR012/HXR015 still surface mismatches.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
+  summary: Match Aspire.AppHost.Sdk case-insensitively in the Python G6/runtime SDK scanners.
+  evidence: Review BH2+EH2. `evaluated_catalog.has_apphost_sdk`/`transform` and the pre-change regexes compare `Aspire.AppHost.Sdk` case-sensitively, while NuGet SDK resolution is case-insensitive, so `Sdk="aspire.apphost.sdk/x"` is not observed. This predates Story 1.2 in the Python scanners; the PowerShell exceptions-validator path is closed by the story's non-Aspire SDK-pin patch.

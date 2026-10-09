@@ -11,7 +11,7 @@ public static class DeletionCapabilitySigningSuccessor
     /// <param name="original">Original independently confirmed obsolete signer outcome.</param><param name="evaluatedAt">Current consuming clock.</param>
     /// <returns>The deterministic next payload, or null if proof is missing, stale or inconsistent.</returns>
     public static DeletionBatchCapabilityV1? Create(DeletionCapabilitySigningOutcome original, DateTimeOffset evaluatedAt)
-        => Create(original, original.NoIssueProof, evaluatedAt);
+        => Create(original, original?.NoIssueProof, evaluatedAt);
 
     /// <summary>Uses a fresh independent current successor basis while preserving the immutable original terminal no-issue identity.</summary>
     /// <param name="original">Original retained obsolete artifact.</param><param name="currentProof">Fresh exact independent no-issue and healthy-key observation.</param><param name="evaluatedAt">Current consuming clock.</param>
@@ -21,7 +21,7 @@ public static class DeletionCapabilitySigningSuccessor
         ArgumentNullException.ThrowIfNull(original);
         if (original.State != DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued || original.NoIssueProof is null || currentProof is not { } proof
             || proof.ProofId != original.NoIssueProof.ProofId
-            || !Valid(original, proof, evaluatedAt) || original.Payload.SigningAttemptOrdinal == long.MaxValue) { return null; }
+            || !Valid(original, proof, evaluatedAt) || original.Payload.SigningAttemptOrdinal >= 9007199254740991L) { return null; }
         return original.Payload with { SigningAttemptOrdinal = original.Payload.SigningAttemptOrdinal + 1,
             IntendedIssuedGuardRevision = proof.CurrentGuardRevision, CapabilityKeyVersion = proof.CurrentHealthyKeyVersion };
     }

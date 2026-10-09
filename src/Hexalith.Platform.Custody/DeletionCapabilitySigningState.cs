@@ -7,7 +7,7 @@ public enum DeletionCapabilitySigningState
     Signed,
     /// <summary>A durable request exists, but no exact signer result is known.</summary>
     Unknown,
-    /// <summary>Recorded current signing authorization denied before provider invocation.</summary>
+    /// <summary>Independently retained known noninvoked original: current signing authorization or post-intent trust denied.</summary>
     Denied,
     /// <summary>Required authority/backend is unavailable.</summary>
     Unavailable,

@@ -8,6 +8,9 @@ namespace Hexalith.Platform.Custody;
 /// <param name="DigestKeyVersion">Original retained system observation-key version.</param>
 public sealed record SecurityObservationIntent(string ObservationId, string RoutingTenantId, string ReasonCode, string UntrustedFieldsHmac, string DigestKeyVersion)
 {
+    /// <summary>Opaque original retained-server-receipt lookup index, committed atomically with the full observation identity and original authenticated route.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? RetainedServerReceiptKey { get; init; }
     /// <inheritdoc/>
     public override string ToString() => nameof(SecurityObservationIntent);
 }

@@ -28,22 +28,22 @@ public sealed class DeletionCapabilityRevocationSubscriber(DeletionCapabilityRev
             if (!Valid(envelope) || string.IsNullOrWhiteSpace(signedEvidence) || signedEvidence.Length > 16384) { return false; }
             var authorization = await budget.ReadAsync(() => authenticator.VerifyAsync(envelope, signedEvidence, CancellationToken.None)).ConfigureAwait(false);
             if (!Current(authorization, envelope)) { return false; }
-            var block = Capture(await budget.ReadAsync(() => registrar.LookupAsync(envelope, CancellationToken.None)).ConfigureAwait(false), envelope, budget);
+            var block = await budget.ReadAsync(async () => Capture(await registrar.LookupAsync(envelope, CancellationToken.None).ConfigureAwait(false), envelope, budget)).ConfigureAwait(false);
             if (block is null)
             {
                 // Register is idempotent at the same owner. A lost result is resolved only by exact lookup.
                 try { await budget.ReadAsync(() => registrar.RegisterAsync(envelope, CancellationToken.None)).ConfigureAwait(false); }
                 catch (Exception) { budget.Check(); }
-                block = Capture(await budget.ReadAsync(() => registrar.LookupAsync(envelope, CancellationToken.None)).ConfigureAwait(false), envelope, budget);
+                block = await budget.ReadAsync(async () => Capture(await registrar.LookupAsync(envelope, CancellationToken.None).ConfigureAwait(false), envelope, budget)).ConfigureAwait(false);
             }
             if (block is null || !await StillCurrentAsync(authorization!, envelope, signedEvidence, budget).ConfigureAwait(false)) { return false; }
-            var original = Capture(await budget.ReadAsync(() => mirror.LookupAsync(envelope, CancellationToken.None)).ConfigureAwait(false), envelope, budget);
+            var original = await budget.ReadAsync(async () => Capture(await mirror.LookupAsync(envelope, CancellationToken.None).ConfigureAwait(false), envelope, budget)).ConfigureAwait(false);
             if (original is not null && !Same(original, block)) { return false; }
             if (original is null)
             {
                 try { await budget.ReadAsync(() => mirror.RecordAsync(block, CancellationToken.None)).ConfigureAwait(false); }
                 catch (Exception) { budget.Check(); }
-                original = Capture(await budget.ReadAsync(() => mirror.LookupAsync(envelope, CancellationToken.None)).ConfigureAwait(false), envelope, budget);
+                original = await budget.ReadAsync(async () => Capture(await mirror.LookupAsync(envelope, CancellationToken.None).ConfigureAwait(false), envelope, budget)).ConfigureAwait(false);
             }
             budget.Check();
             return original is not null && Same(original, block)

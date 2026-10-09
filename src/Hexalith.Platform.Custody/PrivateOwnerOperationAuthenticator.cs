@@ -26,7 +26,8 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
         try
         {
             token.ThrowIfCancellationRequested(); ArgumentNullException.ThrowIfNull(caller); ArgumentNullException.ThrowIfNull(expected);
-            if (grants is null || caller.Identities.Count(i => i.IsAuthenticated) != 1 || profiles.GetCurrent() is not { } profile || !profile.IsValid(clock.GetUtcNow())) { return null; }
+            if (grants is null || caller.Identities.Count(i => i.IsAuthenticated) != 1
+                || await AwaitAsync(() => Task.FromResult(profiles.GetCurrent()), start, token).ConfigureAwait(false) is not { } profile || !profile.IsValid(clock.GetUtcNow())) { return null; }
             ClaimsIdentity machine = caller.Identities.Single(i => i.IsAuthenticated);
             string? issuer = One(machine, "iss"), subject = One(machine, "sub"), client = One(machine, "azp"), audience = One(machine, "aud");
             if (issuer is null || subject is null || client is null || audience is null) { return null; }
@@ -52,8 +53,10 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
             try { if (!CryptographicOperations.FixedTimeEquals(tag, currentTag)) { return null; } } finally { CryptographicOperations.ZeroMemory(currentTag); }
             var currentGrant = await AwaitAsync(() => grants.ResolveCurrentAsync(issuer, subject, client, expected, CancellationToken.None), start, token).ConfigureAwait(false);
             if (currentGrant != grant || !ValidGrant(currentGrant, issuer, subject, client, audience, expected, clock.GetUtcNow())
-                || profiles.GetCurrent() != profile || !profile.IsValid(clock.GetUtcNow()) || !ValidTime(credential, profile, clock.GetUtcNow())) { return null; }
-            token.ThrowIfCancellationRequested(); return credential with { Tag = Convert.ToHexStringLower(tag) };
+                || await AwaitAsync(() => Task.FromResult(profiles.GetCurrent()), start, token).ConfigureAwait(false) != profile || !profile.IsValid(clock.GetUtcNow()) || !ValidTime(credential, profile, clock.GetUtcNow())) { return null; }
+            token.ThrowIfCancellationRequested();
+            if (clock.GetElapsedTime(start) >= TimeSpan.FromSeconds(30)) { return null; }
+            return credential with { Tag = Convert.ToHexStringLower(tag) };
         }
         catch (Exception) { token.ThrowIfCancellationRequested(); return null; }
         finally { if (canonical is not null) { CryptographicOperations.ZeroMemory(canonical); } if (tag is not null) { CryptographicOperations.ZeroMemory(tag); } if (supplied is not null) { CryptographicOperations.ZeroMemory(supplied); } }
@@ -94,7 +97,7 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
         {
             TimeSpan remaining = TimeSpan.FromSeconds(30) - clock.GetElapsedTime(start); if (remaining <= TimeSpan.Zero) { throw new TimeoutException(); }
             var result = await pending.WaitAsync(remaining, clock, token).ConfigureAwait(false);
-            if (token.IsCancellationRequested || clock.GetElapsedTime(start) >= TimeSpan.FromSeconds(30)) { abandoned?.Invoke(result); token.ThrowIfCancellationRequested(); throw new TimeoutException(); }
+            if (token.IsCancellationRequested || clock.GetElapsedTime(start) >= TimeSpan.FromSeconds(30)) { token.ThrowIfCancellationRequested(); throw new TimeoutException(); }
             return result;
         }
         catch (Exception)

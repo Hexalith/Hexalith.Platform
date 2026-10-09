@@ -84,4 +84,70 @@ public sealed class PrivateOwnerOperationAuthenticatorTests
         using var watchdog = new CancellationTokenSource(TimeSpan.FromSeconds(5)); while (!late.Key!.IsDisposed) { await Task.Delay(10, watchdog.Token); }
         late.Key.IsDisposed.ShouldBeTrue();
     }
+    /// <summary>Both synchronous profile observations stay within the original caller/budget and cannot release a late credential.</summary>
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public async Task SuspendedProfileReadIsBounded(bool finalRead, bool deadlineExpires)
+    {
+        var (clock, advance) = PrivateOwnerDeadlineTestClock.Create();
+        var fixture = new CustodyFixtureClock { Now = clock.GetUtcNow() };
+        var keys = new CustodyFixtureKeyProvider(fixture);
+        var profile = new CustodyFixtureProfileProvider(fixture).Profile;
+        var profiles = Substitute.For<IPlatformSigningProfileProvider>();
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(Grant(fixture));
+        using var release = new ManualResetEventSlim();
+        using var cancellation = new CancellationTokenSource();
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var finished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        int reads = 0;
+        profiles.GetCurrent().Returns(_ =>
+        {
+            if (Interlocked.Increment(ref reads) != (finalRead ? 2 : 1)) { return profile; }
+            entered.SetResult(); release.Wait(); finished.SetResult(); return profile;
+        });
+        var authenticator = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants);
+        var operation = Task.Run(() => authenticator.IssueAsync(Caller(), Scope(), cancellation.Token), TestContext.Current.CancellationToken);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
+        try
+        {
+            if (deadlineExpires)
+            {
+                advance(TimeSpan.FromSeconds(30));
+                (await operation.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).ShouldBeNull();
+            }
+            else
+            {
+                cancellation.Cancel();
+                var error = await Should.ThrowAsync<OperationCanceledException>(() => operation.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken));
+                error.CancellationToken.ShouldBe(cancellation.Token);
+            }
+            keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+            int calls = keys.Calls;
+            release.Set(); await finished.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
+            keys.Calls.ShouldBe(calls);
+            if (!finalRead) { calls.ShouldBe(0); }
+        }
+        finally { release.Set(); }
+    }
+
+    /// <summary>A final completed profile cannot release credentials after elapsed time exhausts the original budget.</summary>
+    [Fact]
+    public async Task FinalProfileCompletingAfterBudgetCannotReleaseCredential()
+    {
+        var (clock, advance) = PrivateOwnerDeadlineTestClock.Create();
+        var fixture = new CustodyFixtureClock { Now = clock.GetUtcNow() };
+        var keys = new CustodyFixtureKeyProvider(fixture);
+        var profile = new CustodyFixtureProfileProvider(fixture).Profile;
+        var profiles = Substitute.For<IPlatformSigningProfileProvider>(); int reads = 0;
+        profiles.GetCurrent().Returns(_ => { if (++reads == 2) { advance(TimeSpan.FromSeconds(30)); } return profile; });
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(Grant(fixture));
+        (await new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants).IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken)).ShouldBeNull();
+        keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+
 }

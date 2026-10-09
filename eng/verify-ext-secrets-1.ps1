@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 # No manifest can unlock code, providers and full persisted-state qualification that do not exist.
 if ($Mode -eq 'Live') {
-    throw 'DependencyNotAvailable: EXT-SECRETS-1. Complete S1-S4/v23, production custody/profile, independent authority, accepted targets/commands and persisted qualification are unavailable.'
+    throw 'DependencyNotAvailable: EXT-SECRETS-1. Complete live S1-S4/v23 qualification requires production custody/profile, independent authority, accepted targets/commands and qualified persisted installation; implemented source protocols do not establish those inputs.'
 }
 $callerDirectory = (Get-Location).ProviderPath
 $root = Split-Path $PSScriptRoot -Parent
@@ -34,11 +34,13 @@ $requiredClasses = @(
     'Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests',
     'Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
     'Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests',
+    'Hexalith.Platform.Custody.Tests.DeletionBatchExecutionCoordinatorTests',
     'Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests',
     'Hexalith.Platform.Custody.Tests.DeletionCapabilitySigningActorTests',
     'Hexalith.Platform.Custody.Tests.ExportCustodyCryptographyTests',
     'Hexalith.Platform.Custody.Tests.ExportKeyDeliveryActorTests',
     'Hexalith.Platform.Custody.Tests.Fr34ProtectionGateTests',
+    'Hexalith.Platform.Custody.Tests.PrivateOwnerOperationDeadlineTests',
     'Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests',
     'Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests',
     'Hexalith.Platform.Custody.Tests.IndependentDecisionManifestVerifierTests',
@@ -47,6 +49,7 @@ $requiredClasses = @(
     'Hexalith.Platform.Custody.Tests.PlatformSecurityDenialRecorderTests',
     'Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests',
     'Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests',
+    'Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolWorkerTests',
     'Hexalith.Platform.Custody.Tests.TrustedEnvelopeReplayVerifierTests')
 $testArgs = @($assemblyPath)
 foreach ($class in $requiredClasses) { $testArgs += @('-class', $class) }

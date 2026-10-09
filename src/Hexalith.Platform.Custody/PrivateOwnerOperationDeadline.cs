@@ -8,13 +8,14 @@ internal sealed class PrivateOwnerOperationDeadline(TimeProvider clock, Cancella
     internal void Check()
     { token.ThrowIfCancellationRequested(); if (clock.GetElapsedTime(_start) >= TimeSpan.FromSeconds(30)) { throw new TimeoutException("Private owner operation unavailable."); } }
     /// <summary>Bounds synchronous invocation and noncooperative tasks, observes faults and clears abandoned owned material away from the caller.</summary>
-    internal async Task<T> ReadAsync<T>(Func<Task<T>> operation, Action<T>? abandoned = null)
+    internal async Task<T> ReadAsync<T>(Func<Task<T>> operation, Action<T>? abandoned = null, Action? notStarted = null)
     {
-        Check(); var pending = Task.Run(operation, CancellationToken.None);
+        try { Check(); } catch { notStarted?.Invoke(); throw; }
+        var pending = Task.Run(operation, CancellationToken.None);
         try
         {
             var result = await pending.WaitAsync(TimeSpan.FromSeconds(30) - clock.GetElapsedTime(_start), clock, token).ConfigureAwait(false);
-            try { Check(); return result; } catch { abandoned?.Invoke(result); throw; }
+            Check(); return result;
         }
         catch (Exception)
         {

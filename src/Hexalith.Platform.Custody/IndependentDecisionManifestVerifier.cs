@@ -9,17 +9,22 @@ public sealed class IndependentDecisionManifestVerifier(TimeProvider clock, IInd
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
         try
         {
-            budget.Check(); var owned = DecisionAuthorityManifestCodec.Capture(manifest); ArgumentNullException.ThrowIfNull(expected);
-            var basis = expected with { AffectedEvaluations = DecisionAuthorityManifestCodec.Sorted(expected.AffectedEvaluations), RequiredRoles = DecisionAuthorityManifestCodec.Sorted(expected.RequiredRoles) };
+            budget.Check();
+            var owned = await budget.ReadAsync(() => Task.FromResult(DecisionAuthorityManifestCodec.Capture(manifest))).ConfigureAwait(false);
+            var basis = await budget.ReadAsync(() =>
+            {
+                ArgumentNullException.ThrowIfNull(expected);
+                return Task.FromResult(expected with { AffectedEvaluations = DecisionAuthorityManifestCodec.Sorted(expected.AffectedEvaluations), RequiredRoles = DecisionAuthorityManifestCodec.Sorted(expected.RequiredRoles) });
+            }).ConfigureAwait(false);
             if (authority is null || detachedJws is not { Length: > 0 and <= 16384 } || !Matches(owned, basis)) { budget.Check(); return false; }
-            var profile = Capture(await budget.ReadAsync(() => authority.ResolveAsync(basis, owned.SigningKeyVersion, CancellationToken.None)).ConfigureAwait(false));
+            var profile = await budget.ReadAsync(async () => Capture(await authority.ResolveAsync(basis, owned.SigningKeyVersion, CancellationToken.None).ConfigureAwait(false))).ConfigureAwait(false);
             if (profile is null || !Current(profile, owned) || !await budget.ReadAsync(() => authority.VerifyExpectedBasisAsync(basis, Capture(profile)!, CancellationToken.None)).ConfigureAwait(false)) { budget.Check(); return false; }
             if (owned.Approvers.Any(a => profile.ForbiddenApprovalActors.Contains(a.ActorId, StringComparer.Ordinal)) || !DecisionAuthorityManifestCodec.Verify(owned, profile, detachedJws)) { budget.Check(); return false; }
             foreach (var approver in owned.Approvers)
             {
                 budget.Check(); if (!await budget.ReadAsync(() => authority.VerifyApproverAsync(basis, approver, owned.IssuedAt, CancellationToken.None)).ConfigureAwait(false)) { budget.Check(); return false; }
             }
-            var final = Capture(await budget.ReadAsync(() => authority.ResolveAsync(basis, owned.SigningKeyVersion, CancellationToken.None)).ConfigureAwait(false));
+            var final = await budget.ReadAsync(async () => Capture(await authority.ResolveAsync(basis, owned.SigningKeyVersion, CancellationToken.None).ConfigureAwait(false))).ConfigureAwait(false);
             bool same = final is not null && final.ProfileRevision == profile.ProfileRevision && final.Issuer == profile.Issuer && final.Audience == profile.Audience
                 && final.SigningKeyVersion == profile.SigningKeyVersion && final.PublicAnchorId == profile.PublicAnchorId && final.PublicAnchorVersion == profile.PublicAnchorVersion
                 && final.SubjectPublicKeyInfo.AsSpan().SequenceEqual(profile.SubjectPublicKeyInfo) && final.ForbiddenApprovalActors.SequenceEqual(profile.ForbiddenApprovalActors)

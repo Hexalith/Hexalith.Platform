@@ -1,3 +1,4 @@
+using Hexalith.EventStore.Contracts.Security;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Dapr.Actors.Runtime;
@@ -10,6 +11,24 @@ namespace Hexalith.Platform.Custody.Tests;
 /// <summary>Actual purpose-bound cryptography/conditional lifecycle/serialized end-state source tests; physical fence, all-copy destruction and restore authorities are synthetic.</summary>
 public sealed class CustodyKeyLifecycleTests
 {
+    /// <summary>A separately authorized mutation recovers the independently admitted exact stage after restart without the original caller; read-only evidence cannot advance it and physical effects are not duplicated.</summary>
+    [Fact]
+    public async Task LaterMutationRecoversPreJournalOriginalWithoutItsCaller()
+    {
+        var f = new CustodyKeyLifecycleFixture(); var original = CustodyKeyLifecycleFixture.Registration();
+        AnchoredFixtureJournal.SetAvailable(f.Authority, false);
+        (await f.Actor.RegisterWrappedAsync(original)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable);
+        var pending = f.Backend.CommittedState.Single().Value.ShouldBeOfType<Hexalith.EventStore.Contracts.Security.AnchoredStateTransition>();
+        f.Authority.ClearReceivedCalls(); var restarted = CustodyKeyLifecycleFixture.Create(f.Backend, f.Authority, f);
+        (await restarted.LookupAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "later-pin"))).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable);
+        await f.Authority.DidNotReceive().RecordTransitionAsync(Arg.Any<Hexalith.EventStore.Contracts.Security.AnchoredStateTransition>(), Arg.Any<CancellationToken>());
+        f.Anchor.ShouldBe(0); f.Effects.ShouldBe(0); f.Backend.CommittedState.Single().Value.ShouldBe(pending);
+        AnchoredFixtureJournal.SetAvailable(f.Authority, true);
+        (await restarted.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "later-pin"))).Status.ShouldBe(CustodyKeyLifecycleStatus.Pinned);
+        f.Persisted.Keys.Single().Registration.ShouldBe(original); f.Persisted.Keys.Single().Pins.Single().OperationId.ShouldBe("later-pin");
+        f.Persisted.Revision.ShouldBe(3); f.Effects.ShouldBe(1);
+    }
+
     /// <summary>Complete original export and interaction-root key context survives unwrap with no raw keys in diagnostics.</summary>
     [Theory]
     [InlineData(PlatformKeyPurpose.ExportEnvelopeKey)][InlineData(PlatformKeyPurpose.InteractionRootDek)]
@@ -121,18 +140,149 @@ public sealed class CustodyKeyLifecycleTests
     }
     /// <summary>Failed/lost acknowledgement of a reservation never sends a physical effect from staged cache; precommit anchor divergence remains unavailable.</summary>
     [Theory]
-    [InlineData(false)][InlineData(true)]
-    public async Task ReservationSaveFailureNeverUsesStagedStateForEffect(bool commitBeforeFault)
+    [InlineData(1, false)][InlineData(1, true)][InlineData(2, false)][InlineData(2, true)]
+    public async Task ReservationSaveFailureNeverUsesStagedStateForEffect(int failSave, bool committed)
     {
-        var f = new CustodyKeyLifecycleFixture(); await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration()); var manager = Substitute.For<IActorStateManager>();
-        manager.ClearCacheAsync(Arg.Any<CancellationToken>()).Returns(call => f.Backend.ClearCacheAsync(call.Arg<CancellationToken>()));
-        manager.TryGetStateAsync<CustodyKeyLifecycleLedger>(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => f.Backend.TryGetStateAsync<CustodyKeyLifecycleLedger>(call.Arg<string>(), call.Arg<CancellationToken>()));
-        manager.SetStateAsync(Arg.Any<string>(), Arg.Any<CustodyKeyLifecycleLedger>(), Arg.Any<CancellationToken>()).Returns(call => f.Backend.SetStateAsync(call.Arg<string>(), call.Arg<CustodyKeyLifecycleLedger>(), call.Arg<CancellationToken>()));
-        manager.SaveStateAsync(Arg.Any<CancellationToken>()).Returns(async call => { if (commitBeforeFault) { await f.Backend.SaveStateAsync(call.Arg<CancellationToken>()); } throw new HttpRequestException("Controlled original reservation save failure."); });
+        var f = new CustodyKeyLifecycleFixture(); await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration());
         var request = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, 1);
+        var manager = ActorPendingFixture.Faulting<CustodyKeyLifecycleLedger>(f.Backend, failSave, committed);
         await Should.ThrowAsync<HttpRequestException>(() => CustodyKeyLifecycleFixture.Create(manager, f.Authority, f).ApplyAsync(request));
-        f.Persisted.Revision.ShouldBe(commitBeforeFault ? 2 : 1); f.Persisted.Keys.Single().Outcomes.Count.ShouldBe(commitBeforeFault ? 1 : 0);
-        (await f.Actor.LookupAsync(request)).Status.ShouldBe(commitBeforeFault ? CustodyKeyLifecycleStatus.Unknown : CustodyKeyLifecycleStatus.Unavailable); f.Effects.ShouldBe(0);
+        f.Effects.ShouldBe(0); f.Anchor.ShouldBe(failSave == 1 ? 1 : 2); await f.Backend.ClearCacheAsync(TestContext.Current.CancellationToken);
+        var restarted = CustodyKeyLifecycleFixture.Create(f.Backend, f.Authority, f);
+        var recovered = await restarted.ApplyAsync(request);
+        if (failSave == 1 && !committed) { recovered.Status.ShouldBe(CustodyKeyLifecycleStatus.Destroyed); f.Effects.ShouldBe(1); }
+        else { recovered.Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown); f.Effects.ShouldBe(0); }
+        (await restarted.LookupAsync(request)).Status.ShouldBe(recovered.Status);
+        f.Persisted.Revision.ShouldBe(failSave == 1 && !committed ? 3 : 2);
     }
 
+
+    /// <summary>Exact independently proved negative pin removes its provisional hold; negative unpin retains its existing hold through restart and later destruction.</summary>
+    [Theory]
+    [InlineData(true)][InlineData(false)]
+    public async Task NegativePhysicalPinAndUnpinRetainTheCorrectRestrictiveHold(bool negativePin)
+    {
+        var f = new CustodyKeyLifecycleFixture { NotPerformedPin = negativePin, NotPerformedUnpin = !negativePin, LoseResponse = true };
+        await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration());
+        var pin = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "pin-negative-schedule");
+        (await f.Actor.ApplyAsync(pin)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+        f.Persisted.Keys.Single().Pins.Count.ShouldBe(1);
+        (await f.Actor.LookupAsync(pin)).Status.ShouldBe(negativePin ? CustodyKeyLifecycleStatus.NotPerformed : CustodyKeyLifecycleStatus.Pinned);
+        CustodyKeyLifecycleRequest terminal = pin;
+        if (!negativePin)
+        {
+            terminal = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Unpin, 3, "unpin-negative-schedule");
+            (await f.Actor.ApplyAsync(terminal)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+            (await f.Actor.LookupAsync(terminal)).Status.ShouldBe(CustodyKeyLifecycleStatus.NotPerformed);
+        }
+        var saved = f.Backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+        await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<CustodyKeyLifecycleLedger>(JsonSerializer.Serialize(saved.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        var restarted = CustodyKeyLifecycleFixture.Create(restored, f.Authority, f);
+        (await restarted.LookupAsync(terminal)).Status.ShouldBe(CustodyKeyLifecycleStatus.NotPerformed);
+        var persisted = restored.CommittedState.Single().Value.ShouldBeOfType<CustodyKeyLifecycleLedger>(); persisted.Keys.Single().Pins.Count.ShouldBe(negativePin ? 0 : 1);
+        f.LoseResponse = false; var destroy = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, persisted.Revision, "destroy-after-negative");
+        // Use the original backend for the physical fixture's assertion; both exact bytes were transported above.
+        var result = await f.Actor.ApplyAsync(destroy); result.Status.ShouldBe(negativePin ? CustodyKeyLifecycleStatus.Destroyed : CustodyKeyLifecycleStatus.BlockedByPin);
+        f.Effects.ShouldBe(2);
+    }
+    /// <summary>Well-formed wrapping and physical effect receipts require separate independent original proof; rejected effects remain Unknown and restrictive after transport/restart.</summary>
+    [Theory]
+    [InlineData("wrap")][InlineData("pin")][InlineData("unpin")][InlineData("destroy")]
+    public async Task IndependentReceiptDenialCannotReleaseWellFormedCustodyEvidence(string vector)
+    {
+        var f = new CustodyKeyLifecycleFixture { RejectRegistration = vector == "wrap" };
+        var before = f.AnchorDigest; var registration = CustodyKeyLifecycleFixture.Registration();
+        var wrapped = await f.Actor.RegisterWrappedAsync(registration);
+        if (vector == "wrap") { wrapped.Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable); f.Backend.CommittedState.ShouldBeEmpty(); f.Anchor.ShouldBe(0); f.AnchorDigest.ShouldBe(before); f.Effects.ShouldBe(0); return; }
+        if (vector == "unpin") { await f.Actor.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "confirmed-pin")); }
+        f.RejectOutcome = true;
+        var action = vector == "pin" ? CustodyKeyLifecycleAction.Pin : vector == "unpin" ? CustodyKeyLifecycleAction.Unpin : CustodyKeyLifecycleAction.Destroy;
+        var request = CustodyKeyLifecycleFixture.Request(action, f.Persisted.Revision, "independently-rejected-effect");
+        (await f.Actor.ApplyAsync(request)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown); int effects = f.Effects;
+        var saved = f.Backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+        await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<CustodyKeyLifecycleLedger>(JsonSerializer.Serialize(saved.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        var restarted = CustodyKeyLifecycleFixture.Create(restored, f.Authority, f);
+        (await restarted.LookupAsync(request)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+        (await restarted.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, f.Persisted.Revision, "cannot-follow-rejected-effect"))).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable);
+        restored.CommittedState.Single().Value.ShouldBeOfType<CustodyKeyLifecycleLedger>().Keys.Single().Outcomes.Last().Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+        f.Effects.ShouldBe(effects); f.Persisted.Keys.Single().Pins.Count.ShouldBe(vector == "destroy" ? 0 : 1);
+    }
+
+    /// <summary>Negative original pin recovery removes only its own provisional reservation, preserving a distinct confirmed hold after serialized restart and blocking destruction.</summary>
+    [Fact]
+    public async Task NegativePinPreservesSeparateConfirmedOriginalHold()
+    {
+        var f = new CustodyKeyLifecycleFixture(); await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration());
+        var original = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "confirmed-original-pin") with { HoldId = "independent-existing-hold" };
+        var originalOutcome = await f.Actor.ApplyAsync(original); originalOutcome.Status.ShouldBe(CustodyKeyLifecycleStatus.Pinned);
+        f.NotPerformedPin = true; f.LoseResponse = true;
+        var negative = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 3, "distinct-negative-pin") with { HoldId = "distinct-new-hold" };
+        (await f.Actor.ApplyAsync(negative)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown); f.Persisted.Keys.Single().Pins.Count.ShouldBe(2);
+        (await f.Actor.LookupAsync(negative)).Status.ShouldBe(CustodyKeyLifecycleStatus.NotPerformed); f.Persisted.Keys.Single().Pins.Single().ShouldBe(original);
+        var saved = f.Backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+        await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<CustodyKeyLifecycleLedger>(JsonSerializer.Serialize(saved.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+        var restarted = CustodyKeyLifecycleFixture.Create(restored, f.Authority, f);
+        (await restarted.LookupAsync(original)).ShouldBe(originalOutcome); (await restarted.LookupAsync(negative)).Status.ShouldBe(CustodyKeyLifecycleStatus.NotPerformed);
+        (await restarted.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, 5, "blocked-after-negative-pin"))).Status.ShouldBe(CustodyKeyLifecycleStatus.BlockedByPin);
+        restored.CommittedState.Single().Value.ShouldBeOfType<CustodyKeyLifecycleLedger>().Keys.Single().Pins.Single().ShouldBe(original); f.Effects.ShouldBe(2);
+    }
+
+    /// <summary>Suspended physical invocation/task releases the modeled non-reentrant tenant turn at the original deadline; late results never persist and exact serialized lookup recovers one effect.</summary>
+    [Theory]
+    [InlineData(false, false)][InlineData(false, true)][InlineData(true, false)][InlineData(true, true)]
+    public async Task SuspendedPhysicalLifecycleReleasesTurnAndRecoversOnlyOriginal(bool lookup, bool invocation)
+    {
+        var (clock, advance) = PrivateOwnerDeadlineTestClock.Create(); var f = new CustodyKeyLifecycleFixture();
+        await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration());
+        var request = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, 1, "bounded-original-pin");
+        if (lookup) { f.LoseResponse = true; (await f.Actor.ApplyAsync(request)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown); }
+        var provider = Substitute.For<ICustodyKeyLifecycleProvider>();
+        using var release = new ManualResetEventSlim(); using var turn = new SemaphoreSlim(1);
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var returned = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var pending = new TaskCompletionSource<CustodyKeyLifecycleOutcome>(TaskCreationOptions.RunContinuationsAsynchronously);
+        CustodyKeyLifecycleOutcome? physical = null;
+        Task<CustodyKeyLifecycleOutcome> Suspend(CustodyKeyLifecycleOutcome result)
+        {
+            physical = result; entered.TrySetResult();
+            if (!invocation) { return pending.Task; }
+            release.Wait(); returned.TrySetResult(); return Task.FromResult(result);
+        }
+        provider.ExecuteAsync(Arg.Any<CustodyKeyRegistration>(), Arg.Any<CustodyKeyLifecycleRequest>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call =>
+        {
+            f.LoseResponse = false;
+            return Suspend(f.ExecuteAsync(call.Arg<CustodyKeyRegistration>(), call.Arg<CustodyKeyLifecycleRequest>(), call.Arg<string>(), call.Arg<CancellationToken>()).GetAwaiter().GetResult());
+        });
+        provider.LookupAsync(Arg.Any<CustodyKeyRegistration>(), Arg.Any<CustodyKeyLifecycleRequest>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call =>
+            Suspend(f.LookupAsync(call.Arg<CustodyKeyRegistration>(), call.Arg<CustodyKeyLifecycleRequest>(), call.Arg<string>(), call.Arg<CancellationToken>()).GetAwaiter().GetResult()));
+        var actor = CustodyKeyLifecycleFixture.Create(f.Backend, f.Authority, provider, clock);
+        async Task<T> Turn<T>(Func<Task<T>> operation)
+        { await turn.WaitAsync(TestContext.Current.CancellationToken); try { return await operation(); } finally { turn.Release(); } }
+        var waiting = Task.Run(() => Turn(() => lookup ? actor.LookupAsync(request) : actor.ApplyAsync(request)), TestContext.Current.CancellationToken);
+        try
+        {
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            advance(TimeSpan.FromSeconds(30));
+            (await waiting.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+            f.Persisted.Keys.Single().Pins.Single().ShouldBe(request); f.Effects.ShouldBe(1);
+            (await Turn(() => actor.ApplyAsync(CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Destroy, f.Persisted.Revision, "same-key-blocked")))
+                .WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable);
+            var other = CustodyKeyLifecycleFixture.Registration(CustodyKeyLifecycleFixture.Identity() with { ObjectId = "other-key" })
+                with { OperationId = "other-wrap", ExpectedRevision = f.Persisted.Revision };
+            (await Turn(() => actor.RegisterWrappedAsync(other)).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Wrapped);
+            string before = JsonSerializer.Serialize(f.Persisted);
+            if (invocation) { release.Set(); await returned.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); }
+            else { pending.TrySetResult(physical!); }
+            JsonSerializer.Serialize(f.Persisted).ShouldBe(before); f.Persisted.Keys.First().Outcomes.Single().Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+            var saved = f.Backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+            await restored.SetStateAsync(saved.Key, JsonSerializer.Deserialize<CustodyKeyLifecycleLedger>(before)!, TestContext.Current.CancellationToken);
+            await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+            var restarted = CustodyKeyLifecycleFixture.Create(restored, f.Authority, f, clock);
+            var original = await restarted.LookupAsync(request); original.ShouldBe(physical); original.Status.ShouldBe(CustodyKeyLifecycleStatus.Pinned);
+            (await restarted.ApplyAsync(request)).ShouldBe(original); f.Effects.ShouldBe(1);
+            var final = restored.CommittedState.Single().Value.ShouldBeOfType<CustodyKeyLifecycleLedger>().Keys.Single(k => k.Registration.Identity == request.Identity);
+            final.Requests.Single().ShouldBe(request); final.Pins.Single().ShouldBe(request); final.Outcomes.Single().ShouldBe(original);
+        }
+        finally { release.Set(); pending.TrySetResult(physical!); }
+    }
 }

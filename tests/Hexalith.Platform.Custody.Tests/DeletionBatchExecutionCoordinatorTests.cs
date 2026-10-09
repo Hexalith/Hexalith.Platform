@@ -1,4 +1,5 @@
 using Hexalith.EventStore.Contracts.Security;
+using System.Text.Json;
 using NSubstitute;
 using Shouldly;
 
@@ -99,7 +100,18 @@ public sealed class DeletionBatchExecutionCoordinatorTests
         int commits = fixture.Backend.CommittedTransactions;
         (await fixture.Coordinator.ExecuteAsync(fixture.Payload, cancellationToken: TestContext.Current.CancellationToken)).Status.ShouldBe("CompletionSealed");
         fixture.Backend.CommittedTransactions.ShouldBe(commits); fixture.Signatures.ShouldBe(1); fixture.Reservations.ShouldBe(1);
-        original.Protection!.TargetReceipts.Count.ShouldBe(2); fixture.ProtectionState.CommittedState.ShouldNotBeEmpty();
+        original.Protection!.TargetReceipts.Count.ShouldBe(2);
+        var ledger = fixture.ProtectionState.CommittedState.Single().Value; ledger.GetType().Name.ShouldBe("DeletionConsumptionLedger");
+        string persistedLedger = JsonSerializer.Serialize(ledger); using var document = JsonDocument.Parse(persistedLedger);
+        var retained = document.RootElement.GetProperty("Batches").EnumerateArray().Single();
+        var retainedRequest = retained.GetProperty("Original").Deserialize<DeletionBatchConsumptionRequest>()!;
+        var retainedOutcome = retained.GetProperty("Outcome").Deserialize<DeletionConsumptionOutcome>()!;
+        retainedRequest.Capability.ShouldBe(fixture.Payload); retainedRequest.DispatchReceiptId.ShouldBe(fixture.State.Deletions.Single().Batches.Single().DispatchReceiptId);
+        retainedOutcome.Status.ShouldBe(DeletionConsumptionStatus.Consumed); retainedOutcome.ReceiptId.ShouldBe(original.Protection.ReceiptId);
+        retainedOutcome.TargetReceipts.ShouldBe(original.Protection.TargetReceipts); retainedOutcome.TargetReceipts.Select(receipt => receipt.Target).ShouldBe(retainedRequest.Targets);
+        var lookedUp = await fixture.ProtectionActor.LookupAsync("tenant-a", fixture.Payload.BatchId);
+        JsonSerializer.Serialize(lookedUp).ShouldBe(JsonSerializer.Serialize(retainedOutcome));
+        JsonSerializer.Serialize(fixture.ProtectionState.CommittedState.Single().Value).ShouldBe(persistedLedger); fixture.Reservations.ShouldBe(1);
     }
 
     /// <summary>Actual signer Unknown and protection ConsumptionReserved recover only the original retained physical results through their real actor lookup paths.</summary>
@@ -175,5 +187,132 @@ public sealed class DeletionBatchExecutionCoordinatorTests
             await port.DidNotReceive().DispatchAsync(Arg.Any<DeletionCapabilitySigningOutcome>(), Arg.Any<CancellationToken>()); fixture.Protection.ReceivedCalls().ShouldBeEmpty();
         }
         finally { releaseCallback.Set(); late.SetResult(new("late", "late", "Committed", 11, 1, "", "late")); }
+    }
+
+    /// <summary>Actual subscriber retains separately authenticated historical source events in either mirror order and retries; higher same-key events preserve the first immutable per-batch block receipt.</summary>
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task ActualSubscriberSupportsHigherSameKeyAndUnorderedDifferentKeySourceProofs(bool differentKeys)
+    {
+        using var f = new DeletionBatchActualOwnerFixture(); var port = new EventStoreDeletionBatchGuardPort(f.Guard);
+        var signed = await f.Signer(f.Payload).SignAsync(f.Payload); await port.IssueAsync(signed, false, TestContext.Current.CancellationToken); await port.DispatchAsync(signed, TestContext.Current.CancellationToken);
+        var batch = f.State.Deletions.Single().Batches.Single();
+        var request = new DeletionBatchConsumptionRequest(f.Payload, signed.DetachedJws!, batch.IssuedGuardRevision, batch.DispatchReceiptId, batch.DispatchGuardRevision,
+            batch.Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).ToArray());
+        await f.ProtectionActor.RegisterAsync(request);
+        var first = new DeletionCapabilityRevocationEnvelope("issuer-a", "protection-a", "tenant-a", "DeletionBatchCapabilitySigningKey", "key-a", 1, 1, "original-source-event", new string('A', 64));
+        var second = first with { KeyVersion = differentKeys ? "unrelated-key" : "key-a", RevocationRevision = 2, EventIdentity = "higher-source-event", SignatureDigest = new string('B', 64) };
+        var firstProof = (await f.ProtectionActor.RegisterRevocationAsync(first))!; var originalBlock = await f.ProtectionActor.LookupAsync("tenant-a", f.Payload.BatchId);
+        var secondProof = (await f.ProtectionActor.RegisterRevocationAsync(second))!; secondProof.AffectedBatchIds.ShouldBeEmpty();
+        var auth = Substitute.For<IDeletionCapabilityRevocationAuthenticator>(); DateTimeOffset sourceProofTime = DateTimeOffset.UtcNow;
+        auth.VerifyAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(), "signed-source-proof", Arg.Any<CancellationToken>()).Returns(call => new DeletionCapabilityRevocationAuthorization(call.Arg<DeletionCapabilityRevocationEnvelope>(), "independent-original-source-proof", sourceProofTime.AddSeconds(-1), sourceProofTime.AddMinutes(1)));
+        var subscriber = new DeletionCapabilityRevocationSubscriber(new(first.Issuer, first.Audience, first.TenantId), auth, f.Registrar, new EventStoreDeletionCapabilityGuardRevocationMirror(f.Guard), TimeProvider.System);
+        if (differentKeys) { (await subscriber.ReceiveAsync(second, "signed-source-proof", TestContext.Current.CancellationToken)).ShouldBeTrue(); }
+        (await subscriber.ReceiveAsync(first, "signed-source-proof", TestContext.Current.CancellationToken)).ShouldBeTrue();
+        if (!differentKeys) { (await subscriber.ReceiveAsync(second, "signed-source-proof", TestContext.Current.CancellationToken)).ShouldBeTrue(); }
+        var mirrored = f.State.Deletions.Single().Batches.Single(); mirrored.ProtectionReceiptId.ShouldBe(originalBlock.ReceiptId); mirrored.BlockSetRevision.ShouldBe(1);
+        f.State.Revocations.Count.ShouldBe(2); f.State.CompromisedKeyVersions.Count.ShouldBe(differentKeys ? 2 : 1);
+        f.State.Revocations.Single(r => r.Envelope == first).ReceiptId.ShouldBe(firstProof.ReceiptId); f.State.Revocations.Single(r => r.Envelope == second).ReceiptId.ShouldBe(secondProof.ReceiptId);
+        int commits = f.Backend.CommittedTransactions;
+        (await subscriber.ReceiveAsync(first, "signed-source-proof", TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await subscriber.ReceiveAsync(second, "signed-source-proof", TestContext.Current.CancellationToken)).ShouldBeTrue(); f.Backend.CommittedTransactions.ShouldBe(commits);
+        // The global compare is now 2 while the immutable original batch block remains 1.
+        var replacement = f.Payload with { AttestationOrdinal = 2, CapabilityKeyVersion = "key-b", IntendedIssuedGuardRevision = f.State.Revision };
+        var completed = await f.Coordinator.ExecuteAsync(replacement, true, TestContext.Current.CancellationToken);
+        completed.Status.ShouldBe("CompletionSealed"); f.LatestActivation!.ExpectedKeyBlockSetRevision.ShouldBe(2); f.LatestActivation.CompromiseBlockReceiptId.ShouldBe(originalBlock.ReceiptId);
+        f.LatestActivation.OperationId.ShouldEndWith("-compare-2"); f.Reservations.ShouldBe(1);
+    }
+    /// <summary>A reservation winner recovers its independently proved original irreversible vector after revocation and guard mirroring; a revocation winner cannot reserve.</summary>
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task ActualCoordinatorOrdersOriginalReservationAgainstMirroredCompromise(bool reservationFirst)
+    {
+        using var f = new DeletionBatchActualOwnerFixture { LoseConsumptionResponse = reservationFirst, UnknownConsumptionLookup = reservationFirst };
+        var port = new EventStoreDeletionBatchGuardPort(f.Guard);
+        if (reservationFirst) { (await f.Coordinator.ExecuteAsync(f.Payload, cancellationToken: TestContext.Current.CancellationToken)).Status.ShouldBe("ConsumptionUnknown"); }
+        else
+        {
+            var signed = await f.Signer(f.Payload).SignAsync(f.Payload); await port.IssueAsync(signed, false, TestContext.Current.CancellationToken); await port.DispatchAsync(signed, TestContext.Current.CancellationToken);
+            var batch = f.State.Deletions.Single().Batches.Single(); await f.ProtectionActor.RegisterAsync(new(f.Payload, signed.DetachedJws!, batch.IssuedGuardRevision, batch.DispatchReceiptId,
+                batch.DispatchGuardRevision, batch.Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).ToArray()));
+        }
+        var envelope = new DeletionCapabilityRevocationEnvelope("issuer-a", "protection-a", "tenant-a", "DeletionBatchCapabilitySigningKey", "key-a", 1, 1, "race-revocation", new string('A', 64));
+        var block = (await f.ProtectionActor.RegisterRevocationAsync(envelope))!; (await new EventStoreDeletionCapabilityGuardRevocationMirror(f.Guard).RecordAsync(block, TestContext.Current.CancellationToken)).ShouldBeTrue();
+        f.State.Deletions.Single().Batches.Single().DispatchReceiptId.ShouldNotBeNullOrWhiteSpace(); f.UnknownConsumptionLookup = false;
+        var recovered = await f.Coordinator.ExecuteAsync(f.Payload, cancellationToken: TestContext.Current.CancellationToken);
+        recovered.Status.ShouldBe(reservationFirst ? "CompletionSealed" : "ConsumptionBlocked"); f.Reservations.ShouldBe(reservationFirst ? 1 : 0);
+        f.State.Deletions.Single().Completed.ShouldBe(reservationFirst); f.State.CompromisedKeyVersions.ShouldContain("key-a");
+        if (reservationFirst) { recovered.Protection!.TargetReceipts.Count.ShouldBe(2); (await f.Coordinator.ExecuteAsync(f.Payload, cancellationToken: TestContext.Current.CancellationToken)).Status.ShouldBe("CompletionSealed"); f.Reservations.ShouldBe(1); }
+    }
+    /// <summary>Actual covered-target owner outcome carries the requesting batch's immutable aggregate receipt through guard mirroring, completion, and coordinator retry without a second physical reservation.</summary>
+    [Fact]
+    public async Task ActualCoordinatorCompletesCoveredTargetsWithOriginalTargetReceipts()
+    {
+        using var f = new DeletionBatchActualOwnerFixture();
+        f.ProtectionAuthority.VerifyDispatchAsync(Arg.Any<DeletionBatchConsumptionRequest>(), Arg.Any<CancellationToken>()).Returns(true);
+        var originalPayload = f.Payload with { BatchId = "previous-destroying-batch" }; var signed = await f.Signer(originalPayload).SignAsync(originalPayload);
+        var targets = f.State.Deletions.Single().Batches.Single().Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).ToArray();
+        var original = new DeletionBatchConsumptionRequest(originalPayload, signed.DetachedJws!, 11, "independent-original-dispatch", 13, targets);
+        await f.ProtectionActor.RegisterAsync(original); var destroyed = await f.ProtectionActor.ReserveAndConsumeAsync(original); f.Reservations.ShouldBe(1);
+        var result = await f.Coordinator.ExecuteAsync(f.Payload, cancellationToken: TestContext.Current.CancellationToken);
+        result.Status.ShouldBe("CompletionSealed"); result.Protection!.Status.ShouldBe(DeletionConsumptionStatus.AlreadyDestroyedByBatch); result.Protection.BatchId.ShouldBe(f.Payload.BatchId);
+        result.Protection.ReceiptId.ShouldNotBeNullOrWhiteSpace(); result.Protection.TargetReceipts.ShouldBe(destroyed.TargetReceipts); result.Protection.TargetReceipts.All(t => t.OriginalBatchId == originalPayload.BatchId).ShouldBeTrue();
+        var retried = await f.Coordinator.ExecuteAsync(f.Payload, cancellationToken: TestContext.Current.CancellationToken); retried.Status.ShouldBe("CompletionSealed");
+        JsonSerializer.Serialize(retried.Protection).ShouldBe(JsonSerializer.Serialize(result.Protection)); f.Reservations.ShouldBe(1);
+    }
+
+    /// <summary>Actual post-seal content invalidates completion; exact containment coverage and conditional recompletion retain both historical seals, and retry selects the current latest receipt.</summary>
+    [Fact]
+    public async Task LatestCompletionReceiptSurvivesPostSealContentCoverageAndRecompletion()
+    {
+        using var f = new DeletionBatchActualOwnerFixture(); var target = f.State.Deletions.Single().Batches.Single().Targets[0];
+        f.ViolationResource = "late-content-resource"; f.ViolationTarget = target;
+        f.ViolationFacts = new("tenant-a", target.AgentInteractionId, "conversation-a", "conversation-a", "original-permit-owner", "original-permit", "original-effect-capability", 1,
+            DirectoryWriteKind.ContentAppend, f.State.EpochId, "original-source-acceptance");
+        // Commit the original source append through the actual guard before the independently installed deletion fence/seal.
+        var installed = f.State; f.SetState(installed with { Deletions = [] });
+        var append = new GovernanceGuardTransition("tenant-a", "original-content-append", GovernanceGuardOperation.AppendWrite, f.State.Revision, f.State.EpochId,
+            "deletion-a", null, f.ViolationFacts, null, null, null, null, "", f.ViolationResource);
+        f.OriginalAcceptance = (await f.Guard.ExecuteAsync(append, [new("original-content-cell", 0, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData([])), "sealed-original-content"u8.ToArray())], TestContext.Current.CancellationToken))!;
+        f.OriginalAcceptance.Status.ShouldBe("Accepted");
+        f.SetState(f.State with { Deletions = installed.Deletions });
+        var payload = f.Payload with { IntendedIssuedGuardRevision = f.State.Revision };
+        var first = await f.Coordinator.ExecuteAsync(payload, cancellationToken: TestContext.Current.CancellationToken); first.Status.ShouldBe("CompletionSealed"); var originalCompletion = first.Guard!;
+        var ordinal = new GovernanceOrdinalCommand(1, "", "", "", "", "post-seal-content", "Content", f.OriginalAcceptance.AcceptedAtAdmissionFenceOrdinal, f.OriginalAcceptance.GuardHighWater, f.ViolationResource, [], "");
+        var violation = new GovernanceGuardTransition("tenant-a", "record-post-seal-content", GovernanceGuardOperation.RecordViolation, f.State.Revision, f.State.EpochId,
+            "deletion-a", null, null, null, ordinal, null, null, "", f.ViolationResource);
+        (await f.Guard.ExecuteAsync(violation, [], TestContext.Current.CancellationToken))!.Status.ShouldBe("Committed"); f.State.Deletions.Single().Completed.ShouldBeFalse();
+        var port = new EventStoreDeletionBatchGuardPort(f.Guard); (await port.CompleteAsync(payload, TestContext.Current.CancellationToken))!.Status.ShouldBe("Blocked");
+        var batch = new GovernanceBatchCommand("coverage-link", "Containment", 1, [target], DeletionBatchCapabilityIdentity.TargetManifestDigest([new(target.TenantId, target.AgentInteractionId, target.TargetProtectionKeyAlias)]), 0, "", "", "", "", [], 0);
+        var coverage = new GovernanceGuardTransition("tenant-a", "authorize-content-coverage", GovernanceGuardOperation.AuthorizeContainment, f.State.Revision, f.State.EpochId,
+            "deletion-a", null, null, null, null, null, batch, "coverage-authorization", f.ViolationResource);
+        (await f.Guard.ExecuteAsync(coverage, [], TestContext.Current.CancellationToken))!.Status.ShouldBe("CoverageLinked");
+        var recompleted = (await port.CompleteAsync(payload, TestContext.Current.CancellationToken))!; recompleted.Status.ShouldBe("CompletionSealed"); recompleted.GuardHighWater.ShouldBeGreaterThan(originalCompletion.GuardHighWater);
+        var latest = await port.CompleteAsync(payload, TestContext.Current.CancellationToken); latest.ShouldBe(recompleted);
+        (await f.Coordinator.ExecuteAsync(payload, cancellationToken: TestContext.Current.CancellationToken)).Guard.ShouldBe(recompleted);
+        f.State.Receipts.Count(r => r.Status == "CompletionSealed").ShouldBe(2); f.Reservations.ShouldBe(1);
+    }
+
+    /// <summary>Actual protection/coordinator refuses duplicate physical receipt identities and recovers the independently valid original vector without another destruction.</summary>
+    [Fact]
+    public async Task ActualDuplicatePhysicalReceiptIdsCannotCertifyCompletion()
+    {
+        using var fixture = new DeletionBatchActualOwnerFixture { DuplicatePhysicalReceiptIds = true };
+        var denied = await fixture.Coordinator.ExecuteAsync(fixture.Payload, cancellationToken: TestContext.Current.CancellationToken);
+        denied.Status.ShouldBe("ConsumptionReserved"); fixture.Reservations.ShouldBe(1); fixture.State.Deletions.Single().Completed.ShouldBeFalse();
+        using var reservedDocument = JsonDocument.Parse(JsonSerializer.Serialize(fixture.ProtectionState.CommittedState.Single().Value));
+        var reserved = reservedDocument.RootElement.GetProperty("Batches").EnumerateArray().Single().GetProperty("Outcome").Deserialize<DeletionConsumptionOutcome>()!;
+        reserved.Status.ShouldBe(DeletionConsumptionStatus.ConsumptionReserved); reserved.TargetReceipts.ShouldBeEmpty();
+        (await fixture.Coordinator.ExecuteAsync(fixture.Payload, cancellationToken: TestContext.Current.CancellationToken)).Status.ShouldBe("ConsumptionReserved");
+        fixture.Reservations.ShouldBe(1); fixture.DuplicatePhysicalReceiptIds = false;
+        var completed = await fixture.Coordinator.ExecuteAsync(fixture.Payload, cancellationToken: TestContext.Current.CancellationToken);
+        completed.Status.ShouldBe("CompletionSealed"); fixture.Reservations.ShouldBe(1); completed.Protection!.ReceiptId.ShouldBe(reserved.ReceiptId);
+        completed.Protection.TargetReceipts.Select(receipt => receipt.ReceiptId).Distinct(StringComparer.Ordinal).Count().ShouldBe(2);
+        fixture.State.Deletions.Single().Completed.ShouldBeTrue();
+        using var document = JsonDocument.Parse(JsonSerializer.Serialize(fixture.ProtectionState.CommittedState.Single().Value));
+        var retained = document.RootElement.GetProperty("Batches").EnumerateArray().Single();
+        retained.GetProperty("Original").Deserialize<DeletionBatchConsumptionRequest>()!.Capability.ShouldBe(fixture.Payload);
+        var outcome = retained.GetProperty("Outcome").Deserialize<DeletionConsumptionOutcome>()!;
+        outcome.Status.ShouldBe(DeletionConsumptionStatus.Consumed); outcome.ReceiptId.ShouldBe(reserved.ReceiptId); outcome.TargetReceipts.ShouldBe(completed.Protection.TargetReceipts);
     }
 }

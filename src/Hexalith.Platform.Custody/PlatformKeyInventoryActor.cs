@@ -1,3 +1,4 @@
+using Hexalith.EventStore.Contracts.Security;
 using Dapr.Actors.Runtime;
 using Hexalith.EventStore.Contracts.Identity;
 using System.Security.Cryptography;
@@ -30,7 +31,7 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
         ArgumentNullException.ThrowIfNull(change); Check(change.Key); Text(change.OperationId); Text(change.AuthenticatedEvidenceId);
         if (!Enum.IsDefined(change.Action) || change.ExpectedInventoryRevision < 0) { throw new ArgumentException("Invalid inventory change.", nameof(change)); }
         if (authority is null || !await authority.AuthorizeOperationAsync(change.Key, "ApplyKeyInventory").ConfigureAwait(false)) { return null; }
-        var state = await ReadStateAsync(change.Key).ConfigureAwait(false); string digest = Digest(change);
+        var state = await ReadStateAsync(change.Key, true).ConfigureAwait(false); string digest = Digest(change);
         var prior = state.Signals.SingleOrDefault(s => s.OperationId == change.OperationId);
         if (prior is not null) { if (prior.RequestDigest != digest) { throw new ArgumentException("Changed key operation identity.", nameof(change)); } return prior; }
         if (state.Revision != change.ExpectedInventoryRevision || authority is null || !await authority.AuthorizeAsync(change).ConfigureAwait(false)) { return null; }
@@ -51,9 +52,9 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
         }
         var signal = new PlatformKeyInventorySignal(change.OperationId, digest, revision, change.Action, change.Key);
         var next = state with { Revision = revision, Versions = Array.AsReadOnly(versions.ToArray()), Signals = Array.AsReadOnly(state.Signals.Append(signal).ToArray()) };
-        if (!await authority.RecordRevisionAsync(change.Key, state.Revision, next.Revision, Digest(next)).ConfigureAwait(false))
-        { throw new InvalidOperationException("Independent inventory anchor compare failed."); }
-        await StateManager.SetStateAsync(StateKey, next).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
+        var pending = RecoverableAnchoredState.Prepare(PendingScope, state.Revision, next.Revision, state, next);
+        if (!await RecoverableAnchoredState.CommitAsync(pending, authority, ReadPendingAsync, PersistPendingAsync).ConfigureAwait(false))
+        { throw new InvalidOperationException("Independent inventory transition compare failed."); }
         if (Digest(await ReadStateAsync(change.Key).ConfigureAwait(false)) != Digest(next)) { throw new InvalidOperationException("Inventory outcome not confirmed durable."); }
         return signal;
     }
@@ -72,16 +73,17 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
         if (authority is null || !await authority.AuthorizeOperationAsync(scope, "ReadKeyInventory").ConfigureAwait(false)) { throw new UnauthorizedAccessException("Private key inventory read denied."); }
         return await ReadStateAsync(scope).ConfigureAwait(false);
     }
-    private async Task<PlatformKeyInventorySnapshot> ReadStateAsync(PlatformKeyVersion scope)
+    private async Task<PlatformKeyInventorySnapshot> ReadStateAsync(PlatformKeyVersion scope, bool recoverAdmittedOriginal = false)
     {
         Check(scope); await StateManager.ClearCacheAsync().ConfigureAwait(false); var result = await StateManager.TryGetStateAsync<PlatformKeyInventorySnapshot>(StateKey).ConfigureAwait(false);
-        if (!result.HasValue)
-        {
-            var initial = new PlatformKeyInventorySnapshot(scope.TenantId, scope.Purpose, scope.KeyAlias, 0, [], []);
-            if (authority is null || !await authority.ValidateStateAsync(scope, 0, Digest(initial)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent inventory anchor is absent or stale."); }
-            return initial;
-        }
-        var state = result.Value;
+        var raw = result.HasValue ? result.Value : new PlatformKeyInventorySnapshot(scope.TenantId, scope.Purpose, scope.KeyAlias, 0, [], []);
+        if (authority is null) { throw new InvalidOperationException("Independent inventory authority is absent."); }
+        return await RecoverableAnchoredState.ReconcileAsync(PendingScope, CaptureInventory(raw, scope), await ReadPendingAsync().ConfigureAwait(false),
+            value => CaptureInventory(value, scope), value => authority.ValidateStateAsync(scope, value.Revision, Digest(value)), authority, PersistTargetAsync, recoverAdmittedOriginal).ConfigureAwait(false);
+    }
+    private PlatformKeyInventorySnapshot CaptureInventory(PlatformKeyInventorySnapshot state, PlatformKeyVersion scope)
+    {
+        if (state.TenantId == scope.TenantId && state.Purpose == scope.Purpose && state.KeyAlias == scope.KeyAlias && state.Revision == 0 && state.Signals.Count == 0 && state.Versions.Count == 0) { return state; }
         if (state.TenantId != scope.TenantId || state.Purpose != scope.Purpose || state.KeyAlias != scope.KeyAlias || state.Revision <= 0
             || state.Versions is null || state.Signals is null || state.Versions.Count > 1000 || state.Signals.Count > 10000 || state.Signals.Count != state.Revision
             || state.Versions.Count(v => v.State == PlatformHmacKeyState.Active) > 1 || state.Versions.Select(v => v.Key.Version).Distinct(StringComparer.Ordinal).Count() != state.Versions.Count)
@@ -97,8 +99,28 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
             || state.Signals.Select(s => s.OperationId).Distinct(StringComparer.Ordinal).Count() != state.Signals.Count)
         { throw new InvalidOperationException("Malformed durable key signals."); }
         var owned = state with { Versions = Array.AsReadOnly(state.Versions.ToArray()), Signals = Array.AsReadOnly(state.Signals.ToArray()) };
-        if (authority is null || !await authority.ValidateStateAsync(scope, owned.Revision, Digest(owned)).ConfigureAwait(false)) { throw new InvalidOperationException("Independent inventory anchor is absent or stale."); }
         return owned;
+    }
+
+    private string PendingScope => Host.Id.GetId() + "|" + StateKey;
+    private const string PendingKey = StateKey + "-pending-transition-v1";
+    private async Task<AnchoredStateTransition?> ReadPendingAsync()
+    {
+        await StateManager.ClearCacheAsync().ConfigureAwait(false);
+        var pending = await StateManager.TryGetStateAsync<AnchoredStateTransition>(PendingKey).ConfigureAwait(false);
+        return pending.HasValue ? pending.Value : null;
+    }
+    private async Task PersistPendingAsync(AnchoredStateTransition pending)
+    {
+        await StateManager.SetStateAsync(PendingKey, pending).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
+    }
+    private async Task<PlatformKeyInventorySnapshot> PersistTargetAsync(PlatformKeyInventorySnapshot next)
+    {
+        await StateManager.SetStateAsync(StateKey, next).ConfigureAwait(false);
+        _ = await StateManager.TryRemoveStateAsync(PendingKey).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
+        await StateManager.ClearCacheAsync().ConfigureAwait(false);
+        var confirmed = await StateManager.TryGetStateAsync<PlatformKeyInventorySnapshot>(StateKey).ConfigureAwait(false);
+        return confirmed.HasValue ? confirmed.Value : throw new InvalidOperationException("Reconciled main state is missing.");
     }
     private void Check(PlatformKeyVersion key)
     {

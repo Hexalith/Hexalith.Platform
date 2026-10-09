@@ -22,6 +22,13 @@ public static class PlatformPrivateCapabilityComposition
             provider.GetRequiredService<PlatformHmacService>(), spool, provider.GetRequiredService<TimeProvider>()));
         return services;
     }
+    /// <summary>Adds only a restricted hosted recovery loop; raw spool/recorder credentials remain private constructor captures and ordinary registration installs no worker.</summary>
+    public static IServiceCollection AddPrivateSecurityObservationDrainWorker(this IServiceCollection services, ReplicatedSecurityObservationSpool spool, TimeSpan interval, int maximumCount)
+    {
+        ArgumentNullException.ThrowIfNull(services); ArgumentNullException.ThrowIfNull(spool);
+        services.AddHostedService(provider => new ReplicatedSecurityObservationSpoolWorker(spool, provider.GetRequiredService<TimeProvider>(), interval, maximumCount));
+        return services;
+    }
     /// <summary>Adds only the authenticated custody subscriber; the compromise registrar is not registered or injected into signing/dispatch paths.</summary>
     public static IServiceCollection AddPrivateDeletionRevocationSubscriber(this IServiceCollection services, DeletionCapabilityRevocationSubscription subscription,
         IDeletionCapabilityRevocationAuthenticator authenticator, IDeletionCapabilityCompromiseRegistrar registrar, IDeletionCapabilityGuardRevocationMirror mirror)

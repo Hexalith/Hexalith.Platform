@@ -82,4 +82,24 @@ public sealed class TrustedEnvelopeReplayVerifierTests
         services.GetService<IDeletionCapabilityGuardRevocationMirror>().ShouldBeNull();
         services.GetService<ReplicatedSecurityObservationSpool>().ShouldBeNull(); services.GetService<ISecurityObservationRecorder>().ShouldBeNull();
     }
+
+    /// <summary>Neither a shorter nor a renewed independently supplied replay receipt matches the accepted exclusive retention equation, initially or at lookup.</summary>
+    [Theory]
+    [InlineData(-1, false)][InlineData(1, false)][InlineData(-1, true)][InlineData(1, true)][InlineData(0, false)][InlineData(0, true)]
+    public async Task ExactReplayRetentionIsRequiredAtRegistrationAndTerminalConfirmation(int deviationSeconds, bool substituteAtLookup)
+    {
+        var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock); var keys = new CustodyFixtureKeyProvider(clock);
+        var authenticator = new TrustedEnvelopeAuthenticator(keys, profiles, clock); var expected = Identity();
+        var envelope = (await authenticator.IssueAsync(expected, TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken)).Envelope!;
+        var registrar = Substitute.For<ITrustedEnvelopeReplayRegistrar>(); TrustedEnvelopeReplayReceipt? receipt = null;
+        registrar.RegisterAsync(Arg.Any<TrustedEnvelopeReplayIntent>(), Arg.Any<DateTimeOffset>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>()).Returns(call =>
+        {
+            var first = call.Arg<DateTimeOffset>(); receipt = new(call.Arg<TrustedEnvelopeReplayIntent>(), first,
+                first + call.Arg<TimeSpan>() + TimeSpan.FromSeconds(substituteAtLookup ? 0 : deviationSeconds), 1, "exact-original"); return receipt;
+        });
+        registrar.LookupAsync(Arg.Any<TrustedEnvelopeReplayIntent>(), Arg.Any<CancellationToken>()).Returns(_ => substituteAtLookup ? receipt! with { RetainUntil = receipt!.RetainUntil.AddSeconds(deviationSeconds) } : receipt);
+        var result = await new TrustedEnvelopeReplayVerifier(authenticator, registrar, profiles, clock).VerifyAsync(envelope, expected, TestContext.Current.CancellationToken);
+        result.Status.ShouldBe(deviationSeconds == 0 ? CustodyStatus.Succeeded : CustodyStatus.Unavailable);
+        if (deviationSeconds != 0) { result.Envelope.ShouldBeNull(); }
+    }
 }

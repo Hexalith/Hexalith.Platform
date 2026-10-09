@@ -7,21 +7,23 @@ namespace Hexalith.Platform.Custody;
 
 /// <summary>Private exact protection-block mirror into the actual conditional tenant guard owner; no signing or consuming authority is exposed.</summary>
 /// <param name="guard">Installed private EventStore guard with independent receipt authentication and current lookup authority.</param>
-public sealed class EventStoreDeletionCapabilityGuardRevocationMirror(IGovernanceScopeGuard guard) : IDeletionCapabilityGuardRevocationMirror
+/// <param name="clock">Optional operational deadline clock.</param>
+public sealed class EventStoreDeletionCapabilityGuardRevocationMirror(IGovernanceScopeGuard guard, TimeProvider? clock = null) : IDeletionCapabilityGuardRevocationMirror
 {
     /// <inheritdoc/>
     public async Task<bool> RecordAsync(DeletionCapabilityRevocationReceipt receipt, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(receipt);
-        receipt = Capture(receipt);
-        var state = await guard.ReadAsync(receipt.Envelope.TenantId, cancellationToken).ConfigureAwait(false);
-        if (state is null) { return false; }
-        var original = state.Revocations.SingleOrDefault(value => value.Envelope == receipt.Envelope);
+        var deadline = new PrivateOwnerOperationDeadline(clock ?? TimeProvider.System, cancellationToken);
+        receipt = await deadline.ReadAsync(() => Task.FromResult(Capture(receipt))).ConfigureAwait(false);
+        var state = await deadline.ReadAsync(() => guard.ReadAsync(receipt.Envelope.TenantId, CancellationToken.None)).ConfigureAwait(false);
+        if (state is null || state.TenantId != receipt.Envelope.TenantId) { return false; }
+        var original = await deadline.ReadAsync(() => Task.FromResult(state.Revocations.SingleOrDefault(value => value.Envelope == receipt.Envelope))).ConfigureAwait(false);
         if (original is not null) { return Hash(original) == Hash(receipt); }
         var batch = new GovernanceBatchCommand("", "", 0, [], "", 0, receipt.Envelope.KeyVersion, "", "", "", [], receipt.KeyBlockSetRevision);
         var command = new GovernanceGuardTransition(receipt.Envelope.TenantId, "revocation-" + Hash(receipt.Envelope), GovernanceGuardOperation.RecordKeyCompromise,
             state.Revision, "", "", null, null, null, null, null, batch, "", "") { RevocationReceipt = receipt };
-        var result = await guard.ExecuteAsync(command, [], cancellationToken).ConfigureAwait(false);
+        var result = await deadline.ReadAsync(() => guard.ExecuteAsync(command, [], CancellationToken.None)).ConfigureAwait(false);
         return result?.Status == "Committed";
     }
 
@@ -30,8 +32,10 @@ public sealed class EventStoreDeletionCapabilityGuardRevocationMirror(IGovernanc
     {
         ArgumentNullException.ThrowIfNull(envelope);
         Validate(envelope);
-        var state = await guard.ReadAsync(envelope.TenantId, cancellationToken).ConfigureAwait(false);
-        return state?.Revocations.SingleOrDefault(value => value.Envelope == envelope);
+        var deadline = new PrivateOwnerOperationDeadline(clock ?? TimeProvider.System, cancellationToken);
+        var state = await deadline.ReadAsync(() => guard.ReadAsync(envelope.TenantId, CancellationToken.None)).ConfigureAwait(false);
+        return state is not null && state.TenantId == envelope.TenantId
+            ? await deadline.ReadAsync(() => Task.FromResult(state.Revocations.SingleOrDefault(value => value.Envelope == envelope))).ConfigureAwait(false) : null;
     }
 
     private static string Hash<T>(T value) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));

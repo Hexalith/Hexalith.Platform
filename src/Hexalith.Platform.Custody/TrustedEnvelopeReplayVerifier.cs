@@ -31,12 +31,12 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
             catch (Exception) { budget.Check(); receipt = null; }
             if (receipt is null)
             { receipt = await budget.ReadAsync(() => registrar.LookupAsync(intent, CancellationToken.None)).ConfigureAwait(false); }
-            if (!Exact(receipt, intent, evaluatedAt)) { return new(CustodyStatus.Unavailable); }
+            if (!Exact(receipt, intent, evaluatedAt, profile.ReplayRetention)) { return new(CustodyStatus.Unavailable); }
             var confirmed = await budget.ReadAsync(() => registrar.LookupAsync(intent, CancellationToken.None)).ConfigureAwait(false);
             if (confirmed != receipt) { return new(CustodyStatus.Unavailable); }
             var final = await budget.ReadAsync(() => authenticator.VerifyAsync(captured, expected, CancellationToken.None)).ConfigureAwait(false);
             budget.Check();
-            return profiles.GetCurrent() == profile && profile.IsValid(clock.GetUtcNow()) && Exact(receipt, intent, clock.GetUtcNow())
+            return profiles.GetCurrent() == profile && profile.IsValid(clock.GetUtcNow()) && Exact(receipt, intent, clock.GetUtcNow(), profile.ReplayRetention)
                 ? final : new(CustodyStatus.StaleProfile);
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return new(CustodyStatus.Unavailable); }
@@ -47,8 +47,10 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
             if (complete is not null) { CryptographicOperations.ZeroMemory(complete); }
         }
     }
-    private static bool Exact(TrustedEnvelopeReplayReceipt? receipt, TrustedEnvelopeReplayIntent intent, DateTimeOffset now)
+    private static bool Exact(TrustedEnvelopeReplayReceipt? receipt, TrustedEnvelopeReplayIntent intent, DateTimeOffset now, TimeSpan retention)
         => receipt is not null && receipt.Intent == intent && receipt.FirstSeenAt != default && receipt.FirstSeenAt <= now
-            && receipt.RetainUntil > receipt.FirstSeenAt && receipt.RetainUntil > now && receipt.SourceRevision == 1
+            && receipt.FirstSeenAt.Offset == TimeSpan.Zero && receipt.RetainUntil.Offset == TimeSpan.Zero && RetentionExact(receipt, retention) && receipt.RetainUntil > now && receipt.SourceRevision == 1
             && !string.IsNullOrWhiteSpace(receipt.ReceiptId) && receipt.ReceiptId.Length <= 2048;
+    private static bool RetentionExact(TrustedEnvelopeReplayReceipt receipt, TimeSpan retention)
+    { try { return receipt.RetainUntil == receipt.FirstSeenAt.Add(retention); } catch (ArgumentOutOfRangeException) { return false; } }
 }
