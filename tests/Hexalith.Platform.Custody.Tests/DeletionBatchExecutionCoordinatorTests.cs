@@ -342,8 +342,9 @@ public sealed class DeletionBatchExecutionCoordinatorTests
 
     /// <summary>An issued replacement revoked before or after dispatch retains the original block and reconciles its ordinal without consuming.</summary>
     [Theory]
-    [InlineData(false, false)][InlineData(false, true)][InlineData(true, false)][InlineData(true, true)]
-    public async Task ActualIssuedReplacementRevocationCanReconcileAndAdvanceHealthyNext(bool dispatched, bool loseAcknowledgement)
+    [InlineData(false, false, false)][InlineData(false, true, false)][InlineData(true, false, false)][InlineData(true, true, false)]
+    [InlineData(true, false, true)][InlineData(true, true, true)]
+    public async Task ActualIssuedReplacementRevocationCanReconcileAndAdvanceHealthyNext(bool dispatched, bool loseAcknowledgement, bool activationWonBeforeResume)
     {
         using var f = new DeletionBatchActualOwnerFixture(); var port = new EventStoreDeletionBatchGuardPort(f.Guard);
         var first = await f.Signer(f.Payload).SignAsync(f.Payload); await port.IssueAsync(first, false, TestContext.Current.CancellationToken); await port.DispatchAsync(first, TestContext.Current.CancellationToken);
@@ -361,6 +362,14 @@ public sealed class DeletionBatchExecutionCoordinatorTests
         if (dispatched) { (await port.DispatchAsync(second, TestContext.Current.CancellationToken))!.Status.ShouldBe("Committed"); }
         (await subscriber.ReceiveAsync(revocation with { KeyVersion = "key-b", EventIdentity = "key-b-event", SignatureDigest = new string('B', 64) }, "source-proof", TestContext.Current.CancellationToken)).ShouldBeTrue();
         var pending = f.State.Deletions.Single().Batches.Single(); pending.ProtectionReceiptId.ShouldBe(block); pending.ProtectionOutcome.ShouldBe("ReplacementAwaitingActivation");
+        if (activationWonBeforeResume)
+        {
+            var originalActivation = new DeletionReattestationActivation("raced-activation-" + second.SigningRequestId, block, f.State.Revocations.Max(r => r.KeyBlockSetRevision),
+                pending.IssueReceiptId, new(replacement, second.DetachedJws!, pending.IssuedGuardRevision, pending.DispatchReceiptId, pending.DispatchGuardRevision,
+                    pending.Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).ToArray()));
+            (await f.ProtectionActor.ActivateAsync(originalActivation)).Status.ShouldBe(DeletionConsumptionStatus.ActivationBlockedByReplacementKeyCompromise);
+            f.State.Deletions.Single().Batches.Single().ProtectionReceiptId.ShouldBe(block); f.Reservations.ShouldBe(0);
+        }
         await f.RestartSerializedOwnersAsync(); f.LoseBlockedReconciliationAcknowledgement = loseAcknowledgement;
         var result = await f.Coordinator.ExecuteAsync(replacement, true, TestContext.Current.CancellationToken);
         result.Status.ShouldBe("ActivationBlockedByReplacementKeyCompromise"); f.Reservations.ShouldBe(0);
@@ -368,9 +377,14 @@ public sealed class DeletionBatchExecutionCoordinatorTests
         retained.Original.Capability.ShouldBe(replacement); retained.Original.CompromiseBlockReceiptId.ShouldBe(block);
         retained.Original.CommittedIssuedGuardRevision.ShouldBe(pending.IssuedGuardRevision); retained.Outcome.ReceiptId.ShouldBe(result.Protection!.ReceiptId);
         await f.RestartSerializedOwnersAsync();
+        var replay = await f.Coordinator.ExecuteAsync(replacement, true, TestContext.Current.CancellationToken);
+        replay.Status.ShouldBe("ActivationBlockedByReplacementKeyCompromise"); JsonSerializer.SerializeToUtf8Bytes(replay.Protection).ShouldBe(JsonSerializer.SerializeToUtf8Bytes(retained.Outcome)); f.Reservations.ShouldBe(0); f.Signatures.ShouldBe(2);
         var next = replacement with { AttestationOrdinal = 3, CapabilityKeyVersion = "key-c", IntendedIssuedGuardRevision = f.State.Revision };
         (await f.Coordinator.ExecuteAsync(next, true, TestContext.Current.CancellationToken)).Status.ShouldBe("CompletionSealed"); f.Reservations.ShouldBe(1); f.Signatures.ShouldBe(3);
         (await f.Coordinator.ExecuteAsync(next, true, TestContext.Current.CancellationToken)).Status.ShouldBe("CompletionSealed"); f.Reservations.ShouldBe(1); f.Signatures.ShouldBe(3);
+        await f.RestartSerializedOwnersAsync();
+        var historical = await f.ProtectionActor.ReadBlockedReplacementAsync(replacement);
+        historical.ShouldNotBeNull(); JsonSerializer.SerializeToUtf8Bytes(historical.Original).ShouldBe(JsonSerializer.SerializeToUtf8Bytes(retained.Original)); JsonSerializer.SerializeToUtf8Bytes(historical.Outcome).ShouldBe(JsonSerializer.SerializeToUtf8Bytes(retained.Outcome));
     }
 
     /// <summary>Omitted/foreign/stale/forged independently supplied reconciliation proof cannot change either actual owner's original ledger.</summary>

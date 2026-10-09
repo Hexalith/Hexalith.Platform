@@ -315,16 +315,32 @@ public sealed class ExportKeyDeliveryActorTests
         var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously); var pending = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously); int admissions = 0;
         authority.AuthorizeOperationAsync(identity, Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ =>
         { if (++admissions == (stage == "final" ? 3 : 1) && stage is "admission" or "final") { entered.TrySetResult(); return pending.Task; } return Task.FromResult(true); });
-        if (stage == "journal") { authority.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => { entered.TrySetResult(); return pending.Task; }); }
+        var journalFinished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        if (stage == "journal") { AnchoredFixtureJournal.SuspendRecord(authority, async () => { entered.TrySetResult(); await pending.Task; }, () => journalFinished.TrySetResult()); }
         var io = ActorPendingFixture.Suspended<ExportKeyDeliveryOutcome>(backend, stage == "stage-save" ? 1 : 4); bool stateIo = stage is "stage-save" or "terminal-save";
         var actor = Actor(identity, stateIo ? io.Manager : backend, clock, authority, provider); var reading = actor.DeliverAsync(identity);
         await (stateIo ? io.Entered : entered.Task).WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken);
         try
         {
-            advance(TimeSpan.FromSeconds(30)); (await reading.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).State.ShouldBe(ExportKeyDeliveryState.Unavailable);
+            advance(TimeSpan.FromSeconds(30)); (await reading.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).State.ShouldBe(stage == "terminal-save" ? ExportKeyDeliveryState.Unknown : ExportKeyDeliveryState.Unavailable);
             if (stateIo) { int calls = io.Manager.ReceivedCalls().Count(); (await actor.LookupAsync(identity).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).State.ShouldBe(ExportKeyDeliveryState.Unavailable); io.Manager.ReceivedCalls().Count().ShouldBe(calls); }
             int effects = releases; io.Release.TrySetResult(); pending.TrySetResult(true); if (stateIo) { await io.Finished.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); }
             releases.ShouldBe(effects);
+            if (stage is "stage-save" or "journal")
+            {
+                if (stage == "journal") { await journalFinished.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); }
+                byte[] pendingBytes = JsonSerializer.SerializeToUtf8Bytes(backend.CommittedState.Single(v => v.Value is AnchoredStateTransition).Value);
+                int records = authority.ReceivedCalls().Count(c => c.GetMethodInfo().Name == nameof(IAnchoredStateTransitionAuthority.RecordTransitionAsync));
+                var read = await actor.LookupAsync(identity);
+                read.State.ShouldBe(stage == "stage-save" ? ExportKeyDeliveryState.Unavailable : ExportKeyDeliveryState.Unknown);
+                authority.ReceivedCalls().Count(c => c.GetMethodInfo().Name == nameof(IAnchoredStateTransitionAuthority.RecordTransitionAsync)).ShouldBe(records);
+                if (stage == "stage-save") { JsonSerializer.SerializeToUtf8Bytes(backend.CommittedState.Single(v => v.Value is AnchoredStateTransition).Value).ShouldBe(pendingBytes); }
+                var recovered = await actor.DeliverAsync(identity); recovered.State.ShouldBe(ExportKeyDeliveryState.Unknown);
+                recovered.Identity.ShouldBe(identity); releases.ShouldBe(0);
+                var stored = backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+                await restored.SetStateAsync(stored.Key, JsonSerializer.Deserialize<ExportKeyDeliveryOutcome>(JsonSerializer.SerializeToUtf8Bytes(stored.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+                (await Actor(identity, restored, clock, authority, provider).LookupAsync(identity)).State.ShouldBe(ExportKeyDeliveryState.Unknown); releases.ShouldBe(0);
+            }
             if (stage is "terminal-save" or "final")
             {
                 (await actor.LookupAsync(identity)).ShouldBe(original); releases.ShouldBe(1);

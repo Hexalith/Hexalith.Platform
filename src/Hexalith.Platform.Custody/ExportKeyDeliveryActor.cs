@@ -22,16 +22,18 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
     {
         var budget = new PrivateOwnerOperationDeadline(clock, CancellationToken.None);
         Check(identity);
+        ExportKeyDeliveryOutcome? uncertainty = null;
         try
         {
             budget.Check(); _stateIo.CheckReady();
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(identity, "DeliverExportKey")).ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
             var result = await DeliverAsyncCoreAsync(identity, budget).ConfigureAwait(false);
+            if (result.State == ExportKeyDeliveryState.Unknown) { uncertainty = result; }
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(identity, "DeliverExportKey")).ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
             budget.Check(); return result;
 
         }
-        catch (TimeoutException) { return new(identity, ExportKeyDeliveryState.Unavailable); }
+        catch (TimeoutException) { return uncertainty ?? new(identity, ExportKeyDeliveryState.Unavailable); }
     }
     private async Task<ExportKeyDeliveryOutcome> DeliverAsyncCoreAsync(ExportKeyDeliveryIdentity identity, PrivateOwnerOperationDeadline budget)
     {
@@ -53,6 +55,7 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
             ExportKeyDeliveryOutcome outcome = await budget.ReadAsync(() => provider.ReleaseAsync(identity)).ConfigureAwait(false);
             return await RetainProviderOutcomeAsync(identity, outcome, budget).ConfigureAwait(false);
         }
+        catch (TimeoutException) { return new(identity, ExportKeyDeliveryState.Unknown); }
         catch (Exception) { budget.Check(); return new(identity, ExportKeyDeliveryState.Unknown); }
     }
     /// <inheritdoc/>
@@ -60,16 +63,18 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
     {
         var budget = new PrivateOwnerOperationDeadline(clock, CancellationToken.None);
         Check(identity);
+        ExportKeyDeliveryOutcome? uncertainty = null;
         try
         {
             budget.Check(); _stateIo.CheckReady();
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(identity, "LookupExportKey")).ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
             var result = await LookupAsyncCoreAsync(identity, budget).ConfigureAwait(false);
+            if (result.State == ExportKeyDeliveryState.Unknown) { uncertainty = result; }
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(identity, "LookupExportKey")).ConfigureAwait(false))) { return new(identity, ExportKeyDeliveryState.Unavailable); }
             budget.Check(); return result;
 
         }
-        catch (TimeoutException) { return new(identity, ExportKeyDeliveryState.Unavailable); }
+        catch (TimeoutException) { return uncertainty ?? new(identity, ExportKeyDeliveryState.Unavailable); }
     }
     private async Task<ExportKeyDeliveryOutcome> LookupAsyncCoreAsync(ExportKeyDeliveryIdentity identity, PrivateOwnerOperationDeadline budget)
     {
@@ -85,6 +90,7 @@ public sealed class ExportKeyDeliveryActor(ActorHost host, TimeProvider clock, I
         if (existing.State is ExportKeyDeliveryState.Delivered or ExportKeyDeliveryState.NotDelivered) { return existing; }
         if (provider is null) { return new(expected, ExportKeyDeliveryState.Unavailable); }
         try { return await RetainProviderOutcomeAsync(expected, await budget.ReadAsync(() => provider.LookupAsync(expected)).ConfigureAwait(false), budget).ConfigureAwait(false); }
+        catch (TimeoutException) { return new(expected, ExportKeyDeliveryState.Unknown); }
         catch (Exception) { budget.Check(); return new(expected, ExportKeyDeliveryState.Unknown); }
     }
     private async Task<ExportKeyDeliveryOutcome> RetainProviderOutcomeAsync(ExportKeyDeliveryIdentity expected, ExportKeyDeliveryOutcome outcome, PrivateOwnerOperationDeadline budget)

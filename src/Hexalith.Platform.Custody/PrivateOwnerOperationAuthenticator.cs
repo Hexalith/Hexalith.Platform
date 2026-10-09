@@ -76,8 +76,7 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
         }
         return value;
     }
-    private sealed record Machine(string Issuer, string Subject, string Client, string Audience);
-    private static Machine? CaptureMachine(ClaimsPrincipal caller)
+    private static PrivateOwnerOperationMachine? CaptureMachine(ClaimsPrincipal caller)
     {
         ClaimsIdentity? identity = null;
         foreach (ClaimsIdentity candidate in caller.Identities)

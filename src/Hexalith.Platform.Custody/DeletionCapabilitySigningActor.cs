@@ -34,16 +34,18 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     {
         var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         string id = Check(payload);
+        DeletionCapabilitySigningOutcome? uncertainty = null;
         try
         {
             budget.Check(); _stateIo.CheckReady();
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "SignDeletionCapability")).ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
             var result = await SignAsyncCoreAsync(payload, budget).ConfigureAwait(false);
+            if (result.State == DeletionCapabilitySigningState.Unknown) { uncertainty = result; }
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "SignDeletionCapability")).ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
             budget.Check(); return result;
 
         }
-        catch (TimeoutException) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
+        catch (TimeoutException) { return uncertainty ?? new(id, payload, DeletionCapabilitySigningState.Unavailable); }
     }
     private async Task<DeletionCapabilitySigningOutcome> SignAsyncCoreAsync(DeletionBatchCapabilityV1 payload, PrivateOwnerOperationDeadline budget)
     {
@@ -65,6 +67,7 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         catch (Exception) { budget.Check(); admittedTrust = null; }
         if (admittedTrust is null) { return await SaveAsync(budget, new(requestId, payload, DeletionCapabilitySigningState.Denied)).ConfigureAwait(false); }
         try { return await RetainAsync(payload, requestId, await budget.ReadAsync(async () => CaptureProviderResult(await provider.SignAsync(payload, requestId).ConfigureAwait(false))).ConfigureAwait(false), budget).ConfigureAwait(false); }
+        catch (TimeoutException) { return new(requestId, payload, DeletionCapabilitySigningState.Unknown); }
         catch (Exception) { budget.Check(); return new(requestId, payload, DeletionCapabilitySigningState.Unknown); }
     }
     /// <inheritdoc/>
@@ -72,16 +75,18 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     {
         var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         string id = Check(payload);
+        DeletionCapabilitySigningOutcome? uncertainty = null;
         try
         {
             budget.Check(); _stateIo.CheckReady();
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "LookupDeletionCapability")).ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
             var result = await LookupAsyncCoreAsync(payload, budget).ConfigureAwait(false);
+            if (result.State == DeletionCapabilitySigningState.Unknown) { uncertainty = result; }
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "LookupDeletionCapability")).ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
             budget.Check(); return result;
 
         }
-        catch (TimeoutException) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
+        catch (TimeoutException) { return uncertainty ?? new(id, payload, DeletionCapabilitySigningState.Unavailable); }
     }
     private async Task<DeletionCapabilitySigningOutcome> LookupAsyncCoreAsync(DeletionBatchCapabilityV1 payload, PrivateOwnerOperationDeadline budget)
     {
@@ -104,6 +109,7 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
             or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued) { return existing; }
         if (provider is null || trustProvider is null) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
         try { return await RetainAsync(payload, id, await budget.ReadAsync(async () => CaptureProviderResult(await provider.LookupAsync(payload, id).ConfigureAwait(false))).ConfigureAwait(false), budget, recoveringOriginal: true).ConfigureAwait(false); }
+        catch (TimeoutException) { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
         catch (Exception) { budget.Check(); return new(id, payload, DeletionCapabilitySigningState.Unknown); }
     }
     private async Task<DeletionCapabilitySigningOutcome> RetainAsync(DeletionBatchCapabilityV1 payload, string id, DeletionCapabilitySigningResult result, PrivateOwnerOperationDeadline budget, bool recoveringOriginal = false)

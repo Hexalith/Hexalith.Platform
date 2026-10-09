@@ -515,14 +515,15 @@ public sealed class DeletionCapabilitySigningActorTests
         { if (++admissions == (stage == "final" ? 3 : 1) && stage is "final" or "admission") { entered.TrySetResult(); return pending.Task; } return Task.FromResult(true); });
         if (stage is "trust" or "post-trust") { trust.ResolveAsync(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion, Arg.Any<CancellationToken>()).Returns(_ =>
             { if (++trusts == (stage == "post-trust" ? 2 : 1)) { entered.TrySetResult(); return pendingTrust.Task; } return Task.FromResult(current); }); }
-        if (stage == "journal") { authority.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => { entered.TrySetResult(); return pending.Task; }); }
+        var journalFinished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        if (stage == "journal") { AnchoredFixtureJournal.SuspendRecord(authority, async () => { entered.TrySetResult(); await pending.Task; }, () => journalFinished.TrySetResult()); }
         var io = ActorPendingFixture.Suspended<DeletionCapabilitySigningOutcome>(backend, stage == "stage-save" ? 1 : 4);
         bool stateIo = stage is "stage-save" or "terminal-save";
         var actor = Actor(payload, stateIo ? io.Manager : backend, authority, provider, trust, clock: clock);
         var reading = actor.SignAsync(payload); await (stateIo ? io.Entered : entered.Task).WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken);
         try
         {
-            advance(TimeSpan.FromSeconds(30)); (await reading.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
+            advance(TimeSpan.FromSeconds(30)); (await reading.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).State.ShouldBe(stage == "terminal-save" ? DeletionCapabilitySigningState.Unknown : DeletionCapabilitySigningState.Unavailable);
             if (stateIo)
             {
                 int calls = io.Manager.ReceivedCalls().Count(); (await actor.LookupAsync(payload).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
@@ -531,6 +532,21 @@ public sealed class DeletionCapabilitySigningActorTests
             int effects = signatures; io.Release.TrySetResult(); pending.TrySetResult(true); pendingTrust.TrySetResult(null);
             if (stateIo) { await io.Finished.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); }
             signatures.ShouldBe(effects);
+            if (stage is "stage-save" or "journal")
+            {
+                if (stage == "journal") { await journalFinished.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); }
+                byte[] pendingBytes = JsonSerializer.SerializeToUtf8Bytes(backend.CommittedState.Single(v => v.Value is AnchoredStateTransition).Value);
+                int records = authority.ReceivedCalls().Count(c => c.GetMethodInfo().Name == nameof(IAnchoredStateTransitionAuthority.RecordTransitionAsync));
+                var read = await actor.LookupAsync(payload);
+                read.State.ShouldBe(stage == "stage-save" ? DeletionCapabilitySigningState.Unavailable : DeletionCapabilitySigningState.Unknown);
+                authority.ReceivedCalls().Count(c => c.GetMethodInfo().Name == nameof(IAnchoredStateTransitionAuthority.RecordTransitionAsync)).ShouldBe(records);
+                if (stage == "stage-save") { JsonSerializer.SerializeToUtf8Bytes(backend.CommittedState.Single(v => v.Value is AnchoredStateTransition).Value).ShouldBe(pendingBytes); }
+                var recovered = await actor.SignAsync(payload); recovered.State.ShouldBe(DeletionCapabilitySigningState.Unknown);
+                recovered.Payload.ShouldBe(payload); recovered.SigningRequestId.ShouldBe(id); signatures.ShouldBe(0);
+                var stored = backend.CommittedState.Single(); var restored = new InMemoryStateManager();
+                await restored.SetStateAsync(stored.Key, JsonSerializer.Deserialize<DeletionCapabilitySigningOutcome>(JsonSerializer.SerializeToUtf8Bytes(stored.Value))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+                (await Actor(payload, restored, authority, provider, trust, clock: clock).LookupAsync(payload)).State.ShouldBe(DeletionCapabilitySigningState.Unknown); signatures.ShouldBe(0);
+            }
             if (stage == "post-trust") { backend.CommittedState.Single().Value.ShouldBeOfType<DeletionCapabilitySigningOutcome>().State.ShouldBe(DeletionCapabilitySigningState.Unknown); }
             if (stage is "terminal-save" or "final")
             {

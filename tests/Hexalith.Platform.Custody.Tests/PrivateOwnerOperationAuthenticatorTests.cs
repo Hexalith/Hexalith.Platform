@@ -175,6 +175,12 @@ public sealed class PrivateOwnerOperationAuthenticatorTests
                 MachineSubject = caller.FindFirst("sub")!.Value, MachineClient = caller.FindFirst("azp")!.Value, MachineAudience = caller.FindFirst("aud")!.Value });
         (await new PrivateOwnerOperationAuthenticator(keys, new CustodyFixtureProfileProvider(clock), clock, grants).IssueAsync(caller, scope, TestContext.Current.CancellationToken)).ShouldBeNull();
         grants.ReceivedCalls().ShouldBeEmpty(); keys.Calls.ShouldBe(0);
+        grants.ResolveCurrentAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<PrivateOwnerOperationScope>(), Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var authorizer = new PrivateOwnerOperationAuthenticator(keys, new CustodyFixtureProfileProvider(clock), clock, grants);
+        var credential = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!; credential.ShouldNotBeNull();
+        int keyCalls = keys.Calls; grants.ClearReceivedCalls();
+        (await authorizer.AuthorizeAsync(caller, scope, credential, TestContext.Current.CancellationToken)).ShouldBeFalse();
+        grants.ReceivedCalls().ShouldBeEmpty(); keys.Calls.ShouldBe(keyCalls); keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
     }
 
     /// <summary>Returned profile/grant/key identifiers are validated before canonical credential construction, and every acquired key is retired.</summary>

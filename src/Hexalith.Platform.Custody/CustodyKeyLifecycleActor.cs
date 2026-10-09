@@ -52,15 +52,17 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
     {
         var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         Validate(request); Check(request.Identity); string digest = Digest(request); var missing = Missing(request.Identity, request.OperationId, digest);
+        CustodyKeyLifecycleOutcome? uncertainty = null;
         try
         {
             budget.Check(); _stateIo.CheckReady();
             if (!await AdmitAsync(budget, request.Identity, request.OperationId, "ApplyKeyLifecycle", digest).ConfigureAwait(false)) { return missing; }
             var result = await ApplyCoreAsync(request, digest, budget).ConfigureAwait(false);
+            if (result.Status == CustodyKeyLifecycleStatus.Unknown) { uncertainty = result; }
             return await AdmitAsync(budget, request.Identity, request.OperationId, "ApplyKeyLifecycle", digest).ConfigureAwait(false) ? result : missing;
 
         }
-        catch (TimeoutException) { return missing; }
+        catch (TimeoutException) { return uncertainty ?? missing; }
     }
     private async Task<CustodyKeyLifecycleOutcome> ApplyCoreAsync(CustodyKeyLifecycleRequest request, string digest, PrivateOwnerOperationDeadline budget)
     {
@@ -87,6 +89,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
             var result = await budget.ReadAsync(() => provider.ExecuteAsync(key.Registration, request, digest)).ConfigureAwait(false);
             return await RetainAsync(next, reserved, request, pending, result, budget).ConfigureAwait(false);
         }
+        catch (TimeoutException) { return pending; }
         catch (Exception) { budget.Check(); return pending; }
     }
     /// <inheritdoc/>
@@ -94,6 +97,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
     {
         var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         Validate(request); Check(request.Identity); string digest = Digest(request); var missing = Missing(request.Identity, request.OperationId, digest);
+        CustodyKeyLifecycleOutcome? uncertainty = null;
         try
         {
             budget.Check(); _stateIo.CheckReady();
@@ -101,10 +105,11 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
             var state = await ReadAsync(budget, request.Identity.TenantId).ConfigureAwait(false); var key = state?.Keys.SingleOrDefault(k => k.Registration.Identity == request.Identity);
             var prior = key?.Outcomes.SingleOrDefault(o => o.OperationId == request.OperationId);
             var result = state is not null && key is not null && prior?.RequestDigest == digest ? await ResolveAsync(state, key, request, prior, budget).ConfigureAwait(false) : missing;
+            if (result.Status == CustodyKeyLifecycleStatus.Unknown) { uncertainty = result; }
             return await AdmitAsync(budget, request.Identity, request.OperationId, "LookupKeyLifecycle", digest).ConfigureAwait(false) ? result : missing;
 
         }
-        catch (TimeoutException) { return missing; }
+        catch (TimeoutException) { return uncertainty ?? missing; }
     }
     private async Task<CustodyKeyLifecycleOutcome> ResolveAsync(CustodyKeyLifecycleLedger state, CustodyKeyLifecycleEntry key, CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome original, PrivateOwnerOperationDeadline budget)
     {
@@ -115,6 +120,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
             var result = await budget.ReadAsync(() => provider.LookupAsync(key.Registration, request, original.RequestDigest)).ConfigureAwait(false);
             return await RetainAsync(state, key, request, original, result, budget).ConfigureAwait(false);
         }
+        catch (TimeoutException) { return original; }
         catch (Exception) { budget.Check(); return original; }
     }
     private async Task<CustodyKeyLifecycleOutcome> RetainAsync(CustodyKeyLifecycleLedger state, CustodyKeyLifecycleEntry key, CustodyKeyLifecycleRequest request,

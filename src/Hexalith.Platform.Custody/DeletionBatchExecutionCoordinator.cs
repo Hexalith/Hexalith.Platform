@@ -41,11 +41,11 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
             if (replacement)
             {
                 var pendingReplacement = await WaitAsync(() => guard.ReadAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
-                if (pendingReplacement?.Batch.ProtectionOutcome == "ReplacementAwaitingActivation")
+                if (pendingReplacement?.Batch.ProtectionOutcome is "ReplacementAwaitingActivation" or "ConsumptionBlocked:CapabilityKeyCompromise")
                 {
                     protection = await deadline.ReadAsync(() => Task.FromResult(protectionOwners(payload.TenantId))).ConfigureAwait(false);
                     var retained = await WaitAsync(() => protection.ReadBlockedReplacementAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
-                    if (retained is null)
+                    if (retained is null && pendingReplacement.Batch.ProtectionOutcome == "ReplacementAwaitingActivation")
                     {
                         var comparison = await WaitAsync(() => protection.ReadActivationComparisonAsync(payload.TenantId, payload.BatchId, payload.CapabilityKeyVersion, providerCancellation.Token)).ConfigureAwait(false);
                         if (comparison?.ReplacementKeyBlocked == true)
@@ -56,7 +56,7 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
                             { return new("ReplacementComparisonUnavailable", signed); }
                             var phase = new DeletionBlockedReplacementReconciliation("blocked-replacement-" + id + "-compare-" + comparison.KeyBlockSetRevision.ToString(System.Globalization.CultureInfo.InvariantCulture),
                                 pendingReplacement.Batch.ProtectionReceiptId, comparison.KeyBlockSetRevision, pendingReplacement.Batch.IssueReceiptId, payload, signed.DetachedJws!, id,
-                                pendingReplacement.Batch.IssuedGuardRevision, pendingReplacement.Batch.Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).ToArray(), comparison.ReplacementKeyRevocation);
+                                pendingReplacement.Batch.IssuedGuardRevision, await CaptureTargetsAsync(pendingReplacement.Batch.Targets).ConfigureAwait(false), comparison.ReplacementKeyRevocation);
                             try { _ = await WaitAsync(() => protection.ReconcileBlockedReplacementAsync(phase, providerCancellation.Token)).ConfigureAwait(false); }
                             catch (Exception) { deadline.Check(); }
                             retained = await WaitAsync(() => protection.ReadBlockedReplacementAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
@@ -66,9 +66,11 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
                     if (retained is not null)
                     {
                         if (retained.Original.Capability != payload || retained.Original.SigningRequestId != id || retained.Original.DetachedJws != signed.DetachedJws
-                            || retained.Original.CompromiseBlockReceiptId != pendingReplacement.Batch.ProtectionReceiptId || retained.Original.GuardReplacementReceiptId != pendingReplacement.Batch.IssueReceiptId
+                            || (pendingReplacement.Batch.ProtectionOutcome == "ReplacementAwaitingActivation" ? retained.Original.CompromiseBlockReceiptId : retained.Outcome.ReceiptId) != pendingReplacement.Batch.ProtectionReceiptId || retained.Original.GuardReplacementReceiptId != pendingReplacement.Batch.IssueReceiptId
                             || retained.Original.CommittedIssuedGuardRevision != pendingReplacement.Batch.IssuedGuardRevision || retained.Outcome.Status != DeletionConsumptionStatus.ActivationBlockedByReplacementKeyCompromise
                             || !Exact(retained.Outcome)) { return new("ReplacementReconciliationUnverified", signed); }
+                        if (pendingReplacement.Batch.ProtectionOutcome == "ConsumptionBlocked:CapabilityKeyCompromise")
+                        { deadline.Check(); return new("ActivationBlockedByReplacementKeyCompromise", signed, retained.Outcome, issued); }
                         var mirroredBlock = await WaitAsync(() => guard.RecordBlockedReplacementAsync(signed, retained, providerCancellation.Token)).ConfigureAwait(false);
                         deadline.Check();
                         return new(mirroredBlock?.Status == "Committed" ? "ActivationBlockedByReplacementKeyCompromise" : "ReplacementBlockMirrorUnknown", signed, retained.Outcome, mirroredBlock);
@@ -81,14 +83,7 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
             if (snapshot is null || snapshot.Batch.Capability != payload || snapshot.Batch.DetachedJws != signed.DetachedJws
                 || snapshot.Batch.SigningRequestId != id || snapshot.Batch.IssuedGuardRevision <= 0 || snapshot.Batch.DispatchGuardRevision <= 0
                 || string.IsNullOrWhiteSpace(snapshot.Batch.DispatchReceiptId)) { return new("DispatchUnverified", signed); }
-            var targets = await WaitAsync(() =>
-            {
-                var captured = new List<ProtectionTarget>();
-                foreach (var value in snapshot.Batch.Targets)
-                { deadline.Check(); if (captured.Count >= 1000 || value is null) { throw new ArgumentException("Oversized exact protection manifest."); } captured.Add(new(value.TenantId, value.AgentInteractionId, value.TargetProtectionKeyAlias)); }
-                if (DeletionBatchCapabilityIdentity.TargetManifestDigest(captured) != payload.ManifestDigest) { throw new ArgumentException("Mismatched exact protection manifest."); }
-                return Task.FromResult<IReadOnlyList<ProtectionTarget>>(captured.AsReadOnly());
-            }).ConfigureAwait(false);
+            var targets = await CaptureTargetsAsync(snapshot.Batch.Targets).ConfigureAwait(false);
             var request = new DeletionBatchConsumptionRequest(payload, signed.DetachedJws!, snapshot.Batch.IssuedGuardRevision,
                 snapshot.Batch.DispatchReceiptId, snapshot.Batch.DispatchGuardRevision,
                 targets);
@@ -128,6 +123,15 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
             deadline.Check();
             return new(completion?.Status == "CompletionSealed" ? "CompletionSealed" : "ConsumedCompletionBlocked", signed, result, completion);
 
+            async Task<IReadOnlyList<ProtectionTarget>> CaptureTargetsAsync(IReadOnlyList<GovernanceProtectionTarget> supplied)
+                => await WaitAsync(() =>
+                {
+                    var captured = new List<ProtectionTarget>();
+                    foreach (var value in supplied)
+                    { deadline.Check(); if (captured.Count >= 1000 || value is null) { throw new ArgumentException("Oversized exact protection manifest."); } captured.Add(new(value.TenantId, value.AgentInteractionId, value.TargetProtectionKeyAlias)); }
+                    if (DeletionBatchCapabilityIdentity.TargetManifestDigest(captured) != payload.ManifestDigest) { throw new ArgumentException("Mismatched exact protection manifest."); }
+                    return Task.FromResult<IReadOnlyList<ProtectionTarget>>(captured.AsReadOnly());
+                }).ConfigureAwait(false);
             async Task<T> WaitAsync<T>(Func<Task<T>> operation)
                 => await deadline.ReadAsync(operation).ConfigureAwait(false);
             async Task<DeletionConsumptionOutcome?> RecoverAsync(Func<Task<DeletionConsumptionOutcome>> operation, IDeletionProtectionOwner owner)

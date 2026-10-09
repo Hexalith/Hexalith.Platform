@@ -4,7 +4,7 @@ type: 'refactor'
 epic: 1
 story: 2
 created: '2026-10-08'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: 'fe25d0fda681cdde4fc4ecfab76bc32e9ead5132'
@@ -142,6 +142,58 @@ Rejected:
 - EH13 (low): A malformed project aborts the run loudly instead of being aggregated.
 - EH14 (low): There are no Configuration-conditional selections, and a mismatch would be loud.
 - EH18 (low): The commit-message claim is too broad, but the underlying defects are tracked individually and committed history is not rewritten.
+
+Code review 2026-10-09 (loop 5) of Builds `fef0318..578913c`, with the generated `Tools/package-version-audit.json` excluded. Layers: blind-hunter, edge-case-hunter, verification-gap and acceptance-auditor; none failed. The acceptance auditor found no AC1–AC4 violations. It also ran the Module suite with every Aspire CLI removed from `PATH`: 475/475 passed. Paths are relative to `references/Hexalith.Builds`.
+
+- [ ] [Review][Patch] No test proves the public run/test Aspire probe precedes descriptor discovery [test/Hexalith.Builds.Module.Tests/ModuleCommandApplicationTests.cs:456] — `ModuleCommandExecutionService.cs:273-291` probes before `ExecutableDescriptorLoader.LoadAsync`, but `AspireMismatchStopsPublicStartupAsync` uses a valid descriptor, so the engine's own probe yields the same HXR015. Deleting the service-level probe, or moving it after `LoadAsync`, keeps every test green while invalid descriptors report HXD00x and start descriptor children before the Aspire gate (AC3). Fix: add a public run/test scenario with a fake Aspire printing `0.0.1` and an invalid descriptor; assert `PrerequisiteUnavailable`, HXR015 present and HXD002 absent. (verification-gap, medium)
+- [ ] [Review][Patch] The Python catalog evaluation lost the duplicate EventStore-default guard [Tools/runtime_toolchain_v2.py:185] — the story deleted `require(len(defaults) <= 1, "Ambiguous controlled EventStore catalog default")`. `evaluated_catalog.evaluate_catalog` reads only evaluated properties, so two self-default `HexalithEventStoreVersion` declarations (3.117.1, then 9.9.9) exit 0 and return 3.117.1 (reproduced). The loop-4 duplicate patch changed only the PowerShell writer. Fix: restore an equivalent raw-declaration duplicate check for `HexalithEventStoreVersion` in the Python evaluation, and add a control for it. (acceptance-auditor, low)
+- [ ] [Review][Patch] The writer's final validation names the snapshot key instead of the catalog field [Tools/write-platform-version-catalog.ps1:151] — with `HexalithEventStoreVersion` removed, it fails with `Catalog field eventStoreVersion is missing or invalid.` (reproduced). Matrix row 2 requires naming the catalog field. Fix: map `$field` through `$packageFields`/`$propertyFields`, as the next loop already does. (acceptance-auditor, low)
+- [ ] [Review][Patch] The generic `$(Property)` substitution in `declared_version` is untested [Tools/test_runtime_toolchain_v2.py:108] — the live inventory depends on it for `CommunityToolkit.Aspire.Hosting.Dapr` (`Version="$(HexalithAspireHostingDaprVersion)"`). Removing `runtime_toolchain_v2.py:76`, or dropping `properties` at `:216`, keeps every control green while the real inventory fails. Fix: extend `run_xml_version_controls` with a tracked catalog item using a non-EventStore catalog property and assert the resolved version. (verification-gap, low)
+- [ ] [Review][Patch] The HXR012/HXR013 install hints are catalog-derived but unasserted [test/Hexalith.Builds.Module.Tests/CompositionPrerequisiteProbeTests.cs:67] — both tests assert only rule IDs, so restoring literal hints or swapping the CLI and runtime values passes. Fix: assert that `Hint` contains `CompositionToolchainPins.DaprCliVersion` and `DaprRuntimeVersion` respectively (also `:93`). (verification-gap, low)
+- [ ] [Review][Patch] Strict snapshot parsing of unknown fields and `schemaVersion` is untested [test/Hexalith.Builds.Module.Tests/SupportedPlatformPinsCatalogTests.cs:19] — `PlatformVersionCatalog.cs:62-67` and `:88-91` can each be deleted with no test failing, so a renamed-field or v2 snapshot would load as v1. Fix: add `Parse` cases for an extra field and for `schemaVersion` "2", each expecting `InvalidDataException`. (verification-gap, low)
+- [ ] [Review][Patch] The live-lane skip reason omits the new Aspire CLI prerequisite [test/Hexalith.Builds.Tooling.IntegrationTests/Live/LiveGate.cs:23] — live engines keep the default `aspire` command, so enabling `HEXALITH_G4_LIVE` now also requires an Aspire CLI matching the catalog `Aspire.AppHost.Sdk`, which `SkipReason` does not list. Fix: add that prerequisite to the text. (verification-gap, low)
+- [ ] [Review][Patch] The README does not state the PowerShell 7.6 requirement [README.md:263] — `test-platform-version-catalog.ps1` (CI) and the G4 contract scripts `Assembly.LoadFrom` the net10.0 Tooling assembly, which needs PowerShell on .NET 10 (7.6+). The common 7.4 LTS fails. The writer itself loads the SDK's net8.0 NuGet.Versioning and works on 7.4. CI is unaffected (runner pwsh 7.6.6). Fix: state the minimum PowerShell version beside the existing `pwsh` prerequisite. (blind-hunter, low)
+- [ ] [Review][Patch] `$projectText` is now dead in the exceptions validator [Tools/validate-package-version-exceptions.ps1:349] — every project file is read and the result discarded, because `Get-ProjectSdkVersionPins` now parses the file itself. Fix: delete the assignment. (blind-hunter, low)
+- [ ] [Review][Patch] The G4 contract script ignores the writer's exit code [Tools/test-g4-tool-package-contracts.ps1:951] — a writer failure surfaces as a `ReadAllText` FileNotFound, or reads a stale file from a retained package directory. Fix: throw when `$LASTEXITCODE` is nonzero after the writer call. (edge-case-hunter, low)
+- [ ] [Review][Patch] The G6/runtime catalog wrappers do not convert `OSError` [Tools/g6_current.py:186] — `evaluate_catalog` can raise `OSError` (temporary-directory or preprocess-file failures), which escapes as a raw traceback instead of `G6Error`/`ValidationError`. The neighbouring SDK wrappers already catch `OSError`. Fix: add `OSError` to both `except` tuples (also `Tools/runtime_toolchain_v2.py:188`). (edge-case-hunter, low)
+- [x] [Review][Defer] Python SDK scanners match `Aspire.AppHost.Sdk` case-sensitively [Tools/evaluated_catalog.py:72] — deferred: carried; already recorded in `deferred-work.md` (prior BH2+EH2). Its note that the PowerShell path is closed is amended: property-versioned `Import Sdk` declarations whose ID is not exactly `Aspire.AppHost.Sdk` are still skipped there. (blind-hunter+edge-case-hunter)
+
+Rejected (loop 5):
+
+- BH1 (false): Slash-form `<Import Sdk="Aspire.AppHost.Sdk/x">` cannot carry drift. MSBuild rejects the form with MSB4236 (reproduced with `Microsoft.Build.NoTargets/3.7.0`).
+- BH3 (false, carried BH11): The `PlatformVersionCatalogSource` scenario guards the B3-6 removal.
+- BH4 (rejected, carried B2-10): The spec change log retains the duplicate public/engine Aspire probes.
+- BH5+EH9 (false, carried BH9): The real Aspire 13.6.0 CLI with a non-fresh HOME prints exactly one `13.6.0+<hash>` line to stdout. An extra-stdout-line form was never observed.
+- BH6 (low, carried BH3+EH1): An inherited SDK environment variable reaching the consumer evaluation.
+- BH7 (low, carried BH4/B3-3/BH4-1): Consumer evaluation uses Debug without TargetFramework, and release validation uses Debug. No catalog or SDK selection is configuration-conditional.
+- BH8 (low): The temporary-document path walks `/tmp` parents for `Directory.Build.props`. Every production caller passes the real project path; only tests use the temporary document.
+- BH9 (low, carried BH10): The per-build generator cost, including design-time builds.
+- BH10 (low, carried BH10): The restore scratch folder under `Props/` exists only on a cache miss and is removed in `finally`.
+- BH11 (low, carried BH15/B2-9): Python evaluation cost and the twice-run import-group controls.
+- BH12+AA4 (false): Each catalog `$count++` follows a distinct assertion. The final two increments cover the pin-mutation and snapshot-parse checks. A failed Folders `msbuild` yields a null pin and throws. The `31 +` control constant is cosmetic, and the no-op `Replace` is carried as harmless.
+- BH13 (rejected): The spec mandates the Windows guards for shell-script fakes.
+- BH14 (false): `down`/validation tests run with the default `aspire` command, and the suite passes 475/475 with Aspire absent from `PATH`, so a probe added to those paths would fail them.
+- BH15 (rejected): The spec mandates the catalog-derived Dapr target. NuGet also accepts leading zeros in release segments.
+- BH16 (false): The facade docs still hold, because G6 `direct_pin_issues` binds catalog packages to the owner-approved tuple. The snapshot exception is carried as EH12.
+- BH18+EH4 (low, carried EH4): A versionless or `global.json`-pinned Aspire SDK fails loudly, and none exists.
+- BH19 (false): A duplicate `PackageVersion` fails first in the neutral evaluation with `Catalog field <package> requires exactly one evaluated PackageVersion; found 2`, before build selections are read.
+- BH20-abort+EH6 (low, carried EH13): A malformed project, a missing Python or an MSBuild failure aborts the validator loudly.
+- BH21 (false): The installed-tool check compares the whole embedded catalog byte-for-byte with a fresh evaluation, which covers every pin. Builds uses no artifacts output, and a failed gate build throws before any temporary root exists.
+- BH22 (low, carried BH16): Module-loading placement and `assert` use.
+- BH23 (low, carried BH18): Story-specific README counts are a historical record.
+- AA3 (low): `VersionsEqual` follows NuGet `VersionRelease` semantics, which the spec mandates. Case-variant prerelease labels and a fourth `.0` component do not occur in CLI output.
+- VG2 (low, carried VG2): The Builds-owner `CatalogSelected` exception branch is untested but was demonstrated to work.
+- EH2 (low, carried BH1+EH6): A catalog SDK property resolved before the catalog import fails loudly in real MSBuild.
+- EH3 (low, carried B3-2): Aspire import conditions that depend on properties from a stripped SDK.
+- EH5+VG-O2 (low): Property-versioned `Import Sdk` declarations whose ID is not exactly `Aspire.AppHost.Sdk` (unrelated or case-variant) are skipped by the exceptions collector. No workspace project declares one. Recording them would reverse B2-5's deliberate `Unrelated.Sdk` fixture contract, so the case-variant part is noted on the carried deferred entry.
+- EH7 (low): A Builds checkout scanned under another leaf name fails loudly as unlisted. CI runs inventory-only.
+- EH8 (low): A non-Builds owner adopting `$(HexalithAspireAppHostSdkVersion)` fails loudly against `Aspire.Hosting`. None does, and changing that rule is a policy change.
+- EH10 (low, carried AA5+EH9): Consumer overrides of self-defaulted catalog properties in package items. No consumer uses them.
+- EH11 (low): Relative writer paths after an in-process `Set-Location`. Every caller passes absolute paths.
+- EH12 (low, carried BH12): The installed probe's NuGet.Versioning load order.
+- EH14 (low, carried EH12): An empty or invalid embedded snapshot. The build always validates it.
+- EH16 claim (false): There are no "two SDK authorities". The spec fixes Builds AppHost SDK 13.6.0 (and the matching CLI) apart from Aspire.Hosting 13.6.1, and the consumer AppHost pins are pre-existing allowlisted exceptions.
+- EH17 claim (low, carried EH18): Commit-message breadth.
 
 ## Implementation Notes
 
