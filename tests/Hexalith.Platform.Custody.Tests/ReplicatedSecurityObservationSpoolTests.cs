@@ -169,7 +169,8 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await first).ShouldBeNull();
         var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
         var observedA = await restarted.ObserveAsync(a, TestContext.Current.CancellationToken);
-        observedA.ShouldNotBeNull(); observedA.Sequence.ShouldBe(10002);
+        if (observedA is null) { throw new InvalidOperationException($"Competing rollover retry unavailable: headPage={f.Read()?.PageIndex}, headCount={f.Read()?.Records.Count}, headRevision={f.Read()?.Revision}, anchor={f.Anchor}, pending={f.PendingBytes is not null}, archives={string.Join(',', f.Archives.Select(pair => $"{pair.Key}:{JsonSerializer.Deserialize<SecuritySpoolArchivePage>(pair.Value)!.Snapshot.Records.Count}"))}"); }
+        observedA.Sequence.ShouldBe(10002);
         (await restarted.ObserveAsync(b, TestContext.Current.CancellationToken)).ShouldBe(observedB);
         f.Archives.Count.ShouldBe(1); f.Read()!.Records.Count.ShouldBe(2);
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
