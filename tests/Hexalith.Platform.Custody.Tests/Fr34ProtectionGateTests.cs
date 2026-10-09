@@ -208,10 +208,15 @@ public sealed class Fr34ProtectionGateTests
         {
             if (cancelCaller) { caller.Cancel(); (await Should.ThrowAsync<OperationCanceledException>(() => pending.WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken))).CancellationToken.ShouldBe(caller.Token); }
             else { ticks = TimeSpan.FromSeconds(30).Ticks; foreach (var callback in callbacks.ToArray()) { callback(); } (await pending.WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken)).ShouldBeFalse(); }
-            returned.All(value => value == 0).ShouldBeTrue();
+            returned.ShouldBe(new byte[] { 1, 2, 3 }); // Capture still owns this input until its blocked traversal ends.
         }
         finally { release.Set(); }
         await completed.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        using (var clearing = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken))
+        {
+            clearing.CancelAfter(TimeSpan.FromSeconds(5));
+            while (returned.Any(value => value != 0)) { await Task.Delay(1, clearing.Token); }
+        }
         await f.Authority.DidNotReceiveWithAnyArgs().VerifyCarrierAsync(default!, default!, default!, default!, default!, TestContext.Current.CancellationToken);
         await f.Engine.DidNotReceiveWithAnyArgs().UnsealAsync(default!, TestContext.Current.CancellationToken);
     }

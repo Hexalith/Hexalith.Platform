@@ -119,10 +119,11 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
     }
     private async Task<T> AwaitAsync<T>(Func<Task<T>> operation, long start, CancellationToken token, Action<T>? abandoned = null)
     {
-        token.ThrowIfCancellationRequested(); var pending = Task.Run(operation, CancellationToken.None);
+        token.ThrowIfCancellationRequested();
+        TimeSpan remaining = TimeSpan.FromSeconds(30) - clock.GetElapsedTime(start); if (remaining <= TimeSpan.Zero) { throw new TimeoutException(); }
+        var pending = Task.Run(operation, CancellationToken.None);
         try
         {
-            TimeSpan remaining = TimeSpan.FromSeconds(30) - clock.GetElapsedTime(start); if (remaining <= TimeSpan.Zero) { throw new TimeoutException(); }
             var result = await pending.WaitAsync(remaining, clock, token).ConfigureAwait(false);
             if (token.IsCancellationRequested || clock.GetElapsedTime(start) >= TimeSpan.FromSeconds(30)) { token.ThrowIfCancellationRequested(); throw new TimeoutException(); }
             return result;

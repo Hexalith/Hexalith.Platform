@@ -42,12 +42,15 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
                 notStarted: () => CryptographicOperations.ZeroMemory(sealInput)).ConfigureAwait(false);
             if (!OwnedReference(sealedReference, canaryId)) { return false; }
             reference = sealedReference!;
-            var read = await budget.ReadAsync(() => storage.ReadAsync(reference, CancellationToken.None),
+            var supplied = await budget.ReadAsync(() => storage.ReadAsync(reference, CancellationToken.None),
                 static value => { if (value?.Bytes is { } bytes) { CryptographicOperations.ZeroMemory(bytes); } }).ConfigureAwait(false);
-            persisted = read?.Bytes;
-            read = await budget.ReadAsync(() => Task.FromResult(CaptureObservation(read, reference, budget))).ConfigureAwait(false);
+            // The reader transfers one detached array. Pure capture retires that array only after its
+            // own operation finishes, while the one owned snapshot is used for scan and exact proof.
+            var read = await budget.ReadAsync(() => Task.FromResult(CaptureObservation(supplied, reference, budget)),
+                static value => { if (value?.Bytes is { } bytes) { CryptographicOperations.ZeroMemory(bytes); } },
+                notStarted: () => { if (supplied?.Bytes is { } bytes) { CryptographicOperations.ZeroMemory(bytes); } }).ConfigureAwait(false);
             if (read is null) { return false; }
-            // The returned observation buffer is owned by this evaluation and cleared on every terminal path.
+            persisted = read.Bytes;
             budget.Check();
             if (persisted.AsSpan().IndexOf(plaintext) >= 0 || persisted.AsSpan().IndexOf(challenge) >= 0) { return false; }
             if (!await ProveCarrierAsync(reference, canaryId, read!, initial!, budget).ConfigureAwait(false)) { return false; }
@@ -94,7 +97,9 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
         && value.CanaryId == canaryId && Text(value.RecordId) && Text(value.KeyReference);
     private static Fr34PersistedCanary? CaptureObservation(Fr34PersistedCanary? supplied, Fr34CanaryReference reference, PrivateOwnerOperationDeadline budget)
     {
-        budget.Check();
+        try
+        {
+            budget.Check();
         if (supplied?.Bytes is not { Length: > 0 and <= 16384 } || supplied.Reference != reference
             || supplied.Metadata is not { State: PayloadProtectionState.Protected, MetadataVersion: 1 } metadata
             || string.IsNullOrWhiteSpace(metadata.Scheme) || string.IsNullOrWhiteSpace(metadata.KeyAlias)
@@ -116,7 +121,14 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
         }
         var captured = metadata with { CompatibilityFlags = flags };
         if (!EventStorePayloadProtectionMetadataCarrier.TryValidate(captured, out _)) { return null; }
-        budget.Check(); return supplied with { Metadata = captured };
+            budget.Check();
+            return supplied with { Bytes = supplied.Bytes.ToArray(), Metadata = captured };
+        }
+        finally
+        {
+            // ReadAsync transfers this detached source array to the gate; no reader may retain it.
+            if (supplied?.Bytes is { } bytes) { CryptographicOperations.ZeroMemory(bytes); }
+        }
     }
     private async Task<bool> ProveCarrierAsync(Fr34CanaryReference reference, string canaryId, Fr34PersistedCanary observed,
         Fr34CanaryAuthorization admitted, PrivateOwnerOperationDeadline budget)
