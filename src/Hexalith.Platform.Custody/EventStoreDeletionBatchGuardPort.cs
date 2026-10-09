@@ -67,6 +67,13 @@ public sealed class EventStoreDeletionBatchGuardPort(IGovernanceScopeGuard guard
             operationId, batch), [], cancellationToken).ConfigureAwait(false);
     }
     /// <inheritdoc/>
+    public Task<GovernanceProtocolReceipt?> RecordBlockedReplacementAsync(DeletionCapabilitySigningOutcome signed, DeletionBlockedReplacementResult retained, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(signed); ArgumentNullException.ThrowIfNull(retained);
+        return retained.Original.Capability == signed.Payload && retained.Original.DetachedJws == signed.DetachedJws && retained.Original.SigningRequestId == signed.SigningRequestId
+            ? RecordProtectionAsync(signed, retained.Outcome, true, cancellationToken) : Task.FromResult<GovernanceProtocolReceipt?>(null);
+    }
+    /// <inheritdoc/>
     public async Task<GovernanceProtocolReceipt?> CompleteAsync(DeletionBatchCapabilityV1 payload, CancellationToken cancellationToken = default)
     {
         var snapshot = await ReadAsync(payload, cancellationToken).ConfigureAwait(false); if (snapshot is null) { return null; }

@@ -285,4 +285,34 @@ public sealed class CustodyKeyLifecycleTests
         }
         finally { release.Set(); pending.TrySetResult(physical!); }
     }
+    /// <summary>Actual lifecycle permission/journal/state/final boundaries share one budget and retain original pins and effects through state-I/O abandonment.</summary>
+    [Theory]
+    [InlineData("admission")][InlineData("journal")][InlineData("final")][InlineData("stage-save")][InlineData("terminal-save")]
+    public async Task WholeLifecycleActorBudgetPreservesOriginalAndStateIoBoundary(string stage)
+    {
+        var f = new CustodyKeyLifecycleFixture(); await f.Actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration());
+        var request = CustodyKeyLifecycleFixture.Request(CustodyKeyLifecycleAction.Pin, f.Anchor); var (clock, advance) = PrivateOwnerDeadlineTestClock.Create();
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously); var pending = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously); int admissions = 0;
+        f.Authority.AuthorizeOperationAsync(request.Identity, request.OperationId, Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(_ =>
+        { if (++admissions == (stage == "final" ? 2 : 1) && stage is "admission" or "final") { entered.TrySetResult(); return pending.Task; } return Task.FromResult(true); });
+        if (stage == "journal") { f.Authority.RecordTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>()).Returns(_ => { entered.TrySetResult(); return pending.Task; }); }
+        var io = ActorPendingFixture.Suspended<CustodyKeyLifecycleLedger>(f.Backend, stage == "stage-save" ? 1 : 4); bool stateIo = stage is "stage-save" or "terminal-save";
+        var actor = CustodyKeyLifecycleFixture.Create(stateIo ? io.Manager : f.Backend, f.Authority, f, clock); var reading = actor.ApplyAsync(request);
+        await (stateIo ? io.Entered : entered.Task).WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken);
+        try
+        {
+            advance(TimeSpan.FromSeconds(30)); (await reading.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable);
+            if (stateIo) { int calls = io.Manager.ReceivedCalls().Count(); (await actor.LookupAsync(request).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable); io.Manager.ReceivedCalls().Count().ShouldBe(calls); }
+            int effects = f.Effects; io.Release.TrySetResult(); pending.TrySetResult(true); if (stateIo) { await io.Finished.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); }
+            f.Effects.ShouldBe(effects);
+            if (stage is "terminal-save" or "final")
+            {
+                var original = await actor.LookupAsync(request); original.Status.ShouldBe(CustodyKeyLifecycleStatus.Pinned); f.Persisted.Keys.Single().Pins.Single().ShouldBe(request);
+                var restored = new InMemoryStateManager(); await restored.SetStateAsync(f.Backend.CommittedState.Single().Key, JsonSerializer.Deserialize<CustodyKeyLifecycleLedger>(JsonSerializer.SerializeToUtf8Bytes(f.Persisted))!, TestContext.Current.CancellationToken); await restored.SaveStateAsync(TestContext.Current.CancellationToken);
+                (await CustodyKeyLifecycleFixture.Create(restored, f.Authority, f, clock).ApplyAsync(request)).ShouldBe(original); f.Effects.ShouldBe(1);
+            }
+        }
+        finally { io.Release.TrySetResult(); pending.TrySetResult(true); }
+    }
+
 }

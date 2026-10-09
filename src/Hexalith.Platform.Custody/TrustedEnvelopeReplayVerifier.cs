@@ -17,7 +17,7 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
         try
         {
             budget.Check();
-            var profile = profiles.GetCurrent();
+            var profile = await budget.ReadAsync(() => Task.FromResult(profiles.GetCurrent())).ConfigureAwait(false);
             if (profile is null || !profile.IsValid(clock.GetUtcNow())) { return new(CustodyStatus.StaleProfile); }
             var authenticated = await budget.ReadAsync(() => authenticator.VerifyAsync(envelope, expected, CancellationToken.None)).ConfigureAwait(false);
             if (authenticated.Status != CustodyStatus.Succeeded || authenticated.Envelope is not { } captured) { return authenticated; }
@@ -36,7 +36,9 @@ public sealed class TrustedEnvelopeReplayVerifier(TrustedEnvelopeAuthenticator a
             if (confirmed != receipt) { return new(CustodyStatus.Unavailable); }
             var final = await budget.ReadAsync(() => authenticator.VerifyAsync(captured, expected, CancellationToken.None)).ConfigureAwait(false);
             budget.Check();
-            return profiles.GetCurrent() == profile && profile.IsValid(clock.GetUtcNow()) && Exact(receipt, intent, clock.GetUtcNow(), profile.ReplayRetention)
+            var currentProfile = await budget.ReadAsync(() => Task.FromResult(profiles.GetCurrent())).ConfigureAwait(false);
+            budget.Check();
+            return currentProfile == profile && profile.IsValid(clock.GetUtcNow()) && Exact(receipt, intent, clock.GetUtcNow(), profile.ReplayRetention)
                 ? final : new(CustodyStatus.StaleProfile);
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return new(CustodyStatus.Unavailable); }

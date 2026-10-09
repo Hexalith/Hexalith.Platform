@@ -20,8 +20,10 @@ internal sealed class DeletionBatchActualOwnerFixture : IDisposable
     internal DeletionBatchExecutionCoordinator Coordinator { get; }
     internal DeletionBatchCapabilityV1 Payload { get; }
     internal ECDsa Key { get; } = ECDsa.Create(ECCurve.NamedCurves.nistP256);
-    internal DeletionConsumptionActor ProtectionActor { get; }
+    internal DeletionConsumptionActor ProtectionActor { get; private set; }
     internal InMemoryStateManager ProtectionState { get; } = new();
+    private readonly IAtomicDeletionManifestProvider _protectionProvider;
+    internal bool LoseBlockedReconciliationAcknowledgement { get; set; }
     internal int Signatures { get; private set; }
     internal int Reservations { get; private set; }
     internal bool LoseSignatureResponse { get; set; }
@@ -62,7 +64,11 @@ internal sealed class DeletionBatchActualOwnerFixture : IDisposable
         var protectionAuthority = ProtectionAuthority = Substitute.For<IDeletionConsumptionAuthority>(); long protectionAnchor = 0;
         string protectionDigest = Hash(new { TenantId = "tenant-a", Revision = 0L, KeyBlockSetRevision = 0L, Batches = Array.Empty<object>(), Revocations = Array.Empty<object>(), Operations = Array.Empty<object>() });
         protectionAuthority.AuthorizeOperationAsync("tenant-a", Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call =>
-            !(UnknownConsumptionLookup && call.ArgAt<string>(2) == "LookupDeletionBatch"));
+        {
+            if (LoseBlockedReconciliationAcknowledgement && call.ArgAt<string>(2) == "ReconcileBlockedDeletionReplacement" && ReadProtectionBlockedReplacement(call.ArgAt<string>(1)) is not null)
+            { LoseBlockedReconciliationAcknowledgement = false; throw new IOException("Controlled lost durable blocked-replacement acknowledgement."); }
+            return !(UnknownConsumptionLookup && call.ArgAt<string>(2) == "LookupDeletionBatch");
+        });
         protectionAuthority.ValidateStateAsync("tenant-a", Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => call.ArgAt<long>(1) == protectionAnchor && call.ArgAt<string>(2) == protectionDigest);
         protectionAuthority.RecordRevisionAsync("tenant-a", Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call =>
         { if (call.ArgAt<long>(1) != protectionAnchor || call.ArgAt<long>(2) != protectionAnchor + 1) { return false; } protectionAnchor++; protectionDigest = call.ArgAt<string>(3); return true; });
@@ -70,8 +76,18 @@ internal sealed class DeletionBatchActualOwnerFixture : IDisposable
         protectionAuthority.VerifyDispatchAsync(Arg.Any<DeletionBatchConsumptionRequest>(), Arg.Any<CancellationToken>()).Returns(call => VerifyDispatch(call.Arg<DeletionBatchConsumptionRequest>()));
         protectionAuthority.VerifyActivationAsync(Arg.Any<DeletionReattestationActivation>(), Arg.Any<CancellationToken>()).Returns(call =>
         { LatestActivation = call.Arg<DeletionReattestationActivation>(); return VerifyDispatch(LatestActivation.Replacement); });
+        protectionAuthority.VerifyBlockedReplacementAsync(Arg.Any<DeletionBlockedReplacementReconciliation>(), Arg.Any<CancellationToken>()).Returns(call =>
+        {
+            var phase = call.Arg<DeletionBlockedReplacementReconciliation>(); var batch = State.Deletions.Single().Batches.Single();
+            return batch.ProtectionOutcome == "ReplacementAwaitingActivation" && batch.Capability == phase.Capability && batch.DetachedJws == phase.DetachedJws
+                && batch.SigningRequestId == phase.SigningRequestId && batch.IssuedGuardRevision == phase.CommittedIssuedGuardRevision
+                && batch.IssueReceiptId == phase.GuardReplacementReceiptId && batch.ProtectionReceiptId == phase.CompromiseBlockReceiptId
+                && batch.Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).SequenceEqual(phase.Targets)
+                && State.Revocations.Any(r => Hash(r) == Hash(phase.RevocationReceipt))
+                && DeletionBatchCapabilityCodec.Verify(phase.Capability, new("issuer-a", "protection-a", "tenant-a", phase.Capability.CapabilityKeyVersion, "anchor-a", "v1"), phase.DetachedJws, Key);
+        });
         protectionAuthority.VerifyRevocationAsync(Arg.Any<DeletionCapabilityRevocationEnvelope>(), Arg.Any<CancellationToken>()).Returns(true);
-        var provider = Substitute.For<IAtomicDeletionManifestProvider>();
+        var provider = _protectionProvider = Substitute.For<IAtomicDeletionManifestProvider>();
         provider.ConsumeAsync(Arg.Any<DeletionBatchConsumptionRequest>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call =>
         {
             Reservations++; var request = call.Arg<DeletionBatchConsumptionRequest>(); _originalRequests[request.Capability.BatchId] = request; string receipt = call.ArgAt<string>(1);
@@ -137,7 +153,8 @@ internal sealed class DeletionBatchActualOwnerFixture : IDisposable
                 ProtectionOriginalRequest = command.Batch is { } carrier && _originalRequests.TryGetValue(carrier.BatchId, out var original) ? original : null,
                 ProtectionTerminalOutcome = command.Batch is { } terminal ? ReadProtectionOutcome(terminal.BatchId) : null,
                 AppendResourceId = ViolationResource, OriginalAcceptance = OriginalAcceptance, ViolationAcceptanceOperationId = OriginalAcceptance?.OperationId ?? "",
-                ViolationTargetMutationDigest = OriginalAcceptance?.AcceptedTargetMutationDigest ?? "", ViolationWriteFacts = ViolationFacts, ViolationResourceId = ViolationResource, ViolationProtectionTarget = ViolationTarget, ProtectionActivationRequest = LatestActivation, ProtectionActivationOutcome = LatestActivation is null ? null : ReadProtectionOutcome(LatestActivation.Replacement.Capability.BatchId) };
+                ViolationTargetMutationDigest = OriginalAcceptance?.AcceptedTargetMutationDigest ?? "", ViolationWriteFacts = ViolationFacts, ViolationResourceId = ViolationResource, ViolationProtectionTarget = ViolationTarget, ProtectionActivationRequest = LatestActivation, ProtectionActivationOutcome = LatestActivation is null ? null : ReadProtectionOutcome(LatestActivation.Replacement.Capability.BatchId),
+                ProtectionBlockedReplacement = command.Batch is { } blocked ? ReadProtectionBlockedReplacement(blocked.BatchId) : null };
     }
     private DeletionConsumptionOutcome? ReadProtectionOutcome(string batchId)
     {
@@ -146,6 +163,29 @@ internal sealed class DeletionBatchActualOwnerFixture : IDisposable
         using var bytes = JsonDocument.Parse(JsonSerializer.SerializeToUtf8Bytes(item));
         var batch = bytes.RootElement.GetProperty("Batches").EnumerateArray().SingleOrDefault(value => value.GetProperty("Current").GetProperty("Capability").GetProperty("BatchId").GetString() == batchId);
         return batch.ValueKind == JsonValueKind.Undefined ? null : batch.GetProperty("Outcome").Deserialize<DeletionConsumptionOutcome>();
+    }
+    internal DeletionBlockedReplacementResult? ReadProtectionBlockedReplacement(string batchId)
+    {
+        var ledger = ProtectionState.CommittedState.Values.SingleOrDefault(value => value.GetType().Name == "DeletionConsumptionLedger");
+        if (ledger is null) { return null; }
+        using var document = JsonDocument.Parse(JsonSerializer.SerializeToUtf8Bytes(ledger));
+        var batch = document.RootElement.GetProperty("Batches").EnumerateArray().SingleOrDefault(value => value.GetProperty("Current").GetProperty("Capability").GetProperty("BatchId").GetString() == batchId);
+        if (batch.ValueKind == JsonValueKind.Undefined || !batch.TryGetProperty("BlockedReplacement", out var retained) || retained.ValueKind == JsonValueKind.Null) { return null; }
+        var phase = retained.Deserialize<DeletionBlockedReplacementReconciliation>()!;
+        var operation = document.RootElement.GetProperty("Operations").EnumerateArray().Single(value => value.GetProperty("OperationId").GetString() == phase.OperationId);
+        return new(phase, operation.GetProperty("Outcome").Deserialize<DeletionConsumptionOutcome>()!);
+    }
+    internal async Task RestartSerializedOwnersAsync()
+    {
+        foreach (var state in _signerStates.Values.Append(ProtectionState))
+        {
+            await state.ClearCacheAsync();
+            foreach (var value in state.CommittedState.ToArray())
+            { await state.SetStateAsync(value.Key, JsonSerializer.Deserialize(JsonSerializer.SerializeToUtf8Bytes(value.Value), value.Value.GetType())!); }
+            await state.SaveStateAsync(); await state.ClearCacheAsync();
+        }
+        ProtectionActor = new(ActorHost.CreateForTest<DeletionConsumptionActor>(new ActorTestOptions { ActorId = new(DeletionConsumptionActor.GetActorId("tenant-a")) }), ProtectionAuthority, _protectionProvider);
+        InstallStateManager(ProtectionActor, ProtectionState);
     }
     private bool VerifyDispatch(DeletionBatchConsumptionRequest request)
     {

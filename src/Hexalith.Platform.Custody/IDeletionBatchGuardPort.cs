@@ -13,6 +13,9 @@ public interface IDeletionBatchGuardPort
     Task<GovernanceProtocolReceipt?> DispatchAsync(DeletionCapabilitySigningOutcome signed, CancellationToken cancellationToken = default);
     /// <summary>Mirrors the independently read original protection result, including exact ordered targets and conditional activation status.</summary>
     Task<GovernanceProtocolReceipt?> RecordProtectionAsync(DeletionCapabilitySigningOutcome signed, DeletionConsumptionOutcome outcome, bool activation, CancellationToken cancellationToken = default);
+    /// <summary>Mirrors only the independently proved original issued-but-blocked disposition; omission grants no dispatch or effect.</summary>
+    Task<GovernanceProtocolReceipt?> RecordBlockedReplacementAsync(DeletionCapabilitySigningOutcome signed, DeletionBlockedReplacementResult retained, CancellationToken cancellationToken = default)
+        => Task.FromResult<GovernanceProtocolReceipt?>(null);
     /// <summary>Authorizes then conditionally commits completion only with all exact required outcomes and current dispositions.</summary>
     Task<GovernanceProtocolReceipt?> CompleteAsync(DeletionBatchCapabilityV1 payload, CancellationToken cancellationToken = default);
 }

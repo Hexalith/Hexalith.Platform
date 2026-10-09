@@ -16,6 +16,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
     TimeProvider? clock = null) : Actor(host), ICustodyKeyLifecycleActor
 {
     private readonly TimeProvider _clock = clock ?? TimeProvider.System;
+    private readonly PrivateActorStateIoLifetime _stateIo = new();
     private const string StateKey = "custody-key-lifecycle-candidate-v1";
     /// <summary>Gets exact private actor type.</summary>
     public const string ActorTypeName = "CustodyKeyLifecycleActor";
@@ -24,39 +25,52 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
     /// <inheritdoc/>
     public async Task<CustodyKeyLifecycleOutcome> RegisterWrappedAsync(CustodyKeyRegistration registration)
     {
+        var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         Validate(registration); Check(registration.Identity); string digest = Digest(registration); var missing = Missing(registration.Identity, registration.OperationId, digest);
-        if (!await AdmitAsync(registration.Identity, registration.OperationId, "RegisterWrappedKey", digest).ConfigureAwait(false)) { return missing; }
-        var state = await ReadAsync(registration.Identity.TenantId, true).ConfigureAwait(false); if (state is null) { return missing; }
-        var prior = state.Keys.SingleOrDefault(k => SameObject(k.Registration.Identity, registration.Identity));
-        if (prior is not null)
+        try
         {
-            return prior.Registration == registration && await AdmitAsync(registration.Identity, registration.OperationId, "RegisterWrappedKey", digest).ConfigureAwait(false)
-                ? missing with { Status = CustodyKeyLifecycleStatus.Wrapped, ReceiptId = prior.Registration.WrapReceiptId } : missing with { Status = CustodyKeyLifecycleStatus.Conflict };
+            budget.Check(); _stateIo.CheckReady();
+            if (!await AdmitAsync(budget, registration.Identity, registration.OperationId, "RegisterWrappedKey", digest).ConfigureAwait(false)) { return missing; }
+            var state = await ReadAsync(budget, registration.Identity.TenantId, true).ConfigureAwait(false); if (state is null) { return missing; }
+            var prior = state.Keys.SingleOrDefault(k => SameObject(k.Registration.Identity, registration.Identity));
+            if (prior is not null)
+            {
+                return prior.Registration == registration && await AdmitAsync(budget, registration.Identity, registration.OperationId, "RegisterWrappedKey", digest).ConfigureAwait(false)
+                    ? missing with { Status = CustodyKeyLifecycleStatus.Wrapped, ReceiptId = prior.Registration.WrapReceiptId } : missing with { Status = CustodyKeyLifecycleStatus.Conflict };
+            }
+            if (state.Keys.Count >= 1000 || authority is null || !await budget.ReadAsync(() => authority.VerifyRegistrationAsync(registration)).ConfigureAwait(false)) { return missing; }
+            var next = state with { Revision = checked(state.Revision + 1), Keys = state.Keys.Append(new CustodyKeyLifecycleEntry(registration, [], [], [])).ToArray() };
+            if (registration.ExpectedRevision != state.Revision || !await SaveAsync(budget, state, next).ConfigureAwait(false)) { return missing; }
+            return await AdmitAsync(budget, registration.Identity, registration.OperationId, "RegisterWrappedKey", digest).ConfigureAwait(false)
+                ? missing with { Status = CustodyKeyLifecycleStatus.Wrapped, ReceiptId = registration.WrapReceiptId } : missing;
+
         }
-        if (state.Keys.Count >= 1000 || authority is null || !await authority.VerifyRegistrationAsync(registration).ConfigureAwait(false)) { return missing; }
-        var next = state with { Revision = checked(state.Revision + 1), Keys = state.Keys.Append(new CustodyKeyLifecycleEntry(registration, [], [], [])).ToArray() };
-        if (registration.ExpectedRevision != state.Revision || !await SaveAsync(state, next).ConfigureAwait(false)) { return missing; }
-        return await AdmitAsync(registration.Identity, registration.OperationId, "RegisterWrappedKey", digest).ConfigureAwait(false)
-            ? missing with { Status = CustodyKeyLifecycleStatus.Wrapped, ReceiptId = registration.WrapReceiptId } : missing;
+        catch (TimeoutException) { return missing; }
     }
     /// <inheritdoc/>
     public async Task<CustodyKeyLifecycleOutcome> ApplyAsync(CustodyKeyLifecycleRequest request)
     {
         var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         Validate(request); Check(request.Identity); string digest = Digest(request); var missing = Missing(request.Identity, request.OperationId, digest);
-        if (!await AdmitAsync(request.Identity, request.OperationId, "ApplyKeyLifecycle", digest).ConfigureAwait(false)) { return missing; }
-        var result = await ApplyCoreAsync(request, digest, budget).ConfigureAwait(false);
-        return await AdmitAsync(request.Identity, request.OperationId, "ApplyKeyLifecycle", digest).ConfigureAwait(false) ? result : missing;
+        try
+        {
+            budget.Check(); _stateIo.CheckReady();
+            if (!await AdmitAsync(budget, request.Identity, request.OperationId, "ApplyKeyLifecycle", digest).ConfigureAwait(false)) { return missing; }
+            var result = await ApplyCoreAsync(request, digest, budget).ConfigureAwait(false);
+            return await AdmitAsync(budget, request.Identity, request.OperationId, "ApplyKeyLifecycle", digest).ConfigureAwait(false) ? result : missing;
+
+        }
+        catch (TimeoutException) { return missing; }
     }
     private async Task<CustodyKeyLifecycleOutcome> ApplyCoreAsync(CustodyKeyLifecycleRequest request, string digest, PrivateOwnerOperationDeadline budget)
     {
-        var missing = Missing(request.Identity, request.OperationId, digest); var state = await ReadAsync(request.Identity.TenantId, true).ConfigureAwait(false);
+        var missing = Missing(request.Identity, request.OperationId, digest); var state = await ReadAsync(budget, request.Identity.TenantId, true).ConfigureAwait(false);
         var key = state?.Keys.SingleOrDefault(k => k.Registration.Identity == request.Identity); if (state is null || key is null) { return missing; }
         var prior = key.Outcomes.SingleOrDefault(o => o.OperationId == request.OperationId);
         if (prior is not null) { return prior.RequestDigest == digest ? await ResolveAsync(state, key, request, prior, budget).ConfigureAwait(false) : missing with { Status = CustodyKeyLifecycleStatus.Conflict }; }
         if (provider is null || authority is null || key.Requests.Count >= 10000 || state.Keys.Sum(k => k.Requests.Count) >= 10000
             || request.ExpectedRevision != state.Revision || key.Outcomes.Any(o => o.Status is CustodyKeyLifecycleStatus.Unknown or CustodyKeyLifecycleStatus.Destroyed)
-            || !await authority.AuthorizeEffectAsync(request).ConfigureAwait(false)) { return missing; }
+            || !await budget.ReadAsync(() => authority.AuthorizeEffectAsync(request)).ConfigureAwait(false)) { return missing; }
         if (request.Action == CustodyKeyLifecycleAction.Destroy && key.Pins.Count > 0) { return missing with { Status = CustodyKeyLifecycleStatus.BlockedByPin }; }
         if (request.Action == CustodyKeyLifecycleAction.Pin && key.Pins.Any(p => p.HoldId == request.HoldId)) { return missing with { Status = CustodyKeyLifecycleStatus.Conflict }; }
         if (request.Action == CustodyKeyLifecycleAction.Unpin && !key.Pins.Any(p => p.HoldId == request.HoldId && p.Identity == request.Identity)) { return missing with { Status = CustodyKeyLifecycleStatus.Conflict }; }
@@ -64,7 +78,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
         var reserved = key with { Requests = key.Requests.Append(request).ToArray(), Outcomes = key.Outcomes.Append(pending).ToArray(),
             Pins = request.Action == CustodyKeyLifecycleAction.Pin ? key.Pins.Append(request).ToArray() : key.Pins };
         var next = Replace(state, reserved);
-        if (!await SaveAsync(state, next).ConfigureAwait(false)) { return missing; }
+        if (!await SaveAsync(budget, state, next).ConfigureAwait(false)) { return missing; }
         // Only the owning physical backend consumes current linearizable control at its irreversible instant.
         // Missing/unknown result never permits a new physical call; retries use Lookup only.
         try
@@ -73,18 +87,24 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
             var result = await budget.ReadAsync(() => provider.ExecuteAsync(key.Registration, request, digest)).ConfigureAwait(false);
             return await RetainAsync(next, reserved, request, pending, result, budget).ConfigureAwait(false);
         }
-        catch (Exception) { return pending; }
+        catch (Exception) { budget.Check(); return pending; }
     }
     /// <inheritdoc/>
     public async Task<CustodyKeyLifecycleOutcome> LookupAsync(CustodyKeyLifecycleRequest request)
     {
         var budget = new PrivateOwnerOperationDeadline(_clock, CancellationToken.None);
         Validate(request); Check(request.Identity); string digest = Digest(request); var missing = Missing(request.Identity, request.OperationId, digest);
-        if (!await AdmitAsync(request.Identity, request.OperationId, "LookupKeyLifecycle", digest).ConfigureAwait(false)) { return missing; }
-        var state = await ReadAsync(request.Identity.TenantId).ConfigureAwait(false); var key = state?.Keys.SingleOrDefault(k => k.Registration.Identity == request.Identity);
-        var prior = key?.Outcomes.SingleOrDefault(o => o.OperationId == request.OperationId);
-        var result = state is not null && key is not null && prior?.RequestDigest == digest ? await ResolveAsync(state, key, request, prior, budget).ConfigureAwait(false) : missing;
-        return await AdmitAsync(request.Identity, request.OperationId, "LookupKeyLifecycle", digest).ConfigureAwait(false) ? result : missing;
+        try
+        {
+            budget.Check(); _stateIo.CheckReady();
+            if (!await AdmitAsync(budget, request.Identity, request.OperationId, "LookupKeyLifecycle", digest).ConfigureAwait(false)) { return missing; }
+            var state = await ReadAsync(budget, request.Identity.TenantId).ConfigureAwait(false); var key = state?.Keys.SingleOrDefault(k => k.Registration.Identity == request.Identity);
+            var prior = key?.Outcomes.SingleOrDefault(o => o.OperationId == request.OperationId);
+            var result = state is not null && key is not null && prior?.RequestDigest == digest ? await ResolveAsync(state, key, request, prior, budget).ConfigureAwait(false) : missing;
+            return await AdmitAsync(budget, request.Identity, request.OperationId, "LookupKeyLifecycle", digest).ConfigureAwait(false) ? result : missing;
+
+        }
+        catch (TimeoutException) { return missing; }
     }
     private async Task<CustodyKeyLifecycleOutcome> ResolveAsync(CustodyKeyLifecycleLedger state, CustodyKeyLifecycleEntry key, CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome original, PrivateOwnerOperationDeadline budget)
     {
@@ -95,7 +115,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
             var result = await budget.ReadAsync(() => provider.LookupAsync(key.Registration, request, original.RequestDigest)).ConfigureAwait(false);
             return await RetainAsync(state, key, request, original, result, budget).ConfigureAwait(false);
         }
-        catch (Exception) { return original; }
+        catch (Exception) { budget.Check(); return original; }
     }
     private async Task<CustodyKeyLifecycleOutcome> RetainAsync(CustodyKeyLifecycleLedger state, CustodyKeyLifecycleEntry key, CustodyKeyLifecycleRequest request,
         CustodyKeyLifecycleOutcome pending, CustodyKeyLifecycleOutcome result, PrivateOwnerOperationDeadline budget)
@@ -106,7 +126,7 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
             || result.Status != expected && result.Status != CustodyKeyLifecycleStatus.NotPerformed || !ValidText(result.ReceiptId)
             || result.Status == CustodyKeyLifecycleStatus.Destroyed && !ValidText(result.RestoreBarrierReceiptId)
             || result.Status != CustodyKeyLifecycleStatus.Destroyed && result.RestoreBarrierReceiptId is not null || authority is null
-            || !await authority.VerifyOutcomeAsync(request, result).ConfigureAwait(false)) { return pending; }
+            || !await budget.ReadAsync(() => authority.VerifyOutcomeAsync(request, result)).ConfigureAwait(false)) { return pending; }
         budget.Check();
         var pins = key.Pins;
         if (request.Action == CustodyKeyLifecycleAction.Pin && result.Status == CustodyKeyLifecycleStatus.NotPerformed)
@@ -114,49 +134,49 @@ public sealed class CustodyKeyLifecycleActor(ActorHost host, ICustodyKeyLifecycl
         if (request.Action == CustodyKeyLifecycleAction.Unpin && result.Status == CustodyKeyLifecycleStatus.Unpinned)
         { pins = pins.Where(p => p.HoldId != request.HoldId).ToArray(); }
         var retained = key with { Pins = pins, Outcomes = key.Outcomes.Select(o => o.OperationId == result.OperationId ? result : o).ToArray() };
-        return await SaveAsync(state, Replace(state, retained)).ConfigureAwait(false) ? result : pending;
+        return await SaveAsync(budget, state, Replace(state, retained)).ConfigureAwait(false) ? result : pending;
     }
-    private Task<bool> AdmitAsync(CustodyKeyObjectIdentity identity, string id, string method, string digest)
-        => authority?.AuthorizeOperationAsync(identity, id, method, digest) ?? Task.FromResult(false);
-    private async Task<CustodyKeyLifecycleLedger?> ReadAsync(string tenant, bool recoverAdmittedOriginal = false)
+    private Task<bool> AdmitAsync(PrivateOwnerOperationDeadline budget, CustodyKeyObjectIdentity identity, string id, string method, string digest)
+        => authority is null ? Task.FromResult(false) : budget.ReadAsync(() => authority.AuthorizeOperationAsync(identity, id, method, digest));
+    private async Task<CustodyKeyLifecycleLedger?> ReadAsync(PrivateOwnerOperationDeadline budget, string tenant, bool recoverAdmittedOriginal = false)
     {
-        await StateManager.ClearCacheAsync().ConfigureAwait(false); var read = await StateManager.TryGetStateAsync<CustodyKeyLifecycleLedger>(StateKey).ConfigureAwait(false);
+        await _stateIo.ReadAsync(budget, () => StateManager.ClearCacheAsync()).ConfigureAwait(false); var read = await _stateIo.ReadAsync(budget, () => StateManager.TryGetStateAsync<CustodyKeyLifecycleLedger>(StateKey)).ConfigureAwait(false);
         var state = read.HasValue ? Capture(read.Value) : new(tenant, 0, []);
         if (state.TenantId != tenant || authority is null) { return null; }
         try
         {
-            return await RecoverableAnchoredState.ReconcileAsync(PendingScope, state, await ReadPendingAsync().ConfigureAwait(false), Capture,
-                value => authority.ValidateStateAsync(tenant, value.Revision, Digest(value)), authority, PersistTargetAsync, recoverAdmittedOriginal).ConfigureAwait(false);
+            return await RecoverableAnchoredState.ReconcileAsync(PendingScope, state, await ReadPendingAsync(budget).ConfigureAwait(false), Capture,
+                value => budget.ReadAsync(() => authority.ValidateStateAsync(tenant, value.Revision, Digest(value))), new DeadlineAnchoredStateAuthority(authority, budget), nextValue => PersistTargetAsync(budget, nextValue), recoverAdmittedOriginal).ConfigureAwait(false);
         }
         catch (InvalidOperationException) { return null; }
     }
-    private async Task<bool> SaveAsync(CustodyKeyLifecycleLedger previous, CustodyKeyLifecycleLedger prospective)
+    private async Task<bool> SaveAsync(PrivateOwnerOperationDeadline budget, CustodyKeyLifecycleLedger previous, CustodyKeyLifecycleLedger prospective)
     {
         var next = Capture(prospective);
         if (authority is null) { return false; }
         var pending = RecoverableAnchoredState.Prepare(PendingScope, previous.Revision, next.Revision, previous, next);
-        if (!await RecoverableAnchoredState.CommitAsync(pending, authority, ReadPendingAsync, PersistPendingAsync).ConfigureAwait(false)) { return false; }
-        var confirmed = await ReadAsync(next.TenantId).ConfigureAwait(false); return confirmed is not null && Digest(confirmed) == Digest(next);
+        if (!await RecoverableAnchoredState.CommitAsync(pending, new DeadlineAnchoredStateAuthority(authority, budget), () => ReadPendingAsync(budget), pendingValue => PersistPendingAsync(budget, pendingValue)).ConfigureAwait(false)) { return false; }
+        var confirmed = await ReadAsync(budget, next.TenantId).ConfigureAwait(false); return confirmed is not null && Digest(confirmed) == Digest(next);
     }
 
     private string PendingScope => Host.Id.GetId() + "|" + StateKey;
     private const string PendingKey = StateKey + "-pending-transition-v1";
-    private async Task<AnchoredStateTransition?> ReadPendingAsync()
+    private async Task<AnchoredStateTransition?> ReadPendingAsync(PrivateOwnerOperationDeadline budget)
     {
-        await StateManager.ClearCacheAsync().ConfigureAwait(false);
-        var pending = await StateManager.TryGetStateAsync<AnchoredStateTransition>(PendingKey).ConfigureAwait(false);
+        await _stateIo.ReadAsync(budget, () => StateManager.ClearCacheAsync()).ConfigureAwait(false);
+        var pending = await _stateIo.ReadAsync(budget, () => StateManager.TryGetStateAsync<AnchoredStateTransition>(PendingKey)).ConfigureAwait(false);
         return pending.HasValue ? pending.Value : null;
     }
-    private async Task PersistPendingAsync(AnchoredStateTransition pending)
+    private async Task PersistPendingAsync(PrivateOwnerOperationDeadline budget, AnchoredStateTransition pending)
     {
-        await StateManager.SetStateAsync(PendingKey, pending).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
+        await _stateIo.ReadAsync(budget, () => StateManager.SetStateAsync(PendingKey, pending)).ConfigureAwait(false); await _stateIo.ReadAsync(budget, () => StateManager.SaveStateAsync()).ConfigureAwait(false);
     }
-    private async Task<CustodyKeyLifecycleLedger> PersistTargetAsync(CustodyKeyLifecycleLedger next)
+    private async Task<CustodyKeyLifecycleLedger> PersistTargetAsync(PrivateOwnerOperationDeadline budget, CustodyKeyLifecycleLedger next)
     {
-        await StateManager.SetStateAsync(StateKey, next).ConfigureAwait(false);
-        _ = await StateManager.TryRemoveStateAsync(PendingKey).ConfigureAwait(false); await StateManager.SaveStateAsync().ConfigureAwait(false);
-        await StateManager.ClearCacheAsync().ConfigureAwait(false);
-        var confirmed = await StateManager.TryGetStateAsync<CustodyKeyLifecycleLedger>(StateKey).ConfigureAwait(false);
+        await _stateIo.ReadAsync(budget, () => StateManager.SetStateAsync(StateKey, next)).ConfigureAwait(false);
+        _ = await _stateIo.ReadAsync(budget, () => StateManager.TryRemoveStateAsync(PendingKey)).ConfigureAwait(false); await _stateIo.ReadAsync(budget, () => StateManager.SaveStateAsync()).ConfigureAwait(false);
+        await _stateIo.ReadAsync(budget, () => StateManager.ClearCacheAsync()).ConfigureAwait(false);
+        var confirmed = await _stateIo.ReadAsync(budget, () => StateManager.TryGetStateAsync<CustodyKeyLifecycleLedger>(StateKey)).ConfigureAwait(false);
         return confirmed.HasValue ? confirmed.Value : throw new InvalidOperationException("Reconciled main state is missing.");
     }
     private static CustodyKeyLifecycleLedger Replace(CustodyKeyLifecycleLedger state, CustodyKeyLifecycleEntry key) => state with { Revision = checked(state.Revision + 1),

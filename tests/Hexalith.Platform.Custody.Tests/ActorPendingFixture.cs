@@ -23,4 +23,19 @@ internal static class ActorPendingFixture
             if (saves == failSave) { throw new HttpRequestException("Controlled exact pending/main save failure."); }
         }); return manager;
     }
+    internal static (IActorStateManager Manager, Task Entered, TaskCompletionSource Release, Task Finished) Suspended<T>(InMemoryStateManager backend, int saveNumber)
+    {
+        var manager = Faulting<T>(backend, -1, false); int saves = 0;
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var finished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        manager.SaveStateAsync(Arg.Any<CancellationToken>()).Returns(async call =>
+        {
+            if (++saves == saveNumber) { entered.TrySetResult(); await release.Task; }
+            await backend.SaveStateAsync(call.Arg<CancellationToken>());
+            if (saves == saveNumber) { finished.TrySetResult(); }
+        });
+        return (manager, entered.Task, release, finished.Task);
+    }
+
 }

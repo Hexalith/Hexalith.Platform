@@ -318,3 +318,6 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
   summary: Match Aspire.AppHost.Sdk case-insensitively in the Python G6/runtime SDK scanners.
   evidence: Review BH2+EH2. `evaluated_catalog.has_apphost_sdk`/`transform` and the pre-change regexes compare `Aspire.AppHost.Sdk` case-sensitively, while NuGet SDK resolution is case-insensitive, so `Sdk="aspire.apphost.sdk/x"` is not observed. This predates Story 1.2 in the Python scanners; the PowerShell exceptions-validator path is closed by the story's non-Aspire SDK-pin patch.
+- source_spec: `spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
+  summary: Add a workspace-wide CI gate for the package-version exception allowlist across initialized module owners.
+  evidence: Builds CI and release invoke the existing inventory-only validator without WorkspaceRoot; a standalone Builds checkout cannot scan the other module owners represented in the inventory, while fixture tests cover the scanner itself.

@@ -18,7 +18,7 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
         {
             ArgumentNullException.ThrowIfNull(payload); string id = DeletionBatchCapabilityIdentity.SigningRequestId(payload);
             if (guard is null || signers is null || protectionOwners is null) { return new("Unavailable"); }
-            var signer = signers(payload);
+            var signer = await deadline.ReadAsync(() => Task.FromResult(signers(payload))).ConfigureAwait(false);
             var signed = await WaitAsync(() => signer.SignAsync(payload)).ConfigureAwait(false);
             if (signed.Payload != payload || signed.SigningRequestId != id) { return new("Conflict"); }
             if (signed.State == DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued)
@@ -37,6 +37,44 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
                     : new("NoIssueProofUnavailable", signed, Guard: issued);
             }
             if (issued.Status != "Committed") { return new(issued.Status, signed, Guard: issued); }
+            IDeletionProtectionOwner? protection = null;
+            if (replacement)
+            {
+                var pendingReplacement = await WaitAsync(() => guard.ReadAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
+                if (pendingReplacement?.Batch.ProtectionOutcome == "ReplacementAwaitingActivation")
+                {
+                    protection = await deadline.ReadAsync(() => Task.FromResult(protectionOwners(payload.TenantId))).ConfigureAwait(false);
+                    var retained = await WaitAsync(() => protection.ReadBlockedReplacementAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
+                    if (retained is null)
+                    {
+                        var comparison = await WaitAsync(() => protection.ReadActivationComparisonAsync(payload.TenantId, payload.BatchId, payload.CapabilityKeyVersion, providerCancellation.Token)).ConfigureAwait(false);
+                        if (comparison?.ReplacementKeyBlocked == true)
+                        {
+                            if (comparison.CompromiseBlockReceiptId != pendingReplacement.Batch.ProtectionReceiptId || comparison.TenantId != payload.TenantId
+                                || comparison.BatchId != payload.BatchId || comparison.ReplacementKeyVersion != payload.CapabilityKeyVersion || comparison.OwnerRevision <= 0
+                                || comparison.KeyBlockSetRevision < pendingReplacement.Batch.BlockSetRevision || comparison.ReplacementKeyRevocation is null)
+                            { return new("ReplacementComparisonUnavailable", signed); }
+                            var phase = new DeletionBlockedReplacementReconciliation("blocked-replacement-" + id + "-compare-" + comparison.KeyBlockSetRevision.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                                pendingReplacement.Batch.ProtectionReceiptId, comparison.KeyBlockSetRevision, pendingReplacement.Batch.IssueReceiptId, payload, signed.DetachedJws!, id,
+                                pendingReplacement.Batch.IssuedGuardRevision, pendingReplacement.Batch.Targets.Select(t => new ProtectionTarget(t.TenantId, t.AgentInteractionId, t.TargetProtectionKeyAlias)).ToArray(), comparison.ReplacementKeyRevocation);
+                            try { _ = await WaitAsync(() => protection.ReconcileBlockedReplacementAsync(phase, providerCancellation.Token)).ConfigureAwait(false); }
+                            catch (Exception) { deadline.Check(); }
+                            retained = await WaitAsync(() => protection.ReadBlockedReplacementAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
+                            if (retained is null) { return new("ReplacementReconciliationUnknown", signed); }
+                        }
+                    }
+                    if (retained is not null)
+                    {
+                        if (retained.Original.Capability != payload || retained.Original.SigningRequestId != id || retained.Original.DetachedJws != signed.DetachedJws
+                            || retained.Original.CompromiseBlockReceiptId != pendingReplacement.Batch.ProtectionReceiptId || retained.Original.GuardReplacementReceiptId != pendingReplacement.Batch.IssueReceiptId
+                            || retained.Original.CommittedIssuedGuardRevision != pendingReplacement.Batch.IssuedGuardRevision || retained.Outcome.Status != DeletionConsumptionStatus.ActivationBlockedByReplacementKeyCompromise
+                            || !Exact(retained.Outcome)) { return new("ReplacementReconciliationUnverified", signed); }
+                        var mirroredBlock = await WaitAsync(() => guard.RecordBlockedReplacementAsync(signed, retained, providerCancellation.Token)).ConfigureAwait(false);
+                        deadline.Check();
+                        return new(mirroredBlock?.Status == "Committed" ? "ActivationBlockedByReplacementKeyCompromise" : "ReplacementBlockMirrorUnknown", signed, retained.Outcome, mirroredBlock);
+                    }
+                }
+            }
             var dispatch = await WaitAsync(() => guard.DispatchAsync(signed, providerCancellation.Token)).ConfigureAwait(false);
             if (dispatch?.Status != "Committed") { return new(dispatch?.Status ?? "DispatchUnknown", signed, Guard: dispatch); }
             var snapshot = await WaitAsync(() => guard.ReadAsync(payload, providerCancellation.Token)).ConfigureAwait(false);
@@ -54,7 +92,7 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
             var request = new DeletionBatchConsumptionRequest(payload, signed.DetachedJws!, snapshot.Batch.IssuedGuardRevision,
                 snapshot.Batch.DispatchReceiptId, snapshot.Batch.DispatchGuardRevision,
                 targets);
-            var protection = protectionOwners(payload.TenantId);
+            protection ??= await deadline.ReadAsync(() => Task.FromResult(protectionOwners(payload.TenantId))).ConfigureAwait(false);
             if (replacement && snapshot.Batch.ProtectionOutcome == "ReplacementAwaitingActivation")
             {
                 if (snapshot.Batch.BlockSetRevision <= 0 || string.IsNullOrWhiteSpace(snapshot.Batch.ProtectionReceiptId) || string.IsNullOrWhiteSpace(snapshot.Batch.IssueReceiptId)) { return new("ReplacementBlockUnverified", signed); }

@@ -150,4 +150,70 @@ public sealed class PrivateOwnerOperationAuthenticatorTests
         keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
     }
 
+    /// <summary>Every caller identity carrier rejects strict malformed UTF-8 or more than 2048 encoded bytes before grant or key invocation.</summary>
+    [Theory]
+    [InlineData("tenant", false)][InlineData("tenant", true)]
+    [InlineData("resource", false)][InlineData("resource", true)]
+    [InlineData("method", false)][InlineData("method", true)]
+    [InlineData("contract", false)][InlineData("contract", true)]
+    [InlineData("digest", false)][InlineData("digest", true)]
+    [InlineData("target", false)][InlineData("target", true)]
+    [InlineData("iss", false)][InlineData("iss", true)]
+    [InlineData("sub", false)][InlineData("sub", true)]
+    [InlineData("azp", false)][InlineData("azp", true)]
+    [InlineData("aud", false)][InlineData("aud", true)]
+    public async Task InvalidIdentityCarrierDeniesBeforeGrantAndKey(string field, bool malformed)
+    {
+        string text = malformed ? "\uD800" : new string('é', 1025); var scope = Scope(); var caller = Caller();
+        scope = field switch { "tenant" => scope with { TenantId = text }, "resource" => scope with { ResourceId = text }, "method" => scope with { Method = text },
+            "contract" => scope with { Contract = text }, "digest" => scope with { DigestKeyVersion = text }, "target" => scope with { AuthenticatedTargetTenantId = text }, _ => scope };
+        if (field is "iss" or "sub" or "azp" or "aud")
+        { var identity = (ClaimsIdentity)caller.Identity!; identity.RemoveClaim(identity.FindFirst(field)!); identity.AddClaim(new(field, text)); }
+        var clock = new CustodyFixtureClock(); var keys = new CustodyFixtureKeyProvider(clock); var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        grants.ResolveCurrentAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<PrivateOwnerOperationScope>(), Arg.Any<CancellationToken>())
+            .Returns(call => Grant(clock) with { Scope = call.Arg<PrivateOwnerOperationScope>(), MachineIssuer = caller.FindFirst("iss")!.Value,
+                MachineSubject = caller.FindFirst("sub")!.Value, MachineClient = caller.FindFirst("azp")!.Value, MachineAudience = caller.FindFirst("aud")!.Value });
+        (await new PrivateOwnerOperationAuthenticator(keys, new CustodyFixtureProfileProvider(clock), clock, grants).IssueAsync(caller, scope, TestContext.Current.CancellationToken)).ShouldBeNull();
+        grants.ReceivedCalls().ShouldBeEmpty(); keys.Calls.ShouldBe(0);
+    }
+
+    /// <summary>Returned profile/grant/key identifiers are validated before canonical credential construction, and every acquired key is retired.</summary>
+    [Theory]
+    [InlineData("profile", false)][InlineData("profile", true)][InlineData("issuer", false)][InlineData("issuer", true)]
+    [InlineData("audience", false)][InlineData("audience", true)][InlineData("grant", false)][InlineData("grant", true)][InlineData("key", false)][InlineData("key", true)]
+    public async Task InvalidReturnedIdentityCannotReleaseCredential(string field, bool malformed)
+    {
+        string text = malformed ? "\uD800" : new string('é', 1025); var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock);
+        profiles.Profile = field switch { "profile" => profiles.Profile! with { Version = text }, "issuer" => profiles.Profile! with { Issuer = text }, "audience" => profiles.Profile! with { Audience = text }, _ => profiles.Profile };
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>(); grants.ResolveCurrentAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<PrivateOwnerOperationScope>(), Arg.Any<CancellationToken>())
+            .Returns(Grant(clock) with { AuthorityReference = field == "grant" ? text : Grant(clock).AuthorityReference });
+        var keys = Substitute.For<IPlatformHmacKeyProvider>(); var snapshots = new List<PlatformHmacKeySnapshot>();
+        keys.ResolveAsync(Arg.Any<PlatformHmacScope>(), Arg.Any<string?>(), Arg.Any<CancellationToken>()).Returns(call =>
+        {
+            var snapshot = new PlatformHmacKeySnapshot(call.Arg<PlatformHmacScope>(), new(field == "key" ? text : "key-v1", PlatformHmacKeyState.Active, clock.Now.AddDays(-1), clock.Now.AddDays(1), null), new byte[32]);
+            snapshots.Add(snapshot); return ValueTask.FromResult(new PlatformHmacKeyResolution(CustodyStatus.Succeeded, snapshot));
+        });
+        (await new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants).IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken)).ShouldBeNull();
+        if (field != "key") { keys.ReceivedCalls().ShouldBeEmpty(); }
+        snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+
+    /// <summary>Exactly 2048 strict UTF-8 bytes remain usable across scope, machine, profile, independent grant and signing-key carriers.</summary>
+    [Fact]
+    public async Task ValidMaximumIdentityCarrierStillIssuesAndAuthorizes()
+    {
+        string text = new('é', 1024); var clock = new CustodyFixtureClock(); var profiles = new CustodyFixtureProfileProvider(clock);
+        profiles.Profile = profiles.Profile! with { Version = text, Issuer = text, Audience = text };
+        var scope = new PrivateOwnerOperationScope(text, text, text, text, new string('A', 64), text, text);
+        var caller = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim("iss", text), new Claim("sub", text), new Claim("azp", text), new Claim("aud", text) }, "independent-machine"));
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>(); grants.ResolveCurrentAsync(text, text, text, scope, Arg.Any<CancellationToken>())
+            .Returns(new PrivateOwnerOperationGrant(text, text, text, text, scope, text, 1, true, clock.Now.AddDays(-1), clock.Now.AddDays(1)));
+        var keys = Substitute.For<IPlatformHmacKeyProvider>(); var snapshots = new List<PlatformHmacKeySnapshot>();
+        keys.ResolveAsync(Arg.Any<PlatformHmacScope>(), Arg.Any<string?>(), Arg.Any<CancellationToken>()).Returns(call =>
+        { var key = new PlatformHmacKeySnapshot(call.Arg<PlatformHmacScope>(), new(text, PlatformHmacKeyState.Active, clock.Now.AddDays(-1), clock.Now.AddDays(1), null), new byte[32]); snapshots.Add(key); return ValueTask.FromResult(new PlatformHmacKeyResolution(CustodyStatus.Succeeded, key)); });
+        var authenticator = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants);
+        var credential = (await authenticator.IssueAsync(caller, scope, TestContext.Current.CancellationToken))!; credential.ShouldNotBeNull();
+        (await authenticator.AuthorizeAsync(caller, scope, credential, TestContext.Current.CancellationToken)).ShouldBeTrue(); snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+
 }

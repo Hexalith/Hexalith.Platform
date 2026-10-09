@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Globalization;
+using System.Text;
 
 namespace Hexalith.Platform.Custody;
 
@@ -26,11 +27,11 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
         try
         {
             token.ThrowIfCancellationRequested(); ArgumentNullException.ThrowIfNull(caller); ArgumentNullException.ThrowIfNull(expected);
-            if (grants is null || caller.Identities.Count(i => i.IsAuthenticated) != 1
-                || await AwaitAsync(() => Task.FromResult(profiles.GetCurrent()), start, token).ConfigureAwait(false) is not { } profile || !profile.IsValid(clock.GetUtcNow())) { return null; }
-            ClaimsIdentity machine = caller.Identities.Single(i => i.IsAuthenticated);
-            string? issuer = One(machine, "iss"), subject = One(machine, "sub"), client = One(machine, "azp"), audience = One(machine, "aud");
-            if (issuer is null || subject is null || client is null || audience is null) { return null; }
+            if (grants is null || !ValidScope(expected) || input is not null && !ValidCredentialIdentities(input)) { return null; }
+            var machine = await AwaitAsync(() => Task.FromResult(CaptureMachine(caller)), start, token).ConfigureAwait(false);
+            if (machine is null || await AwaitAsync(() => Task.FromResult(profiles.GetCurrent()), start, token).ConfigureAwait(false) is not { } profile
+                || !ValidText(profile.Version) || !ValidText(profile.Issuer) || !ValidText(profile.Audience) || !profile.IsValid(clock.GetUtcNow())) { return null; }
+            string issuer = machine.Issuer, subject = machine.Subject, client = machine.Client, audience = machine.Audience;
             var grant = await AwaitAsync(() => grants.ResolveCurrentAsync(issuer, subject, client, expected, CancellationToken.None), start, token).ConfigureAwait(false);
             if (!ValidGrant(grant, issuer, subject, client, audience, expected, clock.GetUtcNow())) { return null; }
             byte[] scopeValidation = ScopeBytes(expected); CryptographicOperations.ZeroMemory(scopeValidation);
@@ -63,18 +64,45 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
     }
     private static bool ValidGrant(PrivateOwnerOperationGrant? grant, string issuer, string subject, string client, string audience, PrivateOwnerOperationScope expected, DateTimeOffset now)
         => grant is not null && grant.IsDedicatedServiceAccount && grant.MachineIssuer == issuer && grant.MachineSubject == subject && grant.MachineClient == client
-            && grant.MachineAudience == audience && grant.Scope == expected && !string.IsNullOrWhiteSpace(grant.AuthorityReference) && grant.BindingRevision > 0
+            && grant.MachineAudience == audience && grant.Scope == expected && ValidText(grant.AuthorityReference) && grant.BindingRevision > 0
             && grant.NotBefore.Offset == TimeSpan.Zero && grant.ValidUntil.Offset == TimeSpan.Zero && grant.NotBefore <= now && now < grant.ValidUntil;
     private static string? One(ClaimsIdentity caller, string name)
-    { var values = caller.FindAll(name).ToArray(); return values.Length == 1 && !string.IsNullOrWhiteSpace(values[0].Value) ? values[0].Value : null; }
+    {
+        string? value = null;
+        foreach (Claim claim in caller.FindAll(name))
+        {
+            if (value is not null || !ValidText(claim.Value)) { return null; }
+            value = claim.Value;
+        }
+        return value;
+    }
+    private sealed record Machine(string Issuer, string Subject, string Client, string Audience);
+    private static Machine? CaptureMachine(ClaimsPrincipal caller)
+    {
+        ClaimsIdentity? identity = null;
+        foreach (ClaimsIdentity candidate in caller.Identities)
+        { if (candidate.IsAuthenticated) { if (identity is not null) { return null; } identity = candidate; } }
+        if (identity is null) { return null; }
+        string? issuer = One(identity, "iss"), subject = One(identity, "sub"), client = One(identity, "azp"), audience = One(identity, "aud");
+        return issuer is not null && subject is not null && client is not null && audience is not null ? new(issuer, subject, client, audience) : null;
+    }
+    private static bool ValidText(string? value)
+    {
+        try { return !string.IsNullOrWhiteSpace(value) && value.Length <= 2048 && new UTF8Encoding(false, true).GetByteCount(value) <= 2048; }
+        catch (EncoderFallbackException) { return false; }
+    }
+    private static bool ValidScope(PrivateOwnerOperationScope scope)
+        => scope.PayloadFingerprint is { Length: 64 } && scope.PayloadFingerprint.All(char.IsAsciiHexDigit)
+            && new[] { scope.TenantId, scope.ResourceId, scope.Method, scope.Contract, scope.DigestKeyVersion, scope.AuthenticatedTargetTenantId }.All(ValidText);
+    private static bool ValidCredentialIdentities(PrivateOwnerOperationCredential c)
+        => ValidScope(c.Scope) && new[] { c.ProfileVersion, c.Issuer, c.Audience, c.MachineIssuer, c.MachineSubject, c.MachineClient,
+            c.MachineAudience, c.AuthorityReference, c.SigningKeyVersion }.All(ValidText);
     private static bool ValidTime(PrivateOwnerOperationCredential credential, PlatformSigningProfile profile, DateTimeOffset now)
         => credential.IssuedAt.Offset == TimeSpan.Zero && credential.ExclusiveExpiry.Offset == TimeSpan.Zero && credential.IssuedAt < credential.ExclusiveExpiry
             && credential.ExclusiveExpiry - credential.IssuedAt <= profile.MaximumLifetime && credential.IssuedAt <= now + profile.ClockSkew && now < credential.ExclusiveExpiry;
     private static byte[] ScopeBytes(PrivateOwnerOperationScope scope)
     {
-        if (scope.PayloadFingerprint is not { Length: 64 } || scope.PayloadFingerprint.Any(c => !char.IsAsciiHexDigit(c))) { throw new ArgumentException("Invalid private keyed request fingerprint."); }
-        foreach (string field in new[] { scope.TenantId, scope.ResourceId, scope.Method, scope.Contract, scope.DigestKeyVersion, scope.AuthenticatedTargetTenantId })
-        { ArgumentException.ThrowIfNullOrWhiteSpace(field); }
+        if (!ValidScope(scope)) { throw new ArgumentException("Invalid bounded private owner scope."); }
         return PlatformCanonicalBytes.Components([scope.TenantId, scope.ResourceId, scope.Method, scope.Contract, scope.PayloadFingerprint, scope.DigestKeyVersion, scope.AuthenticatedTargetTenantId]);
     }
     private static byte[] Bytes(PrivateOwnerOperationCredential c)
@@ -88,7 +116,7 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
     private async Task<PlatformHmacKeySnapshot?> ResolveAsync(PlatformHmacScope scope, string? version, long start, CancellationToken token)
     {
         var result = await AwaitAsync(() => keys.ResolveAsync(scope, version, CancellationToken.None).AsTask(), start, token, static value => value.Key?.Dispose()).ConfigureAwait(false);
-        if (result.Status == CustodyStatus.Succeeded) { return result.Key; } result.Key?.Dispose(); return null;
+        if (result.Status == CustodyStatus.Succeeded && result.Key is not null && ValidText(result.Key.Metadata.Version)) { return result.Key; } result.Key?.Dispose(); return null;
     }
     private async Task<T> AwaitAsync<T>(Func<Task<T>> operation, long start, CancellationToken token, Action<T>? abandoned = null)
     {
