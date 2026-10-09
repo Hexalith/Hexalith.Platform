@@ -7,6 +7,7 @@ namespace Hexalith.Platform.Identity;
 public static class P1ReceiptVerifier
 {
     private const string P256CurveOid = "1.2.840.10045.3.1.7";
+    private const int MaxPayloadLength = 1024 * 1024;
 
     /// <summary>Refuses unless the retained receipt and separately signed fresh status match independently supplied expectations.</summary>
     public static bool Verify(
@@ -17,24 +18,37 @@ public static class P1ReceiptVerifier
         try
         {
             P1ReceiptEnrollment? enrollment = authenticatedEnrollment?.Enrollment;
-            if (receiptDocument?.Payload is null || receiptDocument.Signature is null
-                || statusDocument?.Payload is null || statusDocument.Signature is null
+            byte[]? receiptPayload = receiptDocument?.Payload;
+            byte[]? receiptSignature = receiptDocument?.Signature;
+            byte[]? statusPayload = statusDocument?.Payload;
+            byte[]? statusSignature = statusDocument?.Signature;
+            if (receiptPayload is not { Length: > 0 and <= MaxPayloadLength }
+                || receiptSignature is not { Length: 64 }
+                || statusPayload is not { Length: > 0 and <= MaxPayloadLength }
+                || statusSignature is not { Length: 64 }
                 || expected is null || subjectBytes is null || enrollment is null || !Hex(requestNonce)
                 || string.IsNullOrWhiteSpace(enrollment.Issuer)
                 || string.IsNullOrWhiteSpace(enrollment.Audience)
                 || string.IsNullOrWhiteSpace(enrollment.TrustRevision)
                 || enrollment.ReceiptPublicKeySpki.AsSpan().SequenceEqual(enrollment.StatusPublicKeySpki)
-                || authenticatedNowUtc.Offset != TimeSpan.Zero
-                || !P1ReceiptWireV1.TryDecodeReceipt(receiptDocument.Payload, out P1ReceiptClaims? receipt)
-                || receipt is null || !P1ReceiptWireV1.TryDecodeStatus(statusDocument.Payload, out P1StatusClaims? status)
-                || status is null || !ReceiptValid(receipt, expected, subjectBytes, enrollment, retrievalUri, authenticatedNowUtc)
+                || authenticatedNowUtc.Offset != TimeSpan.Zero)
+            {
+                return false;
+            }
+
+            var receiptSnapshot = new P1SignedDocument(receiptPayload.ToArray(), receiptSignature.ToArray());
+            var statusSnapshot = new P1SignedDocument(statusPayload.ToArray(), statusSignature.ToArray());
+            byte[] subjectSnapshot = subjectBytes.ToArray();
+            if (!P1ReceiptWireV1.TryDecodeReceipt(receiptSnapshot.Payload, out P1ReceiptClaims? receipt)
+                || receipt is null || !P1ReceiptWireV1.TryDecodeStatus(statusSnapshot.Payload, out P1StatusClaims? status)
+                || status is null || !ReceiptValid(receipt, expected, subjectSnapshot, enrollment, retrievalUri, authenticatedNowUtc)
                 || !StatusValid(status, receipt, enrollment, statusUri, requestNonce!, authenticatedNowUtc))
             {
                 return false;
             }
 
-            return VerifySignature(receiptDocument, enrollment.ReceiptPublicKeySpki, enrollment.ReceiptKeyFingerprint)
-                && VerifySignature(statusDocument, enrollment.StatusPublicKeySpki, enrollment.StatusKeyFingerprint);
+            return VerifySignature(receiptSnapshot, enrollment.ReceiptPublicKeySpki, enrollment.ReceiptKeyFingerprint)
+                && VerifySignature(statusSnapshot, enrollment.StatusPublicKeySpki, enrollment.StatusKeyFingerprint);
         }
         catch (Exception exception) when (exception is ArgumentException or CryptographicException or InvalidOperationException or EncoderFallbackException)
         {

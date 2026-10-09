@@ -284,6 +284,34 @@ public sealed class P1ReceiptVerifierTests
         keys.Verify(status: Sign(atReceiptExpiry, keys.StatusKey), now: keys.Claims.ExpiresAtUtc).ShouldBeFalse();
     }
 
+    [Fact]
+    public void Receipt_ExpectedTimeMustMatchExactRepresentableUtcInstant()
+    {
+        using var keys = new Fixture();
+        keys.Verify(expected: keys.Claims with { IssuedAtUtc = keys.Claims.IssuedAtUtc.AddTicks(1) }).ShouldBeFalse();
+        keys.Verify(expected: keys.Claims with { ExpiresAtUtc = keys.Claims.ExpiresAtUtc.AddTicks(1) }).ShouldBeFalse();
+        keys.Verify(expected: keys.Claims with { IssuedAtUtc = keys.Claims.IssuedAtUtc.ToOffset(TimeSpan.FromHours(1)) }).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void ReceiptWire_UnrepresentableTimeAndOversizeField_Refuse()
+    {
+        using var keys = new Fixture();
+        Should.Throw<ArgumentException>(() => P1ReceiptWireV1.Encode(keys.Claims with
+        {
+            IssuedAtUtc = keys.Claims.IssuedAtUtc.AddTicks(1),
+        }));
+        Should.Throw<ArgumentException>(() => P1ReceiptWireV1.Encode(keys.StatusClaims with
+        {
+            ObservedAtUtc = keys.StatusClaims.ObservedAtUtc.ToOffset(TimeSpan.FromHours(1)),
+        }));
+        P1ReceiptClaims oversize = keys.Claims with { Reasons = new string('é', 600_000) };
+        long allocatedBefore = GC.GetAllocatedBytesForCurrentThread();
+        Should.Throw<ArgumentException>(() => P1ReceiptWireV1.Encode(oversize));
+        long allocated = GC.GetAllocatedBytesForCurrentThread() - allocatedBefore;
+        allocated.ShouldBeLessThan(256L * 1024);
+    }
+
     private static P1SignedDocument Sign(P1ReceiptClaims claims, ECDsa key) => Sign(P1ReceiptWireV1.Encode(claims), key);
     private static P1SignedDocument Sign(P1StatusClaims claims, ECDsa key) => Sign(P1ReceiptWireV1.Encode(claims), key);
     private static P1SignedDocument Sign(P1BootstrapClaims claims, ECDsa key) => Sign(P1BootstrapWireV1.Encode(claims), key);
@@ -361,10 +389,10 @@ public sealed class P1ReceiptVerifierTests
         public byte[] Subject { get; } = System.Text.Encoding.UTF8.GetBytes("offline subject bytes");
 
         public bool Verify(P1SignedDocument? receipt = default, P1SignedDocument? status = default,
-            string? nonce = default, DateTimeOffset? now = default)
+            string? nonce = default, DateTimeOffset? now = default, P1ReceiptClaims? expected = default)
             => P1ReceiptVerifier.Verify(receipt ?? Receipt, Enrollment.RetrievalOrigin + "/v1/receipts/" + Claims.ReceiptId,
                 status ?? Status, Enrollment.StatusOrigin + "/v1/status/" + Claims.ReceiptId + "?nonce=" + (nonce ?? Nonce),
-                Claims, Subject, AuthenticatedEnrollment, nonce ?? Nonce, now ?? Now);
+                expected ?? Claims, Subject, AuthenticatedEnrollment, nonce ?? Nonce, now ?? Now);
 
         public void Dispose()
         {

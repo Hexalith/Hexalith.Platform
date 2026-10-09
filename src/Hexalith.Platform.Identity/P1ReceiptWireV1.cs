@@ -77,12 +77,14 @@ public static class P1ReceiptWireV1
         Span<byte> length = stackalloc byte[4];
         foreach (string field in fields)
         {
-            byte[] data = StrictUtf8.GetBytes(field);
-            if (stream.Length + 4L + data.Length > 1024 * 1024)
+            int byteCount = StrictUtf8.GetByteCount(field);
+            if (stream.Length + 4L + byteCount > 1024 * 1024)
             {
                 throw new ArgumentException("P1 payload exceeds one MiB.");
             }
-            BinaryPrimitives.WriteInt32BigEndian(length, data.Length);
+
+            byte[] data = StrictUtf8.GetBytes(field);
+            BinaryPrimitives.WriteInt32BigEndian(length, byteCount);
             stream.Write(length);
             stream.Write(data);
         }
@@ -134,7 +136,15 @@ public static class P1ReceiptWireV1
         return true;
     }
 
-    private static string Time(DateTimeOffset instant) => instant.ToUniversalTime().ToString(TimeFormat, CultureInfo.InvariantCulture);
+    private static string Time(DateTimeOffset instant)
+    {
+        if (instant.Offset != TimeSpan.Zero || instant.Ticks % TimeSpan.TicksPerMillisecond != 0)
+        {
+            throw new ArgumentException("P1 receipt time must be UTC and millisecond-aligned.", nameof(instant));
+        }
+
+        return instant.ToString(TimeFormat, CultureInfo.InvariantCulture);
+    }
 
     private static bool TryTime(string value, out DateTimeOffset instant)
         => DateTimeOffset.TryParseExact(value, TimeFormat, CultureInfo.InvariantCulture,
