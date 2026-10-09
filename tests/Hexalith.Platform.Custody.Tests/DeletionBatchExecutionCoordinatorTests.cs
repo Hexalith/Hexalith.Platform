@@ -424,4 +424,16 @@ public sealed class DeletionBatchExecutionCoordinatorTests
         f.Reservations.ShouldBe(0); f.State.Deletions.Single().Batches.Single().ProtectionReceiptId.ShouldBe(block);
     }
 
+    /// <summary>Disabled composition preserves an already canceled caller token and its active restrictive default without touching any original owner.</summary>
+    [Fact]
+    public async Task DisabledCoordinatorChecksOriginalCancellation()
+    {
+        using var fixture = new DeletionBatchExecutionFixture(); using var caller = new CancellationTokenSource(); caller.Cancel();
+        var coordinator = new DeletionBatchExecutionCoordinator(TimeProvider.System);
+        var error = await Should.ThrowAsync<OperationCanceledException>(() => coordinator.ExecuteAsync(fixture.Payload, cancellationToken: caller.Token));
+        error.CancellationToken.ShouldBe(caller.Token);
+        (await coordinator.ExecuteAsync(fixture.Payload, cancellationToken: CancellationToken.None)).Status.ShouldBe("Unavailable");
+        fixture.Signatures.ShouldBe(0); fixture.Reservations.ShouldBe(0); fixture.Source.ReceivedCalls().ShouldBeEmpty();
+    }
+
 }

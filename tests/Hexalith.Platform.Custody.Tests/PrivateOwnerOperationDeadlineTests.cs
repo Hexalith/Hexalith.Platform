@@ -1,3 +1,4 @@
+using NSubstitute;
 using Shouldly;
 
 namespace Hexalith.Platform.Custody.Tests;
@@ -28,4 +29,30 @@ public sealed class PrivateOwnerOperationDeadlineTests
         finally { cleanupRelease.Set(); }
         await cleanupFinished.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); cleanups.ShouldBe(1);
     }
+    /// <summary>A clock crossing the budget after Check cannot construct a negative or infinite wait on either helper.</summary>
+    [Theory]
+    [InlineData(false, 0)][InlineData(false, 1)][InlineData(false, 10000)][InlineData(false, 20000)]
+    [InlineData(true, 0)][InlineData(true, 1)][InlineData(true, 10000)][InlineData(true, 20000)]
+    public async Task NonpositiveRemainingTimeIsTimeoutWithSafeLateCompletion(bool turnOwned, long overrunTicks)
+    {
+        var clock = Substitute.For<TimeProvider>(); clock.TimestampFrequency.Returns(TimeSpan.TicksPerSecond);
+        int reads = 0; clock.GetTimestamp().Returns(_ => Interlocked.Increment(ref reads) >= 3 ? TimeSpan.FromSeconds(30).Ticks + overrunTicks : 0L);
+        var deadline = new PrivateOwnerOperationDeadline(clock, CancellationToken.None);
+        var pending = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var cleaned = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously); int cleanups = 0;
+        Task operation = turnOwned ? deadline.WaitAsync(pending.Task)
+            : deadline.ReadAsync(() => { started.TrySetResult(); return pending.Task; }, value => { value.ShouldBe(17); Interlocked.Increment(ref cleanups); cleaned.TrySetResult(); });
+        try
+        {
+            var error = await Should.ThrowAsync<TimeoutException>(() => operation.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken));
+            error.Message.ShouldBe("Private owner operation unavailable."); operation.IsCompleted.ShouldBeTrue();
+            pending.Task.IsCompleted.ShouldBeFalse();
+            clock.DidNotReceive().CreateTimer(Arg.Any<TimerCallback>(), Arg.Any<object?>(), Arg.Any<TimeSpan>(), Arg.Any<TimeSpan>());
+        }
+        finally { pending.TrySetResult(17); }
+        if (!turnOwned) { await started.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); await cleaned.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); cleanups.ShouldBe(1); }
+        else { (await pending.Task).ShouldBe(17); cleanups.ShouldBe(0); }
+    }
+
 }

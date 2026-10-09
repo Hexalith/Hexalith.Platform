@@ -16,6 +16,7 @@ public sealed class DeletionBatchExecutionCoordinator(TimeProvider clock, IDelet
         var providerCancellation = new CancellationTokenSource();
         try
         {
+            deadline.Check();
             ArgumentNullException.ThrowIfNull(payload); string id = DeletionBatchCapabilityIdentity.SigningRequestId(payload);
             if (guard is null || signers is null || protectionOwners is null) { return new("Unavailable"); }
             var signer = await deadline.ReadAsync(() => Task.FromResult(signers(payload))).ConfigureAwait(false);

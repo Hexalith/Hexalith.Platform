@@ -14,7 +14,10 @@ internal sealed class PrivateOwnerOperationDeadline(TimeProvider clock, Cancella
         var pending = Task.Run(operation, CancellationToken.None);
         try
         {
-            var result = await pending.WaitAsync(TimeSpan.FromSeconds(30) - clock.GetElapsedTime(_start), clock, token).ConfigureAwait(false);
+            TimeSpan remaining = TimeSpan.FromSeconds(30) - clock.GetElapsedTime(_start);
+            token.ThrowIfCancellationRequested();
+            if (remaining <= TimeSpan.Zero) { throw new TimeoutException("Private owner operation unavailable."); }
+            var result = await pending.WaitAsync(remaining, clock, token).ConfigureAwait(false);
             Check(); return result;
         }
         catch (Exception)
@@ -31,7 +34,10 @@ internal sealed class PrivateOwnerOperationDeadline(TimeProvider clock, Cancella
         Check();
         try
         {
-            await pending.WaitAsync(TimeSpan.FromSeconds(30) - clock.GetElapsedTime(_start), clock, token).ConfigureAwait(false);
+            TimeSpan remaining = TimeSpan.FromSeconds(30) - clock.GetElapsedTime(_start);
+            token.ThrowIfCancellationRequested();
+            if (remaining <= TimeSpan.Zero) { throw new TimeoutException("Private owner operation unavailable."); }
+            await pending.WaitAsync(remaining, clock, token).ConfigureAwait(false);
             Check();
         }
         catch (Exception) { token.ThrowIfCancellationRequested(); throw; }

@@ -330,4 +330,21 @@ public sealed class CustodyKeyLifecycleTests
         finally { io.Release.TrySetResult(); pending.TrySetResult(true); }
     }
 
+    /// <summary>An actual actor admission crossing the helper boundary returns its restrictive original form without a negative wait or state/effect continuation.</summary>
+    [Theory]
+    [InlineData(10000)][InlineData(20000)]
+    public async Task AdmissionClockCrossingReturnsUnavailableWithoutStateOrEffect(long overrunTicks)
+    {
+        var fixture = new CustodyKeyLifecycleFixture(); var clock = Substitute.For<TimeProvider>();
+        clock.TimestampFrequency.Returns(TimeSpan.TicksPerSecond); int reads = 0;
+        clock.GetTimestamp().Returns(_ => Interlocked.Increment(ref reads) >= 4 ? TimeSpan.FromSeconds(30).Ticks + overrunTicks : 0L);
+        var suspended = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        fixture.Authority.AuthorizeOperationAsync(Arg.Any<CustodyKeyObjectIdentity>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(suspended.Task);
+        var actor = CustodyKeyLifecycleFixture.Create(fixture.Backend, fixture.Authority, fixture, clock);
+        CustodyKeyLifecycleOutcome result;
+        try { result = await actor.RegisterWrappedAsync(CustodyKeyLifecycleFixture.Registration()).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken); }
+        finally { suspended.TrySetResult(true); }
+        result.Status.ShouldBe(CustodyKeyLifecycleStatus.Unavailable); fixture.Backend.CommittedState.ShouldBeEmpty(); fixture.Effects.ShouldBe(0); fixture.Anchor.ShouldBe(0);
+    }
+
 }
