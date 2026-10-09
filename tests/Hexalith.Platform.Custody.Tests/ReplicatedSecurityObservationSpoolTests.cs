@@ -142,28 +142,36 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
     }
 
-    /// <summary>Competing rollover attempts share the immutable page and retain both exact new intents through retry.</summary>
+    /// <summary>One caller pauses after immutable page persistence while a competing rollover advances the head; restart retains both exact new intents.</summary>
     [Fact]
     public async Task ConcurrentRolloverRetainsOnePageAndBothNewIntents()
     {
         var f = new SecuritySpoolFixture(); var originals = SeedFullAcknowledgedHead(f);
         var a = SecuritySpoolFixture.Intent("concurrent-a"); var b = SecuritySpoolFixture.Intent("concurrent-b");
-        await Task.WhenAll(f.Spool.ObserveAsync(a, TestContext.Current.CancellationToken), f.Spool.ObserveAsync(b, TestContext.Current.CancellationToken));
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        int gated = 0;
+        f.Client.GetStateAndETagAsync<SecuritySpoolArchivePage>(f.Target.ComponentName, Arg.Any<string>(), Arg.Any<Dapr.Client.ConsistencyMode?>(),
+            Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(async call =>
+        {
+            string key = call.ArgAt<string>(1);
+            long index = long.Parse(key[(key.LastIndexOf('/') + 1)..], System.Globalization.CultureInfo.InvariantCulture);
+            if (!f.Archives.TryGetValue(index, out var bytes)) { return (null!, "0"); }
+            if (index == 0 && Interlocked.Exchange(ref gated, 1) == 0) { entered.TrySetResult(); await release.Task; }
+            return (JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)!, "1");
+        });
+        var first = f.Spool.ObserveAsync(a, TestContext.Current.CancellationToken);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        SecurityObservationRecord? observedB;
+        try { observedB = await f.Spool.ObserveAsync(b, TestContext.Current.CancellationToken); }
+        finally { release.TrySetResult(); }
+        observedB.ShouldNotBeNull();
+        (await first).ShouldBeNull();
         var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
-        SecurityObservationRecord? recoveredA = null; SecurityObservationRecord? recoveredB = null;
-        for (int attempt = 0; attempt < 3 && (recoveredA is null || recoveredB is null); attempt++)
-        {
-            recoveredA ??= await restarted.ObserveAsync(a, TestContext.Current.CancellationToken);
-            recoveredB ??= await restarted.ObserveAsync(b, TestContext.Current.CancellationToken);
-        }
-        if (recoveredA is null || recoveredB is null)
-        {
-            throw new InvalidOperationException($"Concurrent recovery unavailable: a={recoveredA is not null}, b={recoveredB is not null}, archives={string.Join(',', f.Archives.Select(pair => $"{pair.Key}:{JsonSerializer.Deserialize<SecuritySpoolArchivePage>(pair.Value)!.Snapshot.Records.Count}"))}, headPage={f.Read()?.PageIndex}, headCount={f.Read()?.Records.Count}, headRevision={f.Read()?.Revision}, pending={f.PendingBytes is not null}, anchor={f.Anchor}");
-        }
-        if (f.Archives.Count != 1 || f.Read()!.Records.Count != 2)
-        {
-            throw new InvalidOperationException($"Concurrent rollover state: archives={string.Join(',', f.Archives.Select(pair => $"{pair.Key}:{JsonSerializer.Deserialize<SecuritySpoolArchivePage>(pair.Value)!.Snapshot.Records.Count}"))}, headPage={f.Read()!.PageIndex}, headCount={f.Read()!.Records.Count}, headRevision={f.Read()!.Revision}, pending={f.PendingBytes is not null}, anchor={f.Anchor}");
-        }
+        var observedA = await restarted.ObserveAsync(a, TestContext.Current.CancellationToken);
+        observedA.ShouldNotBeNull(); observedA.Sequence.ShouldBe(10002);
+        (await restarted.ObserveAsync(b, TestContext.Current.CancellationToken)).ShouldBe(observedB);
+        f.Archives.Count.ShouldBe(1); f.Read()!.Records.Count.ShouldBe(2);
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
     }
 
