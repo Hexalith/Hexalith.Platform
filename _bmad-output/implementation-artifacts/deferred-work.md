@@ -321,3 +321,11 @@
 - source_spec: `spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
   summary: Add a workspace-wide CI gate for the package-version exception allowlist across initialized module owners.
   evidence: Builds CI and release invoke the existing inventory-only validator without WorkspaceRoot; a standalone Builds checkout cannot scan the other module owners represented in the inventory, while fixture tests cover the scanner itself.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
+  summary: Evaluate PackageReference and PackageVersion item conditions in the runtime consumer inventory.
+  evidence: Review BH7-9. `runtime_toolchain_v2.inventory` iterates raw XML and compares every controlled package pin even when its item or parent condition is false. The same loop exists at the preserved Builds baseline; an inactive changed pin can create false drift.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
+  summary: Require each successful VSTest shard to produce its expected TRX report.
+  evidence: Review BH7-12. `domain-ci.yml` marks a zero-exit `dotnet test` PASS before checking that the expected TRX exists. The shard change predates this story's source-start revision and is separate from catalog authority.
