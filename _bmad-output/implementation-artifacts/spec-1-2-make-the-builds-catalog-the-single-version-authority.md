@@ -4,7 +4,7 @@ type: 'refactor'
 epic: 1
 story: 2
 created: '2026-10-08'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: 'fe25d0fda681cdde4fc4ecfab76bc32e9ead5132'
@@ -240,6 +240,58 @@ Rejected (loop 6):
 - EH16 (low): A registry-with-port Redis image is not selected, and fails loudly. Expanding the strict grammar is more than a direct correction.
 - EH19 (low, carried BH10): Restore timeout and scratch placement.
 - EH20 (false, carried BH13): Tooling is `IsPackable=false` with no external compile-time consumers.
+
+Code review 2026-10-09 (loop 8) of Builds `fef0318..f9f8da0`, with the generated `Tools/package-version-audit.json` excluded. Layers: blind-hunter, edge-case-hunter, verification-gap and acceptance-auditor; none failed. The acceptance auditor found no AC1–AC4 violations and confirmed the seven matrix rows, including real-CLI HXR015 runs and the Module suite passing 479/479 with no Aspire CLI on `PATH`. Paths are relative to `references/Hexalith.Builds`.
+
+- [ ] [Review][Patch] The duplicate-key test does not cover the equal-value case it documents [test/Hexalith.Builds.Module.Tests/SupportedPlatformPinsCatalogTests.cs:75] — `DuplicateSelectionNamesField` claims duplicate keys "fail even when their values agree", but injects `daprSdkVersion` `0.0.1` while the snapshot holds `1.18.10`. `PlatformVersionCatalog.Parse` rejects every duplicate through `TryAdd`, yet a regression that rejected only conflicting duplicates would keep the test green. Fix: inject the snapshot's own `daprSdkVersion` value. (blind-hunter, low)
+- [ ] [Review][Patch] The README misstates which commands probe Aspire [README.md:277] — it says "`run` and live `test`", but `ModuleCommandExecutionService.cs:270-273` probes for `run` and `test` whenever the manifest is executable (descriptor assemblies), for any profile, so `test --profile full` also yields HXR015. The README never defines "live `test`", and `live` is also a profile name. Fix: say "`run` and `test` of executable manifests". (acceptance-auditor, low)
+- [ ] [Review][Patch] Per-consumer catalog evaluation bypasses the repository SDK selection [Tools/evaluated_catalog.py:58] — with `consumer_project_name`, both `_run` calls (`:58`, `:82`) evaluate the temporary `<name>.proj` from the temporary directory, so the repository `global.json` no longer selects the SDK. The neutral evaluation and the SDK observer (`:279`) run from the repository, which B3-4 required for that reason. Fix: pass `working_directory=path.parent` to both calls. (edge-case-hunter, low)
+
+Rejected (loop 8):
+
+- BH1+EH26 (false, carried BH5+VG-O3+EH15): The `PlatformVersionCatalogSource` scenario guards the B3-6 removal; honoring the property again would make the alternate catalog agree with the override and the build succeed.
+- BH2+EH18 (false, carried BH12): A package without NuGet.Versioning.dll cannot pass. The installed `down` on the positive v1 manifest reaches `ModuleManifestLoader` → `SupportedPlatformPins` → `PlatformVersionCatalog.Parse` and must return HXI001. The in-process probe resolves the SDK 10.0.401 copy, whose assembly version is exactly 7.9.0.0.
+- BH3+EH1 (low, carried BH3+EH1/BH6/BH15): Inherited SDK environment values and Debug-only consumer observation.
+- BH4+EH4 (low): The observer imports `Directory.Build.props` before the project body, but the catalog assigns `HexalithAspireAppHostSdkVersion` unconditionally after that import and Builds' `Directory.Build.props` sets no catalog property (carried BH17), so the observed SDK matches the real build. Mirroring SDK-internal import placement means restructuring the observer.
+- BH5 (rejected, carried B2-10/BH8): The spec change log retains the duplicate public/engine probe, and probing Aspire before Dapr/Docker follows the spec ordering.
+- BH6+EH21 (false, carried BH9/BH5+EH9): The real CLI prints one `13.6.0+<hash>` line; extra stdout lines were never observed.
+- BH7 (rejected, carried BH13): The spec mandates the Windows guards for shell-script fakes.
+- BH8 (low, carried BH10/BH6): Per-build generator cost and missing `FileWrites`.
+- BH9+EH15 (low, carried BH10): The restore scratch sits under `Props/` deliberately to inherit the repository NuGet.config hierarchy, exists only on a cache miss and is removed in `finally`.
+- BH10 (false, carried EH9): NuGet treats `13.*` as a floating minimum; the spec mandates NuGet range semantics and acceptance of wildcard ranges.
+- BH11+EH16 (low, carried BH4/EH14/BH7): No catalog selection is configuration- or framework-conditional.
+- BH12+EH17 (false): The writer starts `dotnet` through `ProcessStartInfo`, so it never sets `$LASTEXITCODE`. The value checked at `test-g4-tool-package-contracts.ps1:952` comes from the package build script, which throws on any nonzero `dotnet` exit, and the gate resets it to 0. A failing writer reaches `exit 1`.
+- BH13 (false/low, carried BH12+AA4): A failed Folders `msbuild` yields a null pin and throws; the double increment and no-op `Replace` are cosmetic.
+- BH14 (maybe-false; low if true): The `/tmp` rebuild copies no `global.json`, so it uses the host's newest SDK. No scenario result was shown to depend on the SDK band, and here the newest SDK is the pinned 10.0.401. Settling it needs a host whose newest SDK differs from the pin.
+- BH15+EH25 (false): `run_evaluated_catalog_controls` returns `34 + …` constants, so asserting its value in the CI wrapper cannot detect dropped scenarios; each scenario asserts itself. The twice-run controls are carried evaluation cost (BH15/B2-9).
+- BH16 (false, carried BH5/BH15): The spec mandates the catalog-derived Dapr target; G6 `direct_pin_issues` compares catalog packages with the owner-approved tuple.
+- BH17 (low, carried loop-5 BH15/AA3): NuGet accepts leading zeros in release segments, and the validators follow the spec's NuGet semantics.
+- BH18 (false, carried BH13/EH20): Tooling is `IsPackable=false` with no external compile-time consumers.
+- BH19+EH10 (low, carried EH13/BH20/BH10+EH7): A malformed project, a missing Python or an MSBuild failure aborts the validator loudly.
+- BH20 (low): `CatalogSelected` uses literal equality, but no project aliases or pads the catalog property, and a mismatch fails loudly as an unlisted exception.
+- BH21 (low, carried BH16/BH22/B2-9): Module-loading placement, duplicated loader blocks and per-function evaluation cost.
+- BH23 (false): The live lane is opt-in through `HEXALITH_G4_LIVE`, and its skip reason names the catalog Aspire CLI prerequisite; CI deliberately runs no live lane.
+- BH24+AA1 (false, carried BH18/BH23): The paragraph says publication grants no acceptance and Story 1.9 owns the first acceptance, so tags `v4.27.5`–`v4.30.1` are not implied accepted. The `4.27.4` bound is spec-mandated and the story counts are a historical record.
+- BH25 (false): `.editorconfig` sets `insert_final_newline = false` for `*.cs`, and `CompositionToolchainPins.cs` already lacked a final newline at `fef0318`.
+- VG1 (low, carried VG2): The Builds-owner `CatalogSelected` branch remains untested. It runs only under `-WorkspaceRoot`, which CI does not use (carried BH4-5), it was demonstrated to work, and the AppHost selects its SDK through the catalog property directly. The fix needs a fixture workspace and two scenarios.
+- VG-O1+EH2 (low, carried EH4/BH18+EH4): A versionless, `global.json`-pinned Aspire SDK fails loudly, and no workspace project declares one.
+- AA3 (low): The offline reader names all three Redis fields in one message. The build-time writer names the exact property, and every embedded snapshot is validated at build; splitting the check adds branches.
+- EH3 (low, carried EH5/B3-2): Imports using SDK-defined paths fail loudly and occur in no consumer.
+- EH5 (low): Per-consumer re-evaluation recognizes only `==` `MSBuildProjectName` conditions with case-sensitive stems. The catalog's only such condition is the Folders `==` form with an exact-case project; arbitrary condition forms need general per-consumer evaluation.
+- EH6 (low, carried AA5+EH9/EH10/BH5-9/EH7-2): Consumer overrides of catalog properties in package items; none exist.
+- EH7 (low, carried BH7-10): Namespaced package elements; no controlled declaration uses one.
+- EH8 (low, carried EH13): A malformed Projects AppHost aborts loudly.
+- EH11 (low, carried BH5-3/EH7-3): Property-versioned non-Aspire `Import Sdk` declarations.
+- EH12 (low, carried loop-5 EH7): A Builds checkout under another leaf name fails loudly as unlisted.
+- EH13 (low, carried BH14/EH8): Only stderr warnings could corrupt the evaluator JSON.
+- EH14 (false): The writer's own `msbuild -preprocess`/`-getItem` calls (`:89`, `:106`) run before `nuget locals` (`:169`) and would absorb any first-run banner; extra `nuget locals` output lines were never observed.
+- EH19 (false): Production runs one qualification per `pwsh` process. Only the gate runs several in-process, and all its synthetic packages embed the same Tooling.dll, so a reused assembly carries the identical catalog.
+- EH20 (low): The gate deliberately packs a real catalog-bearing assembly so the installed catalog check stays mandatory, and its writer reuses the nuspec cached by the gate's own Tooling build. Mocking the writer adds parameters.
+- EH22 (low, carried EH12/EH14/EH10): An invalid embedded snapshot is always rejected at build.
+- EH23 (low, carried EH4-3): An inherited `HexalithVersionsLoaded` marker.
+- EH24 (false): Every invocation the repository uses (`python3 Tools/<script>.py`) puts `Tools` on `sys.path`; the import fails loudly only under an unused invocation.
+- EH27 (low, carried loop-6 EH16): A registry-with-port Redis image is not selected and fails loudly.
+- EH28 (low): Tolerant cleanup is the loop-6 fix for the locked probe DLL and leaves only a temporary directory on Windows. Unloading through a collectible load context is more than a direct correction.
 
 ## Implementation Notes
 
