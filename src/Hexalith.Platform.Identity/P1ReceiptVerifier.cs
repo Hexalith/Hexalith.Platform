@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Hexalith.Platform.Identity;
 
-/// <summary>Pure offline P1 signature, exact-claim, scope and nonce-bound status verifier; supplies no enrollment or retrieval.</summary>
+/// <summary>Pure offline P1 signature, exact-claim, scope and nonce-bound status verifier; supplies no retrieval.</summary>
 public static class P1ReceiptVerifier
 {
     private const string P256CurveOid = "1.2.840.10045.3.1.7";
@@ -11,11 +11,12 @@ public static class P1ReceiptVerifier
     /// <summary>Refuses unless the retained receipt and separately signed fresh status match independently supplied expectations.</summary>
     public static bool Verify(
         P1SignedDocument? receiptDocument, string? retrievalUri, P1SignedDocument? statusDocument, string? statusUri,
-        P1ReceiptClaims? expected, byte[]? subjectBytes, P1ReceiptEnrollment? enrollment, string? requestNonce,
+        P1ReceiptClaims? expected, byte[]? subjectBytes, P1AuthenticatedEnrollment? authenticatedEnrollment, string? requestNonce,
         DateTimeOffset authenticatedNowUtc)
     {
         try
         {
+            P1ReceiptEnrollment? enrollment = authenticatedEnrollment?.Enrollment;
             if (receiptDocument?.Payload is null || receiptDocument.Signature is null
                 || statusDocument?.Payload is null || statusDocument.Signature is null
                 || expected is null || subjectBytes is null || enrollment is null || !Hex(requestNonce)

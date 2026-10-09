@@ -1,4 +1,6 @@
+using System.Buffers.Binary;
 using System.Security.Cryptography;
+using System.Text;
 using Hexalith.Platform.Identity;
 using Shouldly;
 
@@ -67,7 +69,7 @@ public sealed class P1ReceiptVerifierTests
         string uri = keys.Enrollment.RetrievalOrigin + "/v1/receipts/" + keys.Claims.ReceiptId;
         string statusUri = keys.Enrollment.StatusOrigin + "/v1/status/" + keys.Claims.ReceiptId + "?nonce=" + Nonce;
         P1ReceiptVerifier.Verify(keys.Receipt, uri, keys.Status, statusUri, keys.Claims,
-            System.Text.Encoding.UTF8.GetBytes("different subject"), keys.Enrollment, Nonce, Now).ShouldBeFalse();
+            System.Text.Encoding.UTF8.GetBytes("different subject"), keys.AuthenticatedEnrollment, Nonce, Now).ShouldBeFalse();
     }
 
     [Fact]
@@ -76,8 +78,9 @@ public sealed class P1ReceiptVerifierTests
         using var keys = new Fixture();
         string uri = keys.Enrollment.RetrievalOrigin + "/v1/receipts/" + keys.Claims.ReceiptId;
         string statusUri = keys.Enrollment.StatusOrigin + "/v1/status/" + keys.Claims.ReceiptId + "?nonce=" + Nonce;
-        P1ReceiptVerifier.Verify(null, uri, keys.Status, statusUri, keys.Claims, keys.Subject, keys.Enrollment, Nonce, Now).ShouldBeFalse();
-        P1ReceiptVerifier.Verify(keys.Receipt, uri, null, statusUri, keys.Claims, keys.Subject, keys.Enrollment, Nonce, Now).ShouldBeFalse();
+        P1ReceiptVerifier.Verify(null, uri, keys.Status, statusUri, keys.Claims, keys.Subject, keys.AuthenticatedEnrollment, Nonce, Now).ShouldBeFalse();
+        P1ReceiptVerifier.Verify(keys.Receipt, uri, null, statusUri, keys.Claims, keys.Subject, keys.AuthenticatedEnrollment, Nonce, Now).ShouldBeFalse();
+        P1ReceiptVerifier.Verify(keys.Receipt, uri, keys.Status, statusUri, keys.Claims, keys.Subject, null, Nonce, Now).ShouldBeFalse();
     }
 
     [Fact]
@@ -88,11 +91,222 @@ public sealed class P1ReceiptVerifierTests
         keys.Verify(now: keys.StatusClaims.ExpiresAtUtc).ShouldBeFalse();
     }
 
+    [Fact]
+    public void Bootstrap_MissingWrongRootAndChangedBytes_Refuse()
+    {
+        using var keys = new Fixture();
+        using ECDsa foreign = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        P1BootstrapVerifier.TryVerify(null, keys.Pin, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, null, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with
+        {
+            RootPublicKeySpki = foreign.ExportSubjectPublicKeyInfo(),
+            RootKeyFingerprint = Fingerprint(foreign.ExportSubjectPublicKeyInfo()),
+        }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(Sign(keys.Bootstrap, foreign), keys.Pin, Now, out _).ShouldBeFalse();
+        byte[] changed = keys.Bootstrap.Payload.ToArray();
+        changed[^1] ^= 1;
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap with { Payload = changed }, keys.Pin, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { RootPublicKeySpki = null! }, Now, out _).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Bootstrap_SignedSubstitutionAndExactScope_Refuse()
+    {
+        using var keys = new Fixture();
+        P1BootstrapClaims substituted = keys.BootstrapClaims with { Issuer = "https://other.test.invalid" };
+        P1SignedDocument changed = Sign(substituted, keys.RootKey);
+        P1BootstrapPin pin = keys.Pin with { BootstrapSha256 = Fingerprint(changed.Payload) };
+        P1BootstrapVerifier.TryVerify(changed, pin, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { Revision = "other-r1" }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { Audience = "other-audience" }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { PrincipalMappingRevision = "other-map" }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { RetrievalOrigin = "https://other.test.invalid" }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { StatusOrigin = "https://other.test.invalid" }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { ReceiptKeyFingerprint = new string('f', 64) }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with { StatusKeyFingerprint = new string('f', 64) }, Now, out _).ShouldBeFalse();
+        byte[] noncanonical = [.. keys.Bootstrap.Payload, 0];
+        P1SignedDocument appended = Sign(noncanonical, keys.RootKey);
+        P1BootstrapVerifier.TryVerify(appended, keys.Pin with { BootstrapSha256 = Fingerprint(noncanonical) }, Now, out _).ShouldBeFalse();
+        P1BootstrapClaims denied = keys.BootstrapClaims with { Issuer = "NO_SUPPORTED_RECEIPT_ISSUER" };
+        P1SignedDocument signedDenial = Sign(denied, keys.RootKey);
+        P1BootstrapVerifier.TryVerify(signedDenial, keys.Pin with
+        {
+            Issuer = denied.Issuer,
+            BootstrapSha256 = Fingerprint(signedDenial.Payload),
+        }, Now, out _).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Bootstrap_ExpiredOrInvalidKeys_Refuse()
+    {
+        using var keys = new Fixture();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin, keys.BootstrapClaims.ExpiresAtUtc, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin, keys.BootstrapClaims.EffectiveAtUtc.AddTicks(-1), out _).ShouldBeFalse();
+        P1BootstrapClaims sameKey = keys.BootstrapClaims with
+        {
+            StatusPublicKeySpki = keys.BootstrapClaims.ReceiptPublicKeySpki,
+            StatusKeyFingerprint = keys.BootstrapClaims.ReceiptKeyFingerprint,
+        };
+        P1SignedDocument changed = Sign(sameKey, keys.RootKey);
+        P1BootstrapPin pin = keys.Pin with
+        {
+            BootstrapSha256 = Fingerprint(changed.Payload),
+            StatusKeyFingerprint = sameKey.StatusKeyFingerprint,
+        };
+        P1BootstrapVerifier.TryVerify(changed, pin, Now, out _).ShouldBeFalse();
+        byte[] rootSpki = keys.RootKey.ExportSubjectPublicKeyInfo();
+        P1BootstrapClaims rootReceipt = keys.BootstrapClaims with
+        {
+            ReceiptPublicKeySpki = rootSpki,
+            ReceiptKeyFingerprint = Fingerprint(rootSpki),
+        };
+        P1SignedDocument signedRootReceipt = Sign(rootReceipt, keys.RootKey);
+        P1BootstrapVerifier.TryVerify(signedRootReceipt, keys.Pin with
+        {
+            ReceiptKeyFingerprint = rootReceipt.ReceiptKeyFingerprint,
+            BootstrapSha256 = Fingerprint(signedRootReceipt.Payload),
+        }, Now, out _).ShouldBeFalse();
+        P1BootstrapClaims rootStatus = keys.BootstrapClaims with
+        {
+            StatusPublicKeySpki = rootSpki,
+            StatusKeyFingerprint = Fingerprint(rootSpki),
+        };
+        P1SignedDocument signedRootStatus = Sign(rootStatus, keys.RootKey);
+        P1BootstrapVerifier.TryVerify(signedRootStatus, keys.Pin with
+        {
+            StatusKeyFingerprint = rootStatus.StatusKeyFingerprint,
+            BootstrapSha256 = Fingerprint(signedRootStatus.Payload),
+        }, Now, out _).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Bootstrap_IndependentCanonicalWireVector_Verifies()
+    {
+        using var keys = new Fixture();
+        string[] fields = [
+            "fixture-r1", "https://p1.test.invalid", "hexalith:memories:c1:v1",
+            "https://p1.test.invalid", "https://p1.test.invalid", "fixture-map-r1",
+            Convert.ToHexStringLower(keys.ReceiptKey.ExportSubjectPublicKeyInfo()),
+            keys.BootstrapClaims.ReceiptKeyFingerprint,
+            Convert.ToHexStringLower(keys.StatusKey.ExportSubjectPublicKeyInfo()),
+            keys.BootstrapClaims.StatusKeyFingerprint,
+            "2026-10-09T11:50:00.000Z", "2026-10-10T12:00:00.000Z",
+        ];
+        byte[] wire = AssembleBootstrapWire(fields);
+        P1BootstrapWireV1.Encode(keys.BootstrapClaims).AsSpan().SequenceEqual(wire).ShouldBeTrue();
+        P1BootstrapWireV1.TryDecode(wire, out P1BootstrapClaims? decoded).ShouldBeTrue();
+        decoded.ShouldNotBeNull();
+        decoded.Revision.ShouldBe("fixture-r1");
+        P1BootstrapVerifier.TryVerify(Sign(wire, keys.RootKey),
+            keys.Pin with { BootstrapSha256 = Fingerprint(wire) }, Now, out P1AuthenticatedEnrollment? verified).ShouldBeTrue();
+        verified.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Bootstrap_MalformedWireKeyAndSignature_Refuse()
+    {
+        using var keys = new Fixture();
+        byte[] malformedLength = keys.Bootstrap.Payload.ToArray();
+        BinaryPrimitives.WriteInt32BigEndian(malformedLength.AsSpan(9, 4), int.MaxValue);
+        P1BootstrapWireV1.TryDecode(malformedLength, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(Sign(malformedLength, keys.RootKey),
+            keys.Pin with { BootstrapSha256 = Fingerprint(malformedLength) }, Now, out _).ShouldBeFalse();
+        byte[] malformedUtf8 = keys.Bootstrap.Payload.ToArray();
+        malformedUtf8[13] = 0xff;
+        P1BootstrapWireV1.TryDecode(malformedUtf8, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(Sign(malformedUtf8, keys.RootKey),
+            keys.Pin with { BootstrapSha256 = Fingerprint(malformedUtf8) }, Now, out _).ShouldBeFalse();
+        byte[] invalidSpki = [0x30, 0x00];
+        P1BootstrapClaims invalidKey = keys.BootstrapClaims with
+        {
+            ReceiptPublicKeySpki = invalidSpki,
+            ReceiptKeyFingerprint = Fingerprint(invalidSpki),
+        };
+        P1SignedDocument signedInvalidKey = Sign(invalidKey, keys.RootKey);
+        P1BootstrapVerifier.TryVerify(signedInvalidKey, keys.Pin with
+        {
+            ReceiptKeyFingerprint = invalidKey.ReceiptKeyFingerprint,
+            BootstrapSha256 = Fingerprint(signedInvalidKey.Payload),
+        }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap, keys.Pin with
+        {
+            RootPublicKeySpki = invalidSpki,
+            RootKeyFingerprint = Fingerprint(invalidSpki),
+        }, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap with { Signature = new byte[63] }, keys.Pin, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap with { Signature = new byte[65] }, keys.Pin, Now, out _).ShouldBeFalse();
+        P1BootstrapVerifier.TryVerify(keys.Bootstrap with { Payload = new byte[1024 * 1024 + 1] },
+            keys.Pin, Now, out _).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void BootstrapWire_UnrepresentableTimeAndOversizeField_Refuse()
+    {
+        using var keys = new Fixture();
+        Should.Throw<ArgumentException>(() => P1BootstrapWireV1.Encode(keys.BootstrapClaims with
+        {
+            EffectiveAtUtc = keys.BootstrapClaims.EffectiveAtUtc.AddTicks(1),
+        }));
+        Should.Throw<ArgumentException>(() => P1BootstrapWireV1.Encode(keys.BootstrapClaims with
+        {
+            Revision = new string('x', 1024 * 1024),
+        }));
+    }
+
+    [Fact]
+    public void AuthenticatedEnrollment_CopiesVerifiedKeyBytes()
+    {
+        using var keys = new Fixture();
+        keys.BootstrapClaims.ReceiptPublicKeySpki[0] ^= 1;
+        keys.BootstrapClaims.StatusPublicKeySpki[0] ^= 1;
+        keys.Pin.RootPublicKeySpki[0] ^= 1;
+        keys.Verify().ShouldBeTrue();
+    }
+
+    [Fact]
+    public void MalformedReceiptStatusAndRevocation_Refuse()
+    {
+        using var keys = new Fixture();
+        keys.Verify(receipt: new P1SignedDocument(null!, keys.Receipt.Signature)).ShouldBeFalse();
+        keys.Verify(status: new P1SignedDocument(keys.Status.Payload, null!)).ShouldBeFalse();
+        keys.Verify(status: Sign(keys.StatusClaims with { GrantState = "unknown" }, keys.StatusKey)).ShouldBeFalse();
+        keys.Verify(status: Sign(keys.StatusClaims with { PolicyState = "revoked" }, keys.StatusKey)).ShouldBeFalse();
+        keys.Verify(status: Sign(keys.StatusClaims with { SessionState = "unavailable" }, keys.StatusKey)).ShouldBeFalse();
+        keys.Verify(status: Sign(keys.StatusClaims with { ObservedAtUtc = Now.AddMinutes(-6) }, keys.StatusKey)).ShouldBeFalse();
+        keys.Verify(receipt: Sign(keys.Claims with { Decision = "approved" }, keys.ReceiptKey)).ShouldBeFalse();
+        keys.Verify(receipt: Sign(keys.Claims with { SubjectLength = keys.Subject.LongLength + 1 }, keys.ReceiptKey)).ShouldBeFalse();
+        P1StatusClaims atReceiptExpiry = keys.StatusClaims with
+        {
+            ObservedAtUtc = keys.Claims.ExpiresAtUtc.AddSeconds(-1),
+            ExpiresAtUtc = keys.Claims.ExpiresAtUtc.AddSeconds(30),
+        };
+        keys.Verify(status: Sign(atReceiptExpiry, keys.StatusKey), now: keys.Claims.ExpiresAtUtc).ShouldBeFalse();
+    }
+
     private static P1SignedDocument Sign(P1ReceiptClaims claims, ECDsa key) => Sign(P1ReceiptWireV1.Encode(claims), key);
     private static P1SignedDocument Sign(P1StatusClaims claims, ECDsa key) => Sign(P1ReceiptWireV1.Encode(claims), key);
+    private static P1SignedDocument Sign(P1BootstrapClaims claims, ECDsa key) => Sign(P1BootstrapWireV1.Encode(claims), key);
     private static P1SignedDocument Sign(P1SignedDocument document, ECDsa key) => Sign(document.Payload, key);
     private static P1SignedDocument Sign(byte[] payload, ECDsa key)
         => new(payload, key.SignData(payload, HashAlgorithmName.SHA256, DSASignatureFormat.IeeeP1363FixedFieldConcatenation));
+    private static string Fingerprint(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
+
+    private static byte[] AssembleBootstrapWire(string[] fields)
+    {
+        using var stream = new MemoryStream();
+        stream.Write("HX-P1B/1\n"u8);
+        Span<byte> length = stackalloc byte[4];
+        foreach (string field in fields)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(field);
+            BinaryPrimitives.WriteInt32BigEndian(length, bytes.Length);
+            stream.Write(length);
+            stream.Write(bytes);
+        }
+
+        return stream.ToArray();
+    }
 
     private sealed class Fixture : IDisposable
     {
@@ -100,10 +314,24 @@ public sealed class P1ReceiptVerifierTests
         {
             byte[] receiptSpki = ReceiptKey.ExportSubjectPublicKeyInfo();
             byte[] statusSpki = StatusKey.ExportSubjectPublicKeyInfo();
-            string receiptFingerprint = Convert.ToHexStringLower(SHA256.HashData(receiptSpki));
-            string statusFingerprint = Convert.ToHexStringLower(SHA256.HashData(statusSpki));
-            Enrollment = new("https://p1.test.invalid", "https://p1.test.invalid", "https://p1.test.invalid", "hexalith:memories:c1:v1", "fixture-r1",
-                receiptSpki, receiptFingerprint, statusSpki, statusFingerprint, Now.AddMinutes(-10), Now.AddDays(1));
+            string receiptFingerprint = Fingerprint(receiptSpki);
+            string statusFingerprint = Fingerprint(statusSpki);
+            BootstrapClaims = new("fixture-r1", "https://p1.test.invalid", "hexalith:memories:c1:v1",
+                "https://p1.test.invalid", "https://p1.test.invalid", "fixture-map-r1", receiptSpki,
+                receiptFingerprint, statusSpki, statusFingerprint, Now.AddMinutes(-10), Now.AddDays(1));
+            Bootstrap = Sign(BootstrapClaims, RootKey);
+            byte[] rootSpki = RootKey.ExportSubjectPublicKeyInfo();
+            Pin = new(rootSpki, Fingerprint(rootSpki), Fingerprint(Bootstrap.Payload), BootstrapClaims.Revision,
+                BootstrapClaims.Issuer, BootstrapClaims.Audience, BootstrapClaims.RetrievalOrigin,
+                BootstrapClaims.StatusOrigin, receiptFingerprint, statusFingerprint, BootstrapClaims.PrincipalMappingRevision);
+            if (!P1BootstrapVerifier.TryVerify(Bootstrap, Pin, Now, out P1AuthenticatedEnrollment? authenticated))
+            {
+                throw new InvalidOperationException("Fixture bootstrap was not verified.");
+            }
+            AuthenticatedEnrollment = authenticated!;
+            Enrollment = new(BootstrapClaims.Issuer, BootstrapClaims.RetrievalOrigin, BootstrapClaims.StatusOrigin,
+                BootstrapClaims.Audience, BootstrapClaims.Revision, receiptSpki, receiptFingerprint, statusSpki,
+                statusFingerprint, BootstrapClaims.EffectiveAtUtc, BootstrapClaims.ExpiresAtUtc);
             string subjectDigest = Convert.ToHexStringLower(SHA256.HashData(Subject));
             string action = kind switch { "grant" => "grant-session", "target" => "observe-target", "custody" => "retain", _ => "capture" };
             Claims = new(new string('a', 64), Enrollment.Issuer, receiptFingerprint, Enrollment.Audience, kind, action,
@@ -120,6 +348,11 @@ public sealed class P1ReceiptVerifierTests
 
         public ECDsa ReceiptKey { get; } = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         public ECDsa StatusKey { get; } = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        public ECDsa RootKey { get; } = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        public P1BootstrapClaims BootstrapClaims { get; }
+        public P1SignedDocument Bootstrap { get; }
+        public P1BootstrapPin Pin { get; }
+        public P1AuthenticatedEnrollment AuthenticatedEnrollment { get; }
         public P1ReceiptEnrollment Enrollment { get; }
         public P1ReceiptClaims Claims { get; }
         public P1StatusClaims StatusClaims { get; }
@@ -131,12 +364,13 @@ public sealed class P1ReceiptVerifierTests
             string? nonce = default, DateTimeOffset? now = default)
             => P1ReceiptVerifier.Verify(receipt ?? Receipt, Enrollment.RetrievalOrigin + "/v1/receipts/" + Claims.ReceiptId,
                 status ?? Status, Enrollment.StatusOrigin + "/v1/status/" + Claims.ReceiptId + "?nonce=" + (nonce ?? Nonce),
-                Claims, Subject, Enrollment, nonce ?? Nonce, now ?? Now);
+                Claims, Subject, AuthenticatedEnrollment, nonce ?? Nonce, now ?? Now);
 
         public void Dispose()
         {
             ReceiptKey.Dispose();
             StatusKey.Dispose();
+            RootKey.Dispose();
         }
     }
 }
