@@ -18,5 +18,9 @@ public sealed record SecuritySpoolSnapshot(string InstallationEpoch, long Revisi
     public long DrainRevision { get; init; }
     /// <summary>Exact last selected original sequence, retained durably for fair restart scheduling across routable source streams.</summary>
     public long DrainAfterSequence { get; init; }
+    /// <summary>Digest of the exact archive page this head has reserved, or null when no rollover is in progress.</summary>
+    public string? ReservedArchiveDigest { get; init; }
+    /// <summary>Completed archive reservations. Legacy snapshots leave this at zero; each finalized rollover increments it once.</summary>
+    public long ArchiveReservationCount { get; init; }
 }
 

@@ -29,6 +29,26 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         {
             ValidateIntent(intent); var target = await CurrentAsync("Observe", intent, budget).ConfigureAwait(false); if (target is null) { return null; }
             var (state, etag) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return null; }
+            if (state.ReservedArchiveDigest is not null)
+            {
+                bool completed;
+                try { completed = await CompleteReservedArchiveAsync(target, state, etag, budget).ConfigureAwait(false); }
+                catch (Exception)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    completed = false;
+                }
+                // A failed rollover must not hide an exact original still on this head or in its archive, and must not admit a new one.
+                if (!completed)
+                {
+                    var retained = state.Records.SingleOrDefault(record => record.Intent.ObservationId == intent.ObservationId
+                        || intent.RetainedServerReceiptKey is not null && record.Intent.RetainedServerReceiptKey == intent.RetainedServerReceiptKey)
+                        ?? await FindArchivedAsync(target, state, record => record.Intent.ObservationId == intent.ObservationId
+                            || intent.RetainedServerReceiptKey is not null && record.Intent.RetainedServerReceiptKey == intent.RetainedServerReceiptKey, budget).ConfigureAwait(false);
+                    return retained is not null && retained.Intent == intent && await StillCurrentAsync(target, "Observe", intent, budget).ConfigureAwait(false) ? retained : null;
+                }
+                (state, etag) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return null; }
+            }
             var prior = state.Records.SingleOrDefault(record => record.Intent.ObservationId == intent.ObservationId
                 || intent.RetainedServerReceiptKey is not null && record.Intent.RetainedServerReceiptKey == intent.RetainedServerReceiptKey)
                 ?? await FindArchivedAsync(target, state, record => record.Intent.ObservationId == intent.ObservationId
@@ -115,7 +135,8 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         {
             if (maximumCount is < 1 or > RecordBound) { throw new ArgumentOutOfRangeException(nameof(maximumCount)); }
             var target = await CurrentAsync("Drain", null, budget).ConfigureAwait(false); if (target is null || recorder is null) { return 0; }
-            var (state, _) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return 0; }
+            var (state, stateEtag) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return 0; }
+            if (state.ReservedArchiveDigest is not null && !await CompleteReservedArchiveAsync(target, state, stateEtag, budget).ConfigureAwait(false)) { return 0; }
             for (int selected = 0; selected < maximumCount; selected++)
             {
                 budget.Check();
@@ -238,7 +259,12 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         {
             budget.Check(); if (recorder is null) { return false; }
             var target = await CurrentAsync("Readiness", null, budget).ConfigureAwait(false); if (target is null) { return false; }
-            var (state, _) = await ReadAsync(target, budget).ConfigureAwait(false);
+            var (state, etag) = await ReadAsync(target, budget).ConfigureAwait(false);
+            if (state?.ReservedArchiveDigest is not null)
+            {
+                if (!await CompleteReservedArchiveAsync(target, state, etag, budget).ConfigureAwait(false)) { return false; }
+                (state, _) = await ReadAsync(target, budget).ConfigureAwait(false);
+            }
             var (pending, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
             return state is not null && pending is null && (state.Records.Count < RecordBound || state.PageIndex < ArchivePageBound)
                 && state.Records.All(record => record.Receipt is not null)
@@ -269,12 +295,31 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private static string ArchiveKey(ReplicatedSecuritySpoolTarget target, long page, string digest)
         => Key(target) + "/archive/" + page.ToString(CultureInfo.InvariantCulture) + "/" + digest;
     private static string PendingScope(ReplicatedSecuritySpoolTarget target) => target.ComponentName + "|" + Key(target);
+    private static string ArchiveDigest(SecuritySpoolSnapshot carrier)
+        => Digest(new SecuritySpoolArchivePage(carrier.PageIndex, carrier, carrier.ArchiveHeadDigest));
     private async Task<bool> ArchiveAcknowledgedPageAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot state, string etag, PrivateOwnerOperationDeadline budget)
     {
+        if (state.ReservedArchiveDigest is not null) { return await CompleteReservedArchiveAsync(target, state, etag, budget).ConfigureAwait(false); }
         if (state.PageIndex >= ArchivePageBound || state.Records.Count is < 1 or > RecordBound
             || state.Records.Any(record => record.Receipt is null) || !ValidTarget(target)) { return false; }
-        var page = new SecuritySpoolArchivePage(state.PageIndex, state, state.ArchiveHeadDigest);
-        string digest = Digest(page); string key = ArchiveKey(target, state.PageIndex, digest);
+        // Reserve the anchored head before any archive page exists, so a stale writer cannot create an unlinked carrier.
+        var reserved = state with { Revision = checked(state.Revision + 1), ReservedArchiveDigest = ArchiveDigest(state) };
+        await TryWriteAsync(target, state, reserved, etag, budget).ConfigureAwait(false);
+        var (saved, savedEtag) = await ReadAsync(target, budget, true).ConfigureAwait(false);
+        if (saved is null || saved.ReservedArchiveDigest != reserved.ReservedArchiveDigest || StateDigest(saved) != StateDigest(reserved)) { return false; }
+        return await CompleteReservedArchiveAsync(target, saved, savedEtag, budget).ConfigureAwait(false);
+    }
+    private async Task<bool> CompleteReservedArchiveAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot reserved, string etag, PrivateOwnerOperationDeadline budget)
+    {
+        if (reserved.ReservedArchiveDigest is not { Length: 64 } || !ValidTarget(target)) { return false; }
+        var carrier = reserved with { Revision = checked(reserved.Revision - 1), ReservedArchiveDigest = null };
+        string digest = reserved.ReservedArchiveDigest;
+        if (ArchiveDigest(carrier) != digest || carrier.PageIndex >= ArchivePageBound || carrier.Records.Count is < 1 or > RecordBound
+            || carrier.Records.Any(record => record.Receipt is null)) { return false; }
+        var (current, currentEtag) = await ReadAsync(target, budget).ConfigureAwait(false);
+        if (current is null || currentEtag != etag || current.ReservedArchiveDigest != digest || StateDigest(current) != StateDigest(reserved)) { return false; }
+        var page = new SecuritySpoolArchivePage(carrier.PageIndex, carrier, carrier.ArchiveHeadDigest);
+        string key = ArchiveKey(target, carrier.PageIndex, digest);
         var (existing, archiveEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName, key, ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
         if (existing is null)
         {
@@ -283,15 +328,19 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         }
         var (confirmed, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName, key, ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
         if (confirmed is null || Digest(confirmed) != digest) { return false; }
-        // A competing rollover may have advanced the head while this caller confirmed the same immutable page.
-        var (current, currentEtag) = await ReadAsync(target, budget).ConfigureAwait(false);
-        if (current is null || currentEtag != etag || StateDigest(current) != StateDigest(state)) { return false; }
-        var next = state with { Revision = checked(state.Revision + 1), PageIndex = checked(state.PageIndex + 1),
-            ArchivedObservedCount = checked(state.ArchivedObservedCount + state.Records.Count),
-            ArchivedAcknowledgedCount = checked(state.ArchivedAcknowledgedCount + state.Records.Count),
-            ArchiveHeadDigest = digest, Records = Array.Empty<SecurityObservationRecord>() };
-        await TryWriteAsync(target, state, next, etag, budget).ConfigureAwait(false);
-        var (saved, _) = await ReadAsync(target, budget).ConfigureAwait(false);
+        // The reservation still has to own the head after the page write. A peer that finalized it keeps the one page.
+        var (still, stillEtag) = await ReadAsync(target, budget).ConfigureAwait(false);
+        if (still is null || stillEtag != etag || still.ReservedArchiveDigest != digest || StateDigest(still) != StateDigest(reserved)) { return false; }
+        var next = carrier with
+        {
+            Revision = checked(reserved.Revision + 1), PageIndex = checked(carrier.PageIndex + 1),
+            ArchivedObservedCount = checked(carrier.ArchivedObservedCount + carrier.Records.Count),
+            ArchivedAcknowledgedCount = checked(carrier.ArchivedAcknowledgedCount + carrier.Records.Count),
+            ArchiveHeadDigest = digest, ArchiveReservationCount = checked(carrier.ArchiveReservationCount + 1),
+            Records = Array.Empty<SecurityObservationRecord>(),
+        };
+        await TryWriteAsync(target, reserved, next, etag, budget).ConfigureAwait(false);
+        var (saved, _) = await ReadAsync(target, budget, true).ConfigureAwait(false);
         return saved is not null && StateDigest(saved) == StateDigest(next);
     }
     private async Task<SecurityObservationRecord?> FindArchivedAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot head,
@@ -417,9 +466,21 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
             || source.PageIndex > 0 && (source.ArchiveHeadDigest is not { Length: 64 } || source.ArchiveHeadDigest.Any(c => !char.IsAsciiHexDigit(c)))
             || source.DrainRevision < 0 || source.DrainAfterSequence < 0 || source.DrainAfterSequence > source.ArchivedObservedCount + owned.Count
             || source.DrainRevision == 0 && source.DrainAfterSequence != 0
+            || source.ArchiveReservationCount < 0 || source.ArchiveReservationCount > source.PageIndex
+            || source.ReservedArchiveDigest is not null && (source.ReservedArchiveDigest is not { Length: 64 }
+                || source.ReservedArchiveDigest.Any(static character => !char.IsAsciiHexDigit(character))
+                || source.PageIndex >= ArchivePageBound || owned.Count is < 1 or > RecordBound
+                || owned.Any(static record => record.Receipt is null))
             || source.Revision != checked(source.ArchivedObservedCount + owned.Count + source.ArchivedAcknowledgedCount
-                + owned.Count(r => r.Receipt is not null) + source.DrainRevision + source.PageIndex))
+                + owned.Count(r => r.Receipt is not null) + source.DrainRevision + source.PageIndex
+                + source.ArchiveReservationCount + (source.ReservedArchiveDigest is null ? 0 : 1)))
         { throw new InvalidOperationException("Malformed private spool revision."); }
+        if (source.ReservedArchiveDigest is not null)
+        {
+            var carrier = source with { Revision = checked(source.Revision - 1), ReservedArchiveDigest = null, Records = owned.ToArray() };
+            if (!string.Equals(ArchiveDigest(carrier), source.ReservedArchiveDigest, StringComparison.Ordinal))
+            { throw new InvalidOperationException("Spool archive reservation does not match the anchored head."); }
+        }
         return source with { Records = Array.AsReadOnly(owned.ToArray()) };
     }
     // Reserve the worst JSON representation of every future exact receipt before admitting a pending original.

@@ -169,20 +169,138 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         f.Read()!.Revision.ShouldBe(head.Revision); f.Archives.Count.ShouldBe(16); f.PendingBytes.ShouldBeNull();
     }
 
-    /// <summary>A durable immutable archive written before its head transition survives the failed conditional stage and exact restart retry.</summary>
+    /// <summary>At the page ceiling, readiness holds when the acknowledged head still fits one worst-case observation and its reserved receipt.</summary>
+    [Fact]
+    public async Task FinalPageReadinessHoldsWhenWorstCaseObservationFits()
+    {
+        var f = new SecuritySpoolFixture(); string prior = SeedSixteenPages(f);
+        const int worstCase = 262144;
+        SecurityObservationRecord Seed(int sequence)
+        {
+            var intent = SecuritySpoolFixture.Intent("room-" + sequence + new string('o', 1600)) with
+            { RetainedServerReceiptKey = "server-" + sequence + new string('r', 1600), DigestKeyVersion = new string('k', 1600) };
+            var pending = new SecurityObservationRecord(intent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+        }
+        int perRecord = JsonSerializer.SerializeToUtf8Bytes(Seed(17)).Length + 1;
+        var records = Enumerable.Range(17, Math.Max(1, (RecoverableAnchoredState.MaximumPendingBytes - worstCase - 180000) / perRecord)).Select(Seed).ToList();
+        SecuritySpoolSnapshot Head() => new(f.Target.InstallationEpoch, 48 + records.Count * 2L, records.ToArray())
+        { PageIndex = 16, ArchivedObservedCount = 16, ArchivedAcknowledgedCount = 16, ArchiveHeadDigest = prior };
+        int Upper(SecuritySpoolSnapshot snapshot) => JsonSerializer.SerializeToUtf8Bytes(snapshot with
+        { Revision = long.MaxValue, DrainRevision = long.MaxValue, DrainAfterSequence = long.MaxValue }).Length;
+        while (records.Count > 1 && Upper(Head()) + worstCase > RecoverableAnchoredState.MaximumPendingBytes) { records.RemoveAt(records.Count - 1); }
+        while (records.Count < 9998 && Upper(Head()) + worstCase <= RecoverableAnchoredState.MaximumPendingBytes)
+        {
+            records.Add(Seed(records.Count + 17));
+            if (Upper(Head()) + worstCase > RecoverableAnchoredState.MaximumPendingBytes) { records.RemoveAt(records.Count - 1); break; }
+        }
+        records.Count.ShouldBeGreaterThan(0); records.Count.ShouldBeLessThan(10000);
+        var head = Head();
+        (Upper(head) + worstCase).ShouldBeLessThanOrEqualTo(RecoverableAnchoredState.MaximumPendingBytes);
+        records.Add(Seed(records.Count + 17));
+        (Upper(Head()) + worstCase).ShouldBeGreaterThan(RecoverableAnchoredState.MaximumPendingBytes);
+        records.RemoveAt(records.Count - 1);
+        head = Head();
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16); f.Read()!.ReservedArchiveDigest.ShouldBeNull();
+        f.PendingBytes.ShouldBeNull();
+    }
+
+    /// <summary>A reserved head whose archive page save fails creates no carrier; restart writes that one page and finalizes the same rollover.</summary>
+    [Fact]
+    public async Task ReservationBeforeMissingPageRecoversOneArchiveOnRestart()
+    {
+        var f = new SecuritySpoolFixture(); var originals = SeedFullAcknowledgedHead(f);
+        f.FailNextArchiveSave = true;
+        var next = SecuritySpoolFixture.Intent("before-page");
+        (await f.Spool.ObserveAsync(next, TestContext.Current.CancellationToken)).ShouldBeNull();
+        f.Archives.ShouldBeEmpty(); f.Read()!.PageIndex.ShouldBe(0); f.Read()!.Records.Count.ShouldBe(10000);
+        f.Read()!.ReservedArchiveDigest.ShouldNotBeNullOrWhiteSpace(); f.PendingBytes.ShouldBeNull();
+        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        (await restarted.ObserveAsync(next, TestContext.Current.CancellationToken)).ShouldNotBeNull();
+        f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.ReservedArchiveDigest.ShouldBeNull();
+        (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
+    }
+
+    /// <summary>A durable immutable archive written after head reservation and before finalization survives the failed conditional stage and exact restart retry.</summary>
     [Fact]
     public async Task ArchivePersistedBeforeHeadTransitionRecoversOriginalOnRestart()
     {
         var f = new SecuritySpoolFixture(); var originals = SeedFullAcknowledgedHead(f);
-        f.FailSave = true; f.FailSaveStage = 1;
+        f.FaultSnapshotSave = 2;
         var next = SecuritySpoolFixture.Intent("after-fault");
         (await f.Spool.ObserveAsync(next, TestContext.Current.CancellationToken)).ShouldBeNull();
         f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(0); f.Read()!.Records.Count.ShouldBe(10000);
-        f.FailSave = false;
+        f.Read()!.ReservedArchiveDigest.ShouldNotBeNullOrWhiteSpace();
+        f.FaultSnapshotSave = 0;
         var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
         (await restarted.ObserveAsync(next, TestContext.Current.CancellationToken)).ShouldNotBeNull();
-        f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1);
+        f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.ReservedArchiveDigest.ShouldBeNull();
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
+    }
+
+    /// <summary>A failed reservation completion still returns an exact original on the reserved head or its archive, and does not admit a new intent.</summary>
+    [Fact]
+    public async Task FailedReservationCompletionReturnsRetainedOriginalAndDoesNotAdmit()
+    {
+        var f = new SecuritySpoolFixture();
+        var records = InstallReservedAcknowledgedHead(f, savePage: false);
+        f.FailNextArchiveSave = true;
+        (await f.Spool.ObserveAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
+        f.FailNextArchiveSave = true;
+        (await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("new-while-reserved"), TestContext.Current.CancellationToken)).ShouldBeNull();
+        f.Archives.ShouldBeEmpty(); f.Read()!.ReservedArchiveDigest.ShouldNotBeNullOrWhiteSpace(); f.Read()!.Records.Count.ShouldBe(records.Length);
+
+        var archived = new SecuritySpoolFixture();
+        string prior = SeedArchivePages(archived, 1);
+        var retained = JsonSerializer.Deserialize<SecuritySpoolArchivePage>(archived.ArchiveAt(0))!.Snapshot.Records.Single();
+        var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("reserved-head"), archived.Clock.Now,
+            archived.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), 2, null);
+        var head = pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+        var carrier = new SecuritySpoolSnapshot(archived.Target.InstallationEpoch, 5, [head])
+        { PageIndex = 1, ArchivedObservedCount = 1, ArchivedAcknowledgedCount = 1, ArchiveHeadDigest = prior };
+        byte[] page = JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolArchivePage(1, carrier, prior));
+        var reserved = carrier with { Revision = 6, ReservedArchiveDigest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(page)) };
+        archived.Persisted = JsonSerializer.SerializeToUtf8Bytes(reserved); archived.Anchor = reserved.Revision;
+        archived.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(reserved); archived.FailNextArchiveSave = true;
+        (await archived.Spool.ObserveAsync(retained.Intent, TestContext.Current.CancellationToken)).ShouldBe(retained);
+        archived.Archives.Count.ShouldBe(1); archived.Read()!.ReservedArchiveDigest.ShouldNotBeNullOrWhiteSpace(); archived.Read()!.Records.Single().ShouldBe(head);
+    }
+
+    /// <summary>Drain and readiness finish one interrupted reservation on a short acknowledged head, whether or not its page was already saved.</summary>
+    [Theory]
+    [InlineData("drain", false)]
+    [InlineData("drain", true)]
+    [InlineData("ready", false)]
+    [InlineData("ready", true)]
+    public async Task InterruptedShortReservationFinalizesFromDrainOrReadiness(string operation, bool pageSaved)
+    {
+        var f = new SecuritySpoolFixture();
+        InstallReservedAcknowledgedHead(f, pageSaved);
+        if (operation == "ready" && !pageSaved)
+        {
+            f.FailNextArchiveSave = true;
+            (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+            f.Archives.ShouldBeEmpty(); f.Read()!.ReservedArchiveDigest.ShouldNotBeNullOrWhiteSpace(); f.PendingBytes.ShouldBeNull();
+        }
+        if (operation == "drain") { (await f.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(0); }
+        else { (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue(); }
+        f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.ReservedArchiveDigest.ShouldBeNull(); f.Read()!.Records.ShouldBeEmpty();
+    }
+
+    /// <summary>A persisted reservation digest that does not match its carrier fails closed before lookup can return that head.</summary>
+    [Fact]
+    public async Task MismatchedReservationDigestDeniesLookup()
+    {
+        var f = new SecuritySpoolFixture();
+        var head = InstallReservedAcknowledgedHead(f, savePage: false)[0];
+        var reserved = f.Read()! with { ReservedArchiveDigest = new string('A', 64) };
+        byte[] persisted = JsonSerializer.SerializeToUtf8Bytes(reserved);
+        f.Persisted = persisted; f.Anchor = reserved.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(reserved);
+        (await f.Spool.LookupAsync(head.Intent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        f.Persisted.ShouldBe(persisted); f.Archives.ShouldBeEmpty();
     }
 
     /// <summary>An orphan from a smaller acknowledged predecessor cannot reserve the anchored head's content-addressed rollover slot.</summary>
@@ -232,6 +350,54 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await restarted.ObserveAsync(b, TestContext.Current.CancellationToken)).ShouldBe(observedB);
         f.Archives.Count.ShouldBe(1); f.Read()!.Records.Count.ShouldBe(2);
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
+    }
+
+    /// <summary>Repeated overlapping rollovers keep one physical page per finalized reservation and never pass the sixteen-page envelope.</summary>
+    [Fact]
+    public async Task RepeatedRolloverRaceRetainsOnePagePerSuccessfulArchive()
+    {
+        var f = new SecuritySpoolFixture(); string prior = SeedArchivePages(f, 15);
+        var originals = Enumerable.Range(1, 10000).Select(sequence =>
+        {
+            var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("race-seed-" + sequence), f.Clock.Now,
+                f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence + 15L, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+        }).ToArray();
+        var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, 20045, originals)
+        { PageIndex = 15, ArchivedObservedCount = 15, ArchivedAcknowledgedCount = 15, ArchiveHeadDigest = prior };
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        int gated = 0;
+        f.Client.GetStateAndETagAsync<SecuritySpoolArchivePage>(f.Target.ComponentName, Arg.Any<string>(), Arg.Any<Dapr.Client.ConsistencyMode?>(),
+            Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(async call =>
+        {
+            string key = call.ArgAt<string>(1);
+            long index = long.Parse(key.Split('/')[^2], System.Globalization.CultureInfo.InvariantCulture);
+            if (!f.Archives.TryGetValue(key, out var bytes)) { return (null!, "0"); }
+            if (index == 15 && Interlocked.Exchange(ref gated, 1) == 0) { entered.TrySetResult(); await release.Task; }
+            return (JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)!, "1");
+        });
+        var firstIntent = SecuritySpoolFixture.Intent("repeat-race-a");
+        var first = f.Spool.ObserveAsync(firstIntent, TestContext.Current.CancellationToken);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        SecurityObservationRecord? second; SecurityObservationRecord? third;
+        try
+        {
+            second = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-b"), TestContext.Current.CancellationToken);
+            third = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-c"), TestContext.Current.CancellationToken);
+        }
+        finally { release.TrySetResult(); }
+        second.ShouldNotBeNull(); third.ShouldNotBeNull();
+        (await first).ShouldBeNull();
+        f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16); f.Read()!.ReservedArchiveDigest.ShouldBeNull();
+        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        (await restarted.ObserveAsync(firstIntent, TestContext.Current.CancellationToken)).ShouldNotBeNull();
+        (await restarted.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-d"), TestContext.Current.CancellationToken)).ShouldNotBeNull();
+        f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16);
+        (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
+        f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16);
     }
 
     /// <summary>Pending admission reserves enough bytes for a later maximal exact recorder receipt, so drain can acknowledge and archive the original.</summary>
@@ -388,10 +554,29 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
     }
 
-    private static string SeedSixteenPages(SecuritySpoolFixture fixture)
+    private static SecurityObservationRecord[] InstallReservedAcknowledgedHead(SecuritySpoolFixture fixture, bool savePage)
+    {
+        var records = Enumerable.Range(1, 2).Select(sequence =>
+        {
+            var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("reserved-" + sequence), fixture.Clock.Now,
+                fixture.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+        }).ToArray();
+        var carrier = new SecuritySpoolSnapshot(fixture.Target.InstallationEpoch, records.Length * 2L, records);
+        byte[] page = JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolArchivePage(0, carrier, null));
+        var reserved = carrier with { Revision = carrier.Revision + 1, ReservedArchiveDigest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(page)) };
+        fixture.Persisted = JsonSerializer.SerializeToUtf8Bytes(reserved); fixture.Anchor = reserved.Revision;
+        fixture.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(reserved);
+        if (savePage) { fixture.SetArchive(0, page); }
+        return records;
+    }
+
+    private static string SeedSixteenPages(SecuritySpoolFixture fixture) => SeedArchivePages(fixture, 16);
+
+    private static string SeedArchivePages(SecuritySpoolFixture fixture, int count)
     {
         string? prior = null;
-        for (int index = 0; index < 16; index++)
+        for (int index = 0; index < count; index++)
         {
             var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("page-" + index), fixture.Clock.Now,
                 fixture.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), index + 1, null);

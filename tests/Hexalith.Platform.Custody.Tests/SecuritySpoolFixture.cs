@@ -27,6 +27,9 @@ internal sealed class SecuritySpoolFixture
     internal int PhysicalAppends { get; private set; }
     internal bool CommitBeforeSaveFault { get; set; }
     internal bool FailSave { get; set; }
+    internal bool FailNextArchiveSave { get; set; }
+    internal int FaultSnapshotSave { get; set; }
+    internal int SnapshotSaves { get; private set; }
     internal bool LoseAppendAcknowledgement { get; set; }
     internal bool AcceptWithoutPersistence { get; set; }
     internal bool RecoveryPermission { get; set; }
@@ -60,7 +63,8 @@ internal sealed class SecuritySpoolFixture
         Client.TrySaveStateAsync(Target.ComponentName, Arg.Any<string>(), Arg.Any<SecuritySpoolSnapshot>(), Arg.Any<string>(), Arg.Any<StateOptions>(),
             Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(call => {
                 if (call.ArgAt<string>(3) != (Read()?.Revision ?? 0).ToString(CultureInfo.InvariantCulture)) { return Task.FromResult(false); }
-                bool fail = FailSave && ++_saves == FailSaveStage;
+                SnapshotSaves++;
+                bool fail = FaultSnapshotSave > 0 && SnapshotSaves == FaultSnapshotSave || FailSave && ++_saves == FailSaveStage;
                 if (!fail || CommitBeforeSaveFault) { Persisted = JsonSerializer.SerializeToUtf8Bytes(call.Arg<SecuritySpoolSnapshot>()); }
                 return fail ? Task.FromException<bool>(new HttpRequestException("Controlled component save fault.")) : Task.FromResult(true);
             });
@@ -73,6 +77,7 @@ internal sealed class SecuritySpoolFixture
         Client.TrySaveStateAsync(Target.ComponentName, Arg.Any<string>(), Arg.Any<SecuritySpoolArchivePage>(), Arg.Any<string>(), Arg.Any<StateOptions>(),
             Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(call =>
             {
+                if (FailNextArchiveSave) { FailNextArchiveSave = false; return Task.FromException<bool>(new HttpRequestException("Controlled archive page save fault.")); }
                 string key = call.ArgAt<string>(1);
                 if (call.ArgAt<string>(3) != "0" || Archives.ContainsKey(key)) { return Task.FromResult(false); }
                 Archives[key] = JsonSerializer.SerializeToUtf8Bytes(call.Arg<SecuritySpoolArchivePage>());
