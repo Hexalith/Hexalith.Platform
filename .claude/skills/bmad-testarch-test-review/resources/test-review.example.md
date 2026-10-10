@@ -13,10 +13,7 @@ inputDocuments:
 
 # Test Quality Review: profile-notifications.spec.ts
 
-**Quality Score**: 79/100 (C - Needs Improvement)
-**Raw Deduction Score**: 97/100
-**Score Cap**: 79/100
-**Score Override Rule**: Highest severity High caps effective score at 79: min(raw deduction score 97, 79) = 79.
+**Quality Score**: 97/100 (A)
 **Review Date**: 2026-08-17
 **Review Scope**: single
 **Reviewer**: TEA Agent
@@ -30,15 +27,12 @@ Note: This review audits existing tests. It does not generate tests or score req
 **Overall Assessment**: Needs Improvement
 
 **Recommendation**: Request Changes
-**Verdict Rule**: Critical = 0 and High > 0 => Request Changes (1 High).
 
 **Context Basis**: pr_diff
 
 **Context Waivers Applied**: 0
 
-**Execution Mode**: subagent
-
-The raw deduction score is 97: the file is small, readable, and mostly deterministic. The one HIGH finding caps the effective score at 79 and, on its own, still forces `Request Changes`: a fixed timer can pass or fail according to runner speed. The recommendation is computed from the deduplicated registry findings and is unchanged by how high the raw score is.
+The score remains high because the file is small, readable, and mostly deterministic. One HIGH finding still forces `Request Changes`: a fixed timer can pass or fail according to runner speed. The recommendation is computed from the deduplicated registry findings and is unchanged by the strong numeric score.
 
 ### Key Strengths
 
@@ -48,17 +42,17 @@ The raw deduction score is 97: the file is small, readable, and mostly determini
 
 ### Key Weaknesses
 
-❌ [H1] One fixed `waitForTimeout` introduces timing-dependent behavior
-❌ [M1] One network observer is registered after navigation
-❌ [L2] One test omits the repository's established priority marker
+- One fixed `waitForTimeout` introduces timing-dependent behavior
+- One network observer is registered after navigation
+- One test omits the repository's established priority marker
 
 ## Quality Criteria Assessment
 
 | Criterion                            | Status        | Violations | Basis                                                                   | Notes                                                    |
 | ------------------------------------ | ------------- | ---------: | ----------------------------------------------------------------------- | -------------------------------------------------------- |
-| BDD Format (Given-When-Then)         | ✅ PASS       |          0 | Convention: bddNaming (6 of 8 sampled)                                  | All names state user-visible behavior                    |
-| Test IDs                             | ✅ PASS       |          0 | Convention: testIds (7 of 8 sampled)                                    | All DOM lookups use stable test IDs                      |
-| Priority Markers (P0/P1/P2/P3)       | ⚠️ WARN       |          1 | Convention: priorityMarkers (7 of 8 sampled)                            | Test at line 81 has no marker                            |
+| BDD Format (Given-When-Then)         | ✅ PASS       |          0 | Convention: bddNaming (18 of 24 sampled)                                | All names state user-visible behavior                    |
+| Test IDs                             | ✅ PASS       |          0 | Convention: testIds (20 of 24 sampled)                                  | All DOM lookups use stable test IDs                      |
+| Priority Markers (P0/P1/P2/P3)       | ⚠️ WARN       |          1 | Convention: priorityMarkers (22 of 24 sampled)                          | Test at line 81 has no marker                            |
 | Disabled or Focused Tests            | ✅ PASS       |          0 | Absolute                                                                | No skip, fixme, only, or focus marker                    |
 | Hard Waits (sleep, waitForTimeout)   | ❌ FAIL       |          1 | Absolute                                                                | Fixed 2-second timer at line 37                          |
 | Determinism (no conditionals)        | ✅ PASS       |          0 | Absolute                                                                | No branching, catches, or wall-clock fixtures            |
@@ -66,7 +60,7 @@ The raw deduction score is 97: the file is small, readable, and mostly determini
 | Fixture Patterns                     | ✅ PASS       |          0 | Applicability: the file needs authenticated setup                       | Existing merged fixtures are reused                      |
 | Data Factories                       | ✅ PASS (n/a) |          0 | Applicability: the file does not construct domain payloads              | No payload shape to extract                              |
 | Network-First Pattern                | ❌ FAIL       |          1 | Applicability: the file navigates and then reads data-dependent content | Observer at line 58 is declared after navigation         |
-| Playwright Utils Adoption            | ✅ PASS       |          0 | Convention: playwrightUtils (5 of 8 sampled)                            | Imports merged fixtures and uses utility interception    |
+| Playwright Utils Adoption            | ✅ PASS       |          0 | Convention: playwrightUtils (16 of 24 sampled)                          | Imports merged fixtures and uses utility interception    |
 | Pact.js Utils Adoption               | ✅ PASS (n/a) |          0 | Applicability: the reviewed file is not a Pact artifact                 | Gate closed                                              |
 | Explicit Assertions                  | ✅ PASS       |          0 | Absolute                                                                | Every test has a falsifiable assertion                   |
 | Test Length (≤1000 lines)            | ✅ PASS       |          0 | Absolute                                                                | File is 146 lines                                        |
@@ -75,11 +69,11 @@ The raw deduction score is 97: the file is small, readable, and mostly determini
 
 **Total Violations**: 0 Critical, 1 High, 1 Medium, 1 Low
 
-**Convention Baseline**: 8 test files sampled outside the review set
+**Convention Baseline**: 24 test files sampled outside the review set
 
 ## Quality Score Breakdown
 
-```text
+```
 Starting Score:          100
 Critical Violations:     -0 × 10 = -0
 High Violations:         -1 × 5 = -5
@@ -96,10 +90,8 @@ Bonus Points:
                          --------
 Total Bonus:             +5
 
-Raw Deduction Score:     97/100
-Score Cap:               79/100 (High)
-Effective Score:         79/100
-Grade:                   C
+Final Score:             97/100
+Grade:                   A
 ```
 
 The hard-wait finding appears in three assessment rows because H1 affects timing, duration, and flakiness. The ledger deduplicates the same row, file, and line into one HIGH violation.
@@ -179,7 +171,7 @@ await preferencesLoaded;
 **Criterion**: Priority Markers
 **Knowledge Base**: [test-priorities-matrix.md](./knowledge/test-priorities-matrix.md)
 
-**Issue Description:** The repository uses priority markers in 7 of 8 sampled files. This test has none, so selective execution cannot classify it.
+**Issue Description:** The repository uses priority markers in 22 of 24 sampled files. This test has none, so selective execution cannot classify it.
 
 **Recommended Improvement:** Prefix the behavioral name with `[P2]` after confirming the priority through the decision tree. Do not infer the marker from a risk score.
 
@@ -278,7 +270,7 @@ Re-review after the HIGH finding is fixed. The computed recommendation remains `
 
 **Recommendation**: Request Changes
 
-**Rationale:** One HIGH hard-wait violation requires changes even though the raw deduction score is 97; the High cap already holds the effective score at 79. The two remaining findings are cheaper to fix in the same change and protect the queued-write transition introduced by this pull request.
+**Rationale:** One HIGH hard-wait violation requires changes even though the deterministic score is 97. The two remaining findings are cheaper to fix in the same change and protect the queued-write transition introduced by this pull request.
 
 ## Appendix
 

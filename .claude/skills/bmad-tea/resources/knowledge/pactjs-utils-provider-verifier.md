@@ -499,4 +499,4 @@ export default defineConfig({
 });
 ```
 
-_Source: @seontechnologies/pactjs-utils provider-verifier module, pact-js-example-provider CI workflows._
+_Source: @seontechnologies/pactjs-utils provider-verifier module, pact-js-example-provider CI workflows_
