@@ -255,6 +255,31 @@ Rejected:
 - AA8, the observed-property test sets a private property (false): `ConsumerCannotRedirectMappedRootsAsync` drives a real `.csproj` override through the observed guard and now asserts the outside value.
 - AA9, a pre-story test changed against AC3's wording (rejected): the iteration-16 review directed that change, and recording the deviation is a spec edit.
 
+Code review 2026-10-10 (iteration 20) of Builds `686e179..64aa746`. That commit holds the iteration 18 and 19 patches. Paths are relative to `references/Hexalith.Builds`. Layers: Blind Hunter, Edge Case Hunter, Verification Gap and Acceptance Auditor; none failed. The Acceptance Auditor found no acceptance-criterion or frozen-scope violation, and the Verification Gap layer's 18 targeted cases passed. Totals: 33 raw findings, 0 decision-needed, 7 patch, 0 defer and 13 rejected entries (17 raw findings). The pathspec, deinit and redaction claims were reproduced with Git 2.53.0.
+
+- [x] [Review][Patch] Git credential redaction still leaks user-info containing `/` (medium) — `[^\s/]+@` cannot cross a slash, so `clone of 'https://alice:ab/cd+ef@example.invalid/dep.git' failed` passes through unchanged. Base64-style passwords, such as generated CodeCommit HTTPS credentials, contain `/` and `+`. An unencoded `/` is exactly what makes Git reject the URL and print it raw, so the token reaches HXW004 human/JSON output. Fix: use `\S+@` (greedy to the last `@` before whitespace; this also keeps the existing apostrophe case), and add a `/`-in-password case to both redaction theories. [src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:348]
+- [x] [Review][Patch] HXW004 command hints omit `:(literal)`, so a copied command can act on a sibling reference (low) — The tool calls Git with `":(literal)" + reference`, but the hints print plain pathspecs. Reproduced: with `references/X[1]` beside an advanced `references/X1`, `git add 'references/X[1]'` stages `X1`, and `git submodule update --checkout -- 'references/X[1]'` detaches `X1`. That is the D2 hazard. The suite already supports such paths (`DirectReferenceWithPathspecMetacharacterInitializesAsync`). Fix: quote `":(literal)" + reference` in every HXW004 hint, update README lines 248-251 to match, and assert one glob-character hint. [src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:76]
+- [x] [Review][Patch] HXW004 hints are root-relative but do not anchor Git to the root (low) — `git add 'references/Hexalith.Dep'` works only from the active root. In the Platform-workspace flow a developer often works inside the module's direct reference. There the copied command fails with "pathspec did not match", or the missing-after-initialization hint initializes a nested submodule of that reference. The HXW003 hint in the same file already uses `git -C`. Fix: prefix each HXW004 command with `git -C <quoted root>`; `root` is in scope at all four sites (lines 48, 58, 76, 149). [src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:76]
+- [x] [Review][Patch] The HXW003 nested-deinit hint still hand-quotes its paths (low) — Iteration 19 B12 asked to shell-quote the concrete path in every command hint. Line 230 still builds `git -C '{repository}' submodule deinit -- '{relative}'` from raw strings. An apostrophe in the absolute workspace path, such as a home or Windows profile directory, breaks the command. `relative` also uses OS separators and a glob pathspec. Fix: route both arguments through `QuoteShellArgument`, emit `relative` with `/` and a `:(literal)` prefix, and assert the quoted hint with a nested submodule under an apostrophe path. [src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:230]
+- [x] [Review][Patch] The timeout reason prints `00:10:00` instead of a duration with units (low) — Interpolating the `TimeSpan` uses its constant format, so the reason reads "timed out after 00:10:00." in place of the earlier "10 minutes". Fix: format from the shared bound with units, for example `{GitWorkspaceProcess.SubmoduleUpdateTimeout.TotalMinutes.ToString("0", CultureInfo.InvariantCulture)} minutes`. [src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:41]
+- [x] [Review][Patch] The unified HXR003 diagnostic is pinned only by its hint text (low) — Iteration 18 named three differences: field, message and remediation. `DirectReferenceNonexecutableManifestReportsHxr003Async` asserts only the remediation, so reintroducing an inline diagnostic with field = manifest path or the old message keeps the suite green. Fix: assert the `runtime` field and the shared message in the JSON output. [test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs:349]
+- [x] [Review][Patch] Windows-only exclusions report a pass instead of a skip (low) — `IndependentNestedRepositoryUsesLiteralHistoryPathAsync` and its sibling metacharacter tests at lines 513, 1141 and 1162 `return` early on Windows. A Windows run therefore reports passes for checks it never ran. The same test project already uses xUnit v3 `Assert.Skip` (`CompositionEngineTests.cs:32`). Fix: replace the early returns with `Assert.Skip` and a reason. [test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceRootResolverTests.cs:429]
+
+Rejected:
+- BH2 / BH3 / ECH2 / AA2, a broken or partially cloned checkout gets `git add` or retry advice (low): the hint already offers "deinitialize a broken checkout", and Git's own `deinit` refusal names `-f`. A gitfile broken by hand or a clone killed at the bound is not everyday use, and a per-cause remediation adds a branch at two sites.
+- BH6 / ECH7, quoting is chosen by OS rather than by shell (Git Bash, cmd.exe, U+2019) (low): this needs an apostrophe or typographic quote in a path and a non-PowerShell Windows shell. The fix needs a shell choice or a portable form, not a direct correction.
+- VG1, the Windows `''` branch never runs in Ubuntu-only CI (low): this needs a new quoting-style parameter as a test seam. It matches the iteration-14 precedent for the Windows `FilesystemPathRules` branch.
+- VG3 / AA5 (and the test-coverage parts of BH4 / BH8), the timeout and missing-after-initialization branches are untested (low): both need a new seam, as in iteration 16 VG6 and iteration 18 VG5. The resolver rejects an escaping direct path before initialization (`WorkspaceRootResolver.cs:176-182`), so the second branch is defensive.
+- BH8, the missing-after-initialization hint points to credentials (false): its first instruction, "Check the source path", names the cause that reaches that branch.
+- BH9 (naming part), the local `changedShape` no longer describes the diagnostic (false): it lives in the post-checkout changed-shape branch, and no divergence is named.
+- BH10, the apostrophe test compares hand-written escapes (false): the expected literals are the correct POSIX `'\''` and PowerShell `''` forms, so the assertion proves the emitted command for those shells.
+- BH11, the README remediation is stale (false): README lines 248-251 describe the initialized-mismatch site, whose hint still offers exactly those two commands. The `:(literal)` patch above updates them.
+- ECH3, Git cannot start at the clone site (false): Git already ran for the declaration, index and nested probes in the same resolution (iteration 18 BH3b).
+- ECH4, a failing re-run of `ls-files` blames HEAD (low): carried from iteration 18 BH3d / ECH5; it needs an index change mid-run.
+- ECH6, the 4096-character stderr tail can start mid-URL (low): carried from iteration 18 BH1 / ECH2 / AA3.
+- ECH9, the post-checkout HXR003 no longer names the manifest file (false): iteration 18 B10 required parity with the pre-story HXR003 diagnostic (field `runtime`), as the Code Map's "Preserve the prior HXR003 behavior" requires.
+- VG other, 18 targeted cases passed (false): informational, no defect claimed.
+
 ## Implementation Notes
 
 - Preserve the proven single resolver handoff, recorded-gitlink direct initialization, persisted mapping/hash, package-asset validation task, physical project-reference check, consumer-specific flags, collision and condition safety, path-scoped host exclusion, fail-closed Git probe and hermetic fixtures. The second review diff at `/tmp/story-1-3-rederive-FEKI9O.patch` is reference material only; this spec controls the next re-derived implementation.
@@ -665,6 +690,32 @@ Review iteration 19 (2026-10-10). All three layers returned; each finding was cl
 
 The sole new Builds patch is safe quoting of the concrete reference in HXW004 command hints (B12). Earlier unrelated findings retain their recorded deferrals; new agent-context and Identity findings are deferred from this Builds-only intent.
 
+Review iteration 20 (2026-10-10) of Builds `686e179..64aa746`. All four layers returned; each finding was verified before grouping. The pathspec, deinit and redaction claims were reproduced with Git 2.53.0.
+
+| ID | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| BH5 / ECH5 | medium | patch | `[^\s/]+@` leaves user-info containing `/` unredacted in HXW004 output. |
+| BH1 / ECH1 / AA1 | low | patch | Plain-pathspec hints stage or detach a glob-matching sibling reference; reproduced. |
+| AA3 | low | patch | Root-relative HXW004 hints fail or touch a nested path when run inside a direct reference. |
+| BH7 / VG2 / AA4 | low | patch | HXW003 deinit hint is not shell-quoted or literal (`SubmoduleInitializer.cs:230`). |
+| BH4 / VG4 / AA6 / ECH10 | low | patch | Timeout reason prints `00:10:00`. |
+| BH9 | low | patch | Unified HXR003 is asserted only by remediation text. |
+| BH12 / ECH8 | low | patch | Windows early returns report passes; `Assert.Skip` already exists in the test project. |
+| BH2 / BH3 / ECH2 / AA2 | low | reject | Broken-checkout advice already offers deinitialization; per-cause hints add branches for rare states. |
+| BH6 / ECH7 | low | reject | Shell-specific quoting needs a design choice for rare apostrophe paths. |
+| VG1 | low | reject | Windows quoting branch test needs a new parameter seam; iteration-14 precedent. |
+| VG3 / AA5 | low | reject | Timeout and defensive missing-after-initialization branches need seams; iteration 16 VG6 / 18 VG5. |
+| BH8 | false | reject | The hint first names the source path, the actual cause. |
+| BH10 | false | reject | Expected literals are the correct POSIX and PowerShell quoting. |
+| BH11 | false | reject | README describes the unchanged initialized-mismatch advice. |
+| ECH3 | false | reject | Git already ran in the same resolution (iteration 18 BH3b). |
+| ECH4 | low | reject | Carried from iteration 18 BH3d / ECH5. |
+| ECH6 | low | reject | Carried from iteration 18 BH1 / ECH2 / AA3. |
+| ECH9 | false | reject | Pre-story HXR003 parity was the iteration-18 B10 requirement. |
+| VG other | false | reject | 18 targeted cases passed; informational. |
+
+The one medium patch is credential redaction across `/`. The other six are low-cost corrections to hint text and tests.
+
 ## Verification
 
 **Commands** (from Builds):
@@ -714,3 +765,5 @@ The sole new Builds patch is safe quoting of the concrete reference in HXW004 co
 **Review iteration 18 patch verification (2026-10-10):** Builds Debug test-project build and Release solution build passed with zero warnings/errors. The full direct Module suite passed 684/684 with no skips; focused root-resolver, MSBuild and public-command classes passed 62/62, 88/88 and 39/39. The Release packed G-4 tool contract passed on its serialized rerun, and Builds/root `git diff --check` passed. The Evidence build passed; direct Evidence tests remained 67/107 because of the previously accepted EventStore 3.119.0 catalog versus 3.117.1 corpus mismatch. The eight frozen matrix rows retain passing covering tests in the full Module suite. Live Aspire topology and Windows execution were not run.
 
 **Review iteration 19 patch verification (2026-10-10):** After shell-quoting HXW004 command hints, the direct Debug Module suite passed 686/686 with no skips; its Debug test-project build had zero warnings/errors. The Evidence Debug test-project build passed with zero warnings/errors, while the direct suite remained 67/107 with the previously accepted EventStore catalog/corpus mismatch. The packed G-4 contract passed with `-SkipSourceValidation -RetainPackageDirectory`; its Release build had zero warnings/errors. Builds and root diffs passed `git diff HEAD --check`. The attempted `dotnet test` invocation discovered zero xUnit v3 tests, so both suites were run as assemblies. Live Aspire topology and Windows execution were not run.
+
+**Review iteration 20 patch verification (2026-10-10):** All seven patches were applied in Builds. HXW004 and HXW003 command hints now emit `git -C <quoted root or reference>` with a quoted `:(literal)` pathspec. Redaction uses `\S+@`. The timeout reason reads "10 minutes". The HXR003 field and message are asserted. The Windows exclusions use `Assert.Skip`. The Module Debug test-project build had zero warnings and errors. The direct full Module suite passed 688/688 with no skips; the focused resolver and public-command classes passed 105/105. The Release packed G-4 tool contract passed with `-SkipSourceValidation -RetainPackageDirectory`, and Builds `git diff --check` was clean. The `/`-in-password case is asserted at the sanitizer only. With a `file://` URL, Git also prints the path text after an unencoded `/` without a scheme; an HTTPS URL is printed whole and redacted. The Evidence suite was not rerun, because this patch changes no Evidence code; its accepted 67/107 catalog/corpus baseline is unchanged. Live Aspire topology and Windows execution were not run.
