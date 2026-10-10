@@ -350,3 +350,9 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
   summary: Derive a standalone active root's module identity from a declared source rather than its checkout directory name.
   evidence: `WorkspaceRootResolver.cs:64,112` uses `Path.GetFileName` of the root. A worktree such as `Hexalith.Parties-wt2` loses HXW005 duplicate detection for `Hexalith.Parties.*`, and a directory named `Hexalith` flags every `Hexalith.*` package. User decision 2026-10-10: wait for the next-version Platform declaration to supply a module identity (Stories 1.5/1.12), and document the directory-name rule meanwhile.
+
+## Deferred from: code review of spec-1-3-resolve-one-active-root-source-mapping.md, iteration 16 (2026-10-10)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Confirm whether the final-import marker guard rejects tool-launched projects that do not import `Microsoft.NET.Sdk.targets`.
+  evidence: `SourceMappingMaterializer.cs:352` (`GuardFinalImportMarker`) runs in every mapped project through the `Directory.Build.targets` hook, but only `Microsoft.NET.Sdk.targets` imports the file that sets `_HXWFinalTargetsImported`. A Traversal, NoTargets or legacy project in a launched build graph would fail HXW006. No such project exists in any root-declared reference, so this is unverified (medium if real). One such tool-launched build would settle it; the likely fix is to condition the guard on `'$(UsingMicrosoftNETSdk)' == 'true'`.
