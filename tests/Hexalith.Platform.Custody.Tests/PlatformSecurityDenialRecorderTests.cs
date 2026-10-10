@@ -88,7 +88,7 @@ public sealed class PlatformSecurityDenialRecorderTests
         string digest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(page)));
         var head = acknowledged with { Revision = acknowledged.Revision + 1, PageIndex = 1, ArchivedObservedCount = 1,
             ArchivedAcknowledgedCount = 1, ArchiveHeadDigest = digest, Records = [] };
-        fixture.Archives[0] = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(page);
+        fixture.SetArchive(0, System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(page));
         fixture.Persisted = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(head); fixture.Anchor = head.Revision;
         fixture.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
         fixture.Clock.Now += TimeSpan.FromMinutes(3);

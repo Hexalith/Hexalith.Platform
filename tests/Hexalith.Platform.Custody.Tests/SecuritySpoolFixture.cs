@@ -17,7 +17,7 @@ internal sealed class SecuritySpoolFixture
     internal ReplicatedSecuritySpoolTarget Target { get; }
     internal ReplicatedSecurityObservationSpool Spool { get; }
     internal byte[]? Persisted { get; set; }
-    internal Dictionary<long, byte[]> Archives { get; } = [];
+    internal Dictionary<string, byte[]> Archives { get; } = new(StringComparer.Ordinal);
     internal byte[]? PendingBytes { get; set; }
     internal long PendingEtag { get; set; }
     internal int FailSaveStage { get; set; } = 1;
@@ -67,15 +67,15 @@ internal sealed class SecuritySpoolFixture
         Client.GetStateAndETagAsync<SecuritySpoolArchivePage>(Target.ComponentName, Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
             .Returns(call =>
             {
-                long index = ArchiveIndex(call.ArgAt<string>(1));
-                return (Archives.TryGetValue(index, out var bytes) ? JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)! : null!, Archives.ContainsKey(index) ? "1" : "0");
+                string key = call.ArgAt<string>(1);
+                return (Archives.TryGetValue(key, out var bytes) ? JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)! : null!, Archives.ContainsKey(key) ? "1" : "0");
             });
         Client.TrySaveStateAsync(Target.ComponentName, Arg.Any<string>(), Arg.Any<SecuritySpoolArchivePage>(), Arg.Any<string>(), Arg.Any<StateOptions>(),
             Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(call =>
             {
-                long index = ArchiveIndex(call.ArgAt<string>(1));
-                if (call.ArgAt<string>(3) != "0" || Archives.ContainsKey(index)) { return Task.FromResult(false); }
-                Archives[index] = JsonSerializer.SerializeToUtf8Bytes(call.Arg<SecuritySpoolArchivePage>());
+                string key = call.ArgAt<string>(1);
+                if (call.ArgAt<string>(3) != "0" || Archives.ContainsKey(key)) { return Task.FromResult(false); }
+                Archives[key] = JsonSerializer.SerializeToUtf8Bytes(call.Arg<SecuritySpoolArchivePage>());
                 return Task.FromResult(true);
             });
         Recorder.LookupAsync(Arg.Any<SecurityObservationRecord>(), Arg.Any<CancellationToken>()).Returns(call => {
@@ -119,7 +119,15 @@ internal sealed class SecuritySpoolFixture
     internal void InstallJournal() => AnchoredFixtureJournal.Attach(Authority, Target.ComponentName + "|system/security-observations/" + Target.InstallationEpoch,
         () => (Anchor, AnchorDigest), (next, digest) => { Anchor = next; AnchorDigest = digest; }, Journal);
     internal SecuritySpoolSnapshot? Read() => Persisted is null ? null : JsonSerializer.Deserialize<SecuritySpoolSnapshot>(Persisted);
-    private static long ArchiveIndex(string key) => long.Parse(key[(key.LastIndexOf('/') + 1)..], CultureInfo.InvariantCulture);
+    internal string ArchiveKey(long index, byte[] bytes) => "system/security-observations/" + Target.InstallationEpoch + "/archive/"
+        + index.ToString(CultureInfo.InvariantCulture) + "/" + Convert.ToHexString(SHA256.HashData(bytes));
+    internal void SetArchive(long index, byte[] bytes) => Archives[ArchiveKey(index, bytes)] = bytes;
+    internal byte[] ArchiveAt(long index) => Archives.Single(entry => entry.Key.Split('/')[^2] == index.ToString(CultureInfo.InvariantCulture)).Value;
+    internal void RemoveArchive(long index)
+    {
+        string key = Archives.Keys.Single(value => value.Split('/')[^2] == index.ToString(CultureInfo.InvariantCulture));
+        Archives.Remove(key);
+    }
     internal static SecurityObservationIntent Intent(string id = "observation-1") => new(id, "tenant-a", "invalid-tag",
         Convert.ToHexString(HMACSHA256.HashData(new byte[32], "synthetic-untrusted-secret"u8)), "system-observation-key-v1");
     internal static SecurityEventRecordReceipt Receipt(SecurityObservationRecord record) => new(record.Intent.ObservationId, record.Intent.RoutingTenantId, record.UtcDay,

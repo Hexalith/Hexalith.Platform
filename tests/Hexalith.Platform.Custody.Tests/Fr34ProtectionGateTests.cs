@@ -224,7 +224,7 @@ public sealed class Fr34ProtectionGateTests
         {
             if (cancelCaller) { caller.Cancel(); (await Should.ThrowAsync<OperationCanceledException>(() => pending.WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken))).CancellationToken.ShouldBe(caller.Token); }
             else { ticks = TimeSpan.FromSeconds(30).Ticks; foreach (var callback in callbacks.ToArray()) { callback(); } (await pending.WaitAsync(TimeSpan.FromSeconds(3), TestContext.Current.CancellationToken)).ShouldBeFalse(); }
-            returned.ShouldBe(new byte[] { 1, 2, 3 }); // Capture still owns this input until its blocked traversal ends.
+            returned.All(value => value == 0).ShouldBeTrue(); // Caller release retires the transferred array while capture remains blocked.
         }
         finally { release.Set(); }
         await completed.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);

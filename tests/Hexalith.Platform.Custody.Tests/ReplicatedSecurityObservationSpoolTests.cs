@@ -49,10 +49,10 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await restarted.ObserveAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
         (await restarted.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
         (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
-        byte[] archived = f.Archives[0]; f.Archives.Remove(0);
+        byte[] archived = f.ArchiveAt(0); f.RemoveArchive(0);
         (await restarted.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBeNull();
         (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
-        f.Archives[0] = archived;
+        f.SetArchive(0, archived);
         f.PendingBytes.ShouldBeNull(); f.PhysicalAppends.ShouldBe(1);
     }
 
@@ -78,19 +78,44 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         string digest1 = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(page1)));
         var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, 6, [])
             { PageIndex = 2, ArchivedObservedCount = 2, ArchivedAcknowledgedCount = 2, ArchiveHeadDigest = digest1 };
-        f.Archives[0] = JsonSerializer.SerializeToUtf8Bytes(page0); f.Archives[1] = JsonSerializer.SerializeToUtf8Bytes(page1);
+        f.SetArchive(0, JsonSerializer.SerializeToUtf8Bytes(page0)); f.SetArchive(1, JsonSerializer.SerializeToUtf8Bytes(page1));
         f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
         var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
         (await restarted.LookupAsync(oldestIntent, TestContext.Current.CancellationToken)).ShouldBe(oldest);
+        byte[] middlePage = f.ArchiveAt(1);
+        string middleKey = f.ArchiveKey(1, middlePage);
+        var tampered = JsonSerializer.Deserialize<SecuritySpoolArchivePage>(middlePage)!;
+        var changed = tampered.Snapshot.Records.Single() with
+        { Receipt = tampered.Snapshot.Records.Single().Receipt! with { EventId = "valid-but-foreign-page-content" } };
+        f.Archives[middleKey] = JsonSerializer.SerializeToUtf8Bytes(tampered with { Snapshot = tampered.Snapshot with { Records = [changed] } });
+        (await restarted.LookupAsync(oldestIntent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        f.Archives[middleKey] = middlePage;
+        var overstated = head with { Revision = head.Revision + 2, ArchivedObservedCount = 3, ArchivedAcknowledgedCount = 3 };
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(overstated); f.Anchor = overstated.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(overstated);
+        (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        var duplicatePending = new SecurityObservationRecord(oldestIntent, f.Clock.Now,
+            f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), 2, null);
+        var duplicatePage = page1 with { Snapshot = second with { Records = [duplicatePending with { Receipt = SecuritySpoolFixture.Receipt(duplicatePending) }] } };
+        byte[] duplicateBytes = JsonSerializer.SerializeToUtf8Bytes(duplicatePage);
+        f.RemoveArchive(1); f.SetArchive(1, duplicateBytes);
+        var duplicateHead = head with { ArchiveHeadDigest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(duplicateBytes)) };
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(duplicateHead); f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(duplicateHead);
+        (await restarted.LookupAsync(oldestIntent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        f.RemoveArchive(1); f.SetArchive(1, middlePage);
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
         var exact = await restarted.LookupOriginalAsync(new("server-oldest", oldestIntent.ReasonCode, oldestIntent.UntrustedFieldsHmac, oldestIntent.DigestKeyVersion), TestContext.Current.CancellationToken);
         exact.IsAvailable.ShouldBeTrue(); exact.Record.ShouldBe(oldest);
         (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
-        byte[] middlePage = f.Archives[1]; f.Archives.Remove(1);
+        f.RemoveArchive(1);
         (await restarted.LookupAsync(oldestIntent, TestContext.Current.CancellationToken)).ShouldBeNull();
         (await restarted.LookupOriginalAsync(new("server-oldest", oldestIntent.ReasonCode, oldestIntent.UntrustedFieldsHmac, oldestIntent.DigestKeyVersion), TestContext.Current.CancellationToken)).IsAvailable.ShouldBeFalse();
         (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
         (await restarted.ObserveAsync(SecuritySpoolFixture.Intent("new-after-gap"), TestContext.Current.CancellationToken)).ShouldBeNull();
-        f.Archives[1] = middlePage;
+        f.SetArchive(1, middlePage);
         (await restarted.LookupAsync(oldestIntent, TestContext.Current.CancellationToken)).ShouldBe(oldest);
     }
 
@@ -98,18 +123,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
     [Fact]
     public async Task ArchivePageCeilingRefusesSeventeenthRolloverWithoutChangingHead()
     {
-        var f = new SecuritySpoolFixture(); string? prior = null;
-        for (int index = 0; index < 16; index++)
-        {
-            var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("page-" + index), f.Clock.Now,
-                f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), index + 1, null);
-            var record = pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
-            var snapshot = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, 3L * index + 2, [record])
-            { PageIndex = index, ArchivedObservedCount = index, ArchivedAcknowledgedCount = index, ArchiveHeadDigest = prior };
-            var page = new SecuritySpoolArchivePage(index, snapshot, prior);
-            f.Archives[index] = JsonSerializer.SerializeToUtf8Bytes(page);
-            prior = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(f.Archives[index]));
-        }
+        var f = new SecuritySpoolFixture(); string prior = SeedSixteenPages(f);
         var records = Enumerable.Range(17, 10000).Select(sequence =>
         {
             var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("head-" + sequence), f.Clock.Now,
@@ -124,6 +138,35 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("seventeenth-page"), TestContext.Current.CancellationToken)).ShouldBeNull();
         f.Persisted.ShouldBe(before); f.Archives.Count.ShouldBe(16); f.PendingBytes.ShouldBeNull();
         (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
+    }
+
+    /// <summary>At the finite page ceiling, a byte-full acknowledged head cannot claim no-argument readiness for one worst-case valid original and receipt.</summary>
+    [Fact]
+    public async Task FinalPageReadinessReservesWorstCaseNextObservation()
+    {
+        var f = new SecuritySpoolFixture(); string prior = SeedSixteenPages(f);
+        SecurityObservationRecord Seed(int sequence)
+        {
+            var intent = SecuritySpoolFixture.Intent("ceiling-" + sequence + new string('o', 1600)) with
+            { RetainedServerReceiptKey = "server-" + sequence + new string('r', 1600), DigestKeyVersion = new string('k', 1600) };
+            var pending = new SecurityObservationRecord(intent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+        }
+        int perRecord = JsonSerializer.SerializeToUtf8Bytes(Seed(17)).Length + 1;
+        var records = Enumerable.Range(17, (RecoverableAnchoredState.MaximumPendingBytes - 180000) / perRecord).Select(Seed).ToList();
+        SecuritySpoolSnapshot Head() => new(f.Target.InstallationEpoch, 48 + records.Count * 2L, records.ToArray())
+        { PageIndex = 16, ArchivedObservedCount = 16, ArchivedAcknowledgedCount = 16, ArchiveHeadDigest = prior };
+        while (JsonSerializer.SerializeToUtf8Bytes(Head()).Length > RecoverableAnchoredState.MaximumPendingBytes - 130000) { records.RemoveAt(records.Count - 1); }
+        while (JsonSerializer.SerializeToUtf8Bytes(Head()).Length < RecoverableAnchoredState.MaximumPendingBytes - 240000) { records.Add(Seed(records.Count + 17)); }
+        records.Count.ShouldBeLessThan(10000);
+        var head = Head();
+        int currentBytes = JsonSerializer.SerializeToUtf8Bytes(head).Length;
+        currentBytes.ShouldBeLessThan(RecoverableAnchoredState.MaximumPendingBytes);
+        currentBytes.ShouldBeGreaterThan(RecoverableAnchoredState.MaximumPendingBytes - 262144);
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        f.Read()!.Revision.ShouldBe(head.Revision); f.Archives.Count.ShouldBe(16); f.PendingBytes.ShouldBeNull();
     }
 
     /// <summary>A durable immutable archive written before its head transition survives the failed conditional stage and exact restart retry.</summary>
@@ -142,6 +185,22 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await restarted.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
     }
 
+    /// <summary>An orphan from a smaller acknowledged predecessor cannot reserve the anchored head's content-addressed rollover slot.</summary>
+    [Fact]
+    public async Task StalePartialPageAtSameIndexCannotBlockCurrentRollover()
+    {
+        var f = new SecuritySpoolFixture(); var originals = SeedFullAcknowledgedHead(f);
+        var partial = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, 19998, originals.Take(9999).ToArray());
+        byte[] orphan = JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolArchivePage(0, partial, null));
+        f.SetArchive(0, orphan);
+        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        var next = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("after-stale-page"), TestContext.Current.CancellationToken);
+        next.ShouldNotBeNull(); next.Sequence.ShouldBe(10001);
+        f.Archives.Count.ShouldBe(2); f.Read()!.PageIndex.ShouldBe(1);
+        (await f.Spool.LookupAsync(originals[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(originals[0]);
+        f.Archives[f.ArchiveKey(0, orphan)].ShouldBe(orphan);
+    }
+
     /// <summary>One caller pauses after immutable page persistence while a competing rollover advances the head; restart retains both exact new intents.</summary>
     [Fact]
     public async Task ConcurrentRolloverRetainsOnePageAndBothNewIntents()
@@ -155,8 +214,8 @@ public sealed class ReplicatedSecurityObservationSpoolTests
             Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(async call =>
         {
             string key = call.ArgAt<string>(1);
-            long index = long.Parse(key[(key.LastIndexOf('/') + 1)..], System.Globalization.CultureInfo.InvariantCulture);
-            if (!f.Archives.TryGetValue(index, out var bytes)) { return (null!, "0"); }
+            long index = long.Parse(key.Split('/')[^2], System.Globalization.CultureInfo.InvariantCulture);
+            if (!f.Archives.TryGetValue(key, out var bytes)) { return (null!, "0"); }
             if (index == 0 && Interlocked.Exchange(ref gated, 1) == 0) { entered.TrySetResult(); await release.Task; }
             return (JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)!, "1");
         });
@@ -225,14 +284,69 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
     }
 
-    /// <summary>An out-of-contract recorder event identity cannot be acknowledged or used to mutate the pending original.</summary>
+    /// <summary>Admission reserves the future maximal receipt of every older pending original, not only the newly proposed observation.</summary>
     [Fact]
-    public async Task OversizedRecorderEventIdFailsClosedWithoutChangingPendingOriginal()
+    public async Task NearLimitSeveralPendingOriginalsCannotBeStrandedByOneMoreAdmission()
+    {
+        var f = new SecuritySpoolFixture(); int bound = RecoverableAnchoredState.MaximumPendingBytes;
+        SecurityObservationRecord Seed(int sequence)
+        {
+            var intent = SecuritySpoolFixture.Intent("seed-" + sequence + new string('o', 1600)) with
+            { RetainedServerReceiptKey = "server-" + sequence + new string('r', 1600), DigestKeyVersion = new string('k', 1600) };
+            var pending = new SecurityObservationRecord(intent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) with { EventId = "e" } };
+        }
+        var nextIntent = SecuritySpoolFixture.Intent("proposed-after-two-pending");
+        int perRecord = JsonSerializer.SerializeToUtf8Bytes(Seed(1)).Length + 1;
+        var records = Enumerable.Range(1, (bound - 30000) / perRecord).Select(Seed).ToList();
+        int ProposedBytes()
+        {
+            var proposed = new SecurityObservationRecord(nextIntent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), records.Count + 1L, null);
+            return JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolSnapshot(f.Target.InstallationEpoch, records.Count * 2L + 1, records.Append(proposed).ToArray())).Length;
+        }
+        while (ProposedBytes() > bound - 30000) { records.RemoveAt(records.Count - 1); }
+        int fillRemaining = bound - 30000 - ProposedBytes();
+        for (int index = records.Count - 3; fillRemaining > 0 && index >= 0; index--)
+        {
+            int fill = Math.Min(fillRemaining, 2047);
+            records[index] = records[index] with { Receipt = records[index].Receipt! with { EventId = "e" + new string('e', fill) } };
+            fillRemaining -= fill;
+        }
+        fillRemaining.ShouldBe(0);
+        records[^1] = records[^1] with { Receipt = null };
+        records[^2] = records[^2] with { Receipt = null };
+        var pendingNext = new SecurityObservationRecord(nextIntent, f.Clock.Now, f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), records.Count + 1L, null);
+        var candidate = records.Append(pendingNext).ToArray();
+        SecurityObservationRecord Reserved(SecurityObservationRecord record) => record.Receipt is not null ? record : record with
+        { Receipt = SecuritySpoolFixture.Receipt(record) with { SourceRevision = long.MaxValue, EventId = new string('\0', 2048) } };
+        int projectedRevision = records.Count * 2 - 2 + 1;
+        var onlyNew = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, projectedRevision, records.Append(Reserved(pendingNext)).ToArray());
+        var allPending = onlyNew with { Records = candidate.Select(Reserved).ToArray() };
+        JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolSnapshot(f.Target.InstallationEpoch, projectedRevision - 1, records.Select(Reserved).ToArray())).Length.ShouldBeLessThanOrEqualTo(bound);
+        JsonSerializer.SerializeToUtf8Bytes(onlyNew).Length.ShouldBeLessThanOrEqualTo(bound);
+        JsonSerializer.SerializeToUtf8Bytes(allPending).Length.ShouldBeGreaterThan(bound);
+        var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, projectedRevision - 1, records.ToArray());
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        byte[] before = f.Persisted.ToArray();
+        (await f.Spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        f.Persisted.ShouldBe(before); f.PendingBytes.ShouldBeNull(); f.Archives.Count.ShouldBe(0);
+    }
+
+    /// <summary>An out-of-contract recorder event identity cannot be acknowledged or used to mutate the pending original.</summary>
+    [Theory]
+    [InlineData("ascii")][InlineData("multibyte")][InlineData("invalid-utf16")]
+    public async Task OversizedRecorderEventIdFailsClosedWithoutChangingPendingOriginal(string vector)
     {
         var f = new SecuritySpoolFixture();
         var original = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent(), TestContext.Current.CancellationToken);
         original.ShouldNotBeNull();
-        f.Recorded[original.Intent.ObservationId] = SecuritySpoolFixture.Receipt(original) with { EventId = new string('e', 2049) };
+        string eventId = vector switch
+        {
+            "multibyte" => new string('é', 1025),
+            "invalid-utf16" => new string('\uD800', 1),
+            _ => new string('e', 2049),
+        };
+        f.Recorded[original.Intent.ObservationId] = SecuritySpoolFixture.Receipt(original) with { EventId = eventId };
         (await f.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(0);
         f.Read()!.Records.Single().Receipt.ShouldBeNull();
         f.PendingBytes.ShouldBeNull();
@@ -272,6 +386,23 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         observed.ShouldNotBeNull(); observed.Sequence.ShouldBe(records.Count + 1L);
         f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.ArchivedObservedCount.ShouldBe(records.Count);
         (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
+    }
+
+    private static string SeedSixteenPages(SecuritySpoolFixture fixture)
+    {
+        string? prior = null;
+        for (int index = 0; index < 16; index++)
+        {
+            var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("page-" + index), fixture.Clock.Now,
+                fixture.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), index + 1, null);
+            var record = pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+            var snapshot = new SecuritySpoolSnapshot(fixture.Target.InstallationEpoch, 3L * index + 2, [record])
+            { PageIndex = index, ArchivedObservedCount = index, ArchivedAcknowledgedCount = index, ArchiveHeadDigest = prior };
+            byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolArchivePage(index, snapshot, prior));
+            fixture.SetArchive(index, bytes);
+            prior = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes));
+        }
+        return prior!;
     }
 
     private static SecurityObservationRecord[] SeedFullAcknowledgedHead(SecuritySpoolFixture fixture)

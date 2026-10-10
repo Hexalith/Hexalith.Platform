@@ -18,7 +18,7 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
     public async Task<bool> EvaluateAsync(CancellationToken cancellationToken = default)
     {
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
-        byte[]? challenge = null; byte[]? plaintext = null; byte[]? opened = null; byte[]? persisted = null; byte[]? replayBytes = null;
+        byte[]? challenge = null; byte[]? plaintext = null; byte[]? opened = null; byte[]? persisted = null; byte[]? replayBytes = null; byte[]? transferred = null;
         string? originalCanaryId = null; Fr34CanaryAuthorization? admitted = null;
         Fr34CanaryReference? reference = null;
         bool destructionConfirmed = false;
@@ -44,6 +44,7 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
             reference = sealedReference!;
             var supplied = await budget.ReadAsync(() => storage.ReadAsync(reference, CancellationToken.None),
                 static value => { if (value?.Bytes is { } bytes) { CryptographicOperations.ZeroMemory(bytes); } }).ConfigureAwait(false);
+            transferred = supplied?.Bytes;
             // The reader transfers one detached array. Pure capture retires that array only after its
             // own operation finishes, while the one owned snapshot is used for scan and exact proof.
             var read = await budget.ReadAsync(() => Task.FromResult(CaptureObservation(supplied, reference, budget)),
@@ -75,6 +76,7 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return false; }
         finally
         {
+            if (transferred is not null) { CryptographicOperations.ZeroMemory(transferred); }
             if (challenge is not null) { CryptographicOperations.ZeroMemory(challenge); }
             if (plaintext is not null) { CryptographicOperations.ZeroMemory(plaintext); }
             if (opened is not null) { CryptographicOperations.ZeroMemory(opened); }
@@ -100,27 +102,27 @@ public sealed class Fr34ProtectionGate(Fr34ProtectionTarget target, IFr34Protect
         try
         {
             budget.Check();
-        if (supplied?.Bytes is not { Length: > 0 and <= 16384 } || supplied.Reference != reference
-            || supplied.Metadata is not { State: PayloadProtectionState.Protected, MetadataVersion: 1 } metadata
-            || string.IsNullOrWhiteSpace(metadata.Scheme) || string.IsNullOrWhiteSpace(metadata.KeyAlias)
-            || metadata.Scheme.Length > EventStorePayloadProtectionMetadata.MaxSchemeLength || metadata.KeyAlias.Length > EventStorePayloadProtectionMetadata.MaxKeyAliasLength
-            || metadata.ContentHint?.Length > EventStorePayloadProtectionMetadata.MaxContentHintLength) { return null; }
-        IReadOnlyDictionary<string, string>? flags = null;
-        if (metadata.CompatibilityFlags is { } source)
-        {
-            if (source.Count is < 0 or > EventStorePayloadProtectionMetadata.MaxCompatibilityFlagCount) { return null; }
-            var owned = new Dictionary<string, string>(StringComparer.Ordinal);
-            foreach (var pair in source)
+            if (supplied?.Bytes is not { Length: > 0 and <= 16384 } || supplied.Reference != reference
+                || supplied.Metadata is not { State: PayloadProtectionState.Protected, MetadataVersion: 1 } metadata
+                || string.IsNullOrWhiteSpace(metadata.Scheme) || string.IsNullOrWhiteSpace(metadata.KeyAlias)
+                || metadata.Scheme.Length > EventStorePayloadProtectionMetadata.MaxSchemeLength || metadata.KeyAlias.Length > EventStorePayloadProtectionMetadata.MaxKeyAliasLength
+                || metadata.ContentHint?.Length > EventStorePayloadProtectionMetadata.MaxContentHintLength) { return null; }
+            IReadOnlyDictionary<string, string>? flags = null;
+            if (metadata.CompatibilityFlags is { } source)
             {
-                budget.Check();
-                if (owned.Count >= EventStorePayloadProtectionMetadata.MaxCompatibilityFlagCount || pair.Key is null || pair.Value is null
-                    || pair.Key.Length > EventStorePayloadProtectionMetadata.MaxCompatibilityFlagKeyLength || pair.Value.Length > EventStorePayloadProtectionMetadata.MaxCompatibilityFlagValueLength
-                    || !owned.TryAdd(pair.Key, pair.Value)) { return null; }
+                if (source.Count is < 0 or > EventStorePayloadProtectionMetadata.MaxCompatibilityFlagCount) { return null; }
+                var owned = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var pair in source)
+                {
+                    budget.Check();
+                    if (owned.Count >= EventStorePayloadProtectionMetadata.MaxCompatibilityFlagCount || pair.Key is null || pair.Value is null
+                        || pair.Key.Length > EventStorePayloadProtectionMetadata.MaxCompatibilityFlagKeyLength || pair.Value.Length > EventStorePayloadProtectionMetadata.MaxCompatibilityFlagValueLength
+                        || !owned.TryAdd(pair.Key, pair.Value)) { return null; }
+                }
+                flags = new System.Collections.ObjectModel.ReadOnlyDictionary<string, string>(owned);
             }
-            flags = new System.Collections.ObjectModel.ReadOnlyDictionary<string, string>(owned);
-        }
-        var captured = metadata with { CompatibilityFlags = flags };
-        if (!EventStorePayloadProtectionMetadataCarrier.TryValidate(captured, out _)) { return null; }
+            var captured = metadata with { CompatibilityFlags = flags };
+            if (!EventStorePayloadProtectionMetadataCarrier.TryValidate(captured, out _)) { return null; }
             budget.Check();
             return supplied with { Bytes = supplied.Bytes.ToArray(), Metadata = captured };
         }

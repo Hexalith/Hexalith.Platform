@@ -4,10 +4,10 @@ type: 'feature'
 epic: 1
 story: 3
 created: '2026-10-09'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '4a41508c354acdccd7e18d6f71ad6f7650295714'
 route: 'dispatch'
-review_loop_iteration: 5
+review_loop_iteration: 6
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -244,6 +244,30 @@ Review iteration 5 (2026-10-09). IDs are local to this iteration; each reviewer 
 | V2 | medium | bad_spec | Preverified gap: no mapped descriptor test returns a UI marker assembly under a package origin; removing that guard would leave tests green. |
 
 Grouped bad-spec roots: source candidate and absent package identity selection (B2, E3); conversion and retained-item metadata (B3–B5); Git tree, ownership and transport (B6–B8, E4); mapping immutability and no-Git containment (B9, E1); prerequisite ordering (E5); and end-to-end verification gaps (B10–B11, V1–V2). B1 and E2 are rejected. KEEP the 559 Module/107 Evidence baseline and all fifth-pass features listed in Implementation Notes.
+
+Review iteration 6 (2026-10-09). Each finding was assessed before grouping; the five-loop cap stops another re-derivation.
+
+| ID | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| B1 | medium | patch | ProjectReference `IncludeAssets` or `ExcludeAssets` metadata is copied into a PackageReference without a conversion check, where it can change assets. Add these fields to the existing unsupported list. |
+| B2 | medium | patch | PackageReference `ReferenceOutputAssembly` or `Private` metadata is copied into a ProjectReference, where it can change compilation or copy behavior. Add these fields to the existing unsupported list. |
+| B3 | false | reject | The frozen scope excludes package-mode catalog checks for Story 1.4; central package management already reports a missing PackageVersion during restore. A new HXW catalog diagnostic is not required for an existing project path. |
+| B4 | false | reject | The accepted catalog fallback deliberately maps one absent path to the sole identity-prefixed package when PackageId differs from the filename; no second candidate or expected distinct package was shown. |
+| B5 | false | reject | A candidate must be packable, have the exact requested effective PackageId, and match the source identity prefix; duplicate candidates fail `HXW002`. Folder location alone does not show a wrong package selection. |
+| B6 | medium | bad_spec | Reconciliation evaluates every accepted production csproj before comparing its PackageId with requested packages; one malformed unrelated project can fail an otherwise valid consumer build. Avoiding that without losing distinct imported PackageIds needs a specified selection strategy. |
+| B7 | medium | patch | `ValidateExistingFile` can return null with native path diagnostics, but the command ignores that list and may start composition before the executor reports the invalid primary test project. Return the existing diagnostic before launch. |
+| B8 | medium | patch | `ReadDirectReferencesAsync` checks `File.Exists(.gitmodules)` but does not physically contain the file; an external symlink can supply root declarations. Apply the existing physical path resolver before reading it. |
+| B9 | medium | bad_spec | Package mode accepts a `.gitmodules` direct declaration without verifying its stage-zero gitlink, allowing a stale or untracked submodule declaration to become a package identity. |
+| B10 | medium | bad_spec | Git emits `submodule.name with spaces.path references/Hexalith.Dep` for a legal subsection name; splitting at the first space misparses the key and silently omits that direct reference. This was reproduced with `git config --get-regexp`. |
+| B11 | high | patch | On Windows, `references/Foo\\Bar` passes the two-part slash check and is treated as a deeper path. Reject a backslash anywhere in a declared direct reference path. |
+| V1 | medium | patch | Preverified gap: explicit-mode plan tests do not prove the public default selects source and Debug; add an omitted-mode plan case. |
+| V2 | medium | patch | Preverified gap: resolver and injected-engine no-Git tests do not prove the public command hands its resolved no-Git mapping to the plan; add a public no-Git capture case. |
+| V3 | medium | patch | Preverified gap: the public native-process test covers VSTest only, while direct MTP tests bypass command routing; run that public case with `full-mtp` in both modes. |
+| E1 | medium | bad_spec | The same package-mode declaration without a stage-zero gitlink as B9 can enter the mapping. |
+| E2 | high | patch | The same mixed-separator Windows path as B11 can pass the direct-path check and receive the wrong identity. |
+| E3 | medium | patch | `GIT_SSH_VARIANT` is absent from Git's transport allowlist, so a configured custom SSH helper may receive incompatible arguments during direct checkout. |
+
+Grouped specification defects: eager evaluation of unrelated source projects (B6), unverified package-mode gitlinks (B9, E1), and space-containing Git subsection parsing (B10). Patch findings are recorded but not applied because the specification defects trigger a loopback and `review_loop_iteration` has exceeded five. The staged sixth-pass Builds implementation and its passing gates remain available for human review.
 
 ## Verification
 

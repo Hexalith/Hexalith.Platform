@@ -15,6 +15,9 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private const int RecordBound = 10000;
     private const int ArchivePageBound = 16;
     private const int ReceiptEventIdByteBound = 2048;
+    // This exceeds the serialized maximum of one bounded intent and its worst escaped receipt,
+    // including repeated IDs, source identity, numeric fields and JSON framing.
+    private const int WorstCaseObservationAndReceiptBytes = 262144;
     private static readonly System.Text.UTF8Encoding StrictUtf8 = new(false, true);
     private static readonly string MaximumEscapedEventId = new('\0', ReceiptEventIdByteBound);
     private static string Key(ReplicatedSecuritySpoolTarget target) => "system/security-observations/" + target.InstallationEpoch;
@@ -240,6 +243,9 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
             return state is not null && pending is null && (state.Records.Count < RecordBound || state.PageIndex < ArchivePageBound)
                 && state.Records.All(record => record.Receipt is not null)
                 && await ArchivesCompleteAsync(target, state, budget).ConfigureAwait(false)
+                && (state.PageIndex < ArchivePageBound
+                    ? await NextArchiveSlotAvailableAsync(target, state, budget).ConfigureAwait(false)
+                    : state.Records.Count < RecordBound && FitsWithReceiptReserve(state, budget, WorstCaseObservationAndReceiptBytes))
                 && await StillCurrentAsync(target, "Readiness", null, budget).ConfigureAwait(false);
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return false; }
@@ -260,14 +266,15 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private bool ValidTarget(ReplicatedSecuritySpoolTarget target)
     { Text(target.ComponentName); Text(target.InstallationEpoch); Text(target.AuthorityRevision); return target.ValidUntil.Offset == TimeSpan.Zero && clock.GetUtcNow() < target.ValidUntil; }
     private static string PendingKey(ReplicatedSecuritySpoolTarget target) => Key(target) + "-pending-transition-v1";
-    private static string ArchiveKey(ReplicatedSecuritySpoolTarget target, long page) => Key(target) + "/archive/" + page.ToString(CultureInfo.InvariantCulture);
+    private static string ArchiveKey(ReplicatedSecuritySpoolTarget target, long page, string digest)
+        => Key(target) + "/archive/" + page.ToString(CultureInfo.InvariantCulture) + "/" + digest;
     private static string PendingScope(ReplicatedSecuritySpoolTarget target) => target.ComponentName + "|" + Key(target);
     private async Task<bool> ArchiveAcknowledgedPageAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot state, string etag, PrivateOwnerOperationDeadline budget)
     {
         if (state.PageIndex >= ArchivePageBound || state.Records.Count is < 1 or > RecordBound
             || state.Records.Any(record => record.Receipt is null) || !ValidTarget(target)) { return false; }
         var page = new SecuritySpoolArchivePage(state.PageIndex, state, state.ArchiveHeadDigest);
-        string digest = Digest(page); string key = ArchiveKey(target, state.PageIndex);
+        string digest = Digest(page); string key = ArchiveKey(target, state.PageIndex, digest);
         var (existing, archiveEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName, key, ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
         if (existing is null)
         {
@@ -297,7 +304,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         {
             index--; budget.Check();
             var (page, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName,
-                ArchiveKey(target, index), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+                ArchiveKey(target, index, expected ?? throw new InvalidOperationException("Missing archive head digest.")), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
             if (!ValidArchive(page, head, index, expected, expectedObserved, budget)) { throw new InvalidOperationException("Spool archive chain is missing or divergent."); }
             var found = page!.Snapshot.Records.SingleOrDefault(predicate);
             if (found is not null)
@@ -319,7 +326,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         {
             index--; budget.Check();
             var (page, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName,
-                ArchiveKey(target, index), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+                ArchiveKey(target, index, expected ?? throw new InvalidOperationException("Missing archive head digest.")), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
             if (!ValidArchive(page, head, index, expected, expectedObserved, budget)) { return false; }
             expected = page!.PreviousDigest;
             expectedObserved = page.Snapshot.ArchivedObservedCount;
@@ -335,6 +342,15 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
             || checked(page.Snapshot.ArchivedObservedCount + page.Snapshot.Records.Count) != expectedObserved
             || Digest(page) != expected) { return false; }
         _ = Capture(page.Snapshot, budget); return true;
+    }
+    private async Task<bool> NextArchiveSlotAvailableAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot head, PrivateOwnerOperationDeadline budget)
+    {
+        if (head.Records.Count == 0) { return true; }
+        var page = new SecuritySpoolArchivePage(head.PageIndex, head, head.ArchiveHeadDigest);
+        string digest = Digest(page);
+        var (existing, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName,
+            ArchiveKey(target, head.PageIndex, digest), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+        return existing is null || Digest(existing) == digest;
     }
     private async Task<(SecuritySpoolSnapshot? State, string Etag)> ReadAsync(ReplicatedSecuritySpoolTarget target, PrivateOwnerOperationDeadline budget, bool recoverAdmittedOriginal = false)
     {
@@ -408,7 +424,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     }
     // Reserve the worst JSON representation of every future exact receipt before admitting a pending original.
     // The authoritative recorder must return an EventId within the same UTF-8 bound; larger proofs fail closed.
-    private static bool FitsWithReceiptReserve(SecuritySpoolSnapshot snapshot, PrivateOwnerOperationDeadline budget)
+    private static bool FitsWithReceiptReserve(SecuritySpoolSnapshot snapshot, PrivateOwnerOperationDeadline budget, int additionalBytes = 0)
     {
         if (snapshot.Records.Count > RecordBound) { return false; }
         var records = snapshot.Records.Select(record =>
@@ -420,7 +436,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         }).ToArray();
         var upper = snapshot with { Revision = long.MaxValue, DrainRevision = long.MaxValue, DrainAfterSequence = long.MaxValue, Records = records };
         budget.Check();
-        return JsonSerializer.SerializeToUtf8Bytes(upper).Length <= RecoverableAnchoredState.MaximumPendingBytes;
+        return JsonSerializer.SerializeToUtf8Bytes(upper).Length + additionalBytes <= RecoverableAnchoredState.MaximumPendingBytes;
     }
     private static bool ValidReceiptEventId(string? eventId)
     {
