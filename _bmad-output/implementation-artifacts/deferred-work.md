@@ -329,3 +329,9 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md`
   summary: Require each successful VSTest shard to produce its expected TRX report.
   evidence: Review BH7-12. `domain-ci.yml` marks a zero-exit `dotnet test` PASS before checking that the expected TRX exists. The shard change predates this story's source-start revision and is separate from catalog authority.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Verify ownership of a retained directory-form nested submodule when its former gitlink history is absent from a shallow checkout.
+  evidence: A shallow direct checkout may make `git log --all` return no older gitlink, but a fixture with a retained nested `.git` directory and truncated parent history is needed to establish whether the current preflight misclassifies it.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Validate actor principal ULID syntax in the Identity receipt verifier.
+  evidence: The Identity contract requires `platform:actor:<ULID>`, while `P1ReceiptVerifier.ValidPrincipal` accepts any nonempty suffix; this is outside the Builds source-mapping intent.

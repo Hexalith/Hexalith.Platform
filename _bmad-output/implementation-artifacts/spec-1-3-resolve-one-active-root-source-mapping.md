@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 3
 created: '2026-10-09'
-status: 'in-progress'
+status: 'done'
 baseline_commit: '4a41508c354acdccd7e18d6f71ad6f7650295714'
 route: 'dispatch'
 review_loop_iteration: 12
@@ -117,7 +117,7 @@ Paths are relative to Builds. `T` = `src/libraries/Hexalith.Builds.Tooling`, `C`
 - [x] Review iteration 9 corrections: initialize a direct manifest's recorded checkout before parsing it, fail closed on inconclusive nested Git ownership and dangling markers, preserve whitespace in Git paths, guard mapped roots, constrain source candidate layouts without rejecting package-name tokens, handle multi-target `PackageId` ambiguity, reject newly identified conversion metadata, and reject invalid public mode values. Add focused regressions and rerun gates.
 - [x] Review iteration 10 corrections: keep the root missing-manifest diagnostic, detect nested dangling Git symlinks and preserve nested Git path whitespace, wrap nested filesystem errors, exclude utility directory roles, reject framework-dependent packability and duplicate converted packages, and cover certificate environment forwarding. Recheck focused paths and broad gates.
 - [x] Review iteration 11 corrections: physically contain all package-origin references; verify initialized package checkouts against their indexed gitlinks and derive package identities from the catalog; enforce immutable mapping values at dependency target execution after consumer targets. Add focused regressions and rerun Builds gates.
-- [ ] Review iteration 12 corrections: make mapping import survive `Directory.Build.props` overrides; capture pre-late selection flags; check final reference items at the dependency boundary; exclude source-tree AppHost host resources by path; harden missing-`.gitmodules` parsing/marker handling, early direct-duplicate version diagnostics, empty property suffixes, and central-management opt-out. Add focused regressions and rerun Builds gates.
+- [x] Review iteration 12 corrections: make mapping import survive `Directory.Build.props` overrides; capture pre-late selection flags; check final reference items at the dependency boundary; exclude source-tree AppHost host resources by path; harden missing-`.gitmodules` parsing/marker handling, early direct-duplicate version diagnostics, empty property suffixes, and central-management opt-out. Add focused regressions and rerun Builds gates.
 
 **Acceptance Criteria:**
 - Given a `run` or `test`, when it starts, then the resolver executes once, and native tests and every launched module project use the same mapping content hash.
@@ -445,6 +445,30 @@ Review iteration 12 (2026-10-10). Every reviewer finding was checked against the
 
 Grouped specification corrections: mandatory early import and pre-late selection capture (B1, E1), final dependency-item validation (B2), complete Git missing-declaration handling (B3–B4), early duplicate/version and central-management diagnostics (B6–B8), generated identity validation (B9), and host-project scope (B10). B5 is unverified and deferred; other root findings remain separate. KEEP the eleventh-pass mapping pipeline, passing 633 Module tests and packed contract.
 
+Review iteration 13 (2026-10-10). Findings were checked against the current code and prior triage before grouping. This pass has focused patches only; the unrelated Platform findings remain separate.
+
+| ID | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| B1 | false | reject | An indexed gitlink with no `.gitmodules` path is not a root-declared required identity; the frozen decision names entries in `.gitmodules`, and each declared entry is checked against the index. |
+| B2 | false | reject | A non-active package-origin reference never reads its checkout; a dangling source path cannot change the package mapping or build origin. An active direct reference goes through checkout and fails `HXW004` if unusable. |
+| B3 | medium | patch | Late props captures mapped roots, but the pre-late guard checks only configuration and origin flags. A consumer target can select a different project under an allowed source root through a temporary redirected root, then have the late import hide the property change. |
+| B4 | medium | patch | `AfterMicrosoftNETSdkTargets` is an import list in the installed SDK. A different existing import path containing the expected path as a substring passes `Contains` while omitting the final validation targets. |
+| B5 | low | patch | `CheckPackages` assumes `libraries` is an object and each `type` is a string. Wrong JSON kinds throw `InvalidOperationException` instead of the task's `HXW005` diagnostic. |
+| B6 | low | reject | A legal POSIX directory ending in carriage return could lose that byte in `TrimGitLineEnding`; this is extremely rare and distinguishing it from Windows CRLF requires a protocol-aware change rather than a direct correction. |
+| B7 | maybe-false | defer | A shallow direct checkout could hide an older nested gitlink from `git log --all`, but no reproducible retained directory-form submodule with truncated history was shown. A fixture with that exact state would settle ownership behavior. |
+| B8 | medium | defer | `P1ReceiptVerifier.ValidPrincipal` accepts a non-ULID actor suffix despite the Identity contract. This is an unrelated Identity change outside the Builds-only intent. |
+| B9 | medium | defer | Carried from iteration 8 B4: the unrelated Identity parser permits cache headers that its contract excludes. |
+| B10 | false | reject | Public command and spawned native process tests assert the hash handoff, while `WorkspaceAppHostTests` inspects composed module project settings in both modes. The spec explicitly accepts process and resource boundary tests without live Aspire. |
+| B11 | medium | defer | Carried from iteration 9 B12: the unrelated Identity TLS path lacks positive production-trust integration evidence. |
+| B12 | false | reject | The root diff includes already committed unrelated work because the story baseline predates it; this pass's working-tree changes are confined to Builds and its spec, so there is no combined new change to split. |
+| E1 | medium | patch | `ReadDirectReferencesAsync` compares the `references` path component ordinally, so a legal case variation on a case-insensitive filesystem is omitted despite filesystem-aware matching elsewhere. |
+| E2 | medium | patch | `IsRootManifestAsync` starts Git in the missing parent directory and returns false when an ancestor has `.git`, before its missing-file root classification can run. |
+| V1 | medium | defer | Carried from iteration 11 V1: the real EventStore candidate test runs in this Platform checkout but skips in standalone Builds CI; a Platform-root CI check is separate verification work. |
+| V2 | medium | defer | Carried from iteration 8 V1: unrelated Custody snapshot fields change anchored state digests without a legacy read path. |
+| V3 | medium | defer | Carried from iteration 7 E4: unrelated Custody archive reads use digest-addressed keys and cannot read earlier index-only pages. |
+
+The patch group is B3–B5 and E1–E2. B7 remains unverified. The Evidence catalog/corpus mismatch retains the user's separate baseline decision.
+
 ## Verification
 
 **Commands** (from Builds):
@@ -478,3 +502,7 @@ Grouped specification corrections: mandatory early import and pre-late selection
 **Tenth implementation pass (2026-10-10):** Module Debug build passed with zero warnings/errors; full Module tests passed 627/627, none skipped. Focused resolver, MSBuild and public-command classes passed 41/41, 62/62 and 30/30 before the final nested-enumeration test; the full Module run includes that test. The Release packed G-4 tool contract passed with zero build warnings/errors, and Builds `git diff --check` was clean. The matrix rows are exercised by the resolver, MSBuild, public command, run-plan and AppHost tests, all in the passing Module assembly. The Evidence baseline blocker remains unchanged; no live Aspire topology or Windows execution was run.
 
 **Eleventh implementation pass (2026-10-10):** Module Debug build passed with zero warnings/errors; full Module tests passed 633/633, none skipped, after the final catalog-only package conversion change. The Release packed G-4 tool contract passed, and Builds `git diff --check` was clean. Focused resolver/MSBuild tests passed 109/109 before the last catalog-only regression was added; the full Module run includes it. The Evidence Debug build passed, while the accepted baseline mismatch still caused 40/107 Evidence test failures. No live Aspire topology or Windows execution was run.
+
+**Twelfth implementation pass (2026-10-10):** Module Debug build passed with zero warnings/errors; full Module tests passed 646/646, none skipped. The focused Workspace MSBuild class passed 76/76, including both-mode regressions for a late origin-flag override. The Release packed G-4 tool contract passed with zero build warnings/errors, and Builds `git diff --check` was clean. The Evidence Debug build passed with zero warnings/errors; its direct test run remained 67/107 because of the accepted EventStore catalog/corpus baseline mismatch. No live Aspire topology or Windows execution was run.
+
+**Post-review patch verification (2026-10-10):** Module Debug build passed with zero warnings/errors, and the full direct Module suite passed 655/655 with no skips. Evidence Debug build passed with zero warnings/errors; its direct suite remained 67/107 with the same accepted 40-case catalog/corpus mismatch. The Release packed G-4 tool contract passed with zero build warnings/errors. Builds and root `git diff --check` passed. No live Aspire topology or Windows execution was run.
