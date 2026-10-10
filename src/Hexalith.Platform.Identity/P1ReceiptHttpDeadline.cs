@@ -10,7 +10,10 @@ internal sealed class P1ReceiptHttpDeadline : IAsyncDisposable
     private readonly long _requestStart;
     private readonly DateTimeOffset _authenticatedUtc;
     private readonly CancellationTokenSource _source;
-    private readonly Task _monitor;
+    private readonly object _cancelGate = new();
+    private Task? _cancelTask;
+    private int _deadlineFailed;
+    private int _disposed;
 
     internal P1ReceiptHttpDeadline(P1BootTimeClock clock, long chainStart, DateTimeOffset authenticatedUtc,
         CancellationToken callerToken)
@@ -20,63 +23,84 @@ internal sealed class P1ReceiptHttpDeadline : IAsyncDisposable
         _authenticatedUtc = authenticatedUtc;
         _source = CancellationTokenSource.CreateLinkedTokenSource(callerToken);
         _requestStart = clock.TryRead(out long now) ? now : -1;
-        if (_requestStart < 0 || !Valid)
+        if (_requestStart < 0 || !Valid || !P1ReceiptHttpDeadlineMonitor.TryRegister(this))
         {
-            _source.Cancel();
+            FailDeadline();
         }
-
-        _monitor = Task.Run(MonitorAsync);
     }
 
     internal CancellationToken Token => _source.Token;
 
     internal bool Valid => TryAuthenticatedUtc(out _);
 
+    internal bool DeadlineFailed => Volatile.Read(ref _deadlineFailed) != 0;
+
     internal bool TryAuthenticatedUtc(out DateTimeOffset now)
     {
         now = default;
-        if (_source.IsCancellationRequested || _requestStart < 0 || !_clock.TryRead(out long tick)
+        if (DeadlineFailed || Volatile.Read(ref _disposed) != 0 || _source.IsCancellationRequested)
+        {
+            return false;
+        }
+
+        if (_requestStart < 0 || !_clock.TryRead(out long tick)
             || tick < _chainStart || tick < _requestStart
             || tick - _requestStart >= RequestNanoseconds || tick - _chainStart >= ChainNanoseconds)
         {
+            FailDeadline();
             return false;
         }
 
         try
         {
             now = _authenticatedUtc.AddTicks((tick - _chainStart) / 100);
-            return now.Offset == TimeSpan.Zero;
+            if (now.Offset == TimeSpan.Zero)
+            {
+                return true;
+            }
         }
         catch (ArgumentOutOfRangeException)
         {
-            return false;
+        }
+
+        FailDeadline();
+        return false;
+    }
+
+    internal void Poll() => _ = Valid;
+
+    private void FailDeadline()
+    {
+        if (Interlocked.Exchange(ref _deadlineFailed, 1) == 0)
+        {
+            _ = StartCancellation();
         }
     }
 
-    /// <summary>Polling reads CLOCK_BOOTTIME after resume and cancels pending transport operations.</summary>
-    private async Task MonitorAsync()
+    // CancelAsync marks the token cancelled synchronously but runs callbacks away from
+    // the sole boottime monitor. Keep the registration until callbacks really exit.
+    private Task StartCancellation()
     {
-        try
+        lock (_cancelGate)
         {
-            while (!_source.IsCancellationRequested)
-            {
-                await Task.Delay(20, _source.Token).ConfigureAwait(false);
-                if (!Valid)
-                {
-                    _source.Cancel();
-                    break;
-                }
-            }
-        }
-        catch (OperationCanceledException)
-        {
+            return _cancelTask ??= _source.CancelAsync();
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        _source.Cancel();
-        await _monitor.ConfigureAwait(false);
-        _source.Dispose();
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        Task cancellation = StartCancellation();
+        _ = cancellation.ContinueWith(completed =>
+        {
+            if (completed.IsFaulted) _ = completed.Exception;
+            P1ReceiptHttpDeadlineMonitor.Unregister(this);
+            _source.Dispose();
+        }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+        return ValueTask.CompletedTask;
     }
 }

@@ -29,7 +29,13 @@ internal sealed class P1ReceiptHttpHistory
 
             if (_frames.TryGetValue(id, out byte[]? previous))
             {
-                return previous.AsSpan().SequenceEqual(frame) ? P1ReceiptHttpFailure.None : P1ReceiptHttpFailure.ImmutableIdIncident;
+                bool same = previous.AsSpan().SequenceEqual(frame);
+                if (!finalGuard())
+                {
+                    return P1ReceiptHttpFailure.Deadline;
+                }
+
+                return same ? P1ReceiptHttpFailure.None : P1ReceiptHttpFailure.ImmutableIdIncident;
             }
 
             if (_frames.Count >= MaxIds || _frameBytes + frame.Length > MaxFrameBytes)

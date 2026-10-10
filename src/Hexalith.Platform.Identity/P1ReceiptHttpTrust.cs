@@ -11,6 +11,10 @@ public sealed class P1ReceiptHttpTrust
 {
     private const string ServerAuthOid = "1.3.6.1.5.5.7.3.1";
     private const string ClientAuthOid = "1.3.6.1.5.5.7.3.2";
+    internal const int MaxConcurrentHandshakes = 16;
+    internal const int MaxConcurrentValidationWorkers = 16;
+    private static readonly SemaphoreSlim GlobalHandshakeSlots = new(MaxConcurrentHandshakes, MaxConcurrentHandshakes);
+    private static readonly SemaphoreSlim GlobalValidationSlots = new(MaxConcurrentValidationWorkers, MaxConcurrentValidationWorkers);
     private readonly SemaphoreSlim _validationSlot = new(1, 1);
     private readonly SemaphoreSlim _handshakeSlot = new(1, 1);
     private readonly X509Certificate2? _fixtureRoot;
@@ -41,6 +45,11 @@ public sealed class P1ReceiptHttpTrust
 
         ArgumentNullException.ThrowIfNull(clientCertificate);
         ArgumentNullException.ThrowIfNull(clientIssuer);
+        if (clientCertificate.RawData.AsSpan().SequenceEqual(clientIssuer.RawData)
+            || !IsCertificateAuthority(clientIssuer))
+        {
+            throw new ArgumentException("The enrolled client issuer must be a distinct certificate-signing CA.", nameof(clientIssuer));
+        }
         if (!clientCertificate.HasPrivateKey || (serverAnchor is null) == (serverSpkiSha256 is null))
         {
             throw new ArgumentException("A client private key and exactly one server anchor or SPKI pin are required.");
@@ -87,7 +96,10 @@ public sealed class P1ReceiptHttpTrust
     internal X509Certificate2[] ClientIntermediates { get; }
     internal bool IsFixture => _fixtureRoot is not null;
     internal Action? ContextCreated { get; set; }
+    internal Action? BeforeHandshake { get; set; }
     internal Action? BeforeServerChainBuild { get; set; }
+    internal static int AvailableHandshakeSlots => GlobalHandshakeSlots.CurrentCount;
+    internal static int AvailableValidationSlots => GlobalValidationSlots.CurrentCount;
 
     internal SslStreamCertificateContext CreateClientContext()
     {
@@ -97,9 +109,9 @@ public sealed class P1ReceiptHttpTrust
         return context;
     }
 
-    internal SslStreamCertificateContext? CreateClientContextBounded(P1ReceiptHttpDeadline deadline)
+    internal async Task<SslStreamCertificateContext?> CreateClientContextBoundedAsync(P1ReceiptHttpDeadline deadline)
     {
-        if (!deadline.Valid || !_validationSlot.Wait(0))
+        if (!TryEnterValidation(deadline))
         {
             return null;
         }
@@ -112,12 +124,13 @@ public sealed class P1ReceiptHttpTrust
             }
             finally
             {
-                _validationSlot.Release();
+                LeaveValidation();
             }
         });
+        ObserveWorkerFault(worker);
         try
         {
-            SslStreamCertificateContext context = worker.WaitAsync(deadline.Token).GetAwaiter().GetResult();
+            SslStreamCertificateContext context = await worker.WaitAsync(deadline.Token).ConfigureAwait(false);
             return deadline.Valid ? context : null;
         }
         catch (Exception exception) when (exception is OperationCanceledException or AggregateException or CryptographicException
@@ -154,15 +167,29 @@ public sealed class P1ReceiptHttpTrust
             return false;
         }
 
+        if (!GlobalHandshakeSlots.Wait(0))
+        {
+            _handshakeSlot.Release();
+            return false;
+        }
+
         Task authentication;
         try
         {
-            authentication = stream.AuthenticateAsClientAsync(options, deadline.Token);
+            // The certificate callback is synchronous. Keep it on a dedicated handshake thread so
+            // a slow bounded chain worker does not occupy a thread-pool thread while waiting.
+            authentication = Task.Factory.StartNew(() =>
+            {
+                BeforeHandshake?.Invoke();
+                stream.AuthenticateAsClient(options);
+            },
+                CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
         catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or ObjectDisposedException
             or AuthenticationException or IOException or CryptographicException)
         {
             _handshakeSlot.Release();
+            GlobalHandshakeSlots.Release();
             return false;
         }
 
@@ -170,6 +197,7 @@ public sealed class P1ReceiptHttpTrust
         {
             if (completed.IsFaulted) _ = completed.Exception;
             _handshakeSlot.Release();
+            GlobalHandshakeSlots.Release();
         }, CancellationToken.None,
             TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
         try
@@ -184,6 +212,10 @@ public sealed class P1ReceiptHttpTrust
         }
     }
 
+    internal Task<bool> ValidateClientAsync(P1ReceiptHttpDeadline deadline)
+        => ValidateBoundedAsync(() => ValidateChain(ClientCertificate, ClientIntermediates, ClientAuthOid, true, deadline), deadline);
+
+    // The TLS callback API is synchronous. AuthenticateBoundedAsync runs it on a dedicated thread.
     internal bool ValidateClient(P1ReceiptHttpDeadline deadline)
         => ValidateBounded(() => ValidateChain(ClientCertificate, ClientIntermediates, ClientAuthOid, true, deadline), deadline);
 
@@ -224,7 +256,7 @@ public sealed class P1ReceiptHttpTrust
 
     private bool ValidateBounded(Func<bool> validation, P1ReceiptHttpDeadline deadline, Action? whenNotStarted = null)
     {
-        if (!deadline.Valid || !_validationSlot.Wait(0))
+        if (!TryEnterValidation(deadline))
         {
             whenNotStarted?.Invoke();
             return false;
@@ -238,9 +270,10 @@ public sealed class P1ReceiptHttpTrust
             }
             finally
             {
-                _validationSlot.Release();
+                LeaveValidation();
             }
         });
+        ObserveWorkerFault(worker);
         try
         {
             return worker.WaitAsync(deadline.Token).GetAwaiter().GetResult() && deadline.Valid;
@@ -250,6 +283,54 @@ public sealed class P1ReceiptHttpTrust
         {
             return false;
         }
+    }
+
+    private async Task<bool> ValidateBoundedAsync(Func<bool> validation, P1ReceiptHttpDeadline deadline)
+    {
+        if (!TryEnterValidation(deadline))
+        {
+            return false;
+        }
+
+        Task<bool> worker = Task.Run(() =>
+        {
+            try
+            {
+                return validation();
+            }
+            finally
+            {
+                LeaveValidation();
+            }
+        });
+        ObserveWorkerFault(worker);
+        try
+        {
+            return await worker.WaitAsync(deadline.Token).ConfigureAwait(false) && deadline.Valid;
+        }
+        catch (Exception exception) when (exception is OperationCanceledException or AggregateException or CryptographicException
+            or ArgumentException or InvalidOperationException or ObjectDisposedException)
+        {
+            return false;
+        }
+    }
+
+    private bool TryEnterValidation(P1ReceiptHttpDeadline deadline)
+    {
+        if (!deadline.Valid || !_validationSlot.Wait(0)) return false;
+        if (GlobalValidationSlots.Wait(0)) return true;
+        _validationSlot.Release();
+        return false;
+    }
+
+    private static void ObserveWorkerFault(Task worker)
+        => _ = worker.ContinueWith(completed => _ = completed.Exception, CancellationToken.None,
+            TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+
+    private void LeaveValidation()
+    {
+        GlobalValidationSlots.Release();
+        _validationSlot.Release();
     }
 
     private bool ValidateChain(X509Certificate2 leaf, X509Certificate2[] supplied, string purpose, bool client,
@@ -308,7 +389,7 @@ public sealed class P1ReceiptHttpTrust
 
         if (client)
         {
-            if (!elements[^1].Certificate.RawData.AsSpan().SequenceEqual(ClientIssuer.RawData))
+            if (elements.Count < 2 || !elements[^1].Certificate.RawData.AsSpan().SequenceEqual(ClientIssuer.RawData))
             {
                 return false;
             }
@@ -398,6 +479,11 @@ public sealed class P1ReceiptHttpTrust
     private static bool ExplicitEku(X509Certificate2 certificate, string purpose)
         => certificate.Extensions.OfType<X509EnhancedKeyUsageExtension>()
             .Any(extension => extension.EnhancedKeyUsages.Cast<Oid>().Any(oid => oid.Value == purpose));
+
+    private static bool IsCertificateAuthority(X509Certificate2 certificate)
+        => certificate.Extensions.OfType<X509BasicConstraintsExtension>().Any(extension => extension.CertificateAuthority)
+            && certificate.Extensions.OfType<X509KeyUsageExtension>()
+                .Any(extension => (extension.KeyUsages & X509KeyUsageFlags.KeyCertSign) != 0);
 
     private static bool ValidTime(X509Certificate2 certificate, DateTimeOffset now)
         => certificate.NotBefore.ToUniversalTime() <= now.UtcDateTime && now.UtcDateTime < certificate.NotAfter.ToUniversalTime();

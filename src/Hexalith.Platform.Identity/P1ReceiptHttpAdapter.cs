@@ -16,6 +16,8 @@ public sealed class P1ReceiptHttpAdapter
     private readonly P1ReceiptHttpHistory _history;
     private readonly P1BootTimeClock _clock;
     internal Action? BeforeFinalCommit { get; set; }
+    internal Action? BeforeStatusGet { get; set; }
+    internal Func<string, int, CancellationToken, Task<TcpClient>> ConnectAsync { get; set; } = ConnectTcpAsync;
 
     /// <summary>Creates a two-origin adapter from independently supplied enrollment and production TLS trust.</summary>
     public P1ReceiptHttpAdapter(P1AuthenticatedEnrollment enrollment, P1ReceiptHttpTrust receiptTrust,
@@ -55,16 +57,23 @@ public sealed class P1ReceiptHttpAdapter
         }
 
         if (expected is null || subjectBytes is null || authenticatedNowUtc.Offset != TimeSpan.Zero
-            || !Hex(expected.ReceiptId) || !_clock.TryRead(out long chainStart))
+            || !Hex(expected.ReceiptId))
         {
             return Refuse(P1ReceiptHttpFailure.InvalidInput);
         }
 
+        if (!_clock.TryRead(out long chainStart))
+        {
+            return Refuse(P1ReceiptHttpFailure.Deadline);
+        }
+
         string receiptUri = _receiptTrust.Origin + "/v1/receipts/" + expected.ReceiptId;
         byte[] subject = subjectBytes.ToArray();
+        P1ReceiptHttpDeadline? activeDeadline = null;
         try
         {
             await using var receiptDeadline = new P1ReceiptHttpDeadline(_clock, chainStart, authenticatedNowUtc, cancellationToken);
+            activeDeadline = receiptDeadline;
             if (!receiptDeadline.Valid)
             {
                 return Refuse(P1ReceiptHttpFailure.Deadline);
@@ -86,8 +95,12 @@ public sealed class P1ReceiptHttpAdapter
             }
 
             if (!P1ReceiptTransportV1.TryDecodeReceipt(P1ReceiptTransportV1.ReceiptMediaType, receiptFrame,
-                    out P1SignedDocument? receipt) || receipt is null
-                || !receiptDeadline.TryAuthenticatedUtc(out DateTimeOffset receiptNow)
+                    out P1SignedDocument? receipt) || receipt is null)
+            {
+                return Refuse(receiptDeadline.Valid ? P1ReceiptHttpFailure.Transport : P1ReceiptHttpFailure.Deadline);
+            }
+
+            if (!receiptDeadline.TryAuthenticatedUtc(out DateTimeOffset receiptNow)
                 || !P1ReceiptVerifier.TryVerifyReceiptOnly(receipt, receiptUri, expected, subject, _enrollment, receiptNow))
             {
                 return Refuse(receiptDeadline.Valid ? P1ReceiptHttpFailure.Authority : P1ReceiptHttpFailure.Deadline);
@@ -110,10 +123,13 @@ public sealed class P1ReceiptHttpAdapter
                 return Refuse(P1ReceiptHttpFailure.Deadline);
             }
 
+            await receiptDeadline.DisposeAsync().ConfigureAwait(false);
+            BeforeStatusGet?.Invoke();
             string nonce = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
             string statusPath = "/v1/status/" + expected.ReceiptId + "?nonce=" + nonce;
             string statusUri = _statusTrust.Origin + statusPath;
             await using var statusDeadline = new P1ReceiptHttpDeadline(_clock, chainStart, authenticatedNowUtc, cancellationToken);
+            activeDeadline = statusDeadline;
             if (!statusDeadline.Valid)
             {
                 return Refuse(P1ReceiptHttpFailure.Deadline);
@@ -135,8 +151,12 @@ public sealed class P1ReceiptHttpAdapter
             }
 
             if (!P1ReceiptTransportV1.TryDecodeStatus(P1ReceiptTransportV1.StatusMediaType, statusFrame,
-                    out P1SignedDocument? status) || status is null
-                || !P1ReceiptWireV1.TryDecodeStatus(status.Payload, out P1StatusClaims? statusClaims)
+                    out P1SignedDocument? status) || status is null)
+            {
+                return Refuse(statusDeadline.Valid ? P1ReceiptHttpFailure.Transport : P1ReceiptHttpFailure.Deadline);
+            }
+
+            if (!P1ReceiptWireV1.TryDecodeStatus(status.Payload, out P1StatusClaims? statusClaims)
                 || statusClaims is null
                 || !statusDeadline.TryAuthenticatedUtc(out DateTimeOffset verificationNow)
                 || !P1ReceiptVerifier.TryVerify(receipt, receiptUri, status, statusUri, expected, subject,
@@ -163,19 +183,19 @@ public sealed class P1ReceiptHttpAdapter
             or CryptographicException or OperationCanceledException or ObjectDisposedException or ArgumentException
             or InvalidOperationException)
         {
-            return Refuse(cancellationToken.IsCancellationRequested ? P1ReceiptHttpFailure.Deadline : P1ReceiptHttpFailure.Transport);
+            return Refuse(cancellationToken.IsCancellationRequested || activeDeadline?.DeadlineFailed == true
+                ? P1ReceiptHttpFailure.Deadline : P1ReceiptHttpFailure.Transport);
         }
     }
 
-    private static async Task<byte[]?> GetAsync(P1ReceiptHttpTrust trust, string path, string type, P1ReceiptHttpDeadline deadline)
+    private async Task<byte[]?> GetAsync(P1ReceiptHttpTrust trust, string path, string type, P1ReceiptHttpDeadline deadline)
     {
-        if (!deadline.Valid || !trust.ValidateClient(deadline) || !deadline.Valid)
+        if (!deadline.Valid || !await trust.ValidateClientAsync(deadline).ConfigureAwait(false) || !deadline.Valid)
         {
             return null;
         }
 
-        using var tcp = new TcpClient();
-        await tcp.ConnectAsync(trust.Host, trust.Port, deadline.Token).ConfigureAwait(false);
+        using var tcp = await ConnectAsync(trust.Host, trust.Port, deadline.Token).WaitAsync(deadline.Token).ConfigureAwait(false);
         if (!deadline.Valid)
         {
             return null;
@@ -183,7 +203,7 @@ public sealed class P1ReceiptHttpAdapter
 
         using var tls = new SslStream(tcp.GetStream(), false,
             (sender, certificate, chain, errors) => trust.ValidateServer(certificate, chain, errors, deadline));
-        SslStreamCertificateContext? context = trust.CreateClientContextBounded(deadline);
+        SslStreamCertificateContext? context = await trust.CreateClientContextBoundedAsync(deadline).ConfigureAwait(false);
         if (context is null || !deadline.Valid)
         {
             return null;
@@ -196,6 +216,7 @@ public sealed class P1ReceiptHttpAdapter
             EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
             CertificateRevocationCheckMode = System.Security.Cryptography.X509Certificates.X509RevocationMode.NoCheck,
             CertificateChainPolicy = trust.CreateTlsPolicy(),
+            AllowTlsResume = false,
         };
         if (!deadline.Valid)
         {
@@ -208,7 +229,7 @@ public sealed class P1ReceiptHttpAdapter
         }
         if (!deadline.Valid || !tls.IsMutuallyAuthenticated || tls.LocalCertificate is null
             || !tls.LocalCertificate.GetRawCertData().AsSpan().SequenceEqual(trust.ClientCertificate.RawData)
-            || !trust.ValidateClient(deadline) || !deadline.Valid)
+            || !await trust.ValidateClientAsync(deadline).ConfigureAwait(false) || !deadline.Valid)
         {
             return null;
         }
@@ -239,7 +260,13 @@ public sealed class P1ReceiptHttpAdapter
         while (count < header.Length)
         {
             int read = await stream.ReadAsync(one, deadline.Token).ConfigureAwait(false);
-            if (!deadline.Valid || read != 1 || one[0] > 127 || (one[0] < 32 && one[0] is not (byte)'\r' and not (byte)'\n'))
+            if (!deadline.Valid || read != 1 || one[0] >= 127 || (one[0] < 32 && one[0] is not (byte)'\r' and not (byte)'\n'))
+            {
+                return null;
+            }
+
+            if (one[0] == (byte)'\n' && (count == 0 || header[count - 1] != (byte)'\r')
+                || count > 0 && header[count - 1] == (byte)'\r' && one[0] != (byte)'\n')
             {
                 return null;
             }
@@ -257,8 +284,7 @@ public sealed class P1ReceiptHttpAdapter
         }
 
         string[] lines = Encoding.ASCII.GetString(header, 0, count - 2).Split("\r\n", StringSplitOptions.None);
-        if (!lines[0].StartsWith("HTTP/1.1 200 ", StringComparison.Ordinal)
-            && !string.Equals(lines[0], "HTTP/1.1 200", StringComparison.Ordinal))
+        if (!lines[0].StartsWith("HTTP/1.1 200 ", StringComparison.Ordinal))
         {
             return null;
         }
@@ -336,6 +362,21 @@ public sealed class P1ReceiptHttpAdapter
     }
 
     private static P1ReceiptHttpResult Refuse(P1ReceiptHttpFailure failure) => new(failure, null);
+
+    private static async Task<TcpClient> ConnectTcpAsync(string host, int port, CancellationToken token)
+    {
+        var tcp = new TcpClient();
+        try
+        {
+            await tcp.ConnectAsync(host, port, token).ConfigureAwait(false);
+            return tcp;
+        }
+        catch
+        {
+            tcp.Dispose();
+            throw;
+        }
+    }
 
     private static bool Hex(string? value)
         => value is { Length: 64 } && value.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f');

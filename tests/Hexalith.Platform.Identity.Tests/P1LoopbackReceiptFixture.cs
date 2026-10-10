@@ -1,4 +1,5 @@
 using System.Formats.Asn1;
+using System.Collections.Concurrent;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -24,25 +25,30 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
     internal P1LoopbackReceiptFixture(TimeSpan? receiptServerLifetime = null, TimeSpan? receiptClientLifetime = null,
         bool serverAuthEku = true, bool clientAuthEku = true, string serverDnsName = "localhost",
         bool serverIntermediate = false, bool clientIntermediate = false, string? revocationUrl = null,
-        TimeSpan? statusServerLifetime = null, TimeSpan? statusClientLifetime = null)
+        TimeSpan? statusServerLifetime = null, TimeSpan? statusClientLifetime = null,
+        string? serverRevocationUrl = null, bool secondClientUriSan = false, bool rsaServer = false,
+        TimeSpan? clientIntermediateLifetime = null)
     {
         DateTimeOffset utc = DateTimeOffset.UtcNow;
         Now = new DateTimeOffset(utc.Ticks - utc.Ticks % TimeSpan.TicksPerSecond, TimeSpan.Zero);
         _receiptRoot = CreateRoot("receipt-fixture-root", Now);
         _statusRoot = CreateRoot("status-fixture-root", Now);
         _receiptServerIntermediate = serverIntermediate ? CreateIntermediate(_receiptRoot, "receipt-server-intermediate", Now) : null;
-        _receiptClientIntermediate = clientIntermediate ? CreateIntermediate(_receiptRoot, "receipt-client-intermediate", Now) : null;
+        _receiptClientIntermediate = clientIntermediate
+            ? CreateIntermediate(_receiptRoot, "receipt-client-intermediate", Now, clientIntermediateLifetime) : null;
         _receiptServerCertificate = CreateLeaf(_receiptServerIntermediate ?? _receiptRoot, "receipt-server", Now, true, null,
-            receiptServerLifetime ?? TimeSpan.FromHours(4), serverAuthEku, serverDnsName);
+            receiptServerLifetime ?? TimeSpan.FromHours(4), serverAuthEku, serverDnsName, serverRevocationUrl,
+            rsaServer: rsaServer);
         _statusServerCertificate = CreateLeaf(_statusRoot, "status-server", Now, true, null,
             statusServerLifetime ?? TimeSpan.FromHours(4), true, "localhost");
         _receiptClientCertificate = CreateLeaf(_receiptClientIntermediate ?? _receiptRoot, "receipt-client", Now, false, "spiffe://receipt.test/client",
-            receiptClientLifetime ?? TimeSpan.FromHours(4), clientAuthEku, "localhost", revocationUrl);
+            receiptClientLifetime ?? TimeSpan.FromHours(4), clientAuthEku, "localhost", revocationUrl, secondClientUriSan);
         _statusClientCertificate = CreateLeaf(_statusRoot, "status-client", Now, false, "spiffe://status.test/client",
             statusClientLifetime ?? TimeSpan.FromHours(4), true, "localhost");
         ReceiptFrame = P1SignedEnvelopeV1.Encode(SignReceipt(CreateReceiptClaims()));
         ReceiptServer = new(_receiptServerCertificate, _receiptClientCertificate,
-            (path, token) => Task.FromResult(ReceiptFrame), P1ReceiptTransportV1.ReceiptMediaType,
+            (path, token) => Task.FromResult(ReceiptFrameQueue is { } queue && queue.TryDequeue(out byte[]? next)
+                ? next : ReceiptFrame), P1ReceiptTransportV1.ReceiptMediaType,
             _receiptServerIntermediate);
         StatusServer = new(_statusServerCertificate, _statusClientCertificate,
             (path, token) => Task.FromResult(CreateStatusFrame(path)), P1ReceiptTransportV1.StatusMediaType);
@@ -78,10 +84,15 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
     internal P1ReceiptHttpTrust ReceiptTrust { get; }
     internal P1ReceiptHttpTrust StatusTrust { get; }
     internal X509Certificate2 ReceiptServerCertificate => _receiptServerCertificate;
+    internal X509Certificate2 ReceiptClientCertificate => _receiptClientCertificate;
+    internal X509Certificate2? ReceiptClientIntermediate => _receiptClientIntermediate;
     internal byte[] Subject { get; } = Encoding.UTF8.GetBytes("loopback subject bytes");
     internal P1ReceiptClaims Expected { get; private set; } = null!;
     internal byte[] ReceiptFrame { get; set; }
+    internal ConcurrentQueue<byte[]>? ReceiptFrameQueue { get; set; }
+    internal byte[] LastStatusFrame { get; private set; } = [];
     internal Func<P1StatusClaims, P1StatusClaims>? StatusMutation { get; set; }
+    internal Func<byte[], byte[]>? StatusFrameMutation { get; set; }
 
     internal P1ReceiptHttpAdapter Adapter() => new(Enrollment, ReceiptTrust, StatusTrust);
 
@@ -98,6 +109,10 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
         => new(ReceiptServer.Origin, null, pin ?? Digest(_receiptServerCertificate.PublicKey.ExportSubjectPublicKeyInfo()),
             _receiptClientCertificate, _receiptRoot, "spiffe://receipt.test/client", null, _receiptRoot);
 
+    internal P1ReceiptHttpTrust RootPinReceiptTrust()
+        => new(ReceiptServer.Origin, null, Digest(_receiptRoot.PublicKey.ExportSubjectPublicKeyInfo()),
+            _receiptClientCertificate, _receiptRoot, "spiffe://receipt.test/client", null, _receiptRoot);
+
     internal P1ReceiptHttpTrust WrongReceiptTrust()
         => new(ReceiptServer.Origin, _statusRoot, null, _receiptClientCertificate,
             _receiptRoot, "spiffe://receipt.test/client", null, _statusRoot);
@@ -105,6 +120,14 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
     internal P1ReceiptHttpTrust WrongStatusTrust()
         => new(StatusServer.Origin, _receiptRoot, null, _statusClientCertificate,
             _statusRoot, "spiffe://status.test/client", null, _receiptRoot);
+
+    internal P1ReceiptHttpTrust WrongStatusAnchorTrust()
+        => new(StatusServer.Origin, _receiptRoot, null, _statusClientCertificate,
+            _statusRoot, "spiffe://status.test/client", null, _statusRoot);
+
+    internal P1ReceiptHttpTrust WrongClientSpiffeTrust()
+        => new(ReceiptServer.Origin, _receiptRoot, null, _receiptClientCertificate,
+            _receiptRoot, "spiffe://receipt.test/other", null, _receiptRoot);
 
     internal P1ReceiptHttpTrust ProductionReceiptTrust()
         => new(ReceiptServer.Origin, _receiptRoot, null, _receiptClientCertificate,
@@ -117,6 +140,10 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
     internal P1ReceiptHttpTrust MissingClientIntermediateTrust()
         => new(ReceiptServer.Origin, _receiptRoot, null, _receiptClientCertificate,
             _receiptRoot, "spiffe://receipt.test/client", null, _receiptRoot);
+
+    internal P1ReceiptHttpTrust WrongClientIssuerTrust()
+        => new(ReceiptServer.Origin, _receiptRoot, null, _receiptClientCertificate,
+            _statusRoot, "spiffe://receipt.test/client", null, _receiptRoot);
 
     private P1ReceiptClaims CreateReceiptClaims()
     {
@@ -137,7 +164,10 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
             Expected.GrantId, Expected.SessionId, Expected.PolicyRevision, "active", "active", "active", "active",
             "active", nonce, Now.AddSeconds(-1), Now.AddSeconds(60));
         claims = StatusMutation?.Invoke(claims) ?? claims;
-        return P1SignedEnvelopeV1.Encode(Sign(P1ReceiptWireV1.Encode(claims), _statusKey));
+        byte[] frame = P1SignedEnvelopeV1.Encode(Sign(P1ReceiptWireV1.Encode(claims), _statusKey));
+        frame = StatusFrameMutation?.Invoke(frame) ?? frame;
+        LastStatusFrame = frame.ToArray();
+        return frame;
     }
 
     private P1SignedDocument SignReceipt(P1ReceiptClaims claims)
@@ -159,23 +189,28 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
         return request.CreateSelfSigned(now.AddDays(-1), now.AddDays(2));
     }
 
-    private static X509Certificate2 CreateIntermediate(X509Certificate2 issuer, string name, DateTimeOffset now)
+    private static X509Certificate2 CreateIntermediate(X509Certificate2 issuer, string name, DateTimeOffset now,
+        TimeSpan? lifetime = null)
     {
         using ECDsa key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         var request = new CertificateRequest("CN=" + name, key, HashAlgorithmName.SHA256);
         request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
         request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyCertSign | X509KeyUsageFlags.CrlSign, true));
         request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
-        using X509Certificate2 publicCertificate = request.Create(issuer, now.AddDays(-1), now.AddDays(2),
+        using X509Certificate2 publicCertificate = request.Create(issuer, now.AddDays(-1), now.Add(lifetime ?? TimeSpan.FromDays(2)),
             RandomNumberGenerator.GetBytes(16));
         return publicCertificate.CopyWithPrivateKey(key);
     }
 
     private static X509Certificate2 CreateLeaf(X509Certificate2 issuer, string name, DateTimeOffset now, bool server,
-        string? spiffe, TimeSpan lifetime, bool includeEku, string dnsName, string? revocationUrl = null)
+        string? spiffe, TimeSpan lifetime, bool includeEku, string dnsName, string? revocationUrl = null,
+        bool secondUriSan = false, bool rsaServer = false)
     {
-        using ECDsa key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
-        var request = new CertificateRequest("CN=" + name, key, HashAlgorithmName.SHA256);
+        using RSA? rsaKey = rsaServer ? RSA.Create(2048) : null;
+        using ECDsa? ecKey = rsaServer ? null : ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var request = rsaKey is not null
+            ? new CertificateRequest("CN=" + name, rsaKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1)
+            : new CertificateRequest("CN=" + name, ecKey!, HashAlgorithmName.SHA256);
         request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
         request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature, true));
         if (includeEku)
@@ -185,7 +220,11 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
         }
         var san = new SubjectAlternativeNameBuilder();
         if (server) san.AddDnsName(dnsName);
-        else san.AddUri(new Uri(spiffe!));
+        else
+        {
+            san.AddUri(new Uri(spiffe!));
+            if (secondUriSan) san.AddUri(new Uri("spiffe://receipt.test/other"));
+        }
         request.CertificateExtensions.Add(san.Build());
         if (revocationUrl is not null)
         {
@@ -209,12 +248,19 @@ internal sealed class P1LoopbackReceiptFixture : IAsyncDisposable
             aia.WriteCharacterString(UniversalTagNumber.IA5String, revocationUrl,
                 new Asn1Tag(TagClass.ContextSpecific, 6));
             aia.PopSequence();
+            aia.PushSequence();
+            aia.WriteObjectIdentifier("1.3.6.1.5.5.7.48.1");
+            aia.WriteCharacterString(UniversalTagNumber.IA5String, revocationUrl,
+                new Asn1Tag(TagClass.ContextSpecific, 6));
+            aia.PopSequence();
             aia.PopSequence();
             request.CertificateExtensions.Add(new X509Extension("1.3.6.1.5.5.7.1.1", aia.Encode(), false));
         }
         byte[] serial = RandomNumberGenerator.GetBytes(16);
-        using X509Certificate2 publicCertificate = request.Create(issuer, now.AddHours(-1), now.Add(lifetime), serial);
-        return publicCertificate.CopyWithPrivateKey(key);
+        using X509Certificate2 publicCertificate = request.Create(issuer.SubjectName,
+            X509SignatureGenerator.CreateForECDsa(issuer.GetECDsaPrivateKey()!),
+            now.AddHours(-1), now.Add(lifetime), serial);
+        return rsaKey is not null ? publicCertificate.CopyWithPrivateKey(rsaKey) : publicCertificate.CopyWithPrivateKey(ecKey!);
     }
 
     public async ValueTask DisposeAsync()
