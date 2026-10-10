@@ -77,6 +77,33 @@ public static class P1ReceiptVerifier
         }
     }
 
+    internal static bool TryVerifyReceiptOnly(P1SignedDocument? document, string? retrievalUri,
+        P1ReceiptClaims? expected, byte[]? subjectBytes, P1AuthenticatedEnrollment? authenticatedEnrollment,
+        DateTimeOffset authenticatedNowUtc)
+    {
+        try
+        {
+            P1ReceiptEnrollment? enrollment = authenticatedEnrollment?.Enrollment;
+            byte[]? payload = document?.Payload;
+            byte[]? signature = document?.Signature;
+            if (payload is not { Length: > 0 and <= MaxPayloadLength } || signature is not { Length: 64 }
+                || expected is null || subjectBytes is null || enrollment is null
+                || authenticatedNowUtc.Offset != TimeSpan.Zero
+                || !P1ReceiptWireV1.TryDecodeReceipt(payload, out P1ReceiptClaims? claims) || claims is null)
+            {
+                return false;
+            }
+
+            var snapshot = new P1SignedDocument(payload.ToArray(), signature.ToArray());
+            return ReceiptValid(claims, expected, subjectBytes.ToArray(), enrollment, retrievalUri, authenticatedNowUtc)
+                && VerifySignature(snapshot, enrollment.ReceiptPublicKeySpki, enrollment.ReceiptKeyFingerprint);
+        }
+        catch (Exception exception) when (exception is ArgumentException or CryptographicException or InvalidOperationException or EncoderFallbackException)
+        {
+            return false;
+        }
+    }
+
     private static bool ReceiptValid(P1ReceiptClaims receipt, P1ReceiptClaims expected, byte[] subjectBytes, P1ReceiptEnrollment enrollment,
         string? retrievalUri, DateTimeOffset now)
     {
