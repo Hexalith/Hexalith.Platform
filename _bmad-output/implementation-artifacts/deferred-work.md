@@ -335,3 +335,18 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
   summary: Validate actor principal ULID syntax in the Identity receipt verifier.
   evidence: The Identity contract requires `platform:actor:<ULID>`, while `P1ReceiptVerifier.ValidPrincipal` accepts any nonempty suffix; this is outside the Builds source-mapping intent.
+
+## Deferred from: code review of spec-1-3-resolve-one-active-root-source-mapping.md (2026-10-10)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Run the real EventStore and Commons production-candidate tests in a Platform-root CI check.
+  evidence: `WorkspaceMsBuildTests.cs:240` and `:278` skip in standalone Builds CI, which does not fetch Platform gitlinks. Carried from review iterations 11 and 13 (V1).
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Exercise the case-insensitive `FilesystemPathRules.Comparison` branch on a Windows or macOS CI leg.
+  evidence: Every Builds workflow runs on `ubuntu-latest`. Replacing the method body with `return StringComparison.Ordinal;` leaves CI green, while containment and the host-exclusion condition depend on it on case-insensitive filesystems.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Record the selected `--mode` in run evidence and its canonical command.
+  evidence: `ModuleRunEvidenceFactory.CreateCommand` and the readiness validator's rebuilt command omit `--mode`, so evidence from a source/Debug run looks the same as the package/Release run CI must use. This changes evidence contracts, which story 1.3 forbids. It belongs with Story 1.4 package-mode identity.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Derive a standalone active root's module identity from a declared source rather than its checkout directory name.
+  evidence: `WorkspaceRootResolver.cs:64,112` uses `Path.GetFileName` of the root. A worktree such as `Hexalith.Parties-wt2` loses HXW005 duplicate detection for `Hexalith.Parties.*`, and a directory named `Hexalith` flags every `Hexalith.*` package. User decision 2026-10-10: wait for the next-version Platform declaration to supply a module identity (Stories 1.5/1.12), and document the directory-name rule meanwhile.

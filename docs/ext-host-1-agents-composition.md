@@ -1,8 +1,8 @@
 # EXT-HOST-1 — Agents platform host composition
 
-The expanded owner artifact remains Uncommitted and unavailable. A successful build of the default empty scaffold does not prove Agents composition or Levels 4/5 qualification.
+The expanded owner artifact is Committed at immutable Platform target `f448db29493c1b30b0f18380188fe99b8b7606fe` with the Full command pinned in the Agents external dependency register. It remains unavailable: the exact-target Full command still exits at the closed gate. A successful build of the default empty scaffold does not prove Agents composition or Levels 4/5 qualification. Earlier Uncommitted statements in dated source evidence describe historical state.
 
-The complete requirement is H1–H4: Platform-owned Agents DomainService/UI composition with accepted EventStore, Parties, Conversations, Tenants, Provider/Safety, Workflow, custody, identity and health/telemetry; a replicated durable security-audit spool and private exact-target replay/recorder/worker credentials; real payload protection and persisted FR-34 startup/every-readiness attestation; migration/fences/guard protocols, all-or-none manifest destruction, v21/v23 compromise/dispatch/reserve/activation/completion and restore qualification. Accepted owner targets, dates and executable compatibility commands remain required. Local signing fixtures do not supply S3/S4 or these host protocols.
+The complete requirement is H1–H4: Platform-owned Agents DomainService/UI composition with accepted EventStore, Parties, Conversations, Tenants, Provider/Safety, Workflow, custody, identity and health/telemetry; a replicated durable security-audit spool and private exact-target replay/recorder/worker credentials; real payload protection and persisted FR-34 startup/every-readiness attestation; migration/fences/guard protocols, all-or-none manifest destruction, v21/v23 compromise/dispatch/reserve/activation/completion and restore qualification. The target, date and command are accepted; installed bindings and passing qualification remain required. Local signing fixtures do not supply S3/S4 or these host protocols.
 
 Default full verification refuses before build or live invocation:
 
@@ -17,7 +17,7 @@ Explicit local scaffold verification builds Debug into isolated artifacts:
 ./eng/verify-agents-host.sh --mode LocalScaffold --artifacts-path /tmp/hexalith-agents54-host-artifacts
 ```
 
-It proves only the platform scaffold build and ownership checks. It cannot mark EXT-HOST-1 Available, and a fake accepted manifest cannot unlock undelivered code. Unknown arguments/modes fail before building. This proposed runner has not been accepted as the full owner compatibility command.
+It proves only the platform scaffold build and ownership checks. It cannot mark EXT-HOST-1 Available, and a fake accepted manifest cannot unlock undelivered code. Unknown arguments/modes fail before building. The register accepts the Full runner as the compatibility command; the runner has not passed.
 
 Setting `Platform:Agents:Enabled=true` refuses startup immediately after builder creation, before resource composition. The default scaffold and the explicitly enabled Works/Identity lane retain their existing wiring. No fake custody/protection/spool or new database is installed.
 
