@@ -356,3 +356,15 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
   summary: Confirm whether the final-import marker guard rejects tool-launched projects that do not import `Microsoft.NET.Sdk.targets`.
   evidence: `SourceMappingMaterializer.cs:352` (`GuardFinalImportMarker`) runs in every mapped project through the `Directory.Build.targets` hook, but only `Microsoft.NET.Sdk.targets` imports the file that sets `_HXWFinalTargetsImported`. A Traversal, NoTargets or legacy project in a launched build graph would fail HXW006. No such project exists in any root-declared reference, so this is unverified (medium if real). One such tool-launched build would settle it; the likely fix is to condition the guard on `'$(UsingMicrosoftNETSdk)' == 'true'`.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Correct Identity's incident classification for a prior observation from another receipt URI.
+  evidence: `P1ReceiptHttpAdapter.RetrieveAsync` returns `ImmutableIdIncident` for mismatched retrieval URI input; that is not evidence that the same immutable ID changed and is unrelated to Builds mapping.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Decide whether Identity receipt history must survive adapter recreation within a process.
+  evidence: The adapter creates a new `P1ReceiptHttpHistory` by default, allowing a changed frame after recreation; an explicit adapter lifecycle contract or a real recreating consumer would settle whether this violates the intended history scope.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Require a resolved installed-agent roster before party creation collision checks.
+  evidence: Party creation guidance checks the `codes` map but ignores `installed_agents_resolved`; a failed lookup can omit an installed code and permit an unintended override.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
+  summary: Align CIS and TEA skill configuration with central BMad configuration resolution.
+  evidence: Changed BMM skills use `resolve_config.py` while CIS and TEA skills still read generated per-module YAML, so central overrides can yield different settings across skills.
