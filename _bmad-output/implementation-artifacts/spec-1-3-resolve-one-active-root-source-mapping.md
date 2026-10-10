@@ -7,7 +7,7 @@ created: '2026-10-09'
 status: 'in-review'
 baseline_commit: '4a41508c354acdccd7e18d6f71ad6f7650295714'
 route: 'dispatch'
-review_loop_iteration: 6
+review_loop_iteration: 7
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -268,6 +268,35 @@ Review iteration 6 (2026-10-09). Each finding was assessed before grouping; the 
 | E3 | medium | patch | `GIT_SSH_VARIANT` is absent from Git's transport allowlist, so a configured custom SSH helper may receive incompatible arguments during direct checkout. |
 
 Grouped specification defects: eager evaluation of unrelated source projects (B6), unverified package-mode gitlinks (B9, E1), and space-containing Git subsection parsing (B10). Patch findings are recorded but not applied because the specification defects trigger a loopback and `review_loop_iteration` has exceeded five. The staged sixth-pass Builds implementation and its passing gates remain available for human review.
+
+Review iteration 7 (2026-10-10). Findings matching unchanged iteration-6 code and claims retain their prior verdict and route. New findings were checked against their callers.
+
+| ID | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| B1 | medium | patch | Carried from iteration 6 B8: `.gitmodules` is read without physical containment, so an external symlink can supply declarations. |
+| B2 | medium | bad_spec | Carried from iteration 6 B9: package mode accepts a declaration without verifying its stage-zero gitlink. |
+| B3 | medium | bad_spec | Carried from iteration 6 B10: splitting Git configuration output at the first space omits a direct reference whose subsection name contains spaces. |
+| B4 | high | patch | Carried from iteration 6 B11: a backslash after `references/` can pass the direct-path check on Windows. |
+| B5 | medium | patch | Carried from iteration 6 B7: an invalid primary native-test path can reach composition before its existing diagnostic is returned. |
+| B6 | medium | bad_spec | Carried from iteration 6 B6: reconciliation evaluates unrelated malformed production projects before comparing requested package IDs. |
+| B7 | medium | patch | Carried from iteration 6 B1: ProjectReference asset metadata can change behavior after package conversion. |
+| B8 | medium | patch | Carried from iteration 6 B2: PackageReference output metadata can change behavior after project conversion. |
+| B9 | medium | patch | Carried from iteration 6 E3: the Git environment drops `GIT_SSH_VARIANT`. |
+| B10 | medium | bad_spec | `FilesystemPathRules.Comparison` tests a directory's name in its parent and returns that result. A case-sensitive mounted child of a case-insensitive parent is therefore classified by the parent's rule; containment callers can accept a wrong-case path in the child. |
+| B11 | medium | patch | Carried from iteration 6 V1: explicit-mode plan tests do not verify the public source/Debug default. |
+| B12 | medium | patch | Carried from iteration 6 V3: the public native-process test covers VSTest but not MTP. |
+| B13 | medium | patch | Carried from iteration 6 V2: no public no-Git command test verifies the engine-written mapping and plan. |
+| E1 | medium | patch | Carried from iteration 6 B1: ProjectReference `IncludeAssets` can become active package metadata. |
+| E2 | medium | patch | Carried from iteration 6 B2: PackageReference `ReferenceOutputAssembly` can become active project metadata. |
+| E3 | false | reject | Carried from iteration 6 B5: a utility-directory name alone does not prove selection; candidates must be packable and match the requested effective PackageId and identity prefix. |
+| E4 | medium | defer | The unrelated custody change replaces index-only archive keys with digest-addressed keys. `FindArchivedAsync` and `ArchivesCompleteAsync` now read only the new keys, so a previously written archive cannot be read; no legacy read or migration exists. This is outside story 1.3. |
+| E5 | medium | bad_spec | `requiresMapping` is true for a tool-launched command even when the root manifest is nonexecutable. A required direct-reference failure in `ResolveAsync` can return `HXW004` before the later `HXR003` check, though the root manifest cannot change through checkout. |
+| V1 | medium | patch | Carried from iteration 6 V1: the public default has no plan-boundary test. |
+| V2 | medium | patch | Carried from iteration 6 V2: the public no-Git mapping handoff has no plan-boundary test. |
+| V3 | medium | patch | Carried from iteration 6 V3: the public MTP path has no native-process boundary test. |
+| V4 | medium | bad_spec | Carried from iteration 6 B10: a legal space-containing Git subsection name is misparsed and its direct reference omitted. |
+
+The source-mapping specification defects are B2, B3, B6, B10, E5 and V4. Patch and defer entries are recorded but not processed because those defects require a loopback. `review_loop_iteration` is now 7, beyond the workflow's five-loop cap, so the workflow halts for human review. The sixth-pass implementation remains intact; no code was reverted or patched in this iteration.
 
 ## Verification
 
