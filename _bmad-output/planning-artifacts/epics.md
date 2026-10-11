@@ -1025,7 +1025,9 @@ So that Platform can compose it as a real service for the reference composition 
 
 **Given** the EventStore, Memories and Tenants declarations
 **When** validated
-**Then** each declares its app and resource identities, its logical Dapr roles with their configuration keys, and its readiness checks and startup tasks with their scopes
+**Then** each declares its app and resource identities, its logical Dapr roles with their configuration keys, and usable readiness checks
+**And** each declares independently executable startup tasks with their scopes and authority classes when such tasks exist; an empty task list is valid when none exists
+**And** in-process hosted services are not represented as executable tasks or claimed complete by readiness alone
 
 **Given** Memories' declaration
 **When** validated
