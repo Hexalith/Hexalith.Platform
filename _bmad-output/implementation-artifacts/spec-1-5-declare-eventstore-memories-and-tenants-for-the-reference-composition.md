@@ -4,10 +4,10 @@ type: 'feature'
 epic: 1
 story: 5
 created: '2026-10-11'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 baseline_commit: '6f703dd0227d8fac023ad97d909c5aaa42115578'
-review_loop_iteration: 6
+review_loop_iteration: 7
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -209,6 +209,24 @@ Use `Memories:LlmComponentPath` as the extension's consumer-supplied LLM YAML pa
 | E6-2 audit auth fault | medium — carried B3-11: a faulted authentication task leaves the separate audit UI transition pending. | defer |
 | E6-3 correction registry growth | medium — carried B3-12: the separate correction registry retains unbounded pending/paired records. | defer |
 | V6-1 qualified snapshot invocation coverage | medium — the separate EventStore snapshot tests stub the invoker or build a qualified router request; none asserts the real Dapr invoker serializes both capture fields. | defer |
+| B7-1 Tenants topic spelling | false — carried B2-1: the v2 topic name is a logical identifier and the schema disallows dots; Story 1.7 binds it to the running `tenants.events` channel. | reject |
+| B7-2 EventStore topic pattern | false — carried B8: the schema cannot express the runtime's wildcard/derived topic pattern, and this story does not change a renderer; the declared name is logical. | reject |
+| B7-3 EventStore projection workers | medium — the required gateway registers projection retry, activation, polling, and cleanup hosted services with external effects, while `workers` is empty and their recovery controls are absent. | bad_spec |
+| B7-4 EventStore projection settings | medium — `AddEventStoreServer` binds `EventStore:Projections` and `EventStore:ProjectionDispatch` for the registered projection workers, but the declaration has no input for either. | bad_spec |
+| B7-5 Memories embedding egress | medium — `EmbeddingProviderTransport` calls configured Google/Ollama embedding endpoints and `OidcTokenProvider` posts to an embedding credential token endpoint; the manifest's provider egress covers only Conversation. | bad_spec |
+| B7-6 clock verifier parity | high — clock `/ready` checks a nonempty signature on a probe with non-ULID requesting IDs, while `ClockAttestationVerifier` rejects those IDs and also checks freshness, key epoch and the configured public key. It can report ready for attestations consumers reject. | bad_spec |
+| B7-7 audit auth fault | medium — carried B3-11: a faulted authentication task leaves the separate audit UI transition pending. | defer |
+| B7-8 correction registry growth | medium — carried B3-12: the separate correction registry retains unbounded pending/paired records. | defer |
+| B7-9 correction reversal | medium — carried E3-2: a later reversal can hide an earlier correction proof in the separate UI change. | defer |
+| B7-10 original audit page cap | medium — the separate audit UI lookup stops after 50 matching-timestamp pages even when a valid original row is on a later page, leaving that proof unrecovered. | defer |
+| B7-11 ACL assertion breadth | low — the new script asserts only a subset of `tenants-api` rules, so an accidental broad `/**` allow would still pass despite the declared restricted ACL; exact rule equality is a direct test correction. | patch |
+| E7-1 snapshot interval precheck | medium — carried B6-1: the separate EventStore snapshot request can miss the command that first crosses its interval. | defer |
+| E7-2 correction reversal | medium — carried E3-2: a later reversal can hide an earlier correction proof in the separate UI change. | defer |
+| E7-3 proof visibility during reauthorization | false — `OnAuthenticationStateChanged` increments `_pairedProofGeneration` before its asynchronous work; the pending proof refresh checks that generation before applying results, and the transition clears verified rows. | reject |
+| E7-4 correction registry growth | medium — carried B3-12: the separate correction registry retains unbounded pending/paired records. | defer |
+| V7-1 actor live-disable coverage | medium — the actor tests toggle before reminders while the active-purge test calls the processor directly, so dropping the actor's live callback forwarding would pass; an actor reminder test should disable after the first deletion. | patch |
+| V7-2 audit page principal transition coverage | medium — carried V4-1: the separate Tenant audit UI change has no page test publishing a pending authentication transition. | defer |
+| V7-3 pending correction page coverage | medium — the separate audit UI tests seed proven pairs, but no mounted-page test starts from a registry pending completion and recovers its paired receipt. | defer |
 
 ## Design Notes
 
