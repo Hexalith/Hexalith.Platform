@@ -27,8 +27,12 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     /// <summary>Gets the exact private actor registration name.</summary>
     public const string ActorTypeName = "DeletionCapabilitySigningActor";
     /// <summary>Gets the exact tenant/canonical-request actor address; successful committed issue revision is absent by construction.</summary>
-    public static string GetActorId(DeletionBatchCapabilityV1 payload) => new AggregateIdentity(payload.TenantId, "custody",
-        "deletion-signing-" + DeletionBatchCapabilityCodec.SigningRequestId(payload)).ActorId;
+    public static string GetActorId(DeletionBatchCapabilityV1 payload)
+    {
+        ArgumentNullException.ThrowIfNull(payload);
+        return new AggregateIdentity(payload.TenantId, "custody",
+            "deletion-signing-" + DeletionBatchCapabilityCodec.SigningRequestId(payload)).ActorId;
+    }
     /// <inheritdoc/>
     public async Task<DeletionCapabilitySigningOutcome> SignAsync(DeletionBatchCapabilityV1 payload)
     {

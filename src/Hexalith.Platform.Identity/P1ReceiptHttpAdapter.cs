@@ -72,7 +72,8 @@ public sealed class P1ReceiptHttpAdapter
         P1ReceiptHttpDeadline? activeDeadline = null;
         try
         {
-            await using var receiptDeadline = new P1ReceiptHttpDeadline(_clock, chainStart, authenticatedNowUtc, cancellationToken);
+            var receiptDeadline = new P1ReceiptHttpDeadline(_clock, chainStart, authenticatedNowUtc, cancellationToken);
+            await using var receiptDeadlineScope = receiptDeadline.ConfigureAwait(false);
             activeDeadline = receiptDeadline;
             if (!receiptDeadline.Valid)
             {
@@ -128,7 +129,8 @@ public sealed class P1ReceiptHttpAdapter
             string nonce = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
             string statusPath = "/v1/status/" + expected.ReceiptId + "?nonce=" + nonce;
             string statusUri = _statusTrust.Origin + statusPath;
-            await using var statusDeadline = new P1ReceiptHttpDeadline(_clock, chainStart, authenticatedNowUtc, cancellationToken);
+            var statusDeadline = new P1ReceiptHttpDeadline(_clock, chainStart, authenticatedNowUtc, cancellationToken);
+            await using var statusDeadlineScope = statusDeadline.ConfigureAwait(false);
             activeDeadline = statusDeadline;
             if (!statusDeadline.Valid)
             {

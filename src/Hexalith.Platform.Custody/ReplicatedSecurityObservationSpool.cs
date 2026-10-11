@@ -107,6 +107,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken);
         try
         {
+            ArgumentNullException.ThrowIfNull(lookup);
             ValidateIntent(new(lookup.RetainedServerReceiptKey, "system", lookup.ReasonCode, lookup.UntrustedFieldsHmac, lookup.DigestKeyVersion));
             if (authority is null) { return new(false); }
             var target = await CurrentLookupAsync().ConfigureAwait(false); if (target is null) { return new(false); }

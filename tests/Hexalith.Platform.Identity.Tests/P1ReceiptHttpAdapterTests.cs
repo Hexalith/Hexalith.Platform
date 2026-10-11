@@ -13,7 +13,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task TwoOrigins_ReturnExactCopiedFramesAndFreshStatus()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpAdapter adapter = fixture.Adapter();
         P1ReceiptHttpResult first = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -61,7 +62,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task PinOnlyFixtureSucceedsAndWrongPinRefuses()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var pinOnly = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.PinOnlyReceiptTrust(), fixture.StatusTrust);
         (await pinOnly.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken)).Succeeded.ShouldBeTrue();
@@ -76,7 +78,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task WrongStatusTrustAndProductionTrustRefuse()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         Should.Throw<ArgumentException>(() => new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.WrongReceiptTrust()));
         var wrongStatus = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.WrongStatusTrust());
         P1ReceiptHttpResult wrongStatusResult = await wrongStatus.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
@@ -95,7 +98,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task CorrectRootWithWrongStatusAnchorRefuses()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.WrongStatusAnchorTrust());
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -114,7 +118,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("Content-Type: application/vnd.hexalith.p1-receipt.v1\r\n")]
     public async Task ContradictoryHeadersRefuseWithoutStatus(string header)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptServer.ExtraHeaders = header;
         P1ReceiptHttpResult result = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -128,7 +133,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("public")]
     public async Task SoleMissingOrPublicCacheDirectiveRefuses(string? directive)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptServer.CacheControl = directive;
         P1ReceiptHttpResult result = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -148,7 +154,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("ascii-del")]
     public async Task MalformedHttpFramingRefusesBeforeStatus(string mode)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         switch (mode)
         {
             case "duplicate-length": fixture.ReceiptServer.ExtraHeaders = "Content-Length: " + fixture.ReceiptFrame.Length + "\r\n"; break;
@@ -173,7 +180,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData(1, false)]
     public async Task ResponseHeaderTerminatorAtExactLimitIsAcceptedAndBeyondLimitRefused(int excessBytes, bool accepted)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         string prefix = "HTTP/1.1 200 OK\r\nContent-Type: " + P1ReceiptTransportV1.ReceiptMediaType
             + "\r\nCache-Control: no-store\r\nContent-Length: " + fixture.ReceiptFrame.Length
             + "\r\nConnection: close\r\n";
@@ -194,7 +202,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ChangedValidSignatureIsIncidentWithoutStatusOrReplacement()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpAdapter adapter = fixture.Adapter();
         P1ReceiptHttpResult first = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -215,7 +224,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task SignedWrongScopeRefusesBeforeStatusAndDoesNotSeedHistory()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpAdapter adapter = fixture.Adapter();
         byte[] first = fixture.ReceiptFrame;
         fixture.ReceiptFrame = fixture.SignReceiptFrame(fixture.Expected with { TargetSha256 = new string('b', 64) });
@@ -232,7 +242,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task NullIdAndExpiredStatusRefuseWithoutObservation()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpAdapter adapter = fixture.Adapter();
         P1ReceiptHttpResult badId = await adapter.RetrieveAsync(fixture.Expected with { ReceiptId = null! }, fixture.Subject,
             fixture.Now, cancellationToken: TestContext.Current.CancellationToken);
@@ -253,7 +264,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("partial")]
     public async Task ReceiptTransportRefusalsNeverRequestStatus(string mode)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         switch (mode)
         {
             case "redirect": fixture.ReceiptServer.StatusCode = 302; break;
@@ -276,7 +288,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("wrong-type")]
     public async Task StatusAuthorityAndTransportRefusalsReturnNoObservation(string mode)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         if (mode == "revoked") fixture.StatusMutation = claims => claims with { ReceiptState = "revoked" };
         if (mode == "stale-nonce") fixture.StatusMutation = claims => claims with { Nonce = new string('e', 64) };
         if (mode == "wrong-type") fixture.StatusServer.MediaType = P1ReceiptTransportV1.ReceiptMediaType;
@@ -292,7 +305,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("wrong-type")]
     public async Task RefusedStatusDoesNotSeedImmutableIdHistory(string mode)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var adapter = fixture.Adapter();
         if (mode == "revoked") fixture.StatusMutation = claims => claims with { ReceiptState = "revoked" };
         else fixture.StatusServer.MediaType = P1ReceiptTransportV1.ReceiptMediaType;
@@ -309,7 +323,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task CallerSuppliedPriorFrameDetectsChangeAcrossAdapterInstances()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpResult first = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
         first.Succeeded.ShouldBeTrue();
@@ -324,7 +339,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task HistoryFullIdRetryWithChangedValidFrameRemainsCapacityRefusal()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var history = new P1ReceiptHttpHistory();
         for (int i = 0; i < P1ReceiptHttpHistory.MaxIds; i++)
         {
@@ -353,7 +369,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("https://receipt.test/client")]
     public async Task NoncanonicalSpiffeIdsAreRejectedAtTrustConstruction(string id)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         Should.Throw<ArgumentException>(() => new P1ReceiptHttpTrust(fixture.ReceiptServer.Origin,
             fixture.ReceiptTrust.ServerAnchor, null, fixture.ReceiptTrust.ClientCertificate,
             fixture.ReceiptTrust.ClientIssuer, id));
@@ -362,7 +379,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task NullIssuerAndIpLiteralOriginAreRejectedAtTrustConstruction()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         Should.Throw<ArgumentNullException>(() => new P1ReceiptHttpTrust(fixture.ReceiptServer.Origin,
             fixture.ReceiptTrust.ServerAnchor, null, fixture.ReceiptTrust.ClientCertificate, null!,
             "spiffe://receipt.test/client"));
@@ -376,7 +394,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData(true)]
     public async Task WrongOrSecondClientSpiffeUriRefusesBeforeHttp(bool secondSan)
     {
-        await using var fixture = new P1LoopbackReceiptFixture(secondClientUriSan: secondSan);
+        var fixture = new P1LoopbackReceiptFixture(secondClientUriSan: secondSan);
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpTrust trust = secondSan ? fixture.ReceiptTrust : fixture.WrongClientSpiffeTrust();
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, trust, fixture.StatusTrust);
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
@@ -390,9 +409,10 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData(false)]
     public async Task InitialAuthenticatedCertificateExpiryRefusesBeforeHttp(bool serverExpires)
     {
-        await using var fixture = new P1LoopbackReceiptFixture(
+        var fixture = new P1LoopbackReceiptFixture(
             receiptServerLifetime: serverExpires ? TimeSpan.FromMinutes(30) : null,
             receiptClientLifetime: serverExpires ? null : TimeSpan.FromMinutes(30));
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpResult result = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject,
             fixture.Now.AddMinutes(31), cancellationToken: TestContext.Current.CancellationToken);
         result.Succeeded.ShouldBeFalse();
@@ -407,8 +427,9 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData(false, false, "wrong.localhost")]
     public async Task MissingPurposeOrWrongDnsRefusesBeforeHttp(bool missingClientEku, bool missingServerEku, string dns)
     {
-        await using var fixture = new P1LoopbackReceiptFixture(serverAuthEku: !missingServerEku,
+        var fixture = new P1LoopbackReceiptFixture(serverAuthEku: !missingServerEku,
             clientAuthEku: !missingClientEku, serverDnsName: dns);
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         P1ReceiptHttpResult result = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
         result.Succeeded.ShouldBeFalse();
@@ -419,7 +440,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ServerWithoutClientCertificateRequestRefusesBeforeHttp()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptServer.RequestClientCertificate = false;
         P1ReceiptHttpResult result = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -431,7 +453,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task SuppliedServerAndClientIntermediatesVerifyAndMissingClientIntermediateRefuses()
     {
-        await using var fixture = new P1LoopbackReceiptFixture(serverIntermediate: true, clientIntermediate: true);
+        var fixture = new P1LoopbackReceiptFixture(serverIntermediate: true, clientIntermediate: true);
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptServer.RequireClientChainThrough(fixture.ReceiptClientIntermediate!);
         P1ReceiptHttpResult positive = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -447,7 +470,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task SelfSignedClientLeafCannotEnrollAsItsOwnIssuer()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         using ECDsa key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         var request = new CertificateRequest("CN=self-client", key, HashAlgorithmName.SHA256);
         request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
@@ -468,7 +492,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData(true, false)]
     public async Task DistinctClientIssuerRequiresCaAndCertificateSigningUsage(bool isCa, bool canSignCertificates)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         using ECDsa key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         var request = new CertificateRequest("CN=invalid-client-issuer", key, HashAlgorithmName.SHA256);
         request.CertificateExtensions.Add(new X509BasicConstraintsExtension(isCa, false, 0, true));
@@ -485,8 +510,9 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ExpiredSuppliedIntermediateAndDifferentEnrolledIssuerRefuseBeforeHttp()
     {
-        await using var expired = new P1LoopbackReceiptFixture(clientIntermediate: true,
+        var expired = new P1LoopbackReceiptFixture(clientIntermediate: true,
             clientIntermediateLifetime: TimeSpan.FromMinutes(30));
+        await using var expiredScope = expired.ConfigureAwait(false);
         expired.ReceiptClientIntermediate!.NotAfter.ToUniversalTime().ShouldBeLessThan(expired.Now.AddMinutes(31).UtcDateTime);
         expired.ReceiptClientCertificate.NotAfter.ToUniversalTime().ShouldBeGreaterThan(expired.Now.AddMinutes(31).UtcDateTime);
         P1ReceiptHttpResult expiredResult = await expired.Adapter().RetrieveAsync(expired.Expected, expired.Subject,
@@ -494,7 +520,8 @@ public sealed class P1ReceiptHttpAdapterTests
         expiredResult.Observation.ShouldBeNull();
         expired.ReceiptServer.Requests.ShouldBeEmpty();
 
-        await using var different = new P1LoopbackReceiptFixture();
+        var different = new P1LoopbackReceiptFixture();
+        await using var differentScope = different.ConfigureAwait(false);
         var adapter = new P1ReceiptHttpAdapter(different.Enrollment, different.WrongClientIssuerTrust(), different.StatusTrust);
         P1ReceiptHttpResult differentResult = await adapter.RetrieveAsync(different.Expected, different.Subject,
             different.Now, cancellationToken: TestContext.Current.CancellationToken);
@@ -505,7 +532,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ServerLeafExpiringDuringChainBuildRefusesBeforeHttp()
     {
-        await using var fixture = new P1LoopbackReceiptFixture(receiptServerLifetime: TimeSpan.FromMinutes(30));
+        var fixture = new P1LoopbackReceiptFixture(receiptServerLifetime: TimeSpan.FromMinutes(30));
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptTrust.BeforeServerChainBuild = () => clock.Advance(TimeSpan.FromSeconds(2));
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
@@ -518,7 +546,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ClientExpiryDuringContextCreationRefusesWithNoHttp()
     {
-        await using var fixture = new P1LoopbackReceiptFixture(receiptClientLifetime: TimeSpan.FromMinutes(30));
+        var fixture = new P1LoopbackReceiptFixture(receiptClientLifetime: TimeSpan.FromMinutes(30));
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptTrust.ContextCreated = () => clock.Advance(TimeSpan.FromSeconds(2));
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
@@ -532,7 +561,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ClientExpiryDuringTlsHandshakeRefusesWithNoHttp()
     {
-        await using var fixture = new P1LoopbackReceiptFixture(receiptClientLifetime: TimeSpan.FromMinutes(30));
+        var fixture = new P1LoopbackReceiptFixture(receiptClientLifetime: TimeSpan.FromMinutes(30));
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptTrust.BeforeServerChainBuild = () => clock.Advance(TimeSpan.FromSeconds(2));
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
@@ -547,9 +577,10 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData(false)]
     public async Task StatusOriginCertificateExpiryBetweenGetsRefusesBeforeStatusHttp(bool serverExpires)
     {
-        await using var fixture = new P1LoopbackReceiptFixture(
+        var fixture = new P1LoopbackReceiptFixture(
             statusServerLifetime: serverExpires ? TimeSpan.FromMinutes(30) : null,
             statusClientLifetime: serverExpires ? null : TimeSpan.FromMinutes(30));
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptServer.BeforeResponse = token =>
         {
@@ -568,7 +599,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task UnavailableBootTimeClockRefusesWithoutNetwork()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust,
             new P1UnavailableBootTimeClock());
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
@@ -582,7 +614,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task FinalStatusExpiryRefusesWithoutSeedingHistory()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.StatusMutation = claims => claims with { ExpiresAtUtc = fixture.Now.AddSeconds(2) };
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
@@ -602,7 +635,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task FinalReceiptExpiryRefusesWithoutObservation()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.SetReceipt(fixture.Expected with { ExpiresAtUtc = fixture.Now.AddSeconds(2) });
         var clock = new P1TestBootTimeClock();
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
@@ -621,7 +655,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task FinalCancellationRefusesAndDoesNotSeedHistory()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         var adapter = fixture.Adapter();
         adapter.BeforeFinalCommit = cancellation.Cancel;
@@ -638,13 +673,14 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task PendingBodyRefusesAfterBoottimeJump()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptServer.BodyBytesToSend = 5;
         fixture.ReceiptServer.AfterPartialBody = async token =>
         {
             clock.Advance(TimeSpan.FromSeconds(301));
-            await Task.Delay(Timeout.Infinite, token);
+            await Task.Delay(Timeout.Infinite, token).ConfigureAwait(false);
         };
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
@@ -658,12 +694,13 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task CompleteBodyWaitingForFinalEofRefusesAtTenSecondDeadline()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptServer.AfterPartialBody = async token =>
         {
             clock.Advance(TimeSpan.FromSeconds(11));
-            await Task.Delay(Timeout.Infinite, token);
+            await Task.Delay(Timeout.Infinite, token).ConfigureAwait(false);
         };
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
@@ -681,7 +718,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("partial-body")]
     public async Task PendingIoRefusesAtOwnTenSecondGetLimit(string stage)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
         if (stage == "connect")
@@ -689,7 +727,7 @@ public sealed class P1ReceiptHttpAdapterTests
             adapter.ConnectAsync = async (_, _, token) =>
             {
                 clock.Advance(TimeSpan.FromSeconds(11));
-                await Task.Delay(Timeout.Infinite, token);
+                await Task.Delay(Timeout.Infinite, token).ConfigureAwait(false);
                 return new TcpClient();
             };
         }
@@ -698,7 +736,7 @@ public sealed class P1ReceiptHttpAdapterTests
             Func<CancellationToken, Task> stall = async token =>
             {
                 clock.Advance(TimeSpan.FromSeconds(11));
-                await Task.Delay(Timeout.Infinite, token);
+                await Task.Delay(Timeout.Infinite, token).ConfigureAwait(false);
             };
             if (stage == "tls") fixture.ReceiptServer.BeforeTlsHandshake = stall;
             else if (stage == "headers") fixture.ReceiptServer.BeforeResponse = stall;
@@ -720,12 +758,13 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task PendingStatusGetRefusesAtItsOwnTenSecondLimitWithoutHistoryCommit()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.StatusServer.BeforeResponse = async token =>
         {
             clock.Advance(TimeSpan.FromSeconds(11));
-            await Task.Delay(Timeout.Infinite, token);
+            await Task.Delay(Timeout.Infinite, token).ConfigureAwait(false);
         };
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
@@ -744,7 +783,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task StatusGetReceivesFreshTenSecondAllowance()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         fixture.ReceiptServer.BeforeResponse = token =>
         {
@@ -764,7 +804,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task WholeChainDeadlineRefusesBetweenIndividuallyValidGetsWithoutSeedingHistory()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         var history = new P1ReceiptHttpHistory();
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust,
@@ -787,11 +828,13 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task PublicServerGuardRefusesLocalRootDirectlyAndInRealHandshake()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1BootTimeClock();
         clock.TryRead(out long start).ShouldBeTrue();
-        await using (var deadline = new P1ReceiptHttpDeadline(clock, start, fixture.Now,
-            TestContext.Current.CancellationToken))
+        var deadline = new P1ReceiptHttpDeadline(clock, start, fixture.Now,
+            TestContext.Current.CancellationToken);
+        await using (deadline.ConfigureAwait(false))
         {
             fixture.ProductionReceiptTrust().ValidateServer(fixture.ReceiptServerCertificate, null,
                 SslPolicyErrors.None, deadline).ShouldBeFalse();
@@ -812,11 +855,13 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task MissingClientOfflineRevocationEvidenceRefusesOtherwiseValidChain()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1BootTimeClock();
         clock.TryRead(out long start).ShouldBeTrue();
-        await using var deadline = new P1ReceiptHttpDeadline(clock, start, fixture.Now,
+        var deadline = new P1ReceiptHttpDeadline(clock, start, fixture.Now,
             TestContext.Current.CancellationToken);
+        await using var deadlineScope = deadline.ConfigureAwait(false);
         fixture.ReceiptTrust.ValidateClient(deadline).ShouldBeTrue();
         fixture.ProductionReceiptTrust().ValidateClient(deadline).ShouldBeFalse();
     }
@@ -824,14 +869,17 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task OfflineCrlAndAiaUrlsNeverReceiveAConnection()
     {
-        await using var trap = new P1NetworkTrap();
-        await using var fixture = new P1LoopbackReceiptFixture(revocationUrl: trap.Url);
+        var trap = new P1NetworkTrap();
+        await using var trapScope = trap.ConfigureAwait(false);
+        var fixture = new P1LoopbackReceiptFixture(revocationUrl: trap.Url);
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptTrust.ClientCertificate.Extensions["2.5.29.31"]!.Format(true).ShouldContain(trap.Url);
         fixture.ReceiptTrust.ClientCertificate.Extensions["1.3.6.1.5.5.7.1.1"]!.Format(true).ShouldContain(trap.Url);
         var clock = new P1BootTimeClock();
         clock.TryRead(out long start).ShouldBeTrue();
-        await using var deadline = new P1ReceiptHttpDeadline(clock, start, fixture.Now,
+        var deadline = new P1ReceiptHttpDeadline(clock, start, fixture.Now,
             TestContext.Current.CancellationToken);
+        await using var deadlineScope = deadline.ConfigureAwait(false);
         fixture.ProductionReceiptTrust().ValidateClient(deadline).ShouldBeFalse();
         await Task.Delay(100, TestContext.Current.CancellationToken);
         trap.Hits.ShouldBe(0);
@@ -841,8 +889,10 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ServerCrlAiaAndOcspUrlsNeverReceiveAConnection()
     {
-        await using var trap = new P1NetworkTrap();
-        await using var fixture = new P1LoopbackReceiptFixture(serverRevocationUrl: trap.Url);
+        var trap = new P1NetworkTrap();
+        await using var trapScope = trap.ConfigureAwait(false);
+        var fixture = new P1LoopbackReceiptFixture(serverRevocationUrl: trap.Url);
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptServerCertificate.Extensions["2.5.29.31"]!.Format(true).ShouldContain(trap.Url);
         fixture.ReceiptServerCertificate.Extensions["1.3.6.1.5.5.7.1.1"]!.Format(true).ShouldContain(trap.Url);
         var aia = new System.Formats.Asn1.AsnReader(
@@ -867,7 +917,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task StalledServerWorkerStopsTlsCallbackAndRetainsConcurrencySlot()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         using var gate = new ManualResetEventSlim(false);
         fixture.ReceiptTrust.BeforeServerChainBuild = () =>
@@ -900,7 +951,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task StalledClientContextWorkerRefusesPromptlyAndRetainsSlot()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         using var gate = new ManualResetEventSlim(false);
         fixture.ReceiptTrust.ContextCreated = () =>
@@ -931,7 +983,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ConcurrentTrustWorkersDoNotStarveBoottimeDeadline()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         using var gate = new ManualResetEventSlim(false);
         int entered = 0;
@@ -1000,7 +1053,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task SharedMonitorCapsActiveDeadlinesAndReleasesRegistrations()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         clock.TryRead(out long start).ShouldBeTrue();
         int initial = P1ReceiptHttpDeadlineMonitor.ActiveCount;
@@ -1016,8 +1070,9 @@ public sealed class P1ReceiptHttpAdapterTests
             }
 
             P1ReceiptHttpDeadlineMonitor.ActiveCount.ShouldBe(P1ReceiptHttpDeadlineMonitor.MaxActive);
-            await using var excess = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
+            var excess = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
                 TestContext.Current.CancellationToken);
+            await using var excessScope = excess.ConfigureAwait(false);
             excess.Valid.ShouldBeFalse();
             excess.DeadlineFailed.ShouldBeTrue();
             P1ReceiptHttpDeadlineMonitor.ActiveCount.ShouldBe(P1ReceiptHttpDeadlineMonitor.MaxActive);
@@ -1037,15 +1092,17 @@ public sealed class P1ReceiptHttpAdapterTests
         }
 
         P1ReceiptHttpDeadlineMonitor.ActiveCount.ShouldBe(initial);
-        await using var retry = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
+        var retry = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
             TestContext.Current.CancellationToken);
+        await using var retryScope = retry.ConfigureAwait(false);
         retry.Valid.ShouldBeTrue();
     }
 
     [Fact]
     public async Task AggregateHandshakeCapRefusesExcessTrustInstancesWithoutLeakingSlots()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         using var gate = new ManualResetEventSlim(false);
         int baseline = P1ReceiptHttpTrust.AvailableHandshakeSlots;
@@ -1106,8 +1163,9 @@ public sealed class P1ReceiptHttpAdapterTests
     {
         var clock = new P1TestBootTimeClock();
         clock.TryRead(out long start).ShouldBeTrue();
-        await using var deadline = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
+        var deadline = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
             TestContext.Current.CancellationToken);
+        await using var deadlineScope = deadline.ConfigureAwait(false);
         deadline.Valid.ShouldBeTrue();
         clock.FailNextRead();
         deadline.Valid.ShouldBeFalse();
@@ -1120,8 +1178,9 @@ public sealed class P1ReceiptHttpAdapterTests
     {
         const long start = 1_000_000_000_000;
         var clock = new P1FixedBootTimeClock(start);
-        await using (var deadline = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
-            TestContext.Current.CancellationToken))
+        var deadline = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
+            TestContext.Current.CancellationToken);
+        await using (deadline.ConfigureAwait(false))
         {
             clock.Set(start + 9_999_999_999);
             deadline.Valid.ShouldBeTrue();
@@ -1131,8 +1190,9 @@ public sealed class P1ReceiptHttpAdapterTests
         }
 
         clock.Set(start);
-        await using var rollback = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
+        var rollback = new P1ReceiptHttpDeadline(clock, start, DateTimeOffset.UtcNow,
             TestContext.Current.CancellationToken);
+        await using var rollbackScope = rollback.ConfigureAwait(false);
         clock.Set(start + 1_000);
         rollback.Valid.ShouldBeTrue();
         clock.Set(start - 1);
@@ -1149,10 +1209,12 @@ public sealed class P1ReceiptHttpAdapterTests
         var secondClock = new P1TestBootTimeClock();
         firstClock.TryRead(out long firstStart).ShouldBeTrue();
         secondClock.TryRead(out long secondStart).ShouldBeTrue();
-        await using var first = new P1ReceiptHttpDeadline(firstClock, firstStart, DateTimeOffset.UtcNow,
+        var first = new P1ReceiptHttpDeadline(firstClock, firstStart, DateTimeOffset.UtcNow,
             TestContext.Current.CancellationToken);
-        await using var second = new P1ReceiptHttpDeadline(secondClock, secondStart, DateTimeOffset.UtcNow,
+        await using var firstScope = first.ConfigureAwait(false);
+        var second = new P1ReceiptHttpDeadline(secondClock, secondStart, DateTimeOffset.UtcNow,
             TestContext.Current.CancellationToken);
+        await using var secondScope = second.ConfigureAwait(false);
         using var gate = new ManualResetEventSlim(false);
         using var entered = new ManualResetEventSlim(false);
         using var callback = first.Token.Register(() =>
@@ -1180,7 +1242,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task AggregateValidationCapRetainsSlotsAfterTimedOutTrustWorkers()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         using var gate = new ManualResetEventSlim(false);
         int baseline = P1ReceiptHttpTrust.AvailableValidationSlots;
@@ -1237,7 +1300,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task ConcurrentValidFramesForOneIdHaveOneWinnerAndOneIncident()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         byte[] firstFrame = fixture.SignReceiptFrame(fixture.Expected);
         byte[] secondFrame = fixture.SignReceiptFrame(fixture.Expected);
         firstFrame.SequenceEqual(secondFrame).ShouldBeFalse();
@@ -1264,7 +1328,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task TransientClockFailureAtCommitRefusesAndDoesNotSeedHistory()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
         adapter.BeforeFinalCommit = clock.FailNextRead;
@@ -1283,7 +1348,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task IoErrorAfterBoottimeSignalIsDeadline()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var clock = new P1TestBootTimeClock();
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.ReceiptTrust, fixture.StatusTrust, clock);
         adapter.BeforeFinalCommit = () =>
@@ -1310,7 +1376,9 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("status-signature", P1ReceiptHttpFailure.Authority)]
     public async Task EnvelopeAndAuthorityRefusalsHaveDistinctFailureCodes(string mode, P1ReceiptHttpFailure failure)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        ArgumentNullException.ThrowIfNull(mode);
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         if (mode.StartsWith("receipt", StringComparison.Ordinal))
         {
             fixture.ReceiptFrame = fixture.ReceiptFrame.ToArray();
@@ -1337,7 +1405,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [InlineData("HTTP/1.1 200 OK", "X-Unknown: value\u007f\r\n")]
     public async Task MalformedStatusOrDelHeaderRefusesBeforeStatus(string statusLine, string extraHeader)
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         fixture.ReceiptServer.StatusLine = statusLine;
         fixture.ReceiptServer.ExtraHeaders = extraHeader;
         P1ReceiptHttpResult result = await fixture.Adapter().RetrieveAsync(fixture.Expected, fixture.Subject,
@@ -1350,7 +1419,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task RootSpkiPinSucceedsForServerChainElement()
     {
-        await using var fixture = new P1LoopbackReceiptFixture();
+        var fixture = new P1LoopbackReceiptFixture();
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.RootPinReceiptTrust(), fixture.StatusTrust);
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);
@@ -1361,7 +1431,8 @@ public sealed class P1ReceiptHttpAdapterTests
     [Fact]
     public async Task RsaServerSpkiPinSucceeds()
     {
-        await using var fixture = new P1LoopbackReceiptFixture(rsaServer: true);
+        var fixture = new P1LoopbackReceiptFixture(rsaServer: true);
+        await using var fixtureScope = fixture.ConfigureAwait(false);
         var adapter = new P1ReceiptHttpAdapter(fixture.Enrollment, fixture.PinOnlyReceiptTrust(), fixture.StatusTrust);
         P1ReceiptHttpResult result = await adapter.RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
             cancellationToken: TestContext.Current.CancellationToken);

@@ -22,7 +22,7 @@ public sealed class EventStoreDeletionBatchGuardPort(IGovernanceScopeGuard guard
     /// <inheritdoc/>
     public async Task<GovernanceProtocolReceipt?> IssueAsync(DeletionCapabilitySigningOutcome signed, bool replacement, CancellationToken cancellationToken = default)
     {
-        if (!Valid(signed)) { return null; }
+        if (signed is null || !Valid(signed)) { return null; }
         var snapshot = await ReadAsync(signed.Payload, cancellationToken).ConfigureAwait(false); if (snapshot is null) { return null; }
         var batch = Carrier(snapshot.Batch, signed);
         string id = "issue-" + Hash(new[] { signed.SigningRequestId, batch.AttestationDigest });
@@ -36,7 +36,7 @@ public sealed class EventStoreDeletionBatchGuardPort(IGovernanceScopeGuard guard
     /// <inheritdoc/>
     public async Task<GovernanceProtocolReceipt?> DispatchAsync(DeletionCapabilitySigningOutcome signed, CancellationToken cancellationToken = default)
     {
-        if (!Valid(signed)) { return null; }
+        if (signed is null || !Valid(signed)) { return null; }
         var snapshot = await ReadAsync(signed.Payload, cancellationToken).ConfigureAwait(false);
         if (snapshot is null || !Active(snapshot.Batch, signed)) { return null; }
         if (snapshot.Batch.DispatchGuardRevision > 0)
@@ -50,7 +50,7 @@ public sealed class EventStoreDeletionBatchGuardPort(IGovernanceScopeGuard guard
     /// <inheritdoc/>
     public async Task<GovernanceProtocolReceipt?> RecordProtectionAsync(DeletionCapabilitySigningOutcome signed, DeletionConsumptionOutcome outcome, bool activation, CancellationToken cancellationToken = default)
     {
-        if (!Valid(signed) || outcome is null || outcome.TenantId != signed.Payload.TenantId || outcome.BatchId != signed.Payload.BatchId || outcome.OwnerRevision <= 0 || string.IsNullOrWhiteSpace(outcome.ReceiptId)) { return null; }
+        if (signed is null || !Valid(signed) || outcome is null || outcome.TenantId != signed.Payload.TenantId || outcome.BatchId != signed.Payload.BatchId || outcome.OwnerRevision <= 0 || string.IsNullOrWhiteSpace(outcome.ReceiptId)) { return null; }
         var snapshot = await ReadAsync(signed.Payload, cancellationToken).ConfigureAwait(false);
         if (snapshot is null || !Active(snapshot.Batch, signed)) { return null; }
         string status = activation ? outcome.Status switch { DeletionConsumptionStatus.Unconsumed => "Activated", DeletionConsumptionStatus.ActivationBlockedByReplacementKeyCompromise => "ActivationBlockedByReplacementKeyCompromise", _ => "" }

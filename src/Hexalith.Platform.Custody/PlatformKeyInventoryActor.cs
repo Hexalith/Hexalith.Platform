@@ -16,7 +16,11 @@ public sealed class PlatformKeyInventoryActor(ActorHost host, IPlatformKeyInvent
     /// <summary>Gets private actor registration identity.</summary>
     public const string ActorTypeName = "PlatformKeyInventoryActor";
     /// <summary>Gets exact tenant/purpose/alias actor; version is intentionally in the same rotation/revocation owner.</summary>
-    public static string GetActorId(PlatformKeyVersion key) => new AggregateIdentity(key.TenantId, "custody", "key-inventory-" + Digest(new[] { key.Purpose.ToString(), key.KeyAlias })).ActorId;
+    public static string GetActorId(PlatformKeyVersion key)
+    {
+        ArgumentNullException.ThrowIfNull(key);
+        return new AggregateIdentity(key.TenantId, "custody", "key-inventory-" + Digest(new[] { key.Purpose.ToString(), key.KeyAlias })).ActorId;
+    }
     /// <inheritdoc/>
     public async Task<PlatformKeyInventorySignal?> ApplyAsync(PlatformKeyInventoryChange change)
     {
