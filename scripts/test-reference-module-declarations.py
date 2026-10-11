@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 import subprocess
 import tempfile
 from pathlib import Path
@@ -20,24 +21,34 @@ APPROVED = {
     "memories-set-nx-preflight-dedup",
     "memories-redis-coordination",
 }
+ACL = ROOT / "references/Hexalith.EventStore/deploy/dapr/accesscontrol.yaml"
 
 
 def policy_diagnostics(paths: list[Path]) -> list[dict[str, str]]:
-    """Apply the approved Memories exception inventory beyond the v2 schema enum."""
+    """Apply the approved reference inventory beyond the v2 schema."""
     diagnostics = []
     for path in paths:
         for index, module in enumerate(json.loads(path.read_text())["modules"]):
-            if module["identity"]["moduleId"] != "memories":
+            module_id = module["identity"]["moduleId"]
+            expected_dependencies = {"eventstore": [], "memories": ["eventstore"],
+                                     "tenants": ["eventstore"]}.get(module_id)
+            if expected_dependencies is not None and module["identity"].get("dependencies") != expected_dependencies:
+                diagnostics.append(dict(source=str(path), field=f"modules[{index}].identity.dependencies"))
+            if module_id != "memories":
                 continue
             exceptions = module["runtime"].get("providerExceptions", [])
-            names = [item["name"] for item in exceptions]
+            names = [item.get("name") for item in exceptions]
             for position, item in enumerate(exceptions):
                 field = f"modules[{index}].runtime.providerExceptions[{position}]"
-                if item["name"] not in APPROVED:
+                name = item.get("name")
+                transitional = item.get("transitional")
+                if name not in APPROVED:
                     diagnostics.append(dict(source=str(path), field=f"{field}.name"))
-                if item["name"] == "memories-redis-coordination" and not item["transitional"]:
+                if transitional is None:
                     diagnostics.append(dict(source=str(path), field=f"{field}.transitional"))
-                if item["name"] != "memories-redis-coordination" and item["transitional"]:
+                elif name == "memories-redis-coordination" and not transitional:
+                    diagnostics.append(dict(source=str(path), field=f"{field}.transitional"))
+                elif name != "memories-redis-coordination" and transitional:
                     diagnostics.append(dict(source=str(path), field=f"{field}.transitional"))
             if len(exceptions) != 4 or set(names) != APPROVED or len(set(names)) != len(names):
                 diagnostics.append(dict(source=str(path), field=f"modules[{index}].runtime.providerExceptions"))
@@ -64,6 +75,29 @@ def inputs(module: dict) -> set[str]:
             for item in extension["configurationInputs"]}
 
 
+def input_details(module: dict) -> dict[str, tuple[str, str]]:
+    return {item["key"]: (item["source"], item["reference"])
+            for extension in module["runtime"]["extensions"]
+            for item in extension["configurationInputs"]}
+
+
+def inspect_acl() -> None:
+    """Check the production EventStore sidecar keeps caller-specific default deny rules."""
+    content = ACL.read_text()
+    assert "defaultAction: deny" in content
+    caller_blocks = dict(re.findall(r"^      - appId: ([\w-]+)\n(.*?)(?=^      - appId: |\Z)",
+                                    content, flags=re.MULTILINE | re.DOTALL))
+    domain = caller_blocks["tenants"]
+    assert "defaultAction: deny" in domain
+    assert re.findall(r"^          - name: (\S+)\n            httpVerb: (\[[^\n]+\])\n            action: allow$",
+                      domain, flags=re.MULTILINE) == [("/api/v1/commands", "['POST']")]
+    api = caller_blocks["tenants-api"]
+    assert {("/ready", "['GET']"), ("/api/v1/queries", "['POST']"),
+            ("/api/v1/commands", "['POST']")} <= set(re.findall(
+                r"^          - name: (\S+)\n            httpVerb: (\[[^\n]+\])\n            action: allow$",
+                api, flags=re.MULTILINE))
+
+
 def inspect_inventory(documents: list[dict]) -> None:
     modules = [document["modules"][0] for document in documents]
     by_name = {module["identity"]["moduleId"]: module for module in modules}
@@ -80,6 +114,16 @@ def inspect_inventory(documents: list[dict]) -> None:
         assert ready == {server["id"] for server in module["identity"]["servers"] if server["required"]}
         assert all({"role", "capability", "recoveryClass", "configurationKey"} <= role.keys()
                    for role in module["runtime"]["dapr"])
+    eventstore = by_name["eventstore"]
+    assert {"EventStore:PubSubComponentPath", "EventStore:AppChannelToken",
+            "Authentication:JwtBearer:Authority", "Authentication:JwtBearer:Issuer",
+            "Authentication:JwtBearer:Audience", "Authentication:JwtBearer:ValidAudiences",
+            "Authentication:JwtBearer:AllowedAlgorithms", "Authentication:JwtBearer:SigningKey",
+            "Authentication:JwtBearer:RequireHttpsMetadata",
+            "Authentication:JwtBearer:AllowInsecureSymmetricKey"} <= inputs(eventstore)
+    assert {"app-channel-token", "gateway-jwt-signing-key"} <= {
+        item["name"] for item in eventstore["integration"]["secrets"]}
+    assert input_details(eventstore)["EventStore:AppChannelToken"] == ("secret", "app-channel-token")
     memories = by_name["memories"]
     assert {server["appId"] for server in memories["identity"]["servers"]} == {
         "memories", "memories-access-telemetry", "memories-access-telemetry-clock"}
@@ -88,16 +132,56 @@ def inspect_inventory(documents: list[dict]) -> None:
             "Clock:SigningKeySecretName", "Clock:Sources", "Clock:AllowDevelopmentSources",
             "AccessTelemetryLifecycle:MarkerKeyReference", "Embedding:CredentialNamespace",
             "NaturalLanguage:RetryWorkerEnabled", "ConnectionStrings:redis",
-            "ConnectionStrings:falkordb"} <= inputs(memories)
-    assert {"clock-signing-key", "telemetry-marker-key"} <= {
+            "ConnectionStrings:falkordb", "AccessTelemetryLifecycle:DeploymentId",
+            "AccessTelemetryLifecycle:ConfigurationEpoch", "AccessTelemetryLifecycle:ComponentProfileHash",
+            "AccessTelemetryLifecycle:AttestationVerificationKey", "AccessTelemetryLifecycle:MarkerKeyGeneration",
+            "AccessTelemetryLifecycle:CapacityEvidenceId", "AccessTelemetryLifecycle:PhysicalReclamationEvidenceId",
+            "AccessTelemetryLifecycle:PhysicalReclamationReporterImageDigest",
+            "AccessTelemetryLifecycle:RetentionSource", "retentionSeconds",
+            "AccessTelemetryLifecycle:ClockSignerKeyEpoch", "Clock:SignerKeyEpoch",
+            "Clock:SourceAuthenticationTokens", "TenantEventRouting:AutoProvisionRoutedTenants",
+            "Conversation:ProviderApiKey", "AccessTelemetryLifecycle:Enabled"} <= inputs(memories)
+    assert input_details(memories)["retentionSeconds"] == ("configuration", "access-telemetry-config")
+    assert {"clock-signing-key", "telemetry-marker-key", "conversation-provider-api-key"} <= {
         item["name"] for item in memories["integration"]["secrets"]}
-    assert {"embedding-credentials"} <= {
+    assert {"embedding-credentials", "clock-source-authentication-tokens"} <= {
         item["name"] for item in memories["integration"]["dynamicSecretNamespaces"]}
+    assert input_details(memories)["Clock:SourceAuthenticationTokens"] == (
+        "dynamic-secret", "clock-source-authentication-tokens")
+    assert input_details(memories)["Conversation:ProviderApiKey"] == (
+        "secret", "conversation-provider-api-key")
+    assert any(item == {"name": "authenticated-utc", "protocol": "https",
+                        "destination": "Clock:Sources:<index>:Endpoint"}
+               for item in memories["integration"]["egress"])
     assert {"embedding-retry", "telemetry-delivery", "telemetry-heartbeat",
             "telemetry-retention"} <= {item["name"] for item in memories["integration"]["workers"]}
     assert not any(interface["protocol"] == "mcp" for interface in memories["surfaces"]["interfaces"])
     tenants = by_name["tenants"]
-    assert {"Tenants:DaprConfigPath", "Oidc:Authority", "Jwt:SigningKey"} <= inputs(tenants)
+    assert {"Tenants:DaprConfigPath", "Oidc:Authority", "Jwt:SigningKey",
+            "Tenants:BootstrapGlobalAdminEnabled", "Tenants:BootstrapGlobalAdminUserId",
+            "EventStore:Authentication:Authority", "EventStore:Authentication:ClientId",
+            "EventStore:Authentication:Username", "EventStore:Authentication:Password",
+            "EventStore:DataProtection:PersistToStateStore", "Tenants:AppChannelToken",
+            "Authentication:JwtBearer:Authority", "Authentication:JwtBearer:Issuer",
+            "Authentication:JwtBearer:Audience", "Authentication:JwtBearer:SigningKey",
+            "Authentication:JwtBearer:ValidAudiences", "Authentication:JwtBearer:AllowedAlgorithms",
+            "Authentication:JwtBearer:RequireHttpsMetadata", "Authentication:JwtBearer:AllowInsecureSymmetricKey",
+            "Authentication:Workload:Audience", "Authentication:Workload:AllowedCallers",
+            "Authentication:Workload:MaximumLifetimeSeconds", "EventStore:Authentication:Issuer",
+            "EventStore:Authentication:Audience", "EventStore:Authentication:RequireHttpsMetadata"} <= inputs(tenants)
+    assert {"bootstrap-delegated-password", "domain-app-channel-token"} <= {
+        item["name"] for item in tenants["integration"]["secrets"]}
+    assert input_details(tenants)["EventStore:Authentication:Password"] == (
+        "secret", "bootstrap-delegated-password")
+    assert input_details(tenants)["Tenants:AppChannelToken"] == (
+        "secret", "domain-app-channel-token")
+    assert any(item == {"name": "bootstrap-oidc-token", "protocol": "oidc",
+                        "destination": "EventStore:Authentication:Authority/protocol/openid-connect/token"}
+               for item in tenants["integration"]["egress"])
+    assert any(item == {"name": "global-administrator-bootstrap", "kind": "external-effect",
+                        "disableControl": {"configurationKey": "Tenants:BootstrapGlobalAdminEnabled",
+                                           "disabledValue": False}}
+               for item in tenants["integration"]["workers"])
     assert {"/api/tenants", "/api/global-administrators", "/api/users/{userId}/tenants"} <= {
         interface["routePrefix"] for interface in tenants["surfaces"]["interfaces"]}
     assert {"process", "query", "project", "replay-state"} <= {
@@ -108,6 +192,10 @@ def inspect_inventory(documents: list[dict]) -> None:
 def main() -> None:
     documents = [json.loads(path.read_text()) for path in PATHS]
     inspect_inventory(documents)
+    inspect_acl()
+    build = subprocess.run(["dotnet", "build", str(CLI)], cwd=BUILDS,
+                           capture_output=True, text=True, check=False)
+    assert build.returncode == 0, f"Validator build failed: {build.stdout} {build.stderr}"
     accepted, diagnostics = validate(PATHS)
     assert accepted, diagnostics
     with tempfile.TemporaryDirectory(prefix="hexalith-declarations-") as directory:
@@ -118,6 +206,9 @@ def main() -> None:
             ("unapproved exception", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][0].update(name="unapproved-provider"), "providerExceptions[0].name"),
             ("fifth exception", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"].append(copy.deepcopy(docs[1]["modules"][0]["runtime"]["providerExceptions"][0])), "runtime.providerExceptions"),
             ("unmarked coordination", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][3].update(transitional=False), "providerExceptions[3].transitional"),
+            ("missing exception name", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][0].pop("name"), "providerExceptions[0].name"),
+            ("missing exception transitional", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][3].pop("transitional"), "providerExceptions[3].transitional"),
+            ("invented domain dependency", lambda docs: docs[1]["modules"][0]["identity"]["dependencies"].append("parties"), "identity.dependencies"),
         ):
             variant = copy.deepcopy(documents)
             mutate(variant)
