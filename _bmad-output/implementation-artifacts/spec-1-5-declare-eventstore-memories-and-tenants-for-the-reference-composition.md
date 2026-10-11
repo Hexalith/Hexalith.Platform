@@ -4,10 +4,10 @@ type: 'feature'
 epic: 1
 story: 5
 created: '2026-10-11'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 baseline_commit: '6f703dd0227d8fac023ad97d909c5aaa42115578'
-review_loop_iteration: 5
+review_loop_iteration: 6
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -188,6 +188,21 @@ Use `Memories:LlmComponentPath` as the extension's consumer-supplied LLM YAML pa
 | E5-2 correction registry growth | medium — carried B3-12: the separate correction registry retains unbounded pending/paired records. | defer |
 | V5-1 audit page auth transition coverage | medium — carried V4-1: the separate Tenant audit UI change has no page test publishing an authentication transition. | defer |
 | V5-2 oversized advisory evidence | medium — `ReadAsync(6 MiB + 2)` throws `PayloadLimit` before the parser can discard an oversized optional `postCommandStateJson`; this belongs to a separate EventStore parser change. | defer |
+| B6-1 snapshot interval precheck | medium — the new folded-snapshot request checks the pre-command sequence, so a command that first reaches the interval has no capture and cannot stage a snapshot if no later command arrives; this belongs to the separate EventStore snapshot change. | defer |
+| B6-2 synthetic capture metadata | maybe-false — capture constructs synthetic metadata before the persisted event metadata exists; no production registered capture profile with an `Apply` method depending on those differing fields was found. A qualified production `Apply` using those fields would establish the proposed replay divergence. Potential medium. | defer |
+| B6-3 oversized advisory evidence | medium — carried V5-2: the parser can reject an otherwise admitted response before discarding oversized optional state evidence in the separate EventStore parser change. | defer |
+| B6-4 Memories JWT startup inputs | high — `ValidateServerAuthenticationOptions` validates authority or signing key, issuer, audience, tenant claim, and algorithms at startup, but the required Memories server manifest inventories none of them. | bad_spec |
+| B6-5 Memories Dapr tokens | high — all three required Memories hosts use the app-token middleware and production startup validator requires nonempty `APP_API_TOKEN` and `DAPR_API_TOKEN`; the manifest inventories neither logical credential. | bad_spec |
+| B6-6 production Conversation egress | medium — the declared production `conversation.openai` component needs outbound provider access, while Memories egress lists only clock sources. | bad_spec |
+| B6-7 OIDC metadata egress | medium — EventStore, Memories and Tenants declare production OIDC authority inputs but omit the corresponding metadata/JWKS network destination from their egress inventories. | bad_spec |
+| B6-8 Tenants API auth readiness | false — `UseAuthentication` executes before mapped `/ready` and the API sets JWT bearer as its default scheme, so that request initializes the authentication options; missing authority and signing key cannot yield a healthy response from the named check. | reject |
+| B6-9 audit auth fault | medium — carried B3-11: a faulted authentication task leaves the separate audit UI transition pending. | defer |
+| B6-10 correction registry growth | medium — carried B3-12: the separate correction registry retains unbounded pending/paired records. | defer |
+| B6-11 malformed manifest runtime | low — `policy_diagnostics` indexes `identity` and `runtime` after the v2 CLI rejects a missing section, so a `KeyError` hides structured diagnostics; a direct guarded lookup would fix it. | patch |
+| E6-1 non-object exception entry | low — `policy_diagnostics` calls `.get` on each provider exception; a null or scalar entry raises instead of returning the v2 validator's source/field diagnostics. | patch |
+| E6-2 audit auth fault | medium — carried B3-11: a faulted authentication task leaves the separate audit UI transition pending. | defer |
+| E6-3 correction registry growth | medium — carried B3-12: the separate correction registry retains unbounded pending/paired records. | defer |
+| V6-1 qualified snapshot invocation coverage | medium — the separate EventStore snapshot tests stub the invoker or build a qualified router request; none asserts the real Dapr invoker serializes both capture fields. | defer |
 
 ## Design Notes
 
