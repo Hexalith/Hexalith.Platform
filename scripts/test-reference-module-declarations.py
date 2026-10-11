@@ -28,19 +28,39 @@ def policy_diagnostics(paths: list[Path]) -> list[dict[str, str]]:
     """Apply the approved reference inventory beyond the v2 schema."""
     diagnostics = []
     for path in paths:
-        for index, module in enumerate(json.loads(path.read_text())["modules"]):
-            module_id = module["identity"]["moduleId"]
+        document = json.loads(path.read_text())
+        modules = document.get("modules", [])
+        if not isinstance(modules, list):
+            continue  # The public validator reports the malformed document.
+        for index, module in enumerate(modules):
+            if not isinstance(module, dict):
+                continue
+            identity = module.get("identity")
+            if not isinstance(identity, dict):
+                continue
+            module_id = identity.get("moduleId")
+            if not isinstance(module_id, str):
+                continue
             expected_dependencies = {"eventstore": [], "memories": ["eventstore"],
                                      "tenants": ["eventstore"]}.get(module_id)
-            if expected_dependencies is not None and module["identity"].get("dependencies") != expected_dependencies:
+            if expected_dependencies is not None and identity.get("dependencies") != expected_dependencies:
                 diagnostics.append(dict(source=str(path), field=f"modules[{index}].identity.dependencies"))
             if module_id != "memories":
                 continue
-            exceptions = module["runtime"].get("providerExceptions", [])
-            names = [item.get("name") for item in exceptions]
+            runtime = module.get("runtime")
+            if not isinstance(runtime, dict):
+                continue
+            exceptions = runtime.get("providerExceptions", [])
+            if not isinstance(exceptions, list):
+                continue
+            names = []
             for position, item in enumerate(exceptions):
                 field = f"modules[{index}].runtime.providerExceptions[{position}]"
+                if not isinstance(item, dict):
+                    diagnostics.append(dict(source=str(path), field=field))
+                    continue
                 name = item.get("name")
+                names.append(name if isinstance(name, str) else None)
                 transitional = item.get("transitional")
                 if name not in APPROVED:
                     diagnostics.append(dict(source=str(path), field=f"{field}.name"))
@@ -55,7 +75,7 @@ def policy_diagnostics(paths: list[Path]) -> list[dict[str, str]]:
     return diagnostics
 
 
-def validate(paths: list[Path]) -> tuple[bool, list[dict[str, str]]]:
+def validate(paths: list[Path]) -> tuple[bool, list[dict[str, str]], list[dict[str, str]]]:
     command = ["dotnet", "run", "--no-build", "--project", str(CLI), "--", "validate"]
     for path in paths:
         command.extend(("--manifest", str(path)))
@@ -65,9 +85,10 @@ def validate(paths: list[Path]) -> tuple[bool, list[dict[str, str]]]:
         report = json.loads(result.stdout)
     except json.JSONDecodeError as error:
         raise AssertionError(f"Validator did not return JSON: {result.stdout} {result.stderr}") from error
-    diagnostics = report["diagnostics"] + policy_diagnostics(paths)
+    public_diagnostics = report["diagnostics"]
+    diagnostics = public_diagnostics + policy_diagnostics(paths)
     accepted = result.returncode == 0 and report["status"] == "validated" and not diagnostics
-    return accepted, diagnostics
+    return accepted, diagnostics, public_diagnostics
 
 
 def inputs(module: dict) -> set[str]:
@@ -150,9 +171,37 @@ def inspect_inventory(documents: list[dict]) -> None:
         "dynamic-secret", "clock-source-authentication-tokens")
     assert input_details(memories)["Conversation:ProviderApiKey"] == (
         "secret", "conversation-provider-api-key")
+    assert {"Authentication:JwtBearer:Authority", "Authentication:JwtBearer:SigningKey",
+            "Authentication:JwtBearer:Issuer", "Authentication:JwtBearer:Audience",
+            "Authentication:JwtBearer:RequireHttpsMetadata", "Authentication:JwtBearer:TenantClaimName",
+            "Authentication:JwtBearer:ValidAlgorithms", "Memories:AppChannelToken",
+            "Memories:DaprApiToken"} <= inputs(memories)
+    for key, reference in (("Authentication:JwtBearer:SigningKey", "server-jwt-signing-key"),
+                           ("Memories:AppChannelToken", "app-channel-token"),
+                           ("Memories:DaprApiToken", "dapr-api-token")):
+        assert input_details(memories)[key] == ("secret", reference)
+        assert {"name": reference, "configurationKey": key} in memories["integration"]["secrets"]
+    for key in ("Authentication:JwtBearer:Authority", "Authentication:JwtBearer:Issuer",
+                "Authentication:JwtBearer:Audience", "Authentication:JwtBearer:RequireHttpsMetadata",
+                "Authentication:JwtBearer:TenantClaimName", "Authentication:JwtBearer:ValidAlgorithms"):
+        assert input_details(memories)[key][0] == "configuration"
+    server_deployment = (ROOT / "references/Hexalith.Memories/deploy/kubernetes/base/server-deployment.yaml").read_text()
+    telemetry_deployment = (ROOT / "references/Hexalith.Memories/deploy/kubernetes/base/access-telemetry-deployments.yaml").read_text()
+    for token in ("APP_API_TOKEN", "DAPR_API_TOKEN"):
+        assert len(re.findall(rf"^\s+- name: {token}$", server_deployment, flags=re.MULTILINE)) == 1
+        assert len(re.findall(rf"^\s+- name: {token}$", telemetry_deployment, flags=re.MULTILINE)) == 2
+    for field in ("Authority", "Issuer", "Audience", "RequireHttpsMetadata",
+                  "TenantClaimName", "ValidAlgorithms"):
+        assert f"Authentication__JwtBearer__{field}" in server_deployment
+    conversation_component = (ROOT / "references/Hexalith.Memories/deploy/kubernetes/base/dapr/conversation-openai.yaml").read_text()
+    assert "type: conversation.openai" in conversation_component
+    assert "name: llm-secret" in conversation_component
+    assert "key: OPENAI_API_KEY" in conversation_component
     assert any(item == {"name": "authenticated-utc", "protocol": "https",
                         "destination": "Clock:Sources:<index>:Endpoint"}
                for item in memories["integration"]["egress"])
+    assert {"name": "conversation-provider", "protocol": "https",
+            "destination": "Memories:LlmComponentPath -> conversation.openai provider endpoint"} in memories["integration"]["egress"]
     assert {"embedding-retry", "telemetry-delivery", "telemetry-heartbeat",
             "telemetry-retention"} <= {item["name"] for item in memories["integration"]["workers"]}
     assert not any(interface["protocol"] == "mcp" for interface in memories["surfaces"]["interfaces"])
@@ -178,6 +227,17 @@ def inspect_inventory(documents: list[dict]) -> None:
     assert any(item == {"name": "bootstrap-oidc-token", "protocol": "oidc",
                         "destination": "EventStore:Authentication:Authority/protocol/openid-connect/token"}
                for item in tenants["integration"]["egress"])
+    for module, authority in ((eventstore, "Authentication:JwtBearer:Authority"),
+                              (memories, "Authentication:JwtBearer:Authority"),
+                              (tenants, "Authentication:JwtBearer:Authority"),
+                              (tenants, "Oidc:Authority"),
+                              (tenants, "EventStore:Authentication:Authority")):
+        egress = module["integration"]["egress"]
+        assert any(item["protocol"] == "https" and
+                   item["destination"] == authority + "/.well-known/openid-configuration"
+                   for item in egress)
+        assert any(item["protocol"] == "https" and
+                   item["destination"] == authority + " -> metadata.jwks_uri" for item in egress)
     assert any(item == {"name": "global-administrator-bootstrap", "kind": "external-effect",
                         "disableControl": {"configurationKey": "Tenants:BootstrapGlobalAdminEnabled",
                                            "disabledValue": False}}
@@ -196,7 +256,7 @@ def main() -> None:
     build = subprocess.run(["dotnet", "build", str(CLI)], cwd=BUILDS,
                            capture_output=True, text=True, check=False)
     assert build.returncode == 0, f"Validator build failed: {build.stdout} {build.stderr}"
-    accepted, diagnostics = validate(PATHS)
+    accepted, diagnostics, _ = validate(PATHS)
     assert accepted, diagnostics
     with tempfile.TemporaryDirectory(prefix="hexalith-declarations-") as directory:
         temp = Path(directory)
@@ -208,6 +268,10 @@ def main() -> None:
             ("unmarked coordination", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][3].update(transitional=False), "providerExceptions[3].transitional"),
             ("missing exception name", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][0].pop("name"), "providerExceptions[0].name"),
             ("missing exception transitional", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"][3].pop("transitional"), "providerExceptions[3].transitional"),
+            ("missing identity", lambda docs: docs[1]["modules"][0].pop("identity"), "modules[0].identity"),
+            ("missing runtime", lambda docs: docs[1]["modules"][0].pop("runtime"), "modules[0].runtime"),
+            ("null provider exception", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"].__setitem__(0, None), "providerExceptions[0]"),
+            ("scalar provider exception", lambda docs: docs[1]["modules"][0]["runtime"]["providerExceptions"].__setitem__(0, "unexpected"), "providerExceptions[0]"),
             ("invented domain dependency", lambda docs: docs[1]["modules"][0]["identity"]["dependencies"].append("parties"), "identity.dependencies"),
         ):
             variant = copy.deepcopy(documents)
@@ -217,11 +281,17 @@ def main() -> None:
                 path = temp / f"{scenario.replace(' ', '-')}-{index}.json"
                 path.write_text(json.dumps(document))
                 variant_paths.append(path)
-            accepted, diagnostics = validate(variant_paths)
+            accepted, diagnostics, public_diagnostics = validate(variant_paths)
             assert not accepted, f"{scenario} yielded a partial declaration set"
             assert any(Path(item.get("source", "")).name in {path.name for path in variant_paths}
                        and field in item.get("field", "")
                        for item in diagnostics), f"{scenario}: {diagnostics}"
+            if scenario in {"missing identity", "missing runtime", "null provider exception",
+                            "scalar provider exception"}:
+                assert any(Path(item.get("source", "")).name in {path.name for path in variant_paths}
+                           and field in item.get("field", "")
+                           for item in public_diagnostics), (
+                               f"{scenario} lost public validator diagnostics: {public_diagnostics}")
             print(f"PASS {scenario}: atomic refusal with source and field")
     print("PASS joint declaration set, readiness, routes, inventories and empty tasks")
 
