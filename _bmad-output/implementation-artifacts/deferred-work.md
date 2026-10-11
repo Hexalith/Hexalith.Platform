@@ -368,3 +368,9 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md`
   summary: Align CIS and TEA skill configuration with central BMad configuration resolution.
   evidence: Changed BMM skills use `resolve_config.py` while CIS and TEA skills still read generated per-module YAML, so central overrides can yield different settings across skills.
+
+## Deferred from: code review of spec-1-4-enforce-the-platform-identity-and-support-package-mode.md (2026-10-11)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-4-enforce-the-platform-identity-and-support-package-mode.md`
+  summary: Realign the module manifest EventStore pin (3.119.0) with the Builds catalog and G-4 acceptance pin (3.120.0).
+  evidence: The pre-existing catalog bump `9e6b6ca` set `HexalithEventStoreVersion` to 3.120.0. Story 1.4 keeps `ModuleManifestLoader.ModuleManifestEventStoreVersion` at 3.119.0 on purpose (Code Map, R2-BH9), while `G4P0AcceptanceValidator.cs:99` still checks `SupportedPlatformPins.EventStoreVersion`. So package mode enforces 3.120.0 EventStore packages for manifests that must declare 3.119.0. A manifest pin migration story must realign the schema const, the fixtures and the validator.
