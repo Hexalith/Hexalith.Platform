@@ -1,0 +1,18 @@
+# Development/test-only configuration component. The bounded 24-hour Development default applies
+# when no value is present; short TTLs are allowed only in explicit test composition.
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: access-telemetry-config
+spec:
+  type: configuration.redis
+  version: v1
+  metadata:
+    - name: redisHost
+      value: "127.0.0.1:6379"
+    - name: redisPassword
+      value: ""
+scopes:
+  - memories
+  - memories-access-telemetry
+  - eventstore

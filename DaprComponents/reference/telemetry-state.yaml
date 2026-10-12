@@ -1,0 +1,28 @@
+# Development/test-only portable component. Aspire rewrites the Redis endpoint in a temporary copy.
+# This file is not Production eligibility evidence; Production remains disabled through Story 27.3.
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: access-telemetry-store
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+    - name: redisHost
+      value: "127.0.0.1:6379"
+    - name: redisPassword
+      value: ""
+    - name: actorStateStore
+      value: "true"
+    - name: queryIndexes
+      value: |
+        [
+          {
+            "name": "expiryMinute",
+            "indexes": [
+              { "key": "expiryMinute", "type": "NUMERIC" }
+            ]
+          }
+        ]
+scopes:
+  - memories-access-telemetry

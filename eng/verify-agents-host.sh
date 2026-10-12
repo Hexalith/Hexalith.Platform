@@ -30,6 +30,7 @@ case "$MODE" in
   *) fail "unknown mode: $MODE" ;;
 esac
 cd "$ROOT"
+python3 "$ROOT/eng/verify-platform-pins.py"
 [[ -f "$ROOT/apphost.cs" ]] || fail "platform AppHost missing: apphost.cs"
 [[ -f "$ROOT/aspire.config.json" ]] || fail "aspire.config.json missing"
 [[ -f "$ROOT/README.md" ]] || fail "README.md missing"

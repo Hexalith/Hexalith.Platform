@@ -1,0 +1,36 @@
+# DAPR Pub/Sub Component -- Local Development
+# ================================================================
+# Redis-backed pub/sub for tenant event distribution.
+# Dead-lettering is an application-level concern: EventStore's dead-letter
+# publisher routes failed command-processing deliveries to the
+# deadletter.tenants.events topic. It is NOT configured here -- DAPR's native
+# dead-letter topic is a per-subscription setting, not pub/sub component
+# metadata (the Redis component silently ignores enableDeadLetter/deadLetterTopic).
+#
+# Component Scoping:
+#   EventStore publishes tenant events; sample consumes them in local demos.
+#   Local development intentionally omits topic-level publishingScopes and
+#   subscriptionScopes so local experiments are not blocked by production-only
+#   topic policy. Production deploy/dapr/pubsub.yaml carries the explicit topic
+#   scopes.
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+    # DAPR local init provisions Redis at localhost:6379 with no password.
+    - name: redisHost
+      value: "localhost:6379"
+    - name: redisPassword
+      value: ""
+scopes:
+  - eventstore
+  - sample
+  # The Tenants consumer publishes SearchIndexEntryChanged to the memories-events topic and the
+  # Memories server subscribes to it; both app-ids need the shared pub/sub in scope.
+  - memories
+  - tenants
+  - tenants-api

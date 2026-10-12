@@ -1,0 +1,17 @@
+# DAPR Conversation Component -- Memories Server (Local Development)
+# ================================================================
+# Dev-only echo conversation component: returns input unchanged so the Memories natural-language path
+# exercises end-to-end without a real LLM (or cost). Production swaps spec.type for a real provider
+# (conversation.openai / .googleai / .anthropic) with a secretKeyRef for the API key.
+# Vector/semantic search additionally needs a real embedding provider + secret and is out of scope for
+# tenant search, which uses the syntactic (BM25) axis only.
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: llm
+spec:
+  type: conversation.echo
+  version: v1
+  metadata:
+    - name: responseCacheTTL
+      value: "0s"

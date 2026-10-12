@@ -1,0 +1,80 @@
+# DAPR Access Control Configuration for the EventStore sidecar (D4, FR34, NFR15)
+# ===============================================================================
+# This Configuration CRD is loaded ONLY by the eventstore sidecar and therefore
+# governs which CALLERS may invoke EventStore endpoints through Dapr service invocation.
+#
+# Allowed callers in the local topology:
+#   - eventstore-admin (port 8090): Admin REST API host. Needs GET/POST/PUT to delegate
+#     admin reads and writes to EventStore (ADR-P4).
+#   - sample-blazor-ui: sample query UI. Invokes EventStore /api/v1/queries (GET/POST)
+#     via DAPR service invocation (mirrors the Admin.UI D13 pattern).
+#   - sample-api / tenants-api: external REST API hosts. Invoke only gateway command/query
+#     POST operations and forward the validated caller bearer.
+#
+# Security Posture (D4, FR34, NFR15):
+#   defaultAction: allow (self-hosted mode without mTLS).
+#   Dapr access control policy matching requires mTLS to extract caller identity
+#   (SPIFFE trust domain, namespace, app ID) from TLS certificates.
+#   Without mTLS, policies cannot verify callers -- deny-by-default would block
+#   ALL service invocations regardless of policy rules.
+#
+#   For PRODUCTION (Kubernetes with mTLS + Sentry), use deny-by-default and bind
+#   this config only to the EventStore workload:
+#     1. Change defaultAction to "deny"
+#     2. Set trustDomain to your SPIFFE domain (e.g. "hexalith.io")
+#     3. Update each policy trustDomain + namespace to match the caller's K8s identity
+#     4. Bind separate access-control configs to each receiving service sidecar.
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: accesscontrol
+spec:
+  accessControl:
+    defaultAction: allow  # Allow-by-default in self-hosted mode; change to deny with mTLS
+    trustDomain: "public"
+    policies:
+      # eventstore-admin: Admin API host -- invokes eventstore for write delegation (ADR-P4)
+      # Admin reads go to DAPR state store directly; writes delegate to eventstore.
+      - appId: eventstore-admin
+        defaultAction: deny
+        trustDomain: "public"
+        namespace: "default"
+        operations:
+          - name: /**
+            httpVerb: ['GET', 'POST', 'PUT', 'DELETE']
+            action: allow
+      # sample-blazor-ui: sample query UI -- invokes eventstore /api/v1/queries
+      - appId: sample-blazor-ui
+        defaultAction: deny
+        trustDomain: "public"
+        namespace: "default"
+        operations:
+          - name: /**
+            httpVerb: ['GET', 'POST']
+            action: allow
+      # sample-api: external-facing REST API host -- generated controllers invoke eventstore
+      # POST /api/v1/queries and POST /api/v1/commands, forwarding the caller's validated bearer.
+      - appId: sample-api
+        defaultAction: deny
+        trustDomain: "public"
+        namespace: "default"
+        operations:
+          - name: /api/v1/queries
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/commands
+            httpVerb: ['POST']
+            action: allow
+      # tenants-api: external-facing REST API host -- generated controllers invoke eventstore
+      # POST /api/v1/queries and POST /api/v1/commands, forwarding the caller's validated bearer.
+      - appId: tenants-api
+        defaultAction: deny
+        trustDomain: "public"
+        namespace: "default"
+        operations:
+          - name: /api/v1/queries
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/commands
+            httpVerb: ['POST']
+            action: allow

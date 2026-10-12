@@ -1,0 +1,31 @@
+# DAPR State Store Component -- Local Development
+# =============================================================
+# Redis-backed state store for actor state and command status tracking.
+# actorStateStore: "true" enables DAPR actor state management.
+#
+# Component Scoping:
+#   EventStore owns aggregate actor state; Tenants writes projections; Admin reads diagnostics.
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+    # DAPR does not support the `{env:VAR|default}` template form, so an unset
+    # REDIS_HOST left the literal string as the hostname and daprd failed with
+    # "no such host". `dapr init` provisions Redis at localhost:6379 with no password.
+    - name: redisHost
+      value: "localhost:6379"
+    - name: redisPassword
+      value: ""
+    - name: actorStateStore
+      value: "true"
+    - name: keyPrefix
+      value: "none"
+scopes:
+  - eventstore
+  - tenants
+  - eventstore-admin
+  - memories

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting" />
+    <PackageReference Include="YamlDotNet" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Dapr" />
+    <PackageReference Include="Hexalith.EventStore.Aspire" />
+    <PackageReference Include="Aspire.Hosting.Keycloak" />
+    <PackageReference Include="Aspire.Hosting.Redis" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
+    <ProjectReference Include="../../references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
+    <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
+  </ItemGroup>
+  <ItemGroup><None Update="Declarations/*.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="Hexalith.Platform.Composition.Tests" /></ItemGroup>
+</Project>
