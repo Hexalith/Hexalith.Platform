@@ -4,7 +4,7 @@
 
 ## Goal
 
-Enable source development for Parties from its own workspace, using Platform as a direct submodule and exactly its declared real-service minimum environment, and for EventStore, Memories and McpCli from the Platform workspace. Prove that edits and breakpoints reach the active checkout, initialization stays within direct references, and failures identify their cause. All-domain-workspace verification continues later.
+The Parties developer runs and debugs their checkout from the Parties workspace, with Platform as a direct submodule, against exactly the servers Parties declares (EventStore, Tenants and Memories) as real services; EventStore, Memories and McpCli developers do the same from the Platform workspace. Edits and breakpoints reach the running code, only direct references are initialized, and failures say what is missing or unready and why. It ships what every later consumer waits on (the next declaration-schema major and the first Platform-accepted `hexalith-module`) and proves SM-2 on the reference composition; Epic 3 extends it to all domain workspaces.
 
 ## Stories
 
@@ -24,36 +24,29 @@ Enable source development for Parties from its own workspace, using Platform as 
 
 ## Requirements & Constraints
 
-- Module owners declare one server list for development and integration testing. Domain environments include EventStore, Tenants and Memories plus declared dependencies, excluding unrelated modules. Technical/tool environments introduce no invented domain dependencies. Isolated test doubles remain module-owned.
-- Validate declarations before composition. Missing, duplicate, incompatible or unknown fields produce actionable file, field-path and reason diagnostics; errors never yield a partial composition. Required resources need usable readiness evidence, not merely a running process.
-- The default startup budget is ten minutes from environment request. Overrides require a finite value and justification; complete environments use the largest declared override. Preserve startup duration, readiness results, effective budget and failure diagnostics. Timeout reports identify unready resources, and definite failure may stop early.
-- Demonstrate a breakpoint and source edit in the active checkout. Stop only the owning tool's resources.
-- Module declaration changes require owner review. Tenants, Folders and Projects adopt in their own repositories; Platform supplies the enrollment kit.
+- One owner-declared server list serves development and integration testing. Domain environments add EventStore, Tenants and Memories and exclude unrelated modules; EventStore, Memories and McpCli get no invented domain dependency.
+- Validate before composing: missing, duplicate, incompatible or unknown fields report file, field path and reason, never a partial composition.
+- Required servers need usable readiness checks; a running process is not ready. Declare only independently executable startup tasks, with scope and authority class; an empty list is valid. In-process hosted services are not tasks, and readiness alone never claims them complete.
+- Startup deadline defaults to 10 minutes from the start request. Overrides need a finite value and justification; the complete environment uses the largest, reported as an override. Record duration, readiness results and effective deadline; a raised timeout is never an improvement.
+- SM-2 evidence: breakpoint and edit in the active checkout, nested references uninitialized, recorded with revision, environment, result and diagnostics. A technical module's own AppHost serves only its own tests, never Platform evidence.
+- Stories in other repositories need owner review and are done only when merged, released (tools as an accepted version), pinned in Platform and verified from the Platform workspace. Tenants, Folders and Projects adopt on their own.
 
 ## Technical Decisions
 
-Platform owns composition and declaration semantics; Builds implements schema, validation and `hexalith-module`. Modules retain behavior, UIs, thin SDK hosts, authorization and readiness. One Platform Aspire model consumes declarations through ordinary C# helpers; Builds' AppHost launches it. Domain AppHosts remain frozen pending qualified retirement. New hosting helpers require ratified ServiceDefaults and Aspire/Dapr packages. Preserve the optional Works preview.
-
-The next major after `hexalith.module-manifest.v1` starts Platform declarations; v1 cannot enroll. Support current and previous Platform majors. Define the complete structure now; later stages add validation rules. The groups cover:
-
-- Identity: module, app and resource identities and enabled servers.
-- Runtime: logical Dapr capabilities, recovery classes and configuration keys for bound component names; extension packages and inputs; requests, limits, replicas defaulting to one and volumes.
-- Surfaces: logical interfaces, route prefixes, exposure and surface classes, authorization, inbound callers and operations.
-- Integration: topics and dead-letter policies, logical secrets and dynamic namespaces, identity, egress, provider tenancy and disable controls for external-effect or destructive-retention workers.
-- Lifecycle: readiness, scoped startup tasks and authority classes, recovery/fence hooks, replay/reopening behavior, justified startup overrides, critical flows and smoke surfaces, change classification and recovery inventory.
-
-Platform assigns component names, namespaces, FQDNs and scopes and renders declarative subscriptions. Dapr capabilities bind names through configuration and declare authoritative-restore, rebuild-only or live-authority-only recovery. Provider exceptions are Memories' FalkorDB graph, Redis search/vector indexes and SET NX preflight-dedup row; transitional Redis coordination permits local enrollment. Enrolled hosts cannot map MCP endpoints; MVP MCP uses McpCli stdio.
-
-Startup scopes are per-start verify, once-per-environment creation, recovery and operator-only. Verification is idempotent; creation runs only at initial creation/enrollment; recovery follows dependency order. Hosted authority/population creation is operator-only.
-
-Resolve one active-root build/launch mapping. Initialize only direct `references/*` submodules without recursion or remote updates; initialized nested submodules fail. Source mode uses active/root-declared source in Debug and catalog packages/images elsewhere. Missing source and duplicate source/package identities fail without fallback. Only the pinned tool selects mode.
-
-Package mode uses Release/NuGet artifacts and catalog images. Platform identity is the direct Platform submodule commit, or HEAD inside Platform; it pins the Builds catalog and tool range. Package mode refuses identity/catalog/tool-range or dirty/untagged-submodule mismatches; source mode warns. Builds owns versions; Aspire CLI equals AppHost SDK and EventStore.Aspire/Dapr toolkit pins move together.
+- **Ownership:** Platform owns declaration and composition semantics; Builds implements schema, validator and `hexalith-module`, and its catalog is the sole version authority.
+- **Schema:** the next major after `hexalith.module-manifest.v1` (v1 never enrolls); current and previous majors are accepted. All Identity, Runtime, Surfaces, Integration and Lifecycle fields are defined now; later epics add rules, not majors. Platform assigns component names, namespaces, FQDNs and scopes; files such as the Parties ACL are declaration sources. Task scopes: per-start verify (idempotent), once-per-environment creation (never rerun on upgrade, rollback or restore), recovery (dependency order), operator-only.
+- **Composition:** one Platform Aspire model consumes declarations via ordinary C# helpers; Builds.Module.AppHost launches it. Exactly one `eventstore` app runs, with no extension packages yet. Domain AppHosts are frozen. The Works preview runs only when `Platform:Works:Enabled` is set and remains the rollback composition.
+- **Source mapping:** resolve the active root once into one mapping for build and launch. Initialize only direct `references/*`, never recursively or by remote update; an initialized nested submodule fails by path. Source mode builds root-declared Hexalith dependencies in Debug; others use catalog packages or images, never as fallback. Missing source or duplicate source/package identities fail by name. Only the pinned tool selects the mode, never file existence.
+- **Platform identity:** the direct `references/Hexalith.Platform` commit (HEAD inside Platform) pins the Builds catalog and tool range. Package mode uses Release, NuGet and released images and refuses identity, catalog, tool-range or dirty/untagged mismatches; source mode warns. Aspire CLI must equal the AppHost SDK; EventStore.Aspire and the Dapr toolkit move together. Tool versions through 4.27.4 are not accepted.
+- **Dapr:** Platform owns local mTLS, per-receiver access control and scoped components. Capabilities declare logical role, recovery class (authoritative-restore, rebuild-only, live-authority-only) and the configuration key binding the name; no literal names. Declared topics get Platform-rendered declarative subscriptions with dead-letter policy. Only Memories' FalkorDB graph, Redis search/vector indexes and SET NX dedup row may use provider SDKs; its other Redis use is transitional. New hosting helpers wait for the canonical ServiceDefaults and Aspire Dapr package set.
+- **MCP:** enrolled hosts never map MCP endpoints; McpCli stdio is the only MVP MCP surface, built as a run-scoped, never-published tool for offline inspection here.
 
 ## UX & Interaction Patterns
 
-Expose stable run, debug, test and down commands. Failures name dependencies/resources, paths, reasons, applicable deadlines and diagnostics locations. Adoption checks report pass/fail with files. McpCli is a run-scoped local tool.
+No product UI. Operators use `hexalith-module` `run`, `debug`, `test` and `down` (stopping only what it started). Failures name the unready resource or missing dependency, reason, deadline and diagnostics location, not a log dump. Adoption checks report pass or fail with file and reason.
 
 ## Cross-Story Dependencies
 
-Schema, catalog and source/identity mechanisms enable declarations and composition. Dapr conventions and readiness precede the accepted tool and reference adoption. Owner-reviewed EventStore, Memories and Tenants declarations supply Parties' dependencies. Epic 2 adds integration lifecycle; Epic 3 adds extensions, connected McpCli and all-domain-workspace verification.
+- Schema, catalog, mapping and identity (1.1–1.4) precede declarations (1.5) and the model (1.6); 1.5 supplies the environments for 1.10 and 1.12.
+- The accepted tool (1.9) needs 1.1–1.8 merged; 1.12 and 1.13 pin it, and Parties' name binding and subscriptions rely on 1.7.
+- Epic 2 adds run-scoped resources (fixed Dapr ports block concurrent runs) and the blocking CI tier; Epic 3 adds extensions, connected McpCli and SM-2 across all workspaces, fed by kit checklists; Epic 11 retires the Works preview and frozen AppHosts.
