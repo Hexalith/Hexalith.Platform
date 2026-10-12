@@ -112,6 +112,80 @@ context:
 - Given Memories' exceptions, when inspected, then the three approved uses are distinct from transitional coordination.
 - Given Tenants' AppHost, when this story lands, then it has no new cross-module wiring.
 
+### Review Findings
+
+Code review 2026-10-11 (bmad-code-review, story-scoped diff of Platform script plus EventStore `2841e0c8..06f21776`, Memories `450445a6..57626ffb`, Tenants `711e1008..737159d0`; 39 raw findings from 4 layers).
+
+- [x] [Review][Patch] Memories CI is red because the adopted lifecycle deployment bytes changed (decision 2026-10-12: option A) [references/Hexalith.Memories/deploy/kubernetes/base/access-telemetry-deployments.yaml:204] — Revert the two clock-verifier bindings so the adopted base bytes match again. Restore the exact-byte `QualificationOverlay_AdoptsExactApprovedBytesAndKeepsDerivedEvidenceDisabled` test and drop `ProductionOverlay_ClockAndTelemetryAttestationBindingsMatch`. Reword the deferred-work entry so the successor requalification candidate carries the bindings. Keep the clock readiness code and tests, the local AppHost binding and the manifest inputs. Rationale: both overlays keep the clock at `replicas: 0`, and live qualification is still pending, so the Kubernetes half of Task 90 moves to requalification.
+- [x] [Review][Patch] EventStore gateway hosted services were not audited for the worker inventory (decision 2026-10-12: option 3) [references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json:379] — Add a Design Notes paragraph: `AdminOperationalIndexHostedService` rebuilds gateway-owned routing indexes from domain metadata, and the request path reads them (`DaprDomainQueryHandlerRegistry` reads `admin:query-types:*`; `DaprCommandAggregateTypeResolver` reads `admin:type-catalog:commands:*`; it also fills the named-projection route catalog). It is therefore not an external-effect worker and has no disable control. Declare the `configstore` Dapr configuration role read by `DaprRateLimitConfigSync`.
+- [x] [Review][Patch] Declared surface operations and callers omit routes the owners map and allow [references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json:287] — Tenants `tenant-domain` lacks `admin/operational-index-metadata`, which `accesscontrol.tenants.yaml` allows for `eventstore`. `tenant-api` (`:202`) declares 4 of the 13 `RestRoute` operations: it omits enable/disable, user add/remove/role, users list, configuration set/remove and audit. Memories `telemetry-lifecycle` (`references/Hexalith.Memories/module/hexalith.module-manifest.v2.json:432`) lacks `validate` (called by `AccessTelemetryLifecycleBootstrapService.cs:158`) and `physical-reclamation-evidence`, and omits the `memories-access-telemetry-inspector` caller allowed by `access-telemetry-lifecycle-config.yaml`.
+- [x] [Review][Patch] EventStore's own suite does not pin the new production ACL caller rules [references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Security/AccessControlPolicyTests.cs] — only the hand-run Platform script checks the `tenants-api`/`tenants` rules in `deploy/dapr/accesscontrol.yaml`. Add an exact caller/operation test that mirrors Tenants `EventPublicationConfigurationTests`.
+- [x] [Review][Patch] `NaturalLanguage:RetryWorkerEnabled` default and configuration binding are untested [references/Hexalith.Memories/src/Hexalith.Memories.Server/NaturalLanguage/NaturalLanguageDescriptionOptions.cs:33]
+- [x] [Review][Patch] No test checks that the legacy key wins when both the legacy key and the alias are set [references/Hexalith.Tenants/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs:608]
+- [x] [Review][Patch] Tenants API startup errors name only the legacy signing key when the value came from the `Jwt:SigningKey` alias [references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Program.cs:60]
+- [x] [Review][Patch] UTC source test handler skips its Authorization assertions when the header is absent (`?.`) [references/Hexalith.Memories/tests/Hexalith.Memories.AccessTelemetry.Tests/Clock/ConfiguredUtcSourceHandler.cs:30]
+- [x] [Review][Patch] Declaration script pins app IDs only for Memories; renaming the EventStore or Tenants app IDs still passes [scripts/test-reference-module-declarations.py:328]
+- [x] [Review][Patch] EventStore ACL comment for `tenants-api` describes only the readiness check, not the business query and command routes [references/Hexalith.EventStore/deploy/dapr/accesscontrol.yaml:47]
+- [x] [Review][Defer] Production EventStore ACL denies Memories commands [references/Hexalith.EventStore/deploy/dapr/accesscontrol.yaml:34] — deferred: pre-existing at baseline. Memories defaults to Dapr `invoke/eventstore`, but neither ACL copy allows `memories`. Memories production runs in namespace `hexalith-memories`, so its production EventStore topology is undefined. The exact caller set in `inspect_acl` must grow when this lands.
+- [x] [Review][Defer] Tenants reuses input `reference` identifiers across distinct keys [references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json:94] — deferred: medium if true, unverified. `authority` ×3, `audience` ×3 (including `Authentication:Workload:Audience`), `issuer` ×2 and `requirehttpsmetadata` ×2 would collapse if Story 1.6 binds inputs by `(source, reference)`. Settle this when 1.6 defines how references resolve.
+- [x] [Review][Defer] Telemetry records keep a Dapr `ttlInSeconds` equal to retention expiry, so `AccessTelemetryLifecycle:Enabled=false` does not stop store-level expiry [references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Lifecycle/AccessTelemetryLifecycleProcessor.cs:123] — deferred: pre-existing TTL design.
+- [x] [Review][Defer] Tenants `deploy/dapr/README.md:60` still says `accesscontrol.tenants.yaml` allows only `POST /process` and `/project` (it allows 5 routes) — deferred: pre-existing.
+
+Re-review 2026-10-12 of the fix diff (12 files, +221/-63; 4 layers, 25 raw findings):
+
+- [x] [Review][Patch] Memories `telemetry-lifecycle` grants every listed caller every operation; split it per caller to match the owner ACL [references/Hexalith.Memories/module/hexalith.module-manifest.v2.json:432] — v2 `callers` apply to the whole interface, so the inspector and adapter appear to reach `write`, `heartbeat` and `validate`. Declare `memories` → write/heartbeat/validate, `memories-access-telemetry-inspector` → inspect, and `access-telemetry-adapter` → physical-reclamation-evidence as separate interfaces, and assert the mapping in the script.
+- [x] [Review][Patch] Removing `ProductionOverlay_ClockAndTelemetryAttestationBindingsMatch` dropped the only clock↔telemetry verifier parity check [references/Hexalith.Memories/tests/Hexalith.Memories.Server.Tests/Deployment/ProductionDeploymentArtifactsTests.cs] — add a reduced test on the adopted bytes: telemetry `AccessTelemetryLifecycle__ClockSignerKeyEpoch` equals clock `Clock__SignerKeyEpoch`, and the telemetry verification-key secret equals clock `Clock__SigningKeySecretName`.
+- [x] [Review][Patch] Opt-in `EventStore:DomainServices:ConfigStoreName` (domain-routing overrides from a Dapr configuration store) is not declared as an EventStore configuration input [references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json]
+- [x] [Review][Patch] Declaration script set/dict checks collapse duplicate interface or operation names [scripts/test-reference-module-declarations.py:491]
+- [x] [Review][Patch] New EventStore ACL test does not pin each operation's field set to `name`/`httpVerb`/`action` [references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Security/AccessControlPolicyTests.cs:280]
+- [x] [Review][Defer] Tenants API alias-precedence and error-message tests run only in the non-blocking Aspire CI tier [references/Hexalith.Tenants/.github/workflows/ci.yml:35] — deferred: pre-existing. `Hexalith.Tenants.IntegrationTests` is listed only as `aspire-test-project`, and Builds `domain-ci.yml` defaults `aspire-continue-on-error` to true.
+
+**Re-review rejected:**
+- spec-edit — Task 90 and the Implementation Notes still say the Kubernetes clock binding is present. The Design Notes and deferred-work record that it moved to requalification.
+- decided — The required clock server has no usable `/ready` in Kubernetes until requalification, and a qualification run can scale the clock without the bindings. This is the accepted consequence of decision 1A (overlays keep `replicas: 0`; deferred-work records it).
+- false — `access-telemetry-adapter` is a qualification-only caller wrongly declared for production: the production overlay render already includes the base ACL policy that grants it.
+- false — The EventStore gateway declares `callers: []`: public interfaces use empty callers by convention (`memories-api`, `tenant-api`), and only internal-only interfaces list callers.
+- false — The new ACL test lacks a top-level `trustDomain` check: the existing production trust-domain test (`AccessControlPolicyTests.cs:350`) covers it.
+- false — The composer may assign a component name other than `configstore`: binding logical component keys is Story 1.7, per the Design Notes.
+- false — A null in-memory value keeps `RetryWorkerEnabled` true, so the test comment is wrong: in this host builder the present-null row returned False until the key was omitted.
+- false — The UTC handler's assertions are swallowed by the readiness catch-all: a missing header still fails the test, through `/ready` returning 503.
+- low — The `rate-limit-configuration` recovery class and missing component template: the role is optional at readiness (Degraded), and the class choice has no named consumer harm yet.
+- low — The script's expected lists are hand-typed rather than derived from `RestRoute` attributes, ACL files and `Map*` calls: deriving them adds parsing machinery.
+- low — Operation `kind`, other surfaces' callers and EventStore Dapr roles are not exact-matched: this is consistent with the first-pass rejection of non-secret/egress exactness.
+- low — A redundant subset assertion on `tenant-domain` operations: the exact check supersedes it, and it causes no harm.
+- low — The signing-key error names both keys rather than the one selected: this needs a short legacy key plus a valid alias, and the fix adds selection tracking.
+- low — The retry test misses present-null, empty-string and environment-variable cases and resolves options by hand: these are not production configuration paths. The sibling test shares the same builder pattern.
+- low — An empty clock-source token is accepted by clock startup: this is pre-existing runtime behavior.
+- low — The ACL test is a third hand-kept copy of the policy: this is documentation only.
+- process — Story status is `in-progress` with all items checked: the workflow sets status at the end of the review.
+
+**Rejected:**
+- false — Declared Dapr role keys, `Embedding:CredentialNamespace` and `Clock:SourceAuthenticationTokens` are not read by code: Design Notes sanction them as declaration-stage logical inputs for Story 1.6/1.7.
+- false — Topic names `tenants-events` and `eventstore-events` don't match runtime: the schema's identifier pattern forbids dots, so these are logical names. EventStore's dead-letter publisher is application-level, not a subscription dead-letter.
+- false — "Live" disable controls only apply after a restart in Kubernetes: a ConfigMap environment change requires a restart, which applies the control anyway. EventStore's control is specified as restart-applied.
+- false — Malformed boolean disable values throw at registration: the host fails loudly at startup, which is correct.
+- false — Tenants API `/ready` cascades EventStore outages: this is the behavior Task 68 requires.
+- false — Memories secret declarations use mixed patterns: `clock-signing-key` and `telemetry-marker-key` deliberately map secret-name inputs (loop 2). The attestation verification key is a public key, so `configuration` is correct.
+- false — `TickAsync` mixes an option snapshot with `CurrentValue`: in production `opts` is the tick's current snapshot, and only the enable flag is re-read on purpose.
+- false — Clock readiness accepts an `unconfigured` epoch that consumers reject: consumers compare epochs for equality and `KeyIdRegex` accepts `unconfigured`. The `unconfigured` rejection at `DaprAccessTelemetryCapabilityProbe.cs:269` applies to evidence IDs.
+- false — The Memories Aspire extension never supplies the verifier key and epoch: the extension never supplied any clock signing configuration. The declared inputs carry these keys for the composer.
+- false — `ast.literal_eval` or a missing key crashes `inspect_acl`, and a missing manifest crashes `policy_diagnostics`: both fail closed with a non-zero exit.
+- false — `EventStore:Projections:WorkersEnabled` is not live: it is specified as restart-applied (Implementation Notes).
+- spec-edit — The declared logical secrets (`Tenants:ApiDaprToken`, `Conversation:ProviderApiKey`, `*:AppChannelToken`) are not read by runtime code: the Design Notes runtime mappings make this deliberate; changing it would edit the spec.
+- low — Disabled workers (`WorkersEnabled`, `OrphanSemanticIndex`, `IsStubBackfill`) log nothing: operators set the switch on purpose, and the fix adds log plumbing.
+- low — Readiness probes call the UTC sources on every probe with no cache: no throttling has been shown, and caching adds state.
+- low — No warning when the legacy key and the alias are both set with different values: legacy precedence is specified, and the fix adds a guard.
+- low — `dynamicSecretNamespaces`, `identityNeeds`, `providers`, `topics` and Tenants workers are not exact-matched: the spec scoped exact matching to secrets and egress.
+- low — The script relies on bare `assert`, is not in CI, has mode 100644, and one read lacks an encoding: nobody runs it with `-O`, wiring it into CI was rejected in earlier loops, and the read without encoding is unreachable from `main`.
+- low — Some retention and bootstrap tests use indirect success signals or `Task.Delay(50)`: processor-level tests cover the behavior directly.
+- low — `validate()` with fewer than three paths skips the module-ID check: the gate always passes all three, and missing files fail the public validator.
+- low — `bootstrap-oidc-token` uses protocol `oidc` instead of `https`: the schema allows it, and no consumer harm is named.
+- low — The ACL parser accepts `accessControl` nested under a later root key: this needs a contrived rewrite, and the fix adds a guard.
+- low — A non-Memories owner could declare a provider exception: the schema enum limits names to the four Memories exceptions, and the fix adds a branch.
+- low — A manifest's `moduleId` is not tied to its repository path: this needs swapped owner files.
+- low — The `dotnet` subprocess has no timeout, and report keys are not checked: the run hangs or crashes loudly, and it is run by hand.
+- low — The clock signer factory blocks on `GetResult`: this is pre-existing, the kubelet probe timeout bounds it, and the fix adds a warm-up service.
+
 ## Implementation Notes
 
 Preserve the first pass's correct server identities, empty executable task lists, three approved Memories provider exceptions plus marked transitional Redis coordination, no enrolled MCP surface, and no Tenants AppHost edits. Preserve the joint validation and duplicate-identity, absent-readiness, unapproved-exception, fifth-exception and unmarked-coordination checks. Bind logical component names in Story 1.7.
@@ -350,7 +424,7 @@ Use `Memories:LlmComponentPath` as the extension's consumer-supplied LLM YAML pa
 
 The v2 validator checks that task executable paths exist. Current startup work is largely hosted services, and the Tenants synthetic-tenant task is assigned to Epic 3. The 2026-10-11 decision is to declare empty task lists now, with no redundant /ready wrappers; later owning stories add runnable tasks. Story 1.7 binds logical component keys that current code still hardcodes.
 
-Story 1.7 binding keys are `Dapr:StateStoreComponent`, `Dapr:PubSubComponent`, `Dapr:SecretStoreComponent`, `AccessTelemetryLifecycle:StateStoreComponent`, `AccessTelemetryLifecycle:SecretStoreComponent`, `AccessTelemetryLifecycle:ConfigurationComponent`, and `Embedding:CredentialNamespace`. They are declaration-stage inputs in Story 1.5; current services still use literal Dapr component names and tenant credential conventions. `Memories:LlmComponentPath` is the consumer-supplied YAML path input for the Memories Aspire extension.
+Story 1.7 binding keys are `Dapr:StateStoreComponent`, `Dapr:PubSubComponent`, `Dapr:SecretStoreComponent`, `Dapr:ConfigurationStoreComponent`, `AccessTelemetryLifecycle:StateStoreComponent`, `AccessTelemetryLifecycle:SecretStoreComponent`, `AccessTelemetryLifecycle:ConfigurationComponent`, and `Embedding:CredentialNamespace`. They are declaration-stage inputs in Story 1.5; current services still use literal Dapr component names and tenant credential conventions. `Memories:LlmComponentPath` is the consumer-supplied YAML path input for the Memories Aspire extension.
 
 The `Authentication:JwtBearer:SigningKey` inputs describe the existing non-Production symmetric mode; production gateway and Tenants domain hosts use OIDC authority with no signing key. Clock source tokens are supplied through each `Clock:Sources:*:AuthenticationToken` field from the logical clock-source secret namespace. `retentionSeconds` is the Dapr configuration item in `access-telemetry-config`; `AccessTelemetryLifecycle:RetentionSource` selects that Dapr authority.
 
@@ -362,9 +436,37 @@ Memories' logical `Memories:AppChannelToken` and `Memories:DaprApiToken` secrets
 
 The EventStore workload issuer uses its own client ID and secret in authority mode, distinct from inbound JWT validation. `Authentication:WorkloadIssuer:ClientSecret` is a direct runtime configuration key backed by the logical `workload-issuer-client-secret` secret; it needs no environment alias. Its optional explicit token endpoint or the endpoint discovered from the configured JWT authority drives outbound HTTPS egress. The v2 schema has no `http` egress protocol. Google/Ollama embedding provider entries use `tcp` to cover their configured HTTP or HTTPS URLs; the destination URL determines the application protocol and TLS use. The OIDC token endpoint remains HTTPS in production.
 
+The EventStore gateway's `AdminOperationalIndexHostedService` is not an external-effect worker and has no disable control. It rebuilds gateway-owned routing indexes from domain `admin/operational-index-metadata`, and the request path reads them: `DaprDomainQueryHandlerRegistry` reads `admin:query-types:*`, `DaprCommandAggregateTypeResolver` reads `admin:type-catalog:commands:*`, and startup fills the named-projection route catalog. Disabling it would break routing after a fresh or restored state store. The Memories capability probe differs: it writes throwaway probe keys and can safely be disabled. `DaprRateLimitConfigSync` reads tenant rate-limit overrides from the `configstore` Dapr configuration component, declared as role `rate-limit-configuration`; its readiness check reports Degraded, not Unhealthy, when the component is absent. The opt-in `EventStore:DomainServices:ConfigStoreName` input names a Dapr configuration store for domain-routing overrides; it is null by default. Because v2 `callers` apply to a whole interface, Memories splits its telemetry surface by caller to match the owner ACL: `memories` → write/heartbeat/validate, `memories-access-telemetry-inspector` → inspect, and `access-telemetry-adapter` → physical-reclamation-evidence.
+
+The two clock verifier settings (`AccessTelemetryLifecycle:AttestationVerificationKey` and `ClockSignerKeyEpoch`) reach the clock host in the local Aspire composition. The Kubernetes bindings wait for the successor requalification candidate, because the adopted PG-ONPREM-2 lifecycle deployment bytes must not change outside requalification. Both repository overlays keep the clock at `replicas: 0`.
+
 ## Verification
 
-Final review patches: `python3 scripts/test-reference-module-declarations.py` passed the joint positive and all negative cases, including four production ACL resource-identity drifts. `ProductionDeploymentArtifactsTests` passed 12/12 after adding rendered clock/telemetry key and epoch parity and an exact-byte guard allowing only Story 1.5's two verifier environment bindings to the historical lifecycle candidate. `TenantsApiReadinessTests` passed 3/3, including a Dapr transport exception returning `/ready` 503 while `/alive` remains 200. Both affected .NET test projects built with 0 warnings/errors; Python compilation and owner/root diff checks passed. The active lifecycle deployment bytes now hash to `94ca3adf766d02e533b646278ca572800a4b6b88beb9a60f33974772673771af`, while the adopted inactive candidate records `aba898858bd7e82eb042b6ee50a76cd16821b154a65a7ab83f8e79ef45b835b6`. The historical candidate and evidence were not modified; profile requalification is deferred before production activation.
+Code-review patches (2026-10-12):
+- `python3 scripts/test-reference-module-declarations.py` exits 0 with 41 PASS lines. These include the new EventStore and Tenants server-identity pins, the exact Tenants and Memories surface operations and callers, and the EventStore `rate-limit-configuration` Dapr role.
+- The base lifecycle deployment is byte-identical to `lifecycle-deployments.candidate.yaml` again. The Memories CI lifecycle tooling suite (`PYTHONHASHSEED=0 python3 -m unittest discover -s tests/tooling/access_telemetry_lifecycle -p "test_*.py"`) passes 83/83; it had 54 failures/errors before the revert.
+- `ProductionDeploymentArtifactsTests` passes 11/11 with the exact-byte adoption guard restored.
+- Fresh `-nodeReuse:false` Debug builds of the four affected test projects report 0 warnings and 0 errors. Focused classes pass:
+  - Memories: `StartupWorkerDisableRegistrationTests` 7/7, `NaturalLanguageEmbeddingRetryHostedServiceTests` 10/10, `ClockSigningReadinessHealthCheckTests` 9/9, `AccessTelemetryRetentionDisableTests` 4/4.
+  - Tenants: `TenantsApiGeneratedControllerTests` 39/39, `TenantsApiReadinessTests` 3/3.
+  - EventStore: `AccessControlPolicyTests` 23/23, `ProductionDaprComponentValidationTests` 21/21.
+- The new exact EventStore ACL test fails when the admin rule is temporarily widened with `DELETE`; the file was then restored.
+- An in-memory `null` value for `NaturalLanguage:RetryWorkerEnabled` binds to `false`, so the default case omits the key.
+
+Re-review patches (2026-10-12):
+- The Memories telemetry surface is split per caller.
+- The opt-in `EventStore:DomainServices:ConfigStoreName` input is declared.
+- The script asserts unique interface and operation names.
+- The EventStore ACL test pins each operation's field set.
+- `ProductionOverlay_TelemetryVerifierMatchesClockSigner` is restored as a reduced parity test.
+
+Evidence:
+- `-nodeReuse:false` builds report 0 warnings and 0 errors.
+- `ProductionDeploymentArtifactsTests` passes 12/12, and `AccessControlPolicyTests` passes 23/23.
+- `python3 scripts/test-reference-module-declarations.py` exits 0 with 41 PASS lines.
+- The new parity test fails when telemetry's verifier epoch is changed to `drifted-epoch`. The base deployment was restored byte-identical to the adopted candidate.
+
+Earlier final-review evidence (superseded where noted): `python3 scripts/test-reference-module-declarations.py` passed the joint positive and all negative cases, including four production ACL resource-identity drifts. `ProductionDeploymentArtifactsTests` passed 12/12 after adding rendered clock/telemetry key and epoch parity and an exact-byte guard allowing only Story 1.5's two verifier environment bindings to the historical lifecycle candidate. `TenantsApiReadinessTests` passed 3/3, including a Dapr transport exception returning `/ready` 503 while `/alive` remains 200. Both affected .NET test projects built with 0 warnings/errors; Python compilation and owner/root diff checks passed. The active lifecycle deployment bytes now hash to `94ca3adf766d02e533b646278ca572800a4b6b88beb9a60f33974772673771af`, while the adopted inactive candidate records `aba898858bd7e82eb042b6ee50a76cd16821b154a65a7ab83f8e79ef45b835b6`. The historical candidate and evidence were not modified; profile requalification is deferred before production activation. Superseded 2026-10-12: the two-binding exact-byte allowance and the bindings themselves were reverted.
 
 Iteration 12: From Platform, `python3 scripts/test-reference-module-declarations.py` passed joint validation and every prior frozen-matrix/negative case, plus both receiver ACL copies, renamed owner, extra secret/egress in each owner, and canonical malformed JSON, invalid-root and UTF-8 refusal with public source/field diagnostics. `python3 -m py_compile scripts/test-reference-module-declarations.py` passed. From Tenants, `dotnet build tests/Hexalith.Tenants.Server.Tests/Hexalith.Tenants.Server.Tests.csproj --no-restore -m:1 /nr:false -v:q` succeeded with 0 warnings and 0 errors; `dotnet tests/Hexalith.Tenants.Server.Tests/bin/Debug/net10.0/Hexalith.Tenants.Server.Tests.dll -class '*EventPublicationConfigurationTests'` passed 23/23 with none skipped. `git diff --check` passed in Platform, EventStore and Tenants. `git diff -- src/Hexalith.Tenants.AppHost/Program.cs` in Tenants was empty. Production Dapr mTLS caller behavior still requires a deployed integration check; this iteration verifies the effective policy structure.
 

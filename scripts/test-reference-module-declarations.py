@@ -340,7 +340,17 @@ def inspect_inventory(documents: list[dict]) -> None:
         assert ready == {server["id"] for server in module["identity"]["servers"] if server["required"]}
         assert all({"role", "capability", "recoveryClass", "configurationKey"} <= role.keys()
                    for role in module["runtime"]["dapr"])
+        interface_names = [interface["name"] for interface in module["surfaces"]["interfaces"]]
+        assert len(interface_names) == len(set(interface_names)), interface_names
+        for interface in module["surfaces"]["interfaces"]:
+            operation_names = [operation["name"] for operation in interface["operations"]]
+            assert len(operation_names) == len(set(operation_names)), (interface["name"], operation_names)
     eventstore = by_name["eventstore"]
+    assert {(server["appId"], server["resourceId"]) for server in eventstore["identity"]["servers"]} == {
+        ("eventstore", "eventstore")}
+    assert {"role": "rate-limit-configuration", "capability": "configuration",
+            "recoveryClass": "authoritative-restore",
+            "configurationKey": "Dapr:ConfigurationStoreComponent"} in eventstore["runtime"]["dapr"]
     assert {"EventStore:PubSubComponentPath", "EventStore:AppChannelToken",
             "Authentication:JwtBearer:Authority", "Authentication:JwtBearer:Issuer",
             "Authentication:JwtBearer:Audience", "Authentication:JwtBearer:ValidAudiences",
@@ -381,7 +391,8 @@ def inspect_inventory(documents: list[dict]) -> None:
             "EventStore:ProjectionDispatch", "EventStore:ProjectionDispatch:MaxRetryAttempts",
             "EventStore:ProjectionDispatch:RetryWorkerInterval",
             "EventStore:ProjectionDeliveryIdempotency",
-            "EventStore:ProjectionDeliveryIdempotency:CompletedReceiptLimit"} <= inputs(eventstore)
+            "EventStore:ProjectionDeliveryIdempotency:CompletedReceiptLimit",
+            "EventStore:DomainServices:ConfigStoreName"} <= inputs(eventstore)
     assert {"projection-delivery-retry", "projection-activation", "projection-polling",
             "projection-active-index-cleanup"} == {
                 worker["name"] for worker in eventstore["integration"]["workers"]}
@@ -483,7 +494,24 @@ def inspect_inventory(documents: list[dict]) -> None:
                 "AccessTelemetryLifecycle:CapabilityEvidence:ValidUntilUtc"):
         assert input_details(memories)[key][0] == "configuration"
     assert not any(interface["protocol"] == "mcp" for interface in memories["surfaces"]["interfaces"])
+    # v2 callers apply to a whole interface, so each telemetry caller gets only its owner-ACL routes.
+    assert {interface["name"]: (interface["callers"], [operation["name"] for operation in interface["operations"]])
+            for interface in memories["surfaces"]["interfaces"]
+            if interface["server"] == "telemetry"} == {
+                "telemetry-lifecycle": (["memories"], ["write", "heartbeat", "validate"]),
+                "telemetry-inspection": (["memories-access-telemetry-inspector"], ["inspect"]),
+                "telemetry-reclamation-evidence": (["access-telemetry-adapter"], ["physical-reclamation-evidence"])}
     tenants = by_name["tenants"]
+    assert {(server["appId"], server["resourceId"]) for server in tenants["identity"]["servers"]} == {
+        ("tenants", "tenants"), ("tenants-api", "tenants-api")}
+    tenant_operations = {interface["name"]: {operation["name"] for operation in interface["operations"]}
+                         for interface in tenants["surfaces"]["interfaces"]}
+    assert tenant_operations["tenant-api"] == {
+        "create-tenant", "list-tenants", "get-tenant", "update-tenant", "enable-tenant", "disable-tenant",
+        "add-user-to-tenant", "remove-user-from-tenant", "change-user-role", "get-tenant-users",
+        "set-tenant-configuration", "remove-tenant-configuration", "get-tenant-audit"}
+    assert tenant_operations["tenant-domain"] == {
+        "process", "query", "project", "replay-state", "admin-operational-index-metadata"}
     assert {"Tenants:DaprConfigPath", "Oidc:Authority", "Jwt:SigningKey",
             "Tenants:BootstrapGlobalAdminEnabled", "Tenants:BootstrapGlobalAdminUserId",
             "EventStore:Authentication:Authority", "EventStore:Authentication:ClientId",
