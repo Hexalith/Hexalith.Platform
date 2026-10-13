@@ -246,7 +246,9 @@ public sealed partial class PlatformAppModelTests
             IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, ProjectDirectory = platform, DisableDashboard = true });
             builder.Environment.EnvironmentName = Environments.Development;
             builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(directory, "certificates");
-            WorksPreviewModel.Compose(builder);
+            builder.Configuration["Platform:Works:Enabled"] = "true";
+            builder.Configuration["Platform:Timesheets:Enabled"] = "false";
+            PlatformAppModel.ComposeEntry(builder);
             builder.Resources.OfType<ProjectResource>().Select(resource => resource.Name).Order().ShouldBe(new[] { "eventstore", "eventstore-admin", "eventstore-operations", "works" }.Order());
             builder.Resources.ShouldNotContain(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any() || resource.Name.StartsWith("tenants", StringComparison.Ordinal) || resource.Name.StartsWith("memories", StringComparison.Ordinal));
             builder.Resources.OfType<ProjectResource>().ShouldAllBe(resource => resource.Annotations.OfType<DaprSidecarAnnotation>().Count() == 1);

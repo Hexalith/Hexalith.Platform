@@ -42,6 +42,8 @@ public static class PlatformServerBindings
         foreach (PlatformModuleDeclaration module in declarations)
         {
             string id = PlatformDeclarationSet.Id(module.Declaration);
+            if (id == "timesheets" && !options.TimesheetsEnabled)
+                throw Failure(module, "timesheets/host", "Platform:Timesheets:Enabled", "explicit Development/source opt-in is required");
             foreach (JsonElement server in module.Declaration.GetProperty("identity").GetProperty("servers").EnumerateArray().Where(s => s.GetProperty("enabled").GetBoolean()))
             {
                 string serverId = server.GetProperty("id").GetString()!;
@@ -51,9 +53,17 @@ public static class PlatformServerBindings
                 SourceMappingEntry? source = options.Mapping.Entries.SingleOrDefault(e => e.Identity.Equals(Repository(id), StringComparison.OrdinalIgnoreCase));
                 if (options.Mapping.Mode == WorkspaceMode.Source)
                 {
-                    if (source?.Origin != "source" || source.Path is null || !options.Projects.TryGetValue(identity, out string? relative))
+                    string? relative = options.Projects.GetValueOrDefault(identity);
+                    if (identity == "timesheets/host" && relative is null) relative = PlatformTimesheetsBinding.Project;
+                    if (source?.Origin != "source" || source.Path is null || relative is null)
                         throw Failure(module, identity, "project", "mapped source project is unavailable");
                     project = Path.GetFullPath(Path.Combine(source.Path, relative));
+                    if (identity == "timesheets/host" && project != Path.GetFullPath(Path.Combine(source.Path, PlatformTimesheetsBinding.Project)))
+                        throw Failure(module, identity, project, "only the actual mapped Timesheets host project is supported");
+                    // ContainsProject uses Builds' RepositoryPathResolver. Limit this validation view to
+                    // the selected owner so a link into another mapped repository cannot pass containment.
+                    if (identity == "timesheets/host" && !(options.Mapping with { Entries = [source] }).ContainsProject(project))
+                        throw Failure(module, identity, project, "mapped Timesheets project is missing or physically outside its owner root");
                     if (!options.Mapping.ContainsProject(project) || !File.Exists(project)) throw Failure(module, identity, project, "mapped project is missing or outside its source root");
                 }
                 else if (identity == "eventstore/gateway")
@@ -82,6 +92,7 @@ public static class PlatformServerBindings
             }
         }
         if (result.Count(s => s.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
+        if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);
         return result;
     }
 

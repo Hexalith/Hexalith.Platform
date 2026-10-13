@@ -11,16 +11,5 @@ using Aspire.Hosting;
 using Hexalith.Platform.Composition;
 
 var builder = DistributedApplication.CreateBuilder(args);
-if (bool.TryParse(builder.Configuration["Platform:Agents:Enabled"], out bool agents) && agents)
-{
-    throw new InvalidOperationException("DependencyNotAvailable: EXT-HOST-1. Full Agents composition and accepted owner prerequisites are unavailable.");
-}
-if (bool.TryParse(builder.Configuration["Platform:Works:Enabled"], out bool works) && works)
-{
-    WorksPreviewModel.Compose(builder);
-}
-else
-{
-    PlatformAppModel.Compose(builder);
-}
+PlatformAppModel.ComposeEntry(builder);
 builder.Build().Run();

@@ -84,6 +84,11 @@ public static class PlatformDeclarationSet
             }
             paths.Add(Path.GetFullPath(path));
         }
+        if (options.TimesheetsEnabled)
+        {
+            string candidate = Path.GetFullPath(Path.Combine(options.PlatformRoot, "eng", "timesheets-deployment", "hexalith.module-manifest.v2.json"));
+            if (!paths.Contains(candidate, StringComparer.Ordinal)) paths.Add(candidate);
+        }
         PlatformManifestValidationResult result = PlatformManifestValidator.Validate(paths);
         if (!result.IsValid)
         {
@@ -103,6 +108,7 @@ public static class PlatformDeclarationSet
             selected.Add(identity);
         }
         if (options.ActiveModule is not null) Select(options.ActiveModule);
+        if (options.TimesheetsEnabled) Select("timesheets");
         bool domain = options.DomainModule ?? (options.ActiveModule is not null && options.ActiveModule is not ("eventstore" or "memories" or "mcpcli" or "platform" or "builds"));
         if (options.ActiveModule is null || domain) foreach (string owner in new[] { "eventstore", "tenants", "memories" }) Select(owner);
         return result.Declarations!.Where(d => selected.Contains(Id(d.Declaration))).ToArray();

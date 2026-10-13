@@ -18,12 +18,31 @@ using YamlDotNet.RepresentationModel;
 /// <summary>The single Platform-owned declaration composition used by the file AppHost and Builds.</summary>
 public static class PlatformAppModel
 {
+    /// <summary>Routes the thin file entry while refusing incompatible local topologies.</summary>
+    public static void ComposeEntry(IDistributedApplicationBuilder builder)
+    {
+        if (bool.TryParse(builder.Configuration["Platform:Agents:Enabled"], out bool agents) && agents)
+            throw new InvalidOperationException("DependencyNotAvailable: EXT-HOST-1. Full Agents composition and accepted owner prerequisites are unavailable.");
+        bool works = bool.TryParse(builder.Configuration["Platform:Works:Enabled"], out bool selected) && selected;
+        if (works && builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"))
+            throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled cannot be combined with Platform:Works:Enabled; select one Development composition.");
+        if (works) WorksPreviewModel.Compose(builder);
+        else Compose(builder);
+    }
+
     /// <summary>Validates and binds the complete set, without adding any resources.</summary>
-    public static IReadOnlyList<PlatformServerBinding> Prepare(PlatformCompositionOptions options) => PlatformServerBindings.Resolve(options, PlatformDeclarationSet.Load(options));
+    public static IReadOnlyList<PlatformServerBinding> Prepare(PlatformCompositionOptions options)
+    {
+        PlatformTimesheetsBinding.ValidateMode(options);
+        return PlatformServerBindings.Resolve(options, PlatformDeclarationSet.Load(options));
+    }
 
     /// <summary>Composes the thin file AppHost from the command's persisted source mapping.</summary>
     public static void Compose(IDistributedApplicationBuilder builder)
     {
+        bool timesheets = builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled");
+        if (timesheets && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
+            throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         if (!builder.Environment.IsDevelopment())
             throw new InvalidOperationException("Works Dapr hosting is a development-only preview. A production profile and AD-20 exception are required.");
         string? active = builder.Configuration["Platform:ActiveModule"];
@@ -34,7 +53,7 @@ public static class PlatformAppModel
         SourceMapping mapping = mappingPath is null
             ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "references", PlatformServerBindings.Repository(active ?? "eventstore"), "module", "hexalith.module-manifest.v2.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
-        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"] });
+        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"] });
     }
 
     /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
@@ -45,6 +64,7 @@ public static class PlatformAppModel
     {
         SourceMapping mapping = plan.SourceMapping ?? throw new InvalidDataException("Platform v2 composition requires the command-resolved source mapping.");
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
+        bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
         Dictionary<string, string> configuration = new(StringComparer.Ordinal);
         foreach (string server in new[] { "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/clock", "memories/telemetry" })
         {
@@ -64,12 +84,15 @@ public static class PlatformAppModel
         {
             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
+            TimesheetsEnabled = timesheets,
         }));
     }
 
     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>
     public static void Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
     {
+        if (options.TimesheetsEnabled && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
+            throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         IReadOnlyList<PlatformServerBinding> servers = Prepare(options);
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
@@ -81,10 +104,12 @@ public static class PlatformAppModel
         bool hasMemories = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");
         bool hasTenants = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "tenants");
         bool hasGateway = servers.Any(server => server.ResourceId == "eventstore");
+        bool hasTimesheets = servers.Any(server => server.ResourceId == "timesheets");
         List<string> files = ["statestore.yaml", "pubsub.yaml"];
         if (hasGateway) files.AddRange(["configstore.yaml", "accesscontrol.eventstore.yaml"]);
         if (hasTenants) files.Add("accesscontrol.tenants.yaml");
         if (hasMemories) files.AddRange(["secretstore.yaml", "llm.yaml", "telemetry-state.yaml", "telemetry-config.yaml"]);
+        if (hasTimesheets) files.Add("timesheets-readmodels.yaml");
         foreach (string file in files) if (!File.Exists(Path.Combine(components, file))) throw new FileNotFoundException("Platform shared local Dapr component is unavailable.", Path.Combine(components, file));
 
         // Render only connection endpoints and local signing material; literal component names remain owner-compatible until 1.7.
@@ -127,6 +152,8 @@ public static class PlatformAppModel
             if (options.RunPlan is { } run) redis.WithContainerName(run.RedisContainerName).WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={run.RunId}");
             IResourceBuilder<IDaprComponentResource>? configStore = hasGateway
                 ? builder.AddDaprComponent("configstore", "configuration.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "configstore.yaml") }) : null;
+            IResourceBuilder<IDaprComponentResource>? timesheetsReadModels = hasTimesheets
+                ? builder.AddDaprComponent(PlatformTimesheetsBinding.Component, "state.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "timesheets-readmodels.yaml") }) : null;
             List<IResourceBuilder<IDaprComponentResource>> memoriesComponents = [];
             if (hasMemories)
             {
@@ -155,11 +182,19 @@ public static class PlatformAppModel
                 if (server.ProjectPath is { } projectPath)
                 {
                     IResourceBuilder<ProjectResource> project = builder.AddProject(server.ResourceId, projectPath, launchProfileName: null)
-                        .WithHttpEndpoint(name: "http")
-                        .WithHttpHealthCheck(server.ReadinessEndpoint)
                         .WithAnnotation(new PlatformServerAnnotation(server))
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile");
+                    if (server.ResourceId == "timesheets")
+                    {
+                        project.WithHttpEndpoint(name: "public")
+                            .WithHttpEndpoint(name: "internal", isProxied: false)
+                            .WithEndpoint("internal", endpoint => { endpoint.IsExternal = false; endpoint.ExcludeReferenceEndpoint = true; })
+                            .WithHttpHealthCheck(server.ReadinessEndpoint, endpointName: "public")
+                            .WithEnvironment("Timesheets__InternalSurface__Port", project.GetEndpoint("internal").Property(EndpointProperty.TargetPort))
+                            .WithArgs("-p:HexalithEventStoreRoot=" + options.Mapping.Entries.Single(entry => entry.Identity.Equals("Hexalith.EventStore", StringComparison.OrdinalIgnoreCase)).Path);
+                    }
+                    else project.WithHttpEndpoint(name: "http").WithHttpHealthCheck(server.ReadinessEndpoint);
                     ConfigureEnvironment(project, server, options, clockKey);
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
@@ -202,6 +237,12 @@ public static class PlatformAppModel
                         .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__TenantId", "*")
                         .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__Domain", "tenants")
                         .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__Version", "v1");
+                if (hasTimesheets)
+                    eventStore.WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__AppId", "timesheets")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__MethodName", "process")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__TenantId", "*")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__Domain", "timesheets")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__Version", "v1");
             }
             int sidecarIndex = 0;
             foreach (PlatformServerBinding server in servers)
@@ -216,11 +257,13 @@ public static class PlatformAppModel
                         resource.WithDaprSidecar(sidecar =>
                         {
                             sidecar.WithOptions(new DaprSidecarOptions { AppId = server.AppId, Config = server.AppId == "tenants" ? Path.Combine(rendered, "accesscontrol.tenants.yaml") : options.RunPlan?.DaprConfigPath,
+                                AppEndpoint = server.ResourceId == "timesheets" ? "internal" : null,
                                 DaprHttpPort = ports.Http, DaprGrpcPort = ports.Grpc, DaprInternalGrpcPort = ports.InternalGrpc, MetricsPort = ports.Metrics,
                                 EnableAppHealthCheck = false,
                                 PlacementHostAddress = options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Placement,
                                 SchedulerHostAddress = options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Scheduler });
-                            if (gateway is not null) sidecar.WithReference(gateway.StateStore).WithReference(gateway.PubSub);
+                            if (server.ResourceId == "timesheets") sidecar.WithReference(timesheetsReadModels!);
+                            else if (gateway is not null) sidecar.WithReference(gateway.StateStore).WithReference(gateway.PubSub);
                             if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories")
                                 foreach (IResourceBuilder<IDaprComponentResource> component in memoriesComponents) sidecar.WithReference(component);
                         }).WaitFor(redis);

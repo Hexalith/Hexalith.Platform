@@ -15,6 +15,8 @@ public sealed record PlatformCompositionOptions
     public string? ActiveModule { get; init; }
     /// <summary>Gets the explicitly selected module class. Known reference technical owners need no override.</summary>
     public bool? DomainModule { get; init; }
+    /// <summary>Gets the explicit Development/source-mode Timesheets host opt-in.</summary>
+    public bool TimesheetsEnabled { get; init; }
     /// <summary>Gets project paths relative to their mapped repository, indexed by module/server.</summary>
     public IReadOnlyDictionary<string, string> Projects { get; init; } = PlatformServerBindings.ReferenceProjects;
     /// <summary>Gets released image repositories, indexed by module/server.</summary>
