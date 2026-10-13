@@ -1,0 +1,314 @@
+{
+  "schema": "hexalith.module-manifest.v2",
+  "modules": [
+    {
+      "identity": {
+        "moduleId": "timesheets",
+        "servers": [
+          {
+            "id": "host",
+            "appId": "timesheets",
+            "resourceId": "timesheets",
+            "enabled": true,
+            "required": true
+          }
+        ],
+        "dependencies": [
+          "eventstore",
+          "tenants",
+          "memories"
+        ]
+      },
+      "runtime": {
+        "dapr": [],
+        "extensions": [],
+        "resources": [
+          {
+            "server": "host",
+            "requests": {},
+            "limits": {},
+            "volumes": []
+          }
+        ]
+      },
+      "surfaces": {
+        "interfaces": [
+          {
+            "name": "confirm",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/api/timesheets/magic-links/confirm",
+            "exposure": "public",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "magic-link-capability",
+              "permissions": []
+            },
+            "callers": [],
+            "operations": [
+              {
+                "name": "confirm",
+                "kind": "command",
+                "authorizationPolicy": "magic-link-capability"
+              }
+            ]
+          },
+          {
+            "name": "adjust",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/api/timesheets/magic-links/adjust",
+            "exposure": "public",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "magic-link-capability",
+              "permissions": []
+            },
+            "callers": [],
+            "operations": [
+              {
+                "name": "adjust",
+                "kind": "command",
+                "authorizationPolicy": "magic-link-capability"
+              }
+            ]
+          },
+          {
+            "name": "capability-management",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/api/timesheets/magic-links/confirmation-capabilities",
+            "exposure": "public",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated-owner-authorized",
+              "permissions": []
+            },
+            "callers": [],
+            "operations": [
+              {
+                "name": "capability-management",
+                "kind": "command",
+                "authorizationPolicy": "authenticated-owner-authorized"
+              }
+            ]
+          },
+          {
+            "name": "metadata",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/metadata/timesheets",
+            "exposure": "public",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "public-metadata",
+              "permissions": []
+            },
+            "callers": [],
+            "operations": [
+              {
+                "name": "metadata",
+                "kind": "query",
+                "authorizationPolicy": "public-metadata"
+              }
+            ]
+          },
+          {
+            "name": "process",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/process",
+            "exposure": "internal-only",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated-workload-or-qualified-operator",
+              "permissions": []
+            },
+            "callers": [
+              "eventstore"
+            ],
+            "operations": [
+              {
+                "name": "process",
+                "kind": "command",
+                "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ]
+          },
+          {
+            "name": "replay-state",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/replay-state",
+            "exposure": "internal-only",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated-workload-or-qualified-operator",
+              "permissions": []
+            },
+            "callers": [
+              "eventstore"
+            ],
+            "operations": [
+              {
+                "name": "replay-state",
+                "kind": "administration",
+                "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/query",
+            "exposure": "internal-only",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated-workload-or-qualified-operator",
+              "permissions": []
+            },
+            "callers": [
+              "eventstore"
+            ],
+            "operations": [
+              {
+                "name": "query",
+                "kind": "query",
+                "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ]
+          },
+          {
+            "name": "project",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/project",
+            "exposure": "internal-only",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated-workload-or-qualified-operator",
+              "permissions": []
+            },
+            "callers": [
+              "eventstore"
+            ],
+            "operations": [
+              {
+                "name": "project",
+                "kind": "command",
+                "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ]
+          },
+          {
+            "name": "admin",
+            "server": "host",
+            "protocol": "http",
+            "routePrefix": "/admin",
+            "exposure": "internal-only",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated-workload-or-qualified-operator",
+              "permissions": []
+            },
+            "callers": [
+              "eventstore"
+            ],
+            "operations": [
+              {
+                "name": "admin",
+                "kind": "administration",
+                "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ]
+          }
+        ]
+      },
+      "integration": {
+        "topics": [],
+        "secrets": [],
+        "dynamicSecretNamespaces": [],
+        "identityNeeds": [
+          {
+            "name": "timesheets-workload",
+            "audience": "eventstore",
+            "roles": [],
+            "claims": [
+              "eventstore:bound-tenant",
+              "eventstore:bound-domain",
+              "eventstore:bound-actor"
+            ],
+            "applicationPrincipal": true
+          }
+        ],
+        "egress": [],
+        "providers": [],
+        "workers": []
+      },
+      "lifecycle": {
+        "readiness": [
+          {
+            "server": "host",
+            "kind": "http",
+            "endpoint": "/ready"
+          }
+        ],
+        "tasks": [],
+        "recoveryHooks": [],
+        "fenceHooks": [],
+        "replay": {
+          "reopenBeforeReplay": false
+        },
+        "startup": {},
+        "criticalFlows": [
+          {
+            "name": "magic-link-contribution",
+            "surface": "confirm",
+            "operations": [
+              "confirm"
+            ]
+          },
+          {
+            "name": "magic-link-adjustment",
+            "surface": "adjust",
+            "operations": [
+              "adjust"
+            ]
+          }
+        ],
+        "smokeSurfaces": [],
+        "classification": {
+          "changeClass": "additive",
+          "reason": "Offline enrollment candidate only. Production resource-binding, access/reference authority, certified inventory/maintenance/continuity and subscriber/shared-rebuild providers are required but have no qualified declaration bindings."
+        },
+        "recoveryInventory": [
+          {
+            "name": "timesheets-readmodels",
+            "recoveryClass": "rebuild-only",
+            "owner": "timesheets",
+            "dependencies": [
+              "eventstore"
+            ]
+          },
+          {
+            "name": "legacy-issuance-history",
+            "recoveryClass": "authoritative-restore",
+            "owner": "timesheets",
+            "dependencies": [
+              "eventstore"
+            ]
+          },
+          {
+            "name": "migration-operator-authority",
+            "recoveryClass": "live-authority-only",
+            "owner": "timesheets",
+            "dependencies": [
+              "tenants"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

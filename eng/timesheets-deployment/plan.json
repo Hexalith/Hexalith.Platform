@@ -1,0 +1,312 @@
+{
+  "acceptance": "FAIL",
+  "activationAuthorized": false,
+  "approvalBoundary": "Review this preparation before requesting infrastructure approval. No approval, receipt, grant or gate override is accepted by this tool. Approval of infrastructure does not establish provider authority or module acceptance.",
+  "authentication": {
+    "developmentSymmetricSigningAllowed": false,
+    "fixtureAccessAllowed": false,
+    "mode": "production-grade-asymmetric-oidc-and-bound-workload-assertions",
+    "qualified": false,
+    "realm": "staging"
+  },
+  "candidate": {
+    "clean": true,
+    "cleanScope": "own-root tracked/untracked files; ignored files and nested submodule state excluded",
+    "consumedInputsSha256": "29b081e0766270f3fdf2a02cf81a62682bd725158c708cd6ae984a715c99b244",
+    "filesSha256": {
+      "_bmad-output/implementation-artifacts/3-6-resume-checkpoint.md": "18073e14da86d7c8ce5f6e10890f7a4e50e5f273ce5cae5e63baf5bd088174fd",
+      "docs/deployed-magic-link-acceptance.md": "f3fa3e844f0e23f732371e80258945feede0866b0608e5768457433ebacb2118",
+      "src/Hexalith.Timesheets.Contracts/Models/MagicLinks/MagicLinkCapabilityReadModelAddress.cs": "b5b26c29e1a4c74d78e7652553d9bf33c7dd0e8d22c391ad251f954578768c98",
+      "src/Hexalith.Timesheets.Projections/MagicLinks/IMagicLinkIndexMigrationAuthority.cs": "fa3e40e78cddd0a7ba25048468a331a6802ca9487b2c6456163d2d55528be507",
+      "src/Hexalith.Timesheets.Projections/MagicLinks/IMagicLinkV1VerifiedInventoryProvider.cs": "09754071ab02f3a9558fe628b4f38fc4b068fcb416db7723703fefee2ff9a7da",
+      "src/Hexalith.Timesheets.Projections/MagicLinks/MagicLinkConfirmationCapabilityProjectionHandler.cs": "3f96cd0515b090bad3a670e23f6a0db67166fbec8974146914255fe255ec5c57",
+      "src/Hexalith.Timesheets.Projections/MagicLinks/MagicLinkTokenHashCapabilityIndexProjectionHandler.cs": "0fa7fc6d8f5ec523e2ba8d81f884d410a5f5b4b810664de8c152f8dc40c1f7e1",
+      "src/Hexalith.Timesheets.Projections/MagicLinks/UnavailableMagicLinkV1VerifiedInventoryProvider.cs": "0746b5806fdeaaa2219438176cd682c780dd3315ee94e8ed3bb62683b573b91f",
+      "src/Hexalith.Timesheets.Server/Runtime/ServiceCollectionExtensions.cs": "f9290854b23ded46d8ef4d900cb84b843362180dcc36727423c6681007cc91df",
+      "src/Hexalith.Timesheets/Endpoints/MagicLinks/MagicLinkConfirmationCapabilityEndpoints.cs": "2e48f52a8749aef00eb578c4fc1f12880dac53fb8f3dd2f1c0dad6df1abfeb10",
+      "src/Hexalith.Timesheets/Endpoints/MagicLinks/MagicLinkIndexMigrationEndpoints.cs": "3538ac05046239bd8818ccc13337f95d8f7234175aead096ff0bce064de48cf9",
+      "src/Hexalith.Timesheets/Hexalith.Timesheets.csproj": "792d23d1c28114a8adc138a3b7fc7bb91b89c8dd0207f883f5f981e851338eb6",
+      "src/Hexalith.Timesheets/Program.cs": "e42d13c1df1e863ffc3faa53ed79c53ce0bc11e05b4a4046cc4fd15faa68d622",
+      "src/Hexalith.Timesheets/Runtime/EventStoreGatewayWorkloadAssertionSource.cs": "7b4a3831ba5a5ab3c452fac0839a829cb69765d10f985ee01066a51adcda119f",
+      "src/Hexalith.Timesheets/Runtime/InternalSurfaceGuard.cs": "c7a9c750f790b2ee51c831d8b5e1ba6e1ceaa5307c4576fcd4c5583e92c6081d",
+      "src/Hexalith.Timesheets/Runtime/InternalSurfaceOptions.cs": "0672dd716f25da634c038920e21c9358761f26bc95218f746ce8f1f186345885"
+    },
+    "releasedImageDigest": null,
+    "repository": "Hexalith.Timesheets",
+    "revision": "0e336693234c70735a3c8cd289a1c195a21e49fd"
+  },
+  "classification": "offline-candidate",
+  "componentBindings": [
+    {
+      "configurationKey": null,
+      "name": "timesheets-readmodels",
+      "nameBinding": "module-hardcoded-literal",
+      "note": "No invented rename configuration key. Scope this exact component to the staging Timesheets sidecar; durable shared-rebuild transport/coordination must preserve owner continuity.",
+      "qualifiedHostedBinding": false,
+      "recoveryClass": "rebuild-only"
+    }
+  ],
+  "declaration": {
+    "path": "eng/timesheets-deployment/hexalith.module-manifest.v2.json",
+    "schemaValidation": "required-separate-Builds-validator-check",
+    "sha256": "b86836a73c5b4c1c6bccdd45f3fc908c467a0f9ccfb2aa02c71025bb7e808618",
+    "status": "candidate-outside-active-composition"
+  },
+  "deploymentAuthorized": false,
+  "directSubmodule": {
+    "declaredRevision": "a662ff130779524cbd759f76a018c5b330608eb3",
+    "indexRevision": "a662ff130779524cbd759f76a018c5b330608eb3",
+    "observedCheckoutClean": true,
+    "observedCheckoutCleanScope": "own-root tracked/untracked files; ignored files and nested submodule state excluded",
+    "observedCheckoutContentScope": "allowlisted SOURCE_FILES only; unknown dirty content is unread and uncertified",
+    "observedCheckoutContentSha256": "29b081e0766270f3fdf2a02cf81a62682bd725158c708cd6ae984a715c99b244",
+    "observedCheckoutRevision": "a662ff130779524cbd759f76a018c5b330608eb3",
+    "observedCheckoutStatusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path": "references/Hexalith.Timesheets",
+    "updatedByPreparation": false
+  },
+  "executionSequence": [
+    "Approve the exact proposed infrastructure and bind current observed identities.",
+    "Complete and qualify environment-layer/hosted composition and owner operational providers.",
+    "Resolve source enrollment drift by separate authorization; produce and retain digest-pinned Release artifacts and provenance.",
+    "Validate and dry-run the retained application package with private 8081 and explicit public path allowlist; qualify access denials.",
+    "Deploy only through the approved Platform release procedure after its gates pass; retain baseline and recovery point.",
+    "Run Timesheets-owned deployed acceptance with certified inventory, enforced maintenance, owner continuity and subscriber/shared-rebuild proof before reopening acceptance."
+  ],
+  "expectedClusterEvidence": {
+    "freshNativeBindingRequired": true,
+    "kubeSystemNamespaceUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+    "observedAt": "2026-10-13",
+    "scope": "dated-owner-source-report",
+    "source": "docs/deployed-magic-link-acceptance.md",
+    "sourceSha256": "f3fa3e844f0e23f732371e80258945feede0866b0608e5768457433ebacb2118"
+  },
+  "forbiddenPublicRoutePrefixes": [
+    "/",
+    "/process",
+    "/project",
+    "/query",
+    "/replay-state",
+    "/admin"
+  ],
+  "generator": {
+    "path": "eng/timesheets-deployment/prepare.py",
+    "sha256": "c2808b9b10c0f70ccd19150c848534a4d10ba40d33f0dd41afc287956dac97f3",
+    "snapshotSemantics": "Executing script bytes must match selected Platform input; Platform HEAD participates in identity."
+  },
+  "hostingBacklog": {
+    "4-14": {
+      "key": "4-14-build-staging-namespaces-storage-and-pod-and-network-isolati",
+      "status": "backlog"
+    },
+    "4-15": {
+      "key": "4-15-provide-staging-secrets-through-a-per-environment-openbao-an",
+      "status": "backlog"
+    },
+    "4-16": {
+      "key": "4-16-apply-the-staging-dapr-trust-domain-and-runtime-policy",
+      "status": "backlog"
+    },
+    "4-17": {
+      "key": "4-17-select-and-qualify-the-durable-production-broker",
+      "status": "backlog"
+    },
+    "4-22": {
+      "key": "4-22-deploy-the-reference-release-to-staging",
+      "status": "backlog"
+    }
+  },
+  "listeners": {
+    "configuration": {
+      "Timesheets:InternalSurface:AllowOnAnyPort": false,
+      "Timesheets:InternalSurface:Port": 8081
+    },
+    "internal": {
+      "endpoint": "http://timesheets-internal.hexalith-staging.svc.cluster.local:8081",
+      "exposure": "private-only",
+      "port": 8081,
+      "routePublished": false,
+      "service": "timesheets-internal"
+    },
+    "public": {
+      "exposure": "public",
+      "port": 8080,
+      "service": "timesheets-public"
+    }
+  },
+  "liveEvidenceCollected": false,
+  "ownership": {
+    "administrator": "Jérôme Piquot",
+    "migrationPrincipalGranted": false,
+    "nativeContextConfersDomainAuthority": false,
+    "operator": "Jérôme Piquot",
+    "status": "proposed"
+  },
+  "platform": {
+    "activeCompositionChanged": false,
+    "inputsArePreparationBytes": true,
+    "inputsSha256": {
+      ".gitmodules": "6da4f5297d79bfa54afcb8daacda70670af11868ba1738cc185f584db8eb6ab7",
+      "_bmad-output/implementation-artifacts/sprint-status.yaml": "2364079694eda11acbee00612f59ec7d608bd3d37e105ce65e181977a5ae13e0",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md": "de4a2566048ac5ef59e474d5508b5836a2869cd995a577bf9afda637f8706ca5",
+      "_bmad-output/planning-artifacts/epics.md": "64e3e7f4382953b2b9e473de5d583bd5fd4800f3d972421815d4924a1620ef30",
+      "_bmad-output/specs/spec-platform/SPEC.md": "7afec7574a99a72efb94b150e6520a09d56faea372d13e5a6d841040fb30e8d4",
+      "eng/timesheets-deployment/hexalith.module-manifest.v2.json": "b86836a73c5b4c1c6bccdd45f3fc908c467a0f9ccfb2aa02c71025bb7e808618",
+      "eng/timesheets-deployment/prepare.py": "c2808b9b10c0f70ccd19150c848534a4d10ba40d33f0dd41afc287956dac97f3",
+      "references/Hexalith.Builds/schemas/hexalith.module-manifest.v2.json": "3edd763793378bd01ed467b4ca361d36e19da461fd1cfa54bed1171fca9bee97",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs": "22b512ac8d1f7e371d88046219f30937912d6cdcb73287b2811f1b2ecd1574c1",
+      "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json": "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
+      "references/Hexalith.Memories/module/hexalith.module-manifest.v2.json": "9b207856f3b60baf614907c055c0c9400838199340f35bbd958c0ddbdc5107ca",
+      "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
+      "src/Hexalith.Platform.Composition/Declarations/eventstore.json": "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
+      "src/Hexalith.Platform.Composition/Declarations/memories.json": "9b207856f3b60baf614907c055c0c9400838199340f35bbd958c0ddbdc5107ca",
+      "src/Hexalith.Platform.Composition/Declarations/tenants.json": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
+      "src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs": "b684b40520d54f7751553aec24060c4d948633d8dc1de9334e88a325dbaf41ad",
+      "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "385cc002c58d07247478f03421a91b87a40ae11b46f2c5756b7945f830f53d65"
+    },
+    "revision": "422e7bf13e48a56b3d308eb1cfdd763c17a4b26b"
+  },
+  "preparationResult": "prepared-blocked",
+  "preparationSha256": "80aaf70967771c671e9245982a906ea9b77d56bdb6b568ee60015ad4e33305c7",
+  "prerequisites": [
+    {
+      "id": "infrastructure-approval",
+      "owner": "Platform Administrator",
+      "required": "Exact target, namespaces, Gateway, DNS, environment identities and private access need approval and current observation.",
+      "status": "missing"
+    },
+    {
+      "id": "hosted-composition",
+      "owner": "Platform / Builds",
+      "required": "Development-only composition has no Timesheets binding; staging environment/release stories 4.14–4.17 and 4.22 are unfinished.",
+      "status": "missing"
+    },
+    {
+      "id": "retained-release",
+      "owner": "Builds / Timesheets / Platform",
+      "required": "No qualified Timesheets Release image, owner packages, chart OCI digest, provenance, catalog identity or retained rollback package. Source hashes never substitute for image digests.",
+      "status": "missing"
+    },
+    {
+      "id": "resource-binding-issuer",
+      "owner": "EventStore / Platform identity",
+      "required": "Production IWorkloadAssertionIssuer with CanBindResources must sign per-request tenant/domain/actor claims accepted by the gateway; client credentials alone and development symmetric signing do not qualify.",
+      "status": "missing"
+    },
+    {
+      "id": "access-and-reference-gates",
+      "owner": "Timesheets / Tenants / Projects / Works / Parties",
+      "required": "DenyAllTimesheetsAuthorizationGate, DenyAllTimesheetsTenantAccessValidator, DenyAllProjectReferenceValidator, DenyAllWorkReferenceValidator and DenyAllContributorPartyValidator remain registered. Qualify real providers and negative access tests before normal commands.",
+      "status": "missing"
+    },
+    {
+      "id": "certified-inventory",
+      "owner": "Timesheets authoritative source owner",
+      "required": "IMagicLinkV1VerifiedInventoryProvider is unavailable. Complete cross-tenant issuance coverage, immutable source cut, authenticated receipt verification and current status/retrieval are absent.",
+      "status": "missing"
+    },
+    {
+      "id": "maintenance-and-migration-authority",
+      "owner": "Timesheets / Platform operator authority",
+      "required": "DenyAllMagicLinkIndexMigrationAuthority remains. Enforced writer/delivery quiescence and a separately qualified server-side migration principal are absent; proposed Administrator ownership grants no migration authority.",
+      "status": "missing"
+    },
+    {
+      "id": "source-continuity",
+      "owner": "Timesheets authoritative source owner / EventStore",
+      "required": "Owner-source continuity and retained pending-delivery identities/recovery must be certified for the exact legacy cut; never infer them from a Kubernetes census.",
+      "status": "missing"
+    },
+    {
+      "id": "subscriber-and-shared-rebuild",
+      "owner": "Timesheets / EventStore",
+      "required": "Installed subscriber delivery, shared-rebuild acceptance, full magic-link critical flow and persisted end-state proof on the exact target are absent; isolated manual delivery is insufficient.",
+      "status": "missing"
+    },
+    {
+      "id": "environment-bindings",
+      "owner": "Platform environment-layer owner",
+      "required": "Separate application/data namespaces, OpenBao, staging realm, Dapr trust/ACLs, durable broker, fixed timesheets-readmodels component, private 8081 networking and readiness need qualified hosted bindings.",
+      "status": "missing"
+    },
+    {
+      "id": "owner-complete-declaration",
+      "owner": "Timesheets / EventStore / Platform",
+      "required": "Candidate runtime.dapr/extensions and integration.topics/secrets/egress/providers are empty because qualified owner binding ports and hosted contracts are absent. Obtain an owner-complete runtime, delivery and provider declaration before enrollment; schema validity proves no installed capability.",
+      "status": "missing"
+    },
+    {
+      "id": "module-owned-acceptance",
+      "owner": "Timesheets",
+      "required": "Story 3.6 acceptance and release remain FAIL. Only owner-run evidence bound to the retained release and observed target can close the gate.",
+      "status": "missing"
+    },
+    {
+      "id": "source-enrollment-drift",
+      "owner": "Platform / Timesheets",
+      "required": "Candidate, declared gitlink, index gitlink and observed direct checkout differ. Resolve enrollment under a separately approved source change; preparation preserves every revision.",
+      "status": "blocked"
+    }
+  ],
+  "proposedTarget": {
+    "applicationNamespace": "hexalith-staging",
+    "clusterAddress": "192.168.1.30",
+    "clusterApi": "https://192.168.1.30:6443",
+    "clusterContext": "jpiquot@local",
+    "dataNamespace": "hexalith-staging-data",
+    "environment": "staging",
+    "gateway": {
+      "api": "Gateway API",
+      "crossNamespaceParentReference": true,
+      "name": "hexalith-staging",
+      "namespace": "hexalith-staging-data",
+      "routeNamespace": "hexalith-staging"
+    },
+    "publicHostname": "timesheets.hexalith.com",
+    "publicOrigin": "https://timesheets.hexalith.com",
+    "status": "proposed-unapproved-unobserved"
+  },
+  "publicRouteAllowlist": [
+    {
+      "match": "Exact",
+      "path": "/api/timesheets/magic-links/confirm"
+    },
+    {
+      "match": "Exact",
+      "path": "/api/timesheets/magic-links/confirm/submit"
+    },
+    {
+      "match": "Exact",
+      "path": "/api/timesheets/magic-links/adjust"
+    },
+    {
+      "match": "Exact",
+      "path": "/api/timesheets/magic-links/adjust/submit"
+    },
+    {
+      "match": "PathPrefix",
+      "path": "/api/timesheets/magic-links/confirmation-capabilities"
+    },
+    {
+      "match": "Exact",
+      "path": "/metadata/timesheets"
+    }
+  ],
+  "retainedRelease": {
+    "chartOciDigest": null,
+    "configuration": "Release",
+    "imageDigest": null,
+    "packageIdentities": [],
+    "proposedImageRepository": "registry.hexalith.com/timesheets",
+    "provenance": null,
+    "rollbackPackageDigest": null
+  },
+  "rollbackSequence": [
+    "Stop the failed attempt, retain diagnostics and close its user ingress.",
+    "If qualified compatible rollback exists, restore the retained application package once and verify readiness/smokes.",
+    "Never rewind legacy data, events, revocations, credentials or index state with application rollback.",
+    "For incompatible retained-data state, use the approved named data-restore recovery under owner control; never clear or migrate legacy data from preparation."
+  ],
+  "schema": "hexalith.timesheets-enrollment-preparation.v1",
+  "story": "Timesheets 3.6"
+}
