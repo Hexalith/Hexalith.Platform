@@ -38,6 +38,7 @@ public static class PlatformServerBindings
     public static IReadOnlyList<PlatformServerBinding> Resolve(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations)
     {
         List<PlatformServerBinding> result = [];
+        Dictionary<string, string> secretValues = new(StringComparer.Ordinal);
         foreach (PlatformModuleDeclaration module in declarations)
         {
             string id = PlatformDeclarationSet.Id(module.Declaration);
@@ -63,13 +64,13 @@ public static class PlatformServerBindings
                 else
                 {
                     if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository)) throw Failure(module, identity, "image", "released image is unavailable");
-                    image = repository + ":" + Version(options, id, module);
+                    image = repository + ":" + Version(options, id, module.Source);
                 }
                 JsonElement[] probes = module.Declaration.GetProperty("lifecycle").GetProperty("readiness").EnumerateArray().Where(r => r.GetProperty("server").GetString() == serverId).ToArray();
                 if (probes.Length != 1) throw Failure(module, identity, "lifecycle.readiness", "this Platform model requires exactly one readiness check per enabled server");
                 JsonElement readiness = probes[0];
                 if (readiness.GetProperty("kind").GetString() != "http") throw Failure(module, identity, "lifecycle.readiness", "this Platform model requires a declared HTTP readiness check");
-                Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId);
+                Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
                 JsonElement[] tasks = module.Declaration.GetProperty("lifecycle").GetProperty("tasks").EnumerateArray().Select(t => t.Clone()).ToArray();
                 foreach (JsonElement task in tasks)
                 {
@@ -85,20 +86,20 @@ public static class PlatformServerBindings
     }
 
     private static InvalidDataException Failure(PlatformModuleDeclaration module, string identity, string field, string reason) => new($"{module.Source}: {identity}: {field}: {reason}.");
-    private static string Version(PlatformCompositionOptions options, string module, PlatformModuleDeclaration declaration)
+    internal static string Version(PlatformCompositionOptions options, string module, string source)
     {
         string package = module switch { "tenants" => "Hexalith.Tenants.Server", "memories" => "Hexalith.Memories.Aspire", _ => Repository(module) + ".Aspire" };
         string? snapshotPath = options.RunPlan is null ? null : Path.Combine(options.RunPlan.Workspace, "source-mapping", "catalog-versions.json");
         if (snapshotPath is not null && File.Exists(snapshotPath))
         {
             CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(File.ReadAllText(snapshotPath))!;
-            if (snapshot.MappingHash != options.Mapping.ContentHash || snapshot.Hash != CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions)) throw Failure(declaration, module, snapshotPath, "catalog snapshot differs from the selected mapping");
-            return snapshot.Versions.TryGetValue(package, out string? selected) ? selected : throw Failure(declaration, module, package, "image version is missing from the Builds catalog");
+            if (snapshot.MappingHash != options.Mapping.ContentHash || snapshot.Hash != CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions)) throw new InvalidDataException($"{source}: {module}: {snapshotPath}: catalog snapshot differs from the selected mapping.");
+            return snapshot.Versions.TryGetValue(package, out string? selected) ? selected : throw new InvalidDataException($"{source}: {module}: {package}: image version is missing from the Builds catalog.");
         }
         string catalogPath = Path.Combine(options.PlatformRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
-        if (!File.Exists(catalogPath)) throw Failure(declaration, module, catalogPath, "Builds catalog is unavailable");
+        if (!File.Exists(catalogPath)) throw new InvalidDataException($"{source}: {module}: {catalogPath}: Builds catalog is unavailable.");
         XDocument catalog = XDocument.Load(catalogPath);
         string property = "Hexalith" + (module == "tenants" ? "Tenants" : module == "memories" ? "Memories" : Repository(module)["Hexalith.".Length..]) + "Version";
-        return catalog.Descendants(property).FirstOrDefault()?.Value ?? throw Failure(declaration, module, property, "image version is missing from the Builds catalog");
+        return catalog.Descendants(property).FirstOrDefault()?.Value ?? throw new InvalidDataException($"{source}: {module}: {property}: image version is missing from the Builds catalog.");
     }
 }

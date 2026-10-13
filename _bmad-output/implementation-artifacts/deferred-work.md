@@ -404,3 +404,6 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Pin the Memories infrastructure images through the Builds catalog.
   evidence: The Platform model adds `redis/redis-stack:latest` and `falkordb/falkordb:latest` (`PlatformAppModel.cs:118-119`), while the run Redis is digest-pinned through `CompositionToolchainPins`. The Memories owner AppHost uses the same untagged images (`Program.cs:138,279`). Neither image has a catalog entry, and the registry preflight skips both, so runs are not reproducible.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Make explicit down by run ID independent of the current manifest hash in both v1 and v2.
+  evidence: Both command paths first select states by the manifest's current hash; after a manifest edit, the named running state is absent from that filtered set and the command reports completed/HXI001. The existing v1 behavior and the new v2 behavior need one shared correction.

@@ -34,7 +34,30 @@ public sealed partial class PlatformAppModelTests
         {
             PlatformRoot = Root, Mapping = new SourceMapping(mode, Root, "Hexalith.Platform", entries, false), ActiveModule = active,
             EventStoreSeedProject = Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
+            ReleaseCommits = mode == WorkspaceMode.Package ? new Dictionary<string, string>
+            {
+                ["eventstore/3.120.0"] = "947c843c7bb73f217e27463d9540fde0c24d0332",
+                ["tenants/5.8.0"] = "6f88e4e95ae464617766f6a1294ff08a4504f42b",
+                ["memories/2.27.1"] = "867e09a357ab94719e4d1572b1ab14d8d124eabe",
+            } : new Dictionary<string, string>(),
+            ReleaseSnapshotHashes = mode == WorkspaceMode.Package ? new Dictionary<string, string>
+            {
+                ["eventstore/3.120.0"] = "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
+                ["tenants/5.8.0"] = "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
+                ["memories/2.27.1"] = "9b207856f3b60baf614907c055c0c9400838199340f35bbd958c0ddbdc5107ca",
+            } : new Dictionary<string, string>(),
         };
+    }
+
+    [Fact]
+    public void PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources()
+    {
+        IDistributedApplicationBuilder builder = Builder();
+        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(WorkspaceMode.Package) with { ReleaseCommits = new PlatformCompositionOptions { PlatformRoot = Root, Mapping = Options().Mapping }.ReleaseCommits }));
+        refusal.Message.ShouldContain("Hexalith.EventStore");
+        refusal.Message.ShouldContain("3.120.0");
+        refusal.Message.ShouldContain("947c843c");
+        builder.Resources.ShouldBeEmpty();
     }
 
     [Theory]

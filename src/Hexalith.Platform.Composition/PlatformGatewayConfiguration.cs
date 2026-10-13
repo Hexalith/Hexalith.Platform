@@ -15,7 +15,10 @@ internal static class PlatformGatewayConfiguration
         {
             string source = Path.Combine(Path.GetDirectoryName(project)!, filename);
             if (!File.Exists(source)) continue;
-            JsonNode settings = JsonNode.Parse(File.ReadAllText(source))!;
+            JsonNode settings;
+            try { settings = JsonNode.Parse(File.ReadAllText(source)) ?? throw new InvalidDataException($"{source}: appsettings: JSON root is null."); }
+            catch (System.Text.Json.JsonException exception) { throw new InvalidDataException($"{source}: appsettings: JSON is invalid: {exception.Message}", exception); }
+            if (settings is not JsonObject) throw new InvalidDataException($"{source}: appsettings: JSON root must be an object.");
             if (settings["EventStore"]?["DomainServices"]?["Registrations"] is JsonObject registrations)
                 foreach (string key in registrations.Where(pair => !appIds.Contains(pair.Value?["AppId"]?.GetValue<string>() ?? string.Empty)).Select(pair => pair.Key).ToArray()) registrations.Remove(key);
             File.WriteAllText(Path.Combine(directory, filename), settings.ToJsonString());

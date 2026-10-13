@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Text.Json.Nodes;
+using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
@@ -13,6 +14,311 @@ using YamlDotNet.RepresentationModel;
 
 public sealed partial class PlatformAppModelTests
 {
+    [Fact]
+    public void EventStoreOnlyUsesItsComponentsAndRegistersConfigStore()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-eventstore-components-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            foreach (string file in new[] { "statestore.yaml", "pubsub.yaml", "configstore.yaml", "accesscontrol.eventstore.yaml" })
+                File.Copy(Path.Combine(Root, "DaprComponents", "reference", file), Path.Combine(directory, file));
+            IDistributedApplicationBuilder builder = Builder();
+            PlatformAppModel.Compose(builder, Options(active: "eventstore") with { ComponentsDirectory = directory });
+            builder.Resources.ShouldContain(resource => resource.Name == "configstore");
+            builder.Resources.ShouldNotContain(resource => resource.Name == "llm" || resource.Name == "access-telemetry-secrets" || resource.Name == "access-telemetry-store" || resource.Name == "access-telemetry-config");
+            IDaprSidecarResource sidecar = builder.Resources.Single(resource => resource.Name == "eventstore").Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+            sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>().Select(reference => reference.Component.Name).ShouldContain("configstore");
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Fact]
+    public void MemoriesSidecarsReceiveConversationAndSecretComponentsOnly()
+    {
+        IDistributedApplicationBuilder builder = Builder();
+        PlatformAppModel.Compose(builder, Options());
+        foreach (IResource server in builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
+        {
+            IDaprSidecarResource sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+            string[] components = sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>().Select(reference => reference.Component.Name).ToArray();
+            if (server.Name.StartsWith("memories", StringComparison.Ordinal))
+            {
+                components.ShouldContain("llm");
+                components.ShouldContain("secretstore");
+                components.ShouldContain("access-telemetry-secrets");
+            }
+            else
+            {
+                components.ShouldNotContain("llm");
+                components.ShouldNotContain("secretstore");
+                components.ShouldNotContain("access-telemetry-secrets");
+            }
+        }
+        string secretStore = File.ReadAllText(Path.Combine(Root, "DaprComponents", "reference", "secretstore.yaml"));
+        secretStore.ShouldContain("scopes:");
+        secretStore.ShouldNotContain("  - eventstore");
+        secretStore.ShouldNotContain("  - tenants");
+    }
+
+    [Fact]
+    public void OpaqueSecretsStayWholeAndMalformedStructuredInputsAreScoped()
+    {
+        PlatformCompositionOptions secret = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/EventStore:AppChannelToken"] = "{\"bearer\":\"opaque\"}" } };
+        PlatformAppModel.Prepare(secret).Single().Environment["EventStore__AppChannelToken"].ShouldBe("{\"bearer\":\"opaque\"}");
+        PlatformCompositionOptions malformed = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = "[oops" } };
+        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(malformed));
+        refusal.Message.ShouldContain("eventstore/gateway/Authentication:JwtBearer:ValidAudiences");
+        refusal.Message.ShouldContain("hexalith.module-manifest.v2.json");
+    }
+
+    [Fact]
+    public void EmptyFileSelectionRefusesWithItsConfigurationKey()
+    {
+        IDistributedApplicationBuilder builder = Builder();
+        builder.Environment.EnvironmentName = Environments.Development;
+        builder.Configuration["Platform:ActiveModule"] = "";
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder)).Message.ShouldContain("Platform:ActiveModule");
+        builder.Resources.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void DependencyCycleRefusesBeforeResourceCreation()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-cycle-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            string path = Fixture(directory, "parties", tasks: false);
+            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
+            document["modules"]![0]!["identity"]!["dependencies"] = new JsonArray("parties");
+            File.WriteAllText(path, document.ToJsonString());
+            IDistributedApplicationBuilder builder = Builder();
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(active: "parties") with { DeclarationPaths = [path] }));
+            refusal.Message.ShouldContain("identity.dependencies");
+            refusal.Message.ShouldContain("cycle");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Fact]
+    public void UnsupportedDaprCapabilityRefusesInsteadOfUsingStateStore()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-capability-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            string path = Fixture(directory, "parties", tasks: false);
+            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
+            document["modules"]![0]!["runtime"]!["dapr"]![0]!["capability"] = "workflow";
+            File.WriteAllText(path, document.ToJsonString());
+            Hexalith.Builds.Tooling.Manifest.PlatformManifestValidationResult validation = Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.Validate([path], TestContext.Current.CancellationToken);
+            validation.IsValid.ShouldBeTrue(string.Join("; ", validation.Diagnostics.Select(diagnostic => diagnostic.Message)));
+            PlatformCompositionOptions options = Options() with { Configuration = new Dictionary<string, string> { ["parties/api/Sample:Setting"] = "bound" } };
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformLocalProfile.Bind(options, validation.Declarations!.Single(), "api"));
+            refusal.Message.ShouldContain("workflow");
+            refusal.Message.ShouldContain("runtime.dapr");
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Fact]
+    public void LocalSecretsAreIndependentPerInputAndFreshPerComposition()
+    {
+        IReadOnlyList<PlatformServerBinding> first = PlatformAppModel.Prepare(Options());
+        IReadOnlyList<PlatformServerBinding> second = PlatformAppModel.Prepare(Options());
+        IReadOnlyDictionary<string, string> gateway = first.Single(server => server.ResourceId == "eventstore").Environment;
+        IReadOnlyDictionary<string, string> domain = first.Single(server => server.ResourceId == "tenants").Environment;
+        IReadOnlyDictionary<string, string> api = first.Single(server => server.ResourceId == "tenants-api").Environment;
+        gateway["Authentication__JwtBearer__SigningKey"].ShouldBe(domain["Authentication__JwtBearer__SigningKey"]);
+        gateway["Authentication__JwtBearer__SigningKey"].ShouldBe(api["EventStore__Authentication__SigningKey"]);
+        gateway["Authentication__JwtBearer__SigningKey"].ShouldNotBe(gateway["EventStore__AppChannelToken"]);
+        domain["Tenants__AppChannelToken"].ShouldNotBe(api["Tenants__ApiDaprToken"]);
+        domain["EventStore__Authentication__Password"].ShouldBe(api["EventStore__Authentication__Password"]);
+        first.Single(server => server.ResourceId == "memories").Environment["Memories__AppChannelToken"]
+            .ShouldNotBe(first.Single(server => server.ResourceId == "memories").Environment["Memories__DaprApiToken"]);
+        gateway["Authentication__JwtBearer__SigningKey"].ShouldNotBe(second.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"]);
+        gateway["EventStore__AppChannelToken"].ShouldNotBe(second.Single(server => server.ResourceId == "eventstore").Environment["EventStore__AppChannelToken"]);
+    }
+
+    [Fact]
+    public void ClockTokensBindBySourceIdAndRejectUnknownOrMissingIds()
+    {
+        PlatformCompositionOptions options = Options(active: "memories") with
+        {
+            Configuration = new Dictionary<string, string>
+            {
+                ["memories/clock/Clock:Sources"] = "[{\"Id\":\"second\",\"Endpoint\":\"https://second.example\"},{\"Id\":\"first\",\"Endpoint\":\"https://first.example\"}]",
+                ["memories/clock/Clock:SourceAuthenticationTokens"] = "{\"first\":\"first-token\",\"second\":\"second-token\"}",
+            },
+        };
+        IReadOnlyDictionary<string, string> environment = PlatformAppModel.Prepare(options).Single(server => server.ResourceId == "memories-access-telemetry-clock").Environment;
+        environment["Clock__Sources__0__AuthenticationToken"].ShouldBe("second-token");
+        environment["Clock__Sources__1__AuthenticationToken"].ShouldBe("first-token");
+        environment.ShouldNotContainKey("Clock__SourceAuthenticationTokens__first");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with
+        {
+            Configuration = new Dictionary<string, string>(options.Configuration) { ["memories/clock/Clock:SourceAuthenticationTokens"] = "{\"missing\":\"token\"}" },
+        })).Message.ShouldContain("no source has this ID");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with
+        {
+            Configuration = new Dictionary<string, string>(options.Configuration) { ["memories/clock/Clock:SourceAuthenticationTokens"] = "{\"first\":\"token\"}" },
+        })).Message.ShouldContain("authentication token is unavailable");
+    }
+
+    [Fact]
+    public void PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources()
+    {
+        string root = Path.Combine(Path.GetTempPath(), "platform-provenance-" + Guid.NewGuid().ToString("N"));
+        string declarations = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Declarations");
+        string catalog = Path.Combine(root, "references", "Hexalith.Builds", "Props");
+        Directory.CreateDirectory(declarations);
+        Directory.CreateDirectory(catalog);
+        try
+        {
+            foreach (string name in new[] { "eventstore.json", "tenants.json", "memories.json", "provenance.json" })
+                File.Copy(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", name), Path.Combine(declarations, name));
+            File.Copy(Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
+            PlatformCompositionOptions options = Options(WorkspaceMode.Package) with { PlatformRoot = root };
+            File.AppendAllText(Path.Combine(declarations, "tenants.json"), " ");
+            Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
+            File.Copy(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"), Path.Combine(declarations, "tenants.json"), true);
+            JsonNode provenance = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!;
+            provenance["eventstore"]!["repository"] = "Hexalith.Other";
+            File.WriteAllText(Path.Combine(declarations, "provenance.json"), provenance.ToJsonString());
+            Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
+        }
+        finally { Directory.Delete(root, true); }
+    }
+
+    [Fact]
+    public void ComposedDaprCapabilitiesKeepOwnerLiteralNames()
+    {
+        Dictionary<string, string> names = new(StringComparer.Ordinal)
+        {
+            ["rate-limit-configuration"] = "configstore", ["telemetry-state"] = "access-telemetry-store",
+            ["telemetry-secrets"] = "access-telemetry-secrets",
+        };
+        foreach (PlatformServerBinding server in PlatformAppModel.Prepare(Options()))
+        foreach (JsonElement capability in server.Module.Declaration.GetProperty("runtime").GetProperty("dapr").EnumerateArray())
+        {
+            string role = capability.GetProperty("role").GetString()!;
+            string kind = capability.GetProperty("capability").GetString()!;
+            string expected = names.TryGetValue(role, out string? special) ? special : kind switch
+            {
+                "pubsub" => "pubsub", "configuration" => "access-telemetry-config", "secret" => "secretstore",
+                "conversation" => "llm", _ => "statestore",
+            };
+            server.Environment[capability.GetProperty("configurationKey").GetString()!.Replace(":", "__", StringComparison.Ordinal)].ShouldBe(expected);
+        }
+    }
+
+    [Fact]
+    public void FileEntryHonorsActiveModuleAndRefusesChangedMappingHash()
+    {
+        string mappingPath = Path.Combine(Path.GetTempPath(), "platform-file-mapping-" + Guid.NewGuid().ToString("N") + ".json");
+        SourceMapping mapping = Options().Mapping;
+        File.WriteAllText(mappingPath, JsonSerializer.Serialize(mapping));
+        try
+        {
+            IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
+            {
+                Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name,
+                ProjectDirectory = Root, DisableDashboard = true, AllowUnsecuredTransport = true,
+            });
+            builder.Environment.EnvironmentName = Environments.Development;
+            builder.Configuration["Platform:ActiveModule"] = "eventstore";
+            builder.Configuration["Platform:SourceMapping:Path"] = mappingPath;
+            builder.Configuration["Platform:SourceMapping:Hash"] = mapping.ContentHash;
+            PlatformAppModel.Compose(builder);
+            builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ShouldBe(1);
+            builder.Services.ShouldContain(service => service.ServiceType == typeof(Aspire.Hosting.Lifecycle.IDistributedApplicationEventingSubscriber)
+                && service.ImplementationInstance is PlatformDaprEndpointSubscriber);
+            using (ServiceProvider provider = builder.Services.BuildServiceProvider())
+                provider.GetRequiredService<PlatformCompositionWorkspace>().Dispose();
+
+            IDistributedApplicationBuilder refused = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
+            {
+                Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name,
+                ProjectDirectory = Root, DisableDashboard = true, AllowUnsecuredTransport = true,
+            });
+            refused.Environment.EnvironmentName = Environments.Development;
+            refused.Configuration["Platform:SourceMapping:Path"] = mappingPath;
+            refused.Configuration["Platform:SourceMapping:Hash"] = "different";
+            Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(refused)).Message.ShouldContain("differs from the command-resolved hash");
+            refused.Resources.ShouldBeEmpty();
+        }
+        finally { File.Delete(mappingPath); }
+    }
+
+    [Fact]
+    public void FileEntryRefusesNonDevelopmentBeforeComposing()
+    {
+        IDistributedApplicationBuilder builder = Builder();
+        builder.Environment.EnvironmentName = Environments.Production;
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder)).Message.ShouldContain("development-only preview");
+        builder.Resources.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void BuildsReflectionContractNamesAndSignatureRemainResolvable()
+    {
+        typeof(PlatformAppModel).GetMethod("ComposeRun", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static,
+            [typeof(IDistributedApplicationBuilder), typeof(CompositionRunPlan), typeof(string), typeof(string)])
+            .ShouldNotBeNull();
+        typeof(PlatformServerAnnotation).Name.ShouldBe("PlatformServerAnnotation");
+        typeof(PlatformServerAnnotation).GetProperty("Binding")!.PropertyType.ShouldBe(typeof(PlatformServerBinding));
+        typeof(PlatformServerBinding).GetProperty("ReadinessEndpoint")!.PropertyType.ShouldBe(typeof(string));
+    }
+
+    [Fact]
+    public async Task SignedPackageCompositionUsesSeedAndRefusesCatalogMappingDriftAsync()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
+        try
+        {
+            PlatformCompositionOptions release = Options(WorkspaceMode.Package);
+            SourceMapping mapping = release.Mapping with
+            {
+                Entries = [.. release.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)],
+            };
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(
+                CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [],
+                mapping, [Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json")],
+                null, typeof(PlatformAppModel).Assembly.Location);
+            await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
+            Dictionary<string, string> versions = new(StringComparer.Ordinal)
+            {
+                ["Hexalith.EventStore.Aspire"] = "3.120.0", ["Hexalith.Tenants.Server"] = "5.8.0",
+                ["Hexalith.Memories.Aspire"] = "2.27.1",
+            };
+            CatalogVersionSnapshot Snapshot(string hash) => new(hash, "test-pin", "test-catalog", new Dictionary<string, string>(),
+                versions, new Dictionary<string, IReadOnlyDictionary<string, string>>(),
+                CatalogVersionSnapshot.ComputeHash(hash, "test-pin", "test-catalog", new Dictionary<string, string>(), versions, new Dictionary<string, IReadOnlyDictionary<string, string>>()));
+            string catalogPath = Path.Combine(workspace, "source-mapping", "catalog-versions.json");
+            File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot(mapping.ContentHash)));
+            PlatformCompositionOptions Configure(PlatformCompositionOptions options) => options with
+            {
+                ReleaseCommits = release.ReleaseCommits,
+                ReleaseSnapshotHashes = release.ReleaseSnapshotHashes,
+                ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
+            };
+            IDistributedApplicationBuilder builder = Builder();
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure);
+            builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore")
+                .GetProjectMetadata().ProjectPath.ShouldBe(release.EventStoreSeedProject);
+            builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).Count().ShouldBe(6);
+            File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
+            IDistributedApplicationBuilder refused = Builder();
+            Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(refused, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
+                .Message.ShouldContain("catalog snapshot differs from the selected mapping");
+            refused.Resources.ShouldBeEmpty();
+        }
+        finally { Directory.Delete(workspace, true); }
+    }
+
     [Theory]
     [InlineData(1, false)]
     [InlineData(0, true)]
@@ -36,10 +342,24 @@ public sealed partial class PlatformAppModelTests
             CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [], mapping, [Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json")], null, typeof(PlatformAppModel).Assembly.Location);
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             IDistributedApplicationBuilder builder = Builder();
+            int hostedServicesBeforeCompose = builder.Services.Count(service => service.ServiceType == typeof(IHostedService));
             string key = CompositionSigningKey.Create();
             PlatformAppModel.ComposeRun(builder, plan, key, null);
+            builder.Services.ShouldNotContain(service => service.ServiceType == typeof(PlatformCompositionWorkspace));
+            builder.Services.Count(service => service.ServiceType == typeof(IHostedService)).ShouldBe(hostedServicesBeforeCompose);
             foreach (IResource server in builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
             {
+                Dictionary<string, object> runtime = new();
+                foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                    await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, runtime, TestContext.Current.CancellationToken));
+                runtime["Authentication__JwtBearer__SigningKey"].ShouldBe(key);
+                runtime["Authentication__JwtBearer__Issuer"].ShouldBe(CompositionEnvironment.TokenIssuer);
+                runtime["Authentication__JwtBearer__Audience"].ShouldBe(CompositionEnvironment.TokenAudience);
+                if (server.Name is "tenants" or "tenants-api")
+                {
+                    runtime["EventStore__Authentication__SigningKey"].ShouldBe(key);
+                    runtime["Jwt__SigningKey"].ShouldBe(key);
+                }
                 DaprSidecarOptions sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
                 YamlMappingNode spec = Spec(File.ReadAllText(sidecar.Config!));
                 YamlMappingNode resolution = (YamlMappingNode)spec.Children[new YamlScalarNode("nameResolution")];
@@ -61,6 +381,12 @@ public sealed partial class PlatformAppModelTests
             YamlSequenceNode metadata = (YamlSequenceNode)Spec(File.ReadAllText(stateStore)).Children[new YamlScalarNode("metadata")];
             metadata.Children.OfType<YamlMappingNode>().Single(node => node.Children[new YamlScalarNode("name")].ToString() == "keyPrefix").Children[new YamlScalarNode("value")].ToString().ShouldBe("none");
             ((YamlSequenceNode)((YamlMappingNode)Yaml(File.ReadAllText(stateStore)).Documents[0].RootNode).Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ShouldContain("tenants");
+            string[] shared = ["statestore.yaml", "pubsub.yaml", "telemetry-config.yaml"];
+            foreach (string file in shared)
+                File.ReadAllText(Path.Combine(workspace, "platform-components", file)).ShouldContain("127.0.0.1:" + plan.Ports.Redis);
+            int? vectorEndpoint = builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "memories-vectors")
+                .Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "tcp").Port;
+            File.ReadAllText(Path.Combine(workspace, "platform-components", "telemetry-state.yaml")).ShouldContain("127.0.0.1:" + vectorEndpoint);
         }
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, true); }
     }
@@ -198,7 +524,9 @@ public sealed partial class PlatformAppModelTests
             PlatformCompositionOptions options = original with { Mapping = original.Mapping with { Entries = original.Mapping.Entries.Select(entry => entry.Identity == "Hexalith.EventStore" ? entry with { Path = directory } : entry).ToArray() }, Projects = new Dictionary<string, string>(original.Projects) { ["eventstore/gateway"] = "gateway.csproj" } };
             string tempRoot = Path.Combine(Path.GetTempPath(), "hexalith-platform");
             string[] before = Directory.Exists(tempRoot) ? Directory.GetDirectories(tempRoot).Order(StringComparer.Ordinal).ToArray() : [];
-            Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(Builder(), options));
+            IDistributedApplicationBuilder builder = Builder();
+            Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+            builder.Resources.ShouldBeEmpty();
             Directory.GetDirectories(tempRoot).Order(StringComparer.Ordinal).ShouldBe(before);
         }
         finally { Directory.Delete(directory, true); }

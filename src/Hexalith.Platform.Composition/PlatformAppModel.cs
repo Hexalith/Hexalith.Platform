@@ -11,6 +11,7 @@ using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.EventStore.Aspire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Aspire.Hosting.Lifecycle;
 using YamlDotNet.RepresentationModel;
 
@@ -23,7 +24,10 @@ public static class PlatformAppModel
     /// <summary>Composes the thin file AppHost from the command's persisted source mapping.</summary>
     public static void Compose(IDistributedApplicationBuilder builder)
     {
+        if (!builder.Environment.IsDevelopment())
+            throw new InvalidOperationException("Works Dapr hosting is a development-only preview. A production profile and AD-20 exception are required.");
         string? active = builder.Configuration["Platform:ActiveModule"];
+        if (active is not null && string.IsNullOrWhiteSpace(active)) throw new InvalidDataException("Platform:ActiveModule: module identity is empty.");
         string? declaration = builder.Configuration["Platform:DeclarationPath"];
         string? mappingPath = builder.Configuration["Platform:SourceMapping:Path"] ?? Environment.GetEnvironmentVariable("HEXALITH_SOURCE_MAPPING_PATH");
         string? hash = builder.Configuration["Platform:SourceMapping:Hash"] ?? Environment.GetEnvironmentVariable("HEXALITH_SOURCE_MAPPING_HASH");
@@ -35,6 +39,9 @@ public static class PlatformAppModel
 
     /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
     public static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject)
+        => ComposeRun(builder, plan, signingKey, seedProject, static options => options);
+
+    internal static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject, Func<PlatformCompositionOptions, PlatformCompositionOptions> configureOptions)
     {
         SourceMapping mapping = plan.SourceMapping ?? throw new InvalidDataException("Platform v2 composition requires the command-resolved source mapping.");
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
@@ -46,15 +53,18 @@ public static class PlatformAppModel
             configuration[server + "/Authentication:JwtBearer:Audience"] = CompositionEnvironment.TokenAudience;
             configuration[server + "/Authentication:JwtBearer:ValidAudiences"] = JsonSerializer.Serialize(new[] { CompositionEnvironment.TokenAudience });
         }
-        configuration["tenants/api/EventStore:Authentication:SigningKey"] = signingKey;
-        configuration["tenants/api/EventStore:Authentication:Issuer"] = CompositionEnvironment.TokenIssuer;
-        configuration["tenants/api/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
-        configuration["tenants/api/Jwt:SigningKey"] = signingKey;
-        Compose(builder, new PlatformCompositionOptions
+        foreach (string server in new[] { "tenants/domain", "tenants/api" })
+        {
+            configuration[server + "/EventStore:Authentication:SigningKey"] = signingKey;
+            configuration[server + "/EventStore:Authentication:Issuer"] = CompositionEnvironment.TokenIssuer;
+            configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
+            configuration[server + "/Jwt:SigningKey"] = signingKey;
+        }
+        Compose(builder, configureOptions(new PlatformCompositionOptions
         {
             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
-        });
+        }));
     }
 
     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>
@@ -68,7 +78,13 @@ public static class PlatformAppModel
             if (result.ExitCode != 0 || result.TimedOut) throw new InvalidDataException($"{server.Module.Source}: {PlatformDeclarationSet.Id(server.Module.Declaration)}/{server.ServerId}: image '{server.Image}' is unavailable from its released registry.");
         }
         string components = options.ComponentsDirectory ?? Path.Combine(options.PlatformRoot, "DaprComponents", "reference");
-        string[] files = ["statestore.yaml", "pubsub.yaml", "secretstore.yaml", "llm.yaml", "telemetry-state.yaml", "telemetry-config.yaml", "accesscontrol.eventstore.yaml", "accesscontrol.tenants.yaml"];
+        bool hasMemories = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");
+        bool hasTenants = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "tenants");
+        bool hasGateway = servers.Any(server => server.ResourceId == "eventstore");
+        List<string> files = ["statestore.yaml", "pubsub.yaml"];
+        if (hasGateway) files.AddRange(["configstore.yaml", "accesscontrol.eventstore.yaml"]);
+        if (hasTenants) files.Add("accesscontrol.tenants.yaml");
+        if (hasMemories) files.AddRange(["secretstore.yaml", "llm.yaml", "telemetry-state.yaml", "telemetry-config.yaml"]);
         foreach (string file in files) if (!File.Exists(Path.Combine(components, file))) throw new FileNotFoundException("Platform shared local Dapr component is unavailable.", Path.Combine(components, file));
 
         // Render only connection endpoints and local signing material; literal component names remain owner-compatible until 1.7.
@@ -98,7 +114,10 @@ public static class PlatformAppModel
                 if (file.StartsWith("accesscontrol.", StringComparison.Ordinal) && options.RunPlan is not null) content = MergeRunDiscovery(content, File.ReadAllText(options.RunPlan.DaprConfigPath));
                 File.WriteAllText(Path.Combine(rendered, file), content);
             }
-            File.WriteAllText(Path.Combine(rendered, "telemetry-secrets.yaml"), File.ReadAllText(Path.Combine(rendered, "secretstore.yaml")).Replace("name: secretstore", "name: access-telemetry-secrets", StringComparison.Ordinal));
+            if (hasMemories) File.WriteAllText(Path.Combine(rendered, "telemetry-secrets.yaml"), File.ReadAllText(Path.Combine(rendered, "secretstore.yaml")).Replace("name: secretstore", "name: access-telemetry-secrets", StringComparison.Ordinal));
+
+            string? gatewayContentRoot = servers.FirstOrDefault(server => server.ResourceId == "eventstore")?.ProjectPath is { } gatewayProject
+                ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
 
             string[] redisReference = CompositionToolchainPins.RedisImageReference.Split('@', 2);
             int colon = redisReference[0].LastIndexOf(':');
@@ -106,14 +125,20 @@ public static class PlatformAppModel
                 .WithImageSHA256(redisReference[1]["sha256:".Length..])
                 .WithEndpoint(port: redisPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
             if (options.RunPlan is { } run) redis.WithContainerName(run.RedisContainerName).WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={run.RunId}");
-            IResourceBuilder<IDaprComponentResource> secretStore = builder.AddDaprComponent("secretstore", "secretstores.local.file", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "secretstore.yaml") });
-            IResourceBuilder<IDaprComponentResource> telemetrySecrets = builder.AddDaprComponent("access-telemetry-secrets", "secretstores.local.file", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "telemetry-secrets.yaml") });
-            IResourceBuilder<IDaprComponentResource> llm = builder.AddDaprComponent("llm", "conversation.echo", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "llm.yaml") });
-            IResourceBuilder<IDaprComponentResource> telemetryState = builder.AddDaprComponent("access-telemetry-store", "state.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "telemetry-state.yaml") });
-            IResourceBuilder<IDaprComponentResource> telemetryConfig = builder.AddDaprComponent("access-telemetry-config", "configuration.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "telemetry-config.yaml") });
+            IResourceBuilder<IDaprComponentResource>? configStore = hasGateway
+                ? builder.AddDaprComponent("configstore", "configuration.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "configstore.yaml") }) : null;
+            List<IResourceBuilder<IDaprComponentResource>> memoriesComponents = [];
+            if (hasMemories)
+            {
+                memoriesComponents.Add(builder.AddDaprComponent("secretstore", "secretstores.local.file", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "secretstore.yaml") }));
+                memoriesComponents.Add(builder.AddDaprComponent("access-telemetry-secrets", "secretstores.local.file", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "telemetry-secrets.yaml") }));
+                memoriesComponents.Add(builder.AddDaprComponent("llm", "conversation.echo", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "llm.yaml") }));
+                memoriesComponents.Add(builder.AddDaprComponent("access-telemetry-store", "state.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "telemetry-state.yaml") }));
+                memoriesComponents.Add(builder.AddDaprComponent("access-telemetry-config", "configuration.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "telemetry-config.yaml") }));
+            }
             IResourceBuilder<ContainerResource>? vectors = null;
             IResourceBuilder<ContainerResource>? graph = null;
-            if (servers.Any(s => PlatformDeclarationSet.Id(s.Module.Declaration) == "memories"))
+            if (hasMemories)
             {
                 vectors = builder.AddContainer("memories-vectors", "redis/redis-stack", "latest").WithEndpoint(port: vectorPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
                 graph = builder.AddContainer("memories-graph", "falkordb/falkordb", "latest").WithEndpoint(targetPort: 6379, name: "tcp", scheme: "tcp");
@@ -136,7 +161,7 @@ public static class PlatformAppModel
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile");
                     ConfigureEnvironment(project, server, options, clockKey);
-                    if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", PlatformGatewayConfiguration.Create(projectPath, rendered, servers));
+                    if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         project.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
                     foreach (KeyValuePair<string, string> pair in SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace)) project.WithEnvironment(pair.Key, pair.Value);
@@ -165,6 +190,11 @@ public static class PlatformAppModel
                     daprPlacementHostAddress: options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Placement,
                     daprSchedulerHostAddress: options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Scheduler,
                     pubSubComponentPath: Path.Combine(rendered, "pubsub.yaml"));
+                if (configStore is not null)
+                {
+                    IDaprSidecarResource gatewaySidecar = eventStore.Resource.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+                    builder.CreateResourceBuilder(gatewaySidecar).WithReference(configStore);
+                }
                 eventStore.WaitFor(redis);
                 if (servers.Any(s => s.AppId == "tenants"))
                     eventStore.WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__AppId", "tenants")
@@ -191,7 +221,8 @@ public static class PlatformAppModel
                                 PlacementHostAddress = options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Placement,
                                 SchedulerHostAddress = options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Scheduler });
                             if (gateway is not null) sidecar.WithReference(gateway.StateStore).WithReference(gateway.PubSub);
-                            sidecar.WithReference(secretStore).WithReference(telemetrySecrets).WithReference(llm).WithReference(telemetryState).WithReference(telemetryConfig);
+                            if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories")
+                                foreach (IResourceBuilder<IDaprComponentResource> component in memoriesComponents) sidecar.WithReference(component);
                         }).WaitFor(redis);
                         if (gateway is not null && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore") resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                     }
