@@ -395,3 +395,12 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-5-declare-eventstore-memories-and-tenants-for-the-reference-composition.md`
   summary: Run the Tenants API authentication tests (legacy-over-alias precedence and startup key messages) in a blocking CI lane.
   evidence: The tests live only in `Hexalith.Tenants.IntegrationTests`, which `references/Hexalith.Tenants/.github/workflows/ci.yml:35` lists solely as `aspire-test-project`. Builds `domain-ci.yml` runs that job with `continue-on-error` defaulting to true, so a precedence or message regression can merge green. This is pre-existing CI tiering found in the 2026-10-12 re-review.
+
+## Deferred from: code review of spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md (2026-10-13)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Make an explicit `hexalith-module down --run-id` stop the named run even when the manifest changed after `run`.
+  evidence: Both the v1 path (`ModuleCommandExecutionService.cs:172-209`) and the new v2 path (`:958-969`) look up runs by the current manifest hash. An explicit run ID missing from those matches returns `completed`/HXI001 with exit 0 while the run keeps running. Fix both paths together: when a valid run ID is supplied, read its state directly, and distinguish "no such run" from "already cleaned up".
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Pin the Memories infrastructure images through the Builds catalog.
+  evidence: The Platform model adds `redis/redis-stack:latest` and `falkordb/falkordb:latest` (`PlatformAppModel.cs:118-119`), while the run Redis is digest-pinned through `CompositionToolchainPins`. The Memories owner AppHost uses the same untagged images (`Program.cs:138,279`). Neither image has a catalog entry, and the registry preflight skips both, so runs are not reproducible.
