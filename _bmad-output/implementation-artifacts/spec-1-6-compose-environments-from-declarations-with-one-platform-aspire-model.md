@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 6
 created: '2026-10-12'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '977f2e01347226ac727b707aee4f140f5dc8b010'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -181,6 +181,45 @@ Code review 2026-10-13 (bmad-code-review, second pass). Scope: Platform `977f2e0
 - low — R4-E24 Source materialization runs for v1: same as R4-A5.
 - false — R4-E25 The first Builds commit says v2 skips invocation checks: later commits in the reviewed range add the probes, and commit history is not edited.
 - false — R4-E26 `IsV2` could be mistaken for validation: `PlatformDeclarationSet.Load` validates every declaration through `PlatformManifestValidator` afterwards.
+
+**Sixth-pass review (2026-10-14):** Scope is the unreviewed correction round only: Platform `2594b89..aa2a781` plus Builds `9b44fed..9f0121c`, 22 files and 885 diff lines. `_bmad-output`, the submodule pointer and `memories.json` were excluded. `memories.json` is a CRLF-to-LF byte change, and all three snapshots were checked against `git cat-file <commit>:module/hexalith.module-manifest.v2.json` and `provenance.json`; all match. The Blind Hunter, Edge Case Hunter, Verification Gap Reviewer and Acceptance Auditor all completed. Of 43 raw findings, 14 group into 5 patches. One finding is newly deferred, one is a carried deferral and 27 are rejected.
+
+- [ ] [Review][Patch] The sidecar token test no longer checks that tokens stay server-scoped [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:204] — The rewrite of `ActualDaprCliListenersAndTokensRemainServerScopedAsync` dropped the `else environment.ShouldNotContainKey(token)` branch. Now only positive values are asserted. Suppose `PlatformDaprEndpointSubscriber.Apply` gave each sidecar the union of its module's tokens: `tenants-api` would receive `APP_API_TOKEN` and `tenants` would receive `DAPR_API_TOKEN`, and the test would stay green. The pinned Dapr toolkit sets neither token, so the negative checks still hold when every callback runs. Restore `ShouldNotContainKey` for each token that is absent from the server's binding environment. (R6-B1, R6-A2, R6-V2, R6-E7)
+- [ ] [Review][Patch] The missing-shared-component test fails in the per-server profile check, before the shared check it targets [tests/Hexalith.Platform.Composition.Tests/PlatformFourthReviewTests.cs:41] — The test copies only `accesscontrol.eventstore.yaml`. `Compose` → `Prepare` → `PlatformLocalProfile.Bind` maps `EventStore:StateStoreComponentPath` to `statestore.yaml` and throws first, so the changed message at `PlatformAppModel.cs:113` is never reached. Copy every profile-bound file (`accesscontrol.eventstore.yaml`, `statestore.yaml`, `pubsub.yaml`), omit only the shared-only `configstore.yaml`, and assert its path with no resources added. (R6-B3, R6-V1, R6-E13)
+- [ ] [Review][Patch] The owner-option test's cleanup assertion in `finally` can hide the real failure [tests/Hexalith.Platform.Composition.Tests/OwnerOptionBindingTests.cs:63] — `(await CompositionWorkspace.TryDeleteAsync(...)).ShouldBeTrue()` runs in `finally`, so a failed delete replaces any earlier build or validation failure. On Windows, assemblies loaded into the collectible context stay mapped until a GC after `Unload()`, so the delete fails even when the test passes. Best-effort the cleanup instead of asserting it in `finally`, and collect after `Unload()`. (R6-B9, R6-A4, R6-V5, R6-E11)
+- [ ] [Review][Patch] The fixed-listener assertions pass when no port is set [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:197] — `expected` is the `int?` `DaprHttpPort`/`DaprGrpcPort`/`MetricsPort`. If the model stopped writing those ports, `endpoint.Port`, `TargetPort` and `expected` would all be `null` and the test would pass. Assert that `expected` is not null. (R6-B2)
+- [ ] [Review][Patch] The file-entry documentation omits that `Platform:DeclarationPath` also chooses the mapping root [docs/platform-apphost-form.md:18] — With no mapping path or `HEXALITH_SOURCE_MAPPING_PATH`, `Compose(builder)` (`PlatformAppModel.cs:53-55`) resolves the source mapping from `Platform:DeclarationPath`. A declaration from a workspace that does not map EventStore, Tenants and Memories therefore refuses the reference default by identity, contrary to "the six-server reference environment still runs". State that the mapping is resolved from that declaration's workspace when none is supplied. (R6-B13, R6-E17)
+- [x] [Review][Defer] Timesheets deployment hash-bound files lack `-text` [eng/timesheets-deployment/plan.json:52] — deferred: pre-existing in later Timesheets enrollment work (`ce6f2d3`), not this story. `prepare.py` hashes the working-tree bytes of the candidate manifest and of itself, so an `autocrlf` checkout changes those hashes, as it did for the declaration snapshots. (R6-B11)
+- [x] [Review][Defer] `apphost.cs` SDK 13.6.0 still differs from the catalog's 13.6.1 [apphost.cs:2] — deferred: carried; already in the ledger (fourth pass, R5-E6). No new ledger entry. (R6-A5)
+
+**Sixth-pass rejected:**
+- low — R6-B4 The `--validate-platform` catch prints only the message, and its stack overflow and access violation exclusions are dead code: printing only the message is what the fourth-pass decision specified, and the runner tests assert that exact output. Neither excluded exception can be caught on .NET, so the exclusions change nothing.
+- low — R6-B5 The new outer catch around plan loading and the signing key has no test: a plan-load failure in preflight follows a plan the engine has just written, and the test would need to swap the plan-path environment variable. The compose-failure branch is covered.
+- low — R6-B6 `IsV2` allocates 1 MiB on every call and repeats the loader's size constant: it runs once per command, and the three 1 MiB limits agree today.
+- low — R6-B7 Oversized, non-seekable or UTF-16 v2 documents reach the v1 loader: the oversized case still refuses with the same 1 MiB reason, only as HXM013 instead of HXP013. A FIFO already failed before this change (a second open blocked). Routing these to the v2 validator would need a streaming schema sniff.
+- low — R6-B8 No test pins `-nodeReuse:false` and `-p:UseSharedCompilation=false` in the model build: the argument list is local to `BuildModelAsync`, so a test would need a new seam.
+- low — R6-B10 The ordinary suite builds Memories in place, restores packages, and bounds the build at 5 minutes: source-mode composition already builds owner projects in place, and restore is ordinary build behavior. Whether a cold `-m:1` build exceeds 5 minutes was not checked; if it does, only a first run fails, so this would be low. The warm suite took 48 s.
+- low — R6-B12 No test compares snapshot bytes with the owner Git blob: drift produces a loud package-mode refusal, not wrong behavior, and snapshots change only when owners release v2. A Git-backed test needs skip logic for missing commits.
+- low — R6-B14 One collection serializes the whole partial class, and `PlatformFourthReviewTests.cs` is named after a review round: tests inside one class already run sequentially, so the only cost is no overlap with other classes. The name has no named harm.
+- low — R6-B15 The invocation-probe test binds a fixed plan port: this is the class's existing pattern, and it fails only when that exact loopback port is already in use.
+- low — R6-A1 Oversized v2 now refuses as HXM013: same as R6-B7.
+- false — R6-A3 The runner tests use stub composers: the patch's risk was that removing the early `return 0` would start the run inside preflight. `PreflightStartTrap` covers that branch, and the outer catch is R6-B5.
+- low — R6-A6 The spec says `done` while sprint status says `review`: this review's status sync resolves it, and the fix would edit the spec under review.
+- low — R6-V3 The outer runner catch has no test: same as R6-B5.
+- low — R6-V4 Snapshot hash is not tied to the owner blob: same as R6-B12.
+- false — R6-E1 Unicode whitespace before `[` refuses a literal value: the refusal is loud and scoped, and no Platform-owned or code-supplied value starts with such whitespace.
+- low — R6-E2 A whitespace-prefixed empty structure emits no key: same disposition as the carried R5-B9 rejection.
+- low — R6-E3 A null profile value is no longer a `NullReferenceException`: `local-profile.json` contains no null values, and overrides come only from code.
+- false — R6-E4 A symlink into the owner's own nested `references/<Other>` passes containment: nested owner references are uninitialized by design (all are empty directories here), so `TryResolveExistingFile` fails.
+- low — R6-E5 A non-seekable v2 path crashes the v1 loader: same as R6-B7.
+- low — R6-E6 UTF-16 v2 documents get a v1 schema diagnostic: same as R6-B7.
+- low — R6-E8 A cold Memories build can exceed 5 minutes: same as R6-B10.
+- false — R6-E9 `dotnet` might fail to start with an empty diagnostic: the verified ordinary suite ran this build through the same process environment.
+- low — R6-E10 64 KiB output capture can cut off compiler errors: this affects only failure diagnostics, and the build can be rerun directly.
+- low — R6-E12 The file-entry test leaks its temp workspace if an assertion fails: same disposition as the carried R4-B12 rejection.
+- low — R6-E14 Creating symbolic links needs privilege on Windows: no Windows test run is maintained, and a skip guard adds a branch.
+- low — R6-E15 Fixed listener port: same as R6-B15.
+- low — R6-E16 Existing `autocrlf` clones keep CRLF snapshots until checkout: package mode refuses until owners release v2 declarations, and no Windows clone is in use.
 
 ## Implementation Notes
 

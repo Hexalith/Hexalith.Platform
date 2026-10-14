@@ -431,3 +431,9 @@
 - source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Correct Timesheets deployment preparation's stale claim that Development composition has no Timesheets binding.
   evidence: eng/timesheets-deployment/prepare.py hosted-composition blocker and retained plan.json contradict the later local host binding and its qualification documentation; hosted release qualification remains absent.
+
+## Deferred from: code review of spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md, sixth pass (2026-10-14)
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Mark the Timesheets deployment's hash-bound files `-text` so `autocrlf` checkouts keep their recorded SHA-256 values.
+  evidence: `eng/timesheets-deployment/plan.json:52` records the sha256 of `hexalith.module-manifest.v2.json`, and `prepare.py:19,145-165` hashes working-tree bytes, including its own. `.gitattributes` covers only `src/Hexalith.Platform.Composition/Declarations/*.json`. Pre-existing in Timesheets enrollment work (`ce6f2d3`).
