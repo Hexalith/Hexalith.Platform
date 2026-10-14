@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 6
 created: '2026-10-12'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '977f2e01347226ac727b707aee4f140f5dc8b010'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -120,6 +120,67 @@ Code review 2026-10-13 (bmad-code-review, second pass). Scope: Platform `977f2e0
 - low — `EventStore__CommandGateway__BaseAddress` is inert: no current server reads it, and it may serve domain modules.
 - low — HXP020 is shared with the manifest validator: the two uses differ in phase and category, and a new rule ID would add public surface.
 - low — The `redis-stack.conf` mount is missing: a run-scoped store does not need the owner's persistence settings.
+
+**Fourth-pass review (2026-10-13):** Scope is Platform `977f2e0..be29464` plus Builds `608c164..fe83f39` (rebased onto Builds main as `61f632e`, same content), 58 files. `_bmad-output`, submodule pointers and the three owner snapshots were excluded. The Blind Hunter, Edge Case Hunter, Verification Gap Reviewer and Acceptance Auditor all completed. Line references are to those commits; the later Timesheets work has moved some lines on `main`. Of 64 raw findings, 13 are patches, 5 are deferred (2 already in the ledger) and 38 are rejected.
+
+- [ ] [Review][Patch] The default file-entry Development guard uses the Works refusal text [src/Hexalith.Platform.Composition/PlatformAppModel.cs:28] — The declaration path is not Works, but a non-Development host is told "Works Dapr hosting is a development-only preview…", and `FileEntryRefusesNonDevelopmentBeforeComposing` locks that wording in. Use declaration-composition wording and assert it.
+- [ ] [Review][Patch] `--validate-platform` reports only three exception types [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/AppHostRunner.cs:45] — A `KeyNotFoundException` (provenance without the owner, `PlatformDeclarationSet.cs:43`), a `JsonException` (malformed `local-profile.json`, `PlatformLocalProfile.cs:19`) or a YAML/IO failure escapes as an unhandled crash. HXP020 then keeps only the 512-character stderr tail, so the cause is lost. Under the flag, catch every non-fatal exception, print its message and return 3.
+- [ ] [Review][Patch] Missing-file refusals omit the file path [src/Hexalith.Platform.Composition/PlatformAppModel.cs:88; references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunTopology.cs:279] — `AppHostRunner` prints `exception.Message`, and both `FileNotFoundException`s carry the path only in `FileName`, so HXP020 says a component or the model is unavailable without naming it. Put the path in the message.
+- [ ] [Review][Patch] The model build permits MSBuild node reuse and the shared compiler [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs:59-64] — The composed servers set `MSBUILDDISABLENODEREUSE` and `UseSharedCompilation=false`; `BuildModelAsync` sets neither, so a v2 start can attach to another session's MSBuild nodes and hang until its 5-minute bound under concurrent load. Add `-nodeReuse:false` and `-p:UseSharedCompilation=false`.
+- [ ] [Review][Patch] The documentation says `Platform:DeclarationPath` adds an active declaration [docs/platform-apphost-form.md:18] — `Compose(builder)` validates that file but selects it only when `Platform:ActiveModule` names it; otherwise the six-server reference environment runs. Correct the sentence.
+- [ ] [Review][Patch] Owner snapshot bytes depend on line-ending conversion [src/Hexalith.Platform.Composition/Declarations/memories.json:1; src/Hexalith.Platform.Composition/Declarations/provenance.json] — `memories.json` is committed with CRLF because Memories marks its manifest `eol=crlf`. Its provenance sha256 `9b2078…` is therefore not the hash of the owner blob at `867e09a3` (`30f97d…`, LF), and the second-pass "byte-identical" statement holds only for EventStore and Tenants. Platform has no `.gitattributes`, so an `autocrlf` checkout also changes the LF snapshots' hashes, and package mode refuses them as differing from provenance. Store the owner blob bytes, recompute the hash and mark `Declarations/*.json` as `-text`. (Found while preparing the review.)
+- [ ] [Review][Patch] The secret store comment names the wrong resource [DaprComponents/reference/secretstore.yaml:5-6] — It says the AppHost registers `memories-secretstore`; the Platform model registers `secretstore`.
+- [ ] [Review][Patch] The gateway and Memories sidecar tokens are never asserted [src/Hexalith.Platform.Composition/PlatformLocalProfile.cs:74-78; tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:165] — Only the Tenants runtime tokens are checked. The `-dapr-cli` test takes its `ShouldNotContainKey` branch when a binding lacks a token, so deleting the gateway or Memories mapping stays green while the app rejects its sidecar. Assert that `APP_API_TOKEN`/`DAPR_API_TOKEN` equal the app-side values for the gateway and each Memories server, and require them on the matching `-dapr-cli`.
+- [ ] [Review][Patch] The v2 invocation probes have no test that runs in Builds CI [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs:205-232] — `PlatformPlanDelegatesToThePinnedModelAsync` skips without the Platform checkout and Debug model. A v2 branch that yields no probes would let readiness pass without any Dapr invocation. Add a self-contained test that uses a local `PlatformServerAnnotation` record; the match is by type name.
+- [ ] [Review][Patch] `AppHostRunner --validate-platform` is untested [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/AppHostRunner.cs:29,42-56] — The engine tests' fake AppHost ignores its arguments. Removing the early `return 0` would start the full run inside the preflight and refuse every v2 start at the 5-minute bound, with all tests green. Cover exit 3 plus the message for a refusing model, and exit 0 with no resources for a valid one.
+- [ ] [Review][Patch] Source-mode catalog materialization is untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/CatalogVersionMaterializer.cs:29-30] — Every `CatalogVersionTests` case uses package mode, and the engine tests override `BuildModelAsync`. Restoring the old package-only guard would break every source v2 start with no non-live failure. Add source-mode cases with and without `CatalogCommit`.
+- [ ] [Review][Patch] The file entry's default mapping resolution is covered only by the gated live smoke [src/Hexalith.Platform.Composition/PlatformAppModel.cs:32-37] — Every non-live test sets `Platform:SourceMapping:Path` or refuses first. Compose through the entry with no mapping settings and the `HEXALITH_SOURCE_MAPPING_*` variables cleared, and assert the six servers. `ComposeEntry`, now on `main`, makes the dispatch testable.
+- [ ] [Review][Patch] The Memories owner-option check is skipped in the documented test run [tests/Hexalith.Platform.Composition.Tests/OwnerOptionBindingTests.cs:20] — It needs a prebuilt Memories server DLL that neither the test project nor the documented commands build, so an invalid Memories profile value appears only in the live smoke. Build or reference the Memories option assemblies, as the EventStore check already does.
+- [x] [Review][Defer] The writer-protocol cutover bound includes cold builds, and its timeout stops the file AppHost [src/Hexalith.Platform.Composition/PlatformGatewayStartup.cs:12] — deferred: deadline policy belongs to Story 1.8. The 2-minute bound starts before endpoint allocation and before the gateway's Debug `dotnet run` build. In the file entry, the `TimeoutException` faults a `BackgroundService`, whose default is `StopHost`; the signed runner reports HXR027 under the same pre-existing bound.
+- [x] [Review][Defer] `main` fails the pin check: `apphost.cs` selects `Aspire.AppHost.Sdk` 13.6.0, while the Builds catalog selects 13.6.1 [apphost.cs:2] — deferred: introduced after this story by the Builds bump to `e3be1d4`. `eng/verify-platform-pins.py` exits 1 on `main`, and Platform has no CI that runs the check. Realign the file-entry pins in a separate change.
+- [x] [Review][Defer] Package-mode container servers may not reach their host-run sidecars [src/Hexalith.Platform.Composition/PlatformAppModel.cs:174,236] — deferred, unverified (medium if true): only project resources get explicit `DAPR_HTTP_ENDPOINT`/`DAPR_GRPC_ENDPOINT`, and the container HTTP port is fixed at 8080. Package mode refuses until the owners release v2 declarations; a live package-mode run will settle it.
+- [x] [Review][Defer] An explicit `down --run-id` reports success after a manifest edit [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:958-969] — deferred: already in the ledger (R3-E1).
+- [x] [Review][Defer] The Memories infrastructure images are unpinned [src/Hexalith.Platform.Composition/PlatformAppModel.cs:143-144] — deferred: already in the ledger.
+
+**Fourth-pass rejected:**
+- false — R4-B2 Only the reference owners compose through the entry points, and domain wiring is hard-coded: unbound servers refuse by identity, which is the required missing-input behavior. Parties adoption is Story 1.12 (as B3/E12).
+- low — R4-B3 Multi-module documents use the reference default: E6 chose this deliberately, and the input is rare.
+- low — R4-B4 Channel tokens are per module, not per server: declaration inputs are module-level, and the 2026-10-13 decision generates one value per declared input. Splitting them needs per-key sharing rules.
+- low — R4-B7 Only the selected declaration is hash-checked: dependency manifests, the profile and components are not covered by the signed manifest hash in v1 either. The window is seconds, and pinning them adds plan fields.
+- false — R4-B10 Component rendering can silently no-op: the tests render the actual Platform files and assert the Redis endpoints and the parsed `secretsFile`, so drift fails a test.
+- low — R4-B12 Secrets remain in temp after a crash: the directory and file are user-private, the keys are per-run, and a sweep adds startup work.
+- low — R4-B14 Unknown configuration overrides are ignored: overrides come only from code, and the extra Memories `ValidAudiences` key is harmless because Memories validates `Audience`.
+- low — R4-B16 The pin verifier has gaps: the spec scopes the check to three pins (second pass). The actual drift is deferred above.
+- false — R4-B17 The local profile uses external embedding endpoints: these are Memories' own defaults (second pass).
+- false — R4-B18 There is no Dapr control-plane preflight: by design, and documented (second pass).
+- false — R4-A1 Package mode always refuses: the 2026-10-13 decision requires refusal until the owners release v2 declarations.
+- low — R4-A3 Release commits are coded in Platform: the catalog holds versions, not commits, and a version bump refuses loudly until Platform updates its snapshots, which it must do anyway.
+- low — R4-A4 The signed-plan hash covers one declaration: same as R4-B7.
+- low — R4-A5 Source-mode catalog materialization also runs for v1: v1 source builds do not consume the snapshot (the catalog targets are package-only). The only new failure is a pin missing from the local Builds checkout, which fails by path.
+- low — R4-A8 File-entry package mode reads the checked-out catalog: package mode refuses today, and the checked-out catalog is the pinned submodule.
+- low — R4-A9 Generated secrets are per module: same as R4-B4.
+- low — R4-A10 Signed-key overrides cover only six servers: no other composed server declares those keys (Timesheets binds its own contract), and generalizing needs the selection before `Prepare`.
+- false — R4-E1 Redis host replacement can no-op: same as R4-B10.
+- false — R4-E2 Secret store path replacement can no-op: same as R4-B10.
+- low — R4-E3 A selection without EventStore leaves state/pubsub unreferenced: every owner closure includes EventStore, and only the validator fixture reaches this case.
+- false — R4-E4 Component scopes omit `tenants-api` and the Memories clock/telemetry: they match the owners' own component scopes, and those app IDs do not use those components.
+- low — R4-E7 Secrets remain in temp: same as R4-B12.
+- low — R4-E8 Concurrent file-entry hosts share placement, scheduler and name resolution: run-scoped local resources are Epic 2.
+- low — R4-E9 `Repository` capitalizes multi-word module IDs wrongly: those modules are not enrolled, the mapping lookup is case-insensitive, and the remaining uses refuse loudly.
+- false — R4-E10 Non-reference projects are unavailable: same as R4-B2.
+- low — R4-E11 Signing keys cover only the reference servers: same as R4-A10.
+- low — R4-E12 The technical-module list is hard-coded: declarations have no kind field (second pass).
+- low — R4-E13 Multi-module documents use the reference default: same as R4-B3.
+- false — R4-E14 Optional servers block `WaitFor`: every owner server is `required: true`.
+- false — R4-E15 Empty dynamic secrets pass through: `Clock:SourceAuthenticationTokens` is the only `dynamic-secret` input, and it is mapped and checked.
+- low — R4-E16 Non-object `Clock:Sources` items escape unscoped: the profile is Platform-owned, and the guard adds a branch for an input nothing shown produces.
+- false — R4-E17 Gateway registration key casing: the owner settings use `AppId`, which matches the parser.
+- low — R4-E20 Unpinned plan inputs: same as R4-B7.
+- low — R4-E21 The model build shares `obj/`: rejected in the second pass; node reuse is patched above.
+- low — R4-E23 Pin verifier gaps: same as R4-B16.
+- low — R4-E24 Source materialization runs for v1: same as R4-A5.
+- false — R4-E25 The first Builds commit says v2 skips invocation checks: later commits in the reviewed range add the probes, and commit history is not edited.
+- false — R4-E26 `IsV2` could be mistaken for validation: `PlatformDeclarationSet.Load` validates every declaration through `PlatformManifestValidator` afterwards.
 
 ## Implementation Notes
 

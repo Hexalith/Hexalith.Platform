@@ -407,3 +407,15 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Make explicit down by run ID independent of the current manifest hash in both v1 and v2.
   evidence: Both command paths first select states by the manifest's current hash; after a manifest edit, the named running state is absent from that filtered set and the command reports completed/HXI001. The existing v1 behavior and the new v2 behavior need one shared correction.
+
+## Deferred from: code review of spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md, fourth pass (2026-10-13)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Bound the writer-protocol cutover after the gateway first answers, and report its timeout without stopping the file AppHost (Story 1.8 deadline policy).
+  evidence: `CompositionWriterProtocolCutover.ActivateAsync` starts its 2-minute bound before endpoint allocation, so the gateway's Debug `dotnet run` build falls inside it. In the file entry, `PlatformGatewayStartup` (`PlatformGatewayStartup.cs:12`) lets the `TimeoutException` fault a `BackgroundService`, whose default `StopHost` ends the AppHost on a slow cold start. The signed runner reports HXR027 under the same pre-existing bound.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Realign the file-entry `Aspire.AppHost.Sdk` pin with the Builds catalog.
+  evidence: On `main`, `eng/verify-platform-pins.py` exits 1: `apphost.cs:2` selects 13.6.0 and the Builds catalog at `e3be1d4` selects 13.6.1. The drift came from a Builds pointer bump after Story 1.6. Platform has no CI that runs the check, so only `eng/verify-agents-host.sh --mode LocalScaffold` shows it.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Verify that package-mode container servers can reach their host-run Dapr sidecars (unverified; medium if true).
+  evidence: `PlatformAppModel.cs:236` sets `DAPR_HTTP_ENDPOINT`/`DAPR_GRPC_ENDPOINT` only on project resources, and container servers use a fixed HTTP target port of 8080 (`:174`). Package mode refuses until the owners release v2 declarations, so no run has exercised this. Settle it with the first live package-mode run.
