@@ -13,8 +13,27 @@ import stat
 
 STORY_40 = "4-0-prove-off-node-backups-and-isolated-restores"
 STORY_41 = "4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu"
+STORY_427 = "4-27-retire-kubesphere-without-changing-workload-data"
 ARTIFACTS = Path("_bmad-output/implementation-artifacts")
 BASELINE = ARTIFACTS / "evidence/epic-4/initial-cluster-inventory.md"
+TARGET_REVIEW = ARTIFACTS / "evidence/epic-4/4-26/20261004t095137z-target-review/target-review.json"
+MAINTENANCE = Path("eng/kubernetes-upgrade/MAINTENANCE.md")
+RETIREMENT_PROCEDURE = Path("eng/cluster-management/RETIRE-KUBESPHERE.md")
+SOURCE_FILES = (
+    ARTIFACTS / f"{STORY_41}.md",
+    ARTIFACTS / "epic-4-context.md",
+    BASELINE,
+    ARTIFACTS / "sprint-status.yaml",
+    ARTIFACTS / f"{STORY_40}.md",
+    ARTIFACTS / f"{STORY_427}.md",
+    TARGET_REVIEW,
+    MAINTENANCE,
+    RETIREMENT_PROCEDURE,
+    Path("eng/cluster-management/README.md"),
+    Path("eng/cluster-management/retire.py"),
+    Path("eng/kubernetes-upgrade/prepare.py"),
+    Path("eng/kubernetes-upgrade/README.md"),
+)
 PROOF_FILES = (
     "gate/backup-gate.json",
     "keycloak/keycloak-restore-proof.json",
@@ -38,11 +57,11 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def story_status(path):
+def story_status(path, content=None):
     # Only accept the single exact mapping, at the story mapping indentation.
     matches = re.findall(
         rf"^  {re.escape(STORY_40)}: ([a-z-]+)\s*(?:#.*)?$",
-        path.read_text(encoding="utf-8"),
+        path.read_text(encoding="utf-8") if content is None else content,
         re.MULTILINE,
     )
     return matches[0] if len(matches) == 1 else "unresolved"
@@ -54,8 +73,34 @@ def timestamp(value):
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
         return parsed.astimezone(timezone.utc) if parsed.tzinfo else None
-    except ValueError:
+    except (ValueError, OverflowError):
         return None
+
+
+def selected_hops(review_bytes, captured_at):
+    """Read the dated selection without accepting its currency or execution pins."""
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("Dated target review contains duplicate JSON keys")
+            result[key] = value
+        return result
+
+    review = json.loads(review_bytes, object_pairs_hook=unique_object)
+    reviewed_at = timestamp(review.get("checkedAt")) if isinstance(review, dict) else None
+    if reviewed_at is None or reviewed_at > captured_at:
+        raise ValueError("Dated target review requires a valid timezone-qualified checkedAt no later than preparation")
+    hops = []
+    for field, source_minor, target_minor in (("workloadHop", "1.34", "1.35"),
+                                               ("workloadTarget", "1.35", "1.36")):
+        selection = review.get(field)
+        tag = selection.get("tag") if isinstance(selection, dict) else None
+        if not isinstance(tag, str) or not re.fullmatch(rf"v{re.escape(target_minor)}\.(?:0|[1-9][0-9]*)", tag):
+            raise ValueError(f"Dated target review must select an exact {target_minor} patch in {field}.tag")
+        hops.append({"from": source_minor, "to": target_minor, "targetPatch": tag,
+                     "selectionField": f"{field}.tag"})
+    return hops, review["checkedAt"]
 
 
 def inspect_record(bundle, name, now):
@@ -116,17 +161,24 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
         raise ValueError("Preparation must not write into a source recovery bundle")
     now = datetime.now(timezone.utc)
     captured_at = now.isoformat(timespec="seconds").replace("+00:00", "Z")
-    source_files = (
-        ARTIFACTS / f"{STORY_41}.md",
-        ARTIFACTS / "epic-4-context.md",
-        BASELINE,
-        ARTIFACTS / "sprint-status.yaml",
-        ARTIFACTS / f"{STORY_40}.md",
-        Path("eng/kubernetes-upgrade/prepare.py"),
-        Path("eng/kubernetes-upgrade/README.md"),
-    )
-    evidence_hashes = {str(path): sha256(project_root / path) for path in source_files}
-    status = story_status(project_root / ARTIFACTS / "sprint-status.yaml")
+    # Resolve every required input before allocating an immutable attempt.
+    source_bytes = {str(path): (project_root / path).read_bytes() for path in SOURCE_FILES}
+    evidence_hashes = {name: hashlib.sha256(content).hexdigest() for name, content in source_bytes.items()}
+    hops, reviewed_at = selected_hops(source_bytes[str(TARGET_REVIEW)], now)
+    target_lineage = {"source": str(TARGET_REVIEW), "sha256": evidence_hashes[str(TARGET_REVIEW)],
+                      "checkedAt": reviewed_at, "currencyValidation": "not-validated",
+                      "compatibilityValidation": "not-validated", "executionPinsAccepted": False}
+    procedure_lineage = {
+        "historicalMaintenance": {"source": str(MAINTENANCE), "sha256": evidence_hashes[str(MAINTENANCE)],
+                                  "approval": "not-validated", "supersededForExecution": True},
+        "retirementProcedure": {"source": str(RETIREMENT_PROCEDURE),
+                                "sha256": evidence_hashes[str(RETIREMENT_PROCEDURE)],
+                                "acceptance": "not-validated"},
+        "successorMaintenance": {"state": "blocked-until-accepted-retirement-and-fresh-census",
+                                 "sha256": None, "approval": "not-approved"},
+    }
+    status_path = ARTIFACTS / "sprint-status.yaml"
+    status = story_status(project_root / status_path, source_bytes[str(status_path)].decode("utf-8"))
     inputs = [inspect_record(backup_bundle, name, now) for name in PROOF_FILES]
     validation = inspect_record(backup_bundle, VALIDATION_FILE, now)
     checks = [
@@ -154,6 +206,29 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
         {"condition": "sequential-live-preflight-supported-patch-api-addon-compatibility",
          "result": "not-run"},
         {"condition": "functional-storage-probe-for-every-required-class", "result": "not-run"},
+        {"condition": "accepted-4.27-signed-retirement-preservation-and-private-native-access",
+         "result": "not-validated", "statusIsAcceptance": False,
+         "required": ["signed exact retirement and workload/PVC preservation outcome accepted",
+                      "current independent private native-access proof",
+                      "KubeSphere runtime, blocking admission dependencies and public route absent",
+                      "every retained or replaced dependency has a qualified named owner"]},
+        {"condition": "fresh-post-retirement-recovery-and-configuration-census",
+         "result": "not-run", "required": ["fresh external-etcd point and matching isolated restore",
+             "matching encrypted off-node node/configuration inventory and tested recovery",
+             "fresh signed 4.0 proof/final validation and independent immutable-object readback"],
+         "historicalBackupsSuffice": False},
+        {"condition": "exact-successor-maintenance-procedure-and-outage-approval",
+         "result": "not-approved", "required": ["accepted 4.27 and fresh remaining controller/admission/outage census",
+             "derive successor while preserving historical MAINTENANCE.md bytes and hash",
+             "clear remaining API/add-on/admission blockers, Forgejo consistency and authenticated smoke expectations",
+             "bind exact successor SHA-256 and accountable stop/recovery/outage approval to each signed hop gate"]},
+        {"condition": "fresh-per-hop-target-currency-and-compatibility",
+         "result": "not-validated", "required": ["current supported exact patch and Rancher import compatibility",
+             "fresh release/security review, binary/package checksums and image digests",
+             "fresh live source versions, version skew and sequential kubeadm plan/preflight"]},
+        {"condition": "fresh-authenticated-protected-workload-health", "result": "not-run",
+         "requiredWorkloads": ["keycloak", "openbao", "memories", "forgejo", "forgejo-runner"],
+         "required": "fresh authenticated native health and approved smoke expectations before each hop"},
     ]
     if directory.exists():
         raise ValueError("An attempt already exists; create a new attempt ID")
@@ -178,9 +253,10 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
             "context": "jpiquot@local", "node": "node1", "liveSourceVersion": None,
             "baseline": {"version": "v1.34.9", "capturedAt": "2026-09-28T12:51:19Z",
                          "source": str(BASELINE), "fresh": False},
-            "intendedMinorHops": [{"from": "1.34", "to": "1.35", "targetPatch": None}],
-            "hopChoice": "first supported candidate; subject to approval and compatibility",
-            "additionalHops": "Only if selected; re-plan and revalidate before each hop",
+            "intendedMinorHops": hops, "targetLineage": target_lineage,
+            "procedureLineage": procedure_lineage,
+            "hopChoice": "dated retained two-hop selection; subject to fresh currency, compatibility and approval",
+            "additionalHops": "No automatic chain; accept first-hop outcome and refresh every gate before second hop",
             "selectedBackupBundle": str(backup_bundle) if backup_bundle else None,
             "fullLogsAndRecoveryMaterial": "not-created",
         })
@@ -195,21 +271,40 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
                 **base, "verificationResult": "not-run", "status": "pending-live-execution",
                 "reason": "Operational evidence is unavailable during local-only preparation",
             })
-        write_record(directory, "hop-gate-1.34-to-1.35.json", {
-            **base, "gateState": "closed", "verificationResult": "blocked",
-            "fromMinor": "1.34", "toMinor": "1.35", "exactTargetPatch": None,
-            "prerequisites": {check["condition"]: check["result"] for check in checks},
-            "approval": approval, "signature": "not-created",
-        })
+        for index, hop in enumerate(hops):
+            suffix = f"{hop['from']}-to-{hop['to']}"
+            previous = hops[index - 1] if index else None
+            prerequisites = {check["condition"]: check["result"] for check in checks}
+            if previous:
+                prerequisites["accepted-first-hop-outcome"] = "not-accepted"
+                prerequisites["new-recovery-preflight-and-approval-after-first-hop"] = "not-run"
+            write_record(directory, f"hop-gate-{suffix}.json", {
+                **base, "gateState": "closed", "verificationResult": "blocked",
+                "fromMinor": hop["from"], "toMinor": hop["to"], "exactTargetPatch": hop["targetPatch"],
+                "liveSourceVersion": None, "targetLineage": {**target_lineage, "selectionField": hop["selectionField"]},
+                "procedureLineage": procedure_lineage, "evidenceHashes": evidence_hashes,
+                "prerequisites": prerequisites,
+                "refreshRequirements": list(prerequisites), "freshPrerequisiteRecordHashes": None,
+                "preUpgradeHealth": {"record": "pre-upgrade-health.json", "sha256": None,
+                                     "verificationResult": "not-run"},
+                "previousHop": None if previous is None else {
+                    "outcomeRecord": f"minor-hop-{previous['from']}-to-{previous['to']}.json",
+                    "acceptedOutcomeSha256": None, "acceptance": "not-validated",
+                    "actualResultingComponentVersions": None},
+                "approval": approval, "signature": "not-created",
+            })
+            write_record(directory, f"minor-hop-{suffix}.json", {
+                **base, "verificationResult": "not-run", "fromMinor": hop["from"], "toMinor": hop["to"],
+                "exactTargetPatch": hop["targetPatch"], "commands": [], "resultingComponentVersions": None,
+                "approvedGateRecord": f"hop-gate-{suffix}.json", "approvedGateSha256": None,
+                "approvedSuccessorMaintenanceSha256": None,
+                "postflightEvidenceHashes": {"post-upgrade-health.json": None, "dynamic-storage-proof.json": None},
+            })
         write_record(directory, "maintenance-transition.json", {
             **base, "verificationResult": "not-run",
             "quiesce": {"state": "not-started", "allTrackedWorkflowsTerminal": None},
             "cordon": {"state": "not-started", "observedUnschedulable": None},
             "drain": {"state": "not-started", "exitCode": None, "approvedExceptions": []},
-        })
-        write_record(directory, "minor-hop-1.34-to-1.35.json", {
-            **base, "verificationResult": "not-run", "fromMinor": "1.34", "toMinor": "1.35",
-            "exactTargetPatch": None, "commands": [], "resultingComponentVersions": None,
         })
         write_record(directory, "upgrade-result.json", {
             **base, "verificationResult": "blocked", "state": "blocked-before-mutation",

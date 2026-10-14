@@ -419,3 +419,36 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Verify that package-mode container servers can reach their host-run Dapr sidecars (unverified; medium if true).
   evidence: `PlatformAppModel.cs:236` sets `DAPR_HTTP_ENDPOINT`/`DAPR_GRPC_ENDPOINT` only on project resources, and container servers use a fixed HTTP target port of 8080 (`:174`). Package mode refuses until the owners release v2 declarations, so no run has exercised this. Settle it with the first live package-mode run.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-timesheets-staging-upgrade-handoff.md`
+  summary: Bind upgrade preparation source hashes to an immutable source archive or retained canonical VCS snapshot before operational audit consumes them.
+  evidence: The pre-existing recorder retains only hashes; local source replacement can make consumed preparation bytes unavailable for later reproduction. The current change binds selection to its consumed snapshot but grants no execution authority.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Reject nonpositive NuGet publication verification attempt counts and invalid retry delays.
+  evidence: Builds Tools/publish-g4-tool-packages.ps1 accepts zero or negative HEXALITH_NUGET_VERIFY_ATTEMPTS, skips every remote verification iteration and returns success; introduced by later release tooling commit 01dfb16.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Correct Timesheets deployment preparation's stale claim that Development composition has no Timesheets binding.
+  evidence: eng/timesheets-deployment/prepare.py hosted-composition blocker and retained plan.json contradict the later local host binding and its qualification documentation; hosted release qualification remains absent.
+
+## Deferred from: code review of spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md, sixth pass (2026-10-14)
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Mark the Timesheets deployment's hash-bound files `-text` so `autocrlf` checkouts keep their recorded SHA-256 values.
+  evidence: `eng/timesheets-deployment/plan.json:52` records the sha256 of `hexalith.module-manifest.v2.json`, and `prepare.py:19,145-165` hashes working-tree bytes, including its own. `.gitattributes` covers only `src/Hexalith.Platform.Composition/Declarations/*.json`. Pre-existing in Timesheets enrollment work (`ce6f2d3`).
+
+
+## Deferred from: Story 1.6 build review, seventh pass (2026-10-14)
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Publish retirement preparation attempts atomically after every record and checksum is complete.
+  evidence: The concurrent Story 4.27 preparer creates the final immutable attempt directory before writing its archive and records; attempt.json records preparationComplete=true before later writes and checksum verification. A write failure leaves a partial attempt and blocks retry under the same ID. This is separate retirement-preparation work.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Retain distinct preflight, postflight and storage evidence paths for each Kubernetes upgrade hop.
+  evidence: eng/kubernetes-upgrade/prepare.py assigns pre-upgrade-health.json, post-upgrade-health.json and dynamic-storage-proof.json to both hop records. Fresh second-hop evidence can replace retained first-hop evidence. This predates declaration-composition corrections and belongs to the separate upgrade workflow.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Refuse retirement metadata audits when a nested directory cannot be enumerated.
+  evidence: The concurrent eng/cluster-management/prepare_retirement.py uses os.walk without onerror, which silently ignores inaccessible nested subtrees; the resulting audit can omit metadata while the attempt reports preparationComplete=true. This belongs to the separate retirement-preparation workflow.

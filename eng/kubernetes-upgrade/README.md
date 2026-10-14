@@ -8,6 +8,37 @@ python3 eng/kubernetes-upgrade/prepare.py --operator 'Codex (preparation only)'
 
 Use `--backup-bundle /absolute/path/to/final-bundle` only to inventory a selected local bundle. A rehearsal is not a final recovery proof. A successful preparation command means files were created; it never means the upgrade is authorized. Preserve each attempt rather than overwrite it. The tool refuses evidence output inside the repository or selected recovery bundle. The committed summary may include the attempt ID and digests; full logs and recovery material must be encrypted and access controlled outside Git.
 
+## Retained two-hop preparation
+
+The recorder reads `workloadHop.tag` and `workloadTarget.tag` from the
+[2026-10-04 target review](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t095137z-target-review/target-review.json):
+**1.34 → v1.35.9 → v1.36.5**. It requires exact sequential 1.35/1.36 patches,
+hashes the same input bytes used for selection, and refuses missing or malformed
+required sources before creating an attempt. This is dated selection lineage;
+current support, security, Rancher import compatibility and execution identities
+remain unvalidated and must be refreshed at each hop.
+
+`attempt.json` now records both selected hops and target/procedure hashes. Each
+hop has its own `hop-gate-<from>-to-<to>.json` and
+`minor-hop-<from>-to-<to>.json`, an exact dated target, closed gate, source hashes
+and fresh-prerequisite requirements. Live source and actual resulting/final
+versions remain unknown. The second gate additionally requires the accepted
+first-hop outcome and newly collected recovery, preflight and approval after
+that outcome. These pending records never approve an automatic chained upgrade.
+
+Both gates explicitly require accepted 4.27 signed retirement/preservation and
+private native access, fresh post-retirement external-etcd/isolated-restore and
+matching node/configuration recovery, current signed 4.0 validation/readback,
+and an exact separately approved successor maintenance/outage procedure. The
+successor stays blocked until accepted retirement and a fresh remaining
+controller/admission/outage census. `MAINTENANCE.md` remains byte-for-byte
+historical; its hash and the retirement runbook hash are retained as lineage.
+Story status, passing declarations and signature-file presence validate none
+of these gates. Read the [Timesheets staging handoff](../timesheets-deployment/staging-dependency-handoff.md)
+for the current dependency order, command proposal and local receipt.
+
+## Historical preparation
+
 Actual delegated preparation is recorded in the [2026-10-01 recovery/preflight evidence](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261001t095344z-recovery-preparation/summary.md). SSH access, encrypted immutable node/etcd recovery with isolated tests, target kubeadm plans and both baseline StorageClass probes passed. The signed API/add-on result remains incomplete; no hop gate was opened. These operational proofs were collected separately from this local-only tool.
 
 The [maintenance continuation](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261001t114842z-maintenance-continuation/summary.md) records this conversation as incident channel and the Administrator's acknowledged incident/recovery/outage roles for the five protected services. The [latest window amendment](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261007t144445z-maintenance-window-amendment.json) starts the current window immediately, recorded at 2026-10-07 16:44:45 Europe/Paris (14:44:45 UTC), and runs through October 31. The exclusive end is 2026-11-01 00:00 Europe/Paris (`2026-10-31T23:00:00Z`), accounting for the October daylight-saving transition. Earlier window records remain historical. The [concrete maintenance/recovery proposal](MAINTENANCE.md) remains unapproved and is a historical SHA-bound proposal with the superseded end time; its additional workload outage scope and accountable stop/recovery decisions still need approval. The tested node bundle covers file/key recovery; complete OS reconstruction/replacement capacity is a disclosed conditional limitation, not a new requirement for this story.
@@ -16,7 +47,7 @@ The source remains v1.34.9 with all 16 running protected pods Ready and 17 uncha
 
 ## Resolve before scheduling mutation
 
-Record the Administrator's window, outage approval, incident channel, incident commander, rollback owner, operator and acknowledgements from every workload owner. The baseline source version is historical; record the live source version before selecting the hops. The first candidate hop is 1.34 → 1.35. Further hops require a selected target and independent gates; none is automatically requested by this preparation.
+Record the Administrator's window, outage approval, incident channel, incident commander, rollback owner, operator and acknowledgements from every workload owner. The baseline source version is historical; record the live source version and requalify the retained 1.34 → 1.35 → 1.36 selection. Each hop requires fresh current target identities and its own signed-open gate; preparation requests no operational execution.
 
 The [release page](https://kubernetes.io/releases/) checked on 2026-10-01 lists supported branches 1.35–1.37 and Kubernetes 1.34 end of life on 2026-10-27. Resolve the current patch again at window start. Record exact package versions, package SHA-256, signed repository metadata/source, kubeadm binary version and all control-plane/add-on image digests; do not install from an unbound wildcard version.
 

@@ -59,6 +59,15 @@ public sealed partial class PlatformAppModelTests
         secretStore.ShouldContain("scopes:");
         secretStore.ShouldNotContain("  - eventstore");
         secretStore.ShouldNotContain("  - tenants");
+        using ServiceProvider provider = builder.Services.BuildServiceProvider();
+        string rendered = provider.GetRequiredService<PlatformCompositionWorkspace>().Path;
+        string[] Scopes(string file) => ((YamlSequenceNode)((YamlMappingNode)Yaml(File.ReadAllText(Path.Combine(rendered, file))).Documents[0].RootNode)
+            .Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ToArray();
+        string[] stateScopes = Scopes("statestore.yaml");
+        stateScopes.ShouldBe(["eventstore", "tenants", "eventstore-admin", "memories"]);
+        stateScopes.ShouldNotContain("memories-access-telemetry");
+        Scopes("pubsub.yaml").ShouldBe(["eventstore", "sample", "memories", "tenants", "tenants-api"]);
+        Scopes("telemetry-state.yaml").ShouldBe(["memories-access-telemetry"]);
     }
 
     [Fact]
@@ -66,10 +75,60 @@ public sealed partial class PlatformAppModelTests
     {
         PlatformCompositionOptions secret = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/EventStore:AppChannelToken"] = "{\"bearer\":\"opaque\"}" } };
         PlatformAppModel.Prepare(secret).Single().Environment["EventStore__AppChannelToken"].ShouldBe("{\"bearer\":\"opaque\"}");
-        PlatformCompositionOptions malformed = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = "[oops" } };
+        PlatformCompositionOptions malformed = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = " \n\t[oops" } };
         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(malformed));
         refusal.Message.ShouldContain("eventstore/gateway/Authentication:JwtBearer:ValidAudiences");
         refusal.Message.ShouldContain("hexalith.module-manifest.v2.json");
+    }
+
+    [Theory]
+    [InlineData(" \n\t[\"audience\"]")]
+    [InlineData(" \r\n{\"0\":\"audience\"}")]
+    public void StructuredConfigurationIgnoresLeadingWhitespaceAndOpaqueSecretsStayWhole(string structured)
+    {
+        const string opaque = " \n\t{\"bearer\":\"opaque\"}";
+        PlatformCompositionOptions options = Options(active: "eventstore") with
+        {
+            Configuration = new Dictionary<string, string>
+            {
+                ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = structured,
+                ["eventstore/gateway/EventStore:AppChannelToken"] = opaque,
+            },
+        };
+        IReadOnlyDictionary<string, string> environment = PlatformAppModel.Prepare(options).Single().Environment;
+        environment["Authentication__JwtBearer__ValidAudiences__0"].ShouldBe("audience");
+        environment.ShouldNotContainKey("Authentication__JwtBearer__ValidAudiences");
+        environment["EventStore__AppChannelToken"].ShouldBe(opaque);
+        environment["APP_API_TOKEN"].ShouldBe(opaque);
+    }
+
+    [Theory]
+    [InlineData("eventstore", "gateway", "tenants")]
+    [InlineData("tenants", "domain", "eventstore")]
+    [InlineData("memories", "server", "eventstore")]
+    public void SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(string module, string server, string targetOwner)
+    {
+        string owner = Path.Combine(Path.GetTempPath(), "platform-cross-owner-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(owner, "module"));
+        try
+        {
+            PlatformCompositionOptions options = Options(active: module);
+            string repository = PlatformServerBindings.Repository(module);
+            File.Copy(Path.Combine(Root, "references", repository, "module", "hexalith.module-manifest.v2.json"), Path.Combine(owner, "module", "hexalith.module-manifest.v2.json"));
+            string project = Path.Combine(owner, PlatformServerBindings.ReferenceProjects[module + "/" + server]);
+            Directory.CreateDirectory(Path.GetDirectoryName(project)!);
+            string targetServer = targetOwner == "tenants" ? "domain" : "gateway";
+            File.CreateSymbolicLink(project, Path.Combine(Root, "references", PlatformServerBindings.Repository(targetOwner), PlatformServerBindings.ReferenceProjects[targetOwner + "/" + targetServer]));
+            options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == repository ? entry with { Path = owner } : entry).ToArray() } };
+            options.Mapping.ContainsProject(project).ShouldBeTrue("the complete mapping admits the other owner's physical project");
+            IDistributedApplicationBuilder builder = Builder();
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+            refusal.Message.ShouldContain(module + "/" + server);
+            refusal.Message.ShouldContain(project);
+            refusal.Message.ShouldContain("physically outside its owner root");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally { Directory.Delete(owner, true); }
     }
 
     [Fact]
@@ -157,14 +216,32 @@ public sealed partial class PlatformAppModelTests
         environment["Clock__Sources__0__AuthenticationToken"].ShouldBe("second-token");
         environment["Clock__Sources__1__AuthenticationToken"].ShouldBe("first-token");
         environment.ShouldNotContainKey("Clock__SourceAuthenticationTokens__first");
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with
+        string sources = options.Configuration["memories/clock/Clock:Sources"];
+        JsonArray inlineSources = JsonNode.Parse(sources)!.AsArray();
+        inlineSources[0]!["AuthenticationToken"] = "inline-token";
+        foreach ((string clockSources, string tokens, string field, string reason) in new[]
         {
-            Configuration = new Dictionary<string, string>(options.Configuration) { ["memories/clock/Clock:SourceAuthenticationTokens"] = "{\"missing\":\"token\"}" },
-        })).Message.ShouldContain("no source has this ID");
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with
+            (sources, "{\"missing\":\"token\"}", "Clock:SourceAuthenticationTokens:missing", "no source has this ID"),
+            (sources, "{\"first\":\"token\"}", "Clock:Sources:second", "authentication token is unavailable"),
+            (inlineSources.ToJsonString(), "{\"first\":\"token\"}", "Clock:Sources:second", "authentication token is unavailable"),
+            (sources, "{\"first\":\"token\",\"second\":\"\"}", "Clock:SourceAuthenticationTokens:second", "token is unavailable"),
+            (sources, JsonSerializer.Serialize(new { first = "token", second = " \t " }), "Clock:SourceAuthenticationTokens:second", "token is unavailable"),
+        })
         {
-            Configuration = new Dictionary<string, string>(options.Configuration) { ["memories/clock/Clock:SourceAuthenticationTokens"] = "{\"first\":\"token\"}" },
-        })).Message.ShouldContain("authentication token is unavailable");
+            IDistributedApplicationBuilder builder = Builder();
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options with
+            {
+                Configuration = new Dictionary<string, string>(options.Configuration)
+                {
+                    ["memories/clock/Clock:Sources"] = clockSources,
+                    ["memories/clock/Clock:SourceAuthenticationTokens"] = tokens,
+                },
+            }));
+            refusal.Message.ShouldContain("hexalith.module-manifest.v2.json");
+            refusal.Message.ShouldContain("memories/clock/" + field);
+            refusal.Message.ShouldContain(reason);
+            builder.Resources.ShouldBeEmpty();
+        }
     }
 
     [Fact]
@@ -257,7 +334,8 @@ public sealed partial class PlatformAppModelTests
     {
         IDistributedApplicationBuilder builder = Builder();
         builder.Environment.EnvironmentName = Environments.Production;
-        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder)).Message.ShouldContain("development-only preview");
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder)).Message
+            .ShouldBe("Platform declaration composition requires a Development host. A production profile is unavailable.");
         builder.Resources.ShouldBeEmpty();
     }
 
@@ -418,11 +496,15 @@ public sealed partial class PlatformAppModelTests
             module["lifecycle"]!["readiness"]!.AsArray().Add(ready);
             File.WriteAllText(manifest, document.ToJsonString());
             File.WriteAllText(Path.Combine(directory, "server.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
+            string components = Path.Combine(directory, "components");
+            Directory.CreateDirectory(components);
+            File.Copy(Path.Combine(Root, "DaprComponents", "reference", "pubsub.yaml"), Path.Combine(components, "pubsub.yaml"));
             PlatformCompositionOptions original = Options();
             PlatformCompositionOptions options = original with
             {
                 Mapping = original.Mapping with { Entries = [.. original.Mapping.Entries, new SourceMappingEntry("Hexalith.Technical", "source", directory)] },
                 ActiveModule = "technical", DomainModule = false, DeclarationPaths = [manifest],
+                ComponentsDirectory = components,
                 Projects = new Dictionary<string, string>(original.Projects) { ["technical/api"] = "server.csproj", ["technical/worker"] = "server.csproj" },
                 Configuration = new Dictionary<string, string> { ["technical/api/Sample:Setting"] = "value", ["technical/worker/Sample:Setting"] = "value" },
             };
@@ -430,9 +512,19 @@ public sealed partial class PlatformAppModelTests
             PlatformAppModel.Compose(builder, options);
             IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
             servers.Length.ShouldBe(2); servers.ShouldNotContain(server => server.Name == "eventstore");
+            builder.Resources.ShouldContain(resource => resource.Name == "pubsub");
+            builder.Resources.ShouldNotContain(resource => resource.Name == "statestore");
+            foreach (IResource server in servers)
+                server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>()
+                    .Select(reference => reference.Component.Name).ShouldBe(["pubsub"]);
             servers.SelectMany(server => { DaprSidecarOptions sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options; return new[] { sidecar.DaprHttpPort, sidecar.DaprGrpcPort, sidecar.DaprInternalGrpcPort, sidecar.MetricsPort }; }).Distinct().Count().ShouldBe(8);
             await using ServiceProvider provider = builder.Services.BuildServiceProvider();
-            provider.GetRequiredService<PlatformCompositionWorkspace>().Dispose();
+            PlatformCompositionWorkspace workspace = provider.GetRequiredService<PlatformCompositionWorkspace>();
+            YamlMappingNode pubSub = (YamlMappingNode)Yaml(File.ReadAllText(Path.Combine(workspace.Path, "pubsub.yaml"))).Documents[0].RootNode;
+            string[] scopes = ((YamlSequenceNode)pubSub.Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ToArray();
+            scopes.ShouldContain("technical-api");
+            scopes.ShouldContain("technical-worker");
+            workspace.Dispose();
         }
         finally { Directory.Delete(directory, true); }
     }

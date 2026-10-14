@@ -54,9 +54,10 @@ public static class PlatformLocalProfile
             if (component is not null)
             {
                 value = Path.Combine(directory, component);
-                if (!File.Exists(value)) throw new FileNotFoundException($"{module.Source}: {scoped}: local component is unavailable.", value);
+                if (!File.Exists(value)) throw new FileNotFoundException($"{module.Source}: {scoped}: local component '{value}' is unavailable.", value);
             }
-            if (source is not ("secret" or "dynamic-secret") && (value.StartsWith('[') || value.StartsWith('{')))
+            ReadOnlySpan<char> structuredValue = value.AsSpan().TrimStart();
+            if (source is not ("secret" or "dynamic-secret") && !structuredValue.IsEmpty && structuredValue[0] is '[' or '{')
             {
                 try
                 {
@@ -122,8 +123,8 @@ public static class PlatformLocalProfile
                 throw new InvalidDataException($"{source}: {module}/{server}/Clock:SourceAuthenticationTokens:{token.Name}: token is unavailable.");
             environment[$"Clock__Sources__{sourceIndex}__AuthenticationToken"] = token.Value.GetString()!;
         }
-        foreach ((string id, int sourceIndex) in indices)
-            if (!environment.ContainsKey($"Clock__Sources__{sourceIndex}__AuthenticationToken"))
+        foreach (string id in indices.Keys)
+            if (!tokenDocument.RootElement.TryGetProperty(id, out _))
                 throw new InvalidDataException($"{source}: {module}/{server}/Clock:Sources:{id}: authentication token is unavailable.");
     }
 

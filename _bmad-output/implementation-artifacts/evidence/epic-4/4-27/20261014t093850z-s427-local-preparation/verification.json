@@ -1,0 +1,190 @@
+{
+  "actualPureRehearsalValidatorAccepted": true,
+  "attemptId": "20261014t093850z-s427-local-preparation",
+  "custody": {
+    "allPacketChecksumsMatched": true,
+    "directories0700": true,
+    "files0600": true
+  },
+  "decryptionRepeated": false,
+  "executionBindingUnchanged": {
+    "codeSha256": {
+      "evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+      "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+      "rehearse.py": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+      "rehearse_catalog.py": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+      "rehearse_namespaces.py": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
+      "retire.py": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355"
+    },
+    "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+    "procedureSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60"
+  },
+  "externalInput": {
+    "datedInputClaimsAreNewObservations": false,
+    "extendedWindowGrantsApproval": false,
+    "handoffSha256": "b12758d8a528a876314e7d49b02a864530fc1a7852f40818701ee0f8f789ef38",
+    "historicalInventorySha256": "401d310ae750916b766486db309901c7577f8c878c76a85f827eec50a107bfaf"
+  },
+  "fixturesRepeated": false,
+  "historicalPrivateManifestChecks": {
+    "catalog": {
+      "allManifestChecksumsMatched": true,
+      "checksummedFileCount": 905,
+      "encryptedExportCount": 846,
+      "freshDecryptionPerformed": false,
+      "independentOffNodeAcceptance": false,
+      "manifestSha256": "444e4de224f4b84ef317f75a76f8800b50d5099a10e95d165902b00d2358e074",
+      "retainedTwoRecipientReceiptIntegrityMeasured": true
+    },
+    "namespaces": {
+      "allManifestChecksumsMatched": true,
+      "checksummedFileCount": 98,
+      "encryptedExportCount": 85,
+      "freshDecryptionPerformed": false,
+      "independentOffNodeAcceptance": false,
+      "manifestSha256": "ea266036418fa8cea2db15417c0184ac7f0022fca6ac3c5b24000f931f91e16d",
+      "retainedTwoRecipientReceiptIntegrityMeasured": true
+    }
+  },
+  "independentOffNodeCustodyAccepted": false,
+  "kind": "story-4-27-offline-preparation-local-verification",
+  "liveGateOpen": false,
+  "localMetadataScope": {
+    "claimsTrusted": false,
+    "exactNamedRecordCounts": {
+      "backup-gate.json": 1,
+      "console-closure.json": 0,
+      "evidence-manifest.json": 2,
+      "exact-execution-approval.json": 0,
+      "external-etcd-isolated-restore.json": 4,
+      "external-etcd-recovery-point.json": 4,
+      "keycloak-restore-proof.json": 2,
+      "memories-restore-proof.json": 2,
+      "native-access.json": 3,
+      "node-recovery-bundle.json": 4,
+      "openbao-restore-proof.json": 2,
+      "pre-retirement-health.json": 0,
+      "recovery-policy.json": 2,
+      "recovery-validation.json": 0,
+      "restore-target-cleanup.json": 1,
+      "retirement-approval.json": 0,
+      "retirement-policy.json": 0,
+      "validation.json": 1
+    },
+    "exactRecordNames": [
+      "backup-gate.json",
+      "console-closure.json",
+      "evidence-manifest.json",
+      "exact-execution-approval.json",
+      "external-etcd-isolated-restore.json",
+      "external-etcd-recovery-point.json",
+      "keycloak-restore-proof.json",
+      "memories-restore-proof.json",
+      "native-access.json",
+      "node-recovery-bundle.json",
+      "openbao-restore-proof.json",
+      "pre-retirement-health.json",
+      "recovery-policy.json",
+      "recovery-validation.json",
+      "restore-target-cleanup.json",
+      "retirement-approval.json",
+      "retirement-policy.json",
+      "validation.json"
+    ],
+    "historicalBackupGateExpired": true,
+    "historicalBackupGateExpiresAt": "2026-10-02T06:16:52Z",
+    "inspectedRecordCount": 28,
+    "inspectedRootNames": [
+      "hexalith-management-evidence",
+      "hexalith-recovery-evidence",
+      "hexalith-upgrade-evidence"
+    ],
+    "signatureValidationPerformed": false,
+    "skippedSymlinkCount": 0
+  },
+  "mutationAuthorized": false,
+  "mutationRequests": 0,
+  "openGates": {
+    "story41": "closed",
+    "story427": "in-progress",
+    "timesheetsStory36": "in-progress/FAIL"
+  },
+  "packetFileSha256": {
+    "SHA256SUMS": "e2a0dabcf2234718dd4aa1e9e2e819edc2bf8e05eae6aaab439522b1725a3dee",
+    "attempt.json": "15d0072e31a016a7c93bf063616886f736a6cb617ac0cadbc25fa848342b8748",
+    "closed-gates.json": "f71dd8b90a81f9ecb3f886a3e43b1466b463f0a7c6e2a6dad5a27a114f56ba6a",
+    "historical-integrity.json": "54beafc1873c104b19dab52795c21c667eac0a10d1b01a202063a56ec4a2b451",
+    "input-lineage.json": "4275b9ed0888fd2da9c85e5c76d114c4c06a61608da214256c02fc6f668eeaac",
+    "metadata-audit.json": "470db852001c28ab978bbc438cc3ad6540e799fbb26901507534c45396d6855a",
+    "preparation-sources.zip": "b01f5e788fb456add1537a3d61965fe859b825d9daf63026c2fa1a4bd69a8ac8"
+  },
+  "privatePacket": "/home/administrator/hexalith-retirement-preparation-evidence/20261014t093850z-s427-local-preparation",
+  "productionPlanCreated": false,
+  "productionSourceObserved": false,
+  "recordedAt": "2026-10-14T09:48:01Z",
+  "remainingOperatorEvidence": [
+    "approved private trust/principal/static-native-config/recipients/readback/signing/freshness inputs",
+    "fresh signed 4.0 proofs and independent off-node readback",
+    "fresh production 4.1 external-etcd point, fenced isolated restore and matching node/configuration recovery",
+    "accepted 4.2 closure, independent private native administration/break-glass and authenticated health",
+    "first native census, renewed exact source-bound namespace/catalog/fresh-node fixtures, second fresh receipt-bound plan",
+    "separate exact future execution/allowlist/outage/owner/window/stop/recovery approval",
+    "production preservation/retirement and signed postflight acceptance/fresh post-retirement 4.1 recovery",
+    "unchanged later supported-target/Rancher/runner/infrastructure/release/provider/source/deployed-acceptance gates"
+  ],
+  "remoteCalls": 0,
+  "retirementAccepted": false,
+  "scope": "local source/archive/checksum/mode/retained-receipt audit and software verification only",
+  "signed": false,
+  "signingCalls": 0,
+  "sourceArchive": {
+    "allArchiveChecksumsMatched": true,
+    "allCurrentConsumedSourceHashesMatched": true,
+    "allMemberModes0600": true,
+    "memberCount": 1028,
+    "metadataOriginalRetention": "existing private source custody",
+    "retainedMetadataOriginalCount": 28,
+    "signedRecoveryOriginalsCopied": false
+  },
+  "vcsRevisionMeasuredAtPreparation": "40ea496c76cf7355d48b42c4a6b0f3789a0e4945",
+  "verification": {
+    "command": "python3 -m unittest discover -s eng/cluster-management -p 'test_*.py' -v",
+    "documentedBashBlocksSyntaxChecked": 6,
+    "exitCode": 0,
+    "frozenIntentUnchanged": true,
+    "gitDiffCheckPassed": true,
+    "maintenanceMatchesHistoricalBaseline": true,
+    "newPreparationTestsPassed": 16,
+    "operatorBlocksExecuted": 0,
+    "originalOperationalTasksUnchanged": true,
+    "passingAcceptanceMatrixTests": {
+      "Approved attempt": [
+        "test_shared_phase_execution_and_real_plan_to_execute_handoff"
+      ],
+      "Bound Lease renewal": [
+        "test_bound_node_lease_renewal_accepts_signed_handoff_without_lease_mutation",
+        "test_manager_checkpoint_object_get_refuses_nanosecond_regression_below_observed_floor",
+        "test_bound_lease_holder_drift_after_accepted_delete_stops_further_requests",
+        "test_assessment_accepts_validated_renewed_execution_baseline_and_later_renewal"
+      ],
+      "Completion": [
+        "test_signed_postflight_and_exact_administrator_acceptance",
+        "test_failed_post_retirement_health_leaves_acceptance_and_hop_closed"
+      ],
+      "Partial retirement": [
+        "test_conflict_stops_first_request_without_retry",
+        "test_unexpected_protected_deletion_stops_before_next_request",
+        "test_recreated_controller_stops_before_next_request"
+      ],
+      "Stale or incomplete prerequisite": [
+        "test_stale_approval_is_zero_mutations",
+        "test_missing_recovery_or_console_gate_is_zero_mutations",
+        "test_caller_verified_flag_cannot_replace_actual_signature"
+      ]
+    },
+    "testsPassed": 269,
+    "testsSkipped": 0,
+    "verboseOutputPath": "/tmp/story-4-27-offline-preparation-suite.log",
+    "verboseOutputSha256": "e307b07e4b9a337672b6b4c08d7b783d988fd2b6d758fd990ffc196ffd6a9d76"
+  }
+}

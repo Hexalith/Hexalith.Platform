@@ -15,8 +15,14 @@ Platform updates its snapshots and release commit pins. Builds.Module.EventStore
 is the sole package-mode gateway seed; its packaging contract remains in Builds.
 
 The file entry reads `Platform:ActiveModule` to choose a module; without it, the
-six-server reference environment is selected. `Platform:DeclarationPath` adds an
-active declaration. `Platform:SourceMapping:Path` and
+six-server reference environment is selected. `Platform:DeclarationPath` supplies
+a declaration to validate; `Platform:ActiveModule` must name it to select it.
+Without that selection, the six-server reference environment is selected. When no
+source mapping path is supplied, the file entry resolves the mapping from that
+declaration's workspace. That workspace must map EventStore, Tenants and Memories
+for the reference environment; missing owners refuse by identity before resources
+are added.
+`Platform:SourceMapping:Path` and
 `Platform:SourceMapping:Hash` select the verified source mapping, or the file entry
 uses `HEXALITH_SOURCE_MAPPING_PATH` and `HEXALITH_SOURCE_MAPPING_HASH`. The optional
 `Platform:EventStoreSeedProject` names the package gateway seed project. The file
@@ -39,7 +45,9 @@ file entry separately. Do not claim a generated file-entry test-builder type.
 Build `tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug`,
 then run its `bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll` with `dotnet`
 for the selection, binding and atomic-refusal matrix. This uses the xUnit executable
-runner when the installed .NET SDK rejects the legacy VSTest target. Set
+runner when the installed .NET SDK rejects the legacy VSTest target. The ordinary
+suite builds the mapped Memories server in Debug before validating its owner
+option types; no separately prebuilt owner DLL is required. Set
 `HEXALITH_PLATFORM_LIVE_SMOKE=1` and select
 `-method '*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync'` to run the
 Docker/Dapr file-entry smoke. Run

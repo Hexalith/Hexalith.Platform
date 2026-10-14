@@ -3,6 +3,8 @@ namespace Hexalith.Platform.Composition.Tests;
 using System.Text.Json.Nodes;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Eventing;
+using Aspire.Hosting.Lifecycle;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +15,9 @@ using Microsoft.Extensions.Configuration;
 using Hexalith.EventStore.Client.Projections;
 using Hexalith.EventStore.Server.Configuration;
 using Hexalith.EventStore.ServiceDefaults.Authentication;
+using YamlDotNet.RepresentationModel;
 
+[Collection("Platform file entry")]
 public sealed partial class PlatformAppModelTests
 {
     private static string Root
@@ -44,7 +48,7 @@ public sealed partial class PlatformAppModelTests
             {
                 ["eventstore/3.120.0"] = "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
                 ["tenants/5.8.0"] = "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
-                ["memories/2.27.1"] = "9b207856f3b60baf614907c055c0c9400838199340f35bbd958c0ddbdc5107ca",
+                ["memories/2.27.1"] = "30f97d509aeb9fa019373579ad24db113aa84a9df52139a88a0cfdbaa6b192d4",
             } : new Dictionary<string, string>(),
         };
     }
@@ -164,21 +168,53 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public async Task ActualDaprCliListenersAndTokensRemainServerScopedAsync()
     {
-        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(Options() with { Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-only", ["tenants/domain/Tenants:AppChannelToken"] = "domain-only" } });
         IDistributedApplicationBuilder builder = Builder();
-        foreach (PlatformServerBinding server in servers) builder.AddExecutable(server.ResourceId + "-dapr-cli", "dapr", Root).WithEndpoint(port: 20101, targetPort: 20202, name: "http");
-        PlatformDaprEndpointSubscriber.Apply(new DistributedApplicationModel(builder.Resources), servers);
+        // Model lifecycle callbacks need discovery metadata, but none of these executables is started.
+        builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(Root, "test-dcp-not-started");
+        builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(Root, "test-dashboard-not-started");
+        builder.AddDapr(options => { options.EnableTelemetry = false; options.DaprPath = Path.Combine(Root, "test-dapr-not-started"); });
+        PlatformAppModel.Compose(builder, Options() with { Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-only", ["tenants/domain/Tenants:AppChannelToken"] = "domain-only" } });
+        await using DistributedApplication app = builder.Build();
+        _ = app.Services.GetRequiredService<PlatformCompositionWorkspace>();
+        DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
+        model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ShouldBeEmpty();
+        IReadOnlyList<PlatformServerBinding> servers = model.Resources.SelectMany(resource => resource.Annotations.OfType<PlatformServerAnnotation>()).Select(annotation => annotation.Binding).ToArray();
+        IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
+        IDistributedApplicationEventingSubscriber[] subscribers = app.Services.GetServices<IDistributedApplicationEventingSubscriber>().ToArray();
+        subscribers.ShouldContain(subscriber => subscriber is PlatformDaprEndpointSubscriber);
+        subscribers.ShouldContain(subscriber => subscriber.GetType().Name == "DaprDistributedApplicationLifecycleHook");
+        foreach (IDistributedApplicationEventingSubscriber subscriber in subscribers)
+            await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+        await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken);
+        model.Resources.OfType<ExecutableResource>().Count(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ShouldBe(6);
         foreach (PlatformServerBinding server in servers)
         {
-            ExecutableResource sidecar = builder.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.ResourceId + "-dapr-cli");
-            EndpointAnnotation endpoint = sidecar.Annotations.OfType<EndpointAnnotation>().Single();
-            endpoint.TargetPort.ShouldBe(endpoint.Port);
-            endpoint.IsProxied.ShouldBeFalse();
+            ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.ResourceId + "-dapr-cli");
+            IResource application = model.Resources.Single(resource => resource.Name == server.ResourceId);
+            DaprSidecarOptions options = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+            foreach ((string name, int? expected) in new[] { ("http", options.DaprHttpPort), ("grpc", options.DaprGrpcPort), ("metrics", options.MetricsPort) })
+            {
+                expected.ShouldNotBeNull($"{server.ResourceId} must declare a fixed {name} listener port.");
+                EndpointAnnotation endpoint = sidecar.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == name);
+                endpoint.Port.ShouldBe(expected);
+                endpoint.TargetPort.ShouldBe(expected);
+                endpoint.IsProxied.ShouldBeFalse();
+            }
             Dictionary<string, object> environment = new();
-            await sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>().Last().Callback(new EnvironmentCallbackContext(builder.ExecutionContext, sidecar, environment, TestContext.Current.CancellationToken));
+            foreach (EnvironmentCallbackAnnotation callback in sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, sidecar, environment, TestContext.Current.CancellationToken));
             foreach (string token in new[] { "APP_API_TOKEN", "DAPR_API_TOKEN" })
-                if (server.Environment.TryGetValue(token, out string? expected)) environment[token].ShouldBe(expected);
+                if (server.Environment.TryGetValue(token, out string? value)) environment[token].ShouldBe(value);
                 else environment.ShouldNotContainKey(token);
+            if (server.ResourceId == "eventstore")
+                environment["APP_API_TOKEN"].ShouldBe(server.Environment["EventStore__AppChannelToken"]);
+            if (server.ResourceId is "memories" or "memories-access-telemetry-clock" or "memories-access-telemetry")
+            {
+                environment["APP_API_TOKEN"].ShouldBe(server.Environment["Memories__AppChannelToken"]);
+                environment["DAPR_API_TOKEN"].ShouldBe(server.Environment["Memories__DaprApiToken"]);
+            }
+            if (server.ResourceId == "tenants") environment["APP_API_TOKEN"].ShouldBe("domain-only");
+            if (server.ResourceId == "tenants-api") environment["DAPR_API_TOKEN"].ShouldBe("api-only");
         }
     }
 
@@ -373,6 +409,12 @@ public sealed partial class PlatformAppModelTests
             servers.Length.ShouldBe(7);
             servers.ShouldNotContain(s => PlatformDeclarationSet.Id(s.Binding.Module.Declaration) == "unrelated");
             PlatformServerBinding party = servers.Single(s => s.Binding.ResourceId == "parties-api-host").Binding;
+            using ServiceProvider provider = builder.Services.BuildServiceProvider();
+            string pubSubPath = Path.Combine(provider.GetRequiredService<PlatformCompositionWorkspace>().Path, "pubsub.yaml");
+            YamlMappingNode pubSub = (YamlMappingNode)Yaml(File.ReadAllText(pubSubPath)).Documents[0].RootNode;
+            string[] scopes = ((YamlSequenceNode)pubSub.Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ToArray();
+            scopes.ShouldContain(party.AppId);
+            scopes.ShouldNotContain("unrelated-api");
             party.Tasks.Single().GetProperty("scope").GetString().ShouldBe("per-start-verify");
             party.Tasks.Single().GetProperty("authorityClass").GetString().ShouldNotBeNullOrEmpty();
             PlatformAppModel.Prepare(options with { DomainModule = false }).Count.ShouldBe(1);
