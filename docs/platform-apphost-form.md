@@ -17,7 +17,11 @@ is the sole package-mode gateway seed; its packaging contract remains in Builds.
 The file entry reads `Platform:ActiveModule` to choose a module; without it, the
 six-server reference environment is selected. `Platform:DeclarationPath` supplies
 a declaration to validate; `Platform:ActiveModule` must name it to select it.
-Without that selection, the six-server reference environment still runs.
+Without that selection, the six-server reference environment is selected. When no
+source mapping path is supplied, the file entry resolves the mapping from that
+declaration's workspace. That workspace must map EventStore, Tenants and Memories
+for the reference environment; missing owners refuse by identity before resources
+are added.
 `Platform:SourceMapping:Path` and
 `Platform:SourceMapping:Hash` select the verified source mapping, or the file entry
 uses `HEXALITH_SOURCE_MAPPING_PATH` and `HEXALITH_SOURCE_MAPPING_HASH`. The optional

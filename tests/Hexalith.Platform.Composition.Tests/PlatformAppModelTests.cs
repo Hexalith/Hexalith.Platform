@@ -193,6 +193,7 @@ public sealed partial class PlatformAppModelTests
             DaprSidecarOptions options = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
             foreach ((string name, int? expected) in new[] { ("http", options.DaprHttpPort), ("grpc", options.DaprGrpcPort), ("metrics", options.MetricsPort) })
             {
+                expected.ShouldNotBeNull($"{server.ResourceId} must declare a fixed {name} listener port.");
                 EndpointAnnotation endpoint = sidecar.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == name);
                 endpoint.Port.ShouldBe(expected);
                 endpoint.TargetPort.ShouldBe(expected);
@@ -201,6 +202,9 @@ public sealed partial class PlatformAppModelTests
             Dictionary<string, object> environment = new();
             foreach (EnvironmentCallbackAnnotation callback in sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>())
                 await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, sidecar, environment, TestContext.Current.CancellationToken));
+            foreach (string token in new[] { "APP_API_TOKEN", "DAPR_API_TOKEN" })
+                if (server.Environment.TryGetValue(token, out string? value)) environment[token].ShouldBe(value);
+                else environment.ShouldNotContainKey(token);
             if (server.ResourceId == "eventstore")
                 environment["APP_API_TOKEN"].ShouldBe(server.Environment["EventStore__AppChannelToken"]);
             if (server.ResourceId is "memories" or "memories-access-telemetry-clock" or "memories-access-telemetry")

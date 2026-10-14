@@ -44,10 +44,13 @@ public sealed partial class PlatformAppModelTests
         Directory.CreateDirectory(directory);
         try
         {
-            File.Copy(Path.Combine(Root, "DaprComponents", "reference", "accesscontrol.eventstore.yaml"), Path.Combine(directory, "accesscontrol.eventstore.yaml"));
+            foreach (string file in new[] { "accesscontrol.eventstore.yaml", "statestore.yaml", "pubsub.yaml" })
+                File.Copy(Path.Combine(Root, "DaprComponents", "reference", file), Path.Combine(directory, file));
             IDistributedApplicationBuilder builder = Builder();
             FileNotFoundException refusal = Should.Throw<FileNotFoundException>(() => PlatformAppModel.Compose(builder, Options(active: "eventstore") with { ComponentsDirectory = directory }));
-            refusal.Message.ShouldContain(Path.Combine(directory, "statestore.yaml"));
+            refusal.Message.ShouldContain("Platform shared local Dapr component");
+            refusal.Message.ShouldContain(Path.Combine(directory, "configstore.yaml"));
+            refusal.FileName.ShouldBe(Path.Combine(directory, "configstore.yaml"));
             builder.Resources.ShouldBeEmpty();
         }
         finally { Directory.Delete(directory, true); }

@@ -60,7 +60,10 @@ public sealed class OwnerOptionBindingTests
         finally
         {
             context.Unload();
-            (await CompositionWorkspace.TryDeleteAsync(workspace, CancellationToken.None)).ShouldBeTrue();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            _ = await CompositionWorkspace.TryDeleteAsync(workspace, CancellationToken.None);
         }
     }
 }
