@@ -1,0 +1,33 @@
+# PROPOSED template only. Fill null references from independently enrolled authorities.
+# Existing OpenBao is reused; this creates no database, provider, Secret object or key.
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: proposed-ext-secrets-1-hmac
+  namespace: null
+  labels:
+    hexalith.io/proposal: "ext-secrets-1-uninstalled"
+spec:
+  type: secretstores.hashicorp.vault
+  version: v1
+  metadata:
+    - name: vaultAddr
+      value: "https://hexalith-keys-active.openbao.svc:8200"
+    - name: enginePath
+      value: null # qualified HMAC mount; no lifecycle-covered DEKs in ordinary KV snapshots
+    - name: vaultKVPrefix
+      value: null # exact isolated tenant/purpose enrollment
+    - name: vaultKVUsePrefix
+      value: "true"
+    - name: vaultValueType
+      value: "map"
+    - name: vaultTokenMountPath
+      value: "/var/run/ext-secrets-1/provider/token" # mounted credential reference, never an inline token
+    - name: caCert
+      value: "/var/run/ext-secrets-1/ca/ca.pem" # proposed mount path; CA ConfigMap identity stays null in pod fragment
+    - name: tlsServerName
+      value: null # exact enrolled TLS name
+    - name: skipVerify
+      value: "false"
+scopes:
+  - proposed-ext-secrets-1-custody

@@ -1,0 +1,55 @@
+{
+  "schema": "EXT-SECRETS-1.private-bindings.v1",
+  "status": "Proposed; none of these bindings is installed",
+  "replayRegistrar": {
+    "credentialReference": null,
+    "installedAdapterIdentity": null,
+    "installedAdapterVersion": null,
+    "tenantNamespace": "system",
+    "domain": "trusted-envelope-replay",
+    "aggregate": "TrustedEnvelopeReplay(Issuer, DeliveryNonce)",
+    "command": "RegisterTrustedEnvelopeFirstSeen",
+    "event": "TrustedEnvelopeFirstSeen",
+    "conditionalAppendOnly": true,
+    "initialExpectedStreamVersion": "NoStream",
+    "aggregateDerivationInputs": ["Issuer", "DeliveryNonce"],
+    "businessTenantIsAuthenticatedRecordFieldOnly": true,
+    "publicWorkflowTargetHandlerAccess": false,
+    "exactStreamDerivationAuthorityReference": null
+  },
+  "compromiseSubscriber": {
+    "credentialReference": null,
+    "publisherReference": null,
+    "publicTrustProfileReference": null,
+    "currentRevocationReference": null,
+    "installedRegistrarIdentity": null,
+    "installedRegistrarVersion": null,
+    "protectionOwnerReference": null,
+    "guardMirrorReference": null,
+    "blockBeforeGuardMirror": true,
+    "signatureRequestPermission": false,
+    "publicWorkflowTargetHandlerAccess": false
+  },
+  "allCopyLifecycle": {
+    "qualifiedExistingProviderReference": null,
+    "providerCopyEnumerationReference": null,
+    "backupAndRestoredCopyEnumerationReference": null,
+    "independentReservationAuthorityReference": null,
+    "nonrollbackJournalReference": null,
+    "isolatedRestoreTarget": null,
+    "separateCustodyClassReference": null,
+    "ordinarySnapshotExclusionReference": null,
+    "irreversibleOldBackupDestructionProofReference": null
+  },
+  "independentApproval": {
+    "signerAccount": null,
+    "signerCredentialReference": null,
+    "publicAnchorId": null,
+    "publicAnchorVersion": null,
+    "publicProfileReference": null,
+    "currentActorRoleAuthorityReference": null,
+    "currentRevocationReference": null,
+    "privateKeysOutsidePlatformAndAgents": true,
+    "forbiddenRequesters": ["ReleaseOperatorRecorder", "PlatformKeyCustodian", "Workflow", "CompromiseRegistrar"]
+  }
+}

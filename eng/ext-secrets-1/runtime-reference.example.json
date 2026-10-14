@@ -1,0 +1,71 @@
+{
+  "schema": "EXT-SECRETS-1.qualification.v1",
+  "runtime": {
+    "providerBinding": null,
+    "tenantInventoryReference": null,
+    "currentInventoryAuthorityReference": null,
+    "tenantA": null,
+    "tenantB": null,
+    "profileReference": null,
+    "issuer": null,
+    "audience": null,
+    "profileVersion": null,
+    "profileNotBefore": null,
+    "profileValidUntil": null,
+    "actorRoleAuthorityReference": null,
+    "independentSignerAccount": null,
+    "independentSignerCredentialReference": null,
+    "publicTrustReference": null,
+    "currentRevocationReference": null,
+    "replayRegistrarCredentialReference": null,
+    "replayExactScope": null,
+    "compromiseSubscriberCredentialReference": null,
+    "compromisePublisherReference": null,
+    "allCopyLifecycleAuthorityReference": null,
+    "allCopyInventoryReference": null,
+    "nonrollbackJournalReference": null,
+    "restoreTarget": null,
+    "authenticatedRequesterTransport": null,
+    "migrationAuthorityReference": null,
+    "protectionOwnerReference": null,
+    "publicAnchorRetentionReference": null,
+    "host": "192.168.1.30",
+    "kubernetesApi": "https://192.168.1.30:6443",
+    "verifiedProviderResource": "openbao/StatefulSet/hexalith-keys",
+    "providerServiceReference": "https://hexalith-keys-active.openbao.svc:8200",
+    "timing": {
+      "L": 300,
+      "S": 30,
+      "O": 600,
+      "H": 86400,
+      "R": 604800
+    },
+    "decisionKeysOutsideCustody": true,
+    "overlappingExportDisposition": "Open"
+  },
+  "qualification": {
+    "isolatedTargetId": null,
+    "enrollmentCredentialReference": null,
+    "daprApiCredentialReference": null,
+    "executor": {
+      "appId": null,
+      "identity": null,
+      "version": null,
+      "publicAnchorFile": null
+    },
+    "observer": {
+      "appId": null,
+      "identity": null,
+      "version": null,
+      "publicAnchorFile": null
+    },
+    "enrollment": {
+      "appId": null,
+      "identity": null,
+      "version": null,
+      "publicAnchorFile": null
+    },
+    "daprEndpoint": "http://127.0.0.1:3500",
+    "requestTimeoutSeconds": 30
+  }
+}

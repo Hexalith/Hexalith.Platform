@@ -8,12 +8,19 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
-# No manifest can unlock code, providers and full persisted-state qualification that do not exist.
-if ($Mode -eq 'Live') {
-    throw 'DependencyNotAvailable: EXT-SECRETS-1. Complete live S1-S4/v23 qualification requires production custody/profile, independent authority, accepted targets/commands and qualified persisted installation; implemented source protocols do not establish those inputs.'
-}
 $callerDirectory = (Get-Location).ProviderPath
 $root = Split-Path $PSScriptRoot -Parent
+$eventStoreArgument = $EventStoreSourceRoot
+$artifactsArgument = $ArtifactsDirectory
+$evidenceArgument = $EvidenceDirectory
+if ($Mode -eq 'Live') {
+    # Configuration alone never authorizes effects: the gate reads the authoritative accepted
+    # target/command and independent runtime trust pins before calling an enrolled isolated adapter.
+    & python3 (Join-Path $PSScriptRoot 'ext-secrets-1/qualify.py') --root $root --caller $callerDirectory --eventstore-argument $eventStoreArgument --artifacts-argument $artifactsArgument --evidence-argument $evidenceArgument
+    if ($LASTEXITCODE -eq 2) { throw 'DependencyNotAvailable: EXT-SECRETS-1. Missing prerequisites; see sanitized attempt-*/live-evidence.json.' }
+    if ($LASTEXITCODE -ne 0) { throw 'QualificationFailed: EXT-SECRETS-1. See sanitized attempt-*/live-evidence.json; retain original recovery journal.' }
+    return
+}
 $EventStoreSourceRoot = [IO.Path]::GetFullPath($EventStoreSourceRoot, $callerDirectory)
 $ArtifactsDirectory = [IO.Path]::GetFullPath($ArtifactsDirectory)
 $EvidenceDirectory = [IO.Path]::GetFullPath($EvidenceDirectory)
@@ -31,6 +38,7 @@ if ($buildOutput -notmatch '(?m)^\s*0 Warning\(s\)\s*$' -or $buildOutput -notmat
 }
 $assemblyPath = Join-Path $ArtifactsDirectory 'bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll'
 $requiredClasses = @(
+    'Hexalith.Platform.Custody.Tests.DaprPlatformHmacBindingTests',
     'Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests',
     'Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
     'Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests',
