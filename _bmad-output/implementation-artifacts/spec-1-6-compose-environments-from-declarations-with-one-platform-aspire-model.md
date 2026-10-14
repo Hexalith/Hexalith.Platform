@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 6
 created: '2026-10-12'
-status: 'in-review'
+status: 'done'
 baseline_commit: '977f2e01347226ac727b707aee4f140f5dc8b010'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -268,6 +268,8 @@ Shared-root groups after individual classification: R7-B1/R7-E2/R7-V2 (gateway-d
 
 R7-P1 is a correction to the R7-B2/R7-E1 patch, using the existing reference binding identities; it adds no public contract or owner-file edits.
 
+**Seventh-pass patch resolution (2026-10-14):** All patch entries are resolved. Gateway-free technical servers register and reference their declared shared components; the pubsub-only fixture needs neither EventStore nor a statestore file. Rendered scopes admit additional declared domain/technical consumers while retaining the reference module/server scope bindings, including Memories telemetry's separate actor store. Clock completeness checks the separate token map, and the existing caller test now covers inline-only, missing, unknown, empty and whitespace credentials with scoped atomic refusal. The five sixth-pass corrections remain intact. Three external upgrade/retirement findings were appended to deferred work; carried deferrals were not duplicated.
+
 **Resumed build review (2026-10-14):** Blind Hunter, Edge Case Hunter and Verification Gap Reviewer all completed against the preserved Platform and Builds baseline diff. Each finding is classified before grouping; carried findings retain their prior disposition and are not patched or deferred again.
 
 | Finding | Verdict | Route | Evidence |
@@ -376,6 +378,12 @@ Shared-root groups: B2/E8 (plan-port overlap); B6/E2/V3 (v2 session ownership); 
 | V2 | The actual signed graph asserts Tenants API's complete EventStore authentication environment; signed graph regression above. |
 
 ## Verification
+
+**Final seventh-pass verification (2026-10-14):** The root Debug solution build passed with zero warnings/errors (`/tmp/story-1-6-seventh-parent-solution-build.log`). Both patch builds passed with zero warnings/errors. After the final reference-scope correction, the ordinary Platform suite completed with 99 total, 96 passed, zero failures/errors, and the same three explicit live skips (`/tmp/story-1-6-seventh-final-platform-tests.log`, XML at `/tmp/story-1-6-seventh-final-platform-tests.xml`). The parent audited XML outcomes for every matrix row and all affected regression methods; none was filtered out or skipped. Builds Module.Tests built with zero warnings/errors and its focused runner/model-contract suite passed 151/151 (`/tmp/story-1-6-seventh-parent-builds-build.log`, `/tmp/story-1-6-seventh-parent-builds-tests.log`). The complete reference declaration mutation matrix passed (`/tmp/story-1-6-seventh-parent-declaration-matrix.log`). The aligned pin fixture and all three deliberate pin-drift fixtures passed (`/tmp/story-1-6-sixth-parent-pin-matrix.log`).
+
+The real signed Tenants source smoke passed 1/1 in 163.265 seconds (`/tmp/story-1-6-seventh-warm-tenants-live.log`), asserting all six selected servers healthy, Dapr invocation readiness, successful down, no remaining resources and a removed run workspace. It used the catalog-pinned Dapr CLI 1.18.0/runtime 1.18.2 and an official Aspire CLI 13.6.1 installed only at `/tmp/story-1-6-seventh-aspire/tools`; global CLI installations were unchanged. A private pass-through dotnet wrapper retained each resource's stdout/stderr without changing arguments, process identity, readiness or cleanup bounds. All six mapped owner projects were prebuilt sequentially in Debug before this successful run (logs `/tmp/story-1-6-seventh-prebuild-*.log`).
+
+Earlier live attempts are retained: the installed Aspire CLI 13.6.0 refused at HXR015 before resources (`/tmp/story-1-6-seventh-parent-tenants-live.log`); subsequent attempts observed Finished/unknown readiness for tenants-api and then memories-access-telemetry (`/tmp/story-1-6-seventh-final-tenants-live.log`, `/tmp/story-1-6-seventh-diagnostic-live.log`). Their precise exit causes were not captured. Each owner project built successfully in isolation, and the serially prebuilt composition then passed; this is warm-source evidence, not a claim that cold concurrent startup is qualified. No startup or shutdown bound was increased. The existing file-entry SDK drift and package release/image limits remain deferred, and no file-entry or live package smoke was claimed in this pass. Frozen intent and the original baseline are unchanged; whitespace checks pass. The final observed repository revision was `2bd78603e164265e3b6c00af9950429cff5510f9`; concurrent external repository operations are separate from this workflow's changes.
 
 **Sixth-pass correction verification (2026-10-14):** After the external rebase settled at `fecf84e81572c019ede75fcedd28eb723e30b97f`, the Platform test-project Debug build passed with zero warnings/errors using `-m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 --no-restore` (`/tmp/story-1-6-sixth-settled-platform-build.log`). Direct xUnit execution with `-noLogo -parallelMode none` completed: 99 total, 96 passed, zero errors/failures, three explicit live skips, 38.605 seconds (`/tmp/story-1-6-sixth-settled-platform-tests.log`). The real generated Dapr CLI lifecycle assertions, shared `configstore` refusal and mapped Memories owner-option build/validation all ran. Diff whitespace checks pass. No live smoke was rerun; the recorded SDK drift and package release/image limitations remain deferred.
 
