@@ -5,6 +5,10 @@ a reproducible staging plan. **Deployment is unauthorized; activation is
 unauthorized; Timesheets Story 3.6 acceptance and release remain FAIL.**
 Neither schema validation nor a preparation hash supplies operational evidence.
 
+The [staging dependency handoff](staging-dependency-handoff.md) records the
+2026-10-14 native findings, retirement and sequential upgrade prerequisites,
+local preparation receipt, and missing Release/provider acceptance gates.
+
 The candidate declares one Timesheets host, the EventStore/Tenants/Memories
 domain minimum, public and internal surface boundaries, expected workload
 claim needs, and a proposed recovery inventory. It is inert by default.

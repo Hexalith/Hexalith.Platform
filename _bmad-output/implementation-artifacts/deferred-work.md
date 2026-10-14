@@ -419,3 +419,8 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Verify that package-mode container servers can reach their host-run Dapr sidecars (unverified; medium if true).
   evidence: `PlatformAppModel.cs:236` sets `DAPR_HTTP_ENDPOINT`/`DAPR_GRPC_ENDPOINT` only on project resources, and container servers use a fixed HTTP target port of 8080 (`:174`). Package mode refuses until the owners release v2 declarations, so no run has exercised this. Settle it with the first live package-mode run.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-timesheets-staging-upgrade-handoff.md`
+  summary: Bind upgrade preparation source hashes to an immutable source archive or retained canonical VCS snapshot before operational audit consumes them.
+  evidence: The pre-existing recorder retains only hashes; local source replacement can make consumed preparation bytes unavailable for later reproduction. The current change binds selection to its consumed snapshot but grants no execution authority.
+
