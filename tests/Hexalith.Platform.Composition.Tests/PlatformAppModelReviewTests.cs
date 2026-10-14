@@ -66,10 +66,60 @@ public sealed partial class PlatformAppModelTests
     {
         PlatformCompositionOptions secret = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/EventStore:AppChannelToken"] = "{\"bearer\":\"opaque\"}" } };
         PlatformAppModel.Prepare(secret).Single().Environment["EventStore__AppChannelToken"].ShouldBe("{\"bearer\":\"opaque\"}");
-        PlatformCompositionOptions malformed = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = "[oops" } };
+        PlatformCompositionOptions malformed = Options(active: "eventstore") with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = " \n\t[oops" } };
         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(malformed));
         refusal.Message.ShouldContain("eventstore/gateway/Authentication:JwtBearer:ValidAudiences");
         refusal.Message.ShouldContain("hexalith.module-manifest.v2.json");
+    }
+
+    [Theory]
+    [InlineData(" \n\t[\"audience\"]")]
+    [InlineData(" \r\n{\"0\":\"audience\"}")]
+    public void StructuredConfigurationIgnoresLeadingWhitespaceAndOpaqueSecretsStayWhole(string structured)
+    {
+        const string opaque = " \n\t{\"bearer\":\"opaque\"}";
+        PlatformCompositionOptions options = Options(active: "eventstore") with
+        {
+            Configuration = new Dictionary<string, string>
+            {
+                ["eventstore/gateway/Authentication:JwtBearer:ValidAudiences"] = structured,
+                ["eventstore/gateway/EventStore:AppChannelToken"] = opaque,
+            },
+        };
+        IReadOnlyDictionary<string, string> environment = PlatformAppModel.Prepare(options).Single().Environment;
+        environment["Authentication__JwtBearer__ValidAudiences__0"].ShouldBe("audience");
+        environment.ShouldNotContainKey("Authentication__JwtBearer__ValidAudiences");
+        environment["EventStore__AppChannelToken"].ShouldBe(opaque);
+        environment["APP_API_TOKEN"].ShouldBe(opaque);
+    }
+
+    [Theory]
+    [InlineData("eventstore", "gateway", "tenants")]
+    [InlineData("tenants", "domain", "eventstore")]
+    [InlineData("memories", "server", "eventstore")]
+    public void SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(string module, string server, string targetOwner)
+    {
+        string owner = Path.Combine(Path.GetTempPath(), "platform-cross-owner-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(owner, "module"));
+        try
+        {
+            PlatformCompositionOptions options = Options(active: module);
+            string repository = PlatformServerBindings.Repository(module);
+            File.Copy(Path.Combine(Root, "references", repository, "module", "hexalith.module-manifest.v2.json"), Path.Combine(owner, "module", "hexalith.module-manifest.v2.json"));
+            string project = Path.Combine(owner, PlatformServerBindings.ReferenceProjects[module + "/" + server]);
+            Directory.CreateDirectory(Path.GetDirectoryName(project)!);
+            string targetServer = targetOwner == "tenants" ? "domain" : "gateway";
+            File.CreateSymbolicLink(project, Path.Combine(Root, "references", PlatformServerBindings.Repository(targetOwner), PlatformServerBindings.ReferenceProjects[targetOwner + "/" + targetServer]));
+            options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == repository ? entry with { Path = owner } : entry).ToArray() } };
+            options.Mapping.ContainsProject(project).ShouldBeTrue("the complete mapping admits the other owner's physical project");
+            IDistributedApplicationBuilder builder = Builder();
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+            refusal.Message.ShouldContain(module + "/" + server);
+            refusal.Message.ShouldContain(project);
+            refusal.Message.ShouldContain("physically outside its owner root");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally { Directory.Delete(owner, true); }
     }
 
     [Fact]
@@ -257,7 +307,8 @@ public sealed partial class PlatformAppModelTests
     {
         IDistributedApplicationBuilder builder = Builder();
         builder.Environment.EnvironmentName = Environments.Production;
-        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder)).Message.ShouldContain("development-only preview");
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder)).Message
+            .ShouldBe("Platform declaration composition requires a Development host. A production profile is unavailable.");
         builder.Resources.ShouldBeEmpty();
     }
 

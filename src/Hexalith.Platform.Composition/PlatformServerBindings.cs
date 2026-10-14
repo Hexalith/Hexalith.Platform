@@ -62,9 +62,8 @@ public static class PlatformServerBindings
                         throw Failure(module, identity, project, "only the actual mapped Timesheets host project is supported");
                     // ContainsProject uses Builds' RepositoryPathResolver. Limit this validation view to
                     // the selected owner so a link into another mapped repository cannot pass containment.
-                    if (identity == "timesheets/host" && !(options.Mapping with { Entries = [source] }).ContainsProject(project))
-                        throw Failure(module, identity, project, "mapped Timesheets project is missing or physically outside its owner root");
-                    if (!options.Mapping.ContainsProject(project) || !File.Exists(project)) throw Failure(module, identity, project, "mapped project is missing or outside its source root");
+                    if (!(options.Mapping with { Entries = [source] }).ContainsProject(project))
+                        throw Failure(module, identity, project, "mapped project is missing or physically outside its owner root");
                 }
                 else if (identity == "eventstore/gateway")
                 {

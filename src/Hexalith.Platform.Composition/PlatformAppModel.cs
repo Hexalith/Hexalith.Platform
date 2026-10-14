@@ -44,7 +44,7 @@ public static class PlatformAppModel
         if (timesheets && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         if (!builder.Environment.IsDevelopment())
-            throw new InvalidOperationException("Works Dapr hosting is a development-only preview. A production profile and AD-20 exception are required.");
+            throw new InvalidOperationException("Platform declaration composition requires a Development host. A production profile is unavailable.");
         string? active = builder.Configuration["Platform:ActiveModule"];
         if (active is not null && string.IsNullOrWhiteSpace(active)) throw new InvalidDataException("Platform:ActiveModule: module identity is empty.");
         string? declaration = builder.Configuration["Platform:DeclarationPath"];
@@ -110,7 +110,7 @@ public static class PlatformAppModel
         if (hasTenants) files.Add("accesscontrol.tenants.yaml");
         if (hasMemories) files.AddRange(["secretstore.yaml", "llm.yaml", "telemetry-state.yaml", "telemetry-config.yaml"]);
         if (hasTimesheets) files.Add("timesheets-readmodels.yaml");
-        foreach (string file in files) if (!File.Exists(Path.Combine(components, file))) throw new FileNotFoundException("Platform shared local Dapr component is unavailable.", Path.Combine(components, file));
+        foreach (string file in files) if (!File.Exists(Path.Combine(components, file))) throw new FileNotFoundException($"Platform shared local Dapr component '{Path.Combine(components, file)}' is unavailable.", Path.Combine(components, file));
 
         // Render only connection endpoints and local signing material; literal component names remain owner-compatible until 1.7.
         string rendered = options.RunPlan is null ? Path.Combine(Path.GetTempPath(), "hexalith-platform", Guid.NewGuid().ToString("N")) : Path.Combine(options.RunPlan.Workspace, "platform-components");

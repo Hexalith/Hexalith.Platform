@@ -424,3 +424,10 @@
   summary: Bind upgrade preparation source hashes to an immutable source archive or retained canonical VCS snapshot before operational audit consumes them.
   evidence: The pre-existing recorder retains only hashes; local source replacement can make consumed preparation bytes unavailable for later reproduction. The current change binds selection to its consumed snapshot but grants no execution authority.
 
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Reject nonpositive NuGet publication verification attempt counts and invalid retry delays.
+  evidence: Builds Tools/publish-g4-tool-packages.ps1 accepts zero or negative HEXALITH_NUGET_VERIFY_ATTEMPTS, skips every remote verification iteration and returns success; introduced by later release tooling commit 01dfb16.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Correct Timesheets deployment preparation's stale claim that Development composition has no Timesheets binding.
+  evidence: eng/timesheets-deployment/prepare.py hosted-composition blocker and retained plan.json contradict the later local host binding and its qualification documentation; hosted release qualification remains absent.
