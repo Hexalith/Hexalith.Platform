@@ -299,3 +299,161 @@ suite's 31 setup errors belong to its historical checkout; the mapped Timesheets
 project is present here now, and this retirement preparation makes no new
 enrollment-test claim. No command that contacts production or signs, retires,
 upgrades or deploys was run here.
+## Retirement prerequisite investigation — 2026-10-14
+
+The [next operator action](../cluster-management/NEXT-OPERATOR-ACTION.md) now
+names the concrete unsigned fresh 4.0 tools bundle `20261014t112353z`, its
+Administrator-owned scope/signing/unlock blocker, exact retained-tool commands
+and measurable recovery acceptance. This follows read-only native/provider/
+Memories and narrow console investigations, not a retirement or upgrade attempt.
+Historical Story 4.2 console closure was accepted; its fresh signed 4.27
+attempt/plan-bound record remains required. Current provider readback matched
+all 553 historical objects, but validation still fails seven age/staleness
+checks. Readable old recovery is not fresh recovery.
+
+New offline packet `20261014t112004z-s427-prerequisite-investigation` and the
+[separate unsigned verification receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t112004z-s427-prerequisite-investigation/verification.json)
+retain final documentation/source/checksum lineage and separately distinguish
+read-only observations from zero-remote offline preparation. The old packets,
+external handoff provenance and dates remain preserved. No policy upload,
+quiescence/capture/restore/signing, retirement, upgrade, deployment, domain
+mutation or Git staging/commit occurred. 4.27 stays `in-progress`, 4.1 closed,
+Timesheets 3.6 `in-progress`/FAIL; all later owner, infrastructure, release,
+provider, source/deployed-acceptance and default-deny gates remain unchanged.
+## Actual recovery policy prepared — 2026-10-14T11:40:42Z
+
+The [next operator action](../cluster-management/NEXT-OPERATOR-ACTION.md) now
+points to actual unsigned current policy/precheck bytes for recovery RID
+`20261014t112353z`. Separate retained read-only precheck and local policy
+generation ran; no upload or signature was produced. The remaining approval
+binds exact current policy/capture/signing scope to the already recorded
+October 7–31 dates, this conversation and Administrator roles, which need no
+new selection. Historical freshness remains expired and no recovery capture
+or restore result is supplied by the policy.
+
+Final offline packet `20261014t114108z-s427-current-policy-preparation` and
+[unsigned verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t114108z-s427-current-policy-preparation/verification.json)
+retain corrected final command/source/private-policy lineage. The prior
+investigation packet/receipt remain immutable. No retirement, upgrade,
+deployment, publication, signing or domain mutation occurred; 4.27 stays
+`in-progress`, 4.1 closed and Timesheets 3.6 `in-progress`/FAIL, preserving all
+later gates/default-deny providers.
+
+
+## Approved recovery strict stop — 2026-10-14T13:11:55Z
+
+The Administrator completed private-terminal signing of exact policy RID
+`20261014t112353z`. The original signature and two exact immutable provider
+versions verified, including fresh validator readback, unchanged policy/precheck/
+37 tool files/trust, current age/window, safe static native transport, source
+identity/readiness and absent isolated targets. The prior signing refusal and
+all preparation packets retain their historical meaning and exact bytes.
+
+Twelve approved top-level commands then ran sequentially through the retained
+Keycloak OIDC helper. Current Backup phase was `completed`; the isolated
+PostgreSQL restore became Ready and all ten database/canary comparisons matched.
+The isolated Keycloak app and temporary verifier bootstrap succeeded. The OIDC
+helper returned process exit zero but recorded **`allPass=false`**:
+`tokenRoleClaimsEqualLive=false`, with a missing live claims reference. Its
+isolated client-credentials login returned 200 and seven of eight OIDC/admin/
+count checks passed. The unchanged helper requests its live reference token
+from `https://auth.tache.ai/realms/master/protocol/openid-connect/token`;
+it does not record that reference request's HTTP status. This is a failed
+acceptance check, not proof of a particular unrecorded HTTP failure or complete
+recovery. The sequence stopped on that semantic result, with no retry.
+
+At the stopped-state read, all four protected namespace UIDs, all 15 source
+PVC UIDs/bindings and 15 PV UIDs/claim references were unchanged. Source
+Keycloak/OpenBao/Redis/FalkorDB were ready; Memories MCP remained 2/2 and was
+never paused. Only isolated `recovery-4-0-kc` remains, with namespace UID
+`dafd75fd-65b7-4650-ab2a-7e0993bd68f1`, a new isolated PVC/PV and ready DB/app.
+The CNPG watcher remains `keycloak,cnpg-system,recovery-4-0-kc`; other approved
+restore targets are absent. Its temporary writer credential copy remains
+inside that isolated namespace, pending the incident decision. The local
+verifier scratch secret was removed by the retained helper. No later isolation,
+OpenBao, Memories, cleanup, records/proofs/gate/validation or signing command
+was dispatched. No retirement, upgrade or Timesheets deployment ran.
+
+**Next required input:** the Administrator, as recorded incident owner, must
+decide how to handle this preserved isolated target/watcher and the missing
+live-reference prerequisite before any operational retry or cleanup. The
+existing recovery-scope approval, October 7–31 dates, this conversation as
+incident channel and roles persist; do not request them again. Do not rerun
+`new`, `precheck.py`, `policy.py`, the uploading policy composite or the failed
+helper automatically; do not change the approved/bound tools, reopen the
+public master route or weaken the comparison. Fresh recovery remains
+unaccepted; 4.27 stays `in-progress`, 4.1 closed and Timesheets 3.6 open/FAIL.
+
+New immutable operator custody is
+`/home/administrator/hexalith-retirement-investigation-evidence/20261014t125138z-s427-approved-recovery-run`.
+It retains encrypted command/result and stopped-state diagnostics without a
+recipient-decryption claim, exact original input/readback bindings, actual
+sequential results, failure and protected-state checks. The separate
+[sanitized unsigned verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t125138z-s427-approved-recovery-run/verification.json)
+binds local integrity/preservation; it supplies no signed accepted recovery or
+production-retirement gate. Bound retirement execution/procedure/maintenance,
+frozen intent, original production tasks and older receipts remain preserved.
+
+
+## Private OIDC investigation; exact incident action pending — 2026-10-14
+
+The sealed strict-stop attempt retains all twelve completed authorized
+Keycloak commands and zero further dependent operational dispatches. Its
+failed canonical OIDC artifact remains unchanged, SHA-256
+`014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578`.
+This mid-sequence failure followed an actual completed backup/partial restore;
+the older zero-capture refusal describes the earlier unavailable-key gate.
+
+Separate authorized investigation through explicit static `jpiquot@local` and
+accepted loopback-only private source administration obtained source/restored/
+existing-verifier HTTP 200, equal same-client claims digests and all eight
+unchanged checks true. It read the existing isolated verifier credential with
+bounded READ ONLY SQL and kept credentials/tokens only in memory. Both started
+forwards terminated and listeners were absent. Distinct create-only diagnostic
+SHA-256 is `38e70fa5cc0f48bcc40884dd0e62d3a04284190cb052aa29f41e503afa2249d7`;
+this is investigation, not fresh accepted recovery or incident authorization.
+The public master route remains closed and the failed original/37 approved
+tools/policy/signature/old receipts remain intact.
+
+The prepared private packet is
+`/home/administrator/hexalith-retirement-investigation-evidence/20261014t131927z-s427-private-oidc-correction`.
+Its `INCIDENT-ACTION.md` and create-only `incident-decision-final-pending.json`
+(`incidentApproved=false`) bind the original approval/failure, corrected
+helper/diagnostic, separate guarded proof consumer and actual retained target.
+The concrete next owner decision is acceptance of those changed exact bytes
+and continuation on the existing target, first replaying missing Keycloak
+isolation/target identity. Original `proofs.py` still reads the failed canonical
+file; the separate variant supplies only a guarded distinct reference plus
+signed-proof provenance, with original acceptance logic byte-identical.
+Seventeen meaningful offline tests pass, including changed-input/claims,
+unknown/false checks, unavailable reference, create-only output, uncertain
+forward cleanup and exact prospective/pending incident-decision boundaries.
+No operational proof, isolation, later-system, cleanup or watcher change ran.
+
+This is an incident decision, not repeat original recovery-scope/window/role
+approval. Reuse those existing decisions within their narrow scope. A partial
+abort needs a separate cleanup packet: unchanged full `cleanup_check.py`
+assumes all three isolation records, which are absent, so no executable abort
+is advertised. The retained target/watcher remains under the Administrator
+incident owner. Keep 4.27 in progress, 4.1 closed and Timesheets 3.6 open/FAIL;
+no retirement, upgrade or Timesheets deployment/acceptance is implied. The
+[separate unsigned verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t131927z-s427-private-oidc-correction/verification.json)
+retains exact action/source/checksum/preservation lineage without promoting
+the diagnostic to recovery acceptance.
+
+
+## Accepted OIDC continuation, resumed Memories and unsigned cleanup — 2026-10-14
+
+The Administrator's actual **“Accept the OIDC correction and continue 20261014t112353z.”** decision is retained; original recovery scope, destination, October 7–31 maintenance dates, this conversation as incident channel and acknowledged Administrator incident/recovery/outage roles remain within their existing limits. No repeated scope or incident decision is pending. The supplied **“Freeze announced for this run”** C3 announcement enabled the single final Memories pre/census and approved pause/drain/capture sequence.
+
+The new continuation completed 32 authorized bounded top-level commands with passing actual semantic gates: fresh full incident preflight; retained Keycloak isolation/identity; OpenBao snapshot, immutable transfer/readback, isolated restore and all 10 verification checks; the split paired Memories physical capture/readback/isolated restore and all 17 verification checks; each system's complete isolation/identity; immediate conditional Memories resume; guarded original cleanup; protected-source/watcher and actual cleanup-signing preflight reads. The older 12-command run and its failed canonical OIDC record remain unchanged. The accepted distinct all-eight-check diagnostic is consumed only by the future guarded proof variant; no failed record was overwritten or promoted.
+
+Memories resumed at **2026-10-14T15:18:55Z** with MCP 2/2 ready, both source readiness probes HTTP 200/Healthy, a clean drain recheck, zero pending/in-flight/missing/duplicate work and an unchanged stream. The actual freeze end was announced in this conversation. Both source stores restarted and retained their comparable censuses/AOF health; the approved zero-tenant/zero-graph baseline supplies no logical verifier-pass claim. All three recorded isolated target namespace UIDs, all six target PVs and temporary credential/seal copies are absent. The CNPG controller identity is unchanged and `WATCH_NAMESPACE=keycloak,cnpg-system`. Fresh reads preserve the four protected source namespace UIDs and all 15 PVC/PV bindings. Host-directory removal was inferred from OpenEBS PV deletion; no node-directory inspection was claimed.
+
+The actual cleanup record is **unsigned**, SHA-256 `3ae690daad23e6a0f028ab28ca023ba9a04d4c72f810d9129b117125d08d5b78`, and binds cleanup-check SHA-256 `ac945fb40b695e147f2e6e4dc2a9af5a8fcdb8ecb79fc0c2a814c1d6de997778`. The immediate remaining input is **the Administrator's protected signing access** for that reviewed exact record. [Concrete guarded protected-terminal signing action](/home/administrator/hexalith-retirement-investigation-evidence/20261014t144239z-s427-accepted-oidc-continuation/NEXT-PROTECTED-SIGNING-ACTION.md) binds 99 inputs, exact approved policy/precheck/tool/trust/incident bytes, actual cleanup and fresh native checks. The known noninteractive key refusal was not repeated. Authentic signature verification and fresh exact-version validator readbacks must pass before the separate guarded records prerequisite, original manifest and approved external proof consumer can run. No cleanup signature, manifest/proof writing, backup gate, non-dry final validation or later signatures was dispatched by this continuation at the recorded barrier.
+
+Current read-only M1 preparation matched both live Redis/FalkorDB run IDs to the approved post-copy restart. The Administrator's current GET-only M2 investigation at **2026-10-14T15:32:00Z** enumerated all IAM policies/groups stably, found the sole approved writer policy with exact three permission sets/recovery-project scope and no group membership, and verified the exact current bucket policy's allowed writer actions with no delete/retention/legal-hold rights. The owner-only M2 v2 receipt SHA-256 is `08d587bb85da790b5bbb245eca259ec6ee15cf3d2ea1b27a952d707108dab32b`; encrypted raw readback and the first false local resource-syntax check/correction remain preserved. No IAM write/delete attempt occurred. Neither preparation is the later honest Administrator M1/M2 final-validation attestation; all eight required authentic signatures, immutable readbacks and final non-dry validation remain required.
+
+The [separate unsigned continuation receipt](/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t144239z-s427-accepted-oidc-continuation/verification.json) binds owner-only encrypted events, exact source archive, authentic approval, observed resume/freeze-end, provider/IAM read-only receipts and the current signing action. Earlier packets/receipts/archives, original 37 tools, frozen intent, original production Tasks & Acceptance, legacy baseline and bound retirement/procedure/maintenance bytes remain preserved. Concurrent unrelated deferred-work/spec-1-6 edits are retained as workspace activity, with private current snapshots and truthful digest drift; they are not consumed recovery inputs. Unchanged fixture/test suites were not rerun for this operational checkpoint; actual semantic/native gates, syntax, custody, archive and preservation checks supply the current evidence.
+
+This completed recovery work supplies no accepted fresh backup gate, retirement plan/approval, independent native break-glass recovery, attempt/plan-bound signed console closure, 4.1 external-etcd/node recovery, upgrade, Rancher or Timesheets deployment/activation. **4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**

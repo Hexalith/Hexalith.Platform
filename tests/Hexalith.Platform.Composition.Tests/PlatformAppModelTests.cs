@@ -134,6 +134,15 @@ public sealed partial class PlatformAppModelTests
                 else environment[input.Key].ShouldBe(input.Value);
             if (server.Name == "tenants-api") { environment["DAPR_API_TOKEN"].ShouldBe("api-scoped-token"); environment.ShouldNotContainKey("APP_API_TOKEN"); }
             if (server.Name == "tenants") environment["APP_API_TOKEN"].ShouldBe("domain-scoped-token");
+            if (server.Name == "eventstore")
+            {
+                const string registration = "EventStore__DomainServices__Registrations__wildcard_tenants_v1__";
+                environment[registration + "AppId"].ShouldBe("tenants");
+                environment[registration + "MethodName"].ShouldBe("process");
+                environment[registration + "TenantId"].ShouldBe("*");
+                environment[registration + "Domain"].ShouldBe("tenants");
+                environment[registration + "Version"].ShouldBe("v1");
+            }
             if (server is ContainerResource container)
             {
                 ContainerImageAnnotation image = container.Annotations.OfType<ContainerImageAnnotation>().Single();

@@ -1,0 +1,43 @@
+{
+  "acceptanceProven": false,
+  "acknowledgedOutageSystems": [
+    "Keycloak",
+    "OpenBao",
+    "Memories",
+    "Forgejo",
+    "Forgejo runner"
+  ],
+  "acknowledgedRoles": [
+    "present incident commander",
+    "recovery owner",
+    "workload outage owner"
+  ],
+  "approvalBasis": "Direct Administrator approval of the final actual-policy handoff, recorded in the sole-source spec Approved fresh recovery continuation",
+  "approvalRecordIsPolicySignature": false,
+  "approvedHandoffSha256": "3e721fd9becad7ec6ef601281edec8e278ef52db424325aa21cdfa50756d3cca",
+  "approvedPolicySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+  "approvedPrecheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+  "approvedToolsManifestSha256": "29228eca2d14a73048caaa6eddf597ecac52cd9620c151bb4e824e6b2a082669",
+  "attemptId": "20261014t120527z-s427-approved-recovery-signing",
+  "currentVcsRevision": "8580eb64ac8a9ac3c025dd6c7f64aa6f39ce5cbb",
+  "gitStagingOrCommitAuthorized": false,
+  "humanResponse": "I approve",
+  "incidentChannel": "this ChatGPT/Codex conversation",
+  "kind": "current-recovery-scope-chat-approval",
+  "legacyBaselineCommit": "54920908f15a99b48e69861baf306365353fc6df",
+  "owner": "Administrator jpiquot@itaneo.com",
+  "policySigningUnlockAvailable": false,
+  "privateOriginalSha256": "b1bbc58d75470223b99fbd10175051762be1534af81cb7ae61c4bff0112456c2",
+  "recordedAt": "2026-10-14T12:08:17.725857+00:00",
+  "recoveryId": "20261014t112353z",
+  "retirementMutationAuthorized": false,
+  "scope": "exact described Story 4.0 signing/publication and recovery/capture/isolated-restore/cleanup for this RID; conditional signed-policy and subsequent strict gates apply",
+  "scopeApproved": true,
+  "scopeNeedsReapproval": false,
+  "signed": false,
+  "timesheetsDeploymentOrActivationAuthorized": false,
+  "upgradeMutationAuthorized": false,
+  "windowEndExclusive": true,
+  "windowEndUtc": "2026-10-31T23:00:00Z",
+  "windowStartUtc": "2026-10-07T14:44:45Z"
+}

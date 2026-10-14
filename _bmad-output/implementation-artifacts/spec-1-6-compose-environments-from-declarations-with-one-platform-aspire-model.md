@@ -223,6 +223,43 @@ Code review 2026-10-13 (bmad-code-review, second pass). Scope: Platform `977f2e0
 
 **Sixth-pass patch resolution (2026-10-14):** All five patch findings are implemented. The real Dapr lifecycle test asserts that each sidecar omits tokens absent from its own binding and that every expected HTTP, gRPC and metrics listener port is assigned. The missing-component fixture includes every EventStore profile-bound file and omits only `configstore.yaml`, so it reaches the shared-component refusal and checks its message, path and empty resource graph. The owner-option test collects after unloading its assembly context and treats deletion as best effort, preserving the original build or validation failure. File-entry documentation explains that an unsupplied mapping is resolved from the declaration's workspace and that missing reference owners refuse by identity. Recorded deferrals and frozen intent are unchanged.
 
+### Review Findings — code review 2026-10-14 (chunk 1 of 2: apphost.cs, docs, src/Hexalith.Platform.Composition)
+
+- [x] [Review][Decision] Package mode can never compose: `ReleaseSnapshotHashes` defaults to empty and `PlatformDeclarationSet.Load` refuses every package-mode load, while the frozen decision says "Keep full source and package scope" [PlatformCompositionOptions.cs, PlatformDeclarationSet.cs] — medium. Accept as intentional (docs: "refuses until the owners release matching declarations") or require a populated snapshot path now. **Resolved 2026-10-14: accepted as intentional** (refusal-tested; enables when owners release v2 declarations and snapshot hashes are populated; trigger recorded in deferred-work.md).
+- [x] [Review][Patch] No test exercises `eng/verify-platform-pins.py` (drift, match, conditional Dapr override, missing-pin branch); add a `test_*.py` beside it like other `eng/*` scripts [eng/verify-platform-pins.py]
+- [x] [Review][Patch] Gateway `wildcard_tenants_v1` registration env vars (five keys) are not asserted when tenants is selected/absent; add to the reference-composition test [PlatformAppModel.cs:240-245]
+- [x] [Review][Defer] `apphost.cs` SDK 13.6.0 differs from catalog 13.6.1; the pin gate exits 1 [apphost.cs:2] — deferred: carried R5-E6/R7-B3, separate alignment decision.
+- [x] [Review][Defer] Memories vector/graph containers use unpinned `latest` tags [PlatformAppModel.cs] — deferred: carried; not catalog-versioned.
+- [x] [Review][Defer] Timesheets opt-in composition paths (ComposeEntry, registrations, declaration append) sit inside this file's diff [PlatformAppModel.cs, PlatformDeclarationSet.cs] — deferred: delivered by separate Timesheets specs, not by story 1.6's change.
+- [x] [Review][Defer] Non-tenants sidecars get `Config = RunPlan?.DaprConfigPath`, null in local (non-run) mode [PlatformAppModel.cs:269] — deferred: unverified medium; settle by checking whether Memories/Timesheets need an access-control config without a run plan.
+- [x] [Review][Defer] Run configuration signing-key loop uses a literal six-server list, so an extra selected server gets no plan key [PlatformAppModel.cs:67-81] — deferred: low, only reachable with Timesheets in a run.
+
+#### Rejected (chunk 1)
+
+- Blind Hunter SDK/pin duplicates, `latest` images, doc gaps, dense methods, sync-over-async, temp-dir cleanup, hard-coded port/field naming: low, no named harm or fix is not a direct correction.
+- Edge Case Hunter malformed owner JSON/YAML shapes (appsettings comments, non-string AppId, scalar scopes, missing spec.nameResolution, missing local profile, clock source shape, duplicate mapping entries, absolute/`..` task executables, empty catalog version): fail loudly on owner-controlled input; low.
+- `Platform:Timesheets:Enabled` non-boolean throws: loud failure on bad config; low.
+- Mapping hash without path ignored / default declaration path missing: loud downstream failure; low.
+- `UsesSharedComponent` KeyNotFound, gateway SigningKey lookup, Dapr subscriber lookups, `Directory.Build.targets` glob: environment is bound for every declared key before use; unverified-low.
+- Gateway zero-count: false — domain and default selections always include eventstore.
+- Tenants forcing Memories under `ActiveModule=tenants`: matches the declared dependency (Tenants closure); low.
+- Task metadata not scoped per server, `PlatformGatewayStartup` unbounded poll, `.gitattributes`/CRLF in pin script, secrets.json chmod window, Redis port string replace, non-Development default host now throws: low, negligible in everyday use.
+
+> Chunk 2 of 2 (tests, `Declarations/*.json`, `DaprComponents/reference/*`) was not reviewed in this run; follow up with a second run.
+
+### Review Findings — code review 2026-10-14 (full range 977f2e0..HEAD: src + tests/Hexalith.Platform.Composition*)
+
+- [x] [Review][Patch] Run-scoped container labels/names (`ContainerRunLabel`, `redis` `RedisContainerName`) are not asserted by any default test; only the skipped live smoke catches leaked containers [PlatformAppModel.cs, tests/PlatformAppModelReviewTests.cs]
+- [x] [Review][Patch] Cross-server wiring unasserted: tenants `wildcard_tenants_v1` registration env on the gateway, `EventStore__CommandGateway__BaseAddress` on non-gateway servers, and `WaitAnnotation` per declared dependency edge [PlatformAppModel.cs, tests/PlatformAppModelReviewTests.cs]
+- [x] [Review][Defer] Package mode cannot compose by default (`ReleaseSnapshotHashes` empty; provenance commits differ from `ReleaseCommits`) — deferred: intentional, already in deferred-work.md ("Enable package-mode composition when owners release v2 declarations")
+- [x] [Review][Defer] Memories `redis-stack`/`falkordb` use `latest`; Timesheets composed in Platform model beyond story scope; signing-key override covers a literal list of six servers (no Timesheets) — deferred: already in deferred-work.md
+
+#### Rejected (full range)
+- Gateway "exactly one" enforced as "at most one": low; every enrolled closure includes EventStore (previously rejected).
+- Task executable absolute/`..` path, missing-key `KeyNotFoundException`/`Single()` without located diagnostics, malformed provenance/profile/snapshot, duplicate resourceId/appId, non-numeric AllowedCallers suffix: low; inputs are in-repo trusted declarations and the code fails loudly.
+- Catalog snapshot missing falls back to live catalog: low; only reaches package-mode image versions, which refuse today.
+- `PlatformGatewayStartup` unbounded poll, secrets.json chmod window, Redis string replace without check, Development guard only on one overload, Dapr subscriber `Single`/null port, double `BeforeStartEvent`, `.GetAwaiter().GetResult()` (no sync context in AppHost), `GetValue<bool>` on malformed Timesheets flag, Works dev key outside run mode: low/false, negligible in everyday use.
+
 ## Implementation Notes
 
 - The file `#:project` requires `IsAspireProjectResource=false` and `ReferenceOutputAssembly=true`; Platform's `Directory.Build.targets` supplies that library metadata without changing the file entry form.

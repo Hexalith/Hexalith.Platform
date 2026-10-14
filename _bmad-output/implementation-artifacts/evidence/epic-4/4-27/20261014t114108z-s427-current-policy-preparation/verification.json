@@ -1,0 +1,421 @@
+{
+  "actualReadOnlyObservations": {
+    "consoleSample": {
+      "allSamplesNotRouted": true,
+      "authenticatedOidcAccepted": false,
+      "capturedAt": "2026-10-14T11:23:19.147735+00:00",
+      "establishedHostDohQueries": 4,
+      "fullAliasOrRegistryWorkRepeated": false,
+      "independentExternalVantageAccepted": false,
+      "negativeGetSamples": 8,
+      "oidcDiscoveryPositiveControlStatus": 200,
+      "publicDnsMatches": true,
+      "signedPlanBoundConsoleRecordCreated": false
+    },
+    "currentDestinationPrecheck": {
+      "localOutputOnly": true,
+      "policySignatureOrRecoveryAcceptance": false,
+      "preCaptureDestinationCheck": "pass",
+      "precheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+      "preparedRecoveryId": "20261014t112353z",
+      "providerWrites": 0,
+      "validatorCredentialOnly": true
+    },
+    "explicitNativeGetCommands": 9,
+    "historicalProviderValidation": {
+      "currentRecoveryAccepted": false,
+      "dryRun": true,
+      "evaluatedAt": "2026-10-14T11:15:37Z",
+      "exitCode": 1,
+      "failureCategories": [
+        "proof-age",
+        "rpo-staleness"
+      ],
+      "historicalBundleOverwritten": false,
+      "manifestObjectsMatching": 553,
+      "manifestObjectsReRead": 553,
+      "newReadOnlyProviderReadbackPerformed": true,
+      "outputSha256": "e1e841cdd372ee7fedf222a2e14820f906e96a73fb568d43992ab78c5c2a029b",
+      "summary": {
+        "fail": 7,
+        "pass": 641,
+        "skipped": 0,
+        "total": 648
+      },
+      "verificationResult": "fail"
+    },
+    "historicalSignatureVerification": {
+      "allExitCodesZero": true,
+      "currentRetirementTrustApprovalEstablished": false,
+      "historicalTrustRootSha256": "77df53775f890a393578cb5480512b532ef730bcc854a2bf1d4cdd9bb1d77247",
+      "namespace": "hexalith-recovery",
+      "principal": "jpiquot@itaneo.com",
+      "records": 11
+    },
+    "memoriesCensus": {
+      "activeWorkflowCount": 0,
+      "capturedAt": "2026-10-14T11:19:27.963469+00:00",
+      "decryptionOrRecipientReadbackPerformed": false,
+      "falkorKeyCount": 0,
+      "grantsQuiescenceOrCaptureAuthority": false,
+      "graphCount": 0,
+      "rawExportsEncrypted": true,
+      "rawResultsWrittenAsPlaintext": false,
+      "redisKeyCount": 3,
+      "reminderKeyCount": 0,
+      "tenantCountUnderRetainedD1Convention": 0,
+      "tenantRegistryIndexPresent": false,
+      "workflowStateKeyCount": 0
+    },
+    "memoriesReadOnlyExecCommands": 2,
+    "nativeContext": "jpiquot@local",
+    "observedServerVersion": "v1.34.9",
+    "persistentMutationRequests": 0,
+    "privateCustody": "/home/administrator/hexalith-retirement-investigation-evidence/20261014-prerequisite-readonly",
+    "productionSourceObserved": true,
+    "recoveredIndependentNativeAccessAccepted": false,
+    "signingCalls": 0,
+    "transportFailureObserved": false,
+    "validatorLocalCurrentContextCommands": 1,
+    "validatorNativeGetCommands": 16
+  },
+  "attemptId": "20261014t114108z-s427-current-policy-preparation",
+  "firstUnmetPrerequisite": {
+    "datesRolesOrIncidentChannelNeedNewSelection": false,
+    "dependentCaptureRestoreQuiescenceSigningDispatched": false,
+    "october1DelegationReused": false,
+    "owner": "Administrator jpiquot@itaneo.com",
+    "policyPath": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/recovery-policy.json",
+    "policySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+    "precheckPath": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/destination-precheck.json",
+    "precheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+    "preparedRecoveryId": "20261014t112353z",
+    "required": "Administrator approval binding the actual prepared policy/RID and exact current capture/signing/publication scope to existing maintenance dates/roles, plus protected signing unlock; then a fresh 4.0 recovery run",
+    "standingPolicyDecisionsReusable": true
+  },
+  "kind": "story-4-27-prerequisite-investigation-unsigned-verification",
+  "liveGateOpen": false,
+  "mutationAuthorized": false,
+  "offlineFreshRecoveryAllocation": {
+    "allCaptureProofGateValidationDirectoriesEmpty": true,
+    "approved": false,
+    "currentUnsignedPreparation": {
+      "captureQuiescenceRestoreDispatched": false,
+      "currentScopeApproved": false,
+      "localUnsignedPolicyOnly": true,
+      "policyCommand": [
+        "python3",
+        "policy.py"
+      ],
+      "policyPath": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/recovery-policy.json",
+      "policyPreparedAt": "2026-10-14T11:40:42Z",
+      "policySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+      "precheckCommand": [
+        "uv",
+        "run",
+        "--quiet",
+        "--no-project",
+        "--with",
+        "boto3",
+        "python",
+        "precheck.py"
+      ],
+      "precheckGate": "pass",
+      "precheckPath": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/policy/destination-precheck.json",
+      "precheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+      "preparedAt": "2026-10-14T11:40:42.405866+00:00",
+      "providerReadOnly": true,
+      "providerWrites": 0,
+      "recoveryId": "20261014t112353z",
+      "signatures": 0,
+      "sourcePolicySha256": "eb68fcf5ae4251e0fcceaf56c138027a3c46ce06d435a0fc3d82ff80b575fde6",
+      "sourcePrecheckSha256": "f949c9eea2e87ed3f66aa7d156ffc59652fd23107db747b9d4d72c45ad77d6fe"
+    },
+    "historicalAllocationStep": {
+      "allOperationalDirectoriesEmpty": true,
+      "allUnsigned": true,
+      "allocationCommand": "./final-run-order.sh new",
+      "allocationOnly": true,
+      "checksummedToolCount": 37,
+      "currentRunApproved": false,
+      "manifestSha256": "29228eca2d14a73048caaa6eddf597ecac52cd9620c151bb4e824e6b2a082669",
+      "mutations": 0,
+      "ownerModesMatched": true,
+      "recoveryId": "20261014t112353z",
+      "remoteCalls": 0,
+      "signingCalls": 0,
+      "stagedCopiesMatched": true,
+      "toolsPath": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/tools"
+    },
+    "policyAndPrecheckOwnerModesVerified": true,
+    "providerWrites": 0,
+    "retainedToolChecksumsStillMatched": true,
+    "signed": false
+  },
+  "offlinePreparer": {
+    "actualPureRehearsalValidatorAccepted": true,
+    "allOperationalFieldsNullOrNotRun": true,
+    "allRecordsUnsignedAndClosed": true,
+    "closedFields": [
+      "sourceClusterUid",
+      "currentServerVersion",
+      "freshPlanSha256",
+      "approvalSha256",
+      "recoveryAccepted",
+      "consoleClosureAccepted",
+      "nativeAccessAccepted",
+      "authenticatedHealthAccepted",
+      "retirementAccepted"
+    ],
+    "custody": {
+      "allChecksumsMatched": true,
+      "directories0700": true,
+      "files0600": true
+    },
+    "fixtureManifests": {
+      "catalog": {
+        "allManifestChecksumsMatched": true,
+        "checksummedFileCount": 905,
+        "encryptedExportCount": 846,
+        "freshDecryptionPerformed": false,
+        "independentOffNodeAcceptance": false,
+        "manifestSha256": "444e4de224f4b84ef317f75a76f8800b50d5099a10e95d165902b00d2358e074",
+        "retainedTwoRecipientReceiptIntegrityMeasured": true
+      },
+      "namespaces": {
+        "allManifestChecksumsMatched": true,
+        "checksummedFileCount": 98,
+        "encryptedExportCount": 85,
+        "freshDecryptionPerformed": false,
+        "independentOffNodeAcceptance": false,
+        "manifestSha256": "ea266036418fa8cea2db15417c0184ac7f0022fca6ac3c5b24000f931f91e16d",
+        "retainedTwoRecipientReceiptIntegrityMeasured": true
+      }
+    },
+    "invocations": 1,
+    "metadataScope": {
+      "exactNamedRecordCounts": {
+        "backup-gate.json": 1,
+        "console-closure.json": 0,
+        "evidence-manifest.json": 2,
+        "exact-execution-approval.json": 0,
+        "external-etcd-isolated-restore.json": 4,
+        "external-etcd-recovery-point.json": 4,
+        "keycloak-restore-proof.json": 2,
+        "memories-restore-proof.json": 2,
+        "native-access.json": 3,
+        "node-recovery-bundle.json": 4,
+        "openbao-restore-proof.json": 2,
+        "pre-retirement-health.json": 0,
+        "recovery-policy.json": 3,
+        "recovery-validation.json": 0,
+        "restore-target-cleanup.json": 1,
+        "retirement-approval.json": 0,
+        "retirement-policy.json": 0,
+        "validation.json": 1
+      },
+      "inspectedRoots": [
+        "/home/administrator/hexalith-management-evidence",
+        "/home/administrator/hexalith-recovery-evidence",
+        "/home/administrator/hexalith-upgrade-evidence"
+      ],
+      "recordCount": 29,
+      "scannerClaimsTrusted": false,
+      "scannerCryptographicSignatureValidation": "not-performed",
+      "skippedSymlinkCount": 0
+    },
+    "mutationRequests": 0,
+    "operationalCommands": [],
+    "packetFileSha256": {
+      "SHA256SUMS": "a0fcbbda9073f7d0ebe444652fa00e4327bac36cfc3729622a72bd219a68e0fe",
+      "attempt.json": "1acae4b5ea79233979fd6040a2071244ae71b067978596a7b8076a3197e0828f",
+      "closed-gates.json": "d826eee70eed54273c937d251284bdd902891a11a2175ef4c036fd995347a46d",
+      "historical-integrity.json": "819a361d2c904b81cb098e865d1ad8f4939f62a18592645d1d6fd43547c18b83",
+      "input-lineage.json": "eca1eb813fee79c0e49d84f1a6833781be7351cf760004d7d892472397794fb5",
+      "metadata-audit.json": "5c6932a809e7b825806a37078634db1cb86a49c02d98612dd84376e006bd9310",
+      "preparation-sources.zip": "23ef29e7056f23f8877547d6771179cb4841c0aa2f7a787351bddd24ff9d0cd5"
+    },
+    "privatePacket": "/home/administrator/hexalith-retirement-preparation-evidence/20261014t114108z-s427-current-policy-preparation",
+    "productionPlanCreated": false,
+    "productionSourceObserved": false,
+    "remoteCalls": 0,
+    "signingCalls": 0,
+    "sourceArchive": {
+      "allArchivedAndCurrentSourceHashesMatched": true,
+      "allMemberModes0600": true,
+      "memberCount": 1028,
+      "signedRecoveryOriginalsCopied": false
+    }
+  },
+  "openGates": {
+    "story41": "closed",
+    "story427": "in-progress",
+    "timesheetsStory36": "in-progress/FAIL"
+  },
+  "parentIndependentInspection": {
+    "allCurrentConsumedSourceHashesMatched": true,
+    "allManifestChecksumsMatched": true,
+    "archiveCrcAndMemberHashesAndModesMatched": true,
+    "archiveMemberCount": 1028,
+    "attemptId": "20261014t114108z-s427-current-policy-preparation",
+    "metadataRecordCount": 29,
+    "nextOperatorActionSha256": "3e721fd9becad7ec6ef601281edec8e278ef52db424325aa21cdfa50756d3cca",
+    "operationalCommandCount": 0,
+    "operationalFieldsClosedAndUnsigned": true,
+    "packetDirectories0700": true,
+    "packetFiles0600": true,
+    "policyAndPrecheckModes0600": true,
+    "policyPrecheckBindingVerified": true,
+    "policySignatureAndUploadsLedgerAbsent": true,
+    "preparedPolicySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+    "preparedPrecheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+    "scope": "parent independent final packet and prepared-policy inspection; sealed sources unchanged"
+  },
+  "preservation": {
+    "allHistoricalAndUnrelatedHashesMatched": true,
+    "executionBinding": {
+      "codeSha256": {
+        "evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+        "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+        "rehearse.py": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+        "rehearse_catalog.py": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+        "rehearse_namespaces.py": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
+        "retire.py": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355"
+      },
+      "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+      "procedureSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60"
+    },
+    "fixtureReruns": 0,
+    "frozenIntentUnchanged": true,
+    "historicalDecryptionRepeated": false,
+    "historicalPrerequisitesHandoffAndStoryVerbatimPrefixesPreserved": true,
+    "maintenanceMatchesHistoricalBaseline": true,
+    "oldPreparationPacketAndReceiptUnchanged": true,
+    "originalTasksAndAcceptanceByteIdenticalToReviewedArchive": true,
+    "preparerAndFixedSourceListChanged": false,
+    "preservedHistoricalAndUnrelatedFileCount": 51,
+    "preservedPriorInvestigationFileCount": 11,
+    "priorInvestigationArtifactHashes": {
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261014t112004z-s427-prerequisite-investigation/SHA256SUMS": "b38833e35a6c3142eabea9c82ff86744f9059a9439d7beaa23f002548c07fc8b",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261014t112004z-s427-prerequisite-investigation/lineage.json": "1e7512b1f3af789a553849ddb78ef6c214ee7015632d5f715016c2d6646428ea",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261014t112004z-s427-prerequisite-investigation/operator-action-sources.zip": "00f0373bda49e603fb2cf25855924879edc9d4899ea7321173f7ce5957ad8dcf",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/SHA256SUMS": "76308df1de174050a645327a3499e164883e05b56c086f935df14611c9657e14",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/attempt.json": "b9d5aff08788dc4c632035466bfd769585ec706c015caf07096a459923f6b6d0",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/closed-gates.json": "66b9ff070305cd0b5f3b61167f6983f67073dcf22abfbe58fb060eba6227b426",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/historical-integrity.json": "b05e8b4ce985f2a24dd21c19ba18ec349e759ea68b5564d13670d619449989d3",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/input-lineage.json": "2c90581b8faacc6252731e5bb46cb5b7a479f6479bbce22db18efaeed1fd4826",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/metadata-audit.json": "1a19a44f0006c41ff6312a2a3c6387c5df1713805a7ce2076796694c1baa5ba3",
+      "/home/administrator/hexalith-retirement-preparation-evidence/20261014t112004z-s427-prerequisite-investigation/preparation-sources.zip": "9062b1cb6de4b3bff0ca027bd3f036ef87ef00c279f2ee0e822effedd27405ab",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t112004z-s427-prerequisite-investigation/verification.json": "71b4d17e8f926eed25b45883586df575f308fee23c043d2be8f76a2f5d9e843e"
+    },
+    "priorInvestigationAttemptId": "20261014t112004z-s427-prerequisite-investigation",
+    "priorInvestigationPacketReceiptAndSupplementUnchanged": true,
+    "stagingOrCommitPerformed": false,
+    "unrelatedDirtyFilesPreserved": true
+  },
+  "priorParentInspection": {
+    "attemptId": "20261014t112004z-s427-prerequisite-investigation",
+    "historicalInspection": {
+      "allCurrentConsumedSourceDigestsMatched": true,
+      "allPacketChecksumsMatched": true,
+      "archiveCrcAndPerMemberDigestsMatched": true,
+      "archiveMembers": 1028,
+      "boundExecutionAndProcedureAndMaintenanceMatchedReviewedReceipt": true,
+      "finalOperatorCommandsInspected": true,
+      "frozenIntentByteIdenticalToReviewedPreparationArchive": true,
+      "historicalStagingPrerequisitesPreservedAsVerbatimPrefix": true,
+      "historicalStory427PreservedAsVerbatimPrefix": true,
+      "historicalTimesheetsHandoffPreservedAsVerbatimPrefix": true,
+      "manifestCoveredPacketFiles": 6,
+      "nextOperatorActionSha256": "46abe7d6de04b7b9452285a92d4e01da52d00ca24d610eca019c7e66f07ca091",
+      "originalTasksAndAcceptanceByteIdentical": true,
+      "packetDirectories0700": true,
+      "packetFiles0600": true,
+      "scope": "parent independently reported this inspection after local packet publication; sealed sources unchanged"
+    },
+    "scope": "original parent inspection of the first packet only; final packet independently verified by implementer in this receipt"
+  },
+  "recordedAt": "2026-10-14T11:48:31.409852+00:00",
+  "remaining": [
+    "approve/sign/publish exact new current policy within existing dates/roles, then fresh signed production 4.0 capture/restore/cleanup/validation and independent off-node readback",
+    "fresh production external-etcd point, fenced isolated restore and matching node/configuration recovery under current attempt interfaces",
+    "recovered independent native authority/custody/break-glass and authenticated health",
+    "approved current retirement trust/principal/receipt-signing/two-recipient readback/freshness inputs",
+    "first complete native census, renewed source-bound fixtures, second fresh plan",
+    "fresh independent signed console-closure record bound to exact future execution ID and plan",
+    "separate exact execution/allowlist/outage/owner/window/stop/recovery approval",
+    "production retirement/preservation and signed acceptance/fresh post-retirement 4.1 inputs",
+    "unchanged later Timesheets and supported-hop/Rancher/runner/infrastructure/release/provider/source/deployed-acceptance gates"
+  ],
+  "retirementAccepted": false,
+  "reusedConsoleClosure": {
+    "acceptanceWaiverReusedForStory427": false,
+    "administrationResult": "pass",
+    "freshRetirementConsoleClosureRecordStillRequired": true,
+    "october8GcFollowupResolved": true,
+    "story42AdministratorAcceptanceDate": "2026-10-07"
+  },
+  "reusedMaintenanceAndOwnership": {
+    "acknowledgedOutageSystems": [
+      "Keycloak",
+      "OpenBao",
+      "Memories",
+      "Forgejo",
+      "Forgejo runner"
+    ],
+    "bindPolicySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+    "bindPreparedRecoveryId": "20261014t112353z",
+    "currentPolicyScopeBindingMissing": true,
+    "datesRolesChannelNeedReapproval": false,
+    "existingAcknowledgedRoles": [
+      "present incident commander",
+      "accountable recovery owner",
+      "workload outage owner"
+    ],
+    "incidentChannel": "this ChatGPT/Codex conversation",
+    "limits": [
+      "acknowledgements do not approve additional discovered workload outages",
+      "dates and roles do not approve the new exact capture/signing/publication procedure",
+      "no current technical or mutation gate is opened",
+      "October 1 delegated signing is not reused",
+      "historical SHA-bound maintenance procedure remains unchanged"
+    ],
+    "owner": "Administrator",
+    "rolesSourcePath": "_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261001t114842z-maintenance-continuation/maintenance-metadata.json",
+    "rolesSourceSha256": "8d20f7e5262cde432a178a8606286ed81ae7bae95332192dba5d214feb8a067f",
+    "timezone": "Europe/Paris",
+    "windowEndExclusive": true,
+    "windowEndUtc": "2026-10-31T23:00:00Z",
+    "windowSourcePath": "_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261007t144445z-maintenance-window-amendment.json",
+    "windowSourceSha256": "1d6d07f87ffb84c43ccb93a72c9e54bd23cfcd764cf8026444f584518b326bcb",
+    "windowStartUtc": "2026-10-07T14:44:45Z"
+  },
+  "scope": "read-only source/provider/census/console investigation and reversible offline preparation of actual unsigned current policy only",
+  "signed": false,
+  "supplementalCustody": {
+    "allArchiveAndCurrentSourceHashesMatched": true,
+    "allChecksumsMatched": true,
+    "archiveMemberCount": 74,
+    "archiveSha256": "1a879ad25debaf70e6d94922233d28fb59905f16e10199158929dfff7fa82e31",
+    "checksumsSha256": "8b679bb9fd25095eaaf5d85d2e4c208a45b606acd4d1ad0900a2ce38abf2186c",
+    "credentialsOrSignedRecoveryOriginalsCopied": false,
+    "directories0700": true,
+    "filesAndMembers0600": true,
+    "lineageSha256": "d840e5cd2db52bccee76d4965d02811d37d0cb4ef5199c19f8e6d9e8884eb415",
+    "nextOperatorActionSha256": "3e721fd9becad7ec6ef601281edec8e278ef52db424325aa21cdfa50756d3cca",
+    "privatePacket": "/home/administrator/hexalith-retirement-investigation-evidence/20261014t114108z-s427-current-policy-preparation",
+    "unsignedCurrentPolicyAndPrecheckPrivatelyRetained": true
+  },
+  "verification": {
+    "bashBlocksSyntaxChecked": 18,
+    "command": "python3 -m unittest discover -s eng/cluster-management -p 'test_prepare_retirement.py' -v",
+    "dependentOperationalBlocksExecuted": 0,
+    "exitCode": 0,
+    "gitDiffCheckPassed": true,
+    "pythonHeredocsParsed": 4,
+    "testsPassed": 31,
+    "testsSkipped": 0,
+    "verboseLogPath": "/tmp/story-4-27-prerequisite-preparation-tests.log",
+    "verboseLogSha256": "fe342bc1819a8b28b2c27144c130d61867900a18a6e8bb2c6bf07bcc8d6de63e"
+  }
+}

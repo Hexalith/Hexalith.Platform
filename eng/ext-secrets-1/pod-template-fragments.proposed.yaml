@@ -1,0 +1,70 @@
+# PROPOSED pod-template fragments for two separately enrolled apps. Not resources to apply.
+# Unknown existing Secret/CA/ServiceAccount/image references remain null; no Secret objects or values.
+custodyPodTemplate:
+  metadata:
+    labels:
+      hexalith.io/proposal: "ext-secrets-1-uninstalled"
+    annotations:
+      dapr.io/enabled: "true"
+      dapr.io/app-id: "proposed-ext-secrets-1-custody"
+      dapr.io/api-token-secret: null # custody app's own enrolled Dapr API credential, not qualifier/operator
+      dapr.io/volume-mounts: "provider-token:/var/run/ext-secrets-1/provider,provider-ca:/var/run/ext-secrets-1/ca"
+  spec:
+    serviceAccountName: null
+    containers:
+      - name: proposed-custody
+        image: null
+        env:
+          - name: DAPR_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: null
+                key: token
+        volumeMounts:
+          - name: provider-ca
+            mountPath: /var/run/ext-secrets-1/ca
+            readOnly: true
+    volumes:
+      - name: provider-token
+        secret:
+          secretName: null # custody-only enrolled OpenBao token; mounted only into the Dapr sidecar
+          items:
+            - key: null
+              path: token
+      - name: provider-ca
+        configMap:
+          name: null
+          items:
+            - key: null
+              path: ca.pem
+
+qualificationRunnerPodTemplate:
+  metadata:
+    labels:
+      hexalith.io/proposal: "ext-secrets-1-uninstalled"
+    annotations:
+      dapr.io/enabled: "true"
+      dapr.io/app-id: "proposed-ext-secrets-1-qualification-runner"
+      dapr.io/api-token-secret: null # separately enrolled qualifier Dapr API credential
+  spec:
+    serviceAccountName: null
+    containers:
+      - name: proposed-qualification-runner
+        image: null
+        env:
+          - name: DAPR_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: null
+                key: token
+        volumeMounts:
+          - name: qualification-api-token
+            mountPath: /var/run/ext-secrets-1/qualification
+            readOnly: true
+    volumes:
+      - name: qualification-api-token
+        secret:
+          secretName: null # qualifier token only; no OpenBao provider token/CA is present in this pod
+          items:
+            - key: token
+              path: api-token

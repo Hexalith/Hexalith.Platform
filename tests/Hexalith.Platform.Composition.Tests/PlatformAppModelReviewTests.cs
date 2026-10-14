@@ -448,6 +448,35 @@ public sealed partial class PlatformAppModelTests
                 if (server.Name != "eventstore")
                     new[] { sidecar.DaprHttpPort!.Value, sidecar.DaprGrpcPort!.Value, sidecar.DaprInternalGrpcPort!.Value, sidecar.MetricsPort!.Value }.ShouldAllBe(port => !plan.Ports.ToList().Contains(port));
             }
+            string runLabel = $"{CompositionEnvironment.ContainerRunLabel}={plan.RunId}";
+            foreach (ContainerResource container in builder.Resources.OfType<ContainerResource>().Where(resource => resource.Name is "redis" or "memories-vectors" or "memories-graph"))
+            {
+                List<object> runArguments = [];
+                foreach (ContainerRuntimeArgsCallbackAnnotation callback in container.Annotations.OfType<ContainerRuntimeArgsCallbackAnnotation>())
+                    await callback.Callback(new ContainerRuntimeArgsCallbackContext(runArguments, TestContext.Current.CancellationToken));
+                runArguments.Select(argument => argument.ToString()).ShouldContain(runLabel, container.Name);
+            }
+            builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "redis").Annotations.OfType<ContainerNameAnnotation>().Single().Name.ShouldBe(plan.RedisContainerName);
+            ProjectResource gatewayProject = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
+            Dictionary<string, object> gatewayEnvironment = new();
+            foreach (EnvironmentCallbackAnnotation callback in gatewayProject.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, gatewayProject, gatewayEnvironment, TestContext.Current.CancellationToken));
+            gatewayEnvironment["EventStore__DomainServices__Registrations__wildcard_tenants_v1__AppId"].ShouldBe("tenants");
+            gatewayEnvironment["EventStore__DomainServices__Registrations__wildcard_tenants_v1__MethodName"].ShouldBe("process");
+            gatewayEnvironment["EventStore__DomainServices__Registrations__wildcard_tenants_v1__TenantId"].ShouldBe("*");
+            gatewayEnvironment["EventStore__DomainServices__Registrations__wildcard_tenants_v1__Domain"].ShouldBe("tenants");
+            gatewayEnvironment["EventStore__DomainServices__Registrations__wildcard_tenants_v1__Version"].ShouldBe("v1");
+            gatewayEnvironment.ShouldNotContainKey("EventStore__CommandGateway__BaseAddress");
+            foreach (string dependent in new[] { "tenants", "tenants-api" })
+            {
+                ProjectResource project = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == dependent);
+                project.Annotations.OfType<EnvironmentCallbackAnnotation>().Count().ShouldBeGreaterThan(0);
+                project.Annotations.OfType<WaitAnnotation>().Select(wait => wait.Resource.Name).ShouldContain("eventstore", dependent);
+                Dictionary<string, object> dependentEnvironment = new();
+                foreach (EnvironmentCallbackAnnotation callback in project.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                    await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, dependentEnvironment, TestContext.Current.CancellationToken));
+                dependentEnvironment.ShouldContainKey("EventStore__CommandGateway__BaseAddress");
+            }
             ProjectResource api = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "tenants-api");
             Dictionary<string, object> environment = new();
             foreach (EnvironmentCallbackAnnotation callback in api.Annotations.OfType<EnvironmentCallbackAnnotation>())

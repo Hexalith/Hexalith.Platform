@@ -1,0 +1,105 @@
+{
+  "CNPGWatcherRemainsExtended": true,
+  "OpenBaoMemoriesIsolationCleanupLaterSigningCommandsAfterFailure": 0,
+  "Story4_1GateOpen": false,
+  "Story4_27Accepted": false,
+  "Timesheets3_6Accepted": false,
+  "all12ProcessExitsZeroNoTimeout": true,
+  "all37RetainedToolsVerified": true,
+  "all52PreservedInputsEarlierPacketAndReceiptFilesUnchanged": true,
+  "approvedDestinationPrecheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+  "approvedPolicySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+  "approvedToolsManifestSha256": "29228eca2d14a73048caaa6eddf597ecac52cd9620c151bb4e824e6b2a082669",
+  "attemptId": "20261014t125138z-s427-approved-recovery-run",
+  "automaticRetryCommands": 0,
+  "boundExecutionProcedureAndMaintenanceUnchanged": true,
+  "broadDiffLimitation": "Concurrent unrelated eng/verify-ext-secrets-1.ps1 changes have trailing whitespace; not edited here.",
+  "broadGitDiffCheckPassed": false,
+  "documentedBashBlocksSyntaxChecked": 19,
+  "failedCheck": "tokenRoleClaimsEqualLive",
+  "failedRecordSha256": "014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578",
+  "frozenIntentAndOriginalProductionTasksUnchanged": true,
+  "historicalSourcesPreservedAfterDocumentedParentSpecInsertion": true,
+  "incidentChannel": "this ChatGPT/Codex conversation",
+  "incidentRecoveryOutageOwner": "jpiquot@itaneo.com",
+  "independentProviderReadbackSha256": "ab3f008677a8d72bd5d9473f4c70822d94d8d5b316006568d8ce910ed41b0e6b",
+  "instrumentedTopLevelCommandsDispatched": 12,
+  "isolatedKeycloakAppDeploymentWasCreated": true,
+  "keycloakBackupPhaseCompleted": true,
+  "keycloakDatabaseTenComparisonsMatched": true,
+  "keycloakIsolatedClientCredentialsHttp": 200,
+  "keycloakOidcChecksPassed": 7,
+  "keycloakOidcChecksTotal": 8,
+  "kind": "hexalith.approved-recovery-strict-stop-verification",
+  "lastCommandSemanticallyFailed": true,
+  "liveClaimsReferencePresent": false,
+  "liveReferenceHttpStatusRecordedByHelper": false,
+  "memoriesMCPReplicasReady": [
+    2,
+    2
+  ],
+  "memoriesPaused": false,
+  "nextRequiredInput": "Administrator incident decision for retained isolated target/watcher and missing live-reference prerequisite; scope permission persists",
+  "originalPolicySignatureSha256": "7f5dc8431113f6f5a993ed7cefda5a427673a3334fff2a380d8a1a3eab715f0e",
+  "privateCustodyDirectory": "/home/administrator/hexalith-retirement-investigation-evidence/20261014t125138z-s427-approved-recovery-run",
+  "privateModesVerified": "directories0700/files0600",
+  "protectedSourceIdentityBindingAndReadinessChecks": {
+    "allProtectedPVsClaimReferencesUnchanged": true,
+    "protectedNamespaceUidsUnchanged": true,
+    "protectedPVCUidsBindingsUnchanged": true,
+    "protectedPVUidsUnchanged": true,
+    "sourceKeycloakReady": true,
+    "sourceOpenBaoReady": true,
+    "sourceRedisFalkorDBReady": true
+  },
+  "providerBackupObjectReadbackAcceptanceClaimed": false,
+  "rawCommandAndStateDiagnosticsEncrypted": true,
+  "rawRecipientDecryptionReadbackClaimed": false,
+  "recordedAt": "2026-10-14T13:18:12.266357+00:00",
+  "recoveryId": "20261014t112353z",
+  "remainingIsolatedTarget": "recovery-4-0-kc",
+  "result": "stopped-on-keycloak-live-reference-failure",
+  "retirementUpgradeTimesheetsDeploymentCommands": 0,
+  "reusedDecisionsLimit": "Current recovery scope only; failed operational acceptance requires the recorded incident owner decision. No retirement, upgrade or staging acceptance.",
+  "scopeApprovalReference": "/home/administrator/hexalith-retirement-investigation-evidence/20261014t120527z-s427-approved-recovery-signing/scope-approval.json",
+  "scopeApprovalRetained": true,
+  "scopedGitDiffCheckPassed": true,
+  "signed": false,
+  "signedFreshRecoveryGateAccepted": false,
+  "sourceArchiveSha256": "03c1673d996cb9053670ef7f2248c0855cb42d421335b22f9d88472c60115d5d",
+  "sourceSnapshot": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 28876,
+      "member": "project/_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md",
+      "sha256": "1602d0caa4508cc7d180a86560be9aa00d7daf2578d51e9f1d0c510873b69649"
+    },
+    "_bmad-output/implementation-artifacts/epic-4-context.md": {
+      "bytes": 8314,
+      "member": "project/_bmad-output/implementation-artifacts/epic-4-context.md",
+      "sha256": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 64648,
+      "member": "project/_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md",
+      "sha256": "ea5f313d8612f3e4d465c47f60022145094136582ea3c578c7a6521158714a45"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 34408,
+      "member": "project/eng/cluster-management/NEXT-OPERATOR-ACTION.md",
+      "sha256": "adb94c97722d1af48022fadccb318e8e09649eacc0a388cef655a28bae055b02"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "bytes": 32050,
+      "member": "project/eng/cluster-management/STAGING-PREREQUISITES.md",
+      "sha256": "49f2fd378227c2934fc34436b7a9866e24f3546f4a6c81bbce3c579347ffe93a"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "bytes": 25161,
+      "member": "project/eng/timesheets-deployment/staging-dependency-handoff.md",
+      "sha256": "949e5cd69f4c4f3fdcc4191142363dcbe9dd8c6eb011b37d5c1e8eb8317e9520"
+    }
+  },
+  "testsOrFixturesRerun": false,
+  "windowEndUtc": "2026-10-31T23:00:00Z",
+  "windowStartUtc": "2026-10-07T14:44:45Z"
+}

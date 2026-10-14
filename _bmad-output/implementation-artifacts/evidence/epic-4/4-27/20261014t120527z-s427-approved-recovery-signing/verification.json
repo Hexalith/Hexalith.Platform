@@ -1,0 +1,167 @@
+{
+  "approvedInputs": {
+    "approvedHandoffSha256": "3e721fd9becad7ec6ef601281edec8e278ef52db424325aa21cdfa50756d3cca",
+    "approvedPolicySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+    "approvedPrecheckSha256": "167fb54aa86d52498df18c5f962b050ec976b4844b9a08747a2c4756b904d4a7",
+    "approvedToolsManifestSha256": "29228eca2d14a73048caaa6eddf597ecac52cd9620c151bb4e824e6b2a082669"
+  },
+  "attemptId": "20261014t120527z-s427-approved-recovery-signing",
+  "currentVcsRevision": "8580eb64ac8a9ac3c025dd6c7f64aa6f39ce5cbb",
+  "custody": {
+    "allChecksumsMatched": true,
+    "directories0700": true,
+    "files0600": true
+  },
+  "diagnosticCustody": {
+    "ciphertextSha256": "c1f7d076a7da2c511f5298880cf27610b7445652bfb8796c69cd954d5b4bcdd6",
+    "decryptionOrReadbackPerformed": false,
+    "plaintextSha256": "6c189dfb1d7f314abdcaa021b6e942f7f71a0990fb6d4b1d40885ece696ea59e",
+    "rawDiagnosticsEncrypted": true,
+    "rawDiagnosticsPublished": false,
+    "recipient": "pinned Administrator public SSH Ed25519 key"
+  },
+  "freshRecoveryAccepted": false,
+  "kind": "approved-recovery-signing-refusal-local-verification",
+  "legacyBaselineCommit": "54920908f15a99b48e69861baf306365353fc6df",
+  "openStoryStates": {
+    "story41": "closed",
+    "story427": "in-progress",
+    "timesheetsStory36": "in-progress/FAIL"
+  },
+  "parentIndependentInspection": {
+    "approvalRetained": true,
+    "dependentRecoveryCommands": 0,
+    "exactApprovedPolicyPrecheckToolsHandoffHashesMatched": true,
+    "providerWrites": 0,
+    "scope": "parent independent scope/signing record inspection; owner-only packet and bound sources unchanged",
+    "scopeApprovalAndSigningOutcomeInspected": true,
+    "signatureOrUploadsLedgerPresent": false,
+    "signingExitCode": 255
+  },
+  "policySignatureAccepted": false,
+  "preflight": {
+    "agentEnvironmentPresent": false,
+    "allApprovedInputHashesMatched": true,
+    "capturedAt": "2026-10-14T12:09:43.356942+00:00",
+    "maximumPolicyAgeSeconds": 86400,
+    "nativeAuthenticationHooksPresent": false,
+    "nativeGetCommands": 2,
+    "policyAgeSeconds": 1740.606702,
+    "protectedUnlockSupplied": false,
+    "safeStaticNativeAuthentication": true,
+    "sameSourceClusterUid": true,
+    "serverVersion": "v1.34.9",
+    "toolFilesMatched": 37,
+    "trustAndPublicFingerprintMatched": true,
+    "withinExistingMaintenanceWindow": true
+  },
+  "preservation": {
+    "allDependentRecoveryOutputDirectoriesEmpty": true,
+    "allPreservationHashesMatched": true,
+    "approvedHandoffAndStoryRetainedAsVerbatimPrefixes": true,
+    "approvedPolicyPrecheckAndToolBytesUnchanged": true,
+    "boundExecutionProcedureMaintenance": {
+      "codeSha256": {
+        "evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+        "qualify.py": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+        "rehearse.py": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+        "rehearse_catalog.py": "0cef8f722536d1aeb09f110fda5b83a4d65332c04b5270c6dc0e9af924e65529",
+        "rehearse_namespaces.py": "c745f01399be874391f4bf6f8db01032335300abbd8ebb0776eb38d9647aa8fe",
+        "retire.py": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355"
+      },
+      "maintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+      "procedureSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60"
+    },
+    "fixtureReruns": 0,
+    "frozenIntentUnchanged": true,
+    "gitStagingOrCommitPerformed": false,
+    "originalOperationalTasksAndAcceptanceUnchanged": true,
+    "preservedInputHistoricalAndUnrelatedFileCount": 40,
+    "previousPacketsAndReceiptsUnchanged": true
+  },
+  "privateCustody": "/home/administrator/hexalith-retirement-investigation-evidence/20261014t120527z-s427-approved-recovery-signing",
+  "privatePacketChecksumsSha256": "aa75b88c79056f9e336238b1251e9ae0a88b591e446e85b2f74b04f08819e053",
+  "privateScopeApprovalSha256": "b1bbc58d75470223b99fbd10175051762be1534af81cb7ae61c4bff0112456c2",
+  "protectedSigningUnlockAvailable": false,
+  "recordedAt": "2026-10-14T12:19:02.975322+00:00",
+  "recoveryId": "20261014t112353z",
+  "recoveryScopeApproved": true,
+  "remainingAction": {
+    "afterSuccess": "independently verify original signature and immutable provider upload/readback before any capture; retain all later fresh recovery/manual gates",
+    "approvalReference": "/home/administrator/hexalith-retirement-investigation-evidence/20261014t120527z-s427-approved-recovery-signing/scope-approval.json",
+    "beforeDispatch": "exact current policy/precheck/tool/trust/RID/age/window guards in the appended handoff must pass",
+    "input": "protected signing access only; no repeated scope permission",
+    "owner": "Administrator",
+    "privateTerminalCommand": "cd /home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/tools && ./sign.sh policy/recovery-policy.json",
+    "unlockChannel": "Administrator private terminal prompt only; no chat/arguments/environment/log/file passphrase"
+  },
+  "retirementAccepted": false,
+  "retirementGateOpen": false,
+  "reusedDecisions": {
+    "acknowledgedOutageSystems": [
+      "Keycloak",
+      "OpenBao",
+      "Memories",
+      "Forgejo",
+      "Forgejo runner"
+    ],
+    "acknowledgedRoles": [
+      "present incident commander",
+      "recovery owner",
+      "workload outage owner"
+    ],
+    "incidentChannel": "this ChatGPT/Codex conversation",
+    "owner": "Administrator jpiquot@itaneo.com",
+    "windowEndExclusive": true,
+    "windowEndUtc": "2026-10-31T23:00:00Z",
+    "windowStartUtc": "2026-10-07T14:44:45Z"
+  },
+  "scopeNeedsReapproval": false,
+  "signed": false,
+  "signingAttempt": {
+    "askpassDisabled": true,
+    "captureQuiescenceRestoreCommands": 0,
+    "command": [
+      "./sign.sh",
+      "policy/recovery-policy.json"
+    ],
+    "credentialUnlockCollected": false,
+    "durationSeconds": 0.055084015999455005,
+    "exitCode": 255,
+    "failureClass": "protected-signing-key-unlock-unavailable",
+    "finishedAt": "2026-10-14T12:11:24.380243+00:00",
+    "noControllingTerminal": true,
+    "policySignaturePresent": false,
+    "providerWrites": 0,
+    "publicationReached": false,
+    "retirementUpgradeDeploymentCommands": 0,
+    "scopeApprovalRetained": true,
+    "signedPolicyProduced": false,
+    "startedAt": "2026-10-14T12:11:24.341817+00:00",
+    "stdin": "DEVNULL",
+    "timedOut": false,
+    "timeoutSeconds": 20,
+    "uploadsLedgerPresent": false,
+    "workingDirectory": "/home/administrator/hexalith-recovery-evidence/4-0/20261014t112353z/tools"
+  },
+  "sourceArchives": {
+    "approvedOriginalAndCurrentArchiveHashesPassed": true,
+    "approvedSourceArchiveSha256": "4ce29b6593257e79e588f6e68e55d795ace80ca795ce9e6b31e80e4ea6c655dc",
+    "approvedSourceMembers": 10,
+    "archiveMembers0600": true,
+    "credentialsOrSignedOriginalsCopied": false,
+    "currentCheckpointArchiveSha256": "7522139bc73afd71f63cadd182e835d178a0861631358b21935ffeccf6512c6e",
+    "currentCheckpointMembers": 3
+  },
+  "timesheetsAcceptance": "FAIL",
+  "upgradeGateOpen": false,
+  "verification": {
+    "bashBlocksSyntaxChecked": 7,
+    "currentPrivateTerminalGuardExecutedOnRealApprovedInputs": true,
+    "gitDiffCheckPassed": true,
+    "guardOnlyNoSigningExecutedDuringThatCheck": true,
+    "pythonHeredocsParsed": 5,
+    "reasonNoTestsRerun": "operational refusal checkpoint; implementation and bound execution bytes unchanged",
+    "testsRerun": false
+  }
+}

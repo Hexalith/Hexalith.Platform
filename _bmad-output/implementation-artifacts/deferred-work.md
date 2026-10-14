@@ -452,3 +452,21 @@
 - source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Refuse retirement metadata audits when a nested directory cannot be enumerated.
   evidence: The concurrent eng/cluster-management/prepare_retirement.py uses os.walk without onerror, which silently ignores inaccessible nested subtrees; the resulting audit can omit metadata while the attempt reports preparationComplete=true. This belongs to the separate retirement-preparation workflow.
+
+## Deferred from: code review of spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md (2026-10-14)
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Non-tenants sidecars receive a null Dapr config in local (non-run) mode.
+  evidence: PlatformAppModel.cs:269 sets `Config = ... : options.RunPlan?.DaprConfigPath`. Unverified medium; settle by checking whether Memories/Timesheets need access control without a run plan.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Run signing-key configuration iterates a literal six-server list.
+  evidence: PlatformAppModel.cs:67-81; an extra selected server (Timesheets) gets no plan signing key. Low.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Timesheets composition lives in the Platform model beyond story 1.6's scope; carried SDK 13.6.0 drift and `latest` Memories images re-confirmed.
+  evidence: Delivered by separate Timesheets specs; R5-E6 and the `latest` image deferral already in the ledger.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Enable package-mode composition when owners release v2 declarations.
+  evidence: `ReleaseSnapshotHashes` is empty by design, so package mode refuses today. When the first owner ships a v2 declaration release, populate the Platform release snapshot hashes and add a positive package-mode test.
