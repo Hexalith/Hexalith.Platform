@@ -1,4 +1,7 @@
 using System.Security.Claims;
+using System.Globalization;
+
+using Hexalith.EventStore.Client.Security;
 using System.Text.Json;
 
 using Hexalith.EventStore.Authentication;
@@ -36,14 +39,24 @@ public sealed class PlatformIdentityGatewayAdmission(IOptions<PlatformIdentityOp
                 return null;
             }
 
-            string? source = VerifiedWorkload(principal);
+            if (!string.Equals(scope.PayloadDigest, IdentityAdmissionProof.Digest(payload), StringComparison.Ordinal))
+            {
+                return null;
+            }
+
             bool provision = scope.Operation.Contains("ProvisionAgentParty", StringComparison.Ordinal);
             bool query = scope.Operation.Contains("Resolve", StringComparison.Ordinal);
+            string? source = VerifiedWorkload(principal);
+            bool currentJwtReader = source is null && scope.Operation.Split(',', 2)[0].Split('.').Last() == "ResolvePartyIdentity";
+            (string SourceId, ClaimsIdentity Identity)? jwtReader = currentJwtReader ? VerifiedJwtReader(principal) : null;
+            source ??= jwtReader?.SourceId;
+            ClaimsPrincipal authorizationPrincipal = jwtReader is { } selected
+                ? new ClaimsPrincipal(selected.Identity) : principal;
             string[] allowed = provision ? options.Value.ProvisioningSources
                 : query ? options.Value.ReaderSources : options.Value.IdentityWriterSources;
             if (source is null || !allowed.Contains(source, StringComparer.Ordinal)
-                || !(await tenantValidator.ValidateAsync(principal, scope.TenantId, cancellationToken, scope.AggregateId).ConfigureAwait(false)).IsAuthorized
-                || !(await rbacValidator.ValidateAsync(principal, scope.TenantId, scope.Domain, scope.Operation,
+                || !(await tenantValidator.ValidateAsync(authorizationPrincipal, scope.TenantId, cancellationToken, scope.AggregateId).ConfigureAwait(false)).IsAuthorized
+                || !(await rbacValidator.ValidateAsync(authorizationPrincipal, scope.TenantId, scope.Domain, scope.Operation,
                     query ? "query" : "command", cancellationToken, scope.AggregateId).ConfigureAwait(false)).IsAuthorized)
             {
                 return null;
@@ -66,7 +79,9 @@ public sealed class PlatformIdentityGatewayAdmission(IOptions<PlatformIdentityOp
                 return null;
             }
 
-            if (actorId is not null && actorEvidence is null)
+            if (currentJwtReader && (string.IsNullOrWhiteSpace(actorId) || actorEvidence is not { Active: true, Revision: > 0 }
+                || !string.Equals(actorEvidence.ActorId, actorId, StringComparison.Ordinal))
+                || actorId is not null && actorEvidence is null)
             {
                 return null;
             }
@@ -105,6 +120,37 @@ public sealed class PlatformIdentityGatewayAdmission(IOptions<PlatformIdentityOp
         {
             return null;
         }
+    }
+
+    private (string SourceId, ClaimsIdentity Identity)? VerifiedJwtReader(ClaimsPrincipal principal)
+    {
+        foreach (PlatformIdentityJwtReader reader in options.Value.JwtReaders)
+        {
+            if (string.IsNullOrWhiteSpace(reader.SourceId) || string.IsNullOrWhiteSpace(reader.Issuer)
+                || string.IsNullOrWhiteSpace(reader.Subject) || string.IsNullOrWhiteSpace(reader.ClientId)
+                || string.IsNullOrWhiteSpace(reader.ClientIdClaimType) || string.IsNullOrWhiteSpace(reader.AuthenticationType)
+                || reader.AuthenticationType == DaprInternalAuthenticationOptions.SchemeName) continue;
+            foreach (ClaimsIdentity identity in principal.Identities.Where(identity => identity.IsAuthenticated
+                && identity.AuthenticationType == reader.AuthenticationType))
+            {
+                // All service identity and lifetime claims belong to this one authenticated identity.
+                if (ExactClaim(identity, "iss") != reader.Issuer || ExactClaim(identity, "sub") != reader.Subject
+                    || ExactClaim(identity, reader.ClientIdClaimType) != reader.ClientId
+                    || !long.TryParse(ExactClaim(identity, "exp"), NumberStyles.None, CultureInfo.InvariantCulture, out long expiry)
+                    || expiry <= timeProvider.GetUtcNow().ToUnixTimeSeconds()) continue;
+                string? notBefore = ExactClaim(identity, "nbf");
+                if (notBefore is not null && (!long.TryParse(notBefore, NumberStyles.None, CultureInfo.InvariantCulture, out long start)
+                    || start > timeProvider.GetUtcNow().ToUnixTimeSeconds())) continue;
+                return (reader.SourceId, identity);
+            }
+        }
+        return null;
+    }
+
+    private static string? ExactClaim(ClaimsIdentity identity, string type)
+    {
+        Claim[] claims = [.. identity.FindAll(type)];
+        return claims.Length == 1 ? claims[0].Value : null;
     }
 
     /// <summary>Returns only a workload authenticated through the existing Dapr scheme.</summary>

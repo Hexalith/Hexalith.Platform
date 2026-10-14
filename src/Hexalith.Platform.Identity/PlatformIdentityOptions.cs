@@ -15,6 +15,9 @@ public sealed class PlatformIdentityOptions
     /// <summary>Gets or sets trusted authoritative reader workloads.</summary>
     public string[] ReaderSources { get; set; } = [];
 
+    /// <summary>Gets or sets explicitly configured JWT service readers; empty by default.</summary>
+    public PlatformIdentityJwtReader[] JwtReaders { get; set; } = [];
+
     /// <summary>Gets or sets the private purpose-keyed alias digest secret.</summary>
     public string? AliasKeyBase64 { get; set; }
 
