@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Hexalith.EventStore.Client.Projections;
 using Hexalith.EventStore.Server.Configuration;
 using Hexalith.EventStore.ServiceDefaults.Authentication;
+using YamlDotNet.RepresentationModel;
 
 [Collection("Platform file entry")]
 public sealed partial class PlatformAppModelTests
@@ -408,6 +409,12 @@ public sealed partial class PlatformAppModelTests
             servers.Length.ShouldBe(7);
             servers.ShouldNotContain(s => PlatformDeclarationSet.Id(s.Binding.Module.Declaration) == "unrelated");
             PlatformServerBinding party = servers.Single(s => s.Binding.ResourceId == "parties-api-host").Binding;
+            using ServiceProvider provider = builder.Services.BuildServiceProvider();
+            string pubSubPath = Path.Combine(provider.GetRequiredService<PlatformCompositionWorkspace>().Path, "pubsub.yaml");
+            YamlMappingNode pubSub = (YamlMappingNode)Yaml(File.ReadAllText(pubSubPath)).Documents[0].RootNode;
+            string[] scopes = ((YamlSequenceNode)pubSub.Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ToArray();
+            scopes.ShouldContain(party.AppId);
+            scopes.ShouldNotContain("unrelated-api");
             party.Tasks.Single().GetProperty("scope").GetString().ShouldBe("per-start-verify");
             party.Tasks.Single().GetProperty("authorityClass").GetString().ShouldNotBeNullOrEmpty();
             PlatformAppModel.Prepare(options with { DomainModule = false }).Count.ShouldBe(1);

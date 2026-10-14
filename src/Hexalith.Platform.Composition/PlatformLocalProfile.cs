@@ -123,8 +123,8 @@ public static class PlatformLocalProfile
                 throw new InvalidDataException($"{source}: {module}/{server}/Clock:SourceAuthenticationTokens:{token.Name}: token is unavailable.");
             environment[$"Clock__Sources__{sourceIndex}__AuthenticationToken"] = token.Value.GetString()!;
         }
-        foreach ((string id, int sourceIndex) in indices)
-            if (!environment.ContainsKey($"Clock__Sources__{sourceIndex}__AuthenticationToken"))
+        foreach (string id in indices.Keys)
+            if (!tokenDocument.RootElement.TryGetProperty(id, out _))
                 throw new InvalidDataException($"{source}: {module}/{server}/Clock:Sources:{id}: authentication token is unavailable.");
     }
 

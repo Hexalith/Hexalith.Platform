@@ -105,14 +105,18 @@ public static class PlatformAppModel
         bool hasTenants = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "tenants");
         bool hasGateway = servers.Any(server => server.ResourceId == "eventstore");
         bool hasTimesheets = servers.Any(server => server.ResourceId == "timesheets");
-        List<string> files = ["statestore.yaml", "pubsub.yaml"];
+        PlatformServerBinding[] stateStoreConsumers = servers.Where(server => UsesSharedComponent(server, "statestore")).ToArray();
+        PlatformServerBinding[] pubSubConsumers = servers.Where(server => UsesSharedComponent(server, "pubsub")).ToArray();
+        List<string> files = [];
+        if (hasGateway || stateStoreConsumers.Length > 0) files.Add("statestore.yaml");
+        if (hasGateway || pubSubConsumers.Length > 0) files.Add("pubsub.yaml");
         if (hasGateway) files.AddRange(["configstore.yaml", "accesscontrol.eventstore.yaml"]);
         if (hasTenants) files.Add("accesscontrol.tenants.yaml");
         if (hasMemories) files.AddRange(["secretstore.yaml", "llm.yaml", "telemetry-state.yaml", "telemetry-config.yaml"]);
         if (hasTimesheets) files.Add("timesheets-readmodels.yaml");
         foreach (string file in files) if (!File.Exists(Path.Combine(components, file))) throw new FileNotFoundException($"Platform shared local Dapr component '{Path.Combine(components, file)}' is unavailable.", Path.Combine(components, file));
 
-        // Render only connection endpoints and local signing material; literal component names remain owner-compatible until 1.7.
+        // Render local endpoints, signing material and selected consumers; literal component names remain owner-compatible until 1.7.
         string rendered = options.RunPlan is null ? Path.Combine(Path.GetTempPath(), "hexalith-platform", Guid.NewGuid().ToString("N")) : Path.Combine(options.RunPlan.Workspace, "platform-components");
         CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(rendered)!);
         CompositionWorkspace.CreatePrivateDirectory(rendered);
@@ -134,6 +138,8 @@ public static class PlatformAppModel
             foreach (string file in files)
             {
                 string content = File.ReadAllText(Path.Combine(components, file)).Replace("localhost:6379", "127.0.0.1:" + redisPort, StringComparison.Ordinal).Replace("127.0.0.1:6379", "127.0.0.1:" + redisPort, StringComparison.Ordinal);
+                if (file == "statestore.yaml") content = IncludeComponentConsumers(content, stateStoreConsumers);
+                if (file == "pubsub.yaml") content = IncludeComponentConsumers(content, pubSubConsumers);
                 if (file == "telemetry-state.yaml") content = content.Replace("127.0.0.1:" + redisPort, "127.0.0.1:" + vectorPort, StringComparison.Ordinal);
                 if (file == "secretstore.yaml") content = RenderSecretStore(content, secrets);
                 if (file.StartsWith("accesscontrol.", StringComparison.Ordinal) && options.RunPlan is not null) content = MergeRunDiscovery(content, File.ReadAllText(options.RunPlan.DaprConfigPath));
@@ -244,6 +250,10 @@ public static class PlatformAppModel
                         .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__Domain", "timesheets")
                         .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__Version", "v1");
             }
+            IResourceBuilder<IDaprComponentResource>? sharedStateStore = gateway?.StateStore ?? (stateStoreConsumers.Length > 0
+                ? builder.AddDaprComponent("statestore", "state.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "statestore.yaml") }) : null);
+            IResourceBuilder<IDaprComponentResource>? sharedPubSub = gateway?.PubSub ?? (pubSubConsumers.Length > 0
+                ? builder.AddDaprComponent("pubsub", "pubsub.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "pubsub.yaml") }) : null);
             int sidecarIndex = 0;
             foreach (PlatformServerBinding server in servers)
             {
@@ -263,7 +273,8 @@ public static class PlatformAppModel
                                 PlacementHostAddress = options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Placement,
                                 SchedulerHostAddress = options.RunPlan is null ? null : "127.0.0.1:" + options.RunPlan.Ports.Scheduler });
                             if (server.ResourceId == "timesheets") sidecar.WithReference(timesheetsReadModels!);
-                            else if (gateway is not null) sidecar.WithReference(gateway.StateStore).WithReference(gateway.PubSub);
+                            if (stateStoreConsumers.Contains(server)) sidecar.WithReference(sharedStateStore!);
+                            if (pubSubConsumers.Contains(server)) sidecar.WithReference(sharedPubSub!);
                             if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories")
                                 foreach (IResourceBuilder<IDaprComponentResource> component in memoriesComponents) sidecar.WithReference(component);
                         }).WaitFor(redis);
@@ -325,6 +336,27 @@ public static class PlatformAppModel
 
     internal static string RenderSecretStore(string content, string secrets) =>
         content.Replace(JsonSerializer.Serialize("DaprComponents/secrets.json"), JsonSerializer.Serialize(secrets), StringComparison.Ordinal);
+
+    private static bool UsesSharedComponent(PlatformServerBinding server, string name) =>
+        server.Module.Declaration.GetProperty("runtime").GetProperty("dapr").EnumerateArray()
+            .Any(capability => server.Environment[capability.GetProperty("configurationKey").GetString()!.Replace(":", "__", StringComparison.Ordinal)] == name);
+
+    private static string IncludeComponentConsumers(string content, IEnumerable<PlatformServerBinding> consumers)
+    {
+        YamlStream yaml = new();
+        yaml.Load(new StringReader(content));
+        YamlMappingNode component = (YamlMappingNode)yaml.Documents[0].RootNode;
+        YamlScalarNode key = new("scopes");
+        YamlSequenceNode scopes = component.Children.TryGetValue(key, out YamlNode? existing) ? (YamlSequenceNode)existing : new();
+        // Owner examples already define which reference servers may load each shared component.
+        foreach (string appId in consumers.Where(server => !PlatformServerBindings.ReferenceProjects.ContainsKey(PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId))
+            .Select(server => server.AppId).Distinct(StringComparer.Ordinal))
+            if (!scopes.Children.OfType<YamlScalarNode>().Any(scope => scope.Value == appId)) scopes.Add(appId);
+        component.Children[key] = scopes;
+        StringWriter writer = new(CultureInfo.InvariantCulture);
+        yaml.Save(writer, assignAnchors: false);
+        return writer.ToString();
+    }
 
     internal static string MergeRunDiscovery(string accessControl, string configuration)
     {

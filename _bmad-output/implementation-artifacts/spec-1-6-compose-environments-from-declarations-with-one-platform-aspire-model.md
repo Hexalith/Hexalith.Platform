@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 6
 created: '2026-10-12'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '977f2e01347226ac727b707aee4f140f5dc8b010'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -237,6 +237,37 @@ Code review 2026-10-13 (bmad-code-review, second pass). Scope: Platform `977f2e0
 
 ## Review Triage Log
 
+**Seventh-pass build review (2026-10-14):** All three independent review layers completed against the preserved baseline diff. Findings below were classified individually before grouping. The diff also contains later Timesheets/upgrade work and an unfinished retirement preparer written by another concurrent workflow; those are separate from Story 1.6.
+
+| Finding | Verdict | Route | Evidence |
+|---|---|---|---|
+| R7-B1 | medium | patch | The supported two-server technical fixture declares pubsub and selects no EventStore. `Attach` registers shared references only when the gateway exists, so the configured component is missing. Register the existing literal components independently for this demonstrated gateway-free path and assert the references. |
+| R7-B2 | medium | patch | The domain fixture declares pubsub under `parties-api`; the copied YAML scopes omit it. Unlike the earlier owner-only scope claim, this selected additional consumer demonstrably needs the component. Extend rendered scopes for declared selected consumers while preserving literal names and owner files. |
+| R7-B3 | medium | defer | carried R5-E6: file SDK 13.6.0 still differs from catalog 13.6.1. The verifier correctly refuses; the separately recorded alignment decision remains unchanged. |
+| R7-B4 | medium | defer | carried R5-E4: Memories infrastructure still uses the owner's existing latest tags and has no catalog entries. The existing image-pinning deferral applies. |
+| R7-B5 | medium | defer | carried R5-E3: the existing writer-protocol bound includes endpoint allocation/cold compilation and can stop the file host. Deadline policy remains Story 1.8. |
+| R7-B6 | medium | patch | `Clock:Sources` is flattened before `MapClockTokens`, whose final environment-presence check accepts an inline AuthenticationToken even when the separate token map omits that source ID. Check coverage against the token map itself using the existing source-ID matching contract. |
+| R7-B7 | low | reject | carried R5-E5: non-object Clock items or non-string IDs lose scoped diagnostics, but neither the Platform-owned profile nor current production callers supplies those shapes. The previously rejected rare-input guards are unchanged. |
+| R7-B8 | false | reject | The companion retirement test appeared in the shared workspace after the review diff was staged. Both preparer and test are currently present as external untracked work and will be included when the diff is restaged; no missing source remains in the current preparer inputs. Neither file is a Story 1.6 change. |
+| R7-B9 | medium | defer | The external retirement preparer creates the final attempt directory, verifies the archive, then writes attempt.json with preparationComplete=true before the remaining records and checksums. A later write failure can leave a partial attempt and prevent reusing its ID. This belongs to the concurrent Story 4.27 preparation work. |
+| R7-B10 | medium | defer | The separate Kubernetes-upgrade preparer assigns identical health/storage filenames to both hop records, so retained second-hop evidence can replace first-hop evidence. This is pre-existing upgrade work, not declaration composition. |
+| R7-B11 | low | defer | carried R5-B10: Timesheets preparation still claims no Development binding despite later host-binding work. The existing documentation deferral applies. |
+| R7-E1 | medium | patch | The additional domain app-ID pubsub case is reachable through the existing explicit fixture bindings, and its rendered component scope excludes that app ID. Preserve names and include declared selected consumers. |
+| R7-E2 | medium | patch | The gateway-free technical fixture declares pubsub, but both registration and attachment depend on an EventStore gateway. The minimum closure must receive its declared shared components without inventing that gateway. |
+| R7-E3 | medium | defer | carried R5-E3: same existing cold-start writer-protocol deadline issue; Story 1.8 owns the policy and the prior deferral stands. |
+| R7-E4 | medium | defer | carried R5-E6: same file-entry SDK drift and existing separate alignment decision. |
+| R7-E5 | medium | defer | The external retirement preparer's os.walk has no onerror callback; an inaccessible nested metadata subtree can be omitted from a complete-looking audit. This belongs to concurrent retirement preparation, not Story 1.6. |
+| R7-V1 | medium | patch | Pre-verified regression gap: current Clock tests cover unknown/missing IDs but not present empty/whitespace tokens. Exercise Compose with those values and assert scoped refusal before resources. |
+| R7-V2 | medium | patch | Verified Other finding: the existing technical two-server test declares pubsub yet checks only ports/counts. The gateway-dependent registration/attachment leaves both sidecars without their configured component. |
+
+Shared-root groups after individual classification: R7-B1/R7-E2/R7-V2 (gateway-dependent shared-component registration); R7-B2/R7-E1 (additional declared consumers absent from scopes). R7-B6 and R7-V1 have distinct causes and remain separate patch entries. Carried findings keep their existing routes without another patch or ledger entry. Only the three newly identified external upgrade/retirement defects are appended to deferred work. These fixes preserve frozen intent and use existing internal component and token contracts.
+
+| Finding | Verdict | Route | Evidence |
+|---|---|---|---|
+| R7-P1 | high | patch | Parent inspection of the first scope patch showed that module-level reference metadata would add Memories telemetry to statestore while it already loads access-telemetry-store. Both are actor stores, and the owner examples intentionally keep those reference scopes separate. Preserve the existing reference module/server bindings when extending scopes, and assert the telemetry actor-store scope explicitly. |
+
+R7-P1 is a correction to the R7-B2/R7-E1 patch, using the existing reference binding identities; it adds no public contract or owner-file edits.
+
 **Resumed build review (2026-10-14):** Blind Hunter, Edge Case Hunter and Verification Gap Reviewer all completed against the preserved Platform and Builds baseline diff. Each finding is classified before grouping; carried findings retain their prior disposition and are not patched or deferred again.
 
 | Finding | Verdict | Route | Evidence |
@@ -346,7 +377,9 @@ Shared-root groups: B2/E8 (plan-port overlap); B6/E2/V3 (v2 session ownership); 
 
 ## Verification
 
-**Sixth-pass correction verification (2026-10-14):** After the external rebase settled at `fecf84e`, the Platform test-project Debug build passed with zero warnings/errors using `-m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 --no-restore` (`/tmp/story-1-6-sixth-settled-platform-build.log`). Direct xUnit execution with `-noLogo -parallelMode none` completed: 99 total, 96 passed, zero errors/failures, three explicit live skips, 38.605 seconds (`/tmp/story-1-6-sixth-settled-platform-tests.log`). The real generated Dapr CLI lifecycle assertions, shared `configstore` refusal and mapped Memories owner-option build/validation all ran. Diff whitespace checks pass. No live smoke was rerun; the recorded SDK drift and package release/image limitations remain deferred.
+**Sixth-pass correction verification (2026-10-14):** After the external rebase settled at `fecf84e81572c019ede75fcedd28eb723e30b97f`, the Platform test-project Debug build passed with zero warnings/errors using `-m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 --no-restore` (`/tmp/story-1-6-sixth-settled-platform-build.log`). Direct xUnit execution with `-noLogo -parallelMode none` completed: 99 total, 96 passed, zero errors/failures, three explicit live skips, 38.605 seconds (`/tmp/story-1-6-sixth-settled-platform-tests.log`). The real generated Dapr CLI lifecycle assertions, shared `configstore` refusal and mapped Memories owner-option build/validation all ran. Diff whitespace checks pass. No live smoke was rerun; the recorded SDK drift and package release/image limitations remain deferred.
+
+**Parent matrix audit after sixth-pass corrections (2026-10-14):** The parent inspected the five patch changes and the ordinary-suite logs. Domain, technical/default, invalid/unavailable and Works rows are covered by tests that ran and passed; the only skips are the three explicit live smokes. The pin verifier passed an aligned temporary file entry plus separate SDK, EventStore.Aspire and Dapr drift fixtures; every refusal names the package and both versions (`/tmp/story-1-6-sixth-parent-pin-matrix.log`). No frozen intent was amended, and the original baseline is preserved. External operations committed the patches as `982c78c5d0ae7739a43ea2b8c497fe7b0cd70a92` and subsequently updated owner gitlinks; the recorded test execution preceded those owner updates.
 
 **Final parent verification after resumed review patches (2026-10-14):** The parent inspected the patches and ran verification sequentially. Platform test-project build and root Debug solution build passed with zero warnings/errors. The ordinary Platform suite passed 96/99, with zero failures and only the three explicit live skips; the mapped Memories owner build and real Dapr subscriber lifecycle test both ran. Expanded focused Builds execution passed 166/166, with zero failures/skips, including the new bounded-schema command cases. The complete declaration matrix passed. Frozen intent was compared with HEAD and is unchanged; diff whitespace checks pass. Logs: `/tmp/story-1-6-final-platform-build.log`, `/tmp/story-1-6-final-platform-tests.log`, `/tmp/story-1-6-final-builds-tests.log`, `/tmp/story-1-6-final-solution-build.log`, `/tmp/story-1-6-final-declaration-matrix.log`. The earlier pin-fixture matrix and owner-byte checks remain valid. The separately deferred SDK drift still prevents LocalScaffold file-entry verification, and package startup remains unqualified under the recorded owner-release/image limitations; no live smoke was rerun in this pass.
 

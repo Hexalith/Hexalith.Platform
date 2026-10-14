@@ -437,3 +437,18 @@
 - source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Mark the Timesheets deployment's hash-bound files `-text` so `autocrlf` checkouts keep their recorded SHA-256 values.
   evidence: `eng/timesheets-deployment/plan.json:52` records the sha256 of `hexalith.module-manifest.v2.json`, and `prepare.py:19,145-165` hashes working-tree bytes, including its own. `.gitattributes` covers only `src/Hexalith.Platform.Composition/Declarations/*.json`. Pre-existing in Timesheets enrollment work (`ce6f2d3`).
+
+
+## Deferred from: Story 1.6 build review, seventh pass (2026-10-14)
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Publish retirement preparation attempts atomically after every record and checksum is complete.
+  evidence: The concurrent Story 4.27 preparer creates the final immutable attempt directory before writing its archive and records; attempt.json records preparationComplete=true before later writes and checksum verification. A write failure leaves a partial attempt and blocks retry under the same ID. This is separate retirement-preparation work.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Retain distinct preflight, postflight and storage evidence paths for each Kubernetes upgrade hop.
+  evidence: eng/kubernetes-upgrade/prepare.py assigns pre-upgrade-health.json, post-upgrade-health.json and dynamic-storage-proof.json to both hop records. Fresh second-hop evidence can replace retained first-hop evidence. This predates declaration-composition corrections and belongs to the separate upgrade workflow.
+
+- source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
+  summary: Refuse retirement metadata audits when a nested directory cannot be enumerated.
+  evidence: The concurrent eng/cluster-management/prepare_retirement.py uses os.walk without onerror, which silently ignores inaccessible nested subtrees; the resulting audit can omit metadata while the attempt reports preparationComplete=true. This belongs to the separate retirement-preparation workflow.

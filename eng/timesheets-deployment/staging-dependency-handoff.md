@@ -269,3 +269,33 @@ commands above remain conditional on exact binary/procedure qualification;
 fully bound Timesheets deployment commands cannot be produced while the chart,
 image and approved release workflow are absent. No infrastructure command,
 signing, publication, Git staging/commit or Timesheets acceptance change occurred.
+
+## Offline retirement continuation — 2026-10-14
+
+The [local retirement prerequisites](../cluster-management/STAGING-PREREQUISITES.md)
+add an offline-only packet preparer, exact conditional first-census / sequential
+namespace-catalog-fresh-node / second-plan commands, original signature checks
+and the unresolved operator evidence. The planned local pointer was superseded
+when concurrent repository activity supplied this existing handoff; its full
+prior history above is preserved. This continuation uses the exact external
+input at
+`/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/staging-dependency-handoff.md`,
+SHA-256 `b12758d8a528a876314e7d49b02a864530fc1a7852f40818701ee0f8f789ef38`.
+The dated native findings above belong to that input; this continuation makes
+no new live observations and treats the extended window as no approval.
+
+Packet `20261014t100941z-s427-reviewed-preparation` is prepared under
+`/home/administrator/hexalith-retirement-preparation-evidence/` with retained
+source bytes, complete historical fixture-manifest/readback-receipt integrity
+and metadata path/digest lineage. Recovery originals/signatures stay in their
+existing private custody. See the deliberately sanitized, unsigned
+[local verification receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t100941z-s427-reviewed-preparation/verification.json)
+for packet/test digests. This is no fresh decryption, off-node acceptance,
+source qualification, plan, approval or operational proof. Story 4.27 remains
+`in-progress`, Story 4.1 stays closed and Timesheets Story 3.6 remains open/FAIL.
+All release, infrastructure, provider, source and deployed-acceptance gates
+above and all default-deny providers remain unchanged. The imported enrollment
+suite's 31 setup errors belong to its historical checkout; the mapped Timesheets
+project is present here now, and this retirement preparation makes no new
+enrollment-test claim. No command that contacts production or signs, retires,
+upgrades or deploys was run here.

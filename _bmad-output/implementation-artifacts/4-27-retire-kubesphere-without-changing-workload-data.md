@@ -71,3 +71,47 @@ The [resume verification](evidence/epic-4/4-27/20261006t091552z-s427-resume-veri
 Local prerequisite metadata still shows the historical 4.0 gate expired and no exact-named current retirement policy or console-closure record in the inspected retained roots. This unsigned local checkpoint performed no cryptographic validation of production prerequisites and made zero production observations or mutation requests. Next obtain accepted independent 4.2 console closure, fresh signed 4.0/4.1 proofs and matching recovery, then a fresh native plan bound to the final-byte receipts and separate exact-attempt approval. Production retirement, signed preservation/health acceptance and the post-retirement 4.1 recovery handoff remain pending.
 
 **Current live gate: closed.** No fresh production plan bound to these final-byte receipts, accepted independent 4.2 console closure, fresh attempt-specific production recovery/readback, separate exact execution approval, production preservation/retirement acceptance or post-retirement 4.1 recovery inputs are supplied by this code change. Keep 4.27 `in-progress` and 4.1's native-hop gate closed. Preserve `jpiquot` authority for its separately approved removal in 4.28 and preserve hashed `MAINTENANCE.md`.
+
+## 2026-10-14 offline Timesheets preparation
+
+The [offline preparer](../../eng/cluster-management/prepare_retirement.py) and
+[operator prerequisites](../../eng/cluster-management/STAGING-PREREQUISITES.md)
+retain immutable consumed preparation source bytes and complete historical
+fixture input lineage in owner-only external packet
+`20261014t100941z-s427-reviewed-preparation` under
+`/home/administrator/hexalith-retirement-preparation-evidence/`. The separate
+[sanitized unsigned local audit](evidence/epic-4/4-27/20261014t100941z-s427-reviewed-preparation/verification.json)
+records the actual test, packet, archive and checksum inspection outcomes.
+It is outside the consumed source set to avoid self-reference.
+
+The exact external Timesheets handoff input is
+`/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/staging-dependency-handoff.md`,
+SHA-256 `b12758d8a528a876314e7d49b02a864530fc1a7852f40818701ee0f8f789ef38`.
+Its October 14 native observations and extended window are input claims, not
+observations or approval by this continuation. Concurrent repository changes
+supplied the existing local Timesheets handoff; this run preserves it and adds
+only the continuation pointer.
+
+The real pure rehearsal validator and all 905/98 private-manifest files plus
+846/85 retained two-recipient export/readback records are checked against
+unchanged bound execution/procedure/maintenance bytes and the historical
+October 4 census. No fixture, decryption, off-node acceptance or current source
+qualification is repeated. Recovery metadata originals and signatures remain
+in existing private custody; the new packet contains measured path/digest
+lineage and explicitly untrusted metadata summaries, never plaintext copies
+of those signed originals. Every operational field remains null/not-run,
+`signed=false`, `mutationAuthorized=false`, with no production `plan.json`.
+
+Unresolved operator inputs remain: approved trust root/principal, static native
+configuration, Administrator/distinct readback recipients and identity,
+receipt key/signing scope, approved freshness policy; fresh signed 4.0 proofs,
+independent off-node readback and matching production 4.1 point/fenced isolated
+restore/node recovery; accepted independent 4.2 closure; private native access
+and authenticated health; first fresh census, renewed source-bound fixtures,
+second fresh plan and separate exact execution/outage/owner/window/stop/recovery
+approval. The existing gate expired October 2; historical receipts/placeholders
+and the extended window open no gate. Conditional commands use the unchanged
+bound retirement handoff. No remote operation, signing, retirement, upgrade,
+deployment, domain command, external publication or Git staging/commit occurs
+in this continuation. 4.27 remains `in-progress`, 4.1 closed and Timesheets
+Story 3.6 open/FAIL with all later owner gates/default-deny providers preserved.
