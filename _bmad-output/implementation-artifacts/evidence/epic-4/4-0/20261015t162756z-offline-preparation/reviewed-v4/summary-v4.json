@@ -1,0 +1,157 @@
+{
+  "activeManifest": "packet-v4.json",
+  "actualApiProviderIamCalls": 0,
+  "actualCredentialOrPrivateKeyFileRead": false,
+  "actualKubeconfigRead": false,
+  "actualTransportPreflightRun": false,
+  "approvalAuthenticated": false,
+  "approvalRequest": "> Approve only the Administrator's protected local execution of the exact\n> static transport preflight bound below for RID 20261015t162756z. Permit\n> reading only the fixed owner-only kubeconfig into protected memory after\n> its exact digest/custody check, and the exact local kubectl config-view\n> parser over a sealed in-memory copy. Permit no authentication, API/provider/\n> IAM/network request, private-key file read, secret output, credential grant,\n> capture, restore, decryption, signing, publication, acceptance or later stage.\n> On any mismatch or unknown result, stop and return the sanitized refusal.",
+  "closedBlockers": {
+    "break-glass-custody-and-client-fingerprint": "Closed: fresh break-glass-custody-and-client-fingerprint has not been measured; the corresponding value remains null.",
+    "capture-and-restore-results": "Closed: fresh capture-and-restore-results has not been measured; the corresponding value remains null.",
+    "cleanup-and-absence": "Closed: fresh cleanup-and-absence has not been measured; the corresponding value remains null.",
+    "current-c3-and-drain": "Closed: fresh current-c3-and-drain has not been measured; the corresponding value remains null.",
+    "current-measurement-approval": "Only an Administrator protected local static preflight is proposed. It has not run. Every network/API/provider/IAM lane remains BLOCKED until exact adapters, runtime, current authority and separate reviewed measurement approval exist. No source credential or actual kubeconfig was read by preparation.",
+    "current-memories-tenant-census": "Closed: fresh current-memories-tenant-census has not been measured; the corresponding value remains null.",
+    "current-oidc-live-reference": "Closed: fresh current-oidc-live-reference has not been measured; the corresponding value remains null.",
+    "exact-reviewed-execution-and-signing-approval": "This preparation authorizes no operation. After bounded read-only measurements and adapter review, obtain revised exact current-attempt execution/signing approval; old four-record delegation and old incident acceptance do not transfer.",
+    "fresh-create-only-adapters": "No fresh-RID-safe explicit-argv, create-only, bounded, encrypted, semantically checked capture/restore/publication/cleanup/signature adapter is supplied. Historical executors are reference-only outside runnable tools/RID layouts.",
+    "generic-dispatch-not-an-allowlist": "Historical run_step*.py accepts generic argv; old semantic wrappers bind old outputs. A fresh adapter must reject every nonallowlisted argv and bind per-command semantic outputs with timeout, process-group reap and first-failure stop.",
+    "immutable-validator-readbacks": "Closed: fresh immutable-validator-readbacks has not been measured; the corresponding value remains null.",
+    "legacy-preparer-side-effects": "Old policy.py uploads, preflight --dry mutates, s40lib writes overwrite unsigned outputs, and legacy selftests/preparers may authenticate or mutate. No legacy entry point may execute or be imported.",
+    "memories-split-semantic-adapters": "No fresh split adapter enforces one final pre/census, actual C3 announcement, <=900s drain, paired Redis/FalkorDB source restart/census/AOF gates, isolated restore/isolation, and immediate approved conditional resume. Composite branches must not replay or overwrite the final pre.",
+    "native-authority-and-revocation-lineage": "Closed: fresh native-authority-and-revocation-lineage has not been measured; the corresponding value remains null.",
+    "private-oidc-attempt-guards": "Accepted private_oidc/proof_input_guard/incident_guard and proof consumer hard-code the old RID, target UIDs, accepted incident and diagnostic hashes. New reviewed adapters must bind fresh sources/target UIDs, 38080/28080, disabled proxies/redirects, all eight checks and distinct failed-original lineage; do not edit or replay old tools.",
+    "provider-bucket-policy-and-retention": "BLOCKED: no exact provider read-only adapter/dependency runtime or current authority is qualified. Historical bucket policy/observations remain historical; current value null.",
+    "provider-current-object-versions": "Closed: fresh provider-current-object-versions has not been measured; the corresponding value remains null.",
+    "provider-validator-iam": "BLOCKED: validator/provider adapter/runtime and authority remain unqualified. No provider credential loading or API calls are authorized by local static preflight approval.",
+    "provider-writer-iam": "BLOCKED: Administrator IAM authority and exact read-only metadata adapter/runtime are not qualified; do not load writer credentials or infer existing grants.",
+    "signatures-and-acceptance": "Closed: fresh signatures-and-acceptance has not been measured; the corresponding value remains null.",
+    "source-health-and-canaries": "Closed: fresh source-health-and-canaries has not been measured; the corresponding value remains null.",
+    "source-incarnations-and-indices": "Closed: fresh source-incarnations-and-indices has not been measured; the corresponding value remains null.",
+    "source-pvc-pv-bindings": "Closed: fresh source-pvc-pv-bindings has not been measured; the corresponding value remains null.",
+    "source-resource-uids": "Closed: fresh source-resource-uids has not been measured; the corresponding value remains null.",
+    "source-tool-and-ca-fingerprints": "Closed: fresh source-tool-and-ca-fingerprints has not been measured; the corresponding value remains null.",
+    "ssh-host-trust-and-current-client": "Closed: fresh ssh-host-trust-and-current-client has not been measured; the corresponding value remains null.",
+    "target-capacity-and-storage-class": "Closed: fresh target-capacity-and-storage-class has not been measured; the corresponding value remains null.",
+    "target-image-digests-and-runtime-tools": "Closed: fresh target-image-digests-and-runtime-tools has not been measured; the corresponding value remains null.",
+    "target-runtime-and-isolation": "Closed: fresh target-runtime-and-isolation has not been measured; the corresponding value remains null.",
+    "target-uids-and-volume-identities": "Closed: fresh target-uids-and-volume-identities has not been measured; the corresponding value remains null.",
+    "tool-docker-custody": "Canonical current Docker bytes were hashed without execution; file and parent bin directory are root-owned mode0775. Execution custody is not accepted. The historical staged copy is reference-only unless separately approved for a bounded measurement; no daemon/context/image observation is claimed."
+  },
+  "currentRecoveryClaimed": false,
+  "independentlyReviewedPriorManifestAnchors": {
+    "packet-v2.json": "70a721ca7ced74281029c480419d08889658dc07f83844cdcefd10c7f8f99d59",
+    "packet-v3.json": "5582ea912dcca2b2839f08236405747d6a54232d096d5ce25286c831dfed042a",
+    "packet.json": "3f4dc1e480c03413d44f3a8343e2730913aea220456c2dc4736a8df3eeebed2d"
+  },
+  "kind": "hexalith.reviewed-v4-offline-preparation-closeout",
+  "measurementLanes": {
+    "iam": "BLOCKED-exact-adapter-runtime-and-authority-unqualified",
+    "localStaticTransport": "requires-Administrator-protected-local-approval",
+    "nativeApi": "BLOCKED-static-transport-and-exact-adapter-unqualified",
+    "provider": "BLOCKED-exact-adapter-runtime-and-authority-unqualified"
+  },
+  "noStageCommitPushBranchDependencyUpdate": true,
+  "operationalGate": "closed",
+  "operationalStagesRun": 0,
+  "ownedOutputPaths": [
+    "eng/recovery-preparation/",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-0/20261015t162756z-offline-preparation/reviewed-v4",
+    "/home/administrator/hexalith-recovery-evidence/4-0/20261015t162756z"
+  ],
+  "policyAndRidUnchanged": {
+    "acceptedAt": null,
+    "captureAt": null,
+    "expiresAt": "2026-10-16T16:27:56Z",
+    "maximumPolicyAgeSeconds": 86400,
+    "preparedAt": "2026-10-15T16:27:56Z",
+    "recoveryId": "20261015t162756z"
+  },
+  "preflightTestInputs": "synthetic only; harmless local child processes or mocks; actual binding/config never read by tests",
+  "privateDirectory": "/home/administrator/hexalith-recovery-evidence/4-0/20261015t162756z",
+  "proposedProtectedLocalInvocation": "/usr/bin/python3.14 -I -S -B /home/administrator/projects/hexalith/platform/eng/recovery-preparation/static_transport_preflight.py --binding-sha256 33e92de1a846f43f7f09f9a7e4a341e039b7e5e40ac1110ab2ef224b4c061c30",
+  "recordedAt": "2026-10-15T17:16:07.238425+00:00",
+  "references": {
+    "FUTURE-MEASUREMENTS-v4.md": {
+      "bytes": 11646,
+      "sha256": "81bed336655f99b330c7e5265b174c540b65bd6117fb2ac44a0feb1c33a5f1e9"
+    },
+    "NEXT-OPERATIONAL-APPROVAL-v4.md": {
+      "bytes": 5455,
+      "sha256": "6fbf05a4b39e960faf6767525f174f11809ad4fb42142efe0d12730974b0a44f"
+    },
+    "README-v4.md": {
+      "bytes": 3337,
+      "sha256": "c4f4891652321fb960b6198f906bee9299056c35838560a129af8d766ba6d2d5"
+    },
+    "SHA256SUMS-v4": {
+      "bytes": 14812,
+      "sha256": "b15a23899b97a4ad9cbdc2d31af55b2c5dab1e84e1078fe2959cb3587f457fc5"
+    },
+    "bindings-v4.json": {
+      "bytes": 33381,
+      "sha256": "b5fa825a7914a4a71294c5d4c7512c074caf8d144e775a234d7f95adb1e8d346"
+    },
+    "operation-plan-v4.json": {
+      "bytes": 8002,
+      "sha256": "1fd5d5e758f6960ac90ba06f3b0053c01b66231b3e4157be54ea92493bb1899a"
+    },
+    "packet-v4.json": {
+      "bytes": 22714,
+      "sha256": "1ed5eec5579adeedf7e49519fcba125656caacbaaeaffb6509c49b6575714b14"
+    },
+    "policy/recovery-policy.candidate.json": {
+      "bytes": 18795,
+      "sha256": "a4be017625ba312ab93d76d71bbbf8433f84c08ed43d798c892a39da8939fcdd"
+    },
+    "static-transport-preflight-v4.json": {
+      "bytes": 1113,
+      "sha256": "33e92de1a846f43f7f09f9a7e4a341e039b7e5e40ac1110ab2ef224b4c061c30"
+    }
+  },
+  "release": "FAIL",
+  "sourceReferences": {
+    "readme": {
+      "bytes": 4204,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/README.md",
+      "sha256": "f8d0515fc664e137076c57adce54436986714b414476c12981f561224276c7e4"
+    },
+    "staticPreflight": {
+      "bytes": 12720,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/static_transport_preflight.py",
+      "sha256": "30da6f0002d02a2fd3c47b720d74299ad4352cd2de49e2486ec982bd8b36ff9a"
+    },
+    "staticPreflightTests": {
+      "bytes": 14185,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_static_transport_preflight.py",
+      "sha256": "458e96711941dab75ff528d2b7aa3b8b9c1f25c2f8824f5de9ad5a1b5088cc59"
+    },
+    "tests": {
+      "bytes": 33916,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_verify_packet.py",
+      "sha256": "ef0bc400d60f3140bd580a2ec9a05beca666d45634104ba7c8128c5b444d9996"
+    },
+    "verifier": {
+      "bytes": 32835,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_packet.py",
+      "sha256": "19d535eead357a609fb9a3cefe41615b1f148569dafebf08b65fa37f6938cb5a"
+    }
+  },
+  "verification": {
+    "addedV4Files": 8,
+    "closedBlockerCount": 31,
+    "exitCode": 0,
+    "focusedSyntheticPreflightTests": 12,
+    "focusedVerifierTests": 34,
+    "frozenHistoricalSources": 107,
+    "historicalFilesUnchanged": 348,
+    "jointRewriteRegression": "README + original SHA256SUMS + original manifest jointly rewritten; reviewed anchor fixed before attack",
+    "localToolHashRoles": 11,
+    "memoriesRegressions": "all8 safeguards; omissions and weakened values; removed and key-only mutations detected",
+    "packetFiles": 140,
+    "payloadFilesExcludingActiveManifest": 139,
+    "result": "offline-preparation-pass",
+    "v1v2v3FilesPreserved": 132
+  }
+}

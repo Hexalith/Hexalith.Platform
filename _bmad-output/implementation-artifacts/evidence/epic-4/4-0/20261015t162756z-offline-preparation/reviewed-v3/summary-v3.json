@@ -1,0 +1,102 @@
+{
+  "actualKubeconfigRead": false,
+  "actualPreflightRun": false,
+  "bytes": 21575,
+  "focusedTests": {
+    "localStaticPreflightSynthetic": {
+      "log": "static-preflight-tests-final-custody.log",
+      "passed": 9
+    },
+    "memoriesGuardRemovalDetectedByEightSubtests": true,
+    "verifier": {
+      "log": "verifier-tests-final-custody.log",
+      "passed": 33
+    }
+  },
+  "fullActualPacketVerification": "parent pending as instructed; only focused edited-file tests ran",
+  "fullVerification": "parent-pending",
+  "immediateRequest": {
+    "bytes": 5197,
+    "filename": "NEXT-OPERATIONAL-APPROVAL-v3.md",
+    "sha256": "ce96f0d47e0014b6a5caa9cd06c4994559509b163a677da69a517559d78a9de5"
+  },
+  "kind": "hexalith.reviewed-v3-offline-preparation-closeout",
+  "limits": {
+    "configMaximumBytes": 1048576,
+    "existingNonwritableConfigParent0755Allowed": true,
+    "freshBindingParentMode": "0700",
+    "memfdMode": "0600",
+    "parsedOutputMaximumBytes": 2097152,
+    "staticParserTimeoutSeconds": 10
+  },
+  "manifest": "packet-v3.json",
+  "noActualKubeconfigContentRead": true,
+  "noActualPreflightRun": true,
+  "noCredentialOrPrivateKeyRead": true,
+  "noNetworkProviderApiCall": true,
+  "noOperationalStageRan": true,
+  "operationalGate": "closed",
+  "packetFiles": 132,
+  "policyAndRidUnchanged": {
+    "expiresAt": "2026-10-16T16:27:56Z",
+    "maximumPolicyAgeSeconds": 86400,
+    "preparedAt": "2026-10-15T16:27:56Z",
+    "recoveryId": "20261015t162756z"
+  },
+  "recordedAt": "2026-10-15T17:06:12.250476+00:00",
+  "release": "FAIL",
+  "reviewFixes": [
+    "complete inventoried historical source/identity/storage/authority pin reconstruction and exact equality",
+    "retained original manifest file maps compared against active map and current bytes",
+    "every semantic read bound to its manifest/inventoried digest; complete final active inventory/hash/custody recheck",
+    "overflowing nonfinite floats rejected; malformed nested CLI input sanitized into closed refusal",
+    "all eight Memories safeguards covered on explicit v3; removed-guard mutation detected",
+    "only additive v3 packet; all v1/v2 files and policy/RID/timestamps/failure history preserved",
+    "fixed local static preflight source/binding plus synthetic controls; actual input remains unopened",
+    "immediate request limited to Administrator protected local preflight; all network lanes BLOCKED",
+    "future native candidates include named init-container imageIDs and exact local/host/CSI backing identity selectors"
+  ],
+  "sha256": "5582ea912dcca2b2839f08236405747d6a54232d096d5ce25286c831dfed042a",
+  "sourceSnapshots": [
+    "verify_packet.py.v2.txt",
+    "test_verify_packet.py.v2.txt",
+    "README.md.v2.txt",
+    "verify_packet.py.v3.txt",
+    "test_verify_packet.py.v3.txt",
+    "README.md.v3.txt",
+    "static_transport_preflight.py.v3.txt",
+    "test_static_transport_preflight.py.v3.txt"
+  ],
+  "sources": {
+    "readme": {
+      "bytes": 3544,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/README.md",
+      "sha256": "6e39030e6e6e80f344c926b50fcf84e63cd41008b3d1a817c0da4a315edcfe7c"
+    },
+    "staticPreflight": {
+      "bytes": 10568,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/static_transport_preflight.py",
+      "sha256": "595237bf979fb76d9742224d5d72501a663169fb7431c4a259fc3fe9538b349a"
+    },
+    "staticPreflightTests": {
+      "bytes": 10310,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_static_transport_preflight.py",
+      "sha256": "eab9e1e1c49ed2fd495864055efdc6ff83d03b69d49135b607ddfd5791413f6d"
+    },
+    "tests": {
+      "bytes": 29568,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_verify_packet.py",
+      "sha256": "ca71b44d519547d1d576ca8ab122cc0fd22e9ce50f819853ac010434586086fe"
+    },
+    "verifier": {
+      "bytes": 31791,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_packet.py",
+      "sha256": "e5cedd5e041fa3b5cc181863e1b36a865074af109881d72c3ef0a63fc8aa9215"
+    }
+  },
+  "staticPreflightBinding": {
+    "bytes": 1113,
+    "sha256": "4f9e7975ac52ce099f5090d10049ca847e138160888873a191966d9c9015a672"
+  },
+  "v1v2FilesPreserved": 124
+}

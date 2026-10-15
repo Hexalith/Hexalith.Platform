@@ -1,0 +1,532 @@
+"""Focused synthetic file/custody tests. No operational dependencies or tools."""
+
+import ast
+import base64
+from copy import deepcopy
+from datetime import datetime, timedelta, timezone
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import io
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+
+SOURCE = Path(__file__).with_name('verify_packet.py')
+SPEC = importlib.util.spec_from_file_location('offline_packet_verifier', SOURCE)
+guard = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(guard)
+
+
+def write(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    raw = (json.dumps(value, indent=2, sort_keys=True) + '\n').encode() if isinstance(value, dict) else value
+    path.write_bytes(raw)
+    path.chmod(0o600)
+
+
+class PacketTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.original_roots = guard.RECOVERY_ROOT, guard.HISTORY_ROOTS, guard.PUBLIC_RECIPIENT_SOURCE, guard.SIGNER_FINGERPRINT, guard.REVIEWED_MANIFEST_SHA256
+        guard.REVIEWED_MANIFEST_SHA256 = {}
+        self.addCleanup(self.restore_roots)
+        guard.RECOVERY_ROOT = self.base / 'recovery'
+        guard.RECOVERY_ROOT.mkdir(mode=0o700)
+        guard.HISTORY_ROOTS = tuple(self.base / f'historical-{i}' for i in range(5))
+        self.root = guard.RECOVERY_ROOT / '20261015t162756z'
+        self.root.mkdir(mode=0o700)
+        for historical in guard.HISTORY_ROOTS:
+            historical.mkdir(mode=0o700)
+            write(historical / 'source.py', b'raise RuntimeError("must never execute")\n')
+        self.historical_policy = {
+            'preparedAt': '2026-10-14T11:40:42Z',
+            **{key: {} for key in ('approvalSources', 'cleanupProcedure', 'definitions',
+                                  'destination', 'signing', 'systems', 'validation')},
+        }
+        write(guard.HISTORY_ROOTS[0] / 'policy/recovery-policy.json', self.historical_policy)
+        write(guard.HISTORY_ROOTS[0] / 'signatures/allowed_signers', b'synthetic-public-trust\n')
+        self.history_documents = {
+            (4, 'attempt-bindings-timesheets-reviewed.json'): {
+                'source': {'apiEndpoint': 'https://192.0.2.10:6443', 'clusterUid': 'historical-cluster', 'nodeName': 'node1'},
+                'privatePaths': {'retainedKubeSphereTransport': '/never/open/synthetic-config'},
+                'authority': {'currentLineageAccepted': False, 'clientFingerprint': None,
+                              'lineage': {'sequenceComplete': False, 'currentHeadSha256': None}}},
+            (2, 'bindings.json'): {'context': 'jpiquot@local', 'files': {'/never/open/synthetic-config': 'a' * 64},
+                'identities': {'sourceNamespace': {'uid': 'historical-source'}, 'targetNamespace': {'uid': 'old-target'}}},
+            **{(0, f'{name}/source-pre.json'): {'identity': {'uid': f'historical-{name}',
+                'storage': [{'pvc': name, 'pvcUid': 'old-pvc', 'pv': 'old-pv', 'pvUid': 'old-pv-uid', 'localPath': '/old/storage'}]}}
+               for name in ('keycloak', 'openbao', 'memories')},
+        }
+        for (index, name), value in self.history_documents.items(): write(guard.HISTORY_ROOTS[index] / name, value)
+        tool = self.base / 'inert-local-binary'
+        write(tool, b'Never execute this synthetic binary.\n')
+        freeze = {'original': str(guard.HISTORY_ROOTS[0] / 'source.py'),
+                  'frozen': 'frozen/source.py.txt',
+                  'sha256': guard.digest((guard.HISTORY_ROOTS[0] / 'source.py').read_bytes()),
+                  'classification': 'historical-reference-only-never-execute'}
+        write(self.root / freeze['frozen'], (guard.HISTORY_ROOTS[0] / 'source.py').read_bytes())
+        write(self.root / 'source-freeze.json', {'kind': 'inert-historical-source-freeze', 'sources': [freeze]})
+        self.policy = {
+            'kind': 'hexalith.unsigned-recovery-policy-candidate', 'schemaVersion': 1,
+            'recoveryId': self.root.name, 'preparedAt': '2026-10-15T16:27:56Z',
+            'policyExpiresAt': '2026-10-16T16:27:56Z', 'maximumPolicyAgeSeconds': 86400,
+            'capturedAt': None, 'acceptedAt': None, 'signed': False, 'operationalGate': 'closed',
+            'freshMeasurementsRequired': True,
+            'retainedHistoricalPolicy': {'recoveryId': '20261014t112353z',
+                'classification': 'expired-historical-decisions-only',
+                'sha256': guard.file_hash(guard.HISTORY_ROOTS[0] / 'policy/recovery-policy.json')[0],
+                'preparedAt': self.historical_policy['preparedAt'], 'expiresAt': '2026-10-15T11:40:42Z'},
+            'retainedDecisions': {k: self.historical_policy[k] for k in self.historical_policy if k != 'preparedAt'},
+            'targetProposals': {
+                **{k: prefix + self.root.name for k, prefix in {
+                    'keycloakPretestNamespace': 's40-kcpre-', 'keycloakNamespace': 's40-kc-',
+                    'keycloakCluster': 's40-postgres-', 'keycloakApplication': 's40-oidc-',
+                    'openbaoNamespace': 's40-bao-', 'memoriesNamespace': 's40-mem-'}.items()},
+                'evidencePrefix': f'evidence/4-0/{self.root.name}/',
+                'payloadPrefixes': {s: f'{s}/{self.root.name}/' for s in ('keycloak', 'openbao', 'memories')},
+                'created': False, 'uids': None},
+        }
+        write(self.root / 'policy/recovery-policy.candidate.json', self.policy)
+        self.measurements = {k: {'value': None, 'blocker': k, 'status': 'not-measured-closed'}
+                             for k in guard.MEASUREMENTS}
+        write(self.root / 'measurements.json', self.measurements)
+        write(self.root / 'preservation-inventory.json', {'kind': 'historical-preservation-baseline',
+            'recordedAt': self.policy['preparedAt'], 'roots': {str(p): guard.inventory(p) for p in guard.HISTORY_ROOTS},
+            'priorInventoryException': 'synthetic historical comparison is separate'})
+        write(self.root / 'trust/allowed_signers.txt', b'synthetic-public-trust\n')
+        recipient = b'ssh-ed25519 ' + base64.b64encode(b'synthetic-public-recipient') + b'\n'
+        write(self.root / 'trust/recipient.pub', recipient)
+        guard.PUBLIC_RECIPIENT_SOURCE = self.base / 'existing-recipient.pub'
+        write(guard.PUBLIC_RECIPIENT_SOURCE, recipient)
+        guard.SIGNER_FINGERPRINT = 'SHA256:' + base64.b64encode(hashlib.sha256(
+            b'synthetic-public-recipient').digest()).decode().rstrip('=')
+        self.bindings = {'kind': 'hexalith.offline-s40-bindings', 'recoveryId': self.root.name,
+            'operationalGate': 'closed',
+            'blockers': {k: 'Named blocker: ' + k for k in guard.MEASUREMENTS | guard.ADAPTER_BLOCKERS},
+            'historicalSourcePins': guard.expected_historical_pins(lambda i, n: deepcopy(self.history_documents[(i, n)])),
+            'localTools': {role: {'path': str(tool), 'sha256': guard.file_hash(tool)[0],
+                'bytes': tool.stat().st_size, 'mode': 0o600, 'links': 1, 'executionQualified': False,
+                'custodyAccepted': role != 'docker', 'blocker': 'tool-docker-custody' if role == 'docker' else None}
+                for role in guard.LOCAL_ROLES},
+            'offlineVerifierSources': {role: {'path': str(SOURCE.with_name(name)),
+                'sha256': guard.file_hash(SOURCE.with_name(name))[0], 'bytes': SOURCE.with_name(name).stat().st_size}
+                for role, name in (('verifier', 'verify_packet.py'), ('tests', 'test_verify_packet.py'), ('readme', 'README.md'))},
+            'publicTrust': {'allowedSignersSha256': guard.file_hash(self.root / 'trust/allowed_signers.txt')[0],
+                'recipientSha256': guard.file_hash(self.root / 'trust/recipient.pub')[0],
+                'recipientFingerprint': guard.SIGNER_FINGERPRINT,
+                'signingPrincipal': 'jpiquot@itaneo.com', 'namespace': 'hexalith-recovery',
+                'authenticationPerformed': False, 'decryptionPerformed': False},
+            'operationalResults': {k: None for k in ('capture', 'restore', 'publication', 'cleanup', 'signatures', 'acceptance')},
+            'protectedStates': {'story3_6': 'in-progress', 'epic3': 'in-progress', 'story4_27': 'in-progress',
+                                'story4_1Gate': 'closed', 'spec23': 'draft', 'release': 'FAIL'},
+            'safeguards': {
+                'oidc': {'sourceEndpoint': 'http://127.0.0.1:38080', 'targetEndpoint': 'http://127.0.0.1:28080',
+                    'proxiesEnabled': False, 'redirectsEnabled': False, 'requiredChecks': sorted(guard.OIDC_CHECKS),
+                    'failedOriginalSha256': '014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578',
+                    'oldGuardScope': 'old-attempt-only-requires-new-reviewed-adapter'},
+                'memories': {'actualC3Required': True, 'oneFinalPreAndCensus': True,
+                    'maximumDrainSeconds': 900, 'pairedStores': ['redis-stack', 'falkordb'],
+                    'splitSemanticWrapperRequired': True, 'immediateConditionalResumeRequired': True,
+                    'resumeRequiresApprovedScopeRestoreProofAndCleanDrain': True,
+                    'historicalZeroTenantCountIsNotCurrentEvidence': True}},
+        }
+        write(self.root / 'bindings.json', self.bindings)
+        self.plan = {'kind': 'hexalith.inert-s40-operation-plan', 'inert': True, 'operationalGate': 'closed',
+                     'stages': [{'name': s, 'status': 'not-run', 'dispatchAllowed': False,
+                                 'requires': list(guard.STAGES[i-1:i]) if i else [],
+                                 'description': 'Inert future review description'} for i, s in enumerate(guard.STAGES)]}
+        write(self.root / 'operation-plan.json', self.plan)
+        write(self.root / 'README.md', b'Unsigned offline preparation.\n')
+        write(self.root / 'NEXT-OPERATIONAL-APPROVAL.md', b'Bounded read-only measurements require approval.\n')
+        self.seal()
+        self.active_manifest = 'packet.json'
+
+    def restore_roots(self):
+        guard.RECOVERY_ROOT, guard.HISTORY_ROOTS, guard.PUBLIC_RECIPIENT_SOURCE, guard.SIGNER_FINGERPRINT, guard.REVIEWED_MANIFEST_SHA256 = self.original_roots
+
+    def seal(self):
+        files = {str(p.relative_to(self.root)): {'sha256': guard.file_hash(p)[0], 'bytes': p.stat().st_size}
+                 for p in self.root.rglob('*') if p.is_file() and p.name not in ('packet.json', 'SHA256SUMS')}
+        sums = ''.join(f"{v['sha256']}  {k}\n" for k, v in sorted(files.items()))
+        write(self.root / 'SHA256SUMS', sums.encode())
+        files['SHA256SUMS'] = {'sha256': guard.digest(sums.encode()), 'bytes': len(sums.encode())}
+        self.packet = {'schemaVersion': 1, 'kind': 'hexalith.offline-s40-packet', 'recoveryId': self.root.name,
+                       'custodyDirectory': str(self.root), 'preparationOnly': True, 'operationalGate': 'closed', 'files': files}
+        write(self.root / 'packet.json', self.packet)
+        self.expected = guard.file_hash(self.root / 'packet.json')[0]
+        guard.REVIEWED_MANIFEST_SHA256.setdefault('packet.json', self.expected)
+
+    def verify(self):
+        return guard.verify_packet(self.root, self.expected, self.active_manifest)
+
+    def seal_revision(self, manifest='packet-v2.json'):
+        suffix = {'packet-v2.json': '-v2', 'packet-v3.json': '-v3', 'packet-v4.json': '-v4'}[manifest]
+        active_sum = 'SHA256SUMS' + suffix
+        files = {str(p.relative_to(self.root)): {'sha256': guard.file_hash(p)[0], 'bytes': p.stat().st_size}
+                 for p in self.root.rglob('*') if p.is_file() and p.name not in (active_sum, manifest)}
+        sums = ''.join(f"{v['sha256']}  {k}\n" for k, v in sorted(files.items()))
+        write(self.root / active_sum, sums.encode())
+        files[active_sum] = {'sha256': guard.digest(sums.encode()), 'bytes': len(sums.encode())}
+        write(self.root / manifest, {**self.packet, 'files': files})
+        self.expected = guard.file_hash(self.root / manifest)[0]
+        self.active_manifest = manifest
+        guard.REVIEWED_MANIFEST_SHA256.setdefault(manifest, self.expected)
+
+    def make_v2(self):
+        write(self.root / 'bindings-v2.json', self.bindings)
+        write(self.root / 'README-v2.md', b'Explicit v2 fixture\n')
+        write(self.root / 'NEXT-OPERATIONAL-APPROVAL-v2.md', b'Inert v2 fixture\n')
+        self.seal_revision()
+
+    def make_v3(self):
+        self.make_v2()
+        for role, name in [('staticPreflight', 'static_transport_preflight.py'),
+                           ('staticPreflightTests', 'test_static_transport_preflight.py')]:
+            p = SOURCE.with_name(name)
+            self.bindings['offlineVerifierSources'][role] = {'path': str(p), 'sha256': guard.file_hash(p)[0], 'bytes': p.stat().st_size}
+        write(self.root / 'NEXT-OPERATIONAL-APPROVAL-v3.md', b'Only local static preflight proposal\n')
+        approval = {'filename': 'NEXT-OPERATIONAL-APPROVAL-v3.md',
+                    'sha256': guard.file_hash(self.root / 'NEXT-OPERATIONAL-APPROVAL-v3.md')[0],
+                    'bytes': (self.root / 'NEXT-OPERATIONAL-APPROVAL-v3.md').stat().st_size}
+        plan = {**self.plan, 'activeApproval': approval}
+        write(self.root / 'operation-plan-v3.json', plan)
+        config_path = self.bindings['historicalSourcePins']['sourceTransportPathOnlyNotRead']
+        tools = self.bindings['localTools']
+        preflight = {'kind': 'hexalith.local-static-transport-preflight', 'schemaVersion': 1,
+            'kubeconfig': {'path': config_path, 'sha256': 'a' * 64, 'context': 'jpiquot@local',
+                          'endpoint': self.bindings['historicalSourcePins']['apiEndpoint']},
+            **{name: {k: tools[role][k] for k in ('path', 'sha256', 'bytes')}
+               for name, role in [('kubectl', 'kubectl'), ('interpreter', 'python')]},
+            'source': self.bindings['offlineVerifierSources']['staticPreflight'],
+            'limits': {'maximumConfigBytes': 1048576, 'maximumOutputBytes': 2097152, 'timeoutSeconds': 10,
+                       'networkCallsAllowed': False, 'authenticationAllowed': False}}
+        write(self.root / 'static-transport-preflight.json', preflight)
+        self.bindings.update(activeApproval=approval,
+            retainedManifests={n: {'sha256': guard.file_hash(self.root / n)[0], 'bytes': (self.root / n).stat().st_size}
+                               for n in ('packet.json', 'packet-v2.json')},
+            staticTransportPreflight={'filename': 'static-transport-preflight.json',
+                'sha256': guard.file_hash(self.root / 'static-transport-preflight.json')[0],
+                'bytes': (self.root / 'static-transport-preflight.json').stat().st_size},
+            measurementLanes={'localStaticTransport': 'requires-Administrator-protected-local-approval',
+                'nativeApi': 'BLOCKED-static-transport-and-exact-adapter-unqualified',
+                'provider': 'BLOCKED-exact-adapter-runtime-and-authority-unqualified',
+                'iam': 'BLOCKED-exact-adapter-runtime-and-authority-unqualified'})
+        write(self.root / 'bindings-v3.json', self.bindings)
+        write(self.root / 'README-v3.md', b'Explicit v3 fixture\n')
+        write(self.root / 'FUTURE-MEASUREMENTS-v3.md', b'All network measurement lanes BLOCKED\n')
+        self.seal_revision('packet-v3.json')
+
+    def make_v4(self):
+        self.make_v3()
+        for name, raw in [('NEXT-OPERATIONAL-APPROVAL-v4.md', b'Only exact protected local preflight\n'),
+                          ('README-v4.md', b'Explicit v4 fixture\n'),
+                          ('FUTURE-MEASUREMENTS-v4.md', b'Network lanes BLOCKED\n')]:
+            write(self.root / name, raw)
+        approval = {'filename': 'NEXT-OPERATIONAL-APPROVAL-v4.md',
+            'sha256': guard.file_hash(self.root / 'NEXT-OPERATIONAL-APPROVAL-v4.md')[0],
+            'bytes': (self.root / 'NEXT-OPERATIONAL-APPROVAL-v4.md').stat().st_size}
+        write(self.root / 'operation-plan-v4.json', {**self.plan, 'activeApproval': approval})
+        preflight = json.loads((self.root / 'static-transport-preflight.json').read_bytes())
+        write(self.root / 'static-transport-preflight-v4.json', preflight)
+        self.bindings.update(activeApproval=approval,
+            retainedManifests={n: {'sha256': guard.file_hash(self.root / n)[0], 'bytes': (self.root / n).stat().st_size}
+                              for n in ('packet.json', 'packet-v2.json', 'packet-v3.json')},
+            staticTransportPreflight={'filename': 'static-transport-preflight-v4.json',
+                'sha256': guard.file_hash(self.root / 'static-transport-preflight-v4.json')[0],
+                'bytes': (self.root / 'static-transport-preflight-v4.json').stat().st_size})
+        write(self.root / 'bindings-v4.json', self.bindings)
+        self.seal_revision('packet-v4.json')
+
+    def test_complete_preparation_passes_with_named_closed_operational_blockers(self):
+        result = self.verify()
+        self.assertEqual(result['result'], 'offline-preparation-pass')
+        self.assertEqual(result['operationalGate'], 'closed')
+        self.assertFalse(result['approvalAuthenticated'])
+        self.assertFalse(result['currentRecoveryClaimed'])
+        self.assertEqual(set(result['closedBlockers']), guard.MEASUREMENTS | guard.ADAPTER_BLOCKERS)
+
+    def test_independent_manifest_hash_is_required(self):
+        with self.assertRaisesRegex(guard.Refusal, 'packet SHA-256 mismatch'):
+            guard.verify_packet(self.root, '0' * 64)
+
+    def test_v1_refuses_and_explicit_create_only_v2_passes_closed(self):
+        self.bindings['protectedStates']['spec 23'] = self.bindings['protectedStates'].pop('spec23')
+        write(self.root / 'bindings.json', self.bindings)
+        self.seal()
+        original_sha = self.expected
+        # This deliberately refused v1 is the trusted historical fixture before
+        # any revision/attack is constructed; later resealing cannot update it.
+        guard.REVIEWED_MANIFEST_SHA256['packet.json'] = original_sha
+        original_bytes = {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with self.assertRaisesRegex(guard.Refusal, 'downstream state'): self.verify()
+        self.bindings['protectedStates']['spec23'] = self.bindings['protectedStates'].pop('spec 23')
+        write(self.root / 'bindings-v2.json', self.bindings)
+        write(self.root / 'README-v2.md', b'Explicit corrected v2; initial failure retained.\n')
+        write(self.root / 'NEXT-OPERATIONAL-APPROVAL-v2.md', b'Exact v2 read-only measurement proposal.\n')
+        files = {str(p.relative_to(self.root)): {'sha256': guard.file_hash(p)[0], 'bytes': p.stat().st_size}
+                 for p in self.root.rglob('*') if p.is_file()}
+        sums = ''.join(f"{v['sha256']}  {k}\n" for k, v in sorted(files.items()))
+        write(self.root / 'SHA256SUMS-v2', sums.encode())
+        files['SHA256SUMS-v2'] = {'sha256': guard.digest(sums.encode()), 'bytes': len(sums.encode())}
+        revised = {**self.packet, 'files': files}
+        write(self.root / 'packet-v2.json', revised)
+        with self.assertRaises(guard.Refusal): guard.verify_packet(self.root, original_sha)
+        result = guard.verify_packet(self.root, guard.file_hash(self.root / 'packet-v2.json')[0], 'packet-v2.json')
+        self.assertEqual(result['result'], 'offline-preparation-pass')
+        self.assertEqual(result['operationalGate'], 'closed')
+        for path, raw in original_bytes.items(): self.assertEqual((self.root / path).read_bytes(), raw)
+        with self.assertRaisesRegex(guard.Refusal, 'fixed explicit'):
+            guard.verify_packet(self.root, '0' * 64, '../packet-v2.json')
+
+    def test_missing_input_refused(self):
+        (self.root / 'measurements.json').unlink()
+        with self.assertRaises(guard.Refusal): self.verify()
+
+    def test_tampered_input_refused_without_resealing(self):
+        write(self.root / 'README.md', b'tampered')
+        with self.assertRaisesRegex(guard.Refusal, 'checksum'): self.verify()
+
+    def test_policy_age_ceiling_and_preparation_capture_distinction(self):
+        self.policy['maximumPolicyAgeSeconds'] = 172800
+        write(self.root / 'policy/recovery-policy.candidate.json', self.policy)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'policy-age'): self.verify()
+
+    def test_historical_policy_decision_cannot_change(self):
+        self.policy['retainedDecisions']['destination']['bucket'] = 'different'
+        write(self.root / 'policy/recovery-policy.candidate.json', self.policy)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'retained policy'): self.verify()
+
+    def test_current_measurement_cannot_inherit_old_observation(self):
+        self.measurements['source-resource-uids']['value'] = 'historical-uid'
+        write(self.root / 'measurements.json', self.measurements)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'measurement fabricated'): self.verify()
+
+    def test_fabricated_completed_stage_refused_even_with_resealed_checksums(self):
+        self.plan['stages'][0]['status'] = 'complete'
+        write(self.root / 'operation-plan.json', self.plan)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'completed or dispatchable'): self.verify()
+
+    def test_fabricated_signed_acceptance_refused(self):
+        self.bindings['operationalResults']['acceptance'] = {'allPass': True}
+        write(self.root / 'bindings.json', self.bindings)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'fabricated completed'): self.verify()
+
+    def test_unlisted_operational_artifact_refused(self):
+        write(self.root / 'validation/validation.json', b'{}')
+        with self.assertRaisesRegex(guard.Refusal, 'unexpected packet artifact'): self.verify()
+
+    def test_listed_operational_artifact_refused(self):
+        write(self.root / 'validation.json.sig', b'fake signature')
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'operational artifact'): self.verify()
+
+    def test_empty_operational_directory_refused(self):
+        (self.root / 'capture').mkdir(mode=0o700)
+        with self.assertRaisesRegex(guard.Refusal, 'operational stage'): self.verify()
+
+    def test_direct_and_parent_symlinks_refused(self):
+        original = self.root / 'README.md'
+        original.unlink()
+        original.symlink_to(guard.HISTORY_ROOTS[0] / 'source.py')
+        with self.assertRaisesRegex(guard.Refusal, 'symlink'): self.verify()
+        original.unlink()
+        write(original, b'Unsigned offline preparation.\n')
+        source = self.root / 'frozen'
+        source.rename(self.root / 'frozen-original')
+        source.symlink_to(self.root / 'frozen-original', target_is_directory=True)
+        with self.assertRaisesRegex(guard.Refusal, 'symlink'): self.verify()
+
+    def test_path_escape_refused(self):
+        self.packet['files']['../outside'] = {'sha256': '0' * 64, 'bytes': 1}
+        write(self.root / 'packet.json', self.packet)
+        self.expected = guard.file_hash(self.root / 'packet.json')[0]
+        with self.assertRaises(guard.Refusal): self.verify()
+
+    def test_private_file_or_directory_mode_change_refused(self):
+        (self.root / 'README.md').chmod(0o644)
+        with self.assertRaisesRegex(guard.Refusal, 'private custody'): self.verify()
+
+    def test_runnable_frozen_source_refused(self):
+        (self.root / 'frozen/source.py.txt').chmod(0o700)
+        with self.assertRaisesRegex(guard.Refusal, 'private custody'): self.verify()
+
+    def test_historical_original_drift_refused(self):
+        write(guard.HISTORY_ROOTS[1] / 'source.py', b'changed historical source')
+        with self.assertRaisesRegex(guard.Refusal, 'historical inventory changed'): self.verify()
+
+    def test_historical_concrete_pins_cannot_be_omitted_or_promoted(self):
+        original = deepcopy(self.bindings['historicalSourcePins'])
+        for mode in ('omit-storage', 'omit-authority', 'current-lineage', 'current-fingerprint'):
+            with self.subTest(mode=mode):
+                self.bindings['historicalSourcePins'] = deepcopy(original)
+                pins = self.bindings['historicalSourcePins']
+                if mode == 'omit-storage': del pins['sourcePreRecordsHistoricalOnly']['openbao']
+                elif mode == 'omit-authority': del pins['independentAuthorityHistoricalOnly']
+                elif mode == 'current-lineage': pins['independentAuthorityHistoricalOnly']['lineage']['sequenceComplete'] = True
+                else: pins['independentAuthorityHistoricalOnly']['clientFingerprint'] = 'claimed-current-client'
+                write(self.root / 'bindings.json', self.bindings)
+                self.seal()
+                with self.assertRaisesRegex(guard.Refusal, 'historical pins incomplete or promoted'): self.verify()
+
+    def test_retained_original_tamper_refused_even_when_active_checksums_resealed(self):
+        self.make_v2()
+        write(self.root / 'README.md', b'altered original payload')
+        self.seal_revision()
+        with self.assertRaisesRegex(guard.Refusal, 'retained original binding changed'): self.verify()
+
+    def test_joint_original_payload_checksum_and_manifest_rewrite_cannot_replace_trusted_anchor(self):
+        self.make_v2()
+        trusted = dict(guard.REVIEWED_MANIFEST_SHA256)
+        write(self.root / 'README.md', b'jointly changed original payload')
+        old = json.loads((self.root / 'packet.json').read_bytes())
+        old['files']['README.md'] = {'sha256': guard.file_hash(self.root / 'README.md')[0],
+                                    'bytes': (self.root / 'README.md').stat().st_size}
+        sums = ''.join(f"{v['sha256']}  {k}\n" for k, v in sorted(old['files'].items()) if k != 'SHA256SUMS')
+        write(self.root / 'SHA256SUMS', sums.encode())
+        old['files']['SHA256SUMS'] = {'sha256': guard.file_hash(self.root / 'SHA256SUMS')[0],
+                                    'bytes': (self.root / 'SHA256SUMS').stat().st_size}
+        write(self.root / 'packet.json', old)
+        self.seal_revision('packet-v2.json')
+        self.assertEqual(guard.REVIEWED_MANIFEST_SHA256, trusted)
+        with self.assertRaisesRegex(guard.Refusal, 'independent retained manifest anchor'): self.verify()
+
+    def test_semantic_read_swap_refused(self):
+        original = guard.read_bytes
+        def swapped(path):
+            raw = original(path)
+            if path == self.root / 'bindings.json':
+                changed = deepcopy(self.bindings)
+                changed['historicalSourcePins']['currentIdentityAccepted'] = True
+                return json.dumps(changed).encode()
+            return raw
+        with patch.object(guard, 'read_bytes', side_effect=swapped):
+            with self.assertRaisesRegex(guard.Refusal, 'semantic input checksum'): self.verify()
+
+    def test_historical_semantic_read_swap_refused(self):
+        original = guard.read_bytes
+        def swapped(path):
+            raw = original(path)
+            return b'{}' if path == guard.HISTORY_ROOTS[0] / 'policy/recovery-policy.json' else raw
+        with patch.object(guard, 'read_bytes', side_effect=swapped):
+            with self.assertRaisesRegex(guard.Refusal, 'semantic input checksum'): self.verify()
+
+    def test_late_readme_swap_refused_before_success(self):
+        original = guard.expected_historical_pins
+        def swap(load):
+            result = original(load)
+            write(self.root / 'README.md', b'late replacement')
+            return result
+        with patch.object(guard, 'expected_historical_pins', side_effect=swap):
+            with self.assertRaisesRegex(guard.Refusal, 'checksum mismatch'): self.verify()
+
+    def test_cli_malformed_nested_metadata_is_sanitized_closed_refusal(self):
+        preservation = json.loads((self.root / 'preservation-inventory.json').read_bytes())
+        preservation['roots'] = [str(p) for p in guard.HISTORY_ROOTS]
+        write(self.root / 'preservation-inventory.json', preservation)
+        self.seal()
+        output = io.StringIO()
+        with patch.object(sys, 'argv', ['verify', '--packet', str(self.root), '--sha256', self.expected]), patch.object(sys, 'stdout', output):
+            self.assertEqual(guard.main(), 1)
+        result = json.loads(output.getvalue())
+        self.assertEqual(result['operationalGate'], 'closed')
+        self.assertEqual(result['result'], 'offline-preparation-refused')
+        self.assertNotIn('Traceback', output.getvalue())
+
+    def test_local_tool_drift_refused(self):
+        write(Path(self.bindings['localTools']['age']['path']), b'different tool')
+        with self.assertRaisesRegex(guard.Refusal, 'local tool drift'): self.verify()
+
+    def test_existing_system_tool_hardlink_is_bound_but_packet_hardlink_refused(self):
+        tool = Path(self.bindings['localTools']['timeout']['path'])
+        os.link(tool, self.base / 'existing-system-tool-alias')
+        for item in self.bindings['localTools'].values(): item['links'] = 2
+        write(self.root / 'bindings.json', self.bindings)
+        self.seal()
+        self.assertEqual(self.verify()['operationalGate'], 'closed')
+        os.link(self.root / 'README.md', self.base / 'untrusted-packet-alias')
+        with self.assertRaisesRegex(guard.Refusal, 'single-link'): self.verify()
+
+    def test_missing_measurement_or_adapter_blocker_refused(self):
+        self.bindings['blockers'].pop('private-oidc-attempt-guards')
+        write(self.root / 'bindings.json', self.bindings)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'blockers missing'): self.verify()
+
+    def test_oidc_and_memories_safeguards_cannot_be_weakened(self):
+        self.bindings['safeguards']['oidc']['proxiesEnabled'] = True
+        write(self.root / 'bindings.json', self.bindings)
+        self.seal()
+        with self.assertRaisesRegex(guard.Refusal, 'OIDC safeguards'): self.verify()
+
+    def test_each_memories_safeguard_is_enforced_in_explicit_active_revision(self):
+        original = deepcopy(self.bindings['safeguards']['memories'])
+        self.make_v4()
+        for field in original:
+            for mode in ('omitted', 'weakened'):
+                with self.subTest(field=field, mode=mode):
+                    self.bindings['safeguards']['memories'] = deepcopy(original)
+                    if mode == 'omitted': del self.bindings['safeguards']['memories'][field]
+                    else:
+                        self.bindings['safeguards']['memories'][field] = (
+                            False if type(original[field]) is bool else 901 if field == 'maximumDrainSeconds'
+                            else ['redis-stack'])
+                    write(self.root / 'bindings-v4.json', self.bindings)
+                    self.seal_revision('packet-v4.json')
+                    with self.assertRaisesRegex(guard.Refusal, 'Memories safeguards'): self.verify()
+
+    def test_removed_and_key_only_memories_guards_are_both_detected(self):
+        original = guard.require
+        for mutation, expected in [('removed', 16), ('keys-only', 8)]:
+            with self.subTest(mutation=mutation):
+                def weakened_guard(ok, reason):
+                    if reason != 'Memories safeguards weakened':
+                        original(ok, reason)
+                    elif mutation == 'keys-only':
+                        binding = next(p for p in guard.RECOVERY_ROOT.rglob('bindings-v4.json'))
+                        value = json.loads(binding.read_bytes())['safeguards']['memories']
+                        original(set(value) == {'actualC3Required', 'oneFinalPreAndCensus', 'maximumDrainSeconds',
+                            'pairedStores', 'splitSemanticWrapperRequired', 'immediateConditionalResumeRequired',
+                            'resumeRequiresApprovedScopeRestoreProofAndCleanDrain',
+                            'historicalZeroTenantCountIsNotCurrentEvidence'}, reason)
+                result = unittest.TestResult()
+                with patch.object(guard, 'require', side_effect=weakened_guard):
+                    PacketTests('test_each_memories_safeguard_is_enforced_in_explicit_active_revision').run(result)
+                self.assertEqual(len(result.errors), 0)
+                self.assertEqual(len(result.failures), expected)
+
+    def test_explicit_v4_binds_immediate_local_request_and_retained_chain(self):
+        self.make_v4()
+        self.assertEqual(self.verify()['operationalGate'], 'closed')
+        self.bindings['activeApproval']['filename'] = 'NEXT-OPERATIONAL-APPROVAL.md'
+        write(self.root / 'bindings-v4.json', self.bindings)
+        self.seal_revision('packet-v4.json')
+        with self.assertRaisesRegex(guard.Refusal, 'active approval binding'): self.verify()
+
+    def test_duplicate_fields_nonfinite_values_and_deep_json_refused(self):
+        for raw in (b'{"a": 1, "a": 2}', b'{"a": NaN}', b'{"a":1e9999}', b'{"a":' + b'[' * 60 + b'0' + b']' * 60 + b'}'):
+            with self.subTest(raw=raw[:20]):
+                with self.assertRaises(guard.Refusal): guard.parse_json(raw)
+
+    def test_verifier_has_only_offline_imports_and_no_execution_calls(self):
+        tree = ast.parse(SOURCE.read_text())
+        imports = {n.module for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)}
+        imports |= {a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
+        self.assertLessEqual(imports, {'argparse', 'base64', 'datetime', 'hashlib', 'json', 'math', 'os', 'pathlib', 're', 'stat'})
+        self.assertFalse(any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
+                             and n.func.id in ('eval', 'exec', '__import__') for n in ast.walk(tree)))
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

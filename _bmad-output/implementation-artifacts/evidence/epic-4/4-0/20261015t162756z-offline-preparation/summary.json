@@ -1,0 +1,138 @@
+{
+  "activeManifest": "packet-v2.json",
+  "activeManifestSha256": "70a721ca7ced74281029c480419d08889658dc07f83844cdcefd10c7f8f99d59",
+  "activeNextApproval": "NEXT-OPERATIONAL-APPROVAL-v2.md",
+  "activeNextApprovalSha256": "e28a5d3b8c7c489b01a154d97adbc4dfb3c8d632cb5a51ffb5ea0f375649c30a",
+  "approvalAuthenticated": false,
+  "bindingsSha256": "b3c9c703044ee26da0e3a0671ba5b580d41af9f96cd4fb91bd033343ff3b38eb",
+  "candidatePolicySha256": "a4be017625ba312ab93d76d71bbbf8433f84c08ed43d798c892a39da8939fcdd",
+  "checks": {
+    "actualPacketVerifier": {
+      "exitCode": 0,
+      "receipt": "packet-v2-verification.json",
+      "result": "offline-preparation-pass"
+    },
+    "focusedOfflineTests": {
+      "command": "/usr/bin/python3.14 -I -S -B eng/recovery-preparation/test_verify_packet.py",
+      "log": "focused-tests-explicit-v2.log",
+      "passed": 24
+    },
+    "independentWalk": {
+      "frozenSources": 107,
+      "historicalFilesUnchanged": 348,
+      "initialFilesUnchanged": 119,
+      "localToolRoles": 11,
+      "packetFiles": 124,
+      "receipt": "independent-local-inventory-check.json"
+    },
+    "initialActualRefusal": {
+      "exitCode": 1,
+      "reason": "metadata field-name formatting errors; corrected only through additive v2",
+      "receipt": "packet-verification.json"
+    },
+    "initialConstructionFailure": {
+      "exitCode": 1,
+      "reason": "system timeout hardlink rejected; allowed only for bound local tool hashes, regression covers packet rejection",
+      "receipt": "construction-initial-failure.log"
+    },
+    "retainedV1Refusal": {
+      "exitCode": 1,
+      "receipt": "packet-v1-retained-refusal.json"
+    }
+  },
+  "checksumsSha256": "cb357a3cf3dc1f4b828e4c142252542997f5ef6b8de7375b73869970b9c7b20c",
+  "closedBlockers": {
+    "break-glass-custody-and-client-fingerprint": "Closed: fresh break-glass-custody-and-client-fingerprint has not been measured; the corresponding value remains null.",
+    "capture-and-restore-results": "Closed: fresh capture-and-restore-results has not been measured; the corresponding value remains null.",
+    "cleanup-and-absence": "Closed: fresh cleanup-and-absence has not been measured; the corresponding value remains null.",
+    "current-c3-and-drain": "Closed: fresh current-c3-and-drain has not been measured; the corresponding value remains null.",
+    "current-measurement-approval": "The exact bounded read-only next approval is pending; no credential was loaded and no provider, API, image, capacity, source or authority observation ran.",
+    "current-memories-tenant-census": "Closed: fresh current-memories-tenant-census has not been measured; the corresponding value remains null.",
+    "current-oidc-live-reference": "Closed: fresh current-oidc-live-reference has not been measured; the corresponding value remains null.",
+    "exact-reviewed-execution-and-signing-approval": "This preparation authorizes no operation. After bounded read-only measurements and adapter review, obtain revised exact current-attempt execution/signing approval; old four-record delegation and old incident acceptance do not transfer.",
+    "fresh-create-only-adapters": "No fresh-RID-safe explicit-argv, create-only, bounded, encrypted, semantically checked capture/restore/publication/cleanup/signature adapter is supplied. Historical executors are reference-only outside runnable tools/RID layouts.",
+    "generic-dispatch-not-an-allowlist": "Historical run_step*.py accepts generic argv; old semantic wrappers bind old outputs. A fresh adapter must reject every nonallowlisted argv and bind per-command semantic outputs with timeout, process-group reap and first-failure stop.",
+    "immutable-validator-readbacks": "Closed: fresh immutable-validator-readbacks has not been measured; the corresponding value remains null.",
+    "legacy-preparer-side-effects": "Old policy.py uploads, preflight --dry mutates, s40lib writes overwrite unsigned outputs, and legacy selftests/preparers may authenticate or mutate. No legacy entry point may execute or be imported.",
+    "memories-split-semantic-adapters": "No fresh split adapter enforces one final pre/census, actual C3 announcement, <=900s drain, paired Redis/FalkorDB source restart/census/AOF gates, isolated restore/isolation, and immediate approved conditional resume. Composite branches must not replay or overwrite the final pre.",
+    "native-authority-and-revocation-lineage": "Closed: fresh native-authority-and-revocation-lineage has not been measured; the corresponding value remains null.",
+    "private-oidc-attempt-guards": "Accepted private_oidc/proof_input_guard/incident_guard and proof consumer hard-code the old RID, target UIDs, accepted incident and diagnostic hashes. New reviewed adapters must bind fresh sources/target UIDs, 38080/28080, disabled proxies/redirects, all eight checks and distinct failed-original lineage; do not edit or replay old tools.",
+    "provider-bucket-policy-and-retention": "Closed: fresh provider-bucket-policy-and-retention has not been measured; the corresponding value remains null.",
+    "provider-current-object-versions": "Closed: fresh provider-current-object-versions has not been measured; the corresponding value remains null.",
+    "provider-validator-iam": "Closed: fresh provider-validator-iam has not been measured; the corresponding value remains null.",
+    "provider-writer-iam": "Closed: fresh provider-writer-iam has not been measured; the corresponding value remains null.",
+    "signatures-and-acceptance": "Closed: fresh signatures-and-acceptance has not been measured; the corresponding value remains null.",
+    "source-health-and-canaries": "Closed: fresh source-health-and-canaries has not been measured; the corresponding value remains null.",
+    "source-incarnations-and-indices": "Closed: fresh source-incarnations-and-indices has not been measured; the corresponding value remains null.",
+    "source-pvc-pv-bindings": "Closed: fresh source-pvc-pv-bindings has not been measured; the corresponding value remains null.",
+    "source-resource-uids": "Closed: fresh source-resource-uids has not been measured; the corresponding value remains null.",
+    "source-tool-and-ca-fingerprints": "Closed: fresh source-tool-and-ca-fingerprints has not been measured; the corresponding value remains null.",
+    "ssh-host-trust-and-current-client": "Closed: fresh ssh-host-trust-and-current-client has not been measured; the corresponding value remains null.",
+    "target-capacity-and-storage-class": "Closed: fresh target-capacity-and-storage-class has not been measured; the corresponding value remains null.",
+    "target-image-digests-and-runtime-tools": "Closed: fresh target-image-digests-and-runtime-tools has not been measured; the corresponding value remains null.",
+    "target-runtime-and-isolation": "Closed: fresh target-runtime-and-isolation has not been measured; the corresponding value remains null.",
+    "target-uids-and-volume-identities": "Closed: fresh target-uids-and-volume-identities has not been measured; the corresponding value remains null.",
+    "tool-docker-custody": "Canonical current Docker bytes were hashed without execution; file and parent bin directory are root-owned mode0775. Execution custody is not accepted. The historical staged copy is reference-only unless separately approved for a bounded measurement; no daemon/context/image observation is claimed."
+  },
+  "credentialOrPrivateKeyContentsRead": false,
+  "currentRecoveryClaimed": false,
+  "kind": "hexalith.sanitized-offline-s40-preparation",
+  "legacyToolExecutionsOrImports": 0,
+  "limits": {
+    "acceptanceAt": null,
+    "candidatePolicyExpiresAt": "2026-10-16T16:27:56Z",
+    "captureAt": null,
+    "maintenanceWindowExclusiveEnd": "2026-10-31T23:00:00Z",
+    "maximumMemoriesDrainAgeSeconds": 900,
+    "maximumPolicyAgeSeconds": 86400,
+    "maximumProofAgeSeconds": 86400,
+    "preparedAt": "2026-10-15T16:27:56Z",
+    "retentionDaysFromCreation": 30,
+    "rpoSeconds": 1800
+  },
+  "networkProviderApiCalls": 0,
+  "offlineVerifierSources": {
+    "readme": {
+      "bytes": 2643,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/README.md",
+      "sha256": "29f9d73ddcca70dd04198bc9f7cd98bb895dcd8cc7400ed73fc46b5fdb2e3460"
+    },
+    "tests": {
+      "bytes": 19150,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/test_verify_packet.py",
+      "sha256": "661d52b6d0285fde9a428d30e66cc5b65e3ad161b5adaaa2d4b4d24c23345203"
+    },
+    "verifier": {
+      "bytes": 25574,
+      "path": "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_packet.py",
+      "sha256": "45d32439f53ed28e09a9c7e952bf48753732908304d7455a26e43f0854772bbd"
+    }
+  },
+  "operationalGate": "closed",
+  "operationalStagesRun": 0,
+  "preservationInventorySha256": "3599660b8e66c426588267c4e6e6a883741ca3d8f53c3eb8556798531d14a5cf",
+  "preservedStates": {
+    "epic3": "in-progress",
+    "release": "FAIL",
+    "spec23": "draft",
+    "story3_6": "in-progress",
+    "story4_1Gate": "closed",
+    "story4_27": "in-progress"
+  },
+  "priorInventoryException": {
+    "classification": "pre-existing-unrelated-drift-not-repaired",
+    "currentAtPreparationSha256": "1d66b846fb554deefa67acb44711671376d5d354f74558ffb9b34a87a638283d",
+    "explanation": "Parent preserved the initial exit1 from the prior 162-file inventory: Platform sprint-status was already dirty. This new five-root baseline separately preserves all current historical files. No prior 162/162 pass is claimed.",
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/sprint-status.yaml",
+    "priorInventoryFileMatches": 161,
+    "priorInventoryFiles": 162
+  },
+  "publicAllowedSignersSha256": "77df53775f890a393578cb5480512b532ef730bcc854a2bf1d4cdd9bb1d77247",
+  "publicRecipientSha256": "1eb59a1bd7db64d2ea0dfcb969286c506ccde400183215f3f95be00c73d4c989",
+  "published": false,
+  "recordedAt": "2026-10-15T16:43:39.309196+00:00",
+  "recoveryId": "20261015t162756z",
+  "signed": false,
+  "sourceFreezeSha256": "2087cf86e860b87333fa5fc624aa2ac75a805adb936cd58e7d2987c252f0cb57",
+  "status": "unsigned-offline-preparation-complete-with-operational-blockers"
+}

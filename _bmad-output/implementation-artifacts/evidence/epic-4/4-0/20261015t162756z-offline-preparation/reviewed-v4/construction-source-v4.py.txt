@@ -1,0 +1,155 @@
+"""Draft create-only local v4 constructor. Run only after explicit seal clearance."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import sys
+
+if sys.argv[1:] != ['--seal-reviewed-v4']:
+    raise SystemExit('Not run: explicit reviewed v4 seal argument required')
+os.umask(0o077)
+root = Path('/home/administrator/hexalith-recovery-evidence/4-0/20261015t162756z')
+platform = Path('/home/administrator/projects/hexalith/platform')
+evidence = platform / '_bmad-output/implementation-artifacts/evidence/epic-4/4-0/20261015t162756z-offline-preparation/reviewed-v4'
+approved_sources = {
+    'verify_packet.py': '19d535eead357a609fb9a3cefe41615b1f148569dafebf08b65fa37f6938cb5a',
+    'test_verify_packet.py': 'ef0bc400d60f3140bd580a2ec9a05beca666d45634104ba7c8128c5b444d9996',
+    'static_transport_preflight.py': '30da6f0002d02a2fd3c47b720d74299ad4352cd2de49e2486ec982bd8b36ff9a',
+    'test_static_transport_preflight.py': '458e96711941dab75ff528d2b7aa3b8b9c1f25c2f8824f5de9ad5a1b5088cc59',
+    'README.md': 'f8d0515fc664e137076c57adce54436986714b414476c12981f561224276c7e4',
+}
+anchors = {
+    'packet.json': '3f4dc1e480c03413d44f3a8343e2730913aea220456c2dc4736a8df3eeebed2d',
+    'packet-v2.json': '70a721ca7ced74281029c480419d08889658dc07f83844cdcefd10c7f8f99d59',
+    'packet-v3.json': '5582ea912dcca2b2839f08236405747d6a54232d096d5ce25286c831dfed042a',
+}
+
+
+def h(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def reference(path):
+    return {'sha256': h(path), 'bytes': path.stat().st_size}
+
+
+def put(name, value):
+    raw = (json.dumps(value, indent=2, sort_keys=True) + '\n').encode() if isinstance(value, dict) else value.encode()
+    with (root / name).open('xb') as stream:
+        stream.write(raw)
+    (root / name).chmod(0o600)
+    return {'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)}
+
+
+for name, expected in anchors.items():
+    assert h(root / name) == expected, 'earlier reviewed manifest changed'
+old = json.loads((root / 'packet-v3.json').read_bytes())
+originals = dict(old['files'])
+originals['packet-v3.json'] = reference(root / 'packet-v3.json')
+for name, expected in originals.items():
+    assert reference(root / name) == expected, 'earlier packet file changed'
+for name, expected in approved_sources.items():
+    assert h(platform / 'eng/recovery-preparation' / name) == expected, 'reviewed source drift'
+binding = json.loads((root / 'bindings-v3.json').read_bytes())
+for role, item in binding['offlineVerifierSources'].items():
+    path = Path(item['path'])
+    item.update(reference(path))
+preflight = json.loads((root / 'static-transport-preflight.json').read_bytes())
+old_source_sha = preflight['source']['sha256']
+preflight['source'] = binding['offlineVerifierSources']['staticPreflight']
+preflight_ref = put('static-transport-preflight-v4.json', preflight)
+
+request = (root / 'NEXT-OPERATIONAL-APPROVAL-v3.md').read_text()
+request = request.replace('revision v3', 'revision v4').replace('-v3.md', '-v4.md')
+request = request.replace('static-transport-preflight.json', 'static-transport-preflight-v4.json')
+request = request.replace(h(root / 'static-transport-preflight.json'), preflight_ref['sha256'])
+request = request.replace(old_source_sha, preflight['source']['sha256'])
+request = request.replace('The input limit is 1 MiB, parsed output limit 2 MiB, child timeout 10s;',
+    'The input limit is 1 MiB. Stdout is drained incrementally with a 2 MiB cap; stderr is counted and discarded with a 64 KiB cap. Both share the 10s deadline; overflow or')
+request = request.replace('Only a fixed sanitized pass/refusal JSON is emitted.',
+    'Only sanitized pass/refusal JSON is emitted. A success includes observedAt UTC and exact binding/config/source/kubectl/interpreter digests; no raw input, invalid supplied hash or arguments are echoed on failure.')
+approval_ref = put('NEXT-OPERATIONAL-APPROVAL-v4.md', request)
+future = (root / 'FUTURE-MEASUREMENTS-v3.md').read_text().replace('-v3', '-v4')
+future = future.replace('Existing v1/v2 approval prose', 'Existing v1/v2/v3 approval prose')
+put('FUTURE-MEASUREMENTS-v4.md', future)
+plan = json.loads((root / 'operation-plan-v3.json').read_bytes())
+plan['activeApproval'] = {'filename': 'NEXT-OPERATIONAL-APPROVAL-v4.md', **approval_ref}
+for stage in plan['stages']:
+    stage['description'] = stage['description'].replace('-v3', '-v4')
+put('operation-plan-v4.json', plan)
+binding['activeApproval'] = plan['activeApproval']
+binding['retainedManifests'] = {name: originals[name] for name in anchors}
+binding['staticTransportPreflight'] = {'filename': 'static-transport-preflight-v4.json', **preflight_ref}
+put('bindings-v4.json', binding)
+put('README-v4.md', '''# Active offline preparation review input — explicit v4
+
+Review packet-v4.json, bindings-v4.json, operation-plan-v4.json,
+NEXT-OPERATIONAL-APPROVAL-v4.md and SHA256SUMS-v4. The immediate proposed
+action is solely an Administrator protected LOCAL static transport preflight.
+It has not run on the actual input. Every API/provider/IAM/network lane remains
+BLOCKED pending separately qualified exact adapter/runtime/authority and a
+distinct reviewed measurement approval. Future selector prose remains inert.
+
+All 132 v1/v2/v3 files are retained byte-for-byte. The verifier embeds their
+independently retained reviewed manifest digests, validates every original
+payload mapping and current bytes, and rejects a joint original/checksum/
+manifest rewrite even when an active candidate supplies replacement hashes.
+The active plan binds the exact next request filename/digest. Earlier failures,
+sources, summaries and signed originals remain historical and unchanged.
+
+Focused tests cover all eight Memories safeguards both by field removal and
+weakened values: false booleans, drain901 and one store. Both removed-guard and
+key-only-guard controls are detected. Local parser stdout/stderr are streamed
+under separate2MiB/64KiB bounds and a shared10s deadline; overflow/timeout kills
+and reaps only the exact owned process group. Synthetic oversized-pipe tests
+run harmless local child processes; no operational tool or actual config runs.
+
+The local preflight accepts only the fixed hash/custody-checked input and exact
+source/interpreter/kubectl/binding bytes. It uses a sealed owner-only0600 memfd,
+cleared child environment, TLS/static credential schema and sanitized output.
+Success includes observedAt UTC plus exact input digests, API0/authfalse/
+authorityfalse/closed. No raw input, invalid hash, arbitrary args or diagnostics
+reach output. Existing nonwritable0755 config-parent custody is supported;
+fresh binding parent0700 and config0600 remain required without chmod.
+
+Policy/RID/preparation/expiry remain unchanged:20261015t162756z,
+2026-10-15T16:27:56Z to2026-10-16T16:27:56Z, ceiling86400s. Capture and
+acceptance are null. All retained decisions, source/storage pins, OIDC/private
+loopback/eight-check/failed-lineage controls and actualC3/one-final-pre/census/
+<=900s drain/paired-store/approved conditional-resume safeguards remain bound.
+No retired recovery, completed stage, signature or acceptance was replayed.
+
+The sole packet verifier invocation is an inert local check using the exact
+independent packet-v4.json digest in reviewed-v4 Platform evidence:
+
+```text
+/usr/bin/python3.14 -I -S -B /home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_packet.py --packet /home/administrator/hexalith-recovery-evidence/4-0/20261015t162756z --manifest packet-v4.json --sha256 <reviewed-v4-digest>
+```
+
+Exit0 means consistent unsigned preparation only. operationalGate stays closed,
+approvalAuthenticated=false and currentRecoveryClaimed=false. Parent performs
+full actual packet verification separately. Story3.6/Epic3/4.27 remain in progress,
+spec23 draft,4.1 closed, release FAIL. No actual preflight, credential/key read,
+authentication, API/provider call, capture/restore, signing, publication,
+retirement, upgrade, Rancher or Timesheets execution is granted by preparation.
+'''.replace('drain901', 'drain 901').replace('separate2MiB', 'separate 2 MiB').replace('shared10s', 'shared 10s')
+    .replace('owner-only0600', 'owner-only 0600').replace('nonwritable0755', 'nonwritable 0755')
+    .replace('parent0700', 'parent 0700').replace('config0600', 'config 0600')
+    .replace('unchanged:2026', 'unchanged: 2026').replace('to2026', 'to 2026').replace('ceiling86400', 'ceiling 86400')
+    .replace('actualC3', 'actual C3').replace('Exit0', 'Exit 0').replace('Story3.6/Epic3/4.27', 'Story 3.6 / Epic 3 / 4.27')
+    .replace('spec23', 'spec 23').replace('draft,4.1', 'draft, 4.1'))
+files = {str(path.relative_to(root)): reference(path) for path in sorted(root.rglob('*')) if path.is_file()}
+files['SHA256SUMS-v4'] = put('SHA256SUMS-v4', ''.join(f"{item['sha256']}  {name}\n" for name, item in sorted(files.items())))
+manifest_ref = put('packet-v4.json', {**old, 'files': files})
+for name, expected in originals.items():
+    assert reference(root / name) == expected, 'earlier packet file changed'
+result = {'manifest': 'packet-v4.json', **manifest_ref, 'packetFiles': len(files) + 1,
+    'v1v2v3FilesPreserved': len(originals), 'independentPriorManifestAnchors': anchors,
+    'immediateRequest': {'filename': 'NEXT-OPERATIONAL-APPROVAL-v4.md', **approval_ref},
+    'staticPreflightBinding': preflight_ref, 'sourceReferences': binding['offlineVerifierSources'],
+    'actualKubeconfigRead': False, 'actualPreflightRun': False,
+    'fullActualVerification': 'parent pending', 'operationalGate': 'closed'}
+with (evidence / 'construction-v4.json').open('x') as stream:
+    json.dump(result, stream, indent=2, sort_keys=True)
+    stream.write('\n')
+print(json.dumps(result, indent=2, sort_keys=True))

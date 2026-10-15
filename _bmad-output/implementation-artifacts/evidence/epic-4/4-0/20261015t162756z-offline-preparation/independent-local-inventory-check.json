@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-15T16:42:45.095914+00:00",
+  "currentMeasurementValuesAllNull": true,
+  "failedOriginalOidcUnchanged": true,
+  "frozenHistoricalSourcesVerified": 107,
+  "historicalFilesUnchanged": 348,
+  "initialPacketFilesUnchanged": 119,
+  "localBinaryRolesHashedWithoutExecution": 11,
+  "manifest": "packet-v2.json",
+  "operationStagesAllNotRun": true,
+  "operationalGate": "closed",
+  "packetFilesVerified": 124,
+  "packetSha256": "70a721ca7ced74281029c480419d08889658dc07f83844cdcefd10c7f8f99d59",
+  "priorInventoryException": {
+    "classification": "pre-existing-unrelated-drift-not-repaired",
+    "currentAtPreparationSha256": "1d66b846fb554deefa67acb44711671376d5d354f74558ffb9b34a87a638283d",
+    "explanation": "Parent preserved the initial exit1 from the prior 162-file inventory: Platform sprint-status was already dirty. This new five-root baseline separately preserves all current historical files. No prior 162/162 pass is claimed.",
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/sprint-status.yaml",
+    "priorInventoryFileMatches": 161,
+    "priorInventoryFiles": 162
+  },
+  "privateCustodyModesVerified": true,
+  "result": "pass",
+  "sourceBindingsVerified": 3,
+  "verificationMethod": "separate isolated standard-library walk; did not import verifier or historical source"
+}
