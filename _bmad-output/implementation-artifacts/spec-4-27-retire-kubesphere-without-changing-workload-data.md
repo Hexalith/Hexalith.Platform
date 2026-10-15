@@ -208,6 +208,35 @@ All retained patch findings below are resolved. The parent inspected the correct
 | Edge 3: writable ancestor | medium | Independently demonstrated existing 0700 custody beneath a nonsticky 0777 parent as Blind 2. Patch with the shared ancestor check. |
 | Edge 4: overflowing metadata number fails after partial publication | medium | json.loads accepts 1e999 as infinity and canonical serialization refuses it only after attempt.json is written. Patch: validate serialization before allocating any published output and retain no false complete packet. |
 
+
+### 2026-10-15 Timesheets independent offline preparation review
+
+All three review layers returned before triage. These findings concern the current offline packet; the operational gate always remains closed. The original production acceptance matrix, frozen intent, legacy baseline and in-progress status are preserved. Corrections implement the existing offline refusal requirements without an execution mode. Original candidate bytes and failed checks remain in private custody.
+
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| Timesheets B01 | medium | patch: Document and actual target bindings require zero host mounts; guard and positive fixture require three. Align the current schema with the documented topology. |
+| Timesheets B02 | medium | patch: Guard omits PID/IPC/device/capability/no-new-privileges assertions promised by the procedure. Require them for both isolated targets. |
+| Timesheets B03 | medium | patch: Source current-observation flag, node UID and CA fingerprint are not required. Explicit historical or missing measurements must refuse. |
+| Timesheets B04 | medium | patch: Authority current-lineage/custody fields are ignored and fingerprints use truthiness. Require typed identities and exact accepted custody/lineage. |
+| Timesheets B05 | medium | patch: Only final approval window is tested; retained attempt window and record containment are omitted. Validate both. |
+| Timesheets B06 | medium | patch: Final acceptance reference does not prove separately required pre-capture scope approval. Add a distinct bound approval checked before record chronology. |
+| Timesheets B07 | medium | patch: Future retainUntil alone accepts less than the required 30 days from creation. Bind creation, retention API agreement and interval for records and payloads. |
+| Timesheets B08 | medium | patch: Payload digest/readback checks omit exact endpoint, bucket, region and object key/prefix. Require destination/version lineage. |
+| Timesheets B09 | medium | patch: Nonempty list does not establish completeness of the eleven existing local tool roles. Require each role and exact file binding. |
+| Timesheets B10 | medium | patch: Cleanup checks omit source temporary, child-process and mount absence. Require those explicit outcomes for owned resources. |
+| Timesheets B11 | medium | patch: Image, engine/context/daemon and capacity qualification are not checked. Require measured identifiers and explicit qualification. |
+| Timesheets B12 | medium | patch: Original launcher inherits Python startup hooks. Preserve it as historical and supply a create-only reviewed launcher using -I -S -B with exact hash checks. |
+| Timesheets B13 | low | patch: Deep JSON can raise uncaught RecursionError and reads are unbounded. Bound metadata size and sanitize parser resource refusals. |
+| Timesheets E01 | medium | patch: Same verified topology mismatch as B01; independently filed source/mount declarations do not fix inconsistent schemas. |
+| Timesheets E02 | medium | patch: Same verified isolation omission as B02; network=none does not establish host namespace/capability isolation. |
+| Timesheets E03 | medium | patch: Truthiness admits whitespace/non-string authority/source identities and unknown writer identity. Require typed nonempty values. |
+| Timesheets E04 | medium | patch: node.archiveSha256 lacks an independent digest-format check; matching null plaintext digests can pass. Require a SHA-256 value. |
+| Timesheets E05 | medium | patch: Same verified 30-day retention omission as B07. |
+| Timesheets V01 | medium | patch: Pre-verified test gap: bypassing either verification-receipt or immutable-readback check leaves all 13 tests passing. Add complete-envelope negative cases with rehashed references. |
+| Timesheets V02 | medium | patch: Same independently verified zero-versus-three mount contradiction as B01. |
+| Timesheets O01 | medium | patch: Original private bindings pin earlier guard/tests/procedure hashes. Preserve originals and create a reviewed revision after source stabilization; no original timestamp or operational record changes. |
+
 ## Design Notes
 
 Approved Lease continuation: build explicit private plan bindings for existing native Lease UIDs, API identity/name/namespace, the original valid renewal time and a complete desired-content digest excluding only `spec.renewTime` (with the same existing status/server-bookkeeping normalization). Execution validates nonfuture, monotonic time and every other desired field against those bindings. Recheck retained Lease content during preservation rather than skipping all Lease desired fields. Seed the execution's private reviewed baseline only from the freshly validated objects so the unchanged shared manager Lease checkpoint still checks its exact post-controller transition. Assessment must verify the encrypted execution-before baseline against the same signed-plan bindings. No wildcard, blanket content exclusion, new Lease mutation, or expiry bypass is permitted. Old plans without renewal bindings retain their strict behavior. Document the explicit bindings in the operator handoff and rerun full catalog/fresh-node and seven-namespace qualification sequentially with settled final bytes; retain superseded attempts truthfully.
@@ -585,10 +614,10 @@ Read fully: `eng/cluster-management/NEXT-OPERATOR-ACTION.md`, `eng/cluster-manag
 
 Implement only this cohesive offline preparation:
 
-- [ ] Prepare a concrete reviewable current-attempt guarded recovery procedure in `eng/kubernetes-upgrade/` and private attempt bindings in the new custody directory. Bind preparation lineage to `20261015t112841z-post-40-recovery-prerequisite`, distinguish historical observations from required current observations, and pin exact known source/target identities, endpoint/member/cluster/authority UIDs or fingerprints, private paths, allowed custody and tool hashes. Inspect existing data to resolve routine choices. Proposed target names/paths must be explicit and attempt-scoped, isolated/fenced and distinct from production; never imply they exist or were validated. Every still-unmeasured value or uncovered action must be an explicit closed operational blocker, never a guessed accepted identity. No generic command with stale October 1 paths. No production commands are run.
-- [ ] Specify source health/member revision and version/canary checks, fresh external-etcd capture/integrity, encrypted off-node snapshot readback by the distinct validator, matching fenced isolated restore and exact revision/hash/count/canary comparisons, owner/mode-preserving node/configuration archive and file inventory, immutable readbacks, recovered independent native/SSH and break-glass proof, authority independence from KubeSphere, exact signed records/namespace/trust and acceptance order. Pin all known tools, bounded timeout/stop behavior, target-only cleanup and absence evidence; stop without automatic production restore, grant or retry. Treat scopes unsupported by existing policy/IAM, recipient decryption/readback, recovered authority lineage and 4.1 signing/execution as explicit uncovered operational actions. Preserve failed OIDC and historical receipts.
-- [ ] Implement a small offline-only readiness guard and meaningful negative tests in `eng/kubernetes-upgrade/`. It must have no operational execution mode or credential loading. Refuse expired/future/unknown prerequisites, missing or mismatched approval and exact bindings, unsafe custody/symlinks, source/target collision or insufficient isolation, tool/hash drift, unsigned/unverified record or readback mismatch, wrong recovered authority/dependency, and incomplete cleanup. Test a wholly synthetic valid baseline to ensure failures are substantive; never change actual evidence timestamps to make it pass. Actual current attempt must refuse and produce no remote or mutation behavior. Do not write tests mirroring a trivial implementation; verify the safety boundaries and side-effect absence.
-- [ ] Append current truth to the five tracked handoff/story/spec documents without rewriting historical paragraphs. Add a sanitized checkpoint at `evidence/epic-4/4-27/20261015t140709z-s427-expired-recovery-preparation/verification.json` under the implementation-artifacts directory. Record exact procedure/bindings/test/source hashes and full current VCS identifier, audit limitations, checks actually run, uncovered actions and unchanged closed story/gate status. Seal the new private packet with an exact checksum inventory after preparation. Preserve all earlier custody and record any real local preparation failures truthfully. No captures/restores/decryption/signing/new grants/infrastructure changes are authorized by preparation. No unchanged broad suite reruns.
+- [x] Prepare a concrete reviewable current-attempt guarded recovery procedure in `eng/kubernetes-upgrade/` and private attempt bindings in the new custody directory. Bind preparation lineage to `20261015t112841z-post-40-recovery-prerequisite`, distinguish historical observations from required current observations, and pin exact known source/target identities, endpoint/member/cluster/authority UIDs or fingerprints, private paths, allowed custody and tool hashes. Inspect existing data to resolve routine choices. Proposed target names/paths must be explicit and attempt-scoped, isolated/fenced and distinct from production; never imply they exist or were validated. Every still-unmeasured value or uncovered action must be an explicit closed operational blocker, never a guessed accepted identity. No generic command with stale October 1 paths. No production commands are run.
+- [x] Specify source health/member revision and version/canary checks, fresh external-etcd capture/integrity, encrypted off-node snapshot readback by the distinct validator, matching fenced isolated restore and exact revision/hash/count/canary comparisons, owner/mode-preserving node/configuration archive and file inventory, immutable readbacks, recovered independent native/SSH and break-glass proof, authority independence from KubeSphere, exact signed records/namespace/trust and acceptance order. Pin all known tools, bounded timeout/stop behavior, target-only cleanup and absence evidence; stop without automatic production restore, grant or retry. Treat scopes unsupported by existing policy/IAM, recipient decryption/readback, recovered authority lineage and 4.1 signing/execution as explicit uncovered operational actions. Preserve failed OIDC and historical receipts.
+- [x] Implement a small offline-only readiness guard and meaningful negative tests in `eng/kubernetes-upgrade/`. It must have no operational execution mode or credential loading. Refuse expired/future/unknown prerequisites, missing or mismatched approval and exact bindings, unsafe custody/symlinks, source/target collision or insufficient isolation, tool/hash drift, unsigned/unverified record or readback mismatch, wrong recovered authority/dependency, and incomplete cleanup. Test a wholly synthetic valid baseline to ensure failures are substantive; never change actual evidence timestamps to make it pass. Actual current attempt must refuse and produce no remote or mutation behavior. Do not write tests mirroring a trivial implementation; verify the safety boundaries and side-effect absence.
+- [x] Append current truth to the five tracked handoff/story/spec documents without rewriting historical paragraphs. Add a sanitized checkpoint at `evidence/epic-4/4-27/20261015t140709z-s427-expired-recovery-preparation/verification.json` under the implementation-artifacts directory. Record exact procedure/bindings/test/source hashes and full current VCS identifier, audit limitations, checks actually run, uncovered actions and unchanged closed story/gate status. Seal the new private packet with an exact checksum inventory after preparation. Preserve all earlier custody and record any real local preparation failures truthfully. No captures/restores/decryption/signing/new grants/infrastructure changes are authorized by preparation. No unchanged broad suite reruns.
 
 Acceptance for this resumed preparation: Given authentic but expired signed 4.0 records, when current offline readiness is evaluated, then it refuses dependent live work, preserves historical acceptance and uses the unchanged earliest deadline. Given the exact next-prerequisite lineage, when preparation completes, then concrete source/target/tool/custody/signing/readback/stop/cleanup requirements and every uncovered action are reviewable, no historical executable runs, and substantive safety-boundary tests pass offline. Given missing operational acceptance, the story and dependent gates remain open/closed as above. This preparation cannot complete the original live retirement acceptance matrix or close the story.
 
@@ -677,3 +706,47 @@ grant, retirement, upgrade, Rancher, Timesheets deployment or Git staging/commit
 Unchanged broad tests/fixtures were not rerun. **4.27 remains in-progress, 4.1's
 operational gate closed and Timesheets 3.6 open/FAIL**; all original production
 tasks, later owner gates and default-deny controls remain pending/preserved.
+
+
+## Timesheets reviewed offline prerequisite packet — 2026-10-15 14:43 UTC
+
+Concurrent preparation and Timesheets checkpoint
+`8f9b405c8de33ded25d018cf59194e5a578fa916` are reconciled. Platform HEAD
+remains `55bee680e6901a45946dd8bf1e4a4060952bd7ea`. The [reviewed packet](../../../../../hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/TIMESHEETS-REVIEWED-PACKET.md)
+freezes exact procedure/guard/test bytes and a new offline binding revision,
+without replacing original bindings, helpers or recovery evidence. Its binding
+SHA-256 is `80bcbc6592e3c5918bf79b2b689c8d27bf53d9faa49d73e2dd1fda23dd9db08e`;
+30 scoped local checksum entries match. This is unsigned offline preparation.
+
+The frozen guard passed **26/26 tests in 1.142s**, zero skips, with matching
+source hashes before/after. Its hash-checked `-I -S -B` launcher passes syntax
+and refuses a synthetic Python startup hook. Actual readiness at
+**14:41:10 UTC** exits **1** with the unchanged earliest expiry
+**2026-10-15T11:40:42Z**, `operationalGate=closed` and zero remote requests.
+Timesheets' existing launch-readiness lane passes **13/13 in 0.126s**. All 162
+historical preservation files and eight signed original pairs still match at
+14:43:26 UTC; historical validation/readbacks and the failed OIDC record remain
+preserved. Earlier audit/test assertion failures and the concurrent 19-test /
+14-failure intermediate fixture stop are retained, followed by the independent
+passing frozen-source run. [Exact sanitized results](evidence/epic-4/4-27/20261015t140709z-s427-expired-recovery-preparation/verification.json) bind these facts.
+
+The next unresolved prerequisite is **separate exact authorization to prepare
+fresh 4.0 policy/bundle and current source/tool/custody bindings**. No replacement
+bundle is allocated. Review and cover those exact fresh bytes, then require
+policy signature and immutable independent readback before capture, followed
+by actual current recovery/restore/resume/cleanup, signed records/readbacks,
+gate, non-dry validation and honest final Administrator M1/M2 acceptance.
+The old RID approval and completed four-record delegation cannot cover that
+replacement. Fresh accepted 4.0 precedes separately covered 4.1 external-etcd /
+node/configuration recovery and independent recovered-native/SSH/break-glass
+use. Current unknown identities, image/adapter/capacity qualification,
+policy/IAM, recipient access and signing remain blocked; protected unlock is
+supplied only in its private terminal at the actual prerequisite.
+
+Preserve existing destination/principal/key, scope and incident decisions,
+roles and October 7–31 window within their exact limits. Retirement, upgrades
+and deployment retain separate exact approvals. No capture, restore,
+decryption, infrastructure mutation, signing, publication, Git staging/commit/
+push or dependency update ran. Original production tasks stay pending:
+**4.27 in progress, 4.1 operational gate closed, Timesheets 3.6 in progress and
+release FAIL**. The offline checklist can complete without accepting retirement.

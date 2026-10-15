@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "kind": "hexalith.offline-reviewed-recovery-prerequisite",
+  "observedAt": "2026-10-15T14:43:26.757868+00:00",
+  "preparedFor": "Timesheets 3.6 / Platform 4.27",
+  "timesheetsCheckpoint": "8f9b405c8de33ded25d018cf59194e5a578fa916",
+  "platformHead": "55bee680e6901a45946dd8bf1e4a4060952bd7ea",
+  "recovery": {
+    "id": "20261014t112353z",
+    "expiresAt": "2026-10-15T11:40:42Z",
+    "expiryBasis": "policy.preparedAt",
+    "expired": true,
+    "authenticSignaturesIndependentlyVerifiedAt": "2026-10-15T14:12:04.573547+00:00",
+    "authenticSignatures": 8,
+    "unchangedSignedOriginalPairs": 8,
+    "historicalNonDryValidation": {
+      "total": 4809,
+      "pass": 4809,
+      "fail": 0,
+      "skipped": 0
+    },
+    "historicalManifestVersionsReadBack": 4714,
+    "retainedIndependentRecordVersionReadbacks": 16,
+    "currentProviderReadbacks": 0,
+    "originalOidcFailurePreserved": true,
+    "replacementBundleAllocated": false
+  },
+  "privateCustody": {
+    "directory": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation",
+    "packet": "TIMESHEETS-REVIEWED-PACKET.md",
+    "packetSha256": "a5185eb6049f9e4fd2928e386286573d0482399c19e46abb6878aa7c8bf728b8",
+    "reviewedBindings": "attempt-bindings-timesheets-reviewed.json",
+    "bindingsSha256": "80bcbc6592e3c5918bf79b2b689c8d27bf53d9faa49d73e2dd1fda23dd9db08e",
+    "executionPlanSha256": "bc4705d81595648023ec9badbcab71e8f43a31fd6531c4326fdd350ca0309853",
+    "helper": "CHECK-READINESS-TIMESHEETS-REVIEWED.sh",
+    "helperSha256": "f38dfd797eca61d0efd4fd935aa4de4b76a729cbcd2273196b421c4abd9df84c",
+    "checksumManifest": "TIMESHEETS-REVIEWED-SHA256SUMS",
+    "checksumManifestSha256": "22ef9cd98225285f53dd047e22a64a8fc9188f700e81cb2834d7b374c897e612",
+    "scopedChecksumsMatching": 30,
+    "originalBindingsAndHelperPreserved": true
+  },
+  "sourceHashes": {
+    "eng/kubernetes-upgrade/recovery_readiness.py": "df752a839a16973d04ac66896effb6fae5db00df8243310ebd4045129116c389",
+    "eng/kubernetes-upgrade/test_recovery_readiness.py": "298c73f6b51363d635db3f5ba7067ded4a50e367e894e45cba7aa5061b6ebc12",
+    "eng/kubernetes-upgrade/GUARDED-RECOVERY-PREPARATION.md": "3caef5a501038d4777d69d0ef4e7e4c87c50ee39bc32cf68a983ae8478913e5c"
+  },
+  "repositoryMatchesFrozenReviewedSources": true,
+  "verification": {
+    "offlineGuardTests": {
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.142,
+      "sourceHashesUnchangedDuringRun": true
+    },
+    "timesheetsLaunchReadinessTests": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "seconds": 0.126,
+      "sdk": "10.0.401",
+      "sdkMatchesGlobalJson": true
+    },
+    "actualReadiness": {
+      "exitCode": 1,
+      "checkedAt": "2026-10-15T14:41:10.791959+00:00",
+      "blockers": [
+        "workload recovery expired or future"
+      ],
+      "earliestRecoveryExpiry": "2026-10-15T11:40:42+00:00",
+      "operationalGate": "closed",
+      "mutationAuthorized": false
+    },
+    "helperSyntaxExitCode": 0,
+    "pythonStartupInjectionPrevented": true,
+    "historicalPreservationFilesMatching": 162,
+    "preparationOriginalChecksumsMatching": 16,
+    "preparationSupplementChecksumsMatching": 21,
+    "archivedInputsMatching": 13,
+    "historicalScriptsMatching": 4,
+    "broadSuitesRerun": false
+  },
+  "review": {
+    "independentLayers": 3,
+    "individuallyTriagedFindings": 21,
+    "scope": "current offline preparation",
+    "resolvedByGuardTestsProcedureAndReviewedRevision": true,
+    "originalProductionAcceptanceCompleted": false
+  },
+  "localPreparationFailuresPreserved": [
+    {
+      "source": "initial-local-harness-stop.json",
+      "cause": "initial expiry audit used wrong checkpoint dictionary key; separate corrected audit retained"
+    },
+    {
+      "source": "guard-review-results.json",
+      "cause": "initial regression asserted a particular refusal message before concurrent parse validation; one assertion failure retained"
+    },
+    {
+      "source": "concurrent-review-fix-stop-2.json",
+      "tests": 19,
+      "failures": 14,
+      "cause": "intermediate concurrent schema/fixture mismatch; no dependent dispatch"
+    },
+    {
+      "source": "implementation agent final report",
+      "failures": 2,
+      "cause": "intermediate refusal-order assertions; corrected with complete fixture and substantive boundaries",
+      "provenance": "agent-reported; final passing frozen-source run independently verified"
+    }
+  ],
+  "nextUnresolvedPrerequisite": "Separate exact authorization to prepare fresh 4.0 policy/bundle and current source/tool/custody bindings; no automatic replacement allocation",
+  "requiredSequence": [
+    "review exact fresh 4.0 policy/tool/source/custody bytes and covered operational authority",
+    "Administrator policy signature and independent immutable readback before capture",
+    "current 4.0 captures, isolated restores, verification, conditional approved resume, cleanup, signed records/readbacks, gate, non-dry validation and honest final M1/M2 attestation/signature/readback",
+    "separately covered 4.1 external-etcd/node/configuration recovery and independent recovered-native/SSH/break-glass access",
+    "current retirement census/source-bound qualification/final plan/exact retirement approval",
+    "fresh post-retirement recovery and separately approved per-hop upgrade gates",
+    "separately approved Timesheets enrollment/deployment and deployed acceptance"
+  ],
+  "decisionsPreserved": {
+    "windowStart": "2026-10-07T14:44:45Z",
+    "exclusiveWindowEnd": "2026-10-31T23:00:00Z",
+    "owner": "Administrator jpiquot@itaneo.com",
+    "incidentChannel": "this conversation",
+    "existingDestinationPrincipalKeyScopeAndIncidentHistory": true
+  },
+  "operationalRequests": 0,
+  "credentialLoading": false,
+  "decryptionPerformed": false,
+  "capturesRestoresOrCleanupReplayed": false,
+  "signingPerformed": false,
+  "publicationPerformed": false,
+  "infrastructureMutationPerformed": false,
+  "dependencyUpdates": false,
+  "gitStagingCommitOrPush": false,
+  "status": {
+    "story427": "in-progress",
+    "story41OperationalGate": "closed",
+    "timesheets36": "in-progress",
+    "spec23": "draft",
+    "timesheetsRelease": "FAIL"
+  }
+}

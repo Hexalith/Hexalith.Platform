@@ -1,5 +1,11 @@
 # Timesheets staging dependency handoff — 2026-10-14
 
+Current checkpoint (**2026-10-15 14:43 UTC**): [reviewed offline packet](../../../../../hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/TIMESHEETS-REVIEWED-PACKET.md).
+Recovery `20261014t112353z` is expired. The next input is separate exact
+authorization for fresh 4.0 preparation. 4.27 stays in progress, 4.1 operational
+gate closed and Timesheets release FAIL. Dated actions below retain their
+historical meaning; use the final checkpoint at the end of this document.
+
 Timesheets has an existing Development/source binding, but staging deployment
 and activation remain unavailable and unauthorized. **Timesheets Story 3.6
 acceptance and release remain FAIL.** This handoff prepares the supported-cluster
@@ -617,3 +623,47 @@ grant, retirement, upgrade, Rancher, Timesheets deployment or Git staging/commit
 Unchanged broad tests/fixtures were not rerun. **4.27 remains in-progress, 4.1's
 operational gate closed and Timesheets 3.6 open/FAIL**; all original production
 tasks, later owner gates and default-deny controls remain pending/preserved.
+
+
+## Timesheets reviewed offline prerequisite packet — 2026-10-15 14:43 UTC
+
+Concurrent preparation and Timesheets checkpoint
+`8f9b405c8de33ded25d018cf59194e5a578fa916` are reconciled. Platform HEAD
+remains `55bee680e6901a45946dd8bf1e4a4060952bd7ea`. The [reviewed packet](../../../../../hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/TIMESHEETS-REVIEWED-PACKET.md)
+freezes exact procedure/guard/test bytes and a new offline binding revision,
+without replacing original bindings, helpers or recovery evidence. Its binding
+SHA-256 is `80bcbc6592e3c5918bf79b2b689c8d27bf53d9faa49d73e2dd1fda23dd9db08e`;
+30 scoped local checksum entries match. This is unsigned offline preparation.
+
+The frozen guard passed **26/26 tests in 1.142s**, zero skips, with matching
+source hashes before/after. Its hash-checked `-I -S -B` launcher passes syntax
+and refuses a synthetic Python startup hook. Actual readiness at
+**14:41:10 UTC** exits **1** with the unchanged earliest expiry
+**2026-10-15T11:40:42Z**, `operationalGate=closed` and zero remote requests.
+Timesheets' existing launch-readiness lane passes **13/13 in 0.126s**. All 162
+historical preservation files and eight signed original pairs still match at
+14:43:26 UTC; historical validation/readbacks and the failed OIDC record remain
+preserved. Earlier audit/test assertion failures and the concurrent 19-test /
+14-failure intermediate fixture stop are retained, followed by the independent
+passing frozen-source run. [Exact sanitized results](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261015t140709z-s427-expired-recovery-preparation/verification.json) bind these facts.
+
+The next unresolved prerequisite is **separate exact authorization to prepare
+fresh 4.0 policy/bundle and current source/tool/custody bindings**. No replacement
+bundle is allocated. Review and cover those exact fresh bytes, then require
+policy signature and immutable independent readback before capture, followed
+by actual current recovery/restore/resume/cleanup, signed records/readbacks,
+gate, non-dry validation and honest final Administrator M1/M2 acceptance.
+The old RID approval and completed four-record delegation cannot cover that
+replacement. Fresh accepted 4.0 precedes separately covered 4.1 external-etcd /
+node/configuration recovery and independent recovered-native/SSH/break-glass
+use. Current unknown identities, image/adapter/capacity qualification,
+policy/IAM, recipient access and signing remain blocked; protected unlock is
+supplied only in its private terminal at the actual prerequisite.
+
+Preserve existing destination/principal/key, scope and incident decisions,
+roles and October 7–31 window within their exact limits. Retirement, upgrades
+and deployment retain separate exact approvals. No capture, restore,
+decryption, infrastructure mutation, signing, publication, Git staging/commit/
+push or dependency update ran. Original production tasks stay pending:
+**4.27 in progress, 4.1 operational gate closed, Timesheets 3.6 in progress and
+release FAIL**. The offline checklist can complete without accepting retirement.
