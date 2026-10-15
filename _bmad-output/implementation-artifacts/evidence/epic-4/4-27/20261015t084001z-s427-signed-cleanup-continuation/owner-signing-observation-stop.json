@@ -1,0 +1,32 @@
+{
+  "Story4_1GateOpen": false,
+  "Story4_27Accepted": false,
+  "Timesheets3_6Accepted": false,
+  "acceptedFreshRecovery": false,
+  "actualLocalSignaturePresence": {
+    "keycloak/keycloak-restore-proof.json": false,
+    "manifest/evidence-manifest.json": false,
+    "memories/memories-restore-proof.json": false,
+    "openbao/openbao-restore-proof.json": false
+  },
+  "actualOwnerReply": "Signed and uploaded all four records",
+  "actualUploadLedgerEntryCount": 4,
+  "checkedAt": "2026-10-15T08:58:10.602887+00:00",
+  "expectedEntryCountAfterFourRecordSigning": 12,
+  "gatePresent": false,
+  "kind": "hexalith.owner-signing-claim-independent-observation-stop",
+  "newGateDispatches": 0,
+  "nextRequiredInput": "Non-secret final output or current state of the new four-record protected-terminal signing block; no renewed scope approval.",
+  "nonDryValidationDispatches": 0,
+  "oldUploadLedgerUnchanged": true,
+  "ownerSigningPreflightReceiptPresent": false,
+  "providerReadbacksForMissingFourPairs": 0,
+  "recoveryId": "20261014t112353z",
+  "refusedPreGateCheck": {
+    "clarification": "Expected new entries are absent; the historical four-entry ledger remains unchanged.",
+    "exitCode": 1,
+    "message": "upload ledger changed beyond four approved record/signature pairs"
+  },
+  "remoteWrites": 0,
+  "validationPresent": false
+}

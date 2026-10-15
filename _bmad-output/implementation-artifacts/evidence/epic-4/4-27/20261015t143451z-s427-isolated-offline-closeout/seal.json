@@ -1,0 +1,46 @@
+{
+  "actualReadinessExitCode": 1,
+  "all162HistoricalFilesMatch": true,
+  "checkpointId": "20261015t143451z-s427-isolated-offline-closeout",
+  "checksumManifest": {
+    "allChecksumsReadBackMatching": true,
+    "exactFileSetVerified": true,
+    "filesCovered": 23,
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896/SHA256SUMS",
+    "sha256": "9f5ef6a7bd91179e125eb1ab2b07cb083baf028c38595f3052f7578f937c89e4"
+  },
+  "concurrentSpecInsertionPreserved": true,
+  "currentHead": "55bee680e6901a45946dd8bf1e4a4060952bd7ea",
+  "finalSealResolvesEarlierPendingSealState": true,
+  "immediatePreCloseoutPrefixesMatching": 5,
+  "initialPrefixesMatching": 4,
+  "kind": "hexalith.unsigned-offline-preparation-seal",
+  "mutationAuthorized": false,
+  "newOperationalAcceptance": false,
+  "operationalGate": "closed",
+  "preparationOnly": true,
+  "priorPrerequisiteSealSupplementSha256": "2ee8587a535a11c2db2c664202b7760284a45026a7b786afb86d7b59ed749390",
+  "privateDirectory": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896",
+  "publishedVerificationPreserved": true,
+  "publishedVerificationSha256": "767d9e66dea037bd409df7953f1efbd04029d32ccfb06c1cf6ec900ab493ac56",
+  "remoteOperationalRequests": 0,
+  "rootFinalVerification": {
+    "allChecksPass": true,
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896/root-final-verification.json",
+    "sha256": "3319d7cc2bd8c6322813c5fdf932b83bdc6e6ba2fdf7dc3b78cbe3ef77fdc0ea"
+  },
+  "rootFocusedTestsPass": 19,
+  "schemaVersion": 1,
+  "scope": "Exact local checksum seal of offline preparation, source lineage and truthful closed-gate outcomes; no cryptographic signature or operational authority supplied.",
+  "sealedAt": "2026-10-15T14:42:49.030109+00:00",
+  "signed": false,
+  "sourceArchive": {
+    "members": 8,
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896/final-preparation-sources.zip",
+    "sha256": "406cb1452a9ad2c2b814d32e8fc01925f1a5d5a478bde94934d2694550f9b866"
+  },
+  "story41OperationalGate": "closed",
+  "story427": "in-progress",
+  "timesheets36": "open/FAIL",
+  "unchangedRecoveryDeadline": "2026-10-15T11:40:42Z"
+}

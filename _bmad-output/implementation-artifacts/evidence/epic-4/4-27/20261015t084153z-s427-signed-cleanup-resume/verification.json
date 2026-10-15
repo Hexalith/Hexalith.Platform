@@ -1,0 +1,185 @@
+{
+  "checkpoint": "read-only-reconciled-awaiting-four-record-signatures",
+  "checkpointArchive": {
+    "allMembersVerified": true,
+    "members": 13,
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084153z-s427-signed-cleanup-resume/checkpoint-sources.zip",
+    "sha256": "8f72a6b07fc94c29a836282ef50c7f6df3e952b806603def09d72c431360bdfc"
+  },
+  "concurrentManifestAndProofs": {
+    "custody": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084001z-s427-signed-cleanup-continuation",
+    "manifest": {
+      "concurrentReceiptSha256": "be953fea4d3a10f83c82873d9ba844242891277fe8e8451129bc3b2287641933",
+      "localEvidenceVerified": 73,
+      "notExecutedByThisRun": true,
+      "objectsReadBackByConcurrentRun": 4714,
+      "sha256": "9d16ecb2c1074fa72e131bd448b1230bee2581d4877c83576c78d8b14365f9d2"
+    },
+    "notExecutedByThisRun": true,
+    "proofs": {
+      "keycloak": {
+        "expiresAt": "2026-10-15T13:06:48Z",
+        "measuredRpoSeconds": 29,
+        "sha256": "f6570b31b4f138a2ffe2e44bfbb5c464d0462898ab7f496f795fa52a4c168734",
+        "verificationResult": "pass"
+      },
+      "memories": {
+        "expiresAt": "2026-10-15T15:13:46Z",
+        "measuredRpoSeconds": 86,
+        "sha256": "bc9725e06ab30fe02959b2db6370cfc58750e6420d05d9fa2b19f691326c1ee1",
+        "verificationResult": "pass"
+      },
+      "openbao": {
+        "expiresAt": "2026-10-15T14:52:05Z",
+        "measuredRpoSeconds": 127,
+        "sha256": "fc61e1a0ef9f0a29c47f9c003bef73e7467ce08c35fcbef181d8a14acd481545",
+        "verificationResult": "pass"
+      }
+    }
+  },
+  "createdAt": "2026-10-15T08:53:53.650545+00:00",
+  "freshReadOnlyOutcome": {
+    "allFourNewSignaturesAbsentAtReconciliation": true,
+    "allFourProtectedNamespaceUidsAnd15PvcPvBindingsPreserved": true,
+    "checkedAt": "2026-10-15T08:49:13.225649+00:00",
+    "exactImmutableVersionsReread": 4,
+    "gateAndValidationAbsentAtReconciliation": true,
+    "isolatedTargetsAndTemporaryCopiesAbsent": true,
+    "manifestLocalFilesIndependentlyVerified": 73,
+    "manifestObjectReadbacksByConcurrentRun": 4714,
+    "policyAgeSeconds": 76105.019278
+  },
+  "guardedSigningAction": {
+    "actionPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084001z-s427-signed-cleanup-continuation/NEXT-PROTECTED-SIGNING-ACTION.md",
+    "actionSha256": "a4cb7d9ce0ff2ccc51332e93bb4ab5525fc42a0417b2a20de0fd3b39d7873bfe",
+    "bashSyntaxExitCode": 0,
+    "checkedAt": "2026-10-15T08:51:27.011621+00:00",
+    "guardPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084001z-s427-signed-cleanup-continuation/records_signing_guard.py",
+    "guardSha256": "630f42e092adb467b10fedfce05ec3aa91b6a6f575d55c70c85db378cf119b06",
+    "policyDeadlineUtc": "2026-10-15T11:40:42Z",
+    "protectedTerminalRequired": true,
+    "signingInvoked": false
+  },
+  "independentReadbackAndNativeReceipt": {
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084153z-s427-signed-cleanup-resume/readonly-reconciliation.json",
+    "sha256": "1a30ac7073f35747fdf09c617fcfff1addffcb021c4894df9a376d80b6be8731"
+  },
+  "kind": "hexalith.signed-cleanup-readonly-continuation-verification",
+  "laterOfflineDiagnosis": {
+    "doesNotEstablishOriginalError": true,
+    "path": "offline-readback-failure-diagnosis.json",
+    "sha256": "9783fb0017c3208da65ceb747152a2eca0c9f4f4b177874100beda8278f684d8"
+  },
+  "manifestProofGateValidationSigningByThisRun": false,
+  "policyOriginalAndCleanupSignaturesAuthentic": true,
+  "preservation": {
+    "boundExactFilesUnchanged": true,
+    "earlierTrackingBytePrefixesRetained": true,
+    "sha256": "b36a9ac7014f7e04e4a93df3a9e3eb0cb92fbc642448ee309f67811e01d6c1be"
+  },
+  "privateChecksumFilesVerified": 29,
+  "privateChecksumManifestSha256": "43c7bb1daf19ef3b61aa2dc5f0b50f7c7456a292a32e69fa836aa1bd09c23ebe",
+  "privateCustody": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084153z-s427-signed-cleanup-resume",
+  "privateVerificationSha256": "5bf9d7a1b1ec32eceb440dbe439eb4857b78f8d37c22256ad0b3c52edfd5e3e6",
+  "recoveryAccepted": false,
+  "recoveryId": "20261014t112353z",
+  "remaining": [
+    "Administrator exact manifest and three proof signatures plus immutable publication",
+    "Authenticate/read back actual new signatures before gate",
+    "Gate creation/signing and current non-dry validation",
+    "Honest fresh Administrator M1/M2 and final validation signature",
+    "All original production retirement/4.1/Timesheets acceptance tasks"
+  ],
+  "remoteMutationsByThisRun": 0,
+  "signed": false,
+  "sourceSnapshots": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "boundExactBytes": false,
+      "currentSha256": "a2d0f4b9232298d6b1e0b6147f584dafc12151d5351f956677e05374ffdd9449",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "106d5045e66c13eec5f1da9bb35ec9c1b1253f46d0566cbda6c9ea25a09f3e09",
+      "unchanged": false
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "boundExactBytes": false,
+      "currentSha256": "6e62a778a9feadbc8a84df1a82a563142146e9afa1434929e5047f2a1ef9c380",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "9e1a82a2515fc65a5383f0f2bdef227de42206476ddf3e3ac03ba7aaf6da8939",
+      "unchanged": false
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "boundExactBytes": false,
+      "currentSha256": "93e4d5e84abb00bd10d630cb894c8c119e2ad50c4f86e1d3164f89aa5f6568a5",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "398de5576ffc45281f70b04a9f3425097d7beacd1f7ce9fbd65da71dd7da1524",
+      "unchanged": false
+    },
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": {
+      "boundExactBytes": true,
+      "currentSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60",
+      "unchanged": true
+    },
+    "eng/cluster-management/rehearse.py": {
+      "boundExactBytes": true,
+      "currentSha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+      "unchanged": true
+    },
+    "eng/cluster-management/retire.py": {
+      "boundExactBytes": true,
+      "currentSha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+      "unchanged": true
+    },
+    "eng/kubernetes-upgrade/MAINTENANCE.md": {
+      "boundExactBytes": true,
+      "currentSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+      "unchanged": true
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "boundExactBytes": false,
+      "currentSha256": "71d096d28223da19d35d812e1418e1f5112b2abd90c860e4ded559e76fa63297",
+      "initialBytePrefixPreserved": true,
+      "initialSha256": "1737d1ddabefae2e00d66b6760b329d42cfdebbca702f9e7aaf24c6e9ec0504a",
+      "unchanged": false
+    }
+  },
+  "stoppedCommand": {
+    "argv": [
+      "uv",
+      "run",
+      "--quiet",
+      "--no-project",
+      "--with",
+      "boto3",
+      "python",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084153z-s427-signed-cleanup-resume/continuation.py",
+      "--preread"
+    ],
+    "exactOriginalErrorNotDecrypted": true,
+    "exitCode": 1,
+    "noDependentStageDispatchAfterStop": true,
+    "resultSha256": "dca3a75d0e25cb8355f98fd278c76abc7d25bcb2cc089e952146cec4f19a377f",
+    "stderrBytes": 851,
+    "timedOut": false
+  },
+  "storyStatus": {
+    "4.1": "closed",
+    "4.27": "in-progress",
+    "Timesheets3.6": "open/FAIL"
+  },
+  "verification": {
+    "astSyntaxFiles": 3,
+    "bashSyntaxExitCode": 0,
+    "fixturesRerun": false,
+    "gitDiffCheckHeadExitCode": 0,
+    "privateModes": "0700 directories / 0600 files",
+    "testSuitesRerun": false
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "M1M2AttestedByActualAdministratorValidationSignature": true,
+  "Story4_1GateOpen": false,
+  "Story4_27Accepted": false,
+  "Story4_27State": "in-progress",
+  "Timesheets3_6Accepted": false,
+  "Timesheets3_6State": "open/FAIL",
+  "acceptanceAutomaticallyStaleAtDeadline": true,
+  "acceptedAt": "2026-10-15T11:27:34.340622+00:00",
+  "acceptedCorrectionIncidentSha256": "28b45cc0a30de866ad6fc7946256c966897cef3a21265e645404111eab5906c5",
+  "acceptedFreshRecovery": true,
+  "actualOriginalSignedRecords": {
+    "cleanup/restore-target-cleanup.json": {
+      "recordVersionId": "1792053509510188",
+      "sha256": "3ae690daad23e6a0f028ab28ca023ba9a04d4c72f810d9129b117125d08d5b78",
+      "signatureAuthentic": true,
+      "signatureSha256": "c346a6a9692227302e4c804012bb1df2a0b1b3121f1c76a65a77c794bd6d280c",
+      "signatureVersionId": "1792053509947219"
+    },
+    "gate/backup-gate.json": {
+      "recordVersionId": "1792062557997233",
+      "sha256": "c23f0d12067a4eff0379af8a811ab8ae693b02304b897b570802fccd90356695",
+      "signatureAuthentic": true,
+      "signatureSha256": "8f21e993071501b4e3783ee6c965ab3de7967b32bce6566bf2fdcf68f8eedb94",
+      "signatureVersionId": "1792062558367544"
+    },
+    "keycloak/keycloak-restore-proof.json": {
+      "recordVersionId": "1792062056899533",
+      "sha256": "f6570b31b4f138a2ffe2e44bfbb5c464d0462898ab7f496f795fa52a4c168734",
+      "signatureAuthentic": true,
+      "signatureSha256": "d14444c6105402d35bcd0e6a29f7870f7ba66ce646c12afd212b973b1199076e",
+      "signatureVersionId": "1792062057280661"
+    },
+    "manifest/evidence-manifest.json": {
+      "recordVersionId": "1792062057504562",
+      "sha256": "9d16ecb2c1074fa72e131bd448b1230bee2581d4877c83576c78d8b14365f9d2",
+      "signatureAuthentic": true,
+      "signatureSha256": "e81bb6d612782c578ab889c90983af853ef7d2d66ee0dba4e9eb817b1f81e404",
+      "signatureVersionId": "1792062058507534"
+    },
+    "memories/memories-restore-proof.json": {
+      "recordVersionId": "1792062058977015",
+      "sha256": "bc9725e06ab30fe02959b2db6370cfc58750e6420d05d9fa2b19f691326c1ee1",
+      "signatureAuthentic": true,
+      "signatureSha256": "7af3e5048b9c9f577ee3a44762a110898dba0591819e022f6220f4a5d6289c41",
+      "signatureVersionId": "1792062059296317"
+    },
+    "openbao/openbao-restore-proof.json": {
+      "recordVersionId": "1792062059912492",
+      "sha256": "fc61e1a0ef9f0a29c47f9c003bef73e7467ce08c35fcbef181d8a14acd481545",
+      "signatureAuthentic": true,
+      "signatureSha256": "5c2c82769da9a29ec29fee51c0cf204a3c98c3cecb6536a14b0f68fe1dd34783",
+      "signatureVersionId": "1792062061083724"
+    },
+    "policy/recovery-policy.json": {
+      "recordVersionId": "1791981906616560",
+      "sha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+      "signatureAuthentic": true,
+      "signatureSha256": "7f5dc8431113f6f5a993ed7cefda5a427673a3334fff2a380d8a1a3eab715f0e",
+      "signatureVersionId": "1791981907303892"
+    },
+    "validation/validation.json": {
+      "recordVersionId": "1792063538323774",
+      "sha256": "b269db6ab85f3a99d27560742921f0192d41925d9a3fe2bebd3adc95c6b234ae",
+      "signatureAuthentic": true,
+      "signatureSha256": "aa7b56e6f4ae938342d1de1d77b99f57c760f1b562fcf0fa188da5d99e7b27c7",
+      "signatureVersionId": "1792063538589066"
+    }
+  },
+  "actualSequentialStages": [
+    {
+      "result": "pass",
+      "stage": "authenticate cleanup signature and immutable versions"
+    },
+    {
+      "repeated": false,
+      "result": "pass",
+      "stage": "separate prepared records prerequisite"
+    },
+    {
+      "completedAt": "2026-10-15T08:45:16Z",
+      "immutableVersionsReadBack": 4714,
+      "repeated": false,
+      "result": "pass",
+      "stage": "unchanged manifest"
+    },
+    {
+      "completedAt": "2026-10-15T08:46:19Z",
+      "proofs": 3,
+      "repeated": false,
+      "result": "pass",
+      "stage": "accepted private-OIDC proof consumer"
+    },
+    {
+      "completedAt": "2026-10-15T11:01:09Z",
+      "result": "pass",
+      "stage": "four explicitly delegated owner signatures, uploads and independent readbacks",
+      "temporaryAgentStopped": true
+    },
+    {
+      "completedAt": "2026-10-15T11:03:34Z",
+      "repeated": false,
+      "result": "pass",
+      "stage": "original gate assembly"
+    },
+    {
+      "result": "pass",
+      "stage": "Administrator protected-terminal gate signature and independent readbacks"
+    },
+    {
+      "completedAt": "2026-10-15T11:12:03.162953+00:00",
+      "dryRun": false,
+      "manifestVersionsMatching": 4714,
+      "repeated": false,
+      "result": "pass",
+      "stage": "unchanged actual non-dry validation",
+      "summary": {
+        "fail": 0,
+        "pass": 4809,
+        "skipped": 0,
+        "total": 4809
+      }
+    },
+    {
+      "bothPostCopyRunIdsMatch": true,
+      "completedAt": "2026-10-15T11:14:28.473600+00:00",
+      "result": "pass",
+      "stage": "actual final M1 observation"
+    },
+    {
+      "IAMWrites": 0,
+      "deleteAttempts": 0,
+      "observedAt": "2026-10-15T11:16:14.615833+00:00",
+      "result": "pass",
+      "stage": "actual current M2 IAM and bucket-policy readback"
+    },
+    {
+      "ownerPreflightAt": "2026-10-15T11:25:31.813846+00:00",
+      "result": "pass",
+      "stage": "Administrator protected-terminal final validation signature and honest M1/M2 attestation"
+    },
+    {
+      "acceptedAt": "2026-10-15T11:27:34.340622+00:00",
+      "result": "pass",
+      "stage": "all eight signatures, exact bindings, freshness and 16 independent immutable readbacks"
+    }
+  ],
+  "administratorFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+  "administratorPrincipal": "jpiquot@itaneo.com",
+  "auditHarnessInitialRun": {
+    "cause": "Original signed-record parser does not accept fractional-offset timestamps from new audit receipts.",
+    "correction": "New audit helper uses datetime.fromisoformat only for audit timestamps; original tools and signed records remain unchanged.",
+    "dependentOperationalActionsDispatched": false,
+    "failedSourceAndStopReceiptPreserved": true,
+    "result": "local stop before provider requests"
+  },
+  "captureRestoreCleanupRepeated": false,
+  "checkpointId": "20261015t110948z-s427-signed-gate-final-validation",
+  "currentHead": "55bee680e6901a45946dd8bf1e4a4060952bd7ea",
+  "defaultDenyPreserved": true,
+  "expiryBasis": "policy.preparedAt",
+  "failedOriginalOidcPreserved": true,
+  "failedOriginalOidcSha256": "014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578",
+  "freshAtCheckpointPublication": true,
+  "gitStagingCommitPushPerformed": false,
+  "historicalEvidencePreserved": true,
+  "independentReadbackProperties": [
+    "exact version",
+    "byte length",
+    "SHA-256",
+    "AES256",
+    "COMPLIANCE",
+    "retention API agreement",
+    "30-day retention from object creation with retain-until still in the future"
+  ],
+  "independentValidatorExactImmutableVersionsMatching": 16,
+  "kind": "hexalith.signed-recovery-and-next-offline-prerequisite-checkpoint",
+  "knownNoninteractiveSigningRefusalRepeated": false,
+  "laterOperationsDispatched": false,
+  "legacyBaselineChanged": false,
+  "nextPrerequisite": {
+    "attemptId": "20261015t112841z-post-40-recovery-prerequisite",
+    "authorizationExpanded": false,
+    "datedUpgradeTargetCurrencyOrCompatibilityValidated": false,
+    "directory": "/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261015t112841z-post-40-recovery-prerequisite",
+    "exactSourceFilesArchivedAndReadBack": 13,
+    "firstUnmet": [
+      "fresh production external-etcd snapshot and isolated restore",
+      "matching encrypted off-node node/configuration bundle and tested recovered access",
+      "fresh independent native and break-glass proof"
+    ],
+    "gateState": "closed",
+    "handoff": "/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261015t112841z-post-40-recovery-prerequisite/NEXT-PREREQUISITE.md",
+    "handoffSha256": "e824089fefcbc10e4cfff8fde2777517bc1fa633fb084bdf62d724f8ad2ab14c",
+    "lineageSha256": "b65c80c2c5869ebd9be062f06ae305651cc63f53ea6774edf28d3d76ac1e251c",
+    "mutationAuthorized": false,
+    "oldHardcodedOctober1ScriptsExecuted": false,
+    "originalUnsignedPreparationRecords": 16,
+    "preparedAfterActualSigned40Acceptance": true,
+    "preparerClaimsRemainMetadataOnlyAndUnvalidated": true,
+    "remoteRequests": 0,
+    "sealedChecksumManifestSha256": "0dae06086e6a7742a19a31baf5f431cfdd8f96e72ae951e74073f174df46ce07",
+    "sourceArchiveSha256": "c311a975d89f744e34f65bc5c5c4beabe9060adeecbc2e26d500dae7a369e505",
+    "sourceState": "At preparation before final append-only tracking updates; exact archived input bytes remain preserved."
+  },
+  "original143CheckpointFilesUnchanged": true,
+  "original37ToolsUnchanged": true,
+  "privateCustody": {
+    "acceptanceAuditSha256": "45350fe6bedb4ccdb09d704af7e5b48ef6ea82ab004bac7bf5959327f070e712",
+    "checksumManifestSha256": "09c31bd561b4f7ab584bd52487771ce1cc9becfbe75a1f68befcdac014a9cf4c",
+    "directory": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t110948z-s427-signed-gate-final-validation",
+    "encryptedSignedBundleSnapshotSha256": "1fd40ed5a0dda531938baf06b9aef7ae92245036365a77ae6bd33461dad6e938",
+    "finalLocalVerificationSha256": "0526376bd9720f9e6b5c8e6e58e0ac1fd4cb1a0a794995dbca910ed56fb56849",
+    "recipientDecryptionOrReadbackClaimed": false,
+    "sealedFiles": 50,
+    "sourceArchiveSha256": "aaf2e767c8519807a422a5e2980f086a3715dc648c6b76f88c52f974bca1f331"
+  },
+  "receiptIsAuditOfActualSignedOriginals": true,
+  "receiptSigned": false,
+  "recordedAt": "2026-10-15T11:32:34.474321+00:00",
+  "recoveryId": "20261014t112353z",
+  "retirementUpgradeRancherTimesheetsExecutionAuthorizedByThisReceipt": false,
+  "schemaVersion": 1,
+  "scopeApprovalRepeated": false,
+  "signatureNamespace": "hexalith-recovery",
+  "validUntil": "2026-10-15T11:40:42Z",
+  "verification": {
+    "M1M2PassAndAttested": true,
+    "actualNonDryValidationPass": true,
+    "fiveDocumentationPriorBytePrefixesPreserved": true,
+    "frozenIntentAndBoundRetirementMaintenanceUnchanged": true,
+    "gitDiffCheckPass": true,
+    "newHelperSyntaxPass": true,
+    "originalAndNewPacketChecksumsPass": true,
+    "signatureAndProviderReadbacksPass": true,
+    "unchangedFixtureOrTestSuiteRerun": false
+  }
+}

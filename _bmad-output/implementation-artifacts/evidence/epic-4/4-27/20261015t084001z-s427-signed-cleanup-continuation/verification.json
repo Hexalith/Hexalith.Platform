@@ -1,0 +1,170 @@
+{
+  "Story4_1GateOpen": false,
+  "Story4_27Accepted": false,
+  "Timesheets3_6Accepted": false,
+  "acceptedFreshRecovery": false,
+  "actualCleanupSignatureAuthenticated": true,
+  "actualCurrentVcsRevision": "55bee680e6901a45946dd8bf1e4a4060952bd7ea",
+  "actualIncidentCorrectionAccepted": true,
+  "all98OtherSigningInputsUnchanged": true,
+  "attemptId": "20261015t084001z-s427-signed-cleanup-continuation",
+  "bothIndependentExactImmutableValidatorReadbacksPassed": true,
+  "captureRestoreResumeCleanupRepeated": false,
+  "cleanupImmutableVersionIds": [
+    "1792053509510188",
+    "1792053509947219"
+  ],
+  "cleanupSha256": "3ae690daad23e6a0f028ab28ca023ba9a04d4c72f810d9129b117125d08d5b78",
+  "cleanupSignatureSha256": "c346a6a9692227302e4c804012bb1df2a0b1b3121f1c76a65a77c794bd6d280c",
+  "concreteOperatorActionPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084001z-s427-signed-cleanup-continuation/NEXT-PROTECTED-SIGNING-ACTION.md",
+  "concreteOperatorActionSha256": "a4cb7d9ce0ff2ccc51332e93bb4ab5525fc42a0417b2a20de0fd3b39d7873bfe",
+  "diagnosticCiphertextSha256": {
+    "manifest": "2028f38ebe76b56df81fb6b0ae854348fb57b753d1fec590a7e3c54b148af3b7",
+    "proofs": "17a31778b37f5a613fd3e0322183ab8cb143cf3e6c4f379f6d09e6076b877582"
+  },
+  "encryptedCurrentBundleSnapshotMemberCount": 81,
+  "encryptedCurrentBundleSnapshotSha256": "27a8d9231cc24229fcb2464314a0a982b1121fefaadc39da437fcac43c986f20",
+  "executorSigningAttempts": 0,
+  "finalAdministratorM1M2AttestationComplete": false,
+  "gateGenerationDispatched": false,
+  "historicalCheckpointChecksumFilesPreserved": 143,
+  "independentReadbackReceiptSha256": "8397636d74b37cff10bd860660b1b64b874e46372638bbe34751882dc19d649d",
+  "kind": "hexalith.signed-cleanup-and-prepared-proofs-continuation-verification",
+  "localRefusalsAndCorrectionsPreserved": [
+    "Incorrect public-key private-mode check corrected without changing pinned key bytes.",
+    "New authentic signature mode restricted 0644 to 0600 inside existing 0700 custody; signature/provider bytes unchanged.",
+    "A duplicate new-directory allocation refused without overwrite.",
+    "Offline guard test harness mutation syntax corrected; all eight cases then passed."
+  ],
+  "manifestObjectVersionsReadBack": 4714,
+  "manifestSemanticPass": true,
+  "manifestThenApprovedPrivateOidcConsumerExecutedSequentially": true,
+  "materialLimits": [
+    "Prepared manifest and proofs are unsigned and supply no final recovery acceptance.",
+    "Gate, non-dry validation, remaining signatures/readbacks and honest final M1/M2 remain pending.",
+    "Raw diagnostics and current bundle snapshot are encrypted; no recipient decryption/readback was performed.",
+    "Source cleanup/restore observations retain their original dates and host-directory deletion inference."
+  ],
+  "newGuardOfflineTestsRemoteRequests": 0,
+  "nextOperationalPrerequisitePrepared": false,
+  "nonDryValidationDispatched": false,
+  "noninteractiveSigningRefusalRepeated": false,
+  "offlineSigningGuardCasesPassed": 8,
+  "offlineSigningGuardChecksPass": true,
+  "oldUploadsPreservedWithOnlyApprovedCleanupPairAppended": true,
+  "original37ToolsUnchanged": true,
+  "originalApprovalAndIncidentScopeRetained": true,
+  "originalFailedCanonicalOidcSha256": "014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578",
+  "originalFailureOverwrittenOrPromoted": false,
+  "policyAgeSecondsAtSeal": 76459,
+  "policyFirstAgeDeadlineUtc": "2026-10-15T11:40:42Z",
+  "policyPreparedAt": "2026-10-14T11:40:42Z",
+  "preparedRecordSha256": {
+    "keycloak/keycloak-restore-proof.json": "f6570b31b4f138a2ffe2e44bfbb5c464d0462898ab7f496f795fa52a4c168734",
+    "manifest/evidence-manifest.json": "9d16ecb2c1074fa72e131bd448b1230bee2581d4877c83576c78d8b14365f9d2",
+    "memories/memories-restore-proof.json": "bc9725e06ab30fe02959b2db6370cfc58750e6420d05d9fa2b19f691326c1ee1",
+    "openbao/openbao-restore-proof.json": "fc61e1a0ef9f0a29c47f9c003bef73e7467ce08c35fcbef181d8a14acd481545"
+  },
+  "preparedRecordsPrerequisitePassed": true,
+  "preparedRecordsPrerequisiteReceiptSha256": "26ea6172229a4f0af90da8fbc0ff81f9e49cb1a0b1461ef1bf266366222a2b98",
+  "preparedSignaturePresenceAtCheckpoint": {
+    "keycloak/keycloak-restore-proof.json": false,
+    "manifest/evidence-manifest.json": false,
+    "memories/memories-restore-proof.json": false,
+    "openbao/openbao-restore-proof.json": false
+  },
+  "privateCustodyDirectory": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t084001z-s427-signed-cleanup-continuation",
+  "privateCustodyModes": "directories0700/files0600",
+  "recipientDecryptionReadbackClaimed": false,
+  "recordedAt": "2026-10-15T08:55:01.267921+00:00",
+  "recoveryId": "20261014t112353z",
+  "remoteWritesByThisContinuation": 0,
+  "result": "authenticated-cleanup-prepared-unsigned-proofs-owner-signing-required",
+  "signed": false,
+  "signingGuardSha256": "630f42e092adb467b10fedfce05ec3aa91b6a6f575d55c70c85db378cf119b06",
+  "sourceArchiveSha256": "2508bd7354c1d614b3714f9db8cb18219d278238818d3348970eb3f9a36aa8e2",
+  "sourceSnapshotAtSeal": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 42473,
+      "sha256": "a2d0f4b9232298d6b1e0b6147f584dafc12151d5351f956677e05374ffdd9449"
+    },
+    "_bmad-output/implementation-artifacts/epic-4-context.md": {
+      "bytes": 8314,
+      "sha256": "26e1d3da8f2f865eed9d42071188101a574bd10a8b7ac9a307b3416e1530426e"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 88500,
+      "sha256": "6e62a778a9feadbc8a84df1a82a563142146e9afa1434929e5047f2a1ef9c380"
+    },
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": {
+      "bytes": 12182,
+      "sha256": "789d698b2671ab964f21111ea61c68d77fd5ee09876883515909c5a777140564"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 49934,
+      "sha256": "93e4d5e84abb00bd10d630cb894c8c119e2ad50c4f86e1d3164f89aa5f6568a5"
+    },
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": {
+      "bytes": 83835,
+      "sha256": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "bytes": 41587,
+      "sha256": "6eaaf792bf7a194f013df470a719401c07c33818b8f1d063d48cc1e0271ee1b1"
+    },
+    "eng/cluster-management/retire.py": {
+      "bytes": 76251,
+      "sha256": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355"
+    },
+    "eng/kubernetes-upgrade/MAINTENANCE.md": {
+      "bytes": 14590,
+      "sha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5"
+    },
+    "eng/timesheets-deployment/plan.json": {
+      "bytes": 17107,
+      "sha256": "04b24f38d1910390bb075b8fe27e8f159ba202b6aeacf35f517bcc272a8043dc"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "bytes": 38362,
+      "sha256": "71d096d28223da19d35d812e1418e1f5112b2abd90c860e4ded559e76fa63297"
+    },
+    "private-checkpoint-sources/NEXT-PROTECTED-SIGNING-ACTION.md": {
+      "bytes": 4815,
+      "sha256": "a4cb7d9ce0ff2ccc51332e93bb4ab5525fc42a0417b2a20de0fd3b39d7873bfe"
+    },
+    "private-checkpoint-sources/local-public-key-mode-correction.json": {
+      "bytes": 487,
+      "sha256": "d6d5e22eeb18a300b387f81630d2b088dd493f422530fcc96cc9faccb2950c03"
+    },
+    "private-checkpoint-sources/records-signing-guard-offline-checks.json": {
+      "bytes": 1221,
+      "sha256": "a03bd05502b01de488d6bb22e003de43b5c915314cbafab9052e57bb9ea52de3"
+    },
+    "private-checkpoint-sources/records_signing_guard.py": {
+      "bytes": 9124,
+      "sha256": "630f42e092adb467b10fedfce05ec3aa91b6a6f575d55c70c85db378cf119b06"
+    },
+    "private-checkpoint-sources/run_records_step.py": {
+      "bytes": 7866,
+      "sha256": "186454d77baf9ca780afa80548bde838f229573ce948943639b309a4629d93cd"
+    },
+    "private-checkpoint-sources/signature-custody-refusal-and-correction.json": {
+      "bytes": 910,
+      "sha256": "c6505da7ea120e5c5e315dea4eeea7024001cd3b285d4694590f7f13f54914ec"
+    }
+  },
+  "threePreparedRestoreProofsPass": true,
+  "trackingPrefixesAndUnchangedContracts": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": true,
+    "_bmad-output/implementation-artifacts/epic-4-context.md": true,
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": true,
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": true,
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": true,
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": true,
+    "eng/cluster-management/STAGING-PREREQUISITES.md": true,
+    "eng/cluster-management/retire.py": true,
+    "eng/kubernetes-upgrade/MAINTENANCE.md": true,
+    "eng/timesheets-deployment/plan.json": true,
+    "eng/timesheets-deployment/staging-dependency-handoff.md": true
+  }
+}

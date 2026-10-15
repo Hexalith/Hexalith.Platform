@@ -1,0 +1,169 @@
+{
+  "actualReadiness": {
+    "attemptId": "20261015t140709z-s427-expired-recovery-preparation",
+    "blockers": [
+      "workload recovery expired or future"
+    ],
+    "checkedAt": "2026-10-15T14:38:15.636955+00:00",
+    "claimsAreUntrustedMetadata": true,
+    "credentialLoadingPerformed": false,
+    "cryptographicVerificationPerformed": false,
+    "earliestRecoveryExpiry": "2026-10-15T11:40:42+00:00",
+    "kind": "hexalith.offline-recovery-readiness",
+    "metadataConsistent": false,
+    "mutationAuthorized": false,
+    "operationalGate": "closed",
+    "remoteRequests": 0,
+    "schemaVersion": 1
+  },
+  "actualReadinessCommand": {
+    "bashSyntaxPassed": true,
+    "command": [
+      "/bin/bash",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896/CHECK-READINESS.sh"
+    ],
+    "exitCode": 1,
+    "outcomeSha256": "2db5c835d1799979ef213abe176b0b8e9eab778315707a3b7aa0e914e0617fc5",
+    "stderrBytes": 0
+  },
+  "auditLimitations": [
+    "Readiness checks untrusted local metadata only; it never authenticates or authorizes.",
+    "Historical authentic recovery is expired; no current provider requests, production observations or acceptance are supplied.",
+    "Current snapshot/archive/target/tool/authority/cleanup measurements and exact 4.1 scope/signing remain unavailable.",
+    "Four original handoff/story prefixes match; original spec differs before this closeout, as captured and reported to root. All immediate append prefixes and frozen intent/baseline match.",
+    "Final private seal awaits root verification and is not claimed by this unsigned checkpoint."
+  ],
+  "capturesRestoresResumeCleanupRepeated": false,
+  "checkpointId": "20261015t143451z-s427-isolated-offline-closeout",
+  "concurrentInputs": {
+    "genericAndPrivateMaterialPreserved": true,
+    "genericGuardTestsProcedureAccepted": false,
+    "originalResolvedDockerGroupWritableBlockerRetained": true,
+    "stagedDockerCopyAccepted": false,
+    "uniqueImplementationDirectory": "eng/kubernetes-upgrade/recovery-20261015t140709z"
+  },
+  "currentHead": "55bee680e6901a45946dd8bf1e4a4060952bd7ea",
+  "documentationHashes": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "dc5788db006b04bf10e95a2e06613d05be06bc88445cda7c340fe366158ae52b",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "79422b90cf9fda8f3d4c2a64e445a92f08024961836340770dd0097c7977974e",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "1dad19d784a22a75a0da08df4ba78a85d09c95ce01fc64d60587a57f7b8062c9",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "f4ab1226cbe2f1056cf3bf0aec28cbc4425e37ce78e0dd3a649130a9138063e8",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "9e4ae6d785da6018e82a33cc3dc1a4f165bbe1b8894b4a11c3120a5cc0f8e783"
+  },
+  "focusedTests": {
+    "command": [
+      "/usr/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/kubernetes-upgrade/recovery-20261015t140709z",
+      "-p",
+      "test_readiness.py",
+      "-v"
+    ],
+    "exitCode": 0,
+    "logSha256": "e8cd3cd5ea0a36c480d01b09d32a9869a0e7a740cc85ed99fcc036327a404646",
+    "nonapprovalFreshnessMutationDetected": true,
+    "passed": 19,
+    "rootIndependentSourceStable": true,
+    "skipped": 0,
+    "tests": 19,
+    "unchangedBroadSuiteOrFixtureRerun": false
+  },
+  "gitStagingCommitPushPerformed": false,
+  "historicalScriptsExecuted": false,
+  "historicalSigned40": {
+    "auditSourceSha256": "f15214d9283f2048da31a20f630ece442f229dda6f1dd30b57be1d7c4ed8d7ed",
+    "currentProviderFreshnessClaimed": false,
+    "expiryBasis": "policy.preparedAt",
+    "historicalAcceptancePreserved": true,
+    "recoveryId": "20261014t112353z",
+    "rootLocalAuditEightOriginalSignaturesAuthentic": true,
+    "validUntil": "2026-10-15T11:40:42Z"
+  },
+  "implementationFiles": {
+    "eng/kubernetes-upgrade/recovery-20261015t140709z/PROCEDURE.md": "26fd5e3adf0166e531f0c8683274f4952dab3f68721c9c43c520dd74eea1e795",
+    "eng/kubernetes-upgrade/recovery-20261015t140709z/readiness.py": "a410bd03dfc09d9fdcc40caeb02b1b3063ee76b2b479c9fc2e12070b50933190",
+    "eng/kubernetes-upgrade/recovery-20261015t140709z/test_readiness.py": "e75ac11be6d41515762408f7f42dff30551a0925daaab46177bc14346dba7d1e"
+  },
+  "kind": "hexalith.isolated-offline-recovery-preparation-checkpoint",
+  "legacyBaselineCommit": "54920908f15a99b48e69861baf306365353fc6df",
+  "localPreparationFailuresRetained": [
+    "Initial dictionary-key audit harness stop, corrected separate root helper.",
+    "Concurrent generic test run: 19 tests, 14 failures after unknown shared-file changes.",
+    "Initial isolated fixture reconstruction: 19 tests, 1 failure/94 errors; corrected from saved coherent tests.",
+    "Residual concurrent-only predicates: 19 tests/14 failures; removed, then isolated 19/19 passed.",
+    "First finalization prefix assertion stopped after successful append; preexisting original spec drift recorded, no repeat append."
+  ],
+  "logicalProposalStamp": "20261015t140709z",
+  "mutationAuthorized": false,
+  "operationalGate": "closed",
+  "originalProductionTasksRemainPending": true,
+  "preparationDeliverablesReady": true,
+  "preparationLineageId": "20261015t112841z-post-40-recovery-prerequisite",
+  "preservation": {
+    "all162HistoricalFilesMatch": true,
+    "allEighteenClassifiedReviewRowsPreserved": true,
+    "failedOriginalOidcPreserved": true,
+    "fiveImmediatePreAppendPrefixesMatch": true,
+    "frozenIntentAndBaselineMatch": true,
+    "originalDocumentPrefixChecks": {
+      "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": true,
+      "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": false,
+      "eng/cluster-management/NEXT-OPERATOR-ACTION.md": true,
+      "eng/cluster-management/STAGING-PREREQUISITES.md": true,
+      "eng/timesheets-deployment/staging-dependency-handoff.md": true
+    },
+    "preexistingOriginalSpecPrefixDriftPreservedAndReported": true,
+    "previousDraftsAndCandidateSnapshotPreserved": true
+  },
+  "privateCustody": {
+    "actionSha256": "7f2311ecd166a9fa88ce2759a84407c176333865f86a1409190cf21fa06c50bb",
+    "bindingsSha256": "72ca5ded0bf774194b2992fe6d42b20974a2602cb8cc5ea8d61f26a3bd4a0693",
+    "directory": "/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896",
+    "localFinalizationChecksSha256": "0f5b42bf8e798de3860fc5f5cb4f348e009817c09294d36dbd124dc0d6ce1366",
+    "rootHistoricalPreservationSnapshotSha256": "eb6dabddb13768755db279bf63b352f31f9a3c7511770e268428464a713c4d95",
+    "rootReviewDiffPathsSha256": "e6c50756b15bb4fea042abd286dae04942bce500dc44b3750be842dd3c2aa3cb",
+    "sourceArchiveMembers": 8,
+    "sourceArchiveSha256": "406cb1452a9ad2c2b814d32e8fc01925f1a5d5a478bde94934d2694550f9b866"
+  },
+  "privatePacketSeal": "pending-root-final-checks",
+  "productionCredentialLoading": false,
+  "proposalAttemptId": "20261015t140709z-s427-expired-recovery-preparation",
+  "recordedAt": "2026-10-15T14:41:06.835546+00:00",
+  "remoteRequests": 0,
+  "schemaVersion": 1,
+  "signatureOrDecryptionPerformed": false,
+  "signed": false,
+  "story41OperationalGate": "closed",
+  "story427": "in-progress",
+  "timesheets36": "open/FAIL",
+  "uncoveredActions": [
+    "current-attempt guarded live adapter implementation/review and exact 4.1 execution approval",
+    "4.1 source snapshot/node-file capture and source temporary writes/removal",
+    "4.1 destination prefix writer/validator IAM authorization (do not broaden automatically)",
+    "recipient decryption, independent custody/readback and recovered source SSH/native access",
+    "isolated capacity/image/tool qualification and creation/restore/cleanup",
+    "4.1 record signing/execution delegation; four-record 4.0 delegation does not apply",
+    "local Docker resolved executable is group-writable; tool custody not accepted",
+    "runtime isolation/extraction/input delivery qualification before zero-host-mount proposal may be accepted"
+  ],
+  "unmeasured": [
+    "new fresh signed 4.0 prerequisite; expired original cannot be reused",
+    "current node UID, source CA and installed tool fingerprints",
+    "current source member/cluster/version/health/revision/canary/configuration observations",
+    "current exact engine/context/daemon/candidate image identity and capacity",
+    "actual fenced target container/cluster/member IDs and source-denial evidence",
+    "independent recovered native client fingerprint and encrypted off-node version/custody",
+    "current independent binding/subject/grant/revocation lineage and sealed break-glass fingerprint",
+    "actual matching snapshot/archive immutable versions and recipient decryption/readback",
+    "actual restored revision/hash/count/canary and file-owner/mode/certificate comparisons",
+    "actual target/plaintext/credential/source-temporary cleanup and preservation evidence",
+    "qualified image-baked recovery tools and bounded stdin delivery adapter",
+    "zero-mount archive UID/GID/ACL/xattr preservation and user-namespace/capability qualification",
+    "current API CA/client/service TLS identity and node-installed tool hashes",
+    "complete current independent grant/revocation lineage and actual retained authority census",
+    "creation/publication/readback chronology and matching thirty-day retention API evidence"
+  ]
+}

@@ -457,3 +457,163 @@ Current read-only M1 preparation matched both live Redis/FalkorDB run IDs to the
 The [separate unsigned continuation receipt](/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261014t144239z-s427-accepted-oidc-continuation/verification.json) binds owner-only encrypted events, exact source archive, authentic approval, observed resume/freeze-end, provider/IAM read-only receipts and the current signing action. Earlier packets/receipts/archives, original 37 tools, frozen intent, original production Tasks & Acceptance, legacy baseline and bound retirement/procedure/maintenance bytes remain preserved. Concurrent unrelated deferred-work/spec-1-6 edits are retained as workspace activity, with private current snapshots and truthful digest drift; they are not consumed recovery inputs. Unchanged fixture/test suites were not rerun for this operational checkpoint; actual semantic/native gates, syntax, custody, archive and preservation checks supply the current evidence.
 
 This completed recovery work supplies no accepted fresh backup gate, retirement plan/approval, independent native break-glass recovery, attempt/plan-bound signed console closure, 4.1 external-etcd/node recovery, upgrade, Rancher or Timesheets deployment/activation. **4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**
+
+
+## Signed cleanup and concurrent unsigned records reconciled — 2026-10-15
+
+At **2026-10-15T08:49:13Z**, this continuation independently authenticated the
+unchanged original policy and cleanup signatures and freshly read their four
+exact immutable provider versions with the validator credential. All hashes,
+byte counts, AES256, COMPLIANCE and retention checks passed. Policy age was
+76,105 seconds against 86,400; its earliest deadline remains
+**2026-10-15T11:40:42Z (13:40:42 Europe/Paris)**. The maintenance window does not
+extend freshness. No new scope/window/role approval is pending.
+
+Separate concurrent custody `20261015t084001z-s427-signed-cleanup-continuation`
+created the manifest at 08:45:16Z and three unsigned passing restore proofs at
+08:46:19Z. Those stages were not dispatched by this continuation. Their actual
+receipt/digest bindings, all 73 manifest local files, three proof results,
+RPO/isolation/expiry and accepted OIDC-correction provenance independently
+matched. Its manifest records 4,714 provider-version readbacks by that run;
+this continuation freshly reread only the four policy/cleanup versions. The
+failed original OIDC artifact and original 37 tools remain unchanged. Fresh
+native reads preserve four source namespace UIDs, all 15 PVC/PV bindings and
+CNPG identity/watch scope; isolated targets, their storage claim references
+and temporary credential/seal copies are absent.
+
+This run's new prerequisite command exited 1 without timeout at 08:46:02Z,
+while the external records stage was progressing. Its exact stderr remains
+sealed encrypted; no recipient decryption or particular original error is
+claimed. No dependent stage was dispatched after that stop. A later offline
+provider-disabled diagnosis refused the now-existing proof; that later error
+does not establish the original failure. The subsequent authorized read-only
+reconciliation passed and performed no remote write or record replay.
+
+The immediate prerequisite is the Administrator's own signatures/publication
+of the **existing manifest and three proofs**, using the verified
+[guarded protected-terminal action](/home/administrator/hexalith-retirement-investigation-evidence/20261015t084001z-s427-signed-cleanup-continuation/NEXT-PROTECTED-SIGNING-ACTION.md)
+(SHA-256 `a4cb7d9ce0ff2ccc51332e93bb4ab5525fc42a0417b2a20de0fd3b39d7873bfe`).
+Its exact guard passed local-only checks with zero remote requests; its Bash
+block passed syntax validation. Full terminal guard/signing was not invoked
+and the known unlock refusal was not repeated. All four signatures, the gate
+and final validation were absent at reconciliation. Authenticate actual
+signatures and fresh immutable versions before any dependent gate; later gate
+signing, non-dry validation and honest current M1/M2 remain required. Preserve
+an expired attempt rather than changing timestamps or repeating completed
+captures/restores/cleanup.
+
+New owner-only custody `20261015t084153z-s427-signed-cleanup-resume` retains the
+initial sources, stopped event, encrypted native diagnostics and distinct
+read-only reconciliation. The [separate unsigned verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261015t084153z-s427-signed-cleanup-resume/verification.json)
+records exact hashes and preservation checks without accepting fresh recovery.
+Prior text and concurrent progress are preserved. No unchanged fixture or test
+suite was rerun. Original retirement tasks remain pending: **4.27 in-progress,
+4.1 closed and Timesheets 3.6 open/FAIL**. No retirement, node/etcd mutation,
+upgrade, Rancher, Timesheets deployment/activation or Git staging/commit ran.
+
+
+## Signed cleanup and prepared recovery proof barrier — 2026-10-15
+
+The [current Platform operator action](../cluster-management/NEXT-OPERATOR-ACTION.md#authenticated-cleanup-and-prepared-unsigned-proofs--2026-10-15) records authenticated cleanup with independent exact-version readbacks, then the passing prerequisite, manifest and accepted private-OIDC consumer in sequence. The manifest read back 4,714 versions; all three prepared unsigned proofs pass, preserving the failed original. Administrator manifest/proof signing remains the immediate barrier; the policy age deadline is 2026-10-15T11:40:42Z. No captures/restores/cleanup were repeated. Actual gate/signatures, non-dry validation and honest final M1/M2 attestation still precede fresh 4.0 acceptance. No later infrastructure/release/provider/source/deployed-acceptance or default-deny gate changes: 4.27 stays in progress, 4.1 closed and Timesheets 3.6 open/FAIL.
+
+
+## Fresh signed 4.0 accepted; next recovery prerequisite prepared — 2026-10-15
+
+Recovery `20261014t112353z` passed fresh signed acceptance at
+**2026-10-15T11:27:34.340622Z**, valid only until
+**2026-10-15T11:40:42Z (13:40:42 Paris)**. All eight original Administrator
+signatures authenticate, and a separate validator independently reread all
+**16 exact immutable record/signature versions**, matching bytes, hashes,
+AES256 and COMPLIANCE retention. The actual non-dry validator completed at
+11:12:03Z with **4,809/4,809 checks passing, zero failures/skips**, including
+**4,714/4,714 manifest versions**. Actual M1 at 11:14:28Z matched both live
+post-copy run IDs; M2 at 11:16:14Z confirmed the complete current writer
+IAM/group and bucket-policy restrictions through GET-only evidence. The
+Administrator's authentic final validation signature attests those manual
+steps. Its record version is `1792063538323774`, signature version
+`1792063538589066`; the signed validation SHA-256 is
+`b269db6ab85f3a99d27560742921f0192d41925d9a3fe2bebd3adc95c6b234ae`.
+
+The delegated manifest/three-proof signatures and eight uploads completed at
+11:01:09Z; the temporary signing agent was stopped. The unchanged gate was
+assembled once at 11:03:34Z and then signed by the Administrator in the
+protected terminal, followed by the single non-dry validation and final owner
+signature. No completed capture, restore or cleanup was repeated. The failed
+original OIDC record, accepted distinct correction, all 37 original tools and
+all 143 checksum-covered previous-checkpoint files remain unchanged. Earlier
+pending receipts retain their dated meaning; this checkpoint resolves those
+signing barriers. No repeat scope/window/role approval was requested.
+
+After acceptance, the unchanged offline 4.1 preparer created a new private
+packet `20261015t112841z-post-40-recovery-prerequisite`: 16 unsigned original
+records, checksum manifest, exact read-back archive of 13 source files and a
+separate acceptance/lineage supplement. Its own metadata-only/unvalidated
+claims and closed gates were preserved. Preparation made **zero remote
+requests** and expanded no operational authorization. The first missing
+prerequisite is fresh production external-etcd recovery with a matching
+isolated restore and encrypted off-node node/configuration recovery, plus
+fresh independent private native/break-glass proof. The retained October 1
+scripts hardcode stale paths and were not run. The dated upgrade targets
+remain unvalidated. The new handoff binds concrete evidence requirements and
+current interface gaps; no node/etcd capture, decryption, new native grant,
+retirement, upgrade, Rancher or Timesheets operation was dispatched.
+
+Freshness ends at the deadline above regardless of the maintenance window.
+Preserve all completed evidence after expiry; no timestamp change or replay
+of completed captures/restores/cleanup can extend this acceptance. **4.27
+remains in-progress, 4.1's operational gate closed and Timesheets 3.6
+open/FAIL**. Later retirement/console/native/recovery/health/execution,
+release/provider/source/deployed-acceptance and default-deny gates remain.
+
+[Completed Platform recovery verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261015t110948z-s427-signed-gate-final-validation/verification.json); [next offline prerequisite](/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261015t112841z-post-40-recovery-prerequisite/NEXT-PREREQUISITE.md).
+
+
+## Isolated offline recovery closeout — 2026-10-15
+
+The [attempt-specific guarded procedure](../kubernetes-upgrade/recovery-20261015t140709z/PROCEDURE.md) and its local-only
+`readiness.py` / `test_readiness.py` complete this continuation's reviewable
+offline preparation. Logical proposal/target stamp remains `20261015t140709z`,
+with lineage `20261015t112841z-post-40-recovery-prerequisite`; the distinct
+repository checkpoint is `20261015t143451z-s427-isolated-offline-closeout`. Full current VCS identity
+is `55bee680e6901a45946dd8bf1e4a4060952bd7ea`, separate from the preserved legacy baseline.
+
+The root's local audit authenticated the eight original 4.0 signatures and
+preserved historical acceptance, but the earliest signed deadline remains
+**2026-10-15T11:40:42Z**, basis `policy.preparedAt`. The actual isolated
+readiness action at 14:38:15Z returned **exit 1**, `workload recovery expired or
+future`, with that exact deadline, zero remote requests and authorization false.
+Current provider freshness, new captures/restores and recovered access are not
+claimed. No timestamp, historical receipt or failed OIDC record was replaced.
+
+The focused isolated suite passed **19/19 tests**, no skips, including the
+coherently rebound freshness case and a mutation that demonstrates omission of
+non-approval record freshness is detected. It covers the declared zero-host-
+mount isolation profile, retention duration from creation and both API results,
+archive/plaintext digests, source/node and native-subject/binding/lineage
+identity, event chronology, complete tool roles, custody and side-effect absence.
+Metadata consistency remains untrusted and never authenticates or opens a gate.
+The exact private bindings pin the public encryption recipient, all five
+retained `jpiquot` UIDs, existing encrypted native client, source/tool hashes and
+explicit unknowns. No live adapter or operational execution mode is supplied.
+
+Unidentified concurrent edits affected the generic guard/tests/procedure and
+shared packet. Those bytes and our earlier drafts/candidate snapshot remain
+untouched and unaccepted; this implementation is isolated under
+`eng/kubernetes-upgrade/recovery-20261015t140709z/`. New owner-only custody is
+`/home/administrator/hexalith-retirement-investigation-evidence/20261015t140709z-s427-expired-recovery-preparation/closeout-20261015t143451z-4fbeb896`. Its actual local failed
+rerun and reconstruction corrections, root review-diff paths and 162-file
+historical-preservation snapshot are retained. The root independently reran
+the final focused suite. Final checksum sealing awaits the root's final checks.
+
+The [sanitized unsigned checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261015t143451z-s427-isolated-offline-closeout/verification.json) binds exact files and outcomes.
+Uncovered actions remain fresh 4.0 prerequisite acceptance, exact 4.1 scope and
+freshness policy, source snapshot/node capture, provider-prefix permissions,
+recipient decryption/independent readback, qualified image-baked tools/stdin
+delivery/extraction capacity, recovered authority lineage and 4.1 signing.
+The original resolved Docker executable remains group-writable and blocked;
+no concurrent staged copy is accepted and no tool repair or daemon call ran.
+There was no production command, capture, restore, decryption, signature, new
+grant, retirement, upgrade, Rancher, Timesheets deployment or Git staging/commit.
+Unchanged broad tests/fixtures were not rerun. **4.27 remains in-progress, 4.1's
+operational gate closed and Timesheets 3.6 open/FAIL**; all original production
+tasks, later owner gates and default-deny controls remain pending/preserved.
