@@ -484,3 +484,19 @@
 - source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
   summary: Add catalog-version preflight for the file entry when it uses ambient global Dapr tools.
   evidence: Independent finding B8 confirms the pre-existing global CLI/runtime fallback when HEXALITH_DAPR_HOME is absent; the current live commands provide pinned tools explicitly. Validate ambient selection before launch in the owning toolchain/startup work without weakening the Builds catalog.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-runtime-delivery.md`
+  summary: Pin prepared Dapr environments to declarative subscriptions and assert the scheduler lock bind mount.
+  evidence: Story 1.7 composition sets `Dapr__DeclarativeSubscriptions` and passes a scheduler data directory. The prepared-environment tests do not read that flag, and the scheduler tests do not assert a `/var/lock` bind mount of `scheduler-data`. This secrets delivery did not edit those files.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-runtime-delivery.md`
+  summary: Reject empty or wildcard invocation verbs, unsupported dead-letter strategies, and ambiguous topic matches in local Dapr binding render.
+  evidence: `PlatformDaprBindings` still copies verbs without an allow-list, uses `First` for a dead-letter topic, and drops unknown servers. Those branches belong to the pre-existing story 1.7 binding work.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-runtime-delivery.md`
+  summary: Keep local Dapr fixture cleanup from aborting when a sidecar exits before SIGTERM.
+  evidence: `eng/test-local-dapr-security.py` calls `os.killpg` after `poll()` without catching `ProcessLookupError`. The fixture predates this secrets delivery.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-runtime-delivery.md`
+  summary: Keep the offline recovery verifier from hashing unlisted private-key names and from waiting forever on a live parser child.
+  evidence: `eng/recovery-preparation` was already in the working tree. `secret_path` does not refuse `.p12` or `id_ecdsa`, and the static preflight failure path can wait on a child without the success-path deadline.

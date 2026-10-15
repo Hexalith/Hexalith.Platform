@@ -28,6 +28,7 @@ from cases import plan, plan_digest, wire_plan
 PROTOCOL = "EXT-SECRETS-1.qualification.v1"
 STAGES = ("AfterEffect", "AfterRestart", "AfterRestore", "AfterLookup")
 SHA = re.compile(r"^[0-9a-f]{64}$")
+COMMIT = re.compile(r"^[0-9a-f]{40}$")
 IDENTITY = re.compile(r"^[A-Za-z0-9_.:/@-]{1,2048}$")
 GLOBAL = {"leakCount": 0, "foreignEffects": 0, "allCopyRevival": 0,
           "immutableIdentity": 1, "immutableOutcome": 1, "persistedProofCount": 4}
@@ -61,6 +62,11 @@ class Unavailable(Exception):
 
 class QualificationFailed(Exception):
     pass
+
+
+class ReplacementAcceptancePacket(Exception):
+    def __init__(self):
+        super().__init__("ReplacementAcceptancePacket: EXT-SECRETS-1")
 
 
 def canonical(value):
@@ -135,6 +141,43 @@ def acceptance(register):
 def git(root, *args):
     return subprocess.check_output(["git", "-C", str(root), *args], stderr=subprocess.DEVNULL,
                                    timeout=10, text=True).strip()
+
+
+def load_replacement_packet(path):
+    try:
+        data = Path(path).read_bytes()
+    except OSError:
+        return None
+    if len(data) > 1024 * 1024:
+        raise ReplacementAcceptancePacket()
+    try:
+        packet = decode_json(data)
+    except (ValueError, TypeError, json.JSONDecodeError, UnicodeError):
+        raise ReplacementAcceptancePacket()
+    if not isinstance(packet, dict):
+        raise ReplacementAcceptancePacket()
+    return packet
+
+
+def replacement_packet_inputs(packet, config, target, head):
+    """Compare pins to the loaded configuration, plan, and anchor set. A 64-hex string is not itself a pin."""
+    if not isinstance(packet, dict):
+        raise ReplacementAcceptancePacket()
+    missing = []
+    if packet.get("configurationSha256") != digest(config):
+        missing.append("PinnedConfigurationSha256")
+    if packet.get("planSha256") != plan_digest():
+        missing.append("PinnedPlanSha256")
+    anchors = {f"{role}AnchorSha256": packet.get(f"{role}AnchorSha256") for role in ("executor", "observer", "enrollment")}
+    if packet.get("publicAnchorSha256") != digest(anchors):
+        missing.append("PinnedPublicAnchorSha256")
+    elif packet.get("acceptedReplacementCommit") is None and any(value is not None for value in anchors.values()):
+        missing.append("PinnedPublicAnchorSha256")
+    commit = packet.get("acceptedReplacementCommit")
+    accepted = isinstance(commit, str) and COMMIT.fullmatch(commit) and commit == target and commit == head
+    if not accepted or packet.get("dependencyAvailable") is not False or packet.get("liveCompatibilityAuthorized") is not False:
+        missing.append("LiveCompatibilityNotAuthorized")
+    return missing
 
 
 def preflight(root, config_path, register, caller, eventstore_argument, artifacts_argument, evidence_argument):
@@ -219,6 +262,15 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
         import cryptography  # noqa: F401
     except ImportError:
         missing.append("ES256PublicProofVerifier")
+    packet_file = Path(root) / "eng/ext-secrets-1/replacement-acceptance-packet.json"
+    if packet_file.is_file():
+        packet = load_replacement_packet(packet_file)
+        try:
+            head = git(root, "rev-parse", "HEAD")
+        except (OSError, subprocess.SubprocessError):
+            head = None
+        # A commit equal to the register target and HEAD is the later acceptance condition. It does not skip pin checks above.
+        missing.extend(replacement_packet_inputs(packet, config, target, head))
     if missing:
         raise Unavailable(*missing, *IMPLEMENTATIONS)
     return config, target, binding
@@ -986,6 +1038,10 @@ def main():
         result = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
                   "missingInputs": exc.inputs, "effectsStarted": effects_started, "qualificationEffects": 0 if not effects_started else "Unknown"}
         exit_code = 2
+    except ReplacementAcceptancePacket:
+        result = {"code": "ReplacementAcceptancePacket", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,
+                  "effectsStarted": effects_started, "qualificationEffects": 0}
+        exit_code = 4
     except Exception:
         # Provider error strings and arbitrary response content never enter evidence, logs or stdout.
         result = {"code": "QualificationFailed", "dependency": "EXT-SECRETS-1", "dependencyAvailable": False,

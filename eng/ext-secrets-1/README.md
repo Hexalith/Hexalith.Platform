@@ -85,6 +85,28 @@ The client checks exact recovery order, same-owner block/reserve winner, no cons
 
 Only fully schema-checked signed public proofs are retained. Invalid provider payloads/errors are discarded; failed runs retain the valid original request/outcome/proofs already captured and a sanitized failure record. A full pass permits owner acceptance only for the exact target/run/installed authorities; `dependencyAvailable` remains false because acceptance and register updates belong to the owner.
 
+Replacement acceptance packet
+-----------------------------
+
+The adapters in `src/Hexalith.Platform.Secrets.Runtime` and the executor, observer, and enrollment hosts are enrollable code. They are not installed authorities. `census-2026-10-08.json` records only the verified infrastructure facts: host 192.168.1.30, API `https://192.168.1.30:6443`, Dapr 1.18.1, and OpenBao `hexalith-keys` / `hexalith-keys-active`. Inventory, profile, signer, replay, observer, executor, enrollment, issuer, audience, and tenant identities stay null. Every remaining null is listed with its provisioning action. `productionMutationAllowed` is false. Readiness is not a binding.
+
+`replacement-acceptance-packet.json` publishes `configurationSha256` (the digest of `runtime-reference.example.json`), `planSha256`, and `publicAnchorSha256`. The executor, observer, and enrollment anchor pins are null, and that null set matches this unaccepted packet. `acceptedReplacementCommit` stays unset. `dependencyAvailable` and `liveCompatibilityAuthorized` stay false. Register target `f448db29493c1b30b0f18380188fe99b8b7606fe` stays Committed. Story 5.4 stays in progress. This delivery does not edit the Agents register.
+
+Command template, from the Agents repository, after the owner fills and accepts the replacement commit:
+
+```bash
+test "$(git -C ../platform rev-parse HEAD)" = "<acceptedReplacementCommit>" \
+  && test -z "$(git -C ../platform status --porcelain)" \
+  && pwsh -NoProfile -File ../platform/eng/verify-ext-secrets-1.ps1 -Mode Live \
+    -EventStoreSourceRoot ../eventstore \
+    -ArtifactsDirectory <unique-artifacts> \
+    -EvidenceDirectory <unique-evidence>
+```
+
+An unaccepted source checkout cannot clear Live preflight. A commit equal to the register target and HEAD does not bypass the configuration, plan, or public-anchor pins. Available requires a later passing S1–S4/v23 run on the accepted commit. This delivery does not run that qualification.
+
+`unapplied-reference-artifacts.json` lists the proposed component, policy, pod fragments, and reference examples. Each entry has `apply` false. Nothing here is deployed.
+
 Copyable external provisioning prompts
 -------------------------------------
 

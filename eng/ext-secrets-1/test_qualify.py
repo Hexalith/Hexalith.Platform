@@ -251,8 +251,116 @@ class QualificationTests(unittest.TestCase):
         self.temp.cleanup()
 
     def test_exact_accepted_preflight(self):
+        self.assertFalse((self.fixture.root / "eng/ext-secrets-1/replacement-acceptance-packet.json").exists())
         self.assertEqual(self.fixture.target, self.fixture.preflight()[1])
         self.assertFalse(self.fixture.calls)
+
+    def _ignore_packet(self):
+        exclude = self.fixture.root / ".git" / "info" / "exclude"
+        current = exclude.read_text() if exclude.exists() else ""
+        if "eng/" not in current:
+            exclude.write_text(current + "eng/\n")
+
+    def _write_packet(self, **overrides):
+        self._ignore_packet()
+        packet = {"schema": "EXT-SECRETS-1.replacement-acceptance.v1", "acceptedReplacementCommit": None,
+                  "dependencyAvailable": False, "liveCompatibilityAuthorized": False,
+                  "configurationSha256": q.digest(self.fixture.config), "planSha256": plan_digest(),
+                  "executorAnchorSha256": None, "observerAnchorSha256": None, "enrollmentAnchorSha256": None}
+        packet.update(overrides)
+        anchors = {f"{role}AnchorSha256": packet.get(f"{role}AnchorSha256") for role in ("executor", "observer", "enrollment")}
+        if "publicAnchorSha256" not in overrides:
+            packet["publicAnchorSha256"] = q.digest(anchors)
+        directory = self.fixture.root / "eng" / "ext-secrets-1"
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "replacement-acceptance-packet.json").write_bytes(q.canonical(packet))
+
+    def _denial_without_dapr(self, **overrides):
+        calls = []
+
+        def spy(*args):
+            calls.append(args)
+            raise AssertionError("preflight called Dapr")
+
+        self._write_packet(**overrides)
+        with patch.object(q.DaprTransport, "call", spy):
+            with self.assertRaises(q.Unavailable) as caught:
+                self.fixture.preflight()
+        self.assertEqual([], calls)
+        return caught.exception.inputs
+
+    def test_unaccepted_packet_denies_live_compatibility_with_zero_dapr_calls(self):
+        self.assertIn("LiveCompatibilityNotAuthorized", self._denial_without_dapr())
+
+    def test_wrong_plan_pin_is_pinned_plan_with_zero_dapr_calls(self):
+        self.assertIn("PinnedPlanSha256", self._denial_without_dapr(planSha256="ab" * 32))
+
+    def test_wrong_configuration_pin_is_not_any_64_hex_with_zero_dapr_calls(self):
+        self.assertEqual(64, len("ab" * 32))
+        self.assertIn("PinnedConfigurationSha256", self._denial_without_dapr(configurationSha256="ab" * 32))
+
+    def test_wrong_public_anchor_pin_is_pinned_anchor_with_zero_dapr_calls(self):
+        self.assertIn("PinnedPublicAnchorSha256", self._denial_without_dapr(publicAnchorSha256="ab" * 32))
+
+    def test_populated_anchor_on_unaccepted_packet_is_pinned_anchor(self):
+        self.assertIn("PinnedPublicAnchorSha256", self._denial_without_dapr(executorAnchorSha256="cd" * 32))
+
+    def test_non_string_commit_denies_live_compatibility_with_zero_dapr_calls(self):
+        for commit in (True, 0, {"sha": "abc"}):
+            with self.subTest(commit=commit):
+                self.assertIn("LiveCompatibilityNotAuthorized", self._denial_without_dapr(acceptedReplacementCommit=commit))
+
+    def test_mismatched_commit_string_denies_live_compatibility_with_zero_dapr_calls(self):
+        self.assertIn("LiveCompatibilityNotAuthorized", self._denial_without_dapr(acceptedReplacementCommit="b" * 40))
+
+    def test_dependency_available_true_denies_live_compatibility_with_zero_dapr_calls(self):
+        self.assertIn("LiveCompatibilityNotAuthorized", self._denial_without_dapr(
+            acceptedReplacementCommit=self.fixture.target, dependencyAvailable=True))
+
+    def test_live_compatibility_flag_true_denies_live_compatibility_with_zero_dapr_calls(self):
+        self.assertIn("LiveCompatibilityNotAuthorized", self._denial_without_dapr(
+            acceptedReplacementCommit=self.fixture.target, liveCompatibilityAuthorized=True))
+
+    def test_commit_equal_to_target_and_head_does_not_bypass_pins(self):
+        inputs = self._denial_without_dapr(acceptedReplacementCommit=self.fixture.target, configurationSha256="ab" * 32)
+        self.assertIn("PinnedConfigurationSha256", inputs)
+        self.assertNotIn("LiveCompatibilityNotAuthorized", inputs)
+
+    def test_non_object_packet_is_replacement_acceptance_packet(self):
+        self._ignore_packet()
+        directory = self.fixture.root / "eng" / "ext-secrets-1"
+        directory.mkdir(parents=True)
+        (directory / "replacement-acceptance-packet.json").write_text("[1, 2]", encoding="ascii")
+        calls = []
+        with patch.object(q.DaprTransport, "call", lambda *args: calls.append(args)):
+            with self.assertRaises(q.ReplacementAcceptancePacket):
+                self.fixture.preflight()
+        self.assertEqual([], calls)
+
+    def test_shipped_packet_keeps_null_commit_and_false_availability(self):
+        directory = Path(__file__).resolve().parent
+        packet = json.loads((directory / "replacement-acceptance-packet.json").read_text(encoding="utf-8"))
+        config = q.read_json(directory / "runtime-reference.example.json")
+        anchors = {f"{role}AnchorSha256": packet[f"{role}AnchorSha256"] for role in ("executor", "observer", "enrollment")}
+        self.assertIsNone(packet["acceptedReplacementCommit"])
+        self.assertIs(packet["dependencyAvailable"], False)
+        self.assertIs(packet["liveCompatibilityAuthorized"], False)
+        self.assertIs(packet["productionMutationAllowed"], False)
+        self.assertEqual("f448db29493c1b30b0f18380188fe99b8b7606fe", packet["registerTarget"])
+        self.assertEqual("Committed", packet["registerStatus"])
+        self.assertEqual(q.digest(config), packet["configurationSha256"])
+        self.assertEqual(plan_digest(), packet["planSha256"])
+        self.assertEqual(q.digest(anchors), packet["publicAnchorSha256"])
+        self.assertEqual([None, None, None], list(anchors.values()))
+        census = json.loads((directory / "census-2026-10-08.json").read_text(encoding="utf-8"))
+        self.assertEqual("192.168.1.30", census["host"])
+        self.assertEqual("https://192.168.1.30:6443", census["kubernetesApi"])
+        self.assertEqual("1.18.1", census["daprVersion"])
+        self.assertEqual("openbao/StatefulSet/hexalith-keys", census["verifiedProviderResource"])
+        self.assertIn("hexalith-keys-active", census["providerServiceReference"])
+        self.assertIs(census["readinessIsBinding"], False)
+        self.assertEqual({name: None for name in ("inventory", "profile", "signer", "replay", "observer")},
+                         {name: census["applicationIdentities"][name] for name in ("inventory", "profile", "signer", "replay", "observer")})
 
     def test_config_cannot_self_certify_authorities(self):
         self.fixture.write_register(binding=False)

@@ -1,0 +1,18 @@
+{
+  "schema": "EXT-SECRETS-1.replacement-acceptance.v1",
+  "registerTarget": "f448db29493c1b30b0f18380188fe99b8b7606fe",
+  "registerStatus": "Committed",
+  "story": "5.4",
+  "storyStatus": "in-progress",
+  "acceptedReplacementCommit": null,
+  "dependencyAvailable": false,
+  "liveCompatibilityAuthorized": false,
+  "productionMutationAllowed": false,
+  "configurationSha256": "a678ff5e4b28131207ef46152047b97607768f0c7eed835d1010d41e1f0d8698",
+  "planSha256": "16dd493ff0414fea13be95f137d372e54088881550665aa3239a5814a9e862ed",
+  "publicAnchorSha256": "53f138498b53f560ce6957f054d6feb7d27cdee2190c23bbf4331a3fcb89e160",
+  "executorAnchorSha256": null,
+  "observerAnchorSha256": null,
+  "enrollmentAnchorSha256": null,
+  "commandTemplate": "test \"$(git -C ../platform rev-parse HEAD)\" = \"<acceptedReplacementCommit>\" && test -z \"$(git -C ../platform status --porcelain)\" && pwsh -NoProfile -File ../platform/eng/verify-ext-secrets-1.ps1 -Mode Live -EventStoreSourceRoot ../eventstore -ArtifactsDirectory <unique-artifacts> -EvidenceDirectory <unique-evidence>"
+}

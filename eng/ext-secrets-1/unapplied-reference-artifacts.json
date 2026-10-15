@@ -1,0 +1,35 @@
+{
+  "schema": "EXT-SECRETS-1.unapplied-reference-artifacts.v1",
+  "apply": false,
+  "productionMutationAllowed": false,
+  "artifacts": [
+    {
+      "path": "eng/ext-secrets-1/dapr-openbao.component.proposed.yaml",
+      "apply": false
+    },
+    {
+      "path": "eng/ext-secrets-1/openbao-hmac.policy.proposed.hcl",
+      "apply": false
+    },
+    {
+      "path": "eng/ext-secrets-1/pod-template-fragments.proposed.yaml",
+      "apply": false
+    },
+    {
+      "path": "eng/ext-secrets-1/pod-credential-mount.proposed.json",
+      "apply": false
+    },
+    {
+      "path": "eng/ext-secrets-1/runtime-reference.example.json",
+      "apply": false
+    },
+    {
+      "path": "eng/ext-secrets-1/tenant-inventory.example.json",
+      "apply": false
+    },
+    {
+      "path": "eng/ext-secrets-1/private-authority-bindings.example.json",
+      "apply": false
+    }
+  ]
+}

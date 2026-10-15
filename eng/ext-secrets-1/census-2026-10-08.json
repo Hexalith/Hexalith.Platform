@@ -1,0 +1,571 @@
+{
+  "schema": "EXT-SECRETS-1.census.v1",
+  "integrationDate": "2026-10-08",
+  "host": "192.168.1.30",
+  "kubernetesApi": "https://192.168.1.30:6443",
+  "daprVersion": "1.18.1",
+  "verifiedProviderResource": "openbao/StatefulSet/hexalith-keys",
+  "providerServiceReference": "https://hexalith-keys-active.openbao.svc:8200",
+  "productionMutationAllowed": false,
+  "readinessIsBinding": false,
+  "clusterQueryThisDelivery": false,
+  "applicationIdentities": {
+    "inventory": null,
+    "profile": null,
+    "signer": null,
+    "replay": null,
+    "observer": null,
+    "executor": null,
+    "enrollment": null,
+    "issuer": null,
+    "audience": null,
+    "tenants": null
+  },
+  "remainingNulls": [
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.providerBinding",
+      "provisioningAction": "Enroll the existing OpenBao hexalith-keys store through a Dapr secret-store component on 192.168.1.30 and return its public component name."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.hmacCredentialReference",
+      "provisioningAction": "Enroll a new restricted application credential for that Dapr secret store and return its public reference. Do not reuse the operator or Memories token."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.callTimeout",
+      "provisioningAction": "Set an explicit resolution budget greater than zero and at most 30 seconds."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.tenantInventoryReference",
+      "provisioningAction": "Publish the current tenant inventory and return its public reference. Infrastructure readiness is not an inventory."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.currentInventoryAuthorityReference",
+      "provisioningAction": "Install the independent current key-inventory authority and return its public Dapr app id."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.tenantA",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.tenantB",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.profileReference",
+      "provisioningAction": "Publish the independent issuer, audience, and profile and return the public profile reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.issuer",
+      "provisioningAction": "Enroll the independent decision issuer outside Platform and Agents and return its public issuer reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.audience",
+      "provisioningAction": "Enroll the independent decision audience and return its public audience reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.profileVersion",
+      "provisioningAction": "Publish the current profile version and return that public version."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.profileNotBefore",
+      "provisioningAction": "Publish the current profile validity start as a UTC instant."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.profileValidUntil",
+      "provisioningAction": "Publish the current profile exclusive validity end as a UTC instant."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.actorRoleAuthorityReference",
+      "provisioningAction": "Install the independent actor-role authority and return its public Dapr app id. Decision verification has no signing method."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.independentSignerAccount",
+      "provisioningAction": "Enroll the independent deletion signer outside Platform and Agents and return its public account reference. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.independentSignerCredentialReference",
+      "provisioningAction": "Enroll the independent deletion signer outside Platform and Agents and return its credential reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.publicTrustReference",
+      "provisioningAction": "Publish the independent signing-trust profile and return its public reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.currentRevocationReference",
+      "provisioningAction": "Publish the independent revocation authority and return its public reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.replayRegistrarCredentialReference",
+      "provisioningAction": "Install a private registrar credential restricted to system/trusted-envelope-replay and return its reference. Do not register it for general resolution."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.replayExactScope",
+      "provisioningAction": "Return the public exact replay scope. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.compromiseSubscriberCredentialReference",
+      "provisioningAction": "Install the private compromise subscriber credential and return its reference. Do not register it for general resolution."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.compromiseSubscriptionReference",
+      "provisioningAction": "Enroll the compromise subscription and return its public reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.compromiseGuardMirrorReference",
+      "provisioningAction": "Enroll the independent guard-revocation mirror and return its public reference."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.compromisePublisherReference",
+      "provisioningAction": "Enroll the compromise publisher and return its public reference. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.acceptedReplacementCommit",
+      "provisioningAction": "The owner fills acceptedReplacementCommit with the accepted SHA and accepts it before any Live run."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.allCopyLifecycleAuthorityReference",
+      "provisioningAction": "Qualify the existing all-copy lifecycle provider and return its public reference. Do not add a database or substitute provider."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.allCopyInventoryReference",
+      "provisioningAction": "Publish the all-copy inventory and return its public reference. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.nonrollbackJournalReference",
+      "provisioningAction": "Qualify the existing nonrollback journal and return its public reference. Do not substitute a local restore."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.restoreTarget",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.authenticatedRequesterTransport",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.migrationAuthorityReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.protectionOwnerReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "runtime.publicAnchorRetentionReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.isolatedTargetId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.enrollmentCredentialReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.daprApiCredentialReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.executor.appId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.executor.identity",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.executor.version",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.executor.publicAnchorFile",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.observer.appId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.observer.identity",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.observer.version",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.observer.publicAnchorFile",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.enrollment.appId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.enrollment.identity",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.enrollment.version",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "runtime-reference.example.json",
+      "input": "qualification.enrollment.publicAnchorFile",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "authorityReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "profileReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "systemObservationKey",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "publicAnchorRetentionReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "allCopyLifecycleAuthorityReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "allCopyInventoryReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "nonrollbackJournalReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "separateCustodyClassReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "ordinarySnapshotExclusionReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.tenantId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.purpose",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.opaqueKeyVersion",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.storeName",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.credentialReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.secretReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.numericKv2SecretVersion",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.secretField",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.inventoryRevision",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.state",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.notBefore",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.verifyUntil",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.retiredAt",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.publicAnchorId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "tenant-inventory.example.json",
+      "input": "entryTemplate.publicAnchorVersion",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "replayRegistrar.credentialReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "replayRegistrar.installedAdapterIdentity",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "replayRegistrar.installedAdapterVersion",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "replayRegistrar.exactStreamDerivationAuthorityReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.credentialReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.publisherReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.publicTrustProfileReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.currentRevocationReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.installedRegistrarIdentity",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.installedRegistrarVersion",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.protectionOwnerReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "compromiseSubscriber.guardMirrorReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.qualifiedExistingProviderReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.providerCopyEnumerationReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.backupAndRestoredCopyEnumerationReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.independentReservationAuthorityReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.nonrollbackJournalReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.isolatedRestoreTarget",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.separateCustodyClassReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.ordinarySnapshotExclusionReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "allCopyLifecycle.irreversibleOldBackupDestructionProofReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.signerAccount",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.signerCredentialReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.publicAnchorId",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.publicAnchorVersion",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.publicProfileReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.currentActorRoleAuthorityReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "private-authority-bindings.example.json",
+      "input": "independentApproval.currentRevocationReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "custodyServiceAccountReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "qualificationServiceAccountReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "credentialReferences.providerTokenSecretReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "credentialReferences.providerTokenSecretKeyName",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "credentialReferences.custodyDaprApiTokenSecretReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "credentialReferences.qualificationDaprApiTokenSecretReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "credentialReferences.providerCaConfigMapReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "credentialReferences.providerCaKeyName",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "pod-credential-mount.proposed.json",
+      "input": "renewalOwnerReference",
+      "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    }
+  ]
+}

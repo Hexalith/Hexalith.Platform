@@ -18,6 +18,7 @@ if ($Mode -eq 'Live') {
     # target/command and independent runtime trust pins before calling an enrolled isolated adapter.
     & python3 (Join-Path $PSScriptRoot 'ext-secrets-1/qualify.py') --root $root --caller $callerDirectory --eventstore-argument $eventStoreArgument --artifacts-argument $artifactsArgument --evidence-argument $evidenceArgument
     if ($LASTEXITCODE -eq 2) { throw 'DependencyNotAvailable: EXT-SECRETS-1. Missing prerequisites; see sanitized attempt-*/live-evidence.json.' }
+    if ($LASTEXITCODE -eq 4) { throw 'ReplacementAcceptancePacket: EXT-SECRETS-1. The replacement acceptance packet is not an object; see sanitized attempt-*/live-evidence.json.' }
     if ($LASTEXITCODE -ne 0) { throw 'QualificationFailed: EXT-SECRETS-1. See sanitized attempt-*/live-evidence.json; retain original recovery journal.' }
     return
 }
