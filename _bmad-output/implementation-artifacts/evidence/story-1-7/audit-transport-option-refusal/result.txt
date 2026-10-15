@@ -1,0 +1,8 @@
+Owned sidecars and containers removed; no leftovers.
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 121, in <module>
+    until(lambda: request(endpoint + '/v1.0/healthz/outbound')[0] == 204, app_id + ' outbound readiness')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 47, in until
+    raise AssertionError(f'{label} did not complete in {timeout}s')
+AssertionError: eventstore outbound readiness did not complete in 40s

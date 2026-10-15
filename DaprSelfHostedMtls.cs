@@ -1,6 +1,7 @@
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
+using Hexalith.Builds.Tooling.Runtime;
 
 public static class DaprSelfHostedMtls
 {
@@ -34,13 +35,23 @@ public static class DaprSelfHostedMtls
         string sentryConfigurationPath)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        return AddSentry(builder, sentryConfigurationPath, LocateRepositoryRoot(builder.AppHostDirectory));
+    }
+
+    /// <summary>Adds Sentry using the already resolved Platform checkout as the certificate exclusion boundary.</summary>
+    internal static (IResourceBuilder<ContainerResource> Sentry, string CertificateDirectory) AddSentry(
+        IDistributedApplicationBuilder builder,
+        string sentryConfigurationPath,
+        string platformRoot)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
         ArgumentException.ThrowIfNullOrWhiteSpace(sentryConfigurationPath);
 
-        string certificateDirectory = ResolveCertificateDirectory(builder);
+        string certificateDirectory = ResolveCertificateDirectory(builder, platformRoot);
         Directory.CreateDirectory(certificateDirectory);
 
         IResourceBuilder<ContainerResource> sentry = builder
-            .AddContainer("dapr-sentry", "daprio/sentry", "1.18.3")
+            .AddContainer("dapr-sentry", "daprio/sentry", CompositionToolchainPins.DaprRuntimeVersion)
             .WithEntrypoint("/sentry")
             .WithArgs(
                 $"--issuer-credentials={ContainerCredentialsDirectory}",
@@ -76,14 +87,15 @@ public static class DaprSelfHostedMtls
         AddControlPlane(
             IDistributedApplicationBuilder builder,
             IResourceBuilder<ContainerResource> sentry,
-            string certificateDirectory)
+            string certificateDirectory,
+            string? schedulerDataDirectory = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(sentry);
         ArgumentException.ThrowIfNullOrWhiteSpace(certificateDirectory);
 
         IResourceBuilder<ContainerResource> placement = builder
-            .AddContainer("dapr-placement-mtls", "daprio/dapr", "1.18.3")
+            .AddContainer("dapr-placement-mtls", "daprio/dapr", CompositionToolchainPins.DaprRuntimeVersion)
             .WithEntrypoint("./placement")
             .WithArgs(
                 "--tls-enabled",
@@ -104,7 +116,7 @@ public static class DaprSelfHostedMtls
             .ExcludeFromManifest();
 
         IResourceBuilder<ContainerResource> scheduler = builder
-            .AddContainer("dapr-scheduler-mtls", "daprio/dapr", "1.18.3")
+            .AddContainer("dapr-scheduler-mtls", "daprio/dapr", CompositionToolchainPins.DaprRuntimeVersion)
             .WithEntrypoint("./scheduler")
             .WithArgs(
                 "--tls-enabled",
@@ -115,7 +127,6 @@ public static class DaprSelfHostedMtls
                 $"--override-broadcast-host-port={SchedulerHostAddress}",
                 "--healthz-listen-address=0.0.0.0")
             .WithBindMount(certificateDirectory, ContainerCredentialsDirectory, isReadOnly: true)
-            .WithVolume(SchedulerVolumeName, "/var/lock")
             .WithEndpoint(
                 port: SchedulerHostPort,
                 targetPort: SchedulerContainerPort,
@@ -125,6 +136,9 @@ public static class DaprSelfHostedMtls
             .WithLifetime(ContainerLifetime.Session)
             .WaitFor(sentry)
             .ExcludeFromManifest();
+
+        if (schedulerDataDirectory is null) scheduler.WithVolume(SchedulerVolumeName, "/var/lock");
+        else scheduler.WithBindMount(schedulerDataDirectory, "/var/lock");
 
         string? containerUser = ResolveContainerUser();
         if (!string.IsNullOrWhiteSpace(containerUser))
@@ -139,13 +153,14 @@ public static class DaprSelfHostedMtls
     /// <summary>
     /// Makes a project and its generated Dapr CLI wait for Sentry, then injects the generated trust bundle.
     /// </summary>
-    public static void ConfigureSidecar(
-        IResourceBuilder<ProjectResource> project,
+    public static void ConfigureSidecar<T>(
+        IResourceBuilder<T> project,
         IDaprSidecarResource sidecar,
         IResourceBuilder<ContainerResource> sentry,
         string certificateDirectory,
         IResourceBuilder<ContainerResource>? placement = null,
         IResourceBuilder<ContainerResource>? scheduler = null)
+        where T : IResourceWithWaitSupport
     {
         ArgumentNullException.ThrowIfNull(project);
         ArgumentNullException.ThrowIfNull(sidecar);
@@ -265,7 +280,7 @@ public static class DaprSelfHostedMtls
             lastFailure);
     }
 
-    private static string ResolveCertificateDirectory(IDistributedApplicationBuilder builder)
+    private static string ResolveCertificateDirectory(IDistributedApplicationBuilder builder, string platformRoot)
     {
         string configured = builder.Configuration[CertificateDirectoryConfigurationKey]
             ?? Path.Combine(
@@ -274,7 +289,7 @@ public static class DaprSelfHostedMtls
                 "certs",
                 "hexalith-platform");
         string resolved = ResolveExistingLinks(Path.GetFullPath(configured));
-        string repositoryRoot = ResolveExistingLinks(LocateRepositoryRoot(builder.AppHostDirectory));
+        string repositoryRoot = ResolveExistingLinks(Path.GetFullPath(platformRoot));
         StringComparison pathComparison = OperatingSystem.IsWindows()
             ? StringComparison.OrdinalIgnoreCase
             : StringComparison.Ordinal;

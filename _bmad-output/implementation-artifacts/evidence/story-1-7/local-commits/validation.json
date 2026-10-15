@@ -1,0 +1,67 @@
+[
+  {
+    "repository": "/home/administrator/projects/hexalith/platform",
+    "version": "21.2.1",
+    "command": [
+      "node",
+      "node_modules/@commitlint/cli/cli.js",
+      "--edit",
+      "/tmp/story-1-7-commit-platform.txt",
+      "--verbose"
+    ],
+    "message": "feat(platform): ratify local Dapr conventions and component bindings\n",
+    "exitCode": 0
+  },
+  {
+    "repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "version": "21.2.3",
+    "command": [
+      "node",
+      "node_modules/@commitlint/cli/cli.js",
+      "--edit",
+      "/tmp/story-1-7-commit-Hexalith.Builds.txt",
+      "--verbose"
+    ],
+    "message": "feat(module): declare scoped Dapr bindings and local security\n",
+    "exitCode": 0
+  },
+  {
+    "repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "version": "21.1.0",
+    "command": [
+      "node",
+      "node_modules/@commitlint/cli/cli.js",
+      "--edit",
+      "/tmp/story-1-7-commit-Hexalith.EventStore.txt",
+      "--verbose"
+    ],
+    "message": "feat(dapr): accept assigned component names and declarative subscriptions\n",
+    "exitCode": 0
+  },
+  {
+    "repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "version": "21.2.2",
+    "command": [
+      "node",
+      "node_modules/@commitlint/cli/cli.js",
+      "--edit",
+      "/tmp/story-1-7-commit-Hexalith.Memories.txt",
+      "--verbose"
+    ],
+    "message": "feat(dapr): bind assigned components and explicit ingestion subscriptions\n",
+    "exitCode": 0
+  },
+  {
+    "repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+    "version": "21.2.3",
+    "command": [
+      "node",
+      "node_modules/@commitlint/cli/cli.js",
+      "--edit",
+      "/tmp/story-1-7-commit-Hexalith.Tenants.txt",
+      "--verbose"
+    ],
+    "message": "feat(dapr): declare precise invocation grants and local readiness\n",
+    "exitCode": 0
+  }
+]

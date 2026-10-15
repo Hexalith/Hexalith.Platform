@@ -1,0 +1,62 @@
+time="2026-10-15T17:59:40.897552813Z" level=info msg="Starting Dapr Sentry certificate authority -- version 1.18.2 -- commit d2dd3747145e38e4d85db4714e26d7569c9c37db" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.897676233Z" level=info msg="Log level set to: info" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.898276677Z" level=info msg="Starting watch on filesystem directories: [/credentials]" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.898334694Z" level=info msg="Adding validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.898347319Z" level=info msg="Using local file system for trust bundle storage" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:40.898376315Z" level=info msg="Root and issuer certs not found: generating self signed CA" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:40.899405186Z" level=info msg="Generating self-signed CA certs and persisting to store" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:40.899599895Z" level=info msg="Self-signed certs and JWT root key generated and persisted successfully" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:40.899630825Z" level=info msg="CA certificate key pair ready" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.89966443Z" level=info msg="OIDC HTTP server is disabled" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.899697154Z" level=info msg="Using validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.899859074Z" level=info msg="Fetching initial identity" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:40.900234194Z" level=info msg="Security is initialized successfully" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:40.90026815Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-16 17:59:40 +0000 UTC, renewal at: 2026-10-16 05:52:10 +0000 UTC" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:40.90152323Z" level=info msg="Healthz server is listening on [::]:8080" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.901582114Z" level=info msg="metrics server started on :9090/" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:40.901671919Z" level=info msg="Running gRPC server on port 50001" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2
+time="2026-10-15T17:59:42.906377865Z" level=warning msg="Issuer credentials changed; reloading" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.906502257Z" level=info msg="Shutting down gRPC server" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2
+time="2026-10-15T17:59:42.906536859Z" level=info msg="Healthz server is shutting down" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.906658832Z" level=info msg="Adding validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.906686906Z" level=info msg="Using local file system for trust bundle storage" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:42.907025715Z" level=info msg="Root and issuer certs found: using credentials from store" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:42.907066244Z" level=info msg="CA certificate key pair ready" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.907093056Z" level=info msg="OIDC HTTP server is disabled" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.907100541Z" level=info msg="Using validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.907214542Z" level=info msg="Healthz server is listening on [::]:8080" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.907229877Z" level=info msg="Fetching initial identity" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:42.907427757Z" level=info msg="metrics server started on :9090/" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:42.907544449Z" level=info msg="Security is initialized successfully" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:42.907573866Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-16 17:59:42 +0000 UTC, renewal at: 2026-10-16 05:52:12 +0000 UTC" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:42.907644418Z" level=info msg="Running gRPC server on port 50001" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2
+time="2026-10-15T17:59:44.908136113Z" level=warning msg="Issuer credentials changed; reloading" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.908233993Z" level=info msg="Healthz server is shutting down" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.908299286Z" level=info msg="Shutting down gRPC server" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2
+time="2026-10-15T17:59:44.908417335Z" level=info msg="Adding validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.908443205Z" level=info msg="Using local file system for trust bundle storage" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:44.908728911Z" level=info msg="Root and issuer certs found: using credentials from store" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:44.908770001Z" level=info msg="CA certificate key pair ready" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.90879533Z" level=info msg="OIDC HTTP server is disabled" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.908802835Z" level=info msg="Using validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.908917662Z" level=info msg="Fetching initial identity" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:44.908949971Z" level=info msg="Healthz server is listening on [::]:8080" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.909106095Z" level=info msg="metrics server started on :9090/" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:44.909191084Z" level=info msg="Security is initialized successfully" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:44.909218457Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-16 17:59:44 +0000 UTC, renewal at: 2026-10-16 05:52:14 +0000 UTC" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:44.90929943Z" level=info msg="Running gRPC server on port 50001" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2
+time="2026-10-15T17:59:46.909202331Z" level=warning msg="Issuer credentials changed; reloading" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.90933305Z" level=info msg="Shutting down gRPC server" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2
+time="2026-10-15T17:59:46.909376981Z" level=info msg="Healthz server is shutting down" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.909448179Z" level=info msg="Adding validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.909458529Z" level=info msg="Using local file system for trust bundle storage" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:46.90972106Z" level=info msg="Root and issuer certs found: using credentials from store" instance=ec0b9c2a9d7a scope=dapr.sentry.ca type=log ver=1.18.2
+time="2026-10-15T17:59:46.909783882Z" level=info msg="CA certificate key pair ready" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.909808991Z" level=info msg="OIDC HTTP server is disabled" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.909833048Z" level=info msg="Using validator 'insecure'" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.909933934Z" level=info msg="Healthz server is listening on [::]:8080" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.910095659Z" level=info msg="Fetching initial identity" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:46.910232395Z" level=info msg="metrics server started on :9090/" instance=ec0b9c2a9d7a scope=dapr.sentry type=log ver=1.18.2
+time="2026-10-15T17:59:46.910676458Z" level=info msg="Security is initialized successfully" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:46.910731485Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-16 17:59:46 +0000 UTC, renewal at: 2026-10-16 05:52:16 +0000 UTC" instance=ec0b9c2a9d7a scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T17:59:46.910886336Z" level=info msg="Running gRPC server on port 50001" instance=ec0b9c2a9d7a scope=dapr.sentry.server type=log ver=1.18.2

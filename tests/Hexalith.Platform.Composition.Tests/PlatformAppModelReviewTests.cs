@@ -42,10 +42,16 @@ public sealed partial class PlatformAppModelTests
         {
             IDaprSidecarResource sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
             string[] components = sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>().Select(reference => reference.Component.Name).ToArray();
-            if (server.Name.StartsWith("memories", StringComparison.Ordinal))
+            if (server.Name == "memories")
             {
                 components.ShouldContain("llm");
                 components.ShouldContain("secretstore");
+                components.ShouldContain("access-telemetry-secrets");
+            }
+            else if (server.Name.StartsWith("memories-", StringComparison.Ordinal))
+            {
+                components.ShouldNotContain("llm");
+                components.ShouldNotContain("secretstore");
                 components.ShouldContain("access-telemetry-secrets");
             }
             else
@@ -64,9 +70,9 @@ public sealed partial class PlatformAppModelTests
         string[] Scopes(string file) => ((YamlSequenceNode)((YamlMappingNode)Yaml(File.ReadAllText(Path.Combine(rendered, file))).Documents[0].RootNode)
             .Children[new YamlScalarNode("scopes")]).Children.Select(node => node.ToString()).ToArray();
         string[] stateScopes = Scopes("statestore.yaml");
-        stateScopes.ShouldBe(["eventstore", "tenants", "eventstore-admin", "memories"]);
+        stateScopes.ShouldBe(["eventstore", "memories", "tenants", "tenants-api"]);
         stateScopes.ShouldNotContain("memories-access-telemetry");
-        Scopes("pubsub.yaml").ShouldBe(["eventstore", "sample", "memories", "tenants", "tenants-api"]);
+        Scopes("pubsub.yaml").ShouldBe(["eventstore", "memories", "tenants"]);
         Scopes("telemetry-state.yaml").ShouldBe(["memories-access-telemetry"]);
     }
 
@@ -171,6 +177,7 @@ public sealed partial class PlatformAppModelTests
             string path = Fixture(directory, "parties", tasks: false);
             JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
             document["modules"]![0]!["runtime"]!["dapr"]![0]!["capability"] = "workflow";
+            document["modules"]![0]!["integration"]!["topics"] = new JsonArray();
             File.WriteAllText(path, document.ToJsonString());
             Hexalith.Builds.Tooling.Manifest.PlatformManifestValidationResult validation = Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.Validate([path], TestContext.Current.CancellationToken);
             validation.IsValid.ShouldBeTrue(string.Join("; ", validation.Diagnostics.Select(diagnostic => diagnostic.Message)));
@@ -280,6 +287,7 @@ public sealed partial class PlatformAppModelTests
         foreach (PlatformServerBinding server in PlatformAppModel.Prepare(Options()))
         foreach (JsonElement capability in server.Module.Declaration.GetProperty("runtime").GetProperty("dapr").EnumerateArray())
         {
+            if (capability.TryGetProperty("servers", out var scopes) && !scopes.EnumerateArray().Any(scope => scope.GetString() == server.ServerId)) continue;
             string role = capability.GetProperty("role").GetString()!;
             string kind = capability.GetProperty("capability").GetString()!;
             string expected = names.TryGetValue(role, out string? special) ? special : kind switch
@@ -443,13 +451,13 @@ public sealed partial class PlatformAppModelTests
                 YamlMappingNode resolution = (YamlMappingNode)spec.Children[new YamlScalarNode("nameResolution")];
                 resolution.Children[new YamlScalarNode("component")].ToString().ShouldBe("sqlite");
                 ((YamlMappingNode)resolution.Children[new YamlScalarNode("configuration")]).Children[new YamlScalarNode("connectionString")].ToString().ShouldBe(Path.Combine(Path.GetDirectoryName(plan.DaprConfigPath)!, "name-resolution.db").Replace('\\', '/'));
-                if (server.Name is "eventstore" or "tenants") spec.Children.ShouldContainKey(new YamlScalarNode("accessControl"));
-                else sidecar.Config.ShouldBe(plan.DaprConfigPath);
+                spec.Children.ShouldContainKey(new YamlScalarNode("accessControl"));
+                Path.GetFileName(sidecar.Config).ShouldBe("accesscontrol." + server.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.AppId + ".yaml");
                 if (server.Name != "eventstore")
                     new[] { sidecar.DaprHttpPort!.Value, sidecar.DaprGrpcPort!.Value, sidecar.DaprInternalGrpcPort!.Value, sidecar.MetricsPort!.Value }.ShouldAllBe(port => !plan.Ports.ToList().Contains(port));
             }
             string runLabel = $"{CompositionEnvironment.ContainerRunLabel}={plan.RunId}";
-            foreach (ContainerResource container in builder.Resources.OfType<ContainerResource>().Where(resource => resource.Name is "redis" or "memories-vectors" or "memories-graph"))
+            foreach (ContainerResource container in builder.Resources.OfType<ContainerResource>().Where(resource => resource.Name is "redis" or "memories-vectors" or "memories-graph" or "dapr-sentry" or "dapr-placement-mtls" or "dapr-scheduler-mtls"))
             {
                 List<object> runArguments = [];
                 foreach (ContainerRuntimeArgsCallbackAnnotation callback in container.Annotations.OfType<ContainerRuntimeArgsCallbackAnnotation>())
@@ -481,6 +489,7 @@ public sealed partial class PlatformAppModelTests
             Dictionary<string, object> environment = new();
             foreach (EnvironmentCallbackAnnotation callback in api.Annotations.OfType<EnvironmentCallbackAnnotation>())
                 await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, api, environment, TestContext.Current.CancellationToken));
+            environment["EventStore__GatewayReadiness__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.ShouldBe(gatewayProject);
             environment["EventStore__Authentication__SigningKey"].ShouldBe(key);
             environment["EventStore__Authentication__Issuer"].ShouldBe(CompositionEnvironment.TokenIssuer);
             environment["EventStore__Authentication__Audience"].ShouldBe(CompositionEnvironment.TokenAudience);

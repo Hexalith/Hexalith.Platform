@@ -1,0 +1,397 @@
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+Hexalith.Platform.slnx:9: trailing whitespace.
++  <Project Path="src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" />
+Hexalith.Platform.slnx:10: trailing whitespace.
++  <Project Path="src/Hexalith.Platform.Secrets.Qualification.Enrollment/Hexalith.Platform.Secrets.Qualification.Enrollment.csproj" />
+Hexalith.Platform.slnx:11: trailing whitespace.
++  <Project Path="src/Hexalith.Platform.Secrets.Qualification.Executor/Hexalith.Platform.Secrets.Qualification.Executor.csproj" />
+Hexalith.Platform.slnx:12: trailing whitespace.
++  <Project Path="src/Hexalith.Platform.Secrets.Qualification.Observer/Hexalith.Platform.Secrets.Qualification.Observer.csproj" />
+Hexalith.Platform.slnx:13: trailing whitespace.
++  <Project Path="tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj" />
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:6: trailing whitespace.
++      Shouldly.ShouldAssertException : started.IsReady
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:7: trailing whitespace.
++          should be
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:8: trailing whitespace.
++      True
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:9: trailing whitespace.
++          but was
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:10: trailing whitespace.
++      False
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:11: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/builds-tenants-live-before-readiness-fix.txt:12: trailing whitespace.
++      Additional Info:
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:6: trailing whitespace.
++      Shouldly.ShouldAssertException : ready.ExitCode
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:7: trailing whitespace.
++          should be
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:8: trailing whitespace.
++      0
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:9: trailing whitespace.
++          but was
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:10: trailing whitespace.
++      18
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:11: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:12: trailing whitespace.
++      Additional Info:
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:14: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:36: trailing whitespace.
++      [tenants] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:37: trailing whitespace.
++      "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj", "--configuration", "Debug", 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:40: trailing whitespace.
++      domains (global-administrators [Aggregate: GlobalAdministratorsAggregate], tenants [Aggregate: TenantAggregate], global-administrators [Projection: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:41: trailing whitespace.
++      GlobalAdministratorProjection], tenant-index [Projection: TenantIndexProjection], tenants [Projection: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:42: trailing whitespace.
++      TenantProjection])","State":{"DomainCount":5,"DomainDetails":"global-administrators [Aggregate: GlobalAdministratorsAggregate], tenants [Aggregate: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:43: trailing whitespace.
++      TenantAggregate], global-administrators [Projection: GlobalAdministratorProjection], tenant-index [Projection: TenantIndexProjection], tenants [Projection: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:45: trailing whitespace.
++      [tenants] {"EventId":2007,"LogLevel":"Information","Category":"Hexalith.Tenants.Bootstrap.TenantBootstrapHostedService","Message":"Bootstrap skipped: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:46: trailing whitespace.
++      Tenants:BootstrapGlobalAdminEnabled is false","State":{"Message":"{OriginalFormat}=Bootstrap skipped: Tenants:BootstrapGlobalAdminEnabled is 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:48: trailing whitespace.
++      [tenants] {"EventId":11,"LogLevel":"Error","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting failed to 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:49: trailing whitespace.
++      start","Exception":"System.IO.IOException: Failed to bind to address http://127.0.0.1:12575: address already in use.\n ---\u003E 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:50: trailing whitespace.
++      Microsoft.AspNetCore.Connections.AddressInUseException: Address already in use\n ---\u003E System.Net.Sockets.SocketException (98): Address already in use\n   
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:51: trailing whitespace.
++      at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:52: trailing whitespace.
++      System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)\n   at System.Net.Sockets.Socket.Bind(EndPoint localEP)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:53: trailing whitespace.
++      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:54: trailing whitespace.
++      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()\n   --- End of inner exception stack trace ---\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:55: trailing whitespace.
++      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:56: trailing whitespace.
++      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:57: trailing whitespace.
++      Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:58: trailing whitespace.
++      EndpointConfig endpointConfig, CancellationToken cancellationToken)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:60: trailing whitespace.
++      End of stack trace from previous location ---\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:61: trailing whitespace.
++      AddressBindContext context, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:62: trailing whitespace.
++      Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:63: trailing whitespace.
++      cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:64: trailing whitespace.
++      cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:65: trailing whitespace.
++      CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:67: trailing whitespace.
++      Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:68: trailing whitespace.
++      Microsoft.Extensions.Hosting.Internal.Host.\u003CStartAsync\u003Eb__14_1(IHostedService service, CancellationToken token)\n   at 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:69: trailing whitespace.
++      Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable\u00601 services, CancellationToken token, Boolean concurrent, Boolean 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:82: trailing whitespace.
++      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:86: trailing whitespace.
++      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:89: trailing whitespace.
++      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:92: trailing whitespace.
++      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:95: trailing whitespace.
++      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:99: trailing whitespace.
++      [tenants]    at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:104: trailing whitespace.
++      [tenants]    at Program.<Main>$(String[] args) in 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-concurrent-owner-build.txt:107: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:6: trailing whitespace.
++      Shouldly.ShouldAssertException : 17
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:7: trailing whitespace.
++          should be
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:8: trailing whitespace.
++      0
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:9: trailing whitespace.
++          but was not
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:10: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:11: trailing whitespace.
++      Additional Info:
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:13: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:18: trailing whitespace.
++      [tenants-api] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:19: trailing whitespace.
++      "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj", "--configuration", "Debug", 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:21: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:22: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 2.2502ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:24: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:26: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:27: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:32: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:33: trailing whitespace.
++      HTTP response headers after 1.4335ms - 403","State":{"ElapsedMilliseconds":1.4335,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:35: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:36: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:37: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:39: trailing whitespace.
++      led":false,"Attempt":0,"ExecutionTimeMs":1.8447,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:40: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:42: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:43: trailing whitespace.
++      processing HTTP request after 2.0635ms - 403","State":{"ElapsedMilliseconds":2.0635,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:45: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:46: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 2.3369ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:48: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:50: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:51: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:56: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:57: trailing whitespace.
++      HTTP response headers after 1.1808ms - 403","State":{"ElapsedMilliseconds":1.1808,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:59: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:60: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:61: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:63: trailing whitespace.
++      led":false,"Attempt":0,"ExecutionTimeMs":1.3381,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:64: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:66: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:67: trailing whitespace.
++      processing HTTP request after 1.5749ms - 403","State":{"ElapsedMilliseconds":1.5749,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:69: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:70: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 1.6597ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:72: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:74: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:75: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:80: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:81: trailing whitespace.
++      HTTP response headers after 1.486ms - 403","State":{"ElapsedMilliseconds":1.486,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:83: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:84: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:85: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:87: trailing whitespace.
++      led":false,"Attempt":0,"ExecutionTimeMs":1.7538,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:88: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:90: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:91: trailing whitespace.
++      processing HTTP request after 2.4042ms - 403","State":{"ElapsedMilliseconds":2.4042,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:93: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:94: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 2.5178ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:96: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:98: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:99: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:104: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:105: trailing whitespace.
++      HTTP response headers after 1.6408ms - 403","State":{"ElapsedMilliseconds":1.6408,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:107: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:108: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:109: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:111: trailing whitespace.
++      led":false,"Attempt":0,"ExecutionTimeMs":1.8593,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:112: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:114: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:115: trailing whitespace.
++      processing HTTP request after 2.0712ms - 403","State":{"ElapsedMilliseconds":2.0712,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:117: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:118: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 2.2032ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:120: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:122: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:123: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:128: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:129: trailing whitespace.
++      HTTP response headers after 1.3846ms - 403","State":{"ElapsedMilliseconds":1.3846,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:131: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:132: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:133: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:135: trailing whitespace.
++      led":false,"Attempt":0,"ExecutionTimeMs":1.5423,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:136: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:138: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:139: trailing whitespace.
++      processing HTTP request after 1.729ms - 403","State":{"ElapsedMilliseconds":1.729,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:141: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:142: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 1.8067ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:144: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:146: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:147: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:152: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:153: trailing whitespace.
++      HTTP response headers after 3.3972ms - 403","State":{"ElapsedMilliseconds":3.3972,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:155: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:156: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:157: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:159: trailing whitespace.
++      led":false,"Attempt":0,"ExecutionTimeMs":4.0278,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:160: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:162: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:163: trailing whitespace.
++      processing HTTP request after 4.2232ms - 403","State":{"ElapsedMilliseconds":4.2232,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:165: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:166: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 4.8412ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:168: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:170: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:171: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:176: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:177: trailing whitespace.
++      HTTP response headers after 1.9035ms - 403","State":{"ElapsedMilliseconds":1.9035,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:179: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:180: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:181: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:183: trailing whitespace.
++      ed":false,"Attempt":0,"ExecutionTimeMs":2.093,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:184: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:186: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:187: trailing whitespace.
++      processing HTTP request after 2.2931ms - 403","State":{"ElapsedMilliseconds":2.2931,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:189: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:190: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 2.4041ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:192: trailing whitespace.
++      /ready returned 403.","{OriginalFormat}":"Health check {HealthCheckName} with status {HealthStatus} completed after {ElapsedMilliseconds}ms with message 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:194: trailing whitespace.
++      [tenants-api] {"EventId":100,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"Start 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:195: trailing whitespace.
++      processing HTTP request GET http://127.0.0.1:11887/ready","State":{"HttpMethod":"GET","Uri":"http://127.0.0.1:11887/ready","{OriginalFormat}":"Start processing 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:200: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.ClientHandler","Message":"Received 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:201: trailing whitespace.
++      HTTP response headers after 16.8814ms - 403","State":{"ElapsedMilliseconds":16.8814,"StatusCode":403,"{OriginalFormat}":"Received HTTP response headers after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:203: trailing whitespace.
++      [tenants-api] {"EventId":3,"LogLevel":"Information","Category":"Polly","Message":"Execution attempt. Source: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:204: trailing whitespace.
++      \u0027-standard/http://127.0.0.1:11887/Standard-Retry\u0027, Operation Key: \u0027\u0027, Result: \u0027403\u0027, Handled: \u0027False\u0027, Attempt: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:205: trailing whitespace.
++      \u00270\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:207: trailing whitespace.
++      dled":false,"Attempt":0,"ExecutionTimeMs":17.0459,"{OriginalFormat}":"Execution attempt. Source: \u0027{PipelineName}/{PipelineInstance}/{StrategyName}\u0027, 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:208: trailing whitespace.
++      Operation Key: \u0027{OperationKey}\u0027, Result: \u0027{Result}\u0027, Handled: \u0027{Handled}\u0027, Attempt: \u0027{Attempt}\u0027, Execution Time: 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:210: trailing whitespace.
++      [tenants-api] {"EventId":101,"LogLevel":"Information","Category":"System.Net.Http.HttpClient.eventstore-gateway-readiness.LogicalHandler","Message":"End 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:211: trailing whitespace.
++      processing HTTP request after 17.2456ms - 403","State":{"ElapsedMilliseconds":17.2456,"StatusCode":403,"{OriginalFormat}":"End processing HTTP request after 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:213: trailing whitespace.
++      [tenants-api] {"EventId":103,"LogLevel":"Error","Category":"Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService","Message":"Health check 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:214: trailing whitespace.
++      eventstore-gateway with status Unhealthy completed after 17.4841ms with message \u0027EventStore gateway /ready returned 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:215: trailing whitespace.
++      403.\u0027","State":{"HealthCheckName":"eventstore-gateway","HealthStatus":"Unhealthy","ElapsedMilliseconds":17.4841,"HealthCheckDescription":"EventStore 
+_bmad-output/implementation-artifacts/evidence/story-1-7/file-entry-live-before-readiness-fix.txt:218: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:10: trailing whitespace.
++      Shouldly.ShouldAssertException : build.ExitCode
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:11: trailing whitespace.
++          should be
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:12: trailing whitespace.
++      0
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:13: trailing whitespace.
++          but was
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:14: trailing whitespace.
++      1
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:15: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:16: trailing whitespace.
++      Additional Info:
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:38: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:40: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:44: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/platform-tests-overlapping-builds.txt:46: trailing whitespace.
++      
+_bmad-output/implementation-artifacts/evidence/story-1-7/prerequisites.txt:11: trailing whitespace.
++CLI version: 1.18.0 
+_bmad-output/implementation-artifacts/evidence/story-1-7/security/live-eventstore.txt:121: trailing whitespace.
++ℹ️  
+_bmad-output/implementation-artifacts/evidence/story-1-7/security/live-memories.txt:123: trailing whitespace.
++ℹ️  
+_bmad-output/implementation-artifacts/evidence/story-1-7/security/live-tenants.txt:121: trailing whitespace.
++ℹ️  
+eng/ext-secrets-1/README.md:120: new blank line at EOF.

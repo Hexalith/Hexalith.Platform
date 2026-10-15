@@ -1,0 +1,64 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+    Hexalith.Platform.Composition.Tests.OwnerOptionBindingTests.MemoriesProfileBindsAndValidatesActualOwnerOptionsAsync [FAIL]
+      Shouldly.ShouldAssertException : build.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+            Determining projects to restore...
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Telemetry/Hexalith.Memories.Telemetry.csproj (in 274 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj (in 275 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj (in 336 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj (in 348 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/Hexalith.Memories.AccessTelemetry.Contracts.csproj (in 335 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj (in 339 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 351 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/Hexalith.Memories.ServiceDefaults.csproj (in 354 ms).
+        Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj (in 362 ms).
+        Hexalith.Memories.AccessTelemetry.Contracts -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Memories.AccessTelemetry.Contracts.dll
+        Hexalith.Memories.Contracts -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Memories.Contracts.dll
+        Hexalith.Memories.EventStore -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Memories.EventStore.dll
+        Hexalith.Memories.Telemetry -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Memories.Telemetry.dll
+        Hexalith.Memories.ServiceDefaults -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Memories.ServiceDefaults.dll
+        Hexalith.Commons.UniqueIds -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Commons.UniqueIds.dll
+        Successfully created package '/tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Commons.UniqueIds.1.0.0.nupkg'.
+        Successfully created package '/tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.Commons.UniqueIds.1.0.0.snupkg'.
+        Hexalith.EventStore.Contracts -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.EventStore.Contracts.dll
+        Hexalith.EventStore.Client -> /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/owner-options/Hexalith.EventStore.Client.dll
+      /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Commons' at '/home/administrator/projects/hexalith/platform/references/Hexalith.Commons' duplicates restored package 'Hexalith.Commons.UniqueIds/2.30.1'. [/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj]
+      
+      Build FAILED.
+      
+      /tmp/platform-owner-options-2092b26c430a4772bb7f48fce245185a/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Commons' at '/home/administrator/projects/hexalith/platform/references/Hexalith.Commons' duplicates restored package 'Hexalith.Commons.UniqueIds/2.30.1'. [/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj]
+          0 Warning(s)
+          1 Error(s)
+      
+      Time Elapsed 00:00:56.74
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/OwnerOptionBindingTests.cs(32,0): at Hexalith.Platform.Composition.Tests.OwnerOptionBindingTests.MemoriesProfileBindsAndValidatesActualOwnerOptionsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/OwnerOptionBindingTests.cs(67,0): at Hexalith.Platform.Composition.Tests.OwnerOptionBindingTests.MemoriesProfileBindsAndValidatesActualOwnerOptionsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 110, Errors: 0, Failed: 1, Skipped: 4, Not Run: 0, Time: 64.397s

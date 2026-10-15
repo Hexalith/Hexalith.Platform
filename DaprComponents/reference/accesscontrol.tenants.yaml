@@ -1,25 +1,14 @@
-# DAPR Access Control Configuration for the tenants sidecar (D4, FR34, NFR15)
-# ============================================================================
-# This Configuration CRD is loaded ONLY by the tenants sidecar and therefore
-# governs which CALLERS may invoke the tenants domain service through Dapr.
-#
-# Allowed callers in the local topology:
-#   - eventstore: actor host / domain service invoker. Uses POST-only Dapr service
-#     invocation to process domain commands.
+# Value-free local policy template. Platform renders explicit per-receiver grants from v2 declarations.
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: accesscontrol-tenants
 spec:
+  mtls:
+    enabled: true
+    sentryAddress: localhost:50001
+    controlPlaneTrustDomain: localhost
   accessControl:
-    defaultAction: allow  # Allow-by-default in self-hosted mode; change to deny with mTLS
-    trustDomain: "public"
-    policies:
-      - appId: eventstore
-        defaultAction: deny
-        trustDomain: "public"
-        namespace: "default"
-        operations:
-          - name: /**
-            httpVerb: ['POST']
-            action: allow
+    defaultAction: deny
+    trustDomain: public
+    policies: []

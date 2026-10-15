@@ -1,0 +1,23 @@
+$ dotnet --version
+10.0.401
+
+$ docker version --format {{.Server.Version}}
+29.8.2
+
+$ /tmp/story1-7-aspire-cli/aspire --version
+13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8
+
+$ /tmp/story-1-6-builds-toolchain/tools/dapr --version
+CLI version: 1.18.0 
+Runtime version: 1.18.7
+
+$ /tmp/story-1-6-builds-toolchain/.dapr/bin/daprd --version
+1.18.2
+
+$ docker image inspect daprio/sentry:1.18.2 --format {{json .RepoDigests}}
+["daprio/sentry@sha256:542ebe822d18d9ee1019d2b20960e2fbd533235bc0140e8c2a550f09fdd0a9a7"]
+
+$ docker image inspect daprio/dapr:1.18.2 --format {{json .RepoDigests}}
+["daprio/dapr@sha256:9ec89d30076155d2376c06f98028b6920f31fac5df0eb40e0b8b94cc88dd5b59"]
+
+Dapr CLI default-home runtime is informational; every live run passed explicit pinned runtime HOME.

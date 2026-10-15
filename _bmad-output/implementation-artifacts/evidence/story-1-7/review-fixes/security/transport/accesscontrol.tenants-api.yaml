@@ -1,0 +1,1 @@
+{"apiVersion": "dapr.io/v1alpha1", "kind": "Configuration", "metadata": {"name": "platform-tenants-api"}, "spec": {"mtls": {"enabled": true, "controlPlaneTrustDomain": "localhost", "sentryAddress": "localhost:42005"}, "features": [{"name": "HotReload", "enabled": false}], "accessControl": {"defaultAction": "deny", "trustDomain": "public", "policies": []}}}

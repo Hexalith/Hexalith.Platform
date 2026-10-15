@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Hexalith.Builds.Tooling.Manifest;
+using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Shouldly;
 
@@ -128,8 +129,16 @@ public sealed class TimesheetsEnrollmentTests
         listeners.GetProperty("configuration").GetProperty("Timesheets:InternalSurface:AllowOnAnyPort").GetBoolean().ShouldBeFalse();
         plan.GetProperty("componentBindings")[0].GetProperty("configurationKey").ValueKind.ShouldBe(JsonValueKind.Null);
         plan.GetProperty("publicRouteAllowlist").EnumerateArray().ShouldAllBe(route => route.GetProperty("path").GetString() != "/");
-        string hash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(CandidatePath)));
-        plan.GetProperty("declaration").GetProperty("sha256").GetString().ShouldBe(hash);
+        string historical = Path.Combine(Root, "eng", "timesheets-deployment", "history", "hexalith.module-manifest.v2.before-story-1-7.json");
+        string historicalHash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(historical)));
+        plan.GetProperty("declaration").GetProperty("sha256").GetString().ShouldBe(historicalHash);
+        plan.GetProperty("platform").GetProperty("inputsSha256").GetProperty("eng/timesheets-deployment/hexalith.module-manifest.v2.json").GetString().ShouldBe(historicalHash);
+        string currentHash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(CandidatePath)));
+        currentHash.ShouldNotBe(historicalHash, "the old offline plan predates the explicit local invocation bindings");
+        CompositionRunPlan oldSelection = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), Path.GetTempPath(), Path.GetTempPath(), CompositionPortAllocator.Allocate(1), [], [],
+            new SourceMapping(WorkspaceMode.Source, Root, "Hexalith.Platform", [], false), [CandidatePath], "timesheets", typeof(PlatformAppModel).Assembly.Location)
+            with { PlatformDeclarationHash = historicalHash };
+        Should.Throw<InvalidDataException>(() => PlatformTimesheetsBinding.SelectRun(oldSelection, Root, false)).Message.ShouldContain("PlatformDeclarationHash");
         plan.GetProperty("prerequisites").EnumerateArray().ShouldAllBe(p => p.GetProperty("status").GetString() == "missing" || p.GetProperty("status").GetString() == "blocked");
     }
 

@@ -1,0 +1,16 @@
+# CommunityToolkit.Aspire.Hosting.Dapr.DaprSidecarOptions
+
+Options for configuring a Dapr sidecar.
+
+Package: CommunityToolkit.Aspire.Hosting.Dapr | Version: 13.6.0-preview.1.261001-0243 | TFM: net10.0 | Library: lib/net10.0/CommunityToolkit.Aspire.Hosting.Dapr.dll | Source: NuGet
+
+## Properties
+
+| Name | Digest | Signature | Description |
+| ---- | ------ | --------- | ----------- |
+| ResourcesPaths | `d7fbfc01e0` | `public System.Collections.Immutable.IImmutableSet<string> ResourcesPaths { get; set; }` | Gets or sets the paths of Dapr sidecar resources (i.e. resources). |
+
+Tips:
+member DaprSidecarOptions --package CommunityToolkit.Aspire.Hosting.Dapr Equals:1           # view member detail (source, IL)
+member DaprSidecarOptions --package CommunityToolkit.Aspire.Hosting.Dapr -S "Member Index"  # full selector/identity table
+type DaprSidecarOptions --package CommunityToolkit.Aspire.Hosting.Dapr --tree               # view type tree

@@ -25,10 +25,7 @@ are added.
 `Platform:SourceMapping:Path` and
 `Platform:SourceMapping:Hash` select the verified source mapping, or the file entry
 uses `HEXALITH_SOURCE_MAPPING_PATH` and `HEXALITH_SOURCE_MAPPING_HASH`. The optional
-`Platform:EventStoreSeedProject` names the package gateway seed project. The file
-entry requires a Development host environment and a local `dapr init` placement
-and scheduler. Signed Builds plans supply their own run-scoped placement and
-scheduler.
+`Platform:EventStoreSeedProject` names the package gateway seed project. The file entry requires a Development host environment. Platform supplies local mTLS Sentry, placement and scheduler at Builds catalog pins; sidecars use the same control-plane trust domain (`localhost`) and namespace (`default`); ACLs match self-hosted workload identities in `public`. Signed Builds plans retain runner lifecycle ownership and use the same authenticated control plane.
 
 Builds v2 plans carry their declaration selection and content hash, immutable mapping and the model
 assembly built from the pinned Platform checkout. The Builds AppHost loads that
@@ -55,17 +52,42 @@ Docker/Dapr file-entry smoke. Run
 `eng/verify-platform-pins.py` names both versions when the SDK, EventStore.Aspire
 or Dapr toolkit file pin differs from Builds.
 
+For reproducible file-entry qualification, also set `HEXALITH_PLATFORM_PREBUILD_SOURCE=1`.
+The gated test resolves one verified source mapping, builds each selected owner project
+sequentially, then starts the real file entry with that mapping. Retain the build output
+with `HEXALITH_PLATFORM_SOURCE_PREBUILD_LOG`. Cold default startup can contend for shared
+owner build outputs when several project launches compile the same reference concurrently;
+the sequential-prebuild result does not qualify that cold startup path.
+
 Set `HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1` and `HEXALITH_DAPR_HOME` to a
-catalog-pinned Dapr installation, then select `-class '*BuildsSourceStartupTests'`
+catalog-pinned Dapr installation (CLI and runtime). `HEXALITH_ASPIRE_CLI` may name an isolated catalog-matching Aspire executable. Then select `-class '*BuildsSourceStartupTests'`
 to exercise the real Builds engine for EventStore and the full Tenants domain
 environment. These tests check the single resolved mapping, selected resources,
-run-scoped Dapr invocation readiness and complete teardown.
+declared application readiness, authenticated sidecar outbound readiness and complete teardown. The runner grants no invocation access to readiness routes. The separate gated `LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync` fixture proves allowed/denied invocation and scoped subscription/dead-letter delivery.
 
-Shared local Dapr components retain their existing literal names under
-`DaprComponents/reference`. EventStore's rate-limit configuration uses its
-`configstore` component; Memories' secret and conversation components are attached
-only to Memories sidecars. Component rebinding belongs to Story 1.7; extension
-packages and startup deadline policy remain outside this change.
+Tenants API dependency readiness uses the resolved gateway HTTP health endpoint through
+`EventStore:GatewayReadiness:BaseAddress`. It still probes the gateway's `/ready` result;
+this requires no invocation permission. Without that option, isolated Tenants retains
+its existing Dapr readiness path.
+
+Local Dapr conventions are ratified in architecture AD-9. The canonical hosting set is
+`Hexalith.EventStore.Aspire`, `Hexalith.EventStore.ServiceDefaults` and
+`CommunityToolkit.Aspire.Hosting.Dapr`; Commons provides supporting primitives.
+New hosting helpers must fit this recorded set, and Builds owns every version.
+Evaluate admission with `python3 eng/verify-platform-pins.py --hosting-helper PACKAGE`.
+Optional v2 capability `servers` are owner server IDs. An explicit topic
+`subscription` supplies its `server` and delivery `route`; optional `topic` names the
+physical Dapr topic or pattern, defaulting to the inventory name. `deadLetter.topic`
+references a same-role inventory name; its physical target must be concrete, unique
+and distinct from the source. A receiver, resolved pubsub component and physical
+topic identify one subscription; duplicate identities are refused. Publisher
+inventories create no subscriptions. Interface `invocationRules` supply `caller`, `path` and
+`verbs`; missing rules grant no invocation. Platform resolves names once, injects
+actual owner configuration keys, scopes components to selected consumers, renders
+one deny-default mTLS policy per receiver and disables programmatic subscription
+discovery in declarative mode. The actual CLI resource paths include a dedicated
+subscription directory, with the receiver scopes retained. Shared state readers and isolated telemetry state
+are preserved. Hosted policy and concurrent-run isolation remain later work.
 
 The shared model applies allocated Dapr listener ports and server-scoped tokens to
 the actual generated CLI processes. Gateway configuration is rendered separately
@@ -73,3 +95,13 @@ from owner files so only selected server registrations remain. A new local Redis
 store requires EventStore's existing operator writer-protocol activation: the
 file model runs that bounded operation concurrently with startup, while signed
 Builds plans retain the runner's operation. Neither path bypasses `/ready`.
+
+The reference owner declarations explicitly retain Memories `memories-events` delivery
+at `/events/ingest` and EventStore projection notification pattern
+`*.*.projection-changed` at `/projections/changed`. The EventStore gateway grants
+`tenants-api` POST access to `/api/v1/commands` and `/api/v1/queries`, as used by the
+owner gateway client. It grants no readiness invocation permission. The existing
+projection pattern does not establish Redis wildcard fan-out: the pinned Redis
+component reads a stream using the requested topic value, so concrete projection
+notification delivery is a separate provider limitation, not a qualified result of
+this story's rendering or startup tests.

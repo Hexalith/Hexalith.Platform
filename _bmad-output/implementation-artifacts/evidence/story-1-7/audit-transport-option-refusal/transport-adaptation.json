@@ -1,0 +1,55 @@
+{
+  "purpose": "Fixture-only Sentry transport port; production fixed-port behavior and ACL/subscription content are unchanged.",
+  "hostPort": 37021,
+  "containerPort": 50001,
+  "configurations": [
+    {
+      "file": "accesscontrol.eventstore.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:37021",
+      "originalSha256": "c561891c6786f0936e626f6da803ff743e771c6401fda49c83190645c6c66719",
+      "adaptedSha256": "fc372d48f61b415004fbf4ad2423a180cd684cc43a996febeb9d60d76d9955a0"
+    },
+    {
+      "file": "accesscontrol.tenants.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:37021",
+      "originalSha256": "40af91893032544250bb27a0b3320aa94a5d1995c9df6136efb57fbfccb00166",
+      "adaptedSha256": "394da665f0594c4c2cb25a9d6da8f5c8971e6c5ac019970582c200106b3a01fa"
+    },
+    {
+      "file": "accesscontrol.memories.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:37021",
+      "originalSha256": "97eb62481c1da49febfa8391abfdcebbe7e8484002fb1aa68a661e3d48877046",
+      "adaptedSha256": "c14253440255ba26d6999317f02396bdb9d73e6b3abd2c3d1363c4643388c335"
+    },
+    {
+      "file": "accesscontrol.tenants-api.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:37021",
+      "originalSha256": "d11b61971ad1f0a2ec1348d3f3a2fa4109666f9ad40346a31f53e73e2240b351",
+      "adaptedSha256": "273ee9610f100fbb2c10d9da65951a95731a18d965e0de85f82d4f6a61449bf3"
+    },
+    {
+      "file": "accesscontrol.memories-access-telemetry-clock.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:37021",
+      "originalSha256": "869c24b6e80cb1db702a8e4e00af165a22782efcb4dbbb15c190416d61d2eeb6",
+      "adaptedSha256": "7402d379b955bf15a1be034d8e29671f0af25c8f25a19c8cd0c751e0de417a71"
+    },
+    {
+      "file": "accesscontrol.memories-access-telemetry.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:37021",
+      "originalSha256": "6c8fed354a783f3c5263e8e954a28ec12135ab09c3dd0559834db3ef8ce7a24d",
+      "adaptedSha256": "f8a452c6c3aeb7e20d1bee9f6092762f100407a0ba5fdced714c04073644c828"
+    }
+  ]
+}

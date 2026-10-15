@@ -1,0 +1,1 @@
+{"apiVersion":"dapr.io/v2alpha1","kind":"Subscription","metadata":{"name":"eventstore-gateway-projection-notifications"},"spec":{"pubsubname":"pubsub","topic":"*.*.projection-changed","routes":{"default":"/projections/changed"}},"scopes":["eventstore"]}

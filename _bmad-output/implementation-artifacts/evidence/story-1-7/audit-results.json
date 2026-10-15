@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-15",
+  "phase": "post-parent-audit focused verification",
+  "tests": {
+    "cli-package-tests": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.63
+    },
+    "platform-tests": {
+      "total": 118,
+      "passed": 114,
+      "failed": 0,
+      "skipped": 4,
+      "seconds": 29.201
+    },
+    "conflict-tests": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.303
+    },
+    "builds-tests": {
+      "total": 138,
+      "passed": 138,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.243
+    },
+    "security-live": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.37
+    },
+    "builds-tenants-live": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 122.029
+    }
+  },
+  "declarationChecks": 41,
+  "reusedOwnerRegressionResults": {
+    "domainservice-tests": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.323
+    },
+    "aspire-owner-tests": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.296
+    },
+    "server-owner-tests": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.227
+    },
+    "memories-eventstore-tests": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.201
+    },
+    "memories-server-tests": {
+      "total": 83,
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.45
+    },
+    "tenants-owner-tests": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.77
+    }
+  },
+  "reuseProvenance": "Initial handoff logs and pre-audit-results.json; affected owner source/test implementations unchanged by parent-audit corrections. Current owner manifests and Builds validator were separately rebuilt/validated.",
+  "securityLaunch": "Direct pinned daprd 1.18.2, fixture-only allocated Sentry transport; not Dapr CLI launch. Original/adapted resources, hashes, runtime path and arguments retained.",
+  "cliResourceEvidence": "Actual Aspire lifecycle-generated CLI arguments and scoped Subscription contents asserted by executed in-process test; separate from runtime fixture.",
+  "projectionObservation": {
+    "concreteTopic": "fixture-tenant.fixture-view.projection-changed",
+    "publishedStatus": 204,
+    "callbackObservedWithinSeconds": 2,
+    "callbackObserved": false,
+    "qualification": "Existing Redis wildcard fan-out is not qualified; the source-established pattern is preserved."
+  },
+  "sourceSmoke": "Current-code six-server real Builds source smoke; requires final readiness and owned workspace/scheduler-data cleanup assertions.",
+  "otherSourceSmokes": "Initial successful technical EventStore and sequential-prebuild file-entry results retained as pre-audit provenance; not rerun after parent audit.",
+  "testOnlyFollowup": "After the 118-test ordinary suite, two conflict cases were added and the complete 12-case invalid-binding theory executed. Production code unchanged; ordinary suite not repeated.",
+  "whitespaceBoundary": "Root Story source/docs excludes retained raw evidence and concurrent unrelated slnx/ext-secrets edits. Global whitespace refusal retained separately; no raw bytes or unrelated files rewritten."
+}

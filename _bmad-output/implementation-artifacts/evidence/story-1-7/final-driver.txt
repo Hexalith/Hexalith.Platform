@@ -1,0 +1,43 @@
+START security-live
+{"check": "security-live", "exitCode": 0, "seconds": 4.536, "log": "/tmp/story1-7-security-live.log"}
+START builds-eventstore-live
+{"check": "builds-eventstore-live", "exitCode": 0, "seconds": 53.954, "log": "/tmp/story1-7-builds-eventstore-live.log"}
+START builds-build
+{"check": "builds-build", "exitCode": 0, "seconds": 15.316, "log": "/tmp/story1-7-builds-build.log"}
+START builds-tests
+{"check": "builds-tests", "exitCode": 0, "seconds": 3.54, "log": "/tmp/story1-7-builds-tests.log"}
+START memories-eventstore-build
+{"check": "memories-eventstore-build", "exitCode": 0, "seconds": 2.393, "log": "/tmp/story1-7-memories-eventstore-build.log"}
+START memories-eventstore-tests
+{"check": "memories-eventstore-tests", "exitCode": 0, "seconds": 0.376, "log": "/tmp/story1-7-memories-eventstore-tests.log"}
+START memories-server-build
+{"check": "memories-server-build", "exitCode": 0, "seconds": 7.093, "log": "/tmp/story1-7-memories-server-build.log"}
+START memories-server-tests
+{"check": "memories-server-tests", "exitCode": 0, "seconds": 0.795, "log": "/tmp/story1-7-memories-server-tests.log"}
+START solution-build
+{"check": "solution-build", "exitCode": 0, "seconds": 17.787, "log": "/tmp/story1-7-solution-build.log"}
+START build
+{"check": "build", "exitCode": 0, "seconds": 13.702, "log": "/tmp/story1-7-build.log"}
+START platform-tests
+{"check": "platform-tests", "exitCode": 0, "seconds": 32.621, "log": "/tmp/story1-7-platform-tests.log"}
+START local-scaffold
+{"check": "local-scaffold", "exitCode": 0, "seconds": 9.945, "log": "/tmp/story1-7-local-scaffold.log"}
+START declarations
+{"check": "declarations", "exitCode": 0, "seconds": 34.39, "log": "/tmp/story1-7-declarations.log"}
+START architecture-lint
+{"check": "architecture-lint", "exitCode": 0, "seconds": 0.056, "log": "/tmp/story1-7-architecture-lint.log"}
+START python-compile
+{"check": "python-compile", "exitCode": 0, "seconds": 0.041, "log": "/tmp/story1-7-python-compile.log"}
+START diff-check-
+{"check": "diff-check-", "exitCode": 0, "seconds": 0.098, "log": "/tmp/story1-7-diff-check-.log"}
+START diff-check-Hexalith.Builds
+{"check": "diff-check-Hexalith.Builds", "exitCode": 0, "seconds": 0.006, "log": "/tmp/story1-7-diff-check-Hexalith.Builds.log"}
+START diff-check-Hexalith.EventStore
+{"check": "diff-check-Hexalith.EventStore", "exitCode": 0, "seconds": 0.01, "log": "/tmp/story1-7-diff-check-Hexalith.EventStore.log"}
+START diff-check-Hexalith.Memories
+{"check": "diff-check-Hexalith.Memories", "exitCode": 0, "seconds": 0.007, "log": "/tmp/story1-7-diff-check-Hexalith.Memories.log"}
+START diff-check-Hexalith.Tenants
+{"check": "diff-check-Hexalith.Tenants", "exitCode": 0, "seconds": 0.005, "log": "/tmp/story1-7-diff-check-Hexalith.Tenants.log"}
+START cleanup
+{"check": "cleanup", "exitCode": 0, "seconds": 0.061, "log": "/tmp/story1-7-cleanup.log"}
+ALL FINAL SEQUENTIAL CHECKS PASSED

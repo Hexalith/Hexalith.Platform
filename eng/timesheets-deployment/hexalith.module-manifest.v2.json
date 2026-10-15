@@ -133,6 +133,15 @@
                 "kind": "command",
                 "authorizationPolicy": "authenticated-workload-or-qualified-operator"
               }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/process",
+                "verbs": [
+                  "POST"
+                ]
+              }
             ]
           },
           {
@@ -154,6 +163,15 @@
                 "name": "replay-state",
                 "kind": "administration",
                 "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/replay-state",
+                "verbs": [
+                  "POST"
+                ]
               }
             ]
           },
@@ -177,6 +195,15 @@
                 "kind": "query",
                 "authorizationPolicy": "authenticated-workload-or-qualified-operator"
               }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/query",
+                "verbs": [
+                  "POST"
+                ]
+              }
             ]
           },
           {
@@ -198,6 +225,15 @@
                 "name": "project",
                 "kind": "command",
                 "authorizationPolicy": "authenticated-workload-or-qualified-operator"
+              }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/project",
+                "verbs": [
+                  "POST"
+                ]
               }
             ]
           },

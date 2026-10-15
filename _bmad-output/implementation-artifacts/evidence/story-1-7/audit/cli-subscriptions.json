@@ -1,0 +1,74 @@
+[
+  {
+    "ResourceId": "eventstore",
+    "resourcePathArguments": [
+      "--resources-path",
+      "/tmp/hexalith-platform/6aa5ba2ec240475ba21bc41cf74b9640/subscriptions",
+      "--resources-path"
+    ],
+    "subscriptions": {
+      "subscription.eventstore-gateway-projection-notifications.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022eventstore-gateway-projection-notifications\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022*.*.projection-changed\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/projections/changed\u0022}},\u0022scopes\u0022:[\u0022eventstore\u0022]}",
+      "subscription.memories-server-memories-events.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022memories-server-memories-events\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022memories-events\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/events/ingest\u0022}},\u0022scopes\u0022:[\u0022memories\u0022]}"
+    }
+  },
+  {
+    "ResourceId": "tenants",
+    "resourcePathArguments": [
+      "--resources-path",
+      "/tmp/hexalith-platform/6aa5ba2ec240475ba21bc41cf74b9640/subscriptions",
+      "--resources-path"
+    ],
+    "subscriptions": {
+      "subscription.eventstore-gateway-projection-notifications.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022eventstore-gateway-projection-notifications\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022*.*.projection-changed\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/projections/changed\u0022}},\u0022scopes\u0022:[\u0022eventstore\u0022]}",
+      "subscription.memories-server-memories-events.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022memories-server-memories-events\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022memories-events\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/events/ingest\u0022}},\u0022scopes\u0022:[\u0022memories\u0022]}"
+    }
+  },
+  {
+    "ResourceId": "tenants-api",
+    "resourcePathArguments": [
+      "--resources-path",
+      "/tmp/hexalith-platform/6aa5ba2ec240475ba21bc41cf74b9640/subscriptions",
+      "--resources-path"
+    ],
+    "subscriptions": {
+      "subscription.eventstore-gateway-projection-notifications.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022eventstore-gateway-projection-notifications\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022*.*.projection-changed\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/projections/changed\u0022}},\u0022scopes\u0022:[\u0022eventstore\u0022]}",
+      "subscription.memories-server-memories-events.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022memories-server-memories-events\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022memories-events\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/events/ingest\u0022}},\u0022scopes\u0022:[\u0022memories\u0022]}"
+    }
+  },
+  {
+    "ResourceId": "memories",
+    "resourcePathArguments": [
+      "--resources-path",
+      "/tmp/hexalith-platform/6aa5ba2ec240475ba21bc41cf74b9640/subscriptions",
+      "--resources-path"
+    ],
+    "subscriptions": {
+      "subscription.eventstore-gateway-projection-notifications.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022eventstore-gateway-projection-notifications\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022*.*.projection-changed\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/projections/changed\u0022}},\u0022scopes\u0022:[\u0022eventstore\u0022]}",
+      "subscription.memories-server-memories-events.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022memories-server-memories-events\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022memories-events\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/events/ingest\u0022}},\u0022scopes\u0022:[\u0022memories\u0022]}"
+    }
+  },
+  {
+    "ResourceId": "memories-access-telemetry-clock",
+    "resourcePathArguments": [
+      "--resources-path",
+      "/tmp/hexalith-platform/6aa5ba2ec240475ba21bc41cf74b9640/subscriptions",
+      "--resources-path"
+    ],
+    "subscriptions": {
+      "subscription.eventstore-gateway-projection-notifications.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022eventstore-gateway-projection-notifications\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022*.*.projection-changed\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/projections/changed\u0022}},\u0022scopes\u0022:[\u0022eventstore\u0022]}",
+      "subscription.memories-server-memories-events.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022memories-server-memories-events\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022memories-events\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/events/ingest\u0022}},\u0022scopes\u0022:[\u0022memories\u0022]}"
+    }
+  },
+  {
+    "ResourceId": "memories-access-telemetry",
+    "resourcePathArguments": [
+      "--resources-path",
+      "/tmp/hexalith-platform/6aa5ba2ec240475ba21bc41cf74b9640/subscriptions",
+      "--resources-path"
+    ],
+    "subscriptions": {
+      "subscription.eventstore-gateway-projection-notifications.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022eventstore-gateway-projection-notifications\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022*.*.projection-changed\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/projections/changed\u0022}},\u0022scopes\u0022:[\u0022eventstore\u0022]}",
+      "subscription.memories-server-memories-events.yaml": "{\u0022apiVersion\u0022:\u0022dapr.io/v2alpha1\u0022,\u0022kind\u0022:\u0022Subscription\u0022,\u0022metadata\u0022:{\u0022name\u0022:\u0022memories-server-memories-events\u0022},\u0022spec\u0022:{\u0022pubsubname\u0022:\u0022pubsub\u0022,\u0022topic\u0022:\u0022memories-events\u0022,\u0022routes\u0022:{\u0022default\u0022:\u0022/events/ingest\u0022}},\u0022scopes\u0022:[\u0022memories\u0022]}"
+    }
+  }
+]

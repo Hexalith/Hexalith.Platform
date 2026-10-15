@@ -35,8 +35,9 @@ public static class PlatformServerBindings
     };
 
     /// <summary>Resolves all enabled servers, including their declared readiness and tasks.</summary>
-    public static IReadOnlyList<PlatformServerBinding> Resolve(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations)
+    public static IReadOnlyList<PlatformServerBinding> Resolve(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, PlatformDaprBindings? dapr = null)
     {
+        dapr ??= PlatformDaprBindings.Resolve(declarations);
         List<PlatformServerBinding> result = [];
         Dictionary<string, string> secretValues = new(StringComparer.Ordinal);
         foreach (PlatformModuleDeclaration module in declarations)
@@ -80,6 +81,8 @@ public static class PlatformServerBindings
                 JsonElement readiness = probes[0];
                 if (readiness.GetProperty("kind").GetString() != "http") throw Failure(module, identity, "lifecycle.readiness", "this Platform model requires a declared HTTP readiness check");
                 Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
+                foreach (var pair in dapr.Environment(id, serverId)) environment[pair.Key] = pair.Value;
+                environment["Dapr__DeclarativeSubscriptions"] = "true";
                 JsonElement[] tasks = module.Declaration.GetProperty("lifecycle").GetProperty("tasks").EnumerateArray().Select(t => t.Clone()).ToArray();
                 foreach (JsonElement task in tasks)
                 {

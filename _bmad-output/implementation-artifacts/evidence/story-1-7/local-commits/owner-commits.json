@@ -1,0 +1,62 @@
+[
+  {
+    "repository": "Hexalith.Builds",
+    "commit": "5636b7f36e28e2731111b049f974b1fa951d1c36",
+    "files": [
+      "schemas/hexalith.module-manifest.v2.json",
+      "src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs",
+      "src/hosts/Hexalith.Builds.Module.AppHost/RunTopology.cs",
+      "src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj",
+      "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs",
+      "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs",
+      "test/Hexalith.Builds.Module.Tests/PlatformManifestValidationTests.cs",
+      "test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceAppHostTests.cs"
+    ]
+  },
+  {
+    "repository": "Hexalith.EventStore",
+    "commit": "973a000d3da571b8c5dad90f653aca12ce7d9354",
+    "files": [
+      "module/hexalith.module-manifest.v2.json",
+      "src/Hexalith.EventStore.Aspire/HexalithEventStoreExtensions.cs",
+      "src/Hexalith.EventStore.DomainService/EventStoreDomainEventsEndpointExtensions.cs",
+      "src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs",
+      "src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+      "src/Hexalith.EventStore.Server/Configuration/ProjectionChangeNotifierOptions.cs",
+      "src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs",
+      "src/Hexalith.EventStore/Controllers/ProjectionNotificationController.cs",
+      "src/Hexalith.EventStore/Controllers/ProjectionNotificationTopicAttribute.cs",
+      "src/Hexalith.EventStore/Program.cs",
+      "tests/Hexalith.EventStore.AppHost.Tests/Configuration/DomainModuleAspireExtensionTests.cs",
+      "tests/Hexalith.EventStore.DomainService.Tests/EventStoreDomainEventsEndpointExtensionsTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Configuration/EventStoreWorkloadRateLimitTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Configuration/ProjectionChangeNotifierOptionsTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Controllers/ProjectionSubscriptionMetadataTests.cs"
+    ]
+  },
+  {
+    "repository": "Hexalith.Memories",
+    "commit": "886fade1433d5b12d8a9c24048085b4e45938bad",
+    "files": [
+      "module/hexalith.module-manifest.v2.json",
+      "src/Hexalith.Memories.EventStore/EnvironmentTopicAttribute.cs",
+      "src/Hexalith.Memories.EventStore/EventIngestionController.cs",
+      "src/Hexalith.Memories.Server/Ingestion/EmbeddingClient.cs",
+      "src/Hexalith.Memories.Server/Ingestion/EmbeddingSecretStore.cs",
+      "src/Hexalith.Memories.Server/Program.cs",
+      "tests/Hexalith.Memories.EventStore.Tests/ResolveConfiguredTopicTests.cs",
+      "tests/Hexalith.Memories.Server.Tests/Ingestion/EmbeddingClientConfigTests.cs"
+    ]
+  },
+  {
+    "repository": "Hexalith.Tenants",
+    "commit": "a0c087a3a2010b923d26128ccb558272d8b408f0",
+    "files": [
+      "module/hexalith.module-manifest.v2.json",
+      "src/Hexalith.Tenants.Api/Program.cs",
+      "src/Hexalith.Tenants.Api/Services/EventStoreGatewayReadinessHealthCheck.cs",
+      "src/Hexalith.Tenants/Program.cs",
+      "tests/Hexalith.Tenants.IntegrationTests/TenantsApiReadinessTests.cs"
+    ]
+  }
+]

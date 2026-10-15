@@ -1,0 +1,1 @@
+{"apiVersion":"dapr.io/v2alpha1","kind":"Subscription","metadata":{"name":"memories-server-memories-events"},"spec":{"pubsubname":"pubsub","topic":"memories-events","routes":{"default":"/events/ingest"},"deadLetterTopic":"failed-events"},"scopes":["memories"]}

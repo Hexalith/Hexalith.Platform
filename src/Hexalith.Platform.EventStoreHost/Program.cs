@@ -7,6 +7,8 @@ using Hexalith.EventStore.OpenApi;
 using Hexalith.EventStore.Server.Configuration;
 using Hexalith.EventStore.ServiceDefaults;
 using Hexalith.EventStore.SignalRHub;
+using Dapr;
+using Microsoft.Extensions.Options;
 
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
@@ -43,10 +45,19 @@ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
     });
 }
 
-app.MapControllers();
+bool declarativeSubscriptions = app.Configuration.GetValue<bool>("Dapr:DeclarativeSubscriptions");
+app.MapControllers().Add(endpoint =>
+{
+    for (int index = endpoint.Metadata.Count - 1; index >= 0; index--)
+    {
+        if (endpoint.Metadata[index] is not ITopicMetadata { Name: "*.*.projection-changed" } topic) continue;
+        if (declarativeSubscriptions) endpoint.Metadata.RemoveAt(index);
+        else endpoint.Metadata[index] = new TopicAttribute(app.Services.GetRequiredService<IOptions<ProjectionChangeNotifierOptions>>().Value.PubSubName, topic.Name);
+    }
+});
 app.MapErrorReferences();
 app.MapApiVersionFallback();
-app.MapSubscribeHandler();
+if (!declarativeSubscriptions) app.MapSubscribeHandler();
 app.MapActorsHandlers();
 app.MapApplicationRuntimeProofEndpoints();
 

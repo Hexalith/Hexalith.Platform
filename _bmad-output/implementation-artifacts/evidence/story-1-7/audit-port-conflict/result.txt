@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 74, in <module>
+    subprocess.run(['docker', 'run', '-d', '--name', sentry_name, '-p', '127.0.0.1:50001:50001', '--user', f'{os.getuid()}:{os.getgid()}', '-v', f'{credentials}:/credentials', '-v', f'{fixtures / "accesscontrol.eventstore.yaml"}:/config.yaml:ro', '--entrypoint', '/sentry', f'daprio/sentry:{runtime_version}', '--issuer-credentials=/credentials', '--config=/config.yaml', '--trust-domain=localhost', '--listen-address=0.0.0.0'], check=True, capture_output=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['docker', 'run', '-d', '--name', 'platform-security-b25d77034977-sentry', '-p', '127.0.0.1:50001:50001', '--user', '1000:1000', '-v', '/tmp/platform-security-b25d77034977sbwz_nju/credentials:/credentials', '-v', '/tmp/story1-7-audit-security-evidence/accesscontrol.eventstore.yaml:/config.yaml:ro', '--entrypoint', '/sentry', 'daprio/sentry:1.18.2', '--issuer-credentials=/credentials', '--config=/config.yaml', '--trust-domain=localhost', '--listen-address=0.0.0.0']' returned non-zero exit status 125.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 158, in <module>
+    assert not leftovers, leftovers
+           ^^^^^^^^^^^^^
+AssertionError: 96d810437dfc

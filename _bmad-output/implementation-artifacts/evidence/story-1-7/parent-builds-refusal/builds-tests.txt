@@ -1,0 +1,30 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.PlatformManifestValidationTests.MissingRequiredFieldsReportStableRule(path: "modules.0.runtime.dapr.0.configurationKey", field: "modules[0].runtime.dapr[0].configurationKey") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(605,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.ValidateDaprBindings(JsonElement module, String prefix, String source, HashSet`1 servers, List`1 diagnostics)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(542,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.ValidateModule(JsonElement module, String prefix, String source, String fullPath, Dictionary`2 identities, List`1 diagnostics)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(193,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.ValidateFile(String path, List`1 declarations, Dictionary`2 identities, List`1 diagnostics, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(61,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.Validate(IEnumerable`1 manifestPaths, CancellationToken cancellationToken)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformManifestValidationTests.cs(179,0): at Hexalith.Builds.ModuleTool.Tests.PlatformManifestValidationTests.MissingRequiredFieldsReportStableRule(String path, String field)
+           at InvokeStub_PlatformManifestValidationTests.MissingRequiredFieldsReportStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PlatformManifestValidationTests.InvalidFieldsMatchSchemaAndReportCompletePaths(path: "modules.0.runtime.dapr.0.configurationKey", json: "<missing>", field: "modules[0].runtime.dapr[0].configurationKey") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(605,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.ValidateDaprBindings(JsonElement module, String prefix, String source, HashSet`1 servers, List`1 diagnostics)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(542,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.ValidateModule(JsonElement module, String prefix, String source, String fullPath, Dictionary`2 identities, List`1 diagnostics)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(193,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.ValidateFile(String path, List`1 declarations, Dictionary`2 identities, List`1 diagnostics, CancellationToken cancellationToken)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs(61,0): at Hexalith.Builds.Tooling.Manifest.PlatformManifestValidator.Validate(IEnumerable`1 manifestPaths, CancellationToken cancellationToken)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformManifestValidationTests.cs(159,0): at Hexalith.Builds.ModuleTool.Tests.PlatformManifestValidationTests.InvalidFieldsMatchSchemaAndReportCompletePaths(String path, String json, String field)
+           at InvokeStub_PlatformManifestValidationTests.InvalidFieldsMatchSchemaAndReportCompletePaths(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+g4: HXR026 resource='selected' appId='selected-app' status='HTTP 503;probe-timeout'.
+g4: HXR026 resource='selected' appId='selected-app' status='connection-unavailable;probe-timeout'.
+g4: HXR026 resource='selected' appId='selected-app' status='request-timeout;probe-timeout'.
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 145, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 4.788s

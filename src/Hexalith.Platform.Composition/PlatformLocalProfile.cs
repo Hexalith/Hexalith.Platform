@@ -8,8 +8,12 @@ using Hexalith.Builds.Tooling.Manifest;
 public static class PlatformLocalProfile
 {
     /// <summary>Resolves all required inputs and converts structured sections to .NET environment keys.</summary>
-    public static Dictionary<string, string> Bind(PlatformCompositionOptions options, PlatformModuleDeclaration module, string server) =>
-        Bind(options, module, server, new Dictionary<string, string>(StringComparer.Ordinal));
+    public static Dictionary<string, string> Bind(PlatformCompositionOptions options, PlatformModuleDeclaration module, string server)
+    {
+        Dictionary<string, string> environment = Bind(options, module, server, new Dictionary<string, string>(StringComparer.Ordinal));
+        foreach (var pair in PlatformDaprBindings.Resolve([module]).Environment(PlatformDeclarationSet.Id(module.Declaration), server)) environment[pair.Key] = pair.Value;
+        return environment;
+    }
 
     internal static Dictionary<string, string> Bind(PlatformCompositionOptions options, PlatformModuleDeclaration module, string server, Dictionary<string, string> secretValues)
     {
@@ -79,18 +83,6 @@ public static class PlatformLocalProfile
                 ("memories", _, "Memories:DaprApiToken") => "DAPR_API_TOKEN", _ => null,
             };
             if (runtime is not null) environment[runtime] = value;
-        }
-        foreach (JsonElement capability in module.Declaration.GetProperty("runtime").GetProperty("dapr").EnumerateArray())
-        {
-            string key = capability.GetProperty("configurationKey").GetString()!;
-            string role = capability.GetProperty("role").GetString()!;
-            string kind = capability.GetProperty("capability").GetString()!;
-            environment[key.Replace(":", "__", StringComparison.Ordinal)] = role switch
-            {
-                "telemetry-state" => "access-telemetry-store", "telemetry-secrets" => "access-telemetry-secrets",
-                "rate-limit-configuration" => "configstore",
-                _ => kind switch { "state" => "statestore", "pubsub" => "pubsub", "configuration" => "access-telemetry-config", "secret" => "secretstore", "conversation" => "llm", _ => throw new InvalidDataException($"{module.Source}: {id}/{server}: runtime.dapr: capability '{kind}' is not supported by this Platform model") },
-            };
         }
         if (clockSources is not null || clockTokens is not null)
         {

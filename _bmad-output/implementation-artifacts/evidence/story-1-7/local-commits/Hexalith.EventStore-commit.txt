@@ -1,0 +1,4 @@
+[main 973a000d] feat(dapr): accept assigned component names and declarative subscriptions
+ 15 files changed, 367 insertions(+), 31 deletions(-)
+ create mode 100644 src/Hexalith.EventStore/Controllers/ProjectionNotificationTopicAttribute.cs
+ create mode 100644 tests/Hexalith.EventStore.Server.Tests/Controllers/ProjectionSubscriptionMetadataTests.cs

@@ -350,7 +350,7 @@ def inspect_inventory(documents: list[dict]) -> None:
         ("eventstore", "eventstore")}
     assert {"role": "rate-limit-configuration", "capability": "configuration",
             "recoveryClass": "authoritative-restore",
-            "configurationKey": "Dapr:ConfigurationStoreComponent"} in eventstore["runtime"]["dapr"]
+            "configurationKey": "EventStore:RateLimiting:ConfigurationStoreName", "servers": ["gateway"]} in eventstore["runtime"]["dapr"]
     assert {"EventStore:PubSubComponentPath", "EventStore:AppChannelToken",
             "Authentication:JwtBearer:Authority", "Authentication:JwtBearer:Issuer",
             "Authentication:JwtBearer:Audience", "Authentication:JwtBearer:ValidAudiences",

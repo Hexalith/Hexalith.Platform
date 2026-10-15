@@ -1,0 +1,392 @@
+[
+  {
+    "check": "solution-build",
+    "exitCode": 0,
+    "seconds": 22.686,
+    "command": [
+      "dotnet",
+      "build",
+      "Hexalith.Platform.slnx",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "solution-build.txt"
+  },
+  {
+    "check": "platform-build",
+    "exitCode": 0,
+    "seconds": 12.006,
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "platform-build.txt"
+  },
+  {
+    "check": "platform-tests",
+    "exitCode": 0,
+    "seconds": 32.011,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-parallelMode",
+      "none"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "platform-tests.txt"
+  },
+  {
+    "check": "builds-build",
+    "exitCode": 0,
+    "seconds": 16.263,
+    "command": [
+      "dotnet",
+      "build",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "builds-build.txt"
+  },
+  {
+    "check": "builds-tests",
+    "exitCode": 0,
+    "seconds": 5.03,
+    "command": [
+      "dotnet",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*PlatformManifestValidationTests",
+      "-class",
+      "*WorkspaceAppHostTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "builds-tests.txt"
+  },
+  {
+    "check": "Hexalith.EventStore.AppHost.Tests-build",
+    "exitCode": 0,
+    "seconds": 5.777,
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "log": "Hexalith.EventStore.AppHost.Tests-build.txt"
+  },
+  {
+    "check": "Hexalith.EventStore.AppHost.Tests-tests",
+    "exitCode": 0,
+    "seconds": 0.44,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*DomainModuleAspireExtensionTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "log": "Hexalith.EventStore.AppHost.Tests-tests.txt"
+  },
+  {
+    "check": "Hexalith.EventStore.Server.Tests-build",
+    "exitCode": 0,
+    "seconds": 2.732,
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "log": "Hexalith.EventStore.Server.Tests-build.txt"
+  },
+  {
+    "check": "Hexalith.EventStore.Server.Tests-tests",
+    "exitCode": 0,
+    "seconds": 0.881,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*ProjectionSubscriptionMetadataTests",
+      "-class",
+      "*EventStoreWorkloadRateLimitTests",
+      "-class",
+      "*ProjectionChangeNotifierOptionsTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "log": "Hexalith.EventStore.Server.Tests-tests.txt"
+  },
+  {
+    "check": "helper-tests",
+    "exitCode": 0,
+    "seconds": 0.327,
+    "command": [
+      "python3",
+      "eng/test_verify_platform_pins.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "helper-tests.txt"
+  },
+  {
+    "check": "timesheets-provenance",
+    "exitCode": 0,
+    "seconds": 4.925,
+    "command": [
+      "python3",
+      "eng/timesheets-deployment/test_prepare.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "timesheets-provenance.txt"
+  },
+  {
+    "check": "declarations",
+    "exitCode": 0,
+    "seconds": 32.429,
+    "command": [
+      "python3",
+      "scripts/test-reference-module-declarations.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "declarations.txt"
+  },
+  {
+    "check": "local-scaffold",
+    "exitCode": 0,
+    "seconds": 9.005,
+    "command": [
+      "bash",
+      "eng/verify-agents-host.sh",
+      "--mode",
+      "LocalScaffold",
+      "--artifacts-path",
+      "/tmp/story1-7-parent-scaffold-artifacts"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "local-scaffold.txt"
+  },
+  {
+    "check": "architecture-lint",
+    "exitCode": 0,
+    "seconds": 0.036,
+    "command": [
+      "python3",
+      ".agents/skills/bmad-architecture/scripts/lint_spine.py",
+      "--workspace",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "architecture-lint.txt"
+  },
+  {
+    "check": "python-compile",
+    "exitCode": 0,
+    "seconds": 0.03,
+    "command": [
+      "python3",
+      "-m",
+      "py_compile",
+      "eng/test-local-dapr-security.py",
+      "eng/verify-platform-pins.py",
+      "eng/test_verify_platform_pins.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "python-compile.txt"
+  },
+  {
+    "check": "source-whitespace",
+    "exitCode": 0,
+    "seconds": 0.025,
+    "command": [
+      "git",
+      "-c",
+      "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+      "diff",
+      "HEAD",
+      "--check",
+      "--",
+      ".gitattributes",
+      "DaprComponents/reference/accesscontrol.eventstore.yaml",
+      "DaprComponents/reference/accesscontrol.tenants.yaml",
+      "DaprSelfHostedMtls.cs",
+      "_bmad-output/implementation-artifacts/deferred-work.md",
+      "_bmad-output/implementation-artifacts/spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md",
+      "_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/.memlog.md",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/reviews/review-1-7-adversary.md",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/reviews/review-1-7-reality.md",
+      "apphost.cs",
+      "docs/platform-apphost-form.md",
+      "eng/test-local-dapr-security.py",
+      "eng/test_verify_platform_pins.py",
+      "eng/timesheets-deployment/hexalith.module-manifest.v2.json",
+      "eng/timesheets-deployment/history/README.md",
+      "eng/timesheets-deployment/history/hexalith.module-manifest.v2.before-story-1-7.json",
+      "eng/verify-platform-pins.py",
+      "scripts/test-reference-module-declarations.py",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+      "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs",
+      "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs",
+      "src/Hexalith.Platform.Composition/PlatformLocalProfile.cs",
+      "src/Hexalith.Platform.Composition/PlatformServerBindings.cs",
+      "src/Hexalith.Platform.EventStoreHost/Program.cs",
+      "tests/Hexalith.Platform.Composition.Tests/BuildsSourceStartupTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/TimesheetsEnrollmentTests.cs"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "source-whitespace.txt"
+  },
+  {
+    "check": "Hexalith.Builds-whitespace",
+    "exitCode": 0,
+    "seconds": 0.015,
+    "command": [
+      "git",
+      "diff",
+      "HEAD",
+      "--check"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "log": "Hexalith.Builds-whitespace.txt"
+  },
+  {
+    "check": "Hexalith.EventStore-whitespace",
+    "exitCode": 0,
+    "seconds": 0.02,
+    "command": [
+      "git",
+      "diff",
+      "HEAD",
+      "--check"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "log": "Hexalith.EventStore-whitespace.txt"
+  },
+  {
+    "check": "Hexalith.Memories-whitespace",
+    "exitCode": 0,
+    "seconds": 0.015,
+    "command": [
+      "git",
+      "diff",
+      "HEAD",
+      "--check"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "log": "Hexalith.Memories-whitespace.txt"
+  },
+  {
+    "check": "Hexalith.Tenants-whitespace",
+    "exitCode": 0,
+    "seconds": 0.011,
+    "command": [
+      "git",
+      "diff",
+      "HEAD",
+      "--check"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+    "log": "Hexalith.Tenants-whitespace.txt"
+  },
+  {
+    "check": "runtime-inventory-before-live",
+    "exitCode": 0,
+    "seconds": 0.074,
+    "command": [
+      "docker",
+      "ps",
+      "--format",
+      "{{.Names}}\t{{.Ports}}"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "runtime-inventory-before-live.txt"
+  },
+  {
+    "check": "security-live",
+    "exitCode": 0,
+    "seconds": 7.79,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-method",
+      "*LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "security-live.txt"
+  },
+  {
+    "check": "runtime-inventory-after-live",
+    "exitCode": 0,
+    "seconds": 0.056,
+    "command": [
+      "docker",
+      "ps",
+      "--format",
+      "{{.Names}}\t{{.Ports}}"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "runtime-inventory-after-live.txt"
+  },
+  {
+    "check": "builds-tenants-live",
+    "exitCode": 0,
+    "seconds": 101.015,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-method",
+      "*DomainTenantsStartsThroughTheRealBuildsEngineAsync"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "builds-tenants-live.txt"
+  },
+  {
+    "check": "runtime-inventory-after-source",
+    "exitCode": 0,
+    "seconds": 0.057,
+    "command": [
+      "docker",
+      "ps",
+      "--format",
+      "{{.Names}}\t{{.Ports}}"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "log": "runtime-inventory-after-source.txt"
+  }
+]

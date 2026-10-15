@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Text.Json.Nodes;
+using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Eventing;
@@ -178,6 +179,11 @@ public sealed partial class PlatformAppModelTests
     public async Task ActualDaprCliListenersAndTokensRemainServerScopedAsync()
     {
         IDistributedApplicationBuilder builder = Builder();
+        string certificateDirectory = Path.Combine(Path.GetTempPath(), "platform-cli-credentials-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(certificateDirectory);
+        using PlatformCompositionWorkspace credentials = new(certificateDirectory);
+        foreach (string file in new[] { "ca.crt", "issuer.crt", "issuer.key" }) File.WriteAllText(Path.Combine(certificateDirectory, file), "fixture-" + file);
+        builder.Configuration["Dapr:Mtls:CertificateDirectory"] = certificateDirectory;
         // Model lifecycle callbacks need discovery metadata, but none of these executables is started.
         builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(Root, "test-dcp-not-started");
         builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(Root, "test-dashboard-not-started");
@@ -196,11 +202,23 @@ public sealed partial class PlatformAppModelTests
             await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
         await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken);
         model.Resources.OfType<ExecutableResource>().Count(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ShouldBe(6);
+        List<object> subscriptionEvidence = [];
         foreach (PlatformServerBinding server in servers)
         {
             ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.ResourceId + "-dapr-cli");
             IResource application = model.Resources.Single(resource => resource.Name == server.ResourceId);
             DaprSidecarOptions options = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+            string subscriptionDirectory = options.ResourcesPaths.Single();
+            var subscriptions = Directory.GetFiles(subscriptionDirectory, "*.yaml").ToDictionary(path => Path.GetFileName(path)!, File.ReadAllText);
+            subscriptions.Count.ShouldBe(2);
+            subscriptions.Values.ShouldAllBe(content => JsonDocument.Parse(content).RootElement.GetProperty("kind").GetString() == "Subscription");
+            List<object> arguments = [];
+            foreach (CommandLineArgsCallbackAnnotation callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+                await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
+            string[] argumentText = arguments.Select(argument => argument.ToString()!).ToArray();
+            argumentText.ShouldContain("--resources-path");
+            argumentText.ShouldContain(argument => argument.Contains(subscriptionDirectory, StringComparison.Ordinal));
+            subscriptionEvidence.Add(new { server.ResourceId, resourcePathArguments = argumentText.Where(argument => argument == "--resources-path" || argument.Contains(subscriptionDirectory, StringComparison.Ordinal)), subscriptions });
             foreach ((string name, int? expected) in new[] { ("http", options.DaprHttpPort), ("grpc", options.DaprGrpcPort), ("metrics", options.MetricsPort) })
             {
                 expected.ShouldNotBeNull($"{server.ResourceId} must declare a fixed {name} listener port.");
@@ -212,6 +230,11 @@ public sealed partial class PlatformAppModelTests
             Dictionary<string, object> environment = new();
             foreach (EnvironmentCallbackAnnotation callback in sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>())
                 await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, sidecar, environment, TestContext.Current.CancellationToken));
+            environment["DAPR_TRUST_ANCHORS"].ShouldBe("fixture-ca.crt");
+            environment["DAPR_CERT_CHAIN"].ShouldBe("fixture-issuer.crt");
+            environment["DAPR_CERT_KEY"].ShouldBe("fixture-issuer.key");
+            environment["DAPR_CONTROLPLANE_TRUST_DOMAIN"].ShouldBe("localhost");
+            environment["NAMESPACE"].ShouldBe("default");
             foreach (string token in new[] { "APP_API_TOKEN", "DAPR_API_TOKEN" })
                 if (server.Environment.TryGetValue(token, out string? value)) environment[token].ShouldBe(value);
                 else environment.ShouldNotContainKey(token);
@@ -225,6 +248,7 @@ public sealed partial class PlatformAppModelTests
             if (server.ResourceId == "tenants") environment["APP_API_TOKEN"].ShouldBe("domain-only");
             if (server.ResourceId == "tenants-api") environment["DAPR_API_TOKEN"].ShouldBe("api-only");
         }
+        if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_CLI_EVIDENCE") is { } evidence) File.WriteAllText(evidence, JsonSerializer.Serialize(subscriptionEvidence, new JsonSerializerOptions { WriteIndented = true }));
     }
 
     [Fact]
@@ -438,18 +462,42 @@ public sealed partial class PlatformAppModelTests
     public async Task ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
     {
         if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_LIVE_SMOKE") != "1") Assert.Skip("Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.");
+        string aspire = Environment.GetEnvironmentVariable("HEXALITH_ASPIRE_CLI") ?? "aspire";
         string apphost = Path.Combine(Root, "apphost.cs");
+        string workspace = Path.Combine(Path.GetTempPath(), "platform-file-prebuild-" + Guid.NewGuid().ToString("N"));
+        using PlatformCompositionWorkspace prebuildWorkspace = new(workspace);
+        IReadOnlyDictionary<string, string>? launchEnvironment = null;
+        if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PREBUILD_SOURCE") == "1")
+        {
+            string manifest = Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json");
+            SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
+            await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken);
+            string log = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_SOURCE_PREBUILD_LOG") ?? Path.Combine(workspace, "prebuild.log");
+            File.WriteAllText(log, "Sequential selected owner builds using verified source mapping " + mapping.ContentHash + Environment.NewLine);
+            foreach (PlatformServerBinding server in PlatformAppModel.Prepare(Options() with { Mapping = mapping }))
+            {
+                CompositionProcessResult build = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", ["build", server.ProjectPath!, "-c", "Debug", "-m:1", "--nologo"], Root,
+                    SourceMappingMaterializer.Environment(mapping, workspace)), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
+                File.AppendAllText(log, server.ResourceId + Environment.NewLine + build.Output + build.ErrorOutput);
+                build.ExitCode.ShouldBe(0, server.ResourceId + ": " + build.Output + build.ErrorOutput);
+            }
+            launchEnvironment = new Dictionary<string, string>
+            {
+                ["HEXALITH_SOURCE_MAPPING_PATH"] = Path.Combine(workspace, "source-mapping", "mapping.json"),
+                ["HEXALITH_SOURCE_MAPPING_HASH"] = mapping.ContentHash,
+            };
+        }
         try
         {
-            CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", ["start", "--apphost", apphost, "--non-interactive", "--format", "Json"], Root, null), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
+            CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["start", "--apphost", apphost, "--non-interactive", "--format", "Json"], Root, launchEnvironment), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
             start.ExitCode.ShouldBe(0, start.Output);
             foreach (string server in new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry" })
             {
-                CompositionProcessResult ready = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", ["wait", server, "--apphost", apphost, "--non-interactive", "--timeout", "120"], Root, null), TimeSpan.FromMinutes(3), TestContext.Current.CancellationToken);
+                CompositionProcessResult ready = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["wait", server, "--apphost", apphost, "--non-interactive", "--timeout", "120"], Root, null), TimeSpan.FromMinutes(3), TestContext.Current.CancellationToken);
                 string diagnostic = ready.Output + ready.ErrorOutput;
                 if (ready.ExitCode != 0)
                 {
-                    CompositionProcessResult logs = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", ["logs", server, "--apphost", apphost, "--non-interactive", "--tail", "50"], Root, null), TimeSpan.FromSeconds(30), CancellationToken.None);
+                    CompositionProcessResult logs = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["logs", server, "--apphost", apphost, "--non-interactive", "--tail", "50"], Root, null), TimeSpan.FromSeconds(30), CancellationToken.None);
                     diagnostic += logs.Output + logs.ErrorOutput;
                 }
                 ready.ExitCode.ShouldBe(0, server + ": " + diagnostic);
@@ -457,7 +505,7 @@ public sealed partial class PlatformAppModelTests
         }
         finally
         {
-            CompositionProcessResult stopped = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", ["stop", "--apphost", apphost, "--non-interactive"], Root, null), TimeSpan.FromSeconds(30), CancellationToken.None);
+            CompositionProcessResult stopped = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["stop", "--apphost", apphost, "--non-interactive"], Root, null), TimeSpan.FromSeconds(30), CancellationToken.None);
             stopped.TimedOut.ShouldBeFalse(stopped.Output + stopped.ErrorOutput);
             stopped.ExitCode.ShouldBe(0, stopped.Output + stopped.ErrorOutput);
         }

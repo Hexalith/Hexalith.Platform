@@ -1,0 +1,9 @@
+{"check": "architecture-lint", "command": ["python3", ".agents/skills/bmad-architecture/scripts/lint_spine.py", "--workspace", "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27"], "exitCode": 0, "log": "/tmp/story1-7-audit-architecture-lint.log"}
+{"check": "python-compile", "command": ["python3", "-m", "py_compile", "eng/test-local-dapr-security.py", "eng/verify-platform-pins.py"], "exitCode": 0, "log": "/tmp/story1-7-audit-python-compile.log"}
+{"check": "diff-check-.", "command": ["git", "diff", "HEAD", "--check", "--", ".", ":(exclude)_bmad-output/implementation-artifacts/evidence/", ":(exclude)Hexalith.Platform.slnx", ":(exclude)eng/ext-secrets-1/"], "exitCode": 0, "log": "/tmp/story1-7-audit-diff-check-..log"}
+{"check": "diff-check-Hexalith.Builds", "command": ["git", "-C", "references/Hexalith.Builds", "diff", "HEAD", "--check"], "exitCode": 0, "log": "/tmp/story1-7-audit-diff-check-Hexalith.Builds.log"}
+{"check": "diff-check-Hexalith.EventStore", "command": ["git", "-C", "references/Hexalith.EventStore", "diff", "HEAD", "--check"], "exitCode": 0, "log": "/tmp/story1-7-audit-diff-check-Hexalith.EventStore.log"}
+{"check": "diff-check-Hexalith.Memories", "command": ["git", "-C", "references/Hexalith.Memories", "diff", "HEAD", "--check"], "exitCode": 0, "log": "/tmp/story1-7-audit-diff-check-Hexalith.Memories.log"}
+{"check": "diff-check-Hexalith.Tenants", "command": ["git", "-C", "references/Hexalith.Tenants", "diff", "HEAD", "--check"], "exitCode": 0, "log": "/tmp/story1-7-audit-diff-check-Hexalith.Tenants.log"}
+{"check": "cleanup", "command": ["docker", "ps", "--format", "{{.Names}}\t{{.Ports}}"], "exitCode": 0, "log": "/tmp/story1-7-audit-cleanup.log"}
+ALL FINAL READ-ONLY CHECKS PASSED

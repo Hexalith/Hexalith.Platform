@@ -470,3 +470,17 @@
 - source_spec: `spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md`
   summary: Enable package-mode composition when owners release v2 declarations.
   evidence: `ReleaseSnapshotHashes` is empty by design, so package mode refuses today. When the first owner ships a v2 declaration release, populate the Platform release snapshot hashes and add a positive package-mode test.
+
+## Deferred from: Story 1.7 parent diff audit (2026-10-15)
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Qualify concrete EventStore projection notification delivery for the selected local pubsub provider.
+  evidence: EventStore's established subscriber pattern is `*.*.projection-changed` at `/projections/changed`; publishers produce concrete tenant/projection topics. Pinned components-contrib Redis v1.18.2 Subscribe passes req.Topic to XGroupCreateMkStream and XReadGroup rather than expanding wildcards (https://github.com/dapr/components-contrib/blob/v1.18.2/pubsub/redis/redis.go#L127). Story 1.7 preserves the exact owner binding and local Direct transport default, and does not claim wildcard fan-out. The live fixture publishes a concrete topic (204) and observes no callback within two seconds; evidence is retained under evidence/story-1-7/audit/security/projection-observation.json. Resolve the owner/provider topic contract in follow-up messaging work without inventing a provider exception here.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Verify whether declared application health plus authenticated outbound sidecar health needs an additional safe invocation-readiness check.
+  evidence: Independent finding B6 is medium if true but unverified: all applications are checked before the new outbound probe, and no reachable wrong-channel or name-discovery failure was demonstrated. A controlled healthy-app/broken-permitted-invocation fixture would settle the claim; preserve explicit ACL policy without inventing startup grants.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Add catalog-version preflight for the file entry when it uses ambient global Dapr tools.
+  evidence: Independent finding B8 confirms the pre-existing global CLI/runtime fallback when HEXALITH_DAPR_HOME is absent; the current live commands provide pinned tools explicitly. Validate ambient selection before launch in the owning toolchain/startup work without weakening the Builds catalog.

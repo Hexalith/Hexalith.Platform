@@ -1,0 +1,15 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 110, Errors: 0, Failed: 0, Skipped: 4, Not Run: 0, Time: 32.443s

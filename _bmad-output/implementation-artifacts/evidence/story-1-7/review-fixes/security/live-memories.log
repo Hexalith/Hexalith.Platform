@@ -1,0 +1,60 @@
+time="2026-10-15T19:59:41.80703628+02:00" level=info msg="Starting Dapr Runtime -- version 1.18.2 -- commit d2dd3747145e38e4d85db4714e26d7569c9c37db" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.807086448+02:00" level=info msg="Log level set to: info" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.807577162+02:00" level=info msg="Fetching initial identity" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T19:59:41.812722273+02:00" level=info msg="Security is initialized successfully" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T19:59:41.812757041+02:00" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-16 17:59:41 +0000 UTC, renewal at: 2026-10-16 05:52:11 +0000 UTC" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T19:59:41.813050371+02:00" level=info msg="Enabled features: WorkflowsRemoteActivityReminder" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.813119225+02:00" level=info msg="metric spec: {\"enabled\":true}" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.diagnostics type=log ver=1.18.2
+time="2026-10-15T19:59:41.813138303+02:00" level=info msg="Using default latency distribution buckets: [1 2 3 4 5 6 8 10 13 16 20 25 30 40 50 65 80 100 130 160 200 250 300 400 500 650 800 1000 2000 5000 10000 20000 50000 100000]" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.diagnostics type=log ver=1.18.2
+time="2026-10-15T19:59:41.813233357+02:00" level=warning msg="The default value for 'spec.metric.http.increasedCardinality' will change to 'false' in Dapr 1.15 or later" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.diagnostics type=log ver=1.18.2
+time="2026-10-15T19:59:41.81406236+02:00" level=warning msg="Actor runtime disabled: api error: code = Unavailable desc = placement service is not configured. Actors and Workflow APIs will be unavailable" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.actor type=log ver=1.18.2
+time="2026-10-15T19:59:41.814168456+02:00" level=info msg="standalone mode configured" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.814173215+02:00" level=info msg="app id: memories" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.814241473+02:00" level=warning msg="No scheduler host addresses provided. Scheduler disabled" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.2
+time="2026-10-15T19:59:41.814281606+02:00" level=info msg="Actor runtime disabled: api error: code = Unavailable desc = placement service is not configured" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.actor type=log ver=1.18.2
+time="2026-10-15T19:59:41.815993565+02:00" level=info msg="metrics server started on 0.0.0.0:44567/" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.816034214+02:00" level=info msg="Dapr trace sampler initialized: ParentBased{root:TraceIDRatioBased{0.0001},remoteParentSampled:AlwaysOnSampler,remoteParentNotSampled:AlwaysOffSampler,localParentSampled:AlwaysOnSampler,localParentNotSampled:AlwaysOffSampler}" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.816230205+02:00" level=info msg="local service entry announced: memories -> 172.21.201.86:36133" app_id=memories component="nr (mdns/v1)" instance=DESKTOP-VIOG240 scope=dapr.contrib type=log ver=1.18.2
+time="2026-10-15T19:59:41.816250114+02:00" level=info msg="Initialized name resolution to mdns" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.816291664+02:00" level=info msg="Loading components…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.817070609+02:00" level=info msg="Waiting for all outstanding components to be processed…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.819310305+02:00" level=info msg="Component loaded: pubsub (pubsub.redis/v1)" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.processor type=log ver=1.18.2
+time="2026-10-15T19:59:41.81933872+02:00" level=info msg="All outstanding components processed" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.81934404+02:00" level=info msg="Loading endpoints…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.819941061+02:00" level=info msg="Waiting for all outstanding http endpoints to be processed…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.819964507+02:00" level=info msg="All outstanding http endpoints processed" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.819975418+02:00" level=info msg="Loading Declarative Subscriptions…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.821283272+02:00" level=info msg="Found Subscription: platform-b6dd8c70281f96d91605fb892f441408c9499d13cb25e8accb6a711f7835dcab" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.821291448+02:00" level=info msg="Found Subscription: platform-be3ff3817550b0b47361c347e5e2cdc8737d400f41b6ff4bc7c2c68b2d56e63c" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.821296748+02:00" level=info msg="Found Subscription: platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.821889711+02:00" level=info msg="gRPC server listening on TCP address: :53969" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T19:59:41.821910702+02:00" level=info msg="Enabled gRPC tracing middleware" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T19:59:41.821913758+02:00" level=info msg="Enabled gRPC metrics middleware" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T19:59:41.821959226+02:00" level=info msg="Registering workflow engine for gRPC endpoint: [::]:53969" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T19:59:41.821992541+02:00" level=info msg="API gRPC server is running on port 53969" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.822019975+02:00" level=warning msg="The default value for 'spec.metric.http.increasedCardinality' will change to 'false' in Dapr 1.15 or later" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T19:59:41.822050855+02:00" level=info msg="Enabled max body size HTTP middleware with size 4194304 bytes" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T19:59:41.822055684+02:00" level=info msg="Enabled tracing HTTP middleware" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T19:59:41.82205875+02:00" level=info msg="Enabled metrics HTTP middleware" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T19:59:41.822202249+02:00" level=info msg="HTTP server listening on TCP address: :40695" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T19:59:41.822229863+02:00" level=info msg="HTTP server is running on port 40695" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.822245623+02:00" level=info msg="The request body size parameter is: 4194304 bytes" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.822251475+02:00" level=info msg="gRPC server listening on pre-bound TCP address: [::]:36133" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.internal type=log ver=1.18.2
+time="2026-10-15T19:59:41.822256124+02:00" level=info msg="Enabled gRPC tracing middleware" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.internal type=log ver=1.18.2
+time="2026-10-15T19:59:41.822258108+02:00" level=info msg="Enabled gRPC metrics middleware" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.internal type=log ver=1.18.2
+time="2026-10-15T19:59:41.822277205+02:00" level=info msg="Internal gRPC server is running on :36133" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.822280251+02:00" level=info msg="actors: state store is not configured - this is okay for clients but services with hosted actors will fail to initialize!" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.822291082+02:00" level=info msg="Loading MCP servers…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.82311815+02:00" level=info msg="Waiting for all outstanding MCP servers to be processed…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.823153329+02:00" level=info msg="All outstanding MCP servers processed" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.823163589+02:00" level=info msg="application protocol: http. waiting on port 52487.  This will block until the app is listening on that port." app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.823289875+02:00" level=info msg="application discovered on port 52487" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.824284859+02:00" level=info msg="Application configuration loaded" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:41.82540625+02:00" level=info msg="dapr initialized. Status: Running. Init Elapsed 11ms" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:45.39540641+02:00" level=info msg="Received signal 'terminated'; beginning shutdown" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.signals type=log ver=1.18.2
+time="2026-10-15T19:59:45.395603754+02:00" level=info msg="stopping mDNS server for app id: memories" app_id=memories component="nr (mdns/v1)" instance=DESKTOP-VIOG240 scope=dapr.contrib type=log ver=1.18.2
+time="2026-10-15T19:59:45.395599071+02:00" level=info msg="Dapr is shutting down" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:45.395632656+02:00" level=info msg="Closing HTTP server [::]:40695…" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T19:59:45.395649098+02:00" level=info msg="Shutting down component pubsub (pubsub.redis/v1)" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:45.395875488+02:00" level=info msg="Dapr runtime stopped" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:59:45.396461904+02:00" level=info msg="Daprd shutdown gracefully" app_id=memories instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2

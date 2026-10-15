@@ -1,0 +1,121 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [FAIL]
+      Shouldly.ShouldAssertException : ready.ExitCode
+          should be
+      0
+          but was
+      18
+      
+      Additional Info:
+          tenants: Waiting for resource 'tenants' to be healthy...
+      
+      ❌ Resource 'tenants' entered a failed state: Stopped waiting for resource 'tenants' to become healthy because it failed to start.
+      📄 See logs at /home/administrator/.aspire/logs/cli_20261015T165146_3e98419a.log
+      🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261015T165017645_detach-child_2d3e033b226d47ea95409f99d6500a08.log
+      Getting logs...
+      [tenants] Waiting for resource 'dapr-placement-mtls' to enter the 'Running' state.
+      [tenants] Waiting for resource 'dapr-scheduler-mtls' to enter the 'Running' state.
+      [tenants] Waiting for resource 'eventstore' to enter the 'Running' state.
+      [tenants] Waiting for resource 'dapr-sentry' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'dapr-sentry'.
+      [tenants] Finished waiting for resource 'dapr-sentry'.
+      [tenants] Waiting for resource ready to execute for 'redis'.
+      [tenants] Finished waiting for resource 'redis'.
+      [tenants] Waiting for resource 'dapr-placement-mtls' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'dapr-placement-mtls'.
+      [tenants] Finished waiting for resource 'dapr-placement-mtls'.
+      [tenants] Waiting for resource 'dapr-scheduler-mtls' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'dapr-scheduler-mtls'.
+      [tenants] Finished waiting for resource 'dapr-scheduler-mtls'.
+      [tenants] Waiting for resource 'eventstore' to become healthy.
+      [tenants] Waiting for resource ready to execute for 'eventstore'.
+      [tenants] Finished waiting for resource 'eventstore'.
+      [tenants] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj", "--configuration", "Debug", 
+      "--no-launch-profile"]
+      [tenants] {"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 5
+      domains (global-administrators [Aggregate: GlobalAdministratorsAggregate], tenants [Aggregate: TenantAggregate], global-administrators [Projection: 
+      GlobalAdministratorProjection], tenant-index [Projection: TenantIndexProjection], tenants [Projection: 
+      TenantProjection])","State":{"DomainCount":5,"DomainDetails":"global-administrators [Aggregate: GlobalAdministratorsAggregate], tenants [Aggregate: 
+      TenantAggregate], global-administrators [Projection: GlobalAdministratorProjection], tenant-index [Projection: TenantIndexProjection], tenants [Projection: 
+      TenantProjection]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+      [tenants] {"EventId":2007,"LogLevel":"Information","Category":"Hexalith.Tenants.Bootstrap.TenantBootstrapHostedService","Message":"Bootstrap skipped: 
+      Tenants:BootstrapGlobalAdminEnabled is false","State":{"Message":"{OriginalFormat}=Bootstrap skipped: Tenants:BootstrapGlobalAdminEnabled is 
+      false","{OriginalFormat}":"Bootstrap skipped: Tenants:BootstrapGlobalAdminEnabled is false"}}
+      [tenants] {"EventId":11,"LogLevel":"Error","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting failed to 
+      start","Exception":"System.IO.IOException: Failed to bind to address http://127.0.0.1:12575: address already in use.\n ---\u003E 
+      Microsoft.AspNetCore.Connections.AddressInUseException: Address already in use\n ---\u003E System.Net.Sockets.SocketException (98): Address already in use\n   
+      at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)\n   at 
+      System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)\n   at System.Net.Sockets.Socket.Bind(EndPoint localEP)\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()\n   --- End of inner exception stack trace ---\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, 
+      EndpointConfig endpointConfig, CancellationToken cancellationToken)\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.\u003C\u003Ec__DisplayClass28_0\u00601.\u003C\u003CStartAsync\u003Eg__OnBind|0\u003Ed.MoveNext()\n---
+      End of stack trace from previous location ---\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, 
+      AddressBindContext context, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken 
+      cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken 
+      cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, 
+      CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)\n   at 
+      Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication\u00601 application, CancellationToken cancellationToken)\n   at
+      Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)\n   at 
+      Microsoft.Extensions.Hosting.Internal.Host.\u003CStartAsync\u003Eb__14_1(IHostedService service, CancellationToken token)\n   at 
+      Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable\u00601 services, CancellationToken token, Boolean concurrent, Boolean 
+      abortOnFirstException, List\u00601 exceptions, Func\u00603 operation)","State":{"{OriginalFormat}":"Hosting failed to start"}}
+      [tenants] Unhandled exception. System.IO.IOException: Failed to bind to address http://127.0.0.1:12575: address already in use.
+      [tenants]  ---> Microsoft.AspNetCore.Connections.AddressInUseException: Address already in use
+      [tenants]  ---> System.Net.Sockets.SocketException (98): Address already in use
+      [tenants]    at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+      [tenants]    at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+      [tenants]    at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+      [tenants]    --- End of inner exception stack trace ---
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate 
+      connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+      [tenants] --- End of stack trace from previous location ---
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, 
+      CancellationToken cancellationToken)
+      [tenants]    --- End of inner exception stack trace ---
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, 
+      CancellationToken cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken 
+      cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken 
+      cancellationToken)
+      [tenants]    at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+      [tenants]    at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+      [tenants]    at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean 
+      abortOnFirstException, List`1 exceptions, Func`3 operation)
+      [tenants]    at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+      [tenants]    at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+      [tenants]    at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+      [tenants]    at Program.<Main>$(String[] args) in 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/src/Hexalith.Tenants/Program.cs:line 186
+      [tenants]    at Program.<Main>(String[] args)
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(466,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(474,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 146.452s

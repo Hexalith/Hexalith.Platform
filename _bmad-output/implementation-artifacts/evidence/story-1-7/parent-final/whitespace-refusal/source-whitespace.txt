@@ -1,0 +1,32 @@
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+eng/verify-ext-secrets-1.ps1:21: trailing whitespace.
++    if ($LASTEXITCODE -eq 4) { throw 'ReplacementAcceptancePacket: EXT-SECRETS-1. The replacement acceptance packet is not an object; see sanitized attempt-*/live-evidence.json.' }
+src/Hexalith.Platform.EventStoreHost/Program.cs:10: trailing whitespace.
++using Dapr;
+src/Hexalith.Platform.EventStoreHost/Program.cs:11: trailing whitespace.
++using Microsoft.Extensions.Options;
+src/Hexalith.Platform.EventStoreHost/Program.cs:48: trailing whitespace.
++bool declarativeSubscriptions = app.Configuration.GetValue<bool>("Dapr:DeclarativeSubscriptions");
+src/Hexalith.Platform.EventStoreHost/Program.cs:49: trailing whitespace.
++app.MapControllers().Add(endpoint =>
+src/Hexalith.Platform.EventStoreHost/Program.cs:50: trailing whitespace.
++{
+src/Hexalith.Platform.EventStoreHost/Program.cs:51: trailing whitespace.
++    for (int index = endpoint.Metadata.Count - 1; index >= 0; index--)
+src/Hexalith.Platform.EventStoreHost/Program.cs:52: trailing whitespace.
++    {
+src/Hexalith.Platform.EventStoreHost/Program.cs:53: trailing whitespace.
++        if (endpoint.Metadata[index] is not ITopicMetadata { Name: "*.*.projection-changed" } topic) continue;
+src/Hexalith.Platform.EventStoreHost/Program.cs:54: trailing whitespace.
++        if (declarativeSubscriptions) endpoint.Metadata.RemoveAt(index);
+src/Hexalith.Platform.EventStoreHost/Program.cs:55: trailing whitespace.
++        else endpoint.Metadata[index] = new TopicAttribute(app.Services.GetRequiredService<IOptions<ProjectionChangeNotifierOptions>>().Value.PubSubName, topic.Name);
+src/Hexalith.Platform.EventStoreHost/Program.cs:56: trailing whitespace.
++    }
+src/Hexalith.Platform.EventStoreHost/Program.cs:57: trailing whitespace.
++});
+src/Hexalith.Platform.EventStoreHost/Program.cs:60: trailing whitespace.
++if (!declarativeSubscriptions) app.MapSubscribeHandler();

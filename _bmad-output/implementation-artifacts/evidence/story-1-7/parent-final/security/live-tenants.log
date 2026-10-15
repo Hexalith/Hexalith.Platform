@@ -1,0 +1,60 @@
+time="2026-10-15T20:34:03.198217776+02:00" level=info msg="Starting Dapr Runtime -- version 1.18.2 -- commit d2dd3747145e38e4d85db4714e26d7569c9c37db" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.198729668+02:00" level=info msg="Log level set to: info" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.198975208+02:00" level=info msg="Fetching initial identity" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T20:34:03.208973028+02:00" level=info msg="Security is initialized successfully" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T20:34:03.209014589+02:00" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-10-16 18:34:03 +0000 UTC, renewal at: 2026-10-16 06:26:33 +0000 UTC" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+time="2026-10-15T20:34:03.209305112+02:00" level=info msg="Enabled features: WorkflowsRemoteActivityReminder" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.209468989+02:00" level=info msg="metric spec: {\"enabled\":true}" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.diagnostics type=log ver=1.18.2
+time="2026-10-15T20:34:03.209497094+02:00" level=info msg="Using default latency distribution buckets: [1 2 3 4 5 6 8 10 13 16 20 25 30 40 50 65 80 100 130 160 200 250 300 400 500 650 800 1000 2000 5000 10000 20000 50000 100000]" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.diagnostics type=log ver=1.18.2
+time="2026-10-15T20:34:03.209566128+02:00" level=warning msg="The default value for 'spec.metric.http.increasedCardinality' will change to 'false' in Dapr 1.15 or later" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.diagnostics type=log ver=1.18.2
+time="2026-10-15T20:34:03.21032101+02:00" level=warning msg="Actor runtime disabled: api error: code = Unavailable desc = placement service is not configured. Actors and Workflow APIs will be unavailable" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.actor type=log ver=1.18.2
+time="2026-10-15T20:34:03.210437536+02:00" level=info msg="Actor runtime disabled: api error: code = Unavailable desc = placement service is not configured" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.actor type=log ver=1.18.2
+time="2026-10-15T20:34:03.210492026+02:00" level=info msg="standalone mode configured" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.210546451+02:00" level=info msg="app id: tenants" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.21051224+02:00" level=warning msg="No scheduler host addresses provided. Scheduler disabled" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.scheduler.watchhosts type=log ver=1.18.2
+time="2026-10-15T20:34:03.213668409+02:00" level=info msg="metrics server started on 0.0.0.0:44329/" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.213927762+02:00" level=info msg="Dapr trace sampler initialized: ParentBased{root:TraceIDRatioBased{0.0001},remoteParentSampled:AlwaysOnSampler,remoteParentNotSampled:AlwaysOffSampler,localParentSampled:AlwaysOnSampler,localParentNotSampled:AlwaysOffSampler}" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.214092701+02:00" level=info msg="local service entry announced: tenants -> 172.21.201.86:36337" app_id=tenants component="nr (mdns/v1)" instance=DESKTOP-VIOG240 scope=dapr.contrib type=log ver=1.18.2
+time="2026-10-15T20:34:03.214125274+02:00" level=info msg="Initialized name resolution to mdns" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.214175842+02:00" level=info msg="Loading components…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.215159939+02:00" level=info msg="Waiting for all outstanding components to be processed…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.225985144+02:00" level=info msg="Component loaded: pubsub (pubsub.redis/v1)" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.processor type=log ver=1.18.2
+time="2026-10-15T20:34:03.22602978+02:00" level=info msg="All outstanding components processed" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.226042044+02:00" level=info msg="Loading endpoints…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.226782769+02:00" level=info msg="Waiting for all outstanding http endpoints to be processed…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.22681409+02:00" level=info msg="All outstanding http endpoints processed" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.226825983+02:00" level=info msg="Loading Declarative Subscriptions…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.228111544+02:00" level=info msg="Found Subscription: platform-b6dd8c70281f96d91605fb892f441408c9499d13cb25e8accb6a711f7835dcab" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.228131172+02:00" level=info msg="Found Subscription: platform-be3ff3817550b0b47361c347e5e2cdc8737d400f41b6ff4bc7c2c68b2d56e63c" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.228136432+02:00" level=info msg="Found Subscription: platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.228840857+02:00" level=info msg="gRPC server listening on TCP address: :37241" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T20:34:03.228870725+02:00" level=info msg="Enabled gRPC tracing middleware" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T20:34:03.228878159+02:00" level=info msg="Enabled gRPC metrics middleware" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T20:34:03.228926082+02:00" level=info msg="Registering workflow engine for gRPC endpoint: [::]:37241" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.api type=log ver=1.18.2
+time="2026-10-15T20:34:03.228959416+02:00" level=info msg="API gRPC server is running on port 37241" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.228987541+02:00" level=warning msg="The default value for 'spec.metric.http.increasedCardinality' will change to 'false' in Dapr 1.15 or later" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T20:34:03.229032899+02:00" level=info msg="Enabled max body size HTTP middleware with size 4194304 bytes" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T20:34:03.229048018+02:00" level=info msg="Enabled tracing HTTP middleware" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T20:34:03.229060552+02:00" level=info msg="Enabled metrics HTTP middleware" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T20:34:03.229204221+02:00" level=info msg="HTTP server listening on TCP address: :52999" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T20:34:03.2292246+02:00" level=info msg="HTTP server is running on port 52999" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.229244889+02:00" level=info msg="The request body size parameter is: 4194304 bytes" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.229257564+02:00" level=info msg="gRPC server listening on pre-bound TCP address: [::]:36337" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.internal type=log ver=1.18.2
+time="2026-10-15T20:34:03.229267924+02:00" level=info msg="Enabled gRPC tracing middleware" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.internal type=log ver=1.18.2
+time="2026-10-15T20:34:03.229279857+02:00" level=info msg="Enabled gRPC metrics middleware" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.grpc.internal type=log ver=1.18.2
+time="2026-10-15T20:34:03.229314584+02:00" level=info msg="Internal gRPC server is running on :36337" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.229326768+02:00" level=info msg="actors: state store is not configured - this is okay for clients but services with hosted actors will fail to initialize!" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.2293434+02:00" level=info msg="Loading MCP servers…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.230018759+02:00" level=info msg="Waiting for all outstanding MCP servers to be processed…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.230121899+02:00" level=info msg="All outstanding MCP servers processed" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.230148741+02:00" level=info msg="application protocol: http. waiting on port 51585.  This will block until the app is listening on that port." app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.230336523+02:00" level=info msg="application discovered on port 51585" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.232219507+02:00" level=info msg="Application configuration loaded" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:03.233029421+02:00" level=info msg="dapr initialized. Status: Running. Init Elapsed 22ms" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:06.162011646+02:00" level=info msg="Received signal 'terminated'; beginning shutdown" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.signals type=log ver=1.18.2
+time="2026-10-15T20:34:06.162908154+02:00" level=info msg="stopping mDNS server for app id: tenants" app_id=tenants component="nr (mdns/v1)" instance=DESKTOP-VIOG240 scope=dapr.contrib type=log ver=1.18.2
+time="2026-10-15T20:34:06.162940516+02:00" level=info msg="Closing HTTP server [::]:52999…" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime.http type=log ver=1.18.2
+time="2026-10-15T20:34:06.16286504+02:00" level=info msg="Dapr is shutting down" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:06.163027626+02:00" level=info msg="Shutting down component pubsub (pubsub.redis/v1)" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:06.163101178+02:00" level=info msg="Dapr runtime stopped" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T20:34:06.163160984+02:00" level=info msg="Daprd shutdown gracefully" app_id=tenants instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2

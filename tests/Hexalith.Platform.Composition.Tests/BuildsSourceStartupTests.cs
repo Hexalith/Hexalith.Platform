@@ -28,6 +28,7 @@ public sealed class BuildsSourceStartupTests
             Path.Combine(root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.AppHost", "bin", "Debug", "net10.0", "Hexalith.Builds.Module.AppHost.dll"),
             typeof(CompositionEngine).Assembly.Location)
         {
+            AspireCommand = Environment.GetEnvironmentVariable("HEXALITH_ASPIRE_CLI") ?? "aspire",
             SourceMapping = mapping,
             DaprHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME"),
             StateDirectory = Path.Combine(workspace, "state"),

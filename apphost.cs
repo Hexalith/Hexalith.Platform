@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet
-#:sdk Aspire.AppHost.Sdk@13.6.0
+#:sdk Aspire.AppHost.Sdk@13.6.1
 #:property ManagePackageVersionsCentrally=false
 #:package Aspire.Hosting.Docker@13.6.1
 #:package Aspire.Hosting.Redis@13.6.1

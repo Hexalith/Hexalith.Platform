@@ -1,0 +1,33 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [FAIL]
+      Shouldly.ShouldAssertException : result.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Owned sidecars and containers removed; no leftovers.
+      Traceback (most recent call last):
+        File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 121, in <module>
+          until(lambda: request(endpoint + '/v1.0/healthz/outbound')[0] == 204, app_id + ' outbound readiness')
+          ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 47, in until
+          raise AssertionError(f'{label} did not complete in {timeout}s')
+      AssertionError: eventstore outbound readiness did not complete in 40s
+       Evidence: /tmp/story1-7-audit-security-evidence
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(96,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 42.768s

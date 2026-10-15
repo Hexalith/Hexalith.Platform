@@ -1,0 +1,11 @@
+WARNING: no application command found.
+ℹ️  Starting Dapr with id eventstore. HTTP Port: 51247. gRPC Port: 59219
+time="2026-10-15T19:23:11.113783684+02:00" level=info msg="Starting Dapr Runtime -- version 1.18.2 -- commit d2dd3747145e38e4d85db4714e26d7569c9c37db" app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:23:11.113819112+02:00" level=info msg="Log level set to: info" app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime type=log ver=1.18.2
+time="2026-10-15T19:23:11.1143227+02:00" level=info msg="Fetching initial identity" app_id=eventstore instance=DESKTOP-VIOG240 scope=dapr.runtime.security type=log ver=1.18.2
+⚠  Could not update sidecar metadata for cliPID: PUT http://127.0.0.1:51247/v1.0/metadata/cliPID giving up after 5 attempt(s): Put "http://127.0.0.1:51247/v1.0/metadata/cliPID": dial tcp 127.0.0.1:51247: connect: connection refused
+✅  You're up and running! Dapr logs will appear here.
+
+ℹ️  
+terminated signal received: shutting down
+✅  Exited Dapr successfully
