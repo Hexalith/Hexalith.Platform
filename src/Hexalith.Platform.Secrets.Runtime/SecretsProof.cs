@@ -68,7 +68,7 @@ internal static class SecretsProof
 
     public static bool Authorized(JsonObject? proof, JsonObject request, DateTimeOffset now)
         => Flag(proof, "authorized") is true && Fresh(proof, now)
-            && Text(proof, "status") is null or "authorized" or "present" or "recorded" or "absent"
+            && (proof?.ContainsKey("status") != true || Text(proof, "status") is "authorized" or "present" or "recorded" or "absent")
             && SecretsProvisioning.IsReference(Text(proof, "authorityRevision")) && Echoes(proof, request);
 
     public static bool Absent(JsonObject? proof, JsonObject request, string? authority, string queryMethod, DateTimeOffset now)

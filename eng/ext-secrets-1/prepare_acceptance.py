@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import shlex
+import subprocess
 import time
 from pathlib import Path
 
@@ -17,8 +18,21 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
         raise ValueError("detached output must be outside candidate checkout")
     if output.exists():
         raise ValueError("fresh detached output directory required")
-    config = q.read_json(configuration)
+    output.mkdir(parents=True)
+    try:
+        config = q.read_public_configuration(configuration)
+    except q.Unavailable as error:
+        report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "qualificationEffects": 0,
+                  "dependencyAvailable": False, "missingInputs": error.inputs, "packetPrepared": False}
+        (output / "blocked-inputs.json").write_bytes(q.canonical(report))
+        return report
+    # Relative public anchors are relative to their source configuration, never the later Agents command cwd.
+    for role in ("executor", "observer", "enrollment"):
+        anchor = q.get(config, f"qualification.{role}.publicAnchorFile")
+        if isinstance(anchor, str) and not Path(anchor).is_absolute():
+            config["qualification"][role]["publicAnchorFile"] = str((configuration.parent / anchor).resolve())
     missing = [name for name in q.REQUIRED if not isinstance(q.get(config, name), str) or not q.get(config, name)]
+    missing.extend(q.qualification_prerequisite_inputs(config))
     if type(q.get(config, "runtime.callTimeout")) is not int or q.get(config, "runtime.callTimeout") not in range(1, 31):
         missing.append("runtime.callTimeout")
     if config.get("schema") != q.PROTOCOL:
@@ -38,15 +52,33 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
             missing.append("CurrentProfileValidity")
     except (ValueError, TypeError):
         missing.append("CurrentProfileValidity")
-    head = q.git(root, "rev-parse", "HEAD")
-    if q.get(config, "runtime.acceptedReplacementCommit") != head:
+    head = None
+    candidate_ready = False
+    try:
+        head = q.git(root, "rev-parse", "HEAD")
+        if not q.COMMIT.fullmatch(head):
+            head = None
+            missing.append("ExactImmutableCandidateCheckout")
+        else:
+            candidate_ready = True
+            if q.git(root, "status", "--porcelain"):
+                missing.append("CleanImmutableCandidateCheckout")
+                candidate_ready = False
+    except FileNotFoundError:
+        missing.append("CandidateGitExecutable")
+        candidate_ready = False
+    except subprocess.TimeoutExpired:
+        missing.append("BoundedCandidateGitInspection")
+        candidate_ready = False
+    except (OSError, subprocess.SubprocessError):
+        missing.append("ExactImmutableCandidateCheckout")
+        candidate_ready = False
+    if q.get(config, "runtime.acceptedReplacementCommit") != head or head is None:
         missing.append("runtime.acceptedReplacementCommit")
-    if q.git(root, "status", "--porcelain"):
-        missing.append("CleanImmutableCandidateCheckout")
     anchors, decoded = {}, []
     for role in ("executor", "observer", "enrollment"):
         try:
-            data = Path(q.get(config, f"qualification.{role}.publicAnchorFile")).read_bytes()
+            data = q.read_public_anchor(q.get(config, f"qualification.{role}.publicAnchorFile"))
             decoded.append(q.public_key_identity(data))
             anchors[f"{role}AnchorSha256"] = hashlib.sha256(data).hexdigest()
         except (OSError, TypeError, ValueError, ImportError):
@@ -66,16 +98,14 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     detached_configuration = output / "runtime-reference.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && test -z "$(git -C ../platform status --porcelain)" && '
                f'env EXT_SECRETS_1_RUNTIME_CONFIGURATION={shlex.quote(str(detached_configuration))} EXT_SECRETS_1_ACCEPTANCE_PACKET={shlex.quote(str(packet_path))} '
-               f'pwsh -NoProfile -File ../platform/eng/verify-ext-secrets-1.ps1 -Mode Live -EventStoreSourceRoot {shlex.quote(eventstore)} '
-               f'-ArtifactsDirectory {shlex.quote(artifacts)} -EvidenceDirectory {shlex.quote(evidence)}')
+               + q.command_suffix(eventstore, artifacts, evidence))
     packet = {"schema": "EXT-SECRETS-1.replacement-acceptance.v2", "candidateCommit": head,
               "acceptedReplacementCommit": None, "dependencyAvailable": False, "liveCompatibilityAuthorized": False,
               "productionMutationAllowed": False, "ownerAcceptanceRequired": True, **binding,
               "publicAnchorSha256": q.digest(anchors), "RuntimeQualificationBinding": binding, "exactCommand": command}
-    output.mkdir(parents=True)
     report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "candidateCommit": head,
               "qualificationEffects": 0, "dependencyAvailable": False, "missingInputs": sorted(set(missing)),
-              "packetPrepared": "CleanImmutableCandidateCheckout" not in missing}
+              "packetPrepared": candidate_ready}
     (output / "blocked-inputs.json").write_bytes(q.canonical(report))
     if report["packetPrepared"]:
         packet_path.write_bytes(q.canonical(packet))

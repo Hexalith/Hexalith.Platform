@@ -108,7 +108,7 @@ public sealed class DaprInventoryAuthorityAdapter(SecretsRuntimeConfiguration co
         body = new JsonObject();
         if (transition is null || !SecretsProvisioning.IsReference(transition.ScopeId) || !SecretsProvisioning.IsReference(transition.PredecessorDigest)
             || !SecretsProvisioning.IsReference(transition.TargetDigest) || transition.TargetBytes is not { Length: > 0 and <= 524288 }
-            || transition.ExpectedRevision < 0 || transition.TargetRevision != transition.ExpectedRevision + 1
+            || transition.ExpectedRevision < 0 || transition.ExpectedRevision == long.MaxValue || transition.TargetRevision != transition.ExpectedRevision + 1
             || !string.Equals(transition.TargetDigest, Convert.ToHexString(SHA256.HashData(transition.TargetBytes)), StringComparison.OrdinalIgnoreCase)) { return false; }
         body["scopeId"] = transition.ScopeId;
         body["expectedRevision"] = transition.ExpectedRevision;

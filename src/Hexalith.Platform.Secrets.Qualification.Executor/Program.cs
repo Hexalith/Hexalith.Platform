@@ -5,16 +5,14 @@ var builder = WebApplication.CreateBuilder(args);
 // No production provider or credential is inferred from a configuration reference.
 var app = builder.Build();
 SecretsRuntimeConfiguration configuration = args.Length > 0 ? SecretsRuntimeConfiguration.Load(args[0]) ?? new SecretsRuntimeConfiguration() : new SecretsRuntimeConfiguration();
-app.MapPost("/ext-secrets-1/v1/execute", (HttpRequest request, IServiceProvider services, CancellationToken cancellation) => Handle("execute", request, services, cancellation));
-app.MapPost("/ext-secrets-1/v1/lookup", (HttpRequest request, IServiceProvider services, CancellationToken cancellation) => Handle("lookup", request, services, cancellation));
+app.MapPost("/ext-secrets-1/v1/execute", (HttpContext context, IServiceProvider services, CancellationToken cancellation) => Handle("execute", context, services, cancellation));
+app.MapPost("/ext-secrets-1/v1/lookup", (HttpContext context, IServiceProvider services, CancellationToken cancellation) => Handle("lookup", context, services, cancellation));
 app.Run();
 
-async Task<IResult> Handle(string operation, HttpRequest request, IServiceProvider services, CancellationToken cancellation)
+async Task<IResult> Handle(string operation, HttpContext context, IServiceProvider services, CancellationToken cancellation)
 {
-    using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellation);
-    budget.CancelAfter(TimeSpan.FromSeconds(30));
-    var original = await QualificationHost.ReadRequestAsync(request.Body, budget.Token);
-    QualificationHostResult result = await QualificationHost.HandleAsync("executor", operation, configuration, original,
-        services.GetService<IQualificationExecutorProvider>(), services.GetService<IQualificationOriginalStore>(), services.GetService<IQualificationPublicProofVerifier>(), budget.Token);
+    QualificationHostResult result = await QualificationHttpHost.HandleAsync("executor", operation, configuration, context,
+        builder.Configuration["APP_API_TOKEN"], services.GetService<IQualificationCallerAuthenticator>(),
+        services.GetService<IQualificationExecutorProvider>(), services.GetService<IQualificationOriginalStore>(), services.GetService<IQualificationPublicProofVerifier>(), cancellation);
     return Results.Text(result.Body.ToJsonString(), "application/json", statusCode: result.StatusCode);
 }

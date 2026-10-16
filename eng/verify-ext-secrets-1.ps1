@@ -101,7 +101,7 @@ $runtimeExecuted = @($runtimeResults.SelectNodes('//test'))
 if ($null -eq $runtimeAssembly -or [int]$runtimeAssembly.total -le 0 -or [int]$runtimeAssembly.passed -ne [int]$runtimeAssembly.total -or [int]$runtimeAssembly.failed -ne 0 -or [int]$runtimeAssembly.errors -ne 0 -or [int]$runtimeAssembly.skipped -ne 0 -or [int]$runtimeAssembly.'not-run' -ne 0 -or $runtimeExecuted.Count -ne [int]$runtimeAssembly.total -or @($runtimeExecuted | Where-Object { $_.result -ne 'Pass' }).Count -ne 0) {
     throw 'Local runtime/host XML contains missing, failed, skipped or unrun tests.'
 }
-foreach ($class in @('Hexalith.Platform.Secrets.Runtime.Tests.SecretsRuntimeAdapterTests', 'Hexalith.Platform.Secrets.Runtime.Tests.SecretsAuthorityFailureTests', 'Hexalith.Platform.Secrets.Runtime.Tests.QualificationHostTests')) {
+foreach ($class in @('Hexalith.Platform.Secrets.Runtime.Tests.SecretsRuntimeAdapterTests', 'Hexalith.Platform.Secrets.Runtime.Tests.SecretsAuthorityFailureTests', 'Hexalith.Platform.Secrets.Runtime.Tests.QualificationHostTests', 'Hexalith.Platform.Secrets.Runtime.Tests.ObserverJournalDurabilityTests')) {
     if (@($runtimeExecuted | Where-Object { $_.type -eq $class }).Count -eq 0) { throw "Required runtime/host class did not execute: $class" }
 }
 $pythonLog = Join-Path $EvidenceDirectory 'python-tests.log'

@@ -9,7 +9,7 @@ public interface IQualificationRoleProvider
     string Role { get; }
 
     /// <summary>Checks current accepted target/configuration/plan/anchors, authenticated caller, isolated scope and all required owner ACLs.</summary>
-    Task<bool> AuthorizeAsync(JsonObject request, CancellationToken cancellationToken);
+    Task<bool> AuthorizeAsync(JsonObject request, QualificationCallerContext caller, CancellationToken cancellationToken);
 
     /// <summary>Reads actual owner results and returns the independently signed public protocol envelope. Expected outcomes are never supplied.</summary>
     Task<JsonObject?> InvokeAsync(string operation, JsonObject original, CancellationToken cancellationToken);
@@ -49,40 +49,42 @@ public static class QualificationHost
 
     /// <summary>Runs one admitted isolated operation; repeat and uncertain execution always use exact lookup.</summary>
     public static async Task<QualificationHostResult> HandleAsync(string role, string operation, SecretsRuntimeConfiguration configuration,
-        JsonObject? request, IQualificationRoleProvider? provider, IQualificationOriginalStore? store, IQualificationPublicProofVerifier? verifier, CancellationToken cancellationToken)
+        JsonObject? request, IQualificationRoleProvider? provider, IQualificationOriginalStore? store, IQualificationPublicProofVerifier? verifier, CancellationToken cancellationToken, QualificationCallerContext? caller = null)
     {
         var missing = QualificationDenial.Evaluate(configuration).MissingInputs.ToList();
+        if (caller is null || !SecretsProvisioning.IsReference(caller.Identity) || !SecretsProvisioning.IsReference(caller.ScopeReference)) { missing.Add($"qualification.{role}.authenticatedCallerScope"); }
         if (provider is null || provider.Role != role) { missing.Add($"qualification.{role}.installedProviderSignerAndScopeAuthority"); }
         if (store is null) { missing.Add($"qualification.{role}.independentDurableOriginalStore"); }
         if (verifier is null) { missing.Add($"qualification.{role}.acceptedPublicProofVerifier"); }
         if (configuration.CallTimeout is not { } timeout || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30)) { missing.Add("runtime.callTimeout"); }
         if (missing.Count > 0) { return Deny(missing); }
-        string? id = SecretsProof.Text(request, "requestId");
-        if (request is null || id is null || id.Length != 64 || id.Any(c => !char.IsAsciiHexDigitLower(c))
-            || !SecretsProof.SameText(request, "protocol", "EXT-SECRETS-1.qualification.v1")
-            || !SecretsProof.SameText(request, "targetCommit", configuration.AcceptedReplacementCommit)
-            || !SecretsProvisioning.IsReference(SecretsProof.Text(request, "isolatedTargetId"))
-            || !SecretsProvisioning.IsReference(SecretsProof.Text(request, "planSha256"))
-            || !SecretsProvisioning.IsReference(SecretsProof.Text(request, "runId"))) { return Deny(["ExactAcceptedIsolatedOriginalRequest"]); }
-        if (role is not ("executor" or "observer" or "enrollment") || operation != (role switch { "observer" => "observe", "enrollment" => "enroll", _ => operation })
-            || role == "executor" && operation is not ("execute" or "lookup")) { return Deny(["EnrolledRoleOperation"]); }
+        if (request is null || SecretsProof.Parse(request.ToJsonString()) is not { } original
+            || !SecretsProof.SameText(original, "targetCommit", configuration.AcceptedReplacementCommit)
+            || !QualificationProtocolSchema.ValidRequest(role, operation, original)) { return Deny(["ExactAcceptedIsolatedOriginalRequest"]); }
+        request = original;
+        string id = SecretsProof.Text(request, "requestId")!;
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         budget.CancelAfter(configuration.CallTimeout ?? TimeSpan.FromSeconds(30));
-        bool executionStarted = false;
+        bool executionUncertain = role == "executor";
         try
         {
-            if (!await provider!.AuthorizeAsync((JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false))
-            { return Deny(["IndependentCurrentAcceptedBindingAndIsolatedScope"]); }
+            // Construct the closed provider shape; client expectations stay only in the durable original.
+            var ownerRequest = new JsonObject();
+            foreach (string field in (role == "enrollment"
+                ? "protocol runId targetCommit isolatedTargetId planSha256 requestId operation"
+                : "protocol runId targetCommit isolatedTargetId planSha256 requestId caseId caseTargetId enrolledScope").Split(' '))
+            { ownerRequest[field] = request[field]!.DeepClone(); }
+            if (!await provider!.AuthorizeAsync((JsonObject)ownerRequest.DeepClone(), caller!, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false))
+            { return Deny(["IndependentCurrentAcceptedBindingAndIsolatedScope"], executionUncertain); }
             // Keep the complete original for cross-restart identity checks, including a lost result.
+            // An existing or failed original publication may follow an applied predecessor.
+            // From this boundary onward only exact lookup can resolve executor uncertainty.
+            executionUncertain = role == "executor";
             bool first = await store!.BeginAsync(role, id, (JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             string effectiveOperation = role == "executor" && (!first || operation == "lookup") ? "lookup" : operation;
-            var ownerRequest = (JsonObject)request.DeepClone();
-            // Test expectations are client assertions. Providers resolve caseId to the installed actual procedure.
-            ownerRequest.Remove("scenario");
-            executionStarted = role == "executor" && effectiveOperation == "execute";
             JsonObject? result = await provider.InvokeAsync(effectiveOperation, ownerRequest, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
-            if (result is null || SecretsProof.Parse(result.ToJsonString()) is null || !verifier!.Verify(role, request, result))
-            { return Deny(["ExactOriginalOwnerResultAndIndependentSignature"], executionStarted); }
+            if (result is null || SecretsProof.Parse(result.ToJsonString()) is null || !verifier!.Verify(role, request, result, budget.Token))
+            { return Deny(["ExactOriginalOwnerResultAndIndependentSignature"], executionUncertain); }
             var stable = (JsonObject)result["payload"]!.DeepClone();
             stable.Remove("observedAt");
             stable.Remove("validUntil");
@@ -90,10 +92,10 @@ public static class QualificationHost
             return new QualificationHostResult(200, result);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
-        catch (Exception) { return Deny(["ExactOriginalLookupRequired"], executionStarted); }
+        catch (Exception) { return Deny(["ExactOriginalLookupRequired"], executionUncertain); }
     }
 
-    private static QualificationHostResult Deny(IEnumerable<string> missing, bool executionStarted = false)
+    internal static QualificationHostResult Deny(IEnumerable<string> missing, bool executionStarted = false)
         => new(503, new JsonObject
         {
             ["code"] = "DependencyNotAvailable", ["dependency"] = "EXT-SECRETS-1",

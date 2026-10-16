@@ -1,0 +1,3984 @@
+{
+  "planSha256": "16dd493ff0414fea13be95f137d372e54088881550665aa3239a5814a9e862ed",
+  "cases": [
+    {
+      "id": "S1.exact-provider-credential",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.TenantKek",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.ContentDigest",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.SecurityObservation",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.ExportEnvelope",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.ManifestSigning",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.TrustedEnvelope",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.MigrationEpoch",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.DirectoryEffect",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.inventory.DeletionBatchCapability",
+      "metrics": [
+        "allCopyRevival",
+        "exactReferenceCount",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "independentlyCurrentInventory",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Resolved"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.missing-config",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.missing-reference",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.denied",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.cross-tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.wrong-purpose",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.wrong-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.stale-inventory",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.revoked",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.changed-authority",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.outage",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.reject.unexpected-key-response",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.rotation-invalidation",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "retainedDigestVerifiers",
+        "staleSafetyVerdicts"
+      ],
+      "outcomes": [
+        "Invalidated"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.independent-role.Product",
+      "metrics": [
+        "allCopyRevival",
+        "currentActorRoleEvidence",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.independent-role.Governance",
+      "metrics": [
+        "allCopyRevival",
+        "currentActorRoleEvidence",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.independent-role.Security",
+      "metrics": [
+        "allCopyRevival",
+        "currentActorRoleEvidence",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.independent-role.Architecture",
+      "metrics": [
+        "allCopyRevival",
+        "currentActorRoleEvidence",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.independent-role.Maintainer",
+      "metrics": [
+        "allCopyRevival",
+        "currentActorRoleEvidence",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.approval-prohibited.recorder",
+      "metrics": [
+        "allCopyRevival",
+        "approvalRequests",
+        "approvalSignatures",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.approval-prohibited.custodian",
+      "metrics": [
+        "allCopyRevival",
+        "approvalRequests",
+        "approvalSignatures",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.approval-prohibited.workflow",
+      "metrics": [
+        "allCopyRevival",
+        "approvalRequests",
+        "approvalSignatures",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S1.approval-prohibited.revocation-registrar",
+      "metrics": [
+        "allCopyRevival",
+        "approvalRequests",
+        "approvalSignatures",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.canonical-hmac",
+      "metrics": [
+        "allCopyRevival",
+        "constantTimeVerification",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.issuer",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.audience",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.operation",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.principal",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.actor",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.binding",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.roles",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.target",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.schema",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.logical-id",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.tuple",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.fingerprint",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.digest-key-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.nonce",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.issued-at",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.expires-at",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.substitution.key-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.expiry.before",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "S2.expiry.at",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Expired"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "S2.expiry.after",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Expired"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "S2.future-skew",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.maximum-lifetime",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.overlap-before",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "retainedEnvelopeVerifier"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.overlap-at",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.overlap-after",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.retained-digest",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "retainedDigestVerifiers"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.byte-identical-replay",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "nonceRecords",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "DomainIdempotent"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-reject.changed-fields",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-reject.cross-tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-reject.foreign-issuer",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-reject.public-registrar",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-reject.workflow-registrar",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-reject.target-handler-registrar",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-exact-stream-acl",
+      "metrics": [
+        "allCopyRevival",
+        "exactReplayStreamWrites",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "otherEventWrites",
+        "otherStreamWrites",
+        "persistedProofCount",
+        "reservedSystemNamespace"
+      ],
+      "outcomes": [
+        "Recorded"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.replay-retention-recovery",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "persistedProofCount",
+        "renewedFirstSeen",
+        "replayRetentionSeconds"
+      ],
+      "outcomes": [
+        "Recorded"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S2.emergency-redispatch",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableLogicalId",
+        "immutableOutcome",
+        "leakCount",
+        "newKeyAndNonce",
+        "persistedProofCount",
+        "revokedEffects"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.aes256gcm",
+      "metrics": [
+        "allCopyRevival",
+        "authenticatedWrap",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "ownedPlaintextCleared",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.es256-offline-anchor",
+      "metrics": [
+        "allCopyRevival",
+        "detachedEs256",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "publicAnchorRetained"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.ciphertext",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.tag",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.export",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.purpose",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.jws-header",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.crypto-substitution.public-anchor",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.lifecycle.wrap",
+      "metrics": [
+        "allCopyRevival",
+        "currentLifecycleReservation",
+        "exactReceipts",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Completed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.lifecycle.unwrap",
+      "metrics": [
+        "allCopyRevival",
+        "currentLifecycleReservation",
+        "exactReceipts",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Completed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.lifecycle.pin",
+      "metrics": [
+        "allCopyRevival",
+        "currentLifecycleReservation",
+        "exactReceipts",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Completed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.lifecycle.unpin",
+      "metrics": [
+        "allCopyRevival",
+        "currentLifecycleReservation",
+        "exactReceipts",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Completed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.lifecycle.destroy",
+      "metrics": [
+        "allCopyRevival",
+        "currentLifecycleReservation",
+        "exactReceipts",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Completed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.all-copy-destroy-restore",
+      "metrics": [
+        "allCopiesDestroyed",
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "nonrollbackJournal",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Erased"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.hold-pin",
+      "metrics": [
+        "allCopyRevival",
+        "destroyedTargets",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "retainedPins"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.open-export-disposition",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDisposition",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Blocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.principal-direct-delivery",
+      "metrics": [
+        "allCopyRevival",
+        "directPrincipalRelease",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Delivered"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.delivery-id",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.export-id",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.ack-revision",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.requester",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.purpose",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.audience",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.expiry",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.lifecycle-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.store-target",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-substitution.contract-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.delivery-expiry.before",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableDeliveredAt",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "renewedExpiry"
+      ],
+      "outcomes": [
+        "NotDelivered"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "S3.delivery-expiry.at",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableDeliveredAt",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "renewedExpiry"
+      ],
+      "outcomes": [
+        "NotDelivered"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "S3.delivery-expiry.after",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableDeliveredAt",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "renewedExpiry"
+      ],
+      "outcomes": [
+        "Delivered"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "S3.delivery-actor-revocation.before",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableDeliveredAt",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "renewedExpiry"
+      ],
+      "outcomes": [
+        "NotDelivered"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "S3.delivery-actor-revocation.at",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableDeliveredAt",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "renewedExpiry"
+      ],
+      "outcomes": [
+        "NotDelivered",
+        "Delivered"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "S3.delivery-actor-revocation.after",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableDeliveredAt",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "renewedExpiry"
+      ],
+      "outcomes": [
+        "Delivered"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "Recovery.lifecycle.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Destroyed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.lifecycle.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.delivery.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Delivered"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.delivery.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.signing.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Signed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.signing.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.replay.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Recorded"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.replay.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.consume.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Consumed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.consume.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.compromise-block.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "ConsumptionBlocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.compromise-block.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.activation.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unconsumed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.activation.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.guard-issue.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Issued"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.guard-issue.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.dispatch.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "DeletionBatchDispatchAuthorized"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.dispatch.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.completion.lost-result",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOriginalOutcome",
+        "immutableOriginalRequest",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "CompletionSealed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "Recovery.completion.lookup-outage",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "lookupOnly",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.missing-approvers",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.predecessor",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.contract",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.affected-evaluations",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.actor-roles",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.expired",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.revoked",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.decision-reject.foreign-anchor",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S3.exact-independent-decision",
+      "metrics": [
+        "allCopyRevival",
+        "exactIndependentDecision",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.interaction-create.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.interaction-create.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.interaction-create.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.failure-create.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.failure-create.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.failure-create.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.content-append.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.content-append.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.content-append.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.directory-permit.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.directory-permit.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.directory-permit.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.user-action-intent.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.user-action-intent.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.user-action-intent.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.lease-acquire.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.lease-acquire.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.lease-acquire.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.lease-commit.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.lease-commit.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.lease-commit.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.rate.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.rate.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.rate.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.open.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.open.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.open.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.budget.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.budget.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.budget.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.capacity.stale",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.capacity.disconnected",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration.capacity.restored",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "legacyEpochWrites",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.migration-successor-preservation",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "oldBridgeWrites",
+        "persistedProofCount",
+        "retainedMigrationFacts"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-canonical-14-fields",
+      "metrics": [
+        "allCopyRevival",
+        "canonicalFieldCount",
+        "capabilityExpiryFields",
+        "detachedEs256",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "successfulRevisionInSignedBytes"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.issuer",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.audience",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.request",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.seal",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.kind",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.ordinal",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.batch",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.manifest",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.guard",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.intended-revision",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.attestation",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.signing-attempt",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.key-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.capability-substitution.header",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "S4.routine-rotation-retention",
+      "metrics": [
+        "allCopyRevival",
+        "capabilityExpiryFields",
+        "currentHealthyIssuance",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "publicAnchorRetained"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.two-consecutive-stale-signing-attempts",
+      "metrics": [
+        "activeCredentials",
+        "actualIssueRevisionSeparate",
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "obsoleteUnissuedAttempts",
+        "persistedProofCount",
+        "signingAttempts",
+        "stableSealBatchManifest"
+      ],
+      "outcomes": [
+        "Issued"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.stale-attempt-with-rotation",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "currentHealthyIssuance",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "obsoleteUnissuedAttempts",
+        "persistedProofCount",
+        "signingAttempts",
+        "stableSealBatchManifest"
+      ],
+      "outcomes": [
+        "Issued"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.unknown-sign-or-issue",
+      "metrics": [
+        "allCopyRevival",
+        "blindRetries",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.exact-no-issue-proof",
+      "metrics": [
+        "allCopyRevival",
+        "exactNoIssueProof",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "ObsoleteUnissued"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.issuer",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.audience",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.family",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.key-version",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.revocation-revision",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.trust-revision",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.event-id",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-envelope-substitution.signature-digest",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-private-isolation",
+      "metrics": [
+        "allCopyRevival",
+        "approvalRequests",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "publicRegistrarAccess",
+        "targetHandlerRegistrarAccess",
+        "workflowRegistrarAccess"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.compromise-complete-enumeration",
+      "metrics": [
+        "allCopyRevival",
+        "completeAffectedBatchEnumeration",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Blocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.incomplete-enumeration",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Unknown"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.admission-integrity-block-reserve.before",
+      "metrics": [
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "immutableReservation",
+        "leakCount",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "v23.admission-integrity-block-reserve.at",
+      "metrics": [
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "immutableReservation",
+        "leakCount",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Consumed"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "v23.admission-integrity-block-reserve.after",
+      "metrics": [
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "immutableReservation",
+        "leakCount",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Consumed"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "v23.key-compromise-reserve.before",
+      "metrics": [
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "immutableReservation",
+        "leakCount",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "v23.key-compromise-reserve.at",
+      "metrics": [
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "immutableReservation",
+        "leakCount",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Consumed"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "v23.key-compromise-reserve.after",
+      "metrics": [
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "immutableReservation",
+        "leakCount",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Consumed"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "v23.second-compromise.before-replacement",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "exactNewKeyBlockReceipt",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "replacementKeyEffects"
+      ],
+      "outcomes": [
+        "ActivationBlocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.second-compromise.before-dispatch",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "exactNewKeyBlockReceipt",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "replacementKeyEffects"
+      ],
+      "outcomes": [
+        "ActivationBlocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.second-compromise.before-activation",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "exactNewKeyBlockReceipt",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "replacementKeyEffects"
+      ],
+      "outcomes": [
+        "ActivationBlocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.second-compromise.at-activation",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "exactNewKeyBlockReceipt",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "replacementKeyEffects"
+      ],
+      "outcomes": [
+        "ActivationBlocked",
+        "BlockedAfterActivation"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "v23.second-compromise.after-activation-before-reserve",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "exactNewKeyBlockReceipt",
+        "foreignEffects",
+        "globalKeyBlock",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount",
+        "replacementKeyEffects"
+      ],
+      "outcomes": [
+        "BlockedAfterActivation"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.same-batch-reattest",
+      "metrics": [
+        "activeCredentials",
+        "allCopyRevival",
+        "atomicAllOrNone",
+        "capabilityCompromiseBlockProof",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "nextAttestationOrdinal",
+        "persistedProofCount",
+        "stableSealBatchManifest",
+        "successorDispatchProof"
+      ],
+      "outcomes": [
+        "Consumed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.admission-block-never-reopens",
+      "metrics": [
+        "activations",
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Blocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.activation-substitution.tenant",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.activation-substitution.key",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.activation-substitution.attestation",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.activation-substitution.dispatch",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.activation-substitution.block-set-revision",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.activation-substitution.block-receipt",
+      "metrics": [
+        "allCopyRevival",
+        "forbiddenEffects",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Denied"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.no-false-replacement",
+      "metrics": [
+        "activations",
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "newEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "Blocked"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.same-alias-coverage",
+      "metrics": [
+        "allCopyRevival",
+        "duplicateTargetBatches",
+        "exactOriginalReceipt",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "originalEffects",
+        "persistedProofCount"
+      ],
+      "outcomes": [
+        "AlreadyDestroyed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.delayed-nonexpiring-restore",
+      "metrics": [
+        "allCopyRevival",
+        "capabilityExpiryFields",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "originalEffects",
+        "persistedProofCount",
+        "publicAnchorRetained",
+        "restoredIdentityUnchanged"
+      ],
+      "outcomes": [
+        "Consumed"
+      ],
+      "boundary": "none"
+    },
+    {
+      "id": "v23.hold-dispatch.before",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "v23.hold-dispatch.at",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "v23.hold-dispatch.after",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "v23.compromise-dispatch.before",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "v23.compromise-dispatch.at",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "v23.compromise-dispatch.after",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "v23.guard-mutation-completion.before",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "before"
+    },
+    {
+      "id": "v23.guard-mutation-completion.at",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "at"
+    },
+    {
+      "id": "v23.guard-mutation-completion.after",
+      "metrics": [
+        "allCopyRevival",
+        "exactLinearizationOrder",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "openProductDispositionEffects",
+        "persistedProofCount",
+        "raceWinners"
+      ],
+      "outcomes": [
+        "Blocked",
+        "Completed"
+      ],
+      "boundary": "after"
+    },
+    {
+      "id": "Leakage.all-surfaces",
+      "metrics": [
+        "allCopyRevival",
+        "foreignEffects",
+        "immutableIdentity",
+        "immutableOutcome",
+        "leakCount",
+        "ownedPlaintextCleared",
+        "persistedProofCount",
+        "scannedEvents",
+        "scannedEvidence",
+        "scannedLogs",
+        "scannedProjections",
+        "scannedResponses",
+        "scannedTraces"
+      ],
+      "outcomes": [
+        "Verified"
+      ],
+      "boundary": "none"
+    }
+  ]
+}

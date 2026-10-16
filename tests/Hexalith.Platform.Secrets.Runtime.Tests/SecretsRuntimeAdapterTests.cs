@@ -246,20 +246,24 @@ public sealed class SecretsRuntimeAdapterTests
     {
         var adapter = new DaprSigningProviderAdapter(_configuration, _invoker, _clock);
         DeletionBatchCapabilityV1 payload = Payload();
-        _invoker.Reply = (_, method, body, _) => method == "query-sign" ? Absent(body, "signer-app", method) : SignedProof(body);
+        _invoker.Reply = (_, method, body, _) => method == "query-sign" ? Absent(body, "signer-app", method) : SignedProof();
         DeletionCapabilitySigningResult signed = await adapter.SignAsync(payload, "request-1", TestContext.Current.CancellationToken);
         signed.Outcome.State.ShouldBe(DeletionCapabilitySigningState.Signed);
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-sign", "effect-sign"]);
         _invoker.Calls[1].Body.ShouldContain("capabilityDigest");
         _invoker.Calls[1].Body.ShouldContain("request-1");
 
-        string echoed = _invoker.Calls[1].Body;
+        JsonObject transmitted = (JsonObject)JsonNode.Parse(_invoker.Calls[1].Body)!;
+        byte[] actualCanonical = Convert.FromBase64String(transmitted["canonicalPayload"]!.GetValue<string>());
+        actualCanonical.ShouldBe(Encoding.UTF8.GetBytes(GoldenCanonicalSigningPayload));
+        Convert.ToHexString(SHA256.HashData(actualCanonical)).ToLowerInvariant().ShouldBe(GoldenSigningDigest);
+        transmitted["capabilityDigest"]!.GetValue<string>().ShouldBe(GoldenSigningDigest);
         _invoker.Calls.Clear();
-        _invoker.Reply = (_, _, _, _) => SignedProof(echoed);
+        _invoker.Reply = (_, _, _, _) => SignedProof();
         (await adapter.SignAsync(payload, "request-1", TestContext.Current.CancellationToken)).Outcome.State.ShouldBe(DeletionCapabilitySigningState.Signed);
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-sign"]);
 
-        _invoker.Reply = (_, _, body, _) => SignedProof(body).Replace("request-1", "other", StringComparison.Ordinal);
+        _invoker.Reply = (_, _, body, _) => SignedProof().Replace("request-1", "other", StringComparison.Ordinal);
         (await adapter.SignAsync(payload, "request-1", TestContext.Current.CancellationToken)).Outcome.State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
     }
 
@@ -435,19 +439,14 @@ public sealed class SecretsRuntimeAdapterTests
         return node.ToJsonString();
     }
 
-    private static string SignedProof(string body)
-    {
-        JsonNode? node = JsonNode.Parse(body);
-        node!["state"] = "Signed";
-        node["detachedJws"] = "detached";
-        node["originalIssuanceReceiptId"] = "original-1";
-        node["publicAnchorId"] = "anchor";
-        node["publicAnchorVersion"] = "1";
-        node["subjectPublicKeyInfo"] = "AQ==";
-        node["observedAt"] = Fixtures.Now.ToString("O");
-        node["validUntil"] = Fixtures.Now.AddSeconds(21).ToString("O");
-        return node.ToJsonString();
-    }
+    private const string GoldenCanonicalSigningPayload = """{"AttestationOrdinal":1,"Audience":"audience","BatchId":"batch-1","BatchKind":"batch","BatchOrdinal":1,"CapabilityKeyVersion":"k1","DeletionRequestId":"deletion","DestructionSealId":"seal","GuardStreamId":"guard","IntendedIssuedGuardRevision":1,"Issuer":"issuer","ManifestDigest":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","SigningAttemptOrdinal":1,"TenantId":"tenant-a"}""";
+    private const string GoldenSigningDigest = "7a197c5e17dd978c8b81cd6ad1e2fd447a01e2d51c15a76ffdf09e4a7c7a411b";
+    private const string GoldenCanonicalSigningBase64 = "eyJBdHRlc3RhdGlvbk9yZGluYWwiOjEsIkF1ZGllbmNlIjoiYXVkaWVuY2UiLCJCYXRjaElkIjoiYmF0Y2gtMSIsIkJhdGNoS2luZCI6ImJhdGNoIiwiQmF0Y2hPcmRpbmFsIjoxLCJDYXBhYmlsaXR5S2V5VmVyc2lvbiI6ImsxIiwiRGVsZXRpb25SZXF1ZXN0SWQiOiJkZWxldGlvbiIsIkRlc3RydWN0aW9uU2VhbElkIjoic2VhbCIsIkd1YXJkU3RyZWFtSWQiOiJndWFyZCIsIkludGVuZGVkSXNzdWVkR3VhcmRSZXZpc2lvbiI6MSwiSXNzdWVyIjoiaXNzdWVyIiwiTWFuaWZlc3REaWdlc3QiOiJkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkIiwiU2lnbmluZ0F0dGVtcHRPcmRpbmFsIjoxLCJUZW5hbnRJZCI6InRlbmFudC1hIn0=";
+
+    // Fixed signer response binds the independent canonical vector; no adapter request fields are echoed.
+    private static string SignedProof() => $$$"""
+        {"tenantId":"tenant-a","signingRequestId":"request-1","keyVersion":"k1","capabilityDigest":"{{{GoldenSigningDigest}}}","canonicalPayload":"{{{GoldenCanonicalSigningBase64}}}","state":"Signed","detachedJws":"detached","originalIssuanceReceiptId":"original-1","publicAnchorId":"anchor","publicAnchorVersion":"1","subjectPublicKeyInfo":"AQ==","observedAt":"{{{Fixtures.Now:O}}}","validUntil":"{{{Fixtures.Now.AddSeconds(21):O}}}"}
+        """;
 
     private static string CompromiseProof(string body, string batches)
     {

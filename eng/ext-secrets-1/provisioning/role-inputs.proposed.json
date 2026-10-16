@@ -19,7 +19,10 @@
       "acceptedBindingReference": null,
       "isolatedScopeAuthorityReference": null,
       "storageClassReference": null,
-      "retentionPolicyReference": null
+      "retentionPolicyReference": null,
+      "appChannelCredentialReference": null,
+      "callerAuthenticatorReference": null,
+      "callerScopeAuthorityReference": null
     },
     "observer": {
       "appId": null,
@@ -35,7 +38,10 @@
       "acceptedBindingReference": null,
       "isolatedScopeAuthorityReference": null,
       "storageClassReference": null,
-      "retentionPolicyReference": null
+      "retentionPolicyReference": null,
+      "appChannelCredentialReference": null,
+      "callerAuthenticatorReference": null,
+      "callerScopeAuthorityReference": null
     },
     "enrollment": {
       "appId": null,
@@ -51,7 +57,10 @@
       "acceptedBindingReference": null,
       "isolatedScopeAuthorityReference": null,
       "storageClassReference": null,
-      "retentionPolicyReference": null
+      "retentionPolicyReference": null,
+      "appChannelCredentialReference": null,
+      "callerAuthenticatorReference": null,
+      "callerScopeAuthorityReference": null
     }
   },
   "requirements": {
@@ -61,6 +70,9 @@
     "executorCannotAuthorObserverOrEnrollmentProofs": true,
     "decisionPrivateKeysOutsidePlatformAndAgents": true,
     "operatorAndMemoriesCredentialsForbidden": true,
-    "localVolumesDoNotQualifyNonrollbackOrAllCopy": true
+    "localVolumesDoNotQualifyNonrollbackOrAllCopy": true,
+    "separateRoleAppChannelAndDaprApiTokens": true,
+    "appChannelTokenDoesNotEstablishWorkloadIdentity": true,
+    "authenticatedCallerScopeRequiredBeforeProviderAuthorization": true
   }
 }

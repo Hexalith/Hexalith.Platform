@@ -17,7 +17,7 @@ public sealed class DaprDecisionAuthorityAdapter(SecretsRuntimeConfiguration con
         JsonObject body = Basis(expected, signingKeyVersion);
         JsonObject? proof = (await _session.CallAsync(configuration.ActorRoleAuthorityReference, "runtime.actorRoleAuthorityReference", "query-decision-profile",
             body, cancellationToken).ConfigureAwait(false)).Proof;
-        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow()) || SecretsProof.Flag(proof, "isRevoked") is not false
+        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow()) || SecretsProof.SameText(proof, "status", "absent") || SecretsProof.Flag(proof, "isRevoked") is not false
             || SecretsProof.Flag(proof, "isIndependentlyGoverned") is not true) { return null; }
         long? lifetimeSeconds = SecretsProof.Integer(proof, "maximumManifestLifetimeSeconds");
         long? revision = SecretsProof.Integer(proof, "profileRevision");

@@ -19,6 +19,7 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/config: ${OWNER_ENROLLMENT_DAPR_ACL}
         dapr.io/api-token-secret: ${OWNER_ENROLLMENT_DAPR_TOKEN_SECRET}
+        dapr.io/app-token-secret: ${OWNER_ENROLLMENT_APP_CHANNEL_TOKEN_SECRET}
     spec:
       serviceAccountName: ${OWNER_ENROLLMENT_SERVICE_ACCOUNT}
       automountServiceAccountToken: false
@@ -27,6 +28,12 @@ spec:
           image: ${OWNER_ENROLLMENT_IMAGE_DIGEST}
           args: ["/references/runtime.json"]
           env:
+            # Separate role secret shared only by this app and its own sidecar.
+            - name: APP_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ${OWNER_ENROLLMENT_APP_CHANNEL_TOKEN_SECRET}
+                  key: token
             - name: ASPNETCORE_URLS
               value: http://+:8080
           securityContext:
@@ -87,6 +94,8 @@ spec:
             httpVerb: [POST]
             action: allow
 ---
+# APP_API_TOKEN proves only the sidecar channel. The independently composed caller authenticator
+# must verify workload credentials and current scope before either provider call.
 # Default isolation. Owner supplies explicit Dapr/owner-read/storage DNS and network allow rules.
 # This deny policy alone leaves the workload deliberately unavailable.
 apiVersion: networking.k8s.io/v1

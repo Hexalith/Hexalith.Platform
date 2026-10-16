@@ -58,7 +58,7 @@ public sealed class DaprRevocationAuthenticatorAdapter(SecretsRuntimeConfigurati
             ["evidenceDigest"] = evidenceDigest,
         };
         JsonObject? proof = (await _session.CallAsync(configuration.CurrentRevocationReference, "runtime.currentRevocationReference", "query-revocation", body, cancellationToken).ConfigureAwait(false)).Proof;
-        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow())) { return null; }
+        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow()) || SecretsProof.SameText(proof, "status", "absent")) { return null; }
         DateTimeOffset? observedAt = SecretsProof.Instant(proof, "observedAt");
         DateTimeOffset? validUntil = SecretsProof.Instant(proof, "validUntil");
         DateTimeOffset now = _session.Clock.GetUtcNow();

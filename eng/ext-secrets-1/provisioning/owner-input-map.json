@@ -211,6 +211,51 @@
       "input": "roles.enrollment.retentionPolicyReference",
       "owner": "Independent enrollment provisioning owner",
       "action": "Return the real installed enrollment retentionPolicyReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.appChannelCredentialReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the separately provisioned executor appChannelCredentialReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.executor.callerAuthenticatorReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the separately provisioned executor callerAuthenticatorReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.executor.callerScopeAuthorityReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the separately provisioned executor callerScopeAuthorityReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.observer.appChannelCredentialReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the separately provisioned observer appChannelCredentialReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.observer.callerAuthenticatorReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the separately provisioned observer callerAuthenticatorReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.observer.callerScopeAuthorityReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the separately provisioned observer callerScopeAuthorityReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.enrollment.appChannelCredentialReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the separately provisioned enrollment appChannelCredentialReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.enrollment.callerAuthenticatorReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the separately provisioned enrollment callerAuthenticatorReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.enrollment.callerScopeAuthorityReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the separately provisioned enrollment callerScopeAuthorityReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
     }
   ]
 }

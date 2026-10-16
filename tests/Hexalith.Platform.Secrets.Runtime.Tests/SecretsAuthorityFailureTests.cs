@@ -163,6 +163,75 @@ public sealed class SecretsAuthorityFailureTests
     }
 
     [Fact]
+    public async Task SuccessorRevisionOverflowIsRejectedBeforeAuthorityCall()
+    {
+        byte[] bytes = [1];
+        var transition = new AnchoredStateTransition("scope", long.MaxValue, long.MinValue, new string('a', 64), Convert.ToHexString(SHA256.HashData(bytes)), bytes);
+        _invoker.Reply = (_, _, body, _) => Authorized(body).ToJsonString();
+        (await new DaprInventoryAuthorityAdapter(_configuration, _invoker, _clock).VerifyTransitionAsync(transition, TestContext.Current.CancellationToken)).ShouldBeFalse();
+        _invoker.Calls.ShouldBeEmpty();
+    }
+
+    [Theory]
+    [InlineData("absent")]
+    [InlineData("integer")]
+    [InlineData("null")]
+    [InlineData("boolean")]
+    public async Task FreshBoundRevocationCannotAuthorizeAbsentOrMalformedStatus(string status)
+    {
+        _invoker.Reply = (_, _, body, _) =>
+        {
+            JsonObject proof = Authorized(body);
+            proof["status"] = status switch { "integer" => JsonValue.Create(1), "boolean" => JsonValue.Create(true), "null" => null, _ => JsonValue.Create("absent") };
+            return proof.ToJsonString();
+        };
+        (await new DaprRevocationAuthenticatorAdapter(_configuration, _invoker, _clock).VerifyAsync(Envelope(), "evidence", TestContext.Current.CancellationToken)).ShouldBeNull();
+    }
+
+    [Theory]
+    [InlineData("isRevoked", "true")]
+    [InlineData("isIndependentlyGoverned", "false")]
+    [InlineData("isRevoked", "missing")]
+    [InlineData("isIndependentlyGoverned", "missing")]
+    public async Task OtherwiseFreshAuthorizedDecisionProfileCannotNormalizeUnsafeOrMissingFlags(string field, string mutation)
+    {
+        var basis = new DecisionAuthorityExpectedBasis("decision", "contract", 1, 2, null, "root", ["eval"], ["Product"]);
+        _invoker.Reply = (_, _, body, _) =>
+        {
+            JsonObject proof = Authorized(body);
+            proof["proofValidUntil"] = Fixtures.Now.AddSeconds(20).ToString("O");
+            proof["validFrom"] = Fixtures.Now.AddHours(-1).ToString("O");
+            proof["validUntil"] = Fixtures.Now.AddDays(1).ToString("O");
+            proof["issuer"] = "issuer"; proof["audience"] = "audience"; proof["profileRevision"] = 3;
+            proof["publicAnchorId"] = "anchor"; proof["publicAnchorVersion"] = "1"; proof["subjectPublicKeyInfo"] = "AQ==";
+            proof["isRevoked"] = false; proof["isIndependentlyGoverned"] = true;
+            proof["keyPurpose"] = "DecisionApprovalVerificationOnly"; proof["maximumManifestLifetimeSeconds"] = 300;
+            proof["forbiddenApprovalActors"] = new JsonArray("recorder");
+            if (mutation == "missing") { proof.Remove(field); } else { proof[field] = mutation == "true"; }
+            return proof.ToJsonString();
+        };
+        (await new DaprDecisionAuthorityAdapter(_configuration, _invoker, _clock).ResolveAsync(basis, "k1", TestContext.Current.CancellationToken)).ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task OtherwiseCompleteFreshAuthorizedAbsentDecisionProfileIsRejected()
+    {
+        var basis = new DecisionAuthorityExpectedBasis("decision", "contract", 1, 2, null, "root", ["eval"], ["Product"]);
+        _invoker.Reply = (_, _, body, _) =>
+        {
+            JsonObject proof = Authorized(body);
+            proof["status"] = "absent"; proof["proofValidUntil"] = Fixtures.Now.AddSeconds(20).ToString("O");
+            proof["validFrom"] = Fixtures.Now.AddHours(-1).ToString("O"); proof["validUntil"] = Fixtures.Now.AddDays(1).ToString("O");
+            proof["issuer"] = "issuer"; proof["audience"] = "audience"; proof["profileRevision"] = 3;
+            proof["publicAnchorId"] = "anchor"; proof["publicAnchorVersion"] = "1"; proof["subjectPublicKeyInfo"] = "AQ==";
+            proof["isRevoked"] = false; proof["isIndependentlyGoverned"] = true; proof["keyPurpose"] = "DecisionApprovalVerificationOnly";
+            proof["maximumManifestLifetimeSeconds"] = 300; proof["forbiddenApprovalActors"] = new JsonArray("recorder");
+            return proof.ToJsonString();
+        };
+        (await new DaprDecisionAuthorityAdapter(_configuration, _invoker, _clock).ResolveAsync(basis, "k1", TestContext.Current.CancellationToken)).ShouldBeNull();
+    }
+
+    [Fact]
     public async Task OversizedAndInvalidUtf8ResponsesAreRejectedBeforeParsing()
     {
         SecretsProof.Parse("{\"large\":\"" + new string('a', SecretsProof.MaximumBytes) + "\"}").ShouldBeNull();
