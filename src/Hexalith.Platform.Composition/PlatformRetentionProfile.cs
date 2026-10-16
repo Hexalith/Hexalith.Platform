@@ -59,7 +59,7 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
     {
         _directory = Path.Combine(rendered, "retention");
         CompositionWorkspace.CreatePrivateDirectory(_directory);
-        _postgresPort = CompositionPortAllocator.Allocate(0).Redis;
+        _postgresPort = CompositionPortAllocator.Allocate(1).Redis;
         _password = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
         _observerPassword = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
         using RSA rootKey = RSA.Create(3072);
