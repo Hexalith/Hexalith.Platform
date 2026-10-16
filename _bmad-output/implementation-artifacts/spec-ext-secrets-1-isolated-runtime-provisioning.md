@@ -2,7 +2,7 @@
 title: EXT-SECRETS-1 isolated runtime provisioning
 type: feature
 created: 2026-10-16
-status: in-progress
+status: done
 baseline_commit: 65cd72692660798b01c56ed45312249bbd4e9894
 route: dispatch
 review_loop_iteration: 0
@@ -50,13 +50,13 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `eng/ext-secrets-1/prepare_acceptance.py` — confirm secrets paths at HEAD match `707eaca3b658942b9c6513d24c66da5b71e10199`. If they differ, stop without retargeting.
-- [ ] `.../isolated-runtime-20261016/discovery.json` — read-only inspection of `192.168.1.30`; public Dapr, OpenBao, workload, and credential-reference names only.
-- [ ] `.../isolated-runtime-20261016/runtime-reference.json` — allowlisted example plus discovered public references; absent fields stay null.
-- [ ] Clean worktree of the candidate — run `prepare_acceptance.py` into `.../isolated-runtime-20261016/`. Emit packet, plan pin, three anchor pins, exact command, and blocked-input report.
-- [ ] `.../isolated-runtime-20261016/blockers.json` — each missing input with its authority and executable action from `owner-input-map.json` or the five README prompts.
-- [ ] `eng/verify-ext-secrets-1.ps1 -Mode Local` — clean worktree, fresh directories, EventStore `../eventstore`. Do not run Live.
-- [ ] Live gate — record that register acceptance and enrollment are absent, so all 234 cases stay unrun.
+- [x] `eng/ext-secrets-1/prepare_acceptance.py` — confirm secrets paths at HEAD match `707eaca3b658942b9c6513d24c66da5b71e10199`. If they differ, stop without retargeting.
+- [x] `.../isolated-runtime-20261016/discovery.json` — read-only inspection of `192.168.1.30`; public Dapr, OpenBao, workload, and credential-reference names only.
+- [x] `.../isolated-runtime-20261016/runtime-reference.json` — allowlisted example plus discovered public references; absent fields stay null.
+- [x] Clean worktree of the candidate — run `prepare_acceptance.py` into `.../isolated-runtime-20261016/`. Emit packet, plan pin, three anchor pins, exact command, and blocked-input report.
+- [x] `.../isolated-runtime-20261016/blockers.json` — each missing input with its authority and executable action from `owner-input-map.json` or the five README prompts.
+- [x] `eng/verify-ext-secrets-1.ps1 -Mode Local` — clean worktree, fresh directories, EventStore `../eventstore`. Do not run Live.
+- [x] Live gate — record that register acceptance and enrollment are absent, so all 234 cases stay unrun.
 
 **Acceptance Criteria:**
 - Given absent authorities, when provisioning is attempted, then no cluster, token, key, or journal change occurs, and each blocker names its input, authority, and action.
@@ -69,6 +69,26 @@ context: []
 ## Spec Change Log
 
 ## Review Triage Log
+
+- BH1 — `medium` — defer. `PLAN.md`, `PLAN-v2.md`, and `PLAN-v3.md` line 142 say "None means permission to execute here" after defining tool statuses that do not authorize execution. Pre-existing plan text, committed with this story but not produced by the secrets provisioning.
+- BH2 — `low` — defer. README, REVIEW, DOCUMENT-CHECKS, and PLAN-v3 still name `trust-root-establishment.json` as the first deliverable and do not point at the later clarification that says not to manufacture that file. Pre-existing handoff wording.
+- BH3 — `low` — defer. The clarification names a sole owner as a proposed producer and leaves the independent reviewer unidentified, but it never says that person cannot hold both roles. Pre-existing clarification.
+- BH4 — `low` — defer. The clarification cites eight historical recovery signatures and four public-material classes without paths, fingerprints, or a map onto `public-trust-roots/`, the server/client PEM names, or the encryption recipient. Pre-existing clarification.
+- BH5 — `low` — defer. `REVIEW-OWNER-CLARIFICATION-20261016t130702z.md` labels `/root/plan_edge_review` an independent reviewer and records no clarification digest. The same file says the review establishes no owner authority, so it does not grant acceptance. Pre-existing review note.
+- BH6 — `medium` — defer. The rights section requires all 23 selectors to pass authorization, and the HTTP section requires 404 for selectors 20–23, but the plan never says those are separate results. The method is stated as GET after the table. Pre-existing plan.
+- BH7 — `false` — reject. README line 5 and PLAN-v3 lines 567–568 identify `PLAN.md` and `PLAN-v2.md` as preserved drafting history and name `PLAN-v3.md` as the handoff.
+- BH8 — `low` — defer. PLAN-v3 line 571 uses "They" after several sentences, so the subject is unclear. The ENOENT note and REVIEW.md's `rg` exit 2 describe the same missing file. Pre-existing wording.
+- BH9 — `medium` — defer. Role codes R, M, V, and H appear on the v4 crosswalk and are absent from the producer/reviewer table. The five evidence groups are the five numbered artifact sections, so that half of the claim is not a gap. Pre-existing plan.
+- BH10 — `medium` — defer. I1, I3, and I5 do not restate the format, lifecycle, and 23-request limits that appear elsewhere, and steps 7–10 still describe later measurement while those contracts are open. Pre-existing plan.
+- BH11 — `medium` — defer. The preservation ledger has no row for HEAD `b5e1caea` even though the following paragraph tells P to include later commits. HTTP acceptance names sanitizer shapes and a nine-library inventory without listing them. Pre-existing plan.
+- BH12 — `false` — reject. REVIEW.md and DOCUMENT-CHECKS.json scope the plan handoff and `PLAN-v3.md`. The secrets spec records its own inspection and is not covered by those claims.
+- BH13 — `low` — reject. Design Notes, `baseline_commit`, and the candidate are three different revisions, and the spec does not list the compared paths. `git diff` of the secrets paths between `707eaca3b658942b9c6513d24c66da5b71e10199` and HEAD is empty. The fix would edit this spec.
+- BH14 — `false` — reject. The packet, pins, command, and blockers are under the evidence root named in Design Notes, outside this diff. Empty spec logs are bookkeeping; filling them would edit this spec.
+- BH15 — `low` — reject. Timing keys and the executor, observer, and enrollment roles are fixed in the frozen intent and in `runtime-reference.json`. Adding matrix rows or expanding those terms would edit this spec.
+- EC1 — `medium` — reject. `prepare_acceptance.py` requires `--root`, `--configuration`, `--output`, `--artifacts-argument`, and `--evidence-argument`. The Verification line omits them, so a literal run is argparse usage exit 2 and writes no report. The prepared packet used the full command. The fix would edit this spec.
+- EC2 — `false` — reject. `discovery.json` records a completed read-only inspection, `credentialValuesRead` false, and no owner workloads. Absent references stayed null in `runtime-reference.json`. No partial inspection was stored as a binding.
+
+Verification-gap review reported no findings.
 
 ## Design Notes
 

@@ -576,3 +576,43 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
   summary: Attaching startup-task output readers after the process starts may collapse a fast exit into HXR020.
   evidence: Unverified medium. `BeginOutputReadLine` and `BeginErrorReadLine` sit outside the start try, but the existing `exit 1` task test still names the task. A process that exits before those readers attach would settle whether `InvalidOperationException` escapes `RunAsync`.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The offline owner-evidence plans say a tool status of none grants permission to execute.
+  evidence: PLAN.md, PLAN-v2.md, and PLAN-v3.md line 142. Those files predate this provisioning run. The closed operational gate in the same plans contradicts that sentence.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The owner-evidence handoff still asks for trust-root-establishment.json after the clarification said not to manufacture it.
+  evidence: README.md, REVIEW.md, DOCUMENT-CHECKS.json, and PLAN-v3.md do not link OWNER-TRUST-CLARIFICATION-20261016t130702z.md. Pre-existing handoff text.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The sole-owner clarification does not forbid the named producer from also being the independent reviewer.
+  evidence: OWNER-TRUST-CLARIFICATION-20261016t130702z.md names Jérôme Piquot as proposed producer and leaves the reviewer unidentified. Pre-existing clarification.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The sole-owner clarification cites historical signatures and public-material classes without identifiers or a file map.
+  evidence: OWNER-TRUST-CLARIFICATION-20261016t130702z.md gives no path, fingerprint, or record id for the eight recovery signatures and does not map its four classes onto the plan's PEM and trust-root names. Pre-existing clarification.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The clarification review calls an agent path an independent reviewer and records no digest.
+  evidence: REVIEW-OWNER-CLARIFICATION-20261016t130702z.md names `/root/plan_edge_review` and stores no content digest. It also says the review establishes no owner authority. Pre-existing review note.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The owner-evidence plan does not separate authorization allow from HTTP 404 for selectors 20–23.
+  evidence: PLAN-v3.md requires all 23 rights decisions to pass and separately requires typed 404 responses for selectors 20–23, without saying both results are required. Pre-existing plan.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: PLAN-v3's path-correction paragraph leaves the pronoun They without a clear subject.
+  evidence: PLAN-v3.md line 571. The ENOENT sentence and REVIEW.md's rg exit 2 refer to the same missing file. Pre-existing wording.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: Owner-evidence role codes R, M, V, and H have no producer or reviewer in the role table.
+  evidence: PLAN-v3.md uses those codes on the v4 blocker crosswalk. The common role table defines T, S, C, G, L, Q, P, A, and X only. Pre-existing plan.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The proposed owner-evidence implementation checks omit format, lifecycle, and request-budget limits already stated elsewhere.
+  evidence: PLAN-v3.md items I1, I3, and I5, and dependency steps 7–10, do not restate those limits while later measurement remains described. Pre-existing plan.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
+  summary: The owner-evidence preservation ledger and HTTP acceptance list omit the current HEAD delta and the named sanitizer and library inventory.
+  evidence: PLAN-v3.md records HEAD b5e1caea in prose and tells P to include later commits, but the ledger table has no row for that delta. HTTP acceptance names sanitizer shapes and a nine-library inventory without listing them. Pre-existing plan.
