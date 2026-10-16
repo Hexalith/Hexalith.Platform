@@ -1,0 +1,181 @@
+[
+  {
+    "check": "solution-build",
+    "exitCode": 0,
+    "seconds": 12.731,
+    "command": [
+      "dotnet",
+      "build",
+      "Hexalith.Platform.slnx",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "platform-build",
+    "exitCode": 0,
+    "seconds": 12.17,
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "platform-suite",
+    "exitCode": 0,
+    "seconds": 38.706,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-parallelMode",
+      "none"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "declarations",
+    "exitCode": 0,
+    "seconds": 36.013,
+    "command": [
+      "python3",
+      "scripts/test-reference-module-declarations.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "helper-gate",
+    "exitCode": 0,
+    "seconds": 0.296,
+    "command": [
+      "python3",
+      "eng/test_verify_platform_pins.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "cleanup-races",
+    "exitCode": 0,
+    "seconds": 0.051,
+    "command": [
+      "python3",
+      "eng/test_local_dapr_security_cleanup.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "timesheets-provenance",
+    "exitCode": 0,
+    "seconds": 4.847,
+    "command": [
+      "python3",
+      "eng/timesheets-deployment/test_prepare.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "architecture",
+    "exitCode": 0,
+    "seconds": 0.032,
+    "command": [
+      "python3",
+      ".agents/skills/bmad-architecture/scripts/lint_spine.py",
+      "--workspace",
+      "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "python-compile",
+    "exitCode": 0,
+    "seconds": 0.031,
+    "command": [
+      "python3",
+      "-m",
+      "py_compile",
+      "eng/test-local-dapr-security.py",
+      "eng/test_local_dapr_security_cleanup.py",
+      "eng/verify-platform-pins.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "local-scaffold",
+    "exitCode": 0,
+    "seconds": 10.816,
+    "command": [
+      "bash",
+      "eng/verify-agents-host.sh",
+      "--mode",
+      "LocalScaffold",
+      "--artifacts-path",
+      "/tmp/story-1-7-review-final-scaffold"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "source-whitespace",
+    "exitCode": 0,
+    "seconds": 0.005,
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs",
+      "tests/Hexalith.Platform.Composition.Tests",
+      "eng/test-local-dapr-security.py",
+      "eng/timesheets-deployment/hexalith.module-manifest.v2.json",
+      "_bmad-output/implementation-artifacts/spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md",
+      "_bmad-output/implementation-artifacts/deferred-work.md"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "owner-whitespace",
+    "exitCode": 0,
+    "seconds": 0.012,
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore"
+  },
+  {
+    "check": "security-live",
+    "exitCode": 0,
+    "seconds": 7.144,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-method",
+      "*LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  },
+  {
+    "check": "builds-tenants-live",
+    "exitCode": 0,
+    "seconds": 137.714,
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-method",
+      "*DomainTenantsStartsThroughTheRealBuildsEngineAsync"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform"
+  }
+]

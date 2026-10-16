@@ -120,7 +120,7 @@ public sealed partial class PlatformAppModelTests
         grants.Length.ShouldBe(1);
         grants[0].GetProperty("appId").GetString().ShouldBe("eventstore");
         var operations = grants[0].GetProperty("operations").EnumerateArray().ToArray();
-        operations.Select(operation => operation.GetProperty("name").GetString()).Order().ShouldBe(new[] { "/process", "/query", "/project", "/replay-state" }.Order());
+        operations.Select(operation => operation.GetProperty("name").GetString()).Order().ShouldBe(new[] { "/process", "/query", "/project", "/replay-state", "/admin/operational-index-metadata" }.Order());
         operations.ShouldAllBe(operation => operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).SequenceEqual(new[] { "POST" }));
     }
 
@@ -182,16 +182,23 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
-    public void GatewayAllowsOnlyEstablishedTenantsApiBusinessOperations()
+    public void GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations()
     {
         var files = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(Options())).Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/tmp/local-secrets.json", null);
         using JsonDocument policy = JsonDocument.Parse(files["accesscontrol.eventstore.yaml"]);
         var grants = policy.RootElement.GetProperty("spec").GetProperty("accessControl").GetProperty("policies").EnumerateArray().ToArray();
-        grants.Length.ShouldBe(1);
-        grants[0].GetProperty("appId").GetString().ShouldBe("tenants-api");
-        var operations = grants[0].GetProperty("operations").EnumerateArray().ToArray();
+        grants.Select(grant => grant.GetProperty("appId").GetString()).ShouldBe(["tenants-api", "timesheets"]);
+        var operations = grants.Single(grant => grant.GetProperty("appId").GetString() == "tenants-api").GetProperty("operations").EnumerateArray().ToArray();
         operations.Select(operation => operation.GetProperty("name").GetString()).ShouldBe(["/api/v1/commands", "/api/v1/queries"]);
         operations.ShouldAllBe(operation => operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).SequenceEqual(new[] { "POST" }));
+        var timesheets = grants.Single(grant => grant.GetProperty("appId").GetString() == "timesheets");
+        timesheets.GetProperty("operations").EnumerateArray()
+            .SelectMany(operation => operation.GetProperty("httpVerb").EnumerateArray().Select(verb => $"{verb.GetString()} {operation.GetProperty("name").GetString()}"))
+            .Order(StringComparer.Ordinal).ShouldBe(new[]
+            {
+                "POST /api/v1/commands/*", "POST /api/v1/commands/workload", "POST /api/v1/queries",
+                "GET /api/v1/commands/status/*", "GET /api/v1/commands/status/workload",
+            }.Order(StringComparer.Ordinal));
     }
 
     [Theory]
@@ -341,6 +348,89 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Theory]
+    [InlineData("/api/v1/commands")]
+    [InlineData("/api/v1/COMMANDS")]
+    public void ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(string path)
+    {
+        string source = Path.Combine(Path.GetTempPath(), "platform-acl-verbs-" + Guid.NewGuid().ToString("N") + ".json");
+        try
+        {
+            var document = JsonNode.Parse(File.ReadAllText(Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json")))!;
+            var rules = document["modules"]![0]!["surfaces"]!["interfaces"]![0]!["invocationRules"]!.AsArray();
+            rules.Add(JsonSerializer.SerializeToNode(new { caller = "tenants-api", path, verbs = new[] { "GET" } }));
+            rules.Add(JsonSerializer.SerializeToNode(new { caller = "tenants-api", path, verbs = new[] { "POST", "GET" } }));
+            File.WriteAllText(source, document.ToJsonString());
+            var validated = PlatformManifestValidator.Validate([source], TestContext.Current.CancellationToken);
+            validated.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, validated.Diagnostics.Select(diagnostic => diagnostic.Message)));
+            var files = PlatformDaprBindings.Resolve(validated.Declarations!).Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/unused", null);
+            using JsonDocument policy = JsonDocument.Parse(files["accesscontrol.eventstore.yaml"]);
+            var caller = policy.RootElement.GetProperty("spec").GetProperty("accessControl").GetProperty("policies").EnumerateArray().Single(grant => grant.GetProperty("appId").GetString() == "tenants-api");
+            var operations = caller.GetProperty("operations").EnumerateArray().ToArray();
+            operations.Length.ShouldBe(2);
+            var command = operations.Single(operation => operation.GetProperty("name").GetString() == "/api/v1/commands");
+            command.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).ShouldBe(["GET", "POST"]);
+            command.GetProperty("action").GetString().ShouldBe("allow");
+        }
+        finally { File.Delete(source); }
+    }
+
+    [Fact]
+    public void ReceiverRendersDeclaredDescendantsBeforeParentFallbacks()
+    {
+        var module = PlatformDeclarationSet.Load(Options(active: "eventstore")).Single();
+        var declaration = JsonNode.Parse(module.Declaration.GetRawText())!;
+        declaration["surfaces"]!["interfaces"]![0]!["invocationRules"] = JsonSerializer.SerializeToNode(new[]
+        {
+            new { caller = "tenants-api", path = "/api/v1/commands", verbs = new[] { "POST" } },
+            new { caller = "tenants-api", path = "/api/v1/commands/status", verbs = new[] { "GET" } },
+            new { caller = "tenants-api", path = "/api/v1/commands/status/workload", verbs = new[] { "PUT" } },
+        });
+        var files = PlatformDaprBindings.Resolve([module with { Declaration = JsonSerializer.SerializeToElement(declaration) }])
+            .Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/unused", null);
+        using JsonDocument policy = JsonDocument.Parse(files["accesscontrol.eventstore.yaml"]);
+        var operations = policy.RootElement.GetProperty("spec").GetProperty("accessControl").GetProperty("policies")[0].GetProperty("operations").EnumerateArray().ToArray();
+        operations.Select(operation => operation.GetProperty("name").GetString())
+            .ShouldBe(["/api/v1/commands/status/workload", "/api/v1/commands/status/*", "/api/v1/commands/*"]);
+        operations.Select(operation => operation.GetProperty("httpVerb")[0].GetString()).ShouldBe(["PUT", "GET", "POST"]);
+    }
+
+    [Fact]
+    public void IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-recovery-conflict-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            List<SourceMappingEntry> entries = [];
+            string? conflictingSource = null;
+            foreach (string owner in new[] { "EventStore", "Tenants", "Memories" })
+            {
+                string ownerRoot = Path.Combine(directory, "Hexalith." + owner);
+                string manifest = Path.Combine(ownerRoot, "module", "hexalith.module-manifest.v2.json");
+                Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
+                var document = JsonNode.Parse(File.ReadAllText(Path.Combine(Root, "references", "Hexalith." + owner, "module", "hexalith.module-manifest.v2.json")))!;
+                if (owner == "Tenants")
+                    foreach (var capability in document["modules"]![0]!["runtime"]!["dapr"]!.AsArray().Where(capability => capability!["role"]!.GetValue<string>() == "state"))
+                        capability!["recoveryClass"] = "rebuild-only";
+                File.WriteAllText(manifest, document.ToJsonString());
+                var validated = PlatformManifestValidator.Validate([manifest], TestContext.Current.CancellationToken);
+                validated.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, validated.Diagnostics.Select(diagnostic => diagnostic.Message)));
+                if (owner == "Tenants") conflictingSource = validated.Declarations!.Single().Source;
+                entries.Add(new SourceMappingEntry("Hexalith." + owner, "source", ownerRoot));
+            }
+            IDistributedApplicationBuilder builder = Builder();
+            InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options() with
+            {
+                Mapping = new SourceMapping(WorkspaceMode.Source, Root, "Hexalith.Platform", entries, false),
+            }));
+            failure.Message.ShouldContain(conflictingSource!);
+            failure.Message.ShouldContain("runtime.dapr");
+            failure.Message.ShouldContain("conflicting recovery class for component 'statestore'");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Theory]
     [InlineData(true)]
     [InlineData(false)]
     public void SubscriptionIdentitiesDistinguishConcatenationAndPhysicalAliases(bool splitTuple)
@@ -366,19 +456,21 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Theory]
-    [InlineData("", "expected one YAML mapping document")]
-    [InlineData("apiVersion: dapr.io/v1alpha1\nkind: Component\nspec:\n  type: pubsub.redis\n  version: v1\n", "metadata must be a mapping")]
-    public void InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(string content, string reason)
+    [InlineData("pubsub.yaml", "eventstore", "", "expected one YAML mapping document")]
+    [InlineData("pubsub.yaml", "eventstore", "apiVersion: dapr.io/v1alpha1\nkind: Component\nspec:\n  type: pubsub.redis\n  version: v1\n", "metadata must be a mapping")]
+    [InlineData("secretstore.yaml", "memories", "apiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: secretstore\nspec:\n  type: secretstores.local.file\n  version: v1\n  metadata: []\n", "spec.metadata must contain a secretsFile entry")]
+    [InlineData("secretstore.yaml", "memories", "apiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: secretstore\nspec:\n  type: secretstores.local.file\n  version: v1\n  metadata:\n    - name: nestedSeparator\n      value: ':'\n", "spec.metadata must contain a secretsFile entry")]
+    public void InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(string template, string active, string content, string reason)
     {
         string directory = Path.Combine(Path.GetTempPath(), "platform-invalid-template-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
         try
         {
             foreach (string source in Directory.GetFiles(Path.Combine(Root, "DaprComponents", "reference"), "*.yaml")) File.Copy(source, Path.Combine(directory, Path.GetFileName(source)));
-            string sourcePath = Path.Combine(directory, "pubsub.yaml");
+            string sourcePath = Path.Combine(directory, template);
             File.WriteAllText(sourcePath, content);
             IDistributedApplicationBuilder builder = Builder();
-            InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(active: "eventstore") with { ComponentsDirectory = directory }));
+            InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(active: active) with { ComponentsDirectory = directory }));
             failure.Message.ShouldContain(sourcePath);
             failure.Message.ShouldContain("runtime.dapr");
             failure.Message.ShouldContain(reason);

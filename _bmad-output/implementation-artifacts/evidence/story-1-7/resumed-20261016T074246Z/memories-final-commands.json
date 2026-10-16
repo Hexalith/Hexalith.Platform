@@ -1,0 +1,31 @@
+[
+  {
+    "check": "memories-final-build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Memories.Server.Tests/Hexalith.Memories.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 0,
+    "seconds": 8.236
+  },
+  {
+    "check": "memories-final-http-tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Memories.Server.Tests/bin/Debug/net10.0/Hexalith.Memories.Server.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*MiddlewareOrderTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 0,
+    "seconds": 2.181
+  }
+]

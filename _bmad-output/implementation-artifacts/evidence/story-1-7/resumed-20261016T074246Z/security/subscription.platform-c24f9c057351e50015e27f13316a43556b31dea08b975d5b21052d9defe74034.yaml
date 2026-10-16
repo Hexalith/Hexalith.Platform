@@ -1,0 +1,1 @@
+{"apiVersion":"dapr.io/v2alpha1","kind":"Subscription","metadata":{"name":"platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034"},"spec":{"pubsubname":"pubsub","topic":"*.*.projection-changed","routes":{"default":"/projections/changed"}},"scopes":["eventstore"]}

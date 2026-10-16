@@ -506,3 +506,55 @@
 - Run-plan placement/scheduler ports ignored; fixed mTLS control-plane ports (`51005`, `51006`, Sentry `50001`) collide across concurrent runs. Already disclosed as out of scope.
 - (unverified medium) Declarative-only subscription mode: owners with attribute-only subscriptions and no explicit binding lose delivery, and projection wildcard `*.*.projection-changed` delivery on Redis is unproven. Settle by diffing owner `[Topic]` attributes against rendered subscriptions plus a live wildcard assertion.
 - (unverified medium) Deleted reference ACL grants for `eventstore-admin`, `sample-blazor-ui`, `sample-api`; confirm no selected topology still loads those callers.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Pinned Dapr ACL concrete path rules also match descendant paths; exact-path isolation needs an owner/provider decision.
+  evidence: Dapr v1.18.2 pkg/config/acl_trie.go Search returns node.Data before consuming descendants; endpoint authentication remains required. This provider behavior predates the story and existed under the earlier permissive policies.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 signing must require explicit absence before effect-sign after a parsed query.
+  evidence: R2-B8/R2-E1: DaprSigningProviderAdapter.ResolveAsync falls through from non-Signed parsed proof to effect-sign; independent commit 26628896b4fc7b70337c22b4ee34a4b6b0edc6d8 predates resumed Story 1.7 work.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 revocation authentication must bind the complete requested envelope.
+  evidence: R2-B9: DaprRevocationAuthenticatorAdapter accepts only subset echoes then constructs authorization for the full requested envelope; independent EXT-SECRETS-1 commit, not caused by Story 1.7.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 compromise receipts must bind revocation and trust-profile revisions.
+  evidence: R2-B10: DaprCompromiseRegistrarAdapter omits both revisions from requests and receipt checks; independent EXT-SECRETS-1 commit.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 invocation responses need a small bound before buffering.
+  evidence: R2-E2: DaprSecretsInvoker default buffered SendAsync precedes SecretsProof size validation, allowing excessive memory allocation up to framework buffering limits; independent adapter work.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Recovery inventory must refuse id_ecdsa and .p12 private-material names before reading bytes.
+  evidence: R2-E5: eng/recovery-preparation/verify_packet.py secret_path does not recognize these names, while inventory hashes every admitted regular file; independent recovery work present on activation.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Verify whether recovery static preflight can block indefinitely while reaping a killed parser (medium, unverified).
+  evidence: R2-E6: run_view calls child.wait without a timeout after SIGKILL. A fixed-parser/process fixture remaining unreapable after termination would settle reachability; independent recovery work.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 compromise receipts must accept valid durable key blocks with no affected batches.
+  evidence: R3-B4: the adapter rejects affectedBatchIds=[] although EventStore's actual revocation owner persists it and the custody subscriber accepts it, preventing completion and guard mirroring. Independent adapter commit 26628896b4fc7b70337c22b4ee34a4b6b0edc6d8 predates this resumed story.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 transition admission and recovery must bind independently retained prospective bytes.
+  evidence: R3-B5: DaprInventoryAuthorityAdapter.TransitionBody drops AnchoredStateTransition.TargetBytes although the authority contract requires exact byte retention/verification; different byte arrays generate the same request. Independent EXT-SECRETS-1 code, unchanged by this story.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 final decision authority checks must bind the actual approver cohort, issuance time and exact published profile.
+  evidence: R3-B6: VerifyAuthorityBoundaryAsync omits those manifest/profile fields despite its coherent current authority contract; earlier separate reads cannot supply the missing final check. Independent EXT-SECRETS-1 code.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 inventory and decision authorization must require an affirmative fresh outcome in addition to echoed identity fields.
+  evidence: R3-B7: Echoes/EchoAsync return true after field equality without checking a denial/revocation status or current validity. Matching request echoes with a rejected authority state therefore authorize calls. Independent EXT-SECRETS-1 code.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: EXT-SECRETS-1 replay, compromise and transition mutations must require explicit request-bound absence rather than an empty proof.
+  evidence: R3-B8: CapabilityIdentity.Absent accepts proof.Count == 0 and its callers proceed to effects. Empty JSON establishes neither an outcome nor the request identity. Independent EXT-SECRETS-1 code.
+
+- source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
+  summary: Investigate intermittent signed source startup failures before claiming reliable cold startup.
+  evidence: The resumed 2026-10-16 run retained HXR025 failures at eventstore Waiting/FailedToStart and tenants-api Finished; a control-plane snapshot also showed an unhealthy Sentry health check despite initialization logs. All six sequential owner builds passed, followed eventually by passing technical (44.488 s) and six-server (119.514 s) signed smokes without a startup code change. No single cause is established; a controlled cold/warm reproduction with retained resource health and bounded build exceptions would settle it. See evidence/story-1-7/resumed-20261016T074246Z/verification.md.

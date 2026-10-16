@@ -1,0 +1,95 @@
+[
+  {
+    "check": "builds-build",
+    "exitCode": 0,
+    "seconds": 24.664,
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "command": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ]
+  },
+  {
+    "check": "builds-tests",
+    "exitCode": 0,
+    "seconds": 6.599,
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+    "command": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*PlatformManifestValidationTests",
+      "-class",
+      "*WorkspaceAppHostTests"
+    ]
+  },
+  {
+    "check": "eventstore-aspire-build",
+    "exitCode": 0,
+    "seconds": 17.36,
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ]
+  },
+  {
+    "check": "eventstore-aspire-tests",
+    "exitCode": 0,
+    "seconds": 0.958,
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*DomainModuleAspireExtensionTests"
+    ]
+  },
+  {
+    "check": "eventstore-server-build",
+    "exitCode": 0,
+    "seconds": 9.64,
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ]
+  },
+  {
+    "check": "eventstore-server-tests",
+    "exitCode": 0,
+    "seconds": 1.597,
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*ProjectionSubscriptionMetadataTests",
+      "-class",
+      "*EventStoreWorkloadRateLimitTests",
+      "-class",
+      "*ProjectionChangeNotifierOptionsTests"
+    ]
+  }
+]

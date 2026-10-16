@@ -1,0 +1,92 @@
+[
+  {
+    "check": "eventstore",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.EventStore/Hexalith.EventStore.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "seconds": 2.648
+  },
+  {
+    "check": "tenants",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Tenants/Hexalith.Tenants.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+    "exitCode": 0,
+    "seconds": 8.003
+  },
+  {
+    "check": "tenants-api",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+    "exitCode": 0,
+    "seconds": 3.981
+  },
+  {
+    "check": "memories",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 0,
+    "seconds": 9.645
+  },
+  {
+    "check": "clock",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 0,
+    "seconds": 1.683
+  },
+  {
+    "check": "telemetry",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 0,
+    "seconds": 1.819
+  }
+]

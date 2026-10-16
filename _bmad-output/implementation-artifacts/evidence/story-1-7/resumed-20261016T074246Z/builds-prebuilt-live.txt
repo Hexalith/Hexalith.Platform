@@ -1,0 +1,107 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync [FAIL]
+      Shouldly.ShouldAssertException : started.IsReady
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          HXR025: Readiness stalled at resource 'eventstore' (app ID 'eventstore', status 'state=Waiting;health=unknown').
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      apphost.stdout.observed
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/BuildsSourceStartupTests.cs(45,0): at Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.StartSelectionAsync(String activeModule, String[] expectedServers)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/BuildsSourceStartupTests.cs(69,0): at Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.StartSelectionAsync(String activeModule, String[] expectedServers)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 102.757s

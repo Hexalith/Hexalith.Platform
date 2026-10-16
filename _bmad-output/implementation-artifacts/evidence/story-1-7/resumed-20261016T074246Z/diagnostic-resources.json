@@ -1,0 +1,720 @@
+{
+  "resources": [
+    {
+      "name": "access-telemetry-config",
+      "displayName": "access-telemetry-config",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "access-telemetry-secrets",
+      "displayName": "access-telemetry-secrets",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "access-telemetry-store",
+      "displayName": "access-telemetry-store",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "configstore",
+      "displayName": "configstore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "dapr-placement-mtls-geubmpmf",
+      "displayName": "dapr-placement-mtls",
+      "resourceType": "Container",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        }
+      ],
+      "healthReports": {
+        "dapr-placement-mtls_health_/healthz_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "urls": [
+        {
+          "name": "health",
+          "url": "http://localhost:41831"
+        },
+        {
+          "name": "grpc",
+          "url": "tcp://localhost:51005"
+        }
+      ]
+    },
+    {
+      "name": "dapr-scheduler-mtls-cgpkxakm",
+      "displayName": "dapr-scheduler-mtls",
+      "resourceType": "Container",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        }
+      ],
+      "healthReports": {
+        "dapr-scheduler-mtls_health_/healthz_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "urls": [
+        {
+          "name": "health",
+          "url": "http://localhost:35609"
+        },
+        {
+          "name": "grpc",
+          "url": "tcp://localhost:51006"
+        }
+      ]
+    },
+    {
+      "name": "dapr-sentry-cbqwqftz",
+      "displayName": "dapr-sentry",
+      "resourceType": "Container",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {
+        "dapr-sentry_health_/healthz_200_check": {
+          "status": "Healthy"
+        }
+      },
+      "urls": [
+        {
+          "name": "health",
+          "url": "http://localhost:44503"
+        },
+        {
+          "name": "grpc",
+          "url": "tcp://localhost:50001"
+        }
+      ]
+    },
+    {
+      "name": "eventstore-dapr",
+      "displayName": "eventstore-dapr",
+      "resourceType": "DaprSidecar",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "eventstore-dapr-cli-egvavhhh",
+      "displayName": "eventstore-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {},
+      "urls": [
+        {
+          "name": "metrics",
+          "url": "http://localhost:24847"
+        },
+        {
+          "name": "http",
+          "url": "http://localhost:11148"
+        },
+        {
+          "name": "grpc",
+          "url": "http://localhost:13074"
+        }
+      ]
+    },
+    {
+      "name": "eventstore-fjxdjgpr",
+      "displayName": "eventstore",
+      "resourceType": "Project",
+      "state": "Running",
+      "healthStatus": "Unhealthy",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-geubmpmf"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-cgpkxakm"
+        }
+      ],
+      "healthReports": {
+        "eventstore_http_/ready_200_check": {}
+      },
+      "urls": [
+        {
+          "name": "http",
+          "url": "http://localhost:35469"
+        }
+      ]
+    },
+    {
+      "name": "eventstore-rebuilder-bfejqktu",
+      "displayName": "eventstore-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {
+        "eventstore_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis",
+      "displayName": "redis",
+      "resourceType": "Container",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": [
+        {
+          "name": "tcp",
+          "url": "tcp://localhost:11231"
+        }
+      ]
+    },
+    {
+      "name": "llm",
+      "displayName": "llm",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr",
+      "displayName": "memories-access-telemetry-clock-dapr",
+      "resourceType": "DaprSidecar",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli-aubacjxd",
+      "displayName": "memories-access-telemetry-clock-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-clock-ncnwhjnu"
+        }
+      ],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-clock-ncnwhjnu",
+      "displayName": "memories-access-telemetry-clock",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-ejbhftjz"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-xqypbfub"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-ejbhftjz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-xqypbfub"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-fjxdjgpr"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-geubmpmf"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-cgpkxakm"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {
+        "memories-access-telemetry-clock_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-clock-rebuilder-jabyzjah",
+      "displayName": "memories-access-telemetry-clock-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-clock-ncnwhjnu"
+        }
+      ],
+      "healthReports": {
+        "memories-access-telemetry-clock_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-dapr",
+      "displayName": "memories-access-telemetry-dapr",
+      "resourceType": "DaprSidecar",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli-araavxrt",
+      "displayName": "memories-access-telemetry-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-kkqrdcha"
+        }
+      ],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-kkqrdcha",
+      "displayName": "memories-access-telemetry",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-ejbhftjz"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-xqypbfub"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-ejbhftjz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-xqypbfub"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-fjxdjgpr"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-geubmpmf"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-cgpkxakm"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {
+        "memories-access-telemetry_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "memories-access-telemetry-rebuilder-jbyfxwzm",
+      "displayName": "memories-access-telemetry-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-access-telemetry-kkqrdcha"
+        }
+      ],
+      "healthReports": {
+        "memories-access-telemetry_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "memories-dapr",
+      "displayName": "memories-dapr",
+      "resourceType": "DaprSidecar",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-dapr-cli-rwjrfpkf",
+      "displayName": "memories-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-usavxesc"
+        }
+      ],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "memories-graph-xqypbfub",
+      "displayName": "memories-graph",
+      "resourceType": "Container",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": [
+        {
+          "name": "tcp",
+          "url": "tcp://localhost:46813"
+        }
+      ]
+    },
+    {
+      "name": "memories-rebuilder-aqydvdac",
+      "displayName": "memories-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "memories-usavxesc"
+        }
+      ],
+      "healthReports": {
+        "memories_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "memories-usavxesc",
+      "displayName": "memories",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Reference",
+          "resourceName": "memories-vectors-ejbhftjz"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "memories-graph-xqypbfub"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-vectors-ejbhftjz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "memories-graph-xqypbfub"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-fjxdjgpr"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-geubmpmf"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-cgpkxakm"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {
+        "memories_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "memories-vectors-ejbhftjz",
+      "displayName": "memories-vectors",
+      "resourceType": "Container",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": [
+        {
+          "name": "tcp",
+          "url": "tcp://localhost:22730"
+        }
+      ]
+    },
+    {
+      "name": "pubsub",
+      "displayName": "pubsub",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "secretstore",
+      "displayName": "secretstore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "statestore",
+      "displayName": "statestore",
+      "resourceType": "DaprComponent",
+      "state": "Running",
+      "healthStatus": "Healthy",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "tenants-api-dapr",
+      "displayName": "tenants-api-dapr",
+      "resourceType": "DaprSidecar",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "tenants-api-dapr-cli-hktbmaja",
+      "displayName": "tenants-api-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-api-hyvvjpxd"
+        }
+      ],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "tenants-api-hyvvjpxd",
+      "displayName": "tenants-api",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-fjxdjgpr"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-fjxdjgpr"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-geubmpmf"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-cgpkxakm"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {
+        "tenants-api_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "tenants-api-rebuilder-nhcfppuz",
+      "displayName": "tenants-api-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-api-hyvvjpxd"
+        }
+      ],
+      "healthReports": {
+        "tenants-api_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "tenants-dapr",
+      "displayName": "tenants-dapr",
+      "resourceType": "DaprSidecar",
+      "relationships": [],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "tenants-dapr-cli-jtykcbua",
+      "displayName": "tenants-dapr-cli",
+      "resourceType": "Executable",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-qaxkbbpf"
+        }
+      ],
+      "healthReports": {},
+      "urls": []
+    },
+    {
+      "name": "tenants-qaxkbbpf",
+      "displayName": "tenants",
+      "resourceType": "Project",
+      "state": "Waiting",
+      "relationships": [
+        {
+          "type": "WaitFor",
+          "resourceName": "hexalith-g4-637c8ba2a68f3ba44c08726cdc7e36cc-redis"
+        },
+        {
+          "type": "Reference",
+          "resourceName": "eventstore-fjxdjgpr"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-sentry-cbqwqftz"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-placement-mtls-geubmpmf"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "dapr-scheduler-mtls-cgpkxakm"
+        },
+        {
+          "type": "WaitFor",
+          "resourceName": "eventstore-fjxdjgpr"
+        }
+      ],
+      "healthReports": {
+        "tenants_http_/ready_200_check": {}
+      },
+      "urls": []
+    },
+    {
+      "name": "tenants-rebuilder-ykrufbvd",
+      "displayName": "tenants-rebuilder",
+      "resourceType": "Executable",
+      "state": "NotStarted",
+      "relationships": [
+        {
+          "type": "Parent",
+          "resourceName": "tenants-qaxkbbpf"
+        }
+      ],
+      "healthReports": {
+        "tenants_http_/ready_200_check": {}
+      },
+      "urls": []
+    }
+  ]
+}

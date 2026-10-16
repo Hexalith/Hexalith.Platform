@@ -2,6 +2,10 @@
 
 The local implementation and review workflow are complete. The spec is `done` and sprint tracking is `review`; owner review/merge/release, catalog promotion and live package-image qualification remain pending.
 
+The final resumed run on 2026-10-16 passed 148 Platform tests total (143 passed, five gated skips), 145 Builds regressions, 12 EventStore Aspire cases, 19 EventStore Server cases and seven source-mapped Memories HTTP host cases. Fresh live security/delivery, technical signed source and final six-server signed source runs passed with owned cleanup. Earlier startup failures are retained and reliable cold startup remains unqualified. Three review layers completed; the Memories host verification gap is fixed and independent follow-ups remain deferred. See [current commands, results, failures and diagnostic boundaries](resumed-20261016T074246Z/verification.md).
+
+The four later review patch findings were covered on 2026-10-16 with test-only changes. The full Platform suite now passes 142 total / 137 passed / five gated skips / zero failures. Solution/test-project builds, declaration checks, the helper gate, architecture lint and LocalScaffold also passed. These are model and actual generated CLI assertions; live tests and owner regressions below remain historical. See [the review-patch commands, logs and limits](review-patches-2026-10-16/verification.md).
+
 ## Final parent verification after independent review
 
 All patch findings in the spec's review triage are fixed. The three independent code reviewers and both architecture reviewers completed; no intent/spec loopback was needed. The unverified readiness-probe question, pre-existing ambient-tool preflight gap and existing Redis projection wildcard limitation remain in the deferred ledger.

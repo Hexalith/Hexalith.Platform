@@ -130,11 +130,17 @@ public sealed class PlatformDaprBindings
                 if (binding.Template == "secretstore.yaml")
                 {
                     if (!spec.Children.TryGetValue(new YamlScalarNode("metadata"), out YamlNode? entries) || entries is not YamlSequenceNode sequence) throw new InvalidDataException("spec.metadata must be a sequence");
+                    bool boundSecretsFile = false;
                     foreach (YamlNode entry in sequence.Children)
                     {
                         if (entry is not YamlMappingNode item) throw new InvalidDataException("spec.metadata entries must be mappings");
-                        if (Scalar(item, "name") == "secretsFile") item.Children[new YamlScalarNode("value")] = new YamlScalarNode(secretsPath);
+                        if (Scalar(item, "name") == "secretsFile")
+                        {
+                            item.Children[new YamlScalarNode("value")] = new YamlScalarNode(secretsPath);
+                            boundSecretsFile = true;
+                        }
                     }
+                    if (!boundSecretsFile) throw new InvalidDataException("spec.metadata must contain a secretsFile entry");
                 }
                 metadata.Children[new YamlScalarNode("name")] = new YamlScalarNode(name);
                 component.Children[new YamlScalarNode("scopes")] = new YamlSequenceNode(binding.Consumers.Order(StringComparer.Ordinal).Select(app => new YamlScalarNode(app)));
@@ -149,10 +155,24 @@ public sealed class PlatformDaprBindings
         }
         foreach (var (appId, rules) in _rules)
         {
-            var policies = rules.GroupBy(rule => rule.Caller, StringComparer.Ordinal).OrderBy(group => group.Key, StringComparer.Ordinal).Select(group => new
+            var policies = rules.GroupBy(rule => rule.Caller, StringComparer.Ordinal).OrderBy(group => group.Key, StringComparer.Ordinal).Select(group =>
             {
-                appId = group.Key, @namespace = "default", trustDomain = "public", defaultAction = "deny",
-                operations = group.Select(rule => new { name = rule.Path, httpVerb = rule.Verbs, action = "allow" }).ToArray(),
+                var operations = group.GroupBy(rule => rule.Path, StringComparer.OrdinalIgnoreCase).Select(path => new
+                {
+                    Path = path.Key.ToLowerInvariant(),
+                    Verbs = path.SelectMany(rule => rule.Verbs).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
+                }).ToArray();
+                return new
+                {
+                    appId = group.Key, @namespace = "default", trustDomain = "public", defaultAction = "deny",
+                    // Dapr returns the first populated prefix node. Its single-stage fallback preserves
+                    // a parent's base invocation while letting explicit descendants retain their verbs.
+                    operations = operations.OrderByDescending(operation => operation.Path.Length).ThenBy(operation => operation.Path, StringComparer.Ordinal).Select(operation => new
+                    {
+                        name = operations.Any(other => other.Path != operation.Path && other.Path.StartsWith(operation.Path.TrimEnd('/') + "/", StringComparison.Ordinal)) ? operation.Path.TrimEnd('/') + "/*" : operation.Path,
+                        httpVerb = operation.Verbs, action = "allow",
+                    }).ToArray(),
+                };
             }).ToArray();
             string content = JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Configuration", metadata = new { name = "platform-" + appId }, spec = new { mtls = new { enabled = true, controlPlaneTrustDomain = "localhost", sentryAddress = "localhost:50001" }, features = new[] { new { name = "HotReload", enabled = false } }, accessControl = new { defaultAction = "deny", trustDomain = "public", policies } } });
             if (discovery is not null) content = PlatformAppModel.MergeRunDiscovery(content, discovery);

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/tmp/story1-7-aspire-cli/aspire",
+    "logs",
+    "eventstore",
+    "--apphost",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj",
+    "--search",
+    "Projection delivery writer protocol",
+    "--tail",
+    "10",
+    "--format",
+    "Json",
+    "--non-interactive"
+  ],
+  "messages": [
+    "Health check projection-delivery-writer-protocol with status Unhealthy completed after 14.7186ms with message 'Projection delivery writer protocol v2 is not active.'",
+    "Health check projection-delivery-writer-protocol with status Unhealthy completed after 3.0934ms with message 'Projection delivery writer protocol v2 is not active.'"
+  ]
+}

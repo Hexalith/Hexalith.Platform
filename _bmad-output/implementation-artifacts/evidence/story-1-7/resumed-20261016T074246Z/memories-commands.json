@@ -1,0 +1,59 @@
+[
+  {
+    "check": "mapping-tool-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/tmp/story-1-7-owner-verification-nmvp7e94/Mapping.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/tmp/story-1-7-owner-verification-nmvp7e94",
+    "exitCode": 0,
+    "seconds": 0.86
+  },
+  {
+    "check": "mapping-tool",
+    "command": [
+      "dotnet",
+      "/tmp/story-1-7-owner-verification-nmvp7e94/bin/Debug/net10.0/Mapping.dll",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/module/hexalith.module-manifest.v2.json",
+      "/tmp/story-1-7-owner-verification-nmvp7e94/workspace",
+      "/tmp/story-1-7-owner-verification-nmvp7e94/environment.json"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "seconds": 1.142
+  },
+  {
+    "check": "memories-build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Memories.Server.Tests/Hexalith.Memories.Server.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 0,
+    "seconds": 12.079
+  },
+  {
+    "check": "memories-http-tests",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Memories.Server.Tests/bin/Debug/net10.0/Hexalith.Memories.Server.Tests.dll",
+      "-parallelMode",
+      "none",
+      "-class",
+      "*MiddlewareOrderTests"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "exitCode": 1,
+    "seconds": 2.292
+  }
+]

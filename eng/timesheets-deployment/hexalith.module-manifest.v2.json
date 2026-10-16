@@ -257,6 +257,15 @@
                 "kind": "administration",
                 "authorizationPolicy": "authenticated-workload-or-qualified-operator"
               }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/admin/operational-index-metadata",
+                "verbs": [
+                  "POST"
+                ]
+              }
             ]
           }
         ]

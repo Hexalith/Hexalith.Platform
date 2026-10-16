@@ -1,0 +1,25 @@
+{
+  "specBaselineCommit": "c3af1f2c9e7b0d1b003a1bd5978545f664e38167",
+  "observedConcurrentHead": "6020c583c5644952a11312715020ce2b050c0218",
+  "observedConcurrentSubject": "chore(platform): record offline qualification and composition tests",
+  "revisionSourceCommands": [
+    [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    [
+      "git",
+      "log",
+      "-1",
+      "--format=%s"
+    ]
+  ],
+  "sourceSha256": {
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "f7b83587bf1d8831fc23013e8dfa0510c442d846173a0ba1c593273400c761ab",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": "3397c3e1b4e2a3b19a5a566283ca97c77960df42a84f9e84c490e16a31914eed",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs": "b9438bf6e2c7d39927923ecf21607c40aba649647f4ecc13a801f252031998c4",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformDaprToolchainTests.cs": "275565a2b1c09e9c4d98ebca047dfbec12dd1cc676e5f852153be086732a6b50"
+  },
+  "note": "The repository advanced concurrently during verification. This implementation agent did not stage or commit files. The spec baseline was preserved. Recovery files were not modified."
+}

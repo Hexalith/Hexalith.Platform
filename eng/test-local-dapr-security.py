@@ -51,6 +51,11 @@ def until(check, label, timeout=40):
 received = []
 class App(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path.startswith('/api/v1/commands/status/'):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'{}')
+            return
         # Retain discovery probes; the 404 supplies no programmatic registrations.
         if self.path == '/dapr/subscribe':
             received.append((self.server.app_id, 'discovery', None))
@@ -105,11 +110,26 @@ def retain_runtime_commands():
     (fixtures / 'runtime-commands.json').write_text(json.dumps(commands, indent=2))
 
 def timesheets_invocations(endpoints):
-    allowed = {path: request(endpoints['eventstore'] + '/v1.0/invoke/timesheets/method' + path, b'{}')[0] for path in ['/process', '/query', '/project', '/replay-state']}
+    allowed = {path: request(endpoints['eventstore'] + '/v1.0/invoke/timesheets/method' + path, b'{}')[0] for path in ['/process', '/query', '/project', '/replay-state', '/admin/operational-index-metadata']}
     denied = request(endpoints['memories'] + '/v1.0/invoke/timesheets/method/process', b'{}')[0]
     assert all(status == 200 for status in allowed.values()), allowed
     assert denied == 403, denied
     return allowed, denied
+
+def timesheets_gateway_invocations(endpoints):
+    calls = [
+        ('POST', '/api/v1/commands'),
+        ('POST', '/api/v1/commands/workload'),
+        ('POST', '/api/v1/queries'),
+        ('GET', '/api/v1/commands/status/fixture-message'),
+        ('GET', '/api/v1/commands/status/workload/fixture-tenant/fixture-message'),
+    ]
+    gateway = endpoints['timesheets'] + '/v1.0/invoke/eventstore/method'
+    allowed = {f'{method} {path}': request(gateway + path, b'{}' if method == 'POST' else None, method=method)[0] for method, path in calls}
+    denied_get = request(gateway + '/api/v1/commands/unlisted', method='GET')[0]
+    assert all(status == 200 for status in allowed.values()), allowed
+    assert denied_get == 403, denied_get
+    return allowed, denied_get
 
 with tempfile.TemporaryDirectory(prefix=run) as directory:
     credentials = Path(directory) / 'credentials'
@@ -143,8 +163,9 @@ with tempfile.TemporaryDirectory(prefix=run) as directory:
         # A 404 provides no programmatic registrations. All deliveries below use rendered Subscription objects.
         if scope == 'timesheets-invocation':
             allowed, denied = timesheets_invocations(endpoints)
+            gateway_allowed, gateway_denied_get = timesheets_gateway_invocations(endpoints)
             retain_runtime_commands()
-            print(json.dumps({'scope': scope, 'evidence': 'live rendered Timesheets invocation subset; gateway and delivery checks are not exercised', 'launcher': 'direct pinned daprd with fixture-only Sentry transport adaptation', 'runtime': runtime_version, 'timesheetsAllowed': allowed, 'timesheetsDeniedCaller': denied}))
+            print(json.dumps({'scope': scope, 'evidence': 'live rendered Timesheets receiver and gateway invocations; delivery checks are not exercised', 'launcher': 'direct pinned daprd with fixture-only Sentry transport adaptation', 'runtime': runtime_version, 'timesheetsAllowed': allowed, 'timesheetsDeniedCaller': denied, 'timesheetsGatewayAllowed': gateway_allowed, 'timesheetsGatewayDeniedGet': gateway_denied_get}))
             raise SystemExit(0)
         permitted = request(endpoints['eventstore'] + '/v1.0/invoke/tenants/method/process', b'{}')
         assert permitted[0] == 200, permitted
@@ -162,6 +183,7 @@ with tempfile.TemporaryDirectory(prefix=run) as directory:
         assert gateway_commands[0] == gateway_queries[0] == 200, (gateway_commands, gateway_queries)
         assert gateway_denied_caller[0] == gateway_denied_verb[0] == gateway_denied_path[0] == 403, (gateway_denied_caller, gateway_denied_verb, gateway_denied_path)
         timesheets_allowed, timesheets_denied = timesheets_invocations(endpoints)
+        timesheets_gateway_allowed, timesheets_gateway_denied_get = timesheets_gateway_invocations(endpoints)
         for poison in [False, True]:
             published = request(endpoints['eventstore'] + '/v1.0/publish/pubsub/memories-events', json.dumps({'poison': poison, 'id': run}).encode())
             assert published[0] in [200, 204], published
@@ -177,16 +199,22 @@ with tempfile.TemporaryDirectory(prefix=run) as directory:
         for log in logs:
             log.flush()
         retain_runtime_commands()
-        print(json.dumps({'evidence': 'live rendered fixtures', 'launcher': 'direct pinned daprd with fixture-only Sentry transport adaptation', 'runtime': runtime_version, 'cliPrerequisiteVersion': cli_version, 'permittedInvocation': permitted[0], 'deniedCaller': denied[0], 'deniedVerb': wrong_verb[0], 'deniedPath': wrong_path[0], 'gatewayCommands': gateway_commands[0], 'gatewayQueries': gateway_queries[0], 'gatewayDeniedCaller': gateway_denied_caller[0], 'gatewayDeniedVerb': gateway_denied_verb[0], 'gatewayDeniedPath': gateway_denied_path[0], 'timesheetsAllowed': timesheets_allowed, 'timesheetsDeniedCaller': timesheets_denied, 'declarativeDelivery': True, 'deadLetterDelivery': True, 'deadLetterPhysicalTopic': 'failed.physical', 'concreteProjectionCallbackObserved': projection_observed, 'programmaticSubscriptions': 0}))
+        print(json.dumps({'evidence': 'live rendered fixtures', 'launcher': 'direct pinned daprd with fixture-only Sentry transport adaptation', 'runtime': runtime_version, 'cliPrerequisiteVersion': cli_version, 'permittedInvocation': permitted[0], 'deniedCaller': denied[0], 'deniedVerb': wrong_verb[0], 'deniedPath': wrong_path[0], 'gatewayCommands': gateway_commands[0], 'gatewayQueries': gateway_queries[0], 'gatewayDeniedCaller': gateway_denied_caller[0], 'gatewayDeniedVerb': gateway_denied_verb[0], 'gatewayDeniedPath': gateway_denied_path[0], 'timesheetsAllowed': timesheets_allowed, 'timesheetsDeniedCaller': timesheets_denied, 'timesheetsGatewayAllowed': timesheets_gateway_allowed, 'timesheetsGatewayDeniedGet': timesheets_gateway_denied_get, 'declarativeDelivery': True, 'deadLetterDelivery': True, 'deadLetterPhysicalTopic': 'failed.physical', 'concreteProjectionCallbackObserved': projection_observed, 'programmaticSubscriptions': 0}))
     finally:
         for process in processes:
             if process.poll() is None:
-                os.killpg(process.pid, signal.SIGTERM)
+                try:
+                    os.killpg(process.pid, signal.SIGTERM)
+                except ProcessLookupError:
+                    pass
         for process in processes:
             try:
                 process.wait(timeout=8)
             except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
                 process.wait(timeout=5)
         for app in servers:
             app.shutdown()

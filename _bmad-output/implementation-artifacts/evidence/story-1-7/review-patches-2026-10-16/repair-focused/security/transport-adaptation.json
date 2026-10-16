@@ -1,0 +1,66 @@
+{
+  "purpose": "Fixture-only Sentry transport port; production fixed-port behavior and ACL/subscription content are unchanged.",
+  "scope": "timesheets-invocation",
+  "launcher": "direct pinned daprd; Dapr CLI launch is not exercised by this adapted fixture",
+  "runtimePath": "/tmp/story-1-6-builds-toolchain/.dapr/bin/daprd",
+  "hostPort": 45615,
+  "containerPort": 50001,
+  "configurations": [
+    {
+      "file": "accesscontrol.eventstore.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "4b9684e03965aedf938ce6ebe3943e20f050f332f16aa60cf788626bfe1616ff",
+      "adaptedSha256": "b956fd5d5a07cd13a0e1532474ea62305c700cf3194fd6f7b13e6b891d2b859b"
+    },
+    {
+      "file": "accesscontrol.tenants.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "fa12be34ef9628ab581c9cf6965a785642ff3a532403c8ed7cd404fc5fc5b8a5",
+      "adaptedSha256": "8f8ded2e368d820b61eef16c90602832f4a5847d70a903334f0e067fa72b0416"
+    },
+    {
+      "file": "accesscontrol.timesheets.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "68689ebe5d0fe5b7b318c583adfade1b78d41d70817d4d7024745714983a4bcb",
+      "adaptedSha256": "5c855074a5435d19c224e5875072ea48fa147a1d715dd1ef89c245f55ae463fc"
+    },
+    {
+      "file": "accesscontrol.memories.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "97eb62481c1da49febfa8391abfdcebbe7e8484002fb1aa68a661e3d48877046",
+      "adaptedSha256": "eba3934a1eed6b19008b6ebde21cb86f2966fe9d32c18ccc18b87b970515b70d"
+    },
+    {
+      "file": "accesscontrol.tenants-api.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "d11b61971ad1f0a2ec1348d3f3a2fa4109666f9ad40346a31f53e73e2240b351",
+      "adaptedSha256": "5607848c248e96d77d95e475ddbf0a9c0168a1cfaf4ed3fd8b79f6d568674f6b"
+    },
+    {
+      "file": "accesscontrol.memories-access-telemetry-clock.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "869c24b6e80cb1db702a8e4e00af165a22782efcb4dbbb15c190416d61d2eeb6",
+      "adaptedSha256": "16d2a95a862640eaec3d63bbcc24bc48fee33dea84196d1ed75fbf945bfd0b0c"
+    },
+    {
+      "file": "accesscontrol.memories-access-telemetry.yaml",
+      "field": "spec.mtls.sentryAddress",
+      "before": "localhost:50001",
+      "after": "localhost:45615",
+      "originalSha256": "ad1ffcd91d4749e24db451dd91793e859053220cd9eaacea3d95f3f382aafd38",
+      "adaptedSha256": "df9ea76162955d7025bdc053a56d41eb7d7399f1a6adc0615b21707cfbed3bd3"
+    }
+  ]
+}
