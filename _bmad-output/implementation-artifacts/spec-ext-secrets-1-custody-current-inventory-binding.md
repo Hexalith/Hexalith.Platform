@@ -64,7 +64,7 @@ context: []
 
 ## Implementation Notes
 
-Re-queried `192.168.1.30` at `2026-10-16T15:26:34Z`. OpenBao `hexalith-keys` is unsealed at 3/3 ready and Dapr is 1.18.1. The server certificate and the existing Memories vault components name TLS `hexalith-keys.openbao.svc.cluster.local`. No KV mount is an HMAC mount: `secret/` contains `hexalith/memories` and `tls/`, and `deployment-seal-custody/` list is denied. Memories Redis has no `tenant-registry-index`. The install gate failed, so `ext-secrets-1-isolated`, a new policy, a restricted token, and the vault component were not created. `runtime-reference.json` is unchanged: host, provider, timing, and Open disposition stay as recorded, and the unbound fields stay null. `callTimeout` stays null. The dependency stays unavailable. Live was not run.
+Re-queried `192.168.1.30` at `2026-10-16T17:20:46Z`. OpenBao `hexalith-keys` is unsealed at 3/3 ready and Dapr is 1.18.1. The server certificate and the existing Memories vault components name TLS `hexalith-keys.openbao.svc.cluster.local`. No KV mount is an HMAC mount: `secret/` contains `hexalith/memories` and `tls/`, and `deployment-seal-custody/` list is denied. Memories Redis has no `tenant-registry-index`. The install gate failed, so `ext-secrets-1-isolated`, a new policy, a restricted token, and the vault component were not created. `runtime-reference.json` is unchanged: host, provider, timing, and Open disposition stay as recorded, and the unbound fields stay null. `callTimeout` stays null. The dependency stays unavailable. Live was not run.
 
 ## Spec Change Log
 
