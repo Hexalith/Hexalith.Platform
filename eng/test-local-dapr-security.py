@@ -129,7 +129,9 @@ def timesheets_gateway_invocations(endpoints):
     denied_get = request(gateway + '/api/v1/commands/unlisted', method='GET')[0]
     assert all(status == 200 for status in allowed.values()), allowed
     assert denied_get == 403, denied_get
-    return allowed, denied_get
+    # Recorded, not asserted: documents whether the rendered `/api/v1/commands/*` fallback admits an unlisted POST.
+    unlisted_post = request(gateway + '/api/v1/commands/unlisted', b'{}', method='POST')[0]
+    return allowed, {'GET': denied_get, 'unlistedPostUnderCommandsWildcard': unlisted_post}
 
 with tempfile.TemporaryDirectory(prefix=run) as directory:
     credentials = Path(directory) / 'credentials'

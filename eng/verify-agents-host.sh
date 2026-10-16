@@ -31,6 +31,7 @@ case "$MODE" in
 esac
 cd "$ROOT"
 python3 "$ROOT/eng/verify-platform-pins.py"
+(cd "$ROOT/eng" && python3 -m unittest test_verify_platform_pins test_local_dapr_security_cleanup) || fail "eng Python tests failed"
 [[ -f "$ROOT/apphost.cs" ]] || fail "platform AppHost missing: apphost.cs"
 [[ -f "$ROOT/aspire.config.json" ]] || fail "aspire.config.json missing"
 [[ -f "$ROOT/README.md" ]] || fail "README.md missing"

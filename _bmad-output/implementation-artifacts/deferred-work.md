@@ -558,3 +558,9 @@
 - source_spec: `spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md`
   summary: Investigate intermittent signed source startup failures before claiming reliable cold startup.
   evidence: The resumed 2026-10-16 run retained HXR025 failures at eventstore Waiting/FailedToStart and tenants-api Finished; a control-plane snapshot also showed an unhealthy Sentry health check despite initialization logs. All six sequential owner builds passed, followed eventually by passing technical (44.488 s) and six-server (119.514 s) signed smokes without a startup code change. No single cause is established; a controlled cold/warm reproduction with retained resource health and bounded build exceptions would settle it. See evidence/story-1-7/resumed-20261016T074246Z/verification.md.
+
+## Deferred from: code review of spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md (2026-10-16)
+
+- Real Dapr ACL matching is verified only by gated live tests (`HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1`); no default-run check. Needs Docker + Dapr runtime in a documented release gate.
+- Live fixture never asserts `callbackObserved`; declarative mode drops all programmatic `[Topic]` endpoints. Unverified medium; settle by asserting a non-wildcard projection callback.
+- Live evidence bypasses Platform-composed Aspire sidecars (direct `daprd` + stubs). Unverified medium; settle with a signed Builds source smoke that asserts invocation and delivery.

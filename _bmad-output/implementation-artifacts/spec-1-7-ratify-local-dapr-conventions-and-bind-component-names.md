@@ -204,3 +204,24 @@ Code review 2026-10-15 of `c3af1f2..cb122dd` (layers: Blind Hunter, Edge Case Hu
 - Hard-coded `localhost:50001`/`public` literals in `Render` (low): matches the control-plane constants today.
 - Orphaned ACL stub templates (low): removal touches mapping and tests for no user impact.
 - Spec `status: done` vs sprint `review`, Aspire helper bypass, owner changes pending release (low/process-only): tracked by sprint status, not code defects.
+
+#### Code review 2026-10-16 of `cb122dd^..1711deb` (scoped to Composition, EventStoreHost, composition tests, eng Dapr/pin scripts, Timesheets manifest; layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor; none failed)
+
+- [x] [Review][Decision] (resolved 1a: kept wildcard; live fixture now records an unlisted POST under `/api/v1/commands/*` as `unlistedPostUnderCommandsWildcard`, unit assertions already pin the shape; run the gated fixture to read the result) Parent ACL operation is rewritten to `<parent>/*` when a descendant is declared, so the parent's verbs apply to every unlisted descendant (medium) [src/Hexalith.Platform.Composition/PlatformDaprBindings.cs:172] — Never broaden grants. Live fixture only denies `GET /api/v1/commands/unlisted`; no test probes an unlisted POST under the wildcard. Options: (a) keep and add a live/unit probe of an unlisted POST; (b) emit exact parent plus explicit descendants without the wildcard fallback; (c) accept and record in the spec.
+- [x] [Review][Decision] (resolved 2a: `verify-agents-host.sh` now runs both suites by name) Python suites `eng/test_verify_platform_pins.py` and `eng/test_local_dapr_security_cleanup.py` run on no normal verification path (low) [eng/verify-agents-host.sh:33] — choose where they are gated (extend `verify-agents-host.sh`, a new `eng/verify-platform.*` entry, or leave manual).
+- [x] [Review][Defer] Real Dapr ACL matching (200/403 per verb and path) is verified only by live tests that skip without `HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1`/`HEXALITH_DAPR_HOME` — deferred: needs Docker + Dapr runtime; manual evidence exists under `evidence/story-1-7`.
+- [x] [Review][Defer] Live fixture records `projection-observation.json` (`callbackObserved`) but never asserts it, and declarative mode removes all programmatic `[Topic]` discovery — deferred: known Redis wildcard limitation already in the ledger; unverified medium, settle by asserting the callback on a non-wildcard topic.
+- [x] [Review][Defer] Live evidence uses direct `daprd` processes and stub apps, not the Platform-composed Aspire sidecars (medium, unverified) — deferred: disclosed in spec notes; settle by running the signed Builds source smoke with invocation assertions.
+
+#### Rejected (this pass)
+
+- Sentry `DAPR_CERT_KEY` in sidecar environment (low): local-only dev fixture; fix needs a new secret-file mechanism.
+- Pin gate uses literal tuple / default spine path / `AD-9\b` matches `AD-9.1` / misleading message (low): previously triaged; owner edits both together.
+- Test project needs submodule sources in package mode (maybe-false, would be low).
+- Timesheets history manifest missing (false): tracked at `eng/timesheets-deployment/history/`. Offline plan not regenerated (low, process-only).
+- `Resolve` raw exceptions (duplicate appId, dead-letter `.First`, `Environment`, duplicate subscription, verb/path shape), missing `timesheets-readmodels.yaml` message, empty `HEXALITH_DAPR_HOME`, empty pubsub name (low): upstream validation rejects first; guards add branches.
+- Fixture hygiene: `docker rm check=True`, log handle, port races, `/proc` read, handler JSON, Sentry early-exit, fixed sleep (low): previously rejected, test-only.
+- AST-coupled cleanup test, `services[index + 2]`, symlink skip guard, temp dirs, hard-coded control-plane literals, unreachable `Name` branch (low).
+- `.yaml` files containing JSON (false): JSON is valid YAML.
+- Aspire helper no longer used by Platform, component names as table literals, disabled receiver yields no subscription (low/informational): spec-compliant or process-only.
+- Duplicate-delivery risk if owner ignores `Dapr__DeclarativeSubscriptions` (maybe-false, would be low).
