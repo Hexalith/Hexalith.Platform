@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/usr/bin/python3.14",
+    "-I",
+    "-S",
+    "-B",
+    "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_native_supplement.py",
+    "--sha256",
+    "a7b9bf06139cec3022fbced5fe182b42c773b9a7099c40c84162893a766e2631"
+  ],
+  "exitCode": 1,
+  "stdout": "{\"status\": \"refused\", \"operationalGate\": \"closed\", \"reason\": \"offline-integrity-or-custody-refusal\"}\n",
+  "stderr": ""
+}

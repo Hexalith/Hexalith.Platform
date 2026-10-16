@@ -1,0 +1,15 @@
+{
+  "command": "/usr/bin/python3.14 -I -S -B /home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_native_supplement.py --sha256 a7b9bf06139cec3022fbced5fe182b42c773b9a7099c40c84162893a766e2631",
+  "diagnostic": "byte-binding-mismatch",
+  "exitCode": 1,
+  "knownDrift": [
+    {
+      "currentSha256": "2d0c7c85dc259481180cd9c65fb327c32706e9ddbfa0c1a01fcd848da2d2d41e",
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "sealedSha256": "1d66b846fb554deefa67acb44711671376d5d354f74558ffb9b34a87a638283d"
+    }
+  ],
+  "oldSupplementRepaired": false,
+  "reason": "offline-integrity-or-custody-refusal",
+  "status": "refused"
+}

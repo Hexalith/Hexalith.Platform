@@ -1,0 +1,78 @@
+{
+  "authorityAccepted": false,
+  "executionApprovalReady": false,
+  "historicalEvidenceOnly": [
+    {
+      "classification": "historical-recovered-use-no-current-public-identity-or-rights",
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t112212z-independent-native-access/independent-native-access.json",
+      "sha256": "baf8fa62efc17835e00c2a546f8ba8dd98a8457ad85720ed21cfe097c606dec6"
+    },
+    {
+      "classification": "historical-subject-issuer-validity-no-certificate-fingerprint",
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261003t062816z-kubeadm-admin-credential/admin-credential-observation.json",
+      "sha256": "a611dc5da71a5d426fd9ee732870214a60729b8c3c94a040c235a04aa3598250"
+    },
+    {
+      "classification": "historical-managementGrantLineageAuthenticated-false",
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261001t210315z-native-authority/native-access.json",
+      "sha256": "65f3e446dadd34335f18a7842ffbf097adc2831a4975a9640cc6f48a37447197"
+    },
+    {
+      "classification": "design-actualSignedRepositoryOrOffsiteMirrorVerified-false",
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t154618z-capability-assessment/authority-design.json",
+      "sha256": "fa6545e4fa267aeae760196d66596fb5a122ba774ba7dbd8c8303776748b03cd"
+    }
+  ],
+  "kind": "hexalith.offline-native-evidence-gap-ledger",
+  "missingEvidence": [
+    {
+      "id": "serverTrustSource",
+      "required": "Independently authenticated trust source for https://192.168.1.30:6443; no bootstrap from kubeconfig or historical endpoint metadata."
+    },
+    {
+      "id": "apiCaPublicIdentity",
+      "required": "Exact public CA bytes/fingerprint, trust anchor authentication and permitted validation chain."
+    },
+    {
+      "id": "tlsPeerIdentity",
+      "required": "Exact current API leaf identity/pin, IP SAN 192.168.1.30, issuer/validity and full chain validation evidence."
+    },
+    {
+      "id": "singlePublicClientIdentity",
+      "required": "Chosen single credential kind; exact public client certificate/fingerprint, subject, issuer, groups and validity tied to fixed config/context. No private credential bytes here."
+    },
+    {
+      "id": "independentNativeGrant",
+      "required": "Independently authenticated current principal/role/subjects/resource identity and independence from KubeSphere."
+    },
+    {
+      "id": "completeRevocationLineage",
+      "required": "Authenticated signer trust root, complete grant/revocation sequence and predecessors, independently authenticated current head, offsite custody and post-cut revocations."
+    },
+    {
+      "id": "currentReadRights",
+      "required": "Current independent rights witness for all exact ordered 23 GET selectors, validity and revocation cut at every step."
+    },
+    {
+      "id": "protectedDeliveryCustody",
+      "required": "Reviewed owner/enrollment attestation for exclusive one-credential delivery, pair validation, no fallback and exact protected delivery channel; no actual credential inspection permitted in this run."
+    },
+    {
+      "id": "runtimeOpenSslBehavior",
+      "required": "Exact approved runtime, loaded OpenSSL provider/configuration, strict chain/peer/client certificate behavior and bound environment. Offline bytes/mocks are insufficient for live behavior."
+    },
+    {
+      "id": "actualResponseCompatibility",
+      "required": "Current response/Content-Length/HTTP/media/schema compatibility through a separately authorized bounded validation. Synthetic compatibility is insufficient."
+    },
+    {
+      "id": "priorPreservationDrift",
+      "required": "Explicit disposition of the existing Platform sprint-status drift; old full verifier currently refuses. Preserve originals and do not rebase the sealed packet."
+    },
+    {
+      "id": "exactOperationalApproval",
+      "required": "Distinct bounded approval naming final source/runtime/manifest bytes, identity, output custody, limits, time ceiling and stop conditions, only after every prerequisite is satisfied."
+    }
+  ],
+  "operationalGate": "closed"
+}
