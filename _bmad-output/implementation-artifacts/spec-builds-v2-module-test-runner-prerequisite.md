@@ -2,7 +2,7 @@
 title: 'Builds v2 module-owned test runner prerequisite'
 type: 'feature'
 created: '2026-10-16'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'b2890d20575356239555df5b113e3100c1d594c1'
@@ -70,7 +70,7 @@ Implemented in Platform's direct Builds checkout, preserving its original HEAD. 
 
 Local failures retain resources, process identity and safe diagnostics; CI and successes perform cleanup before output. First outcomes use a per-run file lock, and explicit down records withdrawal before terminating execution while preserving earlier failures. Existing plan/readiness/mapping documents are exposed in the handoff and copied into safe durable diagnostics. Observed candidate/backend fields remain absent and qualification credit is false. Unimplemented attachment/hosted reuse refuses.
 
-Offline verification: Debug `--no-restore` Module.Tests build succeeded with zero warnings/errors; focused classes passed 293 tests in 9.475s and exact affected legacy methods passed 28 in 1.920s, with zero errors/failures/skips/not-run. Exact argv/results are in `/tmp/builds-selected-final-results.json`, logs in `/tmp/builds-selected-final-{0,1}.log`, and tested source inventory in `/tmp/builds-selected-tested-source.json`. The review diff includes all Builds changes and untracked files, excluding independent Platform work: `/tmp/builds-v2-runner-y6sio70q/runner.diff`, SHA-256 `cd2b894c77a98bc80abad9d3c6c746c8cb26fae418ae5d0cf8df89c285eaaa11`. No staging was used. Platform preservation baseline contains hashes of 45 independent files in `/tmp/builds-v2-runner-y6sio70q/preservation-before.json`.
+Initial pre-review offline verification: Debug `--no-restore` Module.Tests build succeeded with zero warnings/errors; focused classes passed 293 tests in 9.475s and exact affected legacy methods passed 28 in 1.920s, with zero errors/failures/skips/not-run. Exact argv/results are in `/tmp/builds-selected-final-results.json`, logs in `/tmp/builds-selected-final-{0,1}.log`, and tested source inventory in `/tmp/builds-selected-tested-source.json`. The review diff includes all Builds changes and untracked files, excluding independent Platform work: `/tmp/builds-v2-runner-y6sio70q/runner.diff`, SHA-256 `cd2b894c77a98bc80abad9d3c6c746c8cb26fae418ae5d0cf8df89c285eaaa11`. No staging was used. Platform preservation baseline contains hashes of 45 independent files in `/tmp/builds-v2-runner-y6sio70q/preservation-before.json`.
 
 ## Spec Change Log
 
@@ -106,3 +106,34 @@ Shared roots: BH1/EC2/VG1; BH2/BH10/EC1/P1; BH3/BH4/EC3; BH8/BH9/VG3. Each indiv
 ## Verification
 
 Build the individual Module.Tests project in Debug with `--no-restore`, then invoke its built xUnit assembly with focused `-class` selectors. Use process doubles only. Run `git diff --check` in Builds and inspect the complete owned diff including new files without staging. Record exact commands/results and any environmental blockers separately.
+
+
+## Final Correction Disposition
+
+All individually triaged findings above are corrected in the authorized runner scope. Setup uses the original monotonic budget before mapping/startup; precise execution expiry and JWT expiry differ only by necessary sub-second JWT rounding. Selected process shutdown, encoded report inspection, startup-timeout observations, terminal bookkeeping and teardown share the first stopping timestamp and allowance. Diagnostic/lock failures cannot prevent an owned inert process from being stopped. Exact-ID down survives missing/corrupt declarations. First outcomes remain consistent across returned, durable and embedded results; evidence cross-binds ownership, source, profile, report hashes and counts. Overflow, mixed-case dependency ownership, report links/special/oversized files, XML encodings/comments/processing instructions, output caps and safe preflight diagnostics have targeted regressions.
+
+The final startup-timeout correction remains within BH4/EC3: the actual readiness-deadline tail now bounds observation and reuses that bound in teardown, preserving HXR021 on observation I/O/cancellation failures and disclosing HXT008. Its four observed/I/O/timeout/legacy cases use an inert tagged process through the existing lifecycle method. The actual AppHost retention/shutdown orchestration is exercised with offline delegates. Real Aspire/PostgreSQL orchestration was deliberately not executed and remains an integration verification limit, rather than live evidence or deferred acceptance credit.
+
+## Final Source-bound Verification
+
+Parent verification ran from Platform's directly declared Builds repository after the final source freeze:
+
+- `dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --configuration Debug --no-restore -m:1 -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0`: exit 0; zero warnings/errors, MSBuild elapsed 52.78 seconds.
+- Built xUnit assembly with 11 explicit affected class selectors: **340 passed**, 18.953 seconds; zero errors/failures/skips/not-run.
+- Same assembly with 16 explicit safe legacy/startup method selectors: **30 passed**, 2.882 seconds; zero errors/failures/skips/not-run. This includes the independent 600-second default and finite startup-override checks. No real-start or restoring fixture helper was selected.
+- Exact argv, exits, elapsed times and raw log hashes: `/tmp/builds-v2-runner-y6sio70q/final-offline-results.json`, SHA-256 `71b1b612ec06f5d08027847050b5f99a3a62e2c23b1052b5647962d3fea72a91`.
+- Before/after hashes of all 34 changed/new Builds files and tested assemblies match: `/tmp/builds-v2-runner-y6sio70q/final-tested-source.json`, SHA-256 `fb5a5db9af3e58d9a51fff80e10065060332ac36c12f793401919523d3e99d5c`.
+- Complete final tracked/untracked runner diff, without staging: `/tmp/builds-v2-runner-y6sio70q/runner-final.diff`, SHA-256 `07265f9c4f5fe1b3cb4edb524589b393f0d5b5b5c99f54dbd53f05d32ec1d41b`.
+
+The earlier 366-test snapshot before the startup-tail correction is archived separately under `before-startup-tail-correction/`; only the final **370-test** result is attributed to the final source. Three independent reviewers completed; parent inspected the corrections. No unresolved review defect is carried into this prerequisite completion.
+
+All owning checkout HEADs remain at their original values. Nothing is staged in Platform or Builds. Of 45 independently dirty/untracked Platform baseline files, 42 remain byte-identical; three changed concurrently outside this task (`eng/verify_works_host.py`, `src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs`, `tests/Hexalith.Platform.Works.Tests/SdkReadinessHealthCheckTests.cs`) and were left untouched. Exact readback is `/tmp/builds-v2-runner-y6sio70q/preservation-final.json`. No workload/server/target contact, dependency update, commit, publication, Production change or Story 27.4/A41/sprint transition occurred. The done status here applies only to this unnumbered Platform runner prerequisite artifact.
+
+## Remaining PostgreSQL Integration Work
+
+| Owner / next work | Current boundary and required result |
+| --- | --- |
+| Platform PostgreSQL composition | `PlatformDaprBindings.Type` and the telemetry-state reference component still select Redis. Implement the existing runner-selected, run-owned PostgreSQL 18.6 profile with immutable Dapr 1.18.1/backend identities, verify-full TLS, actual resources/readiness, observation access, volume/network ownership and cleanup. Preserve other consumers' Redis defaults. Populate actually observed loaded candidate/backend identities; current runner fields deliberately remain null with `qualificationCredit=false`. |
+| Platform / Memories capability and workload | `src/Hexalith.Platform.Composition/Declarations/local-profile.json` still disables lifecycle with placeholder profile/capability evidence and empty clock sources. Direct Memories' qualification gate still requires `Qualification` and historical KVM profile `95aa…`. Implement the supported local profile/capability and signed clock/nonce/expiry binding through the normal logger/acknowledgement path; copying the KVM hash or enabling placeholders is insufficient. |
+| Tool / direct candidate / consumer alignment | Platform still lacks `.config/dotnet-tools.json`; the fixed `python3` executor is not an interpreter/dependency pin. Direct Memories remains `c285b84fddac7dda1efaf4435b8de18694282583`, without `tools/access_telemetry_functional_retention.py`. Under a later authorized dependency change, align that direct candidate, pin supported tools, declare the real module-owned test, and implement its TRX adapter plus validation of the existing plan/readiness/handoff/result encoding. No replacement runner or Memories descriptor schema is needed. |
+| Later operational verification | After these implementation gaps are resolved and a concrete run is authorized, verify real orchestration, current withdrawal, failure retention and actual cleanup, then the one-writer/two-125-record cohorts with at least 1,800 real seconds separation, 3,600-second retention, 900-second purge grace, younger-cohort preservation and positive per-record attribution. Offline runner tests confer no live/full qualification or A41 credit. |
