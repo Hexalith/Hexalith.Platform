@@ -80,9 +80,37 @@ foreach ($class in $requiredClasses) {
     if ($tests.Count -eq 0) { throw "Required custody/cleanup class did not execute: $class" }
     $classEvidence += @{ Class = $class; Passed = $tests.Count }
 }
+$runtimeProject = Join-Path $root 'tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj'
+$runtimeBuildLog = Join-Path $EvidenceDirectory 'runtime-build.log'
+$runtimeTestLog = Join-Path $EvidenceDirectory 'runtime-tests.log'
+$runtimeXmlPath = Join-Path $EvidenceDirectory 'runtime-tests.xml'
+$runtimeBuildArgs = @($buildArgs)
+$runtimeBuildArgs[1] = $runtimeProject
+& dotnet @runtimeBuildArgs *> $runtimeBuildLog
+if ($LASTEXITCODE -ne 0) { throw "Local runtime/host build failed; see $runtimeBuildLog" }
+$runtimeBuildOutput = Get-Content -LiteralPath $runtimeBuildLog -Raw
+if ($runtimeBuildOutput -notmatch '(?m)^\s*0 Warning\(s\)\s*$' -or $runtimeBuildOutput -notmatch '(?m)^\s*0 Error\(s\)\s*$') {
+    throw "Local runtime/host build was not warning/error free; see $runtimeBuildLog"
+}
+$runtimeAssemblyPath = Join-Path $ArtifactsDirectory 'bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll'
+& dotnet $runtimeAssemblyPath -result-xml $runtimeXmlPath *> $runtimeTestLog
+if ($LASTEXITCODE -ne 0) { throw "Local runtime/host tests failed; see $runtimeTestLog" }
+[xml]$runtimeResults = Get-Content -Raw $runtimeXmlPath
+$runtimeAssembly = $runtimeResults.assemblies.assembly
+$runtimeExecuted = @($runtimeResults.SelectNodes('//test'))
+if ($null -eq $runtimeAssembly -or [int]$runtimeAssembly.total -le 0 -or [int]$runtimeAssembly.passed -ne [int]$runtimeAssembly.total -or [int]$runtimeAssembly.failed -ne 0 -or [int]$runtimeAssembly.errors -ne 0 -or [int]$runtimeAssembly.skipped -ne 0 -or [int]$runtimeAssembly.'not-run' -ne 0 -or $runtimeExecuted.Count -ne [int]$runtimeAssembly.total -or @($runtimeExecuted | Where-Object { $_.result -ne 'Pass' }).Count -ne 0) {
+    throw 'Local runtime/host XML contains missing, failed, skipped or unrun tests.'
+}
+foreach ($class in @('Hexalith.Platform.Secrets.Runtime.Tests.SecretsRuntimeAdapterTests', 'Hexalith.Platform.Secrets.Runtime.Tests.SecretsAuthorityFailureTests', 'Hexalith.Platform.Secrets.Runtime.Tests.QualificationHostTests', 'Hexalith.Platform.Secrets.Runtime.Tests.ObserverJournalDurabilityTests')) {
+    if (@($runtimeExecuted | Where-Object { $_.type -eq $class }).Count -eq 0) { throw "Required runtime/host class did not execute: $class" }
+}
+$pythonLog = Join-Path $EvidenceDirectory 'python-tests.log'
+& python3 -m unittest discover -s (Join-Path $PSScriptRoot 'ext-secrets-1') -p 'test_*.py' *> $pythonLog
+if ($LASTEXITCODE -ne 0) { throw "Local qualification/packet regressions failed; see $pythonLog" }
 @{
     Mode = 'Local'; LiveReady = $false; DependencyAvailable = $false
     Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations; no live qualification'; RequiredClasses = $classEvidence
+    RuntimePassed = [int]$runtimeAssembly.passed; RuntimeXmlSha256 = (Get-FileHash $runtimeXmlPath -Algorithm SHA256).Hash.ToLowerInvariant()
     Total = [int]$assembly.total
     Passed = [int]$assembly.passed; BuildArguments = $buildArgs; TestArguments = $testArgs
     XmlSha256 = (Get-FileHash $xmlPath -Algorithm SHA256).Hash.ToLowerInvariant()

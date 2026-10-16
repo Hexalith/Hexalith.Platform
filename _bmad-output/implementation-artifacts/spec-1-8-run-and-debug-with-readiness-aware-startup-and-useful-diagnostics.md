@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 8
 created: '2026-10-16'
-status: 'ready-for-dev'
+status: 'in-review'
 baseline_commit: '5636b7f36e28e2731111b049f974b1fa951d1c36'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -56,12 +56,12 @@ Paths under `references/Hexalith.Builds`.
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `Tooling/Runtime/{ModuleInvocationCommand,ModuleCommandExecutionService}.cs`, `Module.Cli/ModuleCommandApplication.cs` -- add `debug` (source mode, Debug, process ids reported, same run state as `run`) -- FR-2 debugging
-- [ ] `Tooling/Runtime/{CompositionRunPlan,CompositionEngineOptions}.cs`, `CompositionEngine.cs`, `AppHostRunner.cs` -- resolve the effective deadline from declarations (default, largest override, justification, module), start the clock at the request, and use it for both bounds
-- [ ] `Tooling/Runtime/{CompositionResourceReadiness,CompositionReadiness,CompositionStartupFailure}.cs`, `RunReadiness.cs` -- report all unready resources with last result/error and failed startup tasks; keep status strings short and safe
-- [ ] `CompositionEngine.cs`, `CompositionRunState.cs`, `CompositionDiagnosticMirror.cs` -- preserve diagnostics outside the workspace on failure and report the path; record duration, readiness results and deadline on every run
-- [ ] `Tooling/RunEvidence/*`, `schemas/hexalith.module-run-evidence.v1.json` -- additive evidence fields if run evidence must carry the record
-- [ ] `test/Hexalith.Builds.Module.Tests/*` -- cover the matrix, including override aggregation, multi-resource timeout, early failure, `debug` registration and `down` scoping
+- [x] `Tooling/Runtime/{ModuleInvocationCommand,ModuleCommandExecutionService}.cs`, `Module.Cli/ModuleCommandApplication.cs` -- add `debug` (source mode, Debug, process ids reported, same run state as `run`) -- FR-2 debugging
+- [x] `Tooling/Runtime/{CompositionRunPlan,CompositionEngineOptions}.cs`, `CompositionEngine.cs`, `AppHostRunner.cs` -- resolve the effective deadline from declarations (default, largest override, justification, module), start the clock at the request, and use it for both bounds
+- [x] `Tooling/Runtime/{CompositionResourceReadiness,CompositionReadiness,CompositionStartupFailure}.cs`, `RunReadiness.cs` -- report all unready resources with last result/error and failed startup tasks; keep status strings short and safe
+- [x] `CompositionEngine.cs`, `CompositionRunState.cs`, `CompositionDiagnosticMirror.cs` -- preserve diagnostics outside the workspace on failure and report the path; record duration, readiness results and deadline on every run
+- [x] `Tooling/RunEvidence/*`, `schemas/hexalith.module-run-evidence.v1.json` -- additive evidence fields if run evidence must carry the record
+- [x] `test/Hexalith.Builds.Module.Tests/*` -- cover the matrix, including override aggregation, multi-resource timeout, early failure, `debug` registration and `down` scoping
 
 **Acceptance Criteria:**
 - Given a declared composition, when `debug` starts, then dependencies run from source in Debug and process ids are reported.

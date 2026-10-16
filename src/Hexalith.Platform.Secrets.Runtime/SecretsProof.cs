@@ -8,6 +8,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 /// <summary>Parses one public proof. Duplicate names and secret-bearing property names never become a current proof.</summary>
 internal static class SecretsProof
 {
+    internal const int MaximumBytes = 1024 * 1024;
     private static readonly HashSet<string> SecretNames = new(StringComparer.OrdinalIgnoreCase)
     {
         "secret", "password", "token", "privateKey", "private_key", "apiKey", "api_key",
@@ -17,6 +18,7 @@ internal static class SecretsProof
     /// <summary>Parses a proof object. A duplicate or secret-bearing name returns null and is not cached by the caller.</summary>
     public static JsonObject? Parse(string json)
     {
+        if (json.Length > MaximumBytes || Encoding.UTF8.GetByteCount(json) > MaximumBytes) { return null; }
         try
         {
             var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json), new JsonReaderOptions { CommentHandling = JsonCommentHandling.Disallow, MaxDepth = 32 });
@@ -31,6 +33,7 @@ internal static class SecretsProof
     /// <summary>Parses a configuration document. Unknown names, including unmapped secret names, are retained only so the loader can ignore them.</summary>
     public static JsonObject? ParseDocument(string json)
     {
+        if (json.Length > MaximumBytes || Encoding.UTF8.GetByteCount(json) > MaximumBytes) { return null; }
         try
         {
             var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json), new JsonReaderOptions { CommentHandling = JsonCommentHandling.Disallow, MaxDepth = 32 });
@@ -54,6 +57,23 @@ internal static class SecretsProof
     public static bool SameText(JsonObject? proof, string name, string? expected) => expected is not null && Text(proof, name) == expected;
 
     public static bool SameInteger(JsonObject? proof, string name, long expected) => Integer(proof, name) == expected;
+
+    public static bool Fresh(JsonObject? proof, DateTimeOffset now)
+        => Instant(proof, "observedAt") is { } observed
+            && Instant(proof, proof?.ContainsKey("proofValidUntil") == true ? "proofValidUntil" : "validUntil") is { } until
+            && observed <= now && now < until && until - observed <= TimeSpan.FromSeconds(30);
+
+    public static bool Echoes(JsonObject? proof, JsonObject request)
+        => proof is not null && request.All(field => proof.ContainsKey(field.Key) && JsonNode.DeepEquals(proof[field.Key], field.Value));
+
+    public static bool Authorized(JsonObject? proof, JsonObject request, DateTimeOffset now)
+        => Flag(proof, "authorized") is true && Fresh(proof, now)
+            && (proof?.ContainsKey("status") != true || Text(proof, "status") is "authorized" or "present" or "recorded" or "absent")
+            && SecretsProvisioning.IsReference(Text(proof, "authorityRevision")) && Echoes(proof, request);
+
+    public static bool Absent(JsonObject? proof, JsonObject request, string? authority, string queryMethod, DateTimeOffset now)
+        => Authorized(proof, request, now) && SameText(proof, "status", "absent") && SameText(proof, "proofType", "absence")
+            && SameText(proof, "authorityReference", authority) && SameText(proof, "queryMethod", queryMethod);
 
     public static DateTimeOffset? Instant(JsonObject? proof, string name)
     {

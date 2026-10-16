@@ -23,9 +23,28 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsDaprInvoker
         {
             Content = new StringContent(jsonBody, Encoding.UTF8, "application/json"),
         };
-        using HttpResponseMessage response = await http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        using HttpResponseMessage response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode) { return null; }
-        return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        if (response.Content.Headers.ContentLength > SecretsProof.MaximumBytes) { return null; }
+        using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return await ReadBoundedAsync(stream, cancellationToken).ConfigureAwait(false);
+    }
+
+    internal static async Task<string?> ReadBoundedAsync(Stream stream, CancellationToken cancellationToken)
+    {
+        byte[] bytes = new byte[SecretsProof.MaximumBytes + 1];
+        int used = 0;
+        while (used < bytes.Length)
+        {
+            int count = await stream.ReadAsync(bytes.AsMemory(used), cancellationToken).ConfigureAwait(false);
+            if (count == 0)
+            {
+                try { return new UTF8Encoding(false, true).GetString(bytes, 0, used); }
+                catch (DecoderFallbackException) { return null; }
+            }
+            used += count;
+        }
+        return null;
     }
 }
 
@@ -55,7 +74,7 @@ internal sealed class SecretsDaprSession(ISecretsDaprInvoker invoker, TimeSpan t
         budget.CancelAfter(timeout);
         try
         {
-            string? json = await invoker.InvokeAsync(appId!, method, body.ToJsonString(), budget.Token).ConfigureAwait(false);
+            string? json = await invoker.InvokeAsync(appId!, method, body.ToJsonString(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             JsonObject? proof = json is null ? null : SecretsProof.Parse(json);
             return proof is null ? SecretsCall.Failed : new SecretsCall(proof, false);
         }

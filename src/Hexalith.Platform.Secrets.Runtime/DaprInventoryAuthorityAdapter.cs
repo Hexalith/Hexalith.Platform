@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text.Json.Nodes;
 
 using Hexalith.EventStore.Contracts.Security;
@@ -70,10 +71,10 @@ public sealed class DaprInventoryAuthorityAdapter(SecretsRuntimeConfiguration co
         if (!TransitionBody(transition, operation, out JsonObject body)) { return false; }
         SecretsCall query = await _session.CallAsync(configuration.CurrentInventoryAuthorityReference, "runtime.currentInventoryAuthorityReference", "query-transition", body, cancellationToken).ConfigureAwait(false);
         if (query.Unavailable) { return false; }
-        if (Echoes(query.Proof, body)) { return true; }
-        if (!effect || !CapabilityIdentity.Absent(query.Proof)) { return false; }
+        if (SecretsProof.Authorized(query.Proof, body, _session.Clock.GetUtcNow()) && SecretsProof.Text(query.Proof, "status") != "absent") { return true; }
+        if (!effect || !SecretsProof.Absent(query.Proof, body, configuration.CurrentInventoryAuthorityReference, "query-transition", _session.Clock.GetUtcNow())) { return false; }
         SecretsCall effected = await _session.CallAsync(configuration.CurrentInventoryAuthorityReference, "runtime.currentInventoryAuthorityReference", "effect-transition", body, cancellationToken).ConfigureAwait(false);
-        return !effected.Unavailable && Echoes(effected.Proof, body);
+        return !effected.Unavailable && SecretsProof.Authorized(effected.Proof, body, _session.Clock.GetUtcNow()) && SecretsProof.Text(effected.Proof, "status") != "absent";
     }
 
     private Task<bool> EchoAsync(string? appId, string missing, string method, JsonObject body, CancellationToken cancellationToken)
@@ -82,7 +83,7 @@ public sealed class DaprInventoryAuthorityAdapter(SecretsRuntimeConfiguration co
     private async Task<bool> EchoCallAsync(string? appId, string missing, string method, JsonObject body, CancellationToken cancellationToken)
     {
         SecretsCall proof = await _session.CallAsync(appId, missing, method, body, cancellationToken).ConfigureAwait(false);
-        return !proof.Unavailable && Echoes(proof.Proof, body);
+        return !proof.Unavailable && SecretsProof.Authorized(proof.Proof, body, _session.Clock.GetUtcNow()) && SecretsProof.Text(proof.Proof, "status") != "absent";
     }
 
     private static JsonObject ScopeBody(PlatformKeyVersion scope, string operation)
@@ -95,6 +96,9 @@ public sealed class DaprInventoryAuthorityAdapter(SecretsRuntimeConfiguration co
             ["version"] = scope.Version,
             ["alias"] = scope.KeyAlias,
             ["authorityReference"] = scope.AuthorityReference,
+            ["providerTarget"] = scope.ProviderTarget,
+            ["publicAnchorId"] = scope.PublicAnchorId,
+            ["publicAnchorVersion"] = scope.PublicAnchorVersion,
             ["operation"] = operation,
         };
     }
@@ -103,36 +107,16 @@ public sealed class DaprInventoryAuthorityAdapter(SecretsRuntimeConfiguration co
     {
         body = new JsonObject();
         if (transition is null || !SecretsProvisioning.IsReference(transition.ScopeId) || !SecretsProvisioning.IsReference(transition.PredecessorDigest)
-            || !SecretsProvisioning.IsReference(transition.TargetDigest)) { return false; }
+            || !SecretsProvisioning.IsReference(transition.TargetDigest) || transition.TargetBytes is not { Length: > 0 and <= 524288 }
+            || transition.ExpectedRevision < 0 || transition.ExpectedRevision == long.MaxValue || transition.TargetRevision != transition.ExpectedRevision + 1
+            || !string.Equals(transition.TargetDigest, Convert.ToHexString(SHA256.HashData(transition.TargetBytes)), StringComparison.OrdinalIgnoreCase)) { return false; }
         body["scopeId"] = transition.ScopeId;
         body["expectedRevision"] = transition.ExpectedRevision;
         body["targetRevision"] = transition.TargetRevision;
         body["predecessorDigest"] = transition.PredecessorDigest;
         body["targetDigest"] = transition.TargetDigest;
+        body["targetBytes"] = Convert.ToBase64String(transition.TargetBytes);
         body["operation"] = operation;
-        return true;
-    }
-
-    private static bool Echoes(JsonObject? proof, JsonObject body)
-    {
-        if (proof is null) { return false; }
-        foreach (KeyValuePair<string, JsonNode?> field in body)
-        {
-            if (field.Value is null) { if (proof[field.Key] is not null) { return false; } continue; }
-            if (field.Value is JsonValue expected && expected.TryGetValue<string>(out string? text))
-            {
-                if (!SecretsProof.SameText(proof, field.Key, text)) { return false; }
-            }
-            else if (field.Value is JsonValue number && number.TryGetValue<long>(out long integer))
-            {
-                if (!SecretsProof.SameInteger(proof, field.Key, integer)) { return false; }
-            }
-            else if (field.Value is JsonValue narrow && narrow.TryGetValue<int>(out int small))
-            {
-                if (!SecretsProof.SameInteger(proof, field.Key, small)) { return false; }
-            }
-            else { return false; }
-        }
         return true;
     }
 

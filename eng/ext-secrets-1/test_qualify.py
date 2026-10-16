@@ -178,7 +178,7 @@ class Fixture:
             for part in parts[:-1]:
                 cursor = cursor.setdefault(part, {})
             cursor[parts[-1]] = parts[-1] + "-ref"
-        self.config["runtime"].update(host="192.168.1.30", tenantA="tenant-a", tenantB="tenant-b", decisionKeysOutsideCustody=True,
+        self.config["runtime"].update(host="192.168.1.30", tenantA="tenant-a", tenantB="tenant-b", decisionKeysOutsideCustody=True, callTimeout=1, acceptedReplacementCommit=self.target,
             overlappingExportDisposition="Open", profileNotBefore="2026-01-01T00:00:00Z", profileValidUntil="2099-01-01T00:00:00Z",
             timing={"L": 300, "S": 30, "O": 600, "H": 86400, "R": 604800})
         self.config["qualification"].update(daprEndpoint="http://127.0.0.1:3500", requestTimeoutSeconds=1)
@@ -196,6 +196,9 @@ class Fixture:
             self.config["qualification"][role].update(identity=role, appId=role, version="v1", publicAnchorFile=str(anchor))
             self.binding[f"{role}AnchorSha256"] = hashlib.sha256(public).hexdigest()
         self.binding["configurationSha256"] = q.digest(self.config)
+        self.packet_path = self.directory / "detached-packet.json"
+        anchors = {k: v for k, v in self.binding.items() if k.endswith("AnchorSha256")}
+        self.packet_path.write_bytes(q.canonical({"schema": "EXT-SECRETS-1.replacement-acceptance.v1", "acceptedReplacementCommit": self.target, "dependencyAvailable": False, "liveCompatibilityAuthorized": False, "productionMutationAllowed": False, **self.binding, "publicAnchorSha256": q.digest(anchors)}))
         self.path = self.directory / "references.json"
         self.path.write_bytes(q.canonical(self.config))
         self.register = self.agents / "register.md"
@@ -212,7 +215,7 @@ class Fixture:
 ''' + (f'| `RuntimeQualificationBinding` | `{json.dumps(self.binding)}` |\n' if binding else ""))
 
     def preflight(self):
-        return q.preflight(self.root, self.path, self.register, self.agents, "../eventstore", "/tmp/artifacts", "/tmp/evidence")
+        return q.preflight(self.root, self.path, self.register, self.agents, "../eventstore", "/tmp/artifacts", "/tmp/evidence", self.packet_path)
 
     def sign(self, role, payload):
         payload = dict(payload, identity=role, version="v1")
@@ -264,7 +267,7 @@ class QualificationTests(unittest.TestCase):
     def _write_packet(self, **overrides):
         self._ignore_packet()
         packet = {"schema": "EXT-SECRETS-1.replacement-acceptance.v1", "acceptedReplacementCommit": None,
-                  "dependencyAvailable": False, "liveCompatibilityAuthorized": False,
+                  "dependencyAvailable": False, "liveCompatibilityAuthorized": False, "productionMutationAllowed": False,
                   "configurationSha256": q.digest(self.fixture.config), "planSha256": plan_digest(),
                   "executorAnchorSha256": None, "observerAnchorSha256": None, "enrollmentAnchorSha256": None}
         packet.update(overrides)
@@ -273,7 +276,7 @@ class QualificationTests(unittest.TestCase):
             packet["publicAnchorSha256"] = q.digest(anchors)
         directory = self.fixture.root / "eng" / "ext-secrets-1"
         directory.mkdir(parents=True, exist_ok=True)
-        (directory / "replacement-acceptance-packet.json").write_bytes(q.canonical(packet))
+        self.fixture.packet_path.write_bytes(q.canonical(packet))
 
     def _denial_without_dapr(self, **overrides):
         calls = []
@@ -330,7 +333,7 @@ class QualificationTests(unittest.TestCase):
         self._ignore_packet()
         directory = self.fixture.root / "eng" / "ext-secrets-1"
         directory.mkdir(parents=True)
-        (directory / "replacement-acceptance-packet.json").write_text("[1, 2]", encoding="ascii")
+        self.fixture.packet_path.write_text("[1, 2]", encoding="ascii")
         calls = []
         with patch.object(q.DaprTransport, "call", lambda *args: calls.append(args)):
             with self.assertRaises(q.ReplacementAcceptancePacket):
@@ -339,7 +342,7 @@ class QualificationTests(unittest.TestCase):
 
     def test_shipped_packet_keeps_null_commit_and_false_availability(self):
         directory = Path(__file__).resolve().parent
-        packet = json.loads((directory / "replacement-acceptance-packet.json").read_text(encoding="utf-8"))
+        packet = json.loads((directory / "replacement-acceptance-packet.template.json").read_text(encoding="utf-8"))
         config = q.read_json(directory / "runtime-reference.example.json")
         anchors = {f"{role}AnchorSha256": packet[f"{role}AnchorSha256"] for role in ("executor", "observer", "enrollment")}
         self.assertIsNone(packet["acceptedReplacementCommit"])

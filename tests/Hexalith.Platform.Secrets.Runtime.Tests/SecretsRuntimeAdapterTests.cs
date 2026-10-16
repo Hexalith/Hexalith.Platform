@@ -127,7 +127,7 @@ public sealed class SecretsRuntimeAdapterTests
     public async Task InventoryAuthorization_ComparesAliasAuthorityAndOperation()
     {
         var adapter = new DaprInventoryAuthorityAdapter(_configuration, _invoker, _clock);
-        _invoker.Reply = (_, _, body, _) => body;
+        _invoker.Reply = (_, _, body, _) => WithWindow(body);
         (await adapter.AuthorizeOperationAsync(Key(), "ApplyKeyInventory", TestContext.Current.CancellationToken)).ShouldBeTrue();
         _invoker.Reply = (_, _, body, _) => body.Replace("\"ApplyKeyInventory\"", "\"ReadKeyInventory\"", StringComparison.Ordinal);
         (await adapter.AuthorizeOperationAsync(Key(), "ApplyKeyInventory", TestContext.Current.CancellationToken)).ShouldBeFalse();
@@ -139,8 +139,8 @@ public sealed class SecretsRuntimeAdapterTests
     public async Task Transition_VerifyHasNoEffect_AndRecoverNamesMissingJournal()
     {
         var adapter = new DaprInventoryAuthorityAdapter(_configuration, _invoker, _clock);
-        var transition = new AnchoredStateTransition("scope", 1, 2, "a".PadLeft(64, 'a'), "b".PadLeft(64, 'b'), [1]);
-        _invoker.Reply = (_, _, body, _) => body;
+        var transition = new AnchoredStateTransition("scope", 1, 2, "a".PadLeft(64, 'a'), Convert.ToHexString(SHA256.HashData(new byte[] { 1 })), [1]);
+        _invoker.Reply = (_, _, body, _) => WithWindow(body);
         (await adapter.VerifyTransitionAsync(transition, TestContext.Current.CancellationToken)).ShouldBeTrue();
         _invoker.Calls.ShouldAllBe(call => call.Method == "query-transition");
         _invoker.Calls[0].Body.ShouldContain("predecessorDigest");
@@ -148,7 +148,7 @@ public sealed class SecretsRuntimeAdapterTests
         _invoker.Calls[0].Body.ShouldContain("VerifyTransition");
 
         _invoker.Calls.Clear();
-        _invoker.Reply = (_, method, body, _) => method == "query-transition" ? """{"status":"absent"}""" : body;
+        _invoker.Reply = (_, method, body, _) => method == "query-transition" ? Absent(body, "inventory-app", method) : WithWindow(body);
         (await adapter.RecordTransitionAsync(transition, TestContext.Current.CancellationToken)).ShouldBeTrue();
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-transition", "effect-transition"]);
         _invoker.Calls[1].Body.ShouldContain("predecessorDigest");
@@ -159,7 +159,7 @@ public sealed class SecretsRuntimeAdapterTests
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-transition"]);
 
         _invoker.Calls.Clear();
-        _invoker.Reply = (_, _, body, _) => body;
+        _invoker.Reply = (_, _, body, _) => WithWindow(body);
         (await adapter.RecordRevisionAsync(Key(), 1, 2, new string('c', 64), TestContext.Current.CancellationToken)).ShouldBeTrue();
         _invoker.Calls.ShouldHaveSingleItem().Body.ShouldContain("targetDigest");
         _invoker.Calls[0].Body.ShouldNotContain("predecessorDigest");
@@ -192,14 +192,14 @@ public sealed class SecretsRuntimeAdapterTests
     public async Task DecisionVerification_ComparesBasisApproverAndBoundary()
     {
         var adapter = new DaprDecisionAuthorityAdapter(_configuration, _invoker, _clock);
-        _invoker.Reply = (_, _, body, _) => body;
+        _invoker.Reply = (_, _, body, _) => WithWindow(body);
         DecisionAuthorityPublishedProfile profile = Profile();
         (await adapter.VerifyExpectedBasisAsync(Basis(), profile, TestContext.Current.CancellationToken)).ShouldBeTrue();
         _invoker.Reply = (_, _, body, _) => body.Replace("\"eval\"", "\"other\"", StringComparison.Ordinal);
         (await adapter.VerifyExpectedBasisAsync(Basis(), profile, TestContext.Current.CancellationToken)).ShouldBeFalse();
 
         var approver = new DecisionAuthorityApprover("Product", "actor", "source", "binding", "evidence");
-        _invoker.Reply = (_, _, body, _) => body;
+        _invoker.Reply = (_, _, body, _) => WithWindow(body);
         (await adapter.VerifyApproverAsync(Basis(), approver, Fixtures.Now, TestContext.Current.CancellationToken)).ShouldBeTrue();
         _invoker.Reply = (_, _, body, _) =>
         {
@@ -213,7 +213,7 @@ public sealed class SecretsRuntimeAdapterTests
         var manifest = Manifest("other");
         (await adapter.VerifyAuthorityBoundaryAsync(Basis(), manifest, profile, TestContext.Current.CancellationToken)).ShouldBeFalse();
         _invoker.Calls.ShouldBeEmpty();
-        _invoker.Reply = (_, _, body, _) => body;
+        _invoker.Reply = (_, _, body, _) => WithWindow(body);
         (await adapter.VerifyAuthorityBoundaryAsync(Basis(), Manifest("decision"), profile, TestContext.Current.CancellationToken)).ShouldBeTrue();
     }
 
@@ -246,20 +246,24 @@ public sealed class SecretsRuntimeAdapterTests
     {
         var adapter = new DaprSigningProviderAdapter(_configuration, _invoker, _clock);
         DeletionBatchCapabilityV1 payload = Payload();
-        _invoker.Reply = (_, method, body, _) => method == "query-sign" ? """{"status":"absent"}""" : SignedProof(body);
+        _invoker.Reply = (_, method, body, _) => method == "query-sign" ? Absent(body, "signer-app", method) : SignedProof();
         DeletionCapabilitySigningResult signed = await adapter.SignAsync(payload, "request-1", TestContext.Current.CancellationToken);
         signed.Outcome.State.ShouldBe(DeletionCapabilitySigningState.Signed);
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-sign", "effect-sign"]);
         _invoker.Calls[1].Body.ShouldContain("capabilityDigest");
         _invoker.Calls[1].Body.ShouldContain("request-1");
 
-        string echoed = _invoker.Calls[1].Body;
+        JsonObject transmitted = (JsonObject)JsonNode.Parse(_invoker.Calls[1].Body)!;
+        byte[] actualCanonical = Convert.FromBase64String(transmitted["canonicalPayload"]!.GetValue<string>());
+        actualCanonical.ShouldBe(Encoding.UTF8.GetBytes(GoldenCanonicalSigningPayload));
+        Convert.ToHexString(SHA256.HashData(actualCanonical)).ToLowerInvariant().ShouldBe(GoldenSigningDigest);
+        transmitted["capabilityDigest"]!.GetValue<string>().ShouldBe(GoldenSigningDigest);
         _invoker.Calls.Clear();
-        _invoker.Reply = (_, _, _, _) => SignedProof(echoed);
+        _invoker.Reply = (_, _, _, _) => SignedProof();
         (await adapter.SignAsync(payload, "request-1", TestContext.Current.CancellationToken)).Outcome.State.ShouldBe(DeletionCapabilitySigningState.Signed);
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-sign"]);
 
-        _invoker.Reply = (_, _, body, _) => SignedProof(body).Replace("request-1", "other", StringComparison.Ordinal);
+        _invoker.Reply = (_, _, body, _) => SignedProof().Replace("request-1", "other", StringComparison.Ordinal);
         (await adapter.SignAsync(payload, "request-1", TestContext.Current.CancellationToken)).Outcome.State.ShouldBe(DeletionCapabilitySigningState.Unavailable);
     }
 
@@ -269,7 +273,7 @@ public sealed class SecretsRuntimeAdapterTests
         var adapter = new DaprReplayRegistrarAdapter(_configuration, _invoker, _clock);
         var intent = new TrustedEnvelopeReplayIntent("issuer", "nonce", "tenant-a", "command", "k1", new string('c', 64));
         TimeSpan retention = TimeSpan.FromDays(7);
-        _invoker.Reply = (_, method, _, _) => method == "query-replay" ? """{"status":"absent"}""" : ReplayProof(intent, Fixtures.Now, retention, 1);
+        _invoker.Reply = (_, method, body, _) => method == "query-replay" ? Absent(body, "replay-app", method) : ReplayProof(intent, Fixtures.Now, retention, 1);
         TrustedEnvelopeReplayReceipt? receipt = await adapter.RegisterAsync(intent, Fixtures.Now, retention, TestContext.Current.CancellationToken);
         receipt.ShouldNotBeNull();
         receipt.SourceRevision.ShouldBe(1);
@@ -308,7 +312,7 @@ public sealed class SecretsRuntimeAdapterTests
 
         var present = new DaprCompromiseRegistrarAdapter(_configuration, _invoker, _clock);
         _invoker.Reply = (_, _, body, _) => CompromiseProof(body, "[]");
-        (await present.RegisterAsync(Envelope(), TestContext.Current.CancellationToken)).ShouldBeNull();
+        (await present.RegisterAsync(Envelope(), TestContext.Current.CancellationToken)).ShouldNotBeNull();
         _invoker.Calls.Select(call => call.Method).ShouldBe(["query-compromise"]);
         _invoker.Calls.Clear();
         _invoker.Reply = (_, _, body, _) => CompromiseProof(body, "[\"batch-1\"]").Replace("\"issuer\":\"issuer\"", "\"issuer\":\"other\"", StringComparison.Ordinal);
@@ -379,9 +383,12 @@ public sealed class SecretsRuntimeAdapterTests
     [Fact]
     public void ObserverJournal_SerializesAppendAndRead()
     {
-        var journal = new ContentFreeObserverJournal();
+        string directory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var journal = new ContentFreeObserverJournal(directory);
         Parallel.For(0, 100, index => journal.Append(index.ToString(System.Globalization.CultureInfo.InvariantCulture)));
         journal.Read().Count.ShouldBe(100);
+        new ContentFreeObserverJournal(directory).Read().Count.ShouldBe(100);
+        Directory.Delete(directory, recursive: true);
     }
 
     private static PlatformKeyVersion Key() => new("tenant-a", PlatformKeyPurpose.TenantKek, "alias", "v1", "provider", "inventory-app", null, null);
@@ -404,6 +411,7 @@ public sealed class SecretsRuntimeAdapterTests
         node!["observedAt"] = Fixtures.Now.ToString("O");
         node["validUntil"] = Fixtures.Now.AddSeconds(21).ToString("O");
         node["authorityRevision"] = "rev-1";
+        node["authorized"] = true;
         return node.ToJsonString();
     }
 
@@ -421,18 +429,24 @@ public sealed class SecretsRuntimeAdapterTests
     private static DeletionBatchCapabilityV1 Payload() => new("issuer", "audience", "tenant-a", "deletion", "seal", "batch", 1, "batch-1",
         new string('d', 64), "guard", 1, 1, 1, "k1");
 
-    private static string SignedProof(string body)
+    private static string Absent(string body, string authority, string method)
     {
-        JsonNode? node = JsonNode.Parse(body);
-        node!["state"] = "Signed";
-        node["detachedJws"] = "detached";
-        node["publicAnchorId"] = "anchor";
-        node["publicAnchorVersion"] = "1";
-        node["subjectPublicKeyInfo"] = "AQ==";
-        node["observedAt"] = Fixtures.Now.ToString("O");
-        node["validUntil"] = Fixtures.Now.AddSeconds(21).ToString("O");
+        JsonNode node = JsonNode.Parse(WithWindow(body))!;
+        node["status"] = "absent";
+        node["proofType"] = "absence";
+        node["authorityReference"] = authority;
+        node["queryMethod"] = method;
         return node.ToJsonString();
     }
+
+    private const string GoldenCanonicalSigningPayload = """{"AttestationOrdinal":1,"Audience":"audience","BatchId":"batch-1","BatchKind":"batch","BatchOrdinal":1,"CapabilityKeyVersion":"k1","DeletionRequestId":"deletion","DestructionSealId":"seal","GuardStreamId":"guard","IntendedIssuedGuardRevision":1,"Issuer":"issuer","ManifestDigest":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","SigningAttemptOrdinal":1,"TenantId":"tenant-a"}""";
+    private const string GoldenSigningDigest = "7a197c5e17dd978c8b81cd6ad1e2fd447a01e2d51c15a76ffdf09e4a7c7a411b";
+    private const string GoldenCanonicalSigningBase64 = "eyJBdHRlc3RhdGlvbk9yZGluYWwiOjEsIkF1ZGllbmNlIjoiYXVkaWVuY2UiLCJCYXRjaElkIjoiYmF0Y2gtMSIsIkJhdGNoS2luZCI6ImJhdGNoIiwiQmF0Y2hPcmRpbmFsIjoxLCJDYXBhYmlsaXR5S2V5VmVyc2lvbiI6ImsxIiwiRGVsZXRpb25SZXF1ZXN0SWQiOiJkZWxldGlvbiIsIkRlc3RydWN0aW9uU2VhbElkIjoic2VhbCIsIkd1YXJkU3RyZWFtSWQiOiJndWFyZCIsIkludGVuZGVkSXNzdWVkR3VhcmRSZXZpc2lvbiI6MSwiSXNzdWVyIjoiaXNzdWVyIiwiTWFuaWZlc3REaWdlc3QiOiJkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkIiwiU2lnbmluZ0F0dGVtcHRPcmRpbmFsIjoxLCJUZW5hbnRJZCI6InRlbmFudC1hIn0=";
+
+    // Fixed signer response binds the independent canonical vector; no adapter request fields are echoed.
+    private static string SignedProof() => $$$"""
+        {"tenantId":"tenant-a","signingRequestId":"request-1","keyVersion":"k1","capabilityDigest":"{{{GoldenSigningDigest}}}","canonicalPayload":"{{{GoldenCanonicalSigningBase64}}}","state":"Signed","detachedJws":"detached","originalIssuanceReceiptId":"original-1","publicAnchorId":"anchor","publicAnchorVersion":"1","subjectPublicKeyInfo":"AQ==","observedAt":"{{{Fixtures.Now:O}}}","validUntil":"{{{Fixtures.Now.AddSeconds(21):O}}}"}
+        """;
 
     private static string CompromiseProof(string body, string batches)
     {

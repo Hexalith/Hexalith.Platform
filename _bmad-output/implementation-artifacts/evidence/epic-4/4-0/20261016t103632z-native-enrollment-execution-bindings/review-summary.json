@@ -1,0 +1,33 @@
+{
+  "kind": "hexalith.independent-offline-review-summary",
+  "reviewCandidate": "review-candidate-v3.json",
+  "candidateSha256": "95ad5a88314c9b8c02ab92cdc682a698cf5992a82f6f673900c5da6ff32c0868",
+  "reviewers": {
+    "blind_review": {
+      "originalFindings": 10,
+      "followupFindings": 2,
+      "allClosed": true,
+      "candidateMembersCompared": 72
+    },
+    "edge_review": {
+      "originalFindings": 2,
+      "followupFindings": 2,
+      "allClosed": true,
+      "poisonCallbacksInvoked": 0,
+      "candidateMembersCompared": 72
+    },
+    "verification_review": {
+      "originalFindings": 2,
+      "followupFindings": 1,
+      "allClosed": true,
+      "statusPinMutantKilled": true,
+      "validityMutantSubtestFailures": 21,
+      "returnedAndRetainedOutputMutantsKilled": true
+    }
+  },
+  "allIndependentFindingRows": 19,
+  "guardTests": 43,
+  "verifierTests": 22,
+  "actualAuthorityAccepted": false,
+  "operationalGate": "closed"
+}

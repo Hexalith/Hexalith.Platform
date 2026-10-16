@@ -1,0 +1,115 @@
+# UNAPPLIED TEMPLATE. Every OWNER_ value requires an independently returned reference.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${OWNER_EXECUTOR_WORKLOAD}
+  namespace: ${OWNER_EXECUTOR_NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      ext-secrets-role: executor
+  template:
+    metadata:
+      labels:
+        ext-secrets-role: executor
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: ${OWNER_EXECUTOR_APP_ID}
+        dapr.io/app-port: "8080"
+        dapr.io/config: ${OWNER_EXECUTOR_DAPR_ACL}
+        dapr.io/api-token-secret: ${OWNER_EXECUTOR_DAPR_TOKEN_SECRET}
+        dapr.io/app-token-secret: ${OWNER_EXECUTOR_APP_CHANNEL_TOKEN_SECRET}
+    spec:
+      serviceAccountName: ${OWNER_EXECUTOR_SERVICE_ACCOUNT}
+      automountServiceAccountToken: false
+      containers:
+        - name: executor
+          image: ${OWNER_EXECUTOR_IMAGE_DIGEST}
+          args: ["/references/runtime.json"]
+          env:
+            # Separate role secret shared only by this app and its own sidecar.
+            - name: APP_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ${OWNER_EXECUTOR_APP_CHANNEL_TOKEN_SECRET}
+                  key: token
+            - name: ASPNETCORE_URLS
+              value: http://+:8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: references
+              mountPath: /references
+              readOnly: true
+            - name: journal
+              mountPath: /journal
+            - name: role-credentials
+              mountPath: /role-credentials
+              readOnly: true
+      volumes:
+        - name: references
+          configMap:
+            name: ${OWNER_EXECUTOR_REFERENCE_CONFIG}
+        - name: journal
+          persistentVolumeClaim:
+            claimName: ${OWNER_EXECUTOR_INDEPENDENT_JOURNAL_PVC}
+        - name: role-credentials
+          secret:
+            secretName: ${OWNER_EXECUTOR_RESTRICTED_CREDENTIAL_SECRET}
+---
+# The storage owner supplies access modes, storageClassName, size and nonrollback evidence.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${OWNER_EXECUTOR_INDEPENDENT_JOURNAL_PVC}
+  namespace: ${OWNER_EXECUTOR_NAMESPACE}
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: ${OWNER_EXECUTOR_STORAGE_CLASS}
+  resources:
+    requests:
+      storage: ${OWNER_EXECUTOR_JOURNAL_SIZE}
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: ${OWNER_EXECUTOR_DAPR_ACL}
+  namespace: ${OWNER_EXECUTOR_NAMESPACE}
+spec:
+  accessControl:
+    defaultAction: deny
+    trustDomain: ${OWNER_DAPR_TRUST_DOMAIN}
+    policies:
+      - appId: ${OWNER_QUALIFICATION_CLIENT_APP_ID}
+        namespace: ${OWNER_QUALIFICATION_CLIENT_NAMESPACE}
+        trustDomain: ${OWNER_DAPR_TRUST_DOMAIN}
+        defaultAction: deny
+        operations:
+          - name: /ext-secrets-1/v1/execute
+            httpVerb: [POST]
+            action: allow
+          - name: /ext-secrets-1/v1/lookup
+            httpVerb: [POST]
+            action: allow
+---
+# APP_API_TOKEN proves only the sidecar channel. The independently composed caller authenticator
+# must verify workload credentials and current scope before either provider call.
+# Default isolation. Owner supplies explicit Dapr/owner-read/storage DNS and network allow rules.
+# This deny policy alone leaves the workload deliberately unavailable.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${OWNER_EXECUTOR_ISOLATION_POLICY}
+  namespace: ${OWNER_EXECUTOR_NAMESPACE}
+spec:
+  podSelector:
+    matchLabels:
+      ext-secrets-role: executor
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []

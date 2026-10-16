@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 import queue
 import re
+import shlex
+import stat
 import socket
 import subprocess
 import sys
@@ -33,12 +35,13 @@ IDENTITY = re.compile(r"^[A-Za-z0-9_.:/@-]{1,2048}$")
 GLOBAL = {"leakCount": 0, "foreignEffects": 0, "allCopyRevival": 0,
           "immutableIdentity": 1, "immutableOutcome": 1, "persistedProofCount": 4}
 REQUIRED = (
-    "runtime.providerBinding", "runtime.tenantInventoryReference", "runtime.currentInventoryAuthorityReference",
+    "runtime.providerBinding", "runtime.hmacCredentialReference", "runtime.tenantInventoryReference", "runtime.currentInventoryAuthorityReference",
     "runtime.tenantA", "runtime.tenantB", "runtime.profileReference", "runtime.issuer", "runtime.audience",
     "runtime.profileVersion", "runtime.profileNotBefore", "runtime.profileValidUntil", "runtime.actorRoleAuthorityReference",
     "runtime.independentSignerAccount", "runtime.independentSignerCredentialReference", "runtime.publicTrustReference",
     "runtime.currentRevocationReference", "runtime.replayRegistrarCredentialReference", "runtime.replayExactScope",
     "runtime.compromiseSubscriberCredentialReference", "runtime.compromisePublisherReference",
+    "runtime.compromiseSubscriptionReference", "runtime.compromiseGuardMirrorReference",
     "runtime.allCopyLifecycleAuthorityReference", "runtime.allCopyInventoryReference", "runtime.nonrollbackJournalReference",
     "runtime.restoreTarget", "runtime.authenticatedRequesterTransport", "runtime.migrationAuthorityReference",
     "runtime.protectionOwnerReference", "runtime.publicAnchorRetentionReference",
@@ -47,7 +50,9 @@ REQUIRED = (
     "qualification.observer.appId", "qualification.observer.identity", "qualification.observer.version", "qualification.observer.publicAnchorFile",
     "qualification.enrollment.appId", "qualification.enrollment.identity", "qualification.enrollment.version", "qualification.enrollment.publicAnchorFile",
 )
-IMPLEMENTATIONS = ("InstalledOwnerQualificationExecutor", "IndependentPersistedStateObserver",
+REQUIRED += tuple(f"qualification.{role}.{field}" for role in ("executor", "observer", "enrollment")
+                  for field in ("appChannelCredentialReference", "callerAuthenticatorReference", "callerScopeAuthorityReference"))
+IMPLEMENTATIONS = ("IndependentRoleAppChannelAndAuthenticatedCallerScopes", "InstalledOwnerQualificationExecutor", "IndependentPersistedStateObserver",
                    "IsolatedTargetEnrollmentAuthority", "QualifiedAllCopyLifecycleAdapter",
                    "QualifiedNonrollbackRestoreAdapter", "IndependentCurrentInventoryAuthority",
                    "IndependentDecisionSignerAndActorRoleAuthority", "PrivateExactReplayRegistrarBinding",
@@ -86,11 +91,72 @@ def get(value, path):
     return value
 
 
+def bounded_public_file(path, limit):
+    # Open nonblocking before inspecting the descriptor: FIFOs/devices/symlinks cannot stall a proof check.
+    descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > limit:
+            raise ValueError("bounded regular public file required")
+        data = bytearray()
+        while len(data) <= limit:
+            chunk = os.read(descriptor, min(65536, limit + 1 - len(data)))
+            if not chunk:
+                return bytes(data)
+            data.extend(chunk)
+        raise ValueError("public file exceeds bound")
+    finally:
+        os.close(descriptor)
+
+
 def read_json(path):
-    data = Path(path).read_bytes()
-    if len(data) > 1024 * 1024:
-        raise ValueError("oversize")
-    return decode_json(data)
+    return decode_json(bounded_public_file(path, 1024 * 1024))
+
+
+def read_public_anchor(path):
+    return bounded_public_file(path, 4096)
+
+
+def command_suffix(eventstore, artifacts, evidence):
+    return ("pwsh -NoProfile -File ../platform/eng/verify-ext-secrets-1.ps1 -Mode Live "
+            f"-EventStoreSourceRoot {shlex.quote(str(eventstore))} -ArtifactsDirectory {shlex.quote(str(artifacts))} "
+            f"-EvidenceDirectory {shlex.quote(str(evidence))}")
+
+
+def read_public_configuration(path):
+    try:
+        value = read_json(path)
+        validate_public_configuration(value)
+        return value
+    except (OSError, ValueError, TypeError, UnicodeError):
+        # Neither rejected field names nor their values may enter a report or exception message.
+        raise Unavailable("ValidPublicRuntimeReferenceConfiguration") from None
+
+
+def validate_public_configuration(value):
+    nullable = set(REQUIRED) | {"runtime.callTimeout", "runtime.acceptedReplacementCommit"}
+    def object_fields(obj, allowed, prefix=""):
+        if not isinstance(obj, dict) or set(obj) - set(allowed):
+            raise ValueError("public configuration schema")
+        for name, child in obj.items():
+            shape = allowed[name]
+            path = prefix + name
+            if child is None and path in nullable:
+                continue  # Missing provisioning references remain explicit blocked inputs.
+            if isinstance(shape, dict):
+                object_fields(child, shape, path + ".")
+            elif type(child) is not shape or isinstance(child, str) and (not child or len(child) > 2048 or any(ord(c) < 32 for c in child)):
+                raise ValueError("public configuration type")
+    runtime = {name.split(".")[1]: str for name in REQUIRED if name.startswith("runtime.")}
+    runtime.update({name: str for name in ("acceptedReplacementCommit", "host", "kubernetesApi", "verifiedProviderResource", "providerServiceReference", "overlappingExportDisposition")})
+    runtime.update(callTimeout=int, timing={k: int for k in ("L", "S", "O", "H", "R")}, decisionKeysOutsideCustody=bool)
+    role = {"appId": str, "identity": str, "version": str, "publicAnchorFile": str,
+            "appChannelCredentialReference": str, "callerAuthenticatorReference": str, "callerScopeAuthorityReference": str}
+    qualification = {"isolatedTargetId": str, "enrollmentCredentialReference": str, "daprApiCredentialReference": str,
+                     "daprEndpoint": str, "requestTimeoutSeconds": int, **{r: role for r in ("executor", "observer", "enrollment")}}
+    object_fields(value, {"schema": str, "runtime": runtime, "qualification": qualification})
+    if not isinstance(value.get("runtime"), dict) or not isinstance(value.get("qualification"), dict):
+        raise ValueError("public configuration objects")
 
 
 def decode_json(data):
@@ -128,7 +194,7 @@ def acceptance(register):
         raise ValueError("not accepted")
     if "| `TargetIntegrationDate` | `2026-10-08` |" not in section:
         raise ValueError("date changed")
-    command = re.search(r"Command: `([^`]+)`", section).group(1)
+    command = re.search(r"Command: `(.*)`\s*\|?\s*$", section, re.MULTILINE).group(1)
     if f'"{target}"' not in command or "status --porcelain" not in command:
         raise ValueError("not exact")
     # The owner accepts these immutable trust/config pins in the authoritative register.
@@ -145,9 +211,11 @@ def git(root, *args):
 
 def load_replacement_packet(path):
     try:
-        data = Path(path).read_bytes()
+        data = bounded_public_file(path, 1024 * 1024)
     except OSError:
         return None
+    except ValueError:
+        raise ReplacementAcceptancePacket() from None
     if len(data) > 1024 * 1024:
         raise ReplacementAcceptancePacket()
     try:
@@ -159,9 +227,11 @@ def load_replacement_packet(path):
     return packet
 
 
-def replacement_packet_inputs(packet, config, target, head):
+def replacement_packet_inputs(packet, config, target, head, binding=None):
     """Compare pins to the loaded configuration, plan, and anchor set. A 64-hex string is not itself a pin."""
     if not isinstance(packet, dict):
+        raise ReplacementAcceptancePacket()
+    if packet.get("schema") not in ("EXT-SECRETS-1.replacement-acceptance.v1", "EXT-SECRETS-1.replacement-acceptance.v2"):
         raise ReplacementAcceptancePacket()
     missing = []
     if packet.get("configurationSha256") != digest(config):
@@ -171,16 +241,44 @@ def replacement_packet_inputs(packet, config, target, head):
     anchors = {f"{role}AnchorSha256": packet.get(f"{role}AnchorSha256") for role in ("executor", "observer", "enrollment")}
     if packet.get("publicAnchorSha256") != digest(anchors):
         missing.append("PinnedPublicAnchorSha256")
-    elif packet.get("acceptedReplacementCommit") is None and any(value is not None for value in anchors.values()):
-        missing.append("PinnedPublicAnchorSha256")
-    commit = packet.get("acceptedReplacementCommit")
+    for role in ("executor", "observer", "enrollment"):
+        try:
+            data = read_public_anchor(get(config, f"qualification.{role}.publicAnchorFile"))
+            public_key_identity(data)
+            actual = hashlib.sha256(data).hexdigest()
+            if anchors[f"{role}AnchorSha256"] != actual or binding is not None and binding.get(f"{role}AnchorSha256") != actual:
+                missing.append("PinnedPublicAnchorSha256")
+        except (OSError, TypeError, ValueError, ImportError):
+            missing.append("PinnedPublicAnchorSha256")
+    if binding is not None and (binding.get("configurationSha256") != packet.get("configurationSha256") or binding.get("planSha256") != packet.get("planSha256")):
+        missing.append("PacketMatchesAuthoritativeRuntimeQualificationBinding")
+    commit = packet.get("candidateCommit") if packet.get("schema") == "EXT-SECRETS-1.replacement-acceptance.v2" else packet.get("acceptedReplacementCommit")
     accepted = isinstance(commit, str) and COMMIT.fullmatch(commit) and commit == target and commit == head
-    if not accepted or packet.get("dependencyAvailable") is not False or packet.get("liveCompatibilityAuthorized") is not False:
+    if not accepted or packet.get("dependencyAvailable") is not False or packet.get("liveCompatibilityAuthorized") is not False or packet.get("productionMutationAllowed") is not False:
         missing.append("LiveCompatibilityNotAuthorized")
     return missing
 
 
-def preflight(root, config_path, register, caller, eventstore_argument, artifacts_argument, evidence_argument):
+def qualification_prerequisite_inputs(config):
+    """Shared named public-reference checks; credential contents are never read or reported."""
+    missing = []
+    for role in ("executor", "observer", "enrollment"):
+        for field in ("identity", "version", "appId"):
+            value = get(config, f"qualification.{role}.{field}")
+            if not isinstance(value, str) or not IDENTITY.fullmatch(value):
+                missing.append(f"qualification.{role}.{field}")
+    if get(config, "qualification.daprEndpoint") != "http://127.0.0.1:3500":
+        missing.append("LocalEnrolledDaprSidecar")
+    timeout = get(config, "qualification.requestTimeoutSeconds")
+    if type(timeout) is not int or timeout not in range(1, 31):
+        missing.append("BoundedQualificationCalls")
+    credential = get(config, "qualification.daprApiCredentialReference")
+    if not isinstance(credential, str) or not credential.startswith("file:/") or not Path(credential[5:]).is_file():
+        missing.append("MountedQualificationDaprCredential")
+    return missing
+
+
+def preflight(root, config_path, register, caller, eventstore_argument, artifacts_argument, evidence_argument, acceptance_packet_path=None):
     missing = []
     config = {}
     try:
@@ -195,18 +293,16 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
     except (OSError, subprocess.SubprocessError):
         missing.append("ExactAcceptedTargetCheckout")
     # Preserve the exact pinned owner invocation; other Live calls are preflight-only.
-    expected_suffix = (f"pwsh -NoProfile -File ../platform/eng/verify-ext-secrets-1.ps1 -Mode Live "
-                       f"-EventStoreSourceRoot {eventstore_argument} -ArtifactsDirectory {artifacts_argument} "
-                       f"-EvidenceDirectory {evidence_argument}")
+    expected_suffix = command_suffix(eventstore_argument, artifacts_argument, evidence_argument)
     if not command.endswith(expected_suffix) or Path(caller).resolve() != (Path(root).parent / "agents").resolve():
         missing.append("ExactAcceptedOwnerCommand")
     if not config_path:
         missing.append("RuntimeReferenceConfiguration")
     else:
         try:
-            config = read_json(config_path)
-        except (OSError, ValueError, TypeError):
-            missing.append("ValidRuntimeReferenceConfiguration")
+            config = read_public_configuration(config_path)
+        except Unavailable:
+            missing.append("ValidPublicRuntimeReferenceConfiguration")
     for name in REQUIRED:
         value = get(config, name)
         if not isinstance(value, str) or not value or len(value) > 2048 or any(ord(c) < 32 for c in value):
@@ -236,7 +332,7 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
         decoded_keys = []
         for role in ("executor", "observer", "enrollment"):
             try:
-                data = Path(get(config, f"qualification.{role}.publicAnchorFile")).read_bytes()
+                data = read_public_anchor(get(config, f"qualification.{role}.publicAnchorFile"))
                 if hashlib.sha256(data).hexdigest() != binding.get(f"{role}AnchorSha256"):
                     missing.append(f"Accepted{role.title()}PublicAnchor")
                 decoded_keys.append(public_key_identity(data))
@@ -247,30 +343,37 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
         apps = [get(config, f"qualification.{role}.appId") for role in ("executor", "observer", "enrollment")]
         if len(set(pins)) != 3 or len(set(decoded_keys)) != 3 or len(set(identities)) != 3 or len(set(apps)) != 3 or not all(isinstance(p, str) and SHA.fullmatch(p) for p in pins):
             missing.append("IndependentEnrolledQualificationAuthorities")
-    for role in ("executor", "observer", "enrollment"):
-        for field in ("identity", "version", "appId"):
-            if not IDENTITY.fullmatch(get(config, f"qualification.{role}.{field}") or ""):
-                missing.append(f"qualification.{role}.{field}")
-    if get(config, "qualification.daprEndpoint") != "http://127.0.0.1:3500":
-        missing.append("LocalEnrolledDaprSidecar")
-    if get(config, "qualification.requestTimeoutSeconds") not in range(1, 31):
-        missing.append("BoundedQualificationCalls")
-    credential = get(config, "qualification.daprApiCredentialReference")
-    if not isinstance(credential, str) or not credential.startswith("file:/") or not Path(credential[5:]).is_file():
-        missing.append("MountedQualificationDaprCredential")
+    missing.extend(qualification_prerequisite_inputs(config))
+    if type(get(config, "runtime.callTimeout")) is not int or get(config, "runtime.callTimeout") not in range(1, 31):
+        missing.append("runtime.callTimeout")
+    if get(config, "runtime.acceptedReplacementCommit") != target:
+        missing.append("runtime.acceptedReplacementCommit")
     try:
         import cryptography  # noqa: F401
     except ImportError:
         missing.append("ES256PublicProofVerifier")
-    packet_file = Path(root) / "eng/ext-secrets-1/replacement-acceptance-packet.json"
-    if packet_file.is_file():
+    packet_path = acceptance_packet_path or os.environ.get("EXT_SECRETS_1_ACCEPTANCE_PACKET")
+    if not packet_path:
+        missing.append("DetachedImmutableCandidateAcceptancePacket")
+    else:
+        packet_file = Path(packet_path).resolve()
+        if packet_file.is_relative_to(Path(root).resolve()):
+            missing.append("AcceptancePacketOutsideCandidateCheckout")
         packet = load_replacement_packet(packet_file)
+        if packet is None:
+            missing.append("DetachedImmutableCandidateAcceptancePacket")
+            packet = {}
         try:
             head = git(root, "rev-parse", "HEAD")
         except (OSError, subprocess.SubprocessError):
             head = None
         # A commit equal to the register target and HEAD is the later acceptance condition. It does not skip pin checks above.
-        missing.extend(replacement_packet_inputs(packet, config, target, head))
+        if packet:
+            missing.extend(replacement_packet_inputs(packet, config, target, head, binding))
+        else:
+            missing.append("DetachedImmutableCandidateAcceptancePacket")
+        if packet.get("schema") == "EXT-SECRETS-1.replacement-acceptance.v2" and packet.get("exactCommand") != command:
+            missing.append("PacketMatchesAuthoritativeExactOwnerCommand")
     if missing:
         raise Unavailable(*missing, *IMPLEMENTATIONS)
     return config, target, binding
@@ -289,7 +392,7 @@ def verify_signed(envelope, role, config, binding):
         raw = base64.b64decode(envelope["signature"], validate=True)
         if len(raw) != 64 or base64.b64encode(raw).decode() != envelope["signature"]:
             raise ValueError("ES256 signature")
-        key_bytes = Path(get(config, f"qualification.{role}.publicAnchorFile")).read_bytes()
+        key_bytes = read_public_anchor(get(config, f"qualification.{role}.publicAnchorFile"))
         if hashlib.sha256(key_bytes).hexdigest() != binding[f"{role}AnchorSha256"]:
             raise ValueError("changed anchor")
         key = serialization.load_pem_public_key(key_bytes)

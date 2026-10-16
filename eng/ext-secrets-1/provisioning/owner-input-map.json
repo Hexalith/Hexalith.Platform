@@ -1,0 +1,261 @@
+{
+  "schema": "EXT-SECRETS-1.owner-input-map.v1",
+  "apply": false,
+  "inputs": [
+    {
+      "input": "roles.executor.appId",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor appId reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.serviceAccount",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor serviceAccount reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.namespace",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor namespace reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.imageDigest",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor imageDigest reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.installedVersion",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor installedVersion reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.publicAnchorFile",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor publicAnchorFile reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.signerCredentialReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor signerCredentialReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.daprApiCredentialReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor daprApiCredentialReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.durableOriginalStoreReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor durableOriginalStoreReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.ownerReadScopeReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor ownerReadScopeReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.acceptedBindingReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor acceptedBindingReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.isolatedScopeAuthorityReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor isolatedScopeAuthorityReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.storageClassReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor storageClassReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.retentionPolicyReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the real installed executor retentionPolicyReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.appId",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer appId reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.serviceAccount",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer serviceAccount reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.namespace",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer namespace reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.imageDigest",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer imageDigest reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.installedVersion",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer installedVersion reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.publicAnchorFile",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer publicAnchorFile reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.signerCredentialReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer signerCredentialReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.daprApiCredentialReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer daprApiCredentialReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.durableOriginalStoreReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer durableOriginalStoreReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.ownerReadScopeReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer ownerReadScopeReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.acceptedBindingReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer acceptedBindingReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.isolatedScopeAuthorityReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer isolatedScopeAuthorityReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.storageClassReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer storageClassReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.observer.retentionPolicyReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the real installed observer retentionPolicyReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.appId",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment appId reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.serviceAccount",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment serviceAccount reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.namespace",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment namespace reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.imageDigest",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment imageDigest reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.installedVersion",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment installedVersion reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.publicAnchorFile",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment publicAnchorFile reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.signerCredentialReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment signerCredentialReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.daprApiCredentialReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment daprApiCredentialReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.durableOriginalStoreReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment durableOriginalStoreReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.ownerReadScopeReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment ownerReadScopeReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.acceptedBindingReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment acceptedBindingReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.isolatedScopeAuthorityReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment isolatedScopeAuthorityReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.storageClassReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment storageClassReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.enrollment.retentionPolicyReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the real installed enrollment retentionPolicyReference reference and its ACL/current-enrollment proof. Keep credentials private."
+    },
+    {
+      "input": "roles.executor.appChannelCredentialReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the separately provisioned executor appChannelCredentialReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.executor.callerAuthenticatorReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the separately provisioned executor callerAuthenticatorReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.executor.callerScopeAuthorityReference",
+      "owner": "Independent executor provisioning owner",
+      "action": "Return the separately provisioned executor callerScopeAuthorityReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.observer.appChannelCredentialReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the separately provisioned observer appChannelCredentialReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.observer.callerAuthenticatorReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the separately provisioned observer callerAuthenticatorReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.observer.callerScopeAuthorityReference",
+      "owner": "Independent observer provisioning owner",
+      "action": "Return the separately provisioned observer callerScopeAuthorityReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.enrollment.appChannelCredentialReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the separately provisioned enrollment appChannelCredentialReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.enrollment.callerAuthenticatorReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the separately provisioned enrollment callerAuthenticatorReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    },
+    {
+      "input": "roles.enrollment.callerScopeAuthorityReference",
+      "owner": "Independent enrollment provisioning owner",
+      "action": "Return the separately provisioned enrollment callerScopeAuthorityReference public reference and proof of current isolated caller authorization. Keep credential values private; APP_API_TOKEN authenticates only the sidecar channel."
+    }
+  ]
+}

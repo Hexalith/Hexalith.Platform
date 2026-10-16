@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/usr/bin/python3.14",
+    "-I",
+    "-S",
+    "-B",
+    "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_enrollment_revision.py",
+    "--sha256",
+    "c71f38517e02ea5bc7fa176cfb1abe8f12b43b499fbe6f74fbdc339d91f0b23d"
+  ],
+  "exitCode": 0,
+  "stdout": "{\"authorityAccepted\": false, \"candidateExpired\": false, \"executionApprovalReady\": false, \"historicalFilesUnchanged\": 348, \"kind\": \"hexalith.offline-enrollment-revision-verification\", \"knownConcurrentPreservationChanges\": [\"/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/sprint-status.yaml\"], \"liveActivationAllowed\": false, \"newSources\": 4, \"observedAt\": \"2026-10-16T11:12:06.201894+00:00\", \"operationalGate\": \"closed\", \"originalFullVerifierPass\": false, \"payloadFiles\": 88, \"policyCeilingEnds\": \"2026-10-16T16:27:56Z\", \"policyPreparedAt\": \"2026-10-15T16:27:56Z\", \"policyTimesRefreshed\": false, \"preservationFilesCompared\": 557, \"preservationFilesUnchanged\": 556, \"priorSourcesUnchanged\": 6, \"priorSupplementFilesUnchanged\": 56, \"priorSupplementSha256\": \"a7b9bf06139cec3022fbced5fe182b42c773b9a7099c40c84162893a766e2631\", \"recordedPriorDrift\": [\"/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/sprint-status.yaml\"], \"revisionSha256\": \"c71f38517e02ea5bc7fa176cfb1abe8f12b43b499fbe6f74fbdc339d91f0b23d\", \"runtimeFiles\": 1337, \"v4FilesUnchanged\": 140}\n",
+  "stderr": ""
+}

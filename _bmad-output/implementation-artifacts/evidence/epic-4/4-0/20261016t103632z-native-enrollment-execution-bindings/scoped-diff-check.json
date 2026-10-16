@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-10-16T11:12:48.622293+00:00",
+  "head": "9256c675186b020929d67230a22892bb13488bc2",
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "1711deba08a4e66b46acfff8d08e7f2ad7f74ba1",
+    "--",
+    "eng/recovery-preparation/native_enrollment_execution.py",
+    "eng/recovery-preparation/test_native_enrollment_execution.py",
+    "eng/recovery-preparation/verify_enrollment_revision.py",
+    "eng/recovery-preparation/test_verify_enrollment_revision.py"
+  ],
+  "exitCode": 0,
+  "stdout": "",
+  "stderr": "",
+  "concurrentCommits": "9256c675186b020929d67230a22892bb13488bc2 fix: story 1.8\n114e08830da2d8cca0e77cd870b8867506b4c68b fix: story 1.7\nb14e98bb4b69d126a8db81e69cf183bd4a105383 fix: story 1.7\n",
+  "repositoryWideBlocker": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 2,
+    "path": "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj:12",
+    "reason": "trailing whitespace in concurrently changed unrelated project file; preserved outside adapter scope"
+  },
+  "ownGitMutations": []
+}

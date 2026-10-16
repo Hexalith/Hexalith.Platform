@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 using Hexalith.EventStore.Contracts.Security;
@@ -59,9 +58,7 @@ public sealed class DaprRevocationAuthenticatorAdapter(SecretsRuntimeConfigurati
             ["evidenceDigest"] = evidenceDigest,
         };
         JsonObject? proof = (await _session.CallAsync(configuration.CurrentRevocationReference, "runtime.currentRevocationReference", "query-revocation", body, cancellationToken).ConfigureAwait(false)).Proof;
-        if (proof is null || !SecretsProof.SameText(proof, "evidenceDigest", evidenceDigest) || !SecretsProof.SameText(proof, "eventIdentity", envelope.EventIdentity)
-            || !SecretsProof.SameText(proof, "tenantId", envelope.TenantId) || !SecretsProof.SameText(proof, "signatureDigest", envelope.SignatureDigest)
-            || !SecretsProvisioning.IsReference(SecretsProof.Text(proof, "authorityRevision"))) { return null; }
+        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow()) || SecretsProof.SameText(proof, "status", "absent")) { return null; }
         DateTimeOffset? observedAt = SecretsProof.Instant(proof, "observedAt");
         DateTimeOffset? validUntil = SecretsProof.Instant(proof, "validUntil");
         DateTimeOffset now = _session.Clock.GetUtcNow();
@@ -93,11 +90,12 @@ public sealed class DaprSigningProviderAdapter(SecretsRuntimeConfiguration confi
             ["signingRequestId"] = signingRequestId,
             ["keyVersion"] = payload.CapabilityKeyVersion,
             ["capabilityDigest"] = digest,
+            ["canonicalPayload"] = Convert.ToBase64String(DeletionBatchCapabilityIdentity.CanonicalPayload(payload)),
         };
         SecretsCall current = await _session.CallAsync(configuration.IndependentSignerCredentialReference, "runtime.independentSignerCredentialReference", "query-sign", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return Unavailable(payload, signingRequestId); }
         if (Signed(current.Proof, payload, signingRequestId, digest)) { return Result(current.Proof!, payload, signingRequestId); }
-        if (!effect) { return Unavailable(payload, signingRequestId); }
+        if (!effect || !SecretsProof.Absent(current.Proof, body, configuration.IndependentSignerCredentialReference, "query-sign", _session.Clock.GetUtcNow())) { return Unavailable(payload, signingRequestId); }
         SecretsCall signed = await _session.CallAsync(configuration.IndependentSignerCredentialReference, "runtime.independentSignerCredentialReference", "effect-sign", body, cancellationToken).ConfigureAwait(false);
         return !signed.Unavailable && Signed(signed.Proof, payload, signingRequestId, digest) ? Result(signed.Proof!, payload, signingRequestId) : Unavailable(payload, signingRequestId);
     }
@@ -110,8 +108,11 @@ public sealed class DaprSigningProviderAdapter(SecretsRuntimeConfiguration confi
         return proof is not null && SecretsProof.SameText(proof, "state", nameof(DeletionCapabilitySigningState.Signed))
             && SecretsProof.SameText(proof, "tenantId", payload.TenantId) && SecretsProof.SameText(proof, "signingRequestId", signingRequestId)
             && SecretsProof.SameText(proof, "keyVersion", payload.CapabilityKeyVersion) && SecretsProof.SameText(proof, "capabilityDigest", digest)
+            && SecretsProof.SameText(proof, "canonicalPayload", Convert.ToBase64String(DeletionBatchCapabilityIdentity.CanonicalPayload(payload)))
             && observedAt is not null && validUntil is not null && observedAt <= now && now < validUntil && validUntil.Value - observedAt.Value <= TimeSpan.FromSeconds(30)
-            && SecretsProof.SubjectPublicKey(proof) is not null && SecretsProvisioning.IsReference(SecretsProof.Text(proof, "detachedJws"));
+            && SecretsProof.SubjectPublicKey(proof) is not null && SecretsProvisioning.IsReference(SecretsProof.Text(proof, "detachedJws"))
+            && SecretsProvisioning.IsReference(SecretsProof.Text(proof, "publicAnchorId")) && SecretsProvisioning.IsReference(SecretsProof.Text(proof, "publicAnchorVersion"))
+            && SecretsProvisioning.IsReference(SecretsProof.Text(proof, "originalIssuanceReceiptId"));
     }
 
     private static DeletionCapabilitySigningResult Result(JsonObject proof, DeletionBatchCapabilityV1 payload, string signingRequestId)
@@ -134,7 +135,7 @@ public sealed class DaprReplayRegistrarAdapter(SecretsRuntimeConfiguration confi
         SecretsCall current = await _session.CallAsync(configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return null; }
         if (Receipt(current.Proof, intent, evaluatedAt, retention) is { } existing) { return existing; }
-        if (!CapabilityIdentity.Absent(current.Proof)) { return null; }
+        if (!SecretsProof.Absent(current.Proof, body, configuration.ReplayRegistrarCredentialReference, "query-replay", _session.Clock.GetUtcNow())) { return null; }
         SecretsCall created = await _session.CallAsync(configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "effect-replay", body, cancellationToken).ConfigureAwait(false);
         return created.Unavailable ? null : Receipt(created.Proof, intent, evaluatedAt, retention);
     }
@@ -204,7 +205,7 @@ public sealed class DaprCompromiseRegistrarAdapter(SecretsRuntimeConfiguration c
         SecretsCall current = await _session.CallAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", "query-compromise", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return null; }
         if (Receipt(current.Proof, envelope) is { } existing) { return existing; }
-        if (!CapabilityIdentity.Absent(current.Proof)) { return null; }
+        if (!SecretsProof.Absent(current.Proof, body, configuration.CompromiseSubscriptionReference, "query-compromise", _session.Clock.GetUtcNow())) { return null; }
         SecretsCall proof = await _session.CallAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", "effect-compromise", body, cancellationToken).ConfigureAwait(false);
         return proof.Unavailable ? null : Receipt(proof.Proof, envelope);
     }
@@ -227,6 +228,8 @@ public sealed class DaprCompromiseRegistrarAdapter(SecretsRuntimeConfiguration c
             ["tenantId"] = envelope.TenantId,
             ["keyFamily"] = envelope.KeyFamily,
             ["keyVersion"] = envelope.KeyVersion,
+            ["revocationRevision"] = envelope.RevocationRevision,
+            ["trustProfileRevision"] = envelope.TrustProfileRevision,
             ["eventIdentity"] = envelope.EventIdentity,
             ["signatureDigest"] = envelope.SignatureDigest,
         };
@@ -237,11 +240,13 @@ public sealed class DaprCompromiseRegistrarAdapter(SecretsRuntimeConfiguration c
         long? owner = SecretsProof.Integer(proof, "ownerRevision");
         long? block = SecretsProof.Integer(proof, "keyBlockSetRevision");
         string[]? batches = SecretsProof.Texts(proof, "affectedBatchIds");
-        if (proof is null || owner is null || owner <= 0 || block is null || block <= 0 || batches is null || batches.Length == 0
+        if (proof is null || owner is null || owner <= 0 || block is null || block <= 0 || batches is null || batches.Distinct(StringComparer.Ordinal).Count() != batches.Length
             || !SecretsProvisioning.IsReference(SecretsProof.Text(proof, "receiptId")) || !SecretsProof.SameText(proof, "eventIdentity", envelope.EventIdentity)
             || !SecretsProof.SameText(proof, "tenantId", envelope.TenantId) || !SecretsProof.SameText(proof, "issuer", envelope.Issuer)
             || !SecretsProof.SameText(proof, "audience", envelope.Audience) || !SecretsProof.SameText(proof, "keyFamily", envelope.KeyFamily)
-            || !SecretsProof.SameText(proof, "keyVersion", envelope.KeyVersion) || !SecretsProof.SameText(proof, "signatureDigest", envelope.SignatureDigest)) { return null; }
+            || !SecretsProof.SameText(proof, "keyVersion", envelope.KeyVersion) || !SecretsProof.SameText(proof, "signatureDigest", envelope.SignatureDigest)
+            || !SecretsProof.SameInteger(proof, "revocationRevision", envelope.RevocationRevision)
+            || !SecretsProof.SameInteger(proof, "trustProfileRevision", envelope.TrustProfileRevision)) { return null; }
         return new DeletionCapabilityRevocationReceipt(envelope, owner.Value, block.Value, SecretsProof.Text(proof, "receiptId")!, batches);
     }
 }
@@ -249,7 +254,5 @@ public sealed class DaprCompromiseRegistrarAdapter(SecretsRuntimeConfiguration c
 internal static class CapabilityIdentity
 {
     public static string Digest(DeletionBatchCapabilityV1 payload)
-        => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(payload))).ToLowerInvariant();
-
-    public static bool Absent(JsonObject? proof) => proof is not null && (SecretsProof.Text(proof, "status") == "absent" || proof.Count == 0);
+        => Convert.ToHexString(SHA256.HashData(DeletionBatchCapabilityIdentity.CanonicalPayload(payload))).ToLowerInvariant();
 }

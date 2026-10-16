@@ -564,3 +564,7 @@
 - Real Dapr ACL matching is verified only by gated live tests (`HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1`); no default-run check. Needs Docker + Dapr runtime in a documented release gate.
 - Live fixture never asserts `callbackObserved`; declarative mode drops all programmatic `[Topic]` endpoints. Unverified medium; settle by asserting a non-wildcard projection callback.
 - Live evidence bypasses Platform-composed Aspire sidecars (direct `daprd` + stubs). Unverified medium; settle with a signed Builds source smoke that asserts invocation and delivery.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-exact-target-runtime-qualification.md`
+  summary: Verify the independently installed caller authenticator accepts the exact serialized Dapr qualification request and current isolated scope.
+  evidence: Unverified medium concern from R2-B4; the source exposes HttpContext authentication but no installed owner implementation or returned credentials/identity mechanism exists. Only an independent owner enrollment and serialized transport proof can settle it. Live remains blocked; the user requested the source candidate and provisioning blockers.

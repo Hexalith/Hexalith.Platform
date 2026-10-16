@@ -12,7 +12,7 @@ import types
 
 
 SOURCE = Path(__file__).absolute()
-ROOT = Path('/home/administrator/hexalith-recovery-evidence/4-0/20261016t103632z-native-enrollment-execution-revision')
+ROOT = Path('/home/administrator/hexalith-recovery-evidence/4-0/20261016t103632z-native-enrollment-execution-revision-sealed')
 PRIOR = ROOT.parent / '20261016t063900z-native-measurement-supplement'
 PRIOR_SHA = 'a7b9bf06139cec3022fbced5fe182b42c773b9a7099c40c84162893a766e2631'
 VERIFIER_SHA = 'd7e88423178d5b1f54dc03c5d939029a8176cfe467c95d15c1b0996279c975eb'
