@@ -17,6 +17,7 @@ values = {item.tag: item.text for group in properties.findall("PropertyGroup") f
 selected = {
     "Aspire.AppHost.Sdk": values["HexalithAspireAppHostSdkVersion"],
     "Hexalith.EventStore.Aspire": values["HexalithEventStoreVersion"],
+    "Hexalith.EventStore.ServiceDefaults": values["HexalithEventStoreVersion"],
     "CommunityToolkit.Aspire.Hosting.Dapr": values["HexalithAspireHostingDaprVersion"],
 }
 # The Dapr catalog has a consumer-specific override; the file AppHost uses the default selection.

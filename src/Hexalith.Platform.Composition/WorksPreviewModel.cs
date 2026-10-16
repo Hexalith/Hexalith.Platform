@@ -7,6 +7,7 @@ using CommunityToolkit.Aspire.Hosting.Dapr;
 
 using Hexalith.EventStore.Aspire;
 using Hexalith.Platform.Composition;
+using Hexalith.Platform.Works.Runtime;
 
 using Microsoft.Extensions.Hosting;
 
@@ -18,10 +19,13 @@ public static class WorksPreviewModel
     {
         // The Works migration lane resolves sibling source projects until producer packages and a clean-checkout
         // deployment contract exist. A missing source tree is a failed composition, never an empty green host.
-        string worksRoot = Path.GetFullPath(Path.Combine(builder.AppHostDirectory, "..", "works"));
+        string worksRoot = Path.GetFullPath(builder.Configuration["Platform:Works:SourceRoot"]
+            ?? Path.Combine(builder.AppHostDirectory, "..", "works"));
         string eventStoreRoot = Path.Combine(worksRoot, "references", "Hexalith.EventStore");
         string worksProject = Path.Combine(worksRoot, "src", "Hexalith.Works", "Hexalith.Works.csproj");
         bool identityEnabled = bool.TryParse(builder.Configuration["Platform:Identity:Enabled"], out bool configuredIdentity) && configuredIdentity;
+        if (identityEnabled && builder.Configuration["Platform:Works:SyntheticIdentity"] != "true")
+            throw new InvalidOperationException("Platform.Identity has test-only provenance in the Works proof; select Platform:Works:SyntheticIdentity=true explicitly.");
         string eventStoreProject = identityEnabled
             ? Path.Combine(builder.AppHostDirectory, "src", "Hexalith.Platform.EventStoreHost", "Hexalith.Platform.EventStoreHost.csproj")
             : Path.Combine(eventStoreRoot, "src", "Hexalith.EventStore", "Hexalith.EventStore.csproj");
@@ -35,10 +39,14 @@ public static class WorksPreviewModel
             }
         }
 
+        string? profile = builder.Configuration["Platform:Works:ProductionProfile"];
+        if (!string.IsNullOrWhiteSpace(profile)) WorksProductionProfile.Validate(File.ReadAllText(profile));
         if (!builder.Environment.IsDevelopment())
         {
+            if (string.IsNullOrWhiteSpace(profile))
+                throw new InvalidOperationException("A validated Works production profile is required before production admission.");
             throw new InvalidOperationException(
-                "Works Dapr hosting is a development-only preview. A production profile and AD-20 exception are required.");
+                "Works Dapr hosting is a development-only preview. A Maintainer time-bounded exception and qualified production providers are unavailable.");
         }
 
         string components = Path.Combine(builder.AppHostDirectory, "DaprComponents");
@@ -57,6 +65,7 @@ public static class WorksPreviewModel
         string resiliencyPath = Component(Path.Combine("resiliency", "resiliency.yaml"));
         string stateStorePath = Component("statestore.yaml");
         string pubSubPath = Component("pubsub.yaml");
+        string configStorePath = Component("configstore.yaml");
         string sentryPath = Component("sentry.yaml");
 
         string? configuredPlacement = builder.Configuration[AspireDaprLocalServiceEndpoints.PlacementHostAddressKey];
@@ -87,9 +96,10 @@ public static class WorksPreviewModel
 
         IResourceBuilder<IDaprComponentResource> resiliency = builder.AddDaprComponent(
             "resiliency", "resiliency", new DaprComponentOptions { LocalPath = resiliencyPath });
+        IResourceBuilder<IDaprComponentResource> configStore = builder.AddDaprComponent(
+            "configstore", "configuration.redis", new DaprComponentOptions { LocalPath = configStorePath });
 
         var eventStore = builder.AddProject("eventstore", eventStoreProject)
-            .WithHttpHealthCheck("/alive")
             .WithEnvironment("MSBUILDDISABLENODEREUSE", "1")
             .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_work_v1__AppId", "works")
             .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_work_v1__MethodName", "process")
@@ -117,7 +127,16 @@ public static class WorksPreviewModel
 
         var works = builder.AddProject("works", worksProject)
             .WithHttpEndpoint()
-            .WithHttpHealthCheck("/alive")
+            .WithEnvironment("Works__Projection__UseSdkDelivery", "true")
+            .WithEnvironment("Works__Recovery__UseSdkRuntime", "true")
+            .WithEnvironment("Works__Query__GatewayWorkloadId", "eventstore")
+            .WithEnvironment("Authentication__Workload__Audience", "works")
+            .WithEnvironment("Authentication__Workload__AllowedCallers__0", "eventstore")
+            .WithEnvironment("Authentication__Workload__AllowedCallers__1", "eventstore-admin")
+            .WithEnvironment("Authentication__WorkloadIssuer__Workload", "works")
+            .WithEnvironment("WORKS_PLATFORM_RUNTIME", "1")
+            .WithEnvironment("DOTNET_STARTUP_HOOKS", typeof(WorksRecoveryHostingStartup).Assembly.Location)
+            .WithEnvironment("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES", typeof(WorksRecoveryHostingStartup).Assembly.GetName().Name!)
             .AddEventStoreDomainModule(
                 eventStoreResources,
                 "works",
@@ -126,6 +145,17 @@ public static class WorksPreviewModel
                 daprSchedulerHostAddress: schedulerAddress)
             .WithEnvironment("EventStore__CommandGateway__BaseAddress", eventStore.GetEndpoint("http"))
             .WaitFor(eventStoreResources.StateStore);
+
+        // Gateway startup discovers this module's protected metadata. A readiness wait in the opposite
+        // direction prevents either service from starting; keep the SDK's references and sidecar wiring.
+        foreach (WaitAnnotation wait in works.Resource.Annotations.OfType<WaitAnnotation>()
+            .Where(wait => ReferenceEquals(wait.Resource, eventStore.Resource)).ToArray())
+            works.Resource.Annotations.Remove(wait);
+
+        eventStore.WithEnvironment("Authentication__WorkloadIssuer__Workload", "eventstore");
+        SdkReadinessHealthCheck.Attach(builder, eventStore);
+        SdkReadinessHealthCheck.Attach(builder, works);
+        builder.CreateResourceBuilder(SidecarOf(eventStore.Resource)!).WithReference(configStore);
 
         var operations = builder.AddProject("eventstore-operations", operationsProject)
             .WithHttpEndpoint()
@@ -140,7 +170,7 @@ public static class WorksPreviewModel
             .WithEnvironment("EventStoreOperations__ReplayAppId", "works")
             .WithEnvironment("EventStoreOperations__ReplayMethodName", "work/events")
             .WithReference(works)
-            .WaitFor(works)
+            .WaitForStart(works)
             .WaitFor(eventStoreResources.StateStore)
             .WithDaprSidecar(sidecar => sidecar
                 .WithOptions(new DaprSidecarOptions
@@ -185,7 +215,7 @@ public static class WorksPreviewModel
         string devSigningKey = builder.Configuration["Works:Authentication:DevSigningKey"] is { Length: > 0 } configuredKey
             ? configuredKey
             : "DevOnlySigningKey-AtLeast32Chars!";
-        foreach (IResourceBuilder<ProjectResource> jwtValidator in new[] { eventStore, admin })
+        foreach (IResourceBuilder<ProjectResource> jwtValidator in new[] { eventStore, admin, works })
         {
             _ = jwtValidator
                 .WithEnvironment("DOTNET_ENVIRONMENT", builder.Environment.EnvironmentName)

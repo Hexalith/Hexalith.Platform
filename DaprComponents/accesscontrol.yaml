@@ -16,7 +16,7 @@ spec:
     sentryAddress: "127.0.0.1:50001"
     controlPlaneTrustDomain: "localhost"
   accessControl:
-    defaultAction: allow
+    defaultAction: deny
     trustDomain: "public"
     policies:
       - appId: works
@@ -24,6 +24,27 @@ spec:
         trustDomain: "public"
         namespace: "default"
         operations:
-          - name: /**
+          - name: /api/v1/commands
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/commands/workload
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/queries
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/commands/status/*
+            httpVerb: ['GET']
+            action: allow
+          - name: /api/v1/commands/status/workload/*/*
+            httpVerb: ['GET']
+            action: allow
+          - name: /api/v1/streams/read
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/streams/read/workload
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/trusted-effects
             httpVerb: ['POST']
             action: allow

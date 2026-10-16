@@ -4,10 +4,16 @@
     <PackageReference Include="Aspire.Hosting" />
     <PackageReference Include="YamlDotNet" />
     <PackageReference Include="CommunityToolkit.Aspire.Hosting.Dapr" />
-    <PackageReference Include="Hexalith.EventStore.Aspire" />
-    <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
     <PackageReference Include="Aspire.Hosting.Keycloak" />
     <PackageReference Include="Aspire.Hosting.Redis" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj" />
+    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+    <PackageReference Include="Hexalith.EventStore.Aspire" />
+    <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
     <ProjectReference Include="../../references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
@@ -18,4 +24,5 @@
   <ItemGroup><None Update="Declarations/*.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /></ItemGroup>
   <ItemGroup><InternalsVisibleTo Include="Hexalith.Platform.Composition.Tests" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj" /></ItemGroup>
 </Project>

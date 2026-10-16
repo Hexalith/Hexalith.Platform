@@ -19,6 +19,7 @@ CATALOG = """<Project>
 APPHOST = """#!/usr/bin/env dotnet
 #:sdk Aspire.AppHost.Sdk@{sdk}
 #:package CommunityToolkit.Aspire.Hosting.Dapr@{dapr}
+#:package Hexalith.EventStore.ServiceDefaults@3.120.0
 {eventstore}
 """
 
@@ -57,6 +58,16 @@ class VerifyPlatformPinsTests(unittest.TestCase):
         result = self.run_script(eventstore="")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("<missing>", result.stderr)
+
+    def test_service_defaults_is_a_required_canonical_pin(self):
+        with tempfile.TemporaryDirectory() as root:
+            root = pathlib.Path(root)
+            (root / "catalog.props").write_text(CATALOG)
+            (root / "apphost.cs").write_text(APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0").replace("#:package Hexalith.EventStore.ServiceDefaults@3.120.0", ""))
+            (root / "spine.md").write_text(SPINE)
+            result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"), "--spine", str(root / "spine.md")], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("Hexalith.EventStore.ServiceDefaults", result.stderr)
 
     def test_package_mentions_outside_adopted_record_do_not_admit_helpers(self):
         for spine in [SPINE.replace("AD-9", "AD-8"), SPINE.replace("ADOPTED, AMENDED", "PROPOSED"), "### AD-9 — Boundary [ADOPTED]\nNo canonical hosting record.\n" + SPINE.replace("AD-9", "AD-10")]:

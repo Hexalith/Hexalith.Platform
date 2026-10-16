@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsPackable>false</IsPackable><GenerateDocumentationFile>true</GenerateDocumentationFile></PropertyGroup>
+  <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+    <PackageReference Include="Hexalith.EventStore.DomainService" />
+  </ItemGroup>
+</Project>

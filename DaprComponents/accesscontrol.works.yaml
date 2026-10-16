@@ -34,10 +34,16 @@ spec:
           - name: /project
             httpVerb: ['POST']
             action: allow
+          - name: /project/v2
+            httpVerb: ['POST']
+            action: allow
           - name: /project/rebuild/shared/v1
             httpVerb: ['POST']
             action: allow
           - name: /replay-state
+            httpVerb: ['POST']
+            action: allow
+          - name: /admin/operational-index-metadata
             httpVerb: ['POST']
             action: allow
       - appId: eventstore-operations
@@ -46,5 +52,13 @@ spec:
         namespace: "default"
         operations:
           - name: /work/events
+            httpVerb: ['POST']
+            action: allow
+      - appId: eventstore-admin
+        defaultAction: deny
+        trustDomain: "public"
+        namespace: "default"
+        operations:
+          - name: /work/processes/revalidate
             httpVerb: ['POST']
             action: allow

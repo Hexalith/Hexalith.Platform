@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hexalith.com/schemas/works-production-profile.schema.json",
+  "title": "Works production binding candidate; does not grant a preview exception",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trustDomain", "namespace", "mtlsEnabled", "gatewayCaller", "moduleCaller", "operatorCaller", "brokerTlsEnabled", "brokerPolicySha256", "networkPolicySha256", "workloadAuthority", "workloadKeyReference", "delegationProvider", "secretsProvider", "schedulerProvider", "stateProvider", "auditProvider", "backupSet", "retentionPolicy", "telemetryEndpoint"],
+  "properties": {
+    "trustDomain": {"type": "string", "minLength": 1, "not": {"enum": ["public", "localhost", "default", "development"]}},
+    "namespace": {"type": "string", "minLength": 1, "not": {"enum": ["public", "localhost", "default", "development"]}},
+    "mtlsEnabled": {"const": true},
+    "gatewayCaller": {"const": "eventstore"},
+    "moduleCaller": {"const": "works"},
+    "operatorCaller": {"const": "eventstore-admin"},
+    "brokerTlsEnabled": {"const": true},
+    "brokerPolicySha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "networkPolicySha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "workloadAuthority": {"type": "string", "format": "uri", "pattern": "^https://"},
+    "workloadKeyReference": {"type": "string", "minLength": 1},
+    "delegationProvider": {"type": "string", "minLength": 1},
+    "secretsProvider": {"type": "string", "minLength": 1},
+    "schedulerProvider": {"type": "string", "minLength": 1},
+    "stateProvider": {"type": "string", "minLength": 1},
+    "auditProvider": {"type": "string", "minLength": 1},
+    "backupSet": {"type": "string", "minLength": 1},
+    "retentionPolicy": {"type": "string", "minLength": 1},
+    "telemetryEndpoint": {"type": "string", "format": "uri", "pattern": "^https://"}
+  }
+}

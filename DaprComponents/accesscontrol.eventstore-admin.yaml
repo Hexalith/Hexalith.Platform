@@ -14,14 +14,6 @@ spec:
     sentryAddress: "127.0.0.1:50001"
     controlPlaneTrustDomain: "localhost"
   accessControl:
-    defaultAction: allow
+    defaultAction: deny
     trustDomain: "public"
-    policies:
-      - appId: eventstore-admin-ui
-        defaultAction: deny
-        trustDomain: "public"
-        namespace: "default"
-        operations:
-          - name: /**
-            httpVerb: ['GET', 'POST', 'PUT', 'DELETE']
-            action: allow
+    policies: []
