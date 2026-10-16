@@ -10,6 +10,7 @@ using YamlDotNet.RepresentationModel;
 /// <summary>Resolves the local Dapr capability graph before resources exist.</summary>
 public sealed class PlatformDaprBindings
 {
+    private PlatformRetentionProfile? _retentionProfile;
     private readonly Dictionary<string, (string Kind, string Recovery, string Template, HashSet<string> Consumers)> _components = new(StringComparer.Ordinal);
     private readonly Dictionary<string, Dictionary<string, string>> _environment = new(StringComparer.Ordinal);
     private readonly Dictionary<string, List<(string Caller, string Path, string[] Verbs)>> _rules = new(StringComparer.Ordinal);
@@ -19,9 +20,9 @@ public sealed class PlatformDaprBindings
     public IEnumerable<string> ComponentNames => _components.Where(component => component.Value.Consumers.Count > 0).Select(component => component.Key);
 
     /// <summary>Resolves all selected declarations atomically.</summary>
-    public static PlatformDaprBindings Resolve(IReadOnlyList<PlatformModuleDeclaration> declarations)
+    public static PlatformDaprBindings Resolve(IReadOnlyList<PlatformModuleDeclaration> declarations, PlatformRetentionProfile? retentionProfile = null)
     {
-        PlatformDaprBindings result = new();
+        PlatformDaprBindings result = new() { _retentionProfile = retentionProfile };
         foreach (PlatformModuleDeclaration module in declarations)
         {
             string owner = PlatformDeclarationSet.Id(module.Declaration);
@@ -101,7 +102,7 @@ public sealed class PlatformDaprBindings
     internal IReadOnlyDictionary<string, string> Environment(string owner, string server) => _environment[owner + "/" + server];
 
     /// <summary>Gets the Dapr component implementation type.</summary>
-    internal string Type(string name) => _components[name].Kind switch { "state" => "state.redis", "pubsub" => "pubsub.redis", "secret" => "secretstores.local.file", "configuration" => "configuration.redis", "conversation" => "conversation.echo", _ => throw new InvalidOperationException(name) };
+    internal string Type(string name) => _retentionProfile is not null && name == Name("state", "telemetry-state") ? "state.postgresql" : _components[name].Kind switch { "state" => "state.redis", "pubsub" => "pubsub.redis", "secret" => "secretstores.local.file", "configuration" => "configuration.redis", "conversation" => "conversation.echo", _ => throw new InvalidOperationException(name) };
 
     /// <summary>Gets the rendered filename for a resolved component.</summary>
     internal string FileName(string name) => name == Name("secret", "telemetry-secrets") ? "telemetry-secrets.yaml" : _components[name].Template;
@@ -115,6 +116,11 @@ public sealed class PlatformDaprBindings
         Dictionary<string, string> files = new(StringComparer.Ordinal);
         foreach (var (name, binding) in _components.Where(pair => pair.Value.Consumers.Count > 0))
         {
+            if (_retentionProfile is not null && name == Name("state", "telemetry-state"))
+            {
+                files.Add(binding.Template, _retentionProfile.RenderComponent(binding.Consumers));
+                continue;
+            }
             string source = Path.Combine(directory, binding.Template);
             if (!File.Exists(source)) throw new FileNotFoundException($"{source}: runtime.dapr: Platform shared local Dapr component template is unavailable.", source);
             YamlMappingNode component;

@@ -29,6 +29,8 @@ public sealed record PlatformCompositionOptions
     public string? ComponentsDirectory { get; init; }
     /// <summary>Gets a runner-owned run plan, when launched through Builds.</summary>
     public Hexalith.Builds.Tooling.Runtime.CompositionRunPlan? RunPlan { get; init; }
+    /// <summary>Gets the selected local PostgreSQL retention profile; null preserves the default Redis composition.</summary>
+    public PlatformRetentionProfile? RetentionProfile { get; init; }
     /// <summary>Gets the image-preflight process boundary, replaceable only by the composition tests.</summary>
     internal Func<System.Diagnostics.ProcessStartInfo, TimeSpan, CancellationToken, Task<Hexalith.Builds.Tooling.Runtime.CompositionProcessResult>> ImageProbeRunner { get; init; } = Hexalith.Builds.Tooling.Runtime.CompositionProcess.RunAsync;
     /// <summary>Release tag commits for the catalog's owner versions, replaceable by isolated graph tests.</summary>

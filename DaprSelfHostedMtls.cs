@@ -42,7 +42,8 @@ public static class DaprSelfHostedMtls
     internal static (IResourceBuilder<ContainerResource> Sentry, string CertificateDirectory) AddSentry(
         IDistributedApplicationBuilder builder,
         string sentryConfigurationPath,
-        string platformRoot)
+        string platformRoot,
+        string? runtimeVersion = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentException.ThrowIfNullOrWhiteSpace(sentryConfigurationPath);
@@ -51,7 +52,7 @@ public static class DaprSelfHostedMtls
         Directory.CreateDirectory(certificateDirectory);
 
         IResourceBuilder<ContainerResource> sentry = builder
-            .AddContainer("dapr-sentry", "daprio/sentry", CompositionToolchainPins.DaprRuntimeVersion)
+            .AddContainer("dapr-sentry", runtimeVersion is null ? "daprio/sentry" : "ghcr.io/dapr/sentry", runtimeVersion ?? CompositionToolchainPins.DaprRuntimeVersion)
             .WithEntrypoint("/sentry")
             .WithArgs(
                 $"--issuer-credentials={ContainerCredentialsDirectory}",
@@ -71,6 +72,7 @@ public static class DaprSelfHostedMtls
             .WithLifetime(ContainerLifetime.Session)
             .ExcludeFromManifest();
 
+        if (runtimeVersion is not null) sentry.WithImageSHA256("2f98508dff56c75329dbd51674c89f41ce349e06c7744ab2519cb69ba338d41f");
         string? containerUser = ResolveContainerUser();
         if (!string.IsNullOrWhiteSpace(containerUser))
         {
@@ -88,14 +90,15 @@ public static class DaprSelfHostedMtls
             IDistributedApplicationBuilder builder,
             IResourceBuilder<ContainerResource> sentry,
             string certificateDirectory,
-            string? schedulerDataDirectory = null)
+            string? schedulerDataDirectory = null,
+            string? runtimeVersion = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(sentry);
         ArgumentException.ThrowIfNullOrWhiteSpace(certificateDirectory);
 
         IResourceBuilder<ContainerResource> placement = builder
-            .AddContainer("dapr-placement-mtls", "daprio/dapr", CompositionToolchainPins.DaprRuntimeVersion)
+            .AddContainer("dapr-placement-mtls", runtimeVersion is null ? "daprio/dapr" : "ghcr.io/dapr/placement", runtimeVersion ?? CompositionToolchainPins.DaprRuntimeVersion)
             .WithEntrypoint("./placement")
             .WithArgs(
                 "--tls-enabled",
@@ -116,7 +119,7 @@ public static class DaprSelfHostedMtls
             .ExcludeFromManifest();
 
         IResourceBuilder<ContainerResource> scheduler = builder
-            .AddContainer("dapr-scheduler-mtls", "daprio/dapr", CompositionToolchainPins.DaprRuntimeVersion)
+            .AddContainer("dapr-scheduler-mtls", runtimeVersion is null ? "daprio/dapr" : "ghcr.io/dapr/scheduler", runtimeVersion ?? CompositionToolchainPins.DaprRuntimeVersion)
             .WithEntrypoint("./scheduler")
             .WithArgs(
                 "--tls-enabled",
@@ -140,6 +143,11 @@ public static class DaprSelfHostedMtls
         if (schedulerDataDirectory is null) scheduler.WithVolume(SchedulerVolumeName, "/var/lock");
         else scheduler.WithBindMount(schedulerDataDirectory, "/var/lock");
 
+        if (runtimeVersion is not null)
+        {
+            placement.WithImageSHA256("6caf20016d115d4a7f133b9206b739a10abd9f558d76683b27be9ab60f759e26");
+            scheduler.WithImageSHA256("c9bb9ada0cd6a63cd92c26470da1985124e423432af4e39f09b96979fd1059c0");
+        }
         string? containerUser = ResolveContainerUser();
         if (!string.IsNullOrWhiteSpace(containerUser))
         {
@@ -357,7 +365,7 @@ public static class DaprSelfHostedMtls
             $"Could not locate the Platform AppHost from directory '{appHostDirectory}'.");
     }
 
-    private static string? ResolveContainerUser()
+    internal static string? ResolveContainerUser()
     {
         if (!OperatingSystem.IsLinux() || !File.Exists("/proc/self/status"))
         {

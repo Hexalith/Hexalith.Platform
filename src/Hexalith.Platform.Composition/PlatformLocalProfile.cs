@@ -89,6 +89,7 @@ public static class PlatformLocalProfile
             try { MapClockTokens(module.Source, id, server, clockSources, clockTokens, environment); }
             catch (JsonException exception) { throw new InvalidDataException($"{module.Source}: {id}/{server}/Clock:SourceAuthenticationTokens: structured configuration is invalid: {exception.Message}", exception); }
         }
+        if (id == "memories" && options.RetentionProfile is { } retention) retention.Configure(environment, server);
         return environment;
     }
 

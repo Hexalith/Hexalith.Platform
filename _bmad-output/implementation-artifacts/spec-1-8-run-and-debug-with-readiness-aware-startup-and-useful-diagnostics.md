@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 8
 created: '2026-10-16'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '5636b7f36e28e2731111b049f974b1fa951d1c36'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -120,3 +120,25 @@ Paths under `references/Hexalith.Builds`.
 **Commands:**
 - `dotnet test references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests -nodeReuse:false` -- expected: all pass
 - `dotnet build references/Hexalith.Builds/Hexalith.Builds.slnx -nodeReuse:false` -- expected: zero warnings as errors
+
+### Review Findings
+
+Code review 2026-10-16 (commits 643c640, 86b9f35 in references/Hexalith.Builds; full mode).
+
+- [ ] [Review][Patch] Per-resource (90s) and invocation (45s) probe caps override the effective deadline — replace both with the time remaining until the deadline (decision 1A) [RunReadiness.cs:22-24,50,184]
+- [ ] [Review][Patch] `debug` reports the `dotnet run` launcher pid, not the debuggee — label it "launcher process id" in the output and docs (decision 2B) [RunReadiness.cs:411-425, RunTopology.cs:189]
+- [ ] [Review][Patch] Override has no upper bound — reject overrides above 3600s with the existing HXP021 (decision 3A); this subsumes the overflow patch below [CompositionStartupDeadlineResolver.cs IsRepresentableTimeout]
+- [ ] [Review][Patch] Progress snapshot is written once per resource, so an engine-side timeout reports stale "last result"; also write before the invocation probe and after the last resource [RunReadiness.cs:45]
+- [ ] [Review][Patch] Platform preflight and model build use hard-coded 5-minute timeouts and the Aspire probe its own timeout; cap each at the remaining deadline and add a test [CompositionEngine.cs:286, PlatformManifestCommand.cs:86]
+- [ ] [Review][Patch] Overrides that pass `IsRepresentableTimeout` can still crash or collapse: `1e-300` gives a zero deadline; values above the `CancelAfter` limit (~24.8 days) or `DateTimeOffset` range throw [CompositionStartupDeadlineResolver.cs IsRepresentableTimeout]
+- [ ] [Review][Patch] `Select` discards `pathDiagnostics`; a missing or invalid executable fails as only "Startup task 'x' failed" with no cause [CompositionStartupTasks.cs Select]
+- [ ] [Review][Patch] `debug` succeeds with no or partial process ids and says nothing; add a diagnostic naming projects without a pid [CompositionEngine.cs WaitForReadinessAsync, RunReadiness.cs TryProcessId]
+- [ ] [Review][Patch] No test that a real HXR025/HXR026/HXR027 failure writes `UnreadyResources` (dropping `CurrentUnready(...)` stays green) [WorkspaceAppHostTests, AppHostRunnerValidationTests]
+- [ ] [Review][Patch] No test lets `WaitAndWriteAsync` finish against a healthy resource and asserts `readiness.json` `processId`, `detail` and `effectiveDeadline*` [AppHostRunnerValidationTests]
+- [x] [Review][Defer] Startup task killed at the deadline returns false, not null, so a timeout may be worded as "task failed before the deadline" — deferred: maybe-false (medium if true); run a task past a short deadline and read the HXR021 message [CompositionStartupTasks.cs:160-165]
+- [x] [Review][Defer] Task executable resolved against the root manifest's repository root for every module — deferred: maybe-false; declare a task in a dependency module with a relative path and see where it resolves [CompositionStartupTasks.cs Select]
+- [x] [Review][Defer] `state/diagnostics/<runId>` and `before-run/<guid>` are created for every run and never pruned — deferred: needs a retention rule (not a code-only fix) [CompositionEngine.cs StartAppHost]
+- [x] [Review][Defer] Debug attach to the child app process (launch `dotnet <dll>` directly in debug instead of `dotnet run`) — deferred: decision 2C, separate story
+- [x] [Review][Defer] Debug-mode Package-to-Source coercion has no test — deferred: reachable only through programmatic `compositionOptions` [ModuleCommandExecutionService.cs:85,968]
+
+**Rejected:** ReadObservedResourcesAsync read can leak the run — false, `IsTeardownFailure` catch wraps it (CompositionEngine.cs:1098-1103); healthy resources listed as unready — already fixed (B11); `diagnostics[0]` unguarded — false, all callers pass a non-empty list; smaller override shortens the default — spec says largest declared override, low; dropped empty task arguments — B6; stdout/exit code not preserved — B4; ModuleId unsanitized in `Describe`, diagnostics path fallback after failed preserve, mirror single `try`, final-read race, `down` manifest-hash test, rule catalog/changelog note, process-id inconsistency between modes, debug help/json schema, `per-start-verify` scope only, run evidence lacking duration, Manifest-to-Runtime namespace dependency — low, not met in everyday use and the fix adds branches or edits docs.

@@ -84,7 +84,7 @@ public static class PlatformAppModel
         {
             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
-            TimesheetsEnabled = timesheets,
+            TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
         }));
     }
 
@@ -94,8 +94,11 @@ public static class PlatformAppModel
         if (options.TimesheetsEnabled && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         PlatformTimesheetsBinding.ValidateMode(options);
+        if (options.RetentionProfile is not null && (!builder.Environment.IsDevelopment() || options.Mapping.Mode != WorkspaceMode.Source || options.RunPlan is null))
+            throw new InvalidDataException("The PostgreSQL retention experiment requires a runner-owned Development source run.");
+        if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
         var declarations = PlatformDeclarationSet.Load(options);
-        PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations);
+        PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
@@ -118,6 +121,7 @@ public static class PlatformAppModel
             int vectorPort = localPorts.UiHttp;
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
+            options.RetentionProfile?.Prepare(rendered);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
             File.WriteAllText(secrets, JsonSerializer.Serialize(new Dictionary<string, object>
@@ -140,13 +144,15 @@ public static class PlatformAppModel
             string? gatewayContentRoot = servers.FirstOrDefault(server => server.ResourceId == "eventstore")?.ProjectPath is { } gatewayProject
                 ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
 
-            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot);
+            if (options.RetentionProfile is not null) builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(rendered, "dapr-credentials");
+            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, options.RetentionProfile?.RuntimeVersion);
             string[] redisReference = CompositionToolchainPins.RedisImageReference.Split('@', 2);
             int colon = redisReference[0].LastIndexOf(':');
             IResourceBuilder<ContainerResource> redis = builder.AddContainer("redis", redisReference[0][..colon], redisReference[0][(colon + 1)..])
                 .WithImageSHA256(redisReference[1]["sha256:".Length..])
                 .WithEndpoint(port: redisPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
             if (options.RunPlan is { } run) redis.WithContainerName(run.RedisContainerName).WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={run.RunId}");
+            IResourceBuilder<ContainerResource>? telemetryPostgres = options.RetentionProfile?.AddResource(builder);
             Dictionary<string, IResourceBuilder<IDaprComponentResource>> daprComponents = dapr.ComponentNames.ToDictionary(name => name,
                 name => builder.AddDaprComponent(name, dapr.Type(name), new DaprComponentOptions { LocalPath = Path.Combine(rendered, dapr.FileName(name)) }), StringComparer.Ordinal);
             IResourceBuilder<IDaprComponentResource>? timesheetsReadModels = hasTimesheets
@@ -155,8 +161,13 @@ public static class PlatformAppModel
             IResourceBuilder<ContainerResource>? graph = null;
             if (hasMemories)
             {
-                vectors = builder.AddContainer("memories-vectors", "redis/redis-stack", "latest").WithEndpoint(port: vectorPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
-                graph = builder.AddContainer("memories-graph", "falkordb/falkordb", "latest").WithEndpoint(targetPort: 6379, name: "tcp", scheme: "tcp");
+                vectors = builder.AddContainer("memories-vectors", options.RetentionProfile is null ? "redis/redis-stack" : "docker.io/redis/redis-stack-server", options.RetentionProfile is null ? "latest" : "7.4.0-v8").WithEndpoint(port: vectorPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
+                graph = builder.AddContainer("memories-graph", "falkordb/falkordb", options.RetentionProfile is null ? "latest" : "v4.12.0").WithEndpoint(targetPort: 6379, name: "tcp", scheme: "tcp");
+                if (options.RetentionProfile is not null)
+                {
+                    vectors.WithImageSHA256("798ab84d9f266936b034ab11c4d04a2b8e4b441884c5aa7d17ac951eefdf742a");
+                    graph.WithImageSHA256("7927eb194df0fadf70e2deb6c20c8178743ec92aacd739c790f8a35ce5dee613");
+                }
                 if (options.RunPlan is { } scoped)
                 {
                     vectors.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={scoped.RunId}");
@@ -164,7 +175,7 @@ public static class PlatformAppModel
                 }
             }
             if (daprHome is not null) builder.AddDapr(daprOptions => daprOptions.DaprPath = Path.Combine(daprHome, "tools", OperatingSystem.IsWindows() ? "dapr.exe" : "dapr"));
-            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData);
+            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, options.RetentionProfile?.RuntimeVersion);
             if (options.RunPlan is { } securityRun)
                 foreach (var control in new[] { sentry, placement, scheduler }) control.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={securityRun.RunId}");
             Dictionary<string, IResourceBuilder<ProjectResource>> projects = new(StringComparer.Ordinal);
@@ -245,6 +256,7 @@ public static class PlatformAppModel
                             if (server.ResourceId == "timesheets") sidecar.WithReference(timesheetsReadModels!);
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);
+                        if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
                         if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore") resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (hasGateway && server.ResourceId == "tenants-api") resource.WithEnvironment("EventStore__GatewayReadiness__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                     }
@@ -256,6 +268,7 @@ public static class PlatformAppModel
                 DaprSidecarOptionsAnnotation sidecarOptions = sidecarResource.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
                 sidecarResource.Annotations[sidecarResource.Annotations.IndexOf(sidecarOptions)] = new DaprSidecarOptionsAnnotation(sidecarOptions.Options with { RuntimePath = daprHome, DaprHttpPort = ports.Http, DaprGrpcPort = ports.Grpc, DaprInternalGrpcPort = ports.InternalGrpc, MetricsPort = ports.Metrics });
                 if (projects.TryGetValue(server.ResourceId, out IResourceBuilder<ProjectResource>? tokenProject)) tokenProject.WithEnvironment("DAPR_HTTP_ENDPOINT", "http://127.0.0.1:" + ports.Http).WithEnvironment("DAPR_GRPC_ENDPOINT", "http://127.0.0.1:" + ports.Grpc);
+                if (options.RetentionProfile is { } retained && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") retained.Track((IResourceWithEndpoints)resource, ports.Http, server.Environment);
                 if (projects.TryGetValue(server.ResourceId, out var securedProject)) DaprSelfHostedMtls.ConfigureSidecar(securedProject, sidecarResource, sentry, certificates, placement, scheduler);
                 else DaprSelfHostedMtls.ConfigureSidecar(containers[server.ResourceId], sidecarResource, sentry, certificates, placement, scheduler);
             }

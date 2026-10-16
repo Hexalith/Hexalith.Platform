@@ -1,11 +1,13 @@
 """Execute target-host evidence; never promote supporting checks to AD-20 acceptance."""
 import argparse
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
 import subprocess
 import tempfile
+import tarfile
 import xml.etree.ElementTree as ET
 import zipfile
 
@@ -29,7 +31,7 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def require_passed_tests(path, required_methods=()):
+def require_passed_tests(path, required_methods=(), required_types=()):
     """Reject empty results, test failures, skips, and filters that miss required methods."""
     root = ET.parse(path).getroot()
     assemblies = root.findall("assembly")
@@ -47,6 +49,8 @@ def require_passed_tests(path, required_methods=()):
     methods = {test.get("method") for test in tests}
     if not set(required_methods).issubset(methods):
         raise ValueError(str(path) + ": required test methods did not execute")
+    if not set(required_types).issubset({test.get("type") for test in tests}):
+        raise ValueError(str(path) + ": required test classes did not execute")
     return {"total": len(tests), "passed": len(tests), "skipped": 0, "sha256": sha256(path)}
 
 
@@ -64,6 +68,12 @@ def verify_host_records(path, assembly, platform):
             raise ValueError("A parity start did not own its isolated Scheduler fleet")
         if record.get("actorType") != "WorksSdkReminderActor":
             raise ValueError("A parity start did not consume the SDK reminder actor")
+        sdk_assemblies = record.get("sdkAssemblies", [])
+        if not sdk_assemblies:
+            raise ValueError("A live start did not bind its loaded SDK assemblies")
+        for sdk in sdk_assemblies:
+            if not sdk["name"].startswith("Hexalith.EventStore.") or sdk["version"] != "3.123.0.0" or sha256(sdk["path"]) != sdk["sha256"].lower():
+                raise ValueError("A live start used an unbound or unpublished SDK assembly")
         if record.get("role") == "platform-target":
             if binary.resolve() != assembly.resolve() or Path(record["directory"]).resolve() != platform.resolve():
                 raise ValueError("A target start used another host or source root")
@@ -124,6 +134,27 @@ def source_snapshot(root):
             "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
 
 
+def require_published_runtime_source(snapshot, published_producers):
+    """Runtime-built SDK code must match the published producer, regardless of checkout HEAD metadata."""
+    commits = {producer["repositoryCommit"] for producer in published_producers.values()}
+    if len(commits) != 1:
+        raise ValueError("Published SDK archives do not identify one compatible producer commit")
+    commit = commits.pop()
+    archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src",
+                                       "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"])
+    with tarfile.open(fileobj=io.BytesIO(archive)) as source:
+        published = {entry.name: hashlib.sha256(source.extractfile(entry).read()).hexdigest()
+                     for entry in source.getmembers() if entry.isfile()
+                     and (entry.name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props")
+                          or Path(entry.name).suffix in (".cs", ".csproj"))}
+    if snapshot["sourceFiles"] != published:
+        changed = sorted(name for name in snapshot["sourceFiles"].keys() | published.keys()
+                         if snapshot["sourceFiles"].get(name) != published.get(name))
+        raise ValueError("Runtime SDK differs from published producer " + commit + ": " + ", ".join(changed))
+    return {"repositoryCommit": commit, "sourceInventorySha256": snapshot["inventorySha256"],
+            "checkoutCommit": snapshot["commit"], "matchesPublishedProducer": True}
+
+
 def run_verification(args):
     platform = Path(__file__).resolve().parents[1]
     works = args.works_root.resolve()
@@ -178,6 +209,7 @@ def run_verification(args):
                           *sorted((platform / "src").rglob("*.csproj"))]
     summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
         if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
+    summary["worksConsumerSource"] = source_snapshot(works)
     summary["verifierSha256"] = sha256(Path(__file__))
     save()
     try:
@@ -204,6 +236,15 @@ def run_verification(args):
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform)])
         build("works-consumer-release", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Release", works, consumer_output,
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform)])
+        supporting_xml = artifacts / "works-consumer-supporting.xml"
+        supporting_classes = ["WorksSdkPartitionedRebuildTests", "WorksSdkProjectionQueryTests",
+                              "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests"]
+        supporting_command = [consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests", "-noLogo"]
+        for name in supporting_classes:
+            supporting_command += ["-class", "Hexalith.Works.IntegrationTests." + name]
+        run("works-consumer-supporting", supporting_command + ["-result-xml", supporting_xml], works)
+        summary["checks"]["supportingConsumer"] = require_passed_tests(supporting_xml,
+            required_types=["Hexalith.Works.IntegrationTests." + name for name in supporting_classes])
         summary["worksDebugSdkAssemblies"] = {path.name: sha256(path) for path in
             sorted((artifacts / "consumer-debug/bin/Hexalith.Works.IntegrationTests/debug").glob("Hexalith.EventStore.*.dll"))}
         consumer_directory = consumer_output / "bin/Hexalith.Works.IntegrationTests/release"
@@ -240,7 +281,8 @@ def run_verification(args):
         fixtures = list((works / "tests/Hexalith.Works.IntegrationTests").glob("WorksPlatform*.cs")) + [
             works / "tests/Hexalith.Works.IntegrationTests" / name for name in
             ["WorksSdkRecoveryPipelineSmokeTests.cs", "WorksSdkProofHostingStartup.cs", "WorksSdkProofRedis.cs",
-             "WorksAppHostSelection.cs", "WorksAppHostSmokeHarness.cs"]]
+             "WorksAppHostSelection.cs", "WorksAppHostSmokeHarness.cs", "WorksSdkPartitionedRebuildTests.cs",
+             "WorksSdkProjectionQueryTests.cs", "WorksSdkProtectedHttpTests.cs", "WorkItemSharedProjectionRebuildHandlerTests.cs"]]
         summary["fixtureSources"] = {str(path.relative_to(works)): sha256(path) for path in sorted(fixtures)}
         identity_root = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
         summary["identityProvenance"] = {"scope": "explicit-test-only-source; no published Platform.Identity package",
@@ -257,15 +299,41 @@ def run_verification(args):
             if "additionalSeams" in row:
                 row["additionalSeams"].update(producer_evidence[row["additionalSeams"]["package"]])
         save()
+        summary["runtimeProducerQualification"] = require_published_runtime_source(
+            summary["sourceProducers"]["worksDebugAndRuntimeSdk"], producer_evidence)
+        save()
+        # These projects run through dotnet run at host startup and are not all consumer references.
+        # Warm their exact shared output graph serially, so a clean Debug/Release checkout never relies
+        # on coincidental prior builds or races concurrent SDK/Commons reference-assembly writes.
+        runtime_projects = [works / "src/Hexalith.Works/Hexalith.Works.csproj", *[
+            works / "references/Hexalith.EventStore/src" / name / (name + ".csproj") for name in
+            ("Hexalith.EventStore", "Hexalith.EventStore.Operations", "Hexalith.EventStore.Admin.Server.Host")]]
+        runtime_properties = ["-p:Version=3.123.0", "-p:MinVerVersionOverride=3.123.0",
+            "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
+            "-p:HexalithEventStoreRoot=" + str(works / "references/Hexalith.EventStore"),
+            "-p:HexalithAspireHostingDaprVersion=" + adapter]
+        runtime_directories = []
+        for index, project in enumerate(runtime_projects):
+            build("runtime-release-prebuild-" + str(index), str(project), "Release", works, extra=runtime_properties)
+            runtime_directories.append(project.parent / "bin/Release/net10.0")
+        summary["runtimeArtifacts"] = {str(path): sha256(path) for directory in runtime_directories
+            for path in sorted(directory.rglob("*")) if path.is_file()}
+        save()
         if args.prepare_only:
             summary["status"] = "preparation-passed; parity-incomplete"
             return 0
         environment = os.environ.copy()
-        environment.update({"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
+        runtime_environment = {"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
             "WORKS_PLATFORM_ROOT": str(platform), "WORKS_PLATFORM_WORKS_ROOT": str(works),
-            "Platform__Works__SourceRoot": str(works), "Version": "3.123.0", "MinVerVersionOverride": "3.123.0",
+            "Platform__Works__SourceRoot": str(works), "Platform__Identity__Enabled": "false",
+            "Version": "3.123.0", "MinVerVersionOverride": "3.123.0",
+            "UseHexalithProjectReferences": "false", "UseNuGetDeps": "true",
+            "HexalithEventStoreRoot": str(works / "references/Hexalith.EventStore"), "HexalithAspireHostingDaprVersion": adapter,
             "WORKS_PLATFORM_HOST_EVIDENCE": str(artifacts / "host-starts.jsonl"),
-            "WORKS_SDK_PROOF_EVIDENCE_PATH": str(artifacts / "persisted-states.jsonl"), "WORKS_APPHOST_TEST_STARTUP_TIMEOUT_SECONDS": "180"})
+            "WORKS_SDK_PROOF_EVIDENCE_PATH": str(artifacts / "persisted-states.jsonl"), "WORKS_APPHOST_TEST_STARTUP_TIMEOUT_SECONDS": "180"}
+        environment.update(runtime_environment)
+        summary["runtimeEnvironment"] = runtime_environment
+        save()
         executable = consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests"
         xml = artifacts / "platform-recovery.xml"
         run("platform-recovery", [executable, "-noLogo", "-class", "Hexalith.Works.IntegrationTests.WorksSdkRecoveryPipelineSmokeTests", "-result-xml", xml], works, environment)
@@ -284,9 +352,15 @@ def run_verification(args):
             current = source_snapshot(source["root"])
             if current["commit"] != source["commit"] or current["inventorySha256"] != source["inventorySha256"]:
                 raise ValueError("A qualified SDK source graph changed during execution: " + source["root"])
+        works_source = source_snapshot(works)
+        if works_source["commit"] != summary["worksConsumerSource"]["commit"] or works_source["inventorySha256"] != summary["worksConsumerSource"]["inventorySha256"]:
+            raise ValueError("The qualified Works consumer source graph changed during execution")
         for source, digest in summary["platformConsumerSources"].items():
             if sha256(platform / source) != digest:
                 raise ValueError("A qualified Platform consumer changed during execution: " + source)
+        for binary, digest in summary["runtimeArtifacts"].items():
+            if sha256(binary) != digest:
+                raise ValueError("A qualified runtime artifact changed during execution: " + binary)
         for binary, digest in summary["consumer"]["artifacts"].items():
             if sha256(binary) != digest:
                 raise ValueError("A qualified Works consumer artifact changed during execution: " + binary)
@@ -301,7 +375,7 @@ def run_verification(args):
         summary["rollback"] = bind_persisted_outcomes(artifacts / "persisted-states.jsonl", summary["rows"], summary["actualStarts"])
         summary["status"] = "passed-disposable-synthetic-parity-and-rollback"
         return 0
-    except (ValueError, OSError, subprocess.TimeoutExpired) as error:
+    except (ValueError, OSError, subprocess.TimeoutExpired, subprocess.CalledProcessError) as error:
         summary["failure"] = str(error)
         print(str(error), flush=True)
         return 1

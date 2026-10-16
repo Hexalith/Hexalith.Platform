@@ -616,3 +616,11 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-runtime-provisioning.md`
   summary: The owner-evidence preservation ledger and HTTP acceptance list omit the current HEAD delta and the named sanitizer and library inventory.
   evidence: PLAN-v3.md records HEAD b5e1caea in prose and tells P to include later commits, but the ledger table has no row for that delta. HTTP acceptance names sanitizer shapes and a nine-library inventory without listing them. Pre-existing plan.
+
+## Deferred from: code review of spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics (2026-10-16)
+
+- Startup task killed at the deadline may be reported as a task failure rather than a timeout (maybe-false, medium if true). Settle by running a task past a short deadline and reading the HXR021 text. CompositionStartupTasks.cs:160-165.
+- Startup task executable is resolved against the root manifest's repository root for every module (maybe-false). Settle by declaring a relative-path task in a dependency module. CompositionStartupTasks.Select.
+- Diagnostics directories (`state/diagnostics/<runId>`, `before-run/<guid>`) are created on every run and never pruned; needs a retention rule. CompositionEngine.StartAppHost.
+- No test for debug-mode Package-to-Source coercion (ModuleCommandExecutionService.cs:85,968); reachable only via programmatic compositionOptions.
+- Debug attach to the app process rather than the `dotnet run` launcher: build in Debug and launch the output directly (RunTopology.cs:189). Separate story; decision 2C of the story 1.8 review.
