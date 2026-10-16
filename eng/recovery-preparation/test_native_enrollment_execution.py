@@ -1,8 +1,9 @@
 """Inert enrollment/execution fixtures; no real config, keys, output or network."""
 
 from copy import deepcopy
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, tzinfo
 import contextlib
+import gc
 import io
 import json
 import os
@@ -67,6 +68,57 @@ UID = '01234567-89ab-cdef-0123-456789abcdef'
 PAYLOAD = guard.INERT_PREFIX + b'inert-single-credential-never-log'
 NOW = datetime(2026, 10, 16, 12, 0, tzinfo=timezone.utc)
 RUNTIME_SHA = 'd' * 64
+EXPECTED_SELECTORS = [
+    'namespace-kube-system', 'namespace-keycloak', 'namespace-openbao', 'namespace-hexalith-memories',
+    'version', 'readyz', 'keycloak-postgres', 'keycloak-keycloak', 'openbao-hexalith-keys',
+    'hexalith-memories-redis-stack', 'hexalith-memories-falkordb', 'hexalith-memories-memories',
+    'hexalith-memories-memories-mcp', 'hexalith-memories-memories-access-telemetry',
+    'hexalith-memories-memories-access-telemetry-clock', 'keycloak-service',
+    'openebs-hostpath', 'openebs-hostpath-retain', 'native-binding',
+    'absent-s40-kcpre-20261015t162756z', 'absent-s40-kc-20261015t162756z',
+    'absent-s40-bao-20261015t162756z', 'absent-s40-mem-20261015t162756z',
+]
+
+
+def expected_outputs():
+    """Exact independent values; never reconstruct expectations from sanitizer output."""
+    def identity(name, namespace='', uid=UID):
+        return {'identity': {'name': name, 'namespace': namespace, 'uid': uid}}
+    images = {'imageDigests': ['sha256:' + 'a' * 64]}
+    replicas = {'replicas': 2, 'readyReplicas': 2}
+    storage = {'provisioner': 'openebs.io/local', 'volumeBindingMode': 'WaitForFirstConsumer'}
+    return [
+        identity('kube-system', uid='b5860674-1d1e-4a3b-b413-e1bb3b9a4557'),
+        identity('keycloak', uid='22744997-bdad-4ac5-85bf-631fc700d4ea'),
+        identity('openbao'), identity('hexalith-memories'),
+        {'version': 'v1.34.12'}, {'ready': True},
+        {**identity('keycloak-postgres', 'keycloak', '56d8d39c-d688-48f2-aa27-a549400352ce'),
+         'systemId': '7689076343157272595', 'timeline': 2, 'primaryOrdinal': 2, **images},
+        {**identity('keycloak', 'keycloak', '98fc84f3-918f-46d9-ae22-7584fb31ff9b'), **replicas, **images},
+        {**identity('hexalith-keys', 'openbao', 'df2bbbbe-1fe8-4e0b-a8a6-174bd3287806'), **replicas, **images},
+        {**identity('redis-stack', 'hexalith-memories'), **replicas, **images},
+        {**identity('falkordb', 'hexalith-memories'), **replicas, **images},
+        {**identity('memories', 'hexalith-memories'), **replicas},
+        {**identity('memories-mcp', 'hexalith-memories'), **replicas},
+        {**identity('memories-access-telemetry', 'hexalith-memories'), **replicas},
+        {**identity('memories-access-telemetry-clock', 'hexalith-memories'), **replicas},
+        {**identity('keycloak', 'keycloak', '0ac9cd04-9d7e-41ed-8ac7-5a74ca659fd0'),
+         'serviceType': 'ClusterIP', 'ports': [{'port': 8080, 'protocol': 'TCP', 'targetPort': 8081}]},
+        {**identity('openebs-hostpath'), 'storageClassShape': {**storage, 'reclaimPolicy': 'Delete'}},
+        {**identity('openebs-hostpath-retain'), 'storageClassShape': {**storage, 'reclaimPolicy': 'Retain'}},
+        {**identity('kubeadm:cluster-admins', uid='8224bcb7-57c6-437d-a27c-1120d03c8b4b'),
+         'historicalNativeBindingShape': True, 'currentAuthorityAccepted': False},
+        {'targetAbsent': True, 'name': 's40-kcpre-20261015t162756z'},
+        {'targetAbsent': True, 'name': 's40-kc-20261015t162756z'},
+        {'targetAbsent': True, 'name': 's40-bao-20261015t162756z'},
+        {'targetAbsent': True, 'name': 's40-mem-20261015t162756z'},
+    ]
+
+
+def rebind_client_witness_subjects(binding):
+    subject = guard.sha(guard._canonical(binding['enrollment']['clientIdentity']))
+    for name in guard.WITNESSES:
+        binding['enrollment'][name]['subjectSha256'] = subject
 
 
 def fixture(request):
@@ -183,6 +235,9 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(transport.requests, adapter.request_plan())
         self.assertEqual(result['syntheticRequests'], 23)
         self.assertEqual(len(result['measurements']), 23)
+        expected = [{'selector': selector, 'output': output}
+                    for selector, output in zip(EXPECTED_SELECTORS, expected_outputs(), strict=True)]
+        self.assertEqual(result['measurements'], expected)
         self.assertEqual(len(result['unsupportedSelectors']), 5)
         self.assertTrue(result['credentialConsumed'])
         self.assertTrue(result['outputRetained'])
@@ -201,6 +256,7 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(output.stat().st_nlink, 1)
         self.assertLessEqual(output.stat().st_size, 65536)
         retained = output.read_bytes()
+        self.assertEqual(json.loads(retained)['measurements'], expected)
         self.assertNotIn(SECRET.encode(), retained)
         self.assertNotIn(PAYLOAD, retained)
         self.assertFalse(json.loads(retained)['outputRetained'])
@@ -236,6 +292,31 @@ class EnrollmentExecutionTests(unittest.TestCase):
                     result, transport, _ = self.run_fixture(binding=changed)
                     self.assertEqual(result['missingFields'], ['enrollment.' + name + '.evidence.' + field])
                     self.assertEqual(transport.requests, [])
+
+    def test_missing_evidence_does_not_mask_malformed_populated_fields(self):
+        mutations = [
+            lambda e: e['clientIdentity'].__setitem__('kind', 'bearer'),
+            lambda e: e['serverTrust'].__setitem__('endpoint', 'https://wrong.invalid'),
+            lambda e: e['credentialDelivery'].__setitem__('kind', 'bearer'),
+            lambda e: e['revocation']['evidence'].__setitem__('completeLineage', False),
+            lambda e: e['rights']['evidence'].__setitem__('allowed', []),
+            lambda e: e['outputCustody'].__setitem__('slot', '../elsewhere'),
+            lambda e: e['measurementApproval'].__setitem__('evidence', []),
+        ]
+        for mutate in mutations:
+            with self.subTest(mutation=mutations.index(mutate)):
+                changed = deepcopy(self.binding)
+                changed['enrollment']['nativeGrant'] = None
+                mutate(changed['enrollment'])
+                raw = guard._canonical(changed)
+                inspected = guard.inspect_binding(raw, guard.sha(raw), self.runtime)
+                self.assertEqual(inspected['qualification'], 'refused')
+                self.assertNotIn('integrityMatched', inspected)
+                result, transport, delivery = self.run_fixture(binding=changed)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertEqual(transport.requests, [])
+                self.assertFalse(delivery._consumed)
+                self.assert_closed(result)
 
     def test_integrity_matching_public_metadata_and_caller_approval_never_grant_authority(self):
         raw = guard._canonical(self.binding)
@@ -332,6 +413,47 @@ class EnrollmentExecutionTests(unittest.TestCase):
                 self.assertEqual(result['qualification'], 'refused')
                 self.assertEqual(transport.requests, [])
 
+    def test_nested_runtime_objects_are_rejected_before_json_callbacks_or_unbounded_recursion(self):
+        calls = []
+        class PoisonDict(dict):
+            def items(self):
+                calls.append('items')
+                raise AssertionError('dictionary callback invoked')
+        class PoisonList(list):
+            def __iter__(self):
+                calls.append('iter')
+                raise AssertionError('list callback invoked')
+        class PoisonKey:
+            def __str__(self):
+                calls.append('str')
+                raise AssertionError('key callback invoked')
+        values = [PoisonDict(), PoisonList(), {PoisonKey(): 'inert'}, object()]
+        nested = []
+        for _ in range(18):
+            nested = [nested]
+        values.append(nested)
+        for value in values:
+            runtime = deepcopy(self.runtime)
+            runtime['tlsRequirements'] = value
+            result, transport, delivery = self.run_fixture(runtime=runtime)
+            self.assertEqual(result['qualification'], 'refused')
+            self.assertEqual(transport.requests, [])
+            self.assertFalse(delivery._consumed)
+        self.assertEqual(calls, [])
+
+    def test_custom_timezone_is_refused_without_utcoffset_callback(self):
+        calls = []
+        class PoisonTimezone(tzinfo):
+            def utcoffset(self, _):
+                calls.append('utcoffset')
+                raise AssertionError('timezone callback invoked')
+        sample = datetime(2026, 10, 16, 12, 0, tzinfo=PoisonTimezone())
+        result, transport, delivery = self.run_fixture(clock=guard.SyntheticClock([sample]))
+        self.assertEqual(result['qualification'], 'refused')
+        self.assertEqual(transport.requests, [])
+        self.assertFalse(delivery._consumed)
+        self.assertEqual(calls, [])
+
     def test_credential_kind_extra_credential_noninert_and_oversize_never_get_a_delivery(self):
         for values in ([], [{'kind': guard.INERT_KIND, 'payload': PAYLOAD}] * 2,
                        [{'kind': 'bearer', 'payload': PAYLOAD}],
@@ -339,6 +461,31 @@ class EnrollmentExecutionTests(unittest.TestCase):
                        [{'kind': guard.INERT_KIND, 'payload': guard.INERT_PREFIX + b'x' * 4096}]):
             with self.assertRaises(guard.Refusal):
                 guard.SyntheticCredentialDelivery(values)
+
+    def test_poison_credential_kind_and_response_field_callbacks_are_never_invoked(self):
+        calls = []
+        class Poison:
+            def __eq__(self, _):
+                calls.append('eq')
+                raise AssertionError('callback invoked')
+            def __len__(self):
+                calls.append('len')
+                raise AssertionError('callback invoked')
+            def __iter__(self):
+                calls.append('iter')
+                raise AssertionError('callback invoked')
+        with self.assertRaises(guard.Refusal):
+            guard.SyntheticCredentialDelivery([{'kind': Poison(), 'payload': PAYLOAD}])
+        for field, value in (('status', Poison()), ('content_type', Poison()), ('chunks', (Poison(),))):
+            with self.subTest(field=field), guard.SyntheticOutputCustody() as custody:
+                response = fixture(adapter.request_plan()[0])
+                setattr(response, field, value)
+                result, transport, _ = self.run_fixture(binding=complete_binding(custody),
+                    custody=custody, responses=[response])
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertEqual(len(transport.requests), 1)
+                self.assertEqual(result['measurements'], [])
+        self.assertEqual(calls, [])
 
     def test_wrong_credential_digest_consumes_once_wipes_and_never_falls_back(self):
         changed = deepcopy(self.binding)
@@ -368,6 +515,37 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(result['syntheticRequests'], 0)
         with self.assertRaises(guard.Refusal):
             self.custody.reserve(self.binding['enrollment']['outputCustody'])
+
+    def test_postconstruction_delivery_slot_poisoning_never_invokes_callbacks(self):
+        calls = []
+        class Poison:
+            def __bool__(self):
+                calls.append('bool')
+                raise AssertionError('delivery state consulted')
+            def __eq__(self, _):
+                calls.append('eq')
+                raise AssertionError('delivery kind compared')
+            def __len__(self):
+                calls.append('len')
+                raise AssertionError('delivery payload sized')
+            def __getitem__(self, _):
+                calls.append('getitem')
+                raise AssertionError('delivery payload indexed')
+            def __setitem__(self, *_):
+                calls.append('setitem')
+                raise AssertionError('delivery payload wiped')
+        for slot in ('_kind', '_consumed', '_payload'):
+            with self.subTest(slot=slot):
+                delivery = guard.SyntheticCredentialDelivery([{'kind': guard.INERT_KIND, 'payload': PAYLOAD}])
+                setattr(delivery, slot, Poison())
+                result, transport, _ = self.run_fixture(delivery=delivery)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertIs(type(result['credentialConsumed']), bool)
+                self.assertFalse(result['credentialConsumed'])
+                self.assertEqual(transport.requests, [])
+                self.assertEqual(result['measurements'], [])
+                self.assert_closed(result)
+        self.assertEqual(calls, [])
 
     def test_unsafe_slot_alias_modes_and_existing_slot_are_refused_without_overwrite(self):
         for field, value in (('slot', '../escape'), ('successFile', '/tmp/receipt.json'),
@@ -445,6 +623,30 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(result['qualification'], 'refused')
         self.assertEqual(transport.requests, [])
 
+    def test_close_and_finalization_preserve_foreign_replacement_directory(self):
+        custody = guard.SyntheticOutputCustody()
+        root = custody.path
+        owned = root.with_name(root.name + '-retained-owned')
+        root.rename(owned)
+        root.mkdir(mode=0o700)
+        marker = root / 'foreign-replacement-marker'
+        marker.write_bytes(b'inert foreign replacement must survive')
+        temporary = custody._temporary
+        try:
+            with self.assertRaises(guard.Refusal):
+                custody.close()
+            self.assertEqual(marker.read_bytes(), b'inert foreign replacement must survive')
+            self.assertIsNone(custody._root)
+            del custody
+            del temporary
+            gc.collect()
+            self.assertEqual(marker.read_bytes(), b'inert foreign replacement must survive')
+            self.assertTrue(owned.is_dir())
+        finally:
+            marker.unlink()
+            root.rmdir()
+            owned.rmdir()
+
     def test_short_write_one_attempt_and_no_fallback_or_partial_raw_output(self):
         with patch.object(guard.os, 'write', return_value=1) as write:
             result, transport, _ = self.run_fixture()
@@ -467,6 +669,8 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(result['qualification'], 'refused')
         self.assertFalse(result['outputRetained'])
         self.assertEqual(result['measurements'], [])
+        self.assertNotIn('bindingSha256', result)
+        self.assertNotIn('runtimeInventorySha256', result)
         self.assertEqual(len(transport.requests), 23)
         slot = self.custody.path / 'measurement-output'
         self.assertEqual(os.listdir(slot), ['receipt.json'])
@@ -474,6 +678,32 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertFalse(provisional['outputRetained'])
         self.assertIn('provisional', provisional['retainedReceiptAcceptance'])
         self.assert_closed(provisional)
+
+    def test_expiry_during_last_custody_check_is_enforced_after_slow_checks(self):
+        for fault in ('utc', 'monotonic'):
+            with self.subTest(fault=fault), guard.SyntheticOutputCustody() as custody:
+                binding = complete_binding(custody)
+                clock = guard.SyntheticClock([NOW])
+                monotonic = [1.0]
+                original = custody.binding
+                def slow_binding():
+                    value = original()
+                    if custody._retained_stamp is not None:
+                        if fault == 'utc':
+                            clock.samples = (guard._ceiling(),)
+                        else:
+                            monotonic[0] += adapter.LANE_SECONDS
+                    return value
+                with patch.object(custody, 'binding', side_effect=slow_binding), \
+                        patch.object(guard.time, 'monotonic', side_effect=lambda: monotonic[0]):
+                    result, transport, _ = self.run_fixture(binding=binding, custody=custody, clock=clock)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertFalse(result['outputRetained'])
+                self.assertEqual(result['measurements'], [])
+                self.assertNotIn('bindingSha256', result)
+                self.assertNotIn('runtimeInventorySha256', result)
+                self.assertEqual(len(transport.requests), 23)
+                self.assertTrue((custody.path / 'measurement-output/receipt.json').is_file())
 
     def test_runtime_or_source_drift_during_output_fsync_cannot_return_pass(self):
         for drift in ('runtime', 'source'):
@@ -595,6 +825,51 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(result['qualification'], 'inspection-only')
         self.assert_closed(result)
 
+    def test_narrow_client_and_witness_validity_and_future_observation_stop_before_requests(self):
+        cases = [('clientIdentity', 'validFrom', NOW + timedelta(minutes=1)),
+                 ('clientIdentity', 'validUntil', NOW)]
+        cases += [(name, field, value) for name in guard.WITNESSES
+                  for field, value in (('observedAt', NOW + timedelta(minutes=1)), ('validUntil', NOW))]
+        for name, field, value in cases:
+            with self.subTest(name=name, field=field), guard.SyntheticOutputCustody() as custody:
+                binding = complete_binding(custody)
+                binding['enrollment'][name][field] = value.isoformat().replace('+00:00', 'Z')
+                if name == 'clientIdentity':
+                    rebind_client_witness_subjects(binding)
+                # Prove the schema itself is valid: refusal must come from current validity.
+                raw = guard._canonical(binding)
+                inspected = guard.inspect_binding(raw, guard.sha(raw), self.runtime)
+                self.assertEqual(inspected['qualification'], 'inspection-only')
+                self.assertEqual(inspected['missingFields'], [])
+                result, transport, delivery = self.run_fixture(binding=binding, custody=custody)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertEqual(transport.requests, [])
+                self.assertFalse(delivery._consumed)
+                self.assertEqual(result['measurements'], [])
+
+    def test_client_and_each_witness_expiry_inside_policy_stop_before_dependent_request(self):
+        sanitize = adapter.sanitize
+        for name in ('clientIdentity', *guard.WITNESSES):
+            with self.subTest(name=name), guard.SyntheticOutputCustody() as custody:
+                binding = complete_binding(custody)
+                binding['enrollment'][name]['validUntil'] = (NOW + timedelta(seconds=5)).isoformat().replace('+00:00', 'Z')
+                if name == 'clientIdentity':
+                    rebind_client_witness_subjects(binding)
+                clock = guard.SyntheticClock([NOW])
+                def expire(*args):
+                    output = sanitize(*args)
+                    clock.samples = (NOW + timedelta(seconds=6),)
+                    return output
+                with patch.object(adapter, 'sanitize', side_effect=expire):
+                    result, transport, _ = self.run_fixture(binding=binding, custody=custody, clock=clock)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertEqual(len(transport.requests), 1)
+                self.assertEqual(result['measurements'], [])
+                self.assertNotIn('bindingSha256', result)
+                failure = json.loads((custody.path / 'measurement-output/failure.json').read_bytes())
+                self.assertEqual(failure['measurements'], [])
+                self.assert_closed(failure)
+
     def test_request_deadline_covers_sanitizer_and_monotonic_clock_regression(self):
         monotonic = [1.0]
         sanitize = adapter.sanitize
@@ -615,19 +890,19 @@ class EnrollmentExecutionTests(unittest.TestCase):
         self.assertEqual(transport.requests, [])
 
     def test_expiry_and_binding_drift_between_requests_stop_before_next_request(self):
-        request = adapter.SyntheticTransport.request
+        sanitize = adapter.sanitize
         for fault in ('expiry', 'runtime'):
             with self.subTest(fault=fault), guard.SyntheticOutputCustody() as custody:
                 clock = guard.SyntheticClock([NOW])
                 runtime = deepcopy(self.runtime)
-                def drift(transport, *args):
-                    response = request(transport, *args)
+                def drift(*args):
+                    output = sanitize(*args)
                     if fault == 'expiry':
                         clock.samples = (guard._ceiling(),)
                     else:
                         runtime['tlsRequirements']['checkHostname'] = False
-                    return response
-                with patch.object(adapter.SyntheticTransport, 'request', drift):
+                    return output
+                with patch.object(adapter, 'sanitize', side_effect=drift):
                     result, transport, _ = self.run_fixture(binding=complete_binding(custody),
                         custody=custody, clock=clock, runtime=runtime)
                 self.assertEqual(result['qualification'], 'refused')
@@ -645,6 +920,77 @@ class EnrollmentExecutionTests(unittest.TestCase):
         result, transport, _ = self.run_fixture(delivery=object())
         self.assertEqual(result['qualification'], 'refused')
         self.assertEqual(transport.requests, [])
+
+    def test_instance_transport_callback_is_ignored(self):
+        calls = []
+        def injected(*_):
+            calls.append('request')
+            raise AssertionError('caller callback invoked')
+        transport = adapter.SyntheticTransport([fixture(request) for request in adapter.request_plan()])
+        transport.request = injected
+        result, _, _ = self.run_fixture(transport=transport)
+        self.assertEqual(result['qualification'], 'pass')
+        self.assertEqual(len(transport.requests), 23)
+        self.assertEqual(calls, [])
+
+    def test_clock_method_override_is_ignored_and_poison_storage_is_never_consulted(self):
+        calls = []
+        clock = guard.SyntheticClock([NOW])
+        def injected():
+            calls.append('sample')
+            raise AssertionError('caller sample callback invoked')
+        clock.sample = injected
+        result, transport, _ = self.run_fixture(clock=clock)
+        self.assertEqual(result['qualification'], 'pass')
+        self.assertEqual(len(transport.requests), 23)
+        class Poison:
+            def __len__(self):
+                calls.append('len')
+                raise AssertionError('clock storage sized')
+            def __getitem__(self, _):
+                calls.append('getitem')
+                raise AssertionError('clock storage indexed')
+            def __lt__(self, _):
+                calls.append('lt')
+                raise AssertionError('clock index compared')
+            def __ge__(self, _):
+                calls.append('ge')
+                raise AssertionError('clock index compared')
+        for field, value in (('samples', Poison()), ('index', Poison()), ('index', True),
+                             ('samples', ()), ('samples', (NOW,) * 257)):
+            with self.subTest(field=field), guard.SyntheticOutputCustody() as custody:
+                clock = guard.SyntheticClock([NOW])
+                setattr(clock, field, value)
+                result, transport, delivery = self.run_fixture(binding=complete_binding(custody),
+                    custody=custody, clock=clock)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertEqual(transport.requests, [])
+                self.assertFalse(delivery._consumed)
+                self.assertEqual(result['measurements'], [])
+        self.assertEqual(calls, [])
+
+    def test_poison_transport_storage_is_never_consulted(self):
+        calls = []
+        class Poison:
+            def __bool__(self):
+                calls.append('bool')
+                raise AssertionError('storage consulted')
+            def __len__(self):
+                calls.append('len')
+                raise AssertionError('storage consulted')
+            def __iter__(self):
+                calls.append('iter')
+                raise AssertionError('storage consulted')
+        for field in ('requests', 'responses'):
+            with guard.SyntheticOutputCustody() as custody:
+                transport = adapter.SyntheticTransport([])
+                setattr(transport, field, Poison())
+                result, _, delivery = self.run_fixture(binding=complete_binding(custody),
+                    custody=custody, transport=transport)
+                self.assertEqual(result['qualification'], 'refused')
+                self.assertEqual(result['syntheticRequests'], 0)
+                self.assertFalse(delivery._consumed)
+        self.assertEqual(calls, [])
 
     def test_mutated_response_chunks_cannot_introduce_iterators_or_remove_item_bound(self):
         class Poison:

@@ -21,13 +21,18 @@ CEILING = '2026-10-16T16:27:56Z'
 STATUS = '/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/sprint-status.yaml'
 OLD_STATUS_SHA = '1d66b846fb554deefa67acb44711671376d5d354f74558ffb9b34a87a638283d'
 CURRENT_STATUS_SHA = '2d0c7c85dc259481180cd9c65fb327c32706e9ddbfa0c1a01fcd848da2d2d41e'
+OBSERVED_STATUS_SHA = 'f6c25046d9db40c069cb183cf87f8fef19a0a952b601c87dbe690d0b0aff7e43'
 NEW_SOURCES = {'native_enrollment_execution.py', 'test_native_enrollment_execution.py',
                'verify_enrollment_revision.py', 'test_verify_enrollment_revision.py'}
 MANDATORY = {'preservation-before.json', 'prior-verifier-refusal.json',
              'enrollment-execution-binding-v1.json', 'evidence-gaps-v1.json',
              'source-inventory.json', 'NEXT-PREREQUISITE.md', 'README.md',
              'runtime-requirements-v1.json', 'review-summary.json',
-             'preservation-after.json'}
+             'preservation-after.json', 'concurrent-preservation-drift-v1.json'}
+GAP_IDS = {'serverTrustSource', 'apiCaPublicIdentity', 'tlsPeerIdentity',
+           'singlePublicClientIdentity', 'independentNativeGrant', 'completeRevocationLineage',
+           'currentReadRights', 'protectedDeliveryCustody', 'runtimeOpenSslBehavior',
+           'actualResponseCompatibility', 'priorPreservationDrift', 'exactOperationalApproval'}
 EVIDENCE_ROOT = Path('/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-26')
 PUBLIC_EVIDENCE = {
     '20261004t112212z-independent-native-access/independent-native-access.json':
@@ -38,6 +43,16 @@ PUBLIC_EVIDENCE = {
         '65f3e446dadd34335f18a7842ffbf097adc2831a4975a9640cc6f48a37447197',
     '20261004t154618z-capability-assessment/authority-design.json':
         'fa6545e4fa267aeae760196d66596fb5a122ba774ba7dbd8c8303776748b03cd',
+}
+HISTORICAL_CLASSIFICATIONS = {
+    '20261004t112212z-independent-native-access/independent-native-access.json':
+        'historical-recovered-use-no-current-public-identity-or-rights',
+    '20261003t062816z-kubeadm-admin-credential/admin-credential-observation.json':
+        'historical-subject-issuer-validity-no-certificate-fingerprint',
+    '20261001t210315z-native-authority/native-access.json':
+        'historical-managementGrantLineageAuthenticated-false',
+    '20261004t154618z-capability-assessment/authority-design.json':
+        'design-actualSignedRepositoryOrOffsiteMirrorVerified-false',
 }
 
 
@@ -52,6 +67,30 @@ def require(ok, code):
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
+
+
+def canonical(value):
+    return json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False)
+
+
+def runtime_profile(inventory_sha):
+    """Exact inert requirements; parity with the guard is regression tested."""
+    return {'inventorySha256': inventory_sha, 'interpreter': '/usr/bin/python3.14',
+        'flags': ['-I', '-S', '-B'], 'qualification': 'inert-profile-comparison-only',
+        'tlsRequirements': {
+            'opensslVersion': 'OpenSSL 3.5.5 27 Jan 2026', 'opensslVersionInfo': [3, 5, 0, 5, 0],
+            'minimumTlsVersion': 'TLSv1.3', 'maximumTlsVersion': 'TLSv1.3',
+            'verifyMode': 'CERT_REQUIRED', 'verifyFlags': ['VERIFY_X509_STRICT'],
+            'checkHostname': True, 'peerIpSan': '192.168.1.30',
+            'caSource': 'explicit-bound-ca-only', 'peerPin': 'sha256-spki-required',
+            'clientIdentity': 'one-explicit-static-certificate-key-pair',
+            'defaultTrustLoading': False, 'opensslDefaultConfigurationLoading': False,
+            'environmentConfiguration': False, 'automaticProviderLoading': False,
+            'providerAndConfigurationBytes': 'independently-bound-before-future-activation',
+            'compression': False, 'renegotiation': False, 'sessionResumption': False,
+            'alpn': ['http/1.1'], 'handshakeSeconds': 15,
+            'revocation': 'complete-independent-current-witness-required',
+            'liveTlsImplemented': False, 'liveHandshakeQualified': False}}
 
 
 def load_prior_verifier():
@@ -97,7 +136,7 @@ def check_private_layout(v, files):
                 'revision-custody-drift')
 
 
-def validate_baseline(v, before, prior_before, prior_files, prior_sources):
+def validate_baseline(v, before, prior_before, prior_files, prior_sources, current_status=None):
     """One explicit historical status drift is recorded, never silently accepted."""
     expected = set(prior_before) | set(prior_sources) | {str(PRIOR / name) for name in prior_files} | {str(PRIOR / 'packet-v1.json')}
     require(type(before) is dict and set(before) == expected and len(before) == 557,
@@ -111,7 +150,7 @@ def validate_baseline(v, before, prior_before, prior_files, prior_sources):
             else:
                 require(record['sha256'] == original['sha256'] and record['bytes'] == original['bytes'],
                         'historical-baseline-rewrite')
-        v.check_record(Path(name), record)
+        v.check_record(Path(name), current_status if name == STATUS and current_status is not None else record)
 
 
 def validate_sources(v, sources):
@@ -122,13 +161,25 @@ def validate_sources(v, sources):
 
 
 def validate_binding(v, binding, sources, prior_sources, prior_payloads):
-    require(binding['configuration'] == {'context': 'jpiquot@local',
+    require(type(binding) is dict and set(binding) == {'kind', 'schemaVersion', 'recoveryId',
+            'priorSupplementSha256', 'liveActivationAllowed', 'authorityAccepted',
+            'operationalGate', 'configuration', 'proposal', 'outputCustody'} and
+            binding['kind'] == 'hexalith.offline-native-enrollment-execution-revision-binding' and
+            type(binding['schemaVersion']) is int and binding['schemaVersion'] == 1 and
+            binding['recoveryId'] == '20261015t162756z', 'binding-schema-drift')
+    require(canonical(binding['configuration']) == canonical({'context': 'jpiquot@local',
             'endpoint': 'https://192.168.1.30:6443',
             'configSha256': 'f00b691a5886ef76e6be0d6e3efe4030251147b7bba74bb0c58fa1944e0fe86c',
-            'actualConfigRead': False}, 'configuration-scope-drift')
+            'actualConfigRead': False}), 'configuration-scope-drift')
     proposal = binding['proposal']
+    require(type(proposal) is dict and set(proposal) == {'kind', 'schemaVersion', 'recoveryId',
+            'preparedAt', 'policyCeiling', 'sealedSupplementSha256', 'sourceBindings',
+            'runtime', 'contract', 'enrollment', 'syntheticOnly', 'operationalGate'} and
+            proposal['kind'] == 'hexalith.synthetic-native-enrollment-execution-binding' and
+            type(proposal['schemaVersion']) is int and proposal['schemaVersion'] == 1 and
+            proposal['recoveryId'] == '20261015t162756z', 'proposal-schema-drift')
     original = v.strict_json(prior_payloads['adapter-binding-v2.json'])
-    require(proposal['contract'] == original['contract'] and
+    require(canonical(proposal['contract']) == canonical(original['contract']) and
             proposal['sealedSupplementSha256'] == PRIOR_SHA and
             proposal['preparedAt'] == PREPARED and proposal['policyCeiling'] == CEILING and
             proposal['syntheticOnly'] is True and proposal['operationalGate'] == 'closed',
@@ -140,8 +191,8 @@ def validate_binding(v, binding, sources, prior_sources, prior_payloads):
         path = str(SOURCE.with_name(name) if name in NEW_SOURCES else v.SOURCE_ROOT / name)
         record = sources[path] if path in sources else prior_sources[path]
         expected[name] = {key: record[key] for key in ('bytes', 'sha256')}
-    require(proposal['sourceBindings'] == expected, 'proposal-source-drift')
-    require(proposal['runtime']['inventorySha256'] == sha(prior_payloads['runtime-inventory.json']),
+    require(canonical(proposal['sourceBindings']) == canonical(expected), 'proposal-source-drift')
+    require(canonical(proposal['runtime']) == canonical(runtime_profile(sha(prior_payloads['runtime-inventory.json']))),
             'proposal-runtime-drift')
     require(type(proposal['enrollment']) is dict and
             set(proposal['enrollment']) == {'serverTrust', 'clientIdentity', 'nativeGrant', 'revocation',
@@ -149,11 +200,64 @@ def validate_binding(v, binding, sources, prior_sources, prior_payloads):
                 'credentialDelivery', 'outputCustody'} and
             all(value is None for value in proposal['enrollment'].values()),
             'unresolved-witnesses-must-remain-null')
-    require(binding['outputCustody'] == {'root': str(ROOT), 'child': 'measurement-output',
+    require(canonical(binding['outputCustody']) == canonical({'root': str(ROOT), 'child': 'measurement-output',
             'childMustRemainAbsent': True, 'directoryMode': 0o700, 'fileMode': 0o600,
             'slots': ['receipt.json', 'failure.json'], 'exclusiveSingleResult': True,
-            'maximumBytes': 65536, 'attempts': 1, 'realSlotCreated': False}, 'output-plan-drift')
+            'maximumBytes': 65536, 'attempts': 1, 'realSlotCreated': False}), 'output-plan-drift')
     require(not os.path.lexists(ROOT / 'measurement-output'), 'real-output-slot-present')
+
+
+def validate_gaps(gaps):
+    require(type(gaps) is dict and set(gaps) == {'kind', 'executionApprovalReady', 'authorityAccepted',
+            'operationalGate', 'missingEvidence', 'historicalEvidenceOnly'} and
+            gaps['kind'] == 'hexalith.offline-native-evidence-gap-ledger' and
+            gaps['executionApprovalReady'] is False and gaps['authorityAccepted'] is False and
+            gaps['operationalGate'] == 'closed', 'evidence-gap-schema')
+    entries = gaps['missingEvidence']
+    require(type(entries) is list and len(entries) == len(GAP_IDS), 'evidence-gap-members')
+    names = []
+    for entry in entries:
+        require(type(entry) is dict and set(entry) == {'id', 'required'} and
+                type(entry['id']) is str and type(entry['required']) is str and
+                0 < len(entry['required']) <= 2048, 'evidence-gap-entry')
+        names.append(entry['id'])
+    require(set(names) == GAP_IDS and len(names) == len(set(names)), 'evidence-gap-members')
+    entries = gaps['historicalEvidenceOnly']
+    require(type(entries) is list and len(entries) == len(PUBLIC_EVIDENCE), 'historical-evidence-members')
+    seen = set()
+    for entry in entries:
+        require(type(entry) is dict and set(entry) == {'path', 'sha256', 'classification'}, 'historical-evidence-schema')
+        require(entry['path'] in {str(EVIDENCE_ROOT / name) for name in PUBLIC_EVIDENCE} and
+                entry['path'] not in seen and
+                entry['classification'] == HISTORICAL_CLASSIFICATIONS.get(str(Path(entry['path']).relative_to(EVIDENCE_ROOT))) and
+                entry['sha256'] == PUBLIC_EVIDENCE[str(Path(entry['path']).relative_to(EVIDENCE_ROOT))],
+                'historical-evidence-classification')
+        seen.add(entry['path'])
+
+
+def concurrent_status(v, record, before):
+    require(type(record) is dict and set(record) == {'kind', 'path', 'baselineSha256',
+            'currentRecord', 'initiatedByThisTask', 'commit'} and
+            record['kind'] == 'hexalith.recorded-concurrent-preservation-drift' and
+            record['path'] == STATUS and record['baselineSha256'] == CURRENT_STATUS_SHA and
+            record['baselineSha256'] == before[STATUS]['sha256'] and
+            record['currentRecord']['sha256'] == OBSERVED_STATUS_SHA and
+            record['initiatedByThisTask'] is False and type(record['commit']) is str and
+            len(record['commit']) == 40 and all(c in '0123456789abcdef' for c in record['commit']),
+            'concurrent-status-binding')
+    v.check_record(Path(STATUS), record['currentRecord'])
+    return record['currentRecord']
+
+
+def validate_after(after, before, status):
+    require(type(after) is dict and set(after) == {'kind', 'baselineFiles', 'files',
+            'unchangedFiles', 'knownConcurrentChanges', 'unexpectedChanges', 'passed', 'operationalGate'} and
+            after['kind'] == 'hexalith.offline-preservation-after' and after['passed'] is True and
+            after['operationalGate'] == 'closed' and after['unexpectedChanges'] == [] and
+            type(after['baselineFiles']) is int and after['baselineFiles'] == len(before) and
+            type(after['unchangedFiles']) is int and after['unchangedFiles'] == len(before) - 1 and
+            after['knownConcurrentChanges'] == [STATUS] and
+            canonical(after['files']) == canonical({**before, STATUS: status}), 'preservation-after-drift')
 
 
 def verify(expected):
@@ -163,7 +267,12 @@ def verify(expected):
     manifest_raw = v.read_file(ROOT / 'packet-v1.json')
     require(sha(manifest_raw) == expected, 'revision-anchor-drift')
     manifest = v.strict_json(manifest_raw)
-    require(manifest['kind'] == 'hexalith.native-enrollment-execution-revision' and
+    require(set(manifest) == {'kind', 'schemaVersion', 'recoveryId', 'priorSupplementSha256',
+            'policyPreparedAt', 'policyCeilingEnds', 'liveActivationAllowed', 'authorityAccepted',
+            'operationalGate', 'activeBinding', 'files'} and
+            type(manifest['schemaVersion']) is int and manifest['schemaVersion'] == 1 and
+            manifest['recoveryId'] == '20261015t162756z' and
+            manifest['kind'] == 'hexalith.native-enrollment-execution-revision' and
             manifest['priorSupplementSha256'] == PRIOR_SHA and manifest['policyPreparedAt'] == PREPARED and
             manifest['policyCeilingEnds'] == CEILING and manifest['liveActivationAllowed'] is False and
             manifest['authorityAccepted'] is False and manifest['operationalGate'] == 'closed',
@@ -187,7 +296,9 @@ def verify(expected):
             'prior-preservation-members')
     prior_sources = v.strict_json(prior_payloads['source-inventory.json'])['files']
     before = v.strict_json(payloads['preservation-before.json'])['files']
-    validate_baseline(v, before, prior_before, prior_files, prior_sources)
+    status = concurrent_status(v, v.strict_json(payloads['concurrent-preservation-drift-v1.json']), before)
+    validate_baseline(v, before, prior_before, prior_files, prior_sources, status)
+    validate_after(v.strict_json(payloads['preservation-after.json']), before, status)
     runtime = v.strict_json(prior_payloads['runtime-inventory.json'])
     v.validate_runtime(runtime)
     v.validate_sources(prior_sources)
@@ -202,9 +313,7 @@ def verify(expected):
             'binding-gate-drift')
     validate_binding(v, binding, sources, prior_sources, prior_payloads)
     gaps = v.strict_json(payloads['evidence-gaps-v1.json'])
-    require(gaps['executionApprovalReady'] is False and gaps['authorityAccepted'] is False and
-            type(gaps['missingEvidence']) is list and len(gaps['missingEvidence']) >= 8,
-            'evidence-gap-drift')
+    validate_gaps(gaps)
     for name, digest in PUBLIC_EVIDENCE.items():
         raw = v.read_file(EVIDENCE_ROOT / name)
         require(sha(raw) == digest and payloads['public-evidence/' + name] == raw,
@@ -221,15 +330,16 @@ def verify(expected):
     v.check_directories(PRIOR, prior_files)
     # Preserve the original verifier's whole-history layout checks without rewriting
     # its sealed before-map. The current status digest is separately pinned above.
-    v.recheck_external(before={name: before[name] for name in prior_before}, runtime=runtime, sources=prior_sources)
-    validate_baseline(v, before, prior_before, prior_files, prior_sources)
+    v.recheck_external(before={name: status if name == STATUS else before[name] for name in prior_before}, runtime=runtime, sources=prior_sources)
+    validate_baseline(v, before, prior_before, prior_files, prior_sources, status)
     validate_sources(v, sources)
     for name, digest in PUBLIC_EVIDENCE.items():
         require(sha(v.read_file(EVIDENCE_ROOT / name)) == digest, 'late-public-evidence-drift')
     now = datetime.now(timezone.utc)
     return {'kind': 'hexalith.offline-enrollment-revision-verification', 'observedAt': now.isoformat(),
             'revisionSha256': expected, 'priorSupplementSha256': PRIOR_SHA,
-            'payloadFiles': len(files), 'preservationFilesUnchanged': len(before),
+            'payloadFiles': len(files), 'preservationFilesUnchanged': len(before) - 1,
+            'preservationFilesCompared': len(before), 'knownConcurrentPreservationChanges': [STATUS],
             'priorSupplementFilesUnchanged': len(prior_files) + 1,
             'v4FilesUnchanged': 140, 'historicalFilesUnchanged': 348,
             'runtimeFiles': len(runtime['files']), 'priorSourcesUnchanged': len(prior_sources),

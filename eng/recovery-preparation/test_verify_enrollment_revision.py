@@ -163,6 +163,11 @@ class RevisionVerifierTests(unittest.TestCase):
         with patch.object(r, 'VERIFIER_SHA', '0' * 64), self.assertRaises(r.Refusal):
             r.load_prior_verifier()
 
+    def test_full_runtime_requirements_match_the_execution_guard(self):
+        guard = load(Path(__file__).with_name('native_enrollment_execution.py'), 'guard_parity')
+        self.assertEqual(r.canonical(r.runtime_profile('d' * 64)),
+                         r.canonical(guard.runtime_requirements('d' * 64)))
+
 
 class CompleteSyntheticRevision(unittest.TestCase):
     """Exercise the complete verifier using an isolated 557-file fake history."""
@@ -206,24 +211,44 @@ class CompleteSyntheticRevision(unittest.TestCase):
             directory = self.source_root if name in r.NEW_SOURCES else f.sources
             source_bindings[name] = f.record(directory / name)
         f.write_json(self.root / 'enrollment-execution-binding-v1.json', {
+            'kind': 'hexalith.offline-native-enrollment-execution-revision-binding',
+            'schemaVersion': 1, 'recoveryId': '20261015t162756z',
             'liveActivationAllowed': False, 'authorityAccepted': False,
             'operationalGate': 'closed', 'priorSupplementSha256': prior_sha,
             'configuration': {'context': 'jpiquot@local', 'endpoint': 'https://192.168.1.30:6443',
                 'configSha256': 'f00b691a5886ef76e6be0d6e3efe4030251147b7bba74bb0c58fa1944e0fe86c',
                 'actualConfigRead': False},
-            'proposal': {'contract': {'synthetic': True}, 'sealedSupplementSha256': prior_sha,
+            'proposal': {'kind': 'hexalith.synthetic-native-enrollment-execution-binding',
+                'schemaVersion': 1, 'recoveryId': '20261015t162756z',
+                'contract': {'synthetic': True}, 'sealedSupplementSha256': prior_sha,
                 'preparedAt': r.PREPARED, 'policyCeiling': r.CEILING,
                 'syntheticOnly': True, 'operationalGate': 'closed', 'sourceBindings': source_bindings,
-                'runtime': {'inventorySha256': r.sha((f.root / 'runtime-inventory.json').read_bytes())},
+                'runtime': r.runtime_profile(r.sha((f.root / 'runtime-inventory.json').read_bytes())),
                 'enrollment': dict.fromkeys(('serverTrust', 'clientIdentity', 'nativeGrant', 'revocation',
                     'rights', 'breakGlass', 'cnpgController', 'measurementApproval', 'credentialDelivery', 'outputCustody'))},
             'outputCustody': {'root': str(self.root), 'child': 'measurement-output',
                 'childMustRemainAbsent': True, 'directoryMode': 0o700, 'fileMode': 0o600,
                 'slots': ['receipt.json', 'failure.json'], 'exclusiveSingleResult': True,
                 'maximumBytes': 65536, 'attempts': 1, 'realSlotCreated': False}})
-        f.write_json(self.root / 'evidence-gaps-v1.json', {'executionApprovalReady': False,
-            'authorityAccepted': False, 'missingEvidence': list(range(12))})
+        f.write_json(self.root / 'evidence-gaps-v1.json', {
+            'kind': 'hexalith.offline-native-evidence-gap-ledger', 'executionApprovalReady': False,
+            'authorityAccepted': False, 'operationalGate': 'closed',
+            'missingEvidence': [{'id': name, 'required': 'Missing independently established fixture evidence.'}
+                                for name in sorted(r.GAP_IDS)], 'historicalEvidenceOnly': []})
+        # A second unrelated status change occurred after the session baseline.
+        f.write(status, b'synthetic-concurrent-story-status')
+        current_status = f.record(status)
+        f.write_json(self.root / 'concurrent-preservation-drift-v1.json', {
+            'kind': 'hexalith.recorded-concurrent-preservation-drift', 'path': str(status),
+            'baselineSha256': before[str(status)]['sha256'], 'currentRecord': current_status,
+            'initiatedByThisTask': False, 'commit': 'a' * 40})
+        f.write_json(self.root / 'preservation-after.json', {
+            'kind': 'hexalith.offline-preservation-after', 'baselineFiles': len(before),
+            'files': {**before, str(status): current_status}, 'unchangedFiles': len(before) - 1,
+            'knownConcurrentChanges': [str(status)], 'unexpectedChanges': [],
+            'passed': True, 'operationalGate': 'closed'})
         manifest = {'kind': 'hexalith.native-enrollment-execution-revision',
+            'schemaVersion': 1, 'recoveryId': '20261015t162756z',
             'activeBinding': 'enrollment-execution-binding-v1.json',
             'priorSupplementSha256': prior_sha, 'policyPreparedAt': r.PREPARED,
             'policyCeilingEnds': r.CEILING, 'liveActivationAllowed': False,
@@ -236,16 +261,28 @@ class CompleteSyntheticRevision(unittest.TestCase):
         self.stack.enter_context(patch.multiple(r, ROOT=self.root, PRIOR=f.root,
             PRIOR_SHA=prior_sha, SOURCE=self.source_root / 'verify_enrollment_revision.py',
             STATUS=str(status), OLD_STATUS_SHA=old_status_sha,
-            CURRENT_STATUS_SHA=before[str(status)]['sha256'], PUBLIC_EVIDENCE={}))
+            CURRENT_STATUS_SHA=before[str(status)]['sha256'],
+            OBSERVED_STATUS_SHA=current_status['sha256'], PUBLIC_EVIDENCE={}))
         self.stack.enter_context(patch.object(r, 'load_prior_verifier', return_value=self.v))
 
     def test_complete_synthetic_revision_passes_with_closed_gate(self):
         result = r.verify(self.anchor)
-        self.assertEqual(result['preservationFilesUnchanged'], 557)
+        self.assertEqual(result['preservationFilesUnchanged'], 556)
+        self.assertEqual(result['preservationFilesCompared'], 557)
+        self.assertEqual(result['knownConcurrentPreservationChanges'], [r.STATUS])
         self.assertEqual(result['priorSupplementFilesUnchanged'], 56)
         self.assertEqual(result['newSources'], 4)
         self.assertFalse(result['originalFullVerifierPass'])
         self.assertFalse(result['executionApprovalReady'])
+
+    def test_manifest_identity_schema_and_extra_fields_are_exact(self):
+        path = self.root / 'packet-v1.json'
+        original = json.loads(path.read_bytes())
+        for key, value in (('recoveryId', 'other'), ('schemaVersion', True), ('extra', 'unreviewed')):
+            manifest = {**original, key: value}
+            self.fixture.write_json(path, manifest)
+            with self.subTest(field=key), self.assertRaises(r.Refusal):
+                r.verify(r.sha(path.read_bytes()))
 
     def reseal(self):
         f = self.fixture
@@ -279,6 +316,110 @@ class CompleteSyntheticRevision(unittest.TestCase):
         f.write(path, original)
         self.reseal()
 
+    def test_resealed_full_runtime_profile_and_identity_substitutions_refuse(self):
+        path = self.root / 'enrollment-execution-binding-v1.json'
+        original = path.read_bytes()
+        mutations = [
+            lambda b: b['proposal']['runtime'].__setitem__('interpreter', '/arbitrary/python'),
+            lambda b: b['proposal']['runtime'].__setitem__('flags', []),
+            lambda b: b['proposal']['runtime']['tlsRequirements'].__setitem__('checkHostname', False),
+            lambda b: b['proposal']['runtime']['tlsRequirements'].__setitem__('liveTlsImplemented', True),
+            lambda b: b.__setitem__('kind', 'wrong'),
+            lambda b: b.__setitem__('schemaVersion', True),
+            lambda b: b.__setitem__('recoveryId', 'other'),
+            lambda b: b.__setitem__('extra', 'unreviewed'),
+            lambda b: b['proposal'].__setitem__('kind', 'wrong'),
+            lambda b: b['proposal'].__setitem__('schemaVersion', 2),
+            lambda b: b['proposal'].__setitem__('recoveryId', 'other'),
+            lambda b: b['configuration'].__setitem__('actualConfigRead', 0),
+            lambda b: b['outputCustody'].__setitem__('attempts', True),
+            lambda b: b['proposal']['contract'].__setitem__('synthetic', 1),
+        ]
+        for index, mutate in enumerate(mutations):
+            value = json.loads(original)
+            mutate(value)
+            self.fixture.write_json(path, value)
+            self.reseal()
+            with self.subTest(mutation=index), self.assertRaises(r.Refusal):
+                r.verify(self.anchor)
+        self.fixture.write(path, original)
+        self.reseal()
+
+    def test_resealed_gap_ledger_must_retain_all_twelve_specific_missing_facts(self):
+        path = self.root / 'evidence-gaps-v1.json'
+        original = path.read_bytes()
+        mutations = [
+            lambda b: b.__setitem__('missingEvidence', [None] * 8),
+            lambda b: b['missingEvidence'].__setitem__(0, b['missingEvidence'][1]),
+            lambda b: b['missingEvidence'][0].__setitem__('required', ''),
+            lambda b: b['missingEvidence'][0].__setitem__('id', 'invented'),
+            lambda b: b.__setitem__('executionApprovalReady', 0),
+            lambda b: b.__setitem__('authorityAccepted', True),
+            lambda b: b.__setitem__('operationalGate', 'open'),
+        ]
+        for index, mutate in enumerate(mutations):
+            value = json.loads(original)
+            mutate(value)
+            self.fixture.write_json(path, value)
+            self.reseal()
+            with self.subTest(mutation=index), self.assertRaises(r.Refusal):
+                r.verify(self.anchor)
+        self.fixture.write(path, original)
+        self.reseal()
+
+    def test_resealed_after_receipt_cannot_conceal_failure_omission_or_drift(self):
+        path = self.root / 'preservation-after.json'
+        original = path.read_bytes()
+        mutations = [lambda b: b.__setitem__('files', {}),
+            lambda b: b.__setitem__('passed', False),
+            lambda b: b.__setitem__('unchangedFiles', 557),
+            lambda b: b.__setitem__('knownConcurrentChanges', []),
+            lambda b: b.__setitem__('unexpectedChanges', ['synthetic-unexpected-drift']),
+            lambda b: b['files'][r.STATUS].__setitem__('sha256', '0' * 64)]
+        for index, mutate in enumerate(mutations):
+            value = json.loads(original)
+            mutate(value)
+            self.fixture.write_json(path, value)
+            self.reseal()
+            with self.subTest(mutation=index), self.assertRaises(r.Refusal):
+                r.verify(self.anchor)
+        self.fixture.write(path, original)
+        self.reseal()
+
+    def test_resealed_concurrent_status_must_match_pinned_observation(self):
+        status_path = Path(r.STATUS)
+        status_path.write_bytes(b'synthetic-additional-unapproved-status-drift')
+        current = self.fixture.record(status_path)
+        path = self.root / 'concurrent-preservation-drift-v1.json'
+        value = json.loads(path.read_bytes())
+        value['currentRecord'] = current
+        self.fixture.write_json(path, value)
+        path = self.root / 'preservation-after.json'
+        value = json.loads(path.read_bytes())
+        value['files'][r.STATUS] = current
+        self.fixture.write_json(path, value)
+        self.reseal()
+        with self.assertRaisesRegex(r.Refusal, 'concurrent-status-binding'):
+            r.verify(self.anchor)
+
+    def test_historical_classification_is_bound_to_its_exact_source(self):
+        # The complete fixture normally patches the evidence set to empty.
+        source = load(Path(__file__).with_name('verify_enrollment_revision.py'), 'classification_constants')
+        entries = [{'path': str(source.EVIDENCE_ROOT / name), 'sha256': digest,
+                    'classification': source.HISTORICAL_CLASSIFICATIONS[name]}
+                   for name, digest in source.PUBLIC_EVIDENCE.items()]
+        gaps = {'kind': 'hexalith.offline-native-evidence-gap-ledger',
+            'executionApprovalReady': False, 'authorityAccepted': False, 'operationalGate': 'closed',
+            'missingEvidence': [{'id': name, 'required': 'Missing independent evidence.'} for name in r.GAP_IDS],
+            'historicalEvidenceOnly': entries}
+        with patch.multiple(r, PUBLIC_EVIDENCE=source.PUBLIC_EVIDENCE,
+                            HISTORICAL_CLASSIFICATIONS=source.HISTORICAL_CLASSIFICATIONS):
+            r.validate_gaps(gaps)
+            for entry in entries:
+                entry['classification'] = 'design-actualSignedRepositoryOrOffsiteMirrorVerified-false'
+            with self.assertRaises(r.Refusal):
+                r.validate_gaps(gaps)
+
     def test_public_evidence_source_is_rechecked_after_initial_validation(self):
         f = self.fixture
         evidence = f.base / 'public-evidence-source'
@@ -297,7 +438,16 @@ class CompleteSyntheticRevision(unittest.TestCase):
                 if count == 2:
                     (evidence / 'public.json').write_bytes(b'synthetic-evidence-drift')
             return value
-        with patch.multiple(r, PUBLIC_EVIDENCE={'public.json': r.sha((evidence / 'public.json').read_bytes())}, EVIDENCE_ROOT=evidence):
+        with patch.multiple(r, PUBLIC_EVIDENCE={'public.json': r.sha((evidence / 'public.json').read_bytes())},
+                            HISTORICAL_CLASSIFICATIONS={'public.json': 'historical-recovered-use-no-current-public-identity-or-rights'},
+                            EVIDENCE_ROOT=evidence):
+            gaps_path = self.root / 'evidence-gaps-v1.json'
+            gaps = json.loads(gaps_path.read_bytes())
+            gaps['historicalEvidenceOnly'] = [{'path': str(evidence / 'public.json'),
+                'sha256': r.sha((evidence / 'public.json').read_bytes()),
+                'classification': 'historical-recovered-use-no-current-public-identity-or-rights'}]
+            f.write_json(gaps_path, gaps)
+            self.reseal()
             self.assertEqual(r.verify(self.anchor)['operationalGate'], 'closed')
             with patch.object(self.v, 'read_file', side_effect=mutate_after_initial_reads), self.assertRaises(r.Refusal):
                 r.verify(self.anchor)

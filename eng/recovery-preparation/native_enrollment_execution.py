@@ -77,6 +77,7 @@ def load_source(path, name):
 SOURCE = Path(__file__).absolute()
 _adapter = load_source(SOURCE.with_name('native_measurement_adapter.py'),
                        'hexalith_native_enrollment_fixed_adapter')
+_SYNTHETIC_REQUEST = _adapter.SyntheticTransport.request
 _LOADED_SELF_SHA256 = hashlib.sha256(read_source_bytes(SOURCE)).hexdigest()
 Refusal, require = _adapter.Refusal, _adapter.require
 SUPPLEMENT_SHA256 = 'a7b9bf06139cec3022fbced5fe182b42c773b9a7099c40c84162893a766e2631'
@@ -98,6 +99,27 @@ def sha(raw):
 
 
 def _canonical(value):
+    remaining = [8192]
+    def check(item, depth=0):
+        remaining[0] -= 1
+        require(depth <= 16 and remaining[0] >= 0, 'json-shape-limit')
+        kind = type(item)
+        if kind is dict:
+            require(len(item) <= 512, 'json-shape-limit')
+            for key, child in item.items():
+                require(type(key) is str and len(key) <= 128, 'inert-json-key')
+                check(child, depth + 1)
+        elif kind is list:
+            require(len(item) <= 512, 'json-shape-limit')
+            for child in item:
+                check(child, depth + 1)
+        elif kind is str:
+            require(len(item) <= MAX_BINDING, 'json-string-limit')
+        elif kind is int:
+            require(-(2 ** 63) <= item < 2 ** 63, 'json-integer-limit')
+        else:
+            require(kind in (bool, type(None)), 'inert-json-value')
+    check(value)
     return json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode('ascii')
 
 
@@ -153,7 +175,8 @@ def binding_template(runtime_inventory_sha256):
 
 
 def _keys(value, names):
-    require(type(value) is dict and set(value) == set(names), 'typed-schema')
+    require(type(value) is dict and all(type(key) is str for key in value)
+            and set(value) == set(names), 'typed-schema')
 
 
 def _digest(value):
@@ -183,6 +206,86 @@ def _ceiling():
 
 def _rights():
     return [{'method': item['method'], 'path': item['path']} for item in _adapter.request_plan()]
+
+
+def _validate_populated(enrollment, missing, evidence_keys):
+    """Missing evidence never excuses malformed facts that were supplied."""
+    fixed = {
+        'serverTrust': {'endpoint': _adapter.ENDPOINT, 'ipSan': _adapter.HOST},
+        'clientIdentity': {'kind': INERT_KIND},
+        'credentialDelivery': {'kind': INERT_KIND, 'singleUse': True,
+                               'channel': 'protected-in-memory-inert-fixture'},
+        'outputCustody': {'rootMode': 0o700, 'slot': 'measurement-output', 'directoryMode': 0o700,
+                          'fileMode': 0o600, 'successFile': 'receipt.json', 'failureFile': 'failure.json',
+                          'maximumBytes': _adapter.MAX_OUTPUT, 'attempts': 1, 'syntheticScratchOnly': True},
+    }
+    evidence_fixed = {
+        'nativeGrant': {'independent': True},
+        'revocation': {'completeLineage': True, 'state': 'not-revoked-in-fixture'},
+        'rights': {'allowed': _rights()},
+        'breakGlass': {'independent': True},
+        'cnpgController': {'watchNamespaces': ['keycloak', 'cnpg-system']},
+        'measurementApproval': {'separateFromGrant': True},
+    }
+    for name in WITNESSES:
+        fixed[name] = {'kind': 'synthetic-independent-' + name, 'fixtureOnly': True,
+                       'provenance': 'inert-independent-witness-fixture'}
+
+    def fields(name, values, constants):
+        for key, value in values.items():
+            if value is None:
+                continue
+            if key in constants:
+                require(_canonical(value) == _canonical(constants[key]), 'supplied-field-semantics')
+            elif key.endswith('Sha256') or key == 'sha256':
+                _digest(value)
+            elif key in ('validFrom', 'validUntil', 'observedAt'):
+                _timestamp(value)
+            elif key in ('subject', 'issuer', 'approvalId', 'name'):
+                _label(value)
+            elif key in ('currentGrantUid', 'uid'):
+                require(type(value) is str and _adapter.UUID.fullmatch(value), 'typed-uid')
+            elif key == 'groups':
+                require(type(value) is list and 1 <= len(value) <= 8, 'client-groups')
+                for group in value:
+                    _label(group)
+                require(len(value) == len(set(value)), 'client-groups')
+            elif key in ('rootDevice', 'rootInode', 'rootUid'):
+                require(type(value) is int and value >= 0, 'typed-output-custody')
+            elif key == 'bytes':
+                require(type(value) is int and len(INERT_PREFIX) < value <= MAX_CREDENTIAL,
+                        'typed-credential-size')
+            elif key == 'evidence':
+                require(type(value) is dict and set(value) <= set(evidence_keys[name]), 'typed-schema')
+                fields(name, value, evidence_fixed[name])
+            else:
+                raise Refusal('supplied-field-semantics')
+
+    for name, item in enrollment.items():
+        if item is None:
+            continue
+        fields(name, item, fixed[name])
+        start = 'validFrom' if name == 'clientIdentity' else 'observedAt'
+        if item.get(start) is not None and item.get('validUntil') is not None:
+            require(_timestamp(item[start]) < _timestamp(item['validUntil']), 'supplied-validity')
+    client, server = enrollment['clientIdentity'], enrollment['serverTrust']
+    subject = None if any(path.startswith('enrollment.clientIdentity') for path in missing) else sha(_canonical(client))
+    scope = None if any(path.startswith('enrollment.serverTrust') for path in missing) else sha(_canonical({
+        'contract': _adapter.contract(), 'serverTrust': server, 'tlsRequirements': tls_requirements()}))
+    artifacts = []
+    for name in WITNESSES:
+        item = enrollment[name]
+        if item is None:
+            continue
+        for key, expected in (('subjectSha256', subject), ('scopeSha256', scope)):
+            if expected is not None and item.get(key) is not None:
+                require(item[key] == expected, 'witness-identity-or-scope')
+        if item.get('artifactSha256') is not None:
+            artifacts.append(item['artifactSha256'])
+    require(len(artifacts) == len(set(artifacts)), 'separate-witnesses-required')
+    delivery = enrollment['credentialDelivery']
+    if client is not None and delivery is not None and client.get('credentialSha256') is not None and delivery.get('sha256') is not None:
+        require(client['credentialSha256'] == delivery['sha256'], 'credential-delivery-binding')
 
 
 def _validate_enrollment(enrollment):
@@ -221,6 +324,7 @@ def _validate_enrollment(enrollment):
             require(set(item['evidence']) <= set(evidence_keys[name]), 'typed-schema')
             missing.extend('enrollment.' + name + '.evidence.' + key
                            for key in evidence_keys[name] if item['evidence'].get(key) is None)
+    _validate_populated(enrollment, missing, evidence_keys)
     if missing:
         return missing
     server, client = enrollment['serverTrust'], enrollment['clientIdentity']
@@ -296,8 +400,10 @@ def _validate_binding(raw, expected_sha256, runtime):
     require(type(raw) is bytes and len(raw) <= MAX_BINDING, 'bounded-binding')
     _digest(expected_sha256)
     require(sha(raw) == expected_sha256, 'binding-integrity')
-    require(type(runtime) is dict and type(runtime.get('inventorySha256')) is str, 'runtime-profile')
-    require(_canonical(runtime) == _canonical(runtime_requirements(runtime['inventorySha256'])),
+    require(type(runtime) is dict, 'runtime-profile')
+    runtime_raw = _canonical(runtime)
+    require(type(runtime.get('inventorySha256')) is str, 'runtime-profile')
+    require(runtime_raw == _canonical(runtime_requirements(runtime['inventorySha256'])),
             'openssl-or-runtime-profile')
     value = _adapter._strict_json(raw)
     expected = binding_template(runtime['inventorySha256'])
@@ -345,7 +451,7 @@ class SyntheticCredentialDelivery:
         require(type(credentials) in (list, tuple) and len(credentials) == 1, 'one-credential-required')
         item = credentials[0]
         _keys(item, ('kind', 'payload'))
-        require(item['kind'] == INERT_KIND and type(item['payload']) is bytes
+        require(type(item['kind']) is str and item['kind'] == INERT_KIND and type(item['payload']) is bytes
                 and len(INERT_PREFIX) < len(item['payload']) <= MAX_CREDENTIAL
                 and item['payload'].startswith(INERT_PREFIX)
                 and re.fullmatch(rb'[a-z0-9-]+', item['payload'][len(INERT_PREFIX):]),
@@ -356,13 +462,19 @@ class SyntheticCredentialDelivery:
         return '<SyntheticCredentialDelivery redacted>'
 
     def consume(self, expected):
-        require(not self._consumed, 'credential-already-consumed')
+        kind, payload, consumed = self._kind, self._payload, self._consumed
+        require(type(kind) is str and type(payload) is bytearray and type(consumed) is bool,
+                'inert-delivery-storage')
+        require(not consumed, 'credential-already-consumed')
         self._consumed = True
         try:
-            require(self._kind == expected['kind'] and sha(self._payload) == expected['sha256']
-                    and len(self._payload) == expected['bytes'], 'credential-delivery-refused')
+            require(kind == INERT_KIND and len(INERT_PREFIX) < len(payload) <= MAX_CREDENTIAL
+                    and payload.startswith(INERT_PREFIX)
+                    and re.fullmatch(rb'[a-z0-9-]+', payload[len(INERT_PREFIX):])
+                    and kind == expected['kind'] and sha(payload) == expected['sha256']
+                    and len(payload) == expected['bytes'], 'credential-delivery-refused')
         finally:
-            self._payload[:] = b'\x00' * len(self._payload)
+            payload[:] = b'\x00' * len(payload)
 
 
 class SyntheticClock:
@@ -373,9 +485,15 @@ class SyntheticClock:
         self.samples, self.index = tuple(samples), 0
 
     def sample(self):
-        value = self.samples[min(self.index, len(self.samples) - 1)]
-        self.index += 1
+        samples, index = self.samples, self.index
+        require(type(samples) is tuple and type(index) is int, 'inert-clock-storage')
+        require(1 <= len(samples) <= 256 and index >= 0, 'inert-clock-storage')
+        value = samples[min(index, len(samples) - 1)]
+        self.index = index + 1
         return value
+
+
+_SYNTHETIC_CLOCK_SAMPLE = SyntheticClock.sample
 
 
 def _private_directory(info):
@@ -402,7 +520,10 @@ class SyntheticOutputCustody:
 
     def __init__(self):
         self._temporary = tempfile.TemporaryDirectory(prefix='hexalith-native-synthetic-', dir='/tmp')
+        # Never let a pathname-based finalizer remove a later replacement.
+        self._temporary._finalizer.detach()
         self.path = Path(self._temporary.name)
+        self._root_name = self.path.name
         self._root = self._parent = self._slot = None
         self._retained_name = None
         self._retained_stamp = self._retained_sha256 = None
@@ -417,7 +538,7 @@ class SyntheticOutputCustody:
             parent = os.fstat(self._parent)
             require(parent.st_uid == 0 and bool(parent.st_mode & stat.S_ISVTX), 'scratch-parent-custody')
             self._parent_identity = _identity(parent)
-            self._root = os.open(self.path.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
+            self._root = os.open(self._root_name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
                                  dir_fd=self._parent)
             info = os.fstat(self._root)
             _private_directory(info)
@@ -426,13 +547,16 @@ class SyntheticOutputCustody:
             self.close()
             raise Refusal('synthetic-output-custody-refused') from None
 
-    def _check(self):
+    def _check_root(self):
         require(_identity(os.stat('/tmp', follow_symlinks=False)) == self._parent_identity
                 and _identity(os.fstat(self._parent)) == self._parent_identity, 'scratch-parent-drift')
-        actual = os.stat(self.path.name, dir_fd=self._parent, follow_symlinks=False)
+        actual = os.stat(self._root_name, dir_fd=self._parent, follow_symlinks=False)
         _private_directory(actual)
         require(_identity(actual) == self._root_identity
                 and _identity(os.fstat(self._root)) == self._root_identity, 'scratch-root-drift')
+
+    def _check(self):
+        self._check_root()
         if self._slot is not None:
             actual = os.stat('measurement-output', dir_fd=self._root, follow_symlinks=False)
             _private_directory(actual)
@@ -511,12 +635,40 @@ class SyntheticOutputCustody:
             os.close(descriptor)
 
     def close(self):
-        for name in ('_slot', '_root', '_parent'):
-            descriptor = getattr(self, name, None)
-            if descriptor is not None:
-                os.close(descriptor)
-                setattr(self, name, None)
-        self._temporary.cleanup()
+        try:
+            if self._root is not None:
+                self._check_root()
+                self._remove_owned_contents(self._root)
+                self._check_root()
+                os.rmdir(self._root_name, dir_fd=self._parent)
+        except Exception:
+            raise Refusal('synthetic-cleanup-custody-refused') from None
+        finally:
+            for name in ('_slot', '_root', '_parent'):
+                descriptor = getattr(self, name, None)
+                if descriptor is not None:
+                    os.close(descriptor)
+                    setattr(self, name, None)
+
+    def _remove_owned_contents(self, directory):
+        """Remove scratch children through retained descriptors, never aliases."""
+        for name in os.listdir(directory):
+            self._check_root()
+            info = os.stat(name, dir_fd=directory, follow_symlinks=False)
+            if stat.S_ISDIR(info.st_mode):
+                child = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
+                                dir_fd=directory)
+                try:
+                    require(_identity(os.fstat(child)) == _identity(info), 'cleanup-child-replaced')
+                    self._remove_owned_contents(child)
+                    self._check_root()
+                    require(_identity(os.stat(name, dir_fd=directory, follow_symlinks=False)) == _identity(info),
+                            'cleanup-child-replaced')
+                    os.rmdir(name, dir_fd=directory)
+                finally:
+                    os.close(child)
+            else:
+                os.unlink(name, dir_fd=directory)
 
     def __enter__(self):
         return self
@@ -538,7 +690,11 @@ class _Boundaries:
     def check(self, deadline=None):
         value, missing = _validate_binding(self.raw, self.expected, self.runtime)
         require(not missing, 'missing-independent-witness-fixtures')
-        now = datetime.now(timezone.utc) if self.clock is None else self.clock.sample()
+        self.custody._check()
+        require(_canonical(value['enrollment']['outputCustody']) == _canonical(self.custody.binding()),
+                'output-custody-binding-drift')
+        # Clock enforcement follows every potentially slow source/custody read.
+        now = datetime.now(timezone.utc) if self.clock is None else _SYNTHETIC_CLOCK_SAMPLE(self.clock)
         require(type(now) is datetime and now.tzinfo is timezone.utc, 'utc-clock-required')
         monotonic = time.monotonic()
         require(_prepared() <= now < _ceiling() and
@@ -552,9 +708,6 @@ class _Boundaries:
         for key in WITNESSES:
             witness = value['enrollment'][key]
             require(_timestamp(witness['observedAt']) <= now < _timestamp(witness['validUntil']), 'witness-validity')
-        self.custody._check()
-        require(_canonical(value['enrollment']['outputCustody']) == _canonical(self.custody.binding()),
-                'output-custody-binding-drift')
         self.last_utc, self.last_monotonic = now, monotonic
         return value
 
@@ -568,14 +721,17 @@ def qualify_synthetic(raw, expected_sha256, runtime, delivery, transport, custod
         result['missingFields'] = missing
         require(not missing, 'missing-independent-witness-fixtures')
         require(type(delivery) is SyntheticCredentialDelivery
-                and type(transport) is _adapter.SyntheticTransport and not transport.requests
+                and type(transport) is _adapter.SyntheticTransport
+                and type(transport.requests) is list and not transport.requests
+                and type(transport.responses) is tuple
+                and len(transport.responses) <= len(_adapter.request_plan())
                 and type(custody) is SyntheticOutputCustody, 'inert-fixtures-required')
         boundaries = _Boundaries(raw, expected_sha256, runtime, clock, custody)
         boundaries.check()
         try:
             delivery.consume(value['enrollment']['credentialDelivery'])
         finally:
-            result['credentialConsumed'] = delivery._consumed
+            result['credentialConsumed'] = delivery._consumed is True
         boundaries.check()
         custody.reserve(value['enrollment']['outputCustody'])
         reserved = True
@@ -585,10 +741,14 @@ def qualify_synthetic(raw, expected_sha256, runtime, delivery, transport, custod
             deadline = min(boundaries.start + _adapter.LANE_SECONDS,
                            time.monotonic() + _adapter.REQUEST_SECONDS)
             boundaries.check(deadline)
+            require(type(transport.requests) is list and type(transport.responses) is tuple
+                    and len(transport.responses) <= len(_adapter.request_plan()), 'inert-transport-storage')
             result['syntheticRequests'] += 1
-            response = transport.request(request, deadline, min(_adapter.MAX_BODY, _adapter.MAX_TOTAL_BODY - total))
+            response = _SYNTHETIC_REQUEST(transport, request, deadline,
+                                        min(_adapter.MAX_BODY, _adapter.MAX_TOTAL_BODY - total))
             boundaries.check(deadline)
-            require(type(response) is _adapter.Response and type(response.chunks) is tuple
+            require(type(response) is _adapter.Response and type(response.status) is int
+                    and type(response.content_type) is str and type(response.chunks) is tuple
                     and len(response.chunks) <= _adapter.MAX_ITEMS, 'inert-response-required')
             body = bytearray()
             for chunk in response.chunks:
@@ -620,6 +780,8 @@ def qualify_synthetic(raw, expected_sha256, runtime, delivery, transport, custod
         except Exception:
             result.update(qualification='refused', measurements=[], outputRetained=False,
                           reason='synthetic-output-custody-refused')
+            result.pop('bindingSha256', None)
+            result.pop('runtimeInventorySha256', None)
     return result
 
 
