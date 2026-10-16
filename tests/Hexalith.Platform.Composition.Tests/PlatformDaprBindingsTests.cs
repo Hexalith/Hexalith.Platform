@@ -194,6 +194,42 @@ public sealed partial class PlatformAppModelTests
         operations.ShouldAllBe(operation => operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).SequenceEqual(new[] { "POST" }));
     }
 
+    [Theory]
+    [InlineData("tenants", new[] { "eventstore POST /process", "eventstore POST /query", "eventstore POST /project", "eventstore POST /replay-state", "eventstore POST /admin/operational-index-metadata" })]
+    [InlineData("tenants-api", new string[0])]
+    [InlineData("memories", new string[0])]
+    [InlineData("memories-access-telemetry-clock", new[] { "memories POST /v1/time/attest", "memories-access-telemetry POST /v1/time/attest" })]
+    [InlineData("memories-access-telemetry", new[] { "memories POST /v1/access-telemetry/write", "memories POST /v1/access-telemetry/heartbeat", "memories POST /v1/access-telemetry/validate", "memories-access-telemetry-inspector GET /v1/access-telemetry/inspect", "access-telemetry-adapter POST /v1/access-telemetry/physical-reclamation-evidence" })]
+    public void TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants(string appId, string[] expected)
+    {
+        var files = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(Options())).Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/tmp/local-secrets.json", null);
+        using JsonDocument policy = JsonDocument.Parse(files["accesscontrol." + appId + ".yaml"]);
+        JsonElement acl = policy.RootElement.GetProperty("spec").GetProperty("accessControl");
+        acl.GetProperty("defaultAction").GetString().ShouldBe("deny");
+        acl.GetProperty("trustDomain").GetString().ShouldBe("public");
+        JsonElement[] grants = acl.GetProperty("policies").EnumerateArray().ToArray();
+        grants.Select(grant => grant.GetProperty("appId").GetString()).Order(StringComparer.Ordinal)
+            .ShouldBe(expected.Select(rule => rule.Split(' ')[0]).Distinct().Order(StringComparer.Ordinal));
+        List<string> actual = [];
+        foreach (JsonElement grant in grants)
+        {
+            grant.GetProperty("namespace").GetString().ShouldBe("default");
+            grant.GetProperty("trustDomain").GetString().ShouldBe("public");
+            grant.GetProperty("defaultAction").GetString().ShouldBe("deny");
+            JsonElement[] operations = grant.GetProperty("operations").EnumerateArray().ToArray();
+            operations.ShouldNotBeEmpty();
+            foreach (JsonElement operation in operations)
+            {
+                operation.GetProperty("action").GetString().ShouldBe("allow");
+                JsonElement[] verbs = operation.GetProperty("httpVerb").EnumerateArray().ToArray();
+                verbs.ShouldNotBeEmpty();
+                foreach (JsonElement verb in verbs)
+                    actual.Add($"{grant.GetProperty("appId").GetString()} {verb.GetString()} {operation.GetProperty("name").GetString()}");
+            }
+        }
+        actual.Order(StringComparer.Ordinal).ShouldBe(expected.Order(StringComparer.Ordinal));
+    }
+
     [Fact]
     public void ActualOwnerOptionsShareResolvedNamesAndTelemetryStateIsIsolated()
     {

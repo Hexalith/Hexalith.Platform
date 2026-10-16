@@ -438,6 +438,7 @@ public sealed partial class PlatformAppModelTests
                 Dictionary<string, object> runtime = new();
                 foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
                     await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, runtime, TestContext.Current.CancellationToken));
+                runtime["Dapr__DeclarativeSubscriptions"].ShouldBe("true", server.Name);
                 runtime["Authentication__JwtBearer__SigningKey"].ShouldBe(key);
                 runtime["Authentication__JwtBearer__Issuer"].ShouldBe(CompositionEnvironment.TokenIssuer);
                 runtime["Authentication__JwtBearer__Audience"].ShouldBe(CompositionEnvironment.TokenAudience);
@@ -465,6 +466,12 @@ public sealed partial class PlatformAppModelTests
                 runArguments.Select(argument => argument.ToString()).ShouldContain(runLabel, container.Name);
             }
             builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "redis").Annotations.OfType<ContainerNameAnnotation>().Single().Name.ShouldBe(plan.RedisContainerName);
+            ContainerMountAnnotation schedulerData = builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls")
+                .Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/lock");
+            schedulerData.Type.ShouldBe(ContainerMountType.BindMount);
+            schedulerData.Source.ShouldBe(Path.Combine(workspace, "platform-components", "scheduler-data"));
+            schedulerData.IsReadOnly.ShouldBeFalse();
+            Directory.Exists(schedulerData.Source).ShouldBeTrue();
             ProjectResource gatewayProject = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
             Dictionary<string, object> gatewayEnvironment = new();
             foreach (EnvironmentCallbackAnnotation callback in gatewayProject.Annotations.OfType<EnvironmentCallbackAnnotation>())

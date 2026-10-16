@@ -129,6 +129,7 @@ public sealed partial class PlatformAppModelTests
             Dictionary<string, object> environment = new();
             foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
                 await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, environment, TestContext.Current.CancellationToken));
+            environment["Dapr__DeclarativeSubscriptions"].ShouldBe("true", binding.AppId);
             foreach (KeyValuePair<string, string> input in binding.Environment)
                 if (input.Key is "ConnectionStrings__redis" or "ConnectionStrings__falkordb") environment[input.Key].ShouldBeOfType<ReferenceExpression>();
                 else if (input.Key == "AccessTelemetryLifecycle__AttestationVerificationKey") environment[input.Key].ShouldBeOfType<string>().ShouldNotBeNullOrWhiteSpace();
@@ -168,6 +169,13 @@ public sealed partial class PlatformAppModelTests
         foreach (IResource server in servers) server.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
         foreach (IResource server in servers)
             server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.EnableAppHealthCheck.ShouldNotBe(true);
+        string rendered = Path.GetDirectoryName(servers[0].Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config)!;
+        ContainerMountAnnotation schedulerData = builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls")
+            .Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/lock");
+        schedulerData.Type.ShouldBe(ContainerMountType.BindMount);
+        schedulerData.Source.ShouldBe(Path.Combine(rendered, "scheduler-data"));
+        schedulerData.IsReadOnly.ShouldBeFalse();
+        Directory.Exists(schedulerData.Source).ShouldBeTrue();
         builder.Resources.ShouldNotContain(r => r.Name.Contains("admin") || r.Name.Contains("mcp") || r.Name == "eventstore-2");
         servers.OfType<ProjectResource>().ShouldAllBe(r => r.Annotations.OfType<ExecutableAnnotation>().Last().Command == "dotnet");
         builder.Services[0].ServiceType.ShouldBe(typeof(IHostedService));
@@ -194,6 +202,13 @@ public sealed partial class PlatformAppModelTests
         DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
         model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ShouldBeEmpty();
         IReadOnlyList<PlatformServerBinding> servers = model.Resources.SelectMany(resource => resource.Annotations.OfType<PlatformServerAnnotation>()).Select(annotation => annotation.Binding).ToArray();
+        foreach (IResource application in model.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
+        {
+            Dictionary<string, object> applicationEnvironment = [];
+            foreach (EnvironmentCallbackAnnotation callback in application.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, application, applicationEnvironment, TestContext.Current.CancellationToken));
+            applicationEnvironment["Dapr__DeclarativeSubscriptions"].ShouldBe("true", application.Name);
+        }
         IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
         IDistributedApplicationEventingSubscriber[] subscribers = app.Services.GetServices<IDistributedApplicationEventingSubscriber>().ToArray();
         subscribers.ShouldContain(subscriber => subscriber is PlatformDaprEndpointSubscriber);

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/usr/bin/python3.14",
+    "-I",
+    "-S",
+    "-B",
+    "eng/recovery-preparation/test_native_https_transport.py"
+  ],
+  "exitCode": 0,
+  "stdout": "",
+  "stderr": "test_changed_selector_method_identity_or_limit_refuses_before_send (__main__.NativeHttpsTests.test_changed_selector_method_identity_or_limit_refuses_before_send) ... ok\ntest_content_length_overflow_is_rejected_before_body_reads (__main__.NativeHttpsTests.test_content_length_overflow_is_rejected_before_body_reads) ... ok\ntest_deadline_is_checked_after_last_body_read_before_success (__main__.NativeHttpsTests.test_deadline_is_checked_after_last_body_read_before_success) ... ok\ntest_error_diagnostics_do_not_escape_and_stream_closes (__main__.NativeHttpsTests.test_error_diagnostics_do_not_escape_and_stream_closes) ... ok\ntest_fixed_get_host_accept_headers_and_no_auth_proxy_or_command (__main__.NativeHttpsTests.test_fixed_get_host_accept_headers_and_no_auth_proxy_or_command) ... ok\ntest_fixed_numeric_socket_tls_sni_and_one_handshake_with_mocked_io (__main__.NativeHttpsTests.test_fixed_numeric_socket_tls_sni_and_one_handshake_with_mocked_io) ... ok\ntest_header_and_body_slow_drip_share_one_absolute_deadline (__main__.NativeHttpsTests.test_header_and_body_slow_drip_share_one_absolute_deadline) ... ok\ntest_insecure_tls_refuses_before_any_socket (__main__.NativeHttpsTests.test_insecure_tls_refuses_before_any_socket) ... ok\ntest_missing_negative_conflicting_and_malformed_content_length_refuse (__main__.NativeHttpsTests.test_missing_negative_conflicting_and_malformed_content_length_refuse) ... ok\ntest_oversized_headers_stop_at_cap_without_body_buffering (__main__.NativeHttpsTests.test_oversized_headers_stop_at_cap_without_body_buffering) ... ok\ntest_public_transport_refuses_before_socket_config_or_credentials (__main__.NativeHttpsTests.test_public_transport_refuses_before_socket_config_or_credentials) ... ok\ntest_redirect_status_encoding_pagination_headers_and_duplicate_lengths_refuse (__main__.NativeHttpsTests.test_redirect_status_encoding_pagination_headers_and_duplicate_lengths_refuse) ... ok\ntest_tls_connect_handshake_timeout_and_diagnostic_failures_close_once_without_retry (__main__.NativeHttpsTests.test_tls_connect_handshake_timeout_and_diagnostic_failures_close_once_without_retry) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.038s\n\nOK\n",
+  "syntheticOnly": true,
+  "networkCalls": 0
+}
