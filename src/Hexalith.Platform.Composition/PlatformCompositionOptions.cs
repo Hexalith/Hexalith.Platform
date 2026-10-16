@@ -34,12 +34,7 @@ public sealed record PlatformCompositionOptions
     /// <summary>Gets the image-preflight process boundary, replaceable only by the composition tests.</summary>
     internal Func<System.Diagnostics.ProcessStartInfo, TimeSpan, CancellationToken, Task<Hexalith.Builds.Tooling.Runtime.CompositionProcessResult>> ImageProbeRunner { get; init; } = Hexalith.Builds.Tooling.Runtime.CompositionProcess.RunAsync;
     /// <summary>Release tag commits for the catalog's owner versions, replaceable by isolated graph tests.</summary>
-    internal IReadOnlyDictionary<string, string> ReleaseCommits { get; init; } = new Dictionary<string, string>(StringComparer.Ordinal)
-    {
-        ["eventstore/3.120.0"] = "9b26956f9e825fd6771b62a79c7b81323ba856cf",
-        ["tenants/5.8.0"] = "032573384d3df4bc7a5bc0e69945ecca4e00967f",
-        ["memories/2.27.1"] = "d54dba5be30a3626e871b4fc56dd78e76a7acf71",
-    };
+    internal IReadOnlyDictionary<string, string> ReleaseCommits { get; init; } = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DefaultReleaseCommits;
     /// <summary>Manifest hashes observed at the owner release tags; absent entries have no released v2 declaration.</summary>
-    internal IReadOnlyDictionary<string, string> ReleaseSnapshotHashes { get; init; } = new Dictionary<string, string>(StringComparer.Ordinal);
+    internal IReadOnlyDictionary<string, string> ReleaseSnapshotHashes { get; init; } = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DefaultReleaseSnapshotHashes;
 }

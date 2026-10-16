@@ -1,7 +1,6 @@
 namespace Hexalith.Platform.Composition;
 
 using System.Text.Json;
-using System.Xml.Linq;
 using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.Builds.Tooling.Workspace;
 
@@ -87,7 +86,7 @@ public static class PlatformServerBindings
                 foreach (JsonElement task in tasks)
                 {
                     string executable = task.GetProperty("executable").GetString()!;
-                    string ownerRoot = source?.Path ?? Path.GetDirectoryName(Path.GetFullPath(module.Source))!;
+                    string ownerRoot = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, module);
                     if (!File.Exists(Path.Combine(ownerRoot, executable))) throw Failure(module, identity, "lifecycle.tasks.executable", $"task '{task.GetProperty("name").GetString()}' executable '{executable}' is unavailable");
                 }
                 result.Add(new PlatformServerBinding(module, serverId, server.GetProperty("resourceId").GetString()!, server.GetProperty("appId").GetString()!, project, image, readiness.GetProperty("endpoint").GetString()!, environment, tasks));
@@ -99,20 +98,10 @@ public static class PlatformServerBindings
     }
 
     private static InvalidDataException Failure(PlatformModuleDeclaration module, string identity, string field, string reason) => new($"{module.Source}: {identity}: {field}: {reason}.");
-    internal static string Version(PlatformCompositionOptions options, string module, string source)
-    {
-        string package = module switch { "tenants" => "Hexalith.Tenants.Server", "memories" => "Hexalith.Memories.Aspire", _ => Repository(module) + ".Aspire" };
-        string? snapshotPath = options.RunPlan is null ? null : Path.Combine(options.RunPlan.Workspace, "source-mapping", "catalog-versions.json");
-        if (snapshotPath is not null && File.Exists(snapshotPath))
+    internal static string Version(PlatformCompositionOptions options, string module, string source) =>
+        new Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions(options.Mapping, options.DeclarationPaths)
         {
-            CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(File.ReadAllText(snapshotPath))!;
-            if (snapshot.MappingHash != options.Mapping.ContentHash || snapshot.Hash != CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions)) throw new InvalidDataException($"{source}: {module}: {snapshotPath}: catalog snapshot differs from the selected mapping.");
-            return snapshot.Versions.TryGetValue(package, out string? selected) ? selected : throw new InvalidDataException($"{source}: {module}: {package}: image version is missing from the Builds catalog.");
-        }
-        string catalogPath = Path.Combine(options.PlatformRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
-        if (!File.Exists(catalogPath)) throw new InvalidDataException($"{source}: {module}: {catalogPath}: Builds catalog is unavailable.");
-        XDocument catalog = XDocument.Load(catalogPath);
-        string property = "Hexalith" + (module == "tenants" ? "Tenants" : module == "memories" ? "Memories" : Repository(module)["Hexalith.".Length..]) + "Version";
-        return catalog.Descendants(property).FirstOrDefault()?.Value ?? throw new InvalidDataException($"{source}: {module}: {property}: image version is missing from the Builds catalog.");
-    }
+            PlatformRoot = options.PlatformRoot,
+            Workspace = options.RunPlan?.Workspace,
+        }.CatalogVersion(module, source);
 }

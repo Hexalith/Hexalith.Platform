@@ -624,3 +624,63 @@
 - Diagnostics directories (`state/diagnostics/<runId>`, `before-run/<guid>`) are created on every run and never pruned; needs a retention rule. CompositionEngine.StartAppHost.
 - No test for debug-mode Package-to-Source coercion (ModuleCommandExecutionService.cs:85,968); reachable only via programmatic compositionOptions.
 - Debug attach to the app process rather than the `dotnet run` launcher: build in Debug and launch the output directly (RunTopology.cs:189). Separate story; decision 2C of the story 1.8 review.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Selected startup-task termination can exceed its selected-test stopping budget.
+  evidence: R2-B4: the shared Kill helper can wait 10 seconds independently of the selected execution stopping timestamp; coordinate this with the selected-test lifecycle work.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Selected-observation failure reports healthy services as unready and can suppress its real cause.
+  evidence: R2-B6: RunReadiness passes accumulated healthy resources instead of CurrentUnready in the concurrent selected-observation failure branch.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Completed selected-test evidence accepts empty or unhealthy readiness observations.
+  evidence: R2-B7: IsSelectedTestRun checks counts/reports/cleanup but does not require nonempty all-healthy resource observations.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Selected report cleanup can throw and leave raw report material in retained workspaces.
+  evidence: R2-B8: unchecked File.Delete calls in finally can replace the intended refusal on IO/permission failure.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: OCI runtime verification omits opaque-directory whiteout semantics.
+  evidence: R2-B10: an upper root .wh..wh..opq does not clear a prior daprd hash, unlike .wh.daprd.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Concurrent selected-test assertions currently block module test compilation.
+  evidence: R2-VO1: final solution build reports CS0841/CS0165 in ModuleTestSelectionTests before selectedRun/options are initialized; further analyzer errors are in SelectedObservationTests.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Functional observation object keys can retain exact handoff credentials.
+  evidence: R2-VO2 (high): exact APP/DAPR credential comparison applies only to JSON string values. An inert reflection repro accepted a credential key and returned its raw bytes; script /tmp/story18-review-19m2i10g/observation-key-repro.ps1.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Isolate the existing CLI version-metadata test's intermediate/reference outputs.
+  evidence: `references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/PlatformIdentityTests.cs:201` builds the real CLI project with `Version=9.9.9` and a temporary `OutputPath`, while updating its shared default `obj/Debug/net10.0/ref` assembly. After a full module suite, a subsequent `BuildProjectReferences=false` test-only rebuild compiled against CLI 9.9.9 while retaining the normal runtime DLL, producing 199 missing-assembly failures plus two consequent FIFO timeouts in `/tmp/story18-revision-final-tests.xml`. A normal complete solution build restores consistency; keep that build before verification and after the suite until the fixture also isolates intermediate outputs. Deferred as a pre-existing test-isolation issue; no source/pin change was made for it in Story 1.8.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Include nested build inputs in Works SDK producer qualification.
+  evidence: R3-B3: adding src/Directory.Build.props to an inert selected SDK tree leaves runtime_source_snapshot's sourceFiles and inventory hash unchanged, although it changes compilation inputs. This is concurrent Works qualification work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Resolve authoritative selected-test declarations before applying a provisional execution timeout.
+  evidence: R3-B4: ModuleCommandExecutionService restricts ModuleTestExecutionBudget from the working-tree manifest before resolving its recorded direct-reference revision; Restrict only reduces the budget, so a stale short timeout cannot be restored after refresh.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Bound selected terminal metadata reads and require regular files.
+  evidence: R3-B6: CompositionEngine.CopySelectedMetadata uses synchronous File.ReadAllBytes on child-visible metadata paths; a FIFO can block terminal recording beyond the selected stopping budget.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Reject special files and bound selected gate reads during renewal and closure.
+  evidence: R3-B7: CompositionSelectedTestGate.Write rejects links and files above 4096 bytes but not FIFOs, then calls synchronous File.ReadAllBytes under _sync; cancellation and disposal can wait indefinitely.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Exercise selected-test observations at the real AppHost readiness boundary.
+  evidence: R3-V1: the pre-verified review found no test registering ICompositionTestObservationProvider. Real RunReadiness tests therefore miss incomplete/foreign observation refusal and accepted serialization; selected command tests bypass the boundary with fixture readiness.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Verify the v2 Dapr app-channel invocation boundary during Platform readiness.
+  evidence: R4-B2: the preserved baseline already probes /v1.0/healthz/outbound and direct module health separately. That does not exercise an authenticated app-channel invocation, so an incorrect app-channel credential can survive readiness. The protocol predates Story 1.8.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Cover digest-only PostgreSQL requested image references in retention backend binding tests.
+  evidence: R4-V1: pre-verified review found all four RetentionBackendBindsActualLoadedImageInsteadOfRequestedName cases use the tagged PostgresImage constant. No case exercises IsRequestedPostgres's supported digest-only branch; removing it leaves tests green and a supported backend observation incomplete.

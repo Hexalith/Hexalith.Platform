@@ -151,6 +151,7 @@ public static class PlatformAppModel
             IResourceBuilder<ContainerResource> redis = builder.AddContainer("redis", redisReference[0][..colon], redisReference[0][(colon + 1)..])
                 .WithImageSHA256(redisReference[1]["sha256:".Length..])
                 .WithEndpoint(port: redisPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
+            PlatformRedisHealthCheck.Attach(builder, redis);
             if (options.RunPlan is { } run) redis.WithContainerName(run.RedisContainerName).WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={run.RunId}");
             IResourceBuilder<ContainerResource>? telemetryPostgres = options.RetentionProfile?.AddResource(builder);
             Dictionary<string, IResourceBuilder<IDaprComponentResource>> daprComponents = dapr.ComponentNames.ToDictionary(name => name,
@@ -163,6 +164,8 @@ public static class PlatformAppModel
             {
                 vectors = builder.AddContainer("memories-vectors", options.RetentionProfile is null ? "redis/redis-stack" : "docker.io/redis/redis-stack-server", options.RetentionProfile is null ? "latest" : "7.4.0-v8").WithEndpoint(port: vectorPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
                 graph = builder.AddContainer("memories-graph", "falkordb/falkordb", options.RetentionProfile is null ? "latest" : "v4.12.0").WithEndpoint(targetPort: 6379, name: "tcp", scheme: "tcp");
+                PlatformRedisHealthCheck.Attach(builder, vectors);
+                PlatformRedisHealthCheck.Attach(builder, graph);
                 if (options.RetentionProfile is not null)
                 {
                     vectors.WithImageSHA256("798ab84d9f266936b034ab11c4d04a2b8e4b441884c5aa7d17ac951eefdf742a");
