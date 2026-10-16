@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
+import zipfile
 
 
 ROWS = {
@@ -228,7 +229,13 @@ def run_verification(args):
             metadata = json.loads((folder / ".nupkg.metadata").read_text())
             if metadata.get("source") != "https://api.nuget.org/v3/index.json":
                 raise ValueError("Published producer lacks public NuGet provenance: " + package)
-            producer_evidence[package] = {"version": version, "sha256": sha256(artifact), "source": metadata["source"], "nugetSha512": library.get("sha512")}
+            with zipfile.ZipFile(artifact) as archive:
+                nuspec_name = next(name for name in archive.namelist() if name.endswith(".nuspec"))
+                repository = ET.fromstring(archive.read(nuspec_name)).find(".//{*}repository")
+            if repository is None or not repository.get("commit"):
+                raise ValueError("Published producer lacks a repository commit: " + package)
+            producer_evidence[package] = {"version": version, "sha256": sha256(artifact), "source": metadata["source"],
+                "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
         summary["publishedProducers"] = producer_evidence
         fixtures = list((works / "tests/Hexalith.Works.IntegrationTests").glob("WorksPlatform*.cs")) + [
             works / "tests/Hexalith.Works.IntegrationTests" / name for name in
