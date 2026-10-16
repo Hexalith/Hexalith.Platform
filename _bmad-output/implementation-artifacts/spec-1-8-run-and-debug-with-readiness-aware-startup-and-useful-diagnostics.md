@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 8
 created: '2026-10-16'
-status: 'in-review'
+status: 'done'
 baseline_commit: '5636b7f36e28e2731111b049f974b1fa951d1c36'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -73,6 +73,47 @@ Paths under `references/Hexalith.Builds`.
 ## Spec Change Log
 
 ## Review Triage Log
+
+| Finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| B1 | medium | defer | `RunReadiness` still cancels each resource probe at 90s and each invocation probe at 45s. Those caps predate this story; the story replaced the two hard-coded five-minute bounds the spec names. |
+| B2 | medium | patch | `SucceededAsync` catches every `OperationCanceledException` and returns false, so a cancelled start becomes HXR021 instead of HXC130. |
+| B3 | medium | patch | `RunAsync` returns the current task name when remaining time is already zero, and the engine always formats that name as a task that failed. |
+| B4 | low | reject | The preserved report names the task. The frozen intent forbids a raw log dump, and storing streams or an exit code adds fields the report does not require. |
+| B5 | maybe-false | defer | `BeginOutputReadLine` sits outside the start `try`. The `exit 1` test still names the task, so the fast-exit path did not throw. A process that exits before the readers attach would settle whether this becomes HXR020. |
+| B6 | low | reject | The schema allows an empty string argument and `Select` drops it. Declaring an empty argument is not an everyday task, and keeping it needs a new branch. Non-string arguments never reach `Select`; the schema requires strings. |
+| B7 | low | patch | `failingTask` and the HXR021 message store only the task name. Two modules can both declare `verify`. |
+| B8 | medium | patch | The validator accepts any positive finite `timeoutSeconds`. `1e308` is finite, `TimeSpan.FromSeconds` throws at `deadlineUtc = requestedAt + deadline.Timeout`, and the `runId is not null` catch does not run yet. |
+| B9 | false | reject | A probe that fails returns that probe diagnostic before the deadline check. The failed probe is the failure; the deadline check runs after a successful probe. |
+| B10 | medium | patch | Every timeout before a run id writes `diagnostics/before-run/summary.json`, so the next attempt overwrites it. |
+| B11 | medium | patch | `ReportObservedFailureAsync` stores the full observation when nothing is unhealthy, and `ReadStartupFailuresAsync` labels every entry `Unready resource`, including `Healthy`. |
+| B12 | false | reject | Healthy detail `module-ready` is a short result. Tokens-only mirrors and diagnostics that outlive `down` are what the spec requires. Success records duration and deadline on run state. |
+| B13 | low | reject | `executable.pid` is the Aspire property name. A missing-pid warning adds a branch a normal project resource does not need. The missing test is V1. |
+| B14 | false | reject | The engine sets `StartupDeadlineUtc` before it starts the AppHost. The null fallback is the schema default of 600 seconds and is not the launched plan. |
+| B15 | false | reject | No shown task fails because it inherits the runner environment. The missing zero-exit test is V3. |
+| B16 | false | reject | The diff does not change `ci.yml` or any Node action pin. |
+| E1 | medium | patch | Same defect as B3: a deadline that elapsed before the task starts is reported as that task's failure. |
+| E2 | medium | patch | Same defect as B2: caller cancellation is stored as HXR021. |
+| E3 | medium | patch | Same defect as B11: a healthy observation is reported as unready. |
+| E4 | medium | patch | Same defect as B8: an overflowing `timeoutSeconds` leaves `StartAsync` with no diagnostic. |
+| E5 | medium | patch | `PreserveDiagnosticsAsync` is awaited before `TearDownAsync` with no surrounding try. An IO failure skips teardown. The general catch cannot finish teardown if preserve throws again. |
+| E6 | false | reject | Non-string arguments fail schema validation before `Select`. |
+| E7 | false | reject | A schema or run-id mismatch returns HXR022 and does not copy the unready list into the reported diagnostics. |
+| E8 | low | reject | A truncated array is only a corrupt state file. Everyday documents are written by the serializer, and throwing adds a branch. |
+| E9 | low | reject | A null array element is the same corrupt-file case. |
+| E10 | false | reject | The property initializer and `Read` both produce a non-default empty array. `Write` is not handed `default` on this type's normal path. |
+| E11 | medium | patch | After `RunAsync` returns, the ready branch does not check `appHost.HasExited`, so a host that died during the task is still marked ready. |
+| E12 | medium | defer | Same pre-existing 90-second probe cap as B1. |
+| E13 | medium | defer | Same cap as B1. The spec's two bounds were the engine timeout and the AppHost five-minute cancel, which now use the deadline. |
+| E14 | false | reject | The validator writes `defaultTimeoutSeconds` as the constant 600. Only `override.timeoutSeconds` changes the clock, which is the declared rule. |
+| E15 | medium | patch | HXR026 in `RunReadiness` and HXR027 in `AppHostRunner` still call the overload that passes a null unready list, so the report names one resource. |
+| V1 | medium | patch | Startup tests assert documents written by the fake AppHost. `WaitAndWriteAsync`, `ReportStartupStallAsync`, and `executable.pid` have no test. Stopping progress or returning a null pid leaves those tests green. |
+| V2 | medium | patch | `AppHostRunner` now cancels from `StartupDeadlineUtc`, but the runner tests return at `--validate-platform` before `CancelAfter`. Restoring the five-minute cancel leaves the unit tests green. |
+| V3 | medium | patch | The only executed per-start task exits 1. The override test rewrites the task to `recovery`. A `SucceededAsync` that always returns false still passes both. |
+| V4 | medium | patch | No test runs a task past the deadline. Removing `CancelAfter(remaining)` leaves the `exit 1` test passing while a sleep holds startup. |
+| V5 | medium | patch | The redaction test attaches a log path and never a preserved directory. The timeout test checks `summary.json` and does not read `observed.txt`. Ignoring `preservedDirectory` stays green. |
+| V6 | medium | patch | Public `debug` is tested only for a missing manifest, package mode, and an Aspire mismatch. `ReadyRunRecordsDeadlineAndDebugProcessIdsAsync` sets `DebugAttach` on an engine it builds itself. Either `ExecuteAsync` site can leave `DebugAttach` false and those tests still pass. |
+| VO1 | medium | patch | Same defect as B11, filed under verification-gap other findings. |
 
 ## Verification
 

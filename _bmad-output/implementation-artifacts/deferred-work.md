@@ -568,3 +568,11 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-exact-target-runtime-qualification.md`
   summary: Verify the independently installed caller authenticator accepts the exact serialized Dapr qualification request and current isolated scope.
   evidence: Unverified medium concern from R2-B4; the source exposes HttpContext authentication but no installed owner implementation or returned credentials/identity mechanism exists. Only an independent owner enrollment and serialized transport proof can settle it. Live remains blocked; the user requested the source candidate and provisioning blockers.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Per-resource and invocation probes still fail at fixed 90-second and 45-second caps while the effective startup deadline can be longer.
+  evidence: `RunReadiness` cancels each resource probe at 90 seconds and each invocation probe at 45 seconds. Those caps predate story 1.8, which replaced the engine and AppHost five-minute bounds. A resource that becomes ready after the probe cap but inside a declared override still fails.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Attaching startup-task output readers after the process starts may collapse a fast exit into HXR020.
+  evidence: Unverified medium. `BeginOutputReadLine` and `BeginErrorReadLine` sit outside the start try, but the existing `exit 1` task test still names the task. A process that exits before those readers attach would settle whether `InvalidOperationException` escapes `RunAsync`.
