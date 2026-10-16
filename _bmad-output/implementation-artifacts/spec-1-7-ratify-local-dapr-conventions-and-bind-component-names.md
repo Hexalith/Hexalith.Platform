@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 7
 created: '2026-10-15'
-status: 'done'
+status: 'in-progress'
 baseline_commit: 'c3af1f2c9e7b0d1b003a1bd5978545f664e38167'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -120,3 +120,29 @@ All patch findings above are fixed and verified. The final Platform suite covers
 - Extend the existing gated Docker/Dapr source smokes to prove permitted invocation, denied caller, declarative delivery and teardown. Inspect package graph/security with verified fixtures; do not claim live package qualification while release/image prerequisites are absent.
 
 Final post-review evidence (2026-10-15): Platform 134 total / 129 passed / 5 gated skips / zero failures; Builds affected classes 145 passed; EventStore Aspire 12 and Server 19 passed; helper gate 6 and historical Timesheets preparation 31 passed; 41 declaration checks passed. The final direct pinned-runtime security fixture passed 1/1, including all seven negative ACL checks, all four established Timesheets POST operations, scoped ingestion/dead-letter delivery and cleanup. The final real six-server Builds source smoke passed 1/1 in 101.015 s including declared readiness, owned teardown and workspace/scheduler-data removal. Solution/test-project builds, LocalScaffold, architecture lint, Python compilation and scoped whitespace checks passed. Earlier owner regressions and technical/file-entry smokes remain explicitly historical. See [retained commands, failed attempts, raw evidence and qualification limits](evidence/story-1-7/verification.md).
+
+### Review Findings
+
+Code review 2026-10-15 of `c3af1f2..cb122dd` (layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor; none failed).
+
+- [ ] [Review][Patch] Tenants and Memories receiver grants are asserted only by the gated live fixture — add unit assertions of the exact `accesscontrol.tenants.yaml` / `accesscontrol.memories*.yaml` grant sets (e.g. `eventstore` POST `/process`); the deny-by-default theory passes with `policies: []` (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs:128]
+- [ ] [Review][Patch] `Dapr__DeclarativeSubscriptions=true` injection is untested — assert it in each server's rendered environment; `GatewaySeedSubscriptionTests` sets the flag by hand (medium) [src/Hexalith.Platform.Composition/PlatformServerBindings.cs:85]
+- [ ] [Review][Patch] Scheduler bind mount untested — assert a `Bind` mount at `<rendered>/scheduler-data` → `/var/lock`, and the named-volume fallback when the directory is null (low) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:167]
+- [ ] [Review][Patch] `RunPlan.DaprHome` / `HEXALITH_DAPR_HOME` → `AddDapr` path and sidecar `RuntimePath` untested (low) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:107]
+- [x] [Review][Defer] Run-plan placement/scheduler ports are ignored; the mTLS control plane uses fixed `localhost:51005/51006` and Sentry `:50001`, so concurrent runs collide — deferred: already disclosed as out of scope (concurrent-run isolation)
+- [x] [Review][Defer] Declarative-only subscription mode removes programmatic discovery for every server and the projection wildcard topic `*.*.projection-changed` delivery is unproven on Redis; an owner with attribute-only subscriptions and no explicit binding silently loses delivery — deferred: unverified medium; settle by enumerating owner `[Topic]` attributes against rendered subscriptions and a live wildcard delivery assertion
+- [x] [Review][Defer] Reference ACL grants for `eventstore-admin`, `sample-blazor-ui`, `sample-api` were deleted and the stub templates are no longer read by `Render` — deferred: unverified medium; settle by confirming no selected topology still loads those callers
+
+#### Rejected
+
+- Timesheets template ignores `127.0.0.1:6379` / missing-file check removed (false): `timesheets-readmodels.yaml` uses `localhost:6379` only.
+- EventStore host drops `TopicAttribute` options (false): the replaced attribute carries only pubsub name and topic.
+- `projects["eventstore"]` KeyNotFound (false): the line is unchanged and the gateway is always a project resource.
+- Pins script fails when the spine is absent (false): refusing an unrecorded hosting set is the specified gate.
+- Timesheets history file untracked (false): present in the commit tree.
+- Hosting-helper allowlist is a literal tuple, not the recorded set (low): owner edits both together; a fix adds parsing complexity.
+- `Resolve` raw exceptions for duplicate `appId`, missing dead-letter target, unknown strategy or server scope (low): upstream Builds validation rejects these first; guards add branches.
+- Live fixture hygiene — fixed sleep, hard-coded `deadLetterPhysicalTopic`, cleanup `check=True`, `/proc` portability, port race, argv/KeyError messages (low): test-only script, disclosed adaptation.
+- Hard-coded `localhost:50001`/`public` literals in `Render` (low): matches the control-plane constants today.
+- Orphaned ACL stub templates (low): removal touches mapping and tests for no user impact.
+- Spec `status: done` vs sprint `review`, Aspire helper bypass, owner changes pending release (low/process-only): tracked by sprint status, not code defects.

@@ -500,3 +500,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-runtime-delivery.md`
   summary: Keep the offline recovery verifier from hashing unlisted private-key names and from waiting forever on a live parser child.
   evidence: `eng/recovery-preparation` was already in the working tree. `secret_path` does not refuse `.p12` or `id_ecdsa`, and the static preflight failure path can wait on a child without the success-path deadline.
+
+## Deferred from: code review of spec-1-7-ratify-local-dapr-conventions-and-bind-component-names (2026-10-15)
+
+- Run-plan placement/scheduler ports ignored; fixed mTLS control-plane ports (`51005`, `51006`, Sentry `50001`) collide across concurrent runs. Already disclosed as out of scope.
+- (unverified medium) Declarative-only subscription mode: owners with attribute-only subscriptions and no explicit binding lose delivery, and projection wildcard `*.*.projection-changed` delivery on Redis is unproven. Settle by diffing owner `[Topic]` attributes against rendered subscriptions plus a live wildcard assertion.
+- (unverified medium) Deleted reference ACL grants for `eventstore-admin`, `sample-blazor-ui`, `sample-api`; confirm no selected topology still loads those callers.

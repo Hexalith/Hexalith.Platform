@@ -1,0 +1,52 @@
+{
+  "kind": "hexalith.local-static-transport-receipt-validation",
+  "validatedAt": "2026-10-15T19:53:51.195787+00:00",
+  "recoveryId": "20261015t162756z",
+  "provenance": "sanitized JSON supplied by user in this conversation; local run not observed by this agent; receipt is not signed operational approval",
+  "reportedObservedAt": "2026-10-15T19:51:03.842182Z",
+  "reportedSchema": "pass",
+  "receiptFieldsValidated": true,
+  "inputBindingsMatched": 5,
+  "reportedInputs": {
+    "bindingSha256": "33e92de1a846f43f7f09f9a7e4a341e039b7e5e40ac1110ab2ef224b4c061c30",
+    "interpreterSha256": "52e0a13e60a981d8c4b6478be2ba5176f69da07948a056bf49cf6f077e30cb41",
+    "kubeconfigSha256": "f00b691a5886ef76e6be0d6e3efe4030251147b7bba74bb0c58fa1944e0fe86c",
+    "kubectlSha256": "90b7b9058ffeb5c10710bb1c73f541eaf426fb1b4e87df435db669de9a2564a2",
+    "sourceSha256": "30da6f0002d02a2fd3c47b720d74299ad4352cd2de49e2486ec982bd8b36ff9a"
+  },
+  "currentBytesRehashed": [
+    "binding",
+    "interpreter",
+    "kubectl",
+    "source"
+  ],
+  "kubeconfigReopened": false,
+  "kubeconfigDigestComparison": "reported value compared only with sealed reviewed binding; no credential/config contents read by this validation",
+  "policyAgeAtReportedObservationSeconds": 12187.842182,
+  "policyCeilingEnds": "2026-10-16T16:27:56Z",
+  "policyOrCaptureTimesRefreshed": false,
+  "manifest": {
+    "filename": "packet-v4.json",
+    "sha256": "1ed5eec5579adeedf7e49519fcba125656caacbaaeaffb6509c49b6575714b14",
+    "unchanged": true
+  },
+  "platformHeadAtValidation": "12279c8830a26c5ffbb85d8a4f09c60e9fff1dff",
+  "preflightReplayed": false,
+  "apiProviderIamCallsByValidation": 0,
+  "authorityAuthenticated": false,
+  "operationalApprovalInferred": false,
+  "operationalGate": "closed",
+  "providerOrIamQualified": false,
+  "currentRecoveryClaimed": false,
+  "closedBlockerCount": 31,
+  "blockersUpdatedInSealedPacket": false,
+  "nextPrerequisite": "offline qualification/review of exact read-only measurement adapter, dependencies, transport, custody and authority-check plan; then separate exact bounded measurement approval. No executable network approval is ready.",
+  "status": {
+    "story36": "in-progress",
+    "epic3": "in-progress",
+    "story427": "in-progress",
+    "spec23": "draft",
+    "story41OperationalGate": "closed",
+    "release": "FAIL"
+  }
+}
