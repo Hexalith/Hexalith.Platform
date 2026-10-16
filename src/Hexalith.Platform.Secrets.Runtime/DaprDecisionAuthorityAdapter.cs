@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 using Hexalith.Platform.Custody;
@@ -13,9 +14,11 @@ public sealed class DaprDecisionAuthorityAdapter(SecretsRuntimeConfiguration con
     public async Task<DecisionAuthorityPublishedProfile?> ResolveAsync(DecisionAuthorityExpectedBasis expected, string signingKeyVersion, CancellationToken cancellationToken = default)
     {
         if (expected is null || !SecretsProvisioning.IsReference(signingKeyVersion)) { return null; }
+        JsonObject body = Basis(expected, signingKeyVersion);
         JsonObject? proof = (await _session.CallAsync(configuration.ActorRoleAuthorityReference, "runtime.actorRoleAuthorityReference", "query-decision-profile",
-            Basis(expected, signingKeyVersion), cancellationToken).ConfigureAwait(false)).Proof;
-        if (proof is null || SecretsProof.Flag(proof, "isRevoked") is not bool revoked || SecretsProof.Flag(proof, "isIndependentlyGoverned") is not bool governed) { return null; }
+            body, cancellationToken).ConfigureAwait(false)).Proof;
+        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow()) || SecretsProof.Flag(proof, "isRevoked") is not false
+            || SecretsProof.Flag(proof, "isIndependentlyGoverned") is not true) { return null; }
         long? lifetimeSeconds = SecretsProof.Integer(proof, "maximumManifestLifetimeSeconds");
         long? revision = SecretsProof.Integer(proof, "profileRevision");
         byte[]? spki = SecretsProof.SubjectPublicKey(proof);
@@ -26,14 +29,14 @@ public sealed class DaprDecisionAuthorityAdapter(SecretsRuntimeConfiguration con
             || validFrom is null || validUntil is null || forbidden is null || forbidden.Length == 0
             || !SecretsProof.SameText(proof, "signingKeyVersion", signingKeyVersion)
             || !SecretsProof.SameText(proof, "keyPurpose", "DecisionApprovalVerificationOnly")
-            || !SecretsProvisioning.IsReference(SecretsProof.Text(proof, "issuer"))
-            || !SecretsProvisioning.IsReference(SecretsProof.Text(proof, "audience"))
+            || !SecretsProof.SameText(proof, "issuer", configuration.Issuer)
+            || !SecretsProof.SameText(proof, "audience", configuration.Audience)
             || !SecretsProvisioning.IsReference(SecretsProof.Text(proof, "publicAnchorId"))
             || !SecretsProvisioning.IsReference(SecretsProof.Text(proof, "publicAnchorVersion"))) { return null; }
         DateTimeOffset now = _session.Clock.GetUtcNow();
         if (validFrom > now || now >= validUntil) { return null; }
         return new DecisionAuthorityPublishedProfile(SecretsProof.Text(proof, "issuer")!, SecretsProof.Text(proof, "audience")!, revision.Value,
-            signingKeyVersion, SecretsProof.Text(proof, "publicAnchorId")!, SecretsProof.Text(proof, "publicAnchorVersion")!, spki, revoked, governed,
+            signingKeyVersion, SecretsProof.Text(proof, "publicAnchorId")!, SecretsProof.Text(proof, "publicAnchorVersion")!, spki, false, true,
             "DecisionApprovalVerificationOnly", lifetime, validFrom.Value, validUntil.Value, forbidden);
     }
 
@@ -45,6 +48,7 @@ public sealed class DaprDecisionAuthorityAdapter(SecretsRuntimeConfiguration con
         body["issuer"] = profile.Issuer;
         body["audience"] = profile.Audience;
         body["profileRevision"] = profile.ProfileRevision;
+        body["profile"] = JsonSerializer.SerializeToNode(profile);
         return EchoAsync("query-decision-basis", body, cancellationToken);
     }
 
@@ -71,18 +75,16 @@ public sealed class DaprDecisionAuthorityAdapter(SecretsRuntimeConfiguration con
         body["manifestDecisionId"] = manifest.DecisionId;
         body["issuer"] = manifest.Issuer;
         body["audience"] = manifest.Audience;
+        body["profile"] = JsonSerializer.SerializeToNode(profile);
+        try { body["canonicalManifest"] = Convert.ToBase64String(DecisionAuthorityManifestCodec.Canonical(manifest)); }
+        catch (ArgumentException) { return Task.FromResult(false); }
         return EchoAsync("query-decision-boundary", body, cancellationToken);
     }
 
     private async Task<bool> EchoAsync(string method, JsonObject body, CancellationToken cancellationToken)
     {
         JsonObject? proof = (await _session.CallAsync(configuration.ActorRoleAuthorityReference, "runtime.actorRoleAuthorityReference", method, body, cancellationToken).ConfigureAwait(false)).Proof;
-        if (proof is null) { return false; }
-        foreach (KeyValuePair<string, JsonNode?> field in body)
-        {
-            if (field.Key == "signingKeyVersion" && field.Value is null) { continue; }
-            if (!Same(proof, field.Key, field.Value)) { return false; }
-        }
+        if (!SecretsProof.Authorized(proof, body, _session.Clock.GetUtcNow()) || SecretsProof.Text(proof, "status") == "absent") { return false; }
         if (body.ContainsKey("decisionId") && body.ContainsKey("manifestDecisionId")
             && (!SecretsProof.SameText(proof, "decisionId", SecretsProof.Text(body, "decisionId"))
                 || !SecretsProof.SameText(proof, "decisionId", SecretsProof.Text(body, "manifestDecisionId")))) { return false; }
@@ -109,21 +111,4 @@ public sealed class DaprDecisionAuthorityAdapter(SecretsRuntimeConfiguration con
         };
     }
 
-    private static bool Same(JsonObject proof, string name, JsonNode? expected)
-    {
-        if (expected is null) { return proof[name] is null; }
-        if (expected is JsonValue text && text.TryGetValue<string>(out string? value)) { return SecretsProof.SameText(proof, name, value); }
-        if (expected is JsonValue number && number.TryGetValue<long>(out long integer)) { return SecretsProof.SameInteger(proof, name, integer); }
-        if (expected is JsonArray array)
-        {
-            string[]? actual = SecretsProof.Texts(proof, name);
-            if (actual is null || actual.Length != array.Count) { return false; }
-            for (int i = 0; i < array.Count; i++)
-            {
-                if (array[i] is not JsonValue item || !item.TryGetValue<string>(out string? itemText) || actual[i] != itemText) { return false; }
-            }
-            return true;
-        }
-        return false;
-    }
 }

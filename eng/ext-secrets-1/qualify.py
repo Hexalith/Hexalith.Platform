@@ -33,12 +33,13 @@ IDENTITY = re.compile(r"^[A-Za-z0-9_.:/@-]{1,2048}$")
 GLOBAL = {"leakCount": 0, "foreignEffects": 0, "allCopyRevival": 0,
           "immutableIdentity": 1, "immutableOutcome": 1, "persistedProofCount": 4}
 REQUIRED = (
-    "runtime.providerBinding", "runtime.tenantInventoryReference", "runtime.currentInventoryAuthorityReference",
+    "runtime.providerBinding", "runtime.hmacCredentialReference", "runtime.tenantInventoryReference", "runtime.currentInventoryAuthorityReference",
     "runtime.tenantA", "runtime.tenantB", "runtime.profileReference", "runtime.issuer", "runtime.audience",
     "runtime.profileVersion", "runtime.profileNotBefore", "runtime.profileValidUntil", "runtime.actorRoleAuthorityReference",
     "runtime.independentSignerAccount", "runtime.independentSignerCredentialReference", "runtime.publicTrustReference",
     "runtime.currentRevocationReference", "runtime.replayRegistrarCredentialReference", "runtime.replayExactScope",
     "runtime.compromiseSubscriberCredentialReference", "runtime.compromisePublisherReference",
+    "runtime.compromiseSubscriptionReference", "runtime.compromiseGuardMirrorReference",
     "runtime.allCopyLifecycleAuthorityReference", "runtime.allCopyInventoryReference", "runtime.nonrollbackJournalReference",
     "runtime.restoreTarget", "runtime.authenticatedRequesterTransport", "runtime.migrationAuthorityReference",
     "runtime.protectionOwnerReference", "runtime.publicAnchorRetentionReference",
@@ -159,7 +160,7 @@ def load_replacement_packet(path):
     return packet
 
 
-def replacement_packet_inputs(packet, config, target, head):
+def replacement_packet_inputs(packet, config, target, head, binding=None):
     """Compare pins to the loaded configuration, plan, and anchor set. A 64-hex string is not itself a pin."""
     if not isinstance(packet, dict):
         raise ReplacementAcceptancePacket()
@@ -171,16 +172,25 @@ def replacement_packet_inputs(packet, config, target, head):
     anchors = {f"{role}AnchorSha256": packet.get(f"{role}AnchorSha256") for role in ("executor", "observer", "enrollment")}
     if packet.get("publicAnchorSha256") != digest(anchors):
         missing.append("PinnedPublicAnchorSha256")
-    elif packet.get("acceptedReplacementCommit") is None and any(value is not None for value in anchors.values()):
-        missing.append("PinnedPublicAnchorSha256")
-    commit = packet.get("acceptedReplacementCommit")
+    for role in ("executor", "observer", "enrollment"):
+        try:
+            data = Path(get(config, f"qualification.{role}.publicAnchorFile")).read_bytes()
+            public_key_identity(data)
+            actual = hashlib.sha256(data).hexdigest()
+            if anchors[f"{role}AnchorSha256"] != actual or binding is not None and binding.get(f"{role}AnchorSha256") != actual:
+                missing.append("PinnedPublicAnchorSha256")
+        except (OSError, TypeError, ValueError, ImportError):
+            missing.append("PinnedPublicAnchorSha256")
+    if binding is not None and (binding.get("configurationSha256") != packet.get("configurationSha256") or binding.get("planSha256") != packet.get("planSha256")):
+        missing.append("PacketMatchesAuthoritativeRuntimeQualificationBinding")
+    commit = packet.get("candidateCommit") if packet.get("schema") == "EXT-SECRETS-1.replacement-acceptance.v2" else packet.get("acceptedReplacementCommit")
     accepted = isinstance(commit, str) and COMMIT.fullmatch(commit) and commit == target and commit == head
-    if not accepted or packet.get("dependencyAvailable") is not False or packet.get("liveCompatibilityAuthorized") is not False:
+    if not accepted or packet.get("dependencyAvailable") is not False or packet.get("liveCompatibilityAuthorized") is not False or packet.get("productionMutationAllowed") is not False:
         missing.append("LiveCompatibilityNotAuthorized")
     return missing
 
 
-def preflight(root, config_path, register, caller, eventstore_argument, artifacts_argument, evidence_argument):
+def preflight(root, config_path, register, caller, eventstore_argument, artifacts_argument, evidence_argument, acceptance_packet_path=None):
     missing = []
     config = {}
     try:
@@ -255,6 +265,10 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
         missing.append("LocalEnrolledDaprSidecar")
     if get(config, "qualification.requestTimeoutSeconds") not in range(1, 31):
         missing.append("BoundedQualificationCalls")
+    if type(get(config, "runtime.callTimeout")) is not int or get(config, "runtime.callTimeout") not in range(1, 31):
+        missing.append("runtime.callTimeout")
+    if get(config, "runtime.acceptedReplacementCommit") != target:
+        missing.append("runtime.acceptedReplacementCommit")
     credential = get(config, "qualification.daprApiCredentialReference")
     if not isinstance(credential, str) or not credential.startswith("file:/") or not Path(credential[5:]).is_file():
         missing.append("MountedQualificationDaprCredential")
@@ -262,15 +276,25 @@ def preflight(root, config_path, register, caller, eventstore_argument, artifact
         import cryptography  # noqa: F401
     except ImportError:
         missing.append("ES256PublicProofVerifier")
-    packet_file = Path(root) / "eng/ext-secrets-1/replacement-acceptance-packet.json"
-    if packet_file.is_file():
+    packet_path = acceptance_packet_path or os.environ.get("EXT_SECRETS_1_ACCEPTANCE_PACKET")
+    if not packet_path:
+        missing.append("DetachedImmutableCandidateAcceptancePacket")
+    else:
+        packet_file = Path(packet_path).resolve()
+        if packet_file.is_relative_to(Path(root).resolve()):
+            missing.append("AcceptancePacketOutsideCandidateCheckout")
         packet = load_replacement_packet(packet_file)
+        if packet is None:
+            missing.append("DetachedImmutableCandidateAcceptancePacket")
+            packet = {}
         try:
             head = git(root, "rev-parse", "HEAD")
         except (OSError, subprocess.SubprocessError):
             head = None
         # A commit equal to the register target and HEAD is the later acceptance condition. It does not skip pin checks above.
-        missing.extend(replacement_packet_inputs(packet, config, target, head))
+        missing.extend(replacement_packet_inputs(packet, config, target, head, binding))
+        if packet.get("schema") == "EXT-SECRETS-1.replacement-acceptance.v2" and packet.get("exactCommand") != command:
+            missing.append("PacketMatchesAuthoritativeExactOwnerCommand")
     if missing:
         raise Unavailable(*missing, *IMPLEMENTATIONS)
     return config, target, binding

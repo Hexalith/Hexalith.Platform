@@ -1,0 +1,103 @@
+# UNAPPLIED TEMPLATE. Every OWNER_ value requires an independently returned reference.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${OWNER_ENROLLMENT_WORKLOAD}
+  namespace: ${OWNER_ENROLLMENT_NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      ext-secrets-role: enrollment
+  template:
+    metadata:
+      labels:
+        ext-secrets-role: enrollment
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: ${OWNER_ENROLLMENT_APP_ID}
+        dapr.io/app-port: "8080"
+        dapr.io/config: ${OWNER_ENROLLMENT_DAPR_ACL}
+        dapr.io/api-token-secret: ${OWNER_ENROLLMENT_DAPR_TOKEN_SECRET}
+    spec:
+      serviceAccountName: ${OWNER_ENROLLMENT_SERVICE_ACCOUNT}
+      automountServiceAccountToken: false
+      containers:
+        - name: enrollment
+          image: ${OWNER_ENROLLMENT_IMAGE_DIGEST}
+          args: ["/references/runtime.json"]
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: references
+              mountPath: /references
+              readOnly: true
+            - name: journal
+              mountPath: /journal
+            - name: role-credentials
+              mountPath: /role-credentials
+              readOnly: true
+      volumes:
+        - name: references
+          configMap:
+            name: ${OWNER_ENROLLMENT_REFERENCE_CONFIG}
+        - name: journal
+          persistentVolumeClaim:
+            claimName: ${OWNER_ENROLLMENT_INDEPENDENT_JOURNAL_PVC}
+        - name: role-credentials
+          secret:
+            secretName: ${OWNER_ENROLLMENT_RESTRICTED_CREDENTIAL_SECRET}
+---
+# The storage owner supplies access modes, storageClassName, size and nonrollback evidence.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${OWNER_ENROLLMENT_INDEPENDENT_JOURNAL_PVC}
+  namespace: ${OWNER_ENROLLMENT_NAMESPACE}
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: ${OWNER_ENROLLMENT_STORAGE_CLASS}
+  resources:
+    requests:
+      storage: ${OWNER_ENROLLMENT_JOURNAL_SIZE}
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: ${OWNER_ENROLLMENT_DAPR_ACL}
+  namespace: ${OWNER_ENROLLMENT_NAMESPACE}
+spec:
+  accessControl:
+    defaultAction: deny
+    trustDomain: ${OWNER_DAPR_TRUST_DOMAIN}
+    policies:
+      - appId: ${OWNER_QUALIFICATION_CLIENT_APP_ID}
+        namespace: ${OWNER_QUALIFICATION_CLIENT_NAMESPACE}
+        trustDomain: ${OWNER_DAPR_TRUST_DOMAIN}
+        defaultAction: deny
+        operations:
+          - name: /ext-secrets-1/v1/enroll
+            httpVerb: [POST]
+            action: allow
+---
+# Default isolation. Owner supplies explicit Dapr/owner-read/storage DNS and network allow rules.
+# This deny policy alone leaves the workload deliberately unavailable.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${OWNER_ENROLLMENT_ISOLATION_POLICY}
+  namespace: ${OWNER_ENROLLMENT_NAMESPACE}
+spec:
+  podSelector:
+    matchLabels:
+      ext-secrets-role: enrollment
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []

@@ -566,6 +566,218 @@
       "document": "pod-credential-mount.proposed.json",
       "input": "renewalOwnerReference",
       "provisioningAction": "Provision the named public reference on 192.168.1.30. Do not invent an identifier."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.appId",
+      "provisioningAction": "Independent executor owner must return installed appId and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.serviceAccount",
+      "provisioningAction": "Independent executor owner must return installed serviceAccount and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.namespace",
+      "provisioningAction": "Independent executor owner must return installed namespace and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.imageDigest",
+      "provisioningAction": "Independent executor owner must return installed imageDigest and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.installedVersion",
+      "provisioningAction": "Independent executor owner must return installed installedVersion and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.publicAnchorFile",
+      "provisioningAction": "Independent executor owner must return installed publicAnchorFile and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.signerCredentialReference",
+      "provisioningAction": "Independent executor owner must return installed signerCredentialReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.daprApiCredentialReference",
+      "provisioningAction": "Independent executor owner must return installed daprApiCredentialReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.durableOriginalStoreReference",
+      "provisioningAction": "Independent executor owner must return installed durableOriginalStoreReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.ownerReadScopeReference",
+      "provisioningAction": "Independent executor owner must return installed ownerReadScopeReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.acceptedBindingReference",
+      "provisioningAction": "Independent executor owner must return installed acceptedBindingReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.isolatedScopeAuthorityReference",
+      "provisioningAction": "Independent executor owner must return installed isolatedScopeAuthorityReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.storageClassReference",
+      "provisioningAction": "Independent executor owner must return installed storageClassReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.executor.retentionPolicyReference",
+      "provisioningAction": "Independent executor owner must return installed retentionPolicyReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.appId",
+      "provisioningAction": "Independent observer owner must return installed appId and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.serviceAccount",
+      "provisioningAction": "Independent observer owner must return installed serviceAccount and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.namespace",
+      "provisioningAction": "Independent observer owner must return installed namespace and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.imageDigest",
+      "provisioningAction": "Independent observer owner must return installed imageDigest and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.installedVersion",
+      "provisioningAction": "Independent observer owner must return installed installedVersion and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.publicAnchorFile",
+      "provisioningAction": "Independent observer owner must return installed publicAnchorFile and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.signerCredentialReference",
+      "provisioningAction": "Independent observer owner must return installed signerCredentialReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.daprApiCredentialReference",
+      "provisioningAction": "Independent observer owner must return installed daprApiCredentialReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.durableOriginalStoreReference",
+      "provisioningAction": "Independent observer owner must return installed durableOriginalStoreReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.ownerReadScopeReference",
+      "provisioningAction": "Independent observer owner must return installed ownerReadScopeReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.acceptedBindingReference",
+      "provisioningAction": "Independent observer owner must return installed acceptedBindingReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.isolatedScopeAuthorityReference",
+      "provisioningAction": "Independent observer owner must return installed isolatedScopeAuthorityReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.storageClassReference",
+      "provisioningAction": "Independent observer owner must return installed storageClassReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.observer.retentionPolicyReference",
+      "provisioningAction": "Independent observer owner must return installed retentionPolicyReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.appId",
+      "provisioningAction": "Independent enrollment owner must return installed appId and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.serviceAccount",
+      "provisioningAction": "Independent enrollment owner must return installed serviceAccount and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.namespace",
+      "provisioningAction": "Independent enrollment owner must return installed namespace and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.imageDigest",
+      "provisioningAction": "Independent enrollment owner must return installed imageDigest and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.installedVersion",
+      "provisioningAction": "Independent enrollment owner must return installed installedVersion and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.publicAnchorFile",
+      "provisioningAction": "Independent enrollment owner must return installed publicAnchorFile and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.signerCredentialReference",
+      "provisioningAction": "Independent enrollment owner must return installed signerCredentialReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.daprApiCredentialReference",
+      "provisioningAction": "Independent enrollment owner must return installed daprApiCredentialReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.durableOriginalStoreReference",
+      "provisioningAction": "Independent enrollment owner must return installed durableOriginalStoreReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.ownerReadScopeReference",
+      "provisioningAction": "Independent enrollment owner must return installed ownerReadScopeReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.acceptedBindingReference",
+      "provisioningAction": "Independent enrollment owner must return installed acceptedBindingReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.isolatedScopeAuthorityReference",
+      "provisioningAction": "Independent enrollment owner must return installed isolatedScopeAuthorityReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.storageClassReference",
+      "provisioningAction": "Independent enrollment owner must return installed storageClassReference and current isolated ACL proof."
+    },
+    {
+      "document": "provisioning/role-inputs.proposed.json",
+      "input": "roles.enrollment.retentionPolicyReference",
+      "provisioningAction": "Independent enrollment owner must return installed retentionPolicyReference and current isolated ACL proof."
     }
-  ]
+  ],
+  "sourceRefreshDate": "2026-10-16",
+  "roleProvisioningInputMap": "eng/ext-secrets-1/provisioning/owner-input-map.json"
 }

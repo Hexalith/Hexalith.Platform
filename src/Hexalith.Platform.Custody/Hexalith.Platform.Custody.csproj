@@ -9,4 +9,5 @@
     <PackageReference Include="Hexalith.EventStore.Contracts" />
   </ItemGroup>
   <ItemGroup><InternalsVisibleTo Include="Hexalith.Platform.Custody.Tests" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="Hexalith.Platform.Secrets.Runtime" /></ItemGroup>
 </Project>

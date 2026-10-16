@@ -1,0 +1,66 @@
+{
+  "schema": "EXT-SECRETS-1.role-provisioning.v1",
+  "apply": false,
+  "host": "192.168.1.30",
+  "existingProvider": "openbao/StatefulSet/hexalith-keys",
+  "productionMutationAllowed": false,
+  "roles": {
+    "executor": {
+      "appId": null,
+      "serviceAccount": null,
+      "namespace": null,
+      "imageDigest": null,
+      "installedVersion": null,
+      "publicAnchorFile": null,
+      "signerCredentialReference": null,
+      "daprApiCredentialReference": null,
+      "durableOriginalStoreReference": null,
+      "ownerReadScopeReference": null,
+      "acceptedBindingReference": null,
+      "isolatedScopeAuthorityReference": null,
+      "storageClassReference": null,
+      "retentionPolicyReference": null
+    },
+    "observer": {
+      "appId": null,
+      "serviceAccount": null,
+      "namespace": null,
+      "imageDigest": null,
+      "installedVersion": null,
+      "publicAnchorFile": null,
+      "signerCredentialReference": null,
+      "daprApiCredentialReference": null,
+      "durableOriginalStoreReference": null,
+      "ownerReadScopeReference": null,
+      "acceptedBindingReference": null,
+      "isolatedScopeAuthorityReference": null,
+      "storageClassReference": null,
+      "retentionPolicyReference": null
+    },
+    "enrollment": {
+      "appId": null,
+      "serviceAccount": null,
+      "namespace": null,
+      "imageDigest": null,
+      "installedVersion": null,
+      "publicAnchorFile": null,
+      "signerCredentialReference": null,
+      "daprApiCredentialReference": null,
+      "durableOriginalStoreReference": null,
+      "ownerReadScopeReference": null,
+      "acceptedBindingReference": null,
+      "isolatedScopeAuthorityReference": null,
+      "storageClassReference": null,
+      "retentionPolicyReference": null
+    }
+  },
+  "requirements": {
+    "separateNamespacesServiceAccountsAnchorsCredentialsAndStorage": true,
+    "observerCannotExecuteOrRequestSignatures": true,
+    "enrollmentCannotExecuteOrRequestBusinessSignatures": true,
+    "executorCannotAuthorObserverOrEnrollmentProofs": true,
+    "decisionPrivateKeysOutsidePlatformAndAgents": true,
+    "operatorAndMemoriesCredentialsForbidden": true,
+    "localVolumesDoNotQualifyNonrollbackOrAllCopy": true
+  }
+}
