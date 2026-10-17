@@ -1,0 +1,79 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: True) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: True) [FAIL]
+      System.IO.InvalidDataException : ../../../../../references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Memories/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      Stack Trace:
+        /home/administrator/projects/hexalith/folders/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(143,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(26,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: True) [FINISHED] Time: 0.437s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: False) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: False) [FAIL]
+      System.IO.InvalidDataException : ../../../../../references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Memories/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      Stack Trace:
+        /home/administrator/projects/hexalith/folders/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(143,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(26,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: False) [FINISHED] Time: 0.003s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: True) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: True) [FAIL]
+      System.IO.InvalidDataException : ../../../../../references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Memories/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      Stack Trace:
+        /home/administrator/projects/hexalith/folders/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(143,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(26,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: True) [FINISHED] Time: 0.003s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: False) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: False) [FAIL]
+      System.IO.InvalidDataException : ../../../../../references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Memories/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      Stack Trace:
+        /home/administrator/projects/hexalith/folders/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(143,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(26,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: False) [FINISHED] Time: 0.002s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: True) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: True) [FAIL]
+      System.IO.InvalidDataException : ../../../../../references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Memories/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      Stack Trace:
+        /home/administrator/projects/hexalith/folders/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(143,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(26,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: True) [FINISHED] Time: 0.002s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: False) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: False) [FAIL]
+      System.IO.InvalidDataException : ../../../../../references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Memories/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      ../../../../../references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json: manifest: Supply an existing readable manifest file.
+      Stack Trace:
+        /home/administrator/projects/hexalith/folders/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(143,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs(26,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(String name, Boolean healthy)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: False) [FINISHED] Time: 0.003s
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '20e51778062f5cdeb664b69970bac58bec3440603e648e092002da7837909ec8')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 6, Errors: 0, Failed: 6, Skipped: 0, Not Run: 0, Time: 0.603s

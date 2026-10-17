@@ -1,0 +1,91 @@
+Folders $ git rev-parse HEAD
+24fdf3de046fbd20866284ed0cf9caa27369f3de
+
+
+exitCode: 0
+Folders $ git status --short
+ m references/Hexalith.Platform
+?? _bmad-output/implementation-artifacts/spec-1-17-platform-readiness-fixture-qualification.md
+
+
+exitCode: 0
+Folders $ git ls-files -s -- references
+160000 3f194e17174994d308ec84af9ee2b5aa68674d0d 0	references/Hexalith.AI.Tools
+160000 4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77 0	references/Hexalith.Builds
+160000 9e874b1a3c6e7b6ff07b6f40b81d36e4e1403798 0	references/Hexalith.Commons
+160000 77d9af18a54d92506e310fe5a45021a395e66f60 0	references/Hexalith.EventStore
+160000 b102b85b148f21fb26d5742e120c344109df7084 0	references/Hexalith.FrontComposer
+160000 b35b0975a234f1f97e2e35e9dad381d0a988f4af 0	references/Hexalith.McpCli
+160000 f6b60d5a2e9b81d84fddad789c7d9bed40d3a533 0	references/Hexalith.Memories
+160000 b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e 0	references/Hexalith.Platform
+160000 98de6e013840ece9f0fa7c68ab7dcdf2bba3b375 0	references/Hexalith.PolymorphicSerializations
+160000 a8059addf27261c0f2bddd23d2b266ebcfa00660 0	references/Hexalith.Projects
+160000 e667d5391dae306e631dec23acd191863e54130c 0	references/Hexalith.Tenants
+
+
+exitCode: 0
+Folders $ git diff --name-only
+references/Hexalith.Platform
+
+
+exitCode: 0
+Folders $ git diff --check
+
+
+exitCode: 0
+Platform $ git rev-parse HEAD
+b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e
+
+
+exitCode: 0
+Platform $ git status --short
+ M .gitattributes
+ M tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs
+?? docs/implementation/story-1-17-readiness-qualification-2026-10-17.json
+?? docs/implementation/story-1-17-readiness-qualification-2026-10-17/
+
+
+exitCode: 0
+Platform $ git ls-files -s -- references
+160000 3f194e17174994d308ec84af9ee2b5aa68674d0d 0	references/Hexalith.AI.Tools
+160000 6502902f3a01d437fba7c0f75dcf4bf7a8b94701 0	references/Hexalith.Agents
+160000 4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77 0	references/Hexalith.Builds
+160000 d6c4deb70dcce90344f86d7dee3d6e7027e61e24 0	references/Hexalith.ChatBot
+160000 9e874b1a3c6e7b6ff07b6f40b81d36e4e1403798 0	references/Hexalith.Commons
+160000 4e937361613c2dba72c46595226219017e6ba524 0	references/Hexalith.Conversations
+160000 b99a03dfc29021af16511ee664820e05126b73f8 0	references/Hexalith.EventStore
+160000 42a2308113e1bdb9b1d07a778b4405dde797ebd3 0	references/Hexalith.Folders
+160000 8a2164e64566c9eb89c633652b34e1a12d84f446 0	references/Hexalith.FrontComposer
+160000 874a6971629eee143f296c76a2dbd9ca4816da59 0	references/Hexalith.McpCli
+160000 f6b60d5a2e9b81d84fddad789c7d9bed40d3a533 0	references/Hexalith.Memories
+160000 f5f2f2122847a603883b51acc95844ddb19a1565 0	references/Hexalith.Parties
+160000 98de6e013840ece9f0fa7c68ab7dcdf2bba3b375 0	references/Hexalith.PolymorphicSerializations
+160000 a8059addf27261c0f2bddd23d2b266ebcfa00660 0	references/Hexalith.Projects
+160000 0e1fe111a5b4cce684455948b4fd12960589ef55 0	references/Hexalith.Tenants
+160000 ee95f90f529812c744761090691a23196c971c78 0	references/Hexalith.Timesheets
+160000 2cfc53d5d4714dcf8ab2dc9db0f4b7f04e16f9f6 0	references/Hexalith.Works
+
+
+exitCode: 0
+Platform $ git diff --name-only
+.gitattributes
+tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs
+
+
+exitCode: 0
+Platform $ git diff --check
+
+
+exitCode: 0
+references/Hexalith.AI.Tools: Git marker present; HEAD equals root gitlink 3f194e17174994d308ec84af9ee2b5aa68674d0d
+references/Hexalith.Builds: Git marker present; HEAD equals root gitlink 4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77
+references/Hexalith.Commons: Git marker present; HEAD equals root gitlink 9e874b1a3c6e7b6ff07b6f40b81d36e4e1403798
+references/Hexalith.EventStore: Git marker present; HEAD equals root gitlink 77d9af18a54d92506e310fe5a45021a395e66f60
+references/Hexalith.FrontComposer: Git marker present; HEAD equals root gitlink b102b85b148f21fb26d5742e120c344109df7084
+references/Hexalith.McpCli: Git marker present; HEAD equals root gitlink b35b0975a234f1f97e2e35e9dad381d0a988f4af
+references/Hexalith.Memories: Git marker present; HEAD equals root gitlink f6b60d5a2e9b81d84fddad789c7d9bed40d3a533
+references/Hexalith.Platform: Git marker present; HEAD equals root gitlink b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e
+references/Hexalith.PolymorphicSerializations: Git marker present; HEAD equals root gitlink 98de6e013840ece9f0fa7c68ab7dcdf2bba3b375
+references/Hexalith.Projects: Git marker present; HEAD equals root gitlink a8059addf27261c0f2bddd23d2b266ebcfa00660
+references/Hexalith.Tenants: Git marker present; HEAD equals root gitlink e667d5391dae306e631dec23acd191863e54130c
+No initialized nested .git markers found under root-declared owners.

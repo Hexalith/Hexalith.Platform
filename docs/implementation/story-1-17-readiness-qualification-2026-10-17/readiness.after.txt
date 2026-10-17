@@ -1,0 +1,25 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: True) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: True) [FINISHED] Time: 2.437s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: False) [STARTING]
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check redis-redis-ping with status Unhealthy completed after 24.282ms with message 'Redis did not answer PING.'
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "redis", healthy: False) [FINISHED] Time: 1.755s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: True) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: True) [FINISHED] Time: 2.182s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: False) [STARTING]
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-vectors-redis-ping with status Unhealthy completed after 23.146ms with message 'Redis did not answer PING.'
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-vectors", healthy: False) [FINISHED] Time: 2.484s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: True) [STARTING]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: True) [FINISHED] Time: 3.413s
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: False) [STARTING]
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-graph-redis-ping with status Unhealthy completed after 21.4594ms with message 'Redis did not answer PING.'
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: "memories-graph", healthy: False) [FINISHED] Time: 3.507s
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '20e51778062f5cdeb664b69970bac58bec3440603e648e092002da7837909ec8')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 6, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 15.952s

@@ -1,0 +1,699 @@
+{
+  "schema": "hexalith.story117.local-readiness-qualification.v1",
+  "recordedAtUtc": "2026-10-17T09:38:39.209583+00:00",
+  "status": "LOCAL_READINESS_FIXTURE_VERIFIED_PLATFORM_HOLD",
+  "scope": "One Platform test-fixture mapping correction and existing six-case protocol qualification; no live resource startup.",
+  "foldersBaseline": "24fdf3de046fbd20866284ed0cf9caa27369f3de",
+  "platformBaseline": "b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e",
+  "sourceState": "Platform has one uncommitted test-file edit and additive evidence; no clean-release claim.",
+  "firstLocallyResolvableBlocker": {
+    "dependency": "Platform Story 1.8 local readiness verification before Story 1.9",
+    "before": "Six cases fail on missing Platform/references owner declarations before health checks run.",
+    "implementation": "Use existing WorkspaceRootResolver.ResolveAsync from Platform identity anchor in the readiness fixture only. Shared Options and package fixtures stay unchanged.",
+    "after": "Six cases exercise the real composed registrations in the ordinary tracked test assembly and pass.",
+    "codeDiff": {
+      "insertions": 9,
+      "deletions": 1
+    }
+  },
+  "commands": [
+    {
+      "repository": "Platform",
+      "phase": "before",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -m:1 -nodeReuse:false",
+      "exitCode": 0,
+      "result": "Build succeeded; zero warnings and errors.",
+      "log": "composition-build.before.txt"
+    },
+    {
+      "repository": "Platform",
+      "phase": "before",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -method '*InfrastructureHealthRequiresRedisProtocolResponseAsync' -reporter verbose -result-xml /tmp/story117-platform-readiness-baseline.xml",
+      "exitCode": 1,
+      "tests": 6,
+      "failed": 6,
+      "skipped": 0,
+      "result": "Every case failed before protocol assertions on absent nested owner declarations.",
+      "log": "readiness.before.txt",
+      "xml": "readiness.before.xml"
+    },
+    {
+      "repository": "Platform",
+      "phase": "after",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -m:1 -nodeReuse:false",
+      "exitCode": 0,
+      "result": "Build succeeded; zero warnings and errors.",
+      "log": "composition-build.after.txt"
+    },
+    {
+      "repository": "Platform",
+      "phase": "after",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -method '*InfrastructureHealthRequiresRedisProtocolResponseAsync' -reporter verbose -result-xml /tmp/story117-platform-readiness-final.xml",
+      "exitCode": 0,
+      "tests": 6,
+      "failed": 0,
+      "skipped": 0,
+      "result": "Actual model registrations; fragmented PONG accepted and ERR refused for redis, memories-vectors and memories-graph. Expected Unhealthy log lines are negative assertions.",
+      "log": "readiness.after.txt",
+      "xml": "readiness.after.xml"
+    },
+    {
+      "repository": "Folders",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 eng/story117-platform-qualification-current/verify.py",
+      "exitCode": 0,
+      "result": "Packet consistency only; HOLD, zero staging execution, V1Only, T0 unset.",
+      "log": "folders-current-diagnostic.txt"
+    },
+    {
+      "repository": "Folders",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s eng/story117-platform-qualification-current -p 'test_*.py' -q",
+      "exitCode": 0,
+      "tests": 39,
+      "failed": 0,
+      "log": "folders-current-tests.txt"
+    },
+    {
+      "repository": "Platform",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 eng/verify-platform-pins.py",
+      "exitCode": 0,
+      "result": "Local file AppHost pins match local Builds catalog; no release or tool acceptance.",
+      "log": "platform-pins.txt"
+    },
+    {
+      "repository": "Platform",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s eng -p 'test_verify_platform_pins.py' -q",
+      "exitCode": 0,
+      "tests": 11,
+      "failed": 0,
+      "log": "platform-pin-tests.txt"
+    },
+    {
+      "repository": "Platform",
+      "command": "git check-ignore -- docs/implementation/story-1-17-readiness-qualification-2026-10-17/*",
+      "exitCode": 1,
+      "result": "No retained artifact ignored after renaming new .log artifacts to .txt; no force-add required."
+    },
+    {
+      "repository": "Platform",
+      "phase": "after-review",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -m:1 -nodeReuse:false",
+      "exitCode": 0,
+      "result": "Build succeeded; zero warnings and errors.",
+      "log": "composition-build.review.txt"
+    },
+    {
+      "repository": "Platform",
+      "phase": "after-review",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "*InfrastructureHealthRequiresRedisProtocolResponseAsync",
+        "-reporter",
+        "verbose",
+        "-result-xml",
+        "/tmp/story117-platform-readiness-review.xml"
+      ],
+      "exitCode": 0,
+      "tests": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log": "readiness.review.txt",
+      "xml": "readiness.review.xml"
+    }
+  ],
+  "artifacts": {
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/composition-build.after.txt": "9ad58a28054607f4c3c3312b0959600bee34f7a1b8ace351183390768fb07104",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/composition-build.before.txt": "45a9d2d7a46505d1943a55eeb216fa2279eb2ad150e3529ef63d9b082648553e",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/composition-build.review.txt": "903006ab3470943c9cbbcc6ba492281cd79ab9aa47eb277071f7a3bcfa360c46",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/folders-current-diagnostic.txt": "ca0d5f23604bb0e4bfe5427ac5a41ed54788771d6b5b82bd6335f3aca18bd969",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/folders-current-tests.txt": "d12b7b483ec0b315a7d1253d59e89c33794348812cb8d5850da534bb426fa84d",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/platform-pin-tests.txt": "50f5031c936293798c22374f4caf3d1d1b8ee98f05f8cda801af0c56b79e229a",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/platform-pins.txt": "50818282c9dbedaa22ef94c2b71de68c7e4ff83fdecfcd984f774605b76acfc7",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/preservation-audit.txt": "904f5a88b81de242a74070d6813a12135c8e89b60bb4d9257b48c383cd13fa3d",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/readiness.after.txt": "d826a765bfe764359d9c094d012f9c2b347013cd96e4e9409b284aa360e91c8d",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/readiness.after.xml": "88d9b2ad50d90e9b5f553cb1b6e6893e7ed8dcaa86ac6a1d39b16e172db5e72c",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/readiness.before.txt": "1340a7b7d85db01a031e6a751c826722e2f21fa47685492f7c8c32b716dcd4dc",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/readiness.before.xml": "0d3c16e9c3a454b148e9f6d0048c51d83ad9065e1f3a6b62c224f5373df9a402",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/readiness.review.txt": "d90e04b6bf03ec0c26b835a71f9a399bd863c7abb10b6f096a08f78319ceabeb",
+    "docs/implementation/story-1-17-readiness-qualification-2026-10-17/readiness.review.xml": "83836816ca3331fdd4a821d931d6b55dc5a769c1b1fd7aac1c5392ca627322b6"
+  },
+  "sourceInputsSha256": {
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs": "f6f96603705eb24c1131032634e8ea3b78d03fa62aa13abe284baf6c0a9657c1",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj": "f5286c4a254d8240ded1028d88ae4011fe305f35147214c92d8e196d019cb224",
+    "src/Hexalith.Platform.Composition/PlatformRedisHealthCheck.cs": "2548f5dd02b64c639f0f08bd6ca43ef29ffe80688c26f10097820978ddc086a9",
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "c1577076425ab0316261e4e0c0c9e9cd18afa1f3a7e52cfccaeaa3d647553ad4",
+    "hexalith-platform.json": "609b0270c380969286ce2be72aad387758e8169c221f93c3bb14a4b352c5e65c",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "e60e80a708d9788b576145775652de1c9b483b5e0e1791c043077fc0a69c3a28",
+    "docs/implementation/story-1-17-admission-preparation-2026-10-16.json": "f9dcd28a12cb7d9b0cb528424e7cdad4b2927fbd1f8f376ac6304635bf5fa50d",
+    ".gitattributes": "e7309972d9756dc11f537f174c9837095139de6682ace3f713962d37ce4f6fdb"
+  },
+  "currentPacketSha256": "4860ec327e9d006e9df7d1468ae30dfc313acfde9c0d2d5eaf6746ecf446f98f",
+  "publishedBuildsReceiptSha256": "deeb0cb92fe9356d6f47ab6a996445459df506f398fed95ea2088cdc89c64678",
+  "prerequisiteOrder": [
+    {
+      "prerequisite": "Platform Story 1.8",
+      "localStatus": "Reproduced normal explicit Debug build and repaired six-case infrastructure readiness fixture.",
+      "remaining": "Spec done; tracker review retained. Exact accepted-tool/composition startup/debug evidence and owner qualification remain unsupplied. Six local cases do not complete Story 1.8 operational qualification."
+    },
+    {
+      "prerequisite": "Platform Story 1.9 and tool/catalog bindings",
+      "status": "Owner decision required; backlog unchanged.",
+      "toolManifestExists": false,
+      "identity": {
+        "schemaVersion": 1
+      },
+      "platformRecordedBuildsGitlink": "4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77",
+      "workspaceBuildsRevision": "4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77",
+      "publishedToolVersion": "4.32.0",
+      "publishedToolSourceRevision": "abdfca89ed82f388b54664825a8a79fed73e7ccf",
+      "startupSourceDeltaSincePublishedTool": " .../Hexalith.Builds.Module.AppHost/RunReadiness.cs | 194 ++++---\n .../Runtime/CompositionEngine.cs                   | 606 +++++++++++++++++----\n .../Runtime/CompositionStartupRequest.cs           | 126 +++++\n 3 files changed, 755 insertions(+), 171 deletions(-)\n",
+      "interpretation": "Published 4.32.0 predates reviewed Story 1.8 follow-up source. No later released artifact or acceptance is established by this local inspection."
+    },
+    {
+      "prerequisite": "Module intake and attestations",
+      "status": "Unresolved. Existing dated admission handoff is historical; current catalog remains an input observation.",
+      "catalogSelections": {
+        "eventstore": {
+          "appId": "eventstore",
+          "catalogInputPin": "3.124.0",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithEventStoreVersion",
+          "catalogPackage": "Hexalith.EventStore.Server"
+        },
+        "tenants": {
+          "appId": "tenants",
+          "catalogInputPin": "5.8.0",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithTenantsVersion",
+          "catalogPackage": "Hexalith.Tenants.Contracts"
+        },
+        "memories": {
+          "appId": "memories",
+          "catalogInputPin": "2.27.1",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithMemoriesVersion",
+          "catalogPackage": "Hexalith.Memories.Contracts"
+        },
+        "folders-server": {
+          "appId": "folders",
+          "catalogInputPin": "1.2.1",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithFoldersVersion",
+          "catalogPackage": "Hexalith.Folders.Contracts"
+        },
+        "folders-workers": {
+          "appId": "folders-workers",
+          "catalogInputPin": "1.2.1",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithFoldersVersion",
+          "catalogPackage": "Hexalith.Folders.Contracts"
+        },
+        "folders-ui": {
+          "appId": "folders-ui",
+          "catalogInputPin": "1.2.1",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithFoldersVersion",
+          "catalogPackage": "Hexalith.Folders.Contracts"
+        },
+        "projects-server": {
+          "appId": "projects",
+          "catalogInputPin": "1.0.0",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithProjectsVersion",
+          "catalogPackage": "Hexalith.Projects.Contracts"
+        },
+        "frontcomposer": {
+          "appId": null,
+          "catalogInputPin": "4.6.0",
+          "qualifiedArtifact": null,
+          "owner": "Platform intake owner with module owner",
+          "catalogProperty": "HexalithFrontComposerVersion",
+          "catalogPackage": "Hexalith.FrontComposer.Contracts"
+        }
+      },
+      "retainedLocalOwnerTagObservations": [
+        {
+          "module": "EventStore",
+          "catalogVersion": "3.124.0",
+          "retainedLocalTagOnly": true,
+          "tagCommit": "0737c0befce5338e294a789092a0e223e8264a04",
+          "releasedPathExistsInRetainedTag": true,
+          "declarationSha256": "6193ccfd67ef325e990e3c6e15c1e0b5040f939530c9ebae47daf00f2d62a9ee",
+          "platformSnapshotSha256": "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
+          "snapshotMatchesRetainedTagDeclaration": false,
+          "imageAttestationVerifiedByThisRun": false,
+          "inspectedDeclarationPath": "module/hexalith.module-manifest.v2.json",
+          "repository": "references/Hexalith.EventStore",
+          "inspectionCommands": [
+            [
+              "git",
+              "rev-parse",
+              "--verify",
+              "v3.124.0^{commit}"
+            ],
+            [
+              "git",
+              "show",
+              "0737c0befce5338e294a789092a0e223e8264a04:module/hexalith.module-manifest.v2.json"
+            ]
+          ]
+        },
+        {
+          "module": "Tenants",
+          "catalogVersion": "5.8.0",
+          "retainedLocalTagOnly": true,
+          "tagCommit": "032573384d3df4bc7a5bc0e69945ecca4e00967f",
+          "releasedPathExistsInRetainedTag": false,
+          "declarationSha256": null,
+          "platformSnapshotSha256": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
+          "snapshotMatchesRetainedTagDeclaration": false,
+          "imageAttestationVerifiedByThisRun": false,
+          "inspectedDeclarationPath": "module/hexalith.module-manifest.v2.json",
+          "repository": "references/Hexalith.Tenants",
+          "inspectionCommands": [
+            [
+              "git",
+              "rev-parse",
+              "--verify",
+              "v5.8.0^{commit}"
+            ],
+            [
+              "git",
+              "show",
+              "032573384d3df4bc7a5bc0e69945ecca4e00967f:module/hexalith.module-manifest.v2.json"
+            ]
+          ]
+        },
+        {
+          "module": "Memories",
+          "catalogVersion": "2.27.1",
+          "retainedLocalTagOnly": true,
+          "tagCommit": "d54dba5be30a3626e871b4fc56dd78e76a7acf71",
+          "releasedPathExistsInRetainedTag": false,
+          "declarationSha256": null,
+          "platformSnapshotSha256": "30f97d509aeb9fa019373579ad24db113aa84a9df52139a88a0cfdbaa6b192d4",
+          "snapshotMatchesRetainedTagDeclaration": false,
+          "imageAttestationVerifiedByThisRun": false,
+          "inspectedDeclarationPath": "module/hexalith.module-manifest.v2.json",
+          "repository": "references/Hexalith.Memories",
+          "inspectionCommands": [
+            [
+              "git",
+              "rev-parse",
+              "--verify",
+              "v2.27.1^{commit}"
+            ],
+            [
+              "git",
+              "show",
+              "d54dba5be30a3626e871b4fc56dd78e76a7acf71:module/hexalith.module-manifest.v2.json"
+            ]
+          ]
+        },
+        {
+          "module": "Folders",
+          "catalogVersion": "1.2.1",
+          "retainedLocalTagOnly": true,
+          "tagCommit": "17b5a70d2b4b91bbbf73ea63c8a214a0ad426759",
+          "releasedPathExistsInRetainedTag": false,
+          "declarationSha256": null,
+          "inspectedDeclarationPath": "module/hexalith.module-manifest.v2.json",
+          "repository": ".",
+          "inspectionCommands": [
+            [
+              "git",
+              "rev-parse",
+              "--verify",
+              "v1.2.1^{commit}"
+            ],
+            [
+              "git",
+              "show",
+              "17b5a70d2b4b91bbbf73ea63c8a214a0ad426759:module/hexalith.module-manifest.v2.json"
+            ]
+          ]
+        },
+        {
+          "module": "Projects",
+          "catalogVersion": "1.0.0",
+          "retainedLocalTagOnly": true,
+          "tagCommit": "c767d38d8ae76f9ad949965ac4870a842c699f9c",
+          "releasedPathExistsInRetainedTag": false,
+          "declarationSha256": null,
+          "inspectedDeclarationPath": "module/hexalith.module-manifest.v2.json",
+          "repository": "references/Hexalith.Projects",
+          "inspectionCommands": [
+            [
+              "git",
+              "rev-parse",
+              "--verify",
+              "v1.0.0^{commit}"
+            ],
+            [
+              "git",
+              "show",
+              "c767d38d8ae76f9ad949965ac4870a842c699f9c:module/hexalith.module-manifest.v2.json"
+            ]
+          ]
+        },
+        {
+          "module": "FrontComposer",
+          "catalogVersion": "4.6.0",
+          "retainedLocalTagOnly": true,
+          "tagCommit": "6840a361b26ac09ea9bdda6e0a66b09656eb893a",
+          "releasedPathExistsInRetainedTag": false,
+          "declarationSha256": null,
+          "inspectedDeclarationPath": "module/hexalith.module-manifest.v2.json",
+          "repository": "references/Hexalith.FrontComposer",
+          "inspectionCommands": [
+            [
+              "git",
+              "rev-parse",
+              "--verify",
+              "v4.6.0^{commit}"
+            ],
+            [
+              "git",
+              "show",
+              "6840a361b26ac09ea9bdda6e0a66b09656eb893a:module/hexalith.module-manifest.v2.json"
+            ]
+          ]
+        }
+      ],
+      "limits": "Tag objects were inspected offline without fetching. Existence is not published artifact provenance, image availability, attestation verification, vulnerability policy or intake acceptance. Missing standard declaration path is scoped to that path at the retained tag. Exact owner declarations, images/packages, verified attestation identities and baseline-to-candidate classification chain still require Platform/module-owner intake."
+    },
+    {
+      "prerequisite": "Platform release and hosting",
+      "status": "Unresolved. No publication workflow under .github/workflows, signed release record or accepted application/chart/composed-image tuple is supplied in this checkout.",
+      "hosting": "Local AD-9 canonical package pins match Builds. Model fixtures do not prove supported hosted rendering, mTLS/ACL enforcement, subscriptions/delivery, profile/provider isolation, confidential OIDC/delegation or image availability.",
+      "evidence": "docs/implementation/story-1-17-admission-preparation-2026-10-16.json remains historical; current source/pin observations do not supply release/hosting acceptance."
+    },
+    {
+      "prerequisite": "Folders operational qualification",
+      "status": "HOLD; fourteen staging checks remain unexecuted. Target/retained-data confirmation, first-install scope, operators/slots/thresholds, deployed inventory, baseline/census and reversal/recovery/observation/retirement evidence remain owner work."
+    }
+  ],
+  "nextOwnerDecision": {
+    "owner": "Platform maintainer with Builds maintainer",
+    "decision": "Select a released hexalith-module artifact containing the reviewed Stories 1.1\u20131.8 source, qualify that exact artifact/composition, and explicitly accept its exact version and supported toolVersionRange with a coherent Builds catalog commit. Only after that decision pin .config/dotnet-tools.json and complete Platform identity. Do not infer acceptance of 4.32.0 from publication or accept the changed current source as that artifact.",
+    "requiredEvidence": [
+      "Exact released source revision and successful exact-revision CI; signed package hashes/signature verification; retained actual-package readiness/debug/teardown qualification for the accepted composition.",
+      "Explicit Platform acceptance record naming exact tool version, supported range, Builds catalog commit and local profile/provider qualifications; reject versions through 4.27.4 per Story 1.9.",
+      "If current Story 1.8 code needs a new release, obtain separate commit/push/publication authorization and use the existing Builds release/qualification workflow. This run produces no publication authority."
+    ],
+    "supportingSourceComparisonCommand": "git diff --stat abdfca89ed82f388b54664825a8a79fed73e7ccf 4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77 -- src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupRequest.cs src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs",
+    "acceptanceGranted": false
+  },
+  "preservation": {
+    "trackedFiles": [
+      {
+        "repository": "Folders",
+        "baselineRevision": "24fdf3de046fbd20866284ed0cf9caa27369f3de",
+        "trackedRegularFilesAtCapture": 4861,
+        "unchangedTrackedFiles": 4861,
+        "changedTrackedFiles": [],
+        "headAndIndexUnchanged": true,
+        "indexSha256": "d97ac3904f27ae245da423505c249540359973147c3bf23887cfe02d17c78d89"
+      },
+      {
+        "repository": "Platform",
+        "baselineRevision": "b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e",
+        "trackedRegularFilesAtCapture": 4992,
+        "unchangedTrackedFiles": 4990,
+        "changedTrackedFiles": [
+          ".gitattributes",
+          "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReadinessTests.cs"
+        ],
+        "headAndIndexUnchanged": true,
+        "indexSha256": "dcb5cb51277cc7c98b9b75216dbb523cda2d5865353dae7f90e12ac657a97029"
+      }
+    ],
+    "historicalProtectedWorkspaceFilesMatched": 42,
+    "priorCurrentRunPreservationInputsMatched": 45,
+    "currentSourceBindingsMatched": 25,
+    "historicalReplay": "Prior replay receipts and all tracked historical files are byte-unchanged. No historical replay was rerun or relabelled by this run. The prior current-checkout publication refusal remains recorded.",
+    "dependenciesAndGitlinksChanged": false,
+    "nestedSubmodulesInitialized": false,
+    "directReferences": "All eleven existing Git markers and HEADs matched root gitlinks before the source resolver; its initialization path had no missing direct reference to initialize."
+  },
+  "decision": {
+    "qualification": "HOLD",
+    "productionMode": "V1Only",
+    "t0Utc": null,
+    "activationAuthority": null,
+    "firstInstallConfirmed": false,
+    "acceptedToolVersion": null,
+    "acceptedToolVersionRange": null,
+    "platformAcceptance": null,
+    "stagingChecksExecuted": 0,
+    "stagingChecksRemaining": 14,
+    "allCheckStatuses": {
+      "artifact-provenance": "unexecuted",
+      "first-install-baseline-selection": "unexecuted",
+      "platform-profile-and-isolation": "unexecuted",
+      "attempt-controls": "unexecuted",
+      "readiness": "unexecuted",
+      "authentication-and-authorization-negatives": "unexecuted",
+      "durable-end-state": "unexecuted",
+      "projects-lifecycle": "unexecuted",
+      "projects-permissions": "unexecuted",
+      "projects-file-metadata": "unexecuted",
+      "consumer-attribution": "unexecuted",
+      "route-restart-and-reversal": "unexecuted",
+      "retained-data-recovery": "unexecuted",
+      "verification-and-records": "unexecuted"
+    },
+    "deploymentAuthorized": false,
+    "publicationAuthorized": false,
+    "trackerTransitionAuthorized": false,
+    "story117Open": true,
+    "story117Tracker": "backlog",
+    "migrationScopeChanged": false
+  },
+  "limits": [
+    "Focused six-case model/protocol evidence only; no full Platform suite, live Aspire/Dapr run, breakpoint, staging or production qualification is claimed.",
+    "No acceptance, dependency/gitlink edit, deployment, publication, staging, staging-check execution, tracker transition, staging of Git files, commit or push.",
+    "The ordinary test fixture uses source-mode identity findings; no package identity finding is suppressed for admission. Existing resolver/model/health implementation is reused without a new qualification framework.",
+    "Platform .gitattributes marks the new receipt and its evidence directory -text, preserving retained bytes across checkouts."
+  ],
+  "finalIntegrityChecks": {
+    "commands": [
+      {
+        "repository": "Folders",
+        "command": "git diff --check",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "repository": "Platform",
+        "command": "git diff --check",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "artifactHashesMatched": 14,
+    "sourceInputHashesMatched": 8,
+    "readinessXmlSummaries": {
+      "before": {
+        "total": 6,
+        "passed": 0,
+        "failed": 6,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "after": {
+        "total": 6,
+        "passed": 6,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      },
+      "afterReview": {
+        "total": 6,
+        "passed": 6,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    "decisionMatchesUnchangedFoldersPacket": true
+  },
+  "mappedOwnerSourceObservations": {
+    "Builds": {
+      "revision": "4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77",
+      "trackedSourceStatus": "",
+      "filesSha256": {
+        "Props/Directory.Packages.props": "1a9fcfe7360e4b756db11173ef9bbc4f6dc49dd983c297b7fc27d42bd7f31dcd"
+      }
+    },
+    "EventStore": {
+      "revision": "77d9af18a54d92506e310fe5a45021a395e66f60",
+      "trackedSourceStatus": "",
+      "filesSha256": {
+        "module/hexalith.module-manifest.v2.json": "6193ccfd67ef325e990e3c6e15c1e0b5040f939530c9ebae47daf00f2d62a9ee"
+      }
+    },
+    "Tenants": {
+      "revision": "e667d5391dae306e631dec23acd191863e54130c",
+      "trackedSourceStatus": "",
+      "filesSha256": {
+        "module/hexalith.module-manifest.v2.json": "1544124fbbf92fef807576e8f8fa3ad76a1fcd031971bd110f818f6ba9038192"
+      }
+    },
+    "Memories": {
+      "revision": "f6b60d5a2e9b81d84fddad789c7d9bed40d3a533",
+      "trackedSourceStatus": "",
+      "filesSha256": {
+        "module/hexalith.module-manifest.v2.json": "1265d887617a15b904d88f0ff42af3e118d418b449b3e3f73796ee509d1a361f"
+      }
+    }
+  },
+  "binaryEvidenceLimit": "Before-run executable hashes were not captured and are not reconstructed or inferred. Final after-review test and tooling binaries are hashed separately; retained build logs and the captured baseline test-source hash identify the historical failure observation.",
+  "beforeTestSourceSha256": "601129c336e9737f74b61b9ec7336c3e284d46b76a6be24b9bd273b03b5fcd94",
+  "finalExecutedBinaries": {
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "*InfrastructureHealthRequiresRedisProtocolResponseAsync",
+      "-reporter",
+      "verbose",
+      "-result-xml",
+      "/tmp/story117-platform-readiness-review.xml"
+    ],
+    "exitCode": 0,
+    "sha256BeforeAndAfterExecution": {
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "8a97c15a15502a1f85e8a08403f6bf4a2520c89e6068ecb8e8b74b6434d0feec",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "b1cef37219a971ecfd68a7a29b51b3b5ee3478a69c84b738fafff199d638114a",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.dll": "1a07d151468232590df4e3880b8db81000f18906aee556719dc1ca0aa9476002"
+    }
+  },
+  "resolvedSourceMapping": {
+    "Mode": "source",
+    "Root": "/home/administrator/projects/hexalith/folders",
+    "ActiveModule": "Hexalith.Platform",
+    "Entries": [
+      {
+        "Identity": "Hexalith.AI.Tools",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.AI.Tools"
+      },
+      {
+        "Identity": "Hexalith.Builds",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Builds"
+      },
+      {
+        "Identity": "Hexalith.Commons",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Commons"
+      },
+      {
+        "Identity": "Hexalith.EventStore",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.EventStore"
+      },
+      {
+        "Identity": "Hexalith.FrontComposer",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.FrontComposer"
+      },
+      {
+        "Identity": "Hexalith.McpCli",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.McpCli"
+      },
+      {
+        "Identity": "Hexalith.Memories",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Memories"
+      },
+      {
+        "Identity": "Hexalith.Platform",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Platform"
+      },
+      {
+        "Identity": "Hexalith.PolymorphicSerializations",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.PolymorphicSerializations"
+      },
+      {
+        "Identity": "Hexalith.Projects",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Projects"
+      },
+      {
+        "Identity": "Hexalith.Tenants",
+        "Origin": "source",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Tenants"
+      }
+    ],
+    "HasGit": true,
+    "PlatformIdentity": {
+      "Commit": "b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e",
+      "CompositionCommit": "b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e",
+      "CheckoutCommit": "b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e",
+      "PlatformPath": "/home/administrator/projects/hexalith/folders/references/Hexalith.Platform",
+      "ReleaseTag": null,
+      "CatalogCommit": "4f53d9f37c5b86cfd43fbcc8fa5dd4df19b84c77",
+      "ToolVersionRange": null,
+      "RecordPath": "/home/administrator/projects/hexalith/folders/references/Hexalith.Platform/hexalith-platform.json",
+      "IsPlatformRepository": false
+    },
+    "IdentityFindings": [
+      {
+        "RuleId": "HXW011",
+        "Message": "Platform identity b54dc5f2e8fe070db9a0ca3a72ad495b380d2b5e has no local v<SemVer> release tag.",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Platform",
+        "Hint": "Fetch Platform tags, then retry."
+      },
+      {
+        "RuleId": "HXW011",
+        "Message": "Platform checkout '/home/administrator/projects/hexalith/folders/references/Hexalith.Platform' has changes.",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Platform",
+        "Hint": null
+      },
+      {
+        "RuleId": "HXW010",
+        "Message": "Tool version 1.0.0-20261017094217 is outside Platform range unavailable at '/home/administrator/projects/hexalith/folders/references/Hexalith.Platform/hexalith-platform.json'.",
+        "Path": "/home/administrator/projects/hexalith/folders/references/Hexalith.Platform/hexalith-platform.json",
+        "Hint": null
+      }
+    ],
+    "ContentHash": "0d8d926b88821a504e74c0112962d6507f15d9201960f70e93e2c5bdd1ac54d5"
+  },
+  "review": {
+    "layersCompleted": 1,
+    "findings": 9,
+    "patched": 8,
+    "rejectedLow": 1,
+    "deferred": 0,
+    "scope": "One-shot fixture review. Initialization behavior is existing shared source-resolver policy; all eleven current checkouts were verified before invocation and remain unchanged.",
+    "triage": "_bmad-output/implementation-artifacts/spec-1-17-platform-readiness-fixture-qualification.md (Folders repository)"
+  },
+  "receiptIntegrityVerification": {
+    "repository": "Platform",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path\nimport hashlib,json,subprocess,xml.etree.ElementTree as ET\nplatform=Path.cwd(); root=platform.parent.parent\np=platform/'docs/implementation/story-1-17-readiness-qualification-2026-10-17.json'\nd=json.loads(p.read_text())\ndef sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()\nfor group in ['artifacts','sourceInputsSha256']:\n    for name,h in d[group].items(): assert sha(platform/name)==h,name\nfor owner,observed in d['mappedOwnerSourceObservations'].items():\n    repo=root/'references'/('Hexalith.'+owner)\n    for name,h in observed['filesSha256'].items(): assert sha(repo/name)==h,(owner,name)\n    assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==observed['revision']\n    assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=repo,text=True)\nfor name,h in d['finalExecutedBinaries']['sha256BeforeAndAfterExecution'].items(): assert sha(platform/name)==h,name\ncurrent_path=root/'_bmad-output/implementation-artifacts/evidence/story-1-17-current-qualification-2026-10-17.json'\nassert sha(current_path)==d['currentPacketSha256']\ncurrent=json.loads(current_path.read_text())\npub_path=root/'_bmad-output/implementation-artifacts/evidence/story-1-17-builds-publication-2026-10-16.json'\nassert sha(pub_path)==d['publishedBuildsReceiptSha256']\npub=json.loads(pub_path.read_text())\nfor bindings in [pub['protectedWorkspaceFilesSha256'],current['preservation']['beforeSha256'],current['sourceBindingsSha256']]:\n    for name,h in bindings.items(): assert sha(root/name)==h,name\nassert d['decision']==current['decision']\nassert d['decision']['stagingChecksExecuted']==0 and d['decision']['stagingChecksRemaining']==14\nfor file,failed in [('readiness.before.xml',6),('readiness.after.xml',0),('readiness.review.xml',0)]:\n    assembly=ET.parse(platform/'docs/implementation/story-1-17-readiness-qualification-2026-10-17'/file).getroot().find('assembly')\n    assert int(assembly.attrib['total'])==6 and int(assembly.attrib['failed'])==failed\n    assert int(assembly.attrib['passed'])==6-failed and int(assembly.attrib['skipped'])==0\nfor record in d['preservation']['trackedFiles']:\n    repo=root if record['repository']=='Folders' else platform\n    assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==record['baselineRevision']\n    assert hashlib.sha256(subprocess.check_output(['git','ls-files','-s','-z'],cwd=repo)).hexdigest()==record['indexSha256']\nfor repo in [root,platform]: assert subprocess.run(['git','diff','--check'],cwd=repo,capture_output=True).returncode==0\nignored=subprocess.run(['git','check-ignore','--',*d['artifacts']],cwd=platform,capture_output=True)\nassert ignored.returncode==1 and not ignored.stdout\nprint('PASS: 14 retained artifacts, 8 Platform inputs, 4 mapped owner inputs and 3 executed DLLs match; 42/45/25 historical/current bindings preserved; six readiness cases pass; HOLD and zero staging execution retained.')\n"
+    ],
+    "exitCode": 0,
+    "stdout": "PASS: 14 retained artifacts, 8 Platform inputs, 4 mapped owner inputs and 3 executed DLLs match; 42/45/25 historical/current bindings preserved; six readiness cases pass; HOLD and zero staging execution retained.\n",
+    "stderr": ""
+  }
+}

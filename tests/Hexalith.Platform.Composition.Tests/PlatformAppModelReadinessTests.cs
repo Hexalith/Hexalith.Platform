@@ -2,8 +2,10 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Net;
 using System.Net.Sockets;
+using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Hexalith.Builds.Tooling.Workspace;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Shouldly;
@@ -23,7 +25,13 @@ public sealed partial class PlatformAppModelTests
         listener.Start();
         int port = ((IPEndPoint)listener.LocalEndpoint).Port;
         IDistributedApplicationBuilder builder = Builder();
-        PlatformAppModel.Compose(builder, Options());
+        // Resolve the same root-declared owners as the file entry; never assume nested checkouts.
+        using CancellationTokenSource resolution = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        resolution.CancelAfter(TimeSpan.FromSeconds(30));
+        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(
+            Path.Combine(Root, "hexalith-platform.json"), WorkspaceMode.Source, resolution.Token).ConfigureAwait(true);
+        TestContext.Current.TestOutputHelper!.WriteLine("Resolved source mapping: " + JsonSerializer.Serialize(mapping));
+        PlatformAppModel.Compose(builder, Options() with { Mapping = mapping });
         IResource[] infrastructure = builder.Resources.Where(resource => resource.Name is "redis" or "memories-vectors" or "memories-graph").ToArray();
         infrastructure.Length.ShouldBe(3);
         infrastructure.ShouldAllBe(resource => resource.Annotations.OfType<HealthCheckAnnotation>().Count() == 1);
