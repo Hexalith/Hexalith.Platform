@@ -706,3 +706,11 @@
 - `eng/verify_works_host.py` `run_verification` tamper checks are untested.
 - Platform has no tests for the `CompositionDeclarationClosure` delegation (unverified medium).
 - Only `memories` waits for `telemetryPostgres` (unverified).
+
+## Deferred from: code review of spec-1-8 (2026-10-17)
+
+- Timeout report may have no resource names when no failure/progress document exists; unsafe names dropped from the list (unverified medium).
+- Engine `startup-failure.json` read skips run-id/schema/text re-validation (unverified).
+- Later `StartAsync` failure paths use `CleanupPreparedWorkspaceAsync` without preserving diagnostics (unverified medium).
+- Retained-log writer is never disposed, uncapped, opened before the deadline check (concurrent retention work).
+- Cancelled-startup handler's `descriptorChildEntryAssemblyPath!` may be null (unverified).

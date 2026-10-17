@@ -353,3 +353,23 @@ Acceptance evidence includes default/override aggregation, successful run-state 
 - `pid` lambda shadowing (CS0136): false. The committed code builds and its tests ran.
 - Retention and Dapr 1.18.1 pins outside Story 1.8: the spec records them as concurrent retention work, and the fix edits the spec.
 - Redis `PING` fails closed with auth, `verify_works_host.py` KeyError and snapshot scope, two Postgres passwords, SQL interpolation, tmpfs sizing, hard-coded digests, `/proc` races, commit-message wording, and similar: low or speculative; fixes add guards or restructuring. Rejected.
+
+### Review Findings (code review 2026-10-17, full diff of Builds commits 643c640 86b9f35 ed80c1c abdfca8 d961c44, four layers)
+
+Findings already recorded in chunks 1a/1b above (refresh-readiness cancellation, unguarded pre-run diagnostics preservation, `_ = _ =`, missing final newlines, `debug --evidence` pin, Debug-configuration test, package-mapping debug) were re-raised by this pass and are not repeated.
+
+- [ ] [Review][Patch] `CompositionDeclarationClosure.Load` (and `CompositionDeclarationOptions` catalog/props reads) leak `JsonException`, `KeyNotFoundException`, `InvalidOperationException` and `XmlException` on malformed provenance, snapshot, catalog or props files; the callers (`CompositionStartupRequest.ConfigureAsync`, line 75) catch only `InvalidDataException`/IO, so startup crashes instead of returning a diagnostic. Wrap parse/lookups into `InvalidDataException` [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:58]
+- [ ] [Review][Patch] HXR026 failure hard-codes app id `"memories"` instead of the selected test's module [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs:360]
+- [ ] [Review][Patch] New `tests[]` validator rules (HXP003 duplicate name, HXP020 entry suffix per executor, HXP020 python3 non-source mode) have no rule-id/field assertion; `InvalidSelectionNeverStartsAsync` passes without them [references/Hexalith.Builds/test/Hexalith.Builds.Tests/PlatformManifestValidationTests.cs]
+- [ ] [Review][Patch] No test for `StopSignal` swallowing a stdin `IOException` when `RetainOnFailure` (and cancelling when not) [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/StopSignal.cs:109]
+- [x] [Review][Defer] Timeout report may carry the generic "did not become healthy" message with no resource names when no failure/progress document exists, and unsafe resource names are dropped from the list [CompositionEngine.cs ~1116, ReadUnreadyProgressAsync] — deferred: unverified medium; settle by expiring the deadline before the AppHost writes progress
+- [x] [Review][Defer] `startup-failure.json` read in the engine does not re-validate run id/schema/resource text the way `ReadStartupFailuresAsync` does [CompositionEngine.cs ~2478] — deferred: unverified; settle by planting a foreign-run document
+- [x] [Review][Defer] Later `StartAsync` failure paths still use `CleanupPreparedWorkspaceAsync` without preserving diagnostics [CompositionEngine.cs ~1403] — deferred: unverified medium; settle by failing after workspace preparation
+- [x] [Review][Defer] Retained-log writer: append-mode stream never disposed, no size cap, opened before deadline check; failure to open throws [AppHostRunner.cs] — deferred: retention work is concurrent, outside Story 1.8
+- [x] [Review][Defer] Cancelled startup handler uses `descriptorChildEntryAssemblyPath!` which may be null [ModuleCommandExecutionService.cs] — deferred: unverified; settle by cancelling with no composition options
+
+#### Rejected
+- HXR025 replaced by HXR021 / lost per-step bounds: false for the id (HXR025 remains at RunReadiness.cs:327/332 for stalls; HXR021 is the startup-bound rule); removing the 90 s/45 s caps is the spec's single effective deadline.
+- `Remaining(null)` returns 600 s: duplicate of chunk 1a rejection.
+- Changes outside Story 1.8 (retention, selected-test, `tests[]`): informational; the spec records them as concurrent work and the fix edits the spec.
+- Startup-task failure cause not surfaced, hash-case comparison, duplicated blocks, `HXP021` precedence parentheses, 1 ms lower bound (spec-approved), negative `StopTimeoutSeconds`, default `ImmutableArray`, path-spelling duplicates, `SingleOrDefault`, primary-resource naming, `retained` label, `executable.pid` type, `--mode package` help text: low or speculative; fixes add guards or complexity. Rejected.
