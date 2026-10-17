@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 8
 created: '2026-10-16'
-status: 'done'
+status: done
 baseline_commit: '5636b7f36e28e2731111b049f974b1fa951d1c36'
 workspace_baseline_commit: '53e2e2ec3e1ea67271867c4f4a1026d1198c42f6'
 route: 'dispatch'
@@ -426,3 +426,24 @@ Findings already recorded in chunks 1a/1b above (refresh-readiness cancellation,
 - CRLF-aware Git whitespace checks pass in Platform and Builds. Frozen approved intent and both original baseline identifiers remain unchanged. No public API, schema default, dependency pin, or unrelated runtime behavior changed in the final patch.
 
 - Local Builds completion revision: `b7a9c9ec9f57e098b408d3b940929ef4b160985b`. Its exact Conventional Commit message passed pinned commitlint 21.2.3 (`/tmp/story18-builds-commitlint.log`); the Platform completion message passed its pinned commitlint 21.2.1 (`/tmp/story18-platform-commitlint.log`).
+
+### Review Findings (code review 2026-10-17, re-run chunk 1: Builds `Runtime/Composition*` at b7a9c9e vs baseline 5636b7f, four layers)
+
+- [x] [Review][Patch] Expired startup task is not named (fixed: the diagnostic names the task; `failingTask` stays null to keep timeout distinct from a nonzero exit): `deadlineElapsed` breaks to the generic HXR021 timeout with `failingTask` null, so a task running at the deadline yields no resource and no task (violates the Timeout matrix row "same report", iteration 2 timeout-vs-exit distinction) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:972]
+- [x] [Review][Patch] Failed-run state no longer persists HXR023 when teardown leaves tagged resources: `ruleId = located[0].RuleId` replaced `clean ? rule : "HXR023"`; breaks "preserve rule ids" and the retried-`down` signal (restore `clean || retained ? ruleId : "HXR023"`) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1224]
+- [x] [Review][Patch] Add a CompositionEngineTests case where teardown leaves a tagged resource after a startup failure: assert HXR023 in returned diagnostics (non-retained yes, retained no) and the persisted state rule id; no test references HXR023 today [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1243]
+- [x] [Review][Patch] Timeout record persists only unready resources while early task failure persists all `readiness.Resources`; "record readiness results" should hold the full last result set in both [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1110]
+- [x] [Review][Patch] `ReadUnreadyProgressAsync` silently drops unready entries failing `IsSafeFailureText`; keep them with a placeholder name/detail so "every unready resource" holds [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:795]
+- [x] [Review][Defer] Selected-test machinery (`RecordTestOutcomeAsync` rewrites native report/hashes even when `prior` exists, fail-fast `outcome.lock` blocks state deletion in `down`, `KillOwnedWithoutWaiting` catch set, `WriteStateAsync` does not carry `TestRun` forward, `RetainOnFailure` handle not disposed) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:480] — deferred: belongs to concurrent selected-test work, not 1.8 ACs; settle by a selected-session test with a second terminal record
+- [x] [Review][Defer] `DownWithinBudgetAsync` (graceful stop, kill without wait, `recordWithdrawal: false`) has no test; every caller test stubs `PlatformDownOverride` [ModuleCommandExecutionService.cs:1167] — deferred: selected-test scope
+- [x] [Review][Defer] Startup-request edge cases: `ConfigureAsync` git `Win32Exception`/malformed declaration JSON, empty `GetFileName` identity in `ProbeMappingAsync`, silently dropped non-string task arguments, absent `executable` property [CompositionStartupRequest.cs, CompositionStartupTasks.cs] — deferred: unverified medium; settle with fixtures for git-absent and malformed declaration
+- [x] [Review][Defer] `DownAsync(runId)` lets a corrupt state file throw before the tagged-resource sweep [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:434] — deferred: unverified; settle with a corrupt-state `down` test
+
+#### Rejected
+- Closure discovery / setup outside `startupBound`: low. The command-level `CompositionStartupRequest` already bounds discovery (previously triaged); fix adds a second clock.
+- Wall-clock `DateTimeOffset` deadline vs monotonic; poll delay overshoot; non-positive preflight timeout: low, deadline is re-checked between steps and `Math.Max(1, …)` clamps the probe.
+- Deadline overflow / unbounded override: false. Resolver rejects `seconds > 3600` (R-chunk 1a).
+- `InvalidDataException` escaping after `runId` is set: false. The `when (runId is null)` filter falls through to the `runId is not null` catch, which tears down.
+- Diagnostics path leak, retained run unannounced, `DiagnosticsPath` absent on ready runs, duplicated withdrawal diagnostic, mirror append growth, test seams in options: low or cosmetic.
+
+Patches applied 2026-10-17 in Builds (`CompositionEngine.cs`, `CompositionStartupTasks.cs`): HXR023 persisted for unclean teardown, full observed readiness recorded on timeout with unsafe entries sanitized rather than dropped, expired task named. Added `UncleanTeardownAfterReadinessFailureReportsAndPersistsHxr023Async`; extended `StartupTaskIsStoppedAtTheDeadlineAsync`. Full `Hexalith.Builds.Module.Tests` run: 1054 passed, 0 failed. Chunk 1 only; AppHost/CLI/tests and platform-repo chunks remain unreviewed in this re-run.
