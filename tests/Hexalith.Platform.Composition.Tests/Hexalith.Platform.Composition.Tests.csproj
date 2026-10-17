@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
-  <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
+  <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /><PackageReference Include="NSubstitute" /><PackageReference Include="Dapr.Client" /></ItemGroup>
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj" Aliases="platformseed" />
@@ -9,9 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj" />
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj" />
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'"><PackageReference Include="Hexalith.EventStore.Client" /><PackageReference Include="Hexalith.EventStore.Server" /><PackageReference Include="Hexalith.EventStore.ServiceDefaults" /></ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'"><PackageReference Include="Hexalith.EventStore.Contracts" /><PackageReference Include="Hexalith.EventStore.Client" /><PackageReference Include="Hexalith.EventStore.Server" /><PackageReference Include="Hexalith.EventStore.ServiceDefaults" /></ItemGroup>
 </Project>

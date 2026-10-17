@@ -23,7 +23,11 @@ public static class PlatformAppModel
     {
         ArgumentNullException.ThrowIfNull(builder);
         if (bool.TryParse(builder.Configuration["Platform:Agents:Enabled"], out bool agents) && agents)
-            throw new InvalidOperationException("DependencyNotAvailable: EXT-HOST-1. Full Agents composition and accepted owner prerequisites are unavailable.");
+        {
+            if (!AgentsHostComposition.TryCompose(builder))
+                throw new InvalidOperationException("DependencyNotAvailable: EXT-HOST-1. Full Agents composition and accepted owner prerequisites are unavailable.");
+            return;
+        }
         bool works = bool.TryParse(builder.Configuration["Platform:Works:Enabled"], out bool selected) && selected;
         if (works && builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled cannot be combined with Platform:Works:Enabled; select one Development composition.");

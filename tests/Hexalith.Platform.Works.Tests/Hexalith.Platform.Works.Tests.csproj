@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj" /></ItemGroup>
   <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /></ItemGroup>

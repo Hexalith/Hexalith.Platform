@@ -42,7 +42,7 @@ if [[ -d "$ROOT/src/Hexalith.Agents.AppHost" \
   fail "Agents module hosting projects must not live in Hexalith.Platform"
 fi
 if [[ "$MODE" == Full ]]; then
-  fail "DependencyNotAvailable: EXT-HOST-1. Complete H1-H4 composition, production providers, accepted targets/commands and persisted qualification are unavailable."
+  python3 "$ROOT/eng/ext-host-1/verify_full.py" --artifacts-path "$ARTIFACTS_DIR"
 fi
 echo "Building local Platform scaffold (Debug)..."
 # The file-based AppHost requires full property syntax, rather than -warnaserror shorthand.
