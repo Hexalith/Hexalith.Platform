@@ -88,6 +88,84 @@ User-required incomplete status is preserved during review; this review does not
 | V2 | medium | patch | Pre-verified regression gap: no HTTP host authorization tests. Cover real channel/workload authorization status codes offline with allowed and denied callers. |
 | V3 | medium | patch | Pre-verified regression gap: fake-source authority and Python census bypass the C# metadata reader. Add an offline production-reader transport test with exact metadata route, mounted credential and verified local TLS. |
 
+### 2026-10-17 provider-key review
+
+| Finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| BH1 | medium | patch | `FixedTimeEquals` throws when the presented `dapr-api-token` length differs, so the request becomes 500 instead of 401. |
+| BH2 | medium | patch | Grouped with E22. `GetValue<string>()` throws on a non-string field. |
+| BH3 | low | reject | Installed `callTimeout` is 30 and the budgets are already 30. Wiring the field through would add parameters, and the installed value does not meet the defect. |
+| BH4 | false | reject | `AddExplicitHmac` stays unavailable while independent inputs are null. The HTTP routes use `CurrentInventoryAuthority`, which performs the checks. |
+| BH5 | false | reject | The captured native page has `toSequence: null`, which the folder allows. |
+| BH6 | false | reject | Native EventStore readiness is 200, so the scoped Redis components resolve `secretKeyRef`. |
+| BH7 | low | reject | The two configured projection channel names are explicit ACL entries. Changing the extra glob would widen access. |
+| BH8 | low | reject | Grouped with E5 and E6. The one-shot backup already completed and later enrollment hashes matched. A new backup branch is not a direct correction. |
+| BH9 | low | reject | Writers are ready. Refusing a later zero-replica journal adds a recovery branch. |
+| BH10 | medium | patch | `hmac.compare_digest` raises on unequal lengths inside cleanup, so the new policy delete is skipped. |
+| BH11 | medium | patch | `sys/capabilities-self` returns path capabilities under `data`; the root read classifies a permitted empty mount as failed. |
+| BH12 | low | reject | The namespace is ready with its Dapr ingress. Narrowing ports adds policy rules. |
+| BH13 | low | reject | The copied sidecars are running. A pinned manifest is new surface. |
+| BH14 | low | reject | The bootstrap client is the isolated IdP provisioning identity and is not an application credential. Disabling it adds a lifecycle. |
+| BH15 | low | reject | Inventory reads already stop at 1 MiB. Moving the EventStore limit adds startup ordering. |
+| BH16 | medium | patch | `SecurityObservation` resolves for any allowlisted tenant. The custody contract reserves it to tenant `system`. |
+| E1 | high | patch | `Map` returns `Revoked` while `verifyUntil` is open. The enum forbids signing and verification for that state. |
+| E2 | medium | patch | Native command statuses include `PublishFailed` and `TimedOut`. The poll treats only `Rejected`, `Failed`, and `DeadLettered` as terminal. |
+| E3 | false | reject | A malformed status throws before another POST. The durable phase stays unchanged. |
+| E4 | low | reject | A malformed stream throws after admission and does not submit again. The enrollment already completed. |
+| E5 | low | reject | Grouped with BH8. |
+| E6 | low | reject | Grouped with BH8. |
+| E7 | low | reject | A restore that is not accepting clients fails the command and the temporary server is shut down. |
+| E8 | low | reject | A missing label throws during quiesce; the recorded writer restore still runs. |
+| E9 | low | reject | The provisioner client exists. An empty-search guard is a new branch. |
+| E10 | low | reject | Same label crash as E8, after which recorded replicas are restored. |
+| E11 | low | reject | Recovery already reached native readiness 200. Adding a wait is a new step. |
+| E12 | low | reject | Live streams are one event. A size guard is extra branching. |
+| E13 | low | reject | Maybe-false and only low: kubectl emits complete forward lines. |
+| E14 | low | reject | Invalid JSON fails closed. A classifier branch is extra. |
+| E15 | low | reject | Grouped with E13. |
+| E16 | low | reject | Maybe-false and only low: terminate is followed by `communicate`. |
+| E17 | low | reject | The realm scopes were created. A missing-location guard is a new branch. |
+| E18 | medium | patch | The metadata policy is written before `create-orphan`, and a lost token response leaves the policy so the next run refuses it. |
+| E19 | low | reject | The copied sidecar started. A missing-flag guard is a new branch. |
+| E20 | medium | patch | `zip` compares stream hashes without requiring equal counts, so a shorter prefix can pass. |
+| E21 | medium | patch | Grouped with BH1. |
+| E22 | medium | patch | Grouped with BH2. |
+| E23 | low | reject | The installed deployment supplies `DAPR_API_TOKEN`. A missing-token startup guard is extra. |
+| E24 | false | reject | The authorized continuation installs the restricted component and runtime fields while independent authority stays null and qualification stays false. |
+| VG1 | medium | patch | Pre-verified: the active-provider connect callback and `Connection: close` are not the transport under test. |
+| VG2 | medium | patch | Pre-verified: enrollment tests never require `dapr-api-token`. |
+| VG3 | medium | patch | Pre-verified: no test enters `Prepared` with absent metadata, so the journal-before-write order is unpinned. |
+| VG4 | medium | patch | Pre-verified: the success subtest never checks the seven-day `custom_metadata` document. |
+| VG5 | medium | patch | Pre-verified: bearer tests substitute `OfflineWorkloadToken` and never construct `InventoryWorkloadToken`. |
+| VG6 | medium | patch | Pre-verified: `renew_hmac_data.renew` has no test, so a journaled token would not fail. |
+
+
+### 2026-10-17 operational-key continuation review
+
+All three independent review layers read `/tmp/ext-secrets-runtime-review-autbrhrj/changes.diff`; current continuation starts after `538bcaf4f254012372ec355d493da3ed3573017e`. Findings are individually triaged before grouping. Current installation remains unbound and unavailable.
+
+| Finding | Verdict | Route | Evidence / correction |
+| --- | --- | --- | --- |
+| OB1 | medium | patch | Separate token and Secret identity GETs can delete a concurrently replaced isolated credential. Use one selected-field observation and its exact deletion preconditions; same defect exists in the metadata publisher. |
+| OB2 | medium | patch | Capture records unhealthy native/provider/controller observations without denying success; explicitly distinguish expected unbound readiness 503 from failed liveness/native readiness. |
+| OB3 | medium | patch | The newly created Dapr component is outside preexisting-object comparisons; verify its exact installed spec, scope and recorded identity. |
+| OB4 | medium | patch | Installed/evidence allowlists can agree while diverging from the four verified key-plan tuples; require exact correspondence. |
+| OB5 | medium | patch | Lost token issuance can precede accessor journaling. Persist an IssuanceStarted record before submission and retain an explicit uncertainty/recovery state; never blindly issue again. |
+| OB6 | medium | patch | The installation lock ends before binding and rollout, permitting interleaved config/deployment mutation. Retain it through binding completion. |
+| OB7 | medium | patch | The CLI accepts a new immutable image but binding assumes a separate preload happened. Reuse the existing exact-image preload before the isolated deployment changes. |
+| OB8 | medium | patch | The old metadata-census helper still reads a pod known to serve stale 404. Route that read-only observation through the existing active service with the verified original TLS name. |
+| OB9 | medium | defer | Preexisting authorized inventory HTTP receiver uses GetValue<string> on unvalidated JSON field types, yielding 500 for malformed authenticated requests. It is unchanged by this continuation; fix shape validation and HTTP regressions before enabling externally enrolled callers. |
+| OB10 | medium | defer | Preexisting inventory/current-trust reads hardcode a 30-second server budget rather than shorter configured timeout. Existing custody adapter still bounds/releases no material after its deadline; enforce shorter source cancellation before enabling a shorter-budget authority. |
+| OE1 | medium | patch; grouped OB1 | Independent offline reproduction confirms replacement Secret deletion between the two GETs; same cleanup observation race. |
+| OE2 | medium | patch | replace_public rereads newer resourceVersion after bind captured an older Deployment spec; retain the version associated with the actual spec and deny concurrent edits. |
+| OE3 | medium | patch | When an already installed image is reused, changing startup-loaded ConfigMaps does not roll pods. Bind a deterministic config/allowlist checksum into the inventory pod template. |
+| OE4 | medium | defer | Preexisting repair_native_runtime.py can overwrite recorded nonzero writer replica counts on restart after scale-down. Preserve/reuse its original journal before any future repair invocation; the tool is not invoked in this continuation. |
+| OE5 | medium | patch | With four newly installed tuples, an early resolved proof can expire while later reads run. Recheck every resolved proof expiry before returning Bound. |
+| OE6 | medium | patch; grouped OB2 | Independent tracing reproduces capture success with failed readiness/controllers; same missing health assertions. |
+| OV1 | medium | patch | Pre-verified verification gap: shell-text tests pass if random material is replaced by a constant. Execute the shell offline and inspect the fixture write payload and output leakage. |
+| OV2 | medium | patch | Pre-verified regression gap: NativeCreated exact-receipt success and mismatched version/time rejection paths are not exercised. Add independently mutated resume cases. |
+| OV3 | medium | patch; grouped OB1 | Pre-verified regression gap: data credential publication cleanup is not tested. Cover failed/lost publication, revocation, wiping and preservation of a different Secret. |
+| OV4 | medium | patch; grouped OB2 | The verification reviewer independently traced health capture without assertions; same defect as OB2. |
 
 ## Verification
 
@@ -177,10 +255,23 @@ Return installed identities, versions, sanitized evidence, updated reference con
 
 ### Provider-key continuation tasks
 
-- [ ] Verify current native enrollment of tenants A and B, then provision the contract-derived operational HMAC keys through the provider-native path. Record only sanitized tenant/purpose/key/field references and positive numeric KV2 `version_id` mappings obtained from provider readback.
-- [ ] Install separate restricted provider-data credentials, the Dapr secret component, the exact-reference allowlist and the runtime binding. Retain the separate metadata credential. Enforce current enrollment, revocation, profile and validity checks through the completed custody/runtime adapters.
-- [ ] Install an existing approved profile, issuer/audience, public-trust, revocation or workload authority only when a genuinely enrolled independent implementation and its real governance prerequisites are already available. Leave each missing authority null.
-- [ ] Complete every independently executable isolated installation action for the remaining lifecycle/protection, private replay/compromise and qualification blockers. For each genuine external prerequisite, name the exact missing input, accountable owner and concrete next action, and prepare the available manifests and reference packets.
-- [ ] Write a fresh sanitized evidence directory and an updated strict runtime reference. Prove native metadata, permission and health checks; unchanged production resources, original tenant histories, AOF safeguards, scoped ACLs, timing and settled decisions; and zero ad hoc EXT-SECRETS-1 contract operations. Retain `in-progress`, `qualificationPassed=false` and `dependencyAvailable=false` while any required independent qualification evidence is missing.
+- [x] Verify current native enrollment of tenants A and B, then provision the contract-derived operational HMAC keys through the provider-native path. Record only sanitized tenant/purpose/key/field references and positive numeric KV2 `version_id` mappings obtained from provider readback.
+- [x] Install separate restricted provider-data credentials, the Dapr secret component, the exact-reference allowlist and the runtime binding. Retain the separate metadata credential. Enforce current enrollment, revocation, profile and validity checks through the completed custody/runtime adapters.
+- [x] Install an existing approved profile, issuer/audience, public-trust, revocation or workload authority only when a genuinely enrolled independent implementation and its real governance prerequisites are already available. Leave each missing authority null.
+- [x] Complete every independently executable isolated installation action for the remaining lifecycle/protection, private replay/compromise and qualification blockers. For each genuine external prerequisite, name the exact missing input, accountable owner and concrete next action, and prepare the available manifests and reference packets.
+- [x] Write a fresh sanitized evidence directory and an updated strict runtime reference. Prove native metadata, permission and health checks; unchanged production resources, original tenant histories, AOF safeguards, scoped ACLs, timing and settled decisions; and zero ad hoc EXT-SECRETS-1 contract operations. Retain `in-progress`, `qualificationPassed=false` and `dependencyAvailable=false` while any required independent qualification evidence is missing.
 
 Given current native enrollment, when operational HMAC provisioning runs, then each contract-derived purpose has a provider-native key whose readback supplies the exact reference and a positive numeric `version_id`, and the key value remains only in its custody store. Given those mappings, when the restricted provider-data credential, Dapr component, allowlist and runtime binding are installed, then resolution uses the completed adapters and denies any tuple that fails current enrollment, revocation, profile or validity checks. Given a genuinely enrolled independent authority with its real governance prerequisites, when that binding is installed, then its references come from that existing enrollment. Given a missing independent prerequisite, when installation finishes, then that reference stays null, the exact owner and next action are recorded, and qualification and availability stay false.
+
+
+### Operational provider-key continuation implementation
+
+Fresh evidence: `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-key-installation-20261017T100804405564Z`. The original tenant streams were read with the inventory's own restricted OAuth/Dapr credentials and matched their original hashes. Four separate operational keys now have verified native KV2 version `1`: TrustedEnvelope and ContentDigest for each original A/B tenant. Exact references, opaque mappings, native metadata, full-precision creation timestamps and bounded technical validity are in `operational-key-plan.json`, `provider-key-mappings.json` and `provider-native-metadata-readback.json`. SecurityObservation remains reserved to system and lacks real native enrollment/current authority; no substitute tenant was manufactured. These HMAC keys use ordinary snapshot semantics and do not establish all-copy lifecycle qualification.
+
+The initial key write's replica readback returned 404. Installation stopped and revoked its temporary credential. Recovery obtained only allowlisted public fields from the provider's native audit, computed the original provisioner accessor's provider audit hash through a minimal five-minute credential, and matched the original request/path/version/nanosecond creation time to active-provider metadata. `original-key-audit-recovery.json`, the pre-recovery original journal and the initial failure retain that history. No key replacement, removal or key-value read occurred. The audit credential and temporary provisioning policies were removed after revocation. Provisioning now fsyncs each native write receipt before readback, uses active-service readback, refuses generic uncertain-state adoption and validates exact plans before granting policy scope.
+
+The separate restricted exact-path data credential and custody-only Dapr component are installed, and the inventory allowlist has all four verified tuples. Its updated v5 image is `registry.hexalith.com/ext-secrets-1-inventory@sha256:a97d751cb61e3a7d03f392944616820b57fde839dc83dd047a40b5a2d2c7e87c`. Inventory metadata reads use active-provider sockets with verified original TLS/SNI and no pooled old-leader connection. Dapr-relative names and qualified provider metadata paths are separate, so the mount is supplied once. The read-only inventory receives no provider-data mount. `custody-provider-pod-fragment.json` is staged only; an independently enrolled custody executable/caller and complete current profile/revocation/trust still do not exist. Runtime fields fill only installed provider binding, credential reference and call timeout; independent authority fields remain null. The active-binding task stays unchecked.
+
+Fifty-three focused .NET inventory tests passed, including relative-name boundaries and native nanosecond timestamps; twenty focused Python provisioning and review tests passed. Native metadata, capability/lease metadata, public health, complete preservation and credential scans are captured separately. A later capture of the same evidence directory again reported inventory `InstalledUnbound`, readiness 503, native readiness 200, three unsealed OpenBao 2.6.2 nodes, eighteen healthy controllers, and zero contract or provider-data reads. `renew_hmac_data.py` provides the actual data-credential renewal action; its 24-hour initial lease/seven-day maximum and lack of a controller remain operating obligations. Independent lifecycle/protection, private replay/compromise, executor/observer/enrollment implementations and their governance inputs still block qualification. No Agents register edit, contract operation, owner acceptance or push is performed. Status remains `in-progress`; qualificationPassed=false and dependencyAvailable=false.
+
+The image named above was superseded by review fixes. The deployed inventory image is `registry.hexalith.com/ext-secrets-1-inventory@sha256:06e869c7dd6cf51ea63d5aa48f89c57b2c36021da02b2dc313df572b7640a856`. Root verification passed 53 .NET tests and 36 Python tests. The authoritative sanitized result is [the isolated final handoff](../../../../../hexalith-secrets-evidence/ext-secrets-1/runtime-foundations-final-20261017-_bv3fzwb/HANDOFF.md), with [runtime references](../../../../../hexalith-secrets-evidence/ext-secrets-1/runtime-foundations-final-20261017-_bv3fzwb/runtime-reference.json), [key mappings](../../../../../hexalith-secrets-evidence/ext-secrets-1/runtime-foundations-final-20261017-_bv3fzwb/provider-key-mappings.json), [per-input owners and actions](../../../../../hexalith-secrets-evidence/ext-secrets-1/runtime-foundations-final-20261017-_bv3fzwb/remaining-inputs.json) and [root verification](../../../../../hexalith-secrets-evidence/ext-secrets-1/runtime-foundations-final-20261017-_bv3fzwb/root-verification.json). The earlier provider-key directory remains historical. The active current-inventory authority task stays unchecked because independent profile, issuer, audience, revocation, public trust and enrolled custody workload evidence are still absent.

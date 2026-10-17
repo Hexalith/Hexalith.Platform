@@ -31,8 +31,21 @@ public sealed class InventoryAuthorityTests
         result.ShouldNotBeNull();
         result.Metadata.Version.ShouldBe("opaque-v7");
         result.SecretVersion.ShouldBe("1");
-        result.SecretReference.ShouldBe("ext-secrets-1-isolated/exact-tenant-purpose-key");
+        result.SecretReference.ShouldBe("exact-tenant-purpose-key");
         sources.EnrollmentReads.ShouldBe(2);
+        sources.MetadataReferences.ShouldBe(["ext-secrets-1-isolated/exact-tenant-purpose-key", "ext-secrets-1-isolated/exact-tenant-purpose-key"]);
+    }
+
+    [Fact]
+    public async Task ExactNativeNanosecondCreationIsNotTruncatedBeforeMapping()
+    {
+        JsonObject metadata = Metadata();
+        string native = DateTimeOffset.UtcNow.AddMinutes(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffffff") + "89Z";
+        metadata["versions"]!["1"]!["created_time"] = native;
+        JsonObject mappings = JsonNode.Parse(metadata["custom_metadata"]!["ext-secrets-1.versionMappings"]!.GetValue<string>())!.AsObject();
+        mappings["opaque-v7"]!["notBefore"] = native;
+        metadata["custom_metadata"]!["ext-secrets-1.versionMappings"] = mappings.ToJsonString();
+        (await Authority(new InventoryTestSources(metadata)).ResolveAsync("inventory", Scope, null, TestContext.Current.CancellationToken)).ShouldNotBeNull();
     }
 
     [Fact]
@@ -99,7 +112,7 @@ public sealed class InventoryAuthorityTests
             CurrentRevocationReference = "offline-revocation-port",
         };
         JsonArray permitted = [new JsonObject { ["tenantId"] = Scope.TenantId, ["purpose"] = Scope.Purpose.ToString(),
-            ["secretReference"] = "ext-secrets-1-isolated/exact-tenant-purpose-key", ["secretField"] = "hmac" }];
+            ["secretReference"] = "exact-tenant-purpose-key", ["secretField"] = "hmac" }];
         return new(configuration, new InventoryTestProfile(profile) { ChangeRevision = changingTrust }, sources, permitted, TimeProvider.System);
     }
 

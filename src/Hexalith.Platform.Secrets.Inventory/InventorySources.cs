@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -30,8 +31,30 @@ public sealed class InventorySources : IInventorySources, IDisposable
     {
         _configuration = configuration;
         _native = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(30) };
-        _provider = VerifiedClient(configuration["Inventory:ProviderCaFile"]!);
+        _provider = VerifiedClient(configuration["Inventory:ProviderCaFile"]!, ConnectActiveProviderAsync);
         _identity = VerifiedClient(configuration["Inventory:RegistryCaFile"]!);
+    }
+
+    private static Func<string, int, CancellationToken, ValueTask<Socket>> OpenProviderSocket = static async (host, port, cancellationToken) =>
+    {
+        var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+        try
+        {
+            await socket.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
+            return socket;
+        }
+        catch { socket.Dispose(); throw; }
+    };
+
+    private static async ValueTask<Stream> ConnectActiveProviderAsync(SocketsHttpConnectionContext context, CancellationToken cancellationToken)
+    {
+        // Keep the original certificate/SNI host while routing metadata reads to
+        // the existing leader service. A replica's stale 404/revocation view is
+        // not a current inventory observation.
+        if (context.DnsEndPoint.Host != "hexalith-keys.openbao.svc.cluster.local" || context.DnsEndPoint.Port != 8200)
+        { throw new HttpRequestException("Unexpected provider metadata authority."); }
+        Socket socket = await OpenProviderSocket("hexalith-keys-active.openbao.svc", 8200, cancellationToken).ConfigureAwait(false);
+        return new NetworkStream(socket, ownsSocket: true);
     }
 
     /// <summary>Uses caller-owned transports for isolated transport verification.</summary>
@@ -64,6 +87,7 @@ public sealed class InventorySources : IInventorySources, IDisposable
         if (segments.Length == 0 || segments.Any(part => part.Length == 0 || part is "." or ".." || part.Any(char.IsControl))) { return null; }
         string path = string.Join('/', segments.Select(Uri.EscapeDataString));
         using var request = new HttpRequestMessage(HttpMethod.Get, "https://hexalith-keys.openbao.svc.cluster.local:8200/v1/" + mount + "metadata/" + path);
+        request.Headers.ConnectionClose = true; // Resolve the active service afresh after any leadership change.
         string credential = await File.ReadAllTextAsync(_configuration["Inventory:ProviderCredentialFile"]!, cancellationToken).ConfigureAwait(false);
         request.Headers.Add("X-Vault-Token", credential.Trim());
         using HttpResponseMessage response = await _provider.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);

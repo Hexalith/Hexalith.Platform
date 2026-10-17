@@ -35,7 +35,10 @@ public static class InventoryHttp
             if (context.Request.Path.Value is "/alive" or "/ready" or "/health") { await next(); return; }
             string? expected = app.Configuration["APP_API_TOKEN"];
             string received = context.Request.Headers["dapr-api-token"].ToString();
-            if (string.IsNullOrWhiteSpace(expected) || !CryptographicOperations.FixedTimeEquals(Encoding.UTF8.GetBytes(expected), Encoding.UTF8.GetBytes(received)))
+            byte[] expectedBytes = Encoding.UTF8.GetBytes(expected ?? "");
+            byte[] receivedBytes = Encoding.UTF8.GetBytes(received);
+            if (string.IsNullOrWhiteSpace(expected) || expectedBytes.Length != receivedBytes.Length
+                || !CryptographicOperations.FixedTimeEquals(expectedBytes, receivedBytes))
             { context.Response.StatusCode = 401; return; }
             await next();
         });
@@ -47,17 +50,19 @@ public static class InventoryHttp
         app.MapGet("/ready", async (InventoryReadiness readiness, CancellationToken token) =>
             await readiness.ReadyAsync(token) ? Results.Ok(new { status = "Bound" }) : Results.StatusCode(503));
         app.MapPost("/query-profile", (CurrentInventoryAuthority authority, JsonObject request) =>
-            request["profileReference"]?.GetValue<string>() is { } reference && authority.GetCurrentProfile(reference) is { } profile
+            QueryText(request, "profileReference", required: true, out string? reference) && authority.GetCurrentProfile(reference!) is { } profile
                 ? Results.Ok(new { issuer = profile.Issuer, audience = profile.Audience, version = profile.Version, notBefore = profile.NotBefore, validUntil = profile.ValidUntil })
                 : Results.StatusCode(503)).RequireAuthorization("enrolled-inventory-caller");
         app.MapPost("/query-inventory", async (CurrentInventoryAuthority authority, JsonObject request, CancellationToken token) =>
         {
-            if (request["tenantId"]?.GetValue<string>() is not { } tenant || request["purpose"]?.GetValue<string>() is not { } purpose
+            if (!QueryText(request, "tenantId", required: true, out string? tenant)
+                || !QueryText(request, "purpose", required: true, out string? purpose)
                 || !Enum.TryParse(purpose, out PlatformHmacPurpose parsed) || parsed.ToString() != purpose
-                || request["authorityReference"]?.GetValue<string>() is not { } reference
-                || request["storeName"]?.GetValue<string>() != runtime.ProviderBinding
-                || request["credentialReference"]?.GetValue<string>() != runtime.HmacCredentialReference) { return Results.StatusCode(503); }
-            DaprPlatformHmacInventory? proof = await authority.ResolveAsync(reference, new(tenant, parsed), request["version"]?.GetValue<string>(), token);
+                || !QueryText(request, "authorityReference", required: true, out string? reference)
+                || !QueryText(request, "storeName", required: true, out string? store) || store != runtime.ProviderBinding
+                || !QueryText(request, "credentialReference", required: true, out string? credential) || credential != runtime.HmacCredentialReference
+                || !QueryText(request, "version", required: false, out string? version)) { return Results.StatusCode(503); }
+            DaprPlatformHmacInventory? proof = await authority.ResolveAsync(reference!, new(tenant!, parsed), version, token);
             return proof is null ? Results.StatusCode(503) : Results.Ok(new
             {
                 authorityReference = proof.AuthorityReference, revision = proof.Revision, tenantId = proof.Scope.TenantId,
@@ -67,5 +72,13 @@ public static class InventoryHttp
                 secretVersion = proof.SecretVersion, secretField = proof.SecretField, observedAt = proof.ObservedAt, validUntil = proof.ValidUntil,
             });
         }).RequireAuthorization("enrolled-inventory-caller");
+    }
+
+    private static bool QueryText(JsonObject request, string name, bool required, out string? text)
+    {
+        text = null;
+        JsonNode? node = request[name];
+        if (node is null) { return !required; }
+        return node is JsonValue value && value.TryGetValue(out text);
     }
 }

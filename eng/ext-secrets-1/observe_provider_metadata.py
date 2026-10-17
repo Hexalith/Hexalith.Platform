@@ -32,7 +32,7 @@ def observe(installer):
     token = installer.secret_field('ext-secrets-1-inventory-metadata-token', 'token')
     ca = kjson('get', 'configmap', 'ext-secrets-1-openbao-ca', '-n', NS)['data']['ca.pem']
     context = ssl.create_default_context(cadata=ca)
-    process = subprocess.Popen(KUBE + ['port-forward', '-n', 'openbao', 'pod/hexalith-keys-0', ':8200', '--address=127.0.0.1'],
+    process = subprocess.Popen(KUBE + ['port-forward', '-n', 'openbao', 'service/hexalith-keys-active', ':8200', '--address=127.0.0.1'],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         selector = selectors.DefaultSelector()
@@ -67,7 +67,8 @@ def observe(installer):
         paths = ['ext-secrets-1-isolated/metadata', 'ext-secrets-1-isolated/metadata/*',
                  'ext-secrets-1-isolated/data/*', 'secret/data/*', 'sys/mounts', 'sys/policies/acl/*']
         capability_status, response = request('POST', 'sys/capabilities-self', {'paths': paths})
-        capabilities = {path: sorted(response.get(path, [])) for path in paths} if capability_status == 200 else {}
+        capability_body = response.get('data') if isinstance(response, dict) and isinstance(response.get('data'), dict) else response
+        capabilities = {path: sorted(capability_body.get(path, [])) for path in paths} if capability_status == 200 and isinstance(capability_body, dict) else {}
         status, document = request('LIST', 'ext-secrets-1-isolated/metadata')
         result = classify(status, document, capabilities)
         lookup_status, lookup = request('GET', 'auth/token/lookup-self')

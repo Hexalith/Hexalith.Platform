@@ -143,6 +143,32 @@ class ReviewProvisioningTests(unittest.TestCase):
             self.assertIn('~' + app + '||*', acl)
             self.assertNotIn('~' + ('tenants' if app == 'eventstore' else 'eventstore') + '||*', acl)
 
+    def test_publish_failed_and_timed_out_stop_the_status_poll(self):
+        for terminal in ('PublishFailed', 'TimedOut'):
+            registry, request = self.registry('Admitted')
+            registry.call.side_effect = lambda method, path, *args, status=terminal: {'messageId': 'original-message', 'status': status} if method == 'GET' else {}
+            with self.assertRaisesRegex(RuntimeError, 'native-command-terminal:' + terminal):
+                registry.process(request)
+            self.assertEqual(1, sum(call.args[0] == 'GET' for call in registry.call.call_args_list))
+
+    def test_hmac_data_renewal_refuses_other_policies_and_omits_the_token(self):
+        import renew_hmac_data as hmac_renewal
+        secret = b'offline-hmac-token'
+        encoded = base64.b64encode(secret)
+        with patch.object(hmac_renewal, 'kube', return_value=SimpleNamespace(stdout=encoded)), \
+                patch.object(hmac_renewal, 'application_request', return_value=SimpleNamespace(stdout=json.dumps({'data': {'policies': ['other-policy']}}).encode())) as called:
+            with self.assertRaisesRegex(RuntimeError, 'unexpected-isolated-data-credential-policy'):
+                hmac_renewal.renew(self.directory)
+        self.assertEqual(called.call_count, 1)
+        lease = {'accessor': 'public-accessor', 'policies': ['ext-secrets-1-hmac-data-read'], 'ttl': 3600, 'explicit_max_ttl': 86400, 'renewable': True}
+        responses = [{'data': lease}, {'auth': {'lease_duration': 3600, 'client_token': secret.decode()}}, {'data': lease}]
+        with patch.object(hmac_renewal, 'kube', return_value=SimpleNamespace(stdout=encoded)), \
+                patch.object(hmac_renewal, 'application_request', side_effect=lambda *_args, **_kwargs: SimpleNamespace(stdout=json.dumps(responses.pop(0)).encode())):
+            hmac_renewal.renew(self.directory)
+        journal = (self.directory / 'hmac-data-credential-renewal.json').read_bytes()
+        self.assertNotIn(secret, journal)
+        self.assertNotIn(encoded, journal)
+
     def test_credential_renewal_never_records_returned_token(self):
         response = {'auth': {'client_token': 'offline-private-token', 'accessor': 'public-accessor', 'lease_duration': 86400, 'renewable': True}}
         with patch.object(renewal, 'kube', return_value=SimpleNamespace(stdout=base64.b64encode(b'offline-private-token'))), patch.object(renewal, 'application_request', return_value=SimpleNamespace(stdout=json.dumps(response).encode())):

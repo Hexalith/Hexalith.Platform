@@ -95,7 +95,7 @@ class NativeRegistry:
             durable_write(path, record)
             if status.get('status') == 'Completed':
                 return record['originalStatus']
-            if status.get('status') in ['Rejected', 'Failed', 'DeadLettered']:
+            if status.get('status') in ['Rejected', 'Failed', 'DeadLettered', 'PublishFailed', 'TimedOut']:
                 raise RuntimeError('native-command-terminal:' + str(status.get('status')) + ':' + str(status.get('rejectionEventType')))
             time.sleep(1)
         raise RuntimeError('native-command-outcome-unresolved:' + request['messageId'])
