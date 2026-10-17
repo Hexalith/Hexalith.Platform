@@ -37,24 +37,24 @@ public sealed partial class PlatformAppModelTests
         Task<HealthReport> checking = app.Services.GetRequiredService<HealthCheckService>().CheckHealthAsync(registration => registration.Name == key, bound.Token);
         try
         {
-            using TcpClient client = await listener.AcceptTcpClientAsync(bound.Token);
+            using TcpClient client = await listener.AcceptTcpClientAsync(bound.Token).ConfigureAwait(true);
             NetworkStream stream = client.GetStream();
             byte[] request = new byte[6];
-            await stream.ReadExactlyAsync(request, bound.Token);
+            await stream.ReadExactlyAsync(request, bound.Token).ConfigureAwait(true);
             request.ShouldBe("PING\r\n"u8.ToArray());
             // A fragmented response still has to complete the protocol frame before it is accepted.
-            await stream.WriteAsync(healthy ? "+PO"u8.ToArray() : "-ER"u8.ToArray(), bound.Token);
-            await Task.Delay(20, bound.Token);
+            await stream.WriteAsync(healthy ? "+PO"u8.ToArray() : "-ER"u8.ToArray(), bound.Token).ConfigureAwait(true);
+            await Task.Delay(20, bound.Token).ConfigureAwait(true);
             checking.IsCompleted.ShouldBeFalse();
-            await stream.WriteAsync(healthy ? "NG\r\n"u8.ToArray() : "R unavailable\r\n"u8.ToArray(), bound.Token);
-            HealthReport report = await checking;
+            await stream.WriteAsync(healthy ? "NG\r\n"u8.ToArray() : "R unavailable\r\n"u8.ToArray(), bound.Token).ConfigureAwait(true);
+            HealthReport report = await checking.ConfigureAwait(true);
             report.Entries.Single().Key.ShouldBe(key);
             report.Status.ShouldBe(healthy ? HealthStatus.Healthy : HealthStatus.Unhealthy);
         }
         finally
         {
-            await bound.CancelAsync();
-            try { _ = await checking; }
+            await bound.CancelAsync().ConfigureAwait(true);
+            try { _ = await checking.ConfigureAwait(true); }
             catch (OperationCanceledException) { }
         }
     }

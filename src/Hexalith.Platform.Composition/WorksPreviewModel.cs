@@ -17,6 +17,7 @@ public static class WorksPreviewModel
     /// <summary>Adds the existing Works graph.</summary>
     public static void Compose(IDistributedApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         // The Works migration lane resolves sibling source projects until producer packages and a clean-checkout
         // deployment contract exist. A missing source tree is a failed composition, never an empty green host.
         string worksRoot = Path.GetFullPath(builder.Configuration["Platform:Works:SourceRoot"]

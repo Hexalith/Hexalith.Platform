@@ -36,6 +36,8 @@ public static class PlatformServerBindings
     /// <summary>Resolves all enabled servers, including their declared readiness and tasks.</summary>
     public static IReadOnlyList<PlatformServerBinding> Resolve(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, PlatformDaprBindings? dapr = null)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(declarations);
         dapr ??= PlatformDaprBindings.Resolve(declarations);
         List<PlatformServerBinding> result = [];
         Dictionary<string, string> secretValues = new(StringComparer.Ordinal);

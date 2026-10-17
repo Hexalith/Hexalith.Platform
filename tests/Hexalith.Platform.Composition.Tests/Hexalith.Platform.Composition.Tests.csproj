@@ -5,7 +5,7 @@
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj" Aliases="platformseed" />
-    <ProjectReference Include="../../references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj" Aliases="buildsseed" />
+    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj" Aliases="buildsseed" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">

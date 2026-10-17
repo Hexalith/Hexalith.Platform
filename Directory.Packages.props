@@ -1,6 +1,10 @@
 <Project>
   <PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally><CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled></PropertyGroup>
+  <!-- Resolve after CustomAfterMicrosoftCommonProps applies the command's mapping. -->
+  <PropertyGroup>
+    <HexalithBuildsResolvedRoot>$([System.IO.Path]::GetFullPath('$(HexalithBuildsRoot)', '$(MSBuildThisFileDirectory)'))</HexalithBuildsResolvedRoot>
+  </PropertyGroup>
+  <Import Project="$(HexalithBuildsResolvedRoot)/Props/Directory.Packages.props" />
+  <!-- Keep the EventStore source graph's package compatibility adjustments. -->
   <Import Project="$(HexalithEventStoreRoot)/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' == 'true'" />
-  <Import Project="../Hexalith.Builds/Props/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' != 'true' and Exists('../Hexalith.Builds/Props/Directory.Packages.props')" />
-  <Import Project="references/Hexalith.Builds/Props/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithVersionsLoaded)' != 'true'" />
 </Project>

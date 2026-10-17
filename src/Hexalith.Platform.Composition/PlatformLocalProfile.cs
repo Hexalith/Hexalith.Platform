@@ -10,6 +10,8 @@ public static class PlatformLocalProfile
     /// <summary>Resolves all required inputs and converts structured sections to .NET environment keys.</summary>
     public static Dictionary<string, string> Bind(PlatformCompositionOptions options, PlatformModuleDeclaration module, string server)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(module);
         Dictionary<string, string> environment = Bind(options, module, server, new Dictionary<string, string>(StringComparer.Ordinal));
         foreach (var pair in PlatformDaprBindings.Resolve([module]).Environment(PlatformDeclarationSet.Id(module.Declaration), server)) environment[pair.Key] = pair.Value;
         return environment;

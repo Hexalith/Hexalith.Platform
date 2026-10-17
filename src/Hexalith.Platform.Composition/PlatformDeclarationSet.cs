@@ -8,8 +8,10 @@ using Hexalith.Builds.Tooling.Runtime;
 public static class PlatformDeclarationSet
 {
     /// <summary>Loads all declarations before selecting the minimum environment.</summary>
-    public static IReadOnlyList<PlatformModuleDeclaration> Load(PlatformCompositionOptions options) =>
-        CompositionDeclarationClosure.Load(new CompositionDeclarationOptions(options.Mapping, options.DeclarationPaths)
+    public static IReadOnlyList<PlatformModuleDeclaration> Load(PlatformCompositionOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        return CompositionDeclarationClosure.Load(new CompositionDeclarationOptions(options.Mapping, options.DeclarationPaths)
         {
             PlatformRoot = options.PlatformRoot,
             ActiveModule = options.ActiveModule,
@@ -19,6 +21,7 @@ public static class PlatformDeclarationSet
             ReleaseCommits = options.ReleaseCommits,
             ReleaseSnapshotHashes = options.ReleaseSnapshotHashes,
         });
+    }
 
     /// <summary>Returns the declared module identity.</summary>
     public static string Id(JsonElement declaration) => CompositionDeclarationClosure.Id(declaration);

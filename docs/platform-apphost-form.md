@@ -3,6 +3,26 @@ Platform keeps `apphost.cs` as its thin file AppHost. It references
 refusal, Works remains an exclusive opt-in preview, and the default branch calls
 the same declaration model as the Builds runner.
 
+The bootstrap resolves `HexalithBuildsRoot` once for its catalog and tooling
+project. An existing sibling `Hexalith.Builds` checkout takes precedence, matching
+the workspace catalog convention; otherwise it uses the repository's existing
+`references/Hexalith.Builds` checkout. An explicit MSBuild property selects both;
+relative overrides resolve against the Platform root for every consuming project.
+Normalization runs after Builds applies `CustomAfterMicrosoftCommonProps`, so a
+command-selected mapping controls the catalog, tooling and test seed together.
+Missing dependencies fail without initializing nested submodules. The pin verifier
+uses the same default precedence; pass `--catalog` for an explicit root override.
+The runner's `BuildsToolingAssemblyPath` continues to select its own tooling binary.
+File-AppHost SDK and package directives must still match the chosen Builds catalog.
+Run `python3 -m unittest discover -s eng -p 'test_host_builds_resolution.py' -v`
+and `python3 -m unittest discover -s eng -p 'test_verify_platform_pins.py' -v`
+to verify bootstrap resolution and pin refusal without starting services.
+This resolves build-time inputs only. Runtime package image-version lookup and
+the opt-in Builds live smoke still have nested checkout assumptions; neither is
+qualified for this sibling-only workspace by a passing bootstrap build. Normal
+workspace admission still requires the selected Platform release identity,
+Builds pin, tool range and declaration mapping before resources are added.
+
 `PlatformAppModel.Prepare` validates the whole declaration set and resolves all
 enabled servers, full configuration keys, project or image identities, readiness
 checks and executable task metadata before adding resources. Source composition
@@ -18,8 +38,11 @@ The file entry reads `Platform:ActiveModule` to choose a module; without it, the
 six-server reference environment is selected. `Platform:DeclarationPath` supplies
 a declaration to validate; `Platform:ActiveModule` must name it to select it.
 Without that selection, the six-server reference environment is selected. When no
-source mapping path is supplied, the file entry resolves the mapping from that
-declaration's workspace. That workspace must map EventStore, Tenants and Memories
+source mapping path is supplied, the file entry resolves the mapping from the
+explicit declaration's workspace, or anchors on `hexalith-platform.json` in the
+AppHost directory when no declaration is supplied. Builds resolves the outermost
+workspace and its direct references once; owner declarations come from that mapping,
+without assuming references nested inside Platform. That workspace must map EventStore, Tenants and Memories
 for the reference environment; missing owners refuse by identity before resources
 are added.
 `Platform:SourceMapping:Path` and

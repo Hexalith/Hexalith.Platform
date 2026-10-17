@@ -14,6 +14,8 @@ public sealed class SdkReadinessHealthCheck(EndpointReference endpoint, IHttpCli
     /// <param name="resource">The resource exposing the SDK readiness route.</param>
     public static void Attach(IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> resource)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(resource);
         string name = resource.Resource.Name + "/ready";
         builder.Services.AddHttpClient("platform-sdk-readiness", client => client.Timeout = TimeSpan.FromSeconds(5));
         builder.Services.AddHealthChecks().Add(new HealthCheckRegistration(name,
@@ -37,17 +39,20 @@ public sealed class SdkReadinessHealthCheck(EndpointReference endpoint, IHttpCli
             if (!response.IsSuccessStatusCode) return HealthCheckResult.Unhealthy("SDK readiness transport refused admission.");
             if (response.Content.Headers.ContentLength is > 65536)
                 return HealthCheckResult.Unhealthy("SDK readiness response exceeds the Platform bound.");
-            await using Stream stream = await response.Content.ReadAsStreamAsync(boundedToken).ConfigureAwait(false);
-            byte[] buffer = new byte[65537];
-            int count = 0;
-            while (count < buffer.Length)
+            Stream stream = await response.Content.ReadAsStreamAsync(boundedToken).ConfigureAwait(false);
+            await using (stream.ConfigureAwait(false))
             {
-                int read = await stream.ReadAsync(buffer.AsMemory(count), boundedToken).ConfigureAwait(false);
-                if (read == 0) break;
-                count += read;
+                byte[] buffer = new byte[65537];
+                int count = 0;
+                while (count < buffer.Length)
+                {
+                    int read = await stream.ReadAsync(buffer.AsMemory(count), boundedToken).ConfigureAwait(false);
+                    if (read == 0) break;
+                    count += read;
+                }
+                if (count > 65536) return HealthCheckResult.Unhealthy("SDK readiness response exceeds the Platform bound.");
+                return EvaluateBody(System.Text.Encoding.UTF8.GetString(buffer, 0, count));
             }
-            if (count > 65536) return HealthCheckResult.Unhealthy("SDK readiness response exceeds the Platform bound.");
-            return EvaluateBody(System.Text.Encoding.UTF8.GetString(buffer, 0, count));
         }
         catch (Exception exception) when (exception is HttpRequestException or JsonException or OperationCanceledException or InvalidOperationException)
         {
@@ -59,6 +64,7 @@ public sealed class SdkReadinessHealthCheck(EndpointReference endpoint, IHttpCli
     /// <param name="body">The bounded SDK readiness response.</param>
     public static HealthCheckResult EvaluateBody(string body)
     {
+        ArgumentNullException.ThrowIfNull(body);
         string status = body.Trim();
         if (status is "Healthy" or "Degraded" or "Unhealthy")
         {

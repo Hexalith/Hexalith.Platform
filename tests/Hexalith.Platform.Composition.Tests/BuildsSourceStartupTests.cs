@@ -21,7 +21,7 @@ public sealed class BuildsSourceStartupTests
         while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
         string root = directory!.FullName;
         string manifest = Path.Combine(root, "references", PlatformServerBindings.Repository(activeModule), "module", "hexalith.module-manifest.v2.json");
-        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
+        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken).ConfigureAwait(true);
         string workspace = Path.Combine(Path.GetTempPath(), "platform-builds-smoke-" + Guid.NewGuid().ToString("N"));
         string log = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_BUILDS_SMOKE_LOG") ?? Path.Combine(workspace, "apphost.log");
         CompositionEngine engine = new(new CompositionEngineOptions(
@@ -38,7 +38,7 @@ public sealed class BuildsSourceStartupTests
         CompositionRunSession? session = null;
         try
         {
-            CompositionStartResult started = await engine.StartAsync(manifest, TestContext.Current.CancellationToken);
+            CompositionStartResult started = await engine.StartAsync(manifest, TestContext.Current.CancellationToken).ConfigureAwait(true);
             session = started.Session;
             string diagnostics = string.Join(Environment.NewLine, started.Result.Diagnostics.Select(diagnostic => diagnostic.RuleId + ": " + diagnostic.Message));
             if (!started.IsReady && File.Exists(log)) diagnostics += Environment.NewLine + string.Join(Environment.NewLine, File.ReadLines(log).TakeLast(80));
@@ -61,7 +61,7 @@ public sealed class BuildsSourceStartupTests
         {
             if (session is not null)
             {
-                CompositionDownResult stopped = await engine.DownAsync(session, CancellationToken.None);
+                CompositionDownResult stopped = await engine.DownAsync(session, CancellationToken.None).ConfigureAwait(true);
                 stopped.Result.Outcome.ExitCode.ShouldBe(ToolExitCode.Success, string.Join(Environment.NewLine, stopped.Result.Diagnostics.Select(diagnostic => diagnostic.Message)));
                 stopped.Remaining.IsEmpty.ShouldBeTrue();
                 Directory.Exists(session.Plan.Workspace).ShouldBeFalse();

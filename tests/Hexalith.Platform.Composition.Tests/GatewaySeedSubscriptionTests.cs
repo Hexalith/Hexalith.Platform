@@ -29,7 +29,7 @@ public sealed class GatewaySeedSubscriptionTests
 
     private static async Task AssertSeedAsync<TEntryPoint>(bool declarative) where TEntryPoint : class
     {
-        await using WebApplicationFactory<TEntryPoint> factory = new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
+        WebApplicationFactory<TEntryPoint> factory = new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
         {
             builder.UseEnvironment("Development");
             builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(new Dictionary<string, string?>
@@ -55,8 +55,9 @@ public sealed class GatewaySeedSubscriptionTests
                 services.Remove(hosted);
             });
         });
+        await using var factoryLifetime = factory.ConfigureAwait(true);
         using HttpClient client = factory.CreateClient();
-        using HttpResponseMessage response = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken);
+        using HttpResponseMessage response = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(true);
         RouteEndpoint receiver = factory.Services.GetRequiredService<EndpointDataSource>().Endpoints.OfType<RouteEndpoint>().Single(endpoint => endpoint.RoutePattern.RawText == "projections/changed");
         if (declarative)
         {
@@ -66,7 +67,7 @@ public sealed class GatewaySeedSubscriptionTests
         else
         {
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
-            using JsonDocument subscriptions = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
+            using JsonDocument subscriptions = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken).ConfigureAwait(true));
             JsonElement projection = subscriptions.RootElement.EnumerateArray().Single(subscription => subscription.GetProperty("topic").GetString() == "*.*.projection-changed");
             projection.EnumerateObject().Single(property => property.Name.Equals("pubsubname", StringComparison.OrdinalIgnoreCase)).Value.GetString().ShouldBe("configured-seed-events");
             receiver.Metadata.GetMetadata<ITopicMetadata>()!.PubsubName.ShouldBe("configured-seed-events");

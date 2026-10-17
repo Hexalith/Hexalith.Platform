@@ -35,7 +35,7 @@ public sealed class WriterProtocolStartupTests
         }, statusCode: 503));
         app.MapPost("/api/v1/admin/projections/delivery-writer-protocol/activate", async (HttpRequest request) =>
         {
-            using JsonDocument attestation = await JsonDocument.ParseAsync(request.Body);
+            using JsonDocument attestation = await JsonDocument.ParseAsync(request.Body).ConfigureAwait(true);
             attestation.RootElement.GetProperty("cutoverCommit").GetString().ShouldBe("hexalith-g4-run-unit-test");
             attestation.RootElement.GetProperty("writersQuiesced").GetBoolean().ShouldBeTrue();
             string compactToken = request.Headers.Authorization.ToString()["Bearer ".Length..];

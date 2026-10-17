@@ -16,7 +16,7 @@
     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
-    <ProjectReference Include="../../references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
+    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />

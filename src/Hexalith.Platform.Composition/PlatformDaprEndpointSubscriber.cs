@@ -37,7 +37,7 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
                 if (certificateDirectory is not null)
                 {
                     foreach (var credential in new[] { ("DAPR_TRUST_ANCHORS", "ca.crt"), ("DAPR_CERT_CHAIN", "issuer.crt"), ("DAPR_CERT_KEY", "issuer.key") })
-                        context.EnvironmentVariables[credential.Item1] = await DaprSelfHostedMtls.ReadCredentialAsync(certificateDirectory, credential.Item2, 20, TimeSpan.FromMilliseconds(500), static (delay, token) => Task.Delay(delay, token), context.CancellationToken);
+                        context.EnvironmentVariables[credential.Item1] = await DaprSelfHostedMtls.ReadCredentialAsync(certificateDirectory, credential.Item2, 20, TimeSpan.FromMilliseconds(500), static (delay, token) => Task.Delay(delay, token), context.CancellationToken).ConfigureAwait(false);
                     context.EnvironmentVariables["DAPR_CONTROLPLANE_TRUST_DOMAIN"] = "localhost";
                     context.EnvironmentVariables["DAPR_CONTROLPLANE_NAMESPACE"] = "default";
                     context.EnvironmentVariables["NAMESPACE"] = "default";

@@ -38,13 +38,14 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
     /// <summary>Gets the canonical local profile digest.</summary>
     public string ProfileHash { get; }
     /// <summary>Gets the explicitly selected runtime version.</summary>
-    public string RuntimeVersion => "1.18.1";
+    public static string RuntimeVersion => "1.18.1";
     /// <summary>Gets or sets the allocated lifecycle sidecar port, never a caller-supplied endpoint.</summary>
     internal int DaprHttpPort { get; set; }
 
     /// <summary>Selects only the declared source-mode experiment from a Platform-owned run.</summary>
     public static PlatformRetentionProfile? Select(CompositionRunPlan plan, string platformRoot)
     {
+        ArgumentNullException.ThrowIfNull(plan);
         if (plan.SelectedTest is not { ModuleId: "memories", Name: "functional-retention" } selected) return null;
         if (selected.Mode != "source" || selected.DaprRuntimeVersion != "1.18.1" || plan.SourceMapping is not { Mode: WorkspaceMode.Source } mapping
             || Path.GetFullPath(mapping.Root) != Path.GetFullPath(platformRoot)
@@ -204,7 +205,7 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(accessPath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
         string? backend = null;
         string? containerId = null;
-        CompositionProcessResult inspection = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["inspect", "hexalith-retention-" + _plan.RunId], null, null), TimeSpan.FromSeconds(10), cancellationToken);
+        CompositionProcessResult inspection = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["inspect", "hexalith-retention-" + _plan.RunId], null, null), TimeSpan.FromSeconds(10), cancellationToken).ConfigureAwait(false);
         if (inspection.ExitCode == 0 && !inspection.TimedOut)
         {
             using JsonDocument document = JsonDocument.Parse(inspection.Output);
@@ -215,11 +216,11 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
                 containerId = container.GetProperty("Id").GetString();
                 string imageId = container.GetProperty("Image").GetString()!;
                 if (!System.Text.RegularExpressions.Regex.IsMatch(imageId, "^sha256:[a-f0-9]{64}$")) throw new InvalidDataException("The loaded PostgreSQL image identity is unavailable.");
-                CompositionProcessResult imageResult = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["image", "inspect", imageId], null, null), TimeSpan.FromSeconds(10), cancellationToken);
+                CompositionProcessResult imageResult = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["image", "inspect", imageId], null, null), TimeSpan.FromSeconds(10), cancellationToken).ConfigureAwait(false);
                 if (imageResult.ExitCode != 0 || imageResult.TimedOut) throw new InvalidDataException("The loaded PostgreSQL image cannot be inspected locally.");
                 using JsonDocument actualImage = JsonDocument.Parse(imageResult.Output);
                 string actualImageId = BoundBackendImage(container, actualImage.RootElement[0]) ?? throw new InvalidDataException("The loaded PostgreSQL image does not bind the approved digest.");
-                CompositionProcessResult sql = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["exec", "--env", "PGSSLMODE=verify-full", "--env", "PGSSLROOTCERT=/run/retention/ca.pem", "--env", "PGPASSFILE=/run/retention/pgpass", containerId!, "psql", "-h", "127.0.0.1", "-U", "telemetry_observer", "-d", "telemetry", "-w", "-XAt", "-c", "SELECT current_setting('server_version_num'),ssl,version,current_user,current_setting('default_transaction_read_only') FROM pg_stat_ssl WHERE pid=pg_backend_pid()"], null, null), TimeSpan.FromSeconds(10), cancellationToken);
+                CompositionProcessResult sql = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["exec", "--env", "PGSSLMODE=verify-full", "--env", "PGSSLROOTCERT=/run/retention/ca.pem", "--env", "PGPASSFILE=/run/retention/pgpass", containerId!, "psql", "-h", "127.0.0.1", "-U", "telemetry_observer", "-d", "telemetry", "-w", "-XAt", "-c", "SELECT current_setting('server_version_num'),ssl,version,current_user,current_setting('default_transaction_read_only') FROM pg_stat_ssl WHERE pid=pg_backend_pid()"], null, null), TimeSpan.FromSeconds(10), cancellationToken).ConfigureAwait(false);
                 if (sql.ExitCode == 0 && !sql.TimedOut && sql.Output.Trim() is "180006|t|TLSv1.3|telemetry_observer|on" or "180006|t|TLSv1.2|telemetry_observer|on") backend = PostgresImage + "/" + sql.Output.Trim() + "/" + actualImageId;
             }
         }

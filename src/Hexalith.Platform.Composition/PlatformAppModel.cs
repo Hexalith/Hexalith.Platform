@@ -21,6 +21,7 @@ public static class PlatformAppModel
     /// <summary>Routes the thin file entry while refusing incompatible local topologies.</summary>
     public static void ComposeEntry(IDistributedApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         if (bool.TryParse(builder.Configuration["Platform:Agents:Enabled"], out bool agents) && agents)
             throw new InvalidOperationException("DependencyNotAvailable: EXT-HOST-1. Full Agents composition and accepted owner prerequisites are unavailable.");
         bool works = bool.TryParse(builder.Configuration["Platform:Works:Enabled"], out bool selected) && selected;
@@ -33,6 +34,7 @@ public static class PlatformAppModel
     /// <summary>Validates and binds the complete set, without adding any resources.</summary>
     public static IReadOnlyList<PlatformServerBinding> Prepare(PlatformCompositionOptions options)
     {
+        ArgumentNullException.ThrowIfNull(options);
         PlatformTimesheetsBinding.ValidateMode(options);
         return PlatformServerBindings.Resolve(options, PlatformDeclarationSet.Load(options));
     }
@@ -40,6 +42,7 @@ public static class PlatformAppModel
     /// <summary>Composes the thin file AppHost from the command's persisted source mapping.</summary>
     public static void Compose(IDistributedApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         bool timesheets = builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled");
         if (timesheets && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
@@ -51,14 +54,18 @@ public static class PlatformAppModel
         string? mappingPath = builder.Configuration["Platform:SourceMapping:Path"] ?? Environment.GetEnvironmentVariable("HEXALITH_SOURCE_MAPPING_PATH");
         string? hash = builder.Configuration["Platform:SourceMapping:Hash"] ?? Environment.GetEnvironmentVariable("HEXALITH_SOURCE_MAPPING_HASH");
         SourceMapping mapping = mappingPath is null
-            ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "references", PlatformServerBindings.Repository(active ?? "eventstore"), "module", "hexalith.module-manifest.v2.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
+            ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "hexalith-platform.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
         Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"] });
     }
 
     /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
     public static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject)
-        => ComposeRun(builder, plan, signingKey, seedProject, static options => options);
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(plan);
+        ComposeRun(builder, plan, signingKey, seedProject, static options => options);
+    }
 
     internal static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject, Func<PlatformCompositionOptions, PlatformCompositionOptions> configureOptions)
     {
@@ -91,6 +98,8 @@ public static class PlatformAppModel
     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>
     public static void Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(options);
         if (options.TimesheetsEnabled && (!builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode))
             throw new InvalidOperationException("Hexalith.Timesheets: Platform:Timesheets:Enabled requires a Development run. A qualified release and production profile are unavailable.");
         PlatformTimesheetsBinding.ValidateMode(options);
@@ -148,7 +157,7 @@ public static class PlatformAppModel
                 ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
 
             if (options.RetentionProfile is not null) builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(rendered, "dapr-credentials");
-            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, options.RetentionProfile?.RuntimeVersion, selectedSentryPort);
+            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, selectedSentryPort);
             string[] redisReference = CompositionToolchainPins.RedisImageReference.Split('@', 2);
             int colon = redisReference[0].LastIndexOf(':');
             IResourceBuilder<ContainerResource> redis = builder.AddContainer("redis", redisReference[0][..colon], redisReference[0][(colon + 1)..])
@@ -181,7 +190,7 @@ public static class PlatformAppModel
                 }
             }
             if (daprHome is not null) builder.AddDapr(daprOptions => daprOptions.DaprPath = Path.Combine(daprHome, "tools", OperatingSystem.IsWindows() ? "dapr.exe" : "dapr"));
-            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, options.RetentionProfile?.RuntimeVersion, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Placement, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Scheduler);
+            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Placement, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Scheduler);
             if (options.RunPlan is { } securityRun)
                 foreach (var control in new[] { sentry, placement, scheduler }) control.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={securityRun.RunId}");
             Dictionary<string, IResourceBuilder<ProjectResource>> projects = new(StringComparer.Ordinal);

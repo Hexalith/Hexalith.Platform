@@ -22,6 +22,7 @@ public sealed class PlatformDaprBindings
     /// <summary>Resolves all selected declarations atomically.</summary>
     public static PlatformDaprBindings Resolve(IReadOnlyList<PlatformModuleDeclaration> declarations, PlatformRetentionProfile? retentionProfile = null)
     {
+        ArgumentNullException.ThrowIfNull(declarations);
         PlatformDaprBindings result = new() { _retentionProfile = retentionProfile };
         foreach (PlatformModuleDeclaration module in declarations)
         {

@@ -11,7 +11,11 @@ parser.add_argument("--catalog", type=pathlib.Path)
 parser.add_argument("--hosting-helper")
 parser.add_argument("--spine", type=pathlib.Path)
 arguments = parser.parse_args()
-catalog = arguments.catalog or arguments.root / "references/Hexalith.Builds/Props/Directory.Packages.props"
+arguments.root = arguments.root.resolve()
+catalog = arguments.catalog
+if catalog is None:
+    sibling = arguments.root.parent / "Hexalith.Builds/Props/Directory.Packages.props"
+    catalog = sibling if sibling.is_file() else arguments.root / "references/Hexalith.Builds/Props/Directory.Packages.props"
 properties = ET.parse(catalog).getroot()
 values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
 selected = {
