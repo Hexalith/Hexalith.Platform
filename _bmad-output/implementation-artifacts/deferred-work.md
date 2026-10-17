@@ -760,3 +760,15 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
   summary: Exercise the retention provider actual process and loaded-image observation sequence.
   evidence: R5-V2 pre-verified regression gap: no test calls PlatformRetentionProfile.ObserveAsync; helper/model tests cannot detect a provider fallback that bypasses BoundBackendImage rejection. Add successful/mismatched observation integration in the Linux/Docker retention lane.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-runtime-delivery.md`
+  summary: PostgreSQL readiness loads its CA with a synchronous read that the 5-second token cannot cancel, and an unreadable path can throw instead of returning Unhealthy.
+  evidence: Story 1.8 `PlatformPostgresqlHealthCheck.cs` calls `File.ReadAllText` outside the linked token, and the Unhealthy filter omits `UnauthorizedAccessException`. This EXT-SECRETS-1 delivery did not edit that check.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-runtime-delivery.md`
+  summary: A failed startup-task output drain can be reported as generic teardown instead of the verifier exit code, and no test injects that read failure.
+  evidence: Pre-verified review of Builds `DrainAsync`: it catches `IOException` from the discarded stdout/stderr copy, and the existing bounded-output tests only cover a normal end of stream. This is Story 1.8 startup behavior.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-runtime-delivery.md`
+  summary: Story 1.8's spec is marked done while its sprint row still says review.
+  evidence: `spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md` has `status: done`, and `sprint-status.yaml` still has `1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagno: review`. The secrets delivery did not write either field.
