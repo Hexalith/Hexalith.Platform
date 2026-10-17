@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "trustDomain": {"type": "string", "pattern": "^$|^[a-zA-Z0-9.-]+$"},
+    "redis": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "host": {"type": "string"},
+        "passwordSecretName": {"$ref": "#/definitions/name"},
+        "passwordKey": {"type": "string", "pattern": "^[a-zA-Z0-9._-]+$"},
+        "database": {"type": "integer", "minimum": 0, "maximum": 15}
+      }
+    },
+    "network": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "gatewayNamespace": {"$ref": "#/definitions/name"},
+        "gatewayPodLabels": {"type": "object", "additionalProperties": {"type": "string"}},
+        "egress": {
+          "type": "array", "maxItems": 32,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["to", "ports"],
+            "properties": {
+              "to": {
+                "type": "array", "minItems": 1,
+                "items": {
+                  "type": "object", "additionalProperties": false,
+                  "oneOf": [{"required": ["namespaceSelector", "podSelector"], "not": {"required": ["ipBlock"]}}, {"required": ["ipBlock"], "not": {"anyOf": [{"required": ["namespaceSelector"]}, {"required": ["podSelector"]}]}}],
+                  "properties": {
+                    "namespaceSelector": {"$ref": "#/definitions/selector"},
+                    "podSelector": {"$ref": "#/definitions/selector"},
+                    "ipBlock": {
+                      "type": "object", "additionalProperties": false, "required": ["cidr"],
+                      "properties": {"cidr": {"type": "string", "pattern": "/(3[0-2]|[12][0-9]|[1-9]|1[0-2][0-9])$"}}
+                    }
+                  }
+                }
+              },
+              "ports": {
+                "type": "array", "minItems": 1,
+                "items": {
+                  "type": "object", "additionalProperties": false, "required": ["protocol", "port"],
+                  "properties": {"protocol": {"enum": ["TCP", "UDP"]}, "port": {"type": "integer", "minimum": 1, "maximum": 65535}}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "name": {"type": "string", "pattern": "^$|^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$", "maxLength": 253},
+    "selector": {
+      "type": "object", "additionalProperties": false, "required": ["matchLabels"],
+      "properties": {"matchLabels": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "minLength": 1}}}
+    }
+  }
+}

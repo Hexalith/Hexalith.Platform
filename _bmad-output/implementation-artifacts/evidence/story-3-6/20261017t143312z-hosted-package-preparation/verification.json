@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "kind": "timesheets-hosted-package-offline-preparation",
+  "startedAt": "2026-10-17T14:37:39.267972+00:00",
+  "completedAt": "2026-10-17T14:37:53.574711+00:00",
+  "repository": {
+    "path": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform",
+    "revision": "d186ad667639b9d629f7de51921e9600e7f7f992",
+    "uncommittedImplementation": true
+  },
+  "sourceFilesSha256": {
+    "eng/timesheets-deployment/README.md": "6b65a13fb9b4231f2f0fc7331d7df21dc24ac76c1da12c5c4e5e6351b2877aa3",
+    "eng/timesheets-deployment/chart/Chart.yaml": "fb4ef7fd5e02c4ade9282da5618df9d54a00a857b161cf9ce1ad56b3739e10ca",
+    "eng/timesheets-deployment/chart/templates/_helpers.tpl": "a9101a672c90117ee7a2c37ace6e27bb0ddaf04f811622a96567f205c590826d",
+    "eng/timesheets-deployment/chart/templates/application.yaml": "a33a1fa3b4fab09e45cd364e48f1fee2462ea8c738fdd8e0ce554de47ec546b7",
+    "eng/timesheets-deployment/chart/values.schema.json": "f6bb2243fc7454c9c7002f2a2927c005dd6da3c94f6392a649f22a8d2b5c0e02",
+    "eng/timesheets-deployment/chart/values.yaml": "b9d30ccdc1f732b211ee457d01da0874e21cfe177fe734a37fd2a7167a8cd880",
+    "eng/timesheets-deployment/environment-chart/Chart.yaml": "eb8e277cf47796945c90d5ab2996fbcda8508c1c363d6daa72bdbbc289925ce5",
+    "eng/timesheets-deployment/environment-chart/templates/prerequisites.yaml": "ebd2ee4f27c4d0922a6a2075ca058fec8beff5fddf52cb8b0c548e81af29a679",
+    "eng/timesheets-deployment/environment-chart/values.schema.json": "32e4c5bd8e33ebba8a7ec265ccdaf2685ac7471b7356357d3748d0af3ad5062c",
+    "eng/timesheets-deployment/environment-chart/values.yaml": "696a9f3540f6fa5cbf991b4da82353a54672a19fdcff0ef83bf3b730b12efc88",
+    "eng/timesheets-deployment/hosted-package-preparation.md": "3bd6c87073ee85e1d86868d0016121c23029fc27dca62b0435ad819f887e4991",
+    "eng/timesheets-deployment/test_hosted_chart.py": "4de6f42c2213263f0e5517cafa564a2a35364e373bcf01dfb240a056a90c3697"
+  },
+  "packages": [
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/hexalith-platform-0.1.0.tgz",
+      "sha256": "e87a85d5dad7baeac9e07f834b513e49d6b92815871aba658c8c92202a19b975",
+      "bytes": 3690,
+      "command": [
+        "/tmp/timesheets-hosting-helm-4.2.0/helm",
+        "package",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/chart",
+        "--destination",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation"
+      ],
+      "exitCode": 0,
+      "membersSha256": {
+        "hexalith-platform/Chart.yaml": "eebc1de08ec1e98e8155027d0b878dad9aa52250087730948bd3b339e84f314c",
+        "hexalith-platform/values.yaml": "b9d30ccdc1f732b211ee457d01da0874e21cfe177fe734a37fd2a7167a8cd880",
+        "hexalith-platform/values.schema.json": "f6bb2243fc7454c9c7002f2a2927c005dd6da3c94f6392a649f22a8d2b5c0e02",
+        "hexalith-platform/templates/_helpers.tpl": "a9101a672c90117ee7a2c37ace6e27bb0ddaf04f811622a96567f205c590826d",
+        "hexalith-platform/templates/application.yaml": "a33a1fa3b4fab09e45cd364e48f1fee2462ea8c738fdd8e0ce554de47ec546b7"
+      },
+      "qualification": "LOCAL_UNPUBLISHED_CANDIDATE"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/hexalith-platform-timesheets-environment-0.1.0.tgz",
+      "sha256": "db5941a1fc69fb7f4a44a13c9c5e662213aba2c20067035784de80a7cf329f76",
+      "bytes": 2343,
+      "command": [
+        "/tmp/timesheets-hosting-helm-4.2.0/helm",
+        "package",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/environment-chart",
+        "--destination",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation"
+      ],
+      "exitCode": 0,
+      "membersSha256": {
+        "hexalith-platform-timesheets-environment/Chart.yaml": "ad4b87a2f7a9a1df4a90386705329d453d4befc1bbd05481440c0ed23b2647c7",
+        "hexalith-platform-timesheets-environment/values.yaml": "696a9f3540f6fa5cbf991b4da82353a54672a19fdcff0ef83bf3b730b12efc88",
+        "hexalith-platform-timesheets-environment/values.schema.json": "32e4c5bd8e33ebba8a7ec265ccdaf2685ac7471b7356357d3748d0af3ad5062c",
+        "hexalith-platform-timesheets-environment/templates/prerequisites.yaml": "ebd2ee4f27c4d0922a6a2075ca058fec8beff5fddf52cb8b0c548e81af29a679"
+      },
+      "qualification": "LOCAL_UNPUBLISHED_CANDIDATE"
+    }
+  ],
+  "nativeObservation": {
+    "path": "/home/administrator/projects/hexalith/timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261017t142841z-deployment-authority-runtime/native-observation.json",
+    "sha256": "8a4b47d1a0cb00ca43d30ba9fef5d34b753dd60100135ec22b4800bfc3c989fe",
+    "producedBy": "separate-root-read-only-inspection",
+    "timesheetsDeployment": "ABSENT",
+    "stagingApplicationNamespace": "ABSENT",
+    "stagingDataNamespace": "ABSENT",
+    "gatewayApiTypes": "UNAVAILABLE"
+  },
+  "tool": {
+    "path": "/tmp/timesheets-hosting-helm-4.2.0/helm",
+    "version": "v4.2.0+g0646808",
+    "sha256": "bf1e2f933afaaab981b4dce6f0caea951635539336f463780ad479de5408f869",
+    "source": "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz",
+    "officialArchiveSha256": "97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096",
+    "installedIntoRepository": false
+  },
+  "tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/timesheets-deployment",
+      "-p",
+      "test_hosted_chart.py",
+      "-v"
+    ],
+    "environment": {
+      "HELM_BIN": "/tmp/timesheets-hosting-helm-4.2.0/helm"
+    },
+    "exitCode": 0,
+    "summary": [
+      "Ran 14 tests in 13.456s",
+      "OK"
+    ],
+    "log": "_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/hosted-chart-tests.log",
+    "logSha256": "a458dcb778d5ea0915a474a86d45e41e9191da355610199306dcf1dfefc8f25e"
+  },
+  "earlierBroadCheck": {
+    "command": "HELM_BIN=/tmp/timesheets-hosting-helm-4.2.0/helm python3 -m unittest discover -s eng/timesheets-deployment -p 'test_*.py' -v",
+    "exitCode": 1,
+    "tests": 52,
+    "passed": 21,
+    "errors": 31,
+    "blocker": "existing test_prepare.py setUp hardcodes absent Platform/references/Hexalith.Timesheets/src/Hexalith.Timesheets/Hexalith.Timesheets.csproj",
+    "rawLogRetained": false,
+    "nestedSubmodulesInitialized": false
+  },
+  "gates": {
+    "deploymentApproved": false,
+    "activationApproved": false,
+    "operationalApprovalReady": false,
+    "runtimeAcceptance": "NOT_EXECUTED_DEPLOYMENT_ABSENT",
+    "story36": "in-progress",
+    "release": "FAIL"
+  },
+  "effects": {
+    "network": "official Helm archive and published checksum downloaded only; renderer/tests/package used local files",
+    "clusterMutation": false,
+    "permissionChange": false,
+    "registryPublication": false,
+    "domainCommand": false,
+    "recovery": false,
+    "migration": false,
+    "gitMutation": false
+  }
+}

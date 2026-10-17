@@ -1,0 +1,56 @@
+{
+  "files": {
+    "eng/recovery-preparation/FRESH-PREREQUISITE.md": {
+      "bytes": 4244,
+      "sha256": "cef13444d5da96a1a6ed3561992fb6ae836482e77ad0dc1810107b6b98e026be"
+    },
+    "eng/recovery-preparation/fresh_prerequisite.py": {
+      "bytes": 19387,
+      "sha256": "35d27769e89b657e1cb7b0f140bbf58e34a9de61b57833de503afdcdc7642629"
+    },
+    "eng/recovery-preparation/test_fresh_prerequisite.py": {
+      "bytes": 9781,
+      "sha256": "5f92ce034c7a70664c4f58e62e89d819c3ee511ceb4ba963632b9ab6a2c835c6"
+    }
+  },
+  "kind": "offline-fresh-prerequisite-source-and-test-observation",
+  "operations": {
+    "deployment": false,
+    "oldVerifierRerun": false,
+    "permissionChanges": false,
+    "publication": false,
+    "recovery": false,
+    "signing": false
+  },
+  "ownerDocumentReview": {
+    "agentConsistencyCheck": "No source dispatch or live mode; retain old refusal and old dates; proposed names only; closed operational gate.",
+    "distinctHumanReviewerRequired": false,
+    "independentIdentityOrNativeAuthorityClaimed": false,
+    "performedOwnerSignatureClaimed": false,
+    "policy": "owner-self-review-as-directed"
+  },
+  "platformHead": "d186ad667639b9d629f7de51921e9600e7f7f992",
+  "recordedAt": "2026-10-17T14:31:12Z",
+  "schemaVersion": 1,
+  "scope": "Current local source attribution only; working changes are not deployed artifacts.",
+  "sourceChecks": {
+    "finalNewline": "PASS",
+    "syntax": "PASS",
+    "trailingWhitespace": "PASS"
+  },
+  "test": {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_fresh_prerequisite.py"
+    ],
+    "exitCode": 0,
+    "testsFailed": 0,
+    "testsPassed": 11,
+    "testsSkipped": 0,
+    "type": "synthetic-offline-filesystem"
+  },
+  "timesheetsHead": "a376b71d43330a716f836c3086e562e505511dd3"
+}

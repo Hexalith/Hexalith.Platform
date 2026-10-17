@@ -5,6 +5,12 @@ a reproducible staging plan. **Deployment is unauthorized; activation is
 unauthorized; Timesheets Story 3.6 acceptance and release remain FAIL.**
 Neither schema validation nor a preparation hash supplies operational evidence.
 
+The [2026-10-17 hosted package preparation](hosted-package-preparation.md) now
+adds maintained, locally tested Helm application/environment candidates. Fresh
+native reads still find no staging namespaces or Timesheets deployment. Missing
+immutable image, provider and infrastructure bindings refuse rendering; these
+packages do not activate the historical candidate or close deployed acceptance.
+
 The [staging dependency handoff](staging-dependency-handoff.md) records the
 2026-10-14 native findings, retirement and sequential upgrade prerequisites,
 local preparation receipt, and missing Release/provider acceptance gates.

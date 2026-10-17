@@ -1,0 +1,193 @@
+{{- include "platform.validate" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timesheets-runtime
+  labels:
+    {{- include "platform.labels" . | nindent 4 }}
+data:
+  ASPNETCORE_ENVIRONMENT: Staging
+  DOTNET_ENVIRONMENT: Staging
+  ASPNETCORE_URLS: http://+:8080;http://+:8081
+  Timesheets__InternalSurface__Port: "8081"
+  Timesheets__InternalSurface__AllowOnAnyPort: "false"
+  Timesheets__LiveDaprFixture__Enabled: "false"
+  EventStore__DomainService__AppId: timesheets
+  EventStore__DomainService__ServiceVersion: v1
+  EventStore__Processes__StateStoreName: timesheets-readmodels
+  EventStore__TrustedEffectOrigin__StateStoreName: timesheets-readmodels
+  Authentication__JwtBearer__Authority: {{ .Values.identity.authority | quote }}
+  Authentication__JwtBearer__Issuer: {{ .Values.identity.issuer | quote }}
+  Authentication__JwtBearer__Audience: {{ .Values.identity.audience | quote }}
+  Authentication__JwtBearer__RequireHttpsMetadata: "true"
+  {{- range $index, $algorithm := .Values.identity.allowedAlgorithms }}
+  Authentication__JwtBearer__AllowedAlgorithms__{{ $index }}: {{ $algorithm | quote }}
+  {{- end }}
+  Authentication__WorkloadJwtBearer__Authority: {{ .Values.identity.workloadAuthority | quote }}
+  Authentication__WorkloadJwtBearer__Issuer: {{ .Values.identity.workloadIssuer | quote }}
+  Authentication__WorkloadJwtBearer__Audience: timesheets
+  Authentication__WorkloadJwtBearer__RequireHttpsMetadata: "true"
+  {{- range $index, $algorithm := .Values.identity.workloadAllowedAlgorithms }}
+  Authentication__WorkloadJwtBearer__AllowedAlgorithms__{{ $index }}: {{ $algorithm | quote }}
+  {{- end }}
+  Authentication__WorkloadIssuer__Workload: timesheets
+  Authentication__WorkloadIssuer__TokenEndpoint: {{ .Values.identity.tokenEndpoint | quote }}
+  Authentication__WorkloadIssuer__EnableResourceBindingRequests: "true"
+  Authentication__Workload__Audience: timesheets
+  Authentication__Workload__AllowedCallers__0: eventstore
+  Authentication__Workload__MaximumLifetimeSeconds: "300"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timesheets-public
+  labels:
+    {{- include "platform.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: timesheets
+  ports:
+    - name: public
+      port: 8080
+      targetPort: public
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timesheets-internal
+  labels:
+    {{- include "platform.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: timesheets
+  ports:
+    - name: internal
+      port: 8081
+      targetPort: internal
+{{- if ne .Values.mode "remove-workloads" }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timesheets
+  labels:
+    {{- include "platform.labels" . | nindent 4 }}
+  annotations:
+    hexalith.com/source-revision: {{ .Values.sourceRevision | quote }}
+spec:
+  replicas: {{ if eq .Values.mode "recovery" }}0{{ else }}{{ .Values.replicas }}{{ end }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: timesheets
+  template:
+    metadata:
+      labels:
+        {{- include "platform.labels" . | nindent 8 }}
+      annotations:
+        {{- include "platform.daprAnnotations" . | nindent 8 }}
+        checksum/runtime: {{ toJson .Values.identity | sha256sum | quote }}
+    spec:
+      serviceAccountName: timesheets
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecretName | quote }}
+      # Dapr's built-in Kubernetes secret store needs this scoped account's token.
+      automountServiceAccountToken: true
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        runAsGroup: 1654
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: timesheets
+          image: {{ printf "%s@%s" .Values.image.repository .Values.image.digest | quote }}
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            {{- include "platform.containerSecurity" . | nindent 12 }}
+          ports:
+            - name: public
+              containerPort: 8080
+            - name: internal
+              containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: timesheets-runtime
+          env:
+            - name: Authentication__WorkloadIssuer__ClientId
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.identity.secretName }}
+                  key: {{ .Values.identity.clientIdKey }}
+            - name: Authentication__WorkloadIssuer__ClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.identity.secretName }}
+                  key: {{ .Values.identity.clientSecretKey }}
+            - name: APP_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dapr.appTokenSecretName }}
+                  key: token
+            - name: DAPR_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dapr.apiTokenSecretName }}
+                  key: token
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: internal
+            periodSeconds: 5
+            failureThreshold: 12
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: internal
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /alive
+              port: internal
+            periodSeconds: 5
+            failureThreshold: 60
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: temporary
+              mountPath: /tmp
+      volumes:
+        - name: temporary
+          emptyDir:
+            sizeLimit: 64Mi
+{{- end }}
+{{- if and (eq .Values.mode "normal") .Values.ingress.enabled }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: timesheets-public
+spec:
+  parentRefs:
+    - name: {{ .Values.ingress.gateway.name }}
+      namespace: {{ .Values.ingress.gateway.namespace }}
+      sectionName: {{ .Values.ingress.gateway.sectionName }}
+  hostnames:
+    - {{ .Values.ingress.hostname | quote }}
+  rules:
+    - matches:
+        {{- range $path := list "/api/timesheets/magic-links/confirm" "/api/timesheets/magic-links/confirm/submit" "/api/timesheets/magic-links/adjust" "/api/timesheets/magic-links/adjust/submit" "/metadata/timesheets" }}
+        - path:
+            type: Exact
+            value: {{ $path }}
+        {{- end }}
+        - path:
+            type: PathPrefix
+            value: /api/timesheets/magic-links/confirmation-capabilities
+      backendRefs:
+        - name: timesheets-public
+          port: 8080
+{{- end }}

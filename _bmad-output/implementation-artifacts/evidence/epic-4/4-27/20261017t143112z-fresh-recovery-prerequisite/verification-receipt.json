@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "kind": "fresh-offline-prerequisite-consistency-receipt",
+  "command": [
+    "/usr/bin/python3.14",
+    "-I",
+    "-S",
+    "-B",
+    "eng/recovery-preparation/fresh_prerequisite.py",
+    "verify",
+    "--packet",
+    "/home/administrator/hexalith-recovery-evidence/4-0/20261017t143202z",
+    "--sha256",
+    "d14efe6e8e82d983187416392ccc77207b446827f149caf3b45ed4b1ae90939a"
+  ],
+  "exitCode": 0,
+  "result": {
+    "approvalGranted": false,
+    "authorityAccepted": false,
+    "candidateExpired": false,
+    "missingEvidenceCount": 12,
+    "operationalGate": "closed",
+    "recoveryCurrent": false,
+    "rid": "20261017t143202z",
+    "status": "consistent-unsigned-incomplete",
+    "timesheetsAcceptance": false
+  },
+  "meaning": "Local consistency only; no cryptographic authority, current recovery, operational permission or deployed acceptance."
+}

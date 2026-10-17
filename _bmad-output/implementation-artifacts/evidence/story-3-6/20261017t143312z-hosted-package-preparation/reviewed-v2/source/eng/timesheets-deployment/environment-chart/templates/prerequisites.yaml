@@ -1,0 +1,120 @@
+{{- if ne .Release.Namespace "hexalith-staging" -}}{{ fail "candidate namespace must be hexalith-staging" }}{{- end -}}
+{{- if or (empty .Values.trustDomain) (eq .Values.trustDomain "public") -}}{{ fail "qualified staging Dapr trustDomain is required" }}{{- end -}}
+{{- if or (not (regexMatch "^[a-zA-Z0-9.-]+:[0-9]+$" .Values.redis.host)) (empty .Values.redis.passwordSecretName) (empty .Values.redis.passwordKey) -}}{{ fail "qualified Redis TLS host:port and password Secret reference are required" }}{{- end -}}
+{{- if or (empty .Values.network.gatewayNamespace) (empty .Values.network.gatewayPodLabels) (empty .Values.network.egress) -}}{{ fail "qualified Gateway selectors and explicit egress rules are required" }}{{- end -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: timesheets
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: timesheets-own-component-secret
+rules:
+  - apiGroups: [""]
+    resources: [secrets]
+    resourceNames: [{{ .Values.redis.passwordSecretName | quote }}]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: timesheets-own-component-secret
+subjects:
+  - kind: ServiceAccount
+    name: timesheets
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: timesheets-own-component-secret
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: timesheets-readmodels
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+    - name: redisHost
+      value: {{ .Values.redis.host | quote }}
+    - name: redisPassword
+      secretKeyRef:
+        name: {{ .Values.redis.passwordSecretName }}
+        key: {{ .Values.redis.passwordKey }}
+    - name: redisDB
+      value: {{ .Values.redis.database | quote }}
+    - name: enableTLS
+      value: "true"
+    - name: actorStateStore
+      value: "false"
+    - name: keyPrefix
+      value: none
+auth:
+  secretStore: kubernetes
+scopes: [timesheets]
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: timesheets
+spec:
+  mtls:
+    enabled: true
+  features:
+    - name: HotReload
+      enabled: false
+  secrets:
+    scopes:
+      - storeName: kubernetes
+        defaultAccess: deny
+        allowedSecrets: [{{ .Values.redis.passwordSecretName | quote }}]
+  accessControl:
+    defaultAction: deny
+    trustDomain: {{ .Values.trustDomain | quote }}
+    policies:
+      - appId: eventstore
+        namespace: {{ .Release.Namespace }}
+        trustDomain: {{ .Values.trustDomain | quote }}
+        defaultAction: deny
+        operations:
+          {{- range $path := list "/process" "/replay-state" "/query" "/project" "/project/v2" "/project/v2/reconcile" "/project/rebuild/v1" "/project/rebuild/part/v1" "/project/rebuild/stage/v1" "/project/rebuild/commit/v1" "/project/rebuild/abort/v1" "/project/rebuild/verify/v1" "/project/rebuild/shared/v1" "/project/rebuild/reclaim-recovery/v1" "/project/rebuild/reclaim-guarded/v1" "/project/source-guard/reconcile-applied-receipt/v1" "/project/source-guard/applied-receipt/v1" "/project/source-guard/owner-proof/v1" "/admin/operational-index-metadata" }}
+          - name: {{ $path }}
+            httpVerb: [POST]
+            action: allow
+          {{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: timesheets-boundary
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: timesheets
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ .Values.network.gatewayNamespace }}
+          podSelector:
+            matchLabels:
+              {{- toYaml .Values.network.gatewayPodLabels | nindent 14 }}
+      ports:
+        - protocol: TCP
+          port: 8080
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: eventstore
+      ports:
+        - protocol: TCP
+          port: 50002
+        - protocol: TCP
+          port: 8081
+  egress:
+    {{- toYaml .Values.network.egress | nindent 4 }}

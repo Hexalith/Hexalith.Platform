@@ -1,0 +1,164 @@
+{
+  "kind": "platform-owned-blocked-timesheets-staging-proposal",
+  "status": "BLOCKED_NOT_FOR_EXECUTION",
+  "approvalGranted": false,
+  "executableDispatcherExists": false,
+  "target": {
+    "context": "jpiquot@local",
+    "api": "https://192.168.1.30:6443",
+    "clusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+    "applicationNamespace": "hexalith-staging",
+    "dataNamespace": "hexalith-staging-data",
+    "environment": "staging"
+  },
+  "tool": {
+    "path": "/tmp/timesheets-hosting-helm-4.2.0/helm",
+    "sha256": "bf1e2f933afaaab981b4dce6f0caea951635539336f463780ad479de5408f869"
+  },
+  "packages": {
+    "hexalith-platform-timesheets-environment-0.1.0.tgz": {
+      "path": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/reviewed-v2/hexalith-platform-timesheets-environment-0.1.0.tgz",
+      "sha256": "db5941a1fc69fb7f4a44a13c9c5e662213aba2c20067035784de80a7cf329f76"
+    },
+    "hexalith-platform-0.1.0.tgz": {
+      "path": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/reviewed-v2/hexalith-platform-0.1.0.tgz",
+      "sha256": "186490b2d72fa8abce88b8115baa6abb4935d0ea71dbaf67ac3839196d13ad9e"
+    }
+  },
+  "values": {
+    "application": {
+      "path": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/environments/staging/approved-application-values.yaml",
+      "exists": false,
+      "sha256": null,
+      "ownerModule": "Hexalith.Platform"
+    },
+    "environment": {
+      "path": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/environments/staging/approved-environment-values.yaml",
+      "exists": false,
+      "sha256": null,
+      "ownerModule": "Hexalith.Platform"
+    }
+  },
+  "prerequisites": [
+    "Fresh accepted operational recovery and qualified capture/restore/cleanup, not merely the unsigned prerequisite.",
+    "Platform-owned staging namespaces and data foundation, Gateway API/TLS listener, Dapr trust/ACL and persistent Redis; currently absent or unqualified.",
+    "Retained complete immutable Release closure with production image digests/provenance and approved registry pull credentials; Debug archive excluded.",
+    "Actual human and workload issuer trust, approved signer and current client grants/protected Secret references; real Timesheets server-side providers.",
+    "Full legacy installation/source continuity/pending delivery and enforced maintenance receipts before migration or legacy qualification.",
+    "Owner approval bound to exact reviewed package, tool, values and target bytes; no approval exists.",
+    "Recheck native identity, target incarnation, current rights and all prerequisite freshness at every future approved operational boundary."
+  ],
+  "proposedStages": [
+    {
+      "id": "environment",
+      "argv": [
+        "/tmp/timesheets-hosting-helm-4.2.0/helm",
+        "upgrade",
+        "--install",
+        "timesheets-environment",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/reviewed-v2/hexalith-platform-timesheets-environment-0.1.0.tgz",
+        "--namespace",
+        "hexalith-staging",
+        "--kube-context",
+        "jpiquot@local",
+        "--wait",
+        "--timeout",
+        "5m",
+        "--values",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/environments/staging/approved-environment-values.yaml"
+      ],
+      "expectedEffects": "Forward-only install of Timesheets ServiceAccount, Redis read-model component, Dapr configuration, scoped Secret-read Role/RoleBinding and NetworkPolicy in the approved application namespace. No Secret material, datastore, namespace or Gateway is created by this package.",
+      "ownerModule": "Hexalith.Platform"
+    },
+    {
+      "id": "application-ingress-closed",
+      "argv": [
+        "/tmp/timesheets-hosting-helm-4.2.0/helm",
+        "upgrade",
+        "--install",
+        "timesheets",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/reviewed-v2/hexalith-platform-0.1.0.tgz",
+        "--namespace",
+        "hexalith-staging",
+        "--kube-context",
+        "jpiquot@local",
+        "--wait",
+        "--timeout",
+        "5m",
+        "--values",
+        "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/environments/staging/approved-application-values.yaml",
+        "--set",
+        "ingress.enabled=false"
+      ],
+      "expectedEffects": "Install only Timesheets runtime ConfigMap, split ClusterIP Services and digest-pinned single host; public ingress stays closed. Requires approved non-fixture authority and exact configured dependencies.",
+      "ownerModule": "Hexalith.Platform"
+    }
+  ],
+  "failureRecovery": {
+    "argv": [
+      "/tmp/timesheets-hosting-helm-4.2.0/helm",
+      "upgrade",
+      "--install",
+      "timesheets",
+      "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/story-3-6/20261017t143312z-hosted-package-preparation/reviewed-v2/hexalith-platform-0.1.0.tgz",
+      "--namespace",
+      "hexalith-staging",
+      "--kube-context",
+      "jpiquot@local",
+      "--wait",
+      "--timeout",
+      "5m",
+      "--values",
+      "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/timesheets-deployment/environments/staging/approved-application-values.yaml",
+      "--set",
+      "mode=recovery",
+      "--set",
+      "ingress.enabled=false"
+    ],
+    "expectedEffects": "Only after separate approval of the concrete bound command: forward-apply the same retained application package with host scaled to zero and public route absent; retain data, environment objects and diagnostics. Never use helm rollback or automatically rewind credentials, grants, events or read models.",
+    "dataRecovery": "Requires separate exact owner-approved current source/destination/adapter/restore operation; no source or proof is invented here.",
+    "ownerModule": "Hexalith.Platform"
+  },
+  "readOnlyVerification": [
+    "Run the reviewed native collector and compare exact UIDs/digests/services/Dapr trust and ACLs against approved values.",
+    "Verify private denial/readiness and installed EventStore Timesheets dispatch registration before any domain acceptance command."
+  ],
+  "deployedAcceptanceNotYetPrepared": "Exact tenant/source receipts/authorized command identities are unavailable; never run the hardcoded local journey against this target.",
+  "freshPrerequisite": {
+    "rid": "20261017t143202z",
+    "expiresAtExclusive": "2026-10-18T14:32:02Z",
+    "acceptance": "unsigned/incomplete only"
+  },
+  "management": {
+    "ownerModule": "Hexalith.Platform",
+    "managedEnvironments": [
+      "staging",
+      "production"
+    ],
+    "responsibilities": [
+      "environment provisioning and configuration",
+      "identity and secret delivery",
+      "retained release composition",
+      "deployment and promotion",
+      "operational recovery"
+    ],
+    "timesheetsResponsibilities": [
+      "domain contracts and behavior",
+      "module readiness semantics",
+      "critical-flow and smoke assertions",
+      "authoritative-state inventory and domain acceptance"
+    ],
+    "singlePlatformReleaseWriterRequired": true,
+    "componentCommandsAreNotIndependentReleaseAuthority": true,
+    "productionOperationProposed": false,
+    "productionTargetSelectedByThisClarification": false,
+    "source": "Owner clarification in this conversation; existing Platform specification ownership and single-composition constraints"
+  },
+  "historicalProposal": {
+    "path": "/home/administrator/projects/hexalith/timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261017t142841z-deployment-authority-runtime/operational-plan.json",
+    "sha256": "14314ff227987bc5095139d939e3377419e0773216669c301791efdf2de6c9b6",
+    "packetManifestSha256": "1d1728178e0cdebb6cce6cd1015b59e9e1b31bbee8dd0897e372214c00b37c9b",
+    "supersededScope": "Operational ownership and future values-file locations only; historical proposal bytes and packet stay unchanged"
+  },
+  "ownershipClarifiedAt": "2026-10-17T15:05:38.306365+00:00"
+}

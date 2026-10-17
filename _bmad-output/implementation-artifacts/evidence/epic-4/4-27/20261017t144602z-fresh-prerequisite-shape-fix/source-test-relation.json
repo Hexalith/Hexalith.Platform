@@ -1,0 +1,68 @@
+{
+  "documentCheck": {
+    "absoluteOwnerPolicyPathExists": true,
+    "whitespaceAndNewline": "PASS"
+  },
+  "files": {
+    "eng/recovery-preparation/FRESH-PREREQUISITE.md": {
+      "bytes": 4322,
+      "sha256": "d5979d5db8202991e40b111462f405ce4f4629527d2fd2d04bfb722180b25f0c"
+    },
+    "eng/recovery-preparation/fresh_prerequisite.py": {
+      "bytes": 19957,
+      "sha256": "ced52b51b6a44ede182a42b8e09a164354b6b7f2575211615ea097d2d6724266"
+    },
+    "eng/recovery-preparation/test_fresh_prerequisite.py": {
+      "bytes": 13380,
+      "sha256": "c551a27914cd451b1c876079e23f2cfd95b8738a30f281597880d9a88b26df59"
+    }
+  },
+  "kind": "fresh-prerequisite-review-fix-source-test-and-preservation-relation",
+  "liveMutationsPerformed": false,
+  "operationalGate": "closed",
+  "recordedAt": "2026-10-17T14:46:02Z",
+  "relationshipToOriginal": {
+    "anotherRecoveryCandidateAllocated": false,
+    "currentPacketVerifierRerun": false,
+    "expiresAtExclusive": "2026-10-18T14:32:02Z",
+    "independentWholePacketIntegrityCertificationClaimed": false,
+    "oldRefusalExitCode": 1,
+    "oldVerifierRerun": false,
+    "originalReceiptsChanged": false,
+    "originalRecordedSourceDigests": {
+      "eng/recovery-preparation/FRESH-PREREQUISITE.md": "cef13444d5da96a1a6ed3561992fb6ae836482e77ad0dc1810107b6b98e026be",
+      "eng/recovery-preparation/fresh_prerequisite.py": "35d27769e89b657e1cb7b0f140bbf58e34a9de61b57833de503afdcdc7642629",
+      "eng/recovery-preparation/test_fresh_prerequisite.py": "5f92ce034c7a70664c4f58e62e89d819c3ee511ceb4ba963632b9ab6a2c835c6"
+    },
+    "originalSourceTestRecord": "../20261017t143112z-fresh-recovery-prerequisite/source-and-tests.json",
+    "originalVerificationPassMeaning": "Historical local consistency at preparation under the source hashes then recorded; it does not certify this corrected revision.",
+    "packetDatesChanged": false,
+    "packetResealedOrOverwritten": false,
+    "packetSha256": "d14efe6e8e82d983187416392ccc77207b446827f149caf3b45ed4b1ae90939a",
+    "preparedAt": "2026-10-17T14:32:02Z",
+    "rid": "20261017t143202z",
+    "sourceBindingsMatchCurrentFiles": false
+  },
+  "reviewCorrections": [
+    "Validate parsed document roots, manifest files, owner subobjects and local record shapes before object access.",
+    "Malformed manifest roots and nested shapes return CLI exit 1, exact bounded refusal JSON, empty stderr and no traceback.",
+    "Use an absolute --owner-policy path in the documented preparation command."
+  ],
+  "reviewMode": "Owner self-review of project documentation as directed; no independent identity or operational authority claim.",
+  "schemaVersion": 1,
+  "test": {
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "eng/recovery-preparation/test_fresh_prerequisite.py"
+    ],
+    "exitCode": 0,
+    "testsFailed": 0,
+    "testsPassed": 14,
+    "testsSkipped": 0,
+    "type": "synthetic-offline-filesystem-only"
+  },
+  "timesheetsAcceptance": false
+}

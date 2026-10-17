@@ -1,0 +1,12 @@
+trustDomain: ""
+redis:
+  host: ""
+  passwordSecretName: ""
+  passwordKey: password
+  database: 14
+network:
+  gatewayNamespace: ""
+  gatewayPodLabels: {}
+  # Explicit Kubernetes egress rules for qualified DNS, Dapr, OIDC and Redis targets.
+  # No destination is inferred from another story's isolated installation.
+  egress: []

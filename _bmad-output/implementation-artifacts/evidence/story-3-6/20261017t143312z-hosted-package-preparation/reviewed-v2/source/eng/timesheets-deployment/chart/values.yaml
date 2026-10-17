@@ -1,0 +1,41 @@
+# No credentials, granted authority, or released image identities live in this file.
+mode: normal
+image:
+  repository: registry.hexalith.com/timesheets
+  digest: ""
+  # Existing namespace-local registry credential; chart never creates or exposes it.
+  pullSecretName: ""
+sourceRevision: ""
+replicas: 1
+ingress:
+  enabled: false
+  hostname: timesheets.hexalith.com
+  gateway:
+    name: ""
+    namespace: hexalith-staging-data
+    sectionName: ""
+identity:
+  authority: ""
+  issuer: ""
+  audience: ""
+  tokenEndpoint: ""
+  allowedAlgorithms: [RS256]
+  # Workload trust is deliberately separate from the public/human JWT authority.
+  workloadAuthority: ""
+  workloadIssuer: ""
+  workloadAllowedAlgorithms: [RS256]
+  secretName: ""
+  clientIdKey: client-id
+  clientSecretKey: client-secret
+dapr:
+  configuration: timesheets
+  # Environment-layer qualification must install these two existing Secret references.
+  appTokenSecretName: ""
+  apiTokenSecretName: ""
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
