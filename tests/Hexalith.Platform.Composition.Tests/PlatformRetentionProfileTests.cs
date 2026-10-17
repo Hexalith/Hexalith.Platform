@@ -1,12 +1,18 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Security.Cryptography;
+using System.Net;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Shouldly;
@@ -29,6 +35,8 @@ public sealed partial class PlatformAppModelTests
     {
         CompositionRunPlan plan = RetentionPlan();
         PlatformRetentionProfile profile = PlatformRetentionProfile.Select(plan, Root).ShouldNotBeNull();
+        PlatformRetentionProfile.DaprImage.ShouldBe("ghcr.io/dapr/daprd:1.18.1@sha256:b7f7d296f01f0b4b82bf3c5f087ecf26165ce08caf3e87f94b8c72b9e11873f8");
+        PlatformRetentionProfile.PostgresImage.ShouldBe("docker.io/library/postgres:18.6-trixie@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722");
         profile.ProfileHash.ShouldBe(Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(profile.CanonicalJson))));
         profile.ProfileHash.ShouldNotBe("95aa36e8aba8d9914566f6df894c33098739251040dd0cc4b2917f76a994ccdb");
         using JsonDocument canonical = JsonDocument.Parse(profile.CanonicalJson);
@@ -90,6 +98,12 @@ public sealed partial class PlatformAppModelTests
             gate.RootElement.GetProperty("state").GetString().ShouldBe("disabled");
             gate.RootElement.GetProperty("profileSha256").GetString().ShouldBeEmpty();
             gate.RootElement.GetProperty("expiresUtcMs").GetInt64().ShouldBe(0);
+            PlatformDaprBindings bindings = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(Options(active: "memories")), profile);
+            bindings.Type("access-telemetry-store").ShouldBe("state.postgresql");
+            IReadOnlyDictionary<string, string> rendered = bindings.Render(Path.Combine(Root, "DaprComponents", "reference"), 6379, 8080, "offline-secrets", null);
+            using JsonDocument renderedComponent = JsonDocument.Parse(rendered[bindings.FileName("access-telemetry-store")]);
+            renderedComponent.RootElement.GetProperty("spec").GetProperty("type").GetString().ShouldBe("state.postgresql");
+            renderedComponent.RootElement.GetProperty("scopes").EnumerateArray().Select(value => value.GetString()).ShouldContain("memories-access-telemetry");
             PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(Options(active: "memories"))).Type("access-telemetry-store").ShouldBe("state.redis");
         }
         finally
@@ -97,6 +111,81 @@ public sealed partial class PlatformAppModelTests
             if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true);
         }
     }
+    [Theory]
+    [InlineData("non-tls", HealthStatus.Unhealthy)]
+    [InlineData("untrusted", HealthStatus.Unhealthy)]
+    [InlineData("trusted", HealthStatus.Healthy)]
+    [InlineData("open-port", HealthStatus.Unhealthy)]
+    [InlineData("caller-cancellation", HealthStatus.Unhealthy)]
+    public async Task PostgresqlReadinessRequiresTrustedTlsAndPropagatesCallerCancellationAsync(string scenario, HealthStatus expected)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "postgres-readiness-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            using TcpListener listener = new(IPAddress.Loopback, 0);
+            listener.Start();
+            int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            PlatformRetentionProfile profile = PlatformRetentionProfile.Select(RetentionPlan(), Root).ShouldNotBeNull();
+            profile.Prepare(directory, port);
+            string certificates = Path.Combine(directory, "retention");
+            using X509Certificate2 server = X509Certificate2.CreateFromPemFile(Path.Combine(certificates, "server.crt"), Path.Combine(certificates, "server.key"));
+            string authorityPath = Path.Combine(certificates, "ca.pem");
+            if (scenario == "untrusted")
+            {
+                using RSA key = RSA.Create(2048);
+                CertificateRequest request = new("CN=foreign", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+                using X509Certificate2 foreign = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
+                authorityPath = Path.Combine(certificates, "foreign.pem");
+                await File.WriteAllTextAsync(authorityPath, foreign.ExportCertificatePem(), TestContext.Current.CancellationToken);
+            }
+
+            using CancellationTokenSource bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+            bound.CancelAfter(TimeSpan.FromSeconds(15));
+            using CancellationTokenSource caller = CancellationTokenSource.CreateLinkedTokenSource(bound.Token);
+            Task<HealthCheckResult> checking = new PlatformPostgresqlHealthCheck(port, authorityPath).CheckHealthAsync(new HealthCheckContext(), caller.Token);
+            try
+            {
+                using TcpClient client = await listener.AcceptTcpClientAsync(bound.Token);
+                NetworkStream stream = client.GetStream();
+                byte[] request = new byte[8];
+                await stream.ReadExactlyAsync(request, bound.Token);
+                request.ShouldBe(new byte[] { 0, 0, 0, 8, 4, 210, 22, 47 });
+                if (scenario == "caller-cancellation")
+                {
+                    await caller.CancelAsync();
+                    _ = await Should.ThrowAsync<OperationCanceledException>(() => checking);
+                }
+                else
+                {
+                    if (scenario == "non-tls") await stream.WriteAsync("N"u8.ToArray(), bound.Token);
+                    else if (scenario != "open-port")
+                    {
+                        await stream.WriteAsync("S"u8.ToArray(), bound.Token);
+                        using SslStream tls = new(stream, leaveInnerStreamOpen: true);
+                        try
+                        {
+                            await tls.AuthenticateAsServerAsync(new SslServerAuthenticationOptions { ServerCertificate = server, EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13 }, bound.Token);
+                        }
+                        catch (Exception error) when (scenario == "untrusted" && error is AuthenticationException or IOException)
+                        {
+                            // A rejected peer may close its TLS handshake before the server finishes.
+                        }
+                    }
+
+                    (await checking).Status.ShouldBe(expected);
+                }
+            }
+            finally
+            {
+                await caller.CancelAsync();
+                try { _ = await checking; }
+                catch (OperationCanceledException) { }
+            }
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true); }
+    }
+
     [Fact]
     public async Task RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync()
     {
@@ -110,6 +199,18 @@ public sealed partial class PlatformAppModelTests
             IDistributedApplicationBuilder builder = Builder();
             PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
             builder.Services.ShouldContain(service => service.ServiceType == typeof(ICompositionTestObservationProvider));
+            AssertContainerImage(builder, "dapr-sentry", "ghcr.io/dapr/sentry", "1.18.1", "2f98508dff56c75329dbd51674c89f41ce349e06c7744ab2519cb69ba338d41f");
+            AssertContainerImage(builder, "dapr-placement-mtls", "ghcr.io/dapr/placement", "1.18.1", "6caf20016d115d4a7f133b9206b739a10abd9f558d76683b27be9ab60f759e26");
+            AssertContainerImage(builder, "dapr-scheduler-mtls", "ghcr.io/dapr/scheduler", "1.18.1", "c9bb9ada0cd6a63cd92c26470da1985124e423432af4e39f09b96979fd1059c0");
+            AssertContainerImage(builder, "memories-vectors", "docker.io/redis/redis-stack-server", "7.4.0-v8", "798ab84d9f266936b034ab11c4d04a2b8e4b441884c5aa7d17ac951eefdf742a");
+            AssertContainerImage(builder, "memories-graph", "falkordb/falkordb", "v4.12.0", "7927eb194df0fadf70e2deb6c20c8178743ec92aacd739c790f8a35ce5dee613");
+            IDistributedApplicationBuilder defaults = Builder();
+            PlatformAppModel.Compose(defaults, Options(active: "memories"));
+            foreach (string name in new[] { "dapr-sentry", "dapr-placement-mtls", "dapr-scheduler-mtls" })
+                AssertContainerImage(defaults, name, name == "dapr-sentry" ? "daprio/sentry" : "daprio/dapr", CompositionToolchainPins.DaprRuntimeVersion, null);
+            AssertContainerImage(defaults, "memories-vectors", "redis/redis-stack", "latest", null);
+            AssertContainerImage(defaults, "memories-graph", "falkordb/falkordb", "latest", null);
+
             ContainerResource postgres = builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "memories-retention-postgresql");
             postgres.Annotations.OfType<HealthCheckAnnotation>().ShouldNotBeEmpty();
             IResource[] memories = builder.Resources.Where(resource => resource.Name is "memories" or "memories-access-telemetry-clock" or "memories-access-telemetry").ToArray();
@@ -187,4 +288,11 @@ public sealed partial class PlatformAppModelTests
         (PlatformRetentionProfile.BoundBackendImage(container.RootElement, image.RootElement) is not null).ShouldBe(accepted);
     }
 
+    private static void AssertContainerImage(IDistributedApplicationBuilder builder, string resource, string image, string tag, string? sha256)
+    {
+        ContainerImageAnnotation annotation = builder.Resources.Single(value => value.Name == resource).Annotations.OfType<ContainerImageAnnotation>().Single();
+        annotation.Image.ShouldBe(image);
+        annotation.Tag.ShouldBe(tag);
+        annotation.SHA256.ShouldBe(sha256);
+    }
 }

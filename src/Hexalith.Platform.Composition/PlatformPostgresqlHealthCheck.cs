@@ -32,9 +32,13 @@ internal sealed class PlatformPostgresqlHealthCheck(int port, string authorityPa
             }, bound.Token).ConfigureAwait(false);
             return HealthCheckResult.Healthy("PostgreSQL run-CA and hostname verified; backend version still requires SQL observation.");
         }
-        catch (Exception error) when (error is IOException or SocketException or AuthenticationException or OperationCanceledException or System.Security.Cryptography.CryptographicException)
+        catch (Exception error) when (error is IOException or SocketException or AuthenticationException or System.Security.Cryptography.CryptographicException)
         {
             return HealthCheckResult.Unhealthy("PostgreSQL verify-full readiness failed.");
+        }
+        catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+        {
+            return HealthCheckResult.Unhealthy("PostgreSQL verify-full readiness exceeded its 5-second bound.");
         }
     }
 }
