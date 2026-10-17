@@ -55,11 +55,11 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
     }
 
     /// <summary>Creates inactive, private run-local TLS material only when the runner composes this profile.</summary>
-    internal void Prepare(string rendered)
+    internal void Prepare(string rendered, int postgresqlPort)
     {
         _directory = Path.Combine(rendered, "retention");
         CompositionWorkspace.CreatePrivateDirectory(_directory);
-        _postgresPort = CompositionPortAllocator.Allocate(1).Redis;
+        _postgresPort = postgresqlPort;
         _password = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
         _observerPassword = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
         using RSA rootKey = RSA.Create(3072);
@@ -78,9 +78,9 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
         File.WriteAllText(Path.Combine(_directory, "server.crt"), certificate.ExportCertificatePem());
         File.WriteAllText(Path.Combine(_directory, "server.key"), key.ExportPkcs8PrivateKeyPem());
         File.WriteAllText(Path.Combine(_directory, "password"), Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)));
-        File.WriteAllText(Path.Combine(_directory, "pgpass"), "localhost:5432:telemetry:telemetry_observer:" + _observerPassword + "\n");
+        File.WriteAllText(Path.Combine(_directory, "pgpass"), "127.0.0.1:5432:telemetry:telemetry_observer:" + _observerPassword + "\n");
         File.WriteAllText(Path.Combine(_directory, "init.sql"), $"CREATE ROLE telemetry LOGIN PASSWORD '{_password}'; CREATE ROLE telemetry_observer LOGIN PASSWORD '{_observerPassword}'; ALTER ROLE telemetry_observer SET default_transaction_read_only=on; CREATE SCHEMA access_telemetry AUTHORIZATION telemetry; GRANT USAGE ON SCHEMA access_telemetry TO telemetry_observer; ALTER DEFAULT PRIVILEGES FOR ROLE telemetry IN SCHEMA access_telemetry GRANT SELECT ON TABLES TO telemetry_observer;\n");
-        File.WriteAllText(Path.Combine(_directory, "pg_hba.conf"), "local all all trust\nhostssl all all 0.0.0.0/0 scram-sha-256\nhost all all 0.0.0.0/0 reject\n");
+        File.WriteAllText(Path.Combine(_directory, "pg_hba.conf"), "local all postgres trust\nlocal all all reject\nhostssl all all 127.0.0.1/32 scram-sha-256\nhostssl all all 0.0.0.0/0 scram-sha-256\nhost all all 0.0.0.0/0 reject\nhost all all ::0/0 reject\n");
         File.WriteAllText(Path.Combine(_directory, "gate.json"), "{\"schemaVersion\":1,\"state\":\"disabled\",\"profileSha256\":\"\",\"expiresUtcMs\":0}");
         foreach (string file in Directory.EnumerateFiles(_directory)) if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(file, UnixFileMode.UserRead | UnixFileMode.UserWrite);
     }
@@ -112,7 +112,7 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
 
     /// <summary>Renders the scoped Dapr v2 PostgreSQL binding with private connection material and verify-full.</summary>
     internal string RenderComponent(IEnumerable<string> consumers)
-        => JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Component", metadata = new { name = "access-telemetry-store" }, spec = new { type = "state.postgresql", version = "v2", metadata = new[] { new { name = "connectionString", value = $"host=localhost port={_postgresPort} user=telemetry password={_password} dbname=telemetry sslmode=verify-full sslrootcert={Path.Combine(_directory, "ca.pem")} " }, new { name = "actorStateStore", value = "true" }, new { name = "maxConns", value = "40" }, new { name = "tablePrefix", value = "access_telemetry.lifecycle_" }, new { name = "metadataTableName", value = "access_telemetry.dapr_metadata" }, new { name = "timeout", value = "3s" }, new { name = "cleanupInterval", value = "5m" } } }, scopes = consumers.Order(StringComparer.Ordinal).ToArray() });
+        => JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Component", metadata = new { name = "access-telemetry-store" }, spec = new { type = "state.postgresql", version = "v2", metadata = new[] { new { name = "connectionString", value = $"host=127.0.0.1 port={_postgresPort} user=telemetry password={_password} dbname=telemetry sslmode=verify-full sslrootcert={Path.Combine(_directory, "ca.pem")} " }, new { name = "actorStateStore", value = "true" }, new { name = "maxConns", value = "40" }, new { name = "tablePrefix", value = "access_telemetry.lifecycle_" }, new { name = "metadataTableName", value = "access_telemetry.dapr_metadata" }, new { name = "timeout", value = "3s" }, new { name = "cleanupInterval", value = "5m" } } }, scopes = consumers.Order(StringComparer.Ordinal).ToArray() });
 
     /// <summary>Applies the same one-hour settings to all three selected Memories services.</summary>
     internal void Configure(Dictionary<string, string> environment, string server)
@@ -123,9 +123,14 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
         environment["AccessTelemetryLifecycle__RetentionSource"] = "DevelopmentDefault";
         environment["AccessTelemetryLifecycle__ComponentProfileHash"] = ProfileHash;
         environment["AccessTelemetryLifecycle__LocalFunctionalProfileJson"] = CanonicalJson;
+        environment["AccessTelemetryLifecycle__LocalFunctionalSourceMappingHash"] = _plan.SourceMappingHash!;
+        environment["HEXALITH_G4_RUN_ID"] = _plan.RunId;
+        environment["HEXALITH_SOURCE_MAPPING_HASH"] = _plan.SourceMappingHash!;
         environment["AccessTelemetryLifecycle__DeploymentId"] = _plan.RunId;
         environment["AccessTelemetryLifecycle__LocalFunctionalRunId"] = _plan.RunId;
         environment["AccessTelemetryLifecycle__Enabled"] = "true";
+        environment["AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc"] = _plan.SelectedTest!.ExecutionDeadlineUtc.ToString("O", System.Globalization.CultureInfo.InvariantCulture);
+        environment["AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned"] = "true";
         environment["AccessTelemetryLifecycle__CapacityEvidenceId"] = "not-qualified-local-functional";
         environment["AccessTelemetryLifecycle__PhysicalReclamationEvidenceId"] = "not-qualified-local-functional";
         environment["Clock__AllowDevelopmentSources"] = "true";
@@ -169,15 +174,11 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
                         string[] fields = line.Split(' ', 6, StringSplitOptions.RemoveEmptyEntries);
                         if (fields.Length != 6) continue;
                         string path = fields[5];
+                        if (path.StartsWith(candidate + Path.DirectorySeparatorChar, StringComparison.Ordinal) && Path.GetFileName(path).StartsWith("Hexalith.Memories", StringComparison.Ordinal) && path.EndsWith(" (deleted)", StringComparison.Ordinal)) throw new InvalidDataException("A candidate mapping was deleted.");
                         if (!path.StartsWith(candidate + Path.DirectorySeparatorChar, StringComparison.Ordinal) || !Path.GetFileName(path).StartsWith("Hexalith.Memories", StringComparison.Ordinal) || !path.EndsWith(".dll", StringComparison.Ordinal)) continue;
                         string identity = name + "/" + Path.GetRelativePath(candidate, path);
                         if (loaded.ContainsKey(identity)) continue;
-                        // map_files opens the inode actually mapped by this process,
-                        // even if the configured path was subsequently replaced.
-                        using FileStream artifact = File.OpenRead("/proc/" + process + "/map_files/" + fields[0]);
-                        string digest = Convert.ToHexStringLower(SHA256.HashData(artifact));
-                        using FileStream currentArtifact = File.OpenRead(path);
-                        if (digest != Convert.ToHexStringLower(SHA256.HashData(currentArtifact))) throw new InvalidDataException("A loaded candidate artifact differs from its current mapped source output.");
+                        string digest = PlatformMappedArtifact.Hash(process, path, line);
                         loaded[identity] = digest;
                     }
                 }
@@ -209,11 +210,17 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
             using JsonDocument document = JsonDocument.Parse(inspection.Output);
             JsonElement container = document.RootElement[0];
             if (container.GetProperty("Config").GetProperty("Labels").GetProperty(CompositionEnvironment.ContainerRunLabel).GetString() == _plan.RunId
-                && container.GetProperty("Config").GetProperty("Image").GetString() == PostgresImage)
+                && IsRequestedPostgres(container.GetProperty("Config").GetProperty("Image").GetString()))
             {
                 containerId = container.GetProperty("Id").GetString();
-                CompositionProcessResult sql = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["exec", "--env", "PGSSLMODE=verify-full", "--env", "PGSSLROOTCERT=/run/retention/ca.pem", "--env", "PGPASSFILE=/run/retention/pgpass", containerId!, "psql", "-h", "localhost", "-U", "telemetry_observer", "-d", "telemetry", "-w", "-XAt", "-c", "SELECT current_setting('server_version_num'),ssl,version,current_user,current_setting('default_transaction_read_only') FROM pg_stat_ssl WHERE pid=pg_backend_pid()"], null, null), TimeSpan.FromSeconds(10), cancellationToken);
-                if (sql.ExitCode == 0 && !sql.TimedOut && sql.Output.Trim() is "180006|t|TLSv1.3|telemetry_observer|on" or "180006|t|TLSv1.2|telemetry_observer|on") backend = PostgresImage + "/" + sql.Output.Trim();
+                string imageId = container.GetProperty("Image").GetString()!;
+                if (!System.Text.RegularExpressions.Regex.IsMatch(imageId, "^sha256:[a-f0-9]{64}$")) throw new InvalidDataException("The loaded PostgreSQL image identity is unavailable.");
+                CompositionProcessResult imageResult = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["image", "inspect", imageId], null, null), TimeSpan.FromSeconds(10), cancellationToken);
+                if (imageResult.ExitCode != 0 || imageResult.TimedOut) throw new InvalidDataException("The loaded PostgreSQL image cannot be inspected locally.");
+                using JsonDocument actualImage = JsonDocument.Parse(imageResult.Output);
+                string actualImageId = BoundBackendImage(container, actualImage.RootElement[0]) ?? throw new InvalidDataException("The loaded PostgreSQL image does not bind the approved digest.");
+                CompositionProcessResult sql = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", ["exec", "--env", "PGSSLMODE=verify-full", "--env", "PGSSLROOTCERT=/run/retention/ca.pem", "--env", "PGPASSFILE=/run/retention/pgpass", containerId!, "psql", "-h", "127.0.0.1", "-U", "telemetry_observer", "-d", "telemetry", "-w", "-XAt", "-c", "SELECT current_setting('server_version_num'),ssl,version,current_user,current_setting('default_transaction_read_only') FROM pg_stat_ssl WHERE pid=pg_backend_pid()"], null, null), TimeSpan.FromSeconds(10), cancellationToken);
+                if (sql.ExitCode == 0 && !sql.TimedOut && sql.Output.Trim() is "180006|t|TLSv1.3|telemetry_observer|on" or "180006|t|TLSv1.2|telemetry_observer|on") backend = PostgresImage + "/" + sql.Output.Trim() + "/" + actualImageId;
             }
         }
         string runtime = Path.Combine(_plan.DaprHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd");
@@ -228,6 +235,16 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
             ObservedRuntimeHash = runtimeHash, RuntimeArtifactVerified = runtimeVerified,
             ObservedBackendIdentity = backend, PostgresqlContainerId = containerId, AccessPath = accessPath, GatePath = Path.Combine(_directory, "gate.json"), ObservedAtUtc = DateTimeOffset.UtcNow,
         };
+    }
+
+    private static bool IsRequestedPostgres(string? reference) => reference == PostgresImage || reference == PostgresImage.Replace(":18.6-trixie@", "@", StringComparison.Ordinal);
+
+    internal static string? BoundBackendImage(JsonElement container, JsonElement image)
+    {
+        string? id = container.GetProperty("Image").GetString();
+        string repositoryDigest = "docker.io/library/postgres@" + PostgresImage.Split('@')[1];
+        if (id is null || !System.Text.RegularExpressions.Regex.IsMatch(id, "^sha256:[a-f0-9]{64}$") || image.GetProperty("Id").GetString() != id || !IsRequestedPostgres(container.GetProperty("Config").GetProperty("Image").GetString())) return null;
+        return image.GetProperty("RepoDigests").EnumerateArray().Any(value => value.GetString() is { } digest && (digest == repositoryDigest || digest == repositoryDigest["docker.io/".Length..] || digest == repositoryDigest["docker.io/library/".Length..])) ? id : null;
     }
 
     // Aspire may report the dotnet-run or Dapr CLI owner. Inspect only its bounded

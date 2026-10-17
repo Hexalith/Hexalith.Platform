@@ -5,6 +5,11 @@ preserved. A passing supporting build or an individual live scenario does not
 accept the complete Works gate. The retained Works AppHost and ServiceDefaults
 stay usable until 4.16 acceptance and the subsequent 4.9 cutover.
 
+Public 3.124.0 currently fails automatic named projection catch-up. Prepared
+producer corrections remain unpublished; candidate successes cannot satisfy the
+published-producer gate. The [public failure record](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/root-acceptance-2026-10-16/public-3.124.0/public-r4-blocker.json)
+retains the exact failing command and results.
+
 Run from the Platform checkout with a complete Works source checkout:
 
 ```bash
@@ -17,6 +22,12 @@ including the first failing command. It builds the actual `apphost.cs` file entr
 and a separate Works qualification consumer. Live tests require that exact host
 assembly, its SHA-256 and the selected Platform root. They cannot fall back to the
 retained Works host. Only the explicit rollback phase selects that host.
+
+`--runtime-sdk-root /absolute/producer-source` selects an explicit SDK source
+directory, including an extracted official producer archive. Admission compares
+every runtime/build source path and Git blob with the official commit trees bound
+to the restored public packages. Modified, missing, extra or foreign producer
+source fails; a matching version label alone cannot qualify it.
 
 `--prepare-only` exits successfully when preparation passes, with status
 `preparation-passed; parity-incomplete`. Acceptance requires the full command to
@@ -36,7 +47,7 @@ Application and sidecar endpoints are isolated from unrelated running sessions.
 The fixture tears down only its owned resources; it does not stop foreign hosts.
 
 Debug development consumers use source references. Release consumers restore the
-published EventStore 3.123.0 graph. The ledger records package archive hashes and
+published EventStore 3.124.0 graph. The ledger records package archive hashes and
 NuGet provenance, source consumers, host identity and the actual compatible runtime
 inventory used during restore. Source-built producer executables retain their own
 recorded build identity; their binaries are not relabeled as published archives.
@@ -46,7 +57,7 @@ Platform.Identity remains an explicitly identified test-only source dependency.
 
 ## Required producer and consumer evidence
 
-Every EventStore package below is qualified at public version **3.123.0**. The
+Every EventStore package below is qualified at public version **3.124.0**. The
 executable ledger owns exact hashes, commands and outcome records; this table
 describes the required evidence rather than asserting that a run has passed.
 
@@ -119,6 +130,11 @@ only safe hashes and synthetic outcomes.
 Restore reproduces the full owned key inventory and values, removes a
 post-snapshot sentinel, preserves expiry semantics, and verifies Scheduler,
 configuration, credential and runtime bytes against their captured inventories.
+The original Redis serialization supplies restoration bytes. Complete binary
+hash fields/values and set members use stable ordering for verification; hash-field
+absolute deadlines are included. Other values retain strict serialization checks,
+including stream consumer groups and pending deliveries. Startup reuses captured
+component files so retained templates cannot overwrite restored configuration.
 The retained Works host then starts with that restored compatible fleet. Protected
 queries must remain usable, source replay must converge, and reissued trusted
 effects must replay their original receipts without another logical effect.

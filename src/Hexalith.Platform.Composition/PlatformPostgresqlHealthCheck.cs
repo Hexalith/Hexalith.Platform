@@ -27,7 +27,7 @@ internal sealed class PlatformPostgresqlHealthCheck(int port, string authorityPa
             using SslStream tls = new(stream, false);
             await tls.AuthenticateAsClientAsync(new SslClientAuthenticationOptions
             {
-                TargetHost = "localhost", EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+                TargetHost = "127.0.0.1", EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                 CertificateChainPolicy = new X509ChainPolicy { TrustMode = X509ChainTrustMode.CustomRootTrust, CustomTrustStore = { authority }, RevocationMode = X509RevocationMode.NoCheck },
             }, bound.Token).ConfigureAwait(false);
             return HealthCheckResult.Healthy("PostgreSQL run-CA and hostname verified; backend version still requires SQL observation.");

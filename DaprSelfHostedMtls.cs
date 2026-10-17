@@ -43,7 +43,8 @@ public static class DaprSelfHostedMtls
         IDistributedApplicationBuilder builder,
         string sentryConfigurationPath,
         string platformRoot,
-        string? runtimeVersion = null)
+        string? runtimeVersion = null,
+        int? sentryHostPort = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentException.ThrowIfNullOrWhiteSpace(sentryConfigurationPath);
@@ -66,7 +67,7 @@ public static class DaprSelfHostedMtls
             .WithBindMount(sentryConfigurationPath, ContainerSentryConfigurationPath, isReadOnly: true)
             // Dapr's self-hosted configuration resolves Sentry through the host loopback address. Bind the
             // fixed host port directly so daprd does not depend on a DCP proxy while obtaining its identity.
-            .WithEndpoint(port: SentryPort, targetPort: SentryPort, name: "grpc", isProxied: false)
+            .WithEndpoint(port: sentryHostPort ?? SentryPort, targetPort: SentryPort, name: "grpc", isProxied: false)
             .WithHttpEndpoint(targetPort: 8080, name: "health")
             .WithHttpHealthCheck("/healthz", endpointName: "health")
             .WithLifetime(ContainerLifetime.Session)
@@ -91,7 +92,9 @@ public static class DaprSelfHostedMtls
             IResourceBuilder<ContainerResource> sentry,
             string certificateDirectory,
             string? schedulerDataDirectory = null,
-            string? runtimeVersion = null)
+            string? runtimeVersion = null,
+            int? placementHostPort = null,
+            int? schedulerHostPort = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(sentry);
@@ -109,7 +112,7 @@ public static class DaprSelfHostedMtls
                 "--metadata-enabled")
             .WithBindMount(certificateDirectory, ContainerCredentialsDirectory, isReadOnly: true)
             .WithEndpoint(
-                port: PlacementHostPort,
+                port: placementHostPort ?? PlacementHostPort,
                 targetPort: PlacementContainerPort,
                 name: "grpc")
             .WithHttpEndpoint(targetPort: 8080, name: "health")
@@ -127,11 +130,11 @@ public static class DaprSelfHostedMtls
                 "--trust-domain=localhost",
                 $"--trust-anchors-file={ContainerCredentialsDirectory}/ca.crt",
                 $"--etcd-data-dir={SchedulerDataDirectory}",
-                $"--override-broadcast-host-port={SchedulerHostAddress}",
+                $"--override-broadcast-host-port=localhost:{schedulerHostPort ?? SchedulerHostPort}",
                 "--healthz-listen-address=0.0.0.0")
             .WithBindMount(certificateDirectory, ContainerCredentialsDirectory, isReadOnly: true)
             .WithEndpoint(
-                port: SchedulerHostPort,
+                port: schedulerHostPort ?? SchedulerHostPort,
                 targetPort: SchedulerContainerPort,
                 name: "grpc")
             .WithHttpEndpoint(targetPort: 8080, name: "health")

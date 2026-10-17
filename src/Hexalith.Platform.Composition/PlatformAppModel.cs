@@ -119,9 +119,12 @@ public static class PlatformAppModel
             CompositionRunPorts localPorts = AllocateSecondaryPorts(Math.Max(1, servers.Count(server => server.ResourceId != "eventstore")), options.RunPlan?.Ports);
             int redisPort = options.RunPlan?.Ports.Redis ?? localPorts.Redis;
             int vectorPort = localPorts.UiHttp;
+            int? selectedSentryPort = options.RetentionProfile is null ? null : localPorts.Placement;
+            string placementAddress = options.RetentionProfile is null ? DaprSelfHostedMtls.PlacementHostAddress : "localhost:" + options.RunPlan!.Ports.Placement;
+            string schedulerAddress = options.RetentionProfile is null ? DaprSelfHostedMtls.SchedulerHostAddress : "localhost:" + options.RunPlan!.Ports.Scheduler;
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
-            options.RetentionProfile?.Prepare(rendered);
+            options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
             File.WriteAllText(secrets, JsonSerializer.Serialize(new Dictionary<string, object>
@@ -130,7 +133,7 @@ public static class PlatformAppModel
                 ["access-telemetry-marker-key"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
             }));
             if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(secrets, UnixFileMode.UserRead | UnixFileMode.UserWrite);
-            IReadOnlyDictionary<string, string> daprFiles = dapr.Render(components, redisPort, vectorPort, secrets, options.RunPlan is null ? null : File.ReadAllText(options.RunPlan.DaprConfigPath));
+            IReadOnlyDictionary<string, string> daprFiles = dapr.Render(components, redisPort, vectorPort, secrets, options.RunPlan is null ? null : File.ReadAllText(options.RunPlan.DaprConfigPath), selectedSentryPort is null ? null : "localhost:" + selectedSentryPort);
             string subscriptionsDirectory = Path.Combine(rendered, "subscriptions");
             bool hasSubscriptions = daprFiles.Keys.Any(file => file.StartsWith("subscription.", StringComparison.Ordinal));
             if (hasSubscriptions) CompositionWorkspace.CreatePrivateDirectory(subscriptionsDirectory);
@@ -145,7 +148,7 @@ public static class PlatformAppModel
                 ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
 
             if (options.RetentionProfile is not null) builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(rendered, "dapr-credentials");
-            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, options.RetentionProfile?.RuntimeVersion);
+            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, options.RetentionProfile?.RuntimeVersion, selectedSentryPort);
             string[] redisReference = CompositionToolchainPins.RedisImageReference.Split('@', 2);
             int colon = redisReference[0].LastIndexOf(':');
             IResourceBuilder<ContainerResource> redis = builder.AddContainer("redis", redisReference[0][..colon], redisReference[0][(colon + 1)..])
@@ -178,7 +181,7 @@ public static class PlatformAppModel
                 }
             }
             if (daprHome is not null) builder.AddDapr(daprOptions => daprOptions.DaprPath = Path.Combine(daprHome, "tools", OperatingSystem.IsWindows() ? "dapr.exe" : "dapr"));
-            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, options.RetentionProfile?.RuntimeVersion);
+            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, options.RetentionProfile?.RuntimeVersion, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Placement, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Scheduler);
             if (options.RunPlan is { } securityRun)
                 foreach (var control in new[] { sentry, placement, scheduler }) control.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={securityRun.RunId}");
             Dictionary<string, IResourceBuilder<ProjectResource>> projects = new(StringComparer.Ordinal);
@@ -254,8 +257,8 @@ public static class PlatformAppModel
                                 AppEndpoint = server.ResourceId == "timesheets" ? "internal" : null,
                                 DaprHttpPort = ports.Http, DaprGrpcPort = ports.Grpc, DaprInternalGrpcPort = ports.InternalGrpc, MetricsPort = ports.Metrics,
                                 EnableAppHealthCheck = false,
-                                PlacementHostAddress = DaprSelfHostedMtls.PlacementHostAddress,
-                                SchedulerHostAddress = DaprSelfHostedMtls.SchedulerHostAddress });
+                                PlacementHostAddress = placementAddress,
+                                SchedulerHostAddress = schedulerAddress });
                             if (server.ResourceId == "timesheets") sidecar.WithReference(timesheetsReadModels!);
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);

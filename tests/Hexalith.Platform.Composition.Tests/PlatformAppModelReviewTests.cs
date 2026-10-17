@@ -264,6 +264,7 @@ public sealed partial class PlatformAppModelTests
             foreach (string name in new[] { "eventstore.json", "tenants.json", "memories.json", "provenance.json" })
                 File.Copy(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", name), Path.Combine(declarations, name));
             File.Copy(Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
+            File.Copy(Path.Combine(Root, "Directory.Packages.props"), Path.Combine(root, "Directory.Packages.props"));
             PlatformCompositionOptions options = Options(WorkspaceMode.Package) with { PlatformRoot = root };
             File.AppendAllText(Path.Combine(declarations, "tenants.json"), " ");
             Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");

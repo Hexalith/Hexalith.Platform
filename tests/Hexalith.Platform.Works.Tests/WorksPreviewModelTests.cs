@@ -67,6 +67,63 @@ public sealed class WorksPreviewModelTests
         gateway.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
     }
 
+    /// <summary>Every receiver requires a distinct secret app-channel credential even in Development.</summary>
+    [Fact]
+    public async Task EachReceiverRequiresItsOwnSecretAppChannelToken()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        WorksPreviewModel.Compose(builder);
+        HashSet<ParameterResource> tokens = [];
+        ProjectResource[] projects = [.. builder.Resources.OfType<ProjectResource>()];
+        projects.Length.ShouldBe(4);
+        foreach (ProjectResource project in projects)
+        {
+            Dictionary<string, object> environment = new(StringComparer.Ordinal);
+            foreach (EnvironmentCallbackAnnotation callback in project.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, environment,
+                    TestContext.Current.CancellationToken));
+            environment.TryGetValue("APP_API_TOKEN", out object? value).ShouldBeTrue();
+            ParameterResource token = value.ShouldBeOfType<ParameterResource>();
+            token.Secret.ShouldBeTrue();
+            tokens.Add(token).ShouldBeTrue("Each receiver needs its own credential.");
+            builder.Resources.OfType<ParameterResource>().ShouldContain(parameter => ReferenceEquals(parameter, token));
+        }
+    }
+
+    /// <summary>An explicit qualified producer directory controls every SDK executable entry point.</summary>
+    [Fact]
+    public void ExplicitSdkSourceRootSelectsEverySdkEntryProject()
+    {
+        string root = Path.Combine(Path.GetTempPath(), "platform-sdk-source-" + Guid.NewGuid().ToString("N"));
+        string[] names = ["Hexalith.EventStore", "Hexalith.EventStore.Operations", "Hexalith.EventStore.Admin.Server.Host"];
+        try
+        {
+            foreach (string name in names)
+            {
+                string directory = Path.Combine(root, "src", name);
+                Directory.CreateDirectory(directory);
+                File.WriteAllText(Path.Combine(directory, name + ".csproj"), "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
+            }
+            IDistributedApplicationBuilder builder = Builder("Development");
+            builder.Configuration["Platform:Works:EventStoreSourceRoot"] = root;
+            WorksPreviewModel.Compose(builder);
+            foreach (ProjectResource project in builder.Resources.OfType<ProjectResource>().Where(project => project.Name != "works"))
+                project.GetProjectMetadata().ProjectPath.ShouldStartWith(root + Path.DirectorySeparatorChar);
+        }
+        finally { Directory.Delete(root, true); }
+    }
+
+    /// <summary>A missing explicit producer cannot silently fall back to the sibling checkout.</summary>
+    [Fact]
+    public void MissingExplicitSdkSourceRootRefusesBeforeResources()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        string root = Path.Combine(Path.GetTempPath(), "platform-sdk-missing-" + Guid.NewGuid().ToString("N"));
+        builder.Configuration["Platform:Works:EventStoreSourceRoot"] = root;
+        Should.Throw<FileNotFoundException>(() => WorksPreviewModel.Compose(builder)).FileName.ShouldStartWith(root);
+        builder.Resources.ShouldBeEmpty();
+    }
+
     private static IDistributedApplicationBuilder Builder(string environment)
         => DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {

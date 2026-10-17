@@ -21,7 +21,8 @@ public static class WorksPreviewModel
         // deployment contract exist. A missing source tree is a failed composition, never an empty green host.
         string worksRoot = Path.GetFullPath(builder.Configuration["Platform:Works:SourceRoot"]
             ?? Path.Combine(builder.AppHostDirectory, "..", "works"));
-        string eventStoreRoot = Path.Combine(worksRoot, "references", "Hexalith.EventStore");
+        string eventStoreRoot = Path.GetFullPath(builder.Configuration["Platform:Works:EventStoreSourceRoot"]
+            ?? Path.Combine(worksRoot, "references", "Hexalith.EventStore"));
         string worksProject = Path.Combine(worksRoot, "src", "Hexalith.Works", "Hexalith.Works.csproj");
         bool identityEnabled = bool.TryParse(builder.Configuration["Platform:Identity:Enabled"], out bool configuredIdentity) && configuredIdentity;
         if (identityEnabled && builder.Configuration["Platform:Works:SyntheticIdentity"] != "true")
@@ -201,7 +202,7 @@ public static class WorksPreviewModel
 
         foreach (ProjectResource project in builder.Resources
             .OfType<ProjectResource>()
-            .Where(static project => SidecarOf(project) is not null))
+            .Where(static project => SidecarOf(project) is not null).ToArray())
         {
             DaprSelfHostedMtls.ConfigureSidecar(
                 builder.CreateResourceBuilder(project),
@@ -210,6 +211,7 @@ public static class WorksPreviewModel
                 certificateDirectory,
                 placement,
                 scheduler);
+            _ = builder.CreateResourceBuilder(project).WithGeneratedEventStoreAppChannelToken();
         }
 
         string devSigningKey = builder.Configuration["Works:Authentication:DevSigningKey"] is { Length: > 0 } configuredKey

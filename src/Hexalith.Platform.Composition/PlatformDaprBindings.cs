@@ -111,7 +111,7 @@ public sealed class PlatformDaprBindings
     internal bool Consumes(string name, string appId) => _components.TryGetValue(name, out var binding) && binding.Consumers.Contains(appId);
 
     /// <summary>Renders all components, receiver configurations and explicit subscriptions in memory.</summary>
-    internal IReadOnlyDictionary<string, string> Render(string directory, int redisPort, int telemetryPort, string secretsPath, string? discovery)
+    internal IReadOnlyDictionary<string, string> Render(string directory, int redisPort, int telemetryPort, string secretsPath, string? discovery, string? sentryAddress = null)
     {
         Dictionary<string, string> files = new(StringComparer.Ordinal);
         foreach (var (name, binding) in _components.Where(pair => pair.Value.Consumers.Count > 0))
@@ -180,7 +180,7 @@ public sealed class PlatformDaprBindings
                     }).ToArray(),
                 };
             }).ToArray();
-            string content = JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Configuration", metadata = new { name = "platform-" + appId }, spec = new { mtls = new { enabled = true, controlPlaneTrustDomain = "localhost", sentryAddress = "localhost:50001" }, features = new[] { new { name = "HotReload", enabled = false } }, accessControl = new { defaultAction = "deny", trustDomain = "public", policies } } });
+            string content = JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Configuration", metadata = new { name = "platform-" + appId }, spec = new { mtls = new { enabled = true, controlPlaneTrustDomain = "localhost", sentryAddress = sentryAddress ?? "localhost:50001" }, features = new[] { new { name = "HotReload", enabled = false } }, accessControl = new { defaultAction = "deny", trustDomain = "public", policies } } });
             if (discovery is not null) content = PlatformAppModel.MergeRunDiscovery(content, discovery);
             files.Add("accesscontrol." + appId + ".yaml", content);
         }

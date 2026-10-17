@@ -28,6 +28,7 @@ public sealed partial class PlatformAppModelTests
             string originals = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
             File.Copy(Path.Combine(originals, "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
             File.Copy(Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
+            File.Copy(Path.Combine(Root, "Directory.Packages.props"), Path.Combine(directory, "Directory.Packages.props"));
             JsonNode provenance = JsonNode.Parse(File.ReadAllText(Path.Combine(originals, "provenance.json")))!;
             Dictionary<string, string> hashes = [];
             foreach (string owner in new[] { "eventstore", "tenants", "memories" })

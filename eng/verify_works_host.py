@@ -12,6 +12,8 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 
+from verify_works_producer import qualify_runtime_source, runtime_source_snapshot
+
 ROWS = {
     "R1": ("Aspire/Dapr composition", "Hexalith.EventStore.Aspire", "AddHexalithEventStore/AddEventStoreDomainModule", "P/src/Hexalith.Platform.Composition/WorksPreviewModel.cs"),
     "R2": ("SDK defaults, readiness and telemetry", "Hexalith.EventStore.DomainService", "AddEventStoreDomainService", "src/Hexalith.Works/Runtime/WorksHost.cs"),
@@ -62,17 +64,32 @@ def verify_host_records(path, assembly, platform):
         raise ValueError("No actual Platform starts were recorded")
     for record in records:
         binary = Path(record["assembly"])
+        if binary.parent.name != "release":
+            raise ValueError("A qualifying host must use the selected Release deployment output")
         if not binary.is_file() or record["sha256"].lower() != sha256(binary):
             raise ValueError("A live start used an unbound or changed host artifact")
         if not record["schedulerVolume"].startswith("works-sdk416-"):
             raise ValueError("A parity start did not own its isolated Scheduler fleet")
         if record.get("actorType") != "WorksSdkReminderActor":
             raise ValueError("A parity start did not consume the SDK reminder actor")
+        if record.get("readinessPassed") is not True:
+            raise ValueError("A selected host that never passed readiness cannot qualify as a live start")
+        modules = record.get("runtimeModules", [])
+        if not {"eventstore", "works", "eventstore-operations", "eventstore-admin"}.issubset({module["resource"] for module in modules}):
+            raise ValueError("A live start did not bind the complete runtime module set")
+        for module in modules:
+            if module.get("configuration") != "Release" or Path(module["entry"]).parent.name != "release":
+                raise ValueError("A qualifying live module must bind its actual Release configuration and output")
+            if sha256(module["entry"]) != module["entrySha256"].lower() or not module["sdkAssemblies"]:
+                raise ValueError("A live module used an unbound deployment artifact")
+            for sdk in module["sdkAssemblies"]:
+                if sdk["version"] != "3.124.0.0" or sha256(sdk["path"]) != sdk["sha256"].lower():
+                    raise ValueError("A live module used an unbound or unpublished runtime SDK assembly")
         sdk_assemblies = record.get("sdkAssemblies", [])
         if not sdk_assemblies:
             raise ValueError("A live start did not bind its loaded SDK assemblies")
         for sdk in sdk_assemblies:
-            if not sdk["name"].startswith("Hexalith.EventStore.") or sdk["version"] != "3.123.0.0" or sha256(sdk["path"]) != sdk["sha256"].lower():
+            if not sdk["name"].startswith("Hexalith.EventStore.") or sdk["version"] != "3.124.0.0" or sha256(sdk["path"]) != sdk["sha256"].lower():
                 raise ValueError("A live start used an unbound or unpublished SDK assembly")
         if record.get("role") == "platform-target":
             if binary.resolve() != assembly.resolve() or Path(record["directory"]).resolve() != platform.resolve():
@@ -122,15 +139,24 @@ def bind_persisted_outcomes(path, rows, starts):
             "restored": by_phase[RESTORE_PHASE]["state"], "evidenceSha256": sha256(path)}
 
 
-def source_snapshot(root):
+def source_snapshot(root, allow_archive=False):
     """Record source provenance independently of public NuGet archive identity."""
     root = Path(root)
     files = [path for path in (root / "src").rglob("*")
              if path.is_file() and path.suffix in (".cs", ".csproj")
              and not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
     files += [root / name for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props") if (root / name).is_file()]
-    inventory = {str(path.relative_to(root)): sha256(path) for path in sorted(files)}
-    return {"root": str(root), "commit": subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
+    inventory = {path.relative_to(root).as_posix(): sha256(path) for path in sorted(files)}
+    commit = None
+    try:
+        owner = subprocess.check_output(["git", "-C", str(root), "rev-parse", "--show-toplevel"], text=True, stderr=subprocess.DEVNULL).strip()
+        if Path(owner).resolve() != root.resolve():
+            raise ValueError("Source directory is not its own Git checkout: " + str(root))
+        commit = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True, stderr=subprocess.DEVNULL).strip()
+    except (subprocess.CalledProcessError, ValueError):
+        if not allow_archive:
+            raise ValueError("Source directory requires an owning Git checkout unless an explicit archive root was selected: " + str(root))
+    return {"root": str(root), "commit": commit, "provenance": "owning Git checkout" if commit else "explicit filesystem archive; no Git HEAD",
             "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
 
 
@@ -158,6 +184,7 @@ def require_published_runtime_source(snapshot, published_producers):
 def run_verification(args):
     platform = Path(__file__).resolve().parents[1]
     works = args.works_root.resolve()
+    runtime_sdk = args.runtime_sdk_root.resolve() if args.runtime_sdk_root else works / "references/Hexalith.EventStore"
     artifacts = args.artifacts_path.resolve() if args.artifacts_path else Path(tempfile.mkdtemp(prefix="works-platform-proof-"))
     if artifacts.exists() and any(artifacts.iterdir()):
         raise ValueError("Artifacts directory must be empty; existing evidence cannot be reused or overwritten")
@@ -187,7 +214,10 @@ def run_verification(args):
 
     def build(name, project, configuration, root, output=None, extra=()):
         command = ["dotnet", "build", project, "-c", configuration, "-p:TreatWarningsAsErrors=true",
-                   "-p:NuGetAudit=false", "-p:MinVerVersionOverride=1.0.0", "-p:MSBuildWarningsAsErrors=MSB3277"]
+                   "-p:NuGetAudit=false", "-p:Version=3.124.0", "-p:MinVerVersionOverride=3.124.0",
+                   "-p:MSBuildWarningsAsErrors=MSB3277",
+                   "-p:UseHexalithProjectReferences=" + ("true" if configuration == "Debug" else "false"),
+                   "-p:UseNuGetDeps=" + ("false" if configuration == "Debug" else "true")]
         if output:
             command += ["--artifacts-path", str(output)]
         command += ["-p:AspireUseCliBundle=true"] if project.endswith(".cs") else ["-m:1"]
@@ -195,32 +225,41 @@ def run_verification(args):
 
     for row, (title, package, api, consumer) in ROWS.items():
         consumer_path = platform / consumer[2:] if consumer.startswith("P/") else works / consumer
-        summary["rows"][row] = {"title": title, "status": "open", "producer": {"package": package, "version": "3.123.0", "api": api},
+        summary["rows"][row] = {"title": title, "status": "open", "producer": {"package": package, "version": "3.124.0", "api": api},
             "consumer": consumer, "consumerRoot": "Platform" if consumer.startswith("P/") else "Works", "consumerSha256": sha256(consumer_path) if consumer_path.is_file() else None,
             "requiredProofs": {"persisted": False, "negative": False, "restart": False, "rollback": False}}
-    summary["rows"]["R8"]["additionalSeams"] = {"package": "Hexalith.EventStore.Client", "version": "3.123.0", "api": "IProcessDispositionAuthorizer/IProcessDispositionAuditSink"}
+    summary["rows"]["R8"]["additionalSeams"] = {"package": "Hexalith.EventStore.Client", "version": "3.124.0", "api": "IProcessDispositionAuthorizer/IProcessDispositionAuditSink"}
     summary["rows"]["R10"]["configurationConsumers"] = [{"path": str(path.relative_to(platform)), "sha256": sha256(path)}
         for path in sorted((platform / "DaprComponents").rglob("*.yaml"))
         ] + [{"path": str(path.relative_to(platform)), "sha256": sha256(path)} for path in
             [platform / "config/works-production-profile.schema.json", platform / "src/Hexalith.Platform.Composition/WorksProductionProfile.cs"]]
-    summary["sourceProducers"] = {"platformDebugSdk": source_snapshot(platform / "references/Hexalith.EventStore"),
-        "worksDebugAndRuntimeSdk": source_snapshot(works / "references/Hexalith.EventStore")}
+    summary["sourceProducers"] = {"platformDebugSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(platform / "references/Hexalith.EventStore"),
+        "worksDebugAndRuntimeSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(runtime_sdk)}
     platform_consumers = [platform / "apphost.cs", *sorted((platform / "src").rglob("*.cs")),
                           *sorted((platform / "src").rglob("*.csproj"))]
     summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
         if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
     summary["worksConsumerSource"] = source_snapshot(works)
     summary["verifierSha256"] = sha256(Path(__file__))
+    summary["verifierHelpers"] = {name: sha256(Path(__file__).with_name(name)) for name in
+        ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py"]}
     save()
     try:
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer"], platform / "eng")
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", "--artifacts-path", str(artifacts / "agents-full")],
             expected_refusal="DependencyNotAvailable: EXT-HOST-1")
         summary["checks"]["agentsFull"] = "expected-unavailable; not a Works prerequisite"
         run("agents-local-scaffold", ["bash", "eng/verify-agents-host.sh", "--mode", "LocalScaffold", "--artifacts-path", str(artifacts / "agents-local")])
+        # These tests locate their checkout through artifact ancestors. Keep their private
+        # outputs under Platform while avoiding shared default bin/obj deployment directories.
+        (platform / "artifacts").mkdir(exist_ok=True)
+        platform_test_output = Path(tempfile.mkdtemp(prefix="works-parity-tests-", dir=platform / "artifacts"))
+        summary["platformTestsArtifacts"] = str(platform_test_output)
         for configuration in ("Debug", "Release"):
-            build("platform-tests-build-" + configuration.lower(), "tests/Hexalith.Platform.Works.Tests/Hexalith.Platform.Works.Tests.csproj", configuration, platform)
-            executable = platform / "tests/Hexalith.Platform.Works.Tests/bin" / configuration / "net10.0/Hexalith.Platform.Works.Tests"
+            build("platform-tests-build-" + configuration.lower(), "tests/Hexalith.Platform.Works.Tests/Hexalith.Platform.Works.Tests.csproj", configuration, platform,
+                  platform_test_output / configuration.lower(),
+                  extra=["-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=3.124.0"] if args.runtime_sdk_root is not None else [])
+            executable = platform_test_output / configuration.lower() / "bin/Hexalith.Platform.Works.Tests" / configuration.lower() / "Hexalith.Platform.Works.Tests"
             xml = artifacts / ("platform-" + configuration.lower() + ".xml")
             run("platform-tests-" + configuration.lower(), [executable, "-noLogo", "-result-xml", xml])
             summary["checks"][configuration] = require_passed_tests(xml)
@@ -233,12 +272,17 @@ def run_verification(args):
         catalog = ET.parse(platform / "references/Hexalith.Builds/Props/Directory.Packages.props").getroot()
         adapter = next(item.text for item in catalog.findall(".//HexalithAspireHostingDaprVersion") if not item.get("Condition"))
         build("works-consumer-debug", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Debug", works, artifacts / "consumer-debug",
-              ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform)])
+              ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
+               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=3.124.0"])
         build("works-consumer-release", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Release", works, consumer_output,
-              ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform)])
+              ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
+               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=3.124.0"])
         supporting_xml = artifacts / "works-consumer-supporting.xml"
         supporting_classes = ["WorksSdkPartitionedRebuildTests", "WorksSdkProjectionQueryTests",
-                              "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests"]
+                              "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests",
+                              "WorksQueryPolicyDeadlineTests", "WorksSdkProofRedisOwnershipTests",
+                              "WorksPlatformDispositionProbeTests", "WorksPlatformSelectedSdkPathsTests",
+                              "WorksPlatformFleetRestoreTests"]
         supporting_command = [consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests", "-noLogo"]
         for name in supporting_classes:
             supporting_command += ["-class", "Hexalith.Works.IntegrationTests." + name]
@@ -263,7 +307,7 @@ def run_verification(args):
             if not key.startswith("Hexalith.EventStore.") or library["type"] != "package":
                 continue
             package, version = key.split("/")
-            if version != "3.123.0":
+            if version != "3.124.0":
                 raise ValueError("Unexpected published producer: " + key)
             folder = next(Path(root) / library["path"] for root in packages["packageFolders"] if (Path(root) / library["path"]).exists())
             artifact = folder / (package.lower() + "." + version + ".nupkg")
@@ -282,7 +326,9 @@ def run_verification(args):
             works / "tests/Hexalith.Works.IntegrationTests" / name for name in
             ["WorksSdkRecoveryPipelineSmokeTests.cs", "WorksSdkProofHostingStartup.cs", "WorksSdkProofRedis.cs",
              "WorksAppHostSelection.cs", "WorksAppHostSmokeHarness.cs", "WorksSdkPartitionedRebuildTests.cs",
-             "WorksSdkProjectionQueryTests.cs", "WorksSdkProtectedHttpTests.cs", "WorkItemSharedProjectionRebuildHandlerTests.cs"]]
+             "WorksSdkProjectionQueryTests.cs", "WorksSdkProtectedHttpTests.cs", "WorkItemSharedProjectionRebuildHandlerTests.cs",
+             "WorksQueryPolicyDeadlineTests.cs", "WorksSdkProofRedisOwnershipTests.cs"]]
+        fixtures.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
         summary["fixtureSources"] = {str(path.relative_to(works)): sha256(path) for path in sorted(fixtures)}
         identity_root = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
         summary["identityProvenance"] = {"scope": "explicit-test-only-source; no published Platform.Identity package",
@@ -290,7 +336,7 @@ def run_verification(args):
             "projectSha256": sha256(identity_root / "Hexalith.Platform.Identity.csproj"),
             "qualifiedAssemblySha256": sha256(consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Platform.Identity.dll")}
         summary["dependencyModes"] = {"Debug": "sibling source project graph; independently built and hashed",
-            "Release": "public NuGet3.123.0 consumer graph plus explicitly named test-only Platform.Identity and Platform runtime source"}
+            "Release": "public NuGet3.124.0 consumer graph plus explicitly named test-only Platform.Identity and Platform runtime source"}
         for row in summary["rows"].values():
             producer = producer_evidence.get(row["producer"]["package"])
             if producer is None or row["consumerSha256"] is None:
@@ -299,23 +345,25 @@ def run_verification(args):
             if "additionalSeams" in row:
                 row["additionalSeams"].update(producer_evidence[row["additionalSeams"]["package"]])
         save()
-        summary["runtimeProducerQualification"] = require_published_runtime_source(
+        summary["runtimeProducerQualification"] = (qualify_runtime_source if args.runtime_sdk_root is not None else require_published_runtime_source)(
             summary["sourceProducers"]["worksDebugAndRuntimeSdk"], producer_evidence)
         save()
         # These projects run through dotnet run at host startup and are not all consumer references.
-        # Warm their exact shared output graph serially, so a clean Debug/Release checkout never relies
+        # Prepare their exact owned output graph serially, so a clean checkout never relies
         # on coincidental prior builds or races concurrent SDK/Commons reference-assembly writes.
         runtime_projects = [works / "src/Hexalith.Works/Hexalith.Works.csproj", *[
-            works / "references/Hexalith.EventStore/src" / name / (name + ".csproj") for name in
+            runtime_sdk / "src" / name / (name + ".csproj") for name in
             ("Hexalith.EventStore", "Hexalith.EventStore.Operations", "Hexalith.EventStore.Admin.Server.Host")]]
-        runtime_properties = ["-p:Version=3.123.0", "-p:MinVerVersionOverride=3.123.0",
+        runtime_projects.append(works / "src/Hexalith.Works.AppHost/Hexalith.Works.AppHost.csproj")
+        runtime_output = artifacts / "runtime"
+        runtime_properties = ["-p:Version=3.124.0", "-p:MinVerVersionOverride=3.124.0",
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
-            "-p:HexalithEventStoreRoot=" + str(works / "references/Hexalith.EventStore"),
+            "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=3.124.0",
             "-p:HexalithAspireHostingDaprVersion=" + adapter]
         runtime_directories = []
         for index, project in enumerate(runtime_projects):
-            build("runtime-release-prebuild-" + str(index), str(project), "Release", works, extra=runtime_properties)
-            runtime_directories.append(project.parent / "bin/Release/net10.0")
+            build("runtime-release-prebuild-" + str(index), str(project), "Release", works, runtime_output, extra=runtime_properties)
+            runtime_directories.append(runtime_output / "bin" / project.stem / "release")
         summary["runtimeArtifacts"] = {str(path): sha256(path) for directory in runtime_directories
             for path in sorted(directory.rglob("*")) if path.is_file()}
         save()
@@ -326,9 +374,11 @@ def run_verification(args):
         runtime_environment = {"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
             "WORKS_PLATFORM_ROOT": str(platform), "WORKS_PLATFORM_WORKS_ROOT": str(works),
             "Platform__Works__SourceRoot": str(works), "Platform__Identity__Enabled": "false",
-            "Version": "3.123.0", "MinVerVersionOverride": "3.123.0",
+            "Version": "3.124.0", "MinVerVersionOverride": "3.124.0",
+            "ArtifactsPath": str(runtime_output), "UseArtifactsOutput": "true", "WORKS_PLATFORM_RUNTIME_ARTIFACTS": str(runtime_output),
             "UseHexalithProjectReferences": "false", "UseNuGetDeps": "true",
-            "HexalithEventStoreRoot": str(works / "references/Hexalith.EventStore"), "HexalithAspireHostingDaprVersion": adapter,
+            "HexalithEventStoreRoot": str(runtime_sdk), "HexalithEventStoreVersion": "3.124.0", "HexalithAspireHostingDaprVersion": adapter,
+            "Platform__Works__EventStoreSourceRoot": str(runtime_sdk), "WORKS_PLATFORM_SDK_SOURCE_ROOT": str(runtime_sdk),
             "WORKS_PLATFORM_HOST_EVIDENCE": str(artifacts / "host-starts.jsonl"),
             "WORKS_SDK_PROOF_EVIDENCE_PATH": str(artifacts / "persisted-states.jsonl"), "WORKS_APPHOST_TEST_STARTUP_TIMEOUT_SECONDS": "180"}
         environment.update(runtime_environment)
@@ -349,7 +399,7 @@ def run_verification(args):
         for row in summary["rows"].values():
             row["targetCommands"] = [entry for entry in summary["commands"] if entry["name"] in ("platform-recovery", "platform-historical", "platform-ha")]
         for source in summary["sourceProducers"].values():
-            current = source_snapshot(source["root"])
+            current = runtime_source_snapshot(source["root"]) if source["commit"] is None else source_snapshot(source["root"])
             if current["commit"] != source["commit"] or current["inventorySha256"] != source["inventorySha256"]:
                 raise ValueError("A qualified SDK source graph changed during execution: " + source["root"])
         works_source = source_snapshot(works)
@@ -369,6 +419,9 @@ def run_verification(args):
                 raise ValueError("A qualified Platform adapter assembly changed during execution: " + binary)
         if sha256(Path(__file__)) != summary["verifierSha256"]:
             raise ValueError("The verifier changed during execution")
+        for name, digest in summary["verifierHelpers"].items():
+            if sha256(Path(__file__).with_name(name)) != digest:
+                raise ValueError("A verifier helper changed during execution: " + name)
         for source, digest in summary["fixtureSources"].items():
             if sha256(works / source) != digest:
                 raise ValueError("A qualified fixture changed after the consumer build: " + source)
@@ -388,6 +441,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--works-root", type=Path, default=Path(__file__).resolve().parents[2] / "works")
     parser.add_argument("--artifacts-path", type=Path)
+    parser.add_argument("--runtime-sdk-root", type=Path, help="Explicit producer source directory; independently qualified against official commit trees and exact Git blobs")
     parser.add_argument("--prepare-only", action="store_true", help="Run build/profile checks only; never accepts parity")
     args = parser.parse_args()
     return run_verification(args)

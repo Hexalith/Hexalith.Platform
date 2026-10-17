@@ -5,8 +5,8 @@
 #:package Aspire.Hosting.Redis@13.6.1
 #:package Aspire.Hosting.Keycloak@13.6.1-preview.1.26506.6
 #:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.1-beta.935
-#:package Hexalith.EventStore.Aspire@3.123.0
-#:package Hexalith.EventStore.ServiceDefaults@3.123.0
+#:package Hexalith.EventStore.Aspire@3.124.0
+#:package Hexalith.EventStore.ServiceDefaults@3.124.0
 #:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
 using Aspire.Hosting;
 using Hexalith.Platform.Composition;

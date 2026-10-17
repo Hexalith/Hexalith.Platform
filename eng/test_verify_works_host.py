@@ -62,16 +62,51 @@ class WorksEvidenceGateTests(unittest.TestCase):
     def test_another_host_or_scheduler_cannot_qualify_platform(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            assembly = root / 'apphost.dll'
+            assembly = root / 'bin/release/apphost.dll'
+            assembly.parent.mkdir(parents=True)
             assembly.write_bytes(b'bound fixture')
             records = root / 'starts.jsonl'
-            record = {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': 'works-sdk416-owned', 'role': 'platform-target', 'actorType': 'WorksSdkReminderActor', 'sdkAssemblies': [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.123.0.0', 'path': str(assembly), 'sha256': sha256(assembly)}]}
+            record = {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': 'works-sdk416-owned', 'role': 'platform-target', 'actorType': 'WorksSdkReminderActor', 'sdkAssemblies': [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.0.0', 'path': str(assembly), 'sha256': sha256(assembly)}]}
+            record['readinessPassed'] = True
+            record['runtimeModules'] = [{'resource': name, 'configuration': 'Release', 'entry': str(assembly), 'entrySha256': sha256(assembly), 'sdkAssemblies': record['sdkAssemblies']}
+                                        for name in ['eventstore', 'works', 'eventstore-operations', 'eventstore-admin']]
             records.write_text(json.dumps(record) + '\n')
             self.assertEqual(len(verify_host_records(records, assembly, root)), 1)
-            for key, value in [('sha256', 'changed'), ('assembly', str(root / 'old-host.dll')), ('directory', str(root / 'works')), ('schedulerVolume', 'hexalith-works-dapr-scheduler'), ('role', 'unknown'), ('actorType', 'DateReminderActor'), ('sdkAssemblies', []), ('sdkAssemblies', [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.123.1.0', 'path': str(assembly), 'sha256': sha256(assembly)}])]:
+            for key, value in [('sha256', 'changed'), ('assembly', str(root / 'old-host.dll')), ('directory', str(root / 'works')), ('schedulerVolume', 'hexalith-works-dapr-scheduler'), ('role', 'unknown'), ('actorType', 'DateReminderActor'), ('readinessPassed', False), ('runtimeModules', []), ('sdkAssemblies', []), ('sdkAssemblies', [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.1.0', 'path': str(assembly), 'sha256': sha256(assembly)}])]:
                 with self.subTest(key=key), self.assertRaises(ValueError):
                     records.write_text(json.dumps(record | {key: value}) + '\n')
                     verify_host_records(records, assembly, root)
+
+    def test_mixed_or_missing_fleet_configuration_cannot_qualify(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            release = root / 'bin/release/apphost.dll'
+            debug = root / 'bin/debug/apphost.dll'
+            for assembly in [release, debug]:
+                assembly.parent.mkdir(parents=True)
+                assembly.write_bytes(b'valid independently hashed artifact')
+            sdk = [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.0.0',
+                    'path': str(release), 'sha256': sha256(release)}]
+            modules = [{'resource': name, 'configuration': 'Release', 'entry': str(release),
+                        'entrySha256': sha256(release), 'sdkAssemblies': sdk}
+                       for name in ['eventstore', 'works', 'eventstore-operations', 'eventstore-admin']]
+            record = {'assembly': str(release), 'sha256': sha256(release), 'directory': str(root),
+                      'schedulerVolume': 'works-sdk416-owned', 'role': 'platform-target',
+                      'actorType': 'WorksSdkReminderActor', 'readinessPassed': True,
+                      'sdkAssemblies': sdk, 'runtimeModules': modules}
+            records = root / 'starts.jsonl'
+            for configuration in [None, 'Debug', 'Custom']:
+                changed = [modules[0] | {'configuration': configuration}, *modules[1:]]
+                records.write_text(json.dumps(record | {'runtimeModules': changed}) + '\n')
+                with self.subTest(configuration=configuration), self.assertRaisesRegex(ValueError, 'Release configuration'):
+                    verify_host_records(records, release, root)
+            changed = [modules[0] | {'entry': str(debug), 'entrySha256': sha256(debug)}, *modules[1:]]
+            records.write_text(json.dumps(record | {'runtimeModules': changed}) + '\n')
+            with self.assertRaisesRegex(ValueError, 'Release configuration'):
+                verify_host_records(records, release, root)
+            records.write_text(json.dumps(record | {'assembly': str(debug), 'sha256': sha256(debug)}) + '\n')
+            with self.assertRaisesRegex(ValueError, 'Release deployment'):
+                verify_host_records(records, debug, root)
 
     def test_incomplete_phases_or_missing_retained_host_cannot_accept_rows(self):
         with tempfile.TemporaryDirectory() as temporary:
