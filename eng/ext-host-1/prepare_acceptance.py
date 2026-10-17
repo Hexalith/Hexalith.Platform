@@ -72,7 +72,7 @@ def secret(value):
 
 
 def reference(value, name):
-    if value is None or value == "":
+    if value is None or value == "" or (isinstance(value, str) and value.casefold() == "pending"):
         return None
     if not isinstance(value, str) or value != value.strip() or not value or len(value) > 256 or any(ch.isspace() for ch in value) or secret(value):
         raise ValueError("profile rejected a secret or malformed reference")

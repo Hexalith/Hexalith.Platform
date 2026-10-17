@@ -91,8 +91,10 @@ public sealed class AgentsHostCompositionTests
     /// <summary>Secrets, operator kubeconfig, OpenBao server secrets, and unapproved scope keys are rejected.</summary>
     [Theory]
     [InlineData("replay", "/home/administrator/.kube/hexalith-production")]
+    [InlineData("replay", "/HOME/ADMINISTRATOR/.KUBE/HEXALITH-PRODUCTION")]
     [InlineData("recorder", "openbao/Secret/openbao-server-tls")]
-    [InlineData("worker", "openbao/Secret/openbao-seal")]
+    [InlineData("worker", "OPENBAO/SECRET/OPENBAO-SEAL")]
+    [InlineData("spoolBackend", "-----begin private key-----")]
     [InlineData("humanExactConversationScope", "approved")]
     [InlineData("classUtcRangeScope", "approved")]
     public void SecretsAndUnapprovedScopesAreRejected(string key, string value)
@@ -103,6 +105,39 @@ public sealed class AgentsHostCompositionTests
         refusal.Message.ShouldNotContain(value);
     }
 
+    /// <summary>Pending is an empty slot, in any letter case.</summary>
+    [Theory]
+    [InlineData("pending")]
+    [InlineData("PENDING")]
+    public void PendingReferenceIsAnEmptySlot(string pending)
+    {
+        JsonObject document = CompleteProfile(Root);
+        document["replay"] = pending;
+        AgentsDeploymentProfile.MissingReferences(document.ToJsonString()).ShouldContain("replay");
+        Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.Validate(document.ToJsonString()));
+    }
+
+    /// <summary>Host, date, branch, and timing outside the accepted constants are rejected.</summary>
+    [Theory]
+    [InlineData("host", "192.168.1.31")]
+    [InlineData("integrationDate", "2026-10-09")]
+    [InlineData("partiesBranch", "A")]
+    public void RejectedConstantsFailValidation(string key, string value)
+    {
+        JsonObject document = CompleteProfile(Root);
+        document[key] = value;
+        Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.Validate(document.ToJsonString()));
+    }
+
+    /// <summary>A timing bound other than the accepted L/S/O/H/R values is rejected.</summary>
+    [Fact]
+    public void RejectedTimingFailsValidation()
+    {
+        JsonObject document = CompleteProfile(Root);
+        document["timing"]!["L"] = 301;
+        Should.Throw<InvalidDataException>(() => AgentsDeploymentProfile.Validate(document.ToJsonString()));
+    }
+
     /// <summary>A ready profile binds sibling projects and the tenants global administrator reference without registering raw credentials.</summary>
     [Fact]
     public async Task ValidProfileComposesSiblingServicesAndBindsAdministratorReference()
@@ -111,35 +146,34 @@ public sealed class AgentsHostCompositionTests
         string profile = Path.GetTempFileName();
         try
         {
-            foreach ((string directory, string name) in new (string, string)[]
-            {
-                ("src/Hexalith.EventStore", "Hexalith.EventStore.csproj"),
-                ("src/Hexalith.Tenants", "Hexalith.Tenants.csproj"),
-                ("src/Hexalith.Tenants.Api", "Hexalith.Tenants.Api.csproj"),
-                ("src/Hexalith.Parties", "Hexalith.Parties.csproj"),
-                ("src/Hexalith.Conversations.Server", "Hexalith.Conversations.Server.csproj"),
-                ("src/Hexalith.Agents.Server", "Hexalith.Agents.Server.csproj"),
-                ("src/Hexalith.Agents.UI", "Hexalith.Agents.UI.csproj"),
-            })
-            {
-                string folder = Path.Combine(root, directory);
-                Directory.CreateDirectory(folder);
-                File.WriteAllText(Path.Combine(folder, name), "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
-            }
+            WriteProjects(root);
             File.WriteAllText(profile, CompleteProfile(root).ToJsonString());
             IDistributedApplicationBuilder builder = Builder();
             builder.Configuration["Platform:Agents:Enabled"] = "true";
             builder.Configuration[AgentsHostComposition.ProfilePathKey] = profile;
             PlatformAppModel.ComposeEntry(builder);
             builder.Resources.OfType<ProjectResource>().Select(resource => resource.Name).Order()
-                .ShouldBe(["agents", "conversations", "eventstore", "parties", "tenants", "tenants-api"]);
+                .ShouldBe(["agents", "agents-ui", "conversations", "eventstore", "parties", "tenants", "tenants-api"]);
             builder.Resources.ShouldNotContain(resource => resource.Name.Contains("AppHost", StringComparison.Ordinal)
                 || resource.Name.Contains("ServiceDefaults", StringComparison.Ordinal));
             ProjectResource tenants = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "tenants");
             Dictionary<string, object> environment = await EnvironmentAsync(builder, tenants);
             environment["Tenants__BootstrapGlobalAdminEnabled"].ShouldBe("true");
             environment["Tenants__BootstrapGlobalAdminUserId"].ShouldBe("ref:global-administrator");
-            environment["Agents__Replay__Reference"].ShouldBe("ref:replay");
+            Dictionary<string, object> agents = await EnvironmentAsync(builder, builder.Resources.Single(resource => resource.Name == "agents-ui"));
+            agents["Agents__CurrentTenant"].ShouldBe("ref:current-tenant");
+            agents["Agents__HumanIdentity"].ShouldBe("ref:human-identity");
+            agents["Agents__ApproverEvidence"].ShouldBe("ref:approver-evidence");
+            agents["Agents__Replay__Reference"].ShouldBe("ref:replay");
+            agents["Agents__Recorder__Reference"].ShouldBe("ref:recorder");
+            agents["Agents__Worker__Reference"].ShouldBe("ref:worker");
+            agents["Agents__Spool__Backend"].ShouldBe("ref:spool-backend");
+            agents["Agents__Spool__ReplicaCount"].ShouldBe("3");
+            agents["Agents__Spool__FailureModel"].ShouldBe("ref:failure-model");
+            agents["Agents__Protection__Engine"].ShouldBe("ref:protection-engine");
+            agents["Agents__Protection__Observer"].ShouldBe("ref:protection-observer");
+            agents["Agents__Parties__Binding"].ShouldBe("ref:parties-binding");
+            agents["Agents__Conversations__Binding"].ShouldBe("ref:conversations-binding");
             builder.Services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(ReplicatedSecurityObservationSpool));
             builder.Services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(ITrustedEnvelopeReplayRegistrar));
         }
@@ -150,12 +184,106 @@ public sealed class AgentsHostCompositionTests
         }
     }
 
+    /// <summary>Public composition rejects an empty spool, replay, recorder, or worker reference before any project is added.</summary>
+    [Fact]
+    public void EmptyCredentialReferencesAreRejectedBeforeProjects()
+    {
+        AgentsDeploymentProfileModel model = new(
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["eventStore"] = Root, ["tenants"] = Root, ["parties"] = Root, ["conversations"] = Root, ["agents"] = Root,
+            },
+            "ref:current-tenant", "ref:global-administrator", "ref:human-identity", "ref:approver-evidence",
+            "", "ref:recorder", "ref:worker", "", 3, "ref:failure-model", "ref:protection-engine", "ref:protection-observer",
+            "ref:parties-binding", "ref:conversations-binding");
+        IDistributedApplicationBuilder builder = Builder();
+        Should.Throw<InvalidDataException>(() => AgentsHostComposition.Compose(builder, model, null));
+        builder.Resources.ShouldBeEmpty();
+    }
+
+    /// <summary>A host outside Development keeps the refusal and adds no resource.</summary>
+    [Fact]
+    public void NonDevelopmentHostRefusesBeforeResources()
+    {
+        string root = Path.Combine(Path.GetTempPath(), "agents-env-" + Guid.NewGuid().ToString("N"));
+        string profile = Path.GetTempFileName();
+        try
+        {
+            WriteProjects(root);
+            File.WriteAllText(profile, CompleteProfile(root).ToJsonString());
+            IDistributedApplicationBuilder builder = Builder();
+            builder.Environment.EnvironmentName = "Production";
+            builder.Configuration["Platform:Agents:Enabled"] = "true";
+            builder.Configuration[AgentsHostComposition.ProfilePathKey] = profile;
+            Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeEntry(builder)).Message.ShouldContain("EXT-HOST-1");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally
+        {
+            File.Delete(profile);
+            if (Directory.Exists(root))
+                Directory.Delete(root, true);
+        }
+    }
+
+    /// <summary>A relative profile path is resolved from the AppHost directory.</summary>
+    [Fact]
+    public void RelativeProfilePathResolvesFromAppHostDirectory()
+    {
+        string root = Path.Combine(Path.GetTempPath(), "agents-relative-" + Guid.NewGuid().ToString("N"));
+        string name = "agents-profile-" + Guid.NewGuid().ToString("N") + ".json";
+        string full = Path.Combine(Root, name);
+        string away = Path.Combine(Path.GetTempPath(), "agents-cwd-" + Guid.NewGuid().ToString("N"));
+        string previous = Directory.GetCurrentDirectory();
+        try
+        {
+            WriteProjects(root);
+            File.WriteAllText(full, CompleteProfile(root).ToJsonString());
+            Directory.CreateDirectory(away);
+            Directory.SetCurrentDirectory(away);
+            IDistributedApplicationBuilder builder = Builder();
+            builder.Configuration["Platform:Agents:Enabled"] = "true";
+            builder.Configuration[AgentsHostComposition.ProfilePathKey] = name;
+            PlatformAppModel.ComposeEntry(builder);
+            builder.Resources.OfType<ProjectResource>().Select(resource => resource.Name).ShouldContain("agents-ui");
+        }
+        finally
+        {
+            Directory.SetCurrentDirectory(previous);
+            File.Delete(full);
+            if (Directory.Exists(away))
+                Directory.Delete(away, true);
+            if (Directory.Exists(root))
+                Directory.Delete(root, true);
+        }
+    }
+
     /// <summary>A signed operation registers issuer and nonce before the target command is built.</summary>
     [Fact]
     public async Task SignedAdmissionRegistersIssuerBeforeTargetCommand()
     {
         AgentsSpoolHarness harness = new();
         (await harness.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (AgentsAdmissionResult result, int constructed) = await AdmitSignedAsync(harness, leavePending: false);
+        result.CommandConstructed.ShouldBeTrue();
+        result.Command.ShouldBe("target-command");
+        constructed.ShouldBe(1);
+    }
+
+    /// <summary>A spool that becomes unready after verification builds no target command.</summary>
+    [Fact]
+    public async Task SpoolUnreadinessAfterVerificationBlocksTargetCommand()
+    {
+        AgentsSpoolHarness harness = new();
+        (AgentsAdmissionResult result, int constructed) = await AdmitSignedAsync(harness, leavePending: true);
+        result.CommandConstructed.ShouldBeFalse();
+        result.Command.ShouldBe("SecurityAuditUnavailable");
+        constructed.ShouldBe(0);
+        harness.Read()!.Records.ShouldNotBeEmpty();
+    }
+
+    private static async Task<(AgentsAdmissionResult Result, int Constructed)> AdmitSignedAsync(AgentsSpoolHarness harness, bool leavePending)
+    {
         ManualClock clock = harness.Clock;
         PlatformSigningProfile profile = new("profile-v1", "issuer-a", "audience-a", clock.Now.AddDays(-1), clock.Now.AddDays(1),
             TimeSpan.FromSeconds(300), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(600), TimeSpan.FromSeconds(86400), TimeSpan.FromSeconds(604800));
@@ -190,20 +318,42 @@ public sealed class AgentsHostCompositionTests
                 TrustedEnvelopeReplayIntent intent = call.Arg<TrustedEnvelopeReplayIntent>();
                 intent.Issuer.ShouldBe("issuer-a");
                 intent.DeliveryNonce.ShouldBe(envelope.DeliveryNonce);
-                stored = new(intent, call.Arg<DateTimeOffset>(), call.Arg<DateTimeOffset>() + call.Arg<TimeSpan>(), 1, "original-replay-receipt");
-                return stored;
+                TrustedEnvelopeReplayReceipt receipt = new(intent, call.Arg<DateTimeOffset>(), call.Arg<DateTimeOffset>() + call.Arg<TimeSpan>(), 1, "original-replay-receipt");
+                stored = receipt;
+                if (leavePending)
+                    harness.Spool.ObserveAsync(AgentsSpoolHarness.Intent(), CancellationToken.None).GetAwaiter().GetResult().ShouldNotBeNull();
+                return receipt;
             });
         registrar.LookupAsync(Arg.Any<TrustedEnvelopeReplayIntent>(), Arg.Any<CancellationToken>())
             .Returns(call => stored is not null && stored.Intent == call.Arg<TrustedEnvelopeReplayIntent>() ? stored : null);
         TrustedEnvelopeReplayVerifier verifier = new(authenticator, registrar, profiles, clock);
+        int constructed = 0;
         AgentsAdmissionResult result = await AgentsHostComposition.AdmitAsync(verifier, harness.Spool, envelope, expected, _ =>
         {
             order.ShouldBe(1);
+            constructed++;
             return "target-command";
         }, TestContext.Current.CancellationToken);
-        result.CommandConstructed.ShouldBeTrue();
-        result.Command.ShouldBe("target-command");
-        order.ShouldBe(1);
+        return (result, constructed);
+    }
+
+    private static void WriteProjects(string root)
+    {
+        foreach ((string directory, string name) in new (string, string)[]
+        {
+            ("src/Hexalith.EventStore", "Hexalith.EventStore.csproj"),
+            ("src/Hexalith.Tenants", "Hexalith.Tenants.csproj"),
+            ("src/Hexalith.Tenants.Api", "Hexalith.Tenants.Api.csproj"),
+            ("src/Hexalith.Parties", "Hexalith.Parties.csproj"),
+            ("src/Hexalith.Conversations.Server", "Hexalith.Conversations.Server.csproj"),
+            ("src/Hexalith.Agents.Server", "Hexalith.Agents.Server.csproj"),
+            ("src/Hexalith.Agents.UI", "Hexalith.Agents.UI.csproj"),
+        })
+        {
+            string folder = Path.Combine(root, directory);
+            Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, name), "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
+        }
     }
 
     /// <summary>A spool that is not ready blocks target-command construction and writes nothing.</summary>
@@ -244,7 +394,7 @@ public sealed class AgentsHostCompositionTests
         harness.Recorder.AppendAsync(Arg.Any<SecurityObservationRecord>(), Arg.Any<CancellationToken>()).Returns(_ =>
         {
             Interlocked.Increment(ref appends);
-            return Task.FromException(new HttpRequestException("lost acknowledgement"));
+            return Task.CompletedTask;
         });
         int constructed = 0;
         AgentsAdmissionResult blocked = await AgentsHostComposition.AdmitAsync(Verifier(Substitute.For<ITrustedEnvelopeReplayRegistrar>()), harness.Spool, Envelope(), Identity(), _ =>

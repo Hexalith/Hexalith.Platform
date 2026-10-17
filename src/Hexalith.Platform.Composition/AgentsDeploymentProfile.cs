@@ -161,7 +161,7 @@ public static class AgentsDeploymentProfile
         if (value.ValueKind != JsonValueKind.String)
             throw new InvalidDataException("Agents deployment profile requires a reference for " + name + ".");
         string text = value.GetString() ?? string.Empty;
-        if (text.Length == 0)
+        if (text.Length == 0 || text.Equals("Pending", StringComparison.OrdinalIgnoreCase))
             return null;
         if (text != text.Trim() || text.Length > 256 || text.Any(char.IsWhiteSpace) || IsSecret(text))
             throw new InvalidDataException("Agents deployment profile rejected a secret or malformed reference.");
@@ -170,13 +170,13 @@ public static class AgentsDeploymentProfile
 
     private static bool IsSecret(string value)
     {
-        if (value.Contains("BEGIN ", StringComparison.Ordinal) || value.Contains("PRIVATE KEY", StringComparison.Ordinal)
+        if (value.Contains("BEGIN ", StringComparison.OrdinalIgnoreCase) || value.Contains("PRIVATE KEY", StringComparison.OrdinalIgnoreCase)
             || value.Contains("client-certificate-data", StringComparison.OrdinalIgnoreCase)
             || value.Contains("client-key-data", StringComparison.OrdinalIgnoreCase))
             return true;
         foreach (string forbidden in ForbiddenCredentials)
         {
-            if (value.Contains(forbidden, StringComparison.Ordinal))
+            if (value.Contains(forbidden, StringComparison.OrdinalIgnoreCase))
                 return true;
         }
         return false;

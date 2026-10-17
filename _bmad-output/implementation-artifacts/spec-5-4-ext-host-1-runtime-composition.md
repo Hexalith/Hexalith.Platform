@@ -2,7 +2,7 @@
 title: EXT-HOST-1 runtime composition for Agents Story 5.4
 type: feature
 created: 2026-10-17
-status: in-review
+status: done
 route: dispatch
 review_loop_iteration: 0
 baseline_commit: b49d5c1cbfc79e94d92d6228e7d2b3c4f65b56f9
@@ -89,6 +89,47 @@ SDK 10 `dotnet test` needs `global.json` `test.runner` `Microsoft.Testing.Platfo
 ## Spec Change Log
 
 ## Review Triage Log
+
+- blind: composition doc still says Full refuses before build — `medium` — `eng/verify-agents-host.sh` now runs the verifier, so that sentence is stale.
+- blind: host passes null capabilities — `false` — the decision forbids minting registrar or spool objects; `BindPrivateCapabilities` is the call site when the caller already holds them.
+- blind: UI project is required and not added — `medium` — `RequireProject` checks `Hexalith.Agents.UI.csproj` and then drops the path, so the UI never becomes a resource.
+- blind: every empty slot fails validation — `false` — `Validate` must refuse composition when any required slot is empty; the packet is what names those slots.
+- blind: packet and profile disagree on secrets and `Pending` — `medium` — `prepare_acceptance.secret` is case-insensitive and `Pending` is a real reference there, while `IsSecret` is ordinal and `verify_full` treats only `Pending` as a gap.
+- blind: exact command omits the profile and Full always exits 1 — `false` — the register command is `git -C ../platform` plus Full, and this run must exit 1 with `DependencyNotAvailable: EXT-HOST-1`.
+- blind: category files can record an empty successful suite — `medium` — `verify()` treats exit 0 with no `UnitTestResult` nodes as success and still writes the evidence documents.
+- blind: second readiness check leaves the replay registration — `false` — `VerifyAsync` persists the issuer/nonce receipt before the second check, and `AdmitAsync` still does not build the command.
+- blind: lost-ack test throws before a successful append — `medium` — `AppendAsync` throws `HttpRequestException`, so the test does not show an append whose acknowledgement was lost.
+- blind: `Compose` does not reject empty models — `medium` — `TryCompose` validates, but public `Compose` will stamp empty strings onto projects.
+- blind: Agents success skips the Development check and `global.json` changes every `dotnet test` — `medium` — `ComposeEntry` returns before the Development refusal, and `tests/Hexalith.Platform.Identity.Tests` is still a library under the new runner.
+- blind: unrelated spec-1-9 is in the diff — `false` — that file was already untracked before implementation and is not part of this change.
+- edge: unreadable profile escapes the refusal catch — `medium` — `TryCompose` catches `InvalidDataException` and `IOException` only, so `UnauthorizedAccessException` leaves `ComposeEntry`.
+- edge: relative profile path uses the process directory — `medium` — `File.Exists` and `ReadAllText` do not anchor the path at `AppHostDirectory`.
+- edge: profile read has no timeout — `low` — a special file blocking startup is outside ordinary profile paths, and a timeout adds a new branch. Rejected.
+- edge: `Pending` composes as a real reference — `medium` — `OptionalReference` accepts any non-empty string, including `Pending`.
+- edge: packet omits `Pending` from missing references — `medium` — `reference()` returns that string, so the packet does not name it.
+- edge: forbidden paths are case-sensitive — `medium` — `IsSecret` uses ordinal comparison for the kubeconfig and OpenBao markers.
+- edge: Agents path skips the Development check — `medium` — same Development bypass as the blind finding.
+- edge: `Compose` accepts empty slots — `medium` — same public `Compose` hole.
+- edge: non-object profile crashes `verify_full` — `medium` — `binding_gaps` calls `.get` on a JSON array.
+- edge: `pending` is not a gap — `medium` — `binding_gaps` compares `Pending` with ordinal case.
+- edge: duplicate JSON keys — `low` — ordinary `json.loads` last-key behavior, not a path this profile writer produces. Rejected.
+- edge: suite timeout skips the refusal sentence — `medium` — `TimeoutExpired` leaves `verify()` before the `DependencyNotAvailable` print.
+- edge: malformed trx skips the refusal sentence — `medium` — `ET.parse` is uncaught.
+- edge: older trx files are included — `medium` — `results.glob("**/results.trx")` reads files already in the directory.
+- edge: shell never passes `--profile` — `low` — this run has no accepted profile, and the required result is the missing-binding refusal. Rejected.
+- edge: exact command hardcodes `../platform` — `false` — that is the register command shape the packet must emit.
+- edge: interrupted prepare leaves the output directory — `low` — a crash between `mkdir` and the write is rare, and cleanup adds a new branch. Rejected.
+- edge: parent walk can throw `NullReferenceException` — `low` — only a test helper outside a checkout, and the fix is test-only complexity. Rejected.
+- edge claim: missing profile does not throw the refusal sentence — `false` — a blank or missing path returns false, and `ComposeEntry` then throws the existing sentence.
+- edge claim: validation rejects secrets — `medium` — the case-sensitive `IsSecret` comparison lets a recased kubeconfig or OpenBao path through.
+- edge claim: suite failure omits the refusal sentence — `medium` — a nonzero suite exit prints `evidence suites failed` and returns 1 without `DependencyNotAvailable: EXT-HOST-1`.
+- verification-gap: packet writer has no test — `medium` — pre-verified; only the composition tests touch missing references, and they never run `prepare_acceptance.py`.
+- verification-gap: Full evidence can be empty and still exit 1 — `medium` — pre-verified; no test reads `effects`, `gap`, or suite counts.
+- verification-gap: signed admission does not reach `AdmitAsync` — `false` — `SignedAdmissionRegistersIssuerBeforeTargetCommand` passed in this session, including `IsReadyAsync` true and registration before `construct`. The filed “test fails on line 158” claim does not hold. The second readiness flip is still untested and is patched with the admission tests.
+- verification-gap: most environment bindings are unasserted — `medium` — pre-verified; the tenants assertions stop at the administrator id and replay reference.
+- verification-gap: accepted constants have no negative test — `medium` — pre-verified; `CompleteProfile` is the only host, date, branch, and timing input.
+- verification-gap other: secret comparison differs between C# and Python — `medium` — same case-sensitivity defect.
+- verification-gap other: `blocked.json` stays true when category files do not — `low` — with the required missing bindings both say blocked; the split appears only after bindings this run does not have. Rejected.
 
 ## Design Notes
 

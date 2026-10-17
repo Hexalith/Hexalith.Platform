@@ -4,6 +4,7 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Hexalith.Platform.Custody;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 /// <summary>Platform-owned Agents composition. A missing accepted profile keeps the existing refusal and adds no resource.</summary>
 public static class AgentsHostComposition
@@ -19,6 +20,7 @@ public static class AgentsHostComposition
         ("parties", "src/Hexalith.Parties/Hexalith.Parties.csproj", "parties"),
         ("conversations", "src/Hexalith.Conversations.Server/Hexalith.Conversations.Server.csproj", "conversations"),
         ("agents", "src/Hexalith.Agents.Server/Hexalith.Agents.Server.csproj", "agents"),
+        ("agents", "src/Hexalith.Agents.UI/Hexalith.Agents.UI.csproj", "agents-ui"),
     ];
 
     /// <summary>Composes sibling services only when the configured profile validates. Returns false when the profile is absent or rejected.</summary>
@@ -26,19 +28,20 @@ public static class AgentsHostComposition
     public static bool TryCompose(IDistributedApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        string? path = builder.Configuration[ProfilePathKey];
-        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+        if (!builder.Environment.IsDevelopment())
+            return false;
+        string? configured = builder.Configuration[ProfilePathKey];
+        if (string.IsNullOrWhiteSpace(configured))
             return false;
         AgentsDeploymentProfileModel profile;
         try
         {
+            string path = Path.GetFullPath(configured, builder.AppHostDirectory);
+            if (!File.Exists(path))
+                return false;
             profile = AgentsDeploymentProfile.Validate(File.ReadAllText(path));
         }
-        catch (InvalidDataException)
-        {
-            return false;
-        }
-        catch (IOException)
+        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException)
         {
             return false;
         }
@@ -54,10 +57,12 @@ public static class AgentsHostComposition
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(profile);
+        if (string.IsNullOrWhiteSpace(profile.SpoolBackend) || string.IsNullOrWhiteSpace(profile.ReplayReference)
+            || string.IsNullOrWhiteSpace(profile.RecorderReference) || string.IsNullOrWhiteSpace(profile.WorkerReference))
+            throw new InvalidDataException("Agents deployment profile requires every reference slot.");
         List<(string Resource, string Project)> projects = [];
         foreach ((string service, string relative, string resource) in Projects)
             projects.Add((resource, RequireProject(builder, profile, service, relative)));
-        RequireProject(builder, profile, "agents", "src/Hexalith.Agents.UI/Hexalith.Agents.UI.csproj");
         foreach ((string resource, string project) in projects)
         {
             IResourceBuilder<ProjectResource> added = builder.AddProject(resource, project, launchProfileName: null)

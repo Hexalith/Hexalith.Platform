@@ -35,30 +35,42 @@ def binding_gaps(profile_path):
         profile = json.loads(Path(profile_path).read_text())
     except (OSError, json.JSONDecodeError):
         return list(BINDING_GAPS)
+    if not isinstance(profile, dict):
+        return list(BINDING_GAPS)
     gaps = []
     for name in BINDING_GAPS:
         value = profile.get(name)
-        if not isinstance(value, str) or not value.strip() or value.strip() == "Pending":
+        if not isinstance(value, str) or not value.strip() or value.strip().casefold() == "pending":
             gaps.append(name)
     return gaps
 
 
 def run_suite(root, project, test_filter, results, log_name):
     results.mkdir(parents=True, exist_ok=True)
+    for previous in results.glob("**/results.trx"):
+        previous.unlink()
     log = results / log_name
     command = ["dotnet", "test", str(project), "--filter", test_filter,
                "--results-directory", str(results),
                "--report-xunit-trx", "--report-xunit-trx-filename", "results.trx"]
-    completed = subprocess.run(command, cwd=root, text=True, capture_output=True, timeout=3600)
+    try:
+        completed = subprocess.run(command, cwd=root, text=True, capture_output=True, timeout=3600)
+    except subprocess.TimeoutExpired as error:
+        log.write_text(str(error.stdout or "") + "\n" + str(error.stderr or ""))
+        return 1, []
     log.write_text(completed.stdout + "\n" + completed.stderr)
     names = []
-    for trx in results.glob("**/results.trx"):
-        tree = ET.parse(trx)
-        for node in tree.iter():
-            if node.tag.endswith("UnitTestResult"):
-                names.append({"name": node.attrib.get("testName", ""), "outcome": node.attrib.get("outcome", "")})
-        trx.unlink()
-    return completed.returncode, names
+    try:
+        for trx in results.glob("**/results.trx"):
+            tree = ET.parse(trx)
+            for node in tree.iter():
+                if node.tag.endswith("UnitTestResult"):
+                    names.append({"name": node.attrib.get("testName", ""), "outcome": node.attrib.get("outcome", "")})
+            trx.unlink()
+    except (ET.ParseError, OSError):
+        return 1, []
+    code = completed.returncode if completed.returncode != 0 or names else 1
+    return code, names
 
 
 def write_evidence(evidence, category, gaps, suites, names):
@@ -111,7 +123,6 @@ def verify(root, artifacts, profile):
     }))
     if custody_code != 0 or guard_code != 0:
         print("ERROR: EXT-HOST-1 evidence suites failed.", file=sys.stderr)
-        return 1
     print("ERROR: " + REFUSAL, file=sys.stderr)
     return 1
 
