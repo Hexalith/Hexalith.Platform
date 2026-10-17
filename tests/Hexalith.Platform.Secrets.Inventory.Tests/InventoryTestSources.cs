@@ -4,6 +4,7 @@ namespace Hexalith.Platform.Secrets.Inventory.Tests;
 
 internal sealed class InventoryTestSources(JsonObject? metadata) : IInventorySources
 {
+    public List<string> MetadataReferences { get; } = [];
     public int EnrollmentReads { get; private set; }
     public bool DisableAfterFirstRead { get; init; }
     public bool ChangeMetadata { get; init; }
@@ -18,6 +19,7 @@ internal sealed class InventoryTestSources(JsonObject? metadata) : IInventorySou
 
     public Task<JsonObject?> MetadataAsync(string secretReference, CancellationToken cancellationToken)
     {
+        MetadataReferences.Add(secretReference);
         _metadataReads++;
         OnMetadataRead?.Invoke(_metadataReads);
         JsonObject? result = metadata?.DeepClone() as JsonObject;

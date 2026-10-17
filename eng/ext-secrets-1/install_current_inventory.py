@@ -21,6 +21,22 @@ def application_request(token, *args, allowed=(0,)):
                 data=bytes(token) + b'\n', allowed=allowed)
 
 
+def delete_matching_credential_secret(name, token):
+    # One native GET observes only the selected field and its exact deletion
+    # preconditions. A replacement between GET and DELETE fails the precondition.
+    observed = kube('get', 'secret', name, '-n', NS, '--ignore-not-found', '-o',
+                    'jsonpath={.data.token}{" "}{.metadata.uid}{" "}{.metadata.resourceVersion}').stdout.split()
+    if not observed:
+        return
+    if len(observed) != 3:
+        raise RuntimeError('credential-secret-observation-malformed')
+    encoded, uid, version = observed
+    if hmac.compare_digest(base64.b64decode(encoded, validate=True), bytes(token)):
+        kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/secrets/' + name, '-f', '-',
+             data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions',
+                             'preconditions': {'uid': uid.decode(), 'resourceVersion': version.decode()}}))
+
+
 def create_metadata_credential(installer):
     policy_name = 'ext-secrets-1-inventory-metadata-read'
     names = json.loads(installer.bao('policy', 'list', '-format=json').stdout)
@@ -61,11 +77,7 @@ def create_metadata_credential(installer):
             # Publication may have succeeded before the API response was lost.
             # Delete only a Secret containing this newly issued token and pin
             # both UID/resourceVersion in the native deletion precondition.
-            present = kube('get', 'secret', 'ext-secrets-1-inventory-metadata-token', '-n', NS, '--ignore-not-found', '-o', 'jsonpath={.data.token}').stdout
-            if present and hmac.compare_digest(base64.b64decode(present, validate=True), bytes(application_token)):
-                identity = kube('get', 'secret', 'ext-secrets-1-inventory-metadata-token', '-n', NS, '-o', 'jsonpath={.metadata.uid}{" "}{.metadata.resourceVersion}').stdout.decode().split()
-                kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/secrets/ext-secrets-1-inventory-metadata-token', '-f', '-',
-                     data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions', 'preconditions': {'uid': identity[0], 'resourceVersion': identity[1]}}))
+            delete_matching_credential_secret('ext-secrets-1-inventory-metadata-token', application_token)
             installer.bao('policy', 'delete', policy_name)
             journal['phase'] = 'RevokedAndPolicyRemoved'
             durable_write(installer.evidence / 'metadata-credential-provisioning.json', journal)

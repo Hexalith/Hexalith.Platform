@@ -50,17 +50,19 @@ public sealed class CurrentInventoryAuthority(
             JsonObject allowed = matches[0];
             string? secretReference = Text(allowed, "secretReference");
             string? secretField = Text(allowed, "secretField");
-            if (!Reference(secretReference) || !Reference(secretField)) { return null; }
+            if (!SecretName(secretReference) || !Reference(secretField)) { return null; }
+            // Dapr prepends enginePath/data; only the metadata reader receives the qualified provider path.
+            string metadataReference = "ext-secrets-1-isolated/" + secretReference;
             NativeEnrollment? tenant = await sources.EnrollmentAsync(scope.TenantId, budget.Token).ConfigureAwait(false);
             if (tenant is not { Active: true } || tenant.TenantId != scope.TenantId) { return null; }
-            JsonObject? metadata = await sources.MetadataAsync(secretReference!, budget.Token).ConfigureAwait(false);
+            JsonObject? metadata = await sources.MetadataAsync(metadataReference, budget.Token).ConfigureAwait(false);
             DaprPlatformHmacInventory? result = Map(metadata, allowed, scope, version, tenant.Revision);
             if (result is null) { return null; }
             CurrentHmacTrust? keyTrust = await independentTrust.ReadAsync(scope, result.Metadata.Version, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             if (!Current(keyTrust) || keyTrust!.Profile != profileTrust!.Profile) { return null; }
             result = result with { Revision = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(result.Revision + "\n" + keyTrust.Revision))) };
             // Observe both sources again; a changed native revision or backend document cannot release a stale reference.
-            JsonObject? after = await sources.MetadataAsync(secretReference!, budget.Token).ConfigureAwait(false);
+            JsonObject? after = await sources.MetadataAsync(metadataReference, budget.Token).ConfigureAwait(false);
             NativeEnrollment? currentTenant = await sources.EnrollmentAsync(scope.TenantId, budget.Token).ConfigureAwait(false);
             CurrentHmacTrust? currentTrust = await independentTrust.ReadAsync(scope, result.Metadata.Version, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             if (tenant != currentTenant || !JsonNode.DeepEquals(metadata, after)
@@ -121,6 +123,11 @@ public sealed class CurrentInventoryAuthority(
     private static DateTimeOffset? Instant(JsonObject value, string name)
         => DateTimeOffset.TryParse(Text(value, name), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTimeOffset instant)
             && instant.Offset == TimeSpan.Zero ? instant : null;
+
+    private static bool SecretName(string? value)
+        => Reference(value) && !value!.StartsWith("ext-secrets-1-isolated/", StringComparison.Ordinal)
+            && value.Split('/').All(part => part.Length > 0 && part is not "." and not ".."
+                && part.All(character => char.IsAsciiLetterOrDigit(character) || character is '-' or '_'));
 
     private static bool Reference(string? value) => !string.IsNullOrWhiteSpace(value) && value.Length <= 2048 && !value.Any(char.IsControl);
 }

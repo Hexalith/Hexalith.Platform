@@ -684,3 +684,15 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
   summary: Cover digest-only PostgreSQL requested image references in retention backend binding tests.
   evidence: R4-V1: pre-verified review found all four RetentionBackendBindsActualLoadedImageInsteadOfRequestedName cases use the tagged PostgresImage constant. No case exercises IsRequestedPostgres's supported digest-only branch; removing it leaves tests green and a supported backend observation incomplete.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-provider-inventory-installation.md`
+  summary: Preexisting authorized inventory HTTP receiver uses GetValue<string> on unvalidated JSON field types, yielding 500 for malformed authenticated requests. It is unchanged by this continuation; fix shape validation and HTTP regressions before enabling externally enrolled callers.
+  evidence: Operational continuation review OB9. This source is unchanged from the previously reviewed registry/inventory installation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-provider-inventory-installation.md`
+  summary: Preexisting inventory/current-trust reads hardcode a 30-second server budget rather than shorter configured timeout. Existing custody adapter still bounds/releases no material after its deadline; enforce shorter source cancellation before enabling a shorter-budget authority.
+  evidence: Operational continuation review OB10. This source is unchanged from the previously reviewed registry/inventory installation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-ext-secrets-1-isolated-provider-inventory-installation.md`
+  summary: Preexisting repair_native_runtime.py can overwrite recorded nonzero writer replica counts on restart after scale-down. Preserve/reuse its original journal before any future repair invocation; the tool is not invoked in this continuation.
+  evidence: Operational continuation review OE4. This source is unchanged from the previously reviewed registry/inventory installation.
