@@ -2,7 +2,9 @@
 import base64
 from contextlib import contextmanager
 from copy import deepcopy
+from datetime import datetime, timedelta
 import json
+
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -115,6 +117,15 @@ class OperationalReviewTests(unittest.TestCase):
                     else:
                         provisioning.provision_keys(installer, reader, plan)
                         self.assertTrue(all(item['phase'] == 'MetadataVerified' for item in plan))
+                        for item in plan:
+                            custom = records[item['secretReference']]['custom_metadata']
+                            self.assertEqual(custom['ext-secrets-1.tenantId'], item['tenantId'])
+                            self.assertEqual(custom['ext-secrets-1.purpose'], item['purpose'])
+                            self.assertEqual(custom['ext-secrets-1.secretField'], 'hmacKey')
+                            created = datetime.fromisoformat(item['writeReceipt']['created_time'].replace('Z', '+00:00'))
+                            published = json.loads(custom['ext-secrets-1.versionMappings'])
+                            self.assertEqual(published[item['opaqueVersion']]['verifyUntil'], (created + timedelta(days=7)).isoformat())
+
                     generate.assert_not_called()
                     revoke.assert_called_once()
                 self.assertTrue(all(value == 0 for value in token))

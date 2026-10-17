@@ -31,7 +31,9 @@ def delete_matching_credential_secret(name, token):
     if len(observed) != 3:
         raise RuntimeError('credential-secret-observation-malformed')
     encoded, uid, version = observed
-    if hmac.compare_digest(base64.b64decode(encoded, validate=True), bytes(token)):
+    decoded = base64.b64decode(encoded, validate=True)
+    if len(decoded) == len(token) and hmac.compare_digest(decoded, bytes(token)):
+
         kube('delete', '--raw', '/api/v1/namespaces/' + NS + '/secrets/' + name, '-f', '-',
              data=canonical({'apiVersion': 'v1', 'kind': 'DeleteOptions',
                              'preconditions': {'uid': uid.decode(), 'resourceVersion': version.decode()}}))
@@ -50,9 +52,14 @@ def create_metadata_credential(installer):
     if kube('get', 'secret', 'ext-secrets-1-inventory-metadata-token', '-n', NS, '--ignore-not-found', '-o', 'name').stdout.strip():
         raise RuntimeError('metadata-credential-secret-already-exists')
     installer.bao('policy', 'write', policy_name, '-', data=policy.encode())
-    result = json.loads(installer.bao('write', '-format=json', 'auth/token/create-orphan', '-', data=canonical({
-        'policies': [policy_name], 'no_default_policy': True, 'display_name': 'ext-secrets-1-inventory-metadata',
-        'ttl': '24h', 'explicit_max_ttl': '168h', 'renewable': True})).stdout)
+    try:
+        created = installer.bao('write', '-format=json', 'auth/token/create-orphan', '-', data=canonical({
+            'policies': [policy_name], 'no_default_policy': True, 'display_name': 'ext-secrets-1-inventory-metadata',
+            'ttl': '24h', 'explicit_max_ttl': '168h', 'renewable': True}))
+    except Exception:
+        installer.bao('policy', 'delete', policy_name)
+        raise
+    result = json.loads(created.stdout)
     application_token = bytearray(result['auth']['client_token'].encode())
     accessor = result['auth']['accessor']
     duration = result['auth']['lease_duration']

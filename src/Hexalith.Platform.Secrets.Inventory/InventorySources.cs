@@ -35,6 +35,17 @@ public sealed class InventorySources : IInventorySources, IDisposable
         _identity = VerifiedClient(configuration["Inventory:RegistryCaFile"]!);
     }
 
+    private static Func<string, int, CancellationToken, ValueTask<Socket>> OpenProviderSocket = static async (host, port, cancellationToken) =>
+    {
+        var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+        try
+        {
+            await socket.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
+            return socket;
+        }
+        catch { socket.Dispose(); throw; }
+    };
+
     private static async ValueTask<Stream> ConnectActiveProviderAsync(SocketsHttpConnectionContext context, CancellationToken cancellationToken)
     {
         // Keep the original certificate/SNI host while routing metadata reads to
@@ -42,14 +53,10 @@ public sealed class InventorySources : IInventorySources, IDisposable
         // not a current inventory observation.
         if (context.DnsEndPoint.Host != "hexalith-keys.openbao.svc.cluster.local" || context.DnsEndPoint.Port != 8200)
         { throw new HttpRequestException("Unexpected provider metadata authority."); }
-        var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-        try
-        {
-            await socket.ConnectAsync("hexalith-keys-active.openbao.svc", 8200, cancellationToken).ConfigureAwait(false);
-            return new NetworkStream(socket, ownsSocket: true);
-        }
-        catch { socket.Dispose(); throw; }
+        Socket socket = await OpenProviderSocket("hexalith-keys-active.openbao.svc", 8200, cancellationToken).ConfigureAwait(false);
+        return new NetworkStream(socket, ownsSocket: true);
     }
+
 
     /// <summary>Uses caller-owned transports for isolated transport verification.</summary>
     public InventorySources(IConfiguration configuration, HttpClient native, HttpClient identity, HttpClient provider)

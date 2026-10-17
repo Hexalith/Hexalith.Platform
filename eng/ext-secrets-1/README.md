@@ -209,7 +209,7 @@ The data token starts with a 24-hour lease, is renewable and has a seven-day max
 ```bash
 python3 eng/ext-secrets-1/renew_hmac_data.py /home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-key-installation-20261017T100804405564Z
 python3 eng/ext-secrets-1/capture_operational_hmac.py /home/administrator/hexalith-secrets-evidence/ext-secrets-1/provider-key-installation-20261017T100804405564Z
-python3 -m unittest discover -s eng/ext-secrets-1 -p test_operational_hmac_provisioning.py -v
+python3 -m unittest discover -s eng/ext-secrets-1 -p 'test_operational*.py' -v
 ```
 
 The capture verifies current native enrollment/original hashes, exact provider metadata and capability scopes, healthy original controllers, unchanged Redis AOF/scoped-ACL resources, complete strict configuration outside the three installed provider fields, unchanged pre-existing production resources/register, credential absence and installed-versus-staged identities. Inventory remains `InstalledUnbound`, readiness remains 503, qualification and availability remain false. No ad hoc HMAC, EXT-SECRETS-1 contract or qualification operation is used for this installation.
@@ -230,3 +230,4 @@ Latest runtime foundations handoff
 The reviewed continuation is isolated in `platform-ext-secrets-1-runtime-foundations-20261017` after preserving an unexpected concurrent rewrite in the earlier checkout. Four real tenant-purpose operational keys, exact KV2 version-1 mappings, a separate exact-path data credential, custody-only Dapr component and metadata allowlist are installed. The final inventory image/checksum is deployed; root verification passed 53 .NET and 36 Python tests plus fresh native metadata/permission/health and preservation checks. The independent custody runtime remains unbound, readiness is 503, and dependency availability is unchanged.
 
 See [HANDOFF.md](../../../../../hexalith-secrets-evidence/ext-secrets-1/runtime-foundations-final-20261017-_bv3fzwb/HANDOFF.md) for the runtime configuration, actual key inventory, staged custody fragment, each remaining input with its owner/action, and current lease/rotation maintenance. This source commit does not accept a replacement target or run qualification.
+

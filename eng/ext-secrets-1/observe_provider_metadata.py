@@ -67,7 +67,8 @@ def observe(installer):
         paths = ['ext-secrets-1-isolated/metadata', 'ext-secrets-1-isolated/metadata/*',
                  'ext-secrets-1-isolated/data/*', 'secret/data/*', 'sys/mounts', 'sys/policies/acl/*']
         capability_status, response = request('POST', 'sys/capabilities-self', {'paths': paths})
-        capabilities = {path: sorted(response.get(path, [])) for path in paths} if capability_status == 200 else {}
+        capability_body = response.get('data') if isinstance(response, dict) and isinstance(response.get('data'), dict) else response
+        capabilities = {path: sorted(capability_body.get(path, [])) for path in paths} if capability_status == 200 and isinstance(capability_body, dict) else {}
         status, document = request('LIST', 'ext-secrets-1-isolated/metadata')
         result = classify(status, document, capabilities)
         lookup_status, lookup = request('GET', 'auth/token/lookup-self')

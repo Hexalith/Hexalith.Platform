@@ -110,6 +110,8 @@ public sealed class CurrentInventoryAuthority(
         DateTimeOffset? retiredAt = mapping["retiredAt"] is null ? null : Instant(mapping, "retiredAt");
         DateTimeOffset now = clock.GetUtcNow();
         if (notBefore > now || now >= verifyUntil || verifyUntil <= notBefore
+            || state == PlatformHmacKeyState.Revoked
+            || scope.Purpose == PlatformHmacPurpose.SecurityObservation && scope.TenantId != "system"
             || state == PlatformHmacKeyState.Retained && (retiredAt is null || retiredAt > now)
             || mapping["retiredAt"] is not null && retiredAt is null) { return null; }
         string revision = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(tenantRevision + "\n" + metadata.ToJsonString())));

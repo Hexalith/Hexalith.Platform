@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -16,6 +17,35 @@ namespace Hexalith.Platform.Secrets.Inventory.Tests;
 
 public sealed class InventorySourceTransportTests
 {
+    private static readonly SemaphoreSlim ChannelLock = new(1, 1);
+
+    [Fact]
+    public async Task ActiveProviderCallbackKeepsTheCertificateHostAndConnectsToTheLeader()
+    {
+        FieldInfo field = typeof(InventorySources).GetField("OpenProviderSocket", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var original = (Func<string, int, CancellationToken, ValueTask<Socket>>)field.GetValue(null)!;
+        string? host = null;
+        int port = 0;
+        field.SetValue(null, new Func<string, int, CancellationToken, ValueTask<Socket>>((seenHost, seenPort, _) =>
+        {
+            host = seenHost;
+            port = seenPort;
+            throw new IOException("offline-socket");
+        }));
+        try
+        {
+            var connect = (Func<SocketsHttpConnectionContext, CancellationToken, ValueTask<Stream>>)Delegate.CreateDelegate(
+                typeof(Func<SocketsHttpConnectionContext, CancellationToken, ValueTask<Stream>>),
+                typeof(InventorySources).GetMethod("ConnectActiveProviderAsync", BindingFlags.NonPublic | BindingFlags.Static)!);
+            SocketsHttpConnectionContext Context(string host) => (SocketsHttpConnectionContext)Activator.CreateInstance(typeof(SocketsHttpConnectionContext), BindingFlags.Instance | BindingFlags.NonPublic, null, [new DnsEndPoint(host, 8200), new HttpRequestMessage()], null)!;
+            await Should.ThrowAsync<HttpRequestException>(() => connect(Context("other.example"), CancellationToken.None).AsTask());
+            await Should.ThrowAsync<IOException>(() => connect(Context("hexalith-keys.openbao.svc.cluster.local"), CancellationToken.None).AsTask());
+            host.ShouldBe("hexalith-keys-active.openbao.svc");
+            port.ShouldBe(8200);
+        }
+        finally { field.SetValue(null, original); }
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -32,6 +62,7 @@ public sealed class InventorySourceTransportTests
         app.MapPost("/v1.0/invoke/eventstore/method/api/v1/streams/read", async (HttpContext context) =>
         {
             context.Request.Headers.Authorization.ToString().ShouldBe("Bearer offline-native-bearer");
+            context.Request.Headers["dapr-api-token"].ToString().ShouldBe("offline-exact-channel-token");
             JsonObject body = (await JsonNode.ParseAsync(context.Request.Body))!.AsObject();
             long from = body["fromSequence"]!.GetValue<long>();
             cursors.Add(from);
@@ -51,7 +82,16 @@ public sealed class InventorySourceTransportTests
             using var identity = new HttpClient();
             using var provider = new HttpClient();
             using var source = new InventorySources(config, native, identity, provider);
-            var result = await source.EnrollmentAsync(tenant, TestContext.Current.CancellationToken);
+            await ChannelLock.WaitAsync(TestContext.Current.CancellationToken);
+            NativeEnrollment? result;
+            string? previous = Environment.GetEnvironmentVariable("DAPR_API_TOKEN");
+            Environment.SetEnvironmentVariable("DAPR_API_TOKEN", "offline-exact-channel-token");
+            try { result = await source.EnrollmentAsync(tenant, TestContext.Current.CancellationToken); }
+            finally
+            {
+                Environment.SetEnvironmentVariable("DAPR_API_TOKEN", previous);
+                ChannelLock.Release();
+            }
             if (changeHead) result.ShouldBeNull(); else { result.ShouldNotBeNull(); result.Active.ShouldBeFalse(); cursors.ShouldBe([0L, 100L, 0L, 100L]); }
         }
         finally { File.Delete(file); }
@@ -90,7 +130,14 @@ public sealed class InventorySourceTransportTests
             await File.WriteAllTextAsync(credentialFile, denied ? "offline-denied" : "offline-provider-token", TestContext.Current.CancellationToken);
             int port = new Uri(app.Urls.Single()).Port;
             async ValueTask<Stream> Connect(SocketsHttpConnectionContext context, CancellationToken token)
-            { context.DnsEndPoint.Host.ShouldBe("hexalith-keys.openbao.svc.cluster.local"); var socket = new Socket(SocketType.Stream, ProtocolType.Tcp); await socket.ConnectAsync(IPAddress.Loopback, port, token); return new NetworkStream(socket, true); }
+            {
+                context.DnsEndPoint.Host.ShouldBe("hexalith-keys.openbao.svc.cluster.local");
+                context.DnsEndPoint.Port.ShouldBe(8200);
+                context.InitialRequestMessage.Headers.ConnectionClose.ShouldBe(true);
+                var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+                await socket.ConnectAsync(IPAddress.Loopback, port, token);
+                return new NetworkStream(socket, true);
+            }
             using var provider = InventorySources.VerifiedClient(caFile, Connect);
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?> { ["Inventory:ProviderCredentialFile"] = credentialFile }).Build();
             using var source = new InventorySources(config, new HttpClient(), new HttpClient(), provider);

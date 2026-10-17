@@ -80,7 +80,35 @@ class OperationalHmacProvisioningTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 module.validate_version({}, metadata)
 
+    def test_absent_prepared_key_journals_creation_before_write_and_receipt_before_readback(self):
+        with tempfile.TemporaryDirectory() as directory:
+            evidence = Path(directory)
+            installer = SimpleNamespace(evidence=evidence, bao=lambda *args, **kwargs: SimpleNamespace(stdout=b'[]'))
+            plan = module.plan_keys()
+            journal = evidence / 'operational-key-plan.json'
+            reads = {'count': 0}
+
+            def read(_reference):
+                reads['count'] += 1
+                if reads['count'] == 1:
+                    return None
+                self.assertEqual(json.loads(journal.read_text())[0]['phase'], 'NativeCreated')
+                raise RuntimeError('confirming-read-observed')
+
+            def generate(_token, _relative):
+                self.assertEqual(json.loads(journal.read_text())[0]['phase'], 'CreationStarted')
+                return {'version': 1, 'created_time': '2026-10-17T10:00:00.000000000Z', 'destroyed': False, 'deletion_time': ''}
+
+            token = bytearray(b'offline-provisioner')
+            with patch.object(module, 'issue', return_value=(token, {'accessor': 'offline-accessor'})), \
+                    patch.object(module, 'application_request'), \
+                    patch.object(module, 'generate_inside_provider', side_effect=generate):
+                with self.assertRaisesRegex(RuntimeError, 'confirming-read-observed'):
+                    module.provision_keys(installer, SimpleNamespace(read=read), plan)
+            self.assertEqual(reads['count'], 2)
+
     def test_existing_key_is_never_replaced(self):
+
         self._reject_creation('Prepared', {'current_version': 1}, 'new-key-reference-already-exists')
 
     def test_uncertain_absent_key_requires_exact_recovery(self):

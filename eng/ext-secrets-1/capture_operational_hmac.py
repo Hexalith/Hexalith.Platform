@@ -122,8 +122,9 @@ def capture(installer):
         provider = stack.enter_context(forward('service/hexalith-keys-active', 'openbao', 8200))
         tenants = verify(installer, native, idp)
         originals = json.loads((ORIGINAL / 'native-enrollment-receipts.json').read_text())['tenants']
-        if any(item['sourceStreamSha256'] != original['sourceStreamSha256'] for item, original in zip(tenants['tenantStreams'], originals)):
+        if len(tenants['tenantStreams']) != len(originals) or any(item['sourceStreamSha256'] != original['sourceStreamSha256'] for item, original in zip(tenants['tenantStreams'], originals)):
             raise RuntimeError('original-native-enrollment-changed')
+
         reader = ProviderMetadata(installer, provider)
         keys = json.loads((installer.evidence / 'operational-key-plan.json').read_text())
         observations = []
