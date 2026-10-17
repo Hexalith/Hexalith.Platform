@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "schemaStatus": "LOCAL_DRAFT_NOT_A_QUALIFIED_PRODUCTION_SCHEMA",
+  "kind": "a0-evidence-gaps-draft",
+  "recordStatus": "DRAFT_BLOCKED",
+  "draftCreatedAt": "2026-10-17T08:39:05Z",
+  "preparedBy": {
+    "type": "agent",
+    "name": "Codex",
+    "appointedOwnerOrReviewer": false
+  },
+  "sourcePlanPath": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t070848z-offline-owner-evidence-production-plan/PLAN-v3.md",
+  "sourceRow": "A0",
+  "packageManifestPath": "package-manifest.json",
+  "provenance": {
+    "origin": "NEW_AGENT_AUTHORED_DRAFT",
+    "existingSeparatelyAuthorizedOwnerOriginal": false,
+    "creationRequest": "create all json",
+    "authorizedWork": "Create local unsigned A0 JSON drafts and check their syntax and internal references.",
+    "ownerObservationAt": null,
+    "ownerIssuedAt": null,
+    "ownerValidFrom": null,
+    "ownerValidUntilExclusive": null,
+    "unavailableOriginalsRemainUnavailable": true
+  },
+  "candidate": {
+    "rid": "20261015t162756z",
+    "originalPreparedAt": "2026-10-15T16:27:56Z",
+    "operationalCeilingExclusive": "2026-10-16T16:27:56Z",
+    "status": "EXPIRED",
+    "expiryObservedAt": "2026-10-17T08:39:05Z",
+    "operationallyAdmissible": false,
+    "replacementRecoveryAllocated": false
+  },
+  "acceptance": {
+    "documentaryEvidenceAccepted": false,
+    "authorityAccepted": false,
+    "independentHumanReviewAccepted": false,
+    "operationalApprovalGranted": false
+  },
+  "signature": {
+    "status": "UNSIGNED",
+    "originalDetachedSignaturePath": null,
+    "signerIdentity": null,
+    "signedAt": null,
+    "profilePath": "signature-profile.json"
+  },
+  "gaps": [
+    {
+      "id": "A0-PRODUCER",
+      "requiredEvidence": "Accountable organization security/trust producer",
+      "status": "UNIDENTIFIED",
+      "draftPath": "owner-authority-roster.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-REVIEWER",
+      "requiredEvidence": "Distinct independently appointed human security/trust reviewer",
+      "status": "UNIDENTIFIED",
+      "draftPath": "owner-authority-roster.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-APPOINTMENTS",
+      "requiredEvidence": "Original identities, appointments, delegations, purposes and independence evidence for every register row",
+      "status": "UNAVAILABLE",
+      "draftPath": "owner-authority-roster.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-PUBLIC-ROOTS",
+      "requiredEvidence": "Exact applicable original nonsecret public keys/certificates/chains",
+      "status": "UNAVAILABLE",
+      "draftPath": "public-trust-roots-index.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-EXTERNAL-BOOTSTRAP",
+      "requiredEvidence": "Independently established external authority/channel and exact-fingerprint corroboration originals",
+      "status": "UNESTABLISHED",
+      "draftPath": "trust-root-establishment.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-REVOCATION",
+      "requiredEvidence": "Authoritative validity, current signer status, rotation, cut, completeness and freshness evidence",
+      "status": "UNKNOWN",
+      "draftPath": "signer-revocation-evidence.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-PROFILE",
+      "requiredEvidence": "Owner-selected and independently reviewed signing format/namespace/algorithm/serialization/verifier profile",
+      "status": "UNSELECTED",
+      "draftPath": "signature-profile.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-ORIGINALS-AND-SIGNATURES",
+      "requiredEvidence": "Separately authorized owner originals and their applicable original detached signatures",
+      "status": "UNAVAILABLE",
+      "draftPath": "package-manifest.json",
+      "resolved": false
+    },
+    {
+      "id": "A0-HUMAN-DECISION",
+      "requiredEvidence": "Independently authenticated original human review decision and signature bound to exact payloads",
+      "status": "UNAVAILABLE",
+      "draftPath": "independent-review-decision.json",
+      "resolved": false
+    },
+    {
+      "id": "CANDIDATE-EXPIRY",
+      "requiredEvidence": "Operational validity of RID 20261015t162756z",
+      "status": "EXPIRED_UNRECOVERABLE_FOR_THIS_CANDIDATE",
+      "draftPath": "package-manifest.json",
+      "resolved": false
+    }
+  ],
+  "requiredOwnerOperationsIfOriginalsAreUnavailable": [
+    {
+      "operation": "Establish real organization trust authority and purpose-specific producer/reviewer appointments and delegation, with distinct human identities and independence evidence.",
+      "authorizedByThisDraft": false
+    },
+    {
+      "operation": "Independently corroborate exact public-root fingerprints against a named organization authority registry/version or an already authenticated external authority/contact/channel; retain original nonsecret proof.",
+      "authorizedByThisDraft": false
+    },
+    {
+      "operation": "Establish authoritative signer validity, current revocation/rotation status, cuts, completeness and freshness, and select/review the exact signature profile.",
+      "authorizedByThisDraft": false
+    },
+    {
+      "operation": "Under separate exact signing authorization and qualified tooling, issue the real owner originals and original detached signatures; a distinct appointed human supplies an independently authenticated signed review decision.",
+      "authorizedByThisDraft": false
+    }
+  ],
+  "nextConcreteOwnerDeliverable": "Supply exact locations of the existing separately authorized nonsecret A0 originals, original detached signatures, independently established external fingerprint/appointment provenance and the distinct authenticated human review decision. If unavailable, retain these gaps until the separately authorized owner operations produce truthful originals.",
+  "documentaryCompletionDoesNotReviveCandidate": true,
+  "unchangedStatusSnapshot": {
+    "spec23": "draft",
+    "timesheetsStory36": "in-progress",
+    "timesheetsEpic3": "in-progress",
+    "platformStory427": "in-progress",
+    "platform41OperationalGate": "closed",
+    "release": "FAIL",
+    "trackingFilesUpdated": false
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "schemaStatus": "LOCAL_DRAFT_NOT_A_QUALIFIED_PRODUCTION_SCHEMA",
+  "kind": "a0-owner-authority-draft-package-manifest",
+  "recordStatus": "DRAFT_BLOCKED",
+  "draftCreatedAt": "2026-10-17T08:39:05Z",
+  "preparedBy": {
+    "type": "agent",
+    "name": "Codex",
+    "appointedOwnerOrReviewer": false
+  },
+  "sourcePlanPath": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t070848z-offline-owner-evidence-production-plan/PLAN-v3.md",
+  "sourceRow": "A0",
+  "packageManifestPath": "package-manifest.json",
+  "provenance": {
+    "origin": "NEW_AGENT_AUTHORED_DRAFT",
+    "existingSeparatelyAuthorizedOwnerOriginal": false,
+    "creationRequest": "create all json",
+    "authorizedWork": "Create local unsigned A0 JSON drafts and check their syntax and internal references.",
+    "ownerObservationAt": null,
+    "ownerIssuedAt": null,
+    "ownerValidFrom": null,
+    "ownerValidUntilExclusive": null,
+    "unavailableOriginalsRemainUnavailable": true
+  },
+  "candidate": {
+    "rid": "20261015t162756z",
+    "originalPreparedAt": "2026-10-15T16:27:56Z",
+    "operationalCeilingExclusive": "2026-10-16T16:27:56Z",
+    "status": "EXPIRED",
+    "expiryObservedAt": "2026-10-17T08:39:05Z",
+    "operationallyAdmissible": false,
+    "replacementRecoveryAllocated": false
+  },
+  "acceptance": {
+    "documentaryEvidenceAccepted": false,
+    "authorityAccepted": false,
+    "independentHumanReviewAccepted": false,
+    "operationalApprovalGranted": false
+  },
+  "signature": {
+    "status": "UNSIGNED",
+    "originalDetachedSignaturePath": null,
+    "signerIdentity": null,
+    "signedAt": null,
+    "profilePath": "signature-profile.json"
+  },
+  "packageDirectory": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t083905z-a0-owner-authority-json-drafts",
+  "scope": "A0 JSON drafts only; no downstream live evidence, signatures or operational approval is created.",
+  "jsonFileCountIncludingManifest": 8,
+  "members": [
+    {
+      "path": "owner-authority-roster.json",
+      "bytes": 74632,
+      "sha256": "40553519967a4e8721d9e65dc55b4b0d53ad0517fcb2c33b0d4695e599ed48cf",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    },
+    {
+      "path": "public-trust-roots-index.json",
+      "bytes": 2568,
+      "sha256": "e8e0a0ef8da934c6acbb2e2aaacd54bc5e10308651ff7e5fa6d182d3b6600105",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    },
+    {
+      "path": "trust-root-establishment.json",
+      "bytes": 3188,
+      "sha256": "a0e049eea2b8ae8092138691e6b156d24032d7f14177d78b4ec451569ba891ff",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    },
+    {
+      "path": "signer-revocation-evidence.json",
+      "bytes": 2455,
+      "sha256": "8406eb11697ec3247aab448a822e88f7ef22347a67de4e55292a77bb96c423e1",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    },
+    {
+      "path": "signature-profile.json",
+      "bytes": 2819,
+      "sha256": "43f94046fda3182a52550793d9872bae1fa5c26d9503acfd1049a27e7023c313",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    },
+    {
+      "path": "independent-review-decision.json",
+      "bytes": 3204,
+      "sha256": "c9fcae5413e40ab3b6fdd8c7c86aacca8c5a3ab88c2840aeaddca5b554ec3c7c",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    },
+    {
+      "path": "evidence-gaps.json",
+      "bytes": 6180,
+      "sha256": "eb48b01b390f170d1b32311fb507a96b7fe96ce8fd2c34db167efdce6971dd4a",
+      "bindingMeaning": "NEW_DRAFT_BYTE_REFERENCE_ONLY_NOT_AUTHORITY"
+    }
+  ],
+  "manifestSelfDigestIncluded": false,
+  "publicTrustRoots": {
+    "directory": "public-trust-roots/",
+    "indexPath": "public-trust-roots-index.json",
+    "suppliedPublicRootCount": 0,
+    "independentlyEstablishedRootCount": 0
+  },
+  "requiredOriginalDetachedSignatures": [
+    {
+      "payloadPath": "owner-authority-roster.json",
+      "expectedSignaturePath": "owner-authority-roster.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    },
+    {
+      "payloadPath": "public-trust-roots-index.json",
+      "expectedSignaturePath": "public-trust-roots-index.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    },
+    {
+      "payloadPath": "trust-root-establishment.json",
+      "expectedSignaturePath": "trust-root-establishment.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    },
+    {
+      "payloadPath": "signer-revocation-evidence.json",
+      "expectedSignaturePath": "signer-revocation-evidence.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    },
+    {
+      "payloadPath": "signature-profile.json",
+      "expectedSignaturePath": "signature-profile.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    },
+    {
+      "payloadPath": "independent-review-decision.json",
+      "expectedSignaturePath": "independent-review-decision.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    },
+    {
+      "payloadPath": "package-manifest.json",
+      "expectedSignaturePath": "package-manifest.json.sig",
+      "namingStatus": "PROPOSED_NOT_FROZEN",
+      "status": "UNAVAILABLE",
+      "originalSignaturePath": null
+    }
+  ],
+  "originalOwnerPayloadBindings": [],
+  "originalVerifierResult": {
+    "sourceReceiptPath": "/home/administrator/projects/hexalith/timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261016t112503z-offline-owner-evidence-intake/exact-verifier-result.json",
+    "observedAt": "2026-10-16T11:25:36.164697+00:00",
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/verify_enrollment_revision.py",
+      "--sha256",
+      "c71f38517e02ea5bc7fa176cfb1abe8f12b43b499fbe6f74fbdc339d91f0b23d"
+    ],
+    "exitCode": 1,
+    "stdout": "{\"status\": \"refused\", \"operationalGate\": \"closed\", \"reason\": \"offline-revision-integrity-or-custody-refusal\"}\n",
+    "stderr": "",
+    "rerun": false,
+    "waived": false
+  },
+  "historicalAnchors": {
+    "meaning": "Carried from PLAN-v3.md; not recomputed or certified current.",
+    "sealedPacketPath": "/home/administrator/hexalith-recovery-evidence/4-0/20261016t103632z-native-enrollment-execution-revision-sealed/packet-v1.json",
+    "sealedPacketSha256": "c71f38517e02ea5bc7fa176cfb1abe8f12b43b499fbe6f74fbdc339d91f0b23d",
+    "sealedExceptionName": "concurrent-preservation-drift-v1.json",
+    "sealedExceptionStatusSha256": "f6c25046d9db40c069cb183cf87f8fef19a0a952b601c87dbe690d0b0aff7e43",
+    "additionalStory18ObservedStatusSha256": "c94f8fedcc4d9e362985c3056c2a2b3e6628ef74b525ed377b92f7cf920a12c5"
+  },
+  "preservation": {
+    "basis": "Writes limited to this new draft directory; no new whole-byte preservation certification.",
+    "unsealedPreparationDirectory": "/home/administrator/hexalith-recovery-evidence/4-0/20261016t103632z-native-enrollment-execution-revision/",
+    "sealedPreparationDirectory": "/home/administrator/hexalith-recovery-evidence/4-0/20261016t103632z-native-enrollment-execution-revision-sealed/",
+    "existingPacketsSignedOriginalsFailuresAndConcurrentChangesRewritten": false,
+    "sealedExceptionModified": false,
+    "policyOrCaptureTimestampsRefreshed": false,
+    "recoveryOutputSlotAllocated": false
+  },
+  "operationsPerformed": [
+    "Local repository guidance and named nonsecret document reads",
+    "Create these unsigned draft JSON files and an empty public-trust-roots directory",
+    "Narrow JSON syntax, byte-reference and internal consistency checks"
+  ],
+  "operationsNotPerformed": [
+    "New authentication",
+    "Signature verification",
+    "Signing",
+    "Key generation or credential/private-key access",
+    "Network/API/provider/IAM requests",
+    "Publication",
+    "Infrastructure operations",
+    "Preflight or exact-verifier replay",
+    "Recovery allocation or execution",
+    "Operational approval prompt",
+    "Existing story/spec/status changes",
+    "Git staging/commit/push or dependency/gitlink updates"
+  ],
+  "unchangedStatusSnapshot": {
+    "spec23": "draft",
+    "timesheetsStory36": "in-progress",
+    "timesheetsEpic3": "in-progress",
+    "platformStory427": "in-progress",
+    "platform41OperationalGate": "closed",
+    "release": "FAIL",
+    "trackingFilesUpdated": false
+  },
+  "nextConcreteOwnerDeliverablePath": "evidence-gaps.json"
+}

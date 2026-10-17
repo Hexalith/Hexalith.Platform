@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "kind": "sole-owner-documentary-policy-direction",
+  "recordedAt": "2026-10-17T09:32:06Z",
+  "status": "OWNER_DIRECTION_RECORDED_UNSIGNED",
+  "source": {
+    "type": "user-instruction-in-this-conversation",
+    "statementVerbatim": "I am the Owner and only contributor, I dont need all this complicated ceremony. Keep things pragmatic and simple",
+    "recordedBy": "Codex",
+    "independentAuthenticationClaimed": false
+  },
+  "declaredOwner": {
+    "name": "Jérôme Piquot",
+    "role": "Owner and only contributor",
+    "identityBasis": "SELF_DECLARED",
+    "documentaryResponsibility": "Owner makes and reviews owner-side project documentation decisions."
+  },
+  "trustModel": {
+    "name": "OWNER_DECLARED_PROJECT_DOCUMENTATION",
+    "independentHumanReviewerRequired": false,
+    "independentHumanReviewPerformed": false,
+    "externalAuthorityRegistryRequired": false,
+    "newPersonalCertificateRequired": false,
+    "newSigningKeyRequired": false,
+    "independentlyEstablishedAuthorityClaimed": false,
+    "scope": "Owner declarations and the owner's own project documents; source facts about PKI, grants, custody and actual runtime behavior still need their factual evidence."
+  },
+  "documentSigningConvention": {
+    "publicKeyPath": "/home/administrator/.ssh/id_ed25519_git_signing.pub",
+    "documentedFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "format": "OpenSSH SSHSIG",
+    "algorithm": "ssh-ed25519",
+    "messageHash": "sha512",
+    "namespace": "file",
+    "payload": "Exact original document bytes",
+    "meaning": "Document signature under an owner-declared key; no independent identity, appointment or review claim."
+  },
+  "keyStatusConvention": {
+    "maintainer": "Declared owner",
+    "process": "Record key revocation or replacement, reason and actual effective time in an owner declaration when it occurs.",
+    "currentRevocationStatus": "NOT_ATTESTED",
+    "currentCompromiseStatus": "UNKNOWN",
+    "historicalCompletenessClaimed": false,
+    "note": "A valid signature does not establish an unreported or historical key status."
+  },
+  "relationshipToPreviousA0Plan": {
+    "planPath": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t070848z-offline-owner-evidence-production-plan/PLAN-v3.md",
+    "change": "Owner requests owner-declared trust and owner review for owner-side documentation instead of the earlier external authority and distinct-reviewer process.",
+    "earlierIndependentRequirementsSatisfiedAsWritten": false,
+    "oldPlanRewritten": false,
+    "deployedAuthorizationOrAcceptanceRulesChanged": false,
+    "noIndependentEvidenceIsManufactured": true
+  },
+  "preservation": {
+    "existingDraftDirectory": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t083905z-a0-owner-authority-json-drafts",
+    "existingManifestSignaturePath": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t083905z-a0-owner-authority-json-drafts/package-manifest.json.sig.WaFy9jQq",
+    "existingFailedSignaturePath": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t083905z-a0-owner-authority-json-drafts/package-manifest.json.sig",
+    "thisPolicyCoveredByExistingSignature": false,
+    "existingSignedBytesChanged": false,
+    "signatureCreatedForThisPolicy": false,
+    "originalVerifierExitCode": 1,
+    "originalVerifierRerun": false,
+    "sealedExceptionPacketsFailuresAndConcurrentChangesRewritten": false
+  },
+  "candidate": {
+    "rid": "20261015t162756z",
+    "originalPreparedAt": "2026-10-15T16:27:56Z",
+    "ceilingExclusive": "2026-10-16T16:27:56Z",
+    "status": "EXPIRED",
+    "replacementRecoveryAllocated": false,
+    "operationalApprovalGranted": false
+  },
+  "unchangedStatus": {
+    "spec23": "draft",
+    "timesheetsStory36": "in-progress",
+    "timesheetsEpic3": "in-progress",
+    "platformStory427": "in-progress",
+    "platform41OperationalGate": "closed",
+    "release": "FAIL"
+  }
+}
