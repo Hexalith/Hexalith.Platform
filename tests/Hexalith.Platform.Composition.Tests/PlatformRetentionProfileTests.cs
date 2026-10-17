@@ -197,6 +197,7 @@ public sealed partial class PlatformAppModelTests
             CompositionRunPlan plan = CompositionRunPlanFactory.Create(initial.RunId, workspace, workspace, CompositionPortAllocator.Allocate(3), [], [], mapping, initial.PlatformDeclarationPaths, "memories", typeof(PlatformAppModel).Assembly.Location) with { SelectedTest = initial.SelectedTest };
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             IDistributedApplicationBuilder builder = Builder();
+            builder.Environment.EnvironmentName = "Development";
             PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
             builder.Services.ShouldContain(service => service.ServiceType == typeof(ICompositionTestObservationProvider));
             AssertContainerImage(builder, "dapr-sentry", "ghcr.io/dapr/sentry", "1.18.1", "2f98508dff56c75329dbd51674c89f41ce349e06c7744ab2519cb69ba338d41f");
@@ -292,7 +293,8 @@ public sealed partial class PlatformAppModelTests
     {
         ContainerImageAnnotation annotation = builder.Resources.Single(value => value.Name == resource).Annotations.OfType<ContainerImageAnnotation>().Single();
         annotation.Image.ShouldBe(image);
-        annotation.Tag.ShouldBe(tag);
+        // Aspire drops a floating tag when an immutable digest selects the effective image.
+        annotation.Tag.ShouldBe(sha256 is null ? tag : null);
         annotation.SHA256.ShouldBe(sha256);
     }
 }

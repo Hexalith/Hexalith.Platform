@@ -23,7 +23,7 @@ internal sealed class PlatformPostgresqlHealthCheck(int port, string authorityPa
             byte[] response = new byte[1];
             await stream.ReadExactlyAsync(response, bound.Token).ConfigureAwait(false);
             if (response[0] != (byte)'S') return HealthCheckResult.Unhealthy("PostgreSQL TLS is unavailable.");
-            using X509Certificate2 authority = X509Certificate2.CreateFromPemFile(authorityPath);
+            using X509Certificate2 authority = X509Certificate2.CreateFromPem(File.ReadAllText(authorityPath));
             using SslStream tls = new(stream, false);
             await tls.AuthenticateAsClientAsync(new SslClientAuthenticationOptions
             {

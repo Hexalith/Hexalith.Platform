@@ -728,3 +728,35 @@
   summary: Preexisting repair_native_runtime.py can overwrite recorded nonzero writer replica counts on restart after scale-down. Preserve/reuse its original journal before any future repair invocation; the tool is not invoked in this continuation.
   evidence: Operational continuation review OE4. This source is unchanged from the previously reviewed registry/inventory installation.
 
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Hosted metadata-token issuance lacks a durable pre-issuance recovery identity.
+  evidence: R5-B1: create_metadata_credential issues an orphan token before durable_write and parses its response outside the cleanup block; a lost response or malformed success can leave an unrecorded token. Independent hosted-secret provisioning.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Hosted Kubernetes resource creation needs intent journaling and identity reconciliation.
+  evidence: R5-B2: Installer.create writes its resource ledger only after kube create returns, using non-atomic write_bytes. A lost create response or interrupted ledger write leaves an unrecorded resource. Independent hosted installation.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Inventory readiness must enforce the same HMAC retirement invariants as key resolution.
+  evidence: R5-B3: CurrentInventoryAuthority.Map accepts Active metadata with retiredAt and Retained metadata before notBefore, while PlatformHmacKeySnapshot rejects them. InventoryReadiness calls the former. Concurrent hosted inventory work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Configure the TenantRegistry request-body limit through Kestrel options before host construction.
+  evidence: R5-B5: the host resolves KestrelServerOptions directly after startup; an isolated default WebApplication reproduction returned null for that registration. The promised 1 MiB limit is not installed. Concurrent hosted service work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Verify the unique access-credential service set and bind it to selected readiness observations.
+  evidence: R5-B8, unverified medium: ReadAccessSecretsAsync accepts six values without a unique service-set check. Settle reachability by substituting the private file before capture and demonstrating an actual handed-off credential escapes suppression; the native child starts only afterward. Concurrent selected-report work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Refuse unsupported retention host operating systems before resource creation.
+  evidence: R5-B10: PlatformRetentionProfile.Select accepts non-Linux hosts while ObserveAsync requires /proc process/environment/image observations. The OCI artifact platform check does not establish host support. Independent retention work.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Define whether rejected pre-run startup attempts need a persistent attempt record.
+  evidence: R5-E3: prerequisite refusals allocate no run identity and write no state, as baseline and existing no-artifact tests require. Allocated-run startup metadata does not record rejected attempts; any extension needs an attempt-identity policy.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
+  summary: Exercise the retention provider actual process and loaded-image observation sequence.
+  evidence: R5-V2 pre-verified regression gap: no test calls PlatformRetentionProfile.ObserveAsync; helper/model tests cannot detect a provider fallback that bypasses BoundBackendImage rejection. Add successful/mismatched observation integration in the Linux/Docker retention lane.
