@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 8
 created: '2026-10-16'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '5636b7f36e28e2731111b049f974b1fa951d1c36'
 workspace_baseline_commit: '53e2e2ec3e1ea67271867c4f4a1026d1198c42f6'
 route: 'dispatch'
@@ -298,3 +298,58 @@ Acceptance evidence includes default/override aggregation, successful run-state 
 - Final gate repair preserved concurrent selected-test behavior while correcting member order, empty-string syntax, exception documentation, and test analyzer requirements. No checks, scenarios, assertions, or analyzers were disabled.
 - Two earlier final-suite attempts passed 998/999 and reproduced the existing divergent-CLI fixture's shared intermediate-output interference. Metadata inspection proved the test assembly referenced CLI 9.9.9 while its runtime file was 1.0.0. The fixture now uses a private intermediate directory and a copied Tooling reference for its existing no-dependencies build. Its two-case focused verification passed (`/tmp/story18-fixture-isolation-tests2.xml`), and the final full suite passed above. Metadata inspection after both focused and full runs confirmed the main test reference and runtime CLI remain 1.0.0. This resolves the previously deferred fixture-isolation item; earlier failure logs and ledger evidence are retained as history.
 - All three independent review layers completed. Every finding has an individual verdict and route above; both final Story 1.8 patch roots are resolved. Unrelated selected-test, retention, Works qualification, and prior protocol findings were recorded in the deferred ledger without overwriting concurrent work. The approved block and both original baseline fields remain unchanged.
+
+### Review Findings (code review 2026-10-17, chunk 1a: Builds `src/libraries`, commits 643c640 86b9f35 ed80c1c abdfca8 d961c44)
+
+- [ ] [Review][Patch] Unguarded diagnostics preservation on the pre-run timeout path: an IO/Unauthorized/Json error escapes instead of returning HXR021 [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1447]
+- [ ] [Review][Patch] Redundant `_ = _ = entries.RemoveAll(...)` [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupRequest.cs:114]
+- [ ] [Review][Patch] Pin `debug --evidence` command name (`ModuleRunEvidenceFactory` Debug arm has no test) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceFactory.cs:160]
+- [ ] [Review][Patch] Pin HXR022 for unsafe `UnreadyResources[].Name/Detail` and `FailingTask` in the startup-failure document [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:685]
+- [ ] [Review][Patch] Test that a diagnostics-preservation IO failure still tears down and returns the failure result [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1203]
+- [x] [Review][Defer] Debug rewrites only `mapping.Mode` for a package-origin mapping; programmatic callers may fail in Closure.Load [ModuleCommandExecutionService.cs:1282] — deferred: CLI rejects `--mode package` for debug; settle by running a programmatic debug start with a package mapping
+- [x] [Review][Defer] Deadline is checked between steps only; probes use their own timeouts [CompositionEngine.cs] — deferred: unverified medium; settle by timing a stalled Aspire probe against a short deadline
+- [x] [Review][Defer] Startup task stdout/stderr discarded and failure reason lost [CompositionStartupTasks.cs] — deferred: unverified medium; diagnosability gap, not an AC violation
+- [x] [Review][Defer] Startup tasks of dependency modules resolve against the root manifest's repository root [CompositionStartupTasks.cs Select] — deferred: unverified; settle with a dependency-module task fixture in another repository
+- [x] [Review][Defer] Preserved diagnostics (`diagnostics/<runId>`, `before-run/<guid>`) have no retention/cleanup [CompositionEngine.cs] — deferred: not required by this spec's ACs
+- [x] [Review][Defer] Source-mode builds always use Debug configuration, which may affect plain `run` [CompositionLaunchConfiguration.cs] — deferred: unverified; compare with baseline 5636b7f
+
+#### Rejected
+- Override bounds not enforced / deadline overflow (3 layers): false. `CompositionStartupDeadlineResolver.cs:78` rejects `seconds > 3600`, the schema has `maximum: 3600`, and the validator raises HXP021. The layers reviewed intermediate commits, not the final state.
+- "Process id" wording / missing launcher id not named: false. `CompositionEngine.cs:1069-1070` emit "launcher process id" and "launcher process id is unavailable". Remaining doc-comment wording is cosmetic (low, rejected).
+- `CompositionStartupClock.Remaining(null)` returns 600 s: false. The schema default is documented and the deadline is always set on the engine path.
+- `ImmutableArrayJsonConverter.Write` on a default array, null JSON arrays from the AppHost, narrow catch filters in the best-effort probe, path-spelling duplicates, orphaned task descendants, layering inversion, public signature changes, schema-version labels, unsanitised module id: low or speculative with no demonstrated reachable path, and the fix adds guards. Rejected.
+
+### Review Findings (code review 2026-10-17, chunk 1b: Builds `src/hosts` + `test/`)
+
+- [ ] [Review][Patch] `refresh-readiness` deadline expiry throws OperationCanceledException out of `RunResourceControl.RunAsync`: no response is written and later control requests are never served; also add a handler test driving a real signed request (ok/nonce, `module-unready`, expiry) [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunResourceControl.cs:46]
+- [ ] [Review][Patch] No `RunTopology.Compose` test with `DebugAttach = true` (Source and Package) asserting `--configuration Debug` [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceAppHostTests.cs:88]
+- [ ] [Review][Patch] No test for `debug` with a missing launcher process id (diagnostic), `run` recording no ids, or `executable.pid` as long/string [references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs:182]
+- [ ] [Review][Patch] `_ = selected.Timeout;` asserts nothing; assert the actual TimeSpan [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs:869]
+- [ ] [Review][Patch] Restore the final newline removed from `RunResourceControl.cs`, `CompositionTestFiles.cs`, `DeclarationClosureTests.cs`
+- [x] [Review][Defer] Control loop is sequential: stop/start-eventstore requests wait while a refresh polls up to the deadline [RunResourceControl.cs] — deferred: unverified medium; settle by sending stop during an unhealthy refresh
+- [x] [Review][Defer] Refresh waits until the deadline for a runnable resource with no health check that is not a module sidecar [RunReadinessHealth.cs] — deferred: unverified; settle with a health-check-less container in a composed model
+- [x] [Review][Defer] Infrastructure refresh test uses a test-local Redis double, not Platform registrations [AppHostRunnerValidationTests.cs] — deferred: spec records the Platform test project as blocked
+
+#### Rejected
+- 0.001 s lower bound contradicted by `1e-300` test: false. `IsRepresentableTimeout` requires at least 1 ms, and `1e-300` and `0.0001` are in `UnrepresentableStartupOverrideFails`.
+- HXR026 passes healthy resources as unready: duplicate of recorded R2-B6.
+- `down` tested by run id only: previously rejected as low.
+- Progress-write IO inconsistency, wall-clock thresholds, fake AppHost race and one-line string, reflection on Aspire internals, process-global env mutation, Windows skips, undocumented PlatformIdentityTests workaround, `abdfca8` early-return scope, null HealthStatus loop, sub-tick resolver test, lost end-to-end executable-cause test: low or speculative; fixes add guards or restructuring. Rejected.
+
+### Review Findings (code review 2026-10-17, group 2: platform commits 53e2e2e 0bff314)
+
+- [ ] [Review][Patch] `PlatformPostgresqlHealthCheck` catches OperationCanceledException unconditionally, so caller cancellation reports Unhealthy; filter like `PlatformRedisHealthCheck` (`when (!cancellationToken.IsCancellationRequested)`) [src/Hexalith.Platform.Composition/PlatformPostgresqlHealthCheck.cs:35]
+- [ ] [Review][Patch] `PlatformPostgresqlHealthCheck` has no test: add a loopback fake-server test (non-'S' reply, untrusted certificate, valid chain, bare open port) [tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs]
+- [ ] [Review][Patch] No assertion on the retention image names, tags and SHA256 pins (`ghcr.io/dapr/*`, `redis-stack-server 7.4.0-v8`, `falkordb v4.12.0`) or that the default run stays on `daprio/*` and `latest` [src/Hexalith.Platform.Composition/PlatformAppModel.cs]
+- [ ] [Review][Patch] No assertion that `Resolve(..., profile).Type("access-telemetry-store")` is `state.postgresql` and that `Render` emits the profile component [src/Hexalith.Platform.Composition/PlatformDaprBindings.cs]
+- [x] [Review][Defer] `PlatformRetentionProfile.ObserveAsync` (/proc, docker inspect, psql evidence) is untested [PlatformRetentionProfile.cs] — deferred: Linux/Docker bound; extract pure parts first
+- [x] [Review][Defer] `run_verification` tamper checks (runtimeArtifacts, worksConsumerSource, CalledProcessError) are untested [eng/verify_works_host.py] — deferred: orchestration harness; helpers carry the logic
+- [x] [Review][Defer] Platform has no tests for the `CompositionDeclarationClosure` delegation (supplied-path validation, snapshot conflicts, `TaskRepositoryRoot`) [PlatformDeclarationSet.cs, PlatformServerBindings.cs] — deferred: unverified medium; spec fallback is the Builds `DeclarationClosureTests`; settle by comparing old and new validation
+- [x] [Review][Defer] Only the `memories` resource waits for `telemetryPostgres`; other `telemetry-state` consumers do not [PlatformAppModel.cs:274] — deferred: unverified; settle by listing telemetry-state consumers in the retention run
+
+#### Rejected
+- `Dapr:Mtls:CertificateDirectory` unused: false. `DaprSelfHostedMtls.cs:8` and `ResolveCertificateDirectory` read it.
+- `user.Split(':')[1]` and 0600 files with a null user: false. A null user only occurs off Linux, where `SetUnixFileMode` is skipped on Windows; on Linux the user is `uid:gid`.
+- `pid` lambda shadowing (CS0136): false. The committed code builds and its tests ran.
+- Retention and Dapr 1.18.1 pins outside Story 1.8: the spec records them as concurrent retention work, and the fix edits the spec.
+- Redis `PING` fails closed with auth, `verify_works_host.py` KeyError and snapshot scope, two Postgres passwords, SQL interpolation, tmpfs sizing, hard-coded digests, `/proc` races, commit-message wording, and similar: low or speculative; fixes add guards or restructuring. Rejected.

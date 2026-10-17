@@ -1,0 +1,44 @@
+# Independent offline plan review — round 1
+
+Scope: only the new `PLAN-v1.md`, represented by `/tmp/platform-427-owner-evidence-plan-20261017-v1.diff`. Three context-free agents ran the bmad-build blind-hunter, edge-case-hunter and verification-gap lenses at the session's inherited model capability. They were restricted to read-only offline document review and explicit nonsecret reference checks. They performed no owner operations and provide no signer trust, authority, external attestation, activation review or approval.
+
+`PLAN-v1.md` is preserved verbatim. All accepted corrections are create-only in `PLAN-v2.md`; no original plan, repository story/spec, sealed exception, source or owner evidence is rewritten. Every finding is classified individually below before grouping. These findings concern the document; the independent reviewers authenticate no external owner.
+
+## Original blind-hunter report
+
+- Finding floor: 51,642 bytes ÷ 1,000 = 51.642 kB; N = min(floor(√51.642 + 1), 10) = **8**.
+- **A2/B1/H0/S3–S4 contain circular prerequisites.** A2 passes only after H2; B1 requires agreement with B2/H; H0 binds A/B evidence; and B2/H2 require H0. Distinguish preliminary identity/source acceptance from completed behavioral qualification, and specify the exact preliminary artifacts H0 may reference.
+- **H2’s negative qualification cases conflict with the fixed credential scope.** It requires actual evidence of rejected alternative clients and fallback cases, while B1 and the fixed limits prohibit another credential, alternate identity, or expanded scope. Specify which negative cases belong to separately scoped laboratory qualification and which facts the single authorized live handshake must establish.
+- **The common validity rule also rejects the offline work expressly allowed after expiry.** Capping every signed record at the expired ceiling makes newly issued owner appointments and preservation dispositions unusable under the stated intake rules. Define archival/planning record acceptance separately from operational admissibility; retain the unchanged ceiling and permanent operational refusal for this candidate.
+- **F permits an unresolved preservation disposition to satisfy its stated acceptance condition.** “Explicitly unresolved” attribution and acknowledge/reject/defer outcomes can complete the disposition record, but cannot establish that preservation prerequisites pass. Define separate record-completeness and preservation-resolution outcomes, with unresolved or deferred changes explicitly blocking S6.
+- **C1/D do not establish that resolved RBAC rules exhaust effective authorization.** Their authoritative inputs cover identities, bindings and roles, but omit an authenticated account of the server’s applicable authorization configuration and any other decision mechanisms or privileged identity rules. Require proof of the authorization model being evaluated, and fail closed when effective entitlement cannot be derived from it.
+- **The blanket “maximum 64 schema items” lacks a scope compatible with complete lineage.** C2 demands every original journal record without gaps, while a legitimate history can exceed 64 entries. State which limits apply to HTTP responses, individual records and evidence collections; define bounded partition/index handling that preserves the complete original journal.
+- **The 31 original prerequisites lack a complete traceability register.** The plan maps twelve ledger names and describes additional witnesses, but does not enumerate all 31 prerequisites against their immutable source, producer, artifact, acceptance predicate and dependent stage. Add that mapping so G9 and S6 can determine completeness without interpreting scattered prose.
+- **The JSONL signature contract does not define how original record bytes remain recoverable.** Reassembling existing signed records into JSONL can change whitespace or delimiters, and the proposed signature naming convention identifies files and roles without identifying individual records. Specify immutable original-record storage plus an index binding record identity, exact byte length/digest, sequence and original signature filenames; prohibit reconstruction or re-signing as a substitute.
+
+## Original edge-case-hunter report
+
+```json
+[{"location":"PLAN-v1.md:111","trigger_condition":"H0 binds B2 evidence, but B2 delivery requires H0 authorization.","guard_snippet":"H0 binds B1 and the B2 delivery contract; actual B2 evidence follows authorized delivery.","potential_consequence":"The proposed qualification sequence cannot produce its prerequisites without circular authorization."}]
+```
+
+## Original verification-gap report
+
+No verification gaps found.
+
+## Review triage log
+
+| ID | Verdict | Route | Verification and disposition in v2 |
+| --- | --- | --- | --- |
+| Blind 1 | medium | document correction | v1 A2/B1 required actual H evidence while H0 generally bound A/B evidence, producing a genuine cycle. New preliminary documentary acceptance lists exact H0 inputs, separates channel design from actual B2 delivery, and orders actual H1 → B2 → H2 → H3 → final qualification. S6 now distinguishes action prerequisites from later recovery outcome blockers. |
+| Blind 2 | medium | document correction | v1 H2 negative alternate-client evidence conflicted with one-identity production scope. v2 labels separately authorized isolated-lab negatives, forbids alternative production clients/negative handshakes and requires an explicit transfer-limit account; the actual positive uses only B1. |
+| Blind 3 | medium | document correction | The blanket v1 validity cap could make an honestly issued new owner appointment/disposition invalid before issuance. v2 separates documentary record admissibility from operational admissibility, forbids backdating, and retains permanent expired operational refusal. |
+| Blind 4 | medium | document correction | v1 F's acceptance allowed unresolved attribution and defer/acknowledge outcomes without stating their failed gate. v2 defines record-complete versus preservation-resolved, with unresolved/deferred/rejected current drift blocking dependent gates; no decision makes the original verifier pass. |
+| Blind 5 | medium | document correction | v1 C1/D specified RBAC resolution but no authoritative proof that it covered effective server decisions. v2 requires signed `native-authorization-model.json`, complete applicable mechanisms/identity privilege mapping and explicit exhaustive-coverage evidence or unknown/stop. No actual server configuration is inferred. |
+| Blind 6 | medium | document correction | v1's generic 64-item phrase could truncate a complete journal. v2 scopes it to HTTP sanitizer collections and supplies separately proposed bounded streaming original/index limits, complete signed root/page accounting and overflow refusal without truncation. |
+| Blind 7 | medium | document correction | v1 retained 31 blockers only collectively. The exact nonsecret original `bindings-v4.json` blocker map was read for this new traceability task, without hash validation or execution. v2 maps all 31 exact IDs to original source, producer/reviewer roles (UNIDENTIFIED), exact proposed nonsecret output, authoritative source/acceptance, implementation/owner route and dependent stage. All remain blocking; later outcome proofs are not prerequisites to their own measurement authorization. |
+| Blind 8 | medium | document correction | v1 required original signatures but did not prescribe recoverable original JSONL payload bytes or individual signature indexing. v2 preserves original payload/signature directories, exact original record/sequence/predecessor/byte/signature index, explicit delimiter profile and no reserialization/re-signing substitute. |
+| Edge 1 | medium | document correction | Independently identifies the same reachable H0/B2 cycle as Blind 1; classified separately before grouping. Resolved by the same preliminary-record/channel-contract boundary and ordered actual outputs. |
+| Primary 1 | medium | document correction | v1 guessed the unsealed directory name. The explicit Timesheets native-enrollment README records `20261016t103632z-native-enrollment-execution-revision`. v2 uses that exact path and preserves the incorrect v1 only as review history. |
+
+After individual classification, Blind 1 and Edge 1 are grouped by their shared dependency-cycle cause. All other corrections retain distinct causes. No finding is dismissed or deferred. External owner/evidence/expiry/tooling gaps remain prerequisites, not deferred review findings. No legacy operational implementation, test, signature check, exact verifier, evidence search or unchanged validation is repeated. A final independent check of v2 is requested before closing this documentation increment; it is not an exact activation-revision review.

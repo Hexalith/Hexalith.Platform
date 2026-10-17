@@ -684,3 +684,25 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md`
   summary: Cover digest-only PostgreSQL requested image references in retention backend binding tests.
   evidence: R4-V1: pre-verified review found all four RetentionBackendBindsActualLoadedImageInsteadOfRequestedName cases use the tagged PostgresImage constant. No case exercises IsRequestedPostgres's supported digest-only branch; removing it leaves tests green and a supported backend observation incomplete.
+
+## Deferred from: code review of spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md (2026-10-17, chunk 1a)
+
+- Debug rewrites only `mapping.Mode`; a package-origin mapping passed programmatically may fail in `Closure.Load` (unverified medium).
+- Startup deadline is enforced between steps only; probes use their own timeouts (unverified medium).
+- Startup task stdout/stderr discarded; failure reason lost (unverified medium).
+- Dependency-module startup tasks resolve against the root manifest repository root (unverified).
+- Preserved diagnostics have no retention or cleanup policy.
+- Source-mode builds always use Debug; compare with baseline 5636b7f for plain `run` (unverified).
+
+## Deferred from: code review of spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md (2026-10-17, chunk 1b)
+
+- Control loop is sequential; stop/start-eventstore waits during a refresh poll (unverified medium).
+- Refresh waits to the deadline for health-check-less non-sidecar runnable resources (unverified).
+- Infrastructure refresh test uses a Redis double, not Platform registrations (Platform test project blocked).
+
+## Deferred from: code review of spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md (2026-10-17, group 2)
+
+- `PlatformRetentionProfile.ObserveAsync` evidence logic is untested (Linux/Docker bound).
+- `eng/verify_works_host.py` `run_verification` tamper checks are untested.
+- Platform has no tests for the `CompositionDeclarationClosure` delegation (unverified medium).
+- Only `memories` waits for `telemetryPostgres` (unverified).
