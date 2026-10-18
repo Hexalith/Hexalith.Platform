@@ -437,5 +437,382 @@
   "duplicateDispatch": {
     "runId": 39139946983,
     "action": "cancelled own duplicate after discovering the identical approved active release"
-  }
+  },
+  "releaseVersion": "4.33.1",
+  "releaseTagCommit": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+  "lastCheckedUtc": "2026-10-18T15:56:02.405291+00:00",
+  "releaseStatus": {
+    "conclusion": "success",
+    "headSha": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+    "jobs": [
+      {
+        "completedAt": "2026-10-18T15:19:00Z",
+        "conclusion": "success",
+        "databaseId": 117712012146,
+        "name": "Verify current main source",
+        "startedAt": "2026-10-18T15:18:52Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7.0.1",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Require exact current branch and successful push CI",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7.0.1",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 7,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39139908836/job/117712012146"
+      },
+      {
+        "completedAt": "2026-10-18T15:59:43Z",
+        "conclusion": "success",
+        "databaseId": 117712051824,
+        "name": "Release",
+        "startedAt": "2026-10-18T15:19:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7.0.1",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Initialize .NET",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Validate central package versions",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test authoritative package catalog",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test central package version validator",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Validate package version audit",
+            "number": 7,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test package version audit generator",
+            "number": 8,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test package version audit validator",
+            "number": 9,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Validate Builds consumer package authority",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test consumer package authority validator",
+            "number": 11,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Validate package version exception inventory",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test package version exception validator",
+            "number": 13,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Validate Platform version catalog and hosting compatibility",
+            "number": 14,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test Platform version catalog contracts",
+            "number": 15,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Validate Dapr package versions",
+            "number": 16,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test Dapr package validator",
+            "number": 17,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test domain workflow test-platform contracts",
+            "number": 18,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Setup Node.js",
+            "number": 19,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Install Node.js dependencies",
+            "number": 20,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify npm dependency provenance and signatures",
+            "number": 21,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test commitlint workflow contracts",
+            "number": 22,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test legacy package publisher contracts",
+            "number": 23,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test G-4 tool package publisher contracts",
+            "number": 24,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test G-4 release lifecycle contracts",
+            "number": 25,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test G-4 release source guard",
+            "number": 26,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test G-4 tool package qualification gate",
+            "number": 27,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test G-4 tool package artifact validator",
+            "number": 28,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Qualify G-4 tool source and Release packages",
+            "number": 29,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test multi-platform container publisher contracts",
+            "number": 30,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test governed workflow provenance",
+            "number": 31,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Recheck approved release source and push CI",
+            "number": 32,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Authenticate to NuGet.org with Trusted Publishing",
+            "number": 33,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Create Release",
+            "number": 34,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Create Release",
+            "number": 65,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Setup Node.js",
+            "number": 66,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Initialize .NET",
+            "number": 67,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7.0.1",
+            "number": 68,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 69,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39139908836/job/117712051824"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39139908836"
+  },
+  "release": {
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases/416549032",
+    "assets_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases/416549032/assets",
+    "upload_url": "https://uploads.github.com/repos/Hexalith/Hexalith.Builds/releases/416549032/assets{?name,label}",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.33.1",
+    "id": 416549032,
+    "author": {
+      "login": "github-actions[bot]",
+      "id": 41898282,
+      "node_id": "MDM6Qm90NDE4OTgyODI=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-actions",
+      "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "node_id": "RE_kwDOOMzNRc4Y1Aio",
+    "tag_name": "v4.33.1",
+    "target_commitish": "main",
+    "name": "v4.33.1",
+    "draft": false,
+    "immutable": false,
+    "prerelease": false,
+    "created_at": "2026-10-18T14:56:32Z",
+    "updated_at": "2026-10-18T15:59:37Z",
+    "published_at": "2026-10-18T15:59:37Z",
+    "assets": [
+      {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases/assets/653859816",
+        "id": 653859816,
+        "node_id": "RA_kwDOOMzNRc4m-Rvo",
+        "name": "g4-tool-package-inventory.json",
+        "label": "G-4 tool package SHA-256 inventory",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "content_type": "application/json",
+        "state": "uploaded",
+        "size": 73673,
+        "digest": "sha256:a28cb7ea1366156b77849aa90f6d23a03fe9ecda5c6079e646c668683808b492",
+        "download_count": 0,
+        "created_at": "2026-10-18T15:59:36Z",
+        "updated_at": "2026-10-18T15:59:36Z",
+        "browser_download_url": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.33.1/g4-tool-package-inventory.json"
+      }
+    ],
+    "tarball_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tarball/v4.33.1",
+    "zipball_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/zipball/v4.33.1",
+    "body": "## [4.33.1](https://github.com/Hexalith/Hexalith.Builds/compare/v4.33.0...v4.33.1) (2026-10-18)\n\n\n### Bug Fixes\n\n* **build:** stop packaging on ordinary builds ([4629ff2](https://github.com/Hexalith/Hexalith.Builds/commit/4629ff2d3bd66376b29a553663c241d3a7b87853))\n* **ci:** format packaged seed probe conditionals ([c6f56c0](https://github.com/Hexalith/Hexalith.Builds/commit/c6f56c011ce3a83cdf6100c322352daf125c6af9))\n* **tool:** launch the packaged AppHost with local Aspire paths ([5faaf88](https://github.com/Hexalith/Hexalith.Builds/commit/5faaf88b737d4387419ee788fa7e1caebc283092))\n* **tool:** resolve Aspire packages for the process architecture ([13a3316](https://github.com/Hexalith/Hexalith.Builds/commit/13a3316ad0b93e25bf273efca00be36154b327c2))\n* **tool:** resolve packaged-host Aspire paths in a child process ([303f86d](https://github.com/Hexalith/Hexalith.Builds/commit/303f86d6af4a109f7932e8d802f27ad7c06633b6))\n* update package versions ([82565f4](https://github.com/Hexalith/Hexalith.Builds/commit/82565f485efbe961e553d7eac5393b4373858c7d))\n"
+  },
+  "nugetAvailableUtc": "2026-10-18T16:00:14.169574+00:00"
 }

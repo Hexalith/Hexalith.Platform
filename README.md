@@ -29,18 +29,22 @@ Those hosting concerns live here.
 
 ## Module tool
 
-The first Platform-accepted `hexalith-module` version is `4.33.0`, published as
-`hexalith.builds.module.cli`. The local tool manifest pins that exact version.
-`hexalith-platform.json` accepts the range `[4.33.0, 5.0.0-0)`: later 4.x
+The local tool manifest pins `hexalith.builds.module.cli` `4.33.1`, accepted for
+Platform `run` and `debug`. The first accepted version, `4.33.0`, cannot run or
+debug v2 compositions because its packaged host has a mismatched Tooling identity
+and build-machine paths; `4.33.1` fixes both defects.
+`hexalith-platform.json` declares the accepted tool version range. Later 4.x
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
-`544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`, matching both the Builds gitlink
-and release tag `v4.33.0`. Only the pinned version is guaranteed to embed that
+`c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching both the Builds gitlink
+and release tag `v4.33.1`. Only the pinned version is guaranteed to embed that
 catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
 AppHost SDK pins, and nothing compares them with the catalog yet. When the
 exact pin moves, the Builds gitlink moves to that version's release-tag commit.
+See the [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
+for the released-tool verification.
 
-Every version below `4.33.0` is not Platform-accepted, including the published
+Versions below the configured range are not Platform-accepted, including the published
 `4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts. From `4.31.0`, a tool outside the
 range is refused with `HXW010` in package mode and warned in source mode.
 Older tools do not check the range, so run the pinned tool through
@@ -147,12 +151,6 @@ When an earlier run used the same manifest, `down --manifest` refuses with
 `HXR024`; pass the id as `down --manifest <manifest> --run-id <runId>`.
 An explicit `--run-id` chooses that run directly; the tool does not cross-check
 its manifest, so verify both fields before stopping it.
-
-Known issue with the pinned `4.33.0`: `run` and `debug` stop with `HXP020`
-("Could not load file or assembly 'Hexalith.Builds.Tooling, Version=4.33.0.0'").
-The package's AppHost carries `Hexalith.Builds.Tooling` `1.0.0.0` and
-build-machine paths, so these commands need a fixed Builds release. See
-`_bmad-output/implementation-artifacts/evidence/1-10/README.md`.
 
 ### Attach a debugger
 

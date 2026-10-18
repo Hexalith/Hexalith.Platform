@@ -1,0 +1,86 @@
+# 2026-10-18T16:07:29.281199+00:00
+revision .=5151bef5b68d6bd1f33d94f0a3a1b11d32dd48a6
+revision references/Hexalith.Builds=c6f56c011ce3a83cdf6100c322352daf125c6af9
+revision references/Hexalith.EventStore=d55c6f7c11e9bce6f17d490a84c83f1561979d63
+revision references/Hexalith.Memories=4f6b3b1265d15d208761e6419e5c825d3f39fea3
+pinnedTool=4.33.1
+debugger=NET Core debugger 3.2.0-1 (9744e1f, Release)
+
+Copyright (c) 2020 Samsung Electronics Co., LTD
+Distributed under the MIT License.
+See the LICENSE file in the project root for more information.
+breakpointSourceSha256=96cf612566076b45b358c26db1820b41ff0ba2f0a6c06859a9a4a2cd49bdd90e
+containersBefore=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_scheduler", "8d0788f8322f dapr_redis", "cb7c12622c18 dapr_zipkin"]
+$ dotnet tool run hexalith-module -- debug --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+ready: Success
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '76833'.
+HXI010 Topology None field=memories: Project 'memories' launcher process id '92843'.
+HXI010 Topology None field=memories-access-telemetry: Project 'memories-access-telemetry' launcher process id '92836'.
+HXI010 Topology None field=memories-access-telemetry-clock: Project 'memories-access-telemetry-clock' launcher process id '92832'.
+
+exit 0
+runId=bc73e2fbec937376a8efbb3a3dd32026
+workspace=/home/administrator/.local/share/hexalith-builds/g4-workspaces/bc73e2fbec937376a8efbb3a3dd32026
+readinessResults=[{"name": "dapr-placement-mtls", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "dapr-scheduler-mtls", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "dapr-sentry", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "eventstore", "kind": "project", "state": "Healthy", "detail": "module-ready", "processid": 76833}, {"name": "eventstore-dapr-cli", "kind": "executable", "state": "Healthy", "detail": "module-ready", "processid": 76823}, {"name": "memories", "kind": "project", "state": "Healthy", "detail": "module-ready", "processid": 92843}, {"name": "memories-access-telemetry", "kind": "project", "state": "Healthy", "detail": "module-ready", "processid": 92836}, {"name": "memories-access-telemetry-clock", "kind": "project", "state": "Healthy", "detail": "module-ready", "processid": 92832}, {"name": "memories-access-telemetry-clock-dapr-cli", "kind": "executable", "state": "Healthy", "detail": "module-ready", "processid": 92829}, {"name": "memories-access-telemetry-dapr-cli", "kind": "executable", "state": "Healthy", "detail": "module-ready", "processid": 92827}, {"name": "memories-dapr-cli", "kind": "executable", "state": "Healthy", "detail": "module-ready", "processid": 92816}, {"name": "memories-graph", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "memories-vectors", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "redis", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}]
+privateAspireStore=/home/administrator/.local/share/hexalith-builds/g4-workspaces/bc73e2fbec937376a8efbb3a3dd32026/aspire-store/.aspire
+privateAppHostDirectory=/home/administrator/.local/share/hexalith-builds/g4-workspaces/bc73e2fbec937376a8efbb3a3dd32026/apphost
+packagedAppHost=["/home/administrator/.dotnet/dotnet", "exec", "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.33.1/tools/net10.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll"]
+reportedProjectLaunchers=[76833, 92843, 92836, 92832]
+stateProcessIds=[76823, 76833, 92816, 92827, 92829, 92832, 92836, 92843]
+launcher=76833 children:
+89051 /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+
+launcher=92843 children:
+ 2651 /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Debug/net10.0/Hexalith.Memories.Server
+
+launcher=92836 children:
+99610 /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry
+
+launcher=92832 children:
+99026 /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry.Clock
+
+appPid=2651
+breakpoint=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+trigger=http://localhost:20393/ready
+debugAssembly=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Debug/net10.0/Hexalith.Memories.Server.dll
+debugAssemblySha256=fa930aada47d1f86c8af577088bd3caa9a14f9efec568ec6451ee39c80b9b73b
+stopped, reason: interrupted, thread id: 2651, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.Monitor.Wait()}
+>>> break /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+ Breakpoint 1 at /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+>>> continue
+^running
+stopped, reason: breakpoint 1 hit, thread id: 3577, stopped threads: all, times= 1, frame={Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28}
+HIT=True
+>>> backtrace
+#0: 0x00007c688b507adc Hexalith.Memories.Server.dll` Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+#1: 0x00007c688ba2a7b5 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<System.__Canon>()
+#2: 0x00007c688b5037e1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult>.Start<Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2>()
+#3: 0x00007c688b506f3c Hexalith.Memories.Server.dll` Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.CheckHealthAsync()
+#4: 0x00007c68879a4fad Microsoft.Extensions.Diagnostics.HealthChecks.dll` Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService.<RunCheckAsync>d__5.MoveNext()
+#5: 0x00007c688b502a72 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService.<RunCheckAsync>d__5>()
+#6: 0x00007c688b5029ac System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Microsoft.Extensions.Diagnostics.HealthChecks.HealthReportEntry>.Start<Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService.<RunCheckAsync>d__5>()
+#7: 0x00007c68879a2a1f Microsoft.Extensions.Diagnostics.HealthChecks.dll` Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService.RunCheckAsync()
+#8: 0x00007c6883fad4e6 System.Private.CoreLib.dll` System.Threading.Tasks.Task<System.Threading.Tasks.Task<Microsoft.Extensions.Diagnostics.HealthChecks.HealthReportEntry>>.InnerInvoke()
+#9: 0x00007c688b9eb9fe System.Private.CoreLib.dll` System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop()
+#10: 0x00007c688ba2bbf4 System.Private.CoreLib.dll` System.Threading.Tasks.Task.ExecuteWithThreadLocal()
+#11: 0x00007c688b9ad087 System.Private.CoreLib.dll` System.Threading.ThreadPoolWorkQueue.Dispatch()
+#12: 0x00007c6883cc64b0 System.Private.CoreLib.dll` System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+>>> print context.Registration.Name
+context.Registration.Name = "falkordb"
+>>> delete 1
+>>> continue
+^running
+$ dotnet tool run hexalith-module -- down --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json --run-id bc73e2fbec937376a8efbb3a3dd32026
+GET /ready -> RemoteDisconnected: Remote end closed connection without response
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+
+exit 0
+workspaceExistsAfterDown=False
+ownedContainersAfterDown=[]
+containersAfter=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_scheduler", "8d0788f8322f dapr_redis", "cb7c12622c18 dapr_zipkin"]
+stableBaselineContainers=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_scheduler", "8d0788f8322f dapr_redis", "cb7c12622c18 dapr_zipkin"]
+baselineContainersPreserved=True
+ownedProcessesAfterDown=[]
+# finished 2026-10-18T16:09:16.535641+00:00

@@ -1,0 +1,106 @@
+# 2026-10-18T16:06:19.522632+00:00
+revision .=5151bef5b68d6bd1f33d94f0a3a1b11d32dd48a6
+revision references/Hexalith.Builds=c6f56c011ce3a83cdf6100c322352daf125c6af9
+revision references/Hexalith.EventStore=d55c6f7c11e9bce6f17d490a84c83f1561979d63
+revision references/Hexalith.Memories=4f6b3b1265d15d208761e6419e5c825d3f39fea3
+pinnedTool=4.33.1
+debugger=NET Core debugger 3.2.0-1 (9744e1f, Release)
+
+Copyright (c) 2020 Samsung Electronics Co., LTD
+Distributed under the MIT License.
+See the LICENSE file in the project root for more information.
+breakpointSourceSha256=48cfec334d1e31fa68ba4eb4f1a260d031ba2743a4c424260f525fa5b2d4f542
+containersBefore=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_scheduler", "8d0788f8322f dapr_redis", "cb7c12622c18 dapr_zipkin"]
+$ dotnet tool run hexalith-module -- debug --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
+ready: Success
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '43628'.
+
+exit 0
+runId=ce774342c896def4fd912cfa63ed0605
+workspace=/home/administrator/.local/share/hexalith-builds/g4-workspaces/ce774342c896def4fd912cfa63ed0605
+readinessResults=[{"name": "dapr-placement-mtls", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "dapr-scheduler-mtls", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "dapr-sentry", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}, {"name": "eventstore", "kind": "project", "state": "Healthy", "detail": "module-ready", "processid": 43628}, {"name": "eventstore-dapr-cli", "kind": "executable", "state": "Healthy", "detail": "module-ready", "processid": 43619}, {"name": "redis", "kind": "container", "state": "Healthy", "detail": "module-ready", "processid": null}]
+privateAspireStore=/home/administrator/.local/share/hexalith-builds/g4-workspaces/ce774342c896def4fd912cfa63ed0605/aspire-store/.aspire
+privateAppHostDirectory=/home/administrator/.local/share/hexalith-builds/g4-workspaces/ce774342c896def4fd912cfa63ed0605/apphost
+packagedAppHost=["/home/administrator/.dotnet/dotnet", "exec", "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.33.1/tools/net10.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll"]
+reportedProjectLaunchers=[43628]
+stateProcessIds=[43619, 43628]
+launcher=43628 children:
+52553 /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+
+appPid=52553
+breakpoint=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+trigger=http://localhost:14219/ready
+debugAssembly=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore.dll
+debugAssemblySha256=9bcbf84502c6e3b793255854a7d2c145b6e589c29d5ae4d6e6f6520c35ba431b
+stopped, reason: interrupted, thread id: 52553, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.Monitor.Wait()}
+>>> break /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+ Breakpoint 1 at /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+>>> continue
+^running
+stopped, reason: breakpoint 1 hit, thread id: 52774, stopped threads: all, times= 1, frame={Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225}
+HIT=True
+>>> backtrace
+#0: 0x00007714cb724f1e Hexalith.EventStore.Gateway.dll` Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+#1: 0x00007714ca55b56b System.Threading.RateLimiting.dll` System.Threading.RateLimiting.DefaultPartitionedRateLimiter<Microsoft.AspNetCore.Http.HttpContext, string>.GetRateLimiter()
+#2: 0x00007714ca55b4c9 System.Threading.RateLimiting.dll` System.Threading.RateLimiting.DefaultPartitionedRateLimiter<System.__Canon, System.__Canon>.AttemptAcquireCore()
+#3: 0x00007714ca55a5d5 System.Threading.RateLimiting.dll` System.Threading.RateLimiting.ChainedPartitionedRateLimiter<Microsoft.AspNetCore.Http.HttpContext>.AttemptAcquireCore()
+#4: 0x00007714c5023d3a Microsoft.AspNetCore.RateLimiting.dll` Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.CombinedAcquire()
+#5: 0x00007714c5025230 Microsoft.AspNetCore.RateLimiting.dll` Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.<TryAcquireAsync>d__12.MoveNext()
+#6: 0x00007714cb724cfc System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.<TryAcquireAsync>d__12>()
+#7: 0x00007714cb724c4c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<Microsoft.AspNetCore.RateLimiting.LeaseContext>.Start<Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.<TryAcquireAsync>d__12>()
+#8: 0x00007714c5023cd3 Microsoft.AspNetCore.RateLimiting.dll` Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.TryAcquireAsync()
+#9: 0x00007714c5024bc5 Microsoft.AspNetCore.RateLimiting.dll` Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.<InvokeInternal>d__11.MoveNext()
+#10: 0x00007714cb724b3c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.<InvokeInternal>d__11>()
+#11: 0x00007714cb724a7c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.<InvokeInternal>d__11>()
+#12: 0x00007714c5023c27 Microsoft.AspNetCore.RateLimiting.dll` Microsoft.AspNetCore.RateLimiting.RateLimitingMiddleware.InvokeInternal()
+#13: 0x00007714c4f96274 Microsoft.AspNetCore.Authentication.dll` Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+#14: 0x00007714cb717621 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6>()
+#15: 0x00007714cb7174ec System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6>()
+#16: 0x00007714c4f93c5f Microsoft.AspNetCore.Authentication.dll` Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke()
+#17: 0x00007714c4edeace Microsoft.AspNetCore.Diagnostics.dll` Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.Invoke()
+#18: 0x00007714cb711ac7 Hexalith.EventStore.Gateway.dll` Hexalith.EventStore.Middleware.CorrelationIdMiddleware.<InvokeAsync>d__6.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Middleware/CorrelationIdMiddleware.cs:31
+#19: 0x00007714cb711287 Hexalith.EventStore.Gateway.dll` Hexalith.EventStore.Middleware.CorrelationIdMiddleware.InvokeAsync()
+#20: 0x00007714c4ee24f3 Microsoft.AspNetCore.Diagnostics.dll` Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.<Invoke>d__14.MoveNext()
+#21: 0x00007714cb1db8fc System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.<Invoke>d__14>()
+#22: 0x00007714cb1db86c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.<Invoke>d__14>()
+#23: 0x00007714c4edb6d2 Microsoft.AspNetCore.Diagnostics.dll` Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke()
+#24: 0x00007714cb1db7ec OpenTelemetry.Instrumentation.AspNetCore.dll` OpenTelemetry.Instrumentation.AspNetCore.Implementation.HttpServerErrorTypeStartupFilter.InvokeAsync()
+#25: 0x00007714cb1db734 OpenTelemetry.Instrumentation.AspNetCore.dll` OpenTelemetry.Instrumentation.AspNetCore.Implementation.HttpServerErrorTypeStartupFilter.<>c__DisplayClass0_1.<Configure>b__2()
+#26: 0x00007714c6f71265 Microsoft.AspNetCore.HostFiltering.dll` Microsoft.AspNetCore.HostFiltering.HostFilteringMiddleware.Invoke()
+#27: 0x00007714c670eacc Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.<ProcessRequests>d__236<Microsoft.AspNetCore.Hosting.HostingApplication.Context>.MoveNext()
+#28: 0x00007714cb1d305d System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.<ProcessRequests>d__236<Microsoft.AspNetCore.Hosting.HostingApplication.Context>>()
+#29: 0x00007714cb1d2f51 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.<ProcessRequests>d__236<Microsoft.AspNetCore.Hosting.HostingApplication.Context>>()
+#30: 0x00007714c6711964 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests<Microsoft.AspNetCore.Hosting.HostingApplication.Context>()
+#31: 0x00007714c670f2d7 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.<ProcessRequestsAsync>d__235<Microsoft.AspNetCore.Hosting.HostingApplication.Context>.MoveNext()
+#32: 0x00007714cb1d2e69 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.<ProcessRequestsAsync>d__235<Microsoft.AspNetCore.Hosting.HostingApplication.Context>>()
+#33: 0x00007714cb1d2d91 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.<ProcessRequestsAsync>d__235<Microsoft.AspNetCore.Hosting.HostingApplication.Context>>()
+#34: 0x00007714c67118b2 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequestsAsync<Microsoft.AspNetCore.Hosting.HostingApplication.Context>()
+#35: 0x00007714c67085ac Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.<ProcessRequestsAsync>d__12<Microsoft.AspNetCore.Hosting.HostingApplication.Context>.MoveNext()
+#36: 0x00007714cb1d2c9e System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.<ProcessRequestsAsync>d__12<Microsoft.AspNetCore.Hosting.HostingApplication.Context>>()
+#37: 0x00007714cb1d2ba1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.<ProcessRequestsAsync>d__12<Microsoft.AspNetCore.Hosting.HostingApplication.Context>>()
+#38: 0x00007714c67107e5 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.ProcessRequestsAsync<Microsoft.AspNetCore.Hosting.HostingApplication.Context>()
+#39: 0x00007714c6709117 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection<Microsoft.AspNetCore.Connections.ConnectionContext>.<ExecuteAsync>d__8.MoveNext()
+#40: 0x00007714cb1d2675 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection<Microsoft.AspNetCore.Connections.ConnectionContext>.<ExecuteAsync>d__8>()
+#41: 0x00007714cb1d2571 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection<Microsoft.AspNetCore.Connections.ConnectionContext>.<ExecuteAsync>d__8>()
+#42: 0x00007714c6706696 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection<Microsoft.AspNetCore.Connections.ConnectionContext>.ExecuteAsync()
+#43: 0x00007714c6706627 Microsoft.AspNetCore.Server.Kestrel.Core.dll` Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection<System.__Canon>.System.Threading.IThreadPoolWorkItem.Execute()
+#44: 0x00007714c38d64b0 System.Private.CoreLib.dll` System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+>>> print path
+path = "/ready"
+>>> delete 1
+>>> continue
+^running
+$ dotnet tool run hexalith-module -- down --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json --run-id ce774342c896def4fd912cfa63ed0605
+GET /ready -> 200
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+
+exit 0
+workspaceExistsAfterDown=False
+ownedContainersAfterDown=[]
+containersAfter=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_scheduler", "8d0788f8322f dapr_redis", "cb7c12622c18 dapr_zipkin"]
+stableBaselineContainers=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_scheduler", "8d0788f8322f dapr_redis", "cb7c12622c18 dapr_zipkin"]
+baselineContainersPreserved=True
+ownedProcessesAfterDown=[]
+# finished 2026-10-18T16:07:29.082110+00:00
