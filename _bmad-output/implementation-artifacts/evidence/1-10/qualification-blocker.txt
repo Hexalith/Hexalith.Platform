@@ -1,0 +1,15 @@
+CI: https://github.com/Hexalith/Hexalith.Builds/actions/runs/39135616837
+Revision: 332b2c144defba546fe0a09626a4a72f2340e22f
+All preceding gates, including the full Module.Tests suite, passed.
+Final qualification is blocked by two SA1143 formatting diagnostics in Tools/PackagedSeedProbe.
+Prepared patch: seed-probe-formatting.patch. Focused Debug build passed, 0 warnings/errors.
+Additional formatting scope approval requested under the frozen story restriction.
+
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6392431Z ##[error]/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.cs(172,13): error SA1143: Conditional expressions must be formatted consistently (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1143.html) [/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj]
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6403659Z ##[error]/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.cs(131,17): error SA1143: Conditional expressions must be formatted consistently (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1143.html) [/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj]
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6408460Z ##[error]/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.cs(172,13): error SA1143: Conditional expressions must be formatted consistently (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1143.html) [/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj]
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6412528Z ##[error]/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.cs(131,17): error SA1143: Conditional expressions must be formatted consistently (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1143.html) [/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj]
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6417939Z [31;1m[0m[36;1m[36;1m  24 | [0m … DE -ne 0) { [36;1mthrow "Packaged seed probe build failed with exit code $L[0m …[0m
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6419833Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mPackaged seed probe build failed with exit code 1.[0m
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:46.1672489Z [31;1m[0m[36;1m[36;1m 726 | [0m … de -ne 0) { [36;1mthrow "Packaged seed subscription gate failed with exit c[0m …[0m
+Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:46.1675931Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mPackaged seed subscription gate failed with exit code 1.[0m

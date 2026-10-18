@@ -113,6 +113,8 @@ Machine:
 
 ## Implementation Notes
 
+- **Later CI qualification blocker.** CI `39135616837` at `332b2c144defba546fe0a09626a4a72f2340e22f` passed the audit/catalog checks and full Builds module tests, then failed with SA1143 in `Tools/PackagedSeedProbe/PackagedSeedProbe.cs` at the two multiline conditional expressions. A formatting-only patch is prepared and builds with 0 warnings/errors; see `evidence/1-10/qualification-blocker.txt`. Scope approval was requested before adding this separate Builds code change. The release and final pinned-tool breakpoint proof remain pending.
+
 - **Stable AC2 re-verification.** Builds `332b2c144defba546fe0a09626a4a72f2340e22f`, EventStore `d55c6f7c11e9bce6f17d490a84c83f1561979d63`, Memories `d0c5d8ca96b06e02acdda88f255b33288642a7f7`: the source live class passed 3/3 in 286.050 s. All four repository revisions and the three relevant binary hashes matched before/after. `evidence/1-10/live-tests.txt` records the raw output, UTC interval, and restoration of the temporary inotify cap.
 
 - **Resumed run (2026-10-18).** Review pass 2 corrected first-run owner/Aspire-package prerequisites and the run-id lookup in Platform/EventStore/Memories documentation. At Builds `332b2c144defba546fe0a09626a4a72f2340e22f`, the audit validator passes for 307 packages/148 families and the Platform catalog validator passes for EventStore 3.125.1 and toolkit 13.6.1-beta.935. The former CI blocker at `82565f485efbe961e553d7eac5393b4373858c7d` is superseded by that owner repair; exact-SHA CI/release and final pinned breakpoint proof remain required.
