@@ -28,7 +28,7 @@ context:
 **Never:** Add the blocking CI tier (Story 2.8). Pin `hexalith-evidence`; its accepted Evidence-suite blocker stands, and Story 3.9 owns evidence. Edit other modules' tool manifests (Stories 1.12/1.13). Change the identity schema or reader, catalog versions, or release workflow gates. Weaken or skip the failing catalog test. Publish manually around semantic-release.
 
 **Decisions (2026-10-17):**
-- **Range.** `toolVersionRange` is `[<accepted>, 5.0.0)`. Later 4.x releases are accepted without a Platform edit. `.config/dotnet-tools.json` still pins the exact accepted version.
+- **Range.** `toolVersionRange` is `[<accepted>, 5.0.0-0)`. Later 4.x releases are accepted without a Platform edit, including 4.x prereleases; every 5.0 prerelease is excluded (human decision 2026-10-18, superseding `[<accepted>, 5.0.0)`). `.config/dotnet-tools.json` still pins the exact accepted version.
 - **Release.** Claude dispatches `build-release.yml` once CI is green. The human approves the `production` environment gate.
 
 ## I/O & Edge-Case Matrix
@@ -104,6 +104,28 @@ Builds paths are under `references/Hexalith.Builds`.
 - verification-gap: EXT-HOST-1 Python tests are absent from the host verification command — `medium` — the shell lists only two older unittest modules, while the reviewer ran the five new tests directly; rejected for 1.9 as pre-existing Story 5.4 work.
 - verification-gap: Full evidence tests do not assert category matches — `medium` — the existing test asserts effects and gaps only, and its fixture supplies one ACL-named result; rejected for 1.9 as pre-existing Story 5.4 work.
 - verification-gap: no repeatable Platform check compares the pinned package and accepted range — `medium` — Builds tests use synthetic records and the current pair was verified manually; deferred to Story 2.8 because 1.9 explicitly excludes the blocking CI tier.
+Claude review pass 2026-10-18. Story-only diff: Platform `.config`, `hexalith-platform.json`, `README.md`, Builds gitlink, and Builds `544fd2e`.
+
+- blind: released Builds README:283-285 still says the Platform record has no tool range — `low` — confirmed at `544fd2e`; patch (direct wording correction in Builds).
+- blind/edge: Platform README "Publication alone does not grant acceptance" contradicts the 4.x range — `low` — later 4.x releases are accepted by range with no Platform edit; patch (reword).
+- blind/edge: `[4.33.0, 5.0.0)` admits `5.0.0-preview.1` and 4.x prereleases — `medium` — NuGet `Satisfies` confirmed by the reviewer; intent_gap, resolved by the human as `[4.33.0, 5.0.0-0)` (frozen decision updated); patch the record and README.
+- edge: exact `[4.33.0]` instead of the 4.x range — `false` — contradicts the human range decision.
+- blind: gitlink move landed in `3c9fb64 fix: cicd` with Story 5.4 files, before release approval — `low` — process-only traceability; the end state equals the tag commit, and the fix would rewrite pushed history; rejected.
+- blind: catalog commits `650de63`/`eeab884` were brought in without a Platform build — `false` — they only add an unused `Hexalith.McpCli.Abstractions` PackageVersion, which cannot change existing Platform restores.
+- blind: HXP020 — Platform's EventStore declaration provenance is 3.120.0 vs catalog 3.124.0 — `medium` — pre-existing catalog/declaration drift, not caused by 1.9; defer.
+- blind/edge: Platform has no `v<SemVer>` tag, so module-workspace package mode still gets HXW011 — `medium` — `git tag` and `ls-remote --tags` are empty; Platform release tagging is outside this intent; defer.
+- blind: README hard-codes the catalog commit with no upgrade rule — `low` — required by the AC; folded into the README patch as a one-sentence pin/gitlink/tag rule.
+- blind: README check commands state no expected output or identity check — `low` — docs polish with no defect; rejected.
+- blind: stale NuGet HTTP cache restore hint missing — `low` — a transient local cache state, not everyday use; rejected.
+- blind: README does not say which tool the range covers — `false` — README names `hexalith-module`/`hexalith.builds.module.cli`, and HXW010 checks only the running module CLI.
+- blind: not-accepted list omits 4.27.5/4.28.0/4.29.0 and versions below 4.20.0 — `low` — those tags were never published to NuGet.org, but the wording should say every version below 4.33.0; folded into the README patch.
+- blind/edge: the script fix covers only EmbeddedResource, not other external inputs — `false` — no other external item exists today; the remaining copies are explicit `Exec` inputs; speculative.
+- blind/edge: resource evaluation context differs from the isolated build — `false` — the csproj declares the resources unconditionally; the real-checkout evaluation can only add extra copies, never drop a required one.
+- blind: unclear errors when there are no resources or stdout is not JSON — `low` — loud failure in an unreached state; rejected.
+- edge: EmbeddedResource under the tooling `bin/`/`obj/` is never copied — `false` — the only such item, `$(PlatformVersionCatalogPath)`, is generated by the isolated build itself.
+- verification-gap: no automated pin/range consistency check — `medium` — pre-verified; defer (Story 2.8, already logged).
+- verification-gap other: Platform `hexalith.builds.module.cli` pin is absent from Builds `package-version-exceptions.json` — `maybe-false` — only a workspace-mode scan including Platform would report it, and that scan crashes earlier on Platform today; settled by fixing that crash and rescanning; if real, only `low`; rejected.
+
 ## Verification
 
 **Commands:**

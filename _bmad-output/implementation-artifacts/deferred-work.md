@@ -776,3 +776,15 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
   summary: Add a repeatable Platform check that the pinned module tool satisfies the accepted version range.
   evidence: Story 1.9 manually restored and ran 4.33.0 against Platform HEAD, including a 4.32.0 HXW010 refusal, but Builds identity tests use synthetic records and the Platform pin verifier does not compare these two files. Story 2.8 owns the blocking CI tier.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
+  summary: Align Platform's EventStore reference declaration provenance (3.120.0) with the Builds catalog (3.124.0) so package mode can run from the Platform root.
+  evidence: The accepted tool 4.33.0 `run --mode package --manifest src/Hexalith.Platform.Composition/Declarations/eventstore.json` passes identity and then exits 3 with only HXP020 (declaration 3.120.0 vs catalog 3.124.0).
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
+  summary: Define how Platform release commits get `v<SemVer>` tags, so that module workspaces can run package mode against an accepted Platform.
+  evidence: Platform has no local or remote tags, and Builds identity resolution refuses package mode in module workspaces with HXW011 when the Platform gitlink is untagged.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
+  summary: Add an automated check that the `.config/dotnet-tools.json` module tool pin satisfies `hexalith-platform.json` `toolVersionRange`.
+  evidence: Pre-verified review gap: no Platform or Builds test reads the committed range together with the pin; Story 2.8 owns the blocking CI tier.
