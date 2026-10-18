@@ -69,6 +69,34 @@ Builds paths are under `references/Hexalith.Builds`.
 - Given the Platform repository at the new HEAD, when `dotnet tool restore` runs, then `hexalith-module` at the accepted version is restored, and the identity resolution reports no HXW009/HXW010.
 - Given the Platform README, when read, then it names the first accepted version, the range, the catalog commit, and the not-accepted versions 4.20.0–4.27.4 and 4.29.1–4.32.0.
 
+### Review Findings
+
+Second Claude review pass, 2026-10-18. It covers the state after the first-pass patches: Platform `.config/dotnet-tools.json`, `hexalith-platform.json`, `README.md` and the Builds gitlink from `b49d5c1` to `d1eb161`, plus Builds `544fd2e` and `9d9e82a`. The Acceptance Auditor re-ran AC2 at `d1eb161` with the final range `[4.33.0, 5.0.0-0)`:
+- `dotnet tool restore` restored 4.33.0, and `--version` printed `4.33.0+544fd2e…`.
+- Package mode on `eventstore.json` exited 3 with only `HXP020`, so there was no HXW009 or HXW010.
+- Run through the tool's own `NuGet.Versioning`, the range accepts 4.33.0, 4.34.0-beta.1 and 4.99.0, and rejects 4.32.0, 4.33.0-rc.1, 5.0.0-0, 5.0.0-alpha, 5.0.0-preview.1 and 5.0.0.
+
+- [x] [Review][Decision] In-range tools other than the exact pin bring their own embedded toolchain pins — Resolved 2026-10-18 by the human (option 1). The range stays. The README now says only the exact pin is guaranteed to embed the gitlink catalog. The snapshot-vs-catalog check is deferred to Builds or Story 2.8, because 1.9 must not change the Builds identity reader. Finding: the range admits later 4.x tools without a Platform edit. It also keeps admitting 4.33.x after a future pin move, because nothing defines the floor rule.
+  - Each tool reads Dapr CLI/runtime, Redis image/digest and AppHost SDK from its embedded `PlatformVersionCatalog` (`CompositionToolchainPins`, `SupportedPlatformPins`). Package versions come from the catalog materialized at Platform's Builds gitlink.
+  - `PlatformIdentityResolver` only checks that the gitlink commit exists (`:193-196`). It never compares the tool's snapshot with that catalog.
+  - So a module workspace that pins, say, 4.36.0 and references Platform runs one toolchain against another catalog. Some divergences fail with messages naming the tool's pins; the Redis image drifts silently.
+  - The guarantee "catalog commit = gitlink = tag" holds only for the exact pin. The real check is a Builds identity-reader change, which 1.9 must not make.
+- [x] [Review][Patch] README overstates HXW010 protection for tools that are not the pin [README.md:41] — Fixed: the README now says the check exists from 4.31.0 and to run the pinned tool through `dotnet tool run`. Published tags `v4.20.0`–`v4.30.1` contain no `HXW010` and no package mode. Only `v4.31.0` onward read `toolVersionRange`. An older tool, for example an ad-hoc global install run as bare `hexalith-module`, is neither refused nor warned. State that the check exists from 4.31.0 and that the pin applies only through `dotnet tool run`.
+- [x] [Review][Defer] No automated pin, range and tag consistency check [hexalith-platform.json:3] — deferred: Story 2.8 owns the blocking CI tier.
+  - No Platform or Builds test reads the committed range with the pin. None asserts that 5.0 prereleases are excluded or 4.x prereleases accepted, and none checks that the Builds gitlink equals the `v<pin>` tag commit.
+  - A test must not assert through in-process `IdentityFindings`, because the source-built Tooling assembly is `1.0.0-…` and always reports HXW010.
+  - The merged ledger entry supersedes the two duplicate 1.9 entries.
+
+**Rejected:**
+- Pinned Builds README (`v4.33.0`, `README.md:283-285`) still says Platform has no tool range — `low` — real, but already fixed on Builds `main` (`9d9e82a`). It arrives with the next pinned release, and the fix would otherwise need a new release.
+- Builds README "publication … grant[s] no Platform acceptance" contradicts the 4.x range — `false` — the paragraph makes the range authoritative, and publication alone accepts nothing. "Up to and including 4.32.0" stays true under any later floor.
+- Gitlink moved before the release inside `3c9fb64 fix: cicd` — `low` — process-only, and the end state equals the tag commit. The first pass already rejected it, because a fix would rewrite pushed history.
+- Frozen Range decision edited while the Spec Change Log stays empty and note `:77` still shows `5.0.0)` — `low` — the fix edits the spec under review. The decision is recorded inline and in triage item 111, and AC2 is now re-verified on the final range.
+- Catalog-test script copies only `EmbeddedResource` items — `false` — the csproj's only external items are the two schema resources. The other inputs are explicit `Exec` copies, and the target-generated catalog resource comes from the isolated build itself.
+- In-process Platform resolution always records HXW010 because the Tooling assembly is `1.0.0-…` — `low` — this predates the story (a null range also gives HXW010 at `PlatformIdentityResolver.cs:199`), and Platform code never reads `IdentityFindings`. The first pass's reason ("only the running CLI") was imprecise, but the conclusion stands.
+- README restore steps omit `git submodule update`, expected output and an identity check — `low` — HXW009 names a stale Builds checkout by commit. The other parts were already rejected as docs polish in the first pass.
+- Review diff showed the wrong Builds commit set — `false` — the scope was deliberate. `650de63` only adds a `PackageVersion` that Platform code never consumes, `eeab884` only rewrites Builds' own audit JSON, and `9d9e82a` is the first-pass README patch, included so it gets reviewed.
+
 ## Implementation Notes
 
 - 2026-10-17, Builds local commit `254aed4` (`fix(ci): copy embedded schemas into catalog rebuild test`, parent `c8c72dc`, not pushed). The rebuild step now evaluates `Hexalith.Builds.Tooling.csproj` with `dotnet msbuild -getItem:EmbeddedResource` and copies every evaluated resource outside the tooling directory to the same Builds-relative path in the isolated copy; it refuses a resource outside the Builds checkout or missing on disk. The hard-coded manifest-v2 copy and the pre-created `schemas` directory were removed. `pwsh -NoProfile -File Tools/test-platform-version-catalog.ps1` passed locally: 96 scenarios, exit 0. Commit message validated with the repository's commitlint (`@commitlint/cli` 21.2.3).

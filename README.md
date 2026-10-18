@@ -33,12 +33,16 @@ The first Platform-accepted `hexalith-module` version is `4.33.0`, published as
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
 `544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`, matching both the Builds gitlink
-and release tag `v4.33.0`. When the exact pin moves, the Builds gitlink moves
-to that version's release-tag commit.
+and release tag `v4.33.0`. Only the pinned version is guaranteed to embed that
+catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
+AppHost SDK pins, and nothing compares them with the catalog yet. When the
+exact pin moves, the Builds gitlink moves to that version's release-tag commit.
 
 Every version below `4.33.0` is not Platform-accepted, including the published
-`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts. A tool outside the range is
-refused with `HXW010` in package mode and warned in source mode.
+`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts. From `4.31.0`, a tool outside the
+range is refused with `HXW010` in package mode and warned in source mode.
+Older tools do not check the range, so run the pinned tool through
+`dotnet tool run`.
 
 From the Platform root, restore and check the pinned tool with:
 

@@ -776,6 +776,8 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
   summary: Add a repeatable Platform check that the pinned module tool satisfies the accepted version range.
   evidence: Story 1.9 manually restored and ran 4.33.0 against Platform HEAD, including a 4.32.0 HXW010 refusal, but Builds identity tests use synthetic records and the Platform pin verifier does not compare these two files. Story 2.8 owns the blocking CI tier.
+  status: resolved
+  resolution: Superseded by the merged pin/range/tag entry from the 2026-10-18 second-pass review of story 1.9.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
   summary: Align Platform's EventStore reference declaration provenance (3.120.0) with the Builds catalog (3.124.0) so package mode can run from the Platform root.
@@ -788,3 +790,23 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
   summary: Add an automated check that the `.config/dotnet-tools.json` module tool pin satisfies `hexalith-platform.json` `toolVersionRange`.
   evidence: Pre-verified review gap: no Platform or Builds test reads the committed range together with the pin; Story 2.8 owns the blocking CI tier.
+  status: resolved
+  resolution: Duplicate of the entry above; superseded by the merged pin/range/tag entry from the 2026-10-18 second-pass review of story 1.9.
+
+## Deferred from: code review of spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md (2026-10-18, second pass)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
+  summary: Add one automated Platform check covering the module tool pin, the accepted range and the Builds release tag.
+  evidence: Pre-verified review gap. No Platform or Builds test reads `hexalith-platform.json` `toolVersionRange` together with the `.config/dotnet-tools.json` pin. Builds identity tests only use synthetic ranges, none with a `-0` bound.
+    - Nothing would catch a regression of the human-decided `[4.33.0, 5.0.0-0)`: back to `5.0.0)`, which re-admits 5.0 prereleases; an inclusive bound; an exclusive floor that refuses the pin; or a pin outside the range.
+    - Nothing checks that the Builds gitlink equals the `v<pin>` tag commit.
+    - The check must parse with `NuGet.Versioning` directly. In-process `IdentityFindings` always carry HXW010, because the source-built Tooling assembly is `1.0.0-…`.
+    - Story 2.8 owns the blocking CI tier.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
+  summary: Make `hexalith-module` compare its embedded `PlatformVersionCatalog` with the catalog at Platform's Builds gitlink, and refuse in package mode or warn in source mode on a mismatch.
+  evidence: Human-resolved review decision, 2026-10-18 (keep the 4.x range).
+    - Under `[4.33.0, 5.0.0-0)`, any later 4.x tool passes identity. It reads Dapr CLI/runtime, Redis image/digest and AppHost SDK from its embedded snapshot (`CompositionToolchainPins`, `SupportedPlatformPins`), while package versions come from the gitlink catalog.
+    - `PlatformIdentityResolver` only checks that the gitlink commit exists (`:193-196`), so a module that pins a newer tool mixes the two catalogs, and the Redis image drifts silently.
+    - The same drift admits 4.33.x after a future pin move, because no floor rule exists.
+    - Deferred because 1.9 must not change the Builds identity reader; owner is Builds or Story 2.8.
