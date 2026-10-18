@@ -5,11 +5,13 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from verify_works_producer import API, COMMITS_API, BUILD_FILES, REPOSITORY_URL, qualify_runtime_source, runtime_source_snapshot
+from verify_works_producer import API, COMMITS_API, BUILD_FILES, REPOSITORY_URL, TAG_REFS_API, TAGS_API, qualify_runtime_source, runtime_source_snapshot
 
 COMMIT = "a" * 40
 SOURCE_TREE = "b" * 40
 ROOT_TREE = "c" * 40
+TAG = "v3.125.1"
+TAG_OBJECT = "e" * 40
 
 
 class ProducerQualificationTests(unittest.TestCase):
@@ -32,6 +34,7 @@ class ProducerQualificationTests(unittest.TestCase):
             API + SOURCE_TREE + "?recursive=1": {"sha": SOURCE_TREE, "truncated": False, "tree": [
                 entry("Example/Example.cs", self.root / "src/Example/Example.cs"),
                 entry("Example/Example.csproj", self.root / "src/Example/Example.csproj")]}}
+        self.documents[TAG_REFS_API + TAG] = {"ref": "refs/tags/" + TAG, "object": {"type": "commit", "sha": COMMIT}}
         self.producers = {"Hexalith.EventStore.Client": {"repositoryCommit": COMMIT, "repositoryUrl": REPOSITORY_URL}}
 
     def fetch(self, url):
@@ -112,6 +115,31 @@ class ProducerQualificationTests(unittest.TestCase):
         (self.root / "src/Example/Example.cs").write_bytes(b"changed\n")
         with self.assertRaisesRegex(ValueError, "changed during"):
             qualify_runtime_source(snapshot, self.producers, self.fetch)
+
+    def test_named_release_tag_must_name_the_published_producer(self):
+        result = qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
+        self.assertEqual({"tag": TAG, "commit": COMMIT}, {key: result["namedTag"][key] for key in ("tag", "commit")})
+        self.documents[TAG_REFS_API + TAG]["object"]["sha"] = "d" * 40
+        with self.assertRaisesRegex(ValueError, "does not name the published producer"):
+            qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
+        self.documents[TAG_REFS_API + TAG] = {"ref": "refs/tags/v3.125.0", "object": {"type": "commit", "sha": COMMIT}}
+        with self.assertRaisesRegex(ValueError, "does not name"):
+            qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
+        for tag in ["3.125.1", "v3.125.1-story416.1", "main"]:
+            with self.subTest(tag=tag), self.assertRaisesRegex(ValueError, "stable release tag"):
+                qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=tag)
+
+    def test_annotated_release_tag_is_dereferenced_once(self):
+        self.documents[TAG_REFS_API + TAG] = {"ref": "refs/tags/" + TAG, "object": {"type": "tag", "sha": TAG_OBJECT}}
+        self.documents[TAGS_API + TAG_OBJECT] = {"sha": TAG_OBJECT, "tag": TAG, "object": {"type": "commit", "sha": COMMIT}}
+        result = qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
+        self.assertEqual(2, len(result["namedTag"]["receipts"]))
+        self.documents[TAGS_API + TAG_OBJECT]["tag"] = "v3.125.0"
+        with self.assertRaisesRegex(ValueError, "another object"):
+            qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
+        self.documents[TAGS_API + TAG_OBJECT] = {"sha": TAG_OBJECT, "tag": TAG, "object": {"type": "tag", "sha": "f" * 40}}
+        with self.assertRaisesRegex(ValueError, "does not name the published producer"):
+            qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
 
     def test_unavailable_official_authority_cannot_qualify(self):
         def unavailable(_url):

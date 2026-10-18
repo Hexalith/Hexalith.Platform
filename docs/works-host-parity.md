@@ -47,7 +47,11 @@ Application and sidecar endpoints are isolated from unrelated running sessions.
 The fixture tears down only its owned resources; it does not stop foreign hosts.
 
 Debug development consumers use source references. Release consumers restore the
-published EventStore 3.124.0 graph. The ledger records package archive hashes and
+published EventStore graph selected by the Platform Builds catalog, currently
+3.125.1. The verifier reads that single stable selection, refuses a Works consumer
+whose own default pin differs, and binds the explicit producer source to the
+official `v<version>` release tag as well as the commit and trees named by the
+restored archives. The ledger records package archive hashes and
 NuGet provenance, source consumers, host identity and the actual compatible runtime
 inventory used during restore. Source-built producer executables retain their own
 recorded build identity; their binaries are not relabeled as published archives.
@@ -57,7 +61,8 @@ Platform.Identity remains an explicitly identified test-only source dependency.
 
 ## Required producer and consumer evidence
 
-Every EventStore package below is qualified at public version **3.124.0**. The
+Every EventStore package below is qualified at public version **3.125.1**
+(tag `v3.125.1`, producer `55432c50d4b6f1666b4bd6d4a60bfc263b2d0e0b`). The
 executable ledger owns exact hashes, commands and outcome records; this table
 describes the required evidence rather than asserting that a run has passed.
 
@@ -66,7 +71,7 @@ describes the required evidence rather than asserting that a run has passed.
 | R1 | EventStore.Aspire: `AddHexalithEventStore`, `AddEventStoreDomainModule` | Platform `WorksPreviewModel` | Actual file-host composition, durable lifecycle writes, complete process membership and receiver policies |
 | R2 | EventStore.DomainService/ServiceDefaults: canonical host defaults and health | Works `WorksHost`; Platform readiness/runtime adapters | Disabled recovery remains Degraded; actual OTLP recovery alert appears and clears after convergence |
 | R3 | EventStore.DomainService: protected subscription/delivery | Works domain-event adapter | Actual ingress redelivery, origin/publish refusal and unchanged accepted family |
-| R4 | EventStore.Client: `SharedProjectionEpochCoordinator` | Works shared rebuild handler | All eleven source histories captured; old generation readable during Capture/Stage; fenced delivery; complete Commit and unchanged logical family/checkpoints |
+| R4 | EventStore.Client: `SharedProjectionEpochCoordinator` | Works shared rebuild handler | All eleven source histories captured; old generation readable during Capture/Stage; fenced delivery; complete Commit and unchanged logical family/checkpoints; the focused two-rebuild automatic catch-up fact that failed on public 3.124.0 |
 | R5 | EventStore.DomainService: `IDomainQueryHandler` | Works what's-next and item-detail handlers | Own assignment and queued work visible, foreign assignment hidden, wrong actor/tenant and unavailable identity denied; restart queries remain usable |
 | R6 | EventStore.DomainService: `AddEventStoreReminders` | Works recovery domain adapters | Lost firing/reissue, stale callback refusal, two distinct Works hosts/sidecars with primary loss, exactly one logical effect and durable receipt |
 | R7 | EventStore.DomainService: `AddEventStoreProcesses` | Works process translator/catalog | Linked candidate pages, complete coverage, independent owner fencing and restart checkpoints |
@@ -75,8 +80,8 @@ describes the required evidence rather than asserting that a run has passed.
 | R10 | EventStore.ServiceDefaults workload/channel authentication | Platform ACLs/profile; Works SDK ingress | mTLS, deny defaults and exact routes, wrong port/caller/tenant/purpose/publish refusal, incomplete or foreign production configuration refused |
 | R11 | EventStore.Client: `HttpTrustedEffectSubmitter` | Works process delegation/effect policy | Distinct target receipts, replay returns the original terminal result, no repeated logical resume/cancel/expiry |
 
-The verifier requires fresh persisted phase records from live recovery, historical
-and two-host qualification facts. Supporting in-process SDK/domain suites do not
+The verifier requires fresh persisted phase records from live recovery, historical,
+two-host and focused projection-rebuild qualification facts. Supporting in-process SDK/domain suites do not
 substitute for those target-host records. Host-start records distinguish
 `platform-target` from `retained-rollback`; both bind their actual binary and owned
 Scheduler volume. Each row also binds the completed restore observation.

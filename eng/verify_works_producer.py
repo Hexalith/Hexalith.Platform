@@ -9,6 +9,8 @@ REPOSITORY_URL = "https://github.com/Hexalith/Hexalith.EventStore"
 GIT_API = "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/"
 API = GIT_API + "trees/"
 COMMITS_API = GIT_API + "commits/"
+TAG_REFS_API = GIT_API + "ref/tags/"
+TAGS_API = GIT_API + "tags/"
 BUILD_FILES = ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props")
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 
@@ -54,7 +56,34 @@ def _tree(url, fetch, expected_sha):
     return entries, {"url": url, "responseSha256": hashlib.sha256(raw).hexdigest(), "objectSha": expected_sha}
 
 
-def qualify_runtime_source(snapshot, published_producers, fetch=None):
+def _document(url, fetch):
+    raw = fetch(url)
+    if len(raw) > MAX_RESPONSE_BYTES:
+        raise ValueError("Official SDK reference exceeds the bounded response limit")
+    return json.loads(raw), {"url": url, "responseSha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _named_tag(tag, commit, fetch):
+    """Resolve the official release tag, following at most one annotated tag object, to the producer commit."""
+    if not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag or ""):
+        raise ValueError("The named producer tag must be a stable release tag: " + str(tag))
+    document, receipt = _document(TAG_REFS_API + tag, fetch)
+    target = document.get("object", {})
+    receipts = [receipt | {"ref": document.get("ref")}]
+    if document.get("ref") != "refs/tags/" + tag:
+        raise ValueError("Official SDK tag reference does not name " + tag)
+    if target.get("type") == "tag" and re.fullmatch(r"[0-9a-f]{40}", target.get("sha", "")):
+        annotated, annotated_receipt = _document(TAGS_API + target["sha"], fetch)
+        if annotated.get("sha") != target["sha"] or annotated.get("tag") != tag:
+            raise ValueError("Official SDK annotated tag is bound to another object")
+        target = annotated.get("object", {})
+        receipts.append(annotated_receipt | {"objectSha": annotated["sha"]})
+    if target.get("type") != "commit" or target.get("sha") != commit:
+        raise ValueError("Official SDK tag " + tag + " does not name the published producer commit " + commit)
+    return {"tag": tag, "commit": commit, "receipts": receipts}
+
+
+def qualify_runtime_source(snapshot, published_producers, fetch=None, tag=None):
     """Require exact Git blob identities and complete runtime file membership from official immutable trees."""
     if not published_producers or any(row.get("repositoryUrl") != REPOSITORY_URL for row in published_producers.values()):
         raise ValueError("Published SDK archives do not identify the expected official repository")
@@ -63,6 +92,7 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None):
         raise ValueError("Published SDK archives do not identify one compatible producer commit")
     commit = commits.pop()
     fetch = fetch or _fetch
+    named_tag = _named_tag(tag, commit, fetch) if tag is not None else None
     commit_url = COMMITS_API + commit
     commit_raw = fetch(commit_url)
     if len(commit_raw) > MAX_RESPONSE_BYTES:
@@ -105,4 +135,4 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None):
     return {"repositoryCommit": commit, "repositoryUrl": REPOSITORY_URL, "checkoutCommit": None,
             "sourceInventorySha256": current["inventorySha256"], "matchesPublishedProducer": True,
             "qualification": "official-commit-tree-and-exact-git-blob-identities", "runtimeFileCount": len(actual),
-            "officialCommit": commit_receipt, "officialTrees": [root_receipt, source_receipt]}
+            "officialCommit": commit_receipt, "officialTrees": [root_receipt, source_receipt], "namedTag": named_tag}

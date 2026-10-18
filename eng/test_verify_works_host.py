@@ -8,7 +8,9 @@ import tarfile
 import unittest
 from unittest.mock import patch
 
-from verify_works_host import ROWS, PHASES, RESTORE_PHASE, bind_persisted_outcomes, require_passed_tests, require_published_runtime_source, sha256, verify_host_records
+from verify_works_host import ROWS, PHASES, RESTORE_PHASE, bind_persisted_outcomes, require_consumer_pin, require_passed_tests, require_published_runtime_source, selected_sdk_version, sha256, verify_host_records
+
+VERSION = '3.125.1'
 
 
 class WorksEvidenceGateTests(unittest.TestCase):
@@ -66,16 +68,16 @@ class WorksEvidenceGateTests(unittest.TestCase):
             assembly.parent.mkdir(parents=True)
             assembly.write_bytes(b'bound fixture')
             records = root / 'starts.jsonl'
-            record = {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': 'works-sdk416-owned', 'role': 'platform-target', 'actorType': 'WorksSdkReminderActor', 'sdkAssemblies': [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.0.0', 'path': str(assembly), 'sha256': sha256(assembly)}]}
+            record = {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': 'works-sdk416-owned', 'role': 'platform-target', 'actorType': 'WorksSdkReminderActor', 'sdkAssemblies': [{'name': 'Hexalith.EventStore.Aspire', 'version': VERSION + '.0', 'path': str(assembly), 'sha256': sha256(assembly)}]}
             record['readinessPassed'] = True
             record['runtimeModules'] = [{'resource': name, 'configuration': 'Release', 'entry': str(assembly), 'entrySha256': sha256(assembly), 'sdkAssemblies': record['sdkAssemblies']}
                                         for name in ['eventstore', 'works', 'eventstore-operations', 'eventstore-admin']]
             records.write_text(json.dumps(record) + '\n')
-            self.assertEqual(len(verify_host_records(records, assembly, root)), 1)
-            for key, value in [('sha256', 'changed'), ('assembly', str(root / 'old-host.dll')), ('directory', str(root / 'works')), ('schedulerVolume', 'hexalith-works-dapr-scheduler'), ('role', 'unknown'), ('actorType', 'DateReminderActor'), ('readinessPassed', False), ('runtimeModules', []), ('sdkAssemblies', []), ('sdkAssemblies', [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.1.0', 'path': str(assembly), 'sha256': sha256(assembly)}])]:
+            self.assertEqual(len(verify_host_records(records, assembly, root, VERSION)), 1)
+            for key, value in [('sha256', 'changed'), ('assembly', str(root / 'old-host.dll')), ('directory', str(root / 'works')), ('schedulerVolume', 'hexalith-works-dapr-scheduler'), ('role', 'unknown'), ('actorType', 'DateReminderActor'), ('readinessPassed', False), ('runtimeModules', []), ('sdkAssemblies', []), ('sdkAssemblies', [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.0.0', 'path': str(assembly), 'sha256': sha256(assembly)}]), ('sdkAssemblies', [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.125.2.0', 'path': str(assembly), 'sha256': sha256(assembly)}])]:
                 with self.subTest(key=key), self.assertRaises(ValueError):
                     records.write_text(json.dumps(record | {key: value}) + '\n')
-                    verify_host_records(records, assembly, root)
+                    verify_host_records(records, assembly, root, VERSION)
 
     def test_mixed_or_missing_fleet_configuration_cannot_qualify(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -85,7 +87,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
             for assembly in [release, debug]:
                 assembly.parent.mkdir(parents=True)
                 assembly.write_bytes(b'valid independently hashed artifact')
-            sdk = [{'name': 'Hexalith.EventStore.Aspire', 'version': '3.124.0.0',
+            sdk = [{'name': 'Hexalith.EventStore.Aspire', 'version': VERSION + '.0',
                     'path': str(release), 'sha256': sha256(release)}]
             modules = [{'resource': name, 'configuration': 'Release', 'entry': str(release),
                         'entrySha256': sha256(release), 'sdkAssemblies': sdk}
@@ -99,14 +101,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 changed = [modules[0] | {'configuration': configuration}, *modules[1:]]
                 records.write_text(json.dumps(record | {'runtimeModules': changed}) + '\n')
                 with self.subTest(configuration=configuration), self.assertRaisesRegex(ValueError, 'Release configuration'):
-                    verify_host_records(records, release, root)
+                    verify_host_records(records, release, root, VERSION)
             changed = [modules[0] | {'entry': str(debug), 'entrySha256': sha256(debug)}, *modules[1:]]
             records.write_text(json.dumps(record | {'runtimeModules': changed}) + '\n')
             with self.assertRaisesRegex(ValueError, 'Release configuration'):
-                verify_host_records(records, release, root)
+                verify_host_records(records, release, root, VERSION)
             records.write_text(json.dumps(record | {'assembly': str(debug), 'sha256': sha256(debug)}) + '\n')
             with self.assertRaisesRegex(ValueError, 'Release deployment'):
-                verify_host_records(records, debug, root)
+                verify_host_records(records, debug, root, VERSION)
 
     def test_incomplete_phases_or_missing_retained_host_cannot_accept_rows(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -121,6 +123,63 @@ class WorksEvidenceGateTests(unittest.TestCase):
             path.write_text(''.join(json.dumps({'phase': phase, 'state': {}}) + '\n' for phase in phases))
             with self.assertRaises(ValueError):
                 bind_persisted_outcomes(path, {}, [{'role': 'retained-rollback'}])
+
+    def test_live_module_from_another_sdk_version_cannot_qualify(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            assembly = root / 'bin/release/apphost.dll'
+            assembly.parent.mkdir(parents=True)
+            assembly.write_bytes(b'bound fixture')
+            current = [{'name': 'Hexalith.EventStore.Server', 'version': VERSION + '.0', 'path': str(assembly), 'sha256': sha256(assembly)}]
+            previous = [current[0] | {'version': '3.124.0.0'}]
+            modules = [{'resource': name, 'configuration': 'Release', 'entry': str(assembly), 'entrySha256': sha256(assembly),
+                        'sdkAssemblies': previous if name == 'eventstore' else current}
+                       for name in ['eventstore', 'works', 'eventstore-operations', 'eventstore-admin']]
+            record = {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': 'works-sdk416-owned',
+                      'role': 'platform-target', 'actorType': 'WorksSdkReminderActor', 'readinessPassed': True,
+                      'sdkAssemblies': current, 'runtimeModules': modules}
+            records = root / 'starts.jsonl'
+            records.write_text(json.dumps(record) + '\n')
+            with self.assertRaisesRegex(ValueError, 'unpublished runtime SDK assembly'):
+                verify_host_records(records, assembly, root, VERSION)
+
+    def catalog(self, body):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        path = Path(temporary.name) / 'Directory.Packages.props'
+        path.write_text('<Project><PropertyGroup>' + body + '</PropertyGroup></Project>')
+        return path
+
+    def test_catalog_selects_exactly_one_stable_public_sdk_version(self):
+        selected = self.catalog("<HexalithEventStoreVersion Condition=\"'$(HexalithEventStoreVersion)' == ''\">3.125.1</HexalithEventStoreVersion>")
+        self.assertEqual(selected_sdk_version(selected), VERSION)
+        for body in ['', '<HexalithEventStoreVersion>3.125.1-story416.1</HexalithEventStoreVersion>',
+                     '<HexalithEventStoreVersion>3.125.1</HexalithEventStoreVersion><HexalithEventStoreVersion>3.125.0</HexalithEventStoreVersion>',
+                     '<HexalithEventStoreVersion>$(Other)</HexalithEventStoreVersion>']:
+            with self.subTest(body=body), self.assertRaises(ValueError):
+                selected_sdk_version(self.catalog(body))
+
+    def test_works_consumer_default_pin_must_name_the_qualified_producer(self):
+        pinned = self.catalog('<HexalithEventStoreVersion>3.125.1</HexalithEventStoreVersion>')
+        self.assertEqual(require_consumer_pin(pinned, VERSION)['sha256'], sha256(pinned))
+        for body in ['<HexalithEventStoreVersion>3.124.0</HexalithEventStoreVersion>', '']:
+            with self.subTest(body=body), self.assertRaisesRegex(ValueError, 'differs from the Platform catalog'):
+                require_consumer_pin(self.catalog(body), VERSION)
+
+    def test_focused_projection_rebuild_is_a_required_r4_outcome(self):
+        self.assertIn('platform-focused-projection-rebuild', PHASES['R4'])
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / 'states.jsonl'
+            phases = {phase for values in PHASES.values() for phase in values}
+            phases.update(['complete-platform-fleet-snapshot', RESTORE_PHASE,
+                           'platform-historical-restart-replay-and-family', 'platform-two-host-ha-lost-firing-stale-callback-recovery'])
+            rows = {key: {} for key in ROWS}
+            path.write_text(''.join(json.dumps({'phase': phase, 'state': {}}) + '\n' for phase in phases))
+            self.assertTrue(bind_persisted_outcomes(path, rows, [{'role': 'retained-rollback'}])['complete'])
+            phases.remove('platform-focused-projection-rebuild')
+            path.write_text(''.join(json.dumps({'phase': phase, 'state': {}}) + '\n' for phase in phases))
+            with self.assertRaisesRegex(ValueError, 'platform-focused-projection-rebuild'):
+                bind_persisted_outcomes(path, {key: {} for key in ROWS}, [{'role': 'retained-rollback'}])
 
     def test_contract_requires_every_row(self):
         self.assertEqual(set(ROWS), {f'R{index}' for index in range(1, 12)})
