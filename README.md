@@ -36,8 +36,9 @@ its packaged host has a mismatched Tooling identity and build-machine paths,
 which prevent v2 `run` and `debug`; `4.33.1` fixes both defects. Later 4.x
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
-`c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching both the Builds gitlink
-and release tag `v4.33.1`. Only the pinned version is guaranteed to embed that
+`c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching release tag `v4.33.1`.
+The Builds source checkout also contains later development fixes.
+Only the pinned version is guaranteed to embed that
 catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
 AppHost SDK pins, and nothing compares them with the catalog yet. When the
 exact pin moves, the Builds gitlink moves to that version's release-tag commit.
