@@ -1,0 +1,464 @@
+{
+  "status": "pass",
+  "auditedAtUtc": "2026-10-18T07:30:09.996949+00:00",
+  "command": [
+    "python3",
+    "/tmp/ext-parties-1-platform-decision-20261018-5a3o2r04/validate-packet.py",
+    "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18"
+  ],
+  "validatorSha256": "240fabadfaf260f9c694e874367a16ee22af9da527a6e020862901e75364aa18",
+  "checks": [
+    {
+      "check": "parties root submodule revisions",
+      "passed": true,
+      "detail": "Every root-declared checkout remains at the preservation snapshot revision."
+    },
+    {
+      "check": "parties existing dirty file bytes",
+      "passed": true,
+      "detail": "Hashes of all pre-existing modified files match; no reset/clean/checkout is used."
+    },
+    {
+      "check": "platform root submodule revisions",
+      "passed": true,
+      "detail": "Every root-declared checkout remains at the preservation snapshot revision."
+    },
+    {
+      "check": "platform existing dirty file bytes",
+      "passed": true,
+      "detail": "Hashes of all pre-existing modified files match; no reset/clean/checkout is used."
+    },
+    {
+      "check": "eventstore root submodule revisions",
+      "passed": true,
+      "detail": "Every root-declared checkout remains at the preservation snapshot revision."
+    },
+    {
+      "check": "eventstore existing dirty file bytes",
+      "passed": true,
+      "detail": "Hashes of all pre-existing modified files match; no reset/clean/checkout is used."
+    },
+    {
+      "check": "agents root submodule revisions",
+      "passed": true,
+      "detail": "Every root-declared checkout remains at the preservation snapshot revision."
+    },
+    {
+      "check": "agents existing dirty file bytes",
+      "passed": true,
+      "detail": "Hashes of all pre-existing modified files match; no reset/clean/checkout is used."
+    },
+    {
+      "check": "parties head/index/status",
+      "passed": true,
+      "detail": "Parties stays clean and Agents staged work stays byte-identical."
+    },
+    {
+      "check": "agents head/index/status",
+      "passed": true,
+      "detail": "Parties stays clean and Agents staged work stays byte-identical."
+    },
+    {
+      "check": "EventStore HEAD and index",
+      "passed": true,
+      "detail": "External working-tree documentation drift is recorded separately."
+    },
+    {
+      "check": "Packet JSON parses",
+      "passed": true,
+      "detail": "8 JSON files parsed."
+    },
+    {
+      "check": "Bash syntax block 1",
+      "passed": true,
+      "detail": "installation-plan.md"
+    },
+    {
+      "check": "Bash syntax block 2",
+      "passed": true,
+      "detail": "installation-plan.md"
+    },
+    {
+      "check": "Bash syntax block 3",
+      "passed": true,
+      "detail": "installation-plan.md"
+    },
+    {
+      "check": "Bash syntax block 4",
+      "passed": true,
+      "detail": "installation-plan.md"
+    },
+    {
+      "check": "Bash syntax block 5",
+      "passed": true,
+      "detail": "installation-plan.md"
+    },
+    {
+      "check": "Bash syntax block 6",
+      "passed": true,
+      "detail": "installation-plan.md"
+    },
+    {
+      "check": "Local Markdown links",
+      "passed": true,
+      "detail": "19 local file links exist."
+    },
+    {
+      "check": "Embedded JSON syntax",
+      "passed": true,
+      "detail": "One invocation-shape block parsed; it was not executed."
+    },
+    {
+      "check": "Authoritative source bytes stable",
+      "passed": true,
+      "detail": "28 supplied/local source hashes still match their captured bytes; historical HEAD observations are not acceptance."
+    },
+    {
+      "check": "Missing planned artifacts remain explicit",
+      "passed": true,
+      "detail": "Routing catalog, value-free secret contract and normative recovery-hook document are absent, rather than treated as implemented."
+    },
+    {
+      "check": "All implementation/install/Live/availability gates closed",
+      "passed": true,
+      "detail": "No owner acceptance inferred."
+    },
+    {
+      "check": "Immutable policy and Branch B",
+      "passed": true,
+      "detail": "365 fixed 24-hour days from original binding effective-at; exclusive expiry; no new Party IDs."
+    },
+    {
+      "check": "All required decisions unresolved",
+      "passed": true,
+      "detail": "13 decision requests with no invented owner assignment, authority or acceptance date."
+    },
+    {
+      "check": "Both environment bindings unresolved",
+      "passed": true,
+      "detail": "Observed cluster is not substituted for an approved staging/production binding."
+    },
+    {
+      "check": "Credential references only",
+      "passed": true,
+      "detail": "Eleven roles and 22 environment-specific binding forms; no credential values read or stored."
+    },
+    {
+      "check": "Copy inventory refuses completeness",
+      "passed": true,
+      "detail": "All sixteen classes require actual physical inventory, owners or authenticated absence."
+    },
+    {
+      "check": "Custody capability flags unproven",
+      "passed": true,
+      "detail": "Generic OpenBao/Velero and unavailable library defaults cannot prove history custody."
+    },
+    {
+      "check": "Restore and fault targets unresolved",
+      "passed": true,
+      "detail": "Historical/isolated targets are not substituted."
+    },
+    {
+      "check": "Closed exact resource scope",
+      "passed": true,
+      "detail": "No mutations authorized; actual exact tuples await owners."
+    },
+    {
+      "check": "Acceptance preserves Committed and old target/date",
+      "passed": true,
+      "detail": "Existing target/date/command remain historical commitments; no replacement is invented."
+    },
+    {
+      "check": "Legacy command preserved exactly",
+      "passed": true,
+      "detail": "Exact registered command is data only; it was not run."
+    },
+    {
+      "check": "Full P-01 through P-10 retained",
+      "passed": true,
+      "detail": "No skipped vector can establish full qualification."
+    },
+    {
+      "check": "Owner operation commands remain unresolved",
+      "passed": true,
+      "detail": "Fifteen exact operator/target/command slots remain blocked rather than fabricated."
+    },
+    {
+      "check": "Native observations succeeded",
+      "passed": true,
+      "detail": "Eight GET/discovery queries and three value-free config projections; no install, exec, Secret read or Live."
+    },
+    {
+      "check": "Parties and Gateway absent within native metadata scope",
+      "passed": true,
+      "detail": "Name/resource absence has limited scope and supplies no authenticated all-copy absence."
+    },
+    {
+      "check": "GitHub observations succeeded",
+      "passed": true,
+      "detail": "25 GET-only deployment/environment/status/job/workflow reads."
+    },
+    {
+      "check": "GitHub release records do not establish runtime",
+      "passed": true,
+      "detail": "All ten records traced to associated release jobs; latest immutable workflow inspected; no runtime binding accepted."
+    },
+    {
+      "check": "Retained 1991 Local passes and original receipts",
+      "passed": true,
+      "detail": "37 original manifest/XML/log hashes; twelve owner lanes; no suite/build rerun and no current-source/installed claim."
+    },
+    {
+      "check": "Supplied discovery checksum README.md",
+      "passed": true,
+      "detail": "Original discovery artifacts remain untouched."
+    },
+    {
+      "check": "Supplied discovery checksum discovery.json",
+      "passed": true,
+      "detail": "Original discovery artifacts remain untouched."
+    },
+    {
+      "check": "Added-file whitespace",
+      "passed": true,
+      "detail": "10 files checked without staging; no whitespace diagnostics."
+    }
+  ],
+  "checkCount": 43,
+  "failedChecks": [],
+  "commands": [
+    {
+      "argv": [
+        "bash",
+        "-n"
+      ],
+      "inputDocument": "installation-plan.md",
+      "block": 1,
+      "exitCode": 0,
+      "stderr": "",
+      "executed": "syntax only; no shell statements executed"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n"
+      ],
+      "inputDocument": "installation-plan.md",
+      "block": 2,
+      "exitCode": 0,
+      "stderr": "",
+      "executed": "syntax only; no shell statements executed"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n"
+      ],
+      "inputDocument": "installation-plan.md",
+      "block": 3,
+      "exitCode": 0,
+      "stderr": "",
+      "executed": "syntax only; no shell statements executed"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n"
+      ],
+      "inputDocument": "installation-plan.md",
+      "block": 4,
+      "exitCode": 0,
+      "stderr": "",
+      "executed": "syntax only; no shell statements executed"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n"
+      ],
+      "inputDocument": "installation-plan.md",
+      "block": 5,
+      "exitCode": 0,
+      "stderr": "",
+      "executed": "syntax only; no shell statements executed"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n"
+      ],
+      "inputDocument": "installation-plan.md",
+      "block": 6,
+      "exitCode": 0,
+      "stderr": "",
+      "executed": "syntax only; no shell statements executed"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/README.md"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/command-bindings.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/decision-packet.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/github-metadata.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/installation-plan.md"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/local-evidence-audit.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/native-metadata.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/preservation.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/qualification-plan.md"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/dev/null",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18/sources.json"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "Exit 1 without diagnostics reports the additive file, not a whitespace failure."
+    }
+  ],
+  "localBuildsOrTestsRerun": false,
+  "installationLiveOrLiveReadinessExecuted": false,
+  "ownerPrerequisitesResolved": false,
+  "sourceMovement": [
+    {
+      "repository": "platform",
+      "fromHead": "f2ea7ee69dbd7447592fd55ee78826590cc428b6",
+      "toHead": "d1eb16166ee1a62b791a3201cdcd689f33f4fa8f",
+      "meaning": "External commit; baseline modified file hashes still match and those files are now clean. This task made no Git mutation."
+    },
+    {
+      "repository": "eventstore",
+      "meaning": "Two external documentation edits appeared after the snapshot and remain untouched.",
+      "status": " M _bmad-output/implementation-artifacts/deferred-work.md\n M _bmad-output/implementation-artifacts/spec-9-1-corrective-work-authorization-record-and-validator.md\n"
+    }
+  ],
+  "finalSealCommand": [
+    "sha256sum",
+    "--check",
+    "SHA256SUMS"
+  ],
+  "sealWorkingDirectory": "/home/administrator/projects/hexalith/platform/docs/implementation/ext-parties-1-platform-prerequisites-2026-10-18",
+  "earlierAuditCorrection": {
+    "resultPath": "/tmp/ext-parties-1-platform-decision-20261018-5a3o2r04/validation-first-attempt.json",
+    "reason": "The first auditor normalized CRLF in git diff output before comparing a raw-byte snapshot hash, falsely reporting Agents index movement. The auditor now hashes raw subprocess bytes; independent raw recheck matches the original Agents index hash."
+  },
+  "scope": "Document, reference, receipt and preservation validation only; no implementation or installed qualification acceptance."
+}

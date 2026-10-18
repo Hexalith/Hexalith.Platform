@@ -1,0 +1,1948 @@
+{
+  "schemaVersion": 1,
+  "recordId": "EXT-PARTIES-1",
+  "preparedAtUtc": "2026-10-18T07:21:26.217408+00:00",
+  "disposition": "blocked-before-implementation",
+  "ownerAccepted": false,
+  "implementationAuthorizedByResolvedPrerequisites": false,
+  "installationAllowed": false,
+  "liveExecutionAllowed": false,
+  "available": false,
+  "invariants": {
+    "branch": "B",
+    "agentPartyClassification": "Organization",
+    "agentPartyIdentity": "preserve each immutable tenant-scoped ID; no replacement or type-only identity",
+    "policyId": "party-actor-retention-v1",
+    "purpose": "party-actor-history-v1",
+    "retention": "365.00:00:00",
+    "retentionSeconds": 31536000,
+    "expiryTrigger": "binding-effective-at",
+    "deadline": "original binding effective-at + 365 fixed 24-hour days",
+    "releasePredicate": "now < ExpiresAt",
+    "renewalForbiddenFor": [
+      "retry",
+      "revocation",
+      "profile erasure",
+      "rotation",
+      "copy",
+      "restore"
+    ]
+  },
+  "observations": {
+    "nativeEvidence": "native-metadata.json",
+    "observedAtUtc": "2026-10-18T07:18:30.339441+00:00",
+    "context": "jpiquot@local",
+    "apiServer": "https://192.168.1.30:6443",
+    "clusterIdentityWitness": {
+      "kind": "Namespace",
+      "name": "kube-system",
+      "uid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+      "meaning": "cluster binding witness, not an actor-history authority"
+    },
+    "serverVersion": "v1.34.9",
+    "partiesWorkloadMatches": 0,
+    "partiesRouteMatches": 0,
+    "applicationEnrollments": 0,
+    "gatewayApiResourcesAdvertised": false,
+    "genericInfrastructure": [
+      {
+        "ref": "openbao/hexalith-keys",
+        "uid": "df2bbbbe-1fe8-4e0b-a8a6-174bd3287806",
+        "qualification": "generic shared infrastructure only; no actor-purpose mount/key hierarchy or all-backup destruction proof"
+      },
+      {
+        "ref": "velero/scaleway-kube-green",
+        "uid": "ece66776-b06a-4889-8a8c-d54260f47825",
+        "bucket": "hexalith-velero-backups",
+        "qualification": "generic backup destination only; no Parties completeness or destruction authority"
+      }
+    ],
+    "excludedNamespace": "ext-secrets-1-isolated",
+    "scopeLimit": "Configured accessible native context, local Platform owner/operator records, and GitHub deployment/environment/job metadata in Hexalith.Platform and Hexalith.Parties. No claim that an undisclosed or differently named deployment cannot exist. Name matches cannot certify absence/completeness.",
+    "sources": [
+      "S01",
+      "S02",
+      "S10",
+      "S11",
+      "S12"
+    ],
+    "githubMetadata": {
+      "evidence": "github-metadata.json",
+      "platformDeploymentCount": 0,
+      "platformEnvironmentCount": 0,
+      "partiesDeploymentRecordCount": 10,
+      "partiesEnvironmentName": "production",
+      "partiesEnvironmentId": 19131558330,
+      "latestDeploymentId": 7119924400,
+      "latestDeploymentSource": "1ff55d5a79ac90de515de72e48371c2d6f95b72a",
+      "latestDeploymentJob": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/38906617412/job/116991739201",
+      "latestDeploymentState": "success",
+      "latestDeploymentProductionEnvironmentFlag": false,
+      "environmentUrlsPresent": false,
+      "runtimeBindingEstablished": false,
+      "interpretation": "All ten associated jobs are release or release / release. Latest immutable workflow selects production for NuGet/container/semantic-release publication. These records contain no installed Parties environment/gateway/tenant/custody binding."
+    }
+  },
+  "environments": [
+    {
+      "environment": "staging",
+      "disposition": "not-established-in-inspected-scope",
+      "sources": [
+        "S01",
+        "S02",
+        "S09",
+        "S11",
+        "native-metadata.json"
+      ],
+      "binding": {
+        "approvalRecordRef": null,
+        "kubeconfigRef": null,
+        "context": null,
+        "clusterUid": null,
+        "environmentInstance": null,
+        "applicationNamespace": null,
+        "applicationNamespaceUid": null,
+        "dataNamespace": null,
+        "dataNamespaceUid": null,
+        "releaseRecordRef": null,
+        "profileDigest": null,
+        "effectiveConfigurationDigest": null,
+        "helmRelease": null,
+        "workloadRefs": null,
+        "workloadUids": null,
+        "imageDigests": null,
+        "gatewayRef": null,
+        "gatewayUid": null,
+        "gatewayUrl": null,
+        "httpRouteRef": null,
+        "serviceRef": null,
+        "certificateRef": null,
+        "issuerRef": null,
+        "tenantRegistryDeploymentRef": null,
+        "tenantRegistryIssuerRef": null,
+        "tenantRegistryAuthorityRef": null,
+        "tenantARef": null,
+        "tenantBRef": null
+      },
+      "recordedDesiredNamespaces": {
+        "application": "hexalith-staging",
+        "data": "hexalith-staging-data",
+        "source": "S11",
+        "installedOrApprovedByThisPacket": false
+      }
+    },
+    {
+      "environment": "production",
+      "disposition": "not-established-in-inspected-scope",
+      "sources": [
+        "S01",
+        "S02",
+        "S09",
+        "S11",
+        "native-metadata.json"
+      ],
+      "binding": {
+        "approvalRecordRef": null,
+        "kubeconfigRef": null,
+        "context": null,
+        "clusterUid": null,
+        "environmentInstance": null,
+        "applicationNamespace": null,
+        "applicationNamespaceUid": null,
+        "dataNamespace": null,
+        "dataNamespaceUid": null,
+        "releaseRecordRef": null,
+        "profileDigest": null,
+        "effectiveConfigurationDigest": null,
+        "helmRelease": null,
+        "workloadRefs": null,
+        "workloadUids": null,
+        "imageDigests": null,
+        "gatewayRef": null,
+        "gatewayUid": null,
+        "gatewayUrl": null,
+        "httpRouteRef": null,
+        "serviceRef": null,
+        "certificateRef": null,
+        "issuerRef": null,
+        "tenantRegistryDeploymentRef": null,
+        "tenantRegistryIssuerRef": null,
+        "tenantRegistryAuthorityRef": null,
+        "tenantARef": null,
+        "tenantBRef": null
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "role": "provisioner",
+      "liveInputName": "EXT_PARTIES_PROVISIONER_CREDENTIAL",
+      "requiredScope": "Agents Service Principal: accepted create-only deterministic tenant/Agent/Party intent and exact outcome lookup; no general Party creation, tenant-role or replacement grant.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "identity-writer",
+      "liveInputName": "EXT_PARTIES_IDENTITY_WRITER_CREDENTIAL",
+      "requiredScope": "Trusted Platform identity service only: exact source/actor/operator provenance and approved binding/registry mutation; not caller-supplied roles.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "reader",
+      "liveInputName": "EXT_PARTIES_READER_CREDENTIAL",
+      "requiredScope": "Authenticated explicit tenant/Party/current and historical query scope with independent exact-source admission; no alias enrollment or key administration.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "persisted-state-observer",
+      "liveInputName": null,
+      "requiredScope": "Read-only content-free counts/digests, source positions, protected event/snapshot framing, unit/key-generation/copy/receipt outcomes; independent of provider return values.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "custody-provider",
+      "liveInputName": null,
+      "requiredScope": "Purpose/unit-specific key use and copy registration under current authority; no profile/HMAC/export key fallback or root token.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "lifecycle-writer-and-fence",
+      "liveInputName": null,
+      "requiredScope": "Independent current lifecycle revision/epoch/time; exact writer revocation and replacement reissue; unavailable or stale authority denies release.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "cleanup-and-destruction",
+      "liveInputName": null,
+      "requiredScope": "Only inventoried expired original units and all generations/copies; stable operation and original receipt lookup; preserve foreign and still-live units.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "backup-operator",
+      "liveInputName": null,
+      "requiredScope": "Exact approved backup units, immutable object versions and key custody class; staging cannot read production backup prefixes.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "restore-operator",
+      "liveInputName": null,
+      "requiredScope": "Exact approved quarantined target/cut/hook attempt and epoch, fenced old incarnation; no unrestricted production restore.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "failure-injector",
+      "liveInputName": null,
+      "requiredScope": "Exact approved rehearsal workload/faults/duration/rollback; no standing generic mutation credential.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    },
+    {
+      "role": "credential-renewer",
+      "liveInputName": null,
+      "requiredScope": "Issue/revoke/rotate each narrow application credential at its actual issuer, using the approved renewal procedure and pod restart rules.",
+      "environmentBindings": [
+        {
+          "environment": "staging",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        },
+        {
+          "environment": "production",
+          "secretStoreRef": null,
+          "mountOrNamespaceRef": null,
+          "policyRef": null,
+          "roleRef": null,
+          "credentialRef": null,
+          "issuerRef": null,
+          "subjectOrWorkloadRef": null,
+          "audienceRef": null,
+          "expiryMetadataRef": null,
+          "renewalOwnerPrincipalRef": null,
+          "renewalProcedureRef": null,
+          "revocationProcedureRef": null,
+          "approvalRecordRef": null
+        }
+      ],
+      "sources": [
+        "S04",
+        "S08"
+      ],
+      "status": "unresolved"
+    }
+  ],
+  "custody": {
+    "backendRef": null,
+    "mountRef": null,
+    "unitKeyHierarchyRef": null,
+    "allGenerationDestructionRef": null,
+    "providerPackageRef": null,
+    "providerImageRef": null,
+    "hostRegistrationRef": null,
+    "independentLifecycleAuthorityRef": null,
+    "authorityFailureDomainRef": null,
+    "fenceAndReissueOwnerRef": null,
+    "fenceAndReissueProcedureRef": null,
+    "authenticatedTimeSourceRef": null,
+    "maximumClockSkew": null,
+    "maximumAuthorityAge": null,
+    "backendIoBounds": null,
+    "cleanupOperatorRef": null,
+    "cleanupRetryBound": null,
+    "maximumOutageBound": null,
+    "maximumReceiptCompletionBound": null,
+    "expiryGuaranteeDuringOutageRef": null,
+    "capabilitiesProven": {
+      "SourceExpiryEnforced": false,
+      "RestoreSafe": false,
+      "DerivedCopiesCovered": false
+    },
+    "sources": [
+      "S03",
+      "S04",
+      "S05",
+      "S14",
+      "S15",
+      "S16"
+    ]
+  },
+  "copyInventory": {
+    "complete": false,
+    "generation": null,
+    "digest": null,
+    "inventoryAuthorityRef": null,
+    "classes": [
+      {
+        "id": "C01",
+        "class": "source events",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "EventStore persistence and Parties integration owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "authoritative-restore",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C02",
+        "class": "current snapshots including HumanActorBindings and HumanActorTransitions.OriginalEvidence",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "EventStore persistence and Parties snapshot owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "authoritative-restore",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C03",
+        "class": "older snapshots and state versions",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "EventStore persistence owner",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "authoritative-restore",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C04",
+        "class": "projections and read models",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Module projection owner",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "rebuild-only",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C05",
+        "class": "caches and query materializations",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Module cache/query owner",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "rebuild-only",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C06",
+        "class": "broker topics, outbox, dead letters and replay queues",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Platform broker and EventStore delivery owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C07",
+        "class": "spool, export and delivery artifacts",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Owning module or technical service",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C08",
+        "class": "logs, telemetry and diagnostics containing protected attribution",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Platform telemetry and producing module owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C09",
+        "class": "online replicas, failover copies and storage snapshots",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Platform storage and persistence owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C10",
+        "class": "native data backups and full incremental chains",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Platform backup and module recovery owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "authoritative-restore",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C11",
+        "class": "off-site, versioned, immutable objects and replicas",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Platform off-site storage and recovery owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C12",
+        "class": "raw, wrapped, escrowed and rotated actor-purpose key generations",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Selected purpose-key custodian",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C13",
+        "class": "key backups, OpenBao/Raft/PVC backups and wrapping or seal-key paths",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Platform key backup and independent key custodians",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C14",
+        "class": "quarantine, staging restore, DR drill and temporary worker copies",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Restore/drill operator and producing module owners",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C15",
+        "class": "lifecycle, admission, pending-work and receipt records",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Selected surviving-authority owner",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": "live-authority-only",
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      },
+      {
+        "id": "C16",
+        "class": "actor-free continuation certificates and their replicas or backups",
+        "presence": "unknown; requires exact inventory or authenticated absence",
+        "requestedSignoffRole": "Parties/EventStore source-proof owner",
+        "actualCopyOwnerPrincipalRef": null,
+        "actualDestructionOwnerPrincipalRef": null,
+        "proposedRecoveryClass": null,
+        "recoveryClassAccepted": false,
+        "physicalInventoryRef": null,
+        "unitAndGenerationMappingRef": null,
+        "locationOrObjectVersionRefs": null,
+        "allDecryptingPathsRef": null,
+        "originalDeadlineMappingRef": null,
+        "fencingAndRegistrationProtocolRef": null,
+        "irreversibleMechanismRef": null,
+        "receiptRef": null,
+        "absenceAttestationRef": null,
+        "sources": [
+          "S05",
+          "S06",
+          "S08"
+        ]
+      }
+    ],
+    "receiptRetentionPolicyRef": null,
+    "terminalReceiptStoreRef": null,
+    "independentObserverRef": null
+  },
+  "restore": {
+    "approvalRecordRef": null,
+    "targetRef": null,
+    "kubeconfigRef": null,
+    "context": null,
+    "clusterUid": null,
+    "namespace": null,
+    "namespaceUid": null,
+    "workloadUids": null,
+    "imageDigests": null,
+    "cutRef": null,
+    "immutableBackupObjectVersions": null,
+    "keyGenerationCoverageRef": null,
+    "survivingAuthorityRef": null,
+    "oldIncarnationFenceRef": null,
+    "recoveryHookContractRef": null,
+    "hookImplementationRefs": null,
+    "attemptRef": null,
+    "epochRef": null,
+    "operatorPrincipalRef": null,
+    "observerCredentialRef": null,
+    "quarantineNetworkPolicyRefs": null,
+    "cleanupProcedureRef": null,
+    "verifiedDisposalBound": null
+  },
+  "failureInjection": {
+    "approvalRecordRef": null,
+    "targetRef": null,
+    "workloadUids": null,
+    "allowedFaults": null,
+    "maximumDuration": null,
+    "operatorPrincipalRef": null,
+    "observerPrincipalRef": null,
+    "credentialRefs": null,
+    "attemptRef": null,
+    "epochRef": null,
+    "abortProcedureRef": null,
+    "rollbackProcedureRef": null,
+    "cleanupProcedureRef": null
+  },
+  "decisionRequests": [
+    {
+      "id": "D01",
+      "decision": "Deployment and registry",
+      "requestedDecisionRole": "Platform deployment owner with EventStore, Tenants and Parties owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "4.8, 4.9, 4.14\u20134.22, 6.7, 6.11, 6.23",
+      "requiredOutcome": "Supply both exact environment bindings and release/enrollment records; registry issuer, authoritative deployment and two explicitly approved tenants. No existing target established.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "D02",
+      "decision": "Credentials and renewal",
+      "requestedDecisionRole": "Platform identity/secret operations with each capability owner",
+      "assignedPrincipalRef": null,
+      "owningWork": "4.9, 4.15, 4.19, 4.20, 6.8, 6.11",
+      "requiredOutcome": "Supply credential references, only-writer policies, renewal owners and procedures for every role. Generic shared bootstrap and recovery credentials are ineligible substitutes.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q1",
+      "decision": "Custody backend",
+      "requestedDecisionRole": "Platform custody/key owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T2; 4.15; 8.6",
+      "requiredOutcome": "Select a qualified existing backend/key hierarchy and show per-original-unit irreversible destruction of every generation, including historical immutable key backups. Reject soft delete, TTL, tombstones and merely denied reads.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q2",
+      "decision": "Surviving authority",
+      "requestedDecisionRole": "Platform lifecycle and recovery owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T2; 8.4; 8.9",
+      "requiredOutcome": "Name the independent authority outside the EventStore/OpenBao/ciphertext restore cut; writers, fence/reissue procedure, authenticated time source, skew and currentness bounds.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q3",
+      "decision": "Inventory and operators",
+      "requestedDecisionRole": "Platform recovery owner and each copy owner",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T2/T5; 4.10; 8.4\u20138.10",
+      "requiredOutcome": "Close C01\u2013C16 with real locations/generations or authenticated absence; durable work and original receipts, owner-approved targets and independent probes; define receipt minimization and retention.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q4",
+      "decision": "Hard expiry during failures",
+      "requestedDecisionRole": "Platform expiry/monitoring operators and key owner",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T2/T5; 8.8",
+      "requiredOutcome": "Name cleanup, escalation and renewal operators; approve bounded retries, outage and receipt-completion limits and prove cryptographic expiry during outage. The five-second library wait is not an expiry SLA.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q5",
+      "decision": "Original binding and revocation mapping",
+      "requestedDecisionRole": "Parties domain owner, EventStore SDK owner and Platform custody owner",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T3",
+      "requiredOutcome": "Approve collision/idempotency identity and exact original-binding lookup for establish/rebind/revoke. Revocation effectiveAt cannot create a later deadline for predecessor actor evidence; SDK AdmitAsync lacks binding/logical ID.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q6",
+      "decision": "Host composition and source admission",
+      "requestedDecisionRole": "Platform host owner with Parties and EventStore integration owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T3/T4; 4.5; 4.8; 4.22",
+      "requiredOutcome": "Approve package/bootstrap path in both actual owning hosts, Party snapshot codec and payload adapter, retained-source reader and independent source admission; no no-op/local-dev fallback.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "Q7",
+      "decision": "Erasure and retained metadata",
+      "requestedDecisionRole": "Parties privacy/domain owner with Platform/8.6 recovery owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "PLAT-ACTOR-HISTORY-1 T5; 8.6",
+      "requiredOutcome": "Preserve immediate profile ineligibility and independently bounded actor history; decide all key/backup erasure boundaries and minimal content-free anchor/receipt/continuation retention. Reconcile ordinary backup-key retention with hard actor-purpose expiry.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "F1",
+      "decision": "Actor-free successor continuity",
+      "requestedDecisionRole": "Parties and EventStore source-contract owners, with Platform authority and privacy owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "Explicit F1 in S04",
+      "requiredOutcome": "Approve proof producer/schema/version/scope/positions/epochs/currentness and erasure classification that proves complete unique successor versions/intervals without retaining expired predecessor actor/provenance/logical evidence. Current strict fold stays closed until accepted.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "D03",
+      "decision": "Restore target",
+      "requestedDecisionRole": "Administrator/recovery owner, actual deputy and surviving-authority fence owners",
+      "assignedPrincipalRef": null,
+      "owningWork": "4.10; 4.23; 8.1; 8.9; 8.10; 8.14; 8.17",
+      "requiredOutcome": "Supply exact isolated target, immutable cut, authority reconciliation/epoch hooks, independent observer, outage approval, cleanup scope and verified disposal bound. No target selected.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "D04",
+      "decision": "Failure injection",
+      "requestedDecisionRole": "Administrator/rehearsal owner with Parties/EventStore/custody operators",
+      "assignedPrincipalRef": null,
+      "owningWork": "6.1; 6.24; F2",
+      "requiredOutcome": "Supply exact workload UIDs and faults for admission/copy/destruction/receipt commit and lost acknowledgement; operator/observer credentials, duration, abort, cleanup and rollback. 6.1 rollout faults alone do not cover custody failure probes.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    },
+    {
+      "id": "F2",
+      "decision": "Replacement implementation and qualification acceptance",
+      "requestedDecisionRole": "Project owner acting as Parties Maintainer; Platform and EventStore delivery owners; Product for Branch B launch contract",
+      "assignedPrincipalRef": null,
+      "owningWork": "Explicit F2 in S04; EXT-PARTIES-1",
+      "requiredOutcome": "After decisions, implementation and installed probes exist, accept immutable source/package/image targets, integration date, exact complete Live command and all P-01\u2013P-10 evidence. Keep status Committed until that owner-accepted command passes from clean exact checkouts.",
+      "decisionRecordRef": null,
+      "acceptedAt": null,
+      "status": "unresolved"
+    }
+  ],
+  "prerequisiteStories": [
+    {
+      "id": "1.12",
+      "title": "Adopt Parties as the reference domain module",
+      "status": "backlog",
+      "trackingKey": "1-12-adopt-parties-as-the-reference-domain-module",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "3.3",
+      "title": "Generate the run-scoped routing catalog",
+      "status": "backlog",
+      "trackingKey": "3-3-generate-the-run-scoped-routing-catalog",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.0",
+      "title": "Prove off-node backups and isolated restores",
+      "status": "done",
+      "trackingKey": "4-0-prove-off-node-backups-and-isolated-restores",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.1",
+      "title": "Upgrade the cluster off Kubernetes 1.34 after verified backups",
+      "status": "in-progress",
+      "trackingKey": "4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.2",
+      "title": "Close public admin exposure and anonymous registry reads",
+      "status": "in-progress",
+      "trackingKey": "4-2-close-public-admin-exposure-and-anonymous-registry-reads",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.3",
+      "title": "Relocate the privileged Forgejo runner",
+      "status": "in-progress",
+      "trackingKey": "4-3-relocate-the-privileged-forgejo-runner",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.5",
+      "title": "Qualify the Aspire-to-Helm export with the reference composition",
+      "status": "backlog",
+      "trackingKey": "4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.6",
+      "title": "Encode release, attempt, qualification and Administrator records",
+      "status": "backlog",
+      "trackingKey": "4-6-encode-release-attempt-qualification-and-administrator-recor",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.7",
+      "title": "Provide the staging attempt, lock and promotion-stop store",
+      "status": "backlog",
+      "trackingKey": "4-7-provide-the-staging-attempt-lock-and-promotion-stop-store",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.8",
+      "title": "Maintain the module intake manifest",
+      "status": "backlog",
+      "trackingKey": "4-8-maintain-the-module-intake-manifest",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.9",
+      "title": "Ratify the hosted runtime and identity-event contracts",
+      "status": "backlog",
+      "trackingKey": "4-9-ratify-the-hosted-runtime-and-identity-event-contracts",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.10",
+      "title": "Define the recovery hook contract",
+      "status": "in-progress",
+      "trackingKey": "4-10-define-the-recovery-hook-contract",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.11",
+      "title": "Define the check-suite contract and own the reference suites",
+      "status": "backlog",
+      "trackingKey": "4-11-define-the-check-suite-contract-and-own-the-reference-suites",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.12",
+      "title": "Publish retained releases with provenance",
+      "status": "backlog",
+      "trackingKey": "4-12-publish-retained-releases-with-provenance",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.13",
+      "title": "Retain artifacts off the primary failure domain",
+      "status": "backlog",
+      "trackingKey": "4-13-retain-artifacts-off-the-primary-failure-domain",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.14",
+      "title": "Build staging namespaces, storage and pod and network isolation",
+      "status": "backlog",
+      "trackingKey": "4-14-build-staging-namespaces-storage-and-pod-and-network-isolati",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.15",
+      "title": "Provide staging secrets through a per-environment OpenBao and tenant-key store",
+      "status": "backlog",
+      "trackingKey": "4-15-provide-staging-secrets-through-a-per-environment-openbao-an",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.16",
+      "title": "Apply the staging Dapr trust domain and runtime policy",
+      "status": "backlog",
+      "trackingKey": "4-16-apply-the-staging-dapr-trust-domain-and-runtime-policy",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.17",
+      "title": "Select and qualify the durable production broker",
+      "status": "backlog",
+      "trackingKey": "4-17-select-and-qualify-the-durable-production-broker",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.18",
+      "title": "Serve staging through its own Gateway, hostnames and certificates",
+      "status": "backlog",
+      "trackingKey": "4-18-serve-staging-through-its-own-gateway-hostnames-and-certific",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.19",
+      "title": "Generate the staging realm and register staging clients",
+      "status": "backlog",
+      "trackingKey": "4-19-generate-the-staging-realm-and-register-staging-clients",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.20",
+      "title": "Run the staging executor and the module-code sandbox",
+      "status": "backlog",
+      "trackingKey": "4-20-run-the-staging-executor-and-the-module-code-sandbox",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.21",
+      "title": "Send staging telemetry to a per-environment sink",
+      "status": "backlog",
+      "trackingKey": "4-21-send-staging-telemetry-to-a-per-environment-sink",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.22",
+      "title": "Deploy the reference release to staging",
+      "status": "backlog",
+      "trackingKey": "4-22-deploy-the-reference-release-to-staging",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.23",
+      "title": "Restore staging data in place",
+      "status": "backlog",
+      "trackingKey": "4-23-restore-staging-data-in-place",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.25",
+      "title": "Prove staging-side isolation controls",
+      "status": "backlog",
+      "trackingKey": "4-25-prove-staging-side-isolation-controls",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.26",
+      "title": "Qualify Rancher and the management migration",
+      "status": "done",
+      "trackingKey": "4-26-qualify-rancher-and-the-management-migration",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.27",
+      "title": "Retire KubeSphere without changing workload data",
+      "status": "in-progress",
+      "trackingKey": "4-27-retire-kubesphere-without-changing-workload-data",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "4.28",
+      "title": "Deploy Rancher and register the existing cluster",
+      "status": "backlog",
+      "trackingKey": "4-28-deploy-rancher-and-register-the-existing-cluster",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.1",
+      "title": "Decide how rehearsal faults are injected",
+      "status": "backlog",
+      "trackingKey": "6-1-decide-how-rehearsal-faults-are-injected",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.2",
+      "title": "Decide the monitor and admission-check bounds",
+      "status": "backlog",
+      "trackingKey": "6-2-decide-the-monitor-and-admission-check-bounds",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.3",
+      "title": "Name the recovery deputy",
+      "status": "backlog",
+      "trackingKey": "6-3-name-the-recovery-deputy",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.7",
+      "title": "Build the production environment layer",
+      "status": "backlog",
+      "trackingKey": "6-7-build-the-production-environment-layer",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.8",
+      "title": "Run the production executor outside the application cluster",
+      "status": "backlog",
+      "trackingKey": "6-8-run-the-production-executor-outside-the-application-cluster",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.9",
+      "title": "Provide the production attempt, lock and stop store",
+      "status": "backlog",
+      "trackingKey": "6-9-provide-the-production-attempt-lock-and-stop-store",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.11",
+      "title": "Generate the production realm and record admission grants",
+      "status": "backlog",
+      "trackingKey": "6-11-generate-the-production-realm-and-record-admission-grants",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.14",
+      "title": "Refuse production attempts that fail a precondition",
+      "status": "backlog",
+      "trackingKey": "6-14-refuse-production-attempts-that-fail-a-precondition",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.15",
+      "title": "Bound every attempt's timing and fence takeovers",
+      "status": "backlog",
+      "trackingKey": "6-15-bound-every-attempt-s-timing-and-fence-takeovers",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.16",
+      "title": "Roll out and verify a production release",
+      "status": "backlog",
+      "trackingKey": "6-16-roll-out-and-verify-a-production-release",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.18",
+      "title": "Run Administrator-approved attempts into empty or degraded production",
+      "status": "backlog",
+      "trackingKey": "6-18-run-administrator-approved-attempts-into-empty-or-degraded-p",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.23",
+      "title": "Deploy the reference release to production with ingress closed and reach G1",
+      "status": "backlog",
+      "trackingKey": "6-23-deploy-the-reference-release-to-production-with-ingress-clos",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "6.24",
+      "title": "Run the pre-G2 fault rehearsals in approved mode",
+      "status": "backlog",
+      "trackingKey": "6-24-run-the-pre-g2-fault-rehearsals-in-approved-mode",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.1",
+      "title": "Procure prepared replacement capacity and select the recovery executor host",
+      "status": "backlog",
+      "trackingKey": "8-1-procure-prepared-replacement-capacity-and-select-the-recover",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.4",
+      "title": "Build the recovery inventory",
+      "status": "backlog",
+      "trackingKey": "8-4-build-the-recovery-inventory",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.5",
+      "title": "Back up production every 30 minutes with complete chains",
+      "status": "backlog",
+      "trackingKey": "8-5-back-up-production-every-30-minutes-with-complete-chains",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.6",
+      "title": "Keep tenant keys in separate custody",
+      "status": "backlog",
+      "trackingKey": "8-6-keep-tenant-keys-in-separate-custody",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.7",
+      "title": "Record usable recovery points at one declared cut",
+      "status": "backlog",
+      "trackingKey": "8-7-record-usable-recovery-points-at-one-declared-cut",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.8",
+      "title": "Monitor recovery-point freshness and coverage off-site",
+      "status": "backlog",
+      "trackingKey": "8-8-monitor-recovery-point-freshness-and-coverage-off-site",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.9",
+      "title": "Fence the failed environment and rebuild it on prepared capacity",
+      "status": "backlog",
+      "trackingKey": "8-9-fence-the-failed-environment-and-rebuild-it-on-prepared-capa",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.10",
+      "title": "Restore keys and data into quarantine with module recovery hooks",
+      "status": "backlog",
+      "trackingKey": "8-10-restore-keys-and-data-into-quarantine-with-module-recovery-h",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.11",
+      "title": "Rotate credentials and reconcile production admission after restore",
+      "status": "backlog",
+      "trackingKey": "8-11-rotate-credentials-and-reconcile-production-admission-after",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.14",
+      "title": "Prove the deputy's recovery capability",
+      "status": "backlog",
+      "trackingKey": "8-14-prove-the-deputy-s-recovery-capability",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    },
+    {
+      "id": "8.17",
+      "title": "Run the isolated DR drill and prove RPO and RTO",
+      "status": "backlog",
+      "trackingKey": "8-17-run-the-isolated-dr-drill-and-prove-rpo-and-rto",
+      "sources": [
+        "S08",
+        "S09"
+      ],
+      "authorityLimit": "Backlog/status is planning, not installed or current operational acceptance."
+    }
+  ],
+  "acceptance": {
+    "existingAcceptedStatus": "Committed",
+    "existingAcceptedPartiesTarget": "56cb4401c4179d431385ad3d931fefa402e4fc5a",
+    "existingAcceptedIntegrationDate": "2026-10-08",
+    "existingRegisterSource": "S21",
+    "existingAcceptedCommand": "test \"$(git -C ../parties rev-parse HEAD)\" = \"56cb4401c4179d431385ad3d931fefa402e4fc5a\" && test -z \"$(git -C ../parties status --porcelain)\" && pwsh -NoProfile -File ../parties/eng/verify-ext-parties-1.ps1 -Mode Live -EventStoreRoot ../eventstore -PlatformRoot ../platform -EvidenceDirectory /tmp/ext-parties-1-live",
+    "replacement": {
+      "partiesCommit": null,
+      "eventStoreCommit": null,
+      "platformCommit": null,
+      "packageAndImageDigests": null,
+      "rootSubmoduleManifestRef": null,
+      "runtimeReferenceManifestRef": null,
+      "integrationDate": null,
+      "fullLiveCommand": null,
+      "commandWorkingDirectory": null,
+      "ownerAcceptanceRecordRef": null,
+      "passingExactTargetEvidenceRef": null
+    },
+    "requiredEvidenceLevels": [
+      4,
+      5
+    ],
+    "allVectorsRequired": [
+      "P-01",
+      "P-02",
+      "P-03",
+      "P-04",
+      "P-05",
+      "P-06",
+      "P-07",
+      "P-08",
+      "P-09",
+      "P-10"
+    ],
+    "availabilityGate": "Only an owner-accepted full Live command passing on clean exact checkouts with installed targets and all independent persisted assertions can establish Available. Local and LiveReadiness cannot establish it."
+  },
+  "retainedLocalEvidence": {
+    "audit": "local-evidence-audit.json",
+    "passed": 1991,
+    "lanes": 12,
+    "rerun": false,
+    "qualification": "Local only"
+  },
+  "liveInputPresenceOnly": {
+    "EXT_PARTIES_GATEWAY_URL": false,
+    "EXT_PARTIES_TENANT_A": false,
+    "EXT_PARTIES_TENANT_B": false,
+    "EXT_PARTIES_PROVISIONER_CREDENTIAL": false,
+    "EXT_PARTIES_IDENTITY_WRITER_CREDENTIAL": false,
+    "EXT_PARTIES_READER_CREDENTIAL": false,
+    "EXT_PARTIES_POLICY_ID": false,
+    "EXT_PARTIES_RETENTION": false,
+    "EXT_PARTIES_EXPIRY_TRIGGER": false,
+    "EXT_PARTIES_CUSTODY_TARGET": false,
+    "EXT_PARTIES_RESTORE_TARGET": false,
+    "EXT_PARTIES_FAILURE_INJECTION_TARGET": false
+  },
+  "sources": "sources.json",
+  "plans": [
+    "installation-plan.md",
+    "qualification-plan.md"
+  ],
+  "preservationEvidence": "preservation.json",
+  "resourceScope": {
+    "status": "unbound",
+    "approvedMutationAllowlist": [],
+    "emptyAllowlistMeans": "No resource mutation is authorized; this is not an attestation that an installation requires zero resources.",
+    "requiredTupleShape": {
+      "approvalRecordRef": null,
+      "operatorPrincipalRef": null,
+      "credentialRef": null,
+      "clusterUid": null,
+      "environmentInstance": null,
+      "apiVersion": null,
+      "kind": null,
+      "namespace": null,
+      "name": null,
+      "preexistingUid": null,
+      "intendedReleaseDigest": null,
+      "expectedImageDigest": null,
+      "action": null,
+      "rollbackOrCleanupRef": null
+    },
+    "bindingRule": "Owner-supplied rendered object tuples must equal the complete approved allowlist before dry-run or install; application identity cannot own data/environment-layer objects. Record actual created UIDs and require exact matching on later operations."
+  }
+}
