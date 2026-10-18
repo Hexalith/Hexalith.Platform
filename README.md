@@ -35,6 +35,8 @@ Builds gitlink and release tag `v4.33.0`.
 
 Previously published versions in the `4.20.0–4.27.4` and `4.29.1–4.32.0`
 cohorts are not Platform-accepted. Publication alone does not grant acceptance.
+A tool outside the range is refused with `HXW010` in package mode and warned in
+source mode.
 
 From the Platform root, restore and check the pinned tool with:
 

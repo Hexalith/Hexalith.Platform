@@ -4,7 +4,7 @@ type: 'chore'
 epic: 1
 story: 9
 created: '2026-10-17'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: 'b49d5c1cbfc79e94d92d6228e7d2b3c4f65b56f9'
 builds_baseline_commit: 'c8c72dcab8e1b05520ff9445d9df105f084f9813'
 route: 'dispatch'
@@ -61,8 +61,8 @@ Builds paths are under `references/Hexalith.Builds`.
 - [x] `references/Hexalith.Builds/Tools/test-platform-version-catalog.ps1` -- copy every csproj-embedded schema into the rebuild copy -- unblocks the release CI.
 - [x] `references/Hexalith.Builds/README.md` -- reword the acceptance sentence as above -- the release commit carries the correct record.
 - [x] Builds (local only): run the catalog test locally until all cases pass, then make one local commit, `fix(ci): copy embedded schemas into catalog rebuild test`, with the two files above. **Stop here.** The implementation agent never pushes or runs remote operations.
-- [ ] *(Orchestrator, remote)*: push Builds `main` and wait for green push CI. Dispatch `build-release.yml` for human gate approval, wait for NuGet.org to list the version, and fetch the tag -- produces the accepted version.
-- [ ] `{project-root}/.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md` -- after the release only: pin, set the range, move the gitlink to the tag commit, and record the versions -- the Platform acceptance. Concurrent Story 5.4 work has uncommitted Platform files (`global.json`, `src/Hexalith.Platform.Composition/*`, `eng/*`, tests). Never modify, stage or revert them; stage only this story's paths.
+- [x] *(Orchestrator, remote)*: push Builds `main` and wait for green push CI. Dispatch `build-release.yml` for human gate approval, wait for NuGet.org to list the version, and fetch the tag -- produces the accepted version.
+- [x] `{project-root}/.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md` -- after the release only: pin, set the range, move the gitlink to the tag commit, and record the versions -- the Platform acceptance. Concurrent Story 5.4 work has uncommitted Platform files (`global.json`, `src/Hexalith.Platform.Composition/*`, `eng/*`, tests). Never modify, stage or revert them; stage only this story's paths.
 
 **Acceptance Criteria:**
 - Given the release, when it completes, then the NuGet listing contains the version and the Builds tag points to the Platform gitlink commit.
@@ -73,7 +73,10 @@ Builds paths are under `references/Hexalith.Builds`.
 
 - 2026-10-17, Builds local commit `254aed4` (`fix(ci): copy embedded schemas into catalog rebuild test`, parent `c8c72dc`, not pushed). The rebuild step now evaluates `Hexalith.Builds.Tooling.csproj` with `dotnet msbuild -getItem:EmbeddedResource` and copies every evaluated resource outside the tooling directory to the same Builds-relative path in the isolated copy; it refuses a resource outside the Builds checkout or missing on disk. The hard-coded manifest-v2 copy and the pre-created `schemas` directory were removed. `pwsh -NoProfile -File Tools/test-platform-version-catalog.ps1` passed locally: 96 scenarios, exit 0. Commit message validated with the repository's commitlint (`@commitlint/cli` 21.2.3).
 - 2026-10-18 resumed verification: Builds `main` is at `544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`, which contains the CI fix. The catalog test again passed all 96 scenarios with exit 0. The local `origin/main` tracking ref points to that commit, but no release tag matches it in the local checkout. Platform remains unpinned, so release and acceptance criteria are still open.
-- Remaining steps are the orchestrator's remote work, then the post-release Platform edits.
+- 2026-10-18 release verification: Builds `main` and green push CI [39061726126](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39061726126) both use `544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`. The existing approval-gated [release run 39063443489](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39063443489) completed successfully. NuGet.org lists `hexalith.builds.module.cli` 4.33.0, and fetched tag `v4.33.0` points to that same commit. The Platform HEAD gitlink already pointed there, so no gitlink edit was necessary.
+- Platform commit `59f6c25990afc5439070046ed3d3e77f671d9f4a` adds the exact 4.33.0 local tool pin, range `[4.33.0, 5.0.0)`, and acceptance record. `dotnet tool restore --no-http-cache` restored the package after the first plain restore encountered stale NuGet metadata; a subsequent plain restore passed. The tool reports `4.33.0+544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`.
+- Package mode against the EventStore reference manifest passed Platform identity and stopped later at unrelated declaration provenance `HXP020`; `down` completed successfully. An isolated 4.32.0 tool refused package mode with HXW010 and warned in source mode with HXW010 before source mode stopped at missing `HEXALITH_DAPR_HOME` (`HXR011`). The temporary older tool was uninstalled.
+- 2026-10-18 independent re-check on top of `59f6c25`: the README also states that a tool outside the range is refused with `HXW010` in package mode and warned in source mode. At the local HEAD carrying that README sentence, `dotnet tool restore` restored 4.33.0 and `--version` printed `4.33.0+544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`. `run --mode package --manifest src/Hexalith.Platform.Composition/Declarations/eventstore.json --output json` exited 3 with only `HXP020` (EventStore declaration provenance 3.120.0 vs catalog 3.124.0), with no HXW009/HXW010 and no identity warnings. The run resolves the workspace mapping, including Platform identity, before it loads the declaration closure. `down` on the same manifest exited 0 (`HXI001`). `git -C references/Hexalith.Builds describe --exact-match --tags HEAD` printed `v4.33.0`, and the HEAD gitlink is `544fd2e`.
 
 ## Spec Change Log
 
@@ -88,3 +91,5 @@ Builds paths are under `references/Hexalith.Builds`.
 - `dotnet tool restore && dotnet tool run hexalith-module --version` (Platform root) -- expected: the accepted version.
 - From the Platform root, run `dotnet tool run hexalith-module run --mode package` on a reference declaration, then `down` -- expected: no HXW009/HXW010 identity findings. A later non-identity failure is acceptable and recorded.
 - `git -C references/Hexalith.Builds describe --exact-match --tags HEAD` -- expected: `v<accepted>`.
+
+**Observed 2026-10-18:** Catalog test 96/96 pass; push CI and release workflow success; NuGet listing includes 4.33.0; `dotnet tool restore` success; `dotnet tool run hexalith-module --version` reports 4.33.0 with the tag commit; accepted package-mode invocation has no HXW009/HXW010; 4.32.0 package mode returns HXW010 and source mode warns HXW010; `down` succeeds; Builds HEAD has exact tag `v4.33.0` and matches the Platform HEAD gitlink.
