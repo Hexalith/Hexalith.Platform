@@ -22,7 +22,7 @@ Those hosting concerns live here.
 
 ## Requirements
 
-- .NET SDK `10.0.401` or later (`latestPatch` roll-forward)
+- .NET SDK `10.0.402` or later (`latestPatch` roll-forward)
 - Aspire CLI `13.6.1` exactly. The module tool compares `aspire --version` with
   the catalog-selected `Aspire.AppHost.Sdk` and refuses any other version with
   `HXR015`.

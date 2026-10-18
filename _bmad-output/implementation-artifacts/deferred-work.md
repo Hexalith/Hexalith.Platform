@@ -810,3 +810,15 @@
     - `PlatformIdentityResolver` only checks that the gitlink commit exists (`:193-196`), so a module that pins a newer tool mixes the two catalogs, and the Redis image drifts silently.
     - The same drift admits 4.33.x after a future pin move, because no floor rule exists.
     - Deferred because 1.9 must not change the Builds identity reader; owner is Builds or Story 2.8.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Add the path-segment validation and root-containment check to `ResolveReferencedModuleProjectPath` in both `Hexalith.EventStore.Aspire` and `Hexalith.Memories.Aspire`, matching `GetProjectPath`.
+  evidence: Review pass 1 of Story 1.10 (B6/E4). The method was rewritten but still combines `moduleDirectory` and the segments unchecked, so a rooted or `..` segment escapes the consuming root. This predates the story and is tracked as EventStore DW-207. Callers today pass only constant literals.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Make `hexalith-module run`/`debug` print the run id in human output, and stop stale failed-run states from making `down --manifest` refuse with HXR024.
+  evidence: Review pass 1 of Story 1.10 (B11/E3). In `evidence/1-10/diagnostic-eventstore.txt:45-53`, `debug` reported only launcher ids, then `down --manifest` failed with HXR024 because earlier failed runs share the manifest hash. Only `down --run-id` worked. Run states persist as `~/.local/share/hexalith-builds/g4-runs/<runId>.json` (`CompositionRunStateStore.cs:27-28`). This is existing Builds Story 1.8 behaviour; 1.10 only documents the workaround.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Update `Hexalith.Tenants.Aspire` `TenantsServerProjectMetadata` remarks, which still describe the removed seven-location probing, when Tenants takes the EventStore.Aspire release from Story 1.10.
+  evidence: Review pass 1 of Story 1.10 (B5b). `references/Hexalith.Tenants/src/Hexalith.Tenants.Aspire/TenantsServerProjectMetadata.cs:11,21` say the helper "tolerates every layout" in the `Directory.Build.props` order. After the update it resolves only the self `.slnx` root or `references/<Module>` and throws otherwise. Consumer repositories are not edited in 1.10 (frozen decision); belongs to Tenants module adoption (AR-50).

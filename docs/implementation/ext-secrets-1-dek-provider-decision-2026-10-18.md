@@ -48,3 +48,38 @@ The bounded manifest and sorting/canonicalization come from EventStore Contracts
 Continuation evidence: `/home/administrator/hexalith-protection-evidence/ext-protection-1/continuation-20261018T093214Z-80888f824ed64acc9c7dda57c80a5f93/baseline.json`. It binds the exact EventStore baseline, read-only Agents register/reconciliation and provider input bytes. It contains references/hashes only. The acceptance packet in EventStore records focused source results separately from physical qualification.
 
 No provider was selected, installed or simulated. No production adapter was bound to HMAC custody. G1/G3 remain blocked on the selection and demonstrable native/all-copy guarantees above. G2/G4/G5/G6 retain their separately identified gaps; offline verifier hardening is independent work, not a workaround for G1.
+
+## Approved option A feasibility application (2026-10-18)
+
+The preceding recommendation was approved for a bounded erasure-first investigation. It did not authorize production deployment or establish a provider. Platform implemented [the disposable probe](../../eng/ext-secrets-1/probe_raft_non_revival.py) and [its component checks](../../eng/ext-secrets-1/test_probe_raft_non_revival.py), then ran fresh native transit keys on a new single-node real-Raft instance of the exact discovered OpenBao 2.6.2 digest. Networking was disabled; the listener was internal loopback only, writable storage was private tmpfs, Docker logs were disabled and every operation was bounded. No installed runtime/data, production credentials or owner/cohort operations were used. Tokens, unseal material, payloads and Raft snapshots were omitted from public evidence, and owned-container removal was verified. Erasure of host Python/subprocess memory, swap or core dumps remains unproven; host swap settings are unchanged.
+
+**Observed disposition: ordinary Raft recovery revives deleted native key material; stop option A production construction before transaction proof.** The target decrypted before deletion, disappeared from native key inventory and returned HTTP 400/missing-key on decrypt after deletion, then returned to inventory and decrypted the original ciphertext after ordinary non-force restoration of the pre-delete snapshot. The retained control decrypted before/after snapshot, after deletion, before restore and after restore. These observations distinguish revival from refused authentication or an unavailable service. Native version and image source revision were verified as 2.6.2 and `dd9c19c37a878cf4a81b18efb8d6f0599c7da923` before key creation. The probe returned exit 2 (`ObservedRevival`); incomplete observations, version mismatch or unverified cleanup return exit 1 (`BlockedUnknown`). Neither exit can qualify G1.
+
+Evidence remains in `/home/administrator/hexalith-protection-evidence/ext-protection-1/option-a-feasibility-20261018T113800Z-1dbe62f55af0434684a9602a3824bfe9`. Exact byte bindings for the completed pre-review run are below; these historical source hashes do not identify the later review corrections, which require separate final verification/bindings:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `eng/ext-secrets-1/probe_raft_non_revival.py` | `86fa10c206d4dfb032f6dda15941ae8419a17accaa06441191e894f70dce1599` |
+| `eng/ext-secrets-1/test_probe_raft_non_revival.py` | `52f90f14fa7f08bde9bf53e942a3fc89789983c6317efd740b076c75cc291da1` |
+| `raft-probe-attempt-5.result.json` | `ec0a7bbff4a53db487e25ab0fd92a4c3f80d196879fc58f06c910bcc4e42c721` |
+| `raft-probe-attempt-5.command.json` | `e5e69c7442067fb956d284c181a5d1687354eb0c53f1682f79c49cbe1e866ef4` |
+| `probe-component-tests-retry-4.command.json` (16 passing tests) | `e7ca7f55b460c77c9c463ba4e6d24669b7c6332e2ab33cf62e3f0879913c037b` |
+
+Earlier blocked attempts remain part of the record. They stopped before initialization/key creation and supply no erasure conclusion. Attempt 1 removed its exact container but the initial verifier rejected Docker's lowercase absence message; a separate exact-container reconciliation confirmed absence. Later attempts verified cleanup. Startup configuration was corrected to omit the obsolete `disable_mlock` field and create the private Raft directory. This history does not substitute for the complete observed run.
+
+Review corrections bound read-only polling of restored target inventory and both original plaintext checks, without retrying deletion or snapshot restore. A flushed/fsynced public prepared record now retains the exact run ID, container name and ownership label before Docker effects. An unacknowledged create followed by an absent name remains `CreateCompletionUnknown`, since a delayed daemon operation may still publish the container. A killed interpreter requires manual exact-name/label ownership verification and ID-bound removal/absence reconciliation using the [probe README's recovery procedure](../../eng/ext-secrets-1/README.md); neither the prepared record nor one absent name read proves cleanup. The public result now states evidence omission and verified container cleanup, leaving host memory erasure explicitly unproven. Component regressions cover delayed restore/create, interruption metadata, wrong target/control plaintext and incorrect missing-key statuses/messages.
+
+The negative control tests ordinary native transit backup recovery only. No future engine, atomic manifest implementation, independent erasure/fencing authority, excluded custody class or complete all-copy policy was constructed or tested. G1/G3 remain blocked and no canonical complete accepted target exists. The next decision must identify a concrete key hierarchy and independently surviving authority that defeats restored configuration, old keys/receipts/owner state, rollback and root reissue across the complete copy inventory. If that needs a new deployment/storage class, obtain the separate approval required above. Only after that missing primitive is established should native transaction limits/atomic manifest and original-outcome proofs proceed, followed by real EventStore binding and separately accepted owner qualification. Option B remains unselected without a named backend. The Agents register, dependency status and consumer enablement are unchanged.
+
+## Reviewed source and shareable observation
+
+After the review corrections, **23 focused component tests passed**, then native attempt 6 again returned exit 2 / `ObservedRevival` with complete cleanup. The [public evidence bundle](ext-secrets-1-option-a-feasibility-2026-10-18/README.md) retains exact result/command bytes independently of the workstation evidence path. Run `sha256sum --check SHA256SUMS` from that directory. The evidence directory retains every earlier attempt and final source/input/validation inventories; this is a complete negative-control observation, not a complete production artifact or owner-record target.
+
+| Reviewed binding | SHA-256 |
+| --- | --- |
+| Probe source | `1c668b8fa41dd609dc59ece1aeb02aa87b5902900309a7704d1a42dad25f6fbf` |
+| Component test source | `ea03397c3e21e5f8e561271a74a752236e768bbe70b29ce15262358c0e766f01` |
+| `raft-probe-attempt-6.result.json` / bundled `native-result.json` | `6efa381bc70b3de57a24142e5e679f53781c7f89d5ab6740fb7664966f30888e` |
+| `raft-probe-attempt-6.command.json` / bundled `native-command.json` | `b1a0cde4ce8a4b9fd17938519261df15b245b3056466d111c97f9897877ae01f` |
+
+This final run closes the review-correction verification obligation above. It preserves the same erasure-first stop: no production plugin, transaction proof, provider binding, Live run or dependency availability claim follows.

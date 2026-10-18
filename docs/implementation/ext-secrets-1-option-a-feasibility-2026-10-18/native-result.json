@@ -1,0 +1,880 @@
+{
+  "schema": "EXT-PROTECTION-1.ordinary-raft-negative-control.v1",
+  "runId": "7a1cbd9c10c2bd5c35d576070b998b03",
+  "containerName": "ext-protection-1-raft-probe-7a1cbd9c10c2bd5c35d576070b998b03",
+  "ownershipLabel": {
+    "hexalith.ext-protection-1.raft-probe": "7a1cbd9c10c2bd5c35d576070b998b03"
+  },
+  "phase": "Completed",
+  "image": "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+  "expectedNativeVersion": "2.6.2",
+  "probeSourceSha256": "1c668b8fa41dd609dc59ece1aeb02aa87b5902900309a7704d1a42dad25f6fbf",
+  "serverConfigurationSha256": "625b07b50e71f11661e95bf67e7b6e399036b857431d0ed460c8414e3f8ce644",
+  "scope": "Disposable single-node ordinary Raft; native transit only",
+  "productionQualified": false,
+  "g1Qualified": false,
+  "transactionProofExecuted": false,
+  "productionEngineTested": false,
+  "independentErasureAuthorityTested": false,
+  "secretMaterialIncludedInEvidence": false,
+  "hostMemoryErasureProven": false,
+  "observations": {
+    "image-identity": {
+      "verified": true,
+      "localImageId": "sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+      "sourceRevision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+      "architecture": "amd64",
+      "operatingSystem": "linux"
+    },
+    "container-isolation": {
+      "verified": true,
+      "network": "none",
+      "listener": "127.0.0.1",
+      "publishedPorts": false,
+      "persistentVolumes": false,
+      "storage": "tmpfs",
+      "logging": "none"
+    },
+    "native-version": {
+      "verified": true,
+      "version": "2.6.2",
+      "sourceRevision": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923"
+    },
+    "startup-raft": {
+      "verified": true,
+      "storageType": "raft",
+      "initialized": false,
+      "sealed": true
+    },
+    "initialized": {
+      "verified": true,
+      "fresh": true,
+      "keyShares": 1,
+      "keyThreshold": 1
+    },
+    "unsealed": {
+      "verified": true,
+      "storageType": "raft",
+      "initialized": true,
+      "sealed": false
+    },
+    "raft-leader": {
+      "verified": true,
+      "leader": true
+    },
+    "transit-enabled": {
+      "verified": true
+    },
+    "target-created": {
+      "verified": true
+    },
+    "target-encrypted": {
+      "verified": true
+    },
+    "control-created": {
+      "verified": true
+    },
+    "control-encrypted": {
+      "verified": true
+    },
+    "target-before-delete": {
+      "verified": true,
+      "plaintextMatches": true
+    },
+    "control-before-snapshot": {
+      "verified": true,
+      "plaintextMatches": true
+    },
+    "snapshot-saved": {
+      "verified": true,
+      "ordinarySnapshot": true
+    },
+    "snapshot-present": {
+      "verified": true,
+      "nonempty": true
+    },
+    "control-after-snapshot": {
+      "verified": true,
+      "plaintextMatches": true
+    },
+    "target-deletion-enabled": {
+      "verified": true
+    },
+    "target-deleted": {
+      "verified": true
+    },
+    "control-after-delete": {
+      "verified": true,
+      "plaintextMatches": true
+    },
+    "target-absent": {
+      "verified": true,
+      "targetPresent": false,
+      "controlPresent": true
+    },
+    "target-decrypt-refused": {
+      "verified": true,
+      "nativeHttpStatus": 400,
+      "missingKey": true
+    },
+    "control-before-restore": {
+      "verified": true,
+      "plaintextMatches": true
+    },
+    "snapshot-restored": {
+      "verified": true,
+      "force": false,
+      "originalSeal": true
+    },
+    "restore-unsealed": {
+      "verified": true,
+      "storageType": "raft",
+      "initialized": true,
+      "sealed": false
+    },
+    "restore-raft-leader": {
+      "verified": true,
+      "leader": true
+    },
+    "target-present-after-restore": {
+      "verified": true,
+      "targetPresent": true,
+      "controlPresent": true
+    },
+    "target-decrypt-after-restore": {
+      "verified": true,
+      "plaintextMatches": true
+    },
+    "control-after-restore": {
+      "verified": true,
+      "plaintextMatches": true
+    }
+  },
+  "commands": [
+    {
+      "stage": "image-inspect",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "container-create",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "create",
+        "--pull=never",
+        "--name",
+        "ext-protection-1-raft-probe-7a1cbd9c10c2bd5c35d576070b998b03",
+        "--label",
+        "hexalith.ext-protection-1.raft-probe=7a1cbd9c10c2bd5c35d576070b998b03",
+        "--network=none",
+        "--read-only",
+        "--log-driver=none",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--user=65532:65532",
+        "--memory=2g",
+        "--memory-swap=2g",
+        "--pids-limit=128",
+        "--env",
+        "BAO_ADDR=http://127.0.0.1:8200",
+        "--env",
+        "GOMAXPROCS=2",
+        "--env",
+        "GOMEMLIMIT=128MiB",
+        "--tmpfs",
+        "/openbao/file:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+        "--tmpfs",
+        "/openbao/logs:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,nodev,size=128m,mode=0700,uid=65532,gid=65532",
+        "--entrypoint=/bin/sh",
+        "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641",
+        "-ec",
+        "umask 077; mkdir -p /openbao/file/raft; printf %s 'ui = false\napi_addr = \"http://127.0.0.1:8200\"\ncluster_addr = \"https://127.0.0.1:8201\"\nlistener \"tcp\" {\n  address = \"127.0.0.1:8200\"\n  cluster_address = \"127.0.0.1:8201\"\n  tls_disable = true\n}\nstorage \"raft\" {\n  path = \"/openbao/file/raft\"\n  node_id = \"disposable-negative-control\"\n}\n' > /tmp/probe.hcl; exec bao server -config=/tmp/probe.hcl"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "container-inspect",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "container-start",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "start",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "native-version",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "version"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "startup-raft",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "initialize",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "operator",
+        "init",
+        "-format=json",
+        "-key-shares=1",
+        "-key-threshold=1"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "unsealed",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "unsealed-unseal",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "sys/unseal",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "unsealed",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "raft-leader",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/leader"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "transit-enabled",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "secrets",
+        "enable",
+        "-path=probe-transit",
+        "transit"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-created",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/keys/target",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-encrypted",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/encrypt/target",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "control-created",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/keys/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "control-encrypted",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/encrypt/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-before-delete",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/target",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "control-before-snapshot",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "snapshot-saved",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "operator",
+        "raft",
+        "snapshot",
+        "save",
+        "/tmp/pre-delete.snap"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "snapshot-present",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "stat",
+        "-c",
+        "%s",
+        "/tmp/pre-delete.snap"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "control-after-snapshot",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-deletion-enabled",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/keys/target/config",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-deleted",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "delete",
+        "probe-transit/keys/target"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "control-after-delete",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-absent",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "list",
+        "-format=json",
+        "probe-transit/keys"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-decrypt-refused",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/target",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 2,
+      "nativeHttpStatus": 400
+    },
+    {
+      "stage": "control-before-restore",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "snapshot-restored",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "operator",
+        "raft",
+        "snapshot",
+        "restore",
+        "/tmp/pre-delete.snap"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "restore-unsealed",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/seal-status"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "restore-raft-leader",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "read",
+        "-format=json",
+        "sys/leader"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-present-after-restore",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "list",
+        "-format=json",
+        "probe-transit/keys"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "target-decrypt-after-restore",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/target",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "control-after-restore",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "exec",
+        "-i",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1",
+        "sh",
+        "-ec",
+        "IFS= read -r BAO_TOKEN || exit 65; export BAO_TOKEN; export HOME=/tmp; exec bao \"$@\"",
+        "sh",
+        "write",
+        "-format=json",
+        "probe-transit/decrypt/control",
+        "-"
+      ],
+      "stdin": "private-omitted",
+      "exitCode": 0
+    },
+    {
+      "stage": "cleanup-inspect",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "cleanup-remove",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "rm",
+        "--force",
+        "--volumes",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1"
+      ],
+      "stdin": "none",
+      "exitCode": 0
+    },
+    {
+      "stage": "cleanup-verify",
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "inspect",
+        "12ec3d4a8fd0e7a262d3fc2d21b4e8289803f85d2000775281922da45eaa76e1"
+      ],
+      "stdin": "none",
+      "exitCode": 1
+    }
+  ],
+  "cleanup": {
+    "complete": true,
+    "containerAbsent": true,
+    "containerTmpfsUnmounted": true
+  },
+  "outcome": "ObservedRevival",
+  "failure": null,
+  "ownedContainerStateBeforeCleanup": {
+    "running": true,
+    "exitCode": 0,
+    "oomKilled": false
+  },
+  "nonRevivalRequirement": "FailedForOrdinaryRaftSnapshot",
+  "productionConstruction": "StoppedBeforeTransactionProof"
+}
