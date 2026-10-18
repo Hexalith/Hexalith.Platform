@@ -1,0 +1,15 @@
+# Unit tests (built with -nodeReuse:false, run with dotnet exec; baseline = same tree with this story's change stashed)
+
+## references/Hexalith.EventStore  tests/Hexalith.EventStore.AppHost.Tests
+with change : Total 162, Failed 15   (RepositoryProjectPathsTests: 18/18 passed)
+baseline    : Total 153, Failed 15
+Failure sets are identical (diff empty). All 15 need the nested references/Hexalith.Tenants checkout, which stays
+uninitialized in the Platform workspace (TenantsProjectPaths.Validate / missing KeycloakRealms file).
+
+## references/Hexalith.Memories  tests/Hexalith.Memories.Server.Tests
+with change : Total 2993, Failed 2, Skipped 1   (RepositoryProjectPathsTests 9/9, HexalithMemoriesAspireSecretStoreTests 6/6)
+baseline    : Total 2984, Failed 2, Skipped 1
+Failure sets are identical:
+  Hexalith.Memories.Server.Tests.Deployment.AppHostSecurityConfigurationTests.BuildsCatalog_PinsEventStoreFamilyAt31000 [FAIL]
+  Hexalith.Memories.Server.Tests.Deployment.AppHostSecurityConfigurationTests.ProjectAssets_RestoreEventStorePackagesAtCatalogVersion [FAIL]
+Both read the nested references/Hexalith.Builds catalog or EventStore package restore keys, unrelated to this change.

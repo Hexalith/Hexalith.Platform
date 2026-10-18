@@ -1,0 +1,57 @@
+# DIAGNOSTIC ONLY - NOT AC1 EVIDENCE
+# The pinned 4.33.0 tool cannot start the composition (pinned-tool.txt). To show what remains once Builds ships a
+# fixed tool, the same command was run with the Builds CLI built from the references/Hexalith.Builds checkout
+# (6e8b71e = v4.33.0 + 2 commits; Tooling and AppHost both 1.0.0.0, so the model loads). The tool range warning
+# HXW010 is expected for that unversioned build. Debugger: netcoredbg 3.2.0-1092 (MIT), downloaded to the
+# scratchpad (sha256 080eb3b2d2152465f599d3b33d1ee6e747794e11cc0a3773ec689f5e5f2c5afa), never committed.
+# Checkouts: EventStore c0c08d45 + this story's uncommitted change (committed afterwards as a3b0c587, 2af29911);
+#            Memories fb39a0c5 + this story's uncommitted change (committed afterwards as c16ea1a1, 5d77b0ec).
+
+## EventStore, run 7c7e77310b24b6b4151bc4a3681ca9b4 (2026-10-18T11:33Z)
+$ HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll debug --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
+ready: Success
+HXW010 Prerequisite None field=/home/administrator/projects/hexalith/platform/hexalith-platform.json: Tool version 1.0.0-20261018112102 is outside Platform range [4.33.0, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '86917'.
+exit 0
+
+$ ps -o pid,ppid,args -p 86917; ps --ppid 86917 -o pid,ppid,args
+86917 84009 dotnet run --project <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj --configuration Debug --no-launch-profile
+96522 86917 <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore    (app process; listens on 127.0.0.1:32237)
+
+Breakpoint references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+(return RateLimitPartition.GetNoLimiter<string>("__health") in the global rate limiter; every /ready request reaches it)
+# netcoredbg=<scratchpad>/tools/netcoredbg/netcoredbg pid=96522 location=<platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225 url=http://127.0.0.1:32237/ready utc=2026-10-18T11:36:38Z
+>>> break <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+>>> continue
+stopped, reason: interrupted, thread id: 69790, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.LowLevelLifoSemaphore.WaitForSignal()}
+ Breakpoint 1 at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+^running
+stopped, reason: breakpoint 1 hit, thread id: 69795, stopped threads: all, times= 1, frame={Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225}
+# HIT=yes
+>>> backtrace
+>>> delete
+>>> continue
+^running
+stopped, reason: breakpoint 1 hit, thread id: 69796, stopped threads: all, times= 2, frame={Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225}
+>>> detach
+^exit
+>>> quit
+backtrace (first frames):
+#0: 0x0000779e12ae6a9e Hexalith.EventStore.Gateway.dll` Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/E
+#1: 0x0000779e139864b2 System.Threading.RateLimiting.dll` System.Threading.RateLimiting.DefaultPartitionedRateLimiter<Microsoft.AspNetCore.Http.HttpContext, string>.GetRateLimiter()
+#2: 0x0000779e139863d6 System.Threading.RateLimiting.dll` System.Threading.RateLimiting.PartitionedRateLimiter<System.__Canon>.AttemptAcquire()
+#3: 0x0000779e1193a5d5 System.Threading.RateLimiting.dll` System.Threading.RateLimiting.ChainedPartitionedRateLimiter<Microsoft.AspNetCore.Http.HttpContext>.AttemptAcquireCore()
+...frame #18: Hexalith.EventStore.Middleware.CorrelationIdMiddleware.<InvokeAsync>d__6.MoveNext() at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Middleware/CorrelationIdMiddleware.cs:31
+
+Note: this first driver sent 'delete' without a number, so the breakpoint stayed and was hit a second time;
+netcoredbg then detached while the process was stopped and the gateway stayed suspended (/ready timed out).
+
+$ ...Hexalith.Builds.Module.Cli.dll down --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
+failed: UsageOrManifest
+HXR024 Usage Usage field=runId: A matching v2 run identity is required.     (earlier failed runs share the manifest hash)
+$ ...Hexalith.Builds.Module.Cli.dll down --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json --run-id 7c7e77310b24b6b4151bc4a3681ca9b4
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+exit 0
+After down: processes 86917 and 96522 gone; no dapr-sentry/placement/scheduler or run Redis container left.

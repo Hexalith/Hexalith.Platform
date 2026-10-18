@@ -1,0 +1,15 @@
+# Isolated Dapr home: ~/.hexalith/dapr/1.18.2 (environment only, not committed)
+Official release assets, checksums verified against the published .sha256 files:
+  2a94739e0aa101289d88418225319562bc6800db273b3d9cf819a0efd1ea1bfe *dapr_linux_amd64.tar.gz
+  5e9b01848d256f3ee931235d0d70e3cc97dd2b8e8f4d35b2abdc97d57195a188 *daprd_linux_amd64.tar.gz
+  ad182ea14736ba3a08edff4c787452e953aecaf6d9ce4f6e4201d389e3d4ab7c *placement_linux_amd64.tar.gz
+  eadab79a7d836f2b5656ffdb850a06514c02222ce642bd8b9820e3e0e21964dd *scheduler_linux_amd64.tar.gz
+Layout: tools/dapr (CLI 1.18.0), .dapr/bin/{daprd,placement,scheduler} (runtime 1.18.2)
+
+$ DAPR_RUNTIME_PATH=~/.hexalith/dapr/1.18.2 ~/.hexalith/dapr/1.18.2/tools/dapr --version
+CLI version: 1.18.0 
+Runtime version: 1.18.2
+$ ~/.hexalith/dapr/1.18.2/.dapr/bin/daprd --version
+1.18.2
+
+The tool's prerequisite probe accepted this home in every run below (no HXR011/HXR012/HXR013).

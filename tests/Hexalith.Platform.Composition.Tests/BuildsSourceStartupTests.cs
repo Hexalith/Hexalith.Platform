@@ -11,6 +11,10 @@ public sealed class BuildsSourceStartupTests
     public Task TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync() => StartSelectionAsync("eventstore", ["eventstore"]);
 
     [Fact]
+    public Task TechnicalMemoriesStartsThroughTheRealBuildsEngineAsync() => StartSelectionAsync("memories",
+        ["eventstore", "memories", "memories-access-telemetry-clock", "memories-access-telemetry"]);
+
+    [Fact]
     public Task DomainTenantsStartsThroughTheRealBuildsEngineAsync() => StartSelectionAsync("tenants",
         ["eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry"]);
 

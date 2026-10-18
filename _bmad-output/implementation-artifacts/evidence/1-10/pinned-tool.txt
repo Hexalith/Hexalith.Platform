@@ -1,0 +1,41 @@
+# Pinned tool (hexalith.builds.module.cli 4.33.0) from the Platform root
+
+$ dotnet tool run hexalith-module -- --version
+4.33.0+544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9
+
+$ HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet tool run hexalith-module -- debug --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json   (2026-10-18T11:04Z)
+failed: TopologyOrLifecycle
+HXP020 Topology TopologyOrLifecycle field=platform: Could not load file or assembly 'Hexalith.Builds.Tooling, Version=4.33.0.0, Culture=neutral, PublicKeyToken=null'. The located assembly's manifest definition does not match the assembly reference. (0x80131040) deadline='600s' diagnostics='/home/administrator/.local/share/hexalith-builds/g4-runs/diagnostics/5af229e7bc71e8625455665cf05d62ee'. (Supply the named owner input; no resources were started.)
+exit 3
+
+$ HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet tool run hexalith-module -- debug --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json   (2026-10-18T11:51Z)
+failed: TopologyOrLifecycle
+HXP020 Topology TopologyOrLifecycle field=platform: Could not load file or assembly 'Hexalith.Builds.Tooling, Version=4.33.0.0, Culture=neutral, PublicKeyToken=null'. The located assembly's manifest definition does not match the assembly reference. (0x80131040) deadline='600s' diagnostics='/home/administrator/.local/share/hexalith-builds/g4-runs/diagnostics/ecab205c690315072ef8da3b355bba7b'. (Supply the named owner input; no resources were started.)
+exit 3
+
+# Cause 1: Tooling assembly identity skew inside the 4.33.0 package
+# (System.Reflection.Metadata / AssemblyInformationalVersion read from ~/.nuget/packages/hexalith.builds.module.cli/4.33.0/tools/net10.0/any)
+Hexalith.Builds.Tooling.dll            asm=4.33.0.0 info=4.33.0+544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9  (CLI; passed to the Platform model build as BuildsToolingAssemblyPath)
+g4-host/Hexalith.Builds.Tooling.dll    asm=1.0.0.0  info=1.0.0+544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9   (loaded first by the AppHost)
+g4-host/Hexalith.Builds.Module.AppHost asm=1.0.0.0  references Hexalith.Builds.Tooling 1.0.0.0
+The model references Tooling 4.33.0.0; the default load context already holds 1.0.0.0 from the AppHost, so loading the model fails (0x80131040).
+Builds HEAD 6e8b71e (2 commits after v4.33.0, type 'build:', unreleased) already builds the hosts with -p:Version and adds a --validate-platform package check for this.
+
+# Cause 2: build-machine paths baked into the packaged AppHost (AssemblyMetadata of g4-host/Hexalith.Builds.Module.AppHost.dll)
+dcpclipath = /home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.1/tools/dcp
+dcpextensionpaths = /home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.1/tools/ext/
+apphostprojectpath = /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost
+aspiredashboardpath = /home/runner/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.1/tools/Aspire.Dashboard
+apphostprojectbaseintermediateoutputpath = /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/obj/
+
+Diagnostic only (not a fix, nothing in a repository changed): a scratchpad copy of g4-host with the 4.33.0.0 Tooling dll,
+selected through HEXALITH_G4_APPHOST and logged with a startup hook, passes the model load and then stops here:
+14:      System.UnauthorizedAccessException: Access to the path '/home/runner' is denied.
+20:         at Aspire.Hosting.ApplicationModel.AspireStore.EnsureDirectory() in /_/src/Aspire.Hosting/ApplicationModel/AspireStore.cs:line 91
+21:         at Aspire.Hosting.ApplicationModel.AspireStore..ctor(String basePath, IFileSystemService directoryService) in /_/src/Aspire.Hosting/ApplicationModel/AspireStore.cs:line 36
+49:g4: AppHost startup stopped with UnauthorizedAccessException.
+50:g4: waiting for resource 'redis' to become healthy.
+51:g4: HXR021 resource='redis' appId='-' status='state=unreported;health=unreported'.
+
+The engine clears the AppHost environment (CompositionProcess.CreateStartInfo), so no configuration override reaches it.
+Result: with the pinned 4.33.0 tool, run/debug cannot start a Platform v2 composition on this machine (or any machine where the baked /home/runner paths are absent).

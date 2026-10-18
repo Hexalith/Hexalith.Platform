@@ -1,0 +1,81 @@
+# DIAGNOSTIC ONLY - NOT AC1 EVIDENCE (same setup as diagnostic-eventstore.txt)
+
+## Memories, run 6cd413b7047e717b4aa631e86b0a4a05 (2026-10-18T11:47Z)
+$ HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll debug --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+ready: Success
+HXW010 Prerequisite None field=/home/administrator/projects/hexalith/platform/hexalith-platform.json: Tool version 1.0.0-20261018112102 is outside Platform range [4.33.0, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '33685'.
+HXI010 Topology None field=memories: Project 'memories' launcher process id '47176'.
+HXI010 Topology None field=memories-access-telemetry: Project 'memories-access-telemetry' launcher process id '47168'.
+HXI010 Topology None field=memories-access-telemetry-clock: Project 'memories-access-telemetry-clock' launcher process id '47170'.
+exit 0
+
+Launcher -> app process (ps --ppid <launcher>), app port:
+launcher=33685 app=42902 port=127.0.0.1:32054 <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+launcher=47176 app=56393 port=127.0.0.1:32053 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Debug/net10.0/Hexalith.Memories.Server
+launcher=47168 app=53558 port=127.0.0.1:32051 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry
+launcher=47170 app=53355 port=127.0.0.1:32052 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetr
+
+Breakpoint references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+(first statement of CheckHealthAsync; the 'ready'-tagged falkordb check runs on every /ready request)
+# netcoredbg NET Core debugger 3.2.0-1 (9744e1f, Release)
+# attach pid=56393 location=<platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28 trigger=http://127.0.0.1:32053/ready utc=2026-10-18T11:48:28Z
+stopped, reason: interrupted, thread id: 56393, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.Monitor.Wait()}
+>>> break <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+ Breakpoint 1 at <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+>>> continue
+^running
+stopped, reason: breakpoint 1 hit, thread id: 57025, stopped threads: all, times= 1, frame={Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2.MoveNext() at <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28}
+# HIT=yes
+>>> backtrace
+>>> print context.Registration.Name
+context.Registration.Name = "falkordb"
+>>> delete 1
+>>> continue
+^running
+>>> detach
+^exit
+>>> quit
+backtrace (first frames):
+#0: 0x00007aa1fc857d3c Hexalith.Memories.Server.dll` Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2.MoveNext() at <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthC
+#1: 0x00007aa1fc970525 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<System.__Canon>()
+#2: 0x00007aa1fc8534b1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult>.Start<Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2>()
+#3: 0x00007aa1fc85696c Hexalith.Memories.Server.dll` Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.CheckHealthAsync()
+
+After 'delete 1', 'continue' (^running) and 'detach' (^exit), the Memories server stayed suspended: /ready and /alive
+timed out and a re-attach failed with 0x80004005. netcoredbg 3.2.0 detach does not resume a .NET 10.0.12 process here,
+so the docs tell developers to stay attached and finish with 'down'. The untouched eventstore gateway kept answering 200.
+
+## down
+## before down 2026-10-18T11:49:32Z
+dapr-scheduler-mtls-saywbewx	
+dapr-placement-mtls-rqymhamu	
+dapr-sentry-bykqyuev	
+memories-vectors-smjhbnhr	
+memories-graph-pejkdzaz	
+hexalith-g4-6cd413b7047e717b4aa631e86b0a4a05-redis	
+dapr_placement	
+dapr_scheduler	
+dapr_redis	
+dapr_zipkin	
+  PID COMMAND
+33685 dotnet run --project <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj --co
+42902 <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+47168 dotnet run --project <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.A
+47170 dotnet run --project <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memo
+47176 dotnet run --project <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csp
+53355 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Debug/net10.0/Hexalith.Memorie
+53558 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Debug/net10.0/Hexalith.Memories.Acce
+56393 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Debug/net10.0/Hexalith.Memories.Server
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+down exit 0
+## after down 2026-10-18T11:49:36Z
+dapr_placement
+dapr_scheduler
+dapr_redis
+dapr_zipkin
+  PID COMMAND
+The run's containers (Redis labelled hexalith.g4.run=6cd413b7047e717b4aa631e86b0a4a05, memories-vectors, memories-graph,
+Sentry, placement, scheduler) and its eight processes were removed; the machine-wide dapr_placement, dapr_scheduler, dapr_redis and dapr_zipkin containers were left running.

@@ -1,0 +1,166 @@
+# PRE-RELEASE PROOF: hexalith-module 4.33.1-local.1 (Builds fix, before push/release/pin)
+
+Builds: local commit 5faaf88 'fix(tool): launch the packaged AppHost with local Aspire paths' on 4629ff2.
+The package was built from a scratch clone holding exactly that change (README note excepted):
+  pwsh Tools/build-g4-tool-packages.ps1 -Version 4.33.1-local.1 -OutputDirectory <scratchpad>/pack/feed -DeferInventory
+  with NUGET_PACKAGES=<scratchpad>/pack/nuget (a symlink view of ~/.nuget/packages), so every path the packed
+  AppHost bakes in pointed into the scratch clone or that NuGet view.
+The gate run inside that build stopped on a gate-script bug (PowerShell dictionary enumeration, fixed in the
+commit); Tools/test-g4-packaged-platform-loader.ps1 was then rerun on the packed nupkg:
+  result=passed rootTooling=Hexalith.Builds.Tooling, Version=4.33.1.0, Culture=neutral, PublicKeyToken=null hostTooling=Hexalith.Builds.Tooling, Version=4.33.1.0, Culture=neutral, PublicKeyToken=null (same sha256: True)
+  runtime storeBasePath = <scratchpad>/pack/feed/platform-loader-2/workspace/aspire-store/.aspire
+  runtime appHostDirectory = <scratchpad>/pack/feed/platform-loader-2/workspace/apphost
+  runtime dcpCliPath = <scratchpad>/pack/nuget/aspire.hosting.orchestration.linux-x64/13.6.1/tools/dcp
+  runtime dashboardPath = <scratchpad>/pack/nuget/aspire.dashboard.sdk.linux-x64/13.6.1/tools/Aspire.Dashboard
+
+Baked AssemblyMetadata of the packed g4-host/Hexalith.Builds.Module.AppHost.dll:
+  apphostprojectpath = <scratchpad>/pack/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost
+  apphostprojectbaseintermediateoutputpath = <scratchpad>/pack/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/obj/
+  dcpclipath = <scratchpad>/pack/nuget/aspire.hosting.orchestration.linux-x64/13.6.1/tools/dcp
+  aspiredashboardpath = <scratchpad>/pack/nuget/aspire.dashboard.sdk.linux-x64/13.6.1/tools/Aspire.Dashboard
+After packing, the NuGet view was deleted and <scratchpad>/pack/Hexalith.Builds was replaced by an empty read-only
+directory (dr-xr-xr-x), reproducing the CI runner's unusable /home/runner paths.
+
+Negative control: the same packed host started without the runner's overrides (dotnet exec, plan from the gate):
+  g4: AppHost startup stopped with UnauthorizedAccessException.
+  exit 134 (the pre-existing teardown crash after a failed start)
+
+Installed: NUGET_PACKAGES=<scratchpad>/pack/tool-nuget dotnet tool install Hexalith.Builds.Module.Cli --version 4.33.1-local.1 --tool-path <scratchpad>/pack/tool --add-source <scratchpad>/pack/feed
+$ <scratchpad>/pack/tool/hexalith-module --version
+4.33.1-local.1+4629ff2d3bd66376b29a553663c241d3a7b87853
+
+Platform root: 2cc03cd, gitlinks staged Builds 4629ff2 (checkout 4629ff2 + the then-uncommitted fix), EventStore 2af29911, Memories 5d77b0ec.
+
+## EventStore
+$ HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 <scratchpad>/pack/tool/hexalith-module debug --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
+2026-10-18T12:32:25Z
+ready: Success
+HXW009 Prerequisite None field=<platform>/references/Hexalith.Builds: Builds catalog '<platform>/references/Hexalith.Builds' is staged 4629ff2d3bd66376b29a553663c241d3a7b87853, checked out 4629ff2d3bd66376b29a553663c241d3a7b87853, dirty; Platform 2cc03cdee1261fa256546992e28b111a11f3faf8 pins 4629ff2d3bd66376b29a553663c241d3a7b87853.
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '80736'.
+exit 0
+run 129ee79f391f002290a7ae5f135fddbf; launcher 80736 -> app 86182 (127.0.0.1:18518): <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+Aspire store created at <g4-workspaces>/129ee79f391f002290a7ae5f135fddbf/aspire-store/.aspire; DCP running from ~/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.1/tools/dcp (--monitor <packaged AppHost pid>).
+
+# netcoredbg NET Core debugger 3.2.0-1 (9744e1f, Release)
+# attach pid=86182 location=<platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225 trigger=http://127.0.0.1:18518/ready utc=2026-10-18T12:33:31Z
+stopped, reason: interrupted, thread id: 86182, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.Monitor.Wait()}
+>>> break <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+ Breakpoint 1 at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225
+>>> continue
+^running
+stopped, reason: breakpoint 1 hit, thread id: 86238, stopped threads: all, times= 1, frame={Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs:225}
+# HIT=yes
+>>> backtrace
+>>> print path
+path = "/ready"
+>>> delete 1
+>>> continue
+^running
+>>> detach
+# trigger GET http://127.0.0.1:18518/ready -> 200
+^exit
+>>> quit
+#0: 0x0000737c721d455e Hexalith.EventStore.Gateway.dll` Hexalith.EventStore.Extensions.EventStoreServiceCollectionExtensions.<>c.<AddEventStore>b__0_19() at <platform>/references/Hexalith.EventStore/src/H
+
+## before down 2026-10-18T12:33:47Z
+dapr-placement-mtls-nxdburec
+dapr-scheduler-mtls-yqkfqwch
+dapr-sentry-rjuvuqrk
+hexalith-g4-129ee79f391f002290a7ae5f135fddbf-redis
+dapr_placement
+dapr_scheduler
+dapr_redis
+dapr_zipkin
+  PID COMMAND
+77782 /home/administrator/.dotnet/dotnet exec <scratchpad>/pa
+80736 dotnet run --project <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj --co
+86182 <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+down exit 0
+## after down 2026-10-18T12:33:50Z
+dapr_placement
+dapr_scheduler
+dapr_redis
+dapr_zipkin
+  PID COMMAND
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/129ee79f391f002290a7ae5f135fddbf': No such file or directory
+total 8
+dr-xr-xr-x 2 administrator administrator 4096 Oct 18 14:31 .
+drwxr-xr-x 5 administrator administrator 4096 Oct 18 14:31 ..
+
+## Memories
+$ HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 <scratchpad>/pack/tool/hexalith-module debug --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+2026-10-18T12:33:54Z
+ready: Success
+HXW009 Prerequisite None field=<platform>/references/Hexalith.Builds: Builds catalog '<platform>/references/Hexalith.Builds' is staged 4629ff2d3bd66376b29a553663c241d3a7b87853, checked out 4629ff2d3bd66376b29a553663c241d3a7b87853, dirty; Platform 2cc03cdee1261fa256546992e28b111a11f3faf8 pins 4629ff2d3bd66376b29a553663c241d3a7b87853.
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '6636'.
+HXI010 Topology None field=memories: Project 'memories' launcher process id '14620'.
+HXI010 Topology None field=memories-access-telemetry: Project 'memories-access-telemetry' launcher process id '14619'.
+HXI010 Topology None field=memories-access-telemetry-clock: Project 'memories-access-telemetry-clock' launcher process id '14621'.
+exit 0
+run=e9e624f565ee180e52c6726dcbf04a2a workspace=<g4-workspaces>/e9e624f565ee180e52c6726dcbf04a2a
+launcher=6636 app=13413 port=127.0.0.1:17141 <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+launcher=14620 app=21604 port=127.0.0.1:17140 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Debug/net10.0/Hexalith.Memories.Server
+launcher=14619 app=19482 port=127.0.0.1:17138 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry
+launcher=14621 app=19320 port=127.0.0.1:17139 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry.Clock
+
+# netcoredbg NET Core debugger 3.2.0-1 (9744e1f, Release)
+# attach pid=21604 location=<platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28 trigger=http://127.0.0.1:17140/ready utc=2026-10-18T12:35:18Z
+stopped, reason: interrupted, thread id: 21604, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.Monitor.Wait()}
+>>> break <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+ Breakpoint 1 at <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28
+>>> continue
+^running
+stopped, reason: breakpoint 1 hit, thread id: 21690, stopped threads: all, times= 1, frame={Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2.MoveNext() at <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/HealthChecks/FalkorDbHealthCheck.cs:28}
+# HIT=yes
+>>> backtrace
+>>> print context.Registration.Name
+context.Registration.Name = "falkordb"
+>>> delete 1
+>>> continue
+^running
+>>> detach
+^exit
+>>> quit
+#0: 0x000078bd5725b42c Hexalith.Memories.Server.dll` Hexalith.Memories.Server.HealthChecks.FalkorDbHealthCheck.<CheckHealthAsync>d__2.MoveNext() at <platform>/references/Hexalith.Memories/src/Hexalith.Mem
+
+## before down 2026-10-18T12:35:37Z
+dapr-scheduler-mtls-vavsrerk
+dapr-placement-mtls-khpkfhjg
+memories-vectors-szxekyzz
+dapr-sentry-ejwvwhzz
+hexalith-g4-e9e624f565ee180e52c6726dcbf04a2a-redis
+memories-graph-cxehkdky
+dapr_placement
+dapr_scheduler
+dapr_redis
+dapr_zipkin
+  PID COMMAND
+ 6636 dotnet run --project <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj --configuration Debug --no-lau
+13413 <platform>/references/Hexalith.EventStore/src/Hexalith.EventStore/bin/Debug/net10.0/Hexalith.EventStore
+14619 dotnet run --project <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj --co
+14620 dotnet run --project <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj --configuration Debug 
+14621 dotnet run --project <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock
+19320 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry.Clock
+19482 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Debug/net10.0/Hexalith.Memories.AccessTelemetry
+21604 <platform>/references/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Debug/net10.0/Hexalith.Memories.Server
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+down exit 0
+## after down 2026-10-18T12:35:41Z
+dapr_placement
+dapr_scheduler
+dapr_redis
+dapr_zipkin
+  PID COMMAND
+ls: cannot access '<g4-workspaces>/e9e624f565ee180e52c6726dcbf04a2a': No such file or directory
+total 8
+dr-xr-xr-x 2 administrator administrator 4096 Oct 18 14:31 .
+drwxr-xr-x 5 administrator administrator 4096 Oct 18 14:31 ..
+
+The read-only <scratchpad>/pack/Hexalith.Builds stayed empty through both runs: no baked path was used.
+netcoredbg 3.2.0 'detach' is unreliable against .NET 10.0.12 (earlier diagnostic runs left the debuggee suspended);
+'down' removed each whole run either way.
