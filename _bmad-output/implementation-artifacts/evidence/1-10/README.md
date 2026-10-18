@@ -47,7 +47,7 @@ The `4.33.0` package is not usable for any Platform v2 `run`/`debug` here:
    `UnauthorizedAccessException: Access to the path '/home/runner' is denied.` The `6e8b71e` check runs
    `--validate-platform` only, so it does not cover this.
 
-A fixed Builds release and a Platform pin move are required. On 2026-10-18 the human chose to fix the two packaged-host defects in this story (next section). The current Builds main also has a separate catalog/audit mismatch blocking CI; see [release-blocker.txt](release-blocker.txt). Repair of that additional blocker is awaiting the scope approval required by the story.
+A fixed Builds release and a Platform pin move are required. On 2026-10-18 the human chose to fix the two packaged-host defects in this story (next section). The additional catalog/audit repair and formatting-only qualification correction were approved and supplied by the owner. CI [39138234609](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39138234609) passed at `c6f56c011ce3a83cdf6100c322352daf125c6af9`. Approved Release [39139908836](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39139908836) has passed its source/package qualification and is creating the release. See [builds-resumed-verification.txt](builds-resumed-verification.txt) for the local source and package checks. The older failures in [release-blocker.txt](release-blocker.txt) and [qualification-blocker.txt](qualification-blocker.txt) are retained as historical evidence.
 
 ## Builds fix pre-release proof (not the final AC1 evidence)
 

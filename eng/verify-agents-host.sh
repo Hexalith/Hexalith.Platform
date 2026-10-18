@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Local scaffold validation and closed full EXT-HOST-1 qualification.
+# Local scaffold validation and EXT-HOST-1 component qualification.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MODE=Full
+PROFILE=""
 ARTIFACTS_DIR="${TMPDIR:-/tmp}/hexalith-agents54-host-artifacts"
 fail() {
   echo "ERROR: $*" >&2
@@ -22,6 +23,12 @@ while (($#)); do
       [[ -n "$ARTIFACTS_DIR" ]] || fail "artifacts path is empty"
       shift 2
       ;;
+    --profile)
+      (($# >= 2)) || fail "--profile requires a path"
+      PROFILE="$2"
+      [[ -n "$PROFILE" ]] || fail "profile path is empty"
+      shift 2
+      ;;
     *) fail "unknown argument: $1" ;;
   esac
 done
@@ -29,6 +36,16 @@ case "$MODE" in
   Full|LocalScaffold) ;;
   *) fail "unknown mode: $MODE" ;;
 esac
+case "$ARTIFACTS_DIR" in
+  /*) ;;
+  *) ARTIFACTS_DIR="$(pwd)/$ARTIFACTS_DIR" ;;
+esac
+if [[ -n "$PROFILE" ]]; then
+  case "$PROFILE" in
+    /*) ;;
+    *) PROFILE="$(pwd)/$PROFILE" ;;
+  esac
+fi
 cd "$ROOT"
 python3 "$ROOT/eng/verify-platform-pins.py"
 (cd "$ROOT/eng" && python3 -m unittest test_verify_platform_pins test_local_dapr_security_cleanup) || fail "eng Python tests failed"
@@ -42,10 +59,16 @@ if [[ -d "$ROOT/src/Hexalith.Agents.AppHost" \
   fail "Agents module hosting projects must not live in Hexalith.Platform"
 fi
 if [[ "$MODE" == Full ]]; then
-  python3 "$ROOT/eng/ext-host-1/verify_full.py" --artifacts-path "$ARTIFACTS_DIR"
+  full_args=(--artifacts-path "$ARTIFACTS_DIR")
+  if [[ -n "$PROFILE" ]]; then
+    full_args+=(--profile "$PROFILE")
+  fi
+  python3 "$ROOT/eng/ext-host-1/verify_full.py" "${full_args[@]}"
+  echo "Component qualification passed. Live qualification and the OQ-5.4-1 cohort remain gated."
+else
+  echo "Building local Platform scaffold (Debug)..."
+  # The file-based AppHost requires full property syntax, rather than -warnaserror shorthand.
+  dotnet build ./apphost.cs -c Debug --artifacts-path "$ARTIFACTS_DIR" \
+    -p:TreatWarningsAsErrors=true -p:AspireUseCliBundle=true -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+  echo "LocalScaffold build succeeded. Full EXT-HOST-1 qualification remains unavailable."
 fi
-echo "Building local Platform scaffold (Debug)..."
-# The file-based AppHost requires full property syntax, rather than -warnaserror shorthand.
-dotnet build ./apphost.cs -c Debug --artifacts-path "$ARTIFACTS_DIR" \
-  -p:TreatWarningsAsErrors=true -p:AspireUseCliBundle=true -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
-echo "LocalScaffold build succeeded. Full EXT-HOST-1 qualification remains unavailable."

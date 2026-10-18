@@ -49,6 +49,8 @@ context:
 | Mapped dependency | Consumer root resolves the dependency where the mapping would | Helper returns that path | N/A |
 | Unmapped layout | The dependency exists only as a sibling, ancestor or root-level copy | No path returned | Throws, naming the dependency and the expected path |
 
+- **Formatting-only CI repairs (human, 2026-10-18, resumed run).** Approved the two PackagedSeedProbe conditional-expression formatting fixes and equivalent formatting-only CI fixes needed to continue the release. The owner already published the exact correction as `c6f56c011ce3a83cdf6100c322352daf125c6af9`; use that commit rather than creating a duplicate.
+
 </frozen-after-approval>
 
 ## Code Map
@@ -113,7 +115,9 @@ Machine:
 
 ## Implementation Notes
 
-- **Later CI qualification blocker.** CI `39135616837` at `332b2c144defba546fe0a09626a4a72f2340e22f` passed the audit/catalog checks and full Builds module tests, then failed with SA1143 in `Tools/PackagedSeedProbe/PackagedSeedProbe.cs` at the two multiline conditional expressions. A formatting-only patch is prepared and builds with 0 warnings/errors; see `evidence/1-10/qualification-blocker.txt`. Scope approval was requested before adding this separate Builds code change. The release and final pinned-tool breakpoint proof remain pending.
+- **Release in progress.** CI `39138234609` is green at `c6f56c011ce3a83cdf6100c322352daf125c6af9`, including full source tests and official packaged qualification. Existing Release `39139908836` passed the exact-SHA source guard and has a recorded production approval by `jpiquot`; the duplicate dispatch from this resumed run was cancelled. Local source suites and focused package/loader/seed checks passed too (`evidence/1-10/builds-resumed-verification.txt`). Wait for the published version before updating the pin and proving AC1.
+
+- **Later CI qualification blocker.** CI `39135616837` at `332b2c144defba546fe0a09626a4a72f2340e22f` passed the audit/catalog checks and full Builds module tests, then failed with SA1143 in `Tools/PackagedSeedProbe/PackagedSeedProbe.cs` at the two multiline conditional expressions. A formatting-only patch is prepared and builds with 0 warnings/errors; see `evidence/1-10/qualification-blocker.txt`. The human approved these and equivalent formatting-only CI fixes. The owner supplied `c6f56c011ce3a83cdf6100c322352daf125c6af9`; CI `39138234609` is validating it. The release and final pinned-tool breakpoint proof remain pending.
 
 - **Stable AC2 re-verification.** Builds `332b2c144defba546fe0a09626a4a72f2340e22f`, EventStore `d55c6f7c11e9bce6f17d490a84c83f1561979d63`, Memories `d0c5d8ca96b06e02acdda88f255b33288642a7f7`: the source live class passed 3/3 in 286.050 s. All four repository revisions and the three relevant binary hashes matched before/after. `evidence/1-10/live-tests.txt` records the raw output, UTC interval, and restoration of the temporary inotify cap.
 

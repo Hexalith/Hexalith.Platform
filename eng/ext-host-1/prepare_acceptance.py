@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -133,9 +134,11 @@ def prepare(root, output, profile_path=None):
     if not COMMIT.fullmatch(head) or git(root, "status", "--porcelain"):
         raise ValueError("clean candidate checkout required")
     output.mkdir(parents=True)
+    profile_file = output / "agents-deployment-profile.json"
     command = (f'test "$(git -C ../platform rev-parse HEAD)" = "{head}" && '
                'test -z "$(git -C ../platform status --porcelain)" && '
-               "bash ../platform/eng/verify-agents-host.sh --mode Full --artifacts-path /tmp/ext-host-1-full")
+               "bash ../platform/eng/verify-agents-host.sh --mode Full --artifacts-path /tmp/ext-host-1-full --profile "
+               + shlex.quote(str(profile_file)))
     packet = {
         "schema": SCHEMA,
         "acceptedReplacementCommit": None,

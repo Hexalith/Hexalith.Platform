@@ -1,15 +1,38 @@
 #!/usr/bin/env python3
-"""Persist EXT-HOST-1 custody and guard evidence. Missing Parties, Conversations, or protection bindings stay blocked."""
+"""Persist EXT-HOST-1 custody and guard evidence. A complete profile can record component qualification; live qualification stays gated."""
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import prepare_acceptance as prepare
+
 REFUSAL = ("DependencyNotAvailable: EXT-HOST-1. Complete H1-H4 composition, production providers, "
            "accepted targets/commands and persisted qualification are unavailable.")
 BINDING_GAPS = ("partiesBinding", "conversationsBinding", "protectionEngine", "protectionObserver")
+REQUIRED_CELLS = (
+    "RoutingUsesAuthenticatedOriginAndRetainedReceiptDigest",
+    "ExactLookupDoesNotMutateAndRequiresCurrentPrivateAuthority",
+    "DurableFairDrainRetainsUnknownAndAdvancesOtherTenantAfterRestart",
+    "UnavailableSpoolOrOriginalKeyNeverReportsProcessedDenial",
+    "OriginalObservationIsDurableAndStableAcrossRetryAndRestart",
+    "SameRevisionDifferentStateCannotPassRestoreProof",
+    "LostRecorderAcknowledgementRecoversExactSourceBeforeSpoolAck",
+    "LostAcknowledgementAndRetryReuseStoredFirstSeenWithoutRenewal",
+    "StartupEveryReadinessAndContentAdmissionRunFreshCanaries",
+    "AcceptedAttributionAndInstalledFencesAreJointWithEverySourceWrite",
+    "HoldAndSealSerializeAtConditionalEffectWithExactStaleLookup",
+    "PostSealAdmissionCannotBecomeContentContainmentOrSuccessfulCompletion",
+    "CompromiseAndReplacementRemainExactSameBatchWithoutClearingGlobalBlock",
+)
+LOST_ACK_CELLS = (
+    "LostRecorderAcknowledgementRecoversExactSourceBeforeSpoolAck",
+    "LostAcknowledgementAndRetryReuseStoredFirstSeenWithoutRenewal",
+)
+MISSING_RUNTIME_INPUTS = ("EXT-PROTECTION-1", "trust-anchors", "OQ-5.4-1")
 CATEGORIES = {
     "acl": ("Acl", "Authoriz", "Guard", "Fence", "Hold", "Scope"),
     "isolation": ("Cross", "Tenant", "Isolation", "Scope"),
@@ -22,6 +45,7 @@ CUSTODY_FILTER = ("FullyQualifiedName~ReplicatedSecurityObservationSpoolTests|"
                   "FullyQualifiedName~TrustedEnvelopeReplayVerifierTests|"
                   "FullyQualifiedName~PlatformSecurityDenialRecorderTests|"
                   "FullyQualifiedName~Fr34ProtectionGateTests")
+ATTEMPT_NAME = "component-attempt.json"
 
 
 def canonical(value):
@@ -73,54 +97,270 @@ def run_suite(root, project, test_filter, results, log_name):
     return code, names
 
 
-def write_evidence(evidence, category, gaps, suites, names):
+def method_name(test_name):
+    leaf = str(test_name).split("(", 1)[0].strip()
+    return leaf.rsplit(".", 1)[-1]
+
+
+def cell_records(names, started):
+    if not started:
+        return [{"name": name, "outcome": "NotRun"} for name in REQUIRED_CELLS]
+    grouped = {name: [] for name in REQUIRED_CELLS}
+    allowed = set(REQUIRED_CELLS)
+    for item in names:
+        method = method_name(item.get("name", ""))
+        if method in allowed:
+            grouped[method].append(item.get("outcome", ""))
+    records = []
+    for name in REQUIRED_CELLS:
+        outcomes = grouped[name]
+        if not outcomes:
+            outcome = "Missing"
+        elif all(item == "Passed" for item in outcomes):
+            outcome = "Passed"
+        else:
+            outcome = "Failed"
+        records.append({"name": name, "outcome": outcome})
+    return records
+
+
+def coverage_gaps(names, custody_code, guard_code, started):
+    if not started:
+        return []
+    gaps = [record["name"] for record in cell_records(names, True) if record["outcome"] != "Passed"]
+    if gaps:
+        return gaps
+    if custody_code != 0:
+        gaps.append("custody")
+    if guard_code != 0:
+        gaps.append("guard")
+    return gaps
+
+
+def result_code(qualified, started, gaps):
+    if qualified:
+        return "ComponentQualification"
+    if not started or gaps:
+        return "DependencyNotAvailable"
+    return "QualificationNotAccepted"
+
+
+def result_fields(qualified, gaps, coverage, cells):
+    return {
+        "blocked": not qualified,
+        "componentQualification": qualified,
+        "coverageGaps": coverage,
+        "dependency": "EXT-HOST-1",
+        "dependencyAvailable": False,
+        "effects": 0,
+        "gap": gaps,
+        "liveEffects": 0,
+        "missingRuntimeInputs": list(MISSING_RUNTIME_INPUTS),
+        "productionEngineRegistered": False,
+        "requiredCells": cells,
+    }
+
+
+def write_evidence(evidence, category, gaps, suites, names, qualified, coverage, cells):
     matched = [item for item in names if any(token in item["name"] for token in CATEGORIES[category])]
     document = {
         "schema": "EXT-HOST-1.full-evidence.v1",
         "category": category,
         "requirements": ["H1", "H2", "H3", "H4", "v21", "v23"],
-        "blocked": bool(gaps),
-        "dependency": "EXT-HOST-1",
-        "code": "DependencyNotAvailable" if gaps else "QualificationNotAccepted",
-        "gap": gaps,
-        "effects": 0,
-        "liveEffects": 0,
-        "dependencyAvailable": False,
-        "productionEngineRegistered": False,
+        "code": result_code(qualified, suites.get("started", False), gaps),
         "sources": ["Hexalith.Platform.Custody.Tests", "GovernanceScopeGuardTests"],
         "suites": suites,
         "matchedTests": matched,
     }
+    document.update(result_fields(qualified, gaps, coverage, cells))
     (evidence / f"{category}.json").write_bytes(canonical(document))
+
+
+def write_lost_ack(evidence, gaps, suites, names, qualified, coverage, cells):
+    matched = [item for item in names
+               if method_name(item.get("name", "")) in LOST_ACK_CELLS and item.get("outcome") == "Passed"]
+    document = {
+        "schema": "EXT-HOST-1.full-evidence.v1",
+        "category": "lost-ack",
+        "requirements": ["H1", "H2", "H3", "H4", "v21", "v23"],
+        "code": result_code(qualified, suites.get("started", False), gaps),
+        "sources": ["Hexalith.Platform.Custody.Tests", "GovernanceScopeGuardTests"],
+        "suites": suites,
+        "matchedTests": matched,
+    }
+    document.update(result_fields(qualified, gaps, coverage, cells))
+    (evidence / "lost-ack.json").write_bytes(canonical(document))
+
+
+def retain_prior_evidence(evidence):
+    files = []
+    if evidence.exists():
+        for path in evidence.rglob("*"):
+            if path.is_file() and "prior" not in path.relative_to(evidence).parts:
+                files.append((path.relative_to(evidence).as_posix(), path))
+    if not files:
+        return None
+    files.sort()
+    digest = hashlib.sha256()
+    for name, path in files:
+        digest.update(name.encode())
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    digest_hex = digest.hexdigest()
+    destination = evidence / "prior" / digest_hex
+    if destination.exists():
+        return digest_hex
+    destination.mkdir(parents=True)
+    for name, path in files:
+        target = destination / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(path.read_bytes())
+    return digest_hex
+
+
+def publish(evidence, gaps, suites, names, qualified, coverage):
+    retain_prior_evidence(evidence)
+    cells = cell_records(names, bool(suites.get("started")))
+    for category in CATEGORIES:
+        write_evidence(evidence, category, gaps, suites, names, qualified, coverage, cells)
+    write_lost_ack(evidence, gaps, suites, names, qualified, coverage, cells)
+    document = {
+        "schema": "EXT-HOST-1.full-evidence.v1",
+        "code": result_code(qualified, suites.get("started", False), gaps),
+        "suites": suites,
+    }
+    document.update(result_fields(qualified, gaps, coverage, cells))
+    (evidence / "blocked.json").write_bytes(canonical(document))
+
+
+def suite_projects(root):
+    custody_project = root / "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj"
+    guard_project = root / "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj"
+    if not guard_project.exists():
+        guard_project = root.parent / "eventstore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj"
+    return custody_project, guard_project
+
+
+def run_suites(root, artifacts):
+    custody_project, guard_project = suite_projects(root)
+    custody_code, custody_names = run_suite(root, custody_project, CUSTODY_FILTER, artifacts / "custody", "custody.log")
+    guard_code, guard_names = run_suite(
+        root, guard_project, "FullyQualifiedName~GovernanceScopeGuardTests", artifacts / "guard", "guard.log")
+    suites = {"custodyExitCode": custody_code, "guardExitCode": guard_code,
+              "custodyTests": len(custody_names), "guardTests": len(guard_names), "started": True}
+    return custody_code, guard_code, custody_names + guard_names, suites
+
+
+def suites_not_started():
+    return {"custodyExitCode": None, "guardExitCode": None, "custodyTests": 0, "guardTests": 0, "started": False}
+
+
+def profile_status(path):
+    try:
+        loaded = prepare.load_profile(path)
+        missing = prepare.missing_references(loaded)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError, TypeError):
+        return None, "rejected"
+    if missing:
+        return loaded, "incomplete"
+    return loaded, "complete"
+
+
+def git_head(root):
+    completed = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"],
+                               check=True, capture_output=True, text=True, timeout=30)
+    head = completed.stdout.strip()
+    if prepare.COMMIT.fullmatch(head) is None:
+        raise ValueError("component target is not a commit")
+    return head
+
+
+def attempt_key(head, profile):
+    return hashlib.sha256(canonical({"head": head, "plan": prepare.plan(), "profile": profile})).hexdigest()
+
+
+def read_attempt(artifacts):
+    path = artifacts / ATTEMPT_NAME
+    if not path.exists():
+        return None
+    try:
+        document = json.loads(path.read_text())
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return {"attemptKey": "", "exitCode": 1}
+    exit_code = document.get("exitCode") if isinstance(document, dict) else None
+    if not isinstance(document, dict) or not isinstance(document.get("attemptKey"), str) or isinstance(exit_code, bool) or not isinstance(exit_code, int):
+        return {"attemptKey": "", "exitCode": 1}
+    return document
+
+
+def write_attempt(artifacts, key, head, profile, code):
+    document = {
+        "attemptKey": key,
+        "componentQualification": code == 0,
+        "dependencyAvailable": False,
+        "effects": 0,
+        "exitCode": code,
+        "head": head,
+        "liveEffects": 0,
+        "missingRuntimeInputs": list(MISSING_RUNTIME_INPUTS),
+        "planSha256": prepare.digest(prepare.plan()),
+        "productionEngineRegistered": False,
+        "profileSha256": prepare.digest(profile),
+        "schema": "EXT-HOST-1.component-attempt.v1",
+    }
+    (artifacts / ATTEMPT_NAME).write_bytes(canonical(document))
+
+
+def refuse_profile(evidence, profile):
+    publish(evidence, binding_gaps(profile), suites_not_started(), [], False, [])
+    print("ERROR: " + REFUSAL, file=sys.stderr)
+    return 1
 
 
 def verify(root, artifacts, profile):
     root, artifacts = Path(root).resolve(), Path(artifacts).resolve()
     evidence = artifacts / "evidence"
     evidence.mkdir(parents=True, exist_ok=True)
+    if profile:
+        loaded, status = profile_status(profile)
+        if status != "complete":
+            if read_attempt(artifacts) is not None:
+                print("ERROR: " + REFUSAL, file=sys.stderr)
+                return 1
+            return refuse_profile(evidence, profile)
+        try:
+            head = git_head(root)
+        except (OSError, subprocess.SubprocessError, ValueError):
+            print("ERROR: EXT-HOST-1 component target is not a commit.", file=sys.stderr)
+            return 1
+        key = attempt_key(head, loaded)
+        stored = read_attempt(artifacts)
+        if stored is not None:
+            if stored.get("attemptKey") == key:
+                return int(stored["exitCode"])
+            print("ERROR: EXT-HOST-1 keeps the first complete attempt.", file=sys.stderr)
+            return 1
+        custody_code, guard_code, names, suites = run_suites(root, artifacts)
+        gaps = binding_gaps(profile)
+        coverage = coverage_gaps(names, custody_code, guard_code, True)
+        qualified = not gaps and not coverage and custody_code == 0 and guard_code == 0
+        publish(evidence, gaps, suites, names, qualified, coverage)
+        code = 0 if qualified else 1
+        write_attempt(artifacts, key, head, loaded, code)
+        if qualified:
+            return 0
+        if custody_code != 0 or guard_code != 0:
+            print("ERROR: EXT-HOST-1 evidence suites failed.", file=sys.stderr)
+        print("ERROR: EXT-HOST-1 component qualification incomplete.", file=sys.stderr)
+        return 1
+    if read_attempt(artifacts) is not None:
+        print("ERROR: " + REFUSAL, file=sys.stderr)
+        return 1
+    custody_code, guard_code, names, suites = run_suites(root, artifacts)
     gaps = binding_gaps(profile)
-    custody_project = root / "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj"
-    guard_project = root / "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj"
-    if not guard_project.exists():
-        guard_project = root.parent / "eventstore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj"
-    custody_code, custody_names = run_suite(root, custody_project, CUSTODY_FILTER, artifacts / "custody", "custody.log")
-    guard_code, guard_names = run_suite(root, guard_project, "FullyQualifiedName~GovernanceScopeGuardTests", artifacts / "guard", "guard.log")
-    suites = {"custodyExitCode": custody_code, "guardExitCode": guard_code,
-              "custodyTests": len(custody_names), "guardTests": len(guard_names)}
-    names = custody_names + guard_names
-    for category in CATEGORIES:
-        write_evidence(evidence, category, gaps, suites, names)
-    (evidence / "blocked.json").write_bytes(canonical({
-        "schema": "EXT-HOST-1.full-evidence.v1",
-        "blocked": True,
-        "dependency": "EXT-HOST-1",
-        "gap": gaps,
-        "effects": 0,
-        "liveEffects": 0,
-        "dependencyAvailable": False,
-        "productionEngineRegistered": False,
-        "suites": suites,
-    }))
+    coverage = coverage_gaps(names, custody_code, guard_code, True)
+    publish(evidence, gaps, suites, names, False, coverage)
     if custody_code != 0 or guard_code != 0:
         print("ERROR: EXT-HOST-1 evidence suites failed.", file=sys.stderr)
     print("ERROR: " + REFUSAL, file=sys.stderr)

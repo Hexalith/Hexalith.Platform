@@ -1,0 +1,30 @@
+# Resumed Builds verification at c6f56c011ce3a83cdf6100c322352daf125c6af9
+
+Full source validation with DOTNET_PROCESSOR_COUNT=2:
+  Evidence.Tests: 107 passed.
+  Module.Tests: 1070 total, 1067 passed, 3 expected workspace-dependent skips.
+  Tooling.IntegrationTests: 1 passed, 12 explicitly opt-in live cases skipped.
+  Platform source live tests were run separately: 3/3 passed (live-tests.txt).
+
+First full local attempt exposed the already-recorded timing-sensitive bound:
+ReadinessDeadlineObservationSharesStoppingBudgetAsync(timeout) elapsed 1.5094067s
+against a 1.5s assertion. Focused rerun: all 4 scenarios passed. Reduced-concurrency
+full rerun passed all source suites, then packing stopped because the filesystem
+was full. No assertion or gate was changed.
+
+After disk space recovered, focused packaging used:
+  DOTNET_PROCESSOR_COUNT=2 pwsh -NoProfile -File ./Tools/test-g4-tool-package-contracts.ps1 -Version 4.33.1-local.4 -SkipSourceValidation -RequireControls
+
+The packaging, loader, contracts, controls and packaged seed checks passed.
+Source validation was deliberately not repeated in this focused command; its
+inventory therefore remains non-release-eligible. Official CI 39138234609 ran
+source validation and the full package qualification and passed at this SHA.
+Only the protected release workflow can publish the accepted tool.
+
+Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.33.1.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '/tmp/hexalith-builds-g4-packages-a55efd303fae45baba762cf8b2b14fb3/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: /tmp/hexalith-builds-g4-packages-a55efd303fae45baba762cf8b2b14fb3/platform-loader
+  Restored /tmp/bmad-1-10-package-check-k4x9kx8n/repo/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 6 ms).
+  Restored /tmp/bmad-1-10-package-check-k4x9kx8n/repo/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 1 ms).
+  P0Fixture.Inventory.Descriptor -> /tmp/bmad-1-10-package-check-k4x9kx8n/repo/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+  P0Fixture.Inventory -> /tmp/bmad-1-10-package-check-k4x9kx8n/repo/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+Packaged seed configured/declarative HTTP and receiver metadata checks passed.
+Packed G-4 tool contract qualification passed for version '4.33.1-local.4'; inventory recorded at '/tmp/hexalith-builds-g4-packages-a55efd303fae45baba762cf8b2b14fb3/g4-tool-package-inventory.json'.

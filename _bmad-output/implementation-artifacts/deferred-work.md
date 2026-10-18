@@ -826,3 +826,15 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
   summary: Verify whether a stalled packaged-loader Aspire-path resolver needs its own bounded child process (medium severity, unverified).
   evidence: Review pass 2 R2-B10/R2-E2 found the new pwsh resolver is synchronous and outside Invoke-PackagedHostChild's timeout. No stall was reproduced; a deliberately delayed resolver plus a gate-duration assertion would settle the operational impact before adding timeout handling.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-host-1-full-qualification-verifier.md`
+  summary: Correct the Platform README claim that the default Agents host script expects a successful Release AppHost build.
+  evidence: `README.md` "Verify Agents host contract" still says `./eng/verify-agents-host.sh` succeeds as a Release build. Default Full already exited at the verifier before any build, and this story's composition doc states that refusal. The README section predates the qualification pass path.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-host-1-full-qualification-verifier.md`
+  summary: Give the EXT-PROTECTION custody diagram an explicit wait for permanent deletion, cancellation, and missing CloudTrail evidence.
+  evidence: The separate custody design already in the working tree moves `Prepared` to `WaitingForAuthority` and back to `Reserved` without a deletion wait, while its prose requires permanent deletion of an abandoned successor before another arm. This story does not own that design.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-host-1-full-qualification-verifier.md`
+  summary: Turn a missing `dotnet` executable into the EXT-HOST-1 refusal instead of a traceback.
+  evidence: `run_suite` calls `subprocess.run` and catches only `TimeoutExpired`. `FileNotFoundError` escapes. The helper is preserved from the previous verifier and was not introduced by the pass path.

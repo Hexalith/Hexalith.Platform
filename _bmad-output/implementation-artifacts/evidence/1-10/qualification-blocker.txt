@@ -3,7 +3,9 @@ Revision: 332b2c144defba546fe0a09626a4a72f2340e22f
 All preceding gates, including the full Module.Tests suite, passed.
 Final qualification is blocked by two SA1143 formatting diagnostics in Tools/PackagedSeedProbe.
 Prepared patch: seed-probe-formatting.patch. Focused Debug build passed, 0 warnings/errors.
-Additional formatting scope approval requested under the frozen story restriction.
+The human approved these and equivalent formatting-only CI fixes.
+Owner commit c6f56c011ce3a83cdf6100c322352daf125c6af9 supplies exactly this patch.
+Replacement CI: https://github.com/Hexalith/Hexalith.Builds/actions/runs/39138234609
 
 Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6392431Z ##[error]/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.cs(172,13): error SA1143: Conditional expressions must be formatted consistently (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1143.html) [/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj]
 Build and test	Qualify G-4 tool source and Release packages	2026-10-18T14:54:45.6403659Z ##[error]/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.cs(131,17): error SA1143: Conditional expressions must be formatted consistently (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1143.html) [/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj]
