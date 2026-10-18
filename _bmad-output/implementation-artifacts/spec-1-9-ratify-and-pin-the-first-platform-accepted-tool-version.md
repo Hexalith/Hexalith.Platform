@@ -72,6 +72,7 @@ Builds paths are under `references/Hexalith.Builds`.
 ## Implementation Notes
 
 - 2026-10-17, Builds local commit `254aed4` (`fix(ci): copy embedded schemas into catalog rebuild test`, parent `c8c72dc`, not pushed). The rebuild step now evaluates `Hexalith.Builds.Tooling.csproj` with `dotnet msbuild -getItem:EmbeddedResource` and copies every evaluated resource outside the tooling directory to the same Builds-relative path in the isolated copy; it refuses a resource outside the Builds checkout or missing on disk. The hard-coded manifest-v2 copy and the pre-created `schemas` directory were removed. `pwsh -NoProfile -File Tools/test-platform-version-catalog.ps1` passed locally: 96 scenarios, exit 0. Commit message validated with the repository's commitlint (`@commitlint/cli` 21.2.3).
+- 2026-10-18 resumed verification: Builds `main` is at `544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`, which contains the CI fix. The catalog test again passed all 96 scenarios with exit 0. The local `origin/main` tracking ref points to that commit, but no release tag matches it in the local checkout. Platform remains unpinned, so release and acceptance criteria are still open.
 - Remaining steps are the orchestrator's remote work, then the post-release Platform edits.
 
 ## Spec Change Log
