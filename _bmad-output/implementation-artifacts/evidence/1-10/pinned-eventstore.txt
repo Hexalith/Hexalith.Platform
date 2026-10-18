@@ -104,3 +104,13 @@ stableBaselineContainers=["0719fe8c59bd dapr_placement", "8a7dea8bcfe1 dapr_sche
 baselineContainersPreserved=True
 ownedProcessesAfterDown=[]
 # finished 2026-10-18T16:07:29.082110+00:00
+
+# Review-pass-3 provenance correction (raw output above preserved)
+# debugAssembly and debugAssemblySha256 identify the application executable
+# Hexalith.EventStore.dll, not the assembly containing the breakpoint frame.
+# The captured backtrace identifies Hexalith.EventStore.Gateway.dll as the
+# containing assembly. No Gateway assembly hash was captured during this run.
+# The checkout source hash and resolved breakpoint/backtrace record the hit.
+# At Platform HEAD 5151bef, the 4.33.1 tool pin was an uncommitted working-tree
+# edit; the restored-tool version above records the tool actually executed.
+# That pin edit was subsequently committed in 64cbd01.

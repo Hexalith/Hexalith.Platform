@@ -1,0 +1,26 @@
+# Byte-identical cf20db9 test output relocated from /tmp to /home
+
+xUnit sets the working directory to the test assembly directory. This changes only that output-directory location; the fixture and code are unchanged. The same validator always emits a relative manifest path. The fixture creates its declaration under /tmp and expects the absolute path as a substring.
+Original assembly: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll
+Relocated assembly: /home/administrator/.cache/bmad-1-10-cf20db9-test-bin-jacsrzmg/net10.0/Hexalith.Platform.Composition.Tests.dll
+Identical SHA-256: a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf
+Command: dotnet exec /home/administrator/.cache/bmad-1-10-cf20db9-test-bin-jacsrzmg/net10.0/Hexalith.Platform.Composition.Tests.dll -method *ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation
+Environment: DOTNET_PROCESSOR_COUNT=2; live gate unset
+
+## Raw test output
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '00a38cd6d505e1e7a4638dc8afd25c965cb9f9ed538249b80cfdb1ca115c08bc')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.317s
+
+## Result metadata
+{
+  "exitCode": 0,
+  "originalAssemblySha256": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+  "relocatedAssemblySha256": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+  "sourceRevision": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+  "sourceChanged": false
+}

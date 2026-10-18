@@ -1,0 +1,580 @@
+# Review-pass-3 full Composition suite at exact Platform cf20db9
+
+Disposable worktree with clean direct checkouts; unrelated active-workspace Builds edits were excluded.
+Builds and Composition test projects built in Debug with -nodeReuse:false -m:1; 0 warnings, 0 errors.
+Working directory: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform
+Environment: DOTNET_PROCESSOR_COUNT=2 HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 (live gate unset)
+Command: dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll
+
+## Before
+{
+  "utc": "2026-10-18T17:48:32.046600+00:00",
+  "revisions": {
+    "Platform": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+    "AI.Tools": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+    "Agents": "b42a44bc5cbcd1cb57b6df74301893dd7e6ea2ba",
+    "Builds": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+    "ChatBot": "78790dd1573187a87912bc1b29edd320c713c7ed",
+    "Commons": "388b2cb5077ebec37a32c301e657e4c61e1041b2",
+    "Conversations": "ed81a80ea0a8cb0c6e31f4755f082b8913389e6c",
+    "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+    "Folders": "c22b13137202f7bf8c60b80c095a69748435bd6e",
+    "FrontComposer": "1513fe3ed21a554eeee7a9d807f9b9e25fdb4cd2",
+    "McpCli": "c25e2140e14a76b696a76aed30c8302107714fd6",
+    "Memories": "4f6b3b1265d15d208761e6419e5c825d3f39fea3",
+    "Parties": "7e73709992512d944f4950e6efb28c6132f9473c",
+    "PolymorphicSerializations": "f1b7752260d4574dd92791d75a5a1c300590e49e",
+    "Projects": "25f9fdab6106f5bcbf06aaabe8ca351f543bb52e",
+    "Tenants": "c9feedb6656d70c7271e851c844ee29bdfb28c3e",
+    "Timesheets": "72d9fdaa813daf9d39d296e268fd2e1086a8dd87",
+    "Works": "9a7a71bd0fc7e01d342fc6e82c8c9dd892d527ce"
+  },
+  "workingTrees": {
+    "Platform": "",
+    "AI.Tools": "",
+    "Agents": "",
+    "Builds": "",
+    "ChatBot": "",
+    "Commons": "",
+    "Conversations": "",
+    "EventStore": "",
+    "Folders": "",
+    "FrontComposer": "",
+    "McpCli": "",
+    "Memories": "",
+    "Parties": "",
+    "PolymorphicSerializations": "",
+    "Projects": "",
+    "Tenants": "",
+    "Timesheets": "",
+    "Works": ""
+  },
+  "binarySha256": {
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "d9c08ad4940902dbb08501eee37f00acc133c1b0dbef5e49f6ff898403250b2c",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4ecda9525e6a3db0d43fc5aa8d355bfdf65c7bcae0b06301fa2f691d865aae25"
+  },
+  "containers": [
+    "e14ec328293e memories-vectors-ermuagkc",
+    "ed19013214d0 memories-graphs-zwpautjb",
+    "8afadd43815e security-depndyrc",
+    "07c04f82c7fc folders-provider-539031de4192db7c",
+    "92426df0d8cb folders-durability-539031de4192db7c",
+    "d758028f3025 security-cysykhzq",
+    "6533ea1b762f tunnel-proxy-a43a49d6-3a77-403b-b8fe-aa9ad05078e2",
+    "98c19d4e578d memories-vectors-ehcsydcf",
+    "88d9922f30ed memories-graphs-pchnpxbv",
+    "e73433f627bd p1r-isolation-23e3146fb09045b784cc26d4d124b957-sdk",
+    "70c5b5169d21 p1r-isolation-23e3146fb09045b784cc26d4d124b957-daemon",
+    "0719fe8c59bd dapr_placement",
+    "8a7dea8bcfe1 dapr_scheduler",
+    "8d0788f8322f dapr_redis",
+    "cb7c12622c18 dapr_zipkin"
+  ]
+}
+
+## Raw test output
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+{"EventId":7105,"LogLevel":"Warning","Category":"Hexalith.EventStore.Server.Configuration.FoldedSnapshotQualificationHostedService","Message":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","State":{"Message":"{OriginalFormat}=Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","{OriginalFormat}":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent"}}
+{"EventId":1120,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ProjectionDiscoveryHostedService","Message":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","State":{"Message":"{OriginalFormat}=Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","{OriginalFormat}":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime."}}
+{"EventId":1200,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ActiveRebuildIndexCleanupService","Message":"Active-rebuild-index cleanup service started: CadenceSeconds=60, Stage=ActiveRebuildIndexCleanupServiceStarted","State":{"Message":"CadenceSeconds=60,{OriginalFormat}=Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted","CadenceSeconds":60,"{OriginalFormat}":"Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted"}}
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.EventStore.Configuration.DaprRateLimitConfigSync","Message":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.","Exception":"Dapr.DaprException: GetConfiguration operation failed: the Dapr endpoint indicated a failure. See InnerException for details.\n ---\u003E Grpc.Core.RpcException: Status(StatusCode=\u0022Unavailable\u0022, Detail=\u0022Error connecting to subchannel.\u0022, DebugException=\u0022System.Net.Sockets.SocketException: Connection refused\u0022)\n ---\u003E System.Net.Sockets.SocketException (111): Connection refused\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\n   at Grpc.Net.Client.Balancer.Internal.SocketConnectivitySubchannelTransport.TryConnectAsync(ConnectContext context, Int32 attempt)\n   --- End of inner exception stack trace ---\n   at Grpc.Net.Client.Balancer.Internal.ConnectionManager.PickAsync(PickContext context, Boolean waitForReady, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Balancer.Internal.BalancerHttpHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Internal.GrpcCall\u00602.RunCall(HttpRequestMessage request, Nullable\u00601 timeout)\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.FetchConfigurationAsync(DaprClient daprClient, String[] keys, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 70\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 80\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 158","State":{"{OriginalFormat}":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost","State":{"ContentRoot":"/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+{"EventId":7105,"LogLevel":"Warning","Category":"Hexalith.EventStore.Server.Configuration.FoldedSnapshotQualificationHostedService","Message":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","State":{"Message":"{OriginalFormat}=Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","{OriginalFormat}":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent"}}
+{"EventId":1120,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ProjectionDiscoveryHostedService","Message":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","State":{"Message":"{OriginalFormat}=Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","{OriginalFormat}":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime."}}
+{"EventId":1200,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ActiveRebuildIndexCleanupService","Message":"Active-rebuild-index cleanup service started: CadenceSeconds=60, Stage=ActiveRebuildIndexCleanupServiceStarted","State":{"Message":"CadenceSeconds=60,{OriginalFormat}=Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted","CadenceSeconds":60,"{OriginalFormat}":"Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted"}}
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.EventStore.Configuration.DaprRateLimitConfigSync","Message":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.","Exception":"Dapr.DaprException: GetConfiguration operation failed: the Dapr endpoint indicated a failure. See InnerException for details.\n ---\u003E Grpc.Core.RpcException: Status(StatusCode=\u0022Unavailable\u0022, Detail=\u0022Error connecting to subchannel.\u0022, DebugException=\u0022System.Net.Sockets.SocketException: Connection refused\u0022)\n ---\u003E System.Net.Sockets.SocketException (111): Connection refused\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\n   at Grpc.Net.Client.Balancer.Internal.SocketConnectivitySubchannelTransport.TryConnectAsync(ConnectContext context, Int32 attempt)\n   --- End of inner exception stack trace ---\n   at Grpc.Net.Client.Balancer.Internal.ConnectionManager.PickAsync(PickContext context, Boolean waitForReady, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Balancer.Internal.BalancerHttpHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Internal.GrpcCall\u00602.RunCall(HttpRequestMessage request, Nullable\u00601 timeout)\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.FetchConfigurationAsync(DaprClient daprClient, String[] keys, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 70\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 80\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 158","State":{"{OriginalFormat}":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost","State":{"ContentRoot":"/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+{"EventId":62,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager","Message":"User profile is available. Using \u0027/home/administrator/.aspnet/DataProtection-Keys\u0027 as key repository; keys will not be encrypted at rest.","State":{"FullName":"/home/administrator/.aspnet/DataProtection-Keys","{OriginalFormat}":"User profile is available. Using \u0027{FullName}\u0027 as key repository; keys will not be encrypted at rest."}}
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.EventStore.Configuration.DaprRateLimitConfigSync","Message":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.","Exception":"Dapr.DaprException: GetConfiguration operation failed: the Dapr endpoint indicated a failure. See InnerException for details.\n ---\u003E Grpc.Core.RpcException: Status(StatusCode=\u0022Unavailable\u0022, Detail=\u0022Error connecting to subchannel.\u0022, DebugException=\u0022System.Net.Sockets.SocketException: Connection refused\u0022)\n ---\u003E System.Net.Sockets.SocketException (111): Connection refused\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\n   at Grpc.Net.Client.Balancer.Internal.SocketConnectivitySubchannelTransport.TryConnectAsync(ConnectContext context, Int32 attempt)\n   --- End of inner exception stack trace ---\n   at Grpc.Net.Client.Balancer.Internal.ConnectionManager.PickAsync(PickContext context, Boolean waitForReady, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Balancer.Internal.BalancerHttpHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Internal.GrpcCall\u00602.RunCall(HttpRequestMessage request, Nullable\u00601 timeout)\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.FetchConfigurationAsync(DaprClient daprClient, String[] keys, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 70\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 80\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 158","State":{"{OriginalFormat}":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values."}}
+{"EventId":7105,"LogLevel":"Warning","Category":"Hexalith.EventStore.Server.Configuration.FoldedSnapshotQualificationHostedService","Message":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","State":{"Message":"{OriginalFormat}=Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","{OriginalFormat}":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent"}}
+{"EventId":1120,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ProjectionDiscoveryHostedService","Message":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","State":{"Message":"{OriginalFormat}=Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","{OriginalFormat}":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime."}}
+{"EventId":1200,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ActiveRebuildIndexCleanupService","Message":"Active-rebuild-index cleanup service started: CadenceSeconds=60, Stage=ActiveRebuildIndexCleanupServiceStarted","State":{"Message":"CadenceSeconds=60,{OriginalFormat}=Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted","CadenceSeconds":60,"{OriginalFormat}":"Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.EventStoreHost","State":{"ContentRoot":"/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.EventStoreHost","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":1,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request starting HTTP/1.1 GET http://localhost/dapr/subscribe - - -","State":{"Protocol":"HTTP/1.1","Method":"GET","ContentType":null,"ContentLength":null,"Scheme":"http","Host":"localhost","PathBase":"","Path":"/dapr/subscribe","QueryString":"","{OriginalFormat}":"Request starting {Protocol} {Method} {Scheme}://{Host}{PathBase}{Path}{QueryString} - {ContentType} {ContentLength}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Routing.EndpointMiddleware","Message":"Executing endpoint \u0027HTTP: GET dapr/subscribe\u0027","State":{"EndpointName":"HTTP: GET dapr/subscribe","{OriginalFormat}":"Executing endpoint \u0027{EndpointName}\u0027"}}
+{"EventId":1,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Routing.EndpointMiddleware","Message":"Executed endpoint \u0027HTTP: GET dapr/subscribe\u0027","State":{"EndpointName":"HTTP: GET dapr/subscribe","{OriginalFormat}":"Executed endpoint \u0027{EndpointName}\u0027"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+{"EventId":2,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request finished HTTP/1.1 GET http://localhost/dapr/subscribe - 200 - - 29.8104ms","State":{"ElapsedMilliseconds":29.8104,"StatusCode":200,"ContentType":null,"ContentLength":null,"Protocol":"HTTP/1.1","Method":"GET","Scheme":"http","Host":"localhost","PathBase":"","Path":"/dapr/subscribe","QueryString":"","{OriginalFormat}":"Request finished {Protocol} {Method} {Scheme}://{Host}{PathBase}{Path}{QueryString} - {StatusCode} {ContentLength} {ContentType} {ElapsedMilliseconds}ms"}}
+{"EventId":62,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager","Message":"User profile is available. Using \u0027/home/administrator/.aspnet/DataProtection-Keys\u0027 as key repository; keys will not be encrypted at rest.","State":{"FullName":"/home/administrator/.aspnet/DataProtection-Keys","{OriginalFormat}":"User profile is available. Using \u0027{FullName}\u0027 as key repository; keys will not be encrypted at rest."}}
+{"EventId":7105,"LogLevel":"Warning","Category":"Hexalith.EventStore.Server.Configuration.FoldedSnapshotQualificationHostedService","Message":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","State":{"Message":"{OriginalFormat}=Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","{OriginalFormat}":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent"}}
+{"EventId":1120,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ProjectionDiscoveryHostedService","Message":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","State":{"Message":"{OriginalFormat}=Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","{OriginalFormat}":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime."}}
+{"EventId":1200,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ActiveRebuildIndexCleanupService","Message":"Active-rebuild-index cleanup service started: CadenceSeconds=60, Stage=ActiveRebuildIndexCleanupServiceStarted","State":{"Message":"CadenceSeconds=60,{OriginalFormat}=Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted","CadenceSeconds":60,"{OriginalFormat}":"Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted"}}
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.EventStore.Configuration.DaprRateLimitConfigSync","Message":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.","Exception":"Dapr.DaprException: GetConfiguration operation failed: the Dapr endpoint indicated a failure. See InnerException for details.\n ---\u003E Grpc.Core.RpcException: Status(StatusCode=\u0022Unavailable\u0022, Detail=\u0022Error connecting to subchannel.\u0022, DebugException=\u0022System.Net.Sockets.SocketException: Connection refused\u0022)\n ---\u003E System.Net.Sockets.SocketException (111): Connection refused\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\n   at Grpc.Net.Client.Balancer.Internal.SocketConnectivitySubchannelTransport.TryConnectAsync(ConnectContext context, Int32 attempt)\n   --- End of inner exception stack trace ---\n   at Grpc.Net.Client.Balancer.Internal.ConnectionManager.PickAsync(PickContext context, Boolean waitForReady, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Balancer.Internal.BalancerHttpHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Internal.GrpcCall\u00602.RunCall(HttpRequestMessage request, Nullable\u00601 timeout)\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.FetchConfigurationAsync(DaprClient daprClient, String[] keys, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 70\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 80\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken) in /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Configuration/DaprRateLimitConfigSync.cs:line 158","State":{"{OriginalFormat}":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.EventStoreHost","State":{"ContentRoot":"/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.EventStoreHost","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":1,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request starting HTTP/1.1 GET http://localhost/dapr/subscribe - - -","State":{"Protocol":"HTTP/1.1","Method":"GET","ContentType":null,"ContentLength":null,"Scheme":"http","Host":"localhost","PathBase":"","Path":"/dapr/subscribe","QueryString":"","{OriginalFormat}":"Request starting {Protocol} {Method} {Scheme}://{Host}{PathBase}{Path}{QueryString} - {ContentType} {ContentLength}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+{"EventId":2,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request finished HTTP/1.1 GET http://localhost/dapr/subscribe - 404 - - 68.1429ms","State":{"ElapsedMilliseconds":68.1429,"StatusCode":404,"ContentType":null,"ContentLength":null,"Protocol":"HTTP/1.1","Method":"GET","Scheme":"http","Host":"localhost","PathBase":"","Path":"/dapr/subscribe","QueryString":"","{OriginalFormat}":"Request finished {Protocol} {Method} {Scheme}://{Host}{PathBase}{Path}{QueryString} - {StatusCode} {ContentLength} {ContentType} {ElapsedMilliseconds}ms"}}
+{"EventId":16,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost/dapr/subscribe, Response status code: 404","State":{"Method":"GET","Scheme":"http","Host":"localhost","PathBase":"","Path":"/dapr/subscribe","StatusCode":404,"{OriginalFormat}":"Request reached the end of the middleware pipeline without being handled by application code. Request path: {Method} {Scheme}://{Host}{PathBase}{Path}, Response status code: {StatusCode}"}}
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMemoriesStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME to run the real Builds v2 source path.
+    Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation [FAIL]
+      Shouldly.ShouldAssertException : refusal.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-file-mapping-65aadeb896944d5984218cfc24c2bbc3/owner/declaration.json"
+          but was actually
+      "../../../../../../../platform-file-mapping-65aadeb896944d5984218cfc24c2bbc3/owner/declaration.json: ..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: "memories", server: "server", targetOwner: "eventstore") [FAIL]
+      Shouldly.ShouldAssertException : refusal.Message
+          should contain (case insensitive comparison)
+      "memories/server"
+          but was actually
+      "../../../../../../../platform-cross-owner-e1527b30238a426fb15dcdedebd6fd2f/module/hexalith.module-ma..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(132,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(String module, String server, String targetOwner)
+           at InvokeStub_PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources [FAIL]
+      Shouldly.ShouldAssertException : Should.Throw<InvalidDataException>(PlatformAppModel.Compose(builder, options)).Message
+          should contain (case insensitive comparison)
+      "released image is unavailable"
+          but was actually
+      "Hexalith.EventStore: release snapshot '/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platfor..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(362,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync [FAIL]
+      System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '3.120.0' at commit '947c843c7bb73f217e27463d9540fde0c24d0332' does not match Builds catalog version '3.125.1', release commit 'unavailable', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(126,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(113,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(112,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync [FAIL]
+      System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/platform-package-bindings-db9fd05cb85b410c91cb3b083eefbb17/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '3.120.0' at commit '947c843c7bb73f217e27463d9540fde0c24d0332' does not match Builds catalog version '3.125.1', release commit 'unavailable', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(126,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(113,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(48,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync()
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(75,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources [FAIL]
+      Shouldly.ShouldAssertException : validated.IsValid
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(417,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed [FAIL]
+      System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '3.120.0' at commit '947c843c7bb73f217e27463d9540fde0c24d0332' does not match Builds catalog version '3.125.1', release commit 'unavailable', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(126,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(43,0): at Hexalith.Platform.Composition.PlatformAppModel.Prepare(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(86,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-owner-review-c84c3c3f440a4404bf2648c3d6c3ee89.json: eventstore: modules[0]:"
+          but was actually
+      "Hexalith.EventStore: release snapshot '/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platfor..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(615,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 1, timedOut: False) [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should be
+      "../../../../../src/Hexalith.Platform.Composition/Declarations/tenants.json: tenants/domain: image 'registry.hexalith.com/tenants:5.8.0' is unavailable from its released registry."
+          but was
+      "Hexalith.EventStore: release snapshot '/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '3.120.0' at commit '947c843c7bb73f217e27463d9540fde0c24d0332' does not match Builds catalog version '3.125.1', release commit 'unavailable', or its released v2 declaration (absent until the owner releases one)."
+          difference
+      Showing some of the 368 differences
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | .    .    /    .    .    /    .    .    /    .    .    /    .    .    /    s    r    c    /    H    e    ...  
+      Actual Value   | H    e    x    a    l    i    t    h    .    E    v    e    n    t    S    t    o    r    e    :    \s   ...  
+      Expected Code  | 46   46   47   46   46   47   46   46   47   46   46   47   46   46   47   115  114  99   47   72   101  ...  
+      Actual Code    | 72   101  120  97   108  105  116  104  46   69   118  101  110  116  83   116  111  114  101  58   32   ...  
+      
+      Difference     |       |    |         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   ...  
+      Expected Value | ...  x    a    l    i    t    h    .    P    l    a    t    f    o    r    m    .    C    o    m    p    o    ...  
+      Actual Value   | ...  r    e    l    e    a    s    e    \s   s    n    a    p    s    h    o    t    \s   '    /    t    m    ...  
+      Expected Code  | ...  120  97   108  105  116  104  46   80   108  97   116  102  111  114  109  46   67   111  109  112  111  ...  
+      Actual Code    | ...  114  101  108  101  97   115  101  32   115  110  97   112  115  104  111  116  32   39   47   116  109  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   ...  
+      Expected Value | ...  s    i    t    i    o    n    /    D    e    c    l    a    r    a    t    i    o    n    s    /    t    ...  
+      Actual Value   | ...  p    /    b    m    a    d    -    1    -    1    0    -    c    f    2    0    d    b    9    -    6    ...  
+      Expected Code  | ...  115  105  116  105  111  110  47   68   101  99   108  97   114  97   116  105  111  110  115  47   116  ...  
+      Actual Code    | ...  112  47   98   109  97   100  45   49   45   49   48   45   99   102  50   48   100  98   57   45   54   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   ...  
+      Expected Value | ...  t    e    n    a    n    t    s    .    j    s    o    n    :    \s   t    e    n    a    n    t    s    ...  
+      Actual Value   | ...  6    h    x    7    d    2    5    u    /    p    l    a    t    f    o    r    m    /    s    r    c    ...  
+      Expected Code  | ...  116  101  110  97   110  116  115  46   106  115  111  110  58   32   116  101  110  97   110  116  115  ...  
+      Actual Code    | ...  54   104  120  55   100  50   53   117  47   112  108  97   116  102  111  114  109  47   115  114  99   ...  
+      
+      Difference     |       |    |    |         |    |    |    |    |    |    |    |    |    |    |         |    |    |    |    |        
+                     |      \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100  101  102  103  104  ...  
+      Expected Value | ...  d    o    m    a    i    n    :    \s   i    m    a    g    e    \s   '    r    e    g    i    s    t    ...  
+      Actual Value   | ...  H    e    x    a    l    i    t    h    .    P    l    a    t    f    o    r    m    .    C    o    m    ...  
+      Expected Code  | ...  100  111  109  97   105  110  58   32   105  109  97   103  101  32   39   114  101  103  105  115  116  ...  
+      Actual Code    | ...  72   101  120  97   108  105  116  104  46   80   108  97   116  102  111  114  109  46   67   111  109  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/       
+      Index          | ...  105  106  107  108  109  110  111  112  113  114  115  116  117  118  119  120  121  122  123  124  125  ...  
+      Expected Value | ...  r    y    .    h    e    x    a    l    i    t    h    .    c    o    m    /    t    e    n    a    n    ...  
+      Actual Value   | ...  p    o    s    i    t    i    o    n    /    D    e    c    l    a    r    a    t    i    o    n    s    ...  
+      Expected Code  | ...  114  121  46   104  101  120  97   108  105  116  104  46   99   111  109  47   116  101  110  97   110  ...  
+      Actual Code    | ...  112  111  115  105  116  105  111  110  47   68   101  99   108  97   114  97   116  105  111  110  115  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  126  127  128  129  130  131  132  133  134  135  136  137  138  139  140  141  142  143  144  145  146  ...  
+      Expected Value | ...  t    s    :    5    .    8    .    0    '    \s   i    s    \s   u    n    a    v    a    i    l    a    ...  
+      Actual Value   | ...  /    e    v    e    n    t    s    t    o    r    e    .    j    s    o    n    '    :    \s   p    r    ...  
+      Expected Code  | ...  116  115  58   53   46   56   46   48   39   32   105  115  32   117  110  97   118  97   105  108  97   ...  
+      Actual Code    | ...  47   101  118  101  110  116  115  116  111  114  101  46   106  115  111  110  39   58   32   112  114  ...  
+      
+      Difference     |       |         |    |    |    |    |         |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/       \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  148  149  150  151  152  153  154  155  156  157  158  159  160  161  162  163  164  165  166  167  168  ...  
+      Expected Value | ...  l    e    \s   f    r    o    m    \s   i    t    s    \s   r    e    l    e    a    s    e    d    \s   ...  
+      Actual Value   | ...  v    e    n    a    n    c    e    \s   v    e    r    s    i    o    n    \s   '    3    .    1    2    ...  
+      Expected Code  | ...  108  101  32   102  114  111  109  32   105  116  115  32   114  101  108  101  97   115  101  100  32   ...  
+      Actual Code    | ...  118  101  110  97   110  99   101  32   118  101  114  115  105  111  110  32   39   51   46   49   50   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  168  169  170  171  172  173  174  175  176  177  178  179  180  181  182  183  184  185  186  187  188  ...  
+      Expected Value | ...  \s   r    e    g    i    s    t    r    y    .                                                           ...  
+      Actual Value   | ...  2    0    .    0    '    \s   a    t    \s   c    o    m    m    i    t    \s   '    9    4    7    c    ...  
+      Expected Code  | ...  32   114  101  103  105  115  116  114  121  46                                                          ...  
+      Actual Code    | ...  50   48   46   48   39   32   97   116  32   99   111  109  109  105  116  32   39   57   52   55   99   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  189  190  191  192  193  194  195  196  197  198  199  200  201  202  203  204  205  206  207  208  209  ...  
+      Expected Value | ...                                                                                                           ...  
+      Actual Value   | ...  8    4    3    c    7    b    b    7    3    f    2    1    7    e    2    7    4    6    3    d    9    ...  
+      Expected Code  | ...                                                                                                           ...  
+      Actual Code    | ...  56   52   51   99   55   98   98   55   51   102  50   49   55   101  50   55   52   54   51   100  57   ...  
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(417,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(Int32 exit, Boolean timedOut)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 0, timedOut: True) [FAIL]
+      Shouldly.ShouldAssertException : failure.Message
+          should be
+      "../../../../../src/Hexalith.Platform.Composition/Declarations/tenants.json: tenants/domain: image 'registry.hexalith.com/tenants:5.8.0' is unavailable from its released registry."
+          but was
+      "Hexalith.EventStore: release snapshot '/tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '3.120.0' at commit '947c843c7bb73f217e27463d9540fde0c24d0332' does not match Builds catalog version '3.125.1', release commit 'unavailable', or its released v2 declaration (absent until the owner releases one)."
+          difference
+      Showing some of the 368 differences
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | .    .    /    .    .    /    .    .    /    .    .    /    .    .    /    s    r    c    /    H    e    ...  
+      Actual Value   | H    e    x    a    l    i    t    h    .    E    v    e    n    t    S    t    o    r    e    :    \s   ...  
+      Expected Code  | 46   46   47   46   46   47   46   46   47   46   46   47   46   46   47   115  114  99   47   72   101  ...  
+      Actual Code    | 72   101  120  97   108  105  116  104  46   69   118  101  110  116  83   116  111  114  101  58   32   ...  
+      
+      Difference     |       |    |         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   ...  
+      Expected Value | ...  x    a    l    i    t    h    .    P    l    a    t    f    o    r    m    .    C    o    m    p    o    ...  
+      Actual Value   | ...  r    e    l    e    a    s    e    \s   s    n    a    p    s    h    o    t    \s   '    /    t    m    ...  
+      Expected Code  | ...  120  97   108  105  116  104  46   80   108  97   116  102  111  114  109  46   67   111  109  112  111  ...  
+      Actual Code    | ...  114  101  108  101  97   115  101  32   115  110  97   112  115  104  111  116  32   39   47   116  109  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   ...  
+      Expected Value | ...  s    i    t    i    o    n    /    D    e    c    l    a    r    a    t    i    o    n    s    /    t    ...  
+      Actual Value   | ...  p    /    b    m    a    d    -    1    -    1    0    -    c    f    2    0    d    b    9    -    6    ...  
+      Expected Code  | ...  115  105  116  105  111  110  47   68   101  99   108  97   114  97   116  105  111  110  115  47   116  ...  
+      Actual Code    | ...  112  47   98   109  97   100  45   49   45   49   48   45   99   102  50   48   100  98   57   45   54   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   ...  
+      Expected Value | ...  t    e    n    a    n    t    s    .    j    s    o    n    :    \s   t    e    n    a    n    t    s    ...  
+      Actual Value   | ...  6    h    x    7    d    2    5    u    /    p    l    a    t    f    o    r    m    /    s    r    c    ...  
+      Expected Code  | ...  116  101  110  97   110  116  115  46   106  115  111  110  58   32   116  101  110  97   110  116  115  ...  
+      Actual Code    | ...  54   104  120  55   100  50   53   117  47   112  108  97   116  102  111  114  109  47   115  114  99   ...  
+      
+      Difference     |       |    |    |         |    |    |    |    |    |    |    |    |    |    |         |    |    |    |    |        
+                     |      \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100  101  102  103  104  ...  
+      Expected Value | ...  d    o    m    a    i    n    :    \s   i    m    a    g    e    \s   '    r    e    g    i    s    t    ...  
+      Actual Value   | ...  H    e    x    a    l    i    t    h    .    P    l    a    t    f    o    r    m    .    C    o    m    ...  
+      Expected Code  | ...  100  111  109  97   105  110  58   32   105  109  97   103  101  32   39   114  101  103  105  115  116  ...  
+      Actual Code    | ...  72   101  120  97   108  105  116  104  46   80   108  97   116  102  111  114  109  46   67   111  109  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/       
+      Index          | ...  105  106  107  108  109  110  111  112  113  114  115  116  117  118  119  120  121  122  123  124  125  ...  
+      Expected Value | ...  r    y    .    h    e    x    a    l    i    t    h    .    c    o    m    /    t    e    n    a    n    ...  
+      Actual Value   | ...  p    o    s    i    t    i    o    n    /    D    e    c    l    a    r    a    t    i    o    n    s    ...  
+      Expected Code  | ...  114  121  46   104  101  120  97   108  105  116  104  46   99   111  109  47   116  101  110  97   110  ...  
+      Actual Code    | ...  112  111  115  105  116  105  111  110  47   68   101  99   108  97   114  97   116  105  111  110  115  ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  126  127  128  129  130  131  132  133  134  135  136  137  138  139  140  141  142  143  144  145  146  ...  
+      Expected Value | ...  t    s    :    5    .    8    .    0    '    \s   i    s    \s   u    n    a    v    a    i    l    a    ...  
+      Actual Value   | ...  /    e    v    e    n    t    s    t    o    r    e    .    j    s    o    n    '    :    \s   p    r    ...  
+      Expected Code  | ...  116  115  58   53   46   56   46   48   39   32   105  115  32   117  110  97   118  97   105  108  97   ...  
+      Actual Code    | ...  47   101  118  101  110  116  115  116  111  114  101  46   106  115  111  110  39   58   32   112  114  ...  
+      
+      Difference     |       |         |    |    |    |    |         |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/       \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  148  149  150  151  152  153  154  155  156  157  158  159  160  161  162  163  164  165  166  167  168  ...  
+      Expected Value | ...  l    e    \s   f    r    o    m    \s   i    t    s    \s   r    e    l    e    a    s    e    d    \s   ...  
+      Actual Value   | ...  v    e    n    a    n    c    e    \s   v    e    r    s    i    o    n    \s   '    3    .    1    2    ...  
+      Expected Code  | ...  108  101  32   102  114  111  109  32   105  116  115  32   114  101  108  101  97   115  101  100  32   ...  
+      Actual Code    | ...  118  101  110  97   110  99   101  32   118  101  114  115  105  111  110  32   39   51   46   49   50   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  168  169  170  171  172  173  174  175  176  177  178  179  180  181  182  183  184  185  186  187  188  ...  
+      Expected Value | ...  \s   r    e    g    i    s    t    r    y    .                                                           ...  
+      Actual Value   | ...  2    0    .    0    '    \s   a    t    \s   c    o    m    m    i    t    \s   '    9    4    7    c    ...  
+      Expected Code  | ...  32   114  101  103  105  115  116  114  121  46                                                          ...  
+      Actual Code    | ...  50   48   46   48   39   32   97   116  32   99   111  109  109  105  116  32   39   57   52   55   99   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | ...  189  190  191  192  193  194  195  196  197  198  199  200  201  202  203  204  205  206  207  208  209  ...  
+      Expected Value | ...                                                                                                           ...  
+      Actual Value   | ...  8    4    3    c    7    b    b    7    3    f    2    1    7    e    2    7    4    6    3    d    9    ...  
+      Expected Code  | ...                                                                                                           ...  
+      Actual Code    | ...  56   52   51   99   55   98   98   55   51   102  50   49   55   101  50   55   52   54   51   100  57   ...  
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(417,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(Int32 exit, Boolean timedOut)
+           at InvokeStub_PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers [FAIL]
+      System.IO.FileNotFoundException : Platform Dapr component is missing.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/WorksPreviewModel.cs(58,0): at Hexalith.Platform.Composition.WorksPreviewModel.<>c__DisplayClass0_0.<Compose>g__Component|0(String relativePath)
+        src/Hexalith.Platform.Composition/WorksPreviewModel.cs(70,0): at Hexalith.Platform.Composition.WorksPreviewModel.Compose(IDistributedApplicationBuilder builder)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(34,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeEntry(IDistributedApplicationBuilder builder)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(335,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check redis-redis-ping with status Unhealthy completed after 21.0149ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-vectors-redis-ping with status Unhealthy completed after 51.1048ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-graph-redis-ping with status Unhealthy completed after 21.5605ms with message 'Redis did not answer PING.'
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources [FAIL]
+      Shouldly.ShouldAssertException : Should.Throw<InvalidDataException>(PlatformDeclarationSet.Load(options)).Message
+          should contain (case insensitive comparison)
+      "differs from its source provenance"
+          but was actually
+      "Hexalith.EventStore: release snapshot '/tmp/platform-provenance-29b8e37c4dcb48d0a40973249e900055/src..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs(270,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'b21ffca513ef29a5a3ab60e31a36ffd7b052d8f428cdada339854f91106e208d')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 201, Errors: 0, Failed: 12, Skipped: 6, Not Run: 0, Time: 70.200s
+
+## After and checks
+{
+  "exitCode": 1,
+  "before": {
+    "utc": "2026-10-18T17:48:32.046600+00:00",
+    "revisions": {
+      "Platform": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+      "AI.Tools": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "Agents": "b42a44bc5cbcd1cb57b6df74301893dd7e6ea2ba",
+      "Builds": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+      "ChatBot": "78790dd1573187a87912bc1b29edd320c713c7ed",
+      "Commons": "388b2cb5077ebec37a32c301e657e4c61e1041b2",
+      "Conversations": "ed81a80ea0a8cb0c6e31f4755f082b8913389e6c",
+      "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+      "Folders": "c22b13137202f7bf8c60b80c095a69748435bd6e",
+      "FrontComposer": "1513fe3ed21a554eeee7a9d807f9b9e25fdb4cd2",
+      "McpCli": "c25e2140e14a76b696a76aed30c8302107714fd6",
+      "Memories": "4f6b3b1265d15d208761e6419e5c825d3f39fea3",
+      "Parties": "7e73709992512d944f4950e6efb28c6132f9473c",
+      "PolymorphicSerializations": "f1b7752260d4574dd92791d75a5a1c300590e49e",
+      "Projects": "25f9fdab6106f5bcbf06aaabe8ca351f543bb52e",
+      "Tenants": "c9feedb6656d70c7271e851c844ee29bdfb28c3e",
+      "Timesheets": "72d9fdaa813daf9d39d296e268fd2e1086a8dd87",
+      "Works": "9a7a71bd0fc7e01d342fc6e82c8c9dd892d527ce"
+    },
+    "workingTrees": {
+      "Platform": "",
+      "AI.Tools": "",
+      "Agents": "",
+      "Builds": "",
+      "ChatBot": "",
+      "Commons": "",
+      "Conversations": "",
+      "EventStore": "",
+      "Folders": "",
+      "FrontComposer": "",
+      "McpCli": "",
+      "Memories": "",
+      "Parties": "",
+      "PolymorphicSerializations": "",
+      "Projects": "",
+      "Tenants": "",
+      "Timesheets": "",
+      "Works": ""
+    },
+    "binarySha256": {
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "d9c08ad4940902dbb08501eee37f00acc133c1b0dbef5e49f6ff898403250b2c",
+      "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4ecda9525e6a3db0d43fc5aa8d355bfdf65c7bcae0b06301fa2f691d865aae25"
+    },
+    "containers": [
+      "e14ec328293e memories-vectors-ermuagkc",
+      "ed19013214d0 memories-graphs-zwpautjb",
+      "8afadd43815e security-depndyrc",
+      "07c04f82c7fc folders-provider-539031de4192db7c",
+      "92426df0d8cb folders-durability-539031de4192db7c",
+      "d758028f3025 security-cysykhzq",
+      "6533ea1b762f tunnel-proxy-a43a49d6-3a77-403b-b8fe-aa9ad05078e2",
+      "98c19d4e578d memories-vectors-ehcsydcf",
+      "88d9922f30ed memories-graphs-pchnpxbv",
+      "e73433f627bd p1r-isolation-23e3146fb09045b784cc26d4d124b957-sdk",
+      "70c5b5169d21 p1r-isolation-23e3146fb09045b784cc26d4d124b957-daemon",
+      "0719fe8c59bd dapr_placement",
+      "8a7dea8bcfe1 dapr_scheduler",
+      "8d0788f8322f dapr_redis",
+      "cb7c12622c18 dapr_zipkin"
+    ]
+  },
+  "after": {
+    "utc": "2026-10-18T17:49:43.315749+00:00",
+    "revisions": {
+      "Platform": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+      "AI.Tools": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "Agents": "b42a44bc5cbcd1cb57b6df74301893dd7e6ea2ba",
+      "Builds": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+      "ChatBot": "78790dd1573187a87912bc1b29edd320c713c7ed",
+      "Commons": "388b2cb5077ebec37a32c301e657e4c61e1041b2",
+      "Conversations": "ed81a80ea0a8cb0c6e31f4755f082b8913389e6c",
+      "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+      "Folders": "c22b13137202f7bf8c60b80c095a69748435bd6e",
+      "FrontComposer": "1513fe3ed21a554eeee7a9d807f9b9e25fdb4cd2",
+      "McpCli": "c25e2140e14a76b696a76aed30c8302107714fd6",
+      "Memories": "4f6b3b1265d15d208761e6419e5c825d3f39fea3",
+      "Parties": "7e73709992512d944f4950e6efb28c6132f9473c",
+      "PolymorphicSerializations": "f1b7752260d4574dd92791d75a5a1c300590e49e",
+      "Projects": "25f9fdab6106f5bcbf06aaabe8ca351f543bb52e",
+      "Tenants": "c9feedb6656d70c7271e851c844ee29bdfb28c3e",
+      "Timesheets": "72d9fdaa813daf9d39d296e268fd2e1086a8dd87",
+      "Works": "9a7a71bd0fc7e01d342fc6e82c8c9dd892d527ce"
+    },
+    "workingTrees": {
+      "Platform": "",
+      "AI.Tools": "",
+      "Agents": "",
+      "Builds": "",
+      "ChatBot": "",
+      "Commons": "",
+      "Conversations": "",
+      "EventStore": "",
+      "Folders": "",
+      "FrontComposer": "",
+      "McpCli": "",
+      "Memories": "",
+      "Parties": "",
+      "PolymorphicSerializations": "",
+      "Projects": "",
+      "Tenants": "",
+      "Timesheets": "",
+      "Works": ""
+    },
+    "binarySha256": {
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "d9c08ad4940902dbb08501eee37f00acc133c1b0dbef5e49f6ff898403250b2c",
+      "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4ecda9525e6a3db0d43fc5aa8d355bfdf65c7bcae0b06301fa2f691d865aae25"
+    },
+    "containers": [
+      "e14ec328293e memories-vectors-ermuagkc",
+      "ed19013214d0 memories-graphs-zwpautjb",
+      "8afadd43815e security-depndyrc",
+      "07c04f82c7fc folders-provider-539031de4192db7c",
+      "92426df0d8cb folders-durability-539031de4192db7c",
+      "d758028f3025 security-cysykhzq",
+      "6533ea1b762f tunnel-proxy-a43a49d6-3a77-403b-b8fe-aa9ad05078e2",
+      "98c19d4e578d memories-vectors-ehcsydcf",
+      "88d9922f30ed memories-graphs-pchnpxbv",
+      "e73433f627bd p1r-isolation-23e3146fb09045b784cc26d4d124b957-sdk",
+      "70c5b5169d21 p1r-isolation-23e3146fb09045b784cc26d4d124b957-daemon",
+      "0719fe8c59bd dapr_placement",
+      "8a7dea8bcfe1 dapr_scheduler",
+      "8d0788f8322f dapr_redis",
+      "cb7c12622c18 dapr_zipkin"
+    ]
+  },
+  "revisionsUnchanged": true,
+  "binariesUnchanged": true,
+  "allWorkingTreesCleanBeforeAndAfter": true,
+  "baselineContainersStillRunning": true
+}

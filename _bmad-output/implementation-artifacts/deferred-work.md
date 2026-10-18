@@ -852,3 +852,30 @@
   evidence: Review pass 3 (edge-case hunter). The documented recipe matches `projectProcessIds` with the reported launcher id, so it has nothing to match in these cases.
   status: resolved
   resolution: Duplicate of the Story 1.10 pass-1 entry "Make `hexalith-module run`/`debug` print the run id in human output…", which removes the need for the lookup.
+
+
+<!-- Story 1.10 resumed review pass 4 -->
+
+- source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Clarify mixed-revision revocation selection for EventStore published deletion trust.
+  evidence: R4-B3: revoked entries are filtered before the unique live match; the owner must specify whether a newer revoked revision supersedes an older entry and test that mixed profile. Medium impact if confirmed; unverified. Independent owner commits 39b366bca3dbe508b4cf3c5afa69db1ddadb6dd2/993be1bcc03fea06b9cd451ad04d57783a119e83.
+
+- source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Capture owned SubjectPublicKeyInfo bytes in the EventStore published-trust authority.
+  evidence: R4-B4/R4-E3: PublishedTrustDeletionConsumptionAuthority copies the collection but retains caller-owned byte arrays that SignatureMatches later imports; caller mutation can replace accepted key material without a metadata revision. Independent owner security work.
+
+- source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Reject incompatible actor implementations registered under EventStore protection actor names.
+  evidence: R4-B6/R4-E4: InteractionPayloadProtectionServiceCollectionExtensions.RegisterActor returns on ActorTypeName alone, silently preserving a different CLR actor during explicit protection opt-in. Independent owner security work.
+
+- source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Define bounded recovery when an EventStore original writer task never settles.
+  evidence: R4-B7: InteractionOccurrenceProtector.AwaitAsync and actor lifecycle tracking deliberately retain the original writer after cancellation; a permanently incomplete write holds the actor turn indefinitely. Preserve exclusion from unfinished mutations when designing quarantine or host recovery. Independent owner security work.
+
+- source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Capture the Docker health-probe result for a recurring Platform Sentry readiness failure.
+  evidence: R4-B10: exact-cf20db9 class failed Memories with Sentry Running/Unhealthy; the same source and binaries passed a focused retry. The underlying HTTP/health result was lost at teardown. Capture health-check output and reproduce before attributing a medium runtime repeatability defect; unverified. Evidence: evidence/1-10/live-tests-final.txt and live-tests-final-retry.txt.
+
+- source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Isolate ES256 rejection in EventStore published-trust authority regression tests.
+  evidence: R4-V1: the altered-JWS test independently fails guard equality and the malformed-SPKI test fails before VerifyData. Preserve a valid matching request/guard but replace only the anchor with another well-formed P-256 key; assert dispatch denial. Independent owner security work.

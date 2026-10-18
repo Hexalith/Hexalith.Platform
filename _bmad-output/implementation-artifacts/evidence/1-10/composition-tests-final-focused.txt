@@ -1,0 +1,218 @@
+# Focused check of the full-suite failure absent from the old failure set
+
+Working directory: /tmp/bmad-1-10-cf20db9-6hx7d25u/platform
+Command: dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -method *ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation
+Environment: DOTNET_PROCESSOR_COUNT=2; live gate unset
+
+## Before
+{
+  "utc": "2026-10-18T17:50:39.068401+00:00",
+  "revisions": {
+    "Platform": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+    "AI.Tools": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+    "Agents": "b42a44bc5cbcd1cb57b6df74301893dd7e6ea2ba",
+    "Builds": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+    "ChatBot": "78790dd1573187a87912bc1b29edd320c713c7ed",
+    "Commons": "388b2cb5077ebec37a32c301e657e4c61e1041b2",
+    "Conversations": "ed81a80ea0a8cb0c6e31f4755f082b8913389e6c",
+    "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+    "Folders": "c22b13137202f7bf8c60b80c095a69748435bd6e",
+    "FrontComposer": "1513fe3ed21a554eeee7a9d807f9b9e25fdb4cd2",
+    "McpCli": "c25e2140e14a76b696a76aed30c8302107714fd6",
+    "Memories": "4f6b3b1265d15d208761e6419e5c825d3f39fea3",
+    "Parties": "7e73709992512d944f4950e6efb28c6132f9473c",
+    "PolymorphicSerializations": "f1b7752260d4574dd92791d75a5a1c300590e49e",
+    "Projects": "25f9fdab6106f5bcbf06aaabe8ca351f543bb52e",
+    "Tenants": "c9feedb6656d70c7271e851c844ee29bdfb28c3e",
+    "Timesheets": "72d9fdaa813daf9d39d296e268fd2e1086a8dd87",
+    "Works": "9a7a71bd0fc7e01d342fc6e82c8c9dd892d527ce"
+  },
+  "workingTrees": {
+    "Platform": "",
+    "AI.Tools": "",
+    "Agents": "",
+    "Builds": "",
+    "ChatBot": "",
+    "Commons": "",
+    "Conversations": "",
+    "EventStore": "",
+    "Folders": "",
+    "FrontComposer": "",
+    "McpCli": "",
+    "Memories": "",
+    "Parties": "",
+    "PolymorphicSerializations": "",
+    "Projects": "",
+    "Tenants": "",
+    "Timesheets": "",
+    "Works": ""
+  },
+  "binarySha256": {
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "d9c08ad4940902dbb08501eee37f00acc133c1b0dbef5e49f6ff898403250b2c",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4ecda9525e6a3db0d43fc5aa8d355bfdf65c7bcae0b06301fa2f691d865aae25"
+  },
+  "containers": [
+    "7c43356889a0 hopeful_mirzakhani",
+    "bc2eea4dba2c works-sdk415-c3f7a2522beb45dca07e44e86f0b1488",
+    "d758028f3025 security-cysykhzq",
+    "6533ea1b762f tunnel-proxy-a43a49d6-3a77-403b-b8fe-aa9ad05078e2",
+    "98c19d4e578d memories-vectors-ehcsydcf",
+    "88d9922f30ed memories-graphs-pchnpxbv",
+    "e73433f627bd p1r-isolation-23e3146fb09045b784cc26d4d124b957-sdk",
+    "70c5b5169d21 p1r-isolation-23e3146fb09045b784cc26d4d124b957-daemon",
+    "0719fe8c59bd dapr_placement",
+    "8a7dea8bcfe1 dapr_scheduler",
+    "8d0788f8322f dapr_redis",
+    "cb7c12622c18 dapr_zipkin"
+  ]
+}
+
+## Raw test output
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation [FAIL]
+      Shouldly.ShouldAssertException : refusal.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-file-mapping-360252728cc743c8b6cda21dc3aa491b/owner/declaration.json"
+          but was actually
+      "../../../../../../../platform-file-mapping-360252728cc743c8b6cda21dc3aa491b/owner/declaration.json: ..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'b21ffca513ef29a5a3ab60e31a36ffd7b052d8f428cdada339854f91106e208d')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.543s
+
+## After and checks
+{
+  "exitCode": 1,
+  "before": {
+    "utc": "2026-10-18T17:50:39.068401+00:00",
+    "revisions": {
+      "Platform": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+      "AI.Tools": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "Agents": "b42a44bc5cbcd1cb57b6df74301893dd7e6ea2ba",
+      "Builds": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+      "ChatBot": "78790dd1573187a87912bc1b29edd320c713c7ed",
+      "Commons": "388b2cb5077ebec37a32c301e657e4c61e1041b2",
+      "Conversations": "ed81a80ea0a8cb0c6e31f4755f082b8913389e6c",
+      "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+      "Folders": "c22b13137202f7bf8c60b80c095a69748435bd6e",
+      "FrontComposer": "1513fe3ed21a554eeee7a9d807f9b9e25fdb4cd2",
+      "McpCli": "c25e2140e14a76b696a76aed30c8302107714fd6",
+      "Memories": "4f6b3b1265d15d208761e6419e5c825d3f39fea3",
+      "Parties": "7e73709992512d944f4950e6efb28c6132f9473c",
+      "PolymorphicSerializations": "f1b7752260d4574dd92791d75a5a1c300590e49e",
+      "Projects": "25f9fdab6106f5bcbf06aaabe8ca351f543bb52e",
+      "Tenants": "c9feedb6656d70c7271e851c844ee29bdfb28c3e",
+      "Timesheets": "72d9fdaa813daf9d39d296e268fd2e1086a8dd87",
+      "Works": "9a7a71bd0fc7e01d342fc6e82c8c9dd892d527ce"
+    },
+    "workingTrees": {
+      "Platform": "",
+      "AI.Tools": "",
+      "Agents": "",
+      "Builds": "",
+      "ChatBot": "",
+      "Commons": "",
+      "Conversations": "",
+      "EventStore": "",
+      "Folders": "",
+      "FrontComposer": "",
+      "McpCli": "",
+      "Memories": "",
+      "Parties": "",
+      "PolymorphicSerializations": "",
+      "Projects": "",
+      "Tenants": "",
+      "Timesheets": "",
+      "Works": ""
+    },
+    "binarySha256": {
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "d9c08ad4940902dbb08501eee37f00acc133c1b0dbef5e49f6ff898403250b2c",
+      "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4ecda9525e6a3db0d43fc5aa8d355bfdf65c7bcae0b06301fa2f691d865aae25"
+    },
+    "containers": [
+      "7c43356889a0 hopeful_mirzakhani",
+      "bc2eea4dba2c works-sdk415-c3f7a2522beb45dca07e44e86f0b1488",
+      "d758028f3025 security-cysykhzq",
+      "6533ea1b762f tunnel-proxy-a43a49d6-3a77-403b-b8fe-aa9ad05078e2",
+      "98c19d4e578d memories-vectors-ehcsydcf",
+      "88d9922f30ed memories-graphs-pchnpxbv",
+      "e73433f627bd p1r-isolation-23e3146fb09045b784cc26d4d124b957-sdk",
+      "70c5b5169d21 p1r-isolation-23e3146fb09045b784cc26d4d124b957-daemon",
+      "0719fe8c59bd dapr_placement",
+      "8a7dea8bcfe1 dapr_scheduler",
+      "8d0788f8322f dapr_redis",
+      "cb7c12622c18 dapr_zipkin"
+    ]
+  },
+  "after": {
+    "utc": "2026-10-18T17:50:40.312354+00:00",
+    "revisions": {
+      "Platform": "cf20db9e8a4697b0e9fb82d388751d355088e942",
+      "AI.Tools": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "Agents": "b42a44bc5cbcd1cb57b6df74301893dd7e6ea2ba",
+      "Builds": "c6f56c011ce3a83cdf6100c322352daf125c6af9",
+      "ChatBot": "78790dd1573187a87912bc1b29edd320c713c7ed",
+      "Commons": "388b2cb5077ebec37a32c301e657e4c61e1041b2",
+      "Conversations": "ed81a80ea0a8cb0c6e31f4755f082b8913389e6c",
+      "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+      "Folders": "c22b13137202f7bf8c60b80c095a69748435bd6e",
+      "FrontComposer": "1513fe3ed21a554eeee7a9d807f9b9e25fdb4cd2",
+      "McpCli": "c25e2140e14a76b696a76aed30c8302107714fd6",
+      "Memories": "4f6b3b1265d15d208761e6419e5c825d3f39fea3",
+      "Parties": "7e73709992512d944f4950e6efb28c6132f9473c",
+      "PolymorphicSerializations": "f1b7752260d4574dd92791d75a5a1c300590e49e",
+      "Projects": "25f9fdab6106f5bcbf06aaabe8ca351f543bb52e",
+      "Tenants": "c9feedb6656d70c7271e851c844ee29bdfb28c3e",
+      "Timesheets": "72d9fdaa813daf9d39d296e268fd2e1086a8dd87",
+      "Works": "9a7a71bd0fc7e01d342fc6e82c8c9dd892d527ce"
+    },
+    "workingTrees": {
+      "Platform": "",
+      "AI.Tools": "",
+      "Agents": "",
+      "Builds": "",
+      "ChatBot": "",
+      "Commons": "",
+      "Conversations": "",
+      "EventStore": "",
+      "Folders": "",
+      "FrontComposer": "",
+      "McpCli": "",
+      "Memories": "",
+      "Parties": "",
+      "PolymorphicSerializations": "",
+      "Projects": "",
+      "Tenants": "",
+      "Timesheets": "",
+      "Works": ""
+    },
+    "binarySha256": {
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "a1e533114b5abeb2b6a66dfb2f4e24ea933b58f5a883bb7f51539e701a3b1fcf",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "d9c08ad4940902dbb08501eee37f00acc133c1b0dbef5e49f6ff898403250b2c",
+      "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4ecda9525e6a3db0d43fc5aa8d355bfdf65c7bcae0b06301fa2f691d865aae25"
+    },
+    "containers": [
+      "bc2eea4dba2c works-sdk415-c3f7a2522beb45dca07e44e86f0b1488",
+      "d758028f3025 security-cysykhzq",
+      "6533ea1b762f tunnel-proxy-a43a49d6-3a77-403b-b8fe-aa9ad05078e2",
+      "98c19d4e578d memories-vectors-ehcsydcf",
+      "88d9922f30ed memories-graphs-pchnpxbv",
+      "e73433f627bd p1r-isolation-23e3146fb09045b784cc26d4d124b957-sdk",
+      "70c5b5169d21 p1r-isolation-23e3146fb09045b784cc26d4d124b957-daemon",
+      "0719fe8c59bd dapr_placement",
+      "8a7dea8bcfe1 dapr_scheduler",
+      "8d0788f8322f dapr_redis",
+      "cb7c12622c18 dapr_zipkin"
+    ]
+  },
+  "revisionsUnchanged": true,
+  "binariesUnchanged": true
+}

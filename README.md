@@ -30,10 +30,10 @@ Those hosting concerns live here.
 ## Module tool
 
 The local tool manifest pins `hexalith.builds.module.cli` `4.33.1`, accepted for
-Platform `run` and `debug`. The first accepted version, `4.33.0`, cannot run or
-debug v2 compositions because its packaged host has a mismatched Tooling identity
-and build-machine paths; `4.33.1` fixes both defects.
-`hexalith-platform.json` declares the accepted tool version range. Later 4.x
+Platform `run` and `debug`. `hexalith-platform.json` accepts versions in
+`[4.33.1, 5.0.0-0)`. The previously accepted `4.33.0` is now outside that range:
+its packaged host has a mismatched Tooling identity and build-machine paths,
+which prevent v2 `run` and `debug`; `4.33.1` fixes both defects. Later 4.x
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
 `c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching both the Builds gitlink

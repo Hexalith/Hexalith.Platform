@@ -4,7 +4,9 @@ Full source validation with DOTNET_PROCESSOR_COUNT=2:
   Evidence.Tests: 107 passed.
   Module.Tests: 1070 total, 1067 passed, 3 expected workspace-dependent skips.
   Tooling.IntegrationTests: 1 passed, 12 explicitly opt-in live cases skipped.
-  Platform source live tests were run separately: 3/3 passed (live-tests.txt).
+  Historical Platform source live tests were run separately at Builds 332b2c1,
+  not c6f56c0: 3/3 passed (live-tests.txt). Review pass 3 supersedes that result
+  with the exact-cf20db9 gated-class run in live-tests-final.txt.
 
 First full local attempt exposed the already-recorded timing-sensitive bound:
 ReadinessDeadlineObservationSharesStoppingBudgetAsync(timeout) elapsed 1.5094067s

@@ -1,0 +1,40 @@
+# Full Composition failure-set comparison
+
+Historical input: live-tests-historical.txt (the 11:50Z full-suite record).
+Current input: composition-tests-final.txt (exact cf20db9).
+
+{
+  "historicalFailureCount": 12,
+  "currentFailureCount": 12,
+  "sharedFailures": [
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 0, timedOut: True)",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 1, timedOut: False)",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: \"memories\", server: \"server\", targetOwner: \"eventstore\")",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers"
+  ],
+  "addedInTmpWorktreeRun": [
+    "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation"
+  ],
+  "absentFromCurrentFailures": [
+    "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)"
+  ],
+  "layoutSensitiveFailureFocusedInTmp": 1,
+  "sameBinaryFocusedUnderHome": 0,
+  "storyIntroducedSourceRegression": false
+}
+
+Diagnosis:
+- ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation creates an invalid declaration under /tmp and no Platform tool floor/pin files.
+- PlatformManifestValidator.ValidateFile has rendered paths relative to Directory.GetCurrentDirectory() since the Builds 4629ff2 baseline; that line is unchanged at c6f56c0.
+- The Platform fixture and composition entry are unchanged between Platform 7993509/5f185936 and cf20db9.
+- From a test output directory under /tmp, the relative path omits the common /tmp prefix, so the existing absolute-path substring assertion fails.
+- Changing only the initial shell CWD did not help: the runner uses its assembly output directory.
+- A byte-identical copy of the same cf20db9 test output under /home passes 1/1. See composition-tests-final-relocated-bin.txt for the SHA-256 and raw result.
+- This is an existing layout-sensitive assertion, not a regression from the tool floor or pin. No diagnostic behavior or assertion was changed.

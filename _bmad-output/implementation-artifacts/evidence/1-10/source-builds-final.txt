@@ -1,0 +1,49 @@
+# Review-pass-3 clean Debug builds at exact Platform cf20db9
+
+$ dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Debug -nodeReuse:false -m:1
+  Determining projects to restore...
+  Restored /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 218 ms).
+  Restored /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 299 ms).
+  Restored /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj (in 299 ms).
+  13 of 16 projects are up-to-date for restore.
+  Hexalith.EventStore.Aspire -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/bin/Debug/net10.0/Hexalith.EventStore.Aspire.dll
+  Hexalith.EventStore.Contracts -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Debug/net10.0/Hexalith.EventStore.Contracts.dll
+  Hexalith.EventStore.ServiceDefaults -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Debug/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.125.1, CommunityToolkit.Aspire.Hosting.Dapr/13.6.1-beta.935, required range 13.6.1-beta.935 for net10.0.
+  Hexalith.Builds.Tooling -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+  Hexalith.EventStore.Client -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Debug/net10.0/Hexalith.EventStore.Client.dll
+  Hexalith.EventStore.DomainService -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Debug/net10.0/Hexalith.EventStore.DomainService.dll
+  Hexalith.Platform.Works.Runtime -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Works.Runtime/bin/Debug/net10.0/Hexalith.Platform.Works.Runtime.dll
+  Hexalith.Platform.Custody -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Custody/bin/Debug/net10.0/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Composition -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.dll
+  Hexalith.EventStore.Admin.Abstractions -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/bin/Debug/net10.0/Hexalith.EventStore.Admin.Abstractions.dll
+  Hexalith.EventStore.Server -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Server/bin/Debug/net10.0/Hexalith.EventStore.Server.dll
+  Hexalith.EventStore.Gateway -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/bin/Debug/net10.0/Hexalith.EventStore.Gateway.dll
+  Hexalith.Platform.Identity -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.Identity/bin/Debug/net10.0/Hexalith.Platform.Identity.dll
+  Hexalith.Platform.EventStoreHost -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/src/Hexalith.Platform.EventStoreHost/bin/Debug/net10.0/Hexalith.Platform.EventStoreHost.dll
+  Hexalith.Builds.Module.EventStoreHost -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Debug/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+  Hexalith.Platform.Composition.Tests -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:26.98
+
+$ dotnet build references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj --configuration Debug -nodeReuse:false -m:1
+  Determining projects to restore...
+  Restored /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 290 ms).
+  Restored /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 301 ms).
+  2 of 4 projects are up-to-date for restore.
+  Hexalith.Builds.Module.EventStoreHost -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Debug/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+  Hexalith.Builds.Module.UiHost -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Debug/net10.0/Hexalith.Builds.Module.UiHost.dll
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.125.1, CommunityToolkit.Aspire.Hosting.Dapr/13.6.1-beta.935, required range 13.6.1-beta.935 for net10.0.
+  Hexalith.Builds.Tooling -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+  Hexalith.Builds.Module.AppHost -> /tmp/bmad-1-10-cf20db9-6hx7d25u/platform/references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:22.77
+
