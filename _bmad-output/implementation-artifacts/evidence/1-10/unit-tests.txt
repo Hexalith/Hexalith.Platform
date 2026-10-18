@@ -13,3 +13,42 @@ Failure sets are identical:
   Hexalith.Memories.Server.Tests.Deployment.AppHostSecurityConfigurationTests.BuildsCatalog_PinsEventStoreFamilyAt31000 [FAIL]
   Hexalith.Memories.Server.Tests.Deployment.AppHostSecurityConfigurationTests.ProjectAssets_RestoreEventStorePackagesAtCatalogVersion [FAIL]
 Both read the nested references/Hexalith.Builds catalog or EventStore package restore keys, unrelated to this change.
+
+## Resumed focused verification, 2026-10-18, .NET 10.0.13
+
+EventStore RepositoryProjectPathsTests
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.EventStore.AppHost.Tests
+  Discovered:  Hexalith.EventStore.AppHost.Tests
+  Starting:    Hexalith.EventStore.AppHost.Tests
+  Finished:    Hexalith.EventStore.AppHost.Tests (ID = '80df65a2acb0038195a2668a25d9149e1ece276eef211f338cec6b2d32bc9c56')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.AppHost.Tests  Total: 18, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.131s
+
+Memories RepositoryProjectPathsTests and HexalithMemoriesAspireSecretStoreTests
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Memories.Server.Tests
+  Discovered:  Hexalith.Memories.Server.Tests
+  Starting:    Hexalith.Memories.Server.Tests
+  Finished:    Hexalith.Memories.Server.Tests (ID = '75b9e305a3c138a7b88f1872aced36fc23df08f5752a0a0de2369e0233bba1fd')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Memories.Server.Tests  Total: 15, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.742s
+
+Builds CompositionAspireHostPathsTests and AppHostRunnerAspirePathTests
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 13, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.992s
+
+Builds engine missing-package and AppHost-environment tests
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 2, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 3.498s
+

@@ -1,39 +1,57 @@
-# Gated live tests: tests/Hexalith.Platform.Composition.Tests/BuildsSourceStartupTests.cs
-# Real Builds engine in process, AppHost built from references/Hexalith.Builds (Debug), owner manifests from references/.
+# Gated source live verification at the reviewed Builds revision
 
-$ HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*BuildsSourceStartupTests'
-(2026-10-18T11:34Z, third run of the class)
-xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.12)
+Command, from the Platform root:
+  HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*BuildsSourceStartupTests'
+
+Both the Composition test project and the Builds Module AppHost were built in
+Debug with -nodeReuse:false immediately beforehand: 0 warnings, 0 errors.
+The three cases execute sequentially and verify expected healthy project
+resources plus run-specific teardown and workspace removal.
+
+The concurrent Builds audit edit is preserved in the checkout. It changes only
+Tools/package-version-audit.json and does not change the declared catalog pins.
+The temporary watch limit was restored in finally, without stopping any
+unrelated process or container.
+
+## Immutable run metadata
+
+{
+  "startUtc": "2026-10-18T14:37:44.771793+00:00",
+  "revisionsBefore": {
+    "Platform": "5f18593639832d1245577dd93ec07687517d3acb",
+    "Builds": "332b2c144defba546fe0a09626a4a72f2340e22f",
+    "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+    "Memories": "d0c5d8ca96b06e02acdda88f255b33288642a7f7"
+  },
+  "binariesBefore": {
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "0524a590b88d0f5579e49636a5e27c3293c5cb09c61b2df9cbf4bfe46c2a155e",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "bb23ceca52e6e46db0a36d552c227c85040bdebc213970d4fa896bc89c8dec00",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "b0e549e564e557f190f127bda9b5cc1cc0d12990d5d850aae5ce32feb869f17a"
+  },
+  "originalWatchLimit": 1048576,
+  "temporaryWatchLimit": 2097152,
+  "endUtc": "2026-10-18T14:42:31.109758+00:00",
+  "revisionsAfter": {
+    "Platform": "5f18593639832d1245577dd93ec07687517d3acb",
+    "Builds": "332b2c144defba546fe0a09626a4a72f2340e22f",
+    "EventStore": "d55c6f7c11e9bce6f17d490a84c83f1561979d63",
+    "Memories": "d0c5d8ca96b06e02acdda88f255b33288642a7f7"
+  },
+  "binariesAfter": {
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "0524a590b88d0f5579e49636a5e27c3293c5cb09c61b2df9cbf4bfe46c2a155e",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "bb23ceca52e6e46db0a36d552c227c85040bdebc213970d4fa896bc89c8dec00",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "b0e549e564e557f190f127bda9b5cc1cc0d12990d5d850aae5ce32feb869f17a"
+  },
+  "exitCode": 0,
+  "restoredWatchLimit": 1048576
+}
+
+## Test output
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
   Discovering: Hexalith.Platform.Composition.Tests
   Discovered:  Hexalith.Platform.Composition.Tests
   Starting:    Hexalith.Platform.Composition.Tests
   Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
 === TEST EXECUTION SUMMARY ===
-   Hexalith.Platform.Composition.Tests  Total: 3, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 257.896s
-exit 0
-
-Single-case runs before that: EventStore passed in 50.9s, Memories passed in 133.9s.
-
-Earlier class runs: run 1 failed Tenants and Memories, run 2 failed EventStore, each with dapr-sentry Exited.
-Captured Sentry log of such a failure:
-time="2026-10-18T11:45:28.953860931Z" level=fatal msg="failed to add target /var/run/dapr/credentials: no space left on device" instance=31eb66c590b6 scope=dapr.sentry type=log ver=1.18.2
-Cause: the per-user inotify watch budget is exhausted on this host, not a code defect:
-  fs.inotify.max_user_watches = 1048576; watches in use = 1048543 (2026-10-18T11:46Z)
-  largest holders: 39 fluentui-mcp processes (33 spawned by one 2-day-old 'codex app-server'), up to 146876 watches each
-Sentry runs as the invoking user and watches its credentials directory, so it exits when no watch is free.
-
-Full Composition suite without the live gate (2026-10-18T11:50Z): Total 201, Failed 12, Skipped 6.
-Same count as the 12 failures recorded before 2026-10-18 (package mode, registry, Works preview, symlink message);
-none exercises the changed helpers or the new gated case:
-  Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False) [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 0, timedOut: True) [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 1, timedOut: False) [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: "memories", server: "server", targetOwner: "eventstore") [FAIL]
-  Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers [FAIL]
+   Hexalith.Platform.Composition.Tests  Total: 3, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 286.050s

@@ -4,32 +4,38 @@ Collected 2026-10-18 on the WSL2 host, from the Platform root.
 
 ## Versions and commits
 
+The source live tests use these revisions, verified unchanged at the start and
+end of the run. Binary SHA-256 identities and UTC timestamps are in
+[live-tests.txt](live-tests.txt). A concurrent, uncommitted Builds audit refresh
+was preserved; it does not affect source declarations or catalog selections.
+
 | Item | Value |
 | --- | --- |
-| Platform | `79935099e9b4c6fdcffe29f84d42b8c92b50fc2b` (baseline, working tree) |
-| Pinned tool | `hexalith.builds.module.cli` `4.33.0+544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9` |
-| Builds checkout | `6e8b71e` (`v4.33.0` + 2 commits), not changed |
-| EventStore | baseline `c0c08d45`; story commits `a3b0c587` (fix), `2af29911` (docs), local only |
-| Memories | baseline `fb39a0c5`; story commits `c16ea1a1` (fix), `5d77b0ec` (docs), local only |
-| Aspire CLI | `13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8` |
-| Docker | `29.8.2` |
-| .NET | SDK `10.0.401`, runtime `10.0.12` |
+| Platform | `5f18593639832d1245577dd93ec07687517d3acb` |
+| Builds | `332b2c144defba546fe0a09626a4a72f2340e22f` |
+| EventStore | `d55c6f7c11e9bce6f17d490a84c83f1561979d63` |
+| Memories | `d0c5d8ca96b06e02acdda88f255b33288642a7f7` |
+| Pinned tool | `hexalith.builds.module.cli` `4.33.0`; release/pin update pending |
+| .NET | SDK `10.0.402`, runtime `10.0.13` |
+| Aspire CLI | `13.6.1` |
 | Dapr home | `~/.hexalith/dapr/1.18.2`: CLI `1.18.0`, runtime `1.18.2` ([dapr-home.txt](dapr-home.txt)) |
-| Debugger | netcoredbg `3.2.0-1092` (MIT), scratchpad only |
+| Debugger used in historical proofs | netcoredbg `3.2.0-1092` (MIT), scratchpad only |
 
-Runs used the baseline commits plus this story's uncommitted changes, which were committed afterwards
-without further edits. Only `EventStore.Aspire`/`Memories.Aspire` hosting helpers, their tests and docs
-changed; none of the launched servers did.
+The source-built diagnostic runs and the `4.33.1-local.1` prerelease proof below
+are historical results. Each transcript retains the tree/tool identities it
+originally recorded; they do not prove the current released/pinned acceptance.
+The Builds implementation now also includes the process-architecture correction
+and child-process assembly isolation reviewed after the prerelease proof.
 
 ## Acceptance criteria
 
 | AC | Result |
 | --- | --- |
 | AC1: `debug` with the pinned tool reaches ready, a breakpoint is hit, `down` stops only that run | **Pending release.** The pinned `4.33.0` fails with `HXP020` ([pinned-tool.txt](pinned-tool.txt)). The Builds fix (local commit `5faaf88`), packed as `4.33.1-local.1`, passes for both manifests ([prerelease-tool.txt](prerelease-tool.txt)); the final proof needs the released, pinned tool. |
-| AC2: gated live tests for EventStore, Tenants and Memories pass | **Passed**, 3/3 in 257.9 s ([live-tests.txt](live-tests.txt)). |
+| AC2: gated live tests for EventStore, Tenants and Memories pass | **Passed**, 3/3 in 286.050 s at the reviewed Builds/catalog revision above ([live-tests.txt](live-tests.txt)). |
 | AC3: each README scopes the own-repository AppHost to its tests | **Done**: Platform `README.md`, EventStore `README.md` and `CONTRIBUTING.md`, Memories `README.md`. |
 
-## AC1 blocker (needs a Builds change, outside this story)
+## AC1 release blocker
 
 The `4.33.0` package is not usable for any Platform v2 `run`/`debug` here:
 
@@ -41,7 +47,7 @@ The `4.33.0` package is not usable for any Platform v2 `run`/`debug` here:
    `UnauthorizedAccessException: Access to the path '/home/runner' is denied.` The `6e8b71e` check runs
    `--validate-platform` only, so it does not cover this.
 
-A fixed Builds release and a Platform pin move are required. On 2026-10-18 the human chose to fix Builds in this story (next section).
+A fixed Builds release and a Platform pin move are required. On 2026-10-18 the human chose to fix the two packaged-host defects in this story (next section). The current Builds main also has a separate catalog/audit mismatch blocking CI; see [release-blocker.txt](release-blocker.txt). Repair of that additional blocker is awaiting the scope approval required by the story.
 
 ## Builds fix pre-release proof (not the final AC1 evidence)
 
@@ -76,7 +82,9 @@ tell developers to stay attached and finish with `down`.
 
 - The installed machine-wide Dapr (runtime `1.18.7`) was not used; the isolated home above was provisioned
   from official release assets with verified checksums.
-- Two of three live-test class runs failed when Sentry exited with `no space left on device`: the host's
-  inotify watch budget was exhausted (1,048,543 of 1,048,576), mostly by `fluentui-mcp` processes from other
-  sessions. The third run passed. Concurrent runs also share fixed Dapr ports; run-scoping is Epic 2.
+- The historical live-test timeline is inconsistent and is retained only as
+  [superseded evidence](live-tests-historical.txt). The resumed run captures UTC
+  start/end times directly: the first attempt failed with Sentry Exited at the
+  saturated watch limit, then all three cases passed with temporary watch headroom.
+  The original host limit was restored. Runs still share fixed Dapr ports; run-scoping is Epic 2.
 - Unit-test results and baselines: [unit-tests.txt](unit-tests.txt).

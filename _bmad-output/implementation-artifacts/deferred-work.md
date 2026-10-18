@@ -822,3 +822,7 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
   summary: Update `Hexalith.Tenants.Aspire` `TenantsServerProjectMetadata` remarks, which still describe the removed seven-location probing, when Tenants takes the EventStore.Aspire release from Story 1.10.
   evidence: Review pass 1 of Story 1.10 (B5b). `references/Hexalith.Tenants/src/Hexalith.Tenants.Aspire/TenantsServerProjectMetadata.cs:11,21` say the helper "tolerates every layout" in the `Directory.Build.props` order. After the update it resolves only the self `.slnx` root or `references/<Module>` and throws otherwise. Consumer repositories are not edited in 1.10 (frozen decision); belongs to Tenants module adoption (AR-50).
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Verify whether a stalled packaged-loader Aspire-path resolver needs its own bounded child process (medium severity, unverified).
+  evidence: Review pass 2 R2-B10/R2-E2 found the new pwsh resolver is synchronous and outside Invoke-PackagedHostChild's timeout. No stall was reproduced; a deliberately delayed resolver plus a gate-duration assertion would settle the operational impact before adding timeout handling.

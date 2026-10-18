@@ -1,0 +1,49 @@
+# Gated live tests: resumed source verification, 2026-10-18
+
+Platform: 5f18593639832d1245577dd93ec07687517d3acb
+Builds engine/AppHost built before the run: 303f86d6af4a109f7932e8d802f27ad7c06633b6
+Builds checkout at run end: 82565f485efbe961e553d7eac5393b4373858c7d
+EventStore: 55432c50d4b6f1666b4bd6d4a60bfc263b2d0e0b
+Memories: e88033b1f685dfb0b220a2c081ce6838183bed14
+.NET SDK 10.0.402, runtime 10.0.13; Aspire CLI 13.6.1.
+Our changes during the run: documentation/evidence only.
+Concurrent workspace activity fast-forwarded the Builds checkout at 14:25:42Z
+and refreshed its audit at 14:26:37Z. The previously built Tooling/AppHost
+assemblies retained their 14:20:21Z/14:20:23Z timestamps. This is intermediate
+source evidence; final acceptance must be rerun after the released tag/pin settles.
+
+Build commands:
+  dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Debug -nodeReuse:false
+  dotnet build references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj --configuration Debug -nodeReuse:false
+Both succeeded with 0 warnings and 0 errors.
+
+Test command, from the Platform root:
+  HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*BuildsSourceStartupTests'
+
+First attempt:
+  UTC start: 2026-10-18T14:20:38Z
+  UTC end: 2026-10-18T14:22:03Z
+  Total 3; failed 3, each with HXR025 and dapr-sentry Exited.
+  Host inotify watches visible: 1,048,543 / 1,048,576. This reproduces the previously
+  recorded host-limit condition. The sanitized AppHost log retains no raw Sentry
+  stderr; attribution to watch exhaustion is an inference supported by the retry.
+
+Retry:
+  UTC start: 2026-10-18T14:23:20.689625+00:00
+  UTC end: 2026-10-18T14:28:26.896372+00:00
+  Temporary host limit: fs.inotify.max_user_watches=2097152.
+  Original limit 1048576 restored in finally after the test process exited.
+  No unrelated process or container was stopped.
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 3, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 306.032s
+
+The three cases run sequentially and each asserts expected project resources,
+healthy readiness, successful run-specific down, no remaining owned resources,
+and removal of its workspace. This validates the source-built engine/AppHost;
+final AC1 still requires the released/pinned tool and both breakpoint hits.

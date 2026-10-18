@@ -70,11 +70,19 @@ module and fails with `HXP003`/`HXP020`).
 
 - The pinned tool (`dotnet tool restore`), the .NET SDK and Aspire CLI
   `13.6.1` listed above, and a running Docker engine.
-- The direct submodules `references/Hexalith.Builds`, `references/Hexalith.EventStore`
-  and, for Memories, `references/Hexalith.Memories`, initialized without
-  `--recursive`. Each checkout's `HEAD` must equal the gitlink staged in this
+- The direct submodules `references/Hexalith.Builds`, `references/Hexalith.EventStore`,
+  `references/Hexalith.Tenants` and `references/Hexalith.Memories`, initialized
+  without `--recursive`. The tool reads all three declaration owners even for
+  EventStore alone; the selected resources remain those in the table above.
+  Each checkout's `HEAD` must equal the gitlink staged in this
   repository. After a local commit inside a submodule, stage it with
   `git add references/<Repository>` or the tool refuses the run.
+- The local Aspire orchestration and dashboard packages at `13.6.1`. From this
+  workspace, run `dotnet restore apphost.cs` once before the first `debug` run.
+  Tool restore alone does not install these SDK packages. If NuGet uses a custom
+  `globalPackagesFolder`, set `NUGET_PACKAGES` to that absolute folder for both
+  restore and `debug`; the tool otherwise checks `~/.nuget/packages` and reports
+  `HXR016` when the required packages are missing.
 - `HEXALITH_DAPR_HOME`: an absolute, isolated Dapr home with Dapr CLI `1.18.0`
   at `tools/dapr` and runtime `1.18.2` at `.dapr/bin/{daprd,placement,scheduler}`.
   A machine-wide `dapr init` does not qualify. On Linux x64 (including WSL2),
@@ -85,8 +93,8 @@ module and fails with `HXP003`/`HXP020`).
   ```bash
   (
     set -euo pipefail
-    home="$HOME/.hexalith/dapr/1.18.2"
-    mkdir -p "$home/tools" "$home/.dapr/bin"
+    dapr_home="$HOME/.hexalith/dapr/1.18.2"
+    mkdir -p "$dapr_home/tools" "$dapr_home/.dapr/bin"
     cd "$(mktemp -d)"
     base=https://github.com/dapr
     for asset in cli/releases/download/v1.18.0/dapr_linux_amd64.tar.gz \
@@ -97,11 +105,11 @@ module and fails with `HXP003`/`HXP020`).
       curl -fsSLO "$base/$asset.sha256"
     done
     sha256sum -c ./*.sha256
-    tar -xzf dapr_linux_amd64.tar.gz -C "$home/tools"
+    tar -xzf dapr_linux_amd64.tar.gz -C "$dapr_home/tools"
     for binary in daprd placement scheduler; do
-      tar -xzf "${binary}_linux_amd64.tar.gz" -C "$home/.dapr/bin"
+      tar -xzf "${binary}_linux_amd64.tar.gz" -C "$dapr_home/.dapr/bin"
     done
-    DAPR_RUNTIME_PATH="$home" "$home/tools/dapr" --version   # CLI 1.18.0, runtime 1.18.2
+    DAPR_RUNTIME_PATH="$dapr_home" "$dapr_home/tools/dapr" --version   # CLI 1.18.0, runtime 1.18.2
   )
   ```
 
@@ -131,10 +139,14 @@ time.
 
 `debug` does not print the run id. It is the file name of the run state
 `<runId>.json` under `${XDG_DATA_HOME:-$HOME/.local/share}/hexalith-builds/g4-runs/`
-on Linux; the newest run is
-`ls -t "${XDG_DATA_HOME:-$HOME/.local/share}"/hexalith-builds/g4-runs/*.json | head -1`.
+on Linux. Inspect the state files and select the one whose `projectProcessIds`
+contains the launcher id reported by this `debug` invocation. Confirm its
+`manifestHash` matches `sha256sum <manifest>` (ignoring hexadecimal letter case),
+then use its `runId`. File modification time alone cannot identify your run.
 When an earlier run used the same manifest, `down --manifest` refuses with
 `HXR024`; pass the id as `down --manifest <manifest> --run-id <runId>`.
+An explicit `--run-id` chooses that run directly; the tool does not cross-check
+its manifest, so verify both fields before stopping it.
 
 Known issue with the pinned `4.33.0`: `run` and `debug` stop with `HXP020`
 ("Could not load file or assembly 'Hexalith.Builds.Tooling, Version=4.33.0.0'").

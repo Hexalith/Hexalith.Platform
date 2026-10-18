@@ -1,0 +1,52 @@
+# Story 1.10 release blocker, observed 2026-10-18
+
+Builds remote main: 82565f485efbe961e553d7eac5393b4373858c7d
+CI run: https://github.com/Hexalith/Hexalith.Builds/actions/runs/39134930658
+Build and test job: 117697465112
+Failing step: Validate package version audit
+Exact command: pwsh -NoProfile -File ./Tools/validate-package-version-audit.ps1
+
+The remote catalog now selects FsCheck 3.5.0, FsCheck.Xunit.v3 3.5.0,
+Hexalith.EventStore 3.125.1 and StyleCop.Analyzers 1.3.109-beta. The checked-in
+audit retains the earlier versions, and CI stops before package qualification.
+This separate change is newer than the checked-out Builds packaged-host fix.
+
+Approved scoped repair (user approved during this resumed run): refresh the four
+canonical audit families hexalith-eventstore, package:fscheck,
+package:fscheck.xunit.v3 and package:stylecop.analyzers against the committed
+catalog; preserve other families and qualification history; regenerate and
+validate any derived Platform version-catalog metadata affected by that
+EventStore version. Keep the selected dependency versions unchanged.
+Run the deterministic audit/catalog validators and their relevant contract tests,
+then resume exact-SHA green CI, release dispatch and the human production gate.
+
+The frozen story says: "If any other blocker needs a Builds change, stop and ask."
+After approval, remote main was found to already contain the owner repair at
+332b2c144defba546fe0a09626a4a72f2340e22f. Its audit refresh and acceptance
+fixtures supersede the failing catalog state; no duplicate refresh was generated.
+Local validation at that commit:
+- Package version audit: passed for 307 packages, 148 families, 1 source.
+- Platform version catalog: passed for EventStore 3.125.1 and toolkit 13.6.1-beta.935.
+Exact-SHA CI, release and pinned-tool acceptance are the next dependencies.
+
+## CI output
+
+2026-10-18T14:16:05.0894054Z Package version audit validation failed with 17 error(s):
+2026-10-18T14:16:05.0898613Z - Audit catalogSha256 does not match the evaluated catalog declaration bytes.
+2026-10-18T14:16:05.0899882Z - Package 'FsCheck' selects '3.4.0' but the evaluated catalog resolves '3.5.0'.
+2026-10-18T14:16:05.0901214Z - Package 'FsCheck.Xunit.v3' selects '3.4.0' but the evaluated catalog resolves '3.5.0'.
+2026-10-18T14:16:05.0902870Z - Internal package 'Hexalith.EventStore.Admin.Abstractions' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0906229Z - Internal package 'Hexalith.EventStore.Admin.Server' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0908192Z - Internal package 'Hexalith.EventStore.Aspire' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0910560Z - Internal package 'Hexalith.EventStore.Client' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0912423Z - Internal package 'Hexalith.EventStore.Contracts' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0914484Z - Internal package 'Hexalith.EventStore.DomainService' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0916415Z - Internal package 'Hexalith.EventStore.Gateway' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0918058Z - Internal package 'Hexalith.EventStore.RestApi.Generators' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0919545Z - Internal package 'Hexalith.EventStore.Server' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0920613Z - Internal package 'Hexalith.EventStore.ServiceDefaults' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0921640Z - Internal package 'Hexalith.EventStore.SignalR' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0922596Z - Internal package 'Hexalith.EventStore.Testing' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0923593Z - Internal package 'Hexalith.EventStore.Testing.Integration' catalog version '3.125.1' has no matching accepted audit selection.
+2026-10-18T14:16:05.0927581Z - Package 'StyleCop.Analyzers' selects '1.3.82-beta' but the evaluated catalog resolves '1.3.109-beta'.
+2026-10-18T14:16:05.2805611Z ##[error]Process completed with exit code 1.
