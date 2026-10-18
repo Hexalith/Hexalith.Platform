@@ -838,3 +838,17 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-host-1-full-qualification-verifier.md`
   summary: Turn a missing `dotnet` executable into the EXT-HOST-1 refusal instead of a traceback.
   evidence: `run_suite` calls `subprocess.run` and catches only `TimeoutExpired`. `FileNotFoundError` escapes. The helper is preserved from the previous verifier and was not introduced by the pass path.
+
+## Deferred from: code review of spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md (2026-10-18, pass 3)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Add an automated Platform check that the module tool pin, `hexalith-platform.json` `toolVersionRange` and the Builds gitlink release tag agree.
+  evidence: Review pass 3 verification gap. No Platform test reads `.config/dotnet-tools.json`, and source-mode `debug` only warns (HXW010). The range floor `4.33.1` set by `cf20db9` is now part of the invariant.
+  status: resolved
+  resolution: Duplicate of the Story 1.9 second-pass entry "Add one automated Platform check covering the module tool pin, the accepted range and the Builds release tag" (owner Builds or Story 2.8).
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Give users a run-id lookup when no launcher id was reported, after a plain `run` or when `debug` reports "launcher process id is unavailable" (`CompositionEngine.cs:1068`).
+  evidence: Review pass 3 (edge-case hunter). The documented recipe matches `projectProcessIds` with the reported launcher id, so it has nothing to match in these cases.
+  status: resolved
+  resolution: Duplicate of the Story 1.10 pass-1 entry "Make `hexalith-module run`/`debug` print the run id in human output…", which removes the need for the lookup.

@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 10
 created: '2026-10-18'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '79935099e9b4c6fdcffe29f84d42b8c92b50fc2b'
 eventstore_baseline_commit: 'c0c08d450dff89faaeea2bb88dd570a589ce203d'
 memories_baseline_commit: 'fb39a0c59cc3befd3176dec5e3c790f94d0e5bd1'
@@ -112,6 +112,46 @@ Machine:
 - Given the Platform root with `HEXALITH_DAPR_HOME` set, when `debug` runs on the EventStore owner manifest, then it reaches ready from the Debug build of `references/Hexalith.EventStore`, a breakpoint there is hit, and `down` stops only that run. The same holds for Memories.
 - Given the gated live tests, when they run, then the EventStore, Tenants and Memories cases pass.
 - Given each README, when read, then it scopes the own-repository AppHost to that repository's own tests.
+
+### Review Findings
+
+Review pass 3, 2026-10-18. Four layers: blind hunter, edge-case hunter, verification gap and acceptance auditor. They reviewed one combined diff: Platform `7993509..cf20db9` (story paths), the story commits in EventStore `c0c08d4..d55c6f7` and Memories `fb39a0c..4f6b3b1`, and Builds `4629ff2..c6f56c0` without the generated audit, lock and fixture JSON.
+
+- [ ] [Review][Decision] AC2 and the verification evidence predate the final Platform state — `live-tests.txt` (14:37–14:42Z) records Platform, Builds, EventStore and Memories but not Tenants. Tenants was then at `57d564b4` (checkout reflog); the committed gitlink is now `c9feedb6` (`1fae05d`: 55 files, +4056 lines of unrelated Tenants work, SDK pin included), so the Tenants case never ran at the shipped state. `builds-resumed-verification.txt` is titled "at c6f56c0", but its live-test line cites the run at `332b2c1`. Memories later moved from `d0c5d8ca` to `4f6b3b1` (docs and nested gitlinks). The full Composition suite (12 baseline failures) last ran at the superseded state (`live-tests-historical.txt`). Options: rerun the gated class and the full Composition suite at `cf20db9`, or record the Tenants revision and reconcile the labels without rerunning. **Resolved (human, 2026-10-18): rerun at `cf20db9`** → patch.
+- [ ] [Review][Patch] EventStore README still finds the run id by newest state file (`ls -t … | head -1`), which contradicts the R2-B5 recipe in every other doc and can stop another run [references/Hexalith.EventStore/README.md:89]
+- [ ] [Review][Patch] EventStore and Memories run/debug docs omit first-run prerequisites the Platform README requires: the Builds and Tenants direct checkouts, `dotnet restore apphost.cs` (otherwise `HXR016`), `NUGET_PACKAGES`, and "stay attached, then `down`" [references/Hexalith.EventStore/CONTRIBUTING.md:123; references/Hexalith.Memories/README.md:80]
+- [ ] [Review][Patch] Platform README calls `4.33.0` "the first accepted version" and does not say it is now outside the range, after `cf20db9` raised the `hexalith-platform.json` floor to `[4.33.1, 5.0.0-0)` [README.md:33]
+- [ ] [Review][Patch] AC1 evidence cites Platform `5151bef`, whose `.config/dotnet-tools.json` pins `4.33.0`; the `4.33.1` pin was an uncommitted working-tree edit, committed later in `64cbd01` [_bmad-output/implementation-artifacts/evidence/1-10/README.md:16]
+- [ ] [Review][Patch] Evidence environment note merges two runs: the intermediate failure and retry (`live-tests-intermediate.txt`, 14:20Z/14:23Z, engine `303f86d`) and the final pass (`live-tests.txt`, 14:37Z, `332b2c1`), which had no failed first attempt [_bmad-output/implementation-artifacts/evidence/1-10/README.md:131]
+- [ ] [Review][Patch] Evidence claims an assembly identity for the EventStore hit, but `debugAssemblySha256` hashes `Hexalith.EventStore.dll`. `Extensions/**` is compiled into `Hexalith.EventStore.Gateway.dll`, where the frame is [_bmad-output/implementation-artifacts/evidence/1-10/pinned-eventstore.txt:35]
+- [ ] [Review][Patch] Evidence README does not link `live-tests-intermediate.txt`, `audit-validation.txt`, `catalog-validation.txt`, `seed-probe-build.txt`, the three `*-commitlint.txt` files or `pinned-tool.txt`, and does not mark `live-tests-intermediate.txt` superseded [_bmad-output/implementation-artifacts/evidence/1-10/README.md:137]
+- [x] [Review][Defer] No automated check that the tool pin, `toolVersionRange` and the Builds gitlink tag agree [.config/dotnet-tools.json:6] — deferred: pre-existing gap, already recorded by the Story 1.9 second-pass entry (owner Builds or Story 2.8). The new `4.33.1` floor falls under the same check.
+- [x] [Review][Defer] The run-id recipe has nothing to match after plain `run`, or when `debug` reports "launcher process id is unavailable" [README.md:144] — deferred: pre-existing Builds 1.8 behaviour, already recorded by the pass-1 B11b entry (print the run id in human output).
+
+**Rejected (pass 3):**
+- Blind: inotify exhaustion is undocumented — low: specific to this host's other sessions; a troubleshooting section is more than a correction.
+- Blind: the helper docstring overclaims a match with the build-time `ProjectReference` — false: when the helper returns, its path is the props' first candidate (`references/` or self); in the other layouts it throws, so the paths never diverge.
+- Blind: the Memories live case does not assert the Redis and FalkorDB containers — low, carried B9: Memories `/ready` includes those health checks.
+- Blind: `332b2c1` collapses multi-line conditionals onto long lines — low: an owner-authored, approved repair; reformatting 20 Builds files is outside this story.
+- Blind: nine Builds files lost their final newline — false: Builds `.editorconfig:16` sets `insert_final_newline = false` for `*.cs`.
+- Blind: evidence cites `/tmp` logs and does not commit the harness — low: process-only; the cited scratch attempts are explicitly not counted.
+- Blind: nothing ties the restored package hash to the release inventory — low: NuGet versions are immutable, and the informational version `+c6f56c0` names the commit.
+- Blind: `release-progress.json` has a stale `lastCheckedUtc` and API boilerplate — low: raw capture; editing it would alter the record.
+- Blind: ANSI escapes and duplicated lines in `qualification-blocker.txt` — low: raw capture, cosmetic.
+- Blind: the docs cover only Linux — low: the team works on Linux/WSL2, and macOS/Windows recipes would need new research.
+- Blind: tests are missing for the invalid-version and RID branches and the exception hint — low: no defect shown; adding tests is more than a correction.
+- Blind: unit-test evidence names no revisions and leaves failures untracked — low: the failure sets are identical to baseline and come from nested submodules that are uninitialized by design.
+- Auditor: three Builds `fix(tool)` commits instead of one — low: process-only; the two later commits are the B7c and B8-r review patches.
+- Auditor: the release gate was approved under a delegated instruction — false: the approval records the owner's explicit instruction, which is sufficient for a sole owner.
+- Auditor: story commits are mixed with unrelated work — low: process-only; these are the owner's own sync commits.
+- Auditor: sprint status `review` against spec `done` — false: this review's step 6 syncs both (carried B4a).
+- Edge: a recycled launcher pid could match a stale state — low: needs a pid and manifest-hash collision; a guard adds complexity.
+- Edge: unset `HOME` gives a relative packages root — low, carried E8: the dotnet CLI itself needs `HOME`.
+- Edge: a whitespace `AspirePackagesRoot` throws before the run exists — false, carried E6: only tests set it.
+- Edge: the gate resolves `pwsh` from `PATH` — low: CI and normal installs have it on `PATH`; `[Environment]::ProcessPath` would be wrong for a dotnet-tool `pwsh`.
+- Edge: the public helper now throws on a patch release — low, carried B5a.
+- Edge: "mirrors the mapping" but nested checkouts fail — false, carried E13: intended by the frozen rule and AD-4.
+- Edge: the gate never launches DCP — low, carried R2-B9: real compositions supply DCP execution evidence.
 
 ## Implementation Notes
 
