@@ -50,16 +50,41 @@ public sealed class PlatformIdentityEnrollmentService(PlatformActorRegistry regi
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(operatorPrincipal);
-        string? issuer = operatorPrincipal.FindFirst("iss")?.Value;
-        string? subject = operatorPrincipal.FindFirst("sub")?.Value;
-        if (operatorPrincipal.Identity?.IsAuthenticated != true || issuer is null || subject is null
-            || !options.Value.TrustedIssuers.Contains(issuer, StringComparer.Ordinal)
-            || !options.Value.IdentityWriterSources.Contains(source, StringComparer.Ordinal))
+        if (!options.Value.IdentityWriterSources.Contains(source, StringComparer.Ordinal))
+        {
+            return null;
+        }
+
+        string? issuer = null;
+        string? subject = null;
+        foreach (ClaimsIdentity identity in operatorPrincipal.Identities.Where(value => value.IsAuthenticated))
+        {
+            Claim[] issuers = [.. identity.FindAll("iss")];
+            Claim[] subjects = [.. identity.FindAll("sub")];
+            if (issuers.Length == 0 && subjects.Length == 0)
+            {
+                continue;
+            }
+
+            // One authenticated identity must supply one exact login pair. Never
+            // combine claims from different identities or choose between aliases.
+            if (issuer is not null || issuers.Length != 1 || subjects.Length != 1
+                || string.IsNullOrWhiteSpace(issuers[0].Value) || string.IsNullOrWhiteSpace(subjects[0].Value))
+            {
+                return null;
+            }
+
+            issuer = issuers[0].Value;
+            subject = subjects[0].Value;
+        }
+
+        if (issuer is null || subject is null || !options.Value.TrustedIssuers.Contains(issuer, StringComparer.Ordinal))
         {
             return null;
         }
 
         string digest = PlatformLoginAliasDigest.Create(issuer, subject, options.Value.AliasKeyBase64);
-        return await registry.ReadAsync(digest, byAlias: true, source, cancellationToken).ConfigureAwait(false);
+        ActorRegistryEntry? actor = await registry.ReadAsync(digest, byAlias: true, source, cancellationToken).ConfigureAwait(false);
+        return actor is { Active: true } ? actor : null;
     }
 }

@@ -40,6 +40,43 @@ public sealed class PlatformIdentityAdmissionTests
         await fixture.Proxy.DidNotReceiveWithAnyArgs().MutateAsync(default!, default!);
     }
 
+    [Fact]
+    public async Task LoginWithClaimsSplitAcrossAuthenticatedIdentities_DoesNotReadRegistry()
+    {
+        var fixture = Fixture();
+        var principal = new ClaimsPrincipal([
+            new ClaimsIdentity([new Claim("iss", "issuer")], "verified-login"),
+            new ClaimsIdentity([new Claim("sub", "private-subject")], "verified-login"),
+        ]);
+
+        (await fixture.Service.ResolveLoginAsync(principal, "identity-writer", TestContext.Current.CancellationToken)).ShouldBeNull();
+        await fixture.Proxy.DidNotReceiveWithAnyArgs().ReadAsync(default!, default, default!, default!);
+    }
+
+    [Fact]
+    public async Task LoginWithAmbiguousAuthenticatedIdentities_DoesNotReadRegistry()
+    {
+        var fixture = Fixture();
+        var principal = new ClaimsPrincipal([
+            new ClaimsIdentity([new Claim("iss", "issuer"), new Claim("sub", "private-subject")], "verified-login"),
+            new ClaimsIdentity([new Claim("iss", "issuer"), new Claim("sub", "other-subject")], "verified-login"),
+        ]);
+
+        (await fixture.Service.ResolveLoginAsync(principal, "identity-writer", TestContext.Current.CancellationToken)).ShouldBeNull();
+        await fixture.Proxy.DidNotReceiveWithAnyArgs().ReadAsync(default!, default, default!, default!);
+    }
+
+    [Fact]
+    public async Task LoginForInactiveActor_IsIneligible()
+    {
+        var fixture = Fixture();
+        fixture.Proxy.ReadAsync(Arg.Any<string>(), true, Arg.Any<string>(), Arg.Any<string>())
+            .Returns(new ActorRegistryEntry(Operator, 2, false, Operator));
+
+        (await fixture.Service.ResolveLoginAsync(Login("tenant-a"), "identity-writer", TestContext.Current.CancellationToken)).ShouldBeNull();
+        await fixture.Proxy.Received(1).ReadAsync(Arg.Any<string>(), true, Arg.Any<string>(), Arg.Any<string>());
+    }
+
     private static (PlatformIdentityEnrollmentService Service, IIdentityActorRegistryActor Proxy, IActorProxyFactory Factory) Fixture()
     {
         var configured = Options.Create(new PlatformIdentityOptions { IdentityWriterSources = ["identity-writer"], TrustedIssuers = ["issuer"], RegistryServiceSourceId = "registry-service",
