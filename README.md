@@ -28,15 +28,17 @@ Those hosting concerns live here.
 ## Module tool
 
 The first Platform-accepted `hexalith-module` version is `4.33.0`, published as
-`hexalith.builds.module.cli`. The local tool manifest pins that exact version;
-`hexalith-platform.json` accepts the range `[4.33.0, 5.0.0)`. The catalog
-commit is `544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`, matching both the
-Builds gitlink and release tag `v4.33.0`.
+`hexalith.builds.module.cli`. The local tool manifest pins that exact version.
+`hexalith-platform.json` accepts the range `[4.33.0, 5.0.0-0)`: later 4.x
+releases, prereleases included, are accepted without a Platform edit, and 5.0
+prereleases are excluded. The catalog commit is
+`544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9`, matching both the Builds gitlink
+and release tag `v4.33.0`. When the exact pin moves, the Builds gitlink moves
+to that version's release-tag commit.
 
-Previously published versions in the `4.20.0–4.27.4` and `4.29.1–4.32.0`
-cohorts are not Platform-accepted. Publication alone does not grant acceptance.
-A tool outside the range is refused with `HXW010` in package mode and warned in
-source mode.
+Every version below `4.33.0` is not Platform-accepted, including the published
+`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts. A tool outside the range is
+refused with `HXW010` in package mode and warned in source mode.
 
 From the Platform root, restore and check the pinned tool with:
 
