@@ -4,7 +4,7 @@ type: 'chore'
 epic: 1
 story: 9
 created: '2026-10-17'
-status: 'in-review'
+status: 'done'
 baseline_commit: 'b49d5c1cbfc79e94d92d6228e7d2b3c4f65b56f9'
 builds_baseline_commit: 'c8c72dcab8e1b05520ff9445d9df105f084f9813'
 route: 'dispatch'
@@ -82,6 +82,28 @@ Builds paths are under `references/Hexalith.Builds`.
 
 ## Review Triage Log
 
+- blind: Agents UI is added as an Aspire project although its Razor SDK project has no executable output — `medium` — verified in `Hexalith.Agents.UI.csproj`; rejected for 1.9 because this is pre-existing Story 5.4 composition work, outside tool acceptance.
+- blind: normal Agents composition passes null private capabilities — `medium` — `TryCompose` calls `Compose(..., null)`; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: AppHost private service registrations do not reach the launched Agents server — `medium` — `BindPrivateCapabilities` registers on the AppHost service collection; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: `AgentsHostComposition.AdmitAsync` has no production caller — `medium` — the Agents server still registers `UnavailableAgentTrustedCommandAdmission`; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: admission checks spool readiness but does not persist an observation before command construction — `medium` — the method only calls `IsReadyAsync` around verification; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: Agents server lacks an EventStore base URL binding — `medium` — the composition sets no `Agents__EventStore__BaseUrl`, while the server requires the configuration key; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: public `Compose` checks only four credential slots — `medium` — other required profile fields can be empty through that public entry; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: an opaque short string may be an inline credential — `maybe-false` — current validation rejects known secret markers but a reference syntax contract is needed to distinguish opaque references from tokens; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: Full verifier shell does not pass a profile — `medium` — `eng/verify-agents-host.sh` invokes `verify_full.py` without `--profile`; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: category and overall Full evidence can disagree about blocked status — `medium` — category `blocked` is `bool(gaps)` while `blocked.json` is always true; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: TRX failures can count as a successful suite — `medium` — `run_suite` records outcomes but tests only process exit and presence of result nodes; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: category evidence can contain no matched tests — `medium` — `write_evidence` writes empty `matchedTests` without a guard; rejected for 1.9 as pre-existing Story 5.4 work.
+- blind: packet writer accepts a clean unrelated Git repository — `low` — `prepare` checks cleanliness and SHA format but no Platform repository identity; rejected for 1.9 as pre-existing Story 5.4 work.
+- edge: Boolean timing values can pass as integers — `false` — Python equality cannot equate `True` or `False` to any accepted timing value, all of which exceed 1.
+- edge: direct `Compose` can receive empty tenant or protection fields — `medium` — its four-slot guard does not validate those fields; rejected for 1.9 as pre-existing Story 5.4 work.
+- edge: enabling Agents with Works or Timesheets skips the latter lane — `medium` — `ComposeEntry` returns immediately after successful Agents composition; rejected for 1.9 as pre-existing Story 5.4 work.
+- edge: four present bindings can mask other missing profile references in Full evidence — `medium` — `binding_gaps` checks only four keys; rejected for 1.9 as pre-existing Story 5.4 work.
+- edge: missing `dotnet` escapes Full verification before evidence is written — `medium` — `run_suite` catches timeout but not `OSError`; rejected for 1.9 as pre-existing Story 5.4 work.
+- edge: failing suites can leave category evidence marked unblocked — `medium` — category status ignores suite exit codes; rejected for 1.9 as pre-existing Story 5.4 work.
+- verification-gap: EXT-HOST-1 Python tests are absent from the host verification command — `medium` — the shell lists only two older unittest modules, while the reviewer ran the five new tests directly; rejected for 1.9 as pre-existing Story 5.4 work.
+- verification-gap: Full evidence tests do not assert category matches — `medium` — the existing test asserts effects and gaps only, and its fixture supplies one ACL-named result; rejected for 1.9 as pre-existing Story 5.4 work.
+- verification-gap: no repeatable Platform check compares the pinned package and accepted range — `medium` — Builds tests use synthetic records and the current pair was verified manually; deferred to Story 2.8 because 1.9 explicitly excludes the blocking CI tier.
 ## Verification
 
 **Commands:**

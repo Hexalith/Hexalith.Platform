@@ -772,3 +772,7 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-runtime-delivery.md`
   summary: Story 1.8's spec is marked done while its sprint row still says review.
   evidence: `spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md` has `status: done`, and `sprint-status.yaml` still has `1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagno: review`. The secrets delivery did not write either field.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md`
+  summary: Add a repeatable Platform check that the pinned module tool satisfies the accepted version range.
+  evidence: Story 1.9 manually restored and ran 4.33.0 against Platform HEAD, including a 4.32.0 HXW010 refusal, but Builds identity tests use synthetic records and the Platform pin verifier does not compare these two files. Story 2.8 owns the blocking CI tier.
