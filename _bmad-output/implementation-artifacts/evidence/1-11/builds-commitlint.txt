@@ -1,0 +1,24 @@
+# Builds commit cf978100f7668de135eb8a2adcd535e21b26471b (amended after review; replaces d7c828a), validated with Builds' pinned commitlint
+@commitlint/cli@21.2.4
+⧗   --- input ---
+feat(tool): build a run-scoped McpCli for McpCli runs
+
+McpCli is a short-lived CLI that declares no server, so a Platform run of its
+manifest could neither target nor debug it. When the active v2 module is
+mcpcli in source mode, run, debug and test now build the mapped
+HexalithMcpCliRoot checkout's src/Hexalith.McpCli project in Debug with the
+run's pinned catalog and transitive pinning into <run workspace>/tools/mcpcli,
+before the Platform model and before any resource starts, within the startup
+deadline. The build never packs or publishes and leaves the checkout's bin and
+obj untouched.
+
+A ready run reports the tool and the project it was built from with HXI010
+(field mcpcli), and down deletes it with the run workspace. An unmapped,
+uninitialized or project-less checkout fails with HXW004 and a failed build
+with HXR020, both naming McpCli and the expected project path; no sibling copy
+is used. Package mode is unchanged. Repository("mcpcli") now returns
+Hexalith.McpCli, matching Platform.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+✔   found 0 problems, 0 warnings
+exit 0

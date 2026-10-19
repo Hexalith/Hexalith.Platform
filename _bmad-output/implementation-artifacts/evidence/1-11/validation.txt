@@ -1,0 +1,38 @@
+# Declaration validation, 2026-10-19T17:03:55Z, cwd = the Platform root
+# Masking: <scratch> is the session scratchpad (/tmp/claude-1000/<project>/<session>/scratchpad). The tool prints sources
+# relative to the cwd (../../../../../tmp/claude-1000/...); both the relative and the absolute form are masked to
+# <scratch>, so every masked path reads <scratch>/negative/<file>.
+# McpCli checkout 943b75ce85cbedc83b73f3b90277dcd3d4fae83b; manifest sha256 79556a3d886e450cf8e7c8fedbf09e51300e8f9aa56e1cb7baedbd82a0037219
+
+## Negative input: <scratch>/negative/mcpcli-with-mcp-interface.json
+# Produced from the committed manifest by replacing modules[0].surfaces.interfaces ([] in the committed file) with exactly:
+[{"name": "mcpcli-mcp", "server": "cli", "protocol": "mcp", "routePrefix": "/mcp", "exposure": "internal-only", "surfaceClass": "service", "authorization": {"policy": "authenticated", "permissions": []}, "callers": [], "operations": []}]
+# Delta check: the negative file equals the committed manifest plus that interface: True
+
+## Tool: dotnet tool run hexalith-module --
+$ dotnet tool run hexalith-module -- --version
+4.33.1+c6f56c011ce3a83cdf6100c322352daf125c6af9
+$ dotnet tool run hexalith-module -- validate --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json --output human
+validated: Success
+exit 0
+$ dotnet tool run hexalith-module -- validate --manifest <scratch>/negative/mcpcli-with-mcp-interface.json --output human
+failed: UsageOrManifest
+HXP002 Manifest Manifest source=<scratch>/negative/mcpcli-with-mcp-interface.json field=modules[0].surfaces.interfaces[0].protocol: Use one of the values declared by the schema.
+HXP023 Manifest Manifest source=<scratch>/negative/mcpcli-with-mcp-interface.json field=modules[0].surfaces.interfaces[0].protocol: AD-11 rejects MCP endpoints mapped by an enrolled host, regardless of exposure; MVP MCP uses McpCli stdio.
+HXP024 Manifest Manifest source=<scratch>/negative/mcpcli-with-mcp-interface.json field=modules[0].surfaces.interfaces[0].server: Unknown receiving owner server.
+exit 1
+
+## Tool: <scratch>/pack/tool/hexalith-module
+$ <scratch>/pack/tool/hexalith-module --version
+4.34.0-local.1+d7c828a197d3bfb4762301a4d4c341a8c8701bfb
+$ <scratch>/pack/tool/hexalith-module validate --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json --output human
+validated: Success
+exit 0
+$ <scratch>/pack/tool/hexalith-module validate --manifest <scratch>/negative/mcpcli-with-mcp-interface.json --output human
+failed: UsageOrManifest
+HXP002 Manifest Manifest source=<scratch>/negative/mcpcli-with-mcp-interface.json field=modules[0].surfaces.interfaces[0].protocol: Use one of the values declared by the schema.
+HXP023 Manifest Manifest source=<scratch>/negative/mcpcli-with-mcp-interface.json field=modules[0].surfaces.interfaces[0].protocol: AD-11 rejects MCP endpoints mapped by an enrolled host, regardless of exposure; MVP MCP uses McpCli stdio.
+HXP024 Manifest Manifest source=<scratch>/negative/mcpcli-with-mcp-interface.json field=modules[0].surfaces.interfaces[0].server: Unknown receiving owner server.
+exit 1
+
+# <scratch>/pack/tool/hexalith-module is the pre-release 4.34.0-local.1 install (prerelease-tool.txt), packed from Builds d7c828a before the review fixes; validation code is unchanged since.

@@ -15,6 +15,9 @@ public sealed class BuildsSourceStartupTests
         ["eventstore", "memories", "memories-access-telemetry-clock", "memories-access-telemetry"]);
 
     [Fact]
+    public Task TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync() => StartSelectionAsync("mcpcli", ["eventstore"]);
+
+    [Fact]
     public Task DomainTenantsStartsThroughTheRealBuildsEngineAsync() => StartSelectionAsync("tenants",
         ["eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry"]);
 
@@ -60,6 +63,17 @@ public sealed class BuildsSourceStartupTests
                 session.Readiness.Resources.ShouldContain(resource => resource.Name == server && resource.State == "Healthy");
             }
             session.Readiness.Resources.ShouldNotContain(resource => resource.Name.Contains("admin", StringComparison.Ordinal));
+            if (activeModule == "mcpcli")
+            {
+                // McpCli declares no server: the run builds the mapped checkout in Debug into the run workspace instead.
+                session.Plan.McpCliToolPath.ShouldBe(Path.Combine(session.Plan.Workspace, "tools", "mcpcli", "bin", "Hexalith.McpCli", "debug", "Hexalith.McpCli.dll"));
+                File.Exists(session.Plan.McpCliToolPath).ShouldBeTrue();
+                started.Result.Diagnostics.ShouldContain(diagnostic => diagnostic.RuleId == "HXI010" && diagnostic.Field == "mcpcli" && diagnostic.Message.Contains(session.Plan.McpCliToolPath!, StringComparison.Ordinal));
+            }
+            else
+            {
+                session.Plan.McpCliToolPath.ShouldBeNull();
+            }
         }
         finally
         {

@@ -1,0 +1,27 @@
+# PRE-RELEASE TOOL: hexalith-module 4.34.0-local.1 (Builds d7c828a, before push/release/pin)
+# Packed from a scratch clone holding exactly the local Builds commit:
+$ git clone <platform>/references/Hexalith.Builds <scratch>/pack/Hexalith.Builds   # HEAD d7c828a197d3bfb4762301a4d4c341a8c8701bfb, clean: yes
+$ pwsh -NoProfile -File Tools/build-g4-tool-packages.ps1 -Version 4.34.0-local.1 -OutputDirectory <scratch>/pack/feed -DeferInventory
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Packing Hexalith.Builds.Module.Cli at 4.34.0-local.1 in Release configuration.
+  Successfully created package '<scratch>/pack/feed/Hexalith.Builds.Module.Cli.4.34.0-local.1.nupkg'.
+  Successfully created package '<scratch>/pack/feed/Hexalith.Builds.Module.Cli.4.34.0-local.1.snupkg'.
+Packing Hexalith.Builds.Evidence.Cli at 4.34.0-local.1 in Release configuration.
+  Successfully created package '<scratch>/pack/feed/Hexalith.Builds.Evidence.Cli.4.34.0-local.1.nupkg'.
+  Successfully created package '<scratch>/pack/feed/Hexalith.Builds.Evidence.Cli.4.34.0-local.1.snupkg'.
+Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.34.0.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '<scratch>/pack/feed/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: <scratch>/pack/feed/platform-loader
+pack: exit 0, real	0m38.562s
+
+$ ls <scratch>/pack/feed; sha256sum
+448a2de3216c07173f961ddf76b9825b02d540de1511afd046aa786bf12be22c  Hexalith.Builds.Evidence.Cli.4.34.0-local.1.nupkg
+c7075f7fa242d9f09c715410ddc1f1f2e876cf264a0214238d54da5712771b22  Hexalith.Builds.Module.Cli.4.34.0-local.1.nupkg
+cf7fb29008e263690fa72f56ed007a7fd3819ebe76f35e197a7446a3d27036ef  Hexalith.Builds.Evidence.Cli.4.34.0-local.1.snupkg
+023d2ddaeb771aae2686a954ca86f10e1c55dab5f9d360dcffd4fcbdb8aa78d1  Hexalith.Builds.Module.Cli.4.34.0-local.1.snupkg
+
+$ NUGET_PACKAGES=<scratch>/pack/tool-nuget dotnet tool install Hexalith.Builds.Module.Cli --version 4.34.0-local.1 --tool-path <scratch>/pack/tool --add-source <scratch>/pack/feed
+Tool 'hexalith.builds.module.cli' (version '4.34.0-local.1') was successfully installed.
+$ <scratch>/pack/tool/hexalith-module --version
+4.34.0-local.1+d7c828a197d3bfb4762301a4d4c341a8c8701bfb
+Range check: 4.34.0-local.1 is inside Platform toolVersionRange [4.33.1, 5.0.0-0).

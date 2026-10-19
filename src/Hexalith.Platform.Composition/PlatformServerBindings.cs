@@ -30,6 +30,7 @@ public static class PlatformServerBindings
     public static string Repository(string module) => module switch
     {
         "eventstore" => "Hexalith.EventStore", "tenants" => "Hexalith.Tenants", "memories" => "Hexalith.Memories",
+        "mcpcli" => "Hexalith.McpCli",
         _ => "Hexalith." + char.ToUpperInvariant(module[0]) + module[1..],
     };
 

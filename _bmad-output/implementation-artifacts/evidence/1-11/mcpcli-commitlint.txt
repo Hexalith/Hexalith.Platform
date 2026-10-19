@@ -1,0 +1,17 @@
+# McpCli commit 943b75ce85cbedc83b73f3b90277dcd3d4fae83b (amended after review; replaces 13568c0), validated with McpCli's pinned commitlint (package-lock install in <scratch>/mcpcli-commitlint, McpCli's commitlint.config.mjs)
+@commitlint/cli@21.2.2
+⧗   --- input ---
+feat(module): declare McpCli for Platform runs
+
+Add the v2 declaration that lets the Platform tool run and debug McpCli
+from the Platform workspace. McpCli declares no server and no interface; its
+only dependency is eventstore, the gateway it targets, so that gateway is its
+whole minimum environment. MCP stays stdio only.
+
+Document in the README that McpCli runs and debugs from the Platform
+workspace, where the tool builds this checkout in Debug into the run workspace,
+and that this repository's own references serve only its own builds and tests.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+✔   found 0 problems, 0 warnings
+exit 0

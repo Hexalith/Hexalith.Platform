@@ -1,0 +1,35 @@
+# Gated live Platform cases (BuildsSourceStartupTests) with the source-built Builds engine and AppHost.
+# Ran at Builds d7c828a and McpCli 13568c0, before the review fixes (now Builds cf97810, McpCli 943b75c); the coordinator reruns them.
+# Driver commands, in order (cwd tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0):
+#   1. wait until 127.0.0.1:50001/51005/51006 had no listener and no Works test or verifier process ran for 45 s;
+#   2. the dotnet exec line shown below, with HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME set;
+#   3. 'exit <code> <utc>' = the test runner's exit code and finish time;
+#   4. git -C <platform>/references/Hexalith.McpCli status --short --ignored, whose output (empty: no bin/obj or other
+#      files) ends at the '(end McpCli status)' marker;
+#   5. 'containers after' = docker ps --format '{{.Names}}', taken when the log was copied (16:4xZ).
+# No containers-before line was captured for this run. The closest record is the end of prerelease-proof.txt at
+# 16:36:09Z: dapr_placement dapr_redis dapr_scheduler dapr_zipkin, plus works-sdk415-* of the concurrent Works session.
+
+# Gated live class, 2026-10-19T16:43:51Z
+# Platform HEAD f0e33167fcdb5f539da159c54f7505b72a65c9b2 + this story's working tree; Builds d7c828a197d3bfb4762301a4d4c341a8c8701bfb; McpCli 13568c0bc56fc42909c620847915b993483c594d
+$ HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet exec Hexalith.Platform.Composition.Tests.dll -method ...TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync -method ...TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 2, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 106.450s
+exit 0 16:45:37Z
+(end McpCli status)
+containers after: dapr-placement-mtls-vcyeuzmc dapr-scheduler-mtls-bfmfemzu dapr-sentry-hdnjqbqd dapr_placement dapr_redis dapr_scheduler dapr_zipkin works-sdk415-e6f196386a794277a19c2d183abaddf5
+
+# Annotation of the after-list:
+# - dapr-placement-mtls-*, dapr-scheduler-mtls-* and dapr-sentry-* were created at 16:45:39-40Z, after this class finished
+#   (16:45:37Z), by dcp pid 1481597 (label com.microsoft.developer.usvc-dev.creatorProcessId). That dcp ran from the
+#   Aspire CLI bundle (~/.aspire/versions/13.6.1_.../dcp), while this engine runs DCP from the NuGet
+#   aspire.hosting.orchestration package, so it belonged to the concurrent Works session's run. They were transient:
+#   at review time, docker ps -a showed only dapr_placement, dapr_redis, dapr_scheduler and dapr_zipkin, and the same
+#   held at 17:04:11Z.
+# - works-sdk415-* (created 16:45:36Z) belongs to the concurrent Works session, not to this story.
+# - Both cases tear down their own resources and assert it: Remaining.IsEmpty and the run workspace removed.

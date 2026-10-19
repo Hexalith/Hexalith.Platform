@@ -1,0 +1,16 @@
+# Real McpCli Debug build with the review-fixed McpCliBuildArguments, 2026-10-19T17:01:22Z
+# pinned catalog = Builds 4aaeed8 Props/Directory.Packages.props (the Platform HEAD pin) copied to <scratch>/pinned/Props
+# McpCli checkout 13568c0bc56fc42909c620847915b993483c594d; status --short --ignored before:
+(end)
+$ dotnet build <mcpcli>/src/Hexalith.McpCli/Hexalith.McpCli.csproj --configuration Debug --artifacts-path <scratch>/trial-ws2/tools/mcpcli -p:GeneratePackageOnBuild=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 -nodeReuse:false -p:UseSharedCompilation=false -p:CentralPackageTransitivePinningEnabled=true -p:CustomBeforeDirectoryBuildProps=<catalog> -p:ImportDirectoryPackagesProps=false -p:CentralPackageVersionsFileImported=true -p:DirectoryPackagesPropsPath=<catalog>
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:06.86
+exit 0
+$ grep -c CentralPackageTransitivePinningEnabled <scratch>/trial-ws2/tools/mcpcli/obj/Hexalith.McpCli/project.assets.json
+1   ("CentralPackageTransitivePinningEnabled": true in the restore spec, plus centralTransitiveDependencyGroups)
+# Control: the same build without the argument (<scratch>/trial-ws, before the fix) has neither key in its project.assets.json.
+status --short --ignored after:
+(end)
+-rw-r--r-- 1 administrator administrator 86528 Oct 19 19:01 <scratch>/trial-ws2/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll

@@ -1,0 +1,185 @@
+# PRE-RELEASE AC1 PROOF with hexalith-module 4.34.0-local.1 (prerelease-tool.txt), before push/release/pin.
+# AC1 is rerun with the released, pinned tool by the orchestrator after review (spec task 'release and pin').
+# Driver: <scratch>/scripts/mcpcli_proof.sh (debug -> PDB documents -> netcoredbg launch via <scratch>/scripts/ncdb_launch.py -> checkout status -> down).
+# netcoredbg 3.2.0-1092 (MIT), downloaded to the scratchpad, archive sha256 080eb3b2d2152465f599d3b33d1ee6e747794e11cc0a3773ec689f5e5f2c5afa
+# (same asset as evidence/1-10/diagnostic-eventstore.txt), never committed. Framework-frame lines are trimmed from the backtrace.
+# The run waited for a window in which the fixed Dapr control-plane ports were free: another session's Works smoke runs held them.
+
+## Inputs 2026-10-19T16:34:52Z
+$ <scratch>/pack/tool/hexalith-module --version
+4.34.0-local.1+d7c828a197d3bfb4762301a4d4c341a8c8701bfb
+Platform HEAD f0e33167fcdb5f539da159c54f7505b72a65c9b2
+references/Hexalith.Builds staged d7c828a197d3bfb4762301a4d4c341a8c8701bfb checkout d7c828a197d3bfb4762301a4d4c341a8c8701bfb committed 4aaeed8ba8a0901086ff77b3ce21f120b2a8c8df
+references/Hexalith.McpCli staged 13568c0bc56fc42909c620847915b993483c594d checkout 13568c0bc56fc42909c620847915b993483c594d committed 447085c42ec606f642240c4cae0415e7c2f97467
+references/Hexalith.EventStore staged 682512c676827e55d4b94711f8c568a20637b020 checkout 682512c676827e55d4b94711f8c568a20637b020 committed 682512c676827e55d4b94711f8c568a20637b020
+references/Hexalith.Tenants staged 63b7b3d8d6cd18db189c7dbfaf3cd94491115fa9 checkout 63b7b3d8d6cd18db189c7dbfaf3cd94491115fa9 committed 63b7b3d8d6cd18db189c7dbfaf3cd94491115fa9
+references/Hexalith.Memories staged 79e4ab1e05fde7783bc87d132a4e298611b7a7ca checkout 79e4ab1e05fde7783bc87d132a4e298611b7a7ca committed 79e4ab1e05fde7783bc87d132a4e298611b7a7ca
+sibling ../mcpcli: mcpcli (HEAD a51900b)
+$ git -C references/Hexalith.McpCli status --short --ignored
+(end status)
+containers before: dapr_placement dapr_redis dapr_scheduler dapr_zipkin 
+
+## debug 2026-10-19T16:34:52Z
+$ HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 <scratch>/pack/tool/hexalith-module debug --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json
+ready: Success
+HXW009 Prerequisite None field=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds: Builds catalog '/home/administrator/projects/hexalith/platform/references/Hexalith.Builds' is staged d7c828a197d3bfb4762301a4d4c341a8c8701bfb, checked out d7c828a197d3bfb4762301a4d4c341a8c8701bfb; Platform f0e33167fcdb5f539da159c54f7505b72a65c9b2 pins 4aaeed8ba8a0901086ff77b3ce21f120b2a8c8df.
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '1334514'.
+HXI010 Topology None field=mcpcli: Run-scoped McpCli Debug build '/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll'; launch it under a debugger, and down deletes it.
+exit 0 (2026-10-19T16:36:00Z)
+run=493239030fb3522402ccfed7d355fca0 workspace=/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0
+tool=/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll
+-rw-r--r-- 1 administrator administrator 86528 Oct 19 18:35 /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll
+-rw-r--r-- 1 administrator administrator 32868 Oct 19 18:35 /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.pdb
+90e1a88070d8cd4ffb1cf88a38243623946e65fe0fe93cc7a1fece7bee92a3ce  /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll
+f55f83a563f708cdc8f8311534d6af93746a29e082a071a6d641e667c49a3ce6  /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.pdb
+e776fb646caa7d382a5b5c2e81ad96676423a4338ef6d5d6953c72bddbbca233  /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.Core.dll
+3883c268ca0ae7d04234f456d82b56a16def51ece3eaf1639353df94f8385b52  /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.Core.pdb
+state {'status': 'Ready', 'manifestHash': '79556A3D886E450CF8E7C8FEDBF09E51300E8F9AA56E1CB7BAEDBD82A0037219', 'projectProcessIds': [1334502, 1334514], 'startupDurationSeconds': 67.4046946, 'effectiveDeadlineSeconds': 600}
+manifest sha256 79556a3d886e450cf8e7c8fedbf09e51300e8f9aa56e1cb7baedbd82a0037219
+plan {'platformActiveModule': 'mcpcli', 'mcpCliToolPath': '/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll', 'platformModelAssemblyPath': '/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/hosts/platform-model/Hexalith.Platform.Composition.dll'}
+
+## PDB source documents 2026-10-19T16:36:00Z
+# Hexalith.McpCli.pdb
+documents: 15; outside references/Hexalith.McpCli/src: 4
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Program.cs
+# Hexalith.McpCli.Core.pdb
+documents: 59; outside references/Hexalith.McpCli/src: 5
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs
+
+## netcoredbg launch 2026-10-19T16:36:00Z
+NET Core debugger 3.2.0-1 (9744e1f, Release)
+# utc=2026-10-19T16:36:00Z cwd=<scratch>/ncdb-cwd
+# $ <scratch>/tools/netcoredbg/netcoredbg --interpreter=cli -- dotnet /home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll modules
+>>> break /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12
+ Breakpoint 1 at CatalogService.cs:12 --pending, warning: No executable code of the debugger's target code type is associated with this line.
+>>> run
+^running
+breakpoint modified,  Breakpoint 1 at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12
+stopped, reason: breakpoint 1 hit, thread id: 1342452, stopped threads: all, times= 1, frame={Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12}
+# HIT=1 utc=2026-10-19T16:36:02Z
+>>> backtrace
+#0: 0x0000787c3b4efe57 Hexalith.McpCli.Core.dll` Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12
+#1: 0x0000787c3b4ef947 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<>c.<CreateModules>b__18_1() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:330
+#2: 0x0000787c3b4b2787 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:830
+#5: 0x0000787c3b4b1e9e Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.RunAsync()
+#6: 0x0000787c3b4b1d76 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.RunAsync() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:804
+#7: 0x0000787c3b4b1d0d Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<CreateModules>b__18_0() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:327
+#14: 0x0000787c3b4a4023 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:141
+#17: 0x0000787c3b4a30ef Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.InvokeAsync()
+#18: 0x0000787c3b4a1a56 Hexalith.McpCli.dll` Hexalith.McpCli.Program.Main() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Program.cs:21
+#19: 0x0000787c3b4a1896 Hexalith.McpCli.dll` Hexalith.McpCli.Program.<Main>()
+>>> next
+^running
+stopped, reason: end stepping range, thread id: 1342452, stopped threads: all, frame={Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:13}
+>>> print access.Catalog
+access.Catalog = null
+>>> continue
+^running
+{
+  "error": {
+    "code": "catalog_empty",
+    "message": "The Catalog exposes no valid Operations."
+  }
+}
+stopped, reason: exited, exit-code: 2
+^exit
+>>> quit
+# netcoredbg exit=0 breakpoint hits=1
+
+## checkout after the build and debug session 2026-10-19T16:36:06Z
+$ git -C references/Hexalith.McpCli status --short --ignored
+(end status)
+(end bin/obj search)
+
+## down 2026-10-19T16:36:06Z
+$ <scratch>/pack/tool/hexalith-module down --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json --run-id 493239030fb3522402ccfed7d355fca0
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+down exit 0
+## after down 2026-10-19T16:36:09Z
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll': No such file or directory
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0': No such file or directory
+containers after: dapr_placement dapr_redis dapr_scheduler dapr_zipkin works-sdk415-fa4329a907904f0d863af34940ebf76c 
+(end)
+
+## PDB source documents of the two PDBs inspected, Hexalith.McpCli.pdb and Hexalith.McpCli.Core.pdb (full document lists of those two;
+## Hexalith.McpCli.Abstractions.pdb and Hexalith.McpCli.Mcp.pdb were not inspected here, the pinned rerun covers all four first-party PDBs).
+## Generated files are under the run workspace obj.
+# Hexalith.McpCli.pdb
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliOutput.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/GlobalOptionsBinding.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/OutputFileType.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/OutputPreflightException.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/OutputTargetKind.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Hosting/HostFactory.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Hosting/ManifestLoader.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Hosting/SettingsBootstrap.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Hosting/StaticBearerTokenHandler.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Program.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli/debug/ModuleAssemblyManifest.g.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli/debug/Hexalith.McpCli.GlobalUsings.g.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli/debug/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli/debug/Hexalith.McpCli.AssemblyInfo.cs
+# Hexalith.McpCli.Core.pdb
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/AggregateIdAccessors.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogAccess.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogBuilder.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogDiagnostic.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogLookupResult.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogProvider.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogSnapshot.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/ContractDeclarationException.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/DescriptionLinter.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/ExecutionAvailability.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/ICatalog.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/LintFinding.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/ModuleDescriptor.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/ModulesDocument.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/ModuleSummary.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationDescriptionDocument.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationDescriptor.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationEnvelopeDocument.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationKind.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationRouting.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationsDocument.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/OperationSummary.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/RoutingResolution.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/RoutingResolver.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/CommandResult.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/EnvelopeContext.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/ExtensionValidator.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/IOperationExecutor.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/OperationCall.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/OperationError.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/OperationExecutor.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/OperationOutcome.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/QueryPagingDocument.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/QueryResult.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/RunQueryArguments.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Execution/SendCommandArguments.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/McpCliCoreServiceCollectionExtensions.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/DerivedSchema.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/PayloadValidationResult.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/PayloadValidator.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/PayloadViolation.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/PropertyBinding.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/PropertyRole.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Schema/SchemaDeriver.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Serialization/McpCliJson.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/ConnectionProfile.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/ProfileFileTransaction.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/ProfileSnapshot.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/ProfileStore.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/ResolvedSettings.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/SettingsInput.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/SettingsResolution.cs
+/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Settings/SettingsResolver.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli.Core/debug/Hexalith.McpCli.Core.GlobalUsings.g.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli.Core/debug/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli.Core/debug/Hexalith.McpCli.Core.AssemblyInfo.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli.Core/debug/Microsoft.Extensions.Logging.Generators/Microsoft.Extensions.Logging.Generators.LoggerMessageGenerator/LoggerMessage.g.cs
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/493239030fb3522402ccfed7d355fca0/tools/mcpcli/obj/Hexalith.McpCli.Core/debug/System.Text.RegularExpressions.Generator/System.Text.RegularExpressions.Generator.RegexGenerator/RegexGenerator.g.cs

@@ -1,0 +1,33 @@
+# Builds Hexalith.Builds.Module.Tests, built with -nodeReuse:false -p:UseSharedCompilation=false, run with dotnet exec <dll> -xml
+# baseline = origin/main b435f2e3b3892e03f69322d24de6003b0baf7a7d (clean); change = local commit d7c828a197d3bfb4762301a4d4c341a8c8701bfb tree
+baseline : total 1071, passed 1071, failed 0, skipped 0, time 124.982s, run 2026-10-19 15:45:31
+change   : total 1090, passed 1090, failed 0, skipped 0, time 129.287s, run 2026-10-19 15:59:07
+New tests (19), all in McpCliRunBuildTests:
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.McpCliRunReportsTheRunScopedBuildAndDownDeletesItAsync
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.BuildWritesOnlyTheRunWorkspaceAndIgnoresTheSiblingAsync
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OtherActiveModuleDoesNotBuildMcpCliAsync(owner: \"eventstore\")
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OtherActiveModuleDoesNotBuildMcpCliAsync(owner: \"memories\")
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.BuildArgumentsUseDebugRunWorkspaceArtifactsAndThePinnedCatalog
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.MappedCheckoutIsSelectedAndASiblingIsIgnored
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.MissingCheckoutRefusesTheRunBeforeLaunchAsync
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.MissingCheckoutFailsNamingMcpCliAndTheExpectedProject(state: \"unmapped\")
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.MissingCheckoutFailsNamingMcpCliAndTheExpectedProject(state: \"uninitialized\")
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.MissingCheckoutFailsNamingMcpCliAndTheExpectedProject(state: \"project-missing\")
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OnlyAnMcpCliSourceRunBuildsTheTool(activeModule: \"mcpcli\", mode: Source, expected: True)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OnlyAnMcpCliSourceRunBuildsTheTool(activeModule: \"mcpcli\", mode: Package, expected: False)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OnlyAnMcpCliSourceRunBuildsTheTool(activeModule: \"eventstore\", mode: Source, expected: False)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OnlyAnMcpCliSourceRunBuildsTheTool(activeModule: \"memories\", mode: Source, expected: False)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OnlyAnMcpCliSourceRunBuildsTheTool(activeModule: \"tenants\", mode: Source, expected: False)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.OnlyAnMcpCliSourceRunBuildsTheTool(activeModule: null, mode: Source, expected: False)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.McpCliShapedDeclarationValidatesAndRejectsAnMcpInterface(withMcpInterface: False)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.McpCliShapedDeclarationValidatesAndRejectsAnMcpInterface(withMcpInterface: True)
+   Pass  Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.BuildFailureNamesMcpCliAndItsProjectAsync
+
+# After review (amended into Builds cf978100f7668de135eb8a2adcd535e21b26471b), focused runs of the tests covering the edited files only:
+#   dotnet exec Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests
+#     Total: 22, Errors: 0, Failed: 0, Skipped: 0 (adds linked-outside, FailedBuildNamesMcpCliItsProjectAndTheBuildErrorAsync,
+#     McpCliBuildIsBoundedByTheStartupDeadlineAsync; the ready case now also asserts the project path in HXI010)
+#   dotnet exec Hexalith.Builds.Module.Tests.dll -method ...DeclarationClosureTests.SourceClosureSelectsOnlyDeclaredTechnicalDependencies
+#     -method ...StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync -method ...StartupCoordinationTests.DependencyTaskDescendantIsOwnedAndForeignProcessesSurviveAsync
+#     Total: 4, Errors: 0, Failed: 0, Skipped: 0
+# The full suite was not rerun here; the coordinator runs full verification.

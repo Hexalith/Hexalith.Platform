@@ -1,0 +1,54 @@
+# Post-review verification (orchestrator), review pass 1 patches, 2026-10-19
+# Platform HEAD f0e33167fcdb5f539da159c54f7505b72a65c9b2 + story working tree
+# Builds staged/checkout cf978100f7668de135eb8a2adcd535e21b26471b ; McpCli staged/checkout 943b75ce85cbedc83b73f3b90277dcd3d4fae83b
+
+## Builds Hexalith.Builds.Module.Tests (dotnet build -nodeReuse:false -p:UseSharedCompilation=false; dotnet exec <dll>)
+2026-10-19T17:06:52Z
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:37.62
+-rw-r--r-- 1 administrator administrator 1507840 19:07:29 ~/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll
+   Hexalith.Builds.Module.Tests  Total: 1093, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 97.949s
+2026-10-19T17:09:08Z
+
+## Platform Hexalith.Platform.Composition.Tests (full suite, gated live cases skip)
+2026-10-19T17:09:17Z
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:36.55
+-rw-r--r-- 1 administrator administrator 389632 19:09:54 ~/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll
+    Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False) [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 1, timedOut: False) [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 0, timedOut: True) [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: "memories", server: "server", targetOwner: "eventstore") [FAIL]
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources [FAIL]
+   Hexalith.Platform.Composition.Tests  Total: 203, Errors: 0, Failed: 11, Skipped: 7, Not Run: 0, Time: 40.343s
+2026-10-19T17:10:34Z
+# All 11 failures are members of the known 12-failure set in evidence/1-10/failure-membership-final.txt (historical set); WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers now passes; no new failure. McpCliDeclarationTests passed.
+
+## Gated live McpCli case (source-built engine at the Builds checkout above)
+$ HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 HEXALITH_DAPR_HOME=~/.hexalith/dapr/1.18.2 dotnet exec Hexalith.Platform.Composition.Tests.dll -method ...BuildsSourceStartupTests.TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync
+# lines: start UTC, containers before, runner output, exit, end UTC, containers after, git -C references/Hexalith.McpCli status --short --ignored (empty)
+2026-10-19T17:10:54Z
+dapr_placement dapr_scheduler dapr_redis dapr_zipkin 
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 56.051s
+exit=0
+2026-10-19T17:11:51Z
+dapr_placement dapr_scheduler dapr_redis dapr_zipkin 
+(mcpcli status end)

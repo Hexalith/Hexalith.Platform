@@ -59,16 +59,17 @@ dotnet tool run hexalith-module --version
 
 ## Run and debug a technical module
 
-EventStore and Memories run and debug from this workspace, never from their own
-repository. Each command takes the owner manifest in the module's checkout under
-`references/`; the tool loads every owner manifest itself, so never pass the
-copies in `src/Hexalith.Platform.Composition/Declarations/` (that duplicates a
-module and fails with `HXP003`/`HXP020`).
+EventStore, Memories and McpCli run and debug from this workspace, never from
+their own repository. Each command takes the owner manifest in the module's
+checkout under `references/`; the tool loads every owner manifest itself, so
+never pass the copies in `src/Hexalith.Platform.Composition/Declarations/` (that
+duplicates a module and fails with `HXP003`/`HXP020`).
 
 | Module | Manifest | Platform runs |
 | --- | --- | --- |
 | EventStore | `references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json` | `eventstore` |
 | Memories | `references/Hexalith.Memories/module/hexalith.module-manifest.v2.json` | `memories`, `memories-access-telemetry-clock`, `memories-access-telemetry`, `eventstore`, plus Redis Stack (`memories-vectors`) and FalkorDB (`memories-graph`); no Tenants |
+| McpCli | `references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json` | `eventstore` (the gateway McpCli targets), plus a run-scoped Debug build of `references/Hexalith.McpCli`; McpCli declares no server or interface |
 
 ### Prerequisites
 
@@ -78,6 +79,9 @@ module and fails with `HXP003`/`HXP020`).
   `references/Hexalith.Tenants` and `references/Hexalith.Memories`, initialized
   without `--recursive`. The tool reads all three declaration owners even for
   EventStore alone; the selected resources remain those in the table above.
+  McpCli also needs `references/Hexalith.McpCli`, with its own nested
+  `references/*` left uninitialized (`HXW003` refuses any initialized nested
+  submodule).
   Each checkout's `HEAD` must equal the gitlink staged in this
   repository. After a local commit inside a submodule, stage it with
   `git add references/<Repository>` or the tool refuses the run.
@@ -134,6 +138,10 @@ dotnet tool run hexalith-module -- down --manifest references/Hexalith.EventStor
 # Memories with its EventStore dependency
 dotnet tool run hexalith-module -- debug --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
 dotnet tool run hexalith-module -- down --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+
+# McpCli with the EventStore gateway it targets
+dotnet tool run hexalith-module -- debug --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json
+dotnet tool run hexalith-module -- down --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json
 ```
 
 `debug` builds the active module and its root-declared dependencies from their
@@ -143,6 +151,23 @@ endpoint (10-minute default deadline), and reports one process id per project.
 only the resources tagged with that run. Runs share fixed Dapr control-plane
 ports (Sentry `50001`, placement `51005`, scheduler `51006`), so start one at a
 time.
+
+McpCli is a short-lived CLI, not a server. For the McpCli manifest, `run`,
+`debug` and `test` also build `references/Hexalith.McpCli/src/Hexalith.McpCli`
+in Debug into the run workspace, using the run's pinned Builds catalog. The
+build never packs or publishes the tool and never writes the checkout's `bin`
+or `obj`. When the environment is ready, an `HXI010` diagnostic with field
+`mcpcli` names the built tool,
+`${XDG_DATA_HOME:-$HOME/.local/share}/hexalith-builds/g4-workspaces/<runId>/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll`,
+and the checkout project it was built from; `down` deletes it with the run
+workspace. A missing checkout or tool project fails with `HXW004`, and a failed
+build with `HXR020`, before any resource starts. Both name McpCli and the
+expected project path; no other copy, such as a sibling `../mcpcli` checkout,
+is used. Package mode builds no McpCli; package-mode McpCli arrives in Epic 3.
+The started EventStore gateway is the target of connected execution, which also
+arrives in Epic 3; the debugger recipe below uses offline verbs only. The build
+requires a tool release that builds McpCli runs; `4.33.1` composes only
+servers and reports no McpCli build.
 
 `debug` does not print the run id. It is the file name of the run state
 `<runId>.json` under `${XDG_DATA_HOME:-$HOME/.local/share}/hexalith-builds/g4-runs/`
@@ -170,12 +195,41 @@ Attach to the child whose command is the module's
 `references/<Repository>`. Stay attached until you finish, then stop the run
 with `down`.
 
+### Launch McpCli under a debugger
+
+McpCli exits after each command, so launch the reported DLL under the debugger
+instead of attaching. Offline discovery verbs (`modules`, `operations`,
+`describe`) need no gateway URL. With [netcoredbg](https://github.com/Samsung/netcoredbg)
+(MIT; download it outside the repository):
+
+```bash
+tool="<path reported by HXI010>"
+netcoredbg --interpreter=cli -- dotnet "$tool" modules
+# at the ncdb prompt:
+#   break Hexalith.McpCli.Core.Catalog.CatalogService.ListModules
+#   run
+```
+
+netcoredbg first reports the breakpoint as `--pending`, because the McpCli
+assemblies are not loaded yet; it binds once `Hexalith.McpCli.Core` loads, and
+`run` then stops in `ListModules`. A `file:line` breakpoint, such as the
+absolute path of `CatalogService.cs` under `references/Hexalith.McpCli`, works
+the same way.
+
+In VS Code, use a `coreclr` launch configuration whose `program` is the
+reported DLL and whose `args` are the McpCli arguments. Breakpoints bind to the
+sources in `references/Hexalith.McpCli`. Until modules are enrolled, `modules`
+returns `catalog_empty` with exit code `2`. The run-id directory in the
+reported path is the `runId` for `down --run-id`.
+
 ### Own-repository AppHosts
 
 A technical module's own AppHost, such as `src/Hexalith.Memories.AppHost` or
 `src/Hexalith.EventStore.AppHost`, serves only that repository's own tests. A
 run of it is never evidence that the module runs in the Platform composition;
-only the commands above, from this workspace, are.
+only the commands above, from this workspace, are. McpCli has no AppHost: its
+own `references/Hexalith.Platform` and any run from its repository root serve
+only its own tests, and such a run is never Platform evidence.
 
 ## Verify Agents host contract (clean checkout)
 

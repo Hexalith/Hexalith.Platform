@@ -1,0 +1,64 @@
+# NON-PLATFORM EVIDENCE: McpCli own-repository identity check (disposable clone)
+# This run is McpCli own-repository evidence only. It is never Platform evidence (story 1.11 Never list).
+# Clone: git clone <platform>/references/Hexalith.McpCli <scratch>/clone/Hexalith.McpCli (HEAD 13568c0bc56fc42909c620847915b993483c594d, the story's local McpCli commit).
+# Its 17 direct references/* were pointed at local checkouts (submodule.<path>.url = <platform> for Hexalith.Platform,
+# <platform>/references/<Repository> otherwise) so the tool's own source-mode initialization needs no network.
+# The run used the file transport for this invocation only: GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=protocol.file.allow GIT_CONFIG_VALUE_0=always.
+# Driver: <scratch>/scripts/clone_identity.py starts the pinned tool, copies the run's source-mapping/mapping.json as soon as it
+# exists, then sends SIGINT; the tool's bounded teardown ran (HXC130) before the Platform model build, so no environment started.
+
+## Clone gitlinks (git -C <clone> ls-tree HEAD references/Hexalith.Platform; checkout HEAD after the tool initialized it)
+160000 commit 2ac8e73c09fe631c5620723b54784d2e28e8941f	references/Hexalith.Platform
+checkout 2ac8e73c09fe631c5620723b54784d2e28e8941f
+Platform workspace HEAD for contrast: f0e33167fcdb5f539da159c54f7505b72a65c9b2 (a different identity)
+
+# utc=2026-10-19T16:04:46Z cwd=<scratch>/clone/Hexalith.McpCli
+# $ dotnet /home/administrator/.nuget/packages/hexalith.builds.module.cli/4.33.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll debug --manifest <scratch>/clone/Hexalith.McpCli/module/hexalith.module-manifest.v2.json
+# captured run=412e150c77894b24e529cc0def58b151 utc=2026-10-19T16:05:35Z
+# tool exit=130
+cancelled: Cancelled
+HXC130 Cleanup Cancelled field=cancellation: The invocation was cancelled.
+
+## Run state after cancellation (g4-runs/412e150c77894b24e529cc0def58b151.json)
+{'status': 'Cancelled', 'ruleId': 'HXC130', 'appHostProcessId': None, 'startupDurationSeconds': 48.5322498}
+workspace removed: yes
+
+## Recorded source mapping (the run's source-mapping/mapping.json; Entries omitted)
+{
+ "Mode": "source",
+ "Root": "<scratch>/clone/Hexalith.McpCli",
+ "ActiveModule": "Hexalith.McpCli",
+ "HasGit": true,
+ "PlatformIdentity": {
+  "Commit": "2ac8e73c09fe631c5620723b54784d2e28e8941f",
+  "CompositionCommit": "2ac8e73c09fe631c5620723b54784d2e28e8941f",
+  "CheckoutCommit": "2ac8e73c09fe631c5620723b54784d2e28e8941f",
+  "PlatformPath": "<scratch>/clone/Hexalith.McpCli/references/Hexalith.Platform",
+  "ReleaseTag": null,
+  "CatalogCommit": "544fd2e907d62ccdc4b8f24168b8ab5dfcc13eb9",
+  "ToolVersionRange": null,
+  "RecordPath": "<scratch>/clone/Hexalith.McpCli/references/Hexalith.Platform/hexalith-platform.json",
+  "IsPlatformRepository": false
+ },
+ "IdentityFindings": [
+  {
+   "RuleId": "HXW011",
+   "Message": "Platform identity 2ac8e73c09fe631c5620723b54784d2e28e8941f has no local v<SemVer> release tag.",
+   "Path": "<scratch>/clone/Hexalith.McpCli/references/Hexalith.Platform",
+   "Hint": "Fetch Platform tags, then retry."
+  },
+  {
+   "RuleId": "HXW010",
+   "Message": "Tool version 4.33.1 is outside Platform range unavailable at '<scratch>/clone/Hexalith.McpCli/references/Hexalith.Platform/hexalith-platform.json'.",
+   "Path": "<scratch>/clone/Hexalith.McpCli/references/Hexalith.Platform/hexalith-platform.json",
+   "Hint": null
+  }
+ ],
+ "ContentHash": "de5317c79c38531f55eb5fb3efc56a5a3851f65ec76e81eb2efef73b17229fb1"
+}
+Entries: Hexalith.AI.Tools=source, Hexalith.Agents=source, Hexalith.Builds=source, Hexalith.ChatBot=source, Hexalith.Commons=source, Hexalith.Conversations=source, Hexalith.EventStore=source, Hexalith.Folders=source, Hexalith.FrontComposer=source, Hexalith.McpCli=source, Hexalith.Memories=source, Hexalith.Parties=source, Hexalith.Platform=source, Hexalith.PolymorphicSerializations=source, Hexalith.Projects=source, Hexalith.Tenants=source, Hexalith.Timesheets=source, Hexalith.Works=source
+
+RESULT: PlatformIdentity.Commit 2ac8e73c09fe631c5620723b54784d2e28e8941f == clone references/Hexalith.Platform gitlink 2ac8e73c09fe631c5620723b54784d2e28e8941f: True; IsPlatformRepository=False
+
+# Note (after review): McpCli 13568c0 was amended to 943b75ce85cbedc83b73f3b90277dcd3d4fae83b; the amend only adds a link in
+# README.md, so the clone's references/Hexalith.Platform gitlink (2ac8e73) and this result are unchanged.
