@@ -124,7 +124,7 @@ public static class WorksPreviewModel
         // Development/test limits for this preview only. EventStore's defaults (1000 per minute per tenant,
         // 100 per second per consumer) reject the preview's own internal actor, projection and recovery
         // traffic with 429, and the dropped projection update is an open EventStore defect. These values
-        // carry the eleven-source parity load while keeping both SDK limiters finite. Production admission
+        // carry the twelve-source parity load while keeping both SDK limiters finite. Production admission
         // is refused above and must size its own limits.
         foreach ((string key, string value) in DevelopmentRateLimits)
             _ = eventStore.WithEnvironment(key, value);

@@ -21,8 +21,18 @@ That fresh run exited 0 on 2026-10-18 with status
 `passed-disposable-synthetic-parity-and-rollback`. All eleven rows derived their
 four proofs from field-bound phases, with zero skips, nine Platform starts and one
 retained-host rollback start; every Platform `works` and `works-ha` host loaded
-Platform's hosting startup first. The
-[corrected-graph result](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review1-corrections-2026-10-18/canonical-admission/result.json)
+Platform's hosting startup first. Its
+[review iteration 1 result](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review1-corrections-2026-10-18/canonical-admission/result.json)
+is now historical supporting evidence.
+
+Review iteration 2 found that the live restart and rollback queries passed only
+through coordinator authority the fixture added, and that the fixture still set
+keys Platform composes. The fresh run on that corrected graph exited 0 on
+2026-10-19 with status `passed-disposable-synthetic-parity-and-rollback`: all
+eleven rows passed with zero skips, every live query a proof reads was a delegated
+Executor query, and no `platform-target` start set a key Platform composed outside
+the three permitted shapes. Its
+[iteration 2 result](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review2-corrections-2026-10-19/canonical-admission/result.json)
 retains the command, ledger, logs and outcome records. Acceptance stays with
 independent review.
 
@@ -112,8 +122,8 @@ describes the required evidence rather than asserting that a run has passed.
 | R1 | EventStore.Aspire: `AddHexalithEventStore`, `AddEventStoreDomainModule` | Platform `WorksPreviewModel` | Actual file-host composition, durable lifecycle writes, complete process membership and receiver policies |
 | R2 | EventStore.DomainService/ServiceDefaults: canonical host defaults and health | Works `WorksHost`; Platform readiness/runtime adapters | Disabled recovery remains Degraded; actual OTLP recovery alert appears and clears after convergence |
 | R3 | EventStore.DomainService: protected subscription/delivery | Works domain-event adapter | Actual ingress redelivery, origin/publish refusal and unchanged accepted family |
-| R4 | EventStore.Client: `SharedProjectionEpochCoordinator` | Works shared rebuild handler | All eleven source histories captured; old generation readable during Capture/Stage; fenced delivery; complete Commit and unchanged logical family/checkpoints; the focused two-rebuild automatic catch-up fact that failed on public 3.124.0 |
-| R5 | EventStore.DomainService: `IDomainQueryHandler` | Works what's-next and item-detail handlers | Own assignment and queued work visible, foreign assignment hidden, wrong actor/tenant and unavailable identity denied; restart queries remain usable |
+| R4 | EventStore.Client: `SharedProjectionEpochCoordinator` | Works shared rebuild handler | Every source history captured (twelve in the recovery lane, eleven in the focused lane); old generation readable during Capture/Stage; fenced delivery; complete Commit and unchanged logical family/checkpoints; the focused two-rebuild automatic catch-up fact that failed on public 3.124.0 |
+| R5 | EventStore.DomainService: `IDomainQueryHandler` | Works what's-next and item-detail handlers | Own assignment and queued work visible, foreign assignment hidden, wrong actor/tenant and unavailable identity denied; restart and rollback queries are delegated Executor queries that remain usable; a non-delegated full-tenant query is refused |
 | R6 | EventStore.DomainService: `AddEventStoreReminders` | Works recovery domain adapters | Lost firing/reissue, stale callback refusal, two distinct Works hosts/sidecars with primary loss, exactly one logical effect and durable receipt |
 | R7 | EventStore.DomainService: `AddEventStoreProcesses` | Works process translator/catalog | Linked candidate pages, complete coverage, independent owner fencing and restart checkpoints |
 | R8 | EventStore.DomainService: `ProcessDispositionService`; Client authorizer/audit interfaces | Works protected disposition endpoint; Platform runtime providers | Exact source/operator bindings, durable attributed audit before mutation, audit outage refusal, exported recovery alerts |
@@ -135,10 +145,32 @@ verifier derives `requiredProofs` from that map and fails a row whose phase is
 missing, duplicated, lacks a field or carries a non-qualifying value. Cross-phase
 checks also bind the restart family digest to the persisted one, and the restored
 fleet, runtime binaries and replayed receipt to the Platform-written snapshot.
+An alert-clear proof needs a cleared point exported after the last raise. Every
+live module entry must be one of the prebuilt runtime artifacts with the same
+hash. The ledger binds every Works IntegrationTests C# source outside `bin`/`obj`
+as a fixture source, and the supporting set includes the telemetry-collector,
+identity-fixture and composition-guard classes. Any failure inside the run,
+whatever its exception type, is written to the ledger before the nonzero exit.
+
+The recovery lane keeps eleven sources for the five-child cascade, expiry, date
+and child-completion scenarios, all of which end terminal or `InProgress`. The
+Executor view shows only its own Assigned and the Queued work, so a twelfth source
+stays Assigned to the synthetic Executor for the delegated restart and rollback
+queries. The fixture's process profile therefore supports twelve retained sources,
+with 1.9-second operations and a 56-second source quantum to satisfy the SDK's
+coupled budget validation.
 
 - **R9 negative.** The live Works host answers a fully credentialed request to the
   retired `/project` route with the canonical SDK's named-mode `404`. An
   uncredentialed request gets `401`. Neither changes the accepted family.
+- **Delegated queries.** Every live query that a row's proof reads (R1, R3, R4
+  and R5) is a delegated Executor query under the host's composed gateway
+  workload `eventstore`, resolved through a test-only Parties identity authority.
+  Each such phase records `queryIdentity`, the envelope it sent and how many
+  resolutions the authority observed, and the verifier requires it. Neither host
+  composes `Works:Query:PermittedCoordinatorWorkloads`, the fixture adds none, and
+  the restart phase records a non-delegated full-tenant query refused as
+  `Forbidden` before any identity resolution.
 - **R10 negative.** The trust probe connects to the Works sidecar's internal mTLS
   gRPC endpoint. A client chained to the owned trust anchors completes HTTP/2
   setup. The sidecar itself refuses a client without a certificate and a client
@@ -175,8 +207,31 @@ adds nothing. Each proof host records which hosting startups loaded, whether
 Platform's registered telemetry first, and the registration count. The verifier
 refuses a `platform-target` start whose `works` or `works-ha` host lacks Platform's
 hosting startup, runs it after the proof, or registers the telemetry more than
-once. The HA replica copies Platform's composed `works` values; the fixture never
-re-sets Platform-composed workload callers.
+once. The HA replica copies Platform's composed `works` values, including its
+environment; the fixture never re-sets Platform-composed workload callers.
+
+The verifier builds Platform's file host and the Works consumer with one
+deterministic path map, so their `Hexalith.Platform.Works.Runtime.dll` compiles
+are byte-identical. It refuses a run whose two compiles differ, and a start whose
+loaded hosting startup or first startup hook differs from Platform's host output.
+Platform's composed hook value is never replaced to make them match.
+
+On a `platform-target` start, the fixture sets no environment key that Platform
+composed for that resource, even to an equal value. The harness evaluates
+Platform's own environment callbacks before the fixture configures the builder,
+and the fixture's callbacks separately, and refuses the start before any resource
+is built when they overlap. Three overlaps are permitted, each with a checked
+shape: the proof extends the composed hook lists; the captured, restorable
+synthetic app-channel secret replaces the per-run secret through the same public
+SDK helper; and the telemetry lanes redirect the orchestrator's OTLP export to the
+proof's owned loopback collector. Each start records Platform's composed keys, the
+fixture's keys, the permitted overlaps, and Platform's composed values for
+`EventStore__RateLimiting__*`, `Authentication__Workload__AllowedCallers__*`,
+`DOTNET_ENVIRONMENT`, `Works__Recovery__UseSdkRuntime` and
+`Works__Projection__UseSdkDelivery`. It also records each module's launched and
+in-process values. The verifier recomputes the overlap, requires the composed
+values to equal the literals in `WorksPreviewModel.cs`, and requires every
+launched and in-process value to equal Platform's composition.
 
 Ordinary Platform runtime injection installs telemetry only. Synthetic disposition
 authority additionally requires Development, `WORKS_SDK_PROOF=1`,
@@ -211,7 +266,7 @@ development/test limits on its `eventstore` host:
 | `EventStore__RateLimiting__TenantPermitLimits__anonymous` | 8192 |
 | `EventStore__RateLimiting__ConsumerPermitLimits__anonymous` | 8192 |
 
-These values carry the eleven-source parity load and keep both SDK limiters
+These values carry the twelve-source parity load and keep both SDK limiters
 finite. Parity runs at exactly these Platform-composed limits; the fixture injects
 none. The retained Works AppHost keeps its own proof-topology limits (100000).
 Production admission stays refused and must size its own limits after the
@@ -241,7 +296,8 @@ Restore reproduces the full owned key inventory and values, removes a
 post-snapshot sentinel, preserves expiry semantics, and verifies Scheduler,
 configuration, credential and runtime bytes against their captured inventories.
 The Scheduler inventory binds every entry's type, mode, owner and link target,
-plus every regular file's content hash.
+including the volume root itself, plus every regular file's content hash. The
+rollback start must use the snapshot's own Scheduler volume.
 The original Redis serialization supplies restoration bytes. Complete binary
 hash fields/values and set members use stable ordering for verification; hash-field
 absolute deadlines are included. Other values retain strict serialization checks,
@@ -250,6 +306,12 @@ component files so retained templates cannot overwrite restored configuration.
 The retained Works host then starts with that restored compatible fleet. Protected
 queries must remain usable, source replay must converge, and reissued trusted
 effects must replay their original receipts without another logical effect.
+The restore phase records its own re-observations, not the snapshot's variables:
+the stopped restored fleet is re-inventoried before the retained start, the runtime
+binaries are re-hashed inside it, and counts and flags are the values it observed.
+A re-observation cannot reproduce Redis's original DUMP encoding of unordered
+hashes and sets, so it omits that capture-only inventory; every other fleet entry,
+including the canonical logical value inventory, must equal the snapshot.
 Projection-only restore, a changed receiver policy, or a mixed binary/state fleet
 cannot qualify this drill.
 

@@ -106,12 +106,49 @@ def require_passed_tests(path, required_methods=(), required_types=()):
 
 
 PLATFORM_RUNTIME = "Hexalith.Platform.Works.Runtime"
+# Platform's host output and the Works consumer compile the same runtime project in different artifact roots. Mapping
+# each root to one deterministic path makes the embedded PDB path, and therefore every byte, identical.
+DETERMINISTIC_BUILD_ROOT = "/_/hexalith-works-platform-build"
+# Every failure inside the run must be recorded in the ledger before the nonzero exit.
+RECORDED_FAILURES = (ValueError, OSError, subprocess.TimeoutExpired, subprocess.CalledProcessError, KeyError, IndexError,
+                     StopIteration, TypeError, AttributeError, ET.ParseError, zipfile.BadZipFile, tarfile.TarError)
+
+
+def failure_text(error):
+    return str(error) if isinstance(error, ValueError) else type(error).__name__ + ": " + str(error)
+
+
+def path_map(output):
+    return "-p:PathMap=" + str(output) + "=" + DETERMINISTIC_BUILD_ROOT
+
+
+def require_identical_runtime(host_runtime, consumer_runtime):
+    """The runtime DLL the live hook loads (the consumer's compile) must be byte-identical to Platform's host output."""
+    host, consumer = sha256(host_runtime), sha256(consumer_runtime)
+    if host != consumer:
+        raise ValueError("Path-mapped deterministic builds still differ: Platform host-output " + PLATFORM_RUNTIME + ".dll "
+                         + host + " versus the consumer's " + consumer + "; the live hook would not load Platform's bytes")
+    return {"hostOutput": str(host_runtime), "consumer": str(consumer_runtime), "sha256": host, "identical": True,
+            "deterministicBuildRoot": DETERMINISTIC_BUILD_ROOT}
+
+
+def fixture_sources(works):
+    """Bind every Works IntegrationTests C# source outside build outputs, plus the retained host's path resolver."""
+    root = works / "tests/Hexalith.Works.IntegrationTests"
+    files = [path for path in root.rglob("*.cs") if not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
+    files.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
+    return {str(path.relative_to(works)): sha256(path) for path in sorted(files)}
+
+
 PLATFORM_HOSTING_STARTUP = PLATFORM_RUNTIME + ".WorksRecoveryHostingStartup"
 PROOF_HOSTING_ASSEMBLY = "Hexalith.Works.IntegrationTests"
 
 
-def require_platform_hosting(record, resource):
-    """A Platform-composed Works host must run Platform's own hook and hosting startup before the proof."""
+def require_platform_hosting(record, resource, host_runtime=None):
+    """A Platform-composed Works host must run Platform's own hook and hosting startup before the proof.
+
+    With host_runtime, every loaded Platform runtime artifact (hosting startup and first startup hook) must be
+    byte-identical to Platform's own host-output DLL, never only to the consumer's compile."""
     observed = (record.get("hostingStartups") or {}).get(resource)
     if not isinstance(observed, dict):
         raise ValueError("A platform-target start did not record the hosting startups that loaded in " + resource)
@@ -129,6 +166,10 @@ def require_platform_hosting(record, resource):
     location = platform.get("location")
     if not location or not Path(location).is_file() or str(platform.get("sha256", "")).lower() != sha256(location):
         raise ValueError("Platform's loaded hosting startup is not bound to its artifact in " + resource)
+    if host_runtime is not None:
+        expected = sha256(host_runtime)
+        if str(platform.get("sha256", "")).lower() != expected or not Path(hooks[0]).is_file() or sha256(hooks[0]) != expected:
+            raise ValueError("The loaded Platform runtime differs from Platform's host-output " + PLATFORM_RUNTIME + ".dll in " + resource)
     if observed.get("platformRuntimeEnabled") is not True or observed.get("platformTelemetryRegisteredBeforeProof") is not True:
         raise ValueError("Platform's WORKS_PLATFORM_RUNTIME hosting startup did not run before the proof in " + resource)
     if observed.get("telemetryPublisherRegistrations") != 1:
@@ -136,7 +177,94 @@ def require_platform_hosting(record, resource):
     return {"resource": resource, "hostingStartupAssemblies": names, "platformHostingStartupSha256": platform["sha256"].lower()}
 
 
-def verify_host_records(path, assembly, platform, version):
+# The only Platform-composed keys a fixture may write on a platform-target start, and the shape each must keep.
+PERMITTED_OVERLAPS = {
+    "DOTNET_STARTUP_HOOKS": "extends-composed-list",
+    "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "extends-composed-list",
+    "APP_API_TOKEN": "captured-restorable-synthetic-secret",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "redirects-otlp-export-to-owned-loopback-collector",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "redirects-otlp-export-to-owned-loopback-collector",
+    "OTEL_METRIC_EXPORT_INTERVAL": "redirects-otlp-export-to-owned-loopback-collector",
+}
+TRACKED_KEYS = ("DOTNET_ENVIRONMENT", "Works__Recovery__UseSdkRuntime", "Works__Projection__UseSdkDelivery")
+TRACKED_PREFIXES = ("EventStore__RateLimiting__", "Authentication__Workload__AllowedCallers__")
+# Each Platform resource must compose these tracked literal families; the values come from Platform's own source.
+REQUIRED_COMPOSITION = {"eventstore": ("EventStore__RateLimiting__",),
+                        "works": ("Authentication__Workload__AllowedCallers__", "Works__Recovery__UseSdkRuntime", "Works__Projection__UseSdkDelivery")}
+COMPOSED_RESOURCES = ("eventstore", "works", "eventstore-operations", "eventstore-admin")
+LITERAL_TUPLE = re.compile(r'\("([A-Za-z0-9_]+)",\s*"([^"]*)"\)')
+LITERAL_ENVIRONMENT = re.compile(r'\.WithEnvironment\("([A-Za-z0-9_]+)",\s*"([^"]*)"\)')
+
+
+def tracked(key):
+    return key in TRACKED_KEYS or key.startswith(TRACKED_PREFIXES)
+
+
+def platform_composition_literals(source):
+    """Read the tracked literal values Platform's Works preview composes, straight from its bound source."""
+    text = Path(source).read_text()
+    literals = {}
+    for key, value in LITERAL_TUPLE.findall(text) + LITERAL_ENVIRONMENT.findall(text):
+        if tracked(key):
+            if key in literals and literals[key] != value:
+                raise ValueError("Platform composes conflicting literals for " + key)
+            literals[key] = value
+    if not any(key.startswith("EventStore__RateLimiting__") for key in literals) or \
+            not any(key.startswith("Authentication__Workload__AllowedCallers__") for key in literals):
+        raise ValueError("Platform's Works preview composition literals could not be read: " + str(source))
+    return literals
+
+
+def require_platform_composition(record, literals):
+    """A platform-target start runs at Platform's composition: the fixture set no composed key it may not, and every
+    tracked effective value equals the value Platform's own callbacks composed, which equals Platform's source literal."""
+    guard = record.get("compositionGuard")
+    effective = record.get("effectiveEnvironment")
+    if not isinstance(guard, dict) or not isinstance(effective, dict):
+        raise ValueError("A platform-target start did not record Platform's composition and the effective environment")
+    for resource in COMPOSED_RESOURCES:
+        entry = guard.get(resource)
+        if not isinstance(entry, dict) or not isinstance(entry.get("composition"), dict):
+            raise ValueError("A platform-target start did not record Platform's composition for " + resource)
+        overlap = set(entry.get("platformComposedKeys") or []) & set(entry.get("fixtureKeys") or [])
+        permitted = {item.get("key"): item.get("rule") for item in entry.get("permittedOverlaps") or [] if isinstance(item, dict)}
+        offending = sorted((overlap ^ set(permitted)) | {key for key, rule in permitted.items() if PERMITTED_OVERLAPS.get(key) != rule})
+        if offending:
+            raise ValueError("The fixture set a key Platform composed for " + resource + ": " + ", ".join(offending))
+        composition = entry["composition"]
+        if composition.get("DOTNET_ENVIRONMENT") != "Development":
+            raise ValueError("Platform did not compose the Development environment for " + resource)
+        for prefix in REQUIRED_COMPOSITION.get(resource, ()):
+            expected = {key: value for key, value in literals.items() if key.startswith(prefix)}
+            actual = {key: value for key, value in composition.items() if key.startswith(prefix)}
+            if not expected or actual != expected:
+                raise ValueError("Platform's composed " + prefix + " values for " + resource + " differ from its source")
+        for key, value in composition.items():
+            if key in literals and value != literals[key]:
+                raise ValueError("Platform's composed " + key + " for " + resource + " differs from its source literal")
+    observed = {}
+    for resource in [*COMPOSED_RESOURCES, "works-ha"]:
+        if resource not in effective:
+            if resource == "works-ha":
+                continue
+            raise ValueError("A platform-target start did not record the effective environment of " + resource)
+        # The HA replica is fixture-composed and mirrors exactly Platform's composition for its works host.
+        expected = guard["works" if resource == "works-ha" else resource]["composition"]
+        views = [("launched", effective[resource])]
+        hosting = (record.get("hostingStartups") or {}).get(resource)
+        if resource in ("eventstore", "works", "works-ha"):
+            if not isinstance(hosting, dict) or not isinstance(hosting.get("environment"), dict):
+                raise ValueError("A platform-target host did not record its in-process environment: " + resource)
+            views.append(("in-process", hosting["environment"]))
+        for view, values in views:
+            values = {key: value for key, value in values.items() if tracked(key)} if isinstance(values, dict) else None
+            if values != expected:
+                raise ValueError("The " + view + " effective environment of " + resource + " differs from Platform's composition")
+        observed[resource] = expected
+    return observed
+
+
+def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None):
     """Bind target starts and the deliberate retained-host rollback to their exact artifacts."""
     assembly_version = version + ".0"
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
@@ -173,6 +301,8 @@ def verify_host_records(path, assembly, platform, version):
                 raise ValueError("A qualifying live module must bind its actual Release configuration and output")
             if sha256(module["entry"]) != module["entrySha256"].lower() or not module["sdkAssemblies"]:
                 raise ValueError("A live module used an unbound deployment artifact")
+            if runtime_artifacts is not None and runtime_artifacts.get(module["entry"]) != module["entrySha256"].lower():
+                raise ValueError("A live module entry is not one of the prebuilt runtime artifacts: " + module["entry"])
             for sdk in module["sdkAssemblies"]:
                 if sdk["version"] != assembly_version or sha256(sdk["path"]) != sdk["sha256"].lower():
                     raise ValueError("A live module used an unbound or unpublished runtime SDK assembly")
@@ -186,8 +316,10 @@ def verify_host_records(path, assembly, platform, version):
         if record.get("role") == "platform-target":
             if binary.resolve() != assembly.resolve() or Path(record["directory"]).resolve() != platform.resolve():
                 raise ValueError("A target start used another host or source root")
-            record["platformHosting"] = [require_platform_hosting(record, resource) for resource in ("works", "works-ha")
+            record["platformHosting"] = [require_platform_hosting(record, resource, host_runtime) for resource in ("works", "works-ha")
                                          if resource in {module["resource"] for module in modules}]
+            if composition_literals is not None:
+                record["platformComposition"] = require_platform_composition(record, composition_literals)
         elif record.get("role") == "retained-rollback":
             if binary.resolve() == assembly.resolve() or "Hexalith.Works.AppHost" not in binary.name:
                 raise ValueError("Rollback did not select the retained Works host")
@@ -277,6 +409,39 @@ def any_point(name, value):
         isinstance(point, dict) and point.get("Name") == name and point.get("Value") == value for point in points)
 
 
+def alert_cleared_after_raise(name):
+    """A recovery alert was raised and a later exported point (by exporter time) clears it."""
+    def check(points):
+        if not isinstance(points, list):
+            return False
+        valid = [point for point in points if isinstance(point, dict) and point.get("Name") == name and _integer(point.get("UnixTimeNanoseconds"))]
+        raised = [point["UnixTimeNanoseconds"] for point in valid if point.get("Value") == 1]
+        cleared = [point["UnixTimeNanoseconds"] for point in valid if point.get("Value") == 0]
+        return bool(raised) and bool(cleared) and max(cleared) > max(raised)
+    return check
+
+
+def delegated_identity(value):
+    """A delegated Executor query under the composed gateway workload, resolved through the Parties identity."""
+    return (isinstance(value, dict) and value.get("isDelegated") is True and value.get("authenticatedWorkloadId") == "eventstore"
+            and isinstance(value.get("originalActorId"), str) and len(value["originalActorId"]) > 0
+            and value.get("originalActorId") == value.get("userId") == value.get("resolvedActor")
+            and isinstance(value.get("partyId"), str) and len(value["partyId"]) > 0 and value.get("partyId") == value.get("resolvedParty")
+            and isinstance(value.get("tenant"), str) and len(value["tenant"]) > 0 and value.get("tenant") == value.get("resolvedTenant")
+            and positive(value.get("identityCalls")))
+
+
+DUMP_INVENTORY = "redis-full-value-inventory-sha256"
+
+
+def restored_fleet_matches(restored, snapshot):
+    """The re-observed restored fleet equals the snapshot on every entry a re-observation can reproduce."""
+    if not isinstance(restored, dict) or not isinstance(snapshot, dict) or DUMP_INVENTORY in restored or DUMP_INVENTORY not in snapshot:
+        return False
+    expected = {key: value for key, value in snapshot.items() if key != DUMP_INVENTORY}
+    return bool(expected) and restored == expected
+
+
 def every(field, predicate):
     return lambda items: isinstance(items, list) and len(items) > 0 and all(
         isinstance(item, dict) and predicate(_resolve(item, field)) for item in items)
@@ -325,45 +490,57 @@ PROOFS = {
         "restart": [(HISTORICAL_RESTART, {"completed": (is_true, "lifecycle replays Completed after restart"), "claimCount": (equals(1), "one claim after restart"),
                                           "familyDigest": (digest, "family digest after restart")})],
         "rollback": [(RESTORE_PHASE, {"convergence.query.found": (is_true, "retained host query finds the item"),
+                                      "convergence.queryIdentity": (delegated_identity, "retained host query is a delegated Executor query"),
                                       "restoredConfigurationVerified": (is_true, "restored configuration bytes verified")})],
     },
     "R2": {
         "persisted": [(COVERAGE, {"Complete": (is_true, "complete recovery sweep"), "Unresolved": (equals(0), "zero unresolved"),
-                                  "RetainedCandidates": (equals(11), "eleven retained candidates")})],
+                                  "RetainedCandidates": (equals(12), "twelve retained candidates")})],
         "negative": [("periodic-writers-disabled-readiness-degraded", {"status": (equals("Degraded"), "SDK readiness Degraded with periodic writers disabled")}),
                      ("disabled-recovery-otlp-alert-export", {"": (any_point(ALERT, 1), "OTLP recovery alert raised")})],
-        "restart": [(ALERT_CLEAR, {"": (any_point(ALERT, 0), "recovery alert clears after restart")})],
+        "restart": [(ALERT_CLEAR, {"": (alert_cleared_after_raise(ALERT), "recovery alert clears after its last raise, after restart")})],
         "rollback": [(RESTORE_PHASE, {"convergence.restoredSweep.Complete": (is_true, "restored sweep complete"),
                                       "convergence.restoredSweep.Unresolved": (equals(0), "restored sweep has zero unresolved")})],
     },
     "R3": {
         "persisted": [(REDELIVERY, {"redelivered.Outcomes.0.Status": (one_of(0, 1), "redelivery Completed or AlreadyCompleted"),
                                     "concurrentDelivery.redeliveryLogicalCount": (equals(1), "one logical redelivery"),
+                                    "queryIdentity": (delegated_identity, "rebuild queries are delegated Executor queries"),
                                     "": (same("before.Digest", "after.Digest"), "redelivery and capture preserve the family digest")})],
         "negative": [(QUARANTINE, {"": (same("acceptedFamilySha256", "unchangedFamilySha256"), "conflict leaves the accepted family unchanged"),
                                    "repeatedConflictCount": (equals(1), "repeated conflict keeps one evidence record"),
+                                   "queryIdentity": (delegated_identity, "the refused query is a delegated Executor query"),
                                    "conflict.SourceStream": (nonempty, "durable conflict evidence")}),
                      (REFUSALS, {"forbiddenPublish": (equals(403), "forbidden origin publish refused")})],
         "restart": [(RESTART_CONVERGENCE, {"naturalCatchUp": (is_true, "natural catch-up after restarts"),
-                                           "heads": (converged_heads(11), "all eleven owner/global heads converged")})],
+                                           "heads": (converged_heads(12), "all twelve owner/global heads converged")})],
         "rollback": [(RESTORE_PHASE, {"convergence.receipt.Replayed": (is_true, "retained host replays the receipt")})],
     },
     "R4": {
         "persisted": [(FOCUSED_REBUILD, {"concurrentDelivery.automaticCatchUpAfterCommit": (is_true, "automatic catch-up after Commit"),
                                          "concurrentDelivery.oldGenerationStayedReadable": (is_true, "old generation readable during capture"),
                                          "": (same("concurrentDelivery.after.Digest", "concurrentDelivery.expectedDigest"), "committed family equals the independent fold"),
+                                         "queryIdentity": (delegated_identity, "focused rebuild queries are delegated Executor queries"),
                                          "sources": (count(11), "eleven captured sources"), "committed.Phase": (equals(3), "rebuild Committed")})],
         "negative": [(REDELIVERY, {"fenced.Outcomes.0.Status": (equals(2), "delivery during capture is fenced Retryable"),
                                    "negatives.wrongOrigin": (refused_status, "wrong origin refused"), "negatives.wrongOperation": (equals(403), "wrong operation refused")})],
-        "restart": [(RESTART_CONVERGENCE, {"heads": (converged_heads(11), "named projection heads converge after restarts")})],
-        "rollback": [(RESTORE_PHASE, {"convergence.query.conversationCorrelationId.value": (prefixed("synthetic-capture-416-"), "restored family includes the post-capture event")})],
+        "restart": [(RESTART_CONVERGENCE, {"heads": (converged_heads(12), "named projection heads converge after restarts")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.query.conversationCorrelationId.value": (prefixed("synthetic-capture-416-"), "restored family includes the post-capture event"),
+                                      "convergence.queryIdentity": (delegated_identity, "restored family read by a delegated Executor query")})],
     },
     "R5": {
-        "persisted": [(REFUSALS, {"own.found": (is_true, "executor reads own item"), "visible": (count(3), "executor queue view")})],
+        "persisted": [(REFUSALS, {"own.found": (is_true, "executor reads own item"), "visible": (count(3), "executor queue view"),
+                                  "queryIdentity": (delegated_identity, "historical queries are delegated Executor queries")})],
         "negative": [(REFUSALS, {"hidden.found": (is_false, "foreign item filtered"), "wrongActor": (equals("Forbidden"), "wrong actor denied"),
-                                 "wrongTenant": (equals("Forbidden"), "wrong tenant denied")})],
-        "restart": [(QUERY_REPLAY, {"query.found": (is_true, "query usable after restarts"), "query.latestAcceptedSourceSequence": (positive, "query reflects accepted source")})],
-        "rollback": [(RESTORE_PHASE, {"convergence.query.found": (is_true, "retained host query usable")})],
+                                 "wrongTenant": (equals("Forbidden"), "wrong tenant denied")}),
+                     (QUERY_REPLAY, {"nonDelegatedFullTenantQuery.error": (equals("Forbidden"), "non-delegated full-tenant query refused"),
+                                     "nonDelegatedFullTenantQuery.isDelegated": (is_false, "the refused query carried no delegated identity"),
+                                     "nonDelegatedFullTenantQuery.authenticatedWorkloadId": (equals("eventstore"), "refused under the composed gateway workload"),
+                                     "nonDelegatedFullTenantQuery.identityCalls": (equals(0), "refused before any identity resolution")})],
+        "restart": [(QUERY_REPLAY, {"query.found": (is_true, "query usable after restarts"), "query.latestAcceptedSourceSequence": (positive, "query reflects accepted source"),
+                                    "queryIdentity": (delegated_identity, "restart query is a delegated Executor query")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.query.found": (is_true, "retained host query usable"),
+                                      "convergence.queryIdentity": (delegated_identity, "retained host query is a delegated Executor query")})],
     },
     "R6": {
         "persisted": [(CALLBACK, {"witness.entries": (count(1), "persisted SDK reminder witness"), "processCandidate": (is_true, "process candidate persisted")})],
@@ -376,13 +553,13 @@ PROOFS = {
         "rollback": [(RESTORE_PHASE, {"dateResumed": (equals(1), "one date resume after restore"), "childExpired": (equals(1), "one child expiry after restore")})],
     },
     "R7": {
-        "persisted": [("paged-process-candidates-pre-restart", {"expectedSources": (equals(11), "eleven process sources"), "pages": (count(4), "four linked candidate pages")})],
+        "persisted": [("paged-process-candidates-pre-restart", {"expectedSources": (equals(12), "twelve process sources"), "pages": (count(4), "four linked candidate pages")})],
         "negative": [("canonical-related-child-creation-gap", {"creationGap.ReasonCode": (equals("evidence-unavailable"), "missing child evidence refuses the cascade"),
                                                                "existingChildCancellations": (equals(0), "no partial cascade effect"), "readiness": (equals("Degraded"), "readiness Degraded")})],
-        "restart": [("paged-process-restart-and-shared-store-owner-fencing", {"linkedPages": (equals(4), "pages relinked after restart"), "candidates": (count(11), "eleven candidates"),
+        "restart": [("paged-process-restart-and-shared-store-owner-fencing", {"linkedPages": (equals(4), "pages relinked after restart"), "candidates": (count(12), "twelve candidates"),
                                                                               "staleOwnerWriteRefused": (is_true, "stale owner write refused"), "concurrentOwners": (equals(1), "one owner"),
                                                                               "": (greater("successorFence", "priorFence"), "successor fence advanced")})],
-        "rollback": [(RESTORE_PHASE, {"convergence.restoredSweep.RetainedCandidates": (equals(11), "restored sweep retains eleven candidates"),
+        "rollback": [(RESTORE_PHASE, {"convergence.restoredSweep.RetainedCandidates": (equals(12), "restored sweep retains twelve candidates"),
                                       "childCancelled": (equals(1), "one child cancellation after restore")})],
     },
     "R8": {
@@ -390,7 +567,7 @@ PROOFS = {
                                      "": (greater("afterGeneration", "beforeGeneration"), "SDK disposition mutated after audit")})],
         "negative": [(CALLBACK_DISPOSITION, {"wrongPurpose.receiverStatus": (equals(403), "wrong purpose refused"), "wrongTenant.receiverStatus": (equals(403), "wrong tenant refused"),
                                              "wrongAggregate.receiverStatus": (equals(403), "wrong aggregate refused"), "auditOutage.receiverStatus": (equals(500), "audit outage refuses before mutation")})],
-        "restart": [(ALERT_CLEAR, {"": (any_point(ALERT, 0), "alert clears after restart")})],
+        "restart": [(ALERT_CLEAR, {"": (alert_cleared_after_raise(ALERT), "alert clears after its last raise, after restart")})],
         "rollback": [(RESTORE_PHASE, {"convergence.restoredOperatorAuditAttempts": (equals(1), "restored attributed operator audit")})],
     },
     "R9": {
@@ -425,12 +602,13 @@ PROOFS = {
 }
 PROOF_NAMES = ("persisted", "negative", "restart", "rollback")
 
-# Equalities that bind one phase to another, so a restart or restore cannot pass against unrelated state.
+# Bindings of one phase to another, so a restart or restore cannot pass against unrelated state. Each phase records its
+# own re-observation; the optional comparator states how a re-observation must match the captured value.
 CROSS_CHECKS = [
-    (HISTORICAL_RESTART, "familyDigest", HISTORICAL, "familyDigest", "restart preserves the persisted historical family"),
-    (RESTORE_PHASE, "fleet", SNAPSHOT_PHASE, "fleet", "restored fleet equals the complete snapshot"),
-    (RESTORE_PHASE, "runtimeHashes", SNAPSHOT_PHASE, "runtimeHashes", "restored runtime binaries equal the snapshot"),
-    (RESTORE_PHASE, "convergence.receipt.EffectId", QUERY_REPLAY, "receipt.EffectId", "retained host replays the Platform-written receipt"),
+    (HISTORICAL_RESTART, "familyDigest", HISTORICAL, "familyDigest", "restart preserves the persisted historical family", None),
+    (RESTORE_PHASE, "fleet", SNAPSHOT_PHASE, "fleet", "restored fleet equals the complete snapshot", restored_fleet_matches),
+    (RESTORE_PHASE, "runtimeHashes", SNAPSHOT_PHASE, "runtimeHashes", "restored runtime binaries equal the snapshot", None),
+    (RESTORE_PHASE, "convergence.receipt.EffectId", QUERY_REPLAY, "receipt.EffectId", "retained host replays the Platform-written receipt", None),
 ]
 
 
@@ -454,11 +632,15 @@ def bind_persisted_outcomes(path, rows, starts):
     missing = sorted(required_phases() - set(by_phase))
     if missing:
         raise ValueError("Required target outcomes did not execute: " + ", ".join(missing))
-    if not any(record.get("role") == "retained-rollback" for record in starts):
+    retained = [record for record in starts if record.get("role") == "retained-rollback"]
+    if not retained:
         raise ValueError("No retained-host restore start was observed")
-    for first, first_path, second, second_path, description in CROSS_CHECKS:
+    snapshot_volume = by_phase[SNAPSHOT_PHASE]["state"].get("schedulerVolume")
+    if not isinstance(snapshot_volume, str) or any(record.get("schedulerVolume") != snapshot_volume for record in retained):
+        raise ValueError("The retained-host rollback start did not use the snapshot's Scheduler volume")
+    for first, first_path, second, second_path, description, comparator in CROSS_CHECKS:
         left, right = _resolve(by_phase[first]["state"], first_path), _resolve(by_phase[second]["state"], second_path)
-        if left is MISSING or right is MISSING or left != right:
+        if left is MISSING or right is MISSING or not (comparator(left, right) if comparator else left == right):
             raise ValueError("Cross-phase binding failed: " + description)
     if set(PROOFS) != set(ROWS) or any(set(proofs) != set(PROOF_NAMES) for proofs in PROOFS.values()):
         raise ValueError("Every row must map all four proofs to named phases")
@@ -550,10 +732,10 @@ def run_verification(args):
         summary["selectedSdk"] = {"version": version, "catalog": str(platform / CATALOG), "catalogSha256": sha256(platform / CATALOG),
                                   "worksConsumerPins": require_consumer_pins(works, version),
                                   "hostPackagePins": require_host_package_pins(platform / "apphost.cs", version)}
-    except (ValueError, OSError, ET.ParseError) as error:
-        summary["failure"] = str(error)
+    except RECORDED_FAILURES as error:
+        summary["failure"] = failure_text(error)
         save()
-        print(str(error), flush=True)
+        print(summary["failure"], flush=True)
         return 1
 
     def run(name, command, cwd=platform, environment=None, expected_refusal=None):
@@ -628,7 +810,7 @@ def run_verification(args):
                 summary["platformDebugSdkAssemblies"] = {path.name: sha256(path) for path in
                     sorted(executable.parent.glob("Hexalith.EventStore.*.dll"))}
         host_output, consumer_output = artifacts / "host", artifacts / "consumer"
-        build("platform-file-host-release", "./apphost.cs", "Release", platform, host_output)
+        build("platform-file-host-release", "./apphost.cs", "Release", platform, host_output, extra=[path_map(host_output)])
         # Qualify against the target's adapter in an isolated output. The retained Works graph keeps its own pin.
         catalog = ET.parse(platform / CATALOG).getroot()
         adapter = next(item.text for item in catalog.findall(".//HexalithAspireHostingDaprVersion") if not item.get("Condition"))
@@ -637,14 +819,19 @@ def run_verification(args):
                "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version])
         build("works-consumer-release", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Release", works, consumer_output,
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
-               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version])
+               "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, path_map(consumer_output)])
+        host_runtime = host_output / "bin/release" / (PLATFORM_RUNTIME + ".dll")
+        summary["platformRuntimeIdentity"] = require_identical_runtime(
+            host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))
+        save()
         supporting_xml = artifacts / "works-consumer-supporting.xml"
         supporting_classes = ["WorksSdkPartitionedRebuildTests", "WorksSdkProjectionQueryTests",
                               "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests",
                               "WorksQueryPolicyDeadlineTests", "WorksSdkProofRedisOwnershipTests",
                               "WorksPlatformDispositionProbeTests", "WorksPlatformSelectedSdkPathsTests",
                               "WorksPlatformFleetRestoreTests", "WorksAppHostDiscoveryIsolationTests",
-                              "WorksPlatformHostingCompositionTests"]
+                              "WorksPlatformHostingCompositionTests", "WorksPlatformTelemetryCollectorTests",
+                              "WorksPlatformIdentityFixtureTests", "WorksPlatformCompositionGuardTests"]
         supporting_command = [consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests", "-noLogo"]
         for name in supporting_classes:
             supporting_command += ["-class", "Hexalith.Works.IntegrationTests." + name]
@@ -684,15 +871,7 @@ def run_verification(args):
             producer_evidence[package] = {"version": restored, "sha256": sha256(artifact), "source": metadata["source"],
                 "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
         summary["publishedProducers"] = producer_evidence
-        fixtures = list((works / "tests/Hexalith.Works.IntegrationTests").glob("WorksPlatform*.cs")) + [
-            works / "tests/Hexalith.Works.IntegrationTests" / name for name in
-            ["WorksSdkRecoveryPipelineSmokeTests.cs", "WorksSdkProofHostingStartup.cs", "WorksSdkProofRedis.cs",
-             "WorksAppHostSelection.cs", "WorksAppHostSmokeHarness.cs", "WorksSdkPartitionedRebuildTests.cs",
-             "WorksSdkProjectionQueryTests.cs", "WorksSdkProtectedHttpTests.cs", "WorkItemSharedProjectionRebuildHandlerTests.cs",
-             "WorksQueryPolicyDeadlineTests.cs", "WorksSdkProofRedisOwnershipTests.cs",
-             "WorksAppHostDiscoveryIsolation.cs", "WorksAppHostDiscoveryIsolationTests.cs", "WorksSdkProofHostingEvidence.cs"]]
-        fixtures.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
-        summary["fixtureSources"] = {str(path.relative_to(works)): sha256(path) for path in sorted(fixtures)}
+        summary["fixtureSources"] = fixture_sources(works)
         identity_root = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
         summary["identityProvenance"] = {"scope": "explicit-test-only-source; no published Platform.Identity package",
             "project": str(identity_root / "Hexalith.Platform.Identity.csproj"),
@@ -766,7 +945,9 @@ def run_verification(args):
         projection_xml = artifacts / "platform-projection.xml"
         run("platform-projection", [executable, "-noLogo", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformProjectionPipelineSmokeTests.ActualPlatformSharedRebuildAndConcurrentCatchUpPreserveCompleteFamily", "-result-xml", projection_xml], works, environment)
         summary["checks"]["liveProjection"] = require_passed_tests(projection_xml, ["ActualPlatformSharedRebuildAndConcurrentCatchUpPreserveCompleteFamily"])
-        summary["actualStarts"] = verify_host_records(artifacts / "host-starts.jsonl", assembly, platform, version)
+        summary["actualStarts"] = verify_host_records(artifacts / "host-starts.jsonl", assembly, platform, version,
+            runtime_artifacts=summary["runtimeArtifacts"], host_runtime=host_runtime,
+            composition_literals=platform_composition_literals(platform / "src/Hexalith.Platform.Composition/WorksPreviewModel.cs"))
         for row in summary["rows"].values():
             row["targetCommands"] = [entry for entry in summary["commands"] if entry["name"] in ("platform-recovery", "platform-historical", "platform-ha", "platform-projection")]
         for source in summary["sourceProducers"].values():
@@ -799,9 +980,9 @@ def run_verification(args):
         summary["rollback"] = bind_persisted_outcomes(artifacts / "persisted-states.jsonl", summary["rows"], summary["actualStarts"])
         summary["status"] = "passed-disposable-synthetic-parity-and-rollback"
         return 0
-    except (ValueError, OSError, subprocess.TimeoutExpired, subprocess.CalledProcessError) as error:
-        summary["failure"] = str(error)
-        print(str(error), flush=True)
+    except RECORDED_FAILURES as error:
+        summary["failure"] = failure_text(error)
+        print(summary["failure"], flush=True)
         return 1
     finally:
         save()

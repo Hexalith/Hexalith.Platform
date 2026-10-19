@@ -39,8 +39,25 @@ public sealed class WorksDaprPolicyTests
         routes.ShouldContain("/project/v2");
         routes.ShouldContain("/admin/operational-index-metadata");
         routes.ShouldContain("/query");
-        routes.ShouldNotContain("/work/processes/dispose");
+        routes.ShouldNotContain(DispositionRoute);
     }
+
+    /// <summary>Process disposition is granted to the operator workload alone; the gateway holds no disposition authority.</summary>
+    [Fact]
+    public void OnlyTheOperatorWorkloadHoldsProcessDisposition()
+    {
+        YamlMappingNode access = (YamlMappingNode)Spec("accesscontrol.works.yaml")["accessControl"];
+        string[] holders = [.. ((YamlSequenceNode)access["policies"]).Cast<YamlMappingNode>()
+            .Where(policy => ((YamlSequenceNode)policy["operations"]).Cast<YamlMappingNode>().Any(operation => Scalar(operation, "name") == DispositionRoute))
+            .Select(policy => Scalar(policy, "appId"))];
+        holders.ShouldBe(["eventstore-admin"]);
+        YamlMappingNode operation = ((YamlSequenceNode)((YamlSequenceNode)access["policies"]).Cast<YamlMappingNode>()
+            .Single(policy => Scalar(policy, "appId") == "eventstore-admin")["operations"]).Cast<YamlMappingNode>().ShouldHaveSingleItem();
+        Scalar(operation, "name").ShouldBe(DispositionRoute);
+        Scalar(operation, "action").ShouldBe("allow");
+    }
+
+    private const string DispositionRoute = "/work/processes/revalidate";
 
     /// <summary>The subscriber cannot publish source events and the operations workload has no publish grant.</summary>
     [Fact]

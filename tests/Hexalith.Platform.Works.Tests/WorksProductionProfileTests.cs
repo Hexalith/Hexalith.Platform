@@ -51,9 +51,16 @@ public sealed class WorksProductionProfileTests
     [InlineData("namespace", "DEVELOPMENT")]
     [InlineData("brokerPolicySha256", "unbound")]
     [InlineData("networkPolicySha256", "unbound")]
+    [InlineData("trustDomain", " platform.example")]
+    [InlineData("trustDomain", "platform.example ")]
+    [InlineData("namespace", " works-production")]
+    [InlineData("namespace", "works-production\t")]
     [InlineData("workloadAuthority", "http://authority.example")]
     [InlineData("workloadAuthority", "https://localhost")]
+    [InlineData("workloadAuthority", "https://operator:secret@authority.example")]
+    [InlineData("workloadAuthority", "https://operator@authority.example")]
     [InlineData("telemetryEndpoint", "http://collector.example")]
+    [InlineData("telemetryEndpoint", "https://exporter:token@collector.example")]
     public void ForeignOrUnprotectedBindingIsRefused(string setting, string value)
     {
         JsonObject candidate = Candidate();

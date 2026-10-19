@@ -9,13 +9,37 @@ import tarfile
 import unittest
 from unittest.mock import patch
 
-from verify_works_host import (CROSS_CHECKS, PROOF_NAMES, PROOFS, RESTORE_PHASE, ROWS, SNAPSHOT_PHASE, bind_persisted_outcomes,
-                               require_consumer_pin, require_consumer_pins, require_host_package_pins, require_passed_tests,
-                               require_published_runtime_source, required_phases, selected_sdk_version, sha256, verify_host_records)
+import verify_works_host
+from verify_works_host import (CROSS_CHECKS, DUMP_INVENTORY, PROOF_NAMES, PROOFS, RESTORE_PHASE, ROWS, SNAPSHOT_PHASE, alert_cleared_after_raise,
+                               bind_persisted_outcomes, delegated_identity, fixture_sources, platform_composition_literals,
+                               require_consumer_pin, require_consumer_pins, require_host_package_pins, require_identical_runtime,
+                               require_passed_tests, require_published_runtime_source, required_phases, restored_fleet_matches,
+                               selected_sdk_version, sha256, verify_host_records)
 
 VERSION = '3.125.1'
 DIGEST = 'a' * 64
 HOOK_TYPE = 'Hexalith.Platform.Works.Runtime.WorksRecoveryHostingStartup'
+VOLUME = 'works-sdk416-owned'
+RETAINED = [{'role': 'retained-rollback', 'schedulerVolume': VOLUME}]
+PREVIEW_MODEL = Path(__file__).resolve().parents[1] / 'src/Hexalith.Platform.Composition/WorksPreviewModel.cs'
+LITERALS = {'EventStore__RateLimiting__PermitLimit': '8192', 'EventStore__RateLimiting__ConsumerPermitLimit': '8192',
+            'Authentication__Workload__AllowedCallers__0': 'eventstore', 'Authentication__Workload__AllowedCallers__1': 'eventstore-admin',
+            'Works__Recovery__UseSdkRuntime': 'true', 'Works__Projection__UseSdkDelivery': 'true'}
+
+
+def identity(calls=2):
+    actor = '01ARZ3NDEKTSV4RRFFQ69G5FAV'
+    return {'tenant': 'sdk415-tenant', 'isDelegated': True, 'authenticatedWorkloadId': 'eventstore', 'originalActorId': actor,
+            'userId': actor, 'partyId': 'party-416-executor', 'resolvedTenant': 'sdk415-tenant', 'resolvedParty': 'party-416-executor',
+            'resolvedActor': actor, 'identityCalls': calls}
+
+
+def compositions():
+    """Platform's composed tracked values per resource, as the harness records them."""
+    common = {'DOTNET_ENVIRONMENT': 'Development'}
+    return {'eventstore': common | {key: value for key, value in LITERALS.items() if key.startswith('EventStore__RateLimiting__')},
+            'works': common | {key: value for key, value in LITERALS.items() if not key.startswith('EventStore__RateLimiting__')},
+            'eventstore-operations': dict(common), 'eventstore-admin': dict(common)}
 
 
 def heads(count):
@@ -38,23 +62,28 @@ def valid_states():
         'platform-executor-filtering-and-origin-tenant-publish-refusals': {'wrongCaller': 401, 'wrongPort': 401, 'forbiddenPublish': 403,
                                                                            'own': {'found': True}, 'visible': ['mine', 'queued', 'race'],
                                                                            'hidden': {'found': False}, 'wrongActor': 'Forbidden',
-                                                                           'wrongTenant': 'Forbidden', 'unchangedFamily': DIGEST},
-        'complete-supported-process-coverage': {'Complete': True, 'Unresolved': 0, 'RetainedCandidates': 11},
+                                                                           'wrongTenant': 'Forbidden', 'unchangedFamily': DIGEST,
+                                                                           'queryIdentity': identity()},
+        'complete-supported-process-coverage': {'Complete': True, 'Unresolved': 0, 'RetainedCandidates': 12},
         'periodic-writers-disabled-readiness-degraded': {'status': 'Degraded'},
         'disabled-recovery-otlp-alert-export': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1}],
-        'durable-recovery-alert-export-and-clear': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1},
-                                                    {'Name': 'eventstore.domain.recovery.alert', 'Value': 0}],
+        'durable-recovery-alert-export-and-clear': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'UnixTimeNanoseconds': 10},
+                                                    {'Name': 'eventstore.domain.recovery.alert', 'Value': 0, 'UnixTimeNanoseconds': 20}],
         'platform-named-redelivery-capture-through-commit-complete-family': {
             'redelivered': {'Outcomes': [{'Status': 1}]}, 'fenced': {'Outcomes': [{'Status': 2}]},
             'concurrentDelivery': {'redeliveryLogicalCount': 1}, 'before': {'Digest': DIGEST}, 'after': {'Digest': DIGEST},
-            'negatives': {'wrongOrigin': 401, 'wrongOperation': 403}},
+            'negatives': {'wrongOrigin': 401, 'wrongOperation': 403}, 'queryIdentity': identity()},
         'platform-named-conflict-durable-quarantine-with-unchanged-family': {'acceptedFamilySha256': DIGEST, 'unchangedFamilySha256': DIGEST,
-                                                                             'repeatedConflictCount': 1, 'conflict': {'SourceStream': 'item'}},
-        'platform-initial-projection-convergence': {'naturalCatchUp': True, 'heads': heads(11)},
+                                                                             'repeatedConflictCount': 1, 'conflict': {'SourceStream': 'item'},
+                                                                             'queryIdentity': identity(1)},
+        'platform-initial-projection-convergence': {'naturalCatchUp': True, 'heads': heads(12)},
         'platform-focused-projection-rebuild': {'concurrentDelivery': {'automaticCatchUpAfterCommit': True, 'oldGenerationStayedReadable': True,
                                                                        'after': {'Digest': DIGEST}, 'expectedDigest': DIGEST},
-                                                'sources': ['source'] * 11, 'committed': {'Phase': 3}},
+                                                'sources': ['source'] * 11, 'committed': {'Phase': 3}, 'queryIdentity': identity(4)},
         'platform-query-and-explicit-receipt-replay': {'query': {'found': True, 'latestAcceptedSourceSequence': 7},
+                                                       'queryIdentity': identity(1),
+                                                       'nonDelegatedFullTenantQuery': {'error': 'Forbidden', 'isDelegated': False,
+                                                                                       'authenticatedWorkloadId': 'eventstore', 'identityCalls': 0},
                                                        'receipt': {'EffectId': 'EFFECT'}, 'conflictingReplayStatus': 500,
                                                        'durableCollisionCount': 1, 'attributedCollisionAudit': True},
         'successful-callback-no-periodic-recovery': {'witness': {'entries': [{}]}, 'processCandidate': True},
@@ -65,9 +94,9 @@ def valid_states():
                       'nameMismatchRejectedByProbe': True, 'serverIdentity': 'spiffe://public/ns/default/works'}},
         'cascade-expiry-restart-receipt-and-checkpoint': {'replay': {'ReplayObserved': True}, 'childExpired': 1, 'expiryReceipt': {'disposition': 0}},
         'concurrent-sdk-reminder-reissue-after-lost-scheduler-wakeup': {'callers': 2, 'persistedSchedulerReminder': {'actorType': 'WorksSdkReminderActor'}},
-        'paged-process-candidates-pre-restart': {'expectedSources': 11, 'pages': [{}, {}, {}, {}]},
+        'paged-process-candidates-pre-restart': {'expectedSources': 12, 'pages': [{}, {}, {}, {}]},
         'canonical-related-child-creation-gap': {'creationGap': {'ReasonCode': 'evidence-unavailable'}, 'existingChildCancellations': 0, 'readiness': 'Degraded'},
-        'paged-process-restart-and-shared-store-owner-fencing': {'linkedPages': 4, 'candidates': [{}] * 11, 'staleOwnerWriteRefused': True,
+        'paged-process-restart-and-shared-store-owner-fencing': {'linkedPages': 4, 'candidates': [{}] * 12, 'staleOwnerWriteRefused': True,
                                                                  'concurrentOwners': 1, 'priorFence': 32, 'successorFence': 33},
         'protected-scoped-disposition-audit-before-mutation': disposition,
         'callback-protected-scoped-disposition-audit-before-mutation': copy.deepcopy(disposition),
@@ -76,10 +105,11 @@ def valid_states():
         'child-resume-noop-restart-receipt-and-checkpoint': {'replay': {'ReplayObserved': True, 'Disposition': 2}, 'checkpoint': {'Checkpoint': 4}},
         'five-child-persisted-target-receipts': [{'receipt': {'purpose': 'works.cascade-cancel', 'disposition': 0}, 'cancelled': 1}] * 5,
         'cascade-restart-receipt-and-checkpoint': {'receipt': {'effectId': 'CASCADE'}, 'committedEffect': 'CASCADE', 'checkpoint': {'Checkpoint': 7}},
-        SNAPSHOT_PHASE: {'fleet': fleet, 'runtimeHashes': runtime},
+        SNAPSHOT_PHASE: {'fleet': fleet | {DUMP_INVENTORY: 'd' * 64}, 'runtimeHashes': runtime, 'schedulerVolume': VOLUME},
         RESTORE_PHASE: {'convergence': {'query': {'found': True, 'conversationCorrelationId': {'value': 'synthetic-capture-416-0123456789'}},
+                                        'queryIdentity': identity(1),
                                         'receipt': {'Replayed': True, 'Disposition': 2, 'EffectId': 'EFFECT'}, 'resumedCount': 1,
-                                        'restoredSweep': {'Complete': True, 'Unresolved': 0, 'RetainedCandidates': 11},
+                                        'restoredSweep': {'Complete': True, 'Unresolved': 0, 'RetainedCandidates': 12},
                                         'durableCollisionCount': 1, 'restoredOperatorAuditAttempts': 1},
                         'fleet': copy.deepcopy(fleet), 'runtimeHashes': copy.deepcopy(runtime), 'dateResumed': 1, 'childCancelled': 1,
                         'childExpired': 1, 'restoredConfigurationVerified': True},
@@ -167,6 +197,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
         runtime = root / 'consumer/Hexalith.Platform.Works.Runtime.dll'
         runtime.parent.mkdir(parents=True, exist_ok=True)
         runtime.write_bytes(b'platform runtime')
+        # Path-mapped deterministic builds give Platform's host output the same bytes the hook loads.
+        (root / 'bin/release/Hexalith.Platform.Works.Runtime.dll').write_bytes(b'platform runtime')
         sdk = [{'name': 'Hexalith.EventStore.Aspire', 'version': VERSION + '.0', 'path': str(assembly), 'sha256': sha256(assembly)}]
         names = ['eventstore', 'works', 'eventstore-operations', 'eventstore-admin'] + (['works-ha'] if ha else [])
         hosting = {'hostingStartupAssemblies': ['Hexalith.Platform.Works.Runtime', 'Hexalith.Works.IntegrationTests'],
@@ -174,18 +206,31 @@ class WorksEvidenceGateTests(unittest.TestCase):
                    'startups': [{'name': 'Hexalith.Platform.Works.Runtime', 'loaded': True, 'location': str(runtime), 'sha256': sha256(runtime),
                                  'hostingStartupTypes': [HOOK_TYPE]},
                                 {'name': 'Hexalith.Works.IntegrationTests', 'loaded': True, 'hostingStartupTypes': []}],
-                   'platformRuntimeEnabled': True, 'platformTelemetryRegisteredBeforeProof': True, 'telemetryPublisherRegistrations': 1}
-        return assembly, {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': 'works-sdk416-owned',
+                   'platformRuntimeEnabled': True, 'platformTelemetryRegisteredBeforeProof': True, 'telemetryPublisherRegistrations': 1,
+                   'environment': compositions()['works']}
+        composed = compositions()
+        overlaps = [{'key': 'APP_API_TOKEN', 'rule': 'captured-restorable-synthetic-secret'}]
+        guard = {name: {'platformComposedKeys': sorted([*values, 'APP_API_TOKEN', 'OTEL_SERVICE_NAME']), 'fixtureKeys': ['APP_API_TOKEN', 'WORKS_SDK_PROOF'],
+                        'permittedOverlaps': copy.deepcopy(overlaps), 'composition': values} for name, values in composed.items()}
+        guard['works']['platformComposedKeys'] += ['DOTNET_STARTUP_HOOKS']
+        guard['works']['fixtureKeys'] += ['DOTNET_STARTUP_HOOKS']
+        guard['works']['permittedOverlaps'].append({'key': 'DOTNET_STARTUP_HOOKS', 'rule': 'extends-composed-list'})
+        effective = copy.deepcopy(composed) | ({'works-ha': copy.deepcopy(composed['works'])} if ha else {})
+        startups = {name: copy.deepcopy(hosting) for name in ('works', 'works-ha') if name in names}
+        startups['eventstore'] = {'environment': copy.deepcopy(composed['eventstore'])}
+        return assembly, {'assembly': str(assembly), 'sha256': sha256(assembly), 'directory': str(root), 'schedulerVolume': VOLUME,
                           'role': role, 'actorType': 'WorksSdkReminderActor', 'readinessPassed': True, 'worksReadinessExpectation': 'Healthy',
                           'sdkAssemblies': sdk,
                           'runtimeModules': [{'resource': name, 'configuration': 'Release', 'entry': str(assembly), 'entrySha256': sha256(assembly),
                                               'sdkAssemblies': sdk} for name in names],
-                          'hostingStartups': {name: copy.deepcopy(hosting) for name in ('works', 'works-ha') if name in names}}
+                          'hostingStartups': startups, 'compositionGuard': guard, 'effectiveEnvironment': effective}
 
-    def verify(self, root, assembly, *records):
+    def verify(self, root, assembly, *records, runtime_artifacts=None):
         path = root / 'starts.jsonl'
         path.write_text(''.join(json.dumps(record) + '\n' for record in records))
-        return verify_host_records(path, assembly, root, VERSION)
+        return verify_host_records(path, assembly, root, VERSION,
+                                   runtime_artifacts={str(assembly): sha256(assembly)} if runtime_artifacts is None else runtime_artifacts,
+                                   host_runtime=root / 'bin/release/Hexalith.Platform.Works.Runtime.dll', composition_literals=LITERALS)
 
     def test_another_host_or_scheduler_cannot_qualify_platform(self):
         root = self.directory()
@@ -293,7 +338,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
 
     def test_valid_outcomes_derive_every_rows_four_proofs_from_named_phases(self):
         rows = {key: {} for key in ROWS}
-        result = bind_persisted_outcomes(self.outcomes(valid_states()), rows, [{'role': 'retained-rollback'}])
+        result = bind_persisted_outcomes(self.outcomes(valid_states()), rows, RETAINED)
         self.assertTrue(result['complete'])
         self.assertEqual(len(result['crossChecks']), len(CROSS_CHECKS))
         for key, row in rows.items():
@@ -322,7 +367,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                                 container = container[int(part)] if isinstance(container, list) else container[part]
                             del container[leaf]
                             with self.assertRaisesRegex(ValueError, 'lacks required field|Cross-phase binding failed'):
-                                bind_persisted_outcomes(self.outcomes(states), {key: {}}, [{'role': 'retained-rollback'}])
+                                bind_persisted_outcomes(self.outcomes(states), {key: {}}, RETAINED)
 
     def test_non_qualifying_values_are_refused(self):
         cases = [
@@ -347,28 +392,28 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 container = container[part]
             container[path[-1]] = value
             with self.subTest(phase=phase, path=path), self.assertRaisesRegex(ValueError, row + ' .*does not qualify'):
-                bind_persisted_outcomes(self.outcomes(states), {row: {}}, [{'role': 'retained-rollback'}])
+                bind_persisted_outcomes(self.outcomes(states), {row: {}}, RETAINED)
         states = valid_states()
         states['five-child-persisted-target-receipts'] = states['five-child-persisted-target-receipts'][:4]
         with self.assertRaisesRegex(ValueError, 'R11 persisted'):
-            bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, [{'role': 'retained-rollback'}])
+            bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, RETAINED)
 
     def test_duplicate_missing_or_unbound_phases_cannot_accept_rows(self):
         states = valid_states()
         with self.assertRaisesRegex(ValueError, 'Duplicate persisted outcome phase'):
             bind_persisted_outcomes(self.outcomes(states, [('platform-initial-projection-convergence', states['platform-initial-projection-convergence'])]),
-                                    {}, [{'role': 'retained-rollback'}])
+                                    {}, RETAINED)
         for phase in sorted(required_phases()):
             missing = valid_states()
             del missing[phase]
             with self.subTest(phase=phase), self.assertRaisesRegex(ValueError, 'did not execute: ' + phase):
-                bind_persisted_outcomes(self.outcomes(missing), {}, [{'role': 'retained-rollback'}])
+                bind_persisted_outcomes(self.outcomes(missing), {}, RETAINED)
         with self.assertRaisesRegex(ValueError, 'retained-host restore start'):
             bind_persisted_outcomes(self.outcomes(valid_states()), {}, [{'role': 'platform-target'}])
         malformed = self.directory() / 'states.jsonl'
         malformed.write_text(json.dumps({'phase': 'no-state'}) + '\n')
         with self.assertRaisesRegex(ValueError, 'no phase or state'):
-            bind_persisted_outcomes(malformed, {}, [{'role': 'retained-rollback'}])
+            bind_persisted_outcomes(malformed, {}, RETAINED)
 
     def test_restore_and_restart_must_bind_the_captured_platform_state(self):
         for phase, path, value, message in [
@@ -383,14 +428,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 container = container[part]
             container[path[-1]] = value
             with self.subTest(message=message), self.assertRaisesRegex(ValueError, message):
-                bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, [{'role': 'retained-rollback'}])
+                bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, RETAINED)
 
     def test_focused_projection_rebuild_is_a_required_r4_outcome(self):
         self.assertIn('platform-focused-projection-rebuild', [phase for phase, _ in PROOFS['R4']['persisted']])
         states = valid_states()
         del states['platform-focused-projection-rebuild']
         with self.assertRaisesRegex(ValueError, 'platform-focused-projection-rebuild'):
-            bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, [{'role': 'retained-rollback'}])
+            bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, RETAINED)
 
     def test_every_row_maps_all_four_proofs_to_real_phases(self):
         self.assertEqual(set(PROOFS), set(ROWS))
@@ -451,6 +496,138 @@ class WorksEvidenceGateTests(unittest.TestCase):
 
     def test_contract_requires_every_row(self):
         self.assertEqual(set(ROWS), {f'R{index}' for index in range(1, 12)})
+
+    def test_loaded_platform_runtime_must_equal_the_host_output_dll(self):
+        root = self.directory()
+        assembly, record = self.host_record(root, ha=True)
+        self.assertEqual(len(self.verify(root, assembly, record)), 1)
+        (root / 'bin/release/Hexalith.Platform.Works.Runtime.dll').write_bytes(b'consumer compile with another pdb path')
+        with self.assertRaisesRegex(ValueError, 'host-output Hexalith.Platform.Works.Runtime.dll in works'):
+            self.verify(root, assembly, record)
+        host, consumer = root / 'host.dll', root / 'consumer.dll'
+        host.write_bytes(b'same')
+        consumer.write_bytes(b'same')
+        self.assertTrue(require_identical_runtime(host, consumer)['identical'])
+        consumer.write_bytes(b'different')
+        with self.assertRaisesRegex(ValueError, 'Path-mapped deterministic builds still differ'):
+            require_identical_runtime(host, consumer)
+
+    def test_every_live_module_entry_must_be_a_prebuilt_runtime_artifact(self):
+        root = self.directory()
+        assembly, record = self.host_record(root, ha=True)
+        for artifacts in [{}, {str(assembly): '0' * 64}, {str(root / 'other.dll'): sha256(assembly)}]:
+            with self.subTest(artifacts=artifacts), self.assertRaisesRegex(ValueError, 'prebuilt runtime artifacts'):
+                self.verify(root, assembly, record, runtime_artifacts=artifacts)
+
+    def test_platform_target_must_run_at_platform_composition(self):
+        root = self.directory()
+        assembly, record = self.host_record(root, ha=True)
+        self.assertIn('works-ha', self.verify(root, assembly, record)[0]['platformComposition'])
+        mutations = {
+            'missing guard': (lambda r: r.pop('compositionGuard'), 'did not record Platform'),
+            'missing resource': (lambda r: r['compositionGuard'].pop('eventstore-admin'), 'composition for eventstore-admin'),
+            'equal-value overlap': (lambda r: r['compositionGuard']['works']['fixtureKeys'].append('DOTNET_ENVIRONMENT'), 'DOTNET_ENVIRONMENT'),
+            'unlisted overlap': (lambda r: r['compositionGuard']['works']['platformComposedKeys'].append('WORKS_SDK_PROOF'), 'WORKS_SDK_PROOF'),
+            'wrong rule': (lambda r: r['compositionGuard']['works']['permittedOverlaps'][1].update(rule='captured-restorable-synthetic-secret'), 'DOTNET_STARTUP_HOOKS'),
+            'phantom permission': (lambda r: r['compositionGuard']['eventstore']['permittedOverlaps'].append({'key': 'OTEL_EXPORTER_OTLP_ENDPOINT', 'rule': 'redirects-otlp-export-to-owned-loopback-collector'}), 'eventstore'),
+            'production environment': (lambda r: r['compositionGuard']['eventstore-operations']['composition'].update(DOTNET_ENVIRONMENT='Production'), 'Development'),
+            'composed limit differs from source': (lambda r: r['compositionGuard']['eventstore']['composition'].update(EventStore__RateLimiting__PermitLimit='100000'), 'differ from its source'),
+            'composed callers differ from source': (lambda r: r['compositionGuard']['works']['composition'].pop('Authentication__Workload__AllowedCallers__1'), 'differ from its source'),
+            'launched limit differs': (lambda r: r['effectiveEnvironment']['eventstore'].update(EventStore__RateLimiting__PermitLimit='100000'), 'launched effective environment of eventstore'),
+            'launched extra caller': (lambda r: r['effectiveEnvironment']['works'].update(Authentication__Workload__AllowedCallers__2='works'), 'launched effective environment of works'),
+            'replica flag differs': (lambda r: r['effectiveEnvironment']['works-ha'].update(Works__Recovery__UseSdkRuntime='false'), 'works-ha'),
+            'in-process caller differs': (lambda r: r['hostingStartups']['works']['environment'].update(Authentication__Workload__AllowedCallers__0='works'), 'in-process effective environment of works'),
+            'missing in-process record': (lambda r: r['hostingStartups']['eventstore'].pop('environment'), 'in-process environment: eventstore'),
+            'missing launched environment': (lambda r: r['effectiveEnvironment'].pop('eventstore-operations'), 'effective environment of eventstore-operations'),
+        }
+        for name, (mutate, message) in mutations.items():
+            changed = copy.deepcopy(record)
+            mutate(changed)
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, message):
+                self.verify(root, assembly, changed)
+
+    def test_platform_composition_literals_are_read_from_platform_source(self):
+        literals = platform_composition_literals(PREVIEW_MODEL)
+        self.assertEqual({key: value for key, value in literals.items() if key.startswith('EventStore__RateLimiting__')},
+                         {'EventStore__RateLimiting__PermitLimit': '8192', 'EventStore__RateLimiting__ConsumerPermitLimit': '8192',
+                          'EventStore__RateLimiting__TenantPermitLimits__anonymous': '8192', 'EventStore__RateLimiting__ConsumerPermitLimits__anonymous': '8192'})
+        self.assertEqual(literals['Authentication__Workload__AllowedCallers__1'], 'eventstore-admin')
+        self.assertEqual(literals['Works__Recovery__UseSdkRuntime'], 'true')
+        unreadable = self.directory() / 'WorksPreviewModel.cs'
+        unreadable.write_text('builder.WithEnvironment("Other", "value");')
+        with self.assertRaisesRegex(ValueError, 'could not be read'):
+            platform_composition_literals(unreadable)
+        conflicting = self.directory() / 'WorksPreviewModel.cs'
+        conflicting.write_text(PREVIEW_MODEL.read_text() + '\n.WithEnvironment("Authentication__Workload__AllowedCallers__0", "works")')
+        with self.assertRaisesRegex(ValueError, 'conflicting literals'):
+            platform_composition_literals(conflicting)
+
+    def test_alert_clear_must_follow_the_last_raise(self):
+        check = alert_cleared_after_raise('eventstore.domain.recovery.alert')
+        def point(value, at):
+            return {'Name': 'eventstore.domain.recovery.alert', 'Value': value, 'UnixTimeNanoseconds': at}
+        self.assertTrue(check([point(1, 10), point(0, 20)]))
+        self.assertTrue(check([point(1, 10), point(0, 5), point(1, 15), point(0, 30)]))
+        for points in [[point(0, 5), point(1, 10)], [point(1, 10), point(0, 20), point(1, 30)], [point(0, 20)], [point(1, 10)],
+                       [{'Name': 'eventstore.domain.recovery.alert', 'Value': 0}, point(1, 10)], 'not points']:
+            with self.subTest(points=points):
+                self.assertFalse(check(points))
+
+    def test_query_identity_must_be_a_resolved_delegated_executor(self):
+        self.assertTrue(delegated_identity(identity()))
+        for key, value in [('isDelegated', False), ('authenticatedWorkloadId', 'works'), ('userId', 'workload:eventstore'), ('originalActorId', ''),
+                           ('partyId', 'party-416-other'), ('tenant', 'foreign'), ('identityCalls', 0), ('identityCalls', True), ('resolvedActor', 'other')]:
+            with self.subTest(key=key, value=value):
+                self.assertFalse(delegated_identity(identity() | {key: value}))
+        self.assertFalse(delegated_identity(None))
+
+    def test_retained_rollback_must_use_the_snapshot_scheduler_volume(self):
+        rows = {key: {} for key in ROWS}
+        self.assertTrue(bind_persisted_outcomes(self.outcomes(valid_states()), rows, RETAINED)['complete'])
+        for starts in [[{'role': 'retained-rollback', 'schedulerVolume': 'works-sdk416-other'}], [{'role': 'retained-rollback'}],
+                       [*RETAINED, {'role': 'retained-rollback', 'schedulerVolume': 'works-sdk416-other'}]]:
+            with self.subTest(starts=starts), self.assertRaisesRegex(ValueError, "snapshot's Scheduler volume"):
+                bind_persisted_outcomes(self.outcomes(valid_states()), {key: {} for key in ROWS}, starts)
+        states = valid_states()
+        del states[SNAPSHOT_PHASE]['schedulerVolume']
+        with self.assertRaisesRegex(ValueError, "snapshot's Scheduler volume"):
+            bind_persisted_outcomes(self.outcomes(states), {key: {} for key in ROWS}, RETAINED)
+
+    def test_restored_fleet_is_an_independent_re_observation_of_the_snapshot(self):
+        snapshot = {'certificates/ca.crt': 'b' * 64, 'redis-key-count': '682', DUMP_INVENTORY: 'd' * 64}
+        self.assertTrue(restored_fleet_matches({'certificates/ca.crt': 'b' * 64, 'redis-key-count': '682'}, snapshot))
+        for restored in [dict(snapshot), {'certificates/ca.crt': 'b' * 64}, {'certificates/ca.crt': 'b' * 64, 'redis-key-count': '681'},
+                         {'certificates/ca.crt': 'b' * 64, 'redis-key-count': '682', 'extra': 'e' * 64}, 'fleet']:
+            with self.subTest(restored=restored):
+                self.assertFalse(restored_fleet_matches(restored, snapshot))
+        self.assertFalse(restored_fleet_matches({'redis-key-count': '682'}, {'redis-key-count': '682'}))
+
+    def test_every_integration_test_source_is_a_bound_fixture(self):
+        works = self.directory()
+        root = works / 'tests/Hexalith.Works.IntegrationTests'
+        for relative in ['WorksSdkProofResponseHandler.cs', 'Nested/WorksSdkProofProducer.cs', 'bin/Release/Generated.cs', 'obj/Release/Generated.cs', 'notes.md']:
+            (root / relative).parent.mkdir(parents=True, exist_ok=True)
+            (root / relative).write_text('// ' + relative)
+        (works / 'src/Hexalith.Works.AppHost').mkdir(parents=True)
+        (works / 'src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs').write_text('// paths')
+        self.assertEqual(sorted(fixture_sources(works)), ['src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs',
+                                                          'tests/Hexalith.Works.IntegrationTests/Nested/WorksSdkProofProducer.cs',
+                                                          'tests/Hexalith.Works.IntegrationTests/WorksSdkProofResponseHandler.cs'])
+
+    def test_unexpected_failure_types_are_recorded_in_the_ledger(self):
+        works = self.directory()
+        artifacts = self.directory() / 'evidence'
+        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts, 'prepare_only': False})()
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
+                patch('verify_works_host.require_consumer_pins', return_value={}), \
+                patch('verify_works_host.require_host_package_pins', return_value={}), \
+                patch('verify_works_host.source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.subprocess.run', side_effect=KeyError('unexpected-ledger-key')):
+            self.assertEqual(verify_works_host.run_verification(args), 1)
+        ledger = json.loads((artifacts / 'ledger.json').read_text())
+        self.assertEqual(ledger['failure'], "KeyError: 'unexpected-ledger-key'")
+        self.assertEqual(ledger['status'], 'incomplete')
 
 
 if __name__ == '__main__':
