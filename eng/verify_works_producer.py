@@ -15,13 +15,26 @@ BUILD_FILES = ("Directory.Build.props", "Directory.Build.targets", "Directory.Pa
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 
 
+def source_files(root):
+    """Every regular file under src except build outputs: props, targets, JSON and resources are build inputs too."""
+    root = Path(root)
+    paths = []
+    for path in (root / "src").rglob("*"):
+        if {"bin", "obj"}.intersection(path.relative_to(root).parts):
+            continue
+        if path.is_symlink():
+            raise ValueError("Runtime source contains a symbolic link: " + str(path.relative_to(root)))
+        if path.is_file():
+            paths.append(path)
+    return paths
+
+
 def runtime_source_snapshot(root):
     """Record actual runtime bytes; an archive directory has no invented checkout commit."""
     root = Path(root).resolve()
     if not (root / "src").is_dir() or any(not (root / name).is_file() for name in BUILD_FILES):
         raise ValueError("Selected SDK root lacks its runtime source or central build files")
-    paths = [path for path in (root / "src").rglob("*") if path.is_file()
-             and path.suffix in (".cs", ".csproj") and not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
+    paths = source_files(root)
     paths += [root / name for name in BUILD_FILES]
     inventory = {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(paths)}
     return {"root": str(root), "commit": None, "provenance": "explicit-source-root; requires-public-producer-qualification",
@@ -114,10 +127,13 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None, tag=None):
             raise ValueError("Official producer lacks a regular central build file: " + name)
         expected[name] = entry["sha"]
     for name, entry in source_entries.items():
-        if PurePosixPath(name).suffix in (".cs", ".csproj"):
-            if entry.get("type") != "blob" or entry.get("mode") not in ("100644", "100755"):
-                raise ValueError("Official runtime source is not a regular file: " + name)
-            expected["src/" + name] = entry["sha"]
+        if entry.get("type") == "tree" and entry.get("mode") == "040000":
+            continue
+        if entry.get("type") != "blob" or entry.get("mode") not in ("100644", "100755"):
+            raise ValueError("Official runtime source is not a regular file: " + name)
+        if {"bin", "obj"}.intersection(PurePosixPath(name).parts):
+            raise ValueError("Official runtime source tracks a build-output path: " + name)
+        expected["src/" + name] = entry["sha"]
     if len(expected) <= len(BUILD_FILES):
         raise ValueError("Official producer has no runtime source files")
     current = runtime_source_snapshot(snapshot["root"])

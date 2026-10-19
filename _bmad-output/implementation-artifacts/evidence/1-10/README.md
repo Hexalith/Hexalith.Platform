@@ -109,15 +109,25 @@ UTC intervals, exit codes and derived checks are in
 The earlier 3/3 source live result in [live-tests.txt](live-tests.txt) ran at
 Platform `5f185936`, Builds `332b2c1`, EventStore `d55c6f7` and Memories
 `d0c5d8ca`. Its log did not record Tenants; the checkout reflog identifies
-`57d564b4` at that time. It is superseded by the review-pass-3 rerun and does
-not establish acceptance at the final gitlinks. Its concurrent Builds audit
-edit affected metadata only.
+`57d564b4` at that time. It is superseded by the review-pass-3 rerun. Its
+concurrent Builds audit edit affected metadata only.
 
 The source-built diagnostic runs and the `4.33.1-local.1` prerelease proof below
 are historical results. Each transcript retains the tree/tool identities it
 originally recorded; they do not prove the current released/pinned acceptance.
 The Builds implementation now also includes the process-architecture correction
 and child-process assembly isolation reviewed after the prerelease proof.
+
+## Revisions after the evidence
+
+Platform `2d5178f` synced the pushed submodule revisions after the AC1 and AC2
+records above. Review pass 5 accepted the differences without a rerun:
+
+| Repository | Evidence revision | Shipped gitlink | Difference |
+| --- | --- | --- | --- |
+| EventStore | `d55c6f7` | `bb315b1f` | `bb315b1f` is the pushed form of the pass-3 local doc commit `6f16f79` (identical range-diff). The only source change, `9b661535`, adds `src/Hexalith.EventStore.Aspire/HexalithEventStoreExecutableExtensions.cs` with its tests; Platform does not call it. The rest is owner documentation and evidence. |
+| Memories | `4f6b3b1` | `4b2719fe` | `4b2719fe` is the pushed form of the pass-3 local doc commit `842bbe33` (identical range-diff). `c83a318d` adds Story 27.4 documents only. |
+| Builds | `c6f56c0` | `c6f56c0` | The gitlink stays on the `v4.33.1` tag commit. The later `1dfc39e` (Commons 2.30.3) and `5c04dab` (Development preflight) are not part of the pinned catalog. |
 
 ## Acceptance criteria
 

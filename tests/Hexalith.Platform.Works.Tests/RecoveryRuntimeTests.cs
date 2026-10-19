@@ -176,7 +176,11 @@ public sealed class RecoveryRuntimeTests
         services.AddHealthChecks();
         services.AddEventStoreDomainTelemetry("work");
         services.AddWorksRecoveryTelemetry();
+        ServiceDescriptor[] registered = [.. services];
+        // Platform's hosting startup registers first; the parity fixture's later call adds nothing.
         services.AddWorksRecoveryTelemetry();
+        services.ShouldBe(registered);
+        services.Count(descriptor => descriptor.ServiceType == typeof(WorksRecoveryTelemetryPublisher)).ShouldBe(1);
         using ServiceProvider provider = services.BuildServiceProvider();
         var publishers = provider.GetServices<IHealthCheckPublisher>().ToArray();
         publishers.Length.ShouldBe(1);

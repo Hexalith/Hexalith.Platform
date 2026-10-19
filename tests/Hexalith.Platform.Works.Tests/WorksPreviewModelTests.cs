@@ -3,6 +3,7 @@ namespace Hexalith.Platform.Works.Tests;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Hexalith.Platform.Composition;
+using Hexalith.Platform.Works.Runtime;
 using Shouldly;
 
 /// <summary>Checks the Platform-owned target composition and its admission refusals.</summary>
@@ -61,10 +62,45 @@ public sealed class WorksPreviewModelTests
         environment["Works__Recovery__UseSdkRuntime"].ShouldBe("true");
         environment["Authentication__Workload__Audience"].ShouldBe("works");
         environment["Authentication__Workload__AllowedCallers__0"].ShouldBe("eventstore");
+        environment["Authentication__Workload__AllowedCallers__1"].ShouldBe("eventstore-admin");
+        environment.Keys.Where(key => key.StartsWith("Authentication__Workload__AllowedCallers__", StringComparison.Ordinal))
+            .Order(StringComparer.Ordinal).ShouldBe(["Authentication__Workload__AllowedCallers__0", "Authentication__Workload__AllowedCallers__1"]);
+        // Platform's runtime hook and hosting startup are the target's own telemetry composition.
+        environment["WORKS_PLATFORM_RUNTIME"].ShouldBe("1");
+        environment["DOTNET_STARTUP_HOOKS"].ShouldBe(typeof(WorksRecoveryHostingStartup).Assembly.Location);
+        environment["ASPNETCORE_HOSTINGSTARTUPASSEMBLIES"].ShouldBe("Hexalith.Platform.Works.Runtime");
         works.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
         works.Annotations.OfType<WaitAnnotation>().ShouldNotContain(wait => wait.Resource.Name == "eventstore");
         ProjectResource gateway = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
         gateway.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
+    }
+
+    /// <summary>The preview composes explicit, finite development/test EventStore rate limits.</summary>
+    [Fact]
+    public async Task GatewayComposesExplicitDevelopmentRateLimits()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        WorksPreviewModel.Compose(builder);
+        ProjectResource gateway = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
+        Dictionary<string, object> environment = new(StringComparer.Ordinal);
+        foreach (EnvironmentCallbackAnnotation callback in gateway.Annotations.OfType<EnvironmentCallbackAnnotation>())
+            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, gateway, environment,
+                TestContext.Current.CancellationToken));
+        Dictionary<string, object> limits = environment.Where(pair => pair.Key.StartsWith("EventStore__RateLimiting__", StringComparison.Ordinal))
+            .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+        limits.ShouldBe(new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["EventStore__RateLimiting__PermitLimit"] = "8192",
+            ["EventStore__RateLimiting__ConsumerPermitLimit"] = "8192",
+            ["EventStore__RateLimiting__TenantPermitLimits__anonymous"] = "8192",
+            ["EventStore__RateLimiting__ConsumerPermitLimits__anonymous"] = "8192",
+        }, ignoreOrder: true);
+        ProjectResource works = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "works");
+        Dictionary<string, object> worksEnvironment = new(StringComparer.Ordinal);
+        foreach (EnvironmentCallbackAnnotation callback in works.Annotations.OfType<EnvironmentCallbackAnnotation>())
+            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, works, worksEnvironment,
+                TestContext.Current.CancellationToken));
+        worksEnvironment.Keys.ShouldNotContain(key => key.StartsWith("EventStore__RateLimiting__", StringComparison.Ordinal));
     }
 
     /// <summary>Every receiver requires a distinct secret app-channel credential even in Development.</summary>

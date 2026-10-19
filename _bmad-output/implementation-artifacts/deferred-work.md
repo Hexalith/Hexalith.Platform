@@ -854,7 +854,7 @@
   resolution: Duplicate of the Story 1.10 pass-1 entry "Make `hexalith-module run`/`debug` print the run id in human output…", which removes the need for the lookup.
 
 
-<!-- Story 1.10 resumed review pass 4 -->
+## Deferred from: code review of spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md (2026-10-18, pass 4)
 
 - source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
   summary: Clarify mixed-revision revocation selection for EventStore published deletion trust.
@@ -879,3 +879,15 @@
 - source_spec: `spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
   summary: Isolate ES256 rejection in EventStore published-trust authority regression tests.
   evidence: R4-V1: the altered-JWS test independently fails guard equality and the malformed-SPKI test fails before VerifyData. Preserve a valid matching request/guard but replace only the anchor with another well-formed P-256 key; assert dispatch denial. Independent owner security work.
+
+## Deferred from: code review of spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md (2026-10-18, pass 5)
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Refresh the Builds package-version audit for Commons 2.30.3 so Builds `main` CI passes again.
+  evidence: Review pass 5 (blind hunter, acceptance auditor). Owner commit `1dfc39e` raised `HexalithCommonsVersion` to 2.30.3 in `Props/Directory.Packages.props` without refreshing `Tools/package-version-audit.json`. `Tools/validate-package-version-audit.ps1` reports a `catalogSha256` mismatch and 12 Commons packages with no accepted audit selection. Builds CI `39144143974` (`1dfc39e`) and `39157741848` (`5c04dab`) fail at "Validate package version audit"; the next Builds release is blocked. Independent of the 1.10 Builds fix, which released from `c6f56c0`.
+  status: open
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md`
+  summary: Make `ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation` independent of the test output location.
+  evidence: Review pass 5 (blind hunter). The pass-3 full Composition rerun failed this absolute-path substring assertion when the test output was under `/tmp`; byte-identical output passed under `/home` (`evidence/1-10/failure-membership-final.txt`, `composition-tests-final-relocated-bin.txt`). It predates Story 1.10 and had no ledger entry. Developers running the suite from a `/tmp` worktree see a spurious failure.
+  status: open

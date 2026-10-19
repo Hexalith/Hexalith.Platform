@@ -14,6 +14,15 @@ using Microsoft.Extensions.Hosting;
 /// <summary>The preserved opt-in Works preview.</summary>
 public static class WorksPreviewModel
 {
+    /// <summary>The explicit development/test EventStore rate limits composed for the Works preview.</summary>
+    public static IReadOnlyList<(string Key, string Value)> DevelopmentRateLimits { get; } =
+    [
+        ("EventStore__RateLimiting__PermitLimit", "8192"),
+        ("EventStore__RateLimiting__ConsumerPermitLimit", "8192"),
+        ("EventStore__RateLimiting__TenantPermitLimits__anonymous", "8192"),
+        ("EventStore__RateLimiting__ConsumerPermitLimits__anonymous", "8192"),
+    ];
+
     /// <summary>Adds the existing Works graph.</summary>
     public static void Compose(IDistributedApplicationBuilder builder)
     {
@@ -111,6 +120,14 @@ public static class WorksPreviewModel
             .WithEnvironment("EventStore__Publisher__TopicOverrides__work", "work.events")
             .WithEnvironment("EventStore__Publisher__DeadLetterTopicPrefix", "commanddeadletter")
             .WithEnvironment("Authentication__DaprInternal__AllowedCallers__0", "works");
+
+        // Development/test limits for this preview only. EventStore's defaults (1000 per minute per tenant,
+        // 100 per second per consumer) reject the preview's own internal actor, projection and recovery
+        // traffic with 429, and the dropped projection update is an open EventStore defect. These values
+        // carry the eleven-source parity load while keeping both SDK limiters finite. Production admission
+        // is refused above and must size its own limits.
+        foreach ((string key, string value) in DevelopmentRateLimits)
+            _ = eventStore.WithEnvironment(key, value);
 
         var admin = builder.AddProject("eventstore-admin", adminProject)
             .WithEnvironment("MSBUILDDISABLENODEREUSE", "1");

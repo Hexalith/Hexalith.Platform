@@ -36,9 +36,8 @@ its packaged host has a mismatched Tooling identity and build-machine paths,
 which prevent v2 `run` and `debug`; `4.33.1` fixes both defects. Later 4.x
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
-`c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching release tag `v4.33.1`.
-The Builds source checkout also contains later development fixes.
-Only the pinned version is guaranteed to embed that
+`c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching both the Builds gitlink
+and release tag `v4.33.1`. Only the pinned version is guaranteed to embed that
 catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
 AppHost SDK pins, and nothing compares them with the catalog yet. When the
 exact pin moves, the Builds gitlink moves to that version's release-tag commit.
@@ -83,7 +82,7 @@ module and fails with `HXP003`/`HXP020`).
   repository. After a local commit inside a submodule, stage it with
   `git add references/<Repository>` or the tool refuses the run.
 - The local Aspire orchestration and dashboard packages at `13.6.1`. From this
-  workspace, run `dotnet restore apphost.cs` once before the first `debug` run.
+  workspace, run `dotnet restore apphost.cs` once before the first `run` or `debug`.
   Tool restore alone does not install these SDK packages. If NuGet uses a custom
   `globalPackagesFolder`, set `NUGET_PACKAGES` to that absolute folder for both
   restore and `debug`; the tool otherwise checks `~/.nuget/packages` and reports
@@ -93,14 +92,17 @@ module and fails with `HXP003`/`HXP020`).
   A machine-wide `dapr init` does not qualify. On Linux x64 (including WSL2),
   prepare one from the official release assets; other platforms need the
   matching `<os>_<arch>` assets of the same releases. The subshell stops at the
-  first failed download or checksum and leaves your shell where it was:
+  first failed download or checksum, removes its downloads and leaves your shell
+  where it was:
 
   ```bash
   (
     set -euo pipefail
     dapr_home="$HOME/.hexalith/dapr/1.18.2"
     mkdir -p "$dapr_home/tools" "$dapr_home/.dapr/bin"
-    cd "$(mktemp -d)"
+    downloads="$(mktemp -d)"
+    trap 'rm -rf "$downloads"' EXIT
+    cd "$downloads"
     base=https://github.com/dapr
     for asset in cli/releases/download/v1.18.0/dapr_linux_amd64.tar.gz \
         dapr/releases/download/v1.18.2/daprd_linux_amd64.tar.gz \

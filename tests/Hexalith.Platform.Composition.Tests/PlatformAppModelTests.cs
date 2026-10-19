@@ -321,7 +321,7 @@ public sealed partial class PlatformAppModelTests
                 Directory.CreateDirectory(properties);
                 File.WriteAllText(Path.Combine(properties, "launchSettings.json"), "{\"profiles\":{\"http\":{\"commandName\":\"Project\",\"applicationUrl\":\"http://localhost:5010\"}}}");
             }
-            foreach (string relative in new[] { "accesscontrol.yaml", "accesscontrol.works.yaml", "accesscontrol.eventstore-admin.yaml", "accesscontrol.eventstore-operations.yaml", "resiliency/resiliency.yaml", "statestore.yaml", "pubsub.yaml", "sentry.yaml" })
+            foreach (string relative in new[] { "accesscontrol.yaml", "accesscontrol.works.yaml", "accesscontrol.eventstore-admin.yaml", "accesscontrol.eventstore-operations.yaml", "resiliency/resiliency.yaml", "statestore.yaml", "pubsub.yaml", "configstore.yaml", "sentry.yaml" })
             {
                 string target = Path.Combine(platform, "DaprComponents", relative);
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);

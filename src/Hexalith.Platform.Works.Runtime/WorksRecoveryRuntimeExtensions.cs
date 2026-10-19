@@ -13,11 +13,18 @@ namespace Hexalith.Platform.Works.Runtime;
 public static class WorksRecoveryRuntimeExtensions
 {
     /// <summary>Adds bounded cached gauges and alerts without granting disposition authority.</summary>
+    /// <remarks>
+    /// Platform's hosting startup and an explicitly marked parity fixture can both call this method in one host.
+    /// The first call registers the telemetry; later calls add no descriptor, so gauges, alerts and publisher
+    /// options are registered exactly once.
+    /// </remarks>
     /// <param name="services">Host service collection.</param>
     /// <returns>The service collection.</returns>
     public static IServiceCollection AddWorksRecoveryTelemetry(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
+        if (services.Any(static descriptor => descriptor.ServiceType == typeof(WorksRecoveryTelemetryPublisher)))
+            return services;
         services.TryAddSingleton(TimeProvider.System);
         services.TryAddSingleton(provider => new WorksRecoveryTelemetryPublisher(
             provider.GetRequiredKeyedService<EventStoreDomainDiagnostics>("work"), provider.GetRequiredService<TimeProvider>()));

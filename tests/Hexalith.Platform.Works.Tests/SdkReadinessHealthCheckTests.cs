@@ -60,6 +60,45 @@ public sealed class SdkReadinessHealthCheckTests
         finally { listener.Stop(); }
     }
 
+    /// <summary>The check reads the SDK readiness route, never liveness or another health path.</summary>
+    [Fact]
+    public async Task ReadinessCheckRequestsTheSdkReadyRoute()
+    {
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        try
+        {
+            int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
+            {
+                Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true,
+            });
+            ExecutableResource resource = builder.AddExecutable("path-readiness", "dotnet", Environment.CurrentDirectory)
+                .WithHttpEndpoint(name: "http").Resource;
+            EndpointAnnotation endpoint = resource.Annotations.OfType<EndpointAnnotation>().Single();
+            endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", port,
+                EndpointBindingMode.SingleAddress, port.ToString(CultureInfo.InvariantCulture));
+            using ServiceProvider services = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+            var check = new SdkReadinessHealthCheck(new EndpointReference(resource, endpoint), services.GetRequiredService<IHttpClientFactory>());
+            Task<HealthCheckResult> pending = check.CheckHealthAsync(new HealthCheckContext(), TestContext.Current.CancellationToken);
+            using TcpClient accepted = await listener.AcceptTcpClientAsync(TestContext.Current.CancellationToken);
+            NetworkStream stream = accepted.GetStream();
+            using var reader = new StreamReader(stream, Encoding.ASCII, leaveOpen: true);
+            string requestLine = (await reader.ReadLineAsync(TestContext.Current.CancellationToken)).ShouldNotBeNull();
+            string[] request = requestLine.Split(' ');
+            // Only the readiness route reports Healthy, so a liveness or other path would also turn the result Unhealthy.
+            string body = request is ["GET", "/ready", _] ? "Healthy" : "Unhealthy";
+            await stream.WriteAsync(Encoding.ASCII.GetBytes(
+                $"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {body.Length}\r\nConnection: close\r\n\r\n{body}"),
+                TestContext.Current.CancellationToken);
+            HealthCheckResult result = await pending.WaitAsync(TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken);
+            request[0].ShouldBe("GET");
+            request[1].ShouldBe("/ready");
+            result.Status.ShouldBe(HealthStatus.Healthy);
+        }
+        finally { listener.Stop(); }
+    }
+
     /// <summary>The SDK default plain-text writer preserves Degraded, and malformed bodies refuse.</summary>
     [Theory]
     [InlineData("Healthy", HealthStatus.Healthy)]

@@ -153,7 +153,51 @@ Review pass 3, 2026-10-18. Four layers: blind hunter, edge-case hunter, verifica
 - Edge: "mirrors the mapping" but nested checkouts fail — false, carried E13: intended by the frozen rule and AD-4.
 - Edge: the gate never launches DCP — low, carried R2-B9: real compositions supply DCP execution evidence.
 
+Review pass 5, 2026-10-18. Four layers (blind hunter, edge-case hunter, verification gap, acceptance auditor) reviewed one combined diff: Platform `7993509..2d5178f` (story paths), EventStore `c0c08d4..bb315b1f` and Memories `fb39a0c..4b2719fe` (story paths), and Builds `4629ff2..5c04dab` without generated audit, lock and fixture JSON.
+
+- [x] [Review][Decision] Builds gitlink sits two commits past the `v4.33.1` tag — `2d5178f` staged Builds `5c04dab` (`v4.33.1-2`: `1dfc39e` Commons 2.30.1→2.30.3, `5c04dab` preflight `DOTNET_ENVIRONMENT=Development`). That contradicts the orchestrator task ("move the Builds gitlink to its tag commit"), README.md:44 ("the Builds gitlink moves to that version's release-tag commit") and evidence README.md:146 ("uses that tag's Builds commit"). README.md:38-39 still names `c6f56c0` as the catalog commit, but source mode reads the catalog at the gitlink (`PlatformIdentityResolver.cs:147`), so Platform now builds with Commons 2.30.3. Builds CI fails at both commits (`39144143974`, `39157741848`: "Validate package version audit"). Options: revert the gitlink to `c6f56c0`, or keep `5c04dab` and rewrite the rule, the catalog sentence and the evidence line. **Resolved (human, 2026-10-18): revert the gitlink to `c6f56c0`** → patch.
+- [x] [Review][Decision] Acceptance evidence predates the shipped gitlinks — every AC1/AC2 record ran at Builds `c6f56c0`, EventStore `d55c6f7` and Memories `4f6b3b1`. `2d5178f` ships Builds `5c04dab` (source engine preflight change, unit-tested only), EventStore `bb315b1f` (adds `HexalithEventStoreExecutableExtensions.cs`, unused by Platform, and the rebased pass-3 docs, range-diff identical to `6f16f79`) and Memories `4b2719fe` (docs; rebased `842bbe33`). Evidence README.md:113 still calls `cf20db9` "the final gitlinks". Options: rerun the gated class and the pinned AC1 proof at the final state, or record the delta and the rebased SHAs in the evidence README without rerunning. **Resolved (human, 2026-10-18): record the delta without rerunning** → patch.
+- [x] [Review][Patch] Restore the Platform Builds gitlink to the `v4.33.1` tag commit `c6f56c0`, so the README rule, catalog sentence and evidence line hold again [references/Hexalith.Builds]
+- [x] [Review][Patch] Record in the evidence README the post-evidence EventStore/Memories delta and the rebased pass-3 SHAs (`6f16f79`→`bb315b1f`, `842bbe33`→`4b2719fe`), and stop calling `cf20db9` the final gitlinks [_bmad-output/implementation-artifacts/evidence/1-10/README.md:113]
+- [x] [Review][Patch] EventStore quickstart runs the own AppHost without the scoping sentence Memories' quickstart got in pass 1 (B16b); README "Get started" links to it [references/Hexalith.EventStore/docs/getting-started/quickstart.md:31]
+- [x] [Review][Patch] Dapr setup snippet never removes its temporary download directory, and `cd "$(mktemp -d)"` does not stop under `set -e` when `mktemp` fails [README.md:103]
+- [x] [Review][Patch] `dotnet restore apphost.cs` is required "before the first `debug` run", but a first `run` hits the same `HXR016` [README.md:86]
+- [x] [Review][Patch] Pass-4 ledger entries sit under an HTML comment instead of a `## Deferred from:` heading, so they read as pass-3 entries [_bmad-output/implementation-artifacts/deferred-work.md:857]
+- [x] [Review][Defer] Builds `main` CI is red: `1dfc39e` raised Commons to 2.30.3 without refreshing `Tools/package-version-audit.json` (13 audit errors) [references/Hexalith.Builds/Props/Directory.Packages.props:6] — deferred: independent Builds owner commit after the release; it blocks the next Builds release.
+- [x] [Review][Defer] `ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation` fails when the test output is under `/tmp` and has no ledger entry [_bmad-output/implementation-artifacts/evidence/1-10/failure-membership-final.txt] — deferred: pre-existing Composition test brittleness found by the pass-3 rerun.
+- [x] [Review][Defer] The gated live test's failure output is 80 identical placeholder lines and its diagnostics directory is deleted with the `/tmp` workspace [tests/Hexalith.Platform.Composition.Tests/BuildsSourceStartupTests.cs] — deferred: already recorded as R4-B10 (capture the health-probe result).
+
+**Rejected (pass 5):**
+- Blind: `GetReferencedModuleProjectPath` breaks consumers in a `fix:` commit — low, carried B5a.
+- Blind: resolver tests miss an unmarked self layout; Memories lacks a public-entry unmapped test — low: no defect shown; adding tests is more than a correction (pass-3 precedent).
+- Blind+Edge: the loader fixture echoes the injected `DcpPublisher` values, and on CI the resolved path equals the baked one — low: Aspire is pinned, the released-tool proof ran with unreachable baked paths, and reading Aspire's internal DCP options adds complexity.
+- Blind+Edge: engine tests read the host NuGet cache — low, carried E10/V1.
+- Blind: `332b2c1` collapses conditionals onto long lines — low, carried pass 3.
+- Blind: pass-4 EventStore security deferrals live only in the Platform ledger — low: process-only; each names the owner commits.
+- Blind: EventStore DW-207 cites pre-rewrite line numbers — low: cosmetic; the entry names the method.
+- Blind: the Memories helper copy has no ledger entry — false: the pass-1 Platform deferral (B6/E4, R2-E4) explicitly covers it.
+- Blind: inotify headroom is undocumented — low, carried pass 3.
+- Blind+Edge: run/debug docs cover only Linux — low, carried pass 3.
+- Blind: the Memories live case does not assert the containers — low, carried B9.
+- Blind: the secret-store comment gives a new excuse — low, carried B10/R2-B11.
+- Blind: `baselineContainersStillRunning: false` contradicts the README — false: the same record has `protectedDaprContainersUnchanged: true` and explains the unrelated containers; the README cites the protected check.
+- Blind: gated live tests have no developer instructions — false: `docs/platform-apphost-form.md:85` and the test's skip message name both variables.
+- Blind: `/tmp` logs, mixed path redaction and revision-less unit counts — low, carried pass 3 and B18.
+- Blind: meaningless commit subjects in the gitlink ranges — low: process-only owner commits.
+- Auditor: the implementation notes cite rebased `6f16f79`/`842bbe33` as unpushed — rejected: the fix edits the spec under review; the range-diff is identical and the second decision records the mapping.
+- Auditor: the Memories README stretches "own tests" to its walkthrough — false: README.md:42 states the run is never Platform evidence and routes module run/debug to Platform.
+- Auditor: the final AC1 transcripts omit `HEXALITH_DAPR_HOME` — low: ready implies the isolated home (the machine-wide 1.18.7 runtime is refused), and raw transcripts cannot be amended.
+- Verification gap: `CurrentRuntimeIdentifier` has no test that would catch an `OSArchitecture` revert — low: only emulated hosts are affected, and an injectable architecture adds surface (R2-V1 precedent).
+- Verification gap+Edge: the parity docstring fails, and consumer AppHosts throw in the non-recursive workspace — false, carried pass 3 and E13: when the helper returns, its path is the props' first candidate; other layouts throw by design.
+- Edge: the gate resolves `pwsh` from `PATH` — low, carried pass 3.
+- Edge: gate children inherit the ambient environment — low: no relevant ambient variable shown; scrubbing means replicating the runner allow-list.
+- Edge: a non-five-level AppHost output gives a misleading Memories message — low: the message names the computed root; the spec keeps the fixed layout.
+- Edge: a recycled launcher pid matches a stale run — low, carried pass 3.
+- Edge: `.slnx` self detection differs from the mapping — low, carried E5.
+
 ## Implementation Notes
+
+- **Review pass 5 patches (2026-10-18).** The Platform Builds gitlink is staged back at the `v4.33.1` tag commit `c6f56c011ce3a83cdf6100c322352daf125c6af9` (checkout detached at the tag), and the README again says the catalog commit matches both the gitlink and the tag. The evidence README records the post-evidence EventStore/Memories delta and the rebased pass-3 SHAs. The Platform README Dapr snippet now removes its downloads and stops when `mktemp` fails, and the restore prerequisite covers the first `run` as well as `debug`. The pass-4 ledger entries have their own heading. EventStore local commit `772ec1676ac20bfc171b2d1976becda3e5e272d2` (`docs: scope the own AppHost in the quickstart`) passed the pinned commitlint 21.1.0; it is not pushed, and the Platform EventStore gitlink is not staged pending human approval.
 
 - **Review pass 3 re-verification at exact `cf20db9`.** A disposable Platform worktree and local shared clones of all 17 root gitlinks isolated the requested run from concurrent edits in the active workspace. Clean Debug builds passed with zero warnings/errors. The gated class passed EventStore and Tenants (`c9feedb6`) but failed Memories on Sentry Running/Unhealthy (3 total, 1 failed, 451.333 s). Its unchanged-source focused Memories retry passed 1/1 in 101.792 s. All three distinct cases have passing evidence across two invocations; there was no single all-green class run. The first failure is preserved. All checkout revisions and the relevant binary hashes matched before/after each lane; all trees stayed clean. The four protected Dapr containers remained, and the temporary inotify cap was restored. See `evidence/1-10/{live-tests-final,live-tests-final-retry}.txt` and `final-verification.json`.
 

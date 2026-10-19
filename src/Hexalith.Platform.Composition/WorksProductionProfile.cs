@@ -14,6 +14,9 @@ public static class WorksProductionProfile
         "stateProvider", "auditProvider", "backupSet", "retentionPolicy", "telemetryEndpoint",
     ];
 
+    // Self-hosted Dapr defaults; refused in any letter case.
+    private static readonly string[] DevelopmentValues = ["public", "localhost", "default", "development"];
+
     /// <summary>Refuses absent, unknown, duplicate, foreign, plaintext, or incomplete production settings.</summary>
     /// <param name="json">The provider binding manifest, containing references rather than secret material.</param>
     public static void Validate(string json)
@@ -50,7 +53,7 @@ public static class WorksProductionProfile
             if (profile.GetProperty(name).GetString() != expected)
                 throw new InvalidDataException($"Works production profile has a foreign {name}.");
         foreach (string name in new[] { "trustDomain", "namespace" })
-            if (profile.GetProperty(name).GetString() is "public" or "localhost" or "default" or "development")
+            if (DevelopmentValues.Contains(profile.GetProperty(name).GetString()!, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidDataException($"Works production profile cannot use a development {name}.");
         foreach (string name in new[] { "brokerPolicySha256", "networkPolicySha256" })
         {

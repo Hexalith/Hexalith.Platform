@@ -22,10 +22,7 @@ class ProducerQualificationTests(unittest.TestCase):
         (self.root / "src/Example").mkdir(parents=True)
         for name in [*BUILD_FILES, "src/Example/Example.cs", "src/Example/Example.csproj"]:
             (self.root / name).write_bytes((name + "\n").encode())
-        def entry(name, path):
-            data = path.read_bytes()
-            return {"path": name, "type": "blob", "mode": "100644",
-                    "sha": hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()}
+        entry = self.entry
         self.documents = {
             COMMITS_API + COMMIT: {"sha": COMMIT, "tree": {"sha": ROOT_TREE}},
             API + ROOT_TREE: {"sha": ROOT_TREE, "truncated": False, "tree": [
@@ -36,6 +33,12 @@ class ProducerQualificationTests(unittest.TestCase):
                 entry("Example/Example.csproj", self.root / "src/Example/Example.csproj")]}}
         self.documents[TAG_REFS_API + TAG] = {"ref": "refs/tags/" + TAG, "object": {"type": "commit", "sha": COMMIT}}
         self.producers = {"Hexalith.EventStore.Client": {"repositoryCommit": COMMIT, "repositoryUrl": REPOSITORY_URL}}
+
+    @staticmethod
+    def entry(name, path):
+        data = path.read_bytes()
+        return {"path": name, "type": "blob", "mode": "100644",
+                "sha": hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()}
 
     def fetch(self, url):
         return json.dumps(self.documents[url]).encode()
@@ -140,6 +143,38 @@ class ProducerQualificationTests(unittest.TestCase):
         self.documents[TAGS_API + TAG_OBJECT] = {"sha": TAG_OBJECT, "tag": TAG, "object": {"type": "tag", "sha": "f" * 40}}
         with self.assertRaisesRegex(ValueError, "does not name the published producer"):
             qualify_runtime_source(runtime_source_snapshot(self.root), self.producers, self.fetch, tag=TAG)
+
+    def test_every_src_build_input_is_qualified_except_outputs(self):
+        props = self.root / "src/Example/Directory.Build.props"
+        settings = self.root / "src/Example/appsettings.json"
+        props.write_bytes(b"<Project />\n")
+        settings.write_bytes(b"{}\n")
+        with self.assertRaisesRegex(ValueError, "Runtime SDK differs from published producer"):
+            self.qualify()
+        tree = self.documents[API + SOURCE_TREE + "?recursive=1"]["tree"]
+        tree += [{"path": "Example", "type": "tree", "mode": "040000", "sha": "d" * 40},
+                 self.entry("Example/Directory.Build.props", props), self.entry("Example/appsettings.json", settings)]
+        self.assertEqual(7, self.qualify()["runtimeFileCount"])
+        (self.root / "src/Example/obj").mkdir()
+        (self.root / "src/Example/obj/generated.json").write_bytes(b"{}\n")
+        self.assertEqual(7, self.qualify()["runtimeFileCount"])
+        for path in [props, settings]:
+            original = path.read_bytes()
+            path.write_bytes(b"substituted\n")
+            with self.subTest(path=path.name), self.assertRaisesRegex(ValueError, "Runtime SDK differs from published producer"):
+                self.qualify()
+            path.write_bytes(original)
+
+    def test_local_link_or_official_submodule_is_rejected(self):
+        link = self.root / "src/Example/Linked.cs"
+        link.symlink_to(self.root / "src/Example/Example.cs")
+        with self.assertRaisesRegex(ValueError, "symbolic link"):
+            self.qualify()
+        link.unlink()
+        self.documents[API + SOURCE_TREE + "?recursive=1"]["tree"].append(
+            {"path": "Vendored", "type": "commit", "mode": "160000", "sha": "d" * 40})
+        with self.assertRaisesRegex(ValueError, "not a regular file"):
+            self.qualify()
 
     def test_unavailable_official_authority_cannot_qualify(self):
         def unavailable(_url):

@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 
-from verify_works_producer import qualify_runtime_source, runtime_source_snapshot
+from verify_works_producer import qualify_runtime_source, runtime_source_snapshot, source_files
 
 CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
 
@@ -53,6 +53,35 @@ def require_consumer_pin(props, version):
     return {"path": str(props), "version": version, "sha256": sha256(props)}
 
 
+# Directory.Build.props sets the effective conditional default before Directory.Packages.props is imported,
+# so both Works files must name the qualified producer.
+CONSUMER_PIN_FILES = ("Directory.Build.props", "Directory.Packages.props")
+
+
+def require_consumer_pins(works, version):
+    return {name: require_consumer_pin(Path(works) / name, version) for name in CONSUMER_PIN_FILES}
+
+
+HOST_PACKAGE = re.compile(r"^#:package\s+(Hexalith\.EventStore\.[A-Za-z0-9.]+)@(\S+)\s*$")
+
+
+def require_host_package_pins(apphost, version):
+    """The file host's own EventStore package directives must select the catalog producer."""
+    pins = {}
+    for line in Path(apphost).read_text().splitlines():
+        match = HOST_PACKAGE.match(line.strip())
+        if match:
+            if match.group(1) in pins:
+                raise ValueError("The Platform file host repeats an EventStore package directive: " + match.group(1))
+            pins[match.group(1)] = match.group(2)
+    if not pins:
+        raise ValueError("The Platform file host declares no EventStore package directive: " + str(apphost))
+    differing = sorted(name + "@" + pinned for name, pinned in pins.items() if pinned != version)
+    if differing:
+        raise ValueError("Platform file host EventStore packages differ from the catalog selection " + version + ": " + ", ".join(differing))
+    return {"path": str(apphost), "version": version, "packages": sorted(pins), "sha256": sha256(apphost)}
+
+
 def require_passed_tests(path, required_methods=(), required_types=()):
     """Reject empty results, test failures, skips, and filters that miss required methods."""
     root = ET.parse(path).getroot()
@@ -76,6 +105,37 @@ def require_passed_tests(path, required_methods=(), required_types=()):
     return {"total": len(tests), "passed": len(tests), "skipped": 0, "sha256": sha256(path)}
 
 
+PLATFORM_RUNTIME = "Hexalith.Platform.Works.Runtime"
+PLATFORM_HOSTING_STARTUP = PLATFORM_RUNTIME + ".WorksRecoveryHostingStartup"
+PROOF_HOSTING_ASSEMBLY = "Hexalith.Works.IntegrationTests"
+
+
+def require_platform_hosting(record, resource):
+    """A Platform-composed Works host must run Platform's own hook and hosting startup before the proof."""
+    observed = (record.get("hostingStartups") or {}).get(resource)
+    if not isinstance(observed, dict):
+        raise ValueError("A platform-target start did not record the hosting startups that loaded in " + resource)
+    names = observed.get("hostingStartupAssemblies") or []
+    hooks = observed.get("startupHooks") or []
+    startups = {entry.get("name"): entry for entry in observed.get("startups") or [] if isinstance(entry, dict)}
+    platform = startups.get(PLATFORM_RUNTIME) or {}
+    if (PLATFORM_RUNTIME not in names or PROOF_HOSTING_ASSEMBLY not in names
+            or names.index(PLATFORM_RUNTIME) > names.index(PROOF_HOSTING_ASSEMBLY)):
+        raise ValueError("Platform's hosting startup must load before the proof in " + resource)
+    if not hooks or Path(hooks[0]).name != PLATFORM_RUNTIME + ".dll":
+        raise ValueError("Platform's runtime startup hook must stay first in " + resource)
+    if platform.get("loaded") is not True or PLATFORM_HOSTING_STARTUP not in (platform.get("hostingStartupTypes") or []):
+        raise ValueError("Platform's WorksRecoveryHostingStartup did not load in " + resource)
+    location = platform.get("location")
+    if not location or not Path(location).is_file() or str(platform.get("sha256", "")).lower() != sha256(location):
+        raise ValueError("Platform's loaded hosting startup is not bound to its artifact in " + resource)
+    if observed.get("platformRuntimeEnabled") is not True or observed.get("platformTelemetryRegisteredBeforeProof") is not True:
+        raise ValueError("Platform's WORKS_PLATFORM_RUNTIME hosting startup did not run before the proof in " + resource)
+    if observed.get("telemetryPublisherRegistrations") != 1:
+        raise ValueError("Works recovery telemetry must be registered exactly once in " + resource)
+    return {"resource": resource, "hostingStartupAssemblies": names, "platformHostingStartupSha256": platform["sha256"].lower()}
+
+
 def verify_host_records(path, assembly, platform, version):
     """Bind target starts and the deliberate retained-host rollback to their exact artifacts."""
     assembly_version = version + ".0"
@@ -83,6 +143,8 @@ def verify_host_records(path, assembly, platform, version):
     target = [record for record in records if record.get("role") == "platform-target"]
     if not target:
         raise ValueError("No actual Platform starts were recorded")
+    if not any("works-ha" in {module.get("resource") for module in record.get("runtimeModules", [])} for record in target):
+        raise ValueError("No platform-target start bound the independent works-ha replica module")
     for record in records:
         binary = Path(record["assembly"])
         if binary.parent.name != "release":
@@ -93,8 +155,16 @@ def verify_host_records(path, assembly, platform, version):
             raise ValueError("A parity start did not own its isolated Scheduler fleet")
         if record.get("actorType") != "WorksSdkReminderActor":
             raise ValueError("A parity start did not consume the SDK reminder actor")
-        if record.get("readinessPassed") is not True:
-            raise ValueError("A selected host that never passed readiness cannot qualify as a live start")
+        expectation = record.get("worksReadinessExpectation")
+        if expectation == "Healthy":
+            if record.get("readinessPassed") is not True:
+                raise ValueError("A selected host that never passed readiness cannot qualify as a live start")
+        elif expectation == "Degraded":
+            # The fixture disabled periodic writers, so Works only reached Running and asserts Degraded itself.
+            if record.get("readinessPassed") is not False or record.get("role") != "platform-target":
+                raise ValueError("A Degraded-expected start must record that Works readiness did not pass")
+        else:
+            raise ValueError("A live start did not record its Works readiness expectation")
         modules = record.get("runtimeModules", [])
         if not {"eventstore", "works", "eventstore-operations", "eventstore-admin"}.issubset({module["resource"] for module in modules}):
             raise ValueError("A live start did not bind the complete runtime module set")
@@ -116,6 +186,8 @@ def verify_host_records(path, assembly, platform, version):
         if record.get("role") == "platform-target":
             if binary.resolve() != assembly.resolve() or Path(record["directory"]).resolve() != platform.resolve():
                 raise ValueError("A target start used another host or source root")
+            record["platformHosting"] = [require_platform_hosting(record, resource) for resource in ("works", "works-ha")
+                                         if resource in {module["resource"] for module in modules}]
         elif record.get("role") == "retained-rollback":
             if binary.resolve() == assembly.resolve() or "Hexalith.Works.AppHost" not in binary.name:
                 raise ValueError("Rollback did not select the retained Works host")
@@ -124,48 +196,301 @@ def verify_host_records(path, assembly, platform, version):
     return records
 
 
-# Each row must bind real target observations and complete restored-fleet evidence.
-# Supporting unit suites never supply these phase records.
-PHASES = {
-    "R1": ["platform-historical-lifecycle-tree-concurrent-claim-persisted", "complete-supported-process-coverage"],
-    "R2": ["periodic-writers-disabled-readiness-degraded", "disabled-recovery-otlp-alert-export", "durable-recovery-alert-export-and-clear"],
-    "R3": ["platform-named-conflict-durable-quarantine-with-unchanged-family", "platform-named-redelivery-capture-through-commit-complete-family", "platform-executor-filtering-and-origin-tenant-publish-refusals"],
-    "R4": ["platform-named-redelivery-capture-through-commit-complete-family", "platform-focused-projection-rebuild"],
-    "R5": ["platform-historical-lifecycle-tree-concurrent-claim-persisted", "platform-executor-filtering-and-origin-tenant-publish-refusals", "platform-query-and-explicit-receipt-replay"],
-    "R6": ["platform-two-host-ha-lost-firing-stale-callback-recovery", "concurrent-sdk-reminder-reissue-after-lost-scheduler-wakeup", "cascade-expiry-restart-receipt-and-checkpoint"],
-    "R7": ["paged-process-candidates-pre-restart", "paged-process-restart-and-shared-store-owner-fencing", "complete-supported-process-coverage"],
-    "R8": ["protected-scoped-disposition-audit-before-mutation", "durable-recovery-alert-export-and-clear"],
-    "R9": ["successful-callback-no-periodic-recovery", "complete-supported-process-coverage"],
-    "R10": ["platform-two-host-ha-lost-firing-stale-callback-recovery", "platform-executor-filtering-and-origin-tenant-publish-refusals", "protected-scoped-disposition-audit-before-mutation"],
-    "R11": ["five-child-persisted-target-receipts", "platform-query-and-explicit-receipt-replay"],
-}
+# Each row binds its four proofs to named live phases and the qualifying state fields those phases must carry.
+# Supporting unit suites never supply these phase records. A proof is passed only when every listed phase
+# exists exactly once and every field resolves to a qualifying value; nothing is inferred from phase names.
+MISSING = object()
+
+
+def _resolve(state, path):
+    value = state
+    for part in [segment for segment in path.split(".") if segment]:
+        if isinstance(value, dict) and part in value:
+            value = value[part]
+        elif isinstance(value, list) and part.isdigit() and int(part) < len(value):
+            value = value[int(part)]
+        else:
+            return MISSING
+    return value
+
+
+def _integer(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def is_true(value):
+    return value is True
+
+
+def is_false(value):
+    return value is False
+
+
+def equals(expected):
+    return lambda value: type(value) is type(expected) and value == expected
+
+
+def one_of(*expected):
+    return lambda value: any(type(value) is type(item) and value == item for item in expected)
+
+
+def positive(value):
+    return _integer(value) and value > 0
+
+
+def at_least(minimum):
+    return lambda value: _integer(value) and value >= minimum
+
+
+def refused_status(value):
+    return _integer(value) and 400 <= value <= 599
+
+
+def count(expected):
+    return lambda value: isinstance(value, (list, dict)) and len(value) == expected
+
+
+def nonempty(value):
+    return isinstance(value, (list, dict, str)) and len(value) > 0
+
+
+def digest(value):
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def prefixed(prefix):
+    return lambda value: isinstance(value, str) and value.startswith(prefix) and len(value) > len(prefix)
+
+
+def same(first, second):
+    """Both state paths resolve to one equal, present value."""
+    return lambda state: (_resolve(state, first) is not MISSING and _resolve(state, first) == _resolve(state, second))
+
+
+def greater(first, second):
+    return lambda state: (_integer(_resolve(state, first)) and _integer(_resolve(state, second))
+                          and _resolve(state, first) > _resolve(state, second))
+
+
+def any_point(name, value):
+    return lambda points: isinstance(points, list) and any(
+        isinstance(point, dict) and point.get("Name") == name and point.get("Value") == value for point in points)
+
+
+def every(field, predicate):
+    return lambda items: isinstance(items, list) and len(items) > 0 and all(
+        isinstance(item, dict) and predicate(_resolve(item, field)) for item in items)
+
+
+def all_of(*predicates):
+    return lambda value: all(predicate(value) for predicate in predicates)
+
+
+def converged_heads(expected):
+    def check(heads):
+        return isinstance(heads, dict) and len(heads) == expected and all(
+            isinstance(head, dict) and isinstance(head.get("observed"), dict)
+            and _integer(head.get("expectedOwnerSequence")) and head["observed"].get("OwnerSequenceNumber") == head["expectedOwnerSequence"]
+            and _integer(head.get("expectedGlobalPosition")) and head["observed"].get("Position") == head["expectedGlobalPosition"]
+            for head in heads.values())
+    return check
+
+
+ALERT = "eventstore.domain.recovery.alert"
 RESTORE_PHASE = "complete-restore-retained-host-query-and-receipt-replay"
+SNAPSHOT_PHASE = "complete-platform-fleet-snapshot"
+HISTORICAL = "platform-historical-lifecycle-tree-concurrent-claim-persisted"
+HISTORICAL_RESTART = "platform-historical-restart-replay-and-family"
+REFUSALS = "platform-executor-filtering-and-origin-tenant-publish-refusals"
+REDELIVERY = "platform-named-redelivery-capture-through-commit-complete-family"
+RESTART_CONVERGENCE = "platform-initial-projection-convergence"
+FOCUSED_REBUILD = "platform-focused-projection-rebuild"
+QUERY_REPLAY = "platform-query-and-explicit-receipt-replay"
+HA = "platform-two-host-ha-lost-firing-stale-callback-recovery"
+CALLBACK = "successful-callback-no-periodic-recovery"
+DISPOSITION = "protected-scoped-disposition-audit-before-mutation"
+CALLBACK_DISPOSITION = "callback-protected-scoped-disposition-audit-before-mutation"
+ALERT_CLEAR = "durable-recovery-alert-export-and-clear"
+COVERAGE = "complete-supported-process-coverage"
+LEGACY_ROUTE = "platform-sdk-named-mode-legacy-route-refused"
+QUARANTINE = "platform-named-conflict-durable-quarantine-with-unchanged-family"
+
+# row -> proof -> [(phase, {field path: (predicate, qualifying description)})]. An empty path checks the whole state.
+PROOFS = {
+    "R1": {
+        "persisted": [(HISTORICAL, {"familyDigest": (digest, "SHA-256 family digest"), "claimOutcomes": (count(2), "two concurrent claims"),
+                                    "lifecycle.Events": (count(7), "complete seven-event lifecycle"), "replay.Status": (equals("Completed"), "replayed Completed")})],
+        "negative": [(REFUSALS, {"wrongCaller": (refused_status, "wrong caller refused"), "wrongPort": (refused_status, "direct application port refused"),
+                                 "forbiddenPublish": (equals(403), "forbidden publisher refused")})],
+        "restart": [(HISTORICAL_RESTART, {"completed": (is_true, "lifecycle replays Completed after restart"), "claimCount": (equals(1), "one claim after restart"),
+                                          "familyDigest": (digest, "family digest after restart")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.query.found": (is_true, "retained host query finds the item"),
+                                      "restoredConfigurationVerified": (is_true, "restored configuration bytes verified")})],
+    },
+    "R2": {
+        "persisted": [(COVERAGE, {"Complete": (is_true, "complete recovery sweep"), "Unresolved": (equals(0), "zero unresolved"),
+                                  "RetainedCandidates": (equals(11), "eleven retained candidates")})],
+        "negative": [("periodic-writers-disabled-readiness-degraded", {"status": (equals("Degraded"), "SDK readiness Degraded with periodic writers disabled")}),
+                     ("disabled-recovery-otlp-alert-export", {"": (any_point(ALERT, 1), "OTLP recovery alert raised")})],
+        "restart": [(ALERT_CLEAR, {"": (any_point(ALERT, 0), "recovery alert clears after restart")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.restoredSweep.Complete": (is_true, "restored sweep complete"),
+                                      "convergence.restoredSweep.Unresolved": (equals(0), "restored sweep has zero unresolved")})],
+    },
+    "R3": {
+        "persisted": [(REDELIVERY, {"redelivered.Outcomes.0.Status": (one_of(0, 1), "redelivery Completed or AlreadyCompleted"),
+                                    "concurrentDelivery.redeliveryLogicalCount": (equals(1), "one logical redelivery"),
+                                    "": (same("before.Digest", "after.Digest"), "redelivery and capture preserve the family digest")})],
+        "negative": [(QUARANTINE, {"": (same("acceptedFamilySha256", "unchangedFamilySha256"), "conflict leaves the accepted family unchanged"),
+                                   "repeatedConflictCount": (equals(1), "repeated conflict keeps one evidence record"),
+                                   "conflict.SourceStream": (nonempty, "durable conflict evidence")}),
+                     (REFUSALS, {"forbiddenPublish": (equals(403), "forbidden origin publish refused")})],
+        "restart": [(RESTART_CONVERGENCE, {"naturalCatchUp": (is_true, "natural catch-up after restarts"),
+                                           "heads": (converged_heads(11), "all eleven owner/global heads converged")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.receipt.Replayed": (is_true, "retained host replays the receipt")})],
+    },
+    "R4": {
+        "persisted": [(FOCUSED_REBUILD, {"concurrentDelivery.automaticCatchUpAfterCommit": (is_true, "automatic catch-up after Commit"),
+                                         "concurrentDelivery.oldGenerationStayedReadable": (is_true, "old generation readable during capture"),
+                                         "": (same("concurrentDelivery.after.Digest", "concurrentDelivery.expectedDigest"), "committed family equals the independent fold"),
+                                         "sources": (count(11), "eleven captured sources"), "committed.Phase": (equals(3), "rebuild Committed")})],
+        "negative": [(REDELIVERY, {"fenced.Outcomes.0.Status": (equals(2), "delivery during capture is fenced Retryable"),
+                                   "negatives.wrongOrigin": (refused_status, "wrong origin refused"), "negatives.wrongOperation": (equals(403), "wrong operation refused")})],
+        "restart": [(RESTART_CONVERGENCE, {"heads": (converged_heads(11), "named projection heads converge after restarts")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.query.conversationCorrelationId.value": (prefixed("synthetic-capture-416-"), "restored family includes the post-capture event")})],
+    },
+    "R5": {
+        "persisted": [(REFUSALS, {"own.found": (is_true, "executor reads own item"), "visible": (count(3), "executor queue view")})],
+        "negative": [(REFUSALS, {"hidden.found": (is_false, "foreign item filtered"), "wrongActor": (equals("Forbidden"), "wrong actor denied"),
+                                 "wrongTenant": (equals("Forbidden"), "wrong tenant denied")})],
+        "restart": [(QUERY_REPLAY, {"query.found": (is_true, "query usable after restarts"), "query.latestAcceptedSourceSequence": (positive, "query reflects accepted source")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.query.found": (is_true, "retained host query usable")})],
+    },
+    "R6": {
+        "persisted": [(CALLBACK, {"witness.entries": (count(1), "persisted SDK reminder witness"), "processCandidate": (is_true, "process candidate persisted")})],
+        "negative": [(HA, {"actualStaleCallbackObserved": (is_true, "stale Scheduler callback observed"), "staleSchedulerFireResumed": (equals(1), "stale firing caused no second resume"),
+                           "retiredReminderRemovedAfterFiring": (is_true, "retired reminder removed"), "": (greater("afterCallbacks", "beforeCallbacks"), "a real callback fired")})],
+        "restart": [("cascade-expiry-restart-receipt-and-checkpoint", {"replay.ReplayObserved": (is_true, "lost receipt replayed after restart"),
+                                                                       "childExpired": (equals(1), "one child expiry"), "expiryReceipt.disposition": (equals(0), "expiry receipt Success")}),
+                    ("concurrent-sdk-reminder-reissue-after-lost-scheduler-wakeup", {"callers": (equals(2), "two concurrent reissuers"),
+                                                                                    "persistedSchedulerReminder.actorType": (equals("WorksSdkReminderActor"), "reissued SDK reminder persisted")})],
+        "rollback": [(RESTORE_PHASE, {"dateResumed": (equals(1), "one date resume after restore"), "childExpired": (equals(1), "one child expiry after restore")})],
+    },
+    "R7": {
+        "persisted": [("paged-process-candidates-pre-restart", {"expectedSources": (equals(11), "eleven process sources"), "pages": (count(4), "four linked candidate pages")})],
+        "negative": [("canonical-related-child-creation-gap", {"creationGap.ReasonCode": (equals("evidence-unavailable"), "missing child evidence refuses the cascade"),
+                                                               "existingChildCancellations": (equals(0), "no partial cascade effect"), "readiness": (equals("Degraded"), "readiness Degraded")})],
+        "restart": [("paged-process-restart-and-shared-store-owner-fencing", {"linkedPages": (equals(4), "pages relinked after restart"), "candidates": (count(11), "eleven candidates"),
+                                                                              "staleOwnerWriteRefused": (is_true, "stale owner write refused"), "concurrentOwners": (equals(1), "one owner"),
+                                                                              "": (greater("successorFence", "priorFence"), "successor fence advanced")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.restoredSweep.RetainedCandidates": (equals(11), "restored sweep retains eleven candidates"),
+                                      "childCancelled": (equals(1), "one child cancellation after restore")})],
+    },
+    "R8": {
+        "persisted": [(DISPOSITION, {"audit.Attempts": (count(1), "one attributed audit record"), "acceptedCallerStatus": (equals(204), "authorized disposition accepted"),
+                                     "": (greater("afterGeneration", "beforeGeneration"), "SDK disposition mutated after audit")})],
+        "negative": [(CALLBACK_DISPOSITION, {"wrongPurpose.receiverStatus": (equals(403), "wrong purpose refused"), "wrongTenant.receiverStatus": (equals(403), "wrong tenant refused"),
+                                             "wrongAggregate.receiverStatus": (equals(403), "wrong aggregate refused"), "auditOutage.receiverStatus": (equals(500), "audit outage refuses before mutation")})],
+        "restart": [(ALERT_CLEAR, {"": (any_point(ALERT, 0), "alert clears after restart")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.restoredOperatorAuditAttempts": (equals(1), "restored attributed operator audit")})],
+    },
+    "R9": {
+        "persisted": [(CALLBACK, {"processCandidate": (is_true, "SDK process registration from a real callback"), "witness.entries": (count(1), "SDK reminder registration")})],
+        "negative": [(LEGACY_ROUTE, {"legacyRouteStatus": (equals(404), "named-mode host serves no legacy route"), "missingChannelStatus": (equals(401), "uncredentialed request refused"),
+                                     "": (same("acceptedFamilySha256", "unchangedFamilySha256"), "refusals leave the family unchanged")})],
+        "restart": [("child-resume-noop-restart-receipt-and-checkpoint", {"replay.ReplayObserved": (is_true, "SDK process replays after restart"),
+                                                                          "replay.Disposition": (equals(2), "NoOp receipt"), "checkpoint.Checkpoint": (equals(4), "checkpoint advanced")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.receipt.Disposition": (equals(2), "restored NoOp receipt"), "convergence.resumedCount": (equals(1), "one resume")})],
+    },
+    "R10": {
+        "persisted": [(REFUSALS, {"unchangedFamily": (digest, "refused traffic leaves the persisted family unchanged"), "wrongPort": (refused_status, "direct port refused")})],
+        "negative": [(HA, {"trust.trustedClientAcceptedByServer": (is_true, "configured-root client accepted"),
+                           "trust.noClientCertificateRefusedByServer": (is_true, "server refuses a client without a certificate"),
+                           "trust.foreignCaClientRefusedByServer": (is_true, "server refuses a foreign-CA client"),
+                           "trust.nameMismatchRejectedByProbe": (is_true, "probe rejects a server identity mismatch"),
+                           "trust.serverIdentity": (equals("spiffe://public/ns/default/works"), "exact SPIFFE server identity")})],
+        "restart": [(DISPOSITION, {"wrongTenant.receiverStatus": (equals(403), "receiver refuses wrong tenant after restarts"),
+                                   "wrongAggregate.receiverStatus": (equals(403), "receiver refuses wrong aggregate after restarts")})],
+        "rollback": [(RESTORE_PHASE, {"restoredConfigurationVerified": (is_true, "restored trust and policy bytes verified")})],
+    },
+    "R11": {
+        "persisted": [("five-child-persisted-target-receipts", {"": (all_of(count(5), every("receipt.purpose", equals("works.cascade-cancel")),
+                                                                            every("receipt.disposition", equals(0)), every("cancelled", equals(1))),
+                                                                     "five persisted Success cascade receipts, each child cancelled once")})],
+        "negative": [(QUERY_REPLAY, {"conflictingReplayStatus": (refused_status, "conflicting replay refused"), "durableCollisionCount": (equals(1), "one durable collision"),
+                                     "attributedCollisionAudit": (is_true, "attributed collision audit")})],
+        "restart": [("cascade-restart-receipt-and-checkpoint", {"": (same("receipt.effectId", "committedEffect"), "persisted receipt names the committed effect"),
+                                                                "checkpoint.Checkpoint": (at_least(7), "checkpoint advanced past the cascade")})],
+        "rollback": [(RESTORE_PHASE, {"convergence.receipt.Replayed": (is_true, "restored receipt replays"), "convergence.durableCollisionCount": (equals(1), "restored collision evidence")})],
+    },
+}
+PROOF_NAMES = ("persisted", "negative", "restart", "rollback")
+
+# Equalities that bind one phase to another, so a restart or restore cannot pass against unrelated state.
+CROSS_CHECKS = [
+    (HISTORICAL_RESTART, "familyDigest", HISTORICAL, "familyDigest", "restart preserves the persisted historical family"),
+    (RESTORE_PHASE, "fleet", SNAPSHOT_PHASE, "fleet", "restored fleet equals the complete snapshot"),
+    (RESTORE_PHASE, "runtimeHashes", SNAPSHOT_PHASE, "runtimeHashes", "restored runtime binaries equal the snapshot"),
+    (RESTORE_PHASE, "convergence.receipt.EffectId", QUERY_REPLAY, "receipt.EffectId", "retained host replays the Platform-written receipt"),
+]
+
+
+def required_phases():
+    """Derive every required phase from the proof map and cross-checks."""
+    phases = {phase for proofs in PROOFS.values() for requirements in proofs.values() for phase, _ in requirements}
+    phases.update(name for check in CROSS_CHECKS for name in (check[0], check[2]))
+    return phases
 
 
 def bind_persisted_outcomes(path, rows, starts):
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
-    by_phase = {record["phase"]: record for record in records}
-    required = {phase for phases in PHASES.values() for phase in phases}
-    required.update(["complete-platform-fleet-snapshot", RESTORE_PHASE, "platform-historical-restart-replay-and-family",
-                     "platform-two-host-ha-lost-firing-stale-callback-recovery", "platform-focused-projection-rebuild"])
-    missing = sorted(required - set(by_phase))
+    by_phase = {}
+    for record in records:
+        phase = record.get("phase") if isinstance(record, dict) else None
+        if not isinstance(phase, str) or "state" not in record:
+            raise ValueError("A persisted outcome record has no phase or state")
+        if phase in by_phase:
+            raise ValueError("Duplicate persisted outcome phase: " + phase)
+        by_phase[phase] = record
+    missing = sorted(required_phases() - set(by_phase))
     if missing:
         raise ValueError("Required target outcomes did not execute: " + ", ".join(missing))
     if not any(record.get("role") == "retained-rollback" for record in starts):
         raise ValueError("No retained-host restore start was observed")
+    for first, first_path, second, second_path, description in CROSS_CHECKS:
+        left, right = _resolve(by_phase[first]["state"], first_path), _resolve(by_phase[second]["state"], second_path)
+        if left is MISSING or right is MISSING or left != right:
+            raise ValueError("Cross-phase binding failed: " + description)
+    if set(PROOFS) != set(ROWS) or any(set(proofs) != set(PROOF_NAMES) for proofs in PROOFS.values()):
+        raise ValueError("Every row must map all four proofs to named phases")
     for key, row in rows.items():
-        row["evidence"] = [{"phase": phase, "sha256": hashlib.sha256(json.dumps(by_phase[phase], sort_keys=True).encode()).hexdigest()}
-                           for phase in PHASES[key] + [RESTORE_PHASE]]
-        row["requiredProofs"] = {name: True for name in ("persisted", "negative", "restart", "rollback")}
+        proofs = {}
+        for name in PROOF_NAMES:
+            bound = []
+            for phase, fields in PROOFS[key][name]:
+                state = by_phase[phase]["state"]
+                for field, (predicate, description) in fields.items():
+                    value = _resolve(state, field) if field else state
+                    if value is MISSING:
+                        raise ValueError(f"{key} {name} proof: {phase} lacks required field {field}")
+                    if not predicate(value):
+                        raise ValueError(f"{key} {name} proof: {phase} field {field or '<state>'} does not qualify ({description})")
+                bound.append({"phase": phase, "recordSha256": hashlib.sha256(json.dumps(by_phase[phase], sort_keys=True).encode()).hexdigest(),
+                              "fields": {field or "<state>": description for field, (_, description) in fields.items()}})
+            proofs[name] = {"passed": True, "evidence": bound}
+        row["requiredProofs"] = proofs
+        row["evidence"] = [item for proof in proofs.values() for item in proof["evidence"]]
         row["status"] = "passed"
-    return {"complete": True, "snapshot": by_phase["complete-platform-fleet-snapshot"]["state"],
-            "restored": by_phase[RESTORE_PHASE]["state"], "evidenceSha256": sha256(path)}
+    return {"complete": True, "snapshot": by_phase[SNAPSHOT_PHASE]["state"], "restored": by_phase[RESTORE_PHASE]["state"],
+            "crossChecks": [check[4] for check in CROSS_CHECKS], "evidenceSha256": sha256(path)}
 
 
-def source_snapshot(root, allow_archive=False):
-    """Record source provenance independently of public NuGet archive identity."""
+def source_snapshot(root, allow_archive=False, producer=False):
+    """Record source provenance independently of public NuGet archive identity.
+
+    A producer snapshot binds every src/** file except build outputs, because props, targets, JSON and
+    resources are build inputs too. The Works consumer inventory records its C# and project sources."""
     root = Path(root)
-    files = [path for path in (root / "src").rglob("*")
+    files = source_files(root) if producer else [path for path in (root / "src").rglob("*")
              if path.is_file() and path.suffix in (".cs", ".csproj")
              and not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
     files += [root / name for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props") if (root / name).is_file()]
@@ -192,10 +517,12 @@ def require_published_runtime_source(snapshot, published_producers):
     archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src",
                                        "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"])
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
+        members = source.getmembers()
+        if any(not (entry.isfile() or entry.isdir()) for entry in members):
+            raise ValueError("Published producer " + commit + " source contains a link or special file")
         published = {entry.name: hashlib.sha256(source.extractfile(entry).read()).hexdigest()
-                     for entry in source.getmembers() if entry.isfile()
-                     and (entry.name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props")
-                          or Path(entry.name).suffix in (".cs", ".csproj"))}
+                     for entry in members if entry.isfile()
+                     and not {"bin", "obj"}.intersection(Path(entry.name).parts)}
     if snapshot["sourceFiles"] != published:
         changed = sorted(name for name in snapshot["sourceFiles"].keys() | published.keys()
                          if snapshot["sourceFiles"].get(name) != published.get(name))
@@ -221,7 +548,8 @@ def run_verification(args):
     try:
         version = selected_sdk_version(platform / CATALOG)
         summary["selectedSdk"] = {"version": version, "catalog": str(platform / CATALOG), "catalogSha256": sha256(platform / CATALOG),
-                                  "worksConsumerPin": require_consumer_pin(works / "Directory.Packages.props", version)}
+                                  "worksConsumerPins": require_consumer_pins(works, version),
+                                  "hostPackagePins": require_host_package_pins(platform / "apphost.cs", version)}
     except (ValueError, OSError, ET.ParseError) as error:
         summary["failure"] = str(error)
         save()
@@ -266,8 +594,8 @@ def run_verification(args):
         for path in sorted((platform / "DaprComponents").rglob("*.yaml"))
         ] + [{"path": str(path.relative_to(platform)), "sha256": sha256(path)} for path in
             [platform / "config/works-production-profile.schema.json", platform / "src/Hexalith.Platform.Composition/WorksProductionProfile.cs"]]
-    summary["sourceProducers"] = {"platformDebugSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(platform / "references/Hexalith.EventStore"),
-        "worksDebugAndRuntimeSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(runtime_sdk)}
+    summary["sourceProducers"] = {"platformDebugSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(platform / "references/Hexalith.EventStore", producer=True),
+        "worksDebugAndRuntimeSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(runtime_sdk, producer=True)}
     platform_consumers = [platform / "apphost.cs", *sorted((platform / "src").rglob("*.cs")),
                           *sorted((platform / "src").rglob("*.csproj"))]
     summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
@@ -315,7 +643,8 @@ def run_verification(args):
                               "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests",
                               "WorksQueryPolicyDeadlineTests", "WorksSdkProofRedisOwnershipTests",
                               "WorksPlatformDispositionProbeTests", "WorksPlatformSelectedSdkPathsTests",
-                              "WorksPlatformFleetRestoreTests", "WorksAppHostDiscoveryIsolationTests"]
+                              "WorksPlatformFleetRestoreTests", "WorksAppHostDiscoveryIsolationTests",
+                              "WorksPlatformHostingCompositionTests"]
         supporting_command = [consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests", "-noLogo"]
         for name in supporting_classes:
             supporting_command += ["-class", "Hexalith.Works.IntegrationTests." + name]
@@ -361,7 +690,7 @@ def run_verification(args):
              "WorksAppHostSelection.cs", "WorksAppHostSmokeHarness.cs", "WorksSdkPartitionedRebuildTests.cs",
              "WorksSdkProjectionQueryTests.cs", "WorksSdkProtectedHttpTests.cs", "WorkItemSharedProjectionRebuildHandlerTests.cs",
              "WorksQueryPolicyDeadlineTests.cs", "WorksSdkProofRedisOwnershipTests.cs",
-             "WorksAppHostDiscoveryIsolation.cs", "WorksAppHostDiscoveryIsolationTests.cs"]]
+             "WorksAppHostDiscoveryIsolation.cs", "WorksAppHostDiscoveryIsolationTests.cs", "WorksSdkProofHostingEvidence.cs"]]
         fixtures.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
         summary["fixtureSources"] = {str(path.relative_to(works)): sha256(path) for path in sorted(fixtures)}
         identity_root = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
@@ -441,7 +770,7 @@ def run_verification(args):
         for row in summary["rows"].values():
             row["targetCommands"] = [entry for entry in summary["commands"] if entry["name"] in ("platform-recovery", "platform-historical", "platform-ha", "platform-projection")]
         for source in summary["sourceProducers"].values():
-            current = runtime_source_snapshot(source["root"]) if source["commit"] is None else source_snapshot(source["root"])
+            current = runtime_source_snapshot(source["root"]) if source["commit"] is None else source_snapshot(source["root"], producer=True)
             if current["commit"] != source["commit"] or current["inventorySha256"] != source["inventorySha256"]:
                 raise ValueError("A qualified SDK source graph changed during execution: " + source["root"])
         works_source = source_snapshot(works)
