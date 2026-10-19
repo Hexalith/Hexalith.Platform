@@ -45,8 +45,14 @@ public sealed record SecretsRuntimeConfiguration
     /// <summary>Gets the actor-role authority app id.</summary>
     public string? ActorRoleAuthorityReference { get; init; }
 
-    /// <summary>Gets the independent signer credential reference.</summary>
+    /// <summary>Gets the independently governed decision-approval credential reference; Platform never uses it to sign deletion capabilities.</summary>
     public string? IndependentSignerCredentialReference { get; init; }
+
+    /// <summary>Gets the Platform deletion-capability signer Dapr application id, distinct from an approval issuer or credential reference.</summary>
+    public string? CapabilitySignerReference { get; init; }
+
+    /// <summary>Gets the mounted restricted credential reference for the Platform deletion-capability signer.</summary>
+    public string? CapabilitySignerCredentialReference { get; init; }
 
     /// <summary>Gets the published trust reference.</summary>
     public string? PublicTrustReference { get; init; }
@@ -56,6 +62,9 @@ public sealed record SecretsRuntimeConfiguration
 
     /// <summary>Gets the private replay registrar reference.</summary>
     public string? ReplayRegistrarCredentialReference { get; init; }
+
+    /// <summary>Gets the private replay registrar Dapr application id, distinct from its credential reference.</summary>
+    public string? ReplayRegistrarReference { get; init; }
 
     /// <summary>Gets the private compromise subscriber credential reference.</summary>
     public string? CompromiseSubscriberCredentialReference { get; init; }
@@ -141,9 +150,12 @@ public sealed record SecretsRuntimeConfiguration
             CallTimeout = timeout,
             ActorRoleAuthorityReference = Text(runtime, "actorRoleAuthorityReference"),
             IndependentSignerCredentialReference = Text(runtime, "independentSignerCredentialReference"),
+            CapabilitySignerReference = Text(runtime, "capabilitySignerReference"),
+            CapabilitySignerCredentialReference = Text(runtime, "capabilitySignerCredentialReference"),
             PublicTrustReference = Text(runtime, "publicTrustReference"),
             CurrentRevocationReference = Text(runtime, "currentRevocationReference"),
             ReplayRegistrarCredentialReference = Text(runtime, "replayRegistrarCredentialReference"),
+            ReplayRegistrarReference = Text(runtime, "replayRegistrarReference"),
             CompromiseSubscriberCredentialReference = Text(runtime, "compromiseSubscriberCredentialReference"),
             CompromiseSubscriptionReference = Text(runtime, "compromiseSubscriptionReference"),
             CompromiseGuardMirrorReference = Text(runtime, "compromiseGuardMirrorReference"),

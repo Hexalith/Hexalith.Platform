@@ -1,7 +1,12 @@
+using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Nodes;
 
 using Dapr.Client;
+
+using Microsoft.Win32.SafeHandles;
 
 namespace Hexalith.Platform.Secrets.Runtime;
 
@@ -12,23 +17,93 @@ public interface ISecretsDaprInvoker
     Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken);
 }
 
-/// <summary>Dapr service-invocation transport. This type performs no secret-store read.</summary>
-public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsDaprInvoker
+/// <summary>Private service invocation with a separately mounted workload bearer; implementations must fail before sending when credential resolution fails.</summary>
+public interface ISecretsCredentialBoundDaprInvoker : ISecretsDaprInvoker
+{
+    /// <summary>Authenticates the exact explicit destination with the named credential; reference metadata is never treated as authentication.</summary>
+    Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken);
+}
+
+/// <summary>Dapr transport. Private calls resolve a bounded file-mounted bearer; no provider or Kubernetes Secret is read by this transport.</summary>
+public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBoundDaprInvoker
 {
     /// <inheritdoc/>
-    public async Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken)
+    public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken)
+        => SendAsync(appId, method, jsonBody, null, cancellationToken);
+
+    /// <inheritdoc/>
+    public async Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
     {
-        using HttpClient http = client.CreateInvokableHttpClient(appId);
-        using var request = new HttpRequestMessage(HttpMethod.Post, method)
+        if (!SecretsProvisioning.IsDaprApplicationId(appId)) { return null; }
+        using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        budget.CancelAfter(TimeSpan.FromSeconds(30));
+        try
         {
-            Content = new StringContent(jsonBody, Encoding.UTF8, "application/json"),
-        };
+            string? bearer = await ReadMountedBearerAsync(credentialReference, budget.Token).ConfigureAwait(false);
+            if (bearer is null) { return null; }
+            return await SendAsync(appId, method, jsonBody, bearer, budget.Token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch (Exception) { return null; }
+    }
+
+    private async Task<string?> SendAsync(string appId, string method, string jsonBody, string? bearer, CancellationToken cancellationToken)
+    {
+        using var http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false });
+        using HttpRequestMessage request = client.CreateInvokeMethodRequest(HttpMethod.Post, appId, method);
+        request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+        // The SDK exposes the configured channel token on this client's default headers.
+        // Copy them without sending through its redirect-enabled handler.
+        using HttpClient configured = client.CreateInvokableHttpClient(appId);
+        foreach (var header in configured.DefaultRequestHeaders)
+        { if (!request.Headers.Contains(header.Key)) { request.Headers.TryAddWithoutValidation(header.Key, header.Value); } }
+        if (bearer is not null) { request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearer); }
         using HttpResponseMessage response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode) { return null; }
         if (response.Content.Headers.ContentLength > SecretsProof.MaximumBytes) { return null; }
         using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return await ReadBoundedAsync(stream, cancellationToken).ConfigureAwait(false);
     }
+
+    private static async Task<string?> ReadMountedBearerAsync(string reference, CancellationToken cancellationToken)
+    {
+        const int maximumBytes = 8192;
+        if (!SecretsProvisioning.IsReference(reference) || !reference.StartsWith("file:/", StringComparison.Ordinal)) { return null; }
+        string path = reference[5..];
+        if (!Path.IsPathFullyQualified(path) || path.Contains('#') || path.Contains('?')) { return null; }
+        // A path metadata check followed by ordinary open can race a replacement FIFO and block.
+        // Follow projected Secret symlinks, then validate the exact nonblocking opened descriptor.
+        if (!OperatingSystem.IsLinux()) { return null; }
+        cancellationToken.ThrowIfCancellationRequested();
+        int descriptor = LinuxOpen(path, 0x800 | 0x80000); // O_RDONLY | O_NONBLOCK | O_CLOEXEC
+        if (descriptor < 0) { return null; }
+        using var handle = new SafeFileHandle((IntPtr)descriptor, ownsHandle: true);
+        await using var stream = new FileStream(handle, FileAccess.Read, 1, isAsync: false);
+        if (!stream.CanSeek || stream.Length is <= 0 or > maximumBytes) { return null; }
+        byte[] bytes = new byte[maximumBytes + 1];
+        try
+        {
+            int used = 0;
+            while (used < bytes.Length)
+            {
+                int count = await stream.ReadAsync(bytes.AsMemory(used), cancellationToken).ConfigureAwait(false);
+                if (count == 0) { break; }
+                used += count;
+            }
+            if (used is 0 or > maximumBytes) { return null; }
+            if (bytes[used - 1] == (byte)'\n')
+            {
+                used--;
+                if (used > 0 && bytes[used - 1] == (byte)'\r') { used--; }
+            }
+            if (used == 0 || bytes.AsSpan(0, used).ContainsAnyExceptInRange((byte)33, (byte)126)) { return null; }
+            return Encoding.ASCII.GetString(bytes, 0, used);
+        }
+        finally { CryptographicOperations.ZeroMemory(bytes); }
+    }
+
+    [DllImport("libc", EntryPoint = "open", SetLastError = true)]
+    private static extern int LinuxOpen([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags);
 
     internal static async Task<string?> ReadBoundedAsync(Stream stream, CancellationToken cancellationToken)
     {
@@ -60,10 +135,23 @@ internal sealed class SecretsDaprSession(ISecretsDaprInvoker invoker, TimeSpan t
     public TimeProvider Clock { get; } = clock;
 
     public async Task<SecretsCall> CallAsync(string? appId, string missingInput, string method, JsonObject body, CancellationToken cancellationToken)
+        => await CallCoreAsync(appId, missingInput, null, null, method, body, cancellationToken).ConfigureAwait(false);
+
+    public async Task<SecretsCall> CallPrivateAsync(string? appId, string missingInput, string? credentialReference, string missingCredential, string method, JsonObject body, CancellationToken cancellationToken)
+        => await CallCoreAsync(appId, missingInput, credentialReference, missingCredential, method, body, cancellationToken).ConfigureAwait(false);
+
+    private async Task<SecretsCall> CallCoreAsync(string? appId, string missingInput, string? credentialReference, string? missingCredential, string method, JsonObject body, CancellationToken cancellationToken)
     {
-        if (!SecretsProvisioning.IsReference(appId))
+        if (missingCredential is null ? !SecretsProvisioning.IsReference(appId) : !SecretsProvisioning.IsDaprApplicationId(appId))
         {
             throw new SecretsDependencyNotAvailableException(missingInput, SecretsProvisioning.Action(missingInput));
+        }
+        if (missingCredential is not null)
+        {
+            if (!SecretsProvisioning.IsReference(credentialReference))
+            { throw new SecretsDependencyNotAvailableException(missingCredential, SecretsProvisioning.Action(missingCredential)); }
+            if (invoker is not ISecretsCredentialBoundDaprInvoker)
+            { throw new SecretsDependencyNotAvailableException("runtime.privateCredentialBoundTransport", SecretsProvisioning.Action("runtime.privateCredentialBoundTransport")); }
         }
         if (timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30))
         {
@@ -74,7 +162,10 @@ internal sealed class SecretsDaprSession(ISecretsDaprInvoker invoker, TimeSpan t
         budget.CancelAfter(timeout);
         try
         {
-            string? json = await invoker.InvokeAsync(appId!, method, body.ToJsonString(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            Task<string?> call = missingCredential is null
+                ? invoker.InvokeAsync(appId!, method, body.ToJsonString(), budget.Token)
+                : ((ISecretsCredentialBoundDaprInvoker)invoker).InvokeCredentialBoundAsync(appId!, credentialReference!, method, body.ToJsonString(), budget.Token);
+            string? json = await call.WaitAsync(budget.Token).ConfigureAwait(false);
             JsonObject? proof = json is null ? null : SecretsProof.Parse(json);
             return proof is null ? SecretsCall.Failed : new SecretsCall(proof, false);
         }

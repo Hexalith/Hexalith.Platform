@@ -185,6 +185,9 @@ class Fixture:
         token = self.directory / "api-token"
         token.write_text("offline-test-only")
         self.config["qualification"]["daprApiCredentialReference"] = "file:" + str(token)
+        caller_token = self.directory / "caller-token"
+        caller_token.write_text("offline-caller-only")
+        self.config["qualification"]["enrollmentCredentialReference"] = "file:" + str(caller_token)
         self.private = {}
         self.binding = {"planSha256": plan_digest()}
         for role in ("executor", "observer", "enrollment"):
@@ -253,9 +256,12 @@ class QualificationTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
-    def test_exact_accepted_preflight(self):
+    def test_exact_pins_do_not_supply_missing_cohort_authority(self):
         self.assertFalse((self.fixture.root / "eng/ext-secrets-1/replacement-acceptance-packet.json").exists())
-        self.assertEqual(self.fixture.target, self.fixture.preflight()[1])
+        with self.assertRaises(q.Unavailable) as caught:
+            self.fixture.preflight()
+        self.assertIn("OQ-5.4-1.AuthoritativeCohortRecord", caught.exception.inputs)
+        self.assertIn("OQ-5.4-1.JointLivePhaseRunner", caught.exception.inputs)
         self.assertFalse(self.fixture.calls)
 
     def _ignore_packet(self):

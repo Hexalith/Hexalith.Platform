@@ -3,15 +3,23 @@ using Hexalith.Platform.Secrets.Runtime;
 
 namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
-internal sealed class RecordingInvoker : ISecretsDaprInvoker
+internal sealed class RecordingInvoker : ISecretsCredentialBoundDaprInvoker
 {
     public List<(string App, string Method, string Body)> Calls { get; } = [];
+
+    public List<(string App, string Credential)> PrivateBindings { get; } = [];
 
     public Func<string, string, string, CancellationToken, string?> Reply { get; set; } = (_, _, _, _) => null;
 
     public bool CancelCaller { get; set; }
 
     public bool ThrowBudgetCancellation { get; set; }
+
+    public Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
+    {
+        PrivateBindings.Add((appId, credentialReference));
+        return InvokeAsync(appId, method, jsonBody, cancellationToken);
+    }
 
     public Task<string?> InvokeAsync(string appId, string method, string jsonBody, CancellationToken cancellationToken)
     {
@@ -56,10 +64,13 @@ internal static class Fixtures
             ProfileValidUntil = end,
             CallTimeout = TimeSpan.FromSeconds(30),
             ActorRoleAuthorityReference = "role-app",
-            IndependentSignerCredentialReference = "signer-app",
+            IndependentSignerCredentialReference = "outside-approval-issuer-credential",
+            CapabilitySignerReference = "signer-app",
+            CapabilitySignerCredentialReference = "capability-signer-credential",
             PublicTrustReference = "trust-app",
             CurrentRevocationReference = "revocation-app",
-            ReplayRegistrarCredentialReference = "replay-app",
+            ReplayRegistrarReference = "replay-app",
+            ReplayRegistrarCredentialReference = "replay-credential",
             CompromiseSubscriberCredentialReference = "compromise-credential",
             CompromiseSubscriptionReference = "compromise-sub",
             CompromiseGuardMirrorReference = "compromise-mirror",

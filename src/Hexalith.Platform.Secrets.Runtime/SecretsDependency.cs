@@ -24,6 +24,11 @@ public static class SecretsProvisioning
     /// <summary>Returns whether a value is a bounded public reference and not an invented secret.</summary>
     public static bool IsReference(string? value) => !string.IsNullOrWhiteSpace(value) && value.Length <= 2048 && !value.Any(char.IsControl);
 
+    /// <summary>Accepts an explicit Kubernetes Dapr application name; secret references, paths and URLs are not destinations.</summary>
+    public static bool IsDaprApplicationId(string? value) => value is { Length: > 0 and <= 63 }
+        && char.IsAsciiLetterOrDigit(value[0]) && char.IsAsciiLetterOrDigit(value[^1])
+        && value.All(character => character is >= 'a' and <= 'z' or >= '0' and <= '9' or '-');
+
     /// <summary>Returns the owner action that must supply the named input. This text does not invent an identifier.</summary>
     public static string Action(string input) => input switch
     {
@@ -39,13 +44,18 @@ public static class SecretsProvisioning
         "runtime.profileNotBefore" => "Publish the current profile validity start as a UTC instant.",
         "runtime.profileValidUntil" => "Publish the current profile exclusive validity end as a UTC instant.",
         "runtime.actorRoleAuthorityReference" => "Install the independent actor-role authority and return its public Dapr app id. Decision verification has no signing method.",
-        "runtime.independentSignerCredentialReference" => "Enroll the independent deletion signer outside Platform and Agents and return its credential reference.",
+        "runtime.independentSignerCredentialReference" => "Enroll the independently governed decision-approval issuer outside Platform and Agents and return its reference; Platform must not load or use this credential.",
+        "runtime.capabilitySignerReference" => "Install the Platform deletion-capability signing owner and return its Dapr application id; do not use the independent approval issuer.",
+        "runtime.capabilitySignerCredentialReference" => "Mount a restricted deletion-capability signer workload bearer credential and return file:/absolute/path; enroll the receiving owner ACL separately.",
         "runtime.publicTrustReference" => "Publish the independent signing-trust profile and return its public reference.",
         "runtime.currentRevocationReference" => "Publish the independent revocation authority and return its public reference.",
         "runtime.replayRegistrarCredentialReference" => "Install a private registrar credential restricted to system/trusted-envelope-replay and return its reference. Do not register it for general resolution.",
+        "runtime.replayRegistrarReference" => "Install the private exact replay registrar and return its Dapr application id, separately from its mounted credential reference.",
         "runtime.compromiseSubscriberCredentialReference" => "Install the private compromise subscriber credential and return its reference. Do not register it for general resolution.",
         "runtime.compromiseSubscriptionReference" => "Enroll the compromise subscription and return its public reference.",
         "runtime.compromiseGuardMirrorReference" => "Enroll the independent guard-revocation mirror and return its public reference.",
+        "runtime.compromiseSubscriberBinding" => "Compose the exact independently enrolled revocation subscription and guard mirror with AddPrivateCompromise; reference strings alone do not install a subscriber.",
+        "runtime.privateCredentialBoundTransport" => "Install the mounted-credential Dapr transport; private requests must authenticate a workload bearer separately from the Dapr app-channel token.",
         "runtime.nonrollbackJournalReference" => "Qualify the existing nonrollback journal and return its public reference. Do not substitute a local restore.",
         "runtime.allCopyLifecycleAuthorityReference" => "Qualify the existing all-copy lifecycle provider and return its public reference. Do not add a database or substitute provider.",
         "acceptedReplacementCommit" => "The owner fills acceptedReplacementCommit with the accepted SHA and accepts it before any Live run.",

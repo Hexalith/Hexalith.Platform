@@ -41,7 +41,7 @@ public static class SecretsRuntimeServiceCollectionExtensions
         if (Ready(configuration.ActorRoleAuthorityReference, configuration)) { services.AddSingleton<IIndependentDecisionAuthority>(new DaprDecisionAuthorityAdapter(configuration, invoker, clock)); }
         if (Ready(configuration.PublicTrustReference, configuration)) { services.AddSingleton<IDeletionCapabilitySigningTrustProvider>(new DaprSigningTrustAdapter(configuration, invoker, clock)); }
         if (Ready(configuration.CurrentRevocationReference, configuration)) { services.AddSingleton<IDeletionCapabilityRevocationAuthenticator>(new DaprRevocationAuthenticatorAdapter(configuration, invoker, clock)); }
-        if (Ready(configuration.IndependentSignerCredentialReference, configuration)) { services.AddSingleton<IDeletionCapabilitySigningProvider>(new DaprSigningProviderAdapter(configuration, invoker, clock)); }
+        if (PrivateReady(configuration.CapabilitySignerReference, configuration.CapabilitySignerCredentialReference, configuration, invoker)) { services.AddSingleton<IDeletionCapabilitySigningProvider>(new DaprSigningProviderAdapter(configuration, invoker, clock)); }
         return services;
     }
 
@@ -51,25 +51,60 @@ public static class SecretsRuntimeServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(invoker);
+        if (!SecretsProvisioning.IsDaprApplicationId(configuration.ReplayRegistrarReference)) { return "runtime.replayRegistrarReference"; }
         if (!SecretsProvisioning.IsReference(configuration.ReplayRegistrarCredentialReference)) { return "runtime.replayRegistrarCredentialReference"; }
+        if (invoker is not ISecretsCredentialBoundDaprInvoker) { return "runtime.privateCredentialBoundTransport"; }
         if (configuration.CallTimeout is not { } timeout || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30)) { return "runtime.callTimeout"; }
         services.AddPrivateTrustedEnvelopeVerifier(new DaprReplayRegistrarAdapter(configuration, invoker, clock));
         return null;
     }
 
-    /// <summary>Checks the compromise subscription and mirror without registering either credential for general resolution.</summary>
+    /// <summary>Returns the missing concrete binding; reference checks alone cannot compose an authenticated subscriber.</summary>
     public static string? AddPrivateCompromise(this IServiceCollection services, SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock = null)
+    {
+        string? missing = ValidatePrivateCompromise(services, configuration, invoker);
+        return missing ?? "runtime.compromiseSubscriberBinding";
+    }
+
+    /// <summary>Composes only the authenticated subscriber with separately supplied enrolled source/target and mirror. The registrar remains a private constructor capture.</summary>
+    public static string? AddPrivateCompromise(this IServiceCollection services, SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker,
+        DeletionCapabilityRevocationSubscription subscription, IDeletionCapabilityGuardRevocationMirror mirror, TimeProvider? clock = null)
+    {
+        ArgumentNullException.ThrowIfNull(subscription);
+        ArgumentNullException.ThrowIfNull(mirror);
+        string? missing = ValidatePrivateCompromise(services, configuration, invoker);
+        if (missing is not null) { return missing; }
+        if (!SecretsProvisioning.IsReference(subscription.Issuer) || !SecretsProvisioning.IsReference(subscription.Audience)
+            || !SecretsProvisioning.IsReference(subscription.TenantId)
+            || subscription.Issuer != configuration.Issuer || subscription.Audience != configuration.Audience)
+        { return "runtime.compromiseSubscriberBinding"; }
+        services.AddSingleton(provider =>
+        {
+            TimeProvider actualClock = clock ?? provider.GetService<TimeProvider>() ?? TimeProvider.System;
+            return new DeletionCapabilityRevocationSubscriber(subscription,
+                new DaprRevocationAuthenticatorAdapter(configuration, invoker, actualClock),
+                new DaprCompromiseRegistrarAdapter(configuration, invoker, actualClock), mirror, actualClock);
+        });
+        return null;
+    }
+
+    private static string? ValidatePrivateCompromise(IServiceCollection services, SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker)
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(invoker);
-        if (!SecretsProvisioning.IsReference(configuration.CompromiseSubscriptionReference)) { return "runtime.compromiseSubscriptionReference"; }
+        if (!SecretsProvisioning.IsDaprApplicationId(configuration.CompromiseSubscriptionReference)) { return "runtime.compromiseSubscriptionReference"; }
+        if (!SecretsProvisioning.IsReference(configuration.CompromiseSubscriberCredentialReference)) { return "runtime.compromiseSubscriberCredentialReference"; }
         if (!SecretsProvisioning.IsReference(configuration.CompromiseGuardMirrorReference)) { return "runtime.compromiseGuardMirrorReference"; }
+        if (!SecretsProvisioning.IsReference(configuration.CurrentRevocationReference)) { return "runtime.currentRevocationReference"; }
+        if (invoker is not ISecretsCredentialBoundDaprInvoker) { return "runtime.privateCredentialBoundTransport"; }
         if (configuration.CallTimeout is not { } timeout || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30)) { return "runtime.callTimeout"; }
-        new DaprCompromiseRegistrarAdapter(configuration, invoker, clock).RequireMirror();
         return null;
     }
 
     private static bool Ready(string? reference, SecretsRuntimeConfiguration configuration)
         => SecretsProvisioning.IsReference(reference) && configuration.CallTimeout is { } timeout && timeout > TimeSpan.Zero && timeout <= TimeSpan.FromSeconds(30);
+
+    private static bool PrivateReady(string? appId, string? credentialReference, SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker)
+        => SecretsProvisioning.IsDaprApplicationId(appId) && Ready(credentialReference, configuration) && invoker is ISecretsCredentialBoundDaprInvoker;
 }
