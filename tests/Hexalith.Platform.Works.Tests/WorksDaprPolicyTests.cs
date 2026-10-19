@@ -23,9 +23,35 @@ public sealed class WorksDaprPolicyTests
             Scalar(policy, "defaultAction").ShouldBe("deny");
             Scalar(policy, "trustDomain").ShouldBe(Scalar(access, "trustDomain"));
             Scalar(policy, "namespace").ShouldBe("default");
+            // The selected SDK's production-template Admin.Server grant is the only wildcard; it is pinned exactly below.
+            if (file == "accesscontrol.yaml" && Scalar(policy, "appId") == AdminCaller) continue;
             foreach (YamlMappingNode operation in (YamlSequenceNode)policy["operations"])
                 Scalar(operation, "name").ShouldNotBe("/**");
         }
+    }
+
+    /// <summary>
+    /// The EventStore receiver admits exactly two callers: the Works module on its exact gateway routes, and Admin.Server
+    /// under the selected producer's production-template grant (v3.125.1 <c>deploy/dapr/accesscontrol.yaml:34-46</c>).
+    /// </summary>
+    [Fact]
+    public void EventStoreReceiverAdmitsOnlyExactWorksRoutesAndTheSdkTemplateAdminGrant()
+    {
+        YamlMappingNode access = (YamlMappingNode)Spec("accesscontrol.yaml")["accessControl"];
+        Dictionary<string, YamlMappingNode> callers = ((YamlSequenceNode)access["policies"]).Cast<YamlMappingNode>()
+            .ToDictionary(policy => Scalar(policy, "appId"), StringComparer.Ordinal);
+        callers.Keys.Order(StringComparer.Ordinal).ShouldBe([AdminCaller, "works"]);
+        Operations(callers["works"]).ShouldBe([
+            "POST /api/v1/commands allow",
+            "POST /api/v1/commands/workload allow",
+            "POST /api/v1/queries allow",
+            "GET /api/v1/commands/status/* allow",
+            "GET /api/v1/commands/status/workload/*/* allow",
+            "POST /api/v1/streams/read allow",
+            "POST /api/v1/streams/read/workload allow",
+            "POST /api/v1/trusted-effects allow",
+        ]);
+        Operations(callers[AdminCaller]).ShouldBe(["GET,POST,PUT /** allow"]);
     }
 
     /// <summary>Only the SDK gateway may invoke named projection ingress and protected metadata discovery.</summary>
@@ -59,6 +85,8 @@ public sealed class WorksDaprPolicyTests
 
     private const string DispositionRoute = "/work/processes/revalidate";
 
+    private const string AdminCaller = "eventstore-admin";
+
     /// <summary>The subscriber cannot publish source events and the operations workload has no publish grant.</summary>
     [Fact]
     public void BrokerScopesKeepSourceEventsAndBothDeadLetterQueuesSeparate()
@@ -78,4 +106,8 @@ public sealed class WorksDaprPolicyTests
     }
 
     private static string Scalar(YamlMappingNode node, string key) => ((YamlScalarNode)node[key]).Value!;
+
+    private static string[] Operations(YamlMappingNode policy) => [.. ((YamlSequenceNode)policy["operations"]).Cast<YamlMappingNode>()
+        .Select(operation => string.Join(',', ((YamlSequenceNode)operation["httpVerb"]).Cast<YamlScalarNode>().Select(verb => verb.Value))
+            + " " + Scalar(operation, "name") + " " + Scalar(operation, "action"))];
 }

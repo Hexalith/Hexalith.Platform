@@ -1,5 +1,6 @@
 """Execute target-host evidence; never promote supporting checks to AD-20 acceptance."""
 import argparse
+from datetime import datetime
 import hashlib
 import io
 import json
@@ -109,9 +110,10 @@ PLATFORM_RUNTIME = "Hexalith.Platform.Works.Runtime"
 # Platform's host output and the Works consumer compile the same runtime project in different artifact roots. Mapping
 # each root to one deterministic path makes the embedded PDB path, and therefore every byte, identical.
 DETERMINISTIC_BUILD_ROOT = "/_/hexalith-works-platform-build"
-# Every failure inside the run must be recorded in the ledger before the nonzero exit.
-RECORDED_FAILURES = (ValueError, OSError, subprocess.TimeoutExpired, subprocess.CalledProcessError, KeyError, IndexError,
-                     StopIteration, TypeError, AttributeError, ET.ParseError, zipfile.BadZipFile, tarfile.TarError)
+# Every failure inside the run, whatever its Exception type (for example http.client.IncompleteRead from a tag
+# receipt fetch), is recorded in the ledger before the nonzero exit. Only the empty-artifacts precondition refuses
+# without a ledger, because writing one would overwrite existing evidence.
+RECORDED_FAILURES = (Exception,)
 
 
 def failure_text(error):
@@ -139,6 +141,17 @@ def fixture_sources(works):
     files.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
     return {str(path.relative_to(works)): sha256(path) for path in sorted(files)}
 
+
+# Deterministic Works consumer classes the admission gate runs on the Release qualification consumer. They support,
+# and never substitute for, the live target phases.
+SUPPORTING_CLASSES = ("WorksSdkPartitionedRebuildTests", "WorksSdkProjectionQueryTests",
+                      "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests",
+                      "WorksQueryPolicyDeadlineTests", "WorksSdkProofRedisOwnershipTests",
+                      "WorksPlatformDispositionProbeTests", "WorksPlatformSelectedSdkPathsTests",
+                      "WorksPlatformFleetRestoreTests", "WorksAppHostDiscoveryIsolationTests",
+                      "WorksPlatformHostingCompositionTests", "WorksPlatformTelemetryCollectorTests",
+                      "WorksPlatformIdentityFixtureTests", "WorksPlatformCompositionGuardTests",
+                      "WorksAppHostSelectionTests", "WorksSdkPackageContractTests")
 
 PLATFORM_HOSTING_STARTUP = PLATFORM_RUNTIME + ".WorksRecoveryHostingStartup"
 PROOF_HOSTING_ASSEMBLY = "Hexalith.Works.IntegrationTests"
@@ -404,9 +417,38 @@ def greater(first, second):
                           and _resolve(state, first) > _resolve(state, second))
 
 
-def any_point(name, value):
-    return lambda points: isinstance(points, list) and any(
-        isinstance(point, dict) and point.get("Name") == name and point.get("Value") == value for point in points)
+TIMESTAMP = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,7}))?(Z|[+-]\d{2}:\d{2})")
+
+
+def utc_ticks(value):
+    """Exact 100-nanosecond UTC ticks of an ISO-8601 timestamp with an explicit offset, as .NET serializes a
+    DateTimeOffset; None when the value is absent or malformed. Seven fractional digits are kept, never rounded."""
+    match = TIMESTAMP.fullmatch(value) if isinstance(value, str) else None
+    if match is None:
+        return None
+    try:
+        whole = datetime.fromisoformat(match.group(1) + match.group(3))
+    except ValueError:
+        return None
+    return int(whole.timestamp()) * 10_000_000 + int((match.group(2) or "").ljust(7, "0"))
+
+
+def timestamp(value):
+    return utc_ticks(value) is not None
+
+
+def alert_raised_after(name, points_field, observed_field):
+    """An alert=1 point the collector received strictly after the phase's observed Degraded state. The publisher starts
+    Unavailable and exports alert=1 before any health publish, so a point received earlier proves no reaction."""
+    def check(state):
+        if not isinstance(state, dict):
+            return False
+        observed, points = utc_ticks(_resolve(state, observed_field)), _resolve(state, points_field)
+        if observed is None or not isinstance(points, list):
+            return False
+        return any(isinstance(point, dict) and point.get("Name") == name and point.get("Value") == 1
+                   and (utc_ticks(point.get("ReceivedAt")) or 0) > observed for point in points)
+    return check
 
 
 def alert_cleared_after_raise(name):
@@ -497,7 +539,9 @@ PROOFS = {
         "persisted": [(COVERAGE, {"Complete": (is_true, "complete recovery sweep"), "Unresolved": (equals(0), "zero unresolved"),
                                   "RetainedCandidates": (equals(12), "twelve retained candidates")})],
         "negative": [("periodic-writers-disabled-readiness-degraded", {"status": (equals("Degraded"), "SDK readiness Degraded with periodic writers disabled")}),
-                     ("disabled-recovery-otlp-alert-export", {"": (any_point(ALERT, 1), "OTLP recovery alert raised")})],
+                     ("disabled-recovery-otlp-alert-export", {"degradedObservedAt": (timestamp, "the phase's Degraded observation time"),
+                                                              "": (alert_raised_after(ALERT, "points", "degradedObservedAt"),
+                                                                   "OTLP recovery alert received after the observed Degraded state")})],
         "restart": [(ALERT_CLEAR, {"": (alert_cleared_after_raise(ALERT), "recovery alert clears after its last raise, after restart")})],
         "rollback": [(RESTORE_PHASE, {"convergence.restoredSweep.Complete": (is_true, "restored sweep complete"),
                                       "convergence.restoredSweep.Unresolved": (equals(0), "restored sweep has zero unresolved")})],
@@ -766,28 +810,28 @@ def run_verification(args):
         command += ["-p:AspireUseCliBundle=true"] if project.endswith(".cs") else ["-m:1"]
         run(name, command + list(extra), root)
 
-    for row, (title, package, api, consumer) in ROWS.items():
-        consumer_path = platform / consumer[2:] if consumer.startswith("P/") else works / consumer
-        summary["rows"][row] = {"title": title, "status": "open", "producer": {"package": package, "version": version, "api": api},
-            "consumer": consumer, "consumerRoot": "Platform" if consumer.startswith("P/") else "Works", "consumerSha256": sha256(consumer_path) if consumer_path.is_file() else None,
-            "requiredProofs": {"persisted": False, "negative": False, "restart": False, "rollback": False}}
-    summary["rows"]["R8"]["additionalSeams"] = {"package": "Hexalith.EventStore.Client", "version": version, "api": "IProcessDispositionAuthorizer/IProcessDispositionAuditSink"}
-    summary["rows"]["R10"]["configurationConsumers"] = [{"path": str(path.relative_to(platform)), "sha256": sha256(path)}
-        for path in sorted((platform / "DaprComponents").rglob("*.yaml"))
-        ] + [{"path": str(path.relative_to(platform)), "sha256": sha256(path)} for path in
-            [platform / "config/works-production-profile.schema.json", platform / "src/Hexalith.Platform.Composition/WorksProductionProfile.cs"]]
-    summary["sourceProducers"] = {"platformDebugSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(platform / "references/Hexalith.EventStore", producer=True),
-        "worksDebugAndRuntimeSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(runtime_sdk, producer=True)}
-    platform_consumers = [platform / "apphost.cs", *sorted((platform / "src").rglob("*.cs")),
-                          *sorted((platform / "src").rglob("*.csproj"))]
-    summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
-        if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
-    summary["worksConsumerSource"] = source_snapshot(works)
-    summary["verifierSha256"] = sha256(Path(__file__))
-    summary["verifierHelpers"] = {name: sha256(Path(__file__).with_name(name)) for name in
-        ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py"]}
-    save()
     try:
+        for row, (title, package, api, consumer) in ROWS.items():
+            consumer_path = platform / consumer[2:] if consumer.startswith("P/") else works / consumer
+            summary["rows"][row] = {"title": title, "status": "open", "producer": {"package": package, "version": version, "api": api},
+                "consumer": consumer, "consumerRoot": "Platform" if consumer.startswith("P/") else "Works", "consumerSha256": sha256(consumer_path) if consumer_path.is_file() else None,
+                "requiredProofs": {"persisted": False, "negative": False, "restart": False, "rollback": False}}
+        summary["rows"]["R8"]["additionalSeams"] = {"package": "Hexalith.EventStore.Client", "version": version, "api": "IProcessDispositionAuthorizer/IProcessDispositionAuditSink"}
+        summary["rows"]["R10"]["configurationConsumers"] = [{"path": str(path.relative_to(platform)), "sha256": sha256(path)}
+            for path in sorted((platform / "DaprComponents").rglob("*.yaml"))
+            ] + [{"path": str(path.relative_to(platform)), "sha256": sha256(path)} for path in
+                [platform / "config/works-production-profile.schema.json", platform / "src/Hexalith.Platform.Composition/WorksProductionProfile.cs"]]
+        summary["sourceProducers"] = {"platformDebugSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(platform / "references/Hexalith.EventStore", producer=True),
+            "worksDebugAndRuntimeSdk": runtime_source_snapshot(runtime_sdk) if args.runtime_sdk_root is not None else source_snapshot(runtime_sdk, producer=True)}
+        platform_consumers = [platform / "apphost.cs", *sorted((platform / "src").rglob("*.cs")),
+                              *sorted((platform / "src").rglob("*.csproj"))]
+        summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
+            if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
+        summary["worksConsumerSource"] = source_snapshot(works)
+        summary["verifierSha256"] = sha256(Path(__file__))
+        summary["verifierHelpers"] = {name: sha256(Path(__file__).with_name(name)) for name in
+            ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py"]}
+        save()
         run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer"], platform / "eng")
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", "--artifacts-path", str(artifacts / "agents-full")],
             expected_refusal="DependencyNotAvailable: EXT-HOST-1")
@@ -825,13 +869,7 @@ def run_verification(args):
             host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))
         save()
         supporting_xml = artifacts / "works-consumer-supporting.xml"
-        supporting_classes = ["WorksSdkPartitionedRebuildTests", "WorksSdkProjectionQueryTests",
-                              "WorkItemSharedProjectionRebuildHandlerTests", "WorksSdkProtectedHttpTests",
-                              "WorksQueryPolicyDeadlineTests", "WorksSdkProofRedisOwnershipTests",
-                              "WorksPlatformDispositionProbeTests", "WorksPlatformSelectedSdkPathsTests",
-                              "WorksPlatformFleetRestoreTests", "WorksAppHostDiscoveryIsolationTests",
-                              "WorksPlatformHostingCompositionTests", "WorksPlatformTelemetryCollectorTests",
-                              "WorksPlatformIdentityFixtureTests", "WorksPlatformCompositionGuardTests"]
+        supporting_classes = list(SUPPORTING_CLASSES)
         supporting_command = [consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests", "-noLogo"]
         for name in supporting_classes:
             supporting_command += ["-class", "Hexalith.Works.IntegrationTests." + name]

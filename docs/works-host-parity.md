@@ -33,6 +33,17 @@ eleven rows passed with zero skips, every live query a proof reads was a delegat
 Executor query, and no `platform-target` start set a key Platform composed outside
 the three permitted shapes. Its
 [iteration 2 result](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review2-corrections-2026-10-19/canonical-admission/result.json)
+is now historical supporting evidence.
+
+Review iteration 3 found three gaps. The EventStore receiver refused Admin.Server,
+which the SDK's production template grants. A startup alert point could satisfy
+the alert-raise proofs. The composition guard compared only fixture writes
+evaluated on an empty environment. The fresh run on that corrected graph exited 0
+on 2026-10-19 with status `passed-disposable-synthetic-parity-and-rollback`: all
+eleven rows passed with zero skips. Each alert raise followed the phase's observed
+Degraded state, and no `platform-target` start removed or changed a key Platform
+composed. Its
+[iteration 3 result](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review3-corrections-2026-10-19/canonical-admission/result.json)
 retains the command, ledger, logs and outcome records. Acceptance stays with
 independent review.
 
@@ -84,7 +95,12 @@ the catalog-compatible .NET/Aspire/Dapr tools, restored root-declared dependenci
 and the existing local Dapr prerequisites checked by the harness. The two-host trust
 probe also needs the host `openssl` CLI (OpenSSL 1.1.1 or later): the owned Sentry
 issues Ed25519 credentials, and .NET cannot sign the probe's client certificate with
-them. The control-plane
+them. The verifier also needs outbound HTTPS. It fetches the producer's official
+commit, tree and `v<version>` tag receipts from `api.github.com`. It restores any
+published EventStore package missing from the local NuGet cache from nuget.org
+(`https://api.nuget.org/v3/index.json`), the provenance source every restored
+package must record. Without that access the run fails with a recorded failure.
+The control-plane
 ports 50001, 51005 and 51006 must be available for this serialized topology.
 Application and sidecar endpoints are isolated from unrelated running sessions.
 Each live start also gives every sidecar a run-owned SQLite name-resolution
@@ -128,7 +144,7 @@ describes the required evidence rather than asserting that a run has passed.
 | R7 | EventStore.DomainService: `AddEventStoreProcesses` | Works process translator/catalog | Linked candidate pages, complete coverage, independent owner fencing and restart checkpoints |
 | R8 | EventStore.DomainService: `ProcessDispositionService`; Client authorizer/audit interfaces | Works protected disposition endpoint; Platform runtime providers | Exact source/operator bindings, durable attributed audit before mutation, audit outage refusal, exported recovery alerts |
 | R9 | EventStore.DomainService: `AddEventStoreDomainService`, `UseEventStoreDomainService` | Works executable/domain registrations | Both SDK modes selected, protected callbacks persist SDK state; final executable simplification belongs to 4.9 |
-| R10 | EventStore.ServiceDefaults workload/channel authentication | Platform ACLs/profile; Works SDK ingress | mTLS, deny defaults and exact routes, wrong port/caller/tenant/purpose/publish refusal, incomplete or foreign production configuration refused |
+| R10 | EventStore.ServiceDefaults workload/channel authentication | Platform ACLs/profile; Works SDK ingress | mTLS, deny defaults, exact `works` routes and the SDK template's `eventstore-admin` grant on the EventStore receiver, wrong port/caller/tenant/purpose/publish refusal, incomplete or foreign production configuration refused |
 | R11 | EventStore.Client: `HttpTrustedEffectSubmitter` | Works process delegation/effect policy | Distinct target receipts, replay returns the original terminal result, no repeated logical resume/cancel/expiry |
 
 The verifier requires fresh persisted phase records from live recovery, historical,
@@ -145,12 +161,19 @@ verifier derives `requiredProofs` from that map and fails a row whose phase is
 missing, duplicated, lacks a field or carries a non-qualifying value. Cross-phase
 checks also bind the restart family digest to the persisted one, and the restored
 fleet, runtime binaries and replayed receipt to the Platform-written snapshot.
-An alert-clear proof needs a cleared point exported after the last raise. Every
+An alert-clear proof needs a cleared point exported after the last raise. An
+alert-raise proof needs a raised point that the collector received after the phase
+observed the Degraded state, and the phase records that observation time. The
+Platform publisher starts Unavailable and exports `alert=1` before any health
+publish, so a startup point proves no reaction to the degradation. Every
 live module entry must be one of the prebuilt runtime artifacts with the same
 hash. The ledger binds every Works IntegrationTests C# source outside `bin`/`obj`
 as a fixture source, and the supporting set includes the telemetry-collector,
-identity-fixture and composition-guard classes. Any failure inside the run,
-whatever its exception type, is written to the ledger before the nonzero exit.
+identity-fixture, composition-guard, host-selection and package-contract classes.
+Once the run has started, any failure, whatever its exception type, is written to
+the ledger before the nonzero exit. Network read errors are included. Only a
+non-empty artifacts directory is refused without a ledger, because writing one
+would overwrite earlier evidence.
 
 The recovery lane keeps eleven sources for the five-child cascade, expiry, date
 and child-completion scenarios, all of which end terminal or `InProgress`. The
@@ -177,6 +200,18 @@ coupled budget validation.
   certificate from a foreign CA. The probe validates the server's exact SPIFFE
   identity under the configured root, and it rejects the genuine server when it
   expects another application's identity.
+- **EventStore receiver callers.** The EventStore receiver
+  (`DaprComponents/accesscontrol.yaml`) denies by default and names exactly two
+  callers. `works` holds its exact command, query, status, stream-read and
+  trusted-effect routes. `eventstore-admin` holds the selected producer's
+  production-template grant, unchanged in substance: `/**` with GET, POST and PUT
+  (`deploy/dapr/accesscontrol.yaml:34-46` at `v3.125.1`), with this topology's
+  `public` trust domain and `default` namespace. Admin.Server invokes EventStore
+  through its own sidecar for health, projection and backup operations, which the
+  retained host also allows. The wildcard reaches the admin passthrough endpoints,
+  and EventStore authorization still protects the command surface, so the grant
+  adds no command authority. `WorksDaprPolicyTests` pins both callers and their
+  operations, so any other caller or route fails it.
 
 ## Readiness, telemetry and privileged operations
 
@@ -220,7 +255,10 @@ On a `platform-target` start, the fixture sets no environment key that Platform
 composed for that resource, even to an equal value. The harness evaluates
 Platform's own environment callbacks before the fixture configures the builder,
 and the fixture's callbacks separately, and refuses the start before any resource
-is built when they overlap. Three overlaps are permitted, each with a checked
+is built when they overlap. It evaluates the fixture's callbacks twice: on an
+empty environment, which shows every key they write, and after Platform's values.
+The second evaluation catches a callback that removes a composed key, or rewrites
+one only where Platform composed it. Three overlaps are permitted, each with a checked
 shape: the proof extends the composed hook lists; the captured, restorable
 synthetic app-channel secret replaces the per-run secret through the same public
 SDK helper; and the telemetry lanes redirect the orchestrator's OTLP export to the
@@ -271,6 +309,17 @@ finite. Parity runs at exactly these Platform-composed limits; the fixture injec
 none. The retained Works AppHost keeps its own proof-topology limits (100000).
 Production admission stays refused and must size its own limits after the
 EventStore defect is fixed.
+
+`WorksPreviewModel` also composes the `configstore` Dapr component
+(`DaprComponents/configstore.yaml`, type `configuration.redis`, scoped to
+`eventstore`) and references it from the `eventstore` sidecar only. EventStore's
+`DaprRateLimitConfigSync` polls that store every 10 seconds. Its
+`ratelimit:tenants` and `ratelimit:{tenantId}:permit-limit` keys override
+`EventStore:RateLimiting:TenantPermitLimits` at runtime, so a value written there
+can change a tenant's limit without a restart. The committed component points at
+`localhost:6379`. The proof rebinds `configstore`, like `statestore` and `pubsub`,
+to its owned Redis container. That container starts empty and the proof writes no
+`ratelimit:*` key, so the run uses the composed limits above.
 
 ## Production profile policy bindings
 

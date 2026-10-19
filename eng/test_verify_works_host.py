@@ -1,6 +1,7 @@
 """Evidence gates reject successful exits with incomplete or substituted execution."""
 import copy
 import hashlib
+import http.client
 import io
 import json
 from pathlib import Path
@@ -10,8 +11,9 @@ import unittest
 from unittest.mock import patch
 
 import verify_works_host
-from verify_works_host import (CROSS_CHECKS, DUMP_INVENTORY, PROOF_NAMES, PROOFS, RESTORE_PHASE, ROWS, SNAPSHOT_PHASE, alert_cleared_after_raise,
-                               bind_persisted_outcomes, delegated_identity, fixture_sources, platform_composition_literals,
+from verify_works_host import (CROSS_CHECKS, DUMP_INVENTORY, PROOF_NAMES, PROOFS, RESTORE_PHASE, ROWS, SNAPSHOT_PHASE, SUPPORTING_CLASSES,
+                               alert_cleared_after_raise, alert_raised_after, bind_persisted_outcomes, delegated_identity, fixture_sources,
+                               platform_composition_literals, utc_ticks,
                                require_consumer_pin, require_consumer_pins, require_host_package_pins, require_identical_runtime,
                                require_passed_tests, require_published_runtime_source, required_phases, restored_fleet_matches,
                                selected_sdk_version, sha256, verify_host_records)
@@ -66,7 +68,10 @@ def valid_states():
                                                                            'queryIdentity': identity()},
         'complete-supported-process-coverage': {'Complete': True, 'Unresolved': 0, 'RetainedCandidates': 12},
         'periodic-writers-disabled-readiness-degraded': {'status': 'Degraded'},
-        'disabled-recovery-otlp-alert-export': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1}],
+        # The startup point precedes the observed Degraded state; only the later raise qualifies.
+        'disabled-recovery-otlp-alert-export': {'degradedObservedAt': '2026-10-19T07:00:05.1234567+00:00',
+                                                'points': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:01.0000000+00:00'},
+                                                           {'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:06.0000000+00:00'}]},
         'durable-recovery-alert-export-and-clear': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'UnixTimeNanoseconds': 10},
                                                     {'Name': 'eventstore.domain.recovery.alert', 'Value': 0, 'UnixTimeNanoseconds': 20}],
         'platform-named-redelivery-capture-through-commit-complete-family': {
@@ -573,6 +578,49 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.subTest(points=points):
                 self.assertFalse(check(points))
 
+    def test_alert_raise_must_follow_the_observed_degraded_state(self):
+        check = alert_raised_after('eventstore.domain.recovery.alert', 'points', 'degradedObservedAt')
+        observed = '2026-10-19T07:00:05.1234567+00:00'
+        def state(*points, at=observed):
+            return {'degradedObservedAt': at, 'points': [{'Name': 'eventstore.domain.recovery.alert', 'Value': value, 'ReceivedAt': received}
+                                                         for value, received in points]}
+        self.assertTrue(check(state((1, '2026-10-19T07:00:05.1234568+00:00'))))
+        self.assertTrue(check(state((1, '2026-10-19T09:00:06+02:00'))))
+        self.assertTrue(check(state((1, '2026-10-19T07:00:06Z'))))
+        for name, refused in [
+                ('startup point only', state((1, '2026-10-19T07:00:01+00:00'))),
+                ('same tick', state((1, observed))),
+                ('one tick earlier', state((1, '2026-10-19T07:00:05.1234566+00:00'))),
+                ('earlier in another offset', state((1, '2026-10-19T09:00:05+02:00'))),
+                ('later clear only', state((1, '2026-10-19T07:00:01+00:00'), (0, '2026-10-19T07:00:06+00:00'))),
+                ('unreceived point', {'degradedObservedAt': observed, 'points': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1}]}),
+                ('another gauge', {'degradedObservedAt': observed, 'points': [{'Name': 'eventstore.domain.recovery.ready', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:06Z'}]}),
+                ('no observation', state((1, '2026-10-19T07:00:06Z'), at=None)),
+                ('offsetless observation', state((1, '2026-10-19T07:00:06Z'), at='2026-10-19T07:00:05')),
+                ('malformed observation', state((1, '2026-10-19T07:00:06Z'), at='yesterday')),
+                ('points list', [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:06Z'}])]:
+            with self.subTest(name=name):
+                self.assertFalse(check(refused))
+        self.assertEqual(utc_ticks('2026-10-19T07:00:05.1234567+00:00') - utc_ticks('2026-10-19T07:00:05Z'), 1234567)
+        self.assertEqual(utc_ticks('2026-10-19T09:00:05.5+02:00'), utc_ticks('2026-10-19T07:00:05.5000000Z'))
+        for malformed in [None, 5, '', '2026-10-19', '2026-10-19T07:00:05', '2026-10-19T07:00:05.12345678Z', '2026-13-19T07:00:05Z']:
+            with self.subTest(malformed=malformed):
+                self.assertIsNone(utc_ticks(malformed))
+        states = valid_states()
+        states['disabled-recovery-otlp-alert-export']['points'].pop()
+        with self.assertRaisesRegex(ValueError, 'R2 negative proof: disabled-recovery-otlp-alert-export .*does not qualify'):
+            bind_persisted_outcomes(self.outcomes(states), {'R2': {}}, RETAINED)
+
+    def test_supporting_classes_include_every_deterministic_admission_class(self):
+        # Every class is pinned: a class dropped from this tuple runs in no admission lane.
+        self.assertEqual(SUPPORTING_CLASSES, (
+            'WorksSdkPartitionedRebuildTests', 'WorksSdkProjectionQueryTests', 'WorkItemSharedProjectionRebuildHandlerTests',
+            'WorksSdkProtectedHttpTests', 'WorksQueryPolicyDeadlineTests', 'WorksSdkProofRedisOwnershipTests',
+            'WorksPlatformDispositionProbeTests', 'WorksPlatformSelectedSdkPathsTests', 'WorksPlatformFleetRestoreTests',
+            'WorksAppHostDiscoveryIsolationTests', 'WorksPlatformHostingCompositionTests', 'WorksPlatformTelemetryCollectorTests',
+            'WorksPlatformIdentityFixtureTests', 'WorksPlatformCompositionGuardTests', 'WorksAppHostSelectionTests',
+            'WorksSdkPackageContractTests'))
+
     def test_query_identity_must_be_a_resolved_delegated_executor(self):
         self.assertTrue(delegated_identity(identity()))
         for key, value in [('isDelegated', False), ('authenticatedWorkloadId', 'works'), ('userId', 'workload:eventstore'), ('originalActorId', ''),
@@ -615,19 +663,29 @@ class WorksEvidenceGateTests(unittest.TestCase):
                                                           'tests/Hexalith.Works.IntegrationTests/WorksSdkProofResponseHandler.cs'])
 
     def test_unexpected_failure_types_are_recorded_in_the_ledger(self):
-        works = self.directory()
-        artifacts = self.directory() / 'evidence'
-        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts, 'prepare_only': False})()
-        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
-        with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
-                patch('verify_works_host.require_consumer_pins', return_value={}), \
-                patch('verify_works_host.require_host_package_pins', return_value={}), \
-                patch('verify_works_host.source_snapshot', return_value=snapshot), \
-                patch('verify_works_host.subprocess.run', side_effect=KeyError('unexpected-ledger-key')):
-            self.assertEqual(verify_works_host.run_verification(args), 1)
-        ledger = json.loads((artifacts / 'ledger.json').read_text())
-        self.assertEqual(ledger['failure'], "KeyError: 'unexpected-ledger-key'")
-        self.assertEqual(ledger['status'], 'incomplete')
+        snapshot = {'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        cases = [
+            ('command', {'run': KeyError('unexpected-ledger-key')}, "KeyError: 'unexpected-ledger-key'"),
+            ('command', {'run': RuntimeError('unexpected runtime failure')}, 'RuntimeError: unexpected runtime failure'),
+            ('command', {'run': http.client.IncompleteRead(b'partial', 10)}, 'IncompleteRead: IncompleteRead(7 bytes read, 10 more expected)'),
+            # The inventory before the first command is recorded too, not only failures inside a command.
+            ('inventory', {'snapshot': RuntimeError('unreadable consumer source')}, 'RuntimeError: unreadable consumer source'),
+            ('selection', {'version': RuntimeError('unreadable catalog')}, 'RuntimeError: unreadable catalog'),
+        ]
+        for stage, failures, expected in cases:
+            works = self.directory()
+            artifacts = self.directory() / 'evidence'
+            args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts, 'prepare_only': False})()
+            with self.subTest(stage=stage, expected=expected), \
+                    patch('verify_works_host.selected_sdk_version', return_value=VERSION, side_effect=failures.get('version')), \
+                    patch('verify_works_host.require_consumer_pins', return_value={}), \
+                    patch('verify_works_host.require_host_package_pins', return_value={}), \
+                    patch('verify_works_host.source_snapshot', return_value=snapshot | {'root': str(works)}, side_effect=failures.get('snapshot')), \
+                    patch('verify_works_host.subprocess.run', side_effect=failures.get('run', AssertionError('no command expected'))):
+                self.assertEqual(verify_works_host.run_verification(args), 1)
+                ledger = json.loads((artifacts / 'ledger.json').read_text())
+                self.assertEqual(ledger['failure'], expected)
+                self.assertEqual(ledger['status'], 'incomplete')
 
 
 if __name__ == '__main__':

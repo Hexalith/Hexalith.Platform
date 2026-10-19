@@ -2,8 +2,12 @@ namespace Hexalith.Platform.Works.Tests;
 
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Platform.Composition;
 using Hexalith.Platform.Works.Runtime;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 using Shouldly;
 
 /// <summary>Checks the Platform-owned target composition and its admission refusals.</summary>
@@ -69,10 +73,39 @@ public sealed class WorksPreviewModelTests
         environment["WORKS_PLATFORM_RUNTIME"].ShouldBe("1");
         environment["DOTNET_STARTUP_HOOKS"].ShouldBe(typeof(WorksRecoveryHostingStartup).Assembly.Location);
         environment["ASPNETCORE_HOSTINGSTARTUPASSEMBLIES"].ShouldBe("Hexalith.Platform.Works.Runtime");
-        works.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
+        works.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldBe("works/ready");
         works.Annotations.OfType<WaitAnnotation>().ShouldNotContain(wait => wait.Resource.Name == "eventstore");
         ProjectResource gateway = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
-        gateway.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
+        gateway.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldBe("eventstore/ready");
+        // Both names resolve to Platform's SDK readiness check, which keeps Degraded distinct; a plain HTTP probe would not.
+        await using ServiceProvider services = builder.Services.BuildServiceProvider();
+        HealthCheckRegistration[] registrations = [.. services.GetRequiredService<IOptions<HealthCheckServiceOptions>>().Value.Registrations];
+        foreach (string name in new[] { "works/ready", "eventstore/ready" })
+            registrations.Single(registration => registration.Name == name).Factory(services).ShouldBeOfType<SdkReadinessHealthCheck>(name);
+    }
+
+    /// <summary>Only the gateway sidecar loads the configuration store, whose keys can override tenant rate limits at runtime.</summary>
+    [Fact]
+    public void OnlyTheGatewaySidecarReferencesTheConfigurationStore()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        WorksPreviewModel.Compose(builder);
+        Dictionary<string, string[]> components = builder.Resources.OfType<ProjectResource>().ToDictionary(project => project.Name,
+            project => project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>()
+                .Select(reference => reference.Component.Name).ToArray(), StringComparer.Ordinal);
+        components.Keys.Order(StringComparer.Ordinal).ShouldBe(["eventstore", "eventstore-admin", "eventstore-operations", "works"]);
+        components.Where(pair => pair.Value.Contains("configstore")).Select(pair => pair.Key).ShouldBe(["eventstore"]);
+    }
+
+    /// <summary>Operations waits only for Works to start, not to become healthy, so it stays usable while Works recovery is degraded.</summary>
+    [Fact]
+    public void OperationsWaitsOnlyForWorksToStart()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        WorksPreviewModel.Compose(builder);
+        ProjectResource operations = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore-operations");
+        operations.Annotations.OfType<WaitAnnotation>().Where(wait => wait.Resource.Name == "works").ShouldHaveSingleItem()
+            .WaitType.ShouldBe(WaitType.WaitUntilStarted);
     }
 
     /// <summary>The preview composes explicit, finite development/test EventStore rate limits.</summary>

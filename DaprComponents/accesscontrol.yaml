@@ -4,8 +4,9 @@
 # Production MUST use receiver-specific deny-by-default configs with mTLS. See deploy/dapr/ for templates.
 #
 # Loaded only by the eventstore sidecar; governs which CALLERS may invoke EventStore through Dapr service
-# invocation. In the local Platform topology the Works domain service calls back into the EventStore command
-# gateway, so `works` is the named allowed caller.
+# invocation. Exactly two callers are named. The Works domain service calls back into the EventStore command
+# gateway on its exact routes. Admin.Server invokes EventStore through its own sidecar for health, projection
+# and backup operations under the selected SDK's production-template grant.
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
@@ -47,4 +48,16 @@ spec:
             action: allow
           - name: /api/v1/trusted-effects
             httpVerb: ['POST']
+            action: allow
+      # Admin.Server's grant is the selected producer's production template, unchanged in substance
+      # (Hexalith.EventStore v3.125.1 deploy/dapr/accesscontrol.yaml:34-46), with this topology's trust domain
+      # and namespace. The wildcard admits the admin passthrough endpoints; EventStore authorization still
+      # protects the command surface.
+      - appId: eventstore-admin
+        defaultAction: deny
+        trustDomain: "public"
+        namespace: "default"
+        operations:
+          - name: /**
+            httpVerb: ['GET', 'POST', 'PUT']
             action: allow

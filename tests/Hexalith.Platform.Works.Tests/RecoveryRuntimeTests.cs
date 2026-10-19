@@ -77,16 +77,7 @@ public sealed class RecoveryRuntimeTests
     {
         RecoveryRuntimeMemoryStore store = new();
         var options = Options.Create(new EventStoreProcessOptions());
-        var checkpoints = new ProcessCheckpointStore(store, options, TimeProvider.System);
-        var sweeps = new ProcessSweepStore(store, options, TimeProvider.System);
-        await checkpoints.EnsureCandidateAsync(_source, TestContext.Current.CancellationToken);
-        ProcessSourceState owned = (await checkpoints.AcquireAsync(_source, TestContext.Current.CancellationToken))!;
-        owned = await checkpoints.UpdateOwnedAsync(owned, state => state with
-        {
-            Status = ProcessSourceStatus.Quarantined, ReasonCode = "invalid-evidence", FailureSequence = 1,
-        }, TestContext.Current.CancellationToken);
-        await checkpoints.ReleaseAsync(owned, TestContext.Current.CancellationToken);
-        ProcessSourceState before = await checkpoints.GetAsync(_source, TestContext.Current.CancellationToken);
+        (ProcessCheckpointStore checkpoints, ProcessSweepStore sweeps, ProcessSourceState before) = await QuarantinedSourceAsync(store, options);
         var authorizer = new WorksSyntheticDispositionAuthorizer([_source], "eventstore-admin");
         var audit = new WorksSyntheticDispositionAuditSink(store, authorizer, "statestore", TimeProvider.System);
         var disposition = new ProcessDispositionService(authorizer, audit, checkpoints, sweeps, options);
@@ -108,6 +99,55 @@ public sealed class RecoveryRuntimeTests
         persisted.Attempts[0].Purpose.ShouldBe("works.process-disposition");
         persisted.Attempts[0].Reason.ShouldBe("synthetic repair");
         (await new ProcessCheckpointStore(store, options, TimeProvider.System).GetAsync(_source, TestContext.Current.CancellationToken)).Status.ShouldBe(ProcessSourceStatus.Revalidating);
+    }
+
+    /// <summary>
+    /// A write that commits and then reports a CAS conflict is retried with the same attempt identity, so the retry finds
+    /// its own committed attempt and the document stores exactly one.
+    /// </summary>
+    [Fact]
+    public async Task AuditRetryAfterACommittedConflictStoresExactlyOneAttempt()
+    {
+        RecoveryRuntimeMemoryStore store = new() { AuditCommitsThenConflicts = 1 };
+        var sink = new WorksSyntheticDispositionAuditSink(store, new WorksSyntheticDispositionAuthorizer([_source], "eventstore-admin"), "statestore", TimeProvider.System);
+        await sink.RecordAsync(Principal(), _source, "synthetic repair", TestContext.Current.CancellationToken);
+        string key = WorksSyntheticDispositionAuditSink.Key(_source);
+        // The first write committed and reported a conflict; the retry re-read the committed attempt and kept it.
+        store.AuditCommitsThenConflicts.ShouldBe(0);
+        store.Writes.ShouldBe([key, key]);
+        WorksProcessDispositionAuditDocument persisted = (await store.GetAsync<WorksProcessDispositionAuditDocument>("statestore", key, TestContext.Current.CancellationToken)).Value!;
+        persisted.Attempts.ShouldHaveSingleItem().Reason.ShouldBe("synthetic repair");
+    }
+
+    /// <summary>
+    /// The audit document holds at most 256 attempts: the 256th is recorded, and the next disposition refuses before
+    /// any SDK control-state mutation, leaving the full document unchanged.
+    /// </summary>
+    [Fact]
+    public async Task FullAuditDocumentRefusesTheNextDispositionBeforeSdkMutation()
+    {
+        RecoveryRuntimeMemoryStore store = new();
+        var options = Options.Create(new EventStoreProcessOptions());
+        (ProcessCheckpointStore checkpoints, ProcessSweepStore sweeps, ProcessSourceState before) = await QuarantinedSourceAsync(store, options);
+        var authorizer = new WorksSyntheticDispositionAuthorizer([_source], "eventstore-admin");
+        var audit = new WorksSyntheticDispositionAuditSink(store, authorizer, "statestore", TimeProvider.System);
+        string key = WorksSyntheticDispositionAuditSink.Key(_source);
+        WorksProcessDispositionAuditRecord[] prior = [.. Enumerable.Range(0, 255).Select(index => new WorksProcessDispositionAuditRecord(
+            index.ToString("x32", System.Globalization.CultureInfo.InvariantCulture), DateTimeOffset.UnixEpoch, "eventstore-admin", "fixture-operator",
+            _source, "works.process-disposition", "prior repair"))];
+        await store.SaveAsync("statestore", key, new WorksProcessDispositionAuditDocument(prior), TestContext.Current.CancellationToken);
+        await audit.RecordAsync(Principal(), _source, "last admitted repair", TestContext.Current.CancellationToken);
+        WorksProcessDispositionAuditDocument full = (await store.GetAsync<WorksProcessDispositionAuditDocument>("statestore", key, TestContext.Current.CancellationToken)).Value!;
+        full.Attempts.Count.ShouldBe(256);
+        full.Attempts[^1].Reason.ShouldBe("last admitted repair");
+        var disposition = new ProcessDispositionService(authorizer, audit, checkpoints, sweeps, options);
+        store.Writes.Clear();
+        (await Should.ThrowAsync<InvalidOperationException>(() => disposition.RevalidateAsync(Principal(), _source, "refused repair", TestContext.Current.CancellationToken)))
+            .Message.ShouldContain("capacity reached");
+        store.Writes.ShouldBeEmpty();
+        (await checkpoints.GetAsync(_source, TestContext.Current.CancellationToken)).ShouldBe(before);
+        (await sweeps.GetAsync(TestContext.Current.CancellationToken)).Pending.ShouldBeEmpty();
+        (await store.GetAsync<WorksProcessDispositionAuditDocument>("statestore", key, TestContext.Current.CancellationToken)).Value.ShouldBeSameAs(full);
     }
 
     /// <summary>Direct sink use cannot bypass scope validation or retain oversized operator text.</summary>
@@ -158,14 +198,51 @@ public sealed class RecoveryRuntimeTests
         publisher.GetSnapshot().Status.ShouldBe(HealthStatus.Degraded);
     }
 
-    /// <summary>Production cannot install the qualification authority even if fixture markers exist.</summary>
+    /// <summary>
+    /// Each synthetic-authority guard refuses on its own with no service added: Production refuses even with both fixture
+    /// markers set, and Development refuses when either marker is missing or is not exactly <c>1</c>. Development with
+    /// both markers installs the authority, so every refusal above is the guard's own decision.
+    /// </summary>
+    /// <remarks>Only this test sets the two markers, and tests in one class run sequentially, so no parallel test observes them.</remarks>
     [Fact]
-    public void ProductionCannotInstallSyntheticAuthority()
+    public void EverySyntheticAuthorityGuardRefusesWithNoServicesAdded()
     {
-        ServiceCollection services = new();
-        IHostEnvironment environment = new HostingEnvironment { EnvironmentName = Environments.Production };
-        Should.Throw<InvalidOperationException>(() => services.AddWorksSyntheticRecoveryRuntime(environment, [_source], "eventstore-admin", "statestore"));
-        services.ShouldBeEmpty();
+        string? parity = Environment.GetEnvironmentVariable(ParityMarker);
+        string? proof = Environment.GetEnvironmentVariable(ProofMarker);
+        try
+        {
+            foreach ((string name, string? parityValue, string? proofValue) in new (string, string?, string?)[]
+            {
+                (Environments.Production, "1", "1"),
+                (Environments.Staging, "1", "1"),
+                (Environments.Development, null, "1"),
+                (Environments.Development, "0", "1"),
+                (Environments.Development, "1", null),
+                (Environments.Development, "1", "true"),
+                (Environments.Development, null, null),
+            })
+            {
+                Environment.SetEnvironmentVariable(ParityMarker, parityValue);
+                Environment.SetEnvironmentVariable(ProofMarker, proofValue);
+                ServiceCollection refused = new();
+                Should.Throw<InvalidOperationException>(() => refused.AddWorksSyntheticRecoveryRuntime(
+                    new HostingEnvironment { EnvironmentName = name }, [_source], "eventstore-admin", "statestore"),
+                    name + " " + parityValue + "/" + proofValue).Message.ShouldContain("explicitly marked disposable Development parity fixture");
+                refused.ShouldBeEmpty(name + " " + parityValue + "/" + proofValue);
+            }
+
+            Environment.SetEnvironmentVariable(ParityMarker, "1");
+            Environment.SetEnvironmentVariable(ProofMarker, "1");
+            ServiceCollection admitted = new();
+            admitted.AddWorksSyntheticRecoveryRuntime(new HostingEnvironment { EnvironmentName = Environments.Development }, [_source], "eventstore-admin", "statestore");
+            admitted.ShouldContain(descriptor => descriptor.ServiceType == typeof(IProcessDispositionAuthorizer));
+            admitted.ShouldContain(descriptor => descriptor.ServiceType == typeof(IProcessDispositionAuditSink));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable(ParityMarker, parity);
+            Environment.SetEnvironmentVariable(ProofMarker, proof);
+        }
     }
 
     /// <summary>Telemetry registration reuses the canonical SDK singleton and never grants disposition rights.</summary>
@@ -182,11 +259,35 @@ public sealed class RecoveryRuntimeTests
         services.ShouldBe(registered);
         services.Count(descriptor => descriptor.ServiceType == typeof(WorksRecoveryTelemetryPublisher)).ShouldBe(1);
         using ServiceProvider provider = services.BuildServiceProvider();
+        // The publisher's 15-second staleness bound relies on an immediate first publish and a period well inside it.
+        HealthCheckPublisherOptions publisher = provider.GetRequiredService<IOptions<HealthCheckPublisherOptions>>().Value;
+        publisher.Delay.ShouldBe(TimeSpan.Zero);
+        publisher.Period.ShouldBe(TimeSpan.FromSeconds(5));
+        publisher.Period.ShouldBeLessThan(TimeSpan.FromSeconds(15));
         var publishers = provider.GetServices<IHealthCheckPublisher>().ToArray();
         publishers.Length.ShouldBe(1);
         publishers[0].ShouldBeSameAs(provider.GetRequiredService<WorksRecoveryTelemetryPublisher>());
         provider.GetService<IProcessDispositionAuthorizer>().ShouldBeNull();
         provider.GetService<IProcessDispositionAuditSink>().ShouldBeNull();
+    }
+
+    private const string ParityMarker = "WORKS_PLATFORM_PARITY";
+
+    private const string ProofMarker = "WORKS_SDK_PROOF";
+
+    private static async Task<(ProcessCheckpointStore Checkpoints, ProcessSweepStore Sweeps, ProcessSourceState Before)> QuarantinedSourceAsync(
+        RecoveryRuntimeMemoryStore store, IOptions<EventStoreProcessOptions> options)
+    {
+        var checkpoints = new ProcessCheckpointStore(store, options, TimeProvider.System);
+        var sweeps = new ProcessSweepStore(store, options, TimeProvider.System);
+        await checkpoints.EnsureCandidateAsync(_source, TestContext.Current.CancellationToken);
+        ProcessSourceState owned = (await checkpoints.AcquireAsync(_source, TestContext.Current.CancellationToken))!;
+        owned = await checkpoints.UpdateOwnedAsync(owned, state => state with
+        {
+            Status = ProcessSourceStatus.Quarantined, ReasonCode = "invalid-evidence", FailureSequence = 1,
+        }, TestContext.Current.CancellationToken);
+        await checkpoints.ReleaseAsync(owned, TestContext.Current.CancellationToken);
+        return (checkpoints, sweeps, await checkpoints.GetAsync(_source, TestContext.Current.CancellationToken));
     }
 
     private static HealthReport Report(HealthStatus status, Dictionary<string, object> data)

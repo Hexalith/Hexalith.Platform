@@ -15,6 +15,9 @@ internal sealed class RecoveryRuntimeMemoryStore : IReadModelStore
     /// <summary>Gets or sets a bounded number of simulated audit CAS conflicts.</summary>
     internal int AuditConflicts { get; set; }
 
+    /// <summary>Gets or sets a bounded number of audit writes that commit and then report a CAS conflict, like a lost response.</summary>
+    internal int AuditCommitsThenConflicts { get; set; }
+
     /// <summary>Gets committed key write order.</summary>
     internal List<string> Writes { get; } = [];
 
@@ -52,6 +55,12 @@ internal sealed class RecoveryRuntimeMemoryStore : IReadModelStore
         if (expected != etag) return Task.FromResult(false);
         _values[address] = (value, prior.Version + 1);
         Writes.Add(key);
+        if (AuditCommitsThenConflicts > 0 && key.StartsWith("platform:works:process-disposition-audit:", StringComparison.Ordinal))
+        {
+            AuditCommitsThenConflicts--;
+            return Task.FromResult(false);
+        }
+
         return Task.FromResult(true);
     }
 }
