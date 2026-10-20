@@ -14,7 +14,7 @@ from unittest.mock import patch
 import verify_works_host
 from verify_works_host import (CROSS_CHECKS, DUMP_INVENTORY, PROOF_NAMES, PROOFS, RESTORE_PHASE, ROWS, SNAPSHOT_PHASE, SUPPORTING_CLASSES,
                                alert_cleared_after_raise, alert_raised_after, bind_persisted_outcomes, delegated_identity, fixture_sources,
-                               platform_composition_literals, utc_ticks,
+                               platform_composition_literals, published_producers, require_unchanged_fixture_sources, utc_ticks,
                                require_archive_assembly, require_consumer_pin, require_consumer_pins, require_host_package_pins, require_identical_runtime,
                                require_passed_tests, require_published_runtime_source, required_phases, restored_fleet_matches,
                                selected_sdk_version, sha256, verify_host_records)
@@ -595,6 +595,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
         self.assertFalse(check(delayed), 'An export at the same observed tick must not qualify')
         del delayed['points'][0]['UnixTimeNanoseconds']
         self.assertFalse(check(delayed), 'A missing exporter timestamp must not qualify')
+        early_receipt = state((1, '2026-10-19T07:00:01Z'))
+        early_receipt['points'][0]['UnixTimeNanoseconds'] = utc_ticks('2026-10-19T07:00:06Z') * 100
+        self.assertFalse(check(early_receipt), 'A late export with an early receipt must not qualify')
+        for invalid_export_time in [True, False, float(utc_ticks('2026-10-19T07:00:06Z') * 100)]:
+            invalid_export = state((1, '2026-10-19T07:00:06Z'))
+            invalid_export['points'][0]['UnixTimeNanoseconds'] = invalid_export_time
+            with self.subTest(invalid_export_time=invalid_export_time):
+                self.assertFalse(check(invalid_export), 'Exporter time must be an integer, never a boolean or float')
         for name, refused in [
                 ('startup point only', state((1, '2026-10-19T07:00:01+00:00'))),
                 ('same tick', state((1, observed))),
@@ -669,6 +677,66 @@ class WorksEvidenceGateTests(unittest.TestCase):
         self.assertEqual(sorted(fixture_sources(works)), ['src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs',
                                                           'tests/Hexalith.Works.IntegrationTests/Nested/WorksSdkProofProducer.cs',
                                                           'tests/Hexalith.Works.IntegrationTests/WorksSdkProofResponseHandler.cs'])
+
+    def test_fixture_inventory_refuses_additions_removals_and_changed_bytes(self):
+        works = self.directory()
+        root = works / 'tests/Hexalith.Works.IntegrationTests'
+        root.mkdir(parents=True)
+        fixture = root / 'Fixture.cs'
+        fixture.write_text('// original fixture')
+        resolver = works / 'src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs'
+        resolver.parent.mkdir(parents=True)
+        resolver.write_text('// paths')
+        baseline = fixture_sources(works)
+        require_unchanged_fixture_sources(works, baseline)
+        added = root / 'AddedBeforeCompilation.cs'
+        added.write_text('// compiled without an original binding')
+        with self.assertRaisesRegex(ValueError, 'pre-command baseline: .*AddedBeforeCompilation.cs'):
+            require_unchanged_fixture_sources(works, baseline)
+        added.unlink()
+        fixture.unlink()
+        with self.assertRaisesRegex(ValueError, 'pre-command baseline: .*Fixture.cs'):
+            require_unchanged_fixture_sources(works, baseline)
+        fixture.write_text('// changed fixture')
+        with self.assertRaisesRegex(ValueError, 'pre-command baseline: .*Fixture.cs'):
+            require_unchanged_fixture_sources(works, baseline)
+        fixture.write_text('// original fixture')
+        require_unchanged_fixture_sources(works, baseline)
+
+    def test_published_producer_loop_binds_the_consumer_dll_to_its_archive(self):
+        root = self.directory()
+        cache = root / 'packages'
+        consumer = root / 'consumer'
+        consumer.mkdir()
+        package = 'Hexalith.EventStore.Client'
+        restored = VERSION
+        relative = package.lower() + '/' + restored
+        folder = cache / relative
+        folder.mkdir(parents=True)
+        artifact = folder / (package.lower() + '.' + restored + '.nupkg')
+        entry = 'lib/net10.0/' + package + '.dll'
+        contents = b'official-package-assembly'
+        commit = 'b' * 40
+        repository = 'https://github.com/Hexalith/Hexalith.EventStore'
+        with zipfile.ZipFile(artifact, 'w') as archive:
+            archive.writestr(package + '.nuspec',
+                             '<package><metadata><repository url="' + repository + '" commit="' + commit + '" /></metadata></package>')
+            archive.writestr(entry, contents)
+        (folder / '.nupkg.metadata').write_text(json.dumps({'source': 'https://api.nuget.org/v3/index.json'}))
+        assets = root / 'project.assets.json'
+        assets.write_text(json.dumps({'libraries': {
+            package + '/' + restored: {'type': 'package', 'path': relative, 'sha512': 'restore-sha512'},
+            'Hexalith.EventStore.Source/' + restored: {'type': 'project'},
+            'Other.Package/1.0.0': {'type': 'package'}}, 'packageFolders': {str(cache): {}}}))
+        assembly = consumer / (package + '.dll')
+        assembly.write_bytes(contents)
+        self.assertEqual(published_producers(assets, consumer, restored), {package: {
+            'version': restored, 'sha256': sha256(artifact), 'source': 'https://api.nuget.org/v3/index.json',
+            'nugetSha512': 'restore-sha512', 'repositoryCommit': commit, 'repositoryUrl': repository,
+            'consumerAssemblySha256': sha256(assembly), 'archiveAssemblyEntry': entry}})
+        assembly.write_bytes(b'altered-extracted-consumer-dll')
+        with self.assertRaisesRegex(ValueError, 'Consumer assembly differs from its selected public archive'):
+            published_producers(assets, consumer, restored)
 
     def test_extracted_package_assembly_must_match_the_selected_archive(self):
         root = self.directory()

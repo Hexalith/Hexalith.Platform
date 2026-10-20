@@ -49,6 +49,32 @@ def require_archive_assembly(artifact, assembly):
     return {"consumerAssemblySha256": digest, "archiveAssemblyEntry": matches[0]}
 
 
+def published_producers(assets_path, consumer_directory, version):
+    """Bind every selected public SDK package and its consumer DLL to the restored NuGet archive."""
+    packages = json.loads(Path(assets_path).read_text())
+    producer_evidence = {}
+    for key, library in packages["libraries"].items():
+        if not key.startswith("Hexalith.EventStore.") or library["type"] != "package":
+            continue
+        package, restored = key.split("/")
+        if restored != version:
+            raise ValueError("Unexpected published producer: " + key)
+        folder = next(Path(root) / library["path"] for root in packages["packageFolders"] if (Path(root) / library["path"]).exists())
+        artifact = folder / (package.lower() + "." + restored + ".nupkg")
+        metadata = json.loads((folder / ".nupkg.metadata").read_text())
+        if metadata.get("source") != "https://api.nuget.org/v3/index.json":
+            raise ValueError("Published producer lacks public NuGet provenance: " + package)
+        with zipfile.ZipFile(artifact) as archive:
+            nuspec_name = next(name for name in archive.namelist() if name.endswith(".nuspec"))
+            repository = ET.fromstring(archive.read(nuspec_name)).find(".//{*}repository")
+        if repository is None or not repository.get("commit"):
+            raise ValueError("Published producer lacks a repository commit: " + package)
+        producer_evidence[package] = {"version": restored, "sha256": sha256(artifact), "source": metadata["source"],
+            "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
+        producer_evidence[package].update(require_archive_assembly(artifact, consumer_directory / (package + ".dll")))
+    return producer_evidence
+
+
 def selected_sdk_version(catalog):
     """Read the one stable public EventStore version selected by the authoritative Builds catalog."""
     values = [item.text for item in ET.parse(catalog).getroot().iter("HexalithEventStoreVersion")]
@@ -152,6 +178,14 @@ def fixture_sources(works):
     files = [path for path in root.rglob("*.cs") if not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
     files.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
     return {str(path.relative_to(works)): sha256(path) for path in sorted(files)}
+
+
+def require_unchanged_fixture_sources(works, baseline):
+    """Refuse changed bytes, added files and removed files since the pre-command fixture inventory."""
+    current = fixture_sources(works)
+    if current != baseline:
+        changed = sorted(name for name in current.keys() | baseline.keys() if current.get(name) != baseline.get(name))
+        raise ValueError("Qualified fixtures changed since the pre-command baseline: " + ", ".join(changed))
 
 
 # Deterministic Works consumer classes the admission gate runs on the Release qualification consumer. They support,
@@ -904,27 +938,8 @@ def run_verification(args):
         summary["platformAdapterAssemblies"] = {str(path): sha256(path) for path in [
             assembly.parent / "Hexalith.Platform.Composition.dll", assembly.parent / "Hexalith.Platform.Works.Runtime.dll",
             consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Platform.Works.Runtime.dll"]}
-        packages = json.loads((consumer_output / "obj/Hexalith.Works.IntegrationTests/project.assets.json").read_text())
-        producer_evidence = {}
-        for key, library in packages["libraries"].items():
-            if not key.startswith("Hexalith.EventStore.") or library["type"] != "package":
-                continue
-            package, restored = key.split("/")
-            if restored != version:
-                raise ValueError("Unexpected published producer: " + key)
-            folder = next(Path(root) / library["path"] for root in packages["packageFolders"] if (Path(root) / library["path"]).exists())
-            artifact = folder / (package.lower() + "." + restored + ".nupkg")
-            metadata = json.loads((folder / ".nupkg.metadata").read_text())
-            if metadata.get("source") != "https://api.nuget.org/v3/index.json":
-                raise ValueError("Published producer lacks public NuGet provenance: " + package)
-            with zipfile.ZipFile(artifact) as archive:
-                nuspec_name = next(name for name in archive.namelist() if name.endswith(".nuspec"))
-                repository = ET.fromstring(archive.read(nuspec_name)).find(".//{*}repository")
-            if repository is None or not repository.get("commit"):
-                raise ValueError("Published producer lacks a repository commit: " + package)
-            producer_evidence[package] = {"version": restored, "sha256": sha256(artifact), "source": metadata["source"],
-                "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
-            producer_evidence[package].update(require_archive_assembly(artifact, consumer_directory / (package + ".dll")))
+        producer_evidence = published_producers(
+            consumer_output / "obj/Hexalith.Works.IntegrationTests/project.assets.json", consumer_directory, version)
         summary["publishedProducers"] = producer_evidence
         identity_root = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
         summary["identityProvenance"] = {"scope": "explicit-test-only-source; no published Platform.Identity package",
@@ -1028,9 +1043,7 @@ def run_verification(args):
         for name, digest in summary["verifierHelpers"].items():
             if sha256(Path(__file__).with_name(name)) != digest:
                 raise ValueError("A verifier helper changed during execution: " + name)
-        for source, digest in summary["fixtureSources"].items():
-            if sha256(works / source) != digest:
-                raise ValueError("A qualified fixture changed after the consumer build: " + source)
+        require_unchanged_fixture_sources(works, summary["fixtureSources"])
         summary["rollback"] = bind_persisted_outcomes(artifacts / "persisted-states.jsonl", summary["rows"], summary["actualStarts"])
         summary["status"] = "passed-disposable-synthetic-parity-and-rollback"
         return 0

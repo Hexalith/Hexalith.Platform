@@ -51,27 +51,49 @@ The owner selected public **3.126.0** for fresh requalification on 2026-10-19. E
 
 The fresh [3.126.0 packet](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/public-3.126.0-2026-10-19/README.md) records canonical exit 0, all eleven rows, complete rollback, zero skips, and a separate 4/4 retained-host source Debug pass. Concurrent Platform and Builds edits were preserved by running from the recorded isolated source snapshot. Story 4.9 cutover remains separate.
 
-Run from the Platform checkout with a complete Works source checkout and an exact
-export of the qualified producer tag:
+Run from an isolated Platform checkout containing the reviewed Works changes,
+with a complete Works source checkout. The [recorded command](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/public-3.126.0-2026-10-19/README.md)
+used Platform base `f0e33167fcdb5f539da159c54f7505b72a65c9b2` plus the four
+reviewed overlays listed in that packet. Export the same bound Builds catalog
+commit as ordinary source; the live Builds checkout may have moved since qualification.
+The isolated Platform's root-declared `references/Hexalith.Builds` path must expose
+the same bound catalog export. The isolated workspace must also expose Works at `../works`: topology tests use
+that sibling path before the live verifier applies `--works-root`. In a fresh
+isolated workspace, create the link shown below (an existing matching Works
+checkout or link already satisfies it). Select fresh export and evidence directories:
 
 ```bash
+export WORKS_PARITY_WORKS_ROOT=/home/administrator/projects/hexalith/works
+export WORKS_PARITY_PLATFORM_ROOT=/absolute/isolated/workspace/platform
+export WORKS_PARITY_BUILDS_ROOT=/tmp/works-parity-builds-b435f2e-source
 export WORKS_PARITY_SDK_ROOT=/tmp/works-parity-sdk-3.126.0
-mkdir "$WORKS_PARITY_SDK_ROOT"
-git -C ../works/references/Hexalith.EventStore archive v3.126.0 | tar -x -C "$WORKS_PARITY_SDK_ROOT"
-# git archive applies eol attributes; restore the one rewritten blob byte for byte.
-git -C ../works/references/Hexalith.EventStore cat-file blob v3.126.0:global.json > "$WORKS_PARITY_SDK_ROOT/global.json"
-# Reuse the already initialized root-declared Builds dependency in the ordinary source export.
-# This creates no nested Git checkout.
+# Required by the Platform topology tests as well as the explicit live selection.
+ln -s "$WORKS_PARITY_WORKS_ROOT" "$(dirname "$WORKS_PARITY_PLATFORM_ROOT")/works"
+mkdir "$WORKS_PARITY_BUILDS_ROOT" "$WORKS_PARITY_SDK_ROOT"
+git -C "$WORKS_PARITY_WORKS_ROOT/references/Hexalith.Builds" archive b435f2e3b3892e03f69322d24de6003b0baf7a7d | tar -x -C "$WORKS_PARITY_BUILDS_ROOT"
+git -C "$WORKS_PARITY_WORKS_ROOT/references/Hexalith.EventStore" archive v3.126.0 | tar -x -C "$WORKS_PARITY_SDK_ROOT"
+# git archive applies eol attributes; restore the one rewritten SDK blob byte for byte.
+git -C "$WORKS_PARITY_WORKS_ROOT/references/Hexalith.EventStore" cat-file blob v3.126.0:global.json > "$WORKS_PARITY_SDK_ROOT/global.json"
+# Link the empty root-declared Builds paths in both isolated exports to the same catalog.
+# These directories are empty after source export; no nested Git checkout is created.
+rmdir "$WORKS_PARITY_PLATFORM_ROOT/references/Hexalith.Builds"
+ln -s "$WORKS_PARITY_BUILDS_ROOT" "$WORKS_PARITY_PLATFORM_ROOT/references/Hexalith.Builds"
 rmdir "$WORKS_PARITY_SDK_ROOT/references/Hexalith.Builds"
-ln -s "$(realpath ../works/references/Hexalith.Builds)" "$WORKS_PARITY_SDK_ROOT/references/Hexalith.Builds"
-./eng/verify-works-host.sh --works-root ../works --runtime-sdk-root "$WORKS_PARITY_SDK_ROOT" --artifacts-path /tmp/works-parity-new-run
+ln -s "$WORKS_PARITY_BUILDS_ROOT" "$WORKS_PARITY_SDK_ROOT/references/Hexalith.Builds"
+cd "$WORKS_PARITY_PLATFORM_ROOT"
+HexalithBuildsRoot="$WORKS_PARITY_BUILDS_ROOT" \
+HexalithEventStoreRoot="$WORKS_PARITY_SDK_ROOT" \
+bash eng/verify-works-host.sh --works-root "$WORKS_PARITY_WORKS_ROOT" --runtime-sdk-root "$WORKS_PARITY_SDK_ROOT" --artifacts-path /tmp/works-parity-new-run
 ```
 
-`--runtime-sdk-root` is required while the Works EventStore gitlink is `v3.125.0`
-(`f43b121c`): without it the verifier qualifies the gitlink source against the
-3.126.0 archives and refuses any differing runtime/build files. The export
-must come from the root-declared SDK checkout's object store. Its ordinary source link reuses Works' root-declared Builds catalog, which must select the same SDK and compatible dependency versions. It never checks out
-or mutates that shared checkout.
+`--runtime-sdk-root` is required when the Works EventStore gitlink is not exactly
+the selected tag commit: without it the verifier qualifies the gitlink source
+against the selected public archives and refuses any differing runtime/build files.
+The export must come from the root-declared SDK checkout's object store. The
+ordinary-source Builds export pins the qualified catalog and compatible dependency
+versions independently of subsequent shared-checkout changes. `HexalithBuildsRoot`
+and `HexalithEventStoreRoot` preserve those same selections in child builds. No
+shared checkout is mutated.
 
 Choose a fresh, empty artifacts directory for each attempt. The verifier records
 each exact command, working directory, exit result and log hash in `ledger.json`,
