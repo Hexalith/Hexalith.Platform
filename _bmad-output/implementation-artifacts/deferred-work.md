@@ -891,3 +891,20 @@
   summary: Make `ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation` independent of the test output location.
   evidence: Review pass 5 (blind hunter). The pass-3 full Composition rerun failed this absolute-path substring assertion when the test output was under `/tmp`; byte-identical output passed under `/home` (`evidence/1-10/failure-membership-final.txt`, `composition-tests-final-relocated-bin.txt`). It predates Story 1.10 and had no ledger entry. Developers running the suite from a `/tmp` worktree see a spurious failure.
   status: open
+
+## Deferred from: code review of spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md (2026-10-20, pass 2)
+
+- source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
+  summary: Release Builds with the run-scoped McpCli build, pin it in Platform, move the Builds gitlink to its tag, and rerun AC1 with the pinned tool.
+  evidence: Review pass 2 (BH2, AA2, AA3). `.config/dotnet-tools.json` pins `4.33.1`, which builds no McpCli. The Platform Builds gitlink is at untagged `cf97810`. The only AC1 proof used `4.34.0-local.1` at `d7c828a`, before the review fixes, so the post-review `HXI010` text (DLL plus project) has no Platform record. This is tracked by the spec's open orchestrator task "release and pin". The rerun should use the README's function-breakpoint recipe as written.
+  status: open
+
+- source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
+  summary: Restore Platform's `CentralPackageTransitivePinningEnabled` in the pinned-catalog Platform model build.
+  evidence: Review pass 2 (BH6). `PlatformManifestCommand.BuildModelAsync` passes `PinnedCatalogArguments`, so `-p:ImportDirectoryPackagesProps=false` skips Platform `Directory.Packages.props:2`, which enables transitive pinning. The Builds catalog sets only `ManagePackageVersionsCentrally`, so the catalog's transitive security pins (for example GHSA-334f, `Props/Directory.Packages.props:224`) do not apply to the model build. Story 1.11 fixed this for the McpCli build only. Pre-existing.
+  status: open
+
+- source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
+  summary: Add one real-process cancellation and deadline test that covers `BuildMcpCliAsync` and `BuildModelAsync`.
+  evidence: Review pass 2 (VG2). Both builders pass the remaining time and the startup token to `CompositionProcess.RunAsync`, but their tests replace the whole builder (`McpCliBuildOverride`, `PlatformModelBuildOverride`). Passing `CancellationToken.None` would fail no test. A fake project whose build blocks (an `Exec` that sleeps), with a cancelled token or a short deadline, should end within seconds with `OperationCanceledException`. The model-build gap is pre-existing.
+  status: open

@@ -1,0 +1,22 @@
+# Builds commit 24322f56177b8fe86a78b2be7125f873c0a682bd (review pass 2; amends fc5cfc0, README wording only), validated with Builds' pinned commitlint
+@commitlint/cli@21.2.4
+⧗   --- input ---
+fix(tool): name every McpCli HXW004 cause and its remedy
+
+The HXW004 refusal for an McpCli run said only that the mapped checkout was
+uninitialized or had no tool project, and its hint said only to initialize
+the checkout. That did not help when the checkout was initialized at a commit
+without src/Hexalith.McpCli/Hexalith.McpCli.csproj, or when the project
+resolved through a link outside the checkout. The reason now names all three
+causes, and the hint asks for a commit whose tool project lies inside the
+checkout.
+
+Add a test that the McpCli build refuses a missing or altered pinned catalog
+before any build process starts, matching the Platform model build's drift
+cases. The README no longer claims that test builds McpCli: test needs
+--profile naming a declared test, and the McpCli declaration has none, so it
+refuses with HXC002 and builds nothing.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+✔   found 0 problems, 0 warnings
+commitlint exit 0

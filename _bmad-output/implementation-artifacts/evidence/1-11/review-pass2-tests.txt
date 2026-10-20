@@ -1,0 +1,12 @@
+# Review pass 2 (2026-10-20), Builds Hexalith.Builds.Module.Tests at fc5cfc0 (test and product code identical to 24322f5;
+# the amend changed README wording only). Built with -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false
+# -p:MinVerVersionOverride=1.0.0, run with dotnet exec on the test DLL. New: 7 McpCliBuildRefusesMissingOrAlteredCatalogAuthorityAsync
+# drift cases (catalog, snapshot, bytes, mapping, pin, mode, path); MissingCheckoutFailsNamingMcpCliAndTheExpectedProject now
+# asserts the per-case HXW004 reason and the hint.
+
+$ dotnet exec Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests
+   Hexalith.Builds.Module.Tests  Total: 29, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 15.132s
+
+$ dotnet exec Hexalith.Builds.Module.Tests.dll
+   Hexalith.Builds.Module.Tests  Total: 1100, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 122.497s
+   (pass 1 after the review fixes: 1093/1093; +7 new cases = 1100)

@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 11
 created: '2026-10-19'
-status: 'done'
+status: 'in-progress'
 baseline_commit: 'f0e33167fcdb5f539da159c54f7505b72a65c9b2'
 mcpcli_baseline_commit: '447085c42ec606f642240c4cae0415e7c2f97467'
 builds_baseline_commit: 'b435f2e3b3892e03f69322d24de6003b0baf7a7d'
@@ -145,6 +145,39 @@ Platform:
 - Given a sibling `../mcpcli`, when the tool resolves and builds, then only `references/Hexalith.McpCli` is used.
 - Given a McpCli clone with its own `references/Hexalith.Platform`, when the tool runs there, then it reports that submodule commit as the Platform identity, and the evidence marks the run as non-Platform.
 - Given each README, when read, then McpCli's own-repository runs are scoped to its own tests.
+
+### Review Findings
+
+Review pass 2, 2026-10-20. Four layers (blind hunter BH, edge-case hunter EH, verification gap VG, acceptance auditor AA) reviewed Platform `f0e3316..39be561` (story paths), Builds `b435f2e..cf97810` and McpCli `447085c..943b75c`. During the review a concurrent `/pushall` pushed Builds `cf97810` and rebased McpCli `943b75c` onto `origin/main` as `742f5b6` (patch-identical, `git range-diff`), and Platform `c395e4a` moved the McpCli gitlink to `742f5b6`.
+
+- [x] [Review][Patch] The McpCli build's pinned-catalog refusal is untested where McpCli calls it (VG1, medium gap): add `McpCliBuildRefusesMissingOrAlteredCatalogAuthorityAsync` mirroring `PlatformModelCatalogTests.cs:113` but calling `BuildMcpCliAsync`, asserting the refusal and no `tools` output [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs:148] — fixed in Builds `24322f5`: 7 drift cases; 29/29 focused, 1100/1100 full
+- [x] [Review][Patch] Both READMEs say `test` builds McpCli, but `test` refuses the McpCli manifest with `HXC002` before the engine starts, because it declares no `tests` (`ModuleCommandExecutionService.cs:1045-1048`) (AA5, low) [README.md:155] — fixed: both READMEs say `test` needs `--profile` naming a declared test and builds nothing for McpCli; the live check found `HXC001` without `--profile` and `HXC002` with one (`evidence/1-11/review-pass2-debug.txt`)
+- [x] [Review][Patch] The evidence README's revisions are stale: it says Platform is uncommitted, Builds and McpCli are local and unpushed, McpCli is `943b75c`, and Platform HEAD commits Builds `4aaeed8` (BH12, AA7, VG, plus the residual of BH1/AA1) [_bmad-output/implementation-artifacts/evidence/1-11/README.md:3] — fixed: the status, revisions (pushed state, `742f5b6` as the patch-identical rebase of `943b75c`, Builds `24322f5`) and the `HXW009` note are current
+- [x] [Review][Patch] The `HXW004` reason and hint are wrong for the project-missing and linked-outside cases: the hint only says to initialize the checkout, and the reason never mentions a link outside it (BH7, low) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs:214] — fixed in Builds `24322f5`: the reason names the missing project and a project that resolves outside the checkout, the hint asks for a commit whose project lies inside it, and the test asserts both per case
+- [x] [Review][Patch] The README's function-breakpoint recipe (`break Hexalith.McpCli.Core.Catalog.CatalogService.ListModules`, `--pending` then bound) is not in the evidence, which records only the `CatalogService.cs:12` line breakpoint (BH11, AA8, low) [README.md:209] — fixed: `evidence/1-11/review-pass2-debug.txt` ran the recipe verbatim against a live `debug` with the Builds CLI built from `fc5cfc0` (`--pending`, then bound, hit at `CatalogService.cs:11` from `CliRunner.cs:330`); the same run records the post-review `HXI010` text with the project path
+- [x] [Review][Defer] Release and pin are still open: pinned `4.33.1` builds no McpCli, the Platform Builds gitlink is at untagged `cf97810`, and AC1 has no pinned-tool record and no record of the post-review `HXI010` text (BH2, AA2, AA3, medium) [.config/dotnet-tools.json:6] — deferred: tracked by the open orchestrator task "release and pin" above; runs after this review
+- [x] [Review][Defer] The Platform model build also drops Platform's `CentralPackageTransitivePinningEnabled`, because `PinnedCatalogArguments` skips `Directory.Packages.props:2` (BH6, medium) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs:93] — deferred: pre-existing in `BuildModelAsync`; not caused by this change
+- [x] [Review][Defer] Real-process cancellation of `BuildMcpCliAsync` and `BuildModelAsync` is untested; only the build overrides are cancelled (VG2, gap) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs:152] — deferred: one real-process cancellation test should cover both builders; the model-build gap is pre-existing
+
+Rejected:
+- BH1/AA1 (Platform's gitlink names an McpCli commit on no remote) — false now: `c395e4a` (pushed as part of `13d06bc`) moved the gitlink to `742f5b6`, which is on McpCli `origin/main`; the stale hashes in the evidence are a patch above.
+- BH3/EH5 (package mode builds no McpCli and says nothing) — low: decided in pass 1 (BH5/EH3), and the README says so; package-mode McpCli is Epic 3; a diagnostic adds a branch.
+- BH4/EH1/VG (a process `TimedOut` is reported as `HXR020`, not `HXR021`) — low: both timers fire at the same deadline, for a build of about 4 s against 600 s; this mirrors `BuildModelAsync`; pass-1 rejection (VG5/BH4/EH1) stands; the fix adds branches.
+- EH2 (`dotnet` fails to start, giving an empty `HXR020` reason) — low: the tool itself runs under `dotnet`; this mirrors `BuildModelAsync`; the fix adds a branch.
+- BH5 (a RuntimeIdentifier or multi-targeting moves the DLL) — low: pass-1 BH3 rejection stands; McpCli single-targets `net10.0`.
+- BH8 ("direct reference only" assumed; a suffix collision is misreported) — false: entries come only from the active root and direct `.gitmodules` references (`WorkspaceRootResolver.cs:132-149`), and collisions are refused as `HXW002` (`:170-173`).
+- BH9 (the `mcpcli` repository map is maintained in three places) — low: the duplication predates this change; both maps now agree, and each has a test.
+- BH10 (the live Platform test leaves out the main claims) — false: `McpCliRunBuildTests` checks the project path in `HXI010` (`:276`), that `down` deletes the DLL and the workspace (`:282-284`), and that the checkout is unchanged (`:176`).
+- BH13 (the remaining AC1 work has no tracked follow-up) — false: the orchestrator task is open `[ ]`, and `sprint-status.yaml` is `review`.
+- BH14/EH7 (`McpCliDeclarationTests` is ungated and can throw `NullReferenceException`) — false: it fails loudly on an unreachable layout, using the same idiom as `OwnerOptionBindingTests.cs:15-17` and `PlatformAppModelTests.cs:28-30`, which also read `references/*` ungated.
+- BH15/EH4 (the `HXR020` message is not re-bounded, and a catalog failure is blamed on McpCli) — low: the build message is already bounded; pass 1 removed the re-bounding (BH14/EH2) and rejected the labelling (BH14b).
+- BH16 (evidence formatting: local times, absolute paths, an unproven "unchanged since") — low: the raw captured output is kept verbatim, and `git diff d7c828a cf97810 -- Manifest schemas` is empty, so the claim holds.
+- BH17 (the deadline test depends on wall-clock time) — low: it uses the same 2 s/8 s bounds as `StartupReadinessTests.cs:712-725`; no flake has been shown.
+- EH3/EH8 (a referenced project symlinked outside the checkout, and the "never a sibling" claim) — low: unlikely; checking every referenced project adds complexity.
+- EH6 (a `;` in the workspace path splits the `-p:` values) — low: unlikely, and shared with the model build; escaping adds complexity.
+- AA4 (the spec says `done` before the cross-repository done criteria are met) — the fix edits the spec under review; `sprint-status.yaml` stays authoritative.
+- AA6 (other exceptions reach the generic `apphost` handler) — false: the reachable exceptions are `WorkspaceMappingException`, `InvalidOperationException` (the catalog check is wrapped) and `OperationCanceledException`; a process that fails to start returns a result, not an exception.
+- AA9 (the story commit includes an `epic-1-context.md` rewrite) — false: it is this spec's own `context` document, recompiled for the story.
 
 ## Implementation Notes
 

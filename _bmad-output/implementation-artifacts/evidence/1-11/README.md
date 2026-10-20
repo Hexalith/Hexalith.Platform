@@ -1,29 +1,32 @@
 # Story 1.11 evidence: run and debug McpCli from the Platform workspace
 
-Status, 2026-10-19: the pre-release proof passed with the locally packed tool
+Status, 2026-10-20 (review pass 2): the pre-release proof passed on 2026-10-19
+with the locally packed tool
 `4.34.0-local.1+d7c828a197d3bfb4762301a4d4c341a8c8701bfb`. That proof, the live
-tests and the clone run predate the review fixes, which were amended into the
-Builds and McpCli commits (`d7c828a` became `cf97810`, `13568c0` became
-`943b75c`). The orchestrator
-reruns AC1 with the released and pinned tool after review, push and the
-`build-release.yml` production approval. Until then, this directory holds no
-pinned-tool AC1 record.
+tests and the clone run predate the pass-1 review fixes, which were amended into
+the Builds and McpCli commits (`d7c828a` became `cf97810`, `13568c0` became
+`943b75c`). After pass 2, a live `debug` with the Builds CLI built from the
+pass-2 fix (`review-pass2-debug.txt`) recorded the post-review `HXI010` text and
+the README's function-breakpoint recipe. The orchestrator reruns AC1 with the
+released and pinned tool after the `build-release.yml` production approval.
+Until then, this directory holds no pinned-tool AC1 record.
 
 ## Revisions
 
 | Repository | Revision | State |
 | --- | --- | --- |
-| Platform | `f0e33167fcdb5f539da159c54f7505b72a65c9b2` plus this story's working tree | uncommitted; McpCli gitlink staged at `943b75c` |
-| Builds | `cf978100f7668de135eb8a2adcd535e21b26471b` `feat(tool): build a run-scoped McpCli for McpCli runs`, on `origin/main` `b435f2e3b3892e03f69322d24de6003b0baf7a7d` (the pre-review proofs ran at `d7c828a197d3bfb4762301a4d4c341a8c8701bfb`) | local commit, not pushed |
-| McpCli | `943b75ce85cbedc83b73f3b90277dcd3d4fae83b` `feat(module): declare McpCli for Platform runs`, on `447085c42ec606f642240c4cae0415e7c2f97467` (the pre-review proofs ran at `13568c0bc56fc42909c620847915b993483c594d`; only the README link differs) | local commit, not pushed |
-| EventStore / Tenants / Memories | `682512c6` / `63b7b3d8` / `79e4ab1e` | unchanged, equal to the committed gitlinks |
-| Sibling `../mcpcli` | `a51900b` | present during the run, never used |
+| Platform | `39be561` `feat(platform): run and debug McpCli from the Platform workspace` commits this story's paths, with Builds `cf97810` and McpCli `943b75c` gitlinks; `c395e4a` (a concurrent `/pushall`) moved the McpCli gitlink to `742f5b6` | pushed (`origin/main` `13d06bc`); the review pass 2 changes are uncommitted, with the Builds gitlink staged at `24322f5` |
+| Builds | `cf978100f7668de135eb8a2adcd535e21b26471b` `feat(tool): build a run-scoped McpCli for McpCli runs`, on `b435f2e3b3892e03f69322d24de6003b0baf7a7d` (the pre-review proofs ran at `d7c828a197d3bfb4762301a4d4c341a8c8701bfb`), then `24322f56177b8fe86a78b2be7125f873c0a682bd` `fix(tool): name every McpCli HXW004 cause and its remedy` (review pass 2; amends `fc5cfc0`, at which `review-pass2-debug.txt` and `review-pass2-tests.txt` ran; the amend changed README wording only) | `cf97810` pushed to `origin/main` by a concurrent `/pushall` on 2026-10-20; `24322f5` local, not pushed |
+| McpCli | `742f5b6ead66937f62025b73d77452e0f8126658` `feat(module): declare McpCli for Platform runs`, on `a51900b` | pushed to `origin/main`. It is `943b75ce85cbedc83b73f3b90277dcd3d4fae83b` (on `447085c42ec606f642240c4cae0415e7c2f97467`) rebased by the concurrent `/pushall`; `git range-diff` shows an identical patch, so the records that name `943b75c` apply to it. The pre-review proofs ran at `13568c0bc56fc42909c620847915b993483c594d`; only the README link differs |
+| EventStore / Tenants / Memories | `682512c6` / `63b7b3d8` / `79e4ab1e` (pass 2: `b16be635` / `6b62b6b3` / `72a97345`) | unchanged, equal to the committed gitlinks |
+| Sibling `../mcpcli` | `a51900b` (pass 2: `742f5b6`) | present during the run, never used |
 
-Platform `HEAD` still commits Builds `4aaeed8`, so every run reports `HXW009`
-(source mode warns). During this work another process staged the Platform
-Builds gitlink, first at `b435f2e` and then at `d7c828a`, which the review
-amend has since replaced with `cf97810`. This story did not stage it; see the
-spec's Implementation Notes.
+During the 2026-10-19 runs, Platform `HEAD` committed Builds `4aaeed8`, so each
+run reported `HXW009` (source mode warns). Another process staged the Platform
+Builds gitlink, first at `b435f2e` and then at `d7c828a`; the pass-1 amend
+replaced it with `cf97810`, which `39be561` commits. In pass 2 the staged Builds
+gitlink (`fc5cfc0`, then `24322f5`) differs from the `cf97810` pin, so
+`HXW009` appears again.
 
 ## Files
 
@@ -38,6 +41,9 @@ spec's Implementation Notes.
 | [live-tests.txt](live-tests.txt) | Platform gated live cases with the source-built engine: McpCli (`["eventstore"]`, tool path in the plan and in `HXI010`) and EventStore, 2/2 |
 | [clone-identity.txt](clone-identity.txt) | AC4, **non-Platform evidence**: in a disposable McpCli clone, the pinned `4.33.1` run recorded Platform identity `2ac8e73c09fe631c5620723b54784d2e28e8941f`, equal to the clone's `references/Hexalith.Platform` gitlink, and `IsPlatformRepository: false` |
 | [mcpcli-commitlint.txt](mcpcli-commitlint.txt), [builds-commitlint.txt](builds-commitlint.txt) | Both local commit messages pass the owning repository's pinned commitlint |
+| [review-pass2-debug.txt](review-pass2-debug.txt) | Review pass 2, Builds CLI built from `fc5cfc0`, not the pinned tool: `debug` reaches ready (run `88ca6df720ede12bdf7df994f22f79b3`). `HXI010` names the run-scoped DLL and `references/Hexalith.McpCli/src/Hexalith.McpCli/Hexalith.McpCli.csproj`. The README's `break Hexalith.McpCli.Core.Catalog.CatalogService.ListModules` is reported `--pending`, then binds, and is hit (`CatalogService.cs:11`, called from `CliRunner.cs:330`) while `modules` returns `catalog_empty` with exit 2. The checkout stays clean, and `down` removes the workspace and the DLL. `test` builds nothing: without `--profile` it fails with `HXC001`, with one with `HXC002` |
+| [review-pass2-tests.txt](review-pass2-tests.txt) | Review pass 2, Builds: focused `McpCliRunBuildTests` 29/29 (7 new catalog-drift cases) and the full suite 1100/1100 |
+| [builds-commitlint-pass2.txt](builds-commitlint-pass2.txt) | The Builds review-pass-2 commit message passes Builds' pinned commitlint |
 
 ## Acceptance criteria
 

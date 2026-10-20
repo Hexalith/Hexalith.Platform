@@ -152,9 +152,11 @@ only the resources tagged with that run. Runs share fixed Dapr control-plane
 ports (Sentry `50001`, placement `51005`, scheduler `51006`), so start one at a
 time.
 
-McpCli is a short-lived CLI, not a server. For the McpCli manifest, `run`,
-`debug` and `test` also build `references/Hexalith.McpCli/src/Hexalith.McpCli`
-in Debug into the run workspace, using the run's pinned Builds catalog. The
+McpCli is a short-lived CLI, not a server. For the McpCli manifest, `run` and
+`debug` also build `references/Hexalith.McpCli/src/Hexalith.McpCli`
+in Debug into the run workspace, using the run's pinned Builds catalog. `test`
+needs `--profile` naming a declared test; the McpCli declaration declares none,
+so `test` refuses it (`HXC002`) and builds nothing. The
 build never packs or publishes the tool and never writes the checkout's `bin`
 or `obj`. When the environment is ready, an `HXI010` diagnostic with field
 `mcpcli` names the built tool,

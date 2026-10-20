@@ -1,0 +1,115 @@
+# Review pass 2 (2026-10-20): live debug of the McpCli manifest from the Platform root with the Builds CLI built from
+# references/Hexalith.Builds fc5cfc0 (review-fix commit, later amended to 24322f5 with a README-only change), Platform HEAD 13d06bc.
+# Proves the post-review HXI010 text (DLL and project), the README's function-breakpoint recipe verbatim (pending, then bound and hit),
+# that test builds nothing for McpCli, a clean checkout, and down removing the build. Source-built tool: HXW010 (unversioned) and HXW009
+# (staged Builds differs from the Platform HEAD pin) are expected. NOT the pinned-tool AC1 rerun, which follows the release.
+# netcoredbg 3.2.0-1092 (MIT), archive sha256 080eb3b2d2152465f599d3b33d1ee6e747794e11cc0a3773ec689f5e5f2c5afa, in the scratchpad, never committed.
+# Driver: <scratch>/scripts/mcpcli_pass2_proof.sh; <scratch> is the session scratchpad. Times are UTC.
+
+## Inputs 2026-10-20T02:38:14Z
+Platform HEAD 13d06bc36d1bfe90af6762c6409dc6206b197809
+references/Hexalith.Builds staged fc5cfc0f486dba0ea2163f3ebff6d2705f3ed8b7 checkout fc5cfc0f486dba0ea2163f3ebff6d2705f3ed8b7 committed cf978100f7668de135eb8a2adcd535e21b26471b
+references/Hexalith.McpCli staged 742f5b6ead66937f62025b73d77452e0f8126658 checkout 742f5b6ead66937f62025b73d77452e0f8126658 committed 742f5b6ead66937f62025b73d77452e0f8126658
+references/Hexalith.EventStore staged b16be63521e8b784fc68828e0267f892b8e45924 checkout b16be63521e8b784fc68828e0267f892b8e45924 committed b16be63521e8b784fc68828e0267f892b8e45924
+references/Hexalith.Tenants staged 6b62b6b307b10d5acaa86e5a722223bb34dd1b58 checkout 6b62b6b307b10d5acaa86e5a722223bb34dd1b58 committed 6b62b6b307b10d5acaa86e5a722223bb34dd1b58
+references/Hexalith.Memories staged 72a97345b4230e39627cd2026934a547df7d43a4 checkout 72a97345b4230e39627cd2026934a547df7d43a4 committed 72a97345b4230e39627cd2026934a547df7d43a4
+sibling ../mcpcli: mcpcli (HEAD 742f5b6)
+$ git -C references/Hexalith.McpCli status --short --ignored
+(end status)
+containers before: dapr_placement dapr_redis dapr_scheduler dapr_zipkin 
+
+## test refuses the McpCli manifest 2026-10-20T02:38:14Z
+$ dotnet /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll test --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json
+failed: UsageOrManifest
+HXC001 Usage Usage field=arguments: The command line is invalid. (Use --help to supply a supported command and required options.)
+exit 1 (2026-10-20T02:38:14Z)
+(no run-scoped McpCli build exists)
+
+## debug 2026-10-20T02:38:14Z
+$ HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 dotnet /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll debug --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json
+ready: Success
+HXW009 Prerequisite None field=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds: Builds catalog '/home/administrator/projects/hexalith/platform/references/Hexalith.Builds' is staged fc5cfc0f486dba0ea2163f3ebff6d2705f3ed8b7, checked out fc5cfc0f486dba0ea2163f3ebff6d2705f3ed8b7; Platform 13d06bc36d1bfe90af6762c6409dc6206b197809 pins cf978100f7668de135eb8a2adcd535e21b26471b.
+HXW010 Prerequisite None field=/home/administrator/projects/hexalith/platform/hexalith-platform.json: Tool version 1.0.0-20261020023732 is outside Platform range [4.33.1, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '3737029'.
+HXI010 Topology None field=mcpcli: Run-scoped McpCli Debug build '/home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll' of '/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Hexalith.McpCli.csproj'; launch it under a debugger, and down deletes it.
+exit 0 (2026-10-20T02:39:13Z)
+run=88ca6df720ede12bdf7df994f22f79b3 workspace=/home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3
+tool=/home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll
+-rw-r--r-- 1 administrator administrator 86528 Oct 20 04:38 /home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll
+-rw-r--r-- 1 administrator administrator 32868 Oct 20 04:38 /home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.pdb
+plan {'platformActiveModule': 'mcpcli', 'mcpCliToolPath': '/home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll'}
+
+## netcoredbg launch with the README function breakpoint 2026-10-20T02:39:13Z
+NET Core debugger 3.2.0-1 (9744e1f, Release)
+# utc=2026-10-20T02:39:13Z cwd=<scratch>/ncdb-cwd
+# $ <scratch>/tools/netcoredbg/netcoredbg --interpreter=cli -- dotnet /home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll modules
+>>> break Hexalith.McpCli.Core.Catalog.CatalogService.ListModules
+ Breakpoint 1 at Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() --pending, warning: No executable code of the debugger's target code type is associated with this line.
+>>> run
+^running
+breakpoint modified,  Breakpoint 1 at Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() --pending, warning: No executable code of the debugger's target code type is associated with this line.
+breakpoint modified,  Breakpoint 1 at Hexalith.McpCli.Core.Catalog.CatalogService.ListModules()
+breakpoint modified,  Breakpoint 1 at Hexalith.McpCli.Core.Catalog.CatalogService.ListModules()
+breakpoint modified,  Breakpoint 1 at Hexalith.McpCli.Core.Catalog.CatalogService.ListModules()
+stopped, reason: breakpoint 1 hit, thread id: 3745593, stopped threads: all, times= 0, frame={Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:11}
+# HIT=1 utc=2026-10-20T02:39:14Z
+>>> backtrace
+#0: 0x000072a0e7acfe56 Hexalith.McpCli.Core.dll` Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:11
+#1: 0x000072a0e7acf947 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<>c.<CreateModules>b__18_1() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:330
+#2: 0x000072a0e7a92787 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:830
+#3: 0x000072a0e70b28fc System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36>()
+#4: 0x000072a0e7a831e1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<int>.Start<Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36>()
+#5: 0x000072a0e7a91e9e Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.RunAsync()
+#6: 0x000072a0e7a91d76 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.RunAsync() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:804
+#7: 0x000072a0e7a91d0d Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<CreateModules>b__18_0() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:327
+#8: 0x000072a0e7a91c1f System.CommandLine.dll` System.CommandLine.Invocation.AnonymousAsynchronousCommandLineAction.InvokeAsync()
+#9: 0x000072a0e7a913bc System.CommandLine.dll` System.CommandLine.Invocation.InvocationPipeline.<InvokeAsync>d__0.MoveNext()
+#10: 0x000072a0e7a90d1c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<System.CommandLine.Invocation.InvocationPipeline.<InvokeAsync>d__0>()
+#11: 0x000072a0e7a90c8c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<int>.Start<System.CommandLine.Invocation.InvocationPipeline.<InvokeAsync>d__0>()
+#12: 0x000072a0e7a90c40 System.CommandLine.dll` System.CommandLine.Invocation.InvocationPipeline.InvokeAsync()
+#13: 0x000072a0e7a90bc9 System.CommandLine.dll` System.CommandLine.ParseResult.InvokeAsync()
+#14: 0x000072a0e7a84023 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12.MoveNext() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:141
+#15: 0x000072a0e70b28fc System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12>()
+#16: 0x000072a0e7a831e1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<int>.Start<Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12>()
+#17: 0x000072a0e7a830ef Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.InvokeAsync()
+#18: 0x000072a0e7a81a56 Hexalith.McpCli.dll` Hexalith.McpCli.Program.Main() at /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Program.cs:21
+#19: 0x000072a0e7a81896 Hexalith.McpCli.dll` Hexalith.McpCli.Program.<Main>()
+>>> continue
+^running
+{
+  "error": {
+    "code": "catalog_empty",
+    "message": "The Catalog exposes no valid Operations."
+  }
+}
+stopped, reason: exited, exit-code: 2
+^exit
+>>> quit
+# netcoredbg exit=0 breakpoint hits=1
+Exception ignored while finalizing file <_io.BufferedWriter name=4>:
+BrokenPipeError: [Errno 32] Broken pipe
+
+## checkout after the build and debug session 2026-10-20T02:39:17Z
+$ git -C references/Hexalith.McpCli status --short --ignored
+(end status)
+
+## down 2026-10-20T02:39:17Z
+$ dotnet /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll down --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json --run-id 88ca6df720ede12bdf7df994f22f79b3
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+down exit 0
+## after down 2026-10-20T02:39:20Z
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll': No such file or directory
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/88ca6df720ede12bdf7df994f22f79b3': No such file or directory
+containers after: dapr_placement dapr_redis dapr_scheduler dapr_zipkin 
+(end)
+
+## test with a profile 2026-10-20T02:39:29Z
+$ dotnet <builds-cli> test --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json --profile integration
+failed: UsageOrManifest
+HXW009 Prerequisite None field=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds: Builds catalog '/home/administrator/projects/hexalith/platform/references/Hexalith.Builds' is staged fc5cfc0f486dba0ea2163f3ebff6d2705f3ed8b7, checked out fc5cfc0f486dba0ea2163f3ebff6d2705f3ed8b7; Platform 13d06bc36d1bfe90af6762c6409dc6206b197809 pins cf978100f7668de135eb8a2adcd535e21b26471b.
+HXW010 Prerequisite None field=/home/administrator/projects/hexalith/platform/hexalith-platform.json: Tool version 1.0.0-20261020023732 is outside Platform range [4.33.1, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+HXC002 Usage Usage field=profile: Select one declared test using --profile and its declared mode. Filters, attachment, and hosted reuse are unsupported.
+exit 1
+(no run-scoped McpCli build exists)
