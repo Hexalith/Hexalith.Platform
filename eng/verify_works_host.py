@@ -37,6 +37,18 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def require_archive_assembly(artifact, assembly):
+    """Bind the executed package consumer assembly to its selected archive, including extracted-cache contents."""
+    assembly = Path(assembly)
+    digest = sha256(assembly)
+    with zipfile.ZipFile(artifact) as archive:
+        matches = [name for name in archive.namelist() if name.startswith("lib/") and Path(name).name == assembly.name
+                   and hashlib.sha256(archive.read(name)).hexdigest() == digest]
+    if not matches:
+        raise ValueError("Consumer assembly differs from its selected public archive: " + str(assembly))
+    return {"consumerAssemblySha256": digest, "archiveAssemblyEntry": matches[0]}
+
+
 def selected_sdk_version(catalog):
     """Read the one stable public EventStore version selected by the authoritative Builds catalog."""
     values = [item.text for item in ET.parse(catalog).getroot().iter("HexalithEventStoreVersion")]
@@ -439,7 +451,7 @@ def timestamp(value):
 
 def alert_raised_after(name, points_field, observed_field):
     """An alert=1 point the collector received strictly after the phase's observed Degraded state. The publisher starts
-    Unavailable and exports alert=1 before any health publish, so a point received earlier proves no reaction."""
+    Unavailable and exports alert=1 before any health publish. Both export and receipt must follow the observation."""
     def check(state):
         if not isinstance(state, dict):
             return False
@@ -447,7 +459,8 @@ def alert_raised_after(name, points_field, observed_field):
         if observed is None or not isinstance(points, list):
             return False
         return any(isinstance(point, dict) and point.get("Name") == name and point.get("Value") == 1
-                   and (utc_ticks(point.get("ReceivedAt")) or 0) > observed for point in points)
+                   and (utc_ticks(point.get("ReceivedAt")) or 0) > observed
+                   and _integer(point.get("UnixTimeNanoseconds")) and point["UnixTimeNanoseconds"] > observed * 100 for point in points)
     return check
 
 
@@ -589,6 +602,8 @@ PROOFS = {
     "R6": {
         "persisted": [(CALLBACK, {"witness.entries": (count(1), "persisted SDK reminder witness"), "processCandidate": (is_true, "process candidate persisted")})],
         "negative": [(HA, {"actualStaleCallbackObserved": (is_true, "stale Scheduler callback observed"), "staleSchedulerFireResumed": (equals(1), "stale firing caused no second resume"),
+                           "resumeCountAtPrimaryStop": (equals(0), "no resume committed when the primary stopped"),
+                           "primaryStoppedBeforeDue": (is_true, "primary stopped before the scheduled date"),
                            "retiredReminderRemovedAfterFiring": (is_true, "retired reminder removed"), "": (greater("afterCallbacks", "beforeCallbacks"), "a real callback fired")})],
         "restart": [("cascade-expiry-restart-receipt-and-checkpoint", {"replay.ReplayObserved": (is_true, "lost receipt replayed after restart"),
                                                                        "childExpired": (equals(1), "one child expiry"), "expiryReceipt.disposition": (equals(0), "expiry receipt Success")}),
@@ -828,6 +843,7 @@ def run_verification(args):
         summary["platformConsumerSources"] = {str(path.relative_to(platform)): sha256(path) for path in platform_consumers
             if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
         summary["worksConsumerSource"] = source_snapshot(works)
+        summary["fixtureSources"] = fixture_sources(works)
         summary["verifierSha256"] = sha256(Path(__file__))
         summary["verifierHelpers"] = {name: sha256(Path(__file__).with_name(name)) for name in
             ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py"]}
@@ -908,8 +924,8 @@ def run_verification(args):
                 raise ValueError("Published producer lacks a repository commit: " + package)
             producer_evidence[package] = {"version": restored, "sha256": sha256(artifact), "source": metadata["source"],
                 "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
+            producer_evidence[package].update(require_archive_assembly(artifact, consumer_directory / (package + ".dll")))
         summary["publishedProducers"] = producer_evidence
-        summary["fixtureSources"] = fixture_sources(works)
         identity_root = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
         summary["identityProvenance"] = {"scope": "explicit-test-only-source; no published Platform.Identity package",
             "project": str(identity_root / "Hexalith.Platform.Identity.csproj"),

@@ -1,6 +1,6 @@
 # Works host parity and rollback
 
-Story 4.16 qualification is **in progress** until independent review accepts it.
+Story 4.16 synthetic parity and rollback are **qualified on public EventStore 3.126.0**. The implementation is ready for review.
 The accepted 4.15 evidence remains preserved. A passing supporting build or an
 individual live scenario does not accept the complete Works gate. The retained
 Works AppHost and ServiceDefaults stay usable until 4.16 acceptance and the
@@ -47,22 +47,30 @@ composed. Its
 retains the command, ledger, logs and outcome records. Acceptance stays with
 independent review.
 
+The owner selected public **3.126.0** for fresh requalification on 2026-10-19. Earlier results above qualify only their recorded 3.125.1 graphs; 3.126.0 acceptance requires a new complete verifier run.
+
+The fresh [3.126.0 packet](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/public-3.126.0-2026-10-19/README.md) records canonical exit 0, all eleven rows, complete rollback, zero skips, and a separate 4/4 retained-host source Debug pass. Concurrent Platform and Builds edits were preserved by running from the recorded isolated source snapshot. Story 4.9 cutover remains separate.
+
 Run from the Platform checkout with a complete Works source checkout and an exact
 export of the qualified producer tag:
 
 ```bash
-export SDK=/tmp/works-parity-sdk-3.125.1
-mkdir "$SDK"
-git -C ../works/references/Hexalith.EventStore archive v3.125.1 | tar -x -C "$SDK"
+export WORKS_PARITY_SDK_ROOT=/tmp/works-parity-sdk-3.126.0
+mkdir "$WORKS_PARITY_SDK_ROOT"
+git -C ../works/references/Hexalith.EventStore archive v3.126.0 | tar -x -C "$WORKS_PARITY_SDK_ROOT"
 # git archive applies eol attributes; restore the one rewritten blob byte for byte.
-git -C ../works/references/Hexalith.EventStore cat-file blob v3.125.1:global.json > "$SDK/global.json"
-./eng/verify-works-host.sh --works-root ../works --runtime-sdk-root "$SDK" --artifacts-path /tmp/works-parity-new-run
+git -C ../works/references/Hexalith.EventStore cat-file blob v3.126.0:global.json > "$WORKS_PARITY_SDK_ROOT/global.json"
+# Reuse the already initialized root-declared Builds dependency in the ordinary source export.
+# This creates no nested Git checkout.
+rmdir "$WORKS_PARITY_SDK_ROOT/references/Hexalith.Builds"
+ln -s "$(realpath ../works/references/Hexalith.Builds)" "$WORKS_PARITY_SDK_ROOT/references/Hexalith.Builds"
+./eng/verify-works-host.sh --works-root ../works --runtime-sdk-root "$WORKS_PARITY_SDK_ROOT" --artifacts-path /tmp/works-parity-new-run
 ```
 
 `--runtime-sdk-root` is required while the Works EventStore gitlink is `v3.125.0`
 (`f43b121c`): without it the verifier qualifies the gitlink source against the
-3.125.1 archives and refuses the two Aspire hosting files that differ. The export
-must come from the root-declared SDK checkout's object store; it never checks out
+3.126.0 archives and refuses any differing runtime/build files. The export
+must come from the root-declared SDK checkout's object store. Its ordinary source link reuses Works' root-declared Builds catalog, which must select the same SDK and compatible dependency versions. It never checks out
 or mutates that shared checkout.
 
 Choose a fresh, empty artifacts directory for each attempt. The verifier records
@@ -113,7 +121,7 @@ it does not stop foreign hosts.
 
 Debug development consumers use source references. Release consumers restore the
 published EventStore graph selected by the Platform Builds catalog, currently
-3.125.1. The verifier reads that single stable selection. It refuses a Works
+3.126.0. The verifier reads that single stable selection. It refuses a Works
 consumer whose default pin in either `Directory.Build.props` or
 `Directory.Packages.props` differs, and a file host whose `#:package`
 `Hexalith.EventStore.*` directives in `apphost.cs` differ. It binds the explicit producer source to the
@@ -128,8 +136,8 @@ Platform.Identity remains an explicitly identified test-only source dependency.
 
 ## Required producer and consumer evidence
 
-Every EventStore package below is qualified at public version **3.125.1**
-(tag `v3.125.1`, producer `55432c50d4b6f1666b4bd6d4a60bfc263b2d0e0b`). The
+Every EventStore package below must qualify at public version **3.126.0**
+(tag `v3.126.0`, producer `fcf78d6cafb6c0c9f52dc350a9a09aff54ded288`). The
 executable ledger owns exact hashes, commands and outcome records; this table
 describes the required evidence rather than asserting that a run has passed.
 
@@ -205,7 +213,7 @@ coupled budget validation.
   callers. `works` holds its exact command, query, status, stream-read and
   trusted-effect routes. `eventstore-admin` holds the selected producer's
   production-template grant, unchanged in substance: `/**` with GET, POST and PUT
-  (`deploy/dapr/accesscontrol.yaml:34-46` at `v3.125.1`), with this topology's
+  (`deploy/dapr/accesscontrol.yaml:34-46` at `v3.126.0`), with this topology's
   `public` trust domain and `default` namespace. Admin.Server invokes EventStore
   through its own sidecar for health, projection and backup operations, which the
   retained host also allows. The wildcard reaches the admin passthrough endpoints,

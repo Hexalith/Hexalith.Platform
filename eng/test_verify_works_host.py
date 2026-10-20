@@ -8,13 +8,14 @@ from pathlib import Path
 import tempfile
 import tarfile
 import unittest
+import zipfile
 from unittest.mock import patch
 
 import verify_works_host
 from verify_works_host import (CROSS_CHECKS, DUMP_INVENTORY, PROOF_NAMES, PROOFS, RESTORE_PHASE, ROWS, SNAPSHOT_PHASE, SUPPORTING_CLASSES,
                                alert_cleared_after_raise, alert_raised_after, bind_persisted_outcomes, delegated_identity, fixture_sources,
                                platform_composition_literals, utc_ticks,
-                               require_consumer_pin, require_consumer_pins, require_host_package_pins, require_identical_runtime,
+                               require_archive_assembly, require_consumer_pin, require_consumer_pins, require_host_package_pins, require_identical_runtime,
                                require_passed_tests, require_published_runtime_source, required_phases, restored_fleet_matches,
                                selected_sdk_version, sha256, verify_host_records)
 
@@ -70,8 +71,8 @@ def valid_states():
         'periodic-writers-disabled-readiness-degraded': {'status': 'Degraded'},
         # The startup point precedes the observed Degraded state; only the later raise qualifies.
         'disabled-recovery-otlp-alert-export': {'degradedObservedAt': '2026-10-19T07:00:05.1234567+00:00',
-                                                'points': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:01.0000000+00:00'},
-                                                           {'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:06.0000000+00:00'}]},
+                                                'points': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:01.0000000+00:00', 'UnixTimeNanoseconds': utc_ticks('2026-10-19T07:00:01Z') * 100},
+                                                           {'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'ReceivedAt': '2026-10-19T07:00:06.0000000+00:00', 'UnixTimeNanoseconds': utc_ticks('2026-10-19T07:00:06Z') * 100}]},
         'durable-recovery-alert-export-and-clear': [{'Name': 'eventstore.domain.recovery.alert', 'Value': 1, 'UnixTimeNanoseconds': 10},
                                                     {'Name': 'eventstore.domain.recovery.alert', 'Value': 0, 'UnixTimeNanoseconds': 20}],
         'platform-named-redelivery-capture-through-commit-complete-family': {
@@ -94,7 +95,7 @@ def valid_states():
         'successful-callback-no-periodic-recovery': {'witness': {'entries': [{}]}, 'processCandidate': True},
         'platform-two-host-ha-lost-firing-stale-callback-recovery': {
             'actualStaleCallbackObserved': True, 'staleSchedulerFireResumed': 1, 'retiredReminderRemovedAfterFiring': True,
-            'beforeCallbacks': 1, 'afterCallbacks': 2,
+            'beforeCallbacks': 1, 'afterCallbacks': 2, 'resumeCountAtPrimaryStop': 0, 'primaryStoppedBeforeDue': True,
             'trust': {'trustedClientAcceptedByServer': True, 'noClientCertificateRefusedByServer': True, 'foreignCaClientRefusedByServer': True,
                       'nameMismatchRejectedByProbe': True, 'serverIdentity': 'spiffe://public/ns/default/works'}},
         'cascade-expiry-restart-receipt-and-checkpoint': {'replay': {'ReplayObserved': True}, 'childExpired': 1, 'expiryReceipt': {'disposition': 0}},
@@ -583,10 +584,17 @@ class WorksEvidenceGateTests(unittest.TestCase):
         observed = '2026-10-19T07:00:05.1234567+00:00'
         def state(*points, at=observed):
             return {'degradedObservedAt': at, 'points': [{'Name': 'eventstore.domain.recovery.alert', 'Value': value, 'ReceivedAt': received}
-                                                         for value, received in points]}
+                                                         | {'UnixTimeNanoseconds': utc_ticks(received) * 100} for value, received in points]}
         self.assertTrue(check(state((1, '2026-10-19T07:00:05.1234568+00:00'))))
         self.assertTrue(check(state((1, '2026-10-19T09:00:06+02:00'))))
         self.assertTrue(check(state((1, '2026-10-19T07:00:06Z'))))
+        delayed = state((1, '2026-10-19T07:00:06Z'))
+        delayed['points'][0]['UnixTimeNanoseconds'] = utc_ticks('2026-10-19T07:00:01Z') * 100
+        self.assertFalse(check(delayed), 'A buffered startup export received later must not qualify')
+        delayed['points'][0]['UnixTimeNanoseconds'] = utc_ticks(observed) * 100
+        self.assertFalse(check(delayed), 'An export at the same observed tick must not qualify')
+        del delayed['points'][0]['UnixTimeNanoseconds']
+        self.assertFalse(check(delayed), 'A missing exporter timestamp must not qualify')
         for name, refused in [
                 ('startup point only', state((1, '2026-10-19T07:00:01+00:00'))),
                 ('same tick', state((1, observed))),
@@ -662,6 +670,38 @@ class WorksEvidenceGateTests(unittest.TestCase):
                                                           'tests/Hexalith.Works.IntegrationTests/Nested/WorksSdkProofProducer.cs',
                                                           'tests/Hexalith.Works.IntegrationTests/WorksSdkProofResponseHandler.cs'])
 
+    def test_extracted_package_assembly_must_match_the_selected_archive(self):
+        root = self.directory()
+        assembly = root / 'Hexalith.EventStore.Client.dll'
+        assembly.write_bytes(b'published-assembly')
+        artifact = root / 'package.nupkg'
+        with zipfile.ZipFile(artifact, 'w') as archive:
+            archive.writestr('lib/net10.0/' + assembly.name, assembly.read_bytes())
+        bound = require_archive_assembly(artifact, assembly)
+        self.assertEqual(bound['consumerAssemblySha256'], sha256(assembly))
+        self.assertEqual(bound['archiveAssemblyEntry'], 'lib/net10.0/' + assembly.name)
+        assembly.write_bytes(b'modified-extracted-assembly')
+        with self.assertRaisesRegex(ValueError, 'differs from its selected public archive'):
+            require_archive_assembly(artifact, assembly)
+
+    def test_fixture_inventory_is_bound_before_the_first_command(self):
+        works = self.directory()
+        artifacts = self.directory() / 'evidence'
+        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts, 'prepare_only': False})()
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        fixtures = {'tests/Hexalith.Works.IntegrationTests/fixture.cs': DIGEST}
+        def command(*unused, **kwargs):
+            self.assertEqual(json.loads((artifacts / 'ledger.json').read_text())['fixtureSources'], fixtures)
+            raise RuntimeError('stopped after checking the pre-command inventory')
+        with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
+                patch('verify_works_host.require_consumer_pins', return_value={}), \
+                patch('verify_works_host.require_host_package_pins', return_value={}), \
+                patch('verify_works_host.source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.fixture_sources', return_value=fixtures), \
+                patch('verify_works_host.subprocess.run', side_effect=command):
+            self.assertEqual(verify_works_host.run_verification(args), 1)
+        self.assertIn('pre-command inventory', json.loads((artifacts / 'ledger.json').read_text())['failure'])
+
     def test_unexpected_failure_types_are_recorded_in_the_ledger(self):
         snapshot = {'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
         cases = [
@@ -681,6 +721,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     patch('verify_works_host.require_consumer_pins', return_value={}), \
                     patch('verify_works_host.require_host_package_pins', return_value={}), \
                     patch('verify_works_host.source_snapshot', return_value=snapshot | {'root': str(works)}, side_effect=failures.get('snapshot')), \
+                    patch('verify_works_host.fixture_sources', return_value={}), \
                     patch('verify_works_host.subprocess.run', side_effect=failures.get('run', AssertionError('no command expected'))):
                 self.assertEqual(verify_works_host.run_verification(args), 1)
                 ledger = json.loads((artifacts / 'ledger.json').read_text())
