@@ -685,7 +685,6 @@
   summary: Cover digest-only PostgreSQL requested image references in retention backend binding tests.
   evidence: R4-V1: pre-verified review found all four RetentionBackendBindsActualLoadedImageInsteadOfRequestedName cases use the tagged PostgresImage constant. No case exercises IsRequestedPostgres's supported digest-only branch; removing it leaves tests green and a supported backend observation incomplete.
 
-<<<<<<< HEAD
 ## Deferred from: code review of spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md (2026-10-17, chunk 1a)
 
 - Debug rewrites only `mapping.Mode`; a package-origin mapping passed programmatically may fail in `Closure.Load` (unverified medium).
