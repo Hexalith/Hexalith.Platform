@@ -1,0 +1,46 @@
+{
+  "classification": "offline source/size evidence, no component or physical qualification",
+  "verifiedFiles": 32,
+  "syntheticTwoMaxFields": {
+    "targetCount": 1000,
+    "bytes": 4284001,
+    "sha256": "4ca8574a1760760ae7cdfe6eb576c81e1bc1034d9ea76097d9ae1db03eb961ec",
+    "defaultDaprBytes": 4194304,
+    "excessBytes": 89697,
+    "fitsDefaultApi": false,
+    "scope": "complete identity vector alone; enclosing request/proof/protobuf excluded"
+  },
+  "syntheticThreeMaxFields": {
+    "targetCount": 1000,
+    "bytes": 6316001,
+    "sha256": "f1edfc6e2b366475b1b9bdcd40954071aa573f3bc9de4c6878bbd7b6df475966",
+    "defaultDaprBytes": 4194304,
+    "excessBytes": 2121697,
+    "fitsDefaultApi": false,
+    "scope": "complete identity vector alone; enclosing request/proof/protobuf excluded"
+  },
+  "syntheticSevenMaxFields": {
+    "targetCount": 1000,
+    "bytes": 14487001,
+    "sha256": "e1b0f7271264b5fad4ecbaae8dee6715495645dc8b9faaf313ea709558800b69",
+    "defaultDaprBytes": 4194304,
+    "excessBytes": 10292697,
+    "fitsDefaultApi": false,
+    "scope": "complete identity vector alone; enclosing request/proof/protobuf excluded"
+  },
+  "retainedBufferCounterexample": {
+    "trace": [
+      "a raw owned synthetic payload enters BindingRequest.Data",
+      "DaprClientGrpc copies it via ByteString.CopyFrom(request.Data.Span)",
+      "ByteString.CopyFrom(ReadOnlySpan<byte>) calls bytes.ToArray()",
+      "zeroing caller input does not zero that independent array",
+      "BindingResponse retains response.Data.Memory without IDisposable/clear API",
+      "sidecar grpc buffer Free returns data to sync.Pool; default clear happens on future Get, not current Put"
+    ],
+    "missingPrimitive": "authenticated per-delivery quiescence and disposal/zeroing acknowledgement across all copies, or independently accepted exact-incarnation process/host isolation and termination proof",
+    "observedScope": "source-backed API/lifetime counterexample; no real key bytes or process memory dumps used"
+  },
+  "noCompleteCustodyArtifactIdentified": true,
+  "physicalGuaranteesEstablished": false,
+  "realLiveQualification": "Blocked"
+}

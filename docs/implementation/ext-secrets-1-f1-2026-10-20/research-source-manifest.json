@@ -1,0 +1,349 @@
+{
+  "pins": {
+    "dapr/dapr": [
+      "v1.18.1",
+      "4cef924a0b1360c69d810deec8cd59bf853f6721"
+    ],
+    "dapr/dotnet-sdk": [
+      "v1.18.10",
+      "f3e09addc0572e40175f9683f4af5ddc40981ea5"
+    ],
+    "dapr/components-contrib": [
+      "v1.18.0",
+      "72e6a52340620aa41c4deecc40cbc6f0007b9afe"
+    ],
+    "grpc/grpc-go": [
+      "v1.80.0",
+      "397e45edaa68f8763773bbaaf539cf7894169cd2"
+    ],
+    "grpc/grpc-dotnet": [
+      "v2.80.0",
+      "f22747c72676120b2bc69a1ba7c8bed995e29b1b"
+    ],
+    "protocolbuffers/protobuf": [
+      "v35.0",
+      "e59364c38e10de3686a3305ff11fbfc59a10dbd8"
+    ]
+  },
+  "files": [
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "go.mod",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/go.mod",
+      "artifact": "sources/dapr/dapr/go.mod",
+      "bytes": 28536,
+      "sha256": "7ed7c7d9cd9c6dfa964b82f9041676f403bf2bab79969f5a5557b052105ceaf4"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "dapr/proto/components/v1/bindings.proto",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/dapr/proto/components/v1/bindings.proto",
+      "artifact": "sources/dapr/dapr/dapr/proto/components/v1/bindings.proto",
+      "bytes": 3810,
+      "sha256": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "dapr/proto/components/v1/common.proto",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/dapr/proto/components/v1/common.proto",
+      "artifact": "sources/dapr/dapr/dapr/proto/components/v1/common.proto",
+      "bytes": 1215,
+      "sha256": "b1f7bfbd62f76fd6b91d52969a5dea66f2615c3ed847fe9ed49f7229b1a9555d"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "dapr/proto/components/v1/secretstore.proto",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/dapr/proto/components/v1/secretstore.proto",
+      "artifact": "sources/dapr/dapr/dapr/proto/components/v1/secretstore.proto",
+      "bytes": 2726,
+      "sha256": "bceec0f3f53220860de2d4f6d96b82f66aa01b0cec33e0e3bb9f3a4a740c8ec6"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/components/bindings/output_pluggable.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/bindings/output_pluggable.go",
+      "artifact": "sources/dapr/dapr/pkg/components/bindings/output_pluggable.go",
+      "bytes": 3830,
+      "sha256": "c72a161818c210aa8470c818957aca963772a1b1a8dd800d3744abd92a323d72"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/components/pluggable/grpc.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/grpc.go",
+      "artifact": "sources/dapr/dapr/pkg/components/pluggable/grpc.go",
+      "bytes": 6411,
+      "sha256": "81a9777506f23de7e0922c95b5995a3f2399f7f75a1321c936447989a68eda5a"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/components/pluggable/discovery.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/discovery.go",
+      "artifact": "sources/dapr/dapr/pkg/components/pluggable/discovery.go",
+      "bytes": 5327,
+      "sha256": "0389143a20eb28c209550f8ac173c8242e46ea282e4ce5333a26ad7f88788992"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/api/grpc/grpc.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/api/grpc/grpc.go",
+      "artifact": "sources/dapr/dapr/pkg/api/grpc/grpc.go",
+      "bytes": 50094,
+      "sha256": "6beee9179e5eb00c46c798a4300ebaec00478d96a3d4fe297e41bdd368c495c8"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/api/grpc/server.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/api/grpc/server.go",
+      "artifact": "sources/dapr/dapr/pkg/api/grpc/server.go",
+      "bytes": 13288,
+      "sha256": "1b4f56b441e92822a0b42c63d54b4450cfe45a94fe2a4736ad14ff54dc7dfbe3"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/runtime/config.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/config.go",
+      "artifact": "sources/dapr/dapr/pkg/runtime/config.go",
+      "bytes": 19815,
+      "sha256": "77d5a0960ba97a1006ba5cc4b25e3e7756029ebb79d54bc4c22efbd8b1d5e52d"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "cmd/daprd/options/options.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/cmd/daprd/options/options.go",
+      "artifact": "sources/dapr/dapr/cmd/daprd/options/options.go",
+      "bytes": 15658,
+      "sha256": "3053ec5209f3ce32cac407f533f3b08b9914223839bfd904f7e40c81af405d06"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/runtime/processor/binding/send.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/processor/binding/send.go",
+      "artifact": "sources/dapr/dapr/pkg/runtime/processor/binding/send.go",
+      "bytes": 14338,
+      "sha256": "acd7fbe16d9206c89a143382dbb22d86d7742ce54ae0efd3bfcade46a28f5e1d"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/resiliency/resiliency.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/resiliency/resiliency.go",
+      "artifact": "sources/dapr/dapr/pkg/resiliency/resiliency.go",
+      "bytes": 35031,
+      "sha256": "5695566487350b3d63bfe0e48f736ed13807522974805967e2cbf62db136163f"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/resiliency/policy.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/resiliency/policy.go",
+      "artifact": "sources/dapr/dapr/pkg/resiliency/policy.go",
+      "bytes": 8394,
+      "sha256": "24b9379fe46cb4ca2bd9544d141ba42e24451a57287ecae0d91ab4c5c24dd4d6"
+    },
+    {
+      "repository": "dapr/dapr",
+      "version": "v1.18.1",
+      "commit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+      "path": "pkg/runtime/runtime.go",
+      "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/runtime.go",
+      "artifact": "sources/dapr/dapr/pkg/runtime/runtime.go",
+      "bytes": 54104,
+      "sha256": "c39cfdbf7e46815a88655fc6e56e6cf01eeb33c576170f09561864764e0dab6e"
+    },
+    {
+      "repository": "dapr/dotnet-sdk",
+      "version": "v1.18.10",
+      "commit": "f3e09addc0572e40175f9683f4af5ddc40981ea5",
+      "path": "src/Dapr.Client/DaprClientGrpc.cs",
+      "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/DaprClientGrpc.cs",
+      "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/DaprClientGrpc.cs",
+      "bytes": 93008,
+      "sha256": "deffefd746e37f275c3592ce0e9be4483b49b81c3634bd92fedcdc9f88a92baf"
+    },
+    {
+      "repository": "dapr/dotnet-sdk",
+      "version": "v1.18.10",
+      "commit": "f3e09addc0572e40175f9683f4af5ddc40981ea5",
+      "path": "src/Dapr.Client/DaprClientBuilder.cs",
+      "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/DaprClientBuilder.cs",
+      "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/DaprClientBuilder.cs",
+      "bytes": 8237,
+      "sha256": "1489a327fcb0bd4812a437a9da34b02bccd51e0afff6bea9f93c43ac0c10bb81"
+    },
+    {
+      "repository": "dapr/dotnet-sdk",
+      "version": "v1.18.10",
+      "commit": "f3e09addc0572e40175f9683f4af5ddc40981ea5",
+      "path": "src/Dapr.Client/TypeConverters.cs",
+      "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/TypeConverters.cs",
+      "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/TypeConverters.cs",
+      "bytes": 2235,
+      "sha256": "83173124f90a22970137e8a7c5e309244308f06319c2336529c0e7a2eb755c1d"
+    },
+    {
+      "repository": "dapr/dotnet-sdk",
+      "version": "v1.18.10",
+      "commit": "f3e09addc0572e40175f9683f4af5ddc40981ea5",
+      "path": "src/Dapr.Client/BindingRequest.cs",
+      "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/BindingRequest.cs",
+      "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/BindingRequest.cs",
+      "bytes": 1970,
+      "sha256": "5de0e47c3459319bde04117a3abcd4b281c4ed0ceac61682ad30495c7bb0ef8c"
+    },
+    {
+      "repository": "dapr/dotnet-sdk",
+      "version": "v1.18.10",
+      "commit": "f3e09addc0572e40175f9683f4af5ddc40981ea5",
+      "path": "src/Dapr.Client/BindingResponse.cs",
+      "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/BindingResponse.cs",
+      "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/BindingResponse.cs",
+      "bytes": 1819,
+      "sha256": "d4918296cbe5cbdcf0ff4b343609f7057bf69fd2a681f4c468588d5f8fcd6795"
+    },
+    {
+      "repository": "dapr/components-contrib",
+      "version": "v1.18.0",
+      "commit": "72e6a52340620aa41c4deecc40cbc6f0007b9afe",
+      "path": "crypto/subtlecrypto.go",
+      "url": "https://raw.githubusercontent.com/dapr/components-contrib/72e6a52340620aa41c4deecc40cbc6f0007b9afe/crypto/subtlecrypto.go",
+      "artifact": "sources/dapr/components-contrib/crypto/subtlecrypto.go",
+      "bytes": 4719,
+      "sha256": "0eb9339b6d993c9fa8761306ae6ab098fba8071d8952cd152e472cb25665246b"
+    },
+    {
+      "repository": "dapr/components-contrib",
+      "version": "v1.18.0",
+      "commit": "72e6a52340620aa41c4deecc40cbc6f0007b9afe",
+      "path": "secretstores/secret_store.go",
+      "url": "https://raw.githubusercontent.com/dapr/components-contrib/72e6a52340620aa41c4deecc40cbc6f0007b9afe/secretstores/secret_store.go",
+      "artifact": "sources/dapr/components-contrib/secretstores/secret_store.go",
+      "bytes": 1790,
+      "sha256": "b8dac712a43b4f23052c487af8a178304a576b21d240526fdb20657eb02f5909"
+    },
+    {
+      "repository": "dapr/components-contrib",
+      "version": "v1.18.0",
+      "commit": "72e6a52340620aa41c4deecc40cbc6f0007b9afe",
+      "path": "bindings/requests.go",
+      "url": "https://raw.githubusercontent.com/dapr/components-contrib/72e6a52340620aa41c4deecc40cbc6f0007b9afe/bindings/requests.go",
+      "artifact": "sources/dapr/components-contrib/bindings/requests.go",
+      "bytes": 1952,
+      "sha256": "b1e0e2dc2e1fce7cf5ee386459594dde757be6b6a12834a71e1f7e6bd3aa0fa2"
+    },
+    {
+      "repository": "grpc/grpc-go",
+      "version": "v1.80.0",
+      "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+      "path": "clientconn.go",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/clientconn.go",
+      "artifact": "sources/grpc/grpc-go/clientconn.go",
+      "bytes": 67613,
+      "sha256": "d46d518fe7c494bdc047e4c8b55b0feab3c1c019df956c72dea9a0441c06e0c2"
+    },
+    {
+      "repository": "grpc/grpc-go",
+      "version": "v1.80.0",
+      "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+      "path": "server.go",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/server.go",
+      "artifact": "sources/grpc/grpc-go/server.go",
+      "bytes": 72653,
+      "sha256": "af57f92e3ecf2adf8e832afd074a267a5bb370ab4b4241842dbe9155e33f3b8a"
+    },
+    {
+      "repository": "grpc/grpc-go",
+      "version": "v1.80.0",
+      "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+      "path": "rpc_util.go",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/rpc_util.go",
+      "artifact": "sources/grpc/grpc-go/rpc_util.go",
+      "bytes": 36477,
+      "sha256": "0e605aac7acc465edb8bab64b458729f0f07da8364757cc7ea1392f463578a97"
+    },
+    {
+      "repository": "grpc/grpc-go",
+      "version": "v1.80.0",
+      "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+      "path": "mem/buffer_pool.go",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/mem/buffer_pool.go",
+      "artifact": "sources/grpc/grpc-go/mem/buffer_pool.go",
+      "bytes": 2918,
+      "sha256": "64c9863332bad069a10ad838b2ffa40d05c3f0efb22075891df154d83bc529b1"
+    },
+    {
+      "repository": "grpc/grpc-go",
+      "version": "v1.80.0",
+      "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+      "path": "mem/buffers.go",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/mem/buffers.go",
+      "artifact": "sources/grpc/grpc-go/mem/buffers.go",
+      "bytes": 7531,
+      "sha256": "adc16bb1f590d614138eb3f07ca0be83b7b72dffe725b76b84611aabcb162d92"
+    },
+    {
+      "repository": "grpc/grpc-go",
+      "version": "v1.80.0",
+      "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+      "path": "internal/mem/buffer_pool.go",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/internal/mem/buffer_pool.go",
+      "artifact": "sources/grpc/grpc-go/internal/mem/buffer_pool.go",
+      "bytes": 11295,
+      "sha256": "43cfab5932866aa115c222e794148143ece936b3ec7a07481659634920e78680"
+    },
+    {
+      "repository": "grpc/grpc-dotnet",
+      "version": "v2.80.0",
+      "commit": "f22747c72676120b2bc69a1ba7c8bed995e29b1b",
+      "path": "src/Grpc.Net.Client/GrpcChannelOptions.cs",
+      "url": "https://raw.githubusercontent.com/grpc/grpc-dotnet/f22747c72676120b2bc69a1ba7c8bed995e29b1b/src/Grpc.Net.Client/GrpcChannelOptions.cs",
+      "artifact": "sources/grpc/grpc-dotnet/src/Grpc.Net.Client/GrpcChannelOptions.cs",
+      "bytes": 14598,
+      "sha256": "19a9313d5e2e65360f3a955d7ddcc4585e5908612831d3be09bb45e8f78c5ba4"
+    },
+    {
+      "repository": "protocolbuffers/protobuf",
+      "version": "v35.0",
+      "commit": "e59364c38e10de3686a3305ff11fbfc59a10dbd8",
+      "path": "csharp/src/Google.Protobuf/ByteString.cs",
+      "url": "https://raw.githubusercontent.com/protocolbuffers/protobuf/e59364c38e10de3686a3305ff11fbfc59a10dbd8/csharp/src/Google.Protobuf/ByteString.cs",
+      "artifact": "sources/protocolbuffers/protobuf/csharp/src/Google.Protobuf/ByteString.cs",
+      "bytes": 16280,
+      "sha256": "73c0540418a9d74894f851c38157307bfd27a30998c9b658425696c0bbe0e9be"
+    },
+    {
+      "repository": "dapr/components-contrib",
+      "version": "v1.18.0",
+      "commit": "72e6a52340620aa41c4deecc40cbc6f0007b9afe",
+      "url": "https://api.github.com/repos/dapr/components-contrib/git/trees/72e6a52340620aa41c4deecc40cbc6f0007b9afe?recursive=1",
+      "artifact": "sources/components-contrib-tree.json",
+      "bytes": 694138,
+      "sha256": "06871b43f7ea8b2dfef45deb3b4a7fb182f59468a4ee07a3f486e898b5f046e1"
+    }
+  ]
+}

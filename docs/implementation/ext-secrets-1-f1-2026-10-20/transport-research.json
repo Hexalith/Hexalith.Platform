@@ -1,0 +1,435 @@
+{
+  "scope": "F1 read-only primary-source and offline synthetic byte-limit feasibility; no infrastructure provisioning, native destruction, real credentials/key material, owner qualification, F0 rerun or register edits",
+  "baselineCandidate": "69689ab00b2056c6f311af9cb4120fb38c8c766d",
+  "localCandidateEvidence": [
+    {
+      "candidate": "69689ab00b2056c6f311af9cb4120fb38c8c766d",
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyObjectIdentity.cs",
+      "artifact": "candidate-sources/src/Hexalith.Platform.Custody/CustodyKeyObjectIdentity.cs",
+      "sha256": "ce4d4cfeb95563dfbf003b13a44954cb983635e6a31849897af7034e5a13c999"
+    },
+    {
+      "candidate": "69689ab00b2056c6f311af9cb4120fb38c8c766d",
+      "path": "src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+      "artifact": "candidate-sources/src/Hexalith.Platform.Custody/CustodyKeyLifecycleActor.cs",
+      "sha256": "76acb865e740c9259020cccae2c53a478298f7dc8a64ad29016097e72f1e8213"
+    }
+  ],
+  "result": "Transport is a viable provider-neutral extension surface for bounded value-free calls; complete custody contract remains infeasible to qualify on current artifacts. No concrete complete component/provider artifact was identified. This is not a proof of universal impossibility.",
+  "findings": [
+    {
+      "id": "F1-T1",
+      "capability": "Exact arbitrary bytes and operation allowlist",
+      "status": "Source verified; physical semantics absent",
+      "fact": "Raw BindingRequest path copies Data into protobuf bytes without JSON recanonicalization. Generic InvokeBindingAsync<T> serializes JSON with configured options and must not define signed canonical bytes. Binding operation names are extensible, then checked against ListOperations; success proves no private authorization or custody primitive.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/DaprClientGrpc.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/DaprClientGrpc.cs",
+          "sha256": "deffefd746e37f275c3592ce0e9be4483b49b81c3634bd92fedcdc9f88a92baf",
+          "lines": [
+            284,
+            364
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/TypeConverters.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/TypeConverters.cs",
+          "sha256": "83173124f90a22970137e8a7c5e309244308f06319c2336529c0e7a2eb755c1d",
+          "lines": [
+            32,
+            51
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/components-contrib/72e6a52340620aa41c4deecc40cbc6f0007b9afe/bindings/requests.go",
+          "artifact": "sources/dapr/components-contrib/bindings/requests.go",
+          "sha256": "b1e0e2dc2e1fce7cf5ee386459594dde757be6b6a12834a71e1f7e6bd3aa0fa2",
+          "lines": [
+            21,
+            37
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/processor/binding/send.go",
+          "artifact": "sources/dapr/dapr/pkg/runtime/processor/binding/send.go",
+          "sha256": "acd7fbe16d9206c89a143382dbb22d86d7742ce54ae0efd3bfcade46a28f5e1d",
+          "lines": [
+            192,
+            217
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F1-T2",
+      "capability": "Complete 1000-target input and bounded original pages",
+      "status": "Default full-input gate fails; page transport envelope feasible",
+      "fact": "Daprd default MaxRequestBodySize is 4,194,304 bytes; its API gRPC server applies this to both send and receive messages. --max-body-size is a supported API server option, not a pluggable-client receive override. grpc-go pluggable client default response limit is separately 4 MiB and output connector specifies no override. SDK grpc-dotnet receive default is 4 MiB. Even with short tenant and only object/alias at 2048 bytes, the 1000 identity vector is 4,284,001 bytes. A 1000 identity vector with just tenant/object/alias at existing 2048-byte limits already uses 6,316,001 ASCII canonical bytes excluding proof/envelope/protobuf; all seven text fields at validator maxima use 14,487,001. These are lower-bound witnesses, not the complete worst escaped-field request. Do not silently split targets, shrink fields, raise limits, compress, or infer a deployment override. A <=256 KiB original page inside <=1 MiB encoded frame leaves transport headroom but still needs exact authorization/identity/digest/reassembly verification.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/config.go",
+          "artifact": "sources/dapr/dapr/pkg/runtime/config.go",
+          "sha256": "77d5a0960ba97a1006ba5cc4b25e3e7756029ebb79d54bc4c22efbd8b1d5e52d",
+          "lines": [
+            61,
+            68
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/api/grpc/server.go",
+          "artifact": "sources/dapr/dapr/pkg/api/grpc/server.go",
+          "sha256": "1b4f56b441e92822a0b42c63d54b4450cfe45a94fe2a4736ad14ff54dc7dfbe3",
+          "lines": [
+            343,
+            349
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/cmd/daprd/options/options.go",
+          "artifact": "sources/dapr/dapr/cmd/daprd/options/options.go",
+          "sha256": "3053ec5209f3ce32cac407f533f3b08b9914223839bfd904f7e40c81af405d06",
+          "lines": [
+            151,
+            160
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/clientconn.go",
+          "artifact": "sources/grpc/grpc-go/clientconn.go",
+          "sha256": "d46d518fe7c494bdc047e4c8b55b0feab3c1c019df956c72dea9a0441c06e0c2",
+          "lines": [
+            139,
+            140
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/grpc/grpc-dotnet/f22747c72676120b2bc69a1ba7c8bed995e29b1b/src/Grpc.Net.Client/GrpcChannelOptions.cs",
+          "artifact": "sources/grpc/grpc-dotnet/src/Grpc.Net.Client/GrpcChannelOptions.cs",
+          "sha256": "19a9313d5e2e65360f3a955d7ddcc4585e5908612831d3be09bb45e8f78c5ba4",
+          "lines": [
+            50,
+            69
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/bindings/output_pluggable.go",
+          "artifact": "sources/dapr/dapr/pkg/components/bindings/output_pluggable.go",
+          "sha256": "c72a161818c210aa8470c818957aca963772a1b1a8dd800d3744abd92a323d72",
+          "lines": [
+            70,
+            106
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/grpc.go",
+          "artifact": "sources/dapr/dapr/pkg/components/pluggable/grpc.go",
+          "sha256": "81a9777506f23de7e0922c95b5995a3f2399f7f75a1321c936447989a68eda5a",
+          "lines": [
+            94,
+            111
+          ]
+        }
+      ],
+      "counterexampleArtifact": "offline-check-result.json"
+    },
+    {
+      "id": "F1-T3",
+      "capability": "Private operation authorization and anchored phases",
+      "status": "Not supplied by Dapr; contract implementation required",
+      "fact": "OutputBinding.Invoke has data, metadata and operation only. x-component-instance is a multiplexing label, not authenticated end-user or exact-operation authority. UDS uses insecure gRPC credentials, relying on socket isolation. SDK API token authenticates access to sidecar; component scopes/app ID alone do not authorize custody. Exact signed private control proof, independently current trust/revocation and four distinct admit/record/recover/verify implementations remain required. Verify/lookup cannot mutate or imply admission.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/dapr/proto/components/v1/bindings.proto",
+          "artifact": "sources/dapr/dapr/dapr/proto/components/v1/bindings.proto",
+          "sha256": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d",
+          "lines": [
+            114,
+            135
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/grpc.go",
+          "artifact": "sources/dapr/dapr/pkg/components/pluggable/grpc.go",
+          "sha256": "81a9777506f23de7e0922c95b5995a3f2399f7f75a1321c936447989a68eda5a",
+          "lines": [
+            78,
+            111
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/DaprClientGrpc.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/DaprClientGrpc.cs",
+          "sha256": "deffefd746e37f275c3592ce0e9be4483b49b81c3634bd92fedcdc9f88a92baf",
+          "lines": [
+            2292,
+            2310
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F1-T4",
+      "capability": "Retries, cancellation and lost-result lookup",
+      "status": "Transport behavior verified; durable semantics absent",
+      "fact": "SendToOutputBinding uses ComponentOutboundPolicy. Without matching configured/default retry, def.r is nil and policy runs operation once. An outbound retry policy repeats Invoke; no exactly-once authority is created. SDK caller token reaches gRPC CallOptions and output pluggable Invoke forwards request context. Policy timeout can return while goroutine/native I/O completes later; binding runner installs no response disposer. Cancellation/deadline never establishes absence, revoked key delivery, native completion, erasure, or rollback. Persist NativeIntent SendCommitted before native send; uncertain sends are not replayed after restart. Duplicates resolve original request/status; lost-result lookup/read pages remain authenticated read-only and cannot release cached key bytes.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/processor/binding/send.go",
+          "artifact": "sources/dapr/dapr/pkg/runtime/processor/binding/send.go",
+          "sha256": "acd7fbe16d9206c89a143382dbb22d86d7742ce54ae0efd3bfcade46a28f5e1d",
+          "lines": [
+            192,
+            206
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/resiliency/resiliency.go",
+          "artifact": "sources/dapr/dapr/pkg/resiliency/resiliency.go",
+          "sha256": "5695566487350b3d63bfe0e48f736ed13807522974805967e2cbf62db136163f",
+          "lines": [
+            803,
+            839
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/resiliency/policy.go",
+          "artifact": "sources/dapr/dapr/pkg/resiliency/policy.go",
+          "sha256": "24b9379fe46cb4ca2bd9544d141ba42e24451a57287ecae0d91ab4c5c24dd4d6",
+          "lines": [
+            113,
+            164
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/resiliency/policy.go",
+          "artifact": "sources/dapr/dapr/pkg/resiliency/policy.go",
+          "sha256": "24b9379fe46cb4ca2bd9544d141ba42e24451a57287ecae0d91ab4c5c24dd4d6",
+          "lines": [
+            204,
+            230
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/bindings/output_pluggable.go",
+          "artifact": "sources/dapr/dapr/pkg/components/bindings/output_pluggable.go",
+          "sha256": "c72a161818c210aa8470c818957aca963772a1b1a8dd800d3744abd92a323d72",
+          "lines": [
+            70,
+            79
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/DaprClientGrpc.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/DaprClientGrpc.cs",
+          "sha256": "deffefd746e37f275c3592ce0e9be4483b49b81c3634bd92fedcdc9f88a92baf",
+          "lines": [
+            2292,
+            2296
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F1-T5",
+      "capability": "UDS discovery, reflection, restart and re-registration",
+      "status": "Protocol/discovery source verified; component recovery not implemented",
+      "fact": "Pinned bindings.proto imports common.proto. Discovery enumerates socket files under DAPR_COMPONENTS_SOCKETS_FOLDER (default /tmp/dapr-components-sockets), uses gRPC reflection v1alpha, removes filename extension for implementation name, and registers bindings.<socket-stem>. Component logical metadata.name is independent. Init then ListOperations runs when output component is initialized; registration/operation discovery is no capability attestation. Component ready/socket must precede daprd startup. Generic reconnect does not establish durable custody state, re-Init identity continuity, current authority, old-I/O drain or changed-profile rejection. Require external surviving authority and same enrollment/store/incarnation/trust/artifact profile across re-init; changed profiles fail closed. Protect socket mount/ACL from app container.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/dapr/proto/components/v1/bindings.proto",
+          "artifact": "sources/dapr/dapr/dapr/proto/components/v1/bindings.proto",
+          "sha256": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d",
+          "lines": [
+            15,
+            23
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/discovery.go",
+          "artifact": "sources/dapr/dapr/pkg/components/pluggable/discovery.go",
+          "sha256": "0389143a20eb28c209550f8ac173c8242e46ea282e4ce5333a26ad7f88788992",
+          "lines": [
+            49,
+            56
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/discovery.go",
+          "artifact": "sources/dapr/dapr/pkg/components/pluggable/discovery.go",
+          "sha256": "0389143a20eb28c209550f8ac173c8242e46ea282e4ce5333a26ad7f88788992",
+          "lines": [
+            93,
+            133
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/pluggable/discovery.go",
+          "artifact": "sources/dapr/dapr/pkg/components/pluggable/discovery.go",
+          "sha256": "0389143a20eb28c209550f8ac173c8242e46ea282e4ce5333a26ad7f88788992",
+          "lines": [
+            160,
+            178
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/components/bindings/output_pluggable.go",
+          "artifact": "sources/dapr/dapr/pkg/components/bindings/output_pluggable.go",
+          "sha256": "c72a161818c210aa8470c818957aca963772a1b1a8dd800d3744abd92a323d72",
+          "lines": [
+            32,
+            62
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/pkg/runtime/runtime.go",
+          "artifact": "sources/dapr/dapr/pkg/runtime/runtime.go",
+          "sha256": "c39cfdbf7e46815a88655fc6e56e6cf01eeb33c576170f09561864764e0dab6e",
+          "lines": [
+            889,
+            899
+          ]
+        }
+      ],
+      "officialDocumentation": "https://docs.dapr.io/operations/components/pluggable-components-registration/"
+    },
+    {
+      "id": "F1-T6",
+      "capability": "Ephemeral owned-key delivery and buffer closure",
+      "status": "Current SDK/sidecar path does not establish complete closure",
+      "fact": "SDK raw binding request copies caller memory; ByteString CopyFrom(span) allocates independent bytes.ToArray(). Generic JSON path adds SerializeToUtf8Bytes plus ByteString copy. Raw response retains protobuf ReadOnlyMemory without disposal/zero API; typed deserialization creates more state. grpc-go Free returns byte buffers to pool; default pool clears on a subsequent Get, not Put. Method return/cancel/connection close is no zeroing receipt. This is a concrete lifetime gap even with synthetic data and successful transport; no real memory scan or physical-key experiment was performed.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/DaprClientGrpc.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/DaprClientGrpc.cs",
+          "sha256": "deffefd746e37f275c3592ce0e9be4483b49b81c3634bd92fedcdc9f88a92baf",
+          "lines": [
+            320,
+            327
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/protocolbuffers/protobuf/e59364c38e10de3686a3305ff11fbfc59a10dbd8/csharp/src/Google.Protobuf/ByteString.cs",
+          "artifact": "sources/protocolbuffers/protobuf/csharp/src/Google.Protobuf/ByteString.cs",
+          "sha256": "73c0540418a9d74894f851c38157307bfd27a30998c9b658425696c0bbe0e9be",
+          "lines": [
+            204,
+            212
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/TypeConverters.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/TypeConverters.cs",
+          "sha256": "83173124f90a22970137e8a7c5e309244308f06319c2336529c0e7a2eb755c1d",
+          "lines": [
+            32,
+            35
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dotnet-sdk/f3e09addc0572e40175f9683f4af5ddc40981ea5/src/Dapr.Client/BindingResponse.cs",
+          "artifact": "sources/dapr/dotnet-sdk/src/Dapr.Client/BindingResponse.cs",
+          "sha256": "d4918296cbe5cbdcf0ff4b343609f7057bf69fd2a681f4c468588d5f8fcd6795",
+          "lines": [
+            26,
+            42
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/mem/buffers.go",
+          "artifact": "sources/grpc/grpc-go/mem/buffers.go",
+          "sha256": "adc16bb1f590d614138eb3f07ca0be83b7b72dffe725b76b84611aabcb162d92",
+          "lines": [
+            151,
+            176
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/internal/mem/buffer_pool.go",
+          "artifact": "sources/grpc/grpc-go/internal/mem/buffer_pool.go",
+          "sha256": "43cfab5932866aa115c222e794148143ece936b3ec7a07481659634920e78680",
+          "lines": [
+            226,
+            247
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/grpc/grpc-go/397e45edaa68f8763773bbaaf539cf7894169cd2/internal/mem/buffer_pool.go",
+          "artifact": "sources/grpc/grpc-go/internal/mem/buffer_pool.go",
+          "sha256": "43cfab5932866aa115c222e794148143ece936b3ec7a07481659634920e78680",
+          "lines": [
+            309,
+            337
+          ]
+        }
+      ],
+      "missingPrimitive": "Authenticated per-delivery quiescence and disposal/zeroing acknowledgement across all SDK/protobuf/sidecar/component/UDS/kernel/provider-transport copies, or independently accepted exact-incarnation process/host isolation and termination proof. No such primitive exists in OutputBinding protocol.",
+      "accountingStrategy": {
+        "inventory": "Before release, independently durable KeyUseLeaseId/DeliveryAttemptId and NativeIntent IDs bind original root/request, exact recipient process, producer, sidecar, component and transport incarnations; ledger every actual attempt and copied holder.",
+        "hops": [
+          "caller owned array and serializer buffers",
+          "SDK/protobuf immutable request/response arrays",
+          "grpc-dotnet HTTP2/retry buffers",
+          "daprd decoded protobuf/serialization/grpc-go pool/queued retries",
+          "component decoded arrays/native provider-client transport buffers",
+          "UDS/kernel socket queues and TLS buffers where used",
+          "recipient process owned array and downstream consumers"
+        ],
+        "completion": "Record bounded per-hop owner/artifact/profile/incarnation, bytes class (no raw key in ledger), copy/delivery admission and evidence references. Zero owned mutable buffers and retain completion evidence. For opaque framework/runtime buffers, provide tested instrumented zeroing+quiescence implementation or independently accepted isolation/termination proof covering every exact process and host copy; GC, timeout, lease expiry, credential revocation and restart alone do not count.",
+        "faultChecks": "Separately authorized F2/F3 must fault duplicate/delayed sends, loss after SendCommitted, cancellation before/after release, sidecar/component restart and re-registration. Unknown holders remain open and block arm/publication; no raw-key result cache or page path.",
+        "diagnostics": "Disable body/key logging, content traces, core/memory capture/swap/hibernation and memory snapshots in exact accepted artifact/deployment profile; settings alone do not prove deletion."
+      }
+    },
+    {
+      "id": "F1-T7",
+      "capability": "Concrete component/provider completeness",
+      "status": "No complete concrete artifact identified",
+      "fact": "Dapr runtime go.mod pins components-contrib v1.18.0. Retained complete untruncated upstream tree at that commit contains no custody-named implementation. Generic secret store has retrieval operations; cryptography interface has key/crypto operations. Neither supplies complete original current-authority/admission/manifest physical-cut/copy/holder/restore semantics. Proposed bindings.hexalithcustody is a new semantic component contract without implementation/artifact, external authority/provider proof, or end-to-end Dapr qualification. This limited inventory/source inspection does not prove no provider could ever implement it.",
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/dapr/dapr/4cef924a0b1360c69d810deec8cd59bf853f6721/go.mod",
+          "artifact": "sources/dapr/dapr/go.mod",
+          "sha256": "7ed7c7d9cd9c6dfa964b82f9041676f403bf2bab79969f5a5557b052105ceaf4",
+          "lines": [
+            14,
+            14
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/components-contrib/72e6a52340620aa41c4deecc40cbc6f0007b9afe/secretstores/secret_store.go",
+          "artifact": "sources/dapr/components-contrib/secretstores/secret_store.go",
+          "sha256": "b8dac712a43b4f23052c487af8a178304a576b21d240526fdb20657eb02f5909",
+          "lines": [
+            24,
+            40
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dapr/components-contrib/72e6a52340620aa41c4deecc40cbc6f0007b9afe/crypto/subtlecrypto.go",
+          "artifact": "sources/dapr/components-contrib/crypto/subtlecrypto.go",
+          "sha256": "0eb9339b6d993c9fa8761306ae6ab098fba8071d8952cd152e472cb25665246b",
+          "lines": [
+            28,
+            174
+          ]
+        }
+      ],
+      "inventoryArtifact": "component-inventory.json"
+    }
+  ],
+  "separatelyAuthorizedF2F3Prerequisites": [
+    "Implemented immutable, independently governed custody component/provider artifact behind Dapr, authenticated enrolled authority/store/profile/trust and independent observer; no application-native provider bypass.",
+    "Approved supported complete-input transport profile demonstrated for every legal field/escape/full-proof bound on SDK->sidecar->component; component request server configured explicitly. Current default fails. No target chunking.",
+    "Durable linearizable current head; complete original request/response paging and permanent original indexes; exact admit/record/recover/verify permissions; NativeIntent at-most-once send and restart recovery.",
+    "Implement and accept per-delivery buffer/holder completion or exact-incarnation isolation/termination assurance for every hop. Preserve original root and ephemeral owned-key semantics; no raw-key persistence/replay.",
+    "Accepted exact resource/monetary ceiling, independently retained public/original evidence and outside-app restore/failure-domain authority; separately approved synthetic two-tenant native schedule and provider destruction wait.",
+    "Run actual Dapr/component/provider faults and independent physical/all-copy/survivor/restore proofs only after prerequisites and authorization exist. Real Live remains explicitly Blocked; no Available claim or register mutation."
+  ],
+  "reproduction": {
+    "offline": "python3 research/offline-check.py",
+    "optionalPublicSourceRefetch": "python3 research/collect.py",
+    "networkScope": "Public GitHub source URLs only; no infrastructure endpoints",
+    "physicalGuaranteesEstablished": false,
+    "realLiveQualification": "Blocked"
+  }
+}

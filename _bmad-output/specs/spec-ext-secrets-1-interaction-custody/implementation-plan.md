@@ -14,3 +14,9 @@ The approved architecture fixes the Dapr boundary and recovery/erasure semantics
 The next implementation scope is I1, with bounded source investigation for I2; it is not executed by this adoption. F0/F1 total four active engineering days. F2/F3 add six active days plus genuine physical-deletion/evidence wait, with the decision's separate authorization, identity preservation and resource caps. Additional cycles/candidates require a new scoped authorization.
 
 No stories or sprint status are generated here. Unrelated Platform work, Agents records, existing source candidate and all historical negative-control/qualification evidence remain unchanged. Retain this spec's open feasibility/installation questions until actual evidence resolves them.
+
+## I2/F1 continuation — 2026-10-20
+
+The explicit continuation from `69689ab00b2056c6f311af9cb4120fb38c8c766d` implements an unbound provider-neutral contract and bounded synthetic conformance checks. See [F1 evidence and capability gaps](../../../docs/implementation/ext-secrets-1-f1-2026-10-20/README.md). Completed F0 exploration and owner qualification are not repeated.
+
+The complete contract does **not** qualify on the current artifacts: legal full requests exceed the pinned default transport ceiling, SDK/sidecar/transport holder closure is unproved, and no complete semantic component/provider artifact is identified. Source checks, SDK serialization captures and pinned protocol inspection are not actual component persistence, UDS/re-registration or physical evidence. I3 and a supported complete transport/buffer implementation remain prerequisites to separately authorized F2/F3; I5/I6 and the accepted owner cohort remain open. Real Live stays blocked and the dependency remains Committed and unavailable.
