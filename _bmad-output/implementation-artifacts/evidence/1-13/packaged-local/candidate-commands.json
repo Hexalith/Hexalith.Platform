@@ -1,0 +1,86 @@
+{
+  "scope": "Locally packaged tool 4.34.1-enrollment.20261020; no public release, Platform acceptance or SM-2 evidence",
+  "workingDirectory": "disposable enrolled module Git workspace; removed after verification",
+  "commands": [
+    {
+      "state": "pass",
+      "format": "human",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "exitCode": 0,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "pass",
+      "format": "json",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "fail",
+      "format": "human",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "exitCode": 1,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "fail",
+      "format": "json",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "exitCode": 1,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    }
+  ]
+}

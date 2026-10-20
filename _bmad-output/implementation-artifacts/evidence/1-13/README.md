@@ -1,8 +1,9 @@
 # Story 1.13 — local enrollment candidate
 
 Status: local implementation and verification; **not released or Platform accepted**.
-Builds owner review, gated upstream publication, released-pin acceptance and human
-SM-2 remain pending. No SM-2 demonstration was performed or fabricated.
+Builds owner review, gated upstream publication and released-pin acceptance remain
+pending. The kit leaves SM-2 for module-owner verification after adoption; no live
+demonstration was performed or fabricated by this story.
 
 ## Canonical identities
 
@@ -74,7 +75,69 @@ Hosting inventory completeness grants no retirement authority. Every applicable
 producer-adoption, owner-reviewed source/package/deployed parity and EventStore
 AD-22 exact-subject consumer-removal gate remains independently required.
 
-## Verification results
+## Post-review verification
+
+All 17 findings from three independent review passes were corrected. The targeted
+regressions passed **65/65**, with zero build warnings/errors
+([build](review-patch-build.txt), [tests](review-patch-tests.txt)). They cover
+ordinary paths/comments, mixed-case dependency identities, self references,
+frozen-host dependency checks and existence, MSBuild selectors/imports, declared
+Dapr configuration keys in JSON/YAML/YML, qualified attributes, runnable tool
+commands and committed Platform pin divergence. No review finding was deferred.
+Three additional generic `PubSubName` format regressions passed separately on both
+implementation and coordinator runs ([tests](generic-config-coordinator-tests.txt)).
+
+Final verification uses detached Builds source `d7720206bcdde417a93a3514c903d107617107e7`
+plus the reviewed corrections, isolated from concurrent workspace mutations.
+[Source and package hashes](verified-source.json) bind that candidate to the live
+story files. The stable Builds Release build passed with zero warnings/errors
+([output](builds-stable-build.txt)).
+
+The normal Platform composition test project also builds with zero warnings/errors
+after a fresh restore and passes **4/4** kit tests
+([build](platform-restored-build.txt), [tests](platform-normal-tests.txt)). Earlier
+`--no-restore` failures below were stale restore state, not an established product
+blocker. Artifacts must remain under the Platform workspace for its existing test
+root-discovery convention.
+
+The tool was packed and installed locally as `4.34.1-enrollment.20261020`
+([pack](candidate-pack.txt), [install](candidate-install.txt)). This is a private
+verification package, not a public version or accepted Platform pin; local build
+metadata remains `4.34.0`. In a disposable fixture, `dotnet tool restore` and all
+four actual `dotnet tool run hexalith-module -- validate --adoption` commands
+passed: human/JSON success exits `0`, missing-inventory exits `1`, and Git state
+plus every workspace file hash remain unchanged. See
+[commands](packaged-local/candidate-commands.json),
+[restore](packaged-local/tool-restore.txt),
+[reproduction](packaged-local/accept-packaged.py.txt) and retained outputs.
+
+The final serial Builds suite ran **1,185 tests: 1,182 passed, 0 failed, 3 skipped**
+([output](builds-stable-serial-tests.txt)). The skips require an enclosing Platform
+checkout with its real dependencies, which the detached verification snapshot
+does not have. The three final generic-configuration cases were then verified
+separately; production code is identical across both runs.
+
+The earlier stable parallel Builds suite ran **1,185 tests**, with **1 cleanup timing
+failure and 3 context-dependent skips** ([output](builds-stable-parallel-tests.txt)).
+The failing cleanup method passed all **4/4** cases on a separate serial retry
+([output](builds-cleanup-retry.txt)) and the final full serial run.
+The initial 99 fixture failures below did not recur in the stable snapshot.
+
+## Reviewed candidate awaiting owner approval
+
+- Builds implementation/corrections: `b6642fecff8617e1765d835e71ebde316e3f71a5`.
+- Final additional-regression candidate: `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`.
+- [Complete product diff](reviewed-change.patch) includes story changes from the
+  original Platform and Builds baselines, excluding concurrent unrelated work.
+- Exact commit messages passed the pinned owning-repository commitlint CLIs
+  ([Builds](builds-commitlint.txt), [regression](regression-commitlint.txt),
+  [Platform](platform-commitlint.txt)).
+
+The session created local commits only. Owner approval, upstream release and fresh
+released-tool Platform acceptance are still required before changing the accepted
+pin/range or claiming Story 1.13 complete. The active pin remains `4.34.0`.
+
+## Initial implementation verification (historical)
 
 - Builds focused Release build: **PASS**, zero warnings/errors
   ([build output](builds-focused-build.txt)).

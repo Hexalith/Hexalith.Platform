@@ -82,6 +82,34 @@ Implementation handoff: execute sequentially. Step 3 permits local work only: no
 
 ## Review Triage Log
 
+### Pass 1 — 2026-10-20
+
+Every finding was classified before grouping. All surviving entries are local corrections to demonstrated inputs, with no new public surface; route: patch.
+
+| ID | Verdict | Evidence and route |
+| --- | --- | --- |
+| BH1 | medium | `tracked` removes every references/ path, although ordinary tracked helpers may live there. Git ls-files already represents real submodules as gitlinks. Patch the overbroad filter and test a tracked helper. |
+| BH2 | medium | Dependency names become title-cased repository paths and membership uses ordinal case; actual ChatBot naming is rejected. Match existing direct repository identities without inventing casing. |
+| BH3 | medium | Scan skips frozen directories before selecting audit type, so an inventoried host's mode assignment bypasses dependency checks. Preserve dependency inspection inside frozen hosts; limit the legacy exclusion to Dapr hosting patterns. |
+| BH4 | medium | Inventory checks index membership but not physical project existence, then excludes the directory. Add existing-file confinement before exclusion. |
+| BH5 | medium | The unconditional selector check covers only exact-case mode names and *Root, missing generated *FromSource and case-insensitive MSBuild names. Normalize property matching and cover assignments. |
+| BH6 | medium | Imports are absent from selector kinds, allowing a dependency import guarded by Exists while unrelated optional imports correctly pass. Include dependency-selecting imports without rejecting optional imports. |
+| BH7 | medium | The discovery regex contains bare Path followed by Hexalith/Root; ordinary Path.Combine calls fail. Require a real filesystem existence/discovery probe. |
+| BH8 | medium | Raw C# text is scanned as executable code, so a removed invocation in a comment fails enrollment. Ignore comments/string-only invocation text with focused regressions. |
+| BH9 | medium | Configuration scanning recognizes generic names, not the declaration's Sample:Dapr:EventsComponent key; the shipped example can retain a physical default. Check declared keys in supported configuration formats. |
+| BH10 | low | The Topic expression omits global:: and normal qualified syntax. A directly corrected attribute matcher covers this demonstrated standard syntax without a new policy. |
+| EH1 | medium | The references check excludes self only from the required set; it never rejects an existing self gitlink. Add the demonstrated self-reference refusal before source mapping. |
+| EH2 | medium | Same missing physical-existence check as BH4; verified the inventory path is used to exclude scanning without opening the project. Patch with BH4. |
+| EH3 | medium | Pin checks ignore commands, so an empty command array passes though documented dotnet tool run cannot resolve hexalith-module. Require the declared command and test malformed/missing arrays. |
+| EH4 | medium | Same demonstrated comment false failure as BH8. Patch with BH8; the review's snippet is a suggested correction, not an existing guard. |
+| VG1 | medium | Pre-verified regression gap: no test exercises the existing JSON/YAML/YML configuration-default branch. Add format-specific failures and legitimate inputs alongside BH9. |
+| VG2 | medium | Pre-verified regression gap: matching dirty working-tree pins never diverge from committed Platform in current tests. Add a regression preserving committed HEAD while changing both local versions. |
+| VG3 | medium | The compiled reproduction rejects Path.Combine(environment.ContentRootPath, ...); the bare-Path alternative directly explains it. Patch with BH7. |
+
+Grouping: BH1; BH2; BH3; BH4/EH2; BH5; BH6; BH7/VG3; BH8/EH4; BH9/VG1; BH10; EH1; EH3; VG2. All route to patch. Publication and broad-gate failures remain unresolved acceptance work, not fabricated completion evidence.
+
+All 17 findings are fixed and their targeted regressions passed (65 cases plus 3 final generic-configuration format cases). No finding was deferred. The earlier broad failures were superseded by a restored normal Platform build and stable full Builds verification; publication remains pending owner review.
+
 ## Verification
 
 - Build and execute focused Builds test classes directly with xUnit v3; run the owning test project checks required for release.
@@ -91,3 +119,5 @@ Implementation handoff: execute sequentially. Step 3 permits local work only: no
 Local implementation verification: Builds focused Release build (zero warnings/errors), 97 focused adoption/manifest-command tests passed; Platform disposable focused lane ran the actual `DomainEnrollmentKitTests` against the same validator (4 passed); four direct candidate CLI human/JSON pass/fail commands preserved every workspace file hash and Git state. Normal Platform Release build and full Builds test suite remain blocked/failing amid existing/concurrent non-story dependency and legacy-fixture changes. See `evidence/1-13/README.md` and retained raw outputs. Owner review, actual upstream release, release-tag gitlink/pin/floor update, released-tool acceptance and human SM-2 remain pending.
 
 Coordinator matrix audit: read the complete story-scoped combined Platform/Builds diff at `/tmp/story-1-13-review-zwttdunt.diff`. CompleteWorkspacePassesAndRemainsUnchangedAsync covers happy/read-only/sibling/legitimate guards; EveryRequirementFailureIsReportedAsync covers missing/malformed inputs, pins, direct references, gitlinks and forbidden patterns; InitializedNestedReferenceFailsReadOnlyAsync covers nested initialization; FrozenInventoryIsConfinedToExactHostingDirectoryAsync and arbitrary-exclusion cover inventory confinement; ReportsRenderRowsAndLeaveLegacyJsonUnchangedAsync plus PlatformManifestCommandTests cover legacy compatibility and output modes. All ran in the 97-pass output. Platform tests and four direct commands cover shipped templates and candidate behavior. Local implementation tasks are verified; the explicitly post-review publication/acceptance task remains open.
+
+Final coordinator verification: stable full Builds suite ran 1,185 cases, 1,182 passed, zero failed, three enclosing-Platform-dependent skips. Three final generic configuration regressions also passed independently. Freshly restored normal Platform composition test project builds with zero warnings/errors and passes all four DomainEnrollmentKitTests. Four commands through a locally packaged tool and actual dotnet tool run pass in human/JSON success/failure modes, preserving all file hashes and Git state. All review findings are fixed, with none deferred. Builds local commits: `b6642fecff8617e1765d835e71ebde316e3f71a5` and `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`. Complete product diff, source hashes and raw outputs are retained in evidence/1-13. Spec remains in-review because the approved completion constraint requires Builds owner review, upstream publication and released-pin acceptance. Never mark those complete from local candidate evidence.

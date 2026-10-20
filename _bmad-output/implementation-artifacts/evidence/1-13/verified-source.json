@@ -1,0 +1,27 @@
+{
+  "sourceBaseCommit": "d7720206bcdde417a93a3514c903d107617107e7",
+  "correctionsPatchSha256": "d87cdd338e269a75d8bfc9ab85225775e0f323f41e8b277a0b0f05add930bca7",
+  "sourceSha256": {
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "11ea11196b4369ec527cc9b0c410c7a2f3335f8e4a0d8661ed5a7332b80f7208",
+    "src/libraries/Hexalith.Builds.Tooling/Diagnostics/ToolCommandResult.cs": "1aa45b4e48d4537ed5dd447591a50a4383728144c0fd50bfa1bbb0a9f50faa68",
+    "src/libraries/Hexalith.Builds.Tooling/Diagnostics/ToolDiagnosticFormatter.cs": "d7872e0b9ab33d4c2b6ecc50d16be9c05405c5d99006f47e0a9e46ef450eebd1",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs": "300e800d15e22fdb277d63b721ce0924009d1abbdf8e7709c14269a5a473ce6d",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidationResult.cs": "9f301094c790c794f1c777106ab4572e784bc134d90e4360b9b12222e7b5f704",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "9151b185b95098273ba3855c27e6fd86bf95c94bec9c1e887f4856764cfb48a9",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionRow.cs": "656fb374fdb09429b6a3bd5dd3cf2e13b0dd69f6d36a275358b1574ad5ba8072",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs": "45dc57423cb3e256925ee1037647025671190c45118bb03f20c99889165d6f59",
+    "test/Hexalith.Builds.Module.Tests/PlatformAdoptionTestWorkspace.cs": "5ec90b199657e2b3dfd5539d1c909cfcee7aa4f76e66dce9d5e0b90d05836ee2",
+    "test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "c0b608199be9e137e9d84b2c88781488f64c04ae7570c457d5935518d815b84f",
+    "test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs": "bd77e950fca92b9ba973625261c028ed35b9076095bfca0ce909de62a9efe03f"
+  },
+  "packageVersion": "4.34.1-enrollment.20261020",
+  "packageScope": "local package only; not published or Platform-accepted",
+  "packageSha256": "68102858dd6ac1e75b34e1363615dfda530883beaba9e7b171401fffa7968591",
+  "candidateCommit": "b6642fecff8617e1765d835e71ebde316e3f71a5",
+  "candidateTrackedTreeMatchesVerificationSnapshot": true,
+  "publicationCandidateCommit": "fff4a212180d8cd1c5c0759655a9bc4fb6963c45",
+  "additionalRegressionCommit": "fff4a212180d8cd1c5c0759655a9bc4fb6963c45",
+  "additionalRegressionCases": 3,
+  "verificationNote": "Full 1185-case suite verifies b6642fecff8617e1765d835e71ebde316e3f71a5. The publication candidate adds only three independently passing configuration-format tests; production sources are unchanged.",
+  "publicationProductionSourcesMatchVerifiedSnapshot": true
+}
