@@ -10,11 +10,11 @@ mcpcli_baseline_commit: '447085c42ec606f642240c4cae0415e7c2f97467'
 builds_baseline_commit: 'b435f2e3b3892e03f69322d24de6003b0baf7a7d'
 route: 'dispatch'
 review_loop_iteration: 0
-release_run_id: 39389191662
-superseded_release_run_id: 39363818307
+release_run_id: 39396175115
+superseded_release_run_id: 39389191662
 release_ci_run_id: 39389674513
 release_source_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
-release_status: 'waiting-current-source-ci'
+release_status: 'approved-qualification-running'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -185,6 +185,8 @@ Rejected:
 - AA9 (the story commit includes an `epic-1-context.md` rewrite) — false: it is this spec's own `context` document, recompiled for the story.
 
 ## Implementation Notes
+
+- **Approved current-source release (2026-10-20).** Exact-source push CI 39389674513 passed for 5d03f1db9c38db34ecac7fe6048937478ffb82cc. Replacement release 39396175115 passed its source guard, and jpiquot approved its production environment. On resumption, remote main still equals that source commit and release qualification is running. The agent submitted no approval and dispatched no duplicate run. Publication, the exact tool/tag pin and pinned-tool AC1 remain open.
 
 - **Second source advance (2026-10-20).** Exact-source CI 39385370341 passed at 6a38cb0f2e74977d7457fc59e6af79457ed8196a, and replacement release 39389191662 passed its source check and requested production approval. Before publication, main advanced again to 5d03f1db9c38db34ecac7fe6048937478ffb82cc. Both commits have the identical Git tree 65c89574e22cce9469e4c098f5947d3320030916; the change merges existing history without changing files. The orchestrator cancelled the stale replacement before qualification/publication and requested that other pushes to Builds main pause through the release. Latest-source CI 39389674513 is queued. No fresh production approval will be requested until a replacement targets current green main. On approval, check the remote tip immediately rather than waiting on the full release job. Publication, the tool/tag pin and AC1 remain incomplete; 4.33.1 is still the configured tool.
 

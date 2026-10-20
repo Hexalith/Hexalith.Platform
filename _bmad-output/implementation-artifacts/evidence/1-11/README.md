@@ -1,6 +1,14 @@
 # Story 1.11 evidence: run and debug McpCli from the Platform workspace
 
-Current status after production approval, 2026-10-20: the initial release
+Current status, 2026-10-20: [exact-source CI passed](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39389674513)
+for 5d03f1db9c38db34ecac7fe6048937478ffb82cc. [Replacement release 39396175115](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39396175115)
+passed its source guard and received production approval from jpiquot. Release
+qualification is running, and remote main still equals the approved source.
+Publication, tool/tag pinning and pinned-tool AC1 remain open; 4.33.1 is still
+configured. See [release-current.json](release-current.json). No agent approval
+or duplicate dispatch was submitted.
+
+Earlier checkpoint after production approval, 2026-10-20: the initial release
 stopped before publication when Builds main advanced. Its replacement
 39389191662 was cancelled when main advanced again, before another qualification
 cycle. The latest source is 5d03f1db9c38db34ecac7fe6048937478ffb82cc, with
