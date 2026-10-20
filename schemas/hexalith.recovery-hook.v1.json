@@ -25,7 +25,7 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 128,
-      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+      "pattern": "^[a-z0-9][a-z0-9._:-]*(?![\\s\\S])"
     },
     "token": {
       "type": "string",
@@ -34,7 +34,7 @@
     },
     "digest": {
       "type": "string",
-      "pattern": "^sha256:[a-f0-9]{64}$"
+      "pattern": "^sha256:[a-f0-9]{64}(?![\\s\\S])"
     },
     "version": {
       "const": "1.0.0"
@@ -100,7 +100,47 @@
         "encoding": {
           "$ref": "#/$defs/id"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "eventstore-position"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ownerModule": {
+                "const": "eventstore"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "memories-register-sequence"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ownerModule": {
+                "const": "memories"
+              }
+            }
+          }
+        }
+      ]
     },
     "position": {
       "type": "object",
@@ -149,7 +189,47 @@
             "before-cut"
           ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "eventstore-position"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ownerModule": {
+                "const": "eventstore"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "memories-register-sequence"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ownerModule": {
+                "const": "memories"
+              }
+            }
+          }
+        }
+      ]
     },
     "cut": {
       "type": "object",
@@ -212,11 +292,15 @@
               "contains": {
                 "type": "object",
                 "required": [
-                  "kind"
+                  "kind",
+                  "ownerModule"
                 ],
                 "properties": {
                   "kind": {
                     "const": "eventstore-position"
+                  },
+                  "ownerModule": {
+                    "const": "eventstore"
                   }
                 }
               }
@@ -225,11 +309,15 @@
               "contains": {
                 "type": "object",
                 "required": [
-                  "kind"
+                  "kind",
+                  "ownerModule"
                 ],
                 "properties": {
                   "kind": {
                     "const": "memories-register-sequence"
+                  },
+                  "ownerModule": {
+                    "const": "memories"
                   }
                 }
               }
@@ -347,7 +435,8 @@
         "reopenBeforeReplay",
         "endpoint",
         "survivingAuthorities",
-        "hooks"
+        "hooks",
+        "workloadId"
       ],
       "properties": {
         "contractVersion": {
@@ -463,6 +552,9 @@
               }
             }
           ]
+        },
+        "workloadId": {
+          "$ref": "#/$defs/id"
         }
       }
     },
@@ -764,6 +856,9 @@
         },
         "custodianMaterialRef": {
           "$ref": "#/$defs/id"
+        },
+        "workloadId": {
+          "$ref": "#/$defs/id"
         }
       },
       "allOf": [
@@ -782,7 +877,12 @@
             "required": [
               "authorityId",
               "custodianMaterialRef"
-            ]
+            ],
+            "not": {
+              "required": [
+                "workloadId"
+              ]
+            }
           },
           "else": {
             "not": {
@@ -798,7 +898,10 @@
                   ]
                 }
               ]
-            }
+            },
+            "required": [
+              "workloadId"
+            ]
           }
         }
       ]
@@ -884,9 +987,7 @@
           "$ref": "#/$defs/timestamp"
         },
         "endpoint": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 256
+          "const": "/_internal/recovery/v1"
         },
         "dependsOn": {
           "type": "array",

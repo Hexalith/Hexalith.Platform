@@ -1,0 +1,2417 @@
+{
+  "contractVersion": "1.0.0",
+  "recordType": "chain",
+  "synthetic": true,
+  "declarations": [
+    {
+      "contractVersion": "1.0.0",
+      "recordType": "declaration",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "moduleId": "eventstore",
+      "workloadId": "eventstore-recovery",
+      "dependencies": [],
+      "positionDefinitions": [
+        {
+          "positionId": "eventstore-events",
+          "ownerModule": "eventstore",
+          "scope": "catalog-main",
+          "kind": "eventstore-position",
+          "recoveryClass": "authoritative-restore",
+          "encoding": "eventstore-opaque-v1"
+        }
+      ],
+      "reopenBeforeReplay": false,
+      "endpoint": "/_internal/recovery/v1",
+      "survivingAuthorities": [],
+      "hooks": [
+        {
+          "hookId": "admission-purge",
+          "phase": "admission-purge",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "credentials",
+          "phase": "credentials",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "rebuild",
+          "phase": "rebuild",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "integrity",
+          "phase": "integrity",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "external-effect-reconciliation",
+          "phase": "external-effect-reconciliation",
+          "implementation": "implemented"
+        }
+      ]
+    },
+    {
+      "contractVersion": "1.0.0",
+      "recordType": "declaration",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "moduleId": "memories",
+      "workloadId": "memories-recovery",
+      "dependencies": [
+        "eventstore"
+      ],
+      "positionDefinitions": [
+        {
+          "positionId": "memories-register",
+          "ownerModule": "memories",
+          "scope": "register-main",
+          "kind": "memories-register-sequence",
+          "recoveryClass": "rebuild-only",
+          "encoding": "memories-sequence-v1"
+        }
+      ],
+      "reopenBeforeReplay": false,
+      "endpoint": "/_internal/recovery/v1",
+      "survivingAuthorities": [],
+      "hooks": [
+        {
+          "hookId": "admission-purge",
+          "phase": "admission-purge",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "credentials",
+          "phase": "credentials",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "rebuild",
+          "phase": "rebuild",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "integrity",
+          "phase": "integrity",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "external-effect-reconciliation",
+          "phase": "external-effect-reconciliation",
+          "implementation": "implemented"
+        }
+      ]
+    },
+    {
+      "contractVersion": "1.0.0",
+      "recordType": "declaration",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "moduleId": "keys",
+      "workloadId": "keys-recovery",
+      "dependencies": [
+        "memories"
+      ],
+      "positionDefinitions": [
+        {
+          "positionId": "keys-lineage",
+          "ownerModule": "keys",
+          "scope": "tenant-key-custody",
+          "kind": "module-owned-position",
+          "recoveryClass": "live-authority-only",
+          "encoding": "keys-lineage-v1"
+        }
+      ],
+      "reopenBeforeReplay": false,
+      "endpoint": "/_internal/recovery/v1",
+      "survivingAuthorities": [
+        {
+          "authorityId": "tenant-key-backup",
+          "fenceHookId": "fence-custody",
+          "reissueProcedureRef": "synthetic-custody-reissue-procedure"
+        }
+      ],
+      "hooks": [
+        {
+          "hookId": "fence-custody",
+          "phase": "fence",
+          "implementation": "implemented",
+          "authorityId": "tenant-key-backup"
+        },
+        {
+          "hookId": "admission-purge",
+          "phase": "admission-purge",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "credentials",
+          "phase": "credentials",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "rebuild",
+          "phase": "rebuild",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "integrity",
+          "phase": "integrity",
+          "implementation": "implemented"
+        },
+        {
+          "hookId": "external-effect-reconciliation",
+          "phase": "external-effect-reconciliation",
+          "implementation": "implemented"
+        }
+      ]
+    }
+  ],
+  "invocations": [
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "keys",
+      "hookId": "fence-custody",
+      "taskId": "keys-fence-custody",
+      "invocationId": "keys-fence-custody-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:01Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [],
+      "targetPositions": [
+        {
+          "positionId": "keys-lineage",
+          "ownerModule": "keys",
+          "scope": "tenant-key-custody",
+          "kind": "module-owned-position",
+          "recoveryClass": "live-authority-only",
+          "encoding": "keys-lineage-v1",
+          "value": "lineage:alive-f2",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "recovery-executor-sandbox",
+        "executorId": "synthetic-executor",
+        "authorityId": "tenant-key-backup",
+        "custodianMaterialRef": "synthetic-custody-binding"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "eventstore",
+      "hookId": "admission-purge",
+      "taskId": "eventstore-admission-purge",
+      "invocationId": "eventstore-admission-purge-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:03Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "eventstore-events",
+          "ownerModule": "eventstore",
+          "scope": "catalog-main",
+          "kind": "eventstore-position",
+          "recoveryClass": "authoritative-restore",
+          "encoding": "eventstore-opaque-v1",
+          "value": "partition:a/offset:450",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "eventstore-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "memories",
+      "hookId": "admission-purge",
+      "taskId": "memories-admission-purge",
+      "invocationId": "memories-admission-purge-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:05Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "memories-register",
+          "ownerModule": "memories",
+          "scope": "register-main",
+          "kind": "memories-register-sequence",
+          "recoveryClass": "rebuild-only",
+          "encoding": "memories-sequence-v1",
+          "value": "9001",
+          "relationToCut": "before-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "memories-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "keys",
+      "hookId": "admission-purge",
+      "taskId": "keys-admission-purge",
+      "invocationId": "keys-admission-purge-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:07Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "memories-admission-purge"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "keys-lineage",
+          "ownerModule": "keys",
+          "scope": "tenant-key-custody",
+          "kind": "module-owned-position",
+          "recoveryClass": "live-authority-only",
+          "encoding": "keys-lineage-v1",
+          "value": "lineage:alive-f2",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "keys-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "eventstore",
+      "hookId": "credentials",
+      "taskId": "eventstore-credentials",
+      "invocationId": "eventstore-credentials-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:09Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "eventstore-events",
+          "ownerModule": "eventstore",
+          "scope": "catalog-main",
+          "kind": "eventstore-position",
+          "recoveryClass": "authoritative-restore",
+          "encoding": "eventstore-opaque-v1",
+          "value": "partition:a/offset:450",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "eventstore-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "memories",
+      "hookId": "credentials",
+      "taskId": "memories-credentials",
+      "invocationId": "memories-credentials-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:11Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "memories-register",
+          "ownerModule": "memories",
+          "scope": "register-main",
+          "kind": "memories-register-sequence",
+          "recoveryClass": "rebuild-only",
+          "encoding": "memories-sequence-v1",
+          "value": "9001",
+          "relationToCut": "before-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "memories-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "keys",
+      "hookId": "credentials",
+      "taskId": "keys-credentials",
+      "invocationId": "keys-credentials-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:13Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "memories-credentials"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "keys-lineage",
+          "ownerModule": "keys",
+          "scope": "tenant-key-custody",
+          "kind": "module-owned-position",
+          "recoveryClass": "live-authority-only",
+          "encoding": "keys-lineage-v1",
+          "value": "lineage:alive-f2",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "keys-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "eventstore",
+      "hookId": "rebuild",
+      "taskId": "eventstore-rebuild",
+      "invocationId": "eventstore-rebuild-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:15Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials",
+        "memories-credentials",
+        "keys-credentials"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "eventstore-events",
+          "ownerModule": "eventstore",
+          "scope": "catalog-main",
+          "kind": "eventstore-position",
+          "recoveryClass": "authoritative-restore",
+          "encoding": "eventstore-opaque-v1",
+          "value": "partition:a/offset:450",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "eventstore-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "memories",
+      "hookId": "rebuild",
+      "taskId": "memories-rebuild",
+      "invocationId": "memories-rebuild-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:17Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials",
+        "memories-credentials",
+        "keys-credentials",
+        "eventstore-rebuild"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "memories-register",
+          "ownerModule": "memories",
+          "scope": "register-main",
+          "kind": "memories-register-sequence",
+          "recoveryClass": "rebuild-only",
+          "encoding": "memories-sequence-v1",
+          "value": "9001",
+          "relationToCut": "before-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "memories-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "keys",
+      "hookId": "rebuild",
+      "taskId": "keys-rebuild",
+      "invocationId": "keys-rebuild-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:19Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials",
+        "memories-credentials",
+        "keys-credentials",
+        "memories-rebuild"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "keys-lineage",
+          "ownerModule": "keys",
+          "scope": "tenant-key-custody",
+          "kind": "module-owned-position",
+          "recoveryClass": "live-authority-only",
+          "encoding": "keys-lineage-v1",
+          "value": "lineage:alive-f2",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "keys-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "eventstore",
+      "hookId": "integrity",
+      "taskId": "eventstore-integrity",
+      "invocationId": "eventstore-integrity-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:21Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials",
+        "memories-credentials",
+        "keys-credentials",
+        "eventstore-rebuild",
+        "memories-rebuild",
+        "keys-rebuild"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "eventstore-events",
+          "ownerModule": "eventstore",
+          "scope": "catalog-main",
+          "kind": "eventstore-position",
+          "recoveryClass": "authoritative-restore",
+          "encoding": "eventstore-opaque-v1",
+          "value": "partition:a/offset:450",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "eventstore-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "memories",
+      "hookId": "integrity",
+      "taskId": "memories-integrity",
+      "invocationId": "memories-integrity-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:23Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials",
+        "memories-credentials",
+        "keys-credentials",
+        "eventstore-rebuild",
+        "memories-rebuild",
+        "keys-rebuild",
+        "eventstore-integrity"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "memories-register",
+          "ownerModule": "memories",
+          "scope": "register-main",
+          "kind": "memories-register-sequence",
+          "recoveryClass": "rebuild-only",
+          "encoding": "memories-sequence-v1",
+          "value": "9001",
+          "relationToCut": "before-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "memories-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "recordType": "invocation",
+      "moduleId": "keys",
+      "hookId": "integrity",
+      "taskId": "keys-integrity",
+      "invocationId": "keys-integrity-delivery-0",
+      "retry": 0,
+      "invokedAt": "2026-10-07T12:00:25Z",
+      "endpoint": "/_internal/recovery/v1",
+      "dependsOn": [
+        "keys-fence-custody",
+        "eventstore-admission-purge",
+        "memories-admission-purge",
+        "keys-admission-purge",
+        "eventstore-credentials",
+        "memories-credentials",
+        "keys-credentials",
+        "eventstore-rebuild",
+        "memories-rebuild",
+        "keys-rebuild",
+        "memories-integrity"
+      ],
+      "targetPositions": [
+        {
+          "positionId": "keys-lineage",
+          "ownerModule": "keys",
+          "scope": "tenant-key-custody",
+          "kind": "module-owned-position",
+          "recoveryClass": "live-authority-only",
+          "encoding": "keys-lineage-v1",
+          "value": "lineage:alive-f2",
+          "relationToCut": "at-cut"
+        }
+      ],
+      "execution": {
+        "location": "owning-workload",
+        "executorId": "synthetic-executor",
+        "workloadId": "keys-recovery"
+      },
+      "authorization": {
+        "credentialRef": "synthetic-credential-reference",
+        "issuerId": "synthetic-replacement-issuer",
+        "issuerGenerationId": "issuer-fresh-2",
+        "principal": "synthetic-staging-recovery-hook",
+        "audience": "synthetic-recovery-hooks",
+        "scope": "recovery-hook",
+        "issuedAt": "2026-10-07T12:00:00Z",
+        "expiresAt": "2026-10-07T12:10:00Z",
+        "environmentId": "synthetic-staging",
+        "instanceId": "replacement-01",
+        "attemptId": "synthetic-recovery-01",
+        "attemptKind": "recovery",
+        "epoch": 7
+      }
+    }
+  ],
+  "results": [
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "keys",
+      "hookId": "fence-custody",
+      "taskId": "keys-fence-custody",
+      "invocationId": "keys-fence-custody-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:02Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "eventstore",
+      "hookId": "admission-purge",
+      "taskId": "eventstore-admission-purge",
+      "invocationId": "eventstore-admission-purge-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:04Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "memories",
+      "hookId": "admission-purge",
+      "taskId": "memories-admission-purge",
+      "invocationId": "memories-admission-purge-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:06Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "keys",
+      "hookId": "admission-purge",
+      "taskId": "keys-admission-purge",
+      "invocationId": "keys-admission-purge-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:08Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "eventstore",
+      "hookId": "credentials",
+      "taskId": "eventstore-credentials",
+      "invocationId": "eventstore-credentials-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:10Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "memories",
+      "hookId": "credentials",
+      "taskId": "memories-credentials",
+      "invocationId": "memories-credentials-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:12Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "keys",
+      "hookId": "credentials",
+      "taskId": "keys-credentials",
+      "invocationId": "keys-credentials-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:14Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "eventstore",
+      "hookId": "rebuild",
+      "taskId": "eventstore-rebuild",
+      "invocationId": "eventstore-rebuild-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:16Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "memories",
+      "hookId": "rebuild",
+      "taskId": "memories-rebuild",
+      "invocationId": "memories-rebuild-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:18Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "keys",
+      "hookId": "rebuild",
+      "taskId": "keys-rebuild",
+      "invocationId": "keys-rebuild-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:20Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "eventstore",
+      "hookId": "integrity",
+      "taskId": "eventstore-integrity",
+      "invocationId": "eventstore-integrity-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:22Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "memories",
+      "hookId": "integrity",
+      "taskId": "memories-integrity",
+      "invocationId": "memories-integrity-delivery-0",
+      "recordType": "result",
+      "status": "succeeded",
+      "completedAt": "2026-10-07T12:00:24Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "passed",
+        "evidenceRef": "synthetic-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": true
+    },
+    {
+      "contractVersion": "1.0.0",
+      "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "environmentId": "synthetic-staging",
+      "instanceId": "replacement-01",
+      "attemptId": "synthetic-recovery-01",
+      "attemptKind": "recovery",
+      "epoch": 7,
+      "recoveryMode": "disaster-recovery",
+      "cut": {
+        "cutId": "synthetic-cut-01",
+        "positions": [
+          {
+            "positionId": "eventstore-events",
+            "ownerModule": "eventstore",
+            "scope": "catalog-main",
+            "kind": "eventstore-position",
+            "recoveryClass": "authoritative-restore",
+            "encoding": "eventstore-opaque-v1",
+            "value": "partition:a/offset:450",
+            "relationToCut": "at-cut"
+          },
+          {
+            "positionId": "memories-register",
+            "ownerModule": "memories",
+            "scope": "register-main",
+            "kind": "memories-register-sequence",
+            "recoveryClass": "rebuild-only",
+            "encoding": "memories-sequence-v1",
+            "value": "9001",
+            "relationToCut": "before-cut"
+          },
+          {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          }
+        ]
+      },
+      "moduleId": "keys",
+      "hookId": "integrity",
+      "taskId": "keys-integrity",
+      "invocationId": "keys-integrity-delivery-0",
+      "recordType": "result",
+      "status": "failed",
+      "completedAt": "2026-10-07T12:00:26Z",
+      "achievedPositions": [
+        {
+          "position": {
+            "positionId": "keys-lineage",
+            "ownerModule": "keys",
+            "scope": "tenant-key-custody",
+            "kind": "module-owned-position",
+            "recoveryClass": "live-authority-only",
+            "encoding": "keys-lineage-v1",
+            "value": "lineage:alive-f2",
+            "relationToCut": "at-cut"
+          },
+          "targetReached": true
+        }
+      ],
+      "integrity": {
+        "status": "failed",
+        "evidenceRef": "synthetic-failed-integrity-evidence"
+      },
+      "externalEffects": {
+        "status": "reconciled",
+        "evidenceRef": "synthetic-external-evidence"
+      },
+      "replay": {
+        "status": "complete",
+        "evidenceRef": "synthetic-replay-evidence"
+      },
+      "reopeningEligible": false,
+      "reasonCode": "synthetic-integrity-failed"
+    }
+  ]
+}

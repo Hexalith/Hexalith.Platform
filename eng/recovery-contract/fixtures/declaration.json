@@ -1,0 +1,48 @@
+{
+  "contractVersion": "1.0.0",
+  "recordType": "declaration",
+  "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "moduleId": "eventstore",
+  "workloadId": "eventstore-recovery",
+  "dependencies": [],
+  "positionDefinitions": [
+    {
+      "positionId": "eventstore-events",
+      "ownerModule": "eventstore",
+      "scope": "catalog-main",
+      "kind": "eventstore-position",
+      "recoveryClass": "authoritative-restore",
+      "encoding": "eventstore-opaque-v1"
+    }
+  ],
+  "reopenBeforeReplay": false,
+  "endpoint": "/_internal/recovery/v1",
+  "survivingAuthorities": [],
+  "hooks": [
+    {
+      "hookId": "admission-purge",
+      "phase": "admission-purge",
+      "implementation": "implemented"
+    },
+    {
+      "hookId": "credentials",
+      "phase": "credentials",
+      "implementation": "implemented"
+    },
+    {
+      "hookId": "rebuild",
+      "phase": "rebuild",
+      "implementation": "implemented"
+    },
+    {
+      "hookId": "integrity",
+      "phase": "integrity",
+      "implementation": "implemented"
+    },
+    {
+      "hookId": "external-effect-reconciliation",
+      "phase": "external-effect-reconciliation",
+      "implementation": "implemented"
+    }
+  ]
+}

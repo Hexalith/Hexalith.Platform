@@ -1,0 +1,87 @@
+{
+  "contractVersion": "1.0.0",
+  "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "environmentId": "synthetic-staging",
+  "instanceId": "replacement-01",
+  "attemptId": "synthetic-recovery-01",
+  "attemptKind": "recovery",
+  "epoch": 7,
+  "recoveryMode": "disaster-recovery",
+  "cut": {
+    "cutId": "synthetic-cut-01",
+    "positions": [
+      {
+        "positionId": "eventstore-events",
+        "ownerModule": "eventstore",
+        "scope": "catalog-main",
+        "kind": "eventstore-position",
+        "recoveryClass": "authoritative-restore",
+        "encoding": "eventstore-opaque-v1",
+        "value": "partition:a/offset:450",
+        "relationToCut": "at-cut"
+      },
+      {
+        "positionId": "memories-register",
+        "ownerModule": "memories",
+        "scope": "register-main",
+        "kind": "memories-register-sequence",
+        "recoveryClass": "rebuild-only",
+        "encoding": "memories-sequence-v1",
+        "value": "9001",
+        "relationToCut": "before-cut"
+      },
+      {
+        "positionId": "keys-lineage",
+        "ownerModule": "keys",
+        "scope": "tenant-key-custody",
+        "kind": "module-owned-position",
+        "recoveryClass": "live-authority-only",
+        "encoding": "keys-lineage-v1",
+        "value": "lineage:alive-f2",
+        "relationToCut": "at-cut"
+      }
+    ]
+  },
+  "recordType": "invocation",
+  "moduleId": "keys",
+  "hookId": "fence-custody",
+  "taskId": "keys-fence-custody",
+  "invocationId": "keys-fence-custody-delivery-0",
+  "retry": 0,
+  "invokedAt": "2026-10-07T12:00:01Z",
+  "endpoint": "/_internal/recovery/v1",
+  "dependsOn": [],
+  "targetPositions": [
+    {
+      "positionId": "keys-lineage",
+      "ownerModule": "keys",
+      "scope": "tenant-key-custody",
+      "kind": "module-owned-position",
+      "recoveryClass": "live-authority-only",
+      "encoding": "keys-lineage-v1",
+      "value": "lineage:alive-f2",
+      "relationToCut": "at-cut"
+    }
+  ],
+  "execution": {
+    "location": "recovery-executor-sandbox",
+    "executorId": "synthetic-executor",
+    "authorityId": "tenant-key-backup",
+    "custodianMaterialRef": "synthetic-custody-binding"
+  },
+  "authorization": {
+    "credentialRef": "synthetic-credential-reference",
+    "issuerId": "synthetic-replacement-issuer",
+    "issuerGenerationId": "issuer-fresh-2",
+    "principal": "synthetic-staging-recovery-hook",
+    "audience": "synthetic-recovery-hooks",
+    "scope": "recovery-hook",
+    "issuedAt": "2026-10-07T12:00:00Z",
+    "expiresAt": "2026-10-07T12:10:00Z",
+    "environmentId": "synthetic-staging",
+    "instanceId": "replacement-01",
+    "attemptId": "synthetic-recovery-01",
+    "attemptKind": "recovery",
+    "epoch": 7
+  }
+}

@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 10
 created: '2026-10-07'
-status: 'in-progress'
+status: 'done'
 baseline_commit: '332a7d8104e3f6c9aaa57cbc7f07afb5fa0859de'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -54,12 +54,12 @@ Every release binds the exact contract version. Support every version referenced
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `schemas/hexalith.recovery-hook.v1.json` — define versioned declaration/invocation/result shapes and scoped cut positions; make required coverage machine-checkable.
-- [ ] `docs/contracts/recovery-hook-v1.md` — fix endpoint/request/result semantics, authorization and atomic commit obligations, phase/dependency ordering, retry identity, refusals, reopening and version lifecycle; distinguish fence execution.
-- [ ] `eng/recovery-contract/pyproject.toml` and `uv.lock` — declare and lock the JSON Schema validator dependency; avoid a custom schema engine.
-- [ ] `eng/recovery-contract/validate.py` — strictly load JSON, validate against the schema and apply cross-record/context semantic checks; expose a local CLI with stable, sanitized errors.
-- [ ] `eng/recovery-contract/test_validate.py` and `fixtures/*.json` — test every matrix row, mismatched identity/cut/result bindings, dependency cycles, unsupported versions, noncomparable positions, in-place/DR distinctions and replay exceptions. Simulate epoch change between invocation and commit using independent context; label fixtures synthetic.
-- [ ] `eng/recovery-contract/README.md` — document reproducible CLI commands and consumer responsibilities; link the normative contract and schema.
+- [x] `schemas/hexalith.recovery-hook.v1.json` — define versioned declaration/invocation/result shapes and scoped cut positions; make required coverage machine-checkable.
+- [x] `docs/contracts/recovery-hook-v1.md` — fix endpoint/request/result semantics, authorization and atomic commit obligations, phase/dependency ordering, retry identity, refusals, reopening and version lifecycle; distinguish fence execution.
+- [x] `eng/recovery-contract/pyproject.toml` and `uv.lock` — declare and lock the JSON Schema validator dependency; avoid a custom schema engine.
+- [x] `eng/recovery-contract/validate.py` — strictly load JSON, validate against the schema and apply cross-record/context semantic checks; expose a local CLI with stable, sanitized errors.
+- [x] `eng/recovery-contract/test_validate.py` and `fixtures/*.json` — test every matrix row, mismatched identity/cut/result bindings, dependency cycles, unsupported versions, noncomparable positions, in-place/DR distinctions and replay exceptions. Simulate epoch change between invocation and commit using independent context; label fixtures synthetic.
+- [x] `eng/recovery-contract/README.md` — document reproducible CLI commands and consumer responsibilities; link the normative contract and schema.
 
 **Acceptance Criteria:**
 - Given Story 4.10, when the artifacts are inspected, then every listed contract element has a normative definition and schema representation where applicable.
@@ -68,9 +68,34 @@ Every release binds the exact contract version. Support every version referenced
 
 ## Implementation Notes
 
+- Published contract `1.0.0` with closed Draft 2020-12 declaration, invocation, result and offline sidecar shapes. Explicit workload bindings keep ordinary tasks separate from authority-specific sandbox fences.
+- Added strict JSON loading, independent admission/commit contexts, scoped opaque-position checks, dependency/phase ordering, immutable retry bindings and fail-closed result/reopening checks.
+- Locked `jsonschema` and its required RFC3339 validator; malformed dates and CLI errors produce stable diagnostics without reflected values. Lowercase RFC3339 markers and UTC offsets are normalized.
+- Acceptance audit found and fixed missing date-format validation and a pending-replay prerequisite bypass before review. Review fixes preserve exact numeric/fractional-time comparisons, bind the prior issuer, tighten schema-only constraints and independently pin three existing guards. No frozen intent changed.
+- All 74 tests ran and passed. Matrix coverage: conforming chain (`test_valid_chain`, `test_stable_success_output`); invalid shape/secret-safe refusals (`test_unknown_shape_and_unsupported_version`, `test_duplicate_json_keys_and_nonfinite_numbers`, `test_missing_cut_class_and_named_positions`, CLI diagnostic tests); authority mismatch (`test_independent_authority_mismatch`, `test_epoch_takeover_between_invocation_and_commit`, retry checks); incomplete recovery (`test_missing_implementation_is_unqualified`, failed integrity/unknown effect/replay tests and `test_matrix_outcomes`).
+
 ## Spec Change Log
 
 ## Review Triage Log
+
+All 12 accepted findings were resolved in 11 patch groups (BH-2/EH-1 share one root cause). BH-5 and BH-6 were rejected on the evidence below. Final verification: all 74 tests passed; no accepted findings remain open.
+
+| ID | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| BH-1 | high | patch | Reproduced: JSON epoch `7.000000000000000001` rounds to `7.0` and a complete chain matches trusted epoch 7. Preserve exact numeric parsing in the existing loader. |
+| BH-2 | high | patch | Reproduced: a dependent invocation at `.0000001Z` passes before prerequisite completion at `.0000009Z`. Preserve full RFC3339 fractions in the existing comparison helper. |
+| BH-3 | medium | patch | Confirmed standalone declarations accept a final LF in both module ID and digest because regex `$` permits it. Correct the existing end anchors. |
+| BH-4 | medium | patch | Reproduced: changing only commit-context `priorIssuerGenerationId` still reports complete and eligible. Include that existing DR identity in context equality. |
+| BH-5 | false | reject | A reissue regression to pending already returns reopening eligibility false; reproduced against the fixture. The protocol does not require monotonic reissue state, and a fresh current pending state must block reopening. |
+| BH-6 | false | reject | The invocation already binds authority ID together with the material reference, and validation checks the declared authority. A repeated opaque reference alone does not demonstrate access to the same material: resolution and actual authority-specific custody enforcement belong to the custodian/runtime, explicitly outside this offline validator's claim. No global reference-uniqueness rule exists. |
+| BH-7 | medium | patch | Confirmed shape validation accepts `/public/recovery` while declarations and normative target require the fixed internal endpoint. Apply the existing constant to invocation shape. |
+| BH-8 | medium | patch | Confirmed cut shape accepts an EventStore-kind position owned by Keys; owner enforcement currently occurs only in full-chain semantics despite the coverage claim. Add the two existing built-in owner constants to schema constraints. |
+| BH-9 | medium | patch | The HTTP refusal paragraph gives status codes and a reason code but omits content type/body serialization, leaving downstream parsers inconsistent. Clarify the existing reason-code-only body as plain text with one example; add no response fields or endpoints. |
+| BH-10 | medium | patch | The documented duplicate path references a recorded terminal result which does not yet exist during an in-flight execution. Clarify that an identical delivery joins that execution and waits for its terminal result without creating another task. |
+| EH-1 | high | patch (BH-2) | Independently reproduced full-fraction truncation causing inverted phase/credential times to compare equal. Same parsing root cause as BH-2. |
+| VG-1 | medium | patch | Pre-verified mutation leaves all 64 tests green when same-phase dependency enforcement is removed. Add an isolated missing same-phase edge case retaining every earlier-phase edge. |
+| VG-2 | medium | patch | Pre-verified mutation leaves all 64 tests green when credential audience comparison is removed. Add a structurally valid audience mismatch with all other fields unchanged. |
+| VG-3 | medium | patch | Pre-verified mutation leaves all 64 tests green when immutable retry comparison is removed. Add an individually valid retry dependency change that must refuse retry-identity-mismatch. |
 
 ## Design Notes
 
@@ -78,5 +103,5 @@ This adds a language-neutral wire contract rather than a module ABI. Credential 
 
 ## Verification
 
-- `uv run --project eng/recovery-contract python -m unittest discover -s eng/recovery-contract -p 'test_*.py'` — schema self-validation, semantic and CLI cases pass.
+- `uv run --locked --project eng/recovery-contract python -m unittest discover -v -s eng/recovery-contract -p 'test_*.py'` — 74 tests passed (8.747s), including schema self-validation, all four matrix rows, semantic cases and CLI regressions.
 - `git diff --check` — no whitespace errors.

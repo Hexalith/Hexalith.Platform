@@ -1,0 +1,72 @@
+{
+  "contractVersion": "1.0.0",
+  "recordType": "context",
+  "releaseId": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "environmentId": "synthetic-staging",
+  "instanceId": "replacement-01",
+  "attemptId": "synthetic-recovery-01",
+  "attemptKind": "recovery",
+  "epoch": 7,
+  "recoveryMode": "disaster-recovery",
+  "cut": {
+    "cutId": "synthetic-cut-01",
+    "positions": [
+      {
+        "positionId": "eventstore-events",
+        "ownerModule": "eventstore",
+        "scope": "catalog-main",
+        "kind": "eventstore-position",
+        "recoveryClass": "authoritative-restore",
+        "encoding": "eventstore-opaque-v1",
+        "value": "partition:a/offset:450",
+        "relationToCut": "at-cut"
+      },
+      {
+        "positionId": "memories-register",
+        "ownerModule": "memories",
+        "scope": "register-main",
+        "kind": "memories-register-sequence",
+        "recoveryClass": "rebuild-only",
+        "encoding": "memories-sequence-v1",
+        "value": "9001",
+        "relationToCut": "before-cut"
+      },
+      {
+        "positionId": "keys-lineage",
+        "ownerModule": "keys",
+        "scope": "tenant-key-custody",
+        "kind": "module-owned-position",
+        "recoveryClass": "live-authority-only",
+        "encoding": "keys-lineage-v1",
+        "value": "lineage:alive-f2",
+        "relationToCut": "at-cut"
+      }
+    ]
+  },
+  "validatedAt": "2026-10-07T12:02:00Z",
+  "recoveryPrincipal": "synthetic-staging-recovery-hook",
+  "audience": "synthetic-recovery-hooks",
+  "issuer": {
+    "issuerId": "synthetic-replacement-issuer",
+    "generationId": "issuer-fresh-2",
+    "origin": "replacement-capacity",
+    "keySource": "fresh"
+  },
+  "priorIssuerGenerationId": "issuer-old-1",
+  "quarantine": {
+    "userIngress": "closed",
+    "externalEffectWorkers": "disabled",
+    "destructiveRetentionWorkers": "disabled",
+    "executorId": "synthetic-executor",
+    "recoveryWorkloadIds": [
+      "eventstore-recovery",
+      "memories-recovery",
+      "keys-recovery"
+    ],
+    "probeSourceIds": [
+      "synthetic-probe"
+    ],
+    "admittedSources": "owning-executor-recovery-workloads-and-probes-only"
+  },
+  "survivingAuthorityReissue": "complete"
+}
