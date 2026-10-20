@@ -12,7 +12,7 @@ import qualify as q
 from cases import plan_digest
 
 
-def prepare(root, configuration, output, eventstore="../eventstore", artifacts="/tmp/ext-secrets-artifacts", evidence="/tmp/ext-secrets-evidence"):
+def prepare(root, configuration, output, eventstore="../eventstore", artifacts="/tmp/ext-secrets-artifacts", evidence="/tmp/ext-secrets-evidence", register=None):
     root, configuration, output = Path(root).resolve(), Path(configuration).resolve(), Path(output).resolve()
     if output.is_relative_to(root):
         raise ValueError("detached output must be outside candidate checkout")
@@ -93,6 +93,17 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     # Installation, current scopes and owner acceptance are independent external gates even with complete references.
     missing.extend(q.IMPLEMENTATIONS)
     missing.append("OwnerAcceptedTargetRuntimeQualificationBindingAndExactCommand")
+    cohort = []
+    register_binding = None
+    if register is not None:
+        try:
+            register_bytes = q.bounded_public_file(register, 1024 * 1024)
+            cohort = q.cohort_prerequisite_inputs(register, head, register_text=register_bytes.decode("utf-8"))
+            register_binding = {"path": str(Path(register).resolve()),
+                                "sha256": hashlib.sha256(register_bytes).hexdigest()}
+        except (OSError, ValueError, TypeError):
+            cohort = ["AuthoritativeCohortPrerequisites"]
+        missing.extend(cohort)
     binding = {"configurationSha256": q.digest(config), "planSha256": plan_digest(), **anchors}
     packet_path = output / "replacement-acceptance-packet.json"
     detached_configuration = output / "runtime-reference.json"
@@ -102,7 +113,9 @@ def prepare(root, configuration, output, eventstore="../eventstore", artifacts="
     packet = {"schema": "EXT-SECRETS-1.replacement-acceptance.v2", "candidateCommit": head,
               "acceptedReplacementCommit": None, "dependencyAvailable": False, "liveCompatibilityAuthorized": False,
               "productionMutationAllowed": False, "ownerAcceptanceRequired": True, **binding,
-              "publicAnchorSha256": q.digest(anchors), "RuntimeQualificationBinding": binding, "exactCommand": command}
+              "publicAnchorSha256": q.digest(anchors), "RuntimeQualificationBinding": binding, "exactCommand": command,
+              "readiness": "IncompleteSourceCandidate",
+              "qualificationCompleted": False, "cohortBlockingInputs": cohort, "registerEvidence": register_binding}
     report = {"code": "DependencyNotAvailable", "dependency": "EXT-SECRETS-1", "candidateCommit": head,
               "qualificationEffects": 0, "dependencyAvailable": False, "missingInputs": sorted(set(missing)),
               "packetPrepared": candidate_ready}
@@ -123,8 +136,9 @@ def main():
     parser.add_argument("--eventstore-argument", default="../eventstore")
     parser.add_argument("--artifacts-argument", required=True)
     parser.add_argument("--evidence-argument", required=True)
+    parser.add_argument("--register", help="Authoritative Agents register for cohort blockers; read-only, never accepted or edited")
     args = parser.parse_args()
-    result = prepare(args.root, args.configuration, args.output, args.eventstore_argument, args.artifacts_argument, args.evidence_argument)
+    result = prepare(args.root, args.configuration, args.output, args.eventstore_argument, args.artifacts_argument, args.evidence_argument, args.register)
     print(json.dumps(result, sort_keys=True))
     return 2 if result["missingInputs"] else 0
 

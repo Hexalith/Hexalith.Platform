@@ -328,9 +328,15 @@ public sealed class SecretsRuntimeAdapterTests
         var services = new ServiceCollection();
         services.AddExplicitSecretsRuntime(_configuration, _invoker, _clock);
         services.AddPrivateReplay(_configuration, _invoker, _clock);
-        services.AddPrivateCompromise(_configuration, _invoker, _clock).ShouldBeNull();
+        services.AddPrivateCompromise(_configuration, _invoker, _clock).ShouldBe("runtime.compromiseSubscriberBinding");
+        services.AddPrivateCompromise(_configuration, _invoker, new DeletionCapabilityRevocationSubscription("issuer", "audience", "tenant-a"),
+            Substitute.For<IDeletionCapabilityGuardRevocationMirror>(), _clock).ShouldBeNull();
         services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(ITrustedEnvelopeReplayRegistrar));
         services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(IDeletionCapabilityCompromiseRegistrar));
+        services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(ISecretsDaprInvoker));
+        services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(ISecretsCredentialBoundDaprInvoker));
+        using var provider = services.BuildServiceProvider();
+        provider.GetRequiredService<DeletionCapabilityRevocationSubscriber>().ShouldNotBeNull();
     }
 
     [Fact]

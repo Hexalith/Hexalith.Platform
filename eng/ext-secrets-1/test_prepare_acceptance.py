@@ -21,6 +21,12 @@ class AcceptancePreparationTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def assert_only_cohort_refusal(self, invoke):
+        with self.assertRaises(q.Unavailable) as caught:
+            invoke()
+        self.assertEqual(set(q.IMPLEMENTATIONS) | {"OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.JointLivePhaseRunner"},
+                         set(caught.exception.inputs))
+
     def test_detached_packet_pins_real_anchors_without_accepting_candidate(self):
         output = Path(self.temp.name) / "packet"
         result = prepare.prepare(self.fixture.root, self.fixture.path, output)
@@ -44,6 +50,19 @@ class AcceptancePreparationTests(unittest.TestCase):
         self.assertIn("CleanImmutableCandidateCheckout", result["missingInputs"])
         self.assertFalse((output / "replacement-acceptance-packet.json").exists())
         self.assertEqual(0, q.read_json(output / "blocked-inputs.json")["qualificationEffects"])
+
+    def test_packet_retains_authoritative_cohort_blockers_and_register_hash(self):
+        with self.fixture.register.open("a") as stream:
+            stream.write("\n### OQ-5.4-1 — Bounded Owner-Qualification Cohort\n")
+        output = Path(self.temp.name) / "cohort-packet"
+        report = prepare.prepare(self.fixture.root, self.fixture.path, output, register=self.fixture.register)
+        packet = q.read_json(output / "replacement-acceptance-packet.json")
+        self.assertEqual("IncompleteSourceCandidate", packet["readiness"])
+        self.assertFalse(packet["qualificationCompleted"])
+        self.assertIn("OQ-5.4-1.JointLivePhaseRunner", report["missingInputs"])
+        self.assertIn("OQ-5.4-1.CommittedProtectionOwner", packet["cohortBlockingInputs"])
+        self.assertEqual(hashlib.sha256(self.fixture.register.read_bytes()).hexdigest(), packet["registerEvidence"]["sha256"])
+        self.assertEqual([], self.fixture.calls)
 
     def test_candidate_cannot_contain_its_packet_or_overwrite_existing_packet(self):
         with self.assertRaises(ValueError):
@@ -102,7 +121,7 @@ class AcceptancePreparationTests(unittest.TestCase):
                 self.assertFalse(report["packetPrepared"])
                 self.assertEqual(["blocked-inputs.json"], [p.name for p in output.iterdir()])
 
-    def test_generated_v2_packet_round_trips_preflight_with_quoted_metacharacter_paths(self):
+    def test_generated_v2_packet_round_trips_pins_with_quoted_paths_and_keeps_cohort_closed(self):
         output = Path(self.temp.name) / "packet directory;$(never-run)'quoted"
         eventstore = "../event store;$(never-run)"
         artifacts = "/tmp/artifacts space'quoted;$()"
@@ -113,16 +132,16 @@ class AcceptancePreparationTests(unittest.TestCase):
         text = self.fixture.register.read_text()
         original = text.split("Command: `", 1)[1].split("` |", 1)[0]
         self.fixture.register.write_text(text.replace(original, packet["exactCommand"]))
-        config, target, binding = q.preflight(self.fixture.root, output / "runtime-reference.json", self.fixture.register,
-            self.fixture.agents, eventstore, artifacts, evidence, output / "replacement-acceptance-packet.json")
-        self.assertEqual(self.fixture.target, target)
-        self.assertEqual(self.fixture.config, config)
-        self.assertEqual(self.fixture.binding, binding)
+        self.assert_only_cohort_refusal(lambda: q.preflight(self.fixture.root, output / "runtime-reference.json", self.fixture.register,
+            self.fixture.agents, eventstore, artifacts, evidence, output / "replacement-acceptance-packet.json"))
+        self.assertEqual(self.fixture.target, packet["candidateCommit"])
+        self.assertEqual(self.fixture.config, q.read_public_configuration(output / "runtime-reference.json"))
+        self.assertEqual(self.fixture.binding, packet["RuntimeQualificationBinding"])
         self.assertTrue(packet["exactCommand"].endswith(q.command_suffix(eventstore, artifacts, evidence)))
         self.assertEqual([], self.fixture.calls)
 
     def test_unknown_packet_schemas_never_use_legacy_acceptance(self):
-        self.fixture.preflight()
+        self.assert_only_cohort_refusal(self.fixture.preflight)
         packet = q.read_json(self.fixture.packet_path)
         for schema in (None, "EXT-SECRETS-1.replacement-acceptance.v3", "unexpected"):
             with self.subTest(schema=schema):
@@ -179,11 +198,11 @@ class AcceptancePreparationTests(unittest.TestCase):
         previous = Path.cwd()
         try:
             os.chdir(self.fixture.agents)
-            actual, _, _ = q.preflight(self.fixture.root, output / "runtime-reference.json", self.fixture.register, self.fixture.agents,
-                "../eventstore", "/tmp/artifacts", "/tmp/evidence", output / "replacement-acceptance-packet.json")
+            self.assert_only_cohort_refusal(lambda: q.preflight(self.fixture.root, output / "runtime-reference.json", self.fixture.register, self.fixture.agents,
+                "../eventstore", "/tmp/artifacts", "/tmp/evidence", output / "replacement-acceptance-packet.json"))
         finally:
             os.chdir(previous)
-        self.assertEqual(copied, actual)
+        self.assertEqual(copied, q.read_public_configuration(output / "runtime-reference.json"))
         self.assertEqual(q.digest(copied), packet["configurationSha256"])
 
     def test_preparation_reuses_all_named_transport_and_role_version_blockers(self):

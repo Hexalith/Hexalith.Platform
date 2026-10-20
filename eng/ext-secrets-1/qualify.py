@@ -38,6 +38,7 @@ REQUIRED = (
     "runtime.providerBinding", "runtime.hmacCredentialReference", "runtime.tenantInventoryReference", "runtime.currentInventoryAuthorityReference",
     "runtime.tenantA", "runtime.tenantB", "runtime.profileReference", "runtime.issuer", "runtime.audience",
     "runtime.profileVersion", "runtime.profileNotBefore", "runtime.profileValidUntil", "runtime.actorRoleAuthorityReference",
+    "runtime.capabilitySignerReference", "runtime.capabilitySignerCredentialReference", "runtime.replayRegistrarReference",
     "runtime.independentSignerAccount", "runtime.independentSignerCredentialReference", "runtime.publicTrustReference",
     "runtime.currentRevocationReference", "runtime.replayRegistrarCredentialReference", "runtime.replayExactScope",
     "runtime.compromiseSubscriberCredentialReference", "runtime.compromisePublisherReference",
@@ -91,11 +92,13 @@ def get(value, path):
     return value
 
 
-def bounded_public_file(path, limit):
+def bounded_public_file(path, limit, *, forbidden_inodes=()):
     # Open nonblocking before inspecting the descriptor: FIFOs/devices/symlinks cannot stall a proof check.
     descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
     try:
         metadata = os.fstat(descriptor)
+        if (metadata.st_dev, metadata.st_ino) in forbidden_inodes:
+            raise ValueError("configured credential cannot be public evidence")
         if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > limit:
             raise ValueError("bounded regular public file required")
         data = bytearray()
@@ -125,10 +128,18 @@ def command_suffix(eventstore, artifacts, evidence):
 
 def read_public_configuration(path):
     try:
-        value = read_json(path)
+        return parse_public_configuration(bounded_public_file(path, 1024 * 1024))
+    except (OSError, ValueError, TypeError, UnicodeError):
+        raise Unavailable("ValidPublicRuntimeReferenceConfiguration") from None
+
+
+def parse_public_configuration(data):
+    """Validate captured public bytes so evidence hashes can bind the interpreted snapshot."""
+    try:
+        value = decode_json(data)
         validate_public_configuration(value)
         return value
-    except (OSError, ValueError, TypeError, UnicodeError):
+    except (ValueError, TypeError, UnicodeError):
         # Neither rejected field names nor their values may enter a report or exception message.
         raise Unavailable("ValidPublicRuntimeReferenceConfiguration") from None
 
@@ -186,8 +197,8 @@ def public_key_identity(data):
     return key.public_bytes(serialization.Encoding.DER, serialization.PublicFormat.SubjectPublicKeyInfo)
 
 
-def acceptance(register):
-    text = Path(register).read_text()
+def acceptance(register, *, register_text=None):
+    text = bounded_public_file(register, 1024 * 1024).decode("utf-8") if register_text is None else register_text
     section = text.split("### EXT-SECRETS-1 — Platform Secret Resolution", 1)[1].split("### EXT-EXPORT-STORE-1", 1)[0]
     target = re.search(r"\| `TargetVersionOrCommit` \| `([0-9a-f]{40})` \|", section).group(1)
     if not re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", section):
@@ -202,6 +213,44 @@ def acceptance(register):
     binding_match = re.search(r"\| `RuntimeQualificationBinding` \| `([^`]+)` \|", section)
     binding = json.loads(binding_match.group(1)) if binding_match else None
     return target, command, binding
+
+
+def cohort_prerequisite_inputs(register, target, *, register_text=None):
+    """The full plan crosses the accepted joint cohort; a standalone run cannot satisfy it."""
+    text = bounded_public_file(register, 1024 * 1024).decode("utf-8") if register_text is None else register_text
+    if "### OQ-5.4-1" not in text:
+        return ["OQ-5.4-1.AuthoritativeCohortRecord", "OQ-5.4-1.JointLivePhaseRunner"]
+    missing = []
+    def section(record):
+        match = re.search(r"^### " + re.escape(record) + r"\b[^\n]*\n(.*?)(?=^### |^## |\Z)", text, re.M | re.S)
+        return match.group(1) if match else ""
+    protection, host = section("EXT-PROTECTION-1"), section("EXT-HOST-1")
+    def accepted_owner(value):
+        return (re.search(r"\| `AcceptedStatus` \| `(?:Committed|Available)` \|", value)
+                and re.search(r"\| `TargetVersionOrCommit` \| `[0-9a-f]{40}` \|", value)
+                and re.search(r"\| `TargetIntegrationDate` \| `\d{4}-\d{2}-\d{2}` \|", value)
+                and re.search(r"Command: `[^`\n]+`", value))
+    if not accepted_owner(protection):
+        missing.append("OQ-5.4-1.CommittedProtectionOwner")
+    if not accepted_owner(host) or f'| `TargetVersionOrCommit` | `{target}` |' not in host:
+        missing.append("OQ-5.4-1.SharedPlatformTarget")
+    # A profile must be in the accepted executable command, not just explanatory prose.
+    command = re.search(r"Command: `([^`]+)`", host)
+    try:
+        arguments = shlex.split(command.group(1)) if command is not None else []
+        position = arguments.index("--profile")
+        profile = arguments[position + 1]
+        valid_profile = bool(profile and not profile.startswith("-") and not any(x in profile for x in ("$", "`", "<", ">")))
+    except (ValueError, IndexError):
+        valid_profile = False
+    if not accepted_owner(host) or not valid_profile:
+        missing.append("OQ-5.4-1.AcceptedPinnedHostProfile")
+    # This client implements the complete secrets plan. It does not execute the protection
+    # owner phase, interleave host composition, or prove every consumer refuses. Those
+    # phase receipts must come from a real joint runner before this standalone entry can
+    # acquire any authority for the mutual cases. No local/config flag supplies them.
+    missing.append("OQ-5.4-1.JointLivePhaseRunner")
+    return missing
 
 
 def git(root, *args):
@@ -272,17 +321,64 @@ def qualification_prerequisite_inputs(config):
     timeout = get(config, "qualification.requestTimeoutSeconds")
     if type(timeout) is not int or timeout not in range(1, 31):
         missing.append("BoundedQualificationCalls")
-    credential = get(config, "qualification.daprApiCredentialReference")
-    if not isinstance(credential, str) or not credential.startswith("file:/") or not Path(credential[5:]).is_file():
-        missing.append("MountedQualificationDaprCredential")
+    for path, name in (("qualification.daprApiCredentialReference", "MountedQualificationDaprCredential"),
+                       ("qualification.enrollmentCredentialReference", "MountedQualificationCallerCredential")):
+        credential = get(config, path)
+        if not mounted_credential_reference(credential):
+            missing.append(name)
     return missing
+
+
+def mounted_credential_reference(reference):
+    """Inspect mount metadata without reading credentials; Kubernetes projected files may be links."""
+    if not isinstance(reference, str) or not reference.startswith("file:/"):
+        return False
+    try:
+        metadata = os.stat(reference[5:])
+        return stat.S_ISREG(metadata.st_mode) and 0 < metadata.st_size <= 8192
+    except OSError:
+        return False
+
+
+def read_mounted_credential(reference, missing):
+    """Validate and read one bounded regular descriptor, including projected Secret mounts."""
+    descriptor = None
+    try:
+        if not isinstance(reference, str) or not reference.startswith("file:/"):
+            raise ValueError("credential reference")
+        descriptor = os.open(reference[5:], os.O_RDONLY | os.O_NONBLOCK)
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode) or not 0 < metadata.st_size <= 8192:
+            raise ValueError("bounded regular credential file")
+        # fstat and read share the same descriptor. An atomic projected-volume rotation
+        # cannot switch this operation to another file between validation and reading.
+        data = bytearray()
+        while len(data) <= 8192:
+            chunk = os.read(descriptor, min(8193 - len(data), 4096))
+            if not chunk:
+                break
+            data.extend(chunk)
+        if len(data) > 8192:
+            raise ValueError("credential size")
+        token = data.decode("utf-8", errors="strict").strip()
+        data[:] = b"\x00" * len(data)
+        if not token or any(ord(c) <= 32 or ord(c) >= 127 for c in token):
+            raise ValueError("credential shape")
+        return token
+    except (OSError, ValueError, UnicodeError):
+        raise Unavailable(missing) from None
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
 
 
 def preflight(root, config_path, register, caller, eventstore_argument, artifacts_argument, evidence_argument, acceptance_packet_path=None):
     missing = []
     config = {}
     try:
-        target, command, binding = acceptance(register)
+        register_text = bounded_public_file(register, 1024 * 1024).decode("utf-8")
+        target, command, binding = acceptance(register, register_text=register_text)
+        missing.extend(cohort_prerequisite_inputs(register, target, register_text=register_text))
     except (OSError, ValueError, IndexError, AttributeError, TypeError):
         raise Unavailable("AuthoritativeAcceptedTargetAndOwnerCommand")
     try:
@@ -438,18 +534,18 @@ class DaprTransport:
 
         def read():
             token = None
+            caller_token = None
             response = None
             try:
-                token_path = get(self.config, "qualification.daprApiCredentialReference")[5:]
-                token = Path(token_path).read_text().strip()
-                if not token or len(token) > 8192 or any(ord(c) < 32 for c in token):
-                    raise Unavailable("MountedQualificationDaprCredential")
+                token = read_mounted_credential(get(self.config, "qualification.daprApiCredentialReference"), "MountedQualificationDaprCredential")
+                caller_token = read_mounted_credential(get(self.config, "qualification.enrollmentCredentialReference"), "MountedQualificationCallerCredential")
                 connection.timeout = remaining()
                 connection.connect()
                 connection.sock.settimeout(remaining())
                 connection.request("POST", f"/v1.0/invoke/{app}/method/ext-secrets-1/v1/{operation}", canonical(request),
-                                   {"Content-Type": "application/json", "dapr-api-token": token})
+                                   {"Content-Type": "application/json", "dapr-api-token": token, "Authorization": "Bearer " + caller_token})
                 token = None
+                caller_token = None
                 response = connection.getresponse()
                 if 300 <= response.status < 400:
                     raise QualificationFailed("DaprRedirectProhibited")
@@ -471,6 +567,7 @@ class DaprTransport:
                 result.put((False, exc))
             finally:
                 token = None
+                caller_token = None
                 if response is not None: response.close()
                 connection.close()
 

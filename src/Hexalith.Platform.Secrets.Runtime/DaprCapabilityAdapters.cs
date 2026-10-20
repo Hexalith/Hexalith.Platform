@@ -92,11 +92,11 @@ public sealed class DaprSigningProviderAdapter(SecretsRuntimeConfiguration confi
             ["capabilityDigest"] = digest,
             ["canonicalPayload"] = Convert.ToBase64String(DeletionBatchCapabilityIdentity.CanonicalPayload(payload)),
         };
-        SecretsCall current = await _session.CallAsync(configuration.IndependentSignerCredentialReference, "runtime.independentSignerCredentialReference", "query-sign", body, cancellationToken).ConfigureAwait(false);
+        SecretsCall current = await _session.CallPrivateAsync(configuration.CapabilitySignerReference, "runtime.capabilitySignerReference", configuration.CapabilitySignerCredentialReference, "runtime.capabilitySignerCredentialReference", "query-sign", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return Unavailable(payload, signingRequestId); }
         if (Signed(current.Proof, payload, signingRequestId, digest)) { return Result(current.Proof!, payload, signingRequestId); }
-        if (!effect || !SecretsProof.Absent(current.Proof, body, configuration.IndependentSignerCredentialReference, "query-sign", _session.Clock.GetUtcNow())) { return Unavailable(payload, signingRequestId); }
-        SecretsCall signed = await _session.CallAsync(configuration.IndependentSignerCredentialReference, "runtime.independentSignerCredentialReference", "effect-sign", body, cancellationToken).ConfigureAwait(false);
+        if (!effect || !SecretsProof.Absent(current.Proof, body, configuration.CapabilitySignerReference, "query-sign", _session.Clock.GetUtcNow())) { return Unavailable(payload, signingRequestId); }
+        SecretsCall signed = await _session.CallPrivateAsync(configuration.CapabilitySignerReference, "runtime.capabilitySignerReference", configuration.CapabilitySignerCredentialReference, "runtime.capabilitySignerCredentialReference", "effect-sign", body, cancellationToken).ConfigureAwait(false);
         return !signed.Unavailable && Signed(signed.Proof, payload, signingRequestId, digest) ? Result(signed.Proof!, payload, signingRequestId) : Unavailable(payload, signingRequestId);
     }
 
@@ -132,18 +132,18 @@ public sealed class DaprReplayRegistrarAdapter(SecretsRuntimeConfiguration confi
     public async Task<TrustedEnvelopeReplayReceipt?> RegisterAsync(TrustedEnvelopeReplayIntent intent, DateTimeOffset evaluatedAt, TimeSpan retention, CancellationToken cancellationToken = default)
     {
         JsonObject body = Body(intent, evaluatedAt, retention);
-        SecretsCall current = await _session.CallAsync(configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", body, cancellationToken).ConfigureAwait(false);
+        SecretsCall current = await _session.CallPrivateAsync(configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return null; }
         if (Receipt(current.Proof, intent, evaluatedAt, retention) is { } existing) { return existing; }
-        if (!SecretsProof.Absent(current.Proof, body, configuration.ReplayRegistrarCredentialReference, "query-replay", _session.Clock.GetUtcNow())) { return null; }
-        SecretsCall created = await _session.CallAsync(configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "effect-replay", body, cancellationToken).ConfigureAwait(false);
+        if (!SecretsProof.Absent(current.Proof, body, configuration.ReplayRegistrarReference, "query-replay", _session.Clock.GetUtcNow())) { return null; }
+        SecretsCall created = await _session.CallPrivateAsync(configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "effect-replay", body, cancellationToken).ConfigureAwait(false);
         return created.Unavailable ? null : Receipt(created.Proof, intent, evaluatedAt, retention);
     }
 
     /// <inheritdoc/>
     public async Task<TrustedEnvelopeReplayReceipt?> LookupAsync(TrustedEnvelopeReplayIntent intent, CancellationToken cancellationToken = default)
     {
-        SecretsCall proof = await _session.CallAsync(configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", Body(intent, null, null), cancellationToken).ConfigureAwait(false);
+        SecretsCall proof = await _session.CallPrivateAsync(configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", Body(intent, null, null), cancellationToken).ConfigureAwait(false);
         return proof.Unavailable ? null : Receipt(proof.Proof, intent, evaluatedAt: null, retention: null);
     }
 
@@ -202,11 +202,11 @@ public sealed class DaprCompromiseRegistrarAdapter(SecretsRuntimeConfiguration c
     {
         RequireMirror();
         JsonObject body = Body(envelope);
-        SecretsCall current = await _session.CallAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", "query-compromise", body, cancellationToken).ConfigureAwait(false);
+        SecretsCall current = await _session.CallPrivateAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", configuration.CompromiseSubscriberCredentialReference, "runtime.compromiseSubscriberCredentialReference", "query-compromise", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return null; }
         if (Receipt(current.Proof, envelope) is { } existing) { return existing; }
         if (!SecretsProof.Absent(current.Proof, body, configuration.CompromiseSubscriptionReference, "query-compromise", _session.Clock.GetUtcNow())) { return null; }
-        SecretsCall proof = await _session.CallAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", "effect-compromise", body, cancellationToken).ConfigureAwait(false);
+        SecretsCall proof = await _session.CallPrivateAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", configuration.CompromiseSubscriberCredentialReference, "runtime.compromiseSubscriberCredentialReference", "effect-compromise", body, cancellationToken).ConfigureAwait(false);
         return proof.Unavailable ? null : Receipt(proof.Proof, envelope);
     }
 
@@ -214,7 +214,7 @@ public sealed class DaprCompromiseRegistrarAdapter(SecretsRuntimeConfiguration c
     public async Task<DeletionCapabilityRevocationReceipt?> LookupAsync(DeletionCapabilityRevocationEnvelope envelope, CancellationToken cancellationToken = default)
     {
         RequireMirror();
-        SecretsCall proof = await _session.CallAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", "query-compromise", Body(envelope), cancellationToken).ConfigureAwait(false);
+        SecretsCall proof = await _session.CallPrivateAsync(configuration.CompromiseSubscriptionReference, "runtime.compromiseSubscriptionReference", configuration.CompromiseSubscriberCredentialReference, "runtime.compromiseSubscriberCredentialReference", "query-compromise", Body(envelope), cancellationToken).ConfigureAwait(false);
         return proof.Unavailable ? null : Receipt(proof.Proof, envelope);
     }
 
