@@ -1,0 +1,12 @@
+cwd: /home/administrator/projects/hexalith/platform/references/Hexalith.Parties
+command: ["dotnet", "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll", "-class", "Hexalith.Parties.Tests.Security.SecurityRegistrationTests", "-class", "Hexalith.Parties.Tests.HealthChecks.HealthEndpointIntegrationTests", "-class", "Hexalith.Parties.Tests.HealthChecks.ConfiguredComponentHealthCheckTests"]
+exit: 0
+full-output-sha256: 660203888cb8c98f2846033fd14e2c45982df62464ca903b0b7419755dc3b975
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Parties.Tests
+  Discovered:  Hexalith.Parties.Tests
+  Starting:    Hexalith.Parties.Tests
+  Finished:    Hexalith.Parties.Tests (ID = 'af6be4556e614c1c2b76b5295ee662d0035a185c85fec29c5aee601aa3d5570f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Tests  Total: 15, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 2.637s

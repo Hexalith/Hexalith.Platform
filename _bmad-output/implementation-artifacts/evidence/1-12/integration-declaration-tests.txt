@@ -1,0 +1,19 @@
+cwd: /home/administrator/projects/hexalith/platform/references/Hexalith.Parties
+command: ["python3", "-B", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_platform_declaration.py", "-v"]
+exit: 0
+full-output-sha256: 29617fe8a49b2eeb0a7d86fb8dfe0405ba09343d4f3991a79fa140ee8194a5fb
+
+test_build_files_leave_all_source_selection_to_the_tool (test_platform_declaration.PlatformDeclarationTests.test_build_files_leave_all_source_selection_to_the_tool) ... ok
+test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting (test_platform_declaration.PlatformDeclarationTests.test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting) ... /tmp/tmpd1j9pop_/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpd1j9pop_/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpd1j9pop_/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpd1j9pop_/accesscontrol.yaml: Platform declaration: Unsafe operation grant
+ok
+test_optimized_process_rejects_unsafe_acl_without_rewriting (test_platform_declaration.PlatformDeclarationTests.test_optimized_process_rejects_unsafe_acl_without_rewriting) ... ok
+test_owner_acl_is_the_exact_declaration_authority (test_platform_declaration.PlatformDeclarationTests.test_owner_acl_is_the_exact_declaration_authority) ... ok
+test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed (test_platform_declaration.PlatformDeclarationTests.test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.566s
+
+OK

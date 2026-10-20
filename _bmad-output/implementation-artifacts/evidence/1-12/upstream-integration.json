@@ -1,0 +1,55 @@
+{
+  "recordedAtUtc": "2026-10-20T14:21:35.676062+00:00",
+  "story": "1.12",
+  "approval": {
+    "decision": "approved",
+    "source": "User reply to owner approval and upstream integration question",
+    "reply": "²yes",
+    "scope": [
+      "Approve reviewed owner changes",
+      "Push Parties first, then Platform"
+    ],
+    "reviewedPlatformCommit": "b4979fc7ea606a544eb567c2a8fb940ece710194",
+    "reviewedPartiesCommit": "895e04c4a5cc46faab0ac2d780aeff6de4e9f777"
+  },
+  "upstreamIntegration": {
+    "status": "complete",
+    "pushOrder": [
+      "parties",
+      "platform"
+    ],
+    "verifiedRemoteMainHeads": {
+      "parties": "35d891d202a87fd4f494f2cadd26c277df44b84a",
+      "platform": "e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058"
+    },
+    "partiesPreservedUpstreamCommit": "32fa72e2cb223d7f8554d3a5439fa6e15212ec26",
+    "platformAdoptionCommit": "e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058"
+  },
+  "rebase": {
+    "approvedPatchUnchanged": true,
+    "diffSha256": "adad33ac38bd377366c011ca6cda071bf4495df0e71ae2c3c1f739fed6f2aace",
+    "commitMap": {
+      "e873ac00bf19059638e3d91cb4ae4aaa0ba9c819": "a1d8db0d2009c7124b36d19a6ac81e696c5967e3",
+      "10de88c7ecd441b6c616096d74629aa46293819c": "94bf9f6b51b201a3e149daedec0ba831f7764de8",
+      "ae00820347b87483cc90538012c27464375ad9a1": "8559c2672623c784b8b940744ab9df1489bf6e3a",
+      "895e04c4a5cc46faab0ac2d780aeff6de4e9f777": "35d891d202a87fd4f494f2cadd26c277df44b84a"
+    }
+  },
+  "pinnedPartiesReferences": [
+    "160000 commit 17179e59843ee8cfb35892a74a2c18d3136fc9cf\treferences/Hexalith.Platform",
+    "160000 commit 9a94131a26d0c5d80d5540706e267ee123d54b68\treferences/Hexalith.Tenants"
+  ],
+  "verification": {
+    "checks": "integration-check-results.json",
+    "allSevenChecksPassed": true,
+    "hostAndConfigurationCases": 15,
+    "upstreamProjectionCases": 14,
+    "rendererCases": 5,
+    "compositionCases": 3,
+    "liveProof": "README.md#live-proof",
+    "preExistingBroadTestProblemsDeferred": 4,
+    "remoteCiResult": "not claimed by this integration record"
+  },
+  "concurrentUnpublishedCommitPreserved": "258269e3896c533d763a2fdb233ed9d4287272d5",
+  "completionPublishing": "Publish only story completion records from the integrated adoption base; preserve the concurrent commit through a local merge without publishing it."
+}
