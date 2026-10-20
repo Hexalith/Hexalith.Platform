@@ -1,0 +1,152 @@
+{
+  "observed_at_utc": "2026-10-20T07:58:37.732528+00:00",
+  "superseded_release": {
+    "conclusion": "failure",
+    "databaseId": 39363818307,
+    "headSha": "24322f56177b8fe86a78b2be7125f873c0a682bd",
+    "status": "completed",
+    "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39363818307"
+  },
+  "human_approvals": [
+    {
+      "user": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "state": "approved",
+      "comment": "",
+      "environments": [
+        {
+          "id": 18426806302,
+          "node_id": "EN_kwDOOMzNRc8AAAAESlLAHg",
+          "name": "production",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/environments/production",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/deployments/activity_log?environments_filter=production",
+          "created_at": "2026-07-20T09:36:18Z",
+          "updated_at": "2026-07-20T09:36:18Z",
+          "can_admins_bypass": false
+        }
+      ]
+    }
+  ],
+  "failure": {
+    "step": "Recheck approved release source and push CI",
+    "reason": "Builds Release source is not the exact current main tip.",
+    "published": false
+  },
+  "current_source_commit": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "comparison": {
+    "previous_source_commit": "24322f56177b8fe86a78b2be7125f873c0a682bd",
+    "production_catalog_and_release_files_changed": false,
+    "compared_paths": [
+      "src",
+      "Props",
+      "schemas",
+      "Tools",
+      ".github",
+      "Github"
+    ],
+    "changed_paths": [
+      "_bmad-output/implementation-artifacts/6-1-p0-deliver-g4-persisted-runner-and-evidence-tooling.md",
+      "evidence/g4/p0-resume-20261020/README.md",
+      "evidence/g4/p0-resume-20261020/artifact-directory.txt",
+      "evidence/g4/p0-resume-20261020/artifact-hashes.json",
+      "evidence/g4/p0-resume-20261020/builds-diff-check.stderr.txt",
+      "evidence/g4/p0-resume-20261020/builds-diff-check.stdout.txt",
+      "evidence/g4/p0-resume-20261020/builds-revision.stderr.txt",
+      "evidence/g4/p0-resume-20261020/builds-revision.stdout.txt",
+      "evidence/g4/p0-resume-20261020/builds-status.stderr.txt",
+      "evidence/g4/p0-resume-20261020/builds-status.stdout.txt",
+      "evidence/g4/p0-resume-20261020/commands.json",
+      "evidence/g4/p0-resume-20261020/debug-build.stderr.txt",
+      "evidence/g4/p0-resume-20261020/debug-build.stdout.txt",
+      "evidence/g4/p0-resume-20261020/final-binaries-after-tests.json",
+      "evidence/g4/p0-resume-20261020/final-binaries-before-tests.json",
+      "evidence/g4/p0-resume-20261020/final-isolated-debug-build.stderr.txt",
+      "evidence/g4/p0-resume-20261020/final-isolated-debug-build.stdout.txt",
+      "evidence/g4/p0-resume-20261020/final-source-after-build.json",
+      "evidence/g4/p0-resume-20261020/final-source-after-tests.json",
+      "evidence/g4/p0-resume-20261020/final-source-before-build.json",
+      "evidence/g4/p0-resume-20261020/g6-current-audit.json",
+      "evidence/g4/p0-resume-20261020/g6-current-audit.stderr.txt",
+      "evidence/g4/p0-resume-20261020/g6-current-audit.stdout.txt",
+      "evidence/g4/p0-resume-20261020/historical-schema-observation.stderr.txt",
+      "evidence/g4/p0-resume-20261020/historical-schema-observation.stdout.txt",
+      "evidence/g4/p0-resume-20261020/historical-v2-observation.stderr.txt",
+      "evidence/g4/p0-resume-20261020/historical-v2-observation.stdout.txt",
+      "evidence/g4/p0-resume-20261020/isolated-debug-build-retry.stderr.txt",
+      "evidence/g4/p0-resume-20261020/isolated-debug-build-retry.stdout.txt",
+      "evidence/g4/p0-resume-20261020/isolated-debug-build.stderr.txt",
+      "evidence/g4/p0-resume-20261020/isolated-debug-build.stdout.txt",
+      "evidence/g4/p0-resume-20261020/native-regressions.binding.json",
+      "evidence/g4/p0-resume-20261020/native-source-regressions.stderr.txt",
+      "evidence/g4/p0-resume-20261020/native-source-regressions.stdout.txt",
+      "evidence/g4/p0-resume-20261020/native-source-regressions.trx",
+      "evidence/g4/p0-resume-20261020/observation-commands.json",
+      "evidence/g4/p0-resume-20261020/projects-diff-check.stderr.txt",
+      "evidence/g4/p0-resume-20261020/projects-diff-check.stdout.txt",
+      "evidence/g4/p0-resume-20261020/redact-native-report.py",
+      "evidence/g4/p0-resume-20261020/sdk.stderr.txt",
+      "evidence/g4/p0-resume-20261020/sdk.stdout.txt",
+      "evidence/g4/p0-resume-20261020/source-input-hashes.json",
+      "evidence/g4/p0-resume-20261020/verification.json",
+      "test/Hexalith.Builds.Module.Tests/ReadsProfileSelectionTests.cs"
+    ],
+    "summary": "One upstream commit adds profile-selection tests, documentation, and qualification evidence. Production code, catalog, and release machinery are identical."
+  },
+  "current_source_ci": {
+    "conclusion": "",
+    "databaseId": 39389674513,
+    "headSha": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "status": "queued",
+    "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39389674513"
+  },
+  "remaining": [
+    "Successful exact-source CI for 5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "Dispatch another replacement against still-current main",
+    "Human production approval for that exact replacement",
+    "Publication, exact tool/tag pin, and prepared pinned-tool acceptance proof"
+  ],
+  "prepared_proof_driver": "/tmp/platform-1-11-pinned-proof.py",
+  "first_retry_source_ci": {
+    "conclusion": "success",
+    "databaseId": 39385370341,
+    "headSha": "6a38cb0f2e74977d7457fc59e6af79457ed8196a",
+    "status": "completed",
+    "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39385370341"
+  },
+  "cancelled_replacement": {
+    "conclusion": "cancelled",
+    "databaseId": 39389191662,
+    "headSha": "6a38cb0f2e74977d7457fc59e6af79457ed8196a",
+    "status": "completed",
+    "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39389191662"
+  },
+  "previous_retry_source_commit": "6a38cb0f2e74977d7457fc59e6af79457ed8196a",
+  "second_main_advance": {
+    "previous_commit": "6a38cb0f2e74977d7457fc59e6af79457ed8196a",
+    "current_commit": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "identical_tree": "65c89574e22cce9469e4c098f5947d3320030916",
+    "file_changes": false,
+    "action": "Cancelled the now-stale replacement before qualification/publication.",
+    "human_coordination_requested": "Keep Builds main stable through exact-source CI, production approval, and publication."
+  },
+  "approval_resume_check": "Immediately compare an approved release headSha with remote main; cancel stale pre-publication runs rather than waiting for their final source guard."
+}

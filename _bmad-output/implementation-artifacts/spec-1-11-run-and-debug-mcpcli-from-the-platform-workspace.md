@@ -10,9 +10,11 @@ mcpcli_baseline_commit: '447085c42ec606f642240c4cae0415e7c2f97467'
 builds_baseline_commit: 'b435f2e3b3892e03f69322d24de6003b0baf7a7d'
 route: 'dispatch'
 review_loop_iteration: 0
-release_run_id: 39363818307
-release_source_commit: '24322f56177b8fe86a78b2be7125f873c0a682bd'
-release_status: 'waiting-production-approval'
+release_run_id: 39389191662
+superseded_release_run_id: 39363818307
+release_ci_run_id: 39389674513
+release_source_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
+release_status: 'waiting-current-source-ci'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -183,6 +185,12 @@ Rejected:
 - AA9 (the story commit includes an `epic-1-context.md` rewrite) — false: it is this spec's own `context` document, recompiled for the story.
 
 ## Implementation Notes
+
+- **Second source advance (2026-10-20).** Exact-source CI 39385370341 passed at 6a38cb0f2e74977d7457fc59e6af79457ed8196a, and replacement release 39389191662 passed its source check and requested production approval. Before publication, main advanced again to 5d03f1db9c38db34ecac7fe6048937478ffb82cc. Both commits have the identical Git tree 65c89574e22cce9469e4c098f5947d3320030916; the change merges existing history without changing files. The orchestrator cancelled the stale replacement before qualification/publication and requested that other pushes to Builds main pause through the release. Latest-source CI 39389674513 is queued. No fresh production approval will be requested until a replacement targets current green main. On approval, check the remote tip immediately rather than waiting on the full release job. Publication, the tool/tag pin and AC1 remain incomplete; 4.33.1 is still the configured tool.
+
+
+- **Release retry (2026-10-20).** The human approved production for run 39363818307. Its package qualification passed, but the final source guard stopped publication because Builds main had advanced from 24322f56177b8fe86a78b2be7125f873c0a682bd to 6a38cb0f2e74977d7457fc59e6af79457ed8196a while the earlier run waited for approval. The new commit adds profile-selection tests, documentation and evidence; git diff confirms no changes under src, Props, schemas, Tools, .github or Github. The orchestrator is waiting for exact-source push CI 39385370341 before dispatching a replacement release. That replacement requires its own human production approval. No package was published, and the Platform tool remains pinned to 4.33.1. The Builds and McpCli checkouts were fast-forwarded to their already-pushed documentation/test commits without initializing nested references. See [release-retry.json](evidence/1-11/release-retry.json). The prepared pinned-tool proof includes both manifest acceptance/rejection, all four runtime PDBs, the README function breakpoint, exit 2 for offline modules, and down cleanup.
+
 
 
 - **Resumed release handoff (2026-10-20).** At Platform 23a35074b10f999946ed5fdd621e4bb60af73de8, fresh focused verification passed (Builds 29/29; Platform actual McpCli declaration/casing 1/1), and review pass 3 found no new McpCli-run product patch. Builds 24322f56177b8fe86a78b2be7125f873c0a682bd is current remote main and push CI 39360743339 passed. McpCli's reviewed checkout 742f5b6ead66937f62025b73d77452e0f8126658 has successful CI; remote main has since advanced to documentation-only 0779fd98df7bffcfde79a8ce121076390c30284c, so this run did not move or push that checkout. The exact-source/CI release guard passed, and the orchestrator dispatched build-release.yml as run 39363818307. Its source-check job passed; production approval is pending with the human, as the frozen decisions require. No approval API was invoked. See [release-handoff.json](evidence/1-11/release-handoff.json). The tool remains pinned to 4.33.1 until publication, so the release/pin task and pinned-tool AC1 remain incomplete. Earlier local/unpushed notes below describe historical execution states.
