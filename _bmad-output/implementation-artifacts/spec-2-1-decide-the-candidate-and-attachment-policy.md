@@ -2,7 +2,7 @@
 title: '2.1 Decide the candidate and attachment policy'
 type: 'feature'
 created: '2026-10-20'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6ab00b79054a58c72d5c7110ea69140d75d9d1ec'
@@ -39,6 +39,7 @@ Confirmed by the user on 2026-10-20:
 
 ## Code Map
 
+- `docs/contracts/candidate-and-attachment-policy-v1.md`: canonical published decisions and adoption handoff; PR merge result, no cross-decision reuse, 1,800-second default/14,400-second maximum holds.
 - `_bmad-output/implementation-artifacts/epic-2-context.md`: FR-4 requirements; policy values undecided.
 - `README.md`: module-tool documentation and Platform Maintainer ownership; `.github/CODEOWNERS` assigns `@jpiquot`.
 - `references/Hexalith.Builds/.github/workflows/domain-ci.yml`: candidate equals workflow SHA; event/caller determines revision.
@@ -50,9 +51,9 @@ Confirmed by the user on 2026-10-20:
 
 **Execution:**
 
-- [ ] `docs/contracts/candidate-and-attachment-policy-v1.md` — write the approved decisions, rationale, owners, revisit triggers, version rules, evidence/hold rejection examples and downstream adoption requirements.
-- [ ] `README.md` — link the canonical policy near module-tool guidance and distinguish policy publication from implemented runner support.
-- [ ] `_bmad-output/implementation-artifacts/sprint-status.yaml` — synchronize Story 2.1 and Epic 2 as the workflow progresses; leave other statuses intact.
+- [x] `docs/contracts/candidate-and-attachment-policy-v1.md` — write the approved decisions, rationale, owners, revisit triggers, version rules, evidence/hold rejection examples and downstream adoption requirements.
+- [x] `README.md` — link the canonical policy near module-tool guidance and distinguish policy publication from implemented runner support.
+- [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` — synchronize Story 2.1 and Epic 2 as the workflow progresses; leave other statuses intact.
 
 **Acceptance Criteria:**
 
@@ -63,10 +64,31 @@ Confirmed by the user on 2026-10-20:
 
 ## Implementation Notes
 
+- Published `hexalith.platform.candidate-and-attachment-policy.v1` with committed merge-result/exact head-base decision binding, no cross-decision reuse, 1,800-second default and 14,400-second maximum immutable holds, downstream descriptor/result handoff, ownership and revisit conditions.
+- Linked the canonical policy from module-tool guidance without asserting runner support or Builds approval. Story 2.1 is ready for review; Epic 2 remains in progress. No runner, schema, pin or submodule changes were made by this story.
+
 ## Spec Change Log
 
 ## Review Triage Log
 
+Three independent review layers completed. Edge-case review returned no findings; verification-gap review found no gaps. Each blind-review finding was checked against the full policy and the downstream stories before classification. The corrections below clarify documentation within the approved decisions; they introduce no runner or schema surface.
+
+| Finding | Verdict | Evidence and route |
+| --- | --- | --- |
+| BH1: Release candidate scope | medium | The candidate section unconditionally requires a PR merge result, then requires evidence for a different release revision. A release consumer cannot apply both rules. Patch: scope the PR rule to PR merge decisions and state exact committed release-revision selection under existing release authority. |
+| BH2: Decision identity lifecycle | medium | The handoff requires a stable decision identity but supplies no retry/reopen lifecycle, allowing Story 3.1 consumers to interpret a new request as an old decision. Patch: clarify decision authority, immutable bindings, retry producing-run identity and new-request/reopen semantics. |
+| BH3: Attachment lineage comparison | medium | The policy forbids replacement run IDs for the same work but defines only “enough attachment lineage.” Story 2.6 cannot compare renewal attempts consistently. Patch: define comparison by runner-issued original attachment-request lineage, preserved across retries and reconnects. |
+| BH4: Qualified runner binding | medium | Exact-version Builds adoption is a prerequisite, but the handoff does not bind an executing tool to its qualification. Story 2.2/3.1 consumers cannot verify that prerequisite from a result. Patch: make the existing qualification requirement explicit in the semantic handoff. |
+| BH5: Executed suite binding | medium | A passed outcome and loaded artifacts alone do not identify which required suite/configuration completed. Story 3.1 could accept a different or empty test invocation. Patch: require declared/executed suite and configuration identity plus completion/count evidence, preserving existing integration gates. |
+| BH6: Withdrawal stops work | medium | Withdrawal currently records an outcome and ends a hold without explicitly stopping the attached worker. Story 2.7 requires the run to end; an ongoing worker could affect remaining users. Patch: state that withdrawal ends attached work/access, preserves other runs and reports stopping leftovers. |
+
+All six findings were corrected in the policy and inspected individually after re-engaging the original implementation agent. Release selection is scoped by decision kind; trusted request identity and runner-issued attachment lineage define comparisons; executing-tool qualification and suite completion are bound; withdrawal explicitly ends owned work and access. No findings were deferred, and the approved frozen decisions remain unchanged.
+
 ## Verification
 
 Cross-check Story 2.1 and AD-10, README links and Markdown whitespace. Inspect missing identity, changed revision/base, disallowed reuse, shorter/max/invalid hold, expiry, withdrawal and prior failure. Documentation requires no new test suite or workload run.
+
+- 2026-10-20: Cross-checked the policy against Story 2.1, FR-4 and AD-4/AD-5/AD-10; the acceptance/rejection table covers missing identities, changed head/base, disallowed reuse, shorter/maximum/invalid holds, expiry, withdrawal and prior failure.
+- Passed `git diff --check` for the story's tracked documentation/tracking files and checked the new policy's whitespace. All four canonical-policy local links and the added README policy link resolve.
+- Confirmed the frozen approved block is byte-for-byte unchanged, only Story 2.1's sprint status changes to review, and Epic 2 remains in progress. Concurrent independent README/code/submodule edits are preserved; their verification is outside this story. No test suite or workload was run.
+- Parent verification after review corrections: all four policy links and the README policy link resolve; whitespace checks pass; the approved block matches its pre-implementation SHA-256. All four Story 2.1 acceptance criteria and each corrected review finding were manually checked against the final policy. Spec is done; sprint tracking remains review under the build workflow, with Epic 2 in progress. Runtime adoption and integration qualification remain downstream work.

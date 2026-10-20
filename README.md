@@ -55,6 +55,13 @@ warned in source mode.
 Older tools do not check the range, so run the pinned tool through
 `dotnet tool run`.
 
+The canonical [candidate evidence and attachment policy v1](docs/contracts/candidate-and-attachment-policy-v1.md)
+fixes committed PR merge-result evidence, prohibits reuse across decisions and
+sets finite attachment holds. This publishes Platform policy for downstream
+descriptor and runner adoption; it does not establish implemented support or
+change the accepted tool pin. Builds adoption and Platform integration
+qualification remain prerequisites to accepting evidence or attachments under it.
+
 From the Platform root, restore and check the pinned tool with:
 
 ```bash
