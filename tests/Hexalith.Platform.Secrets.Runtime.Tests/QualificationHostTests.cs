@@ -13,6 +13,19 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 
 public sealed class QualificationHostTests
 {
+    [Fact]
+    public async Task RequiredInputsRejectNullWhileMalformedPublicJsonReturnsNoConfiguration()
+    {
+        Should.Throw<ArgumentNullException>(() => SecretsRuntimeConfiguration.Parse(null!)).ParamName.ShouldBe("json");
+        SecretsRuntimeConfiguration.Parse("{").ShouldBeNull();
+        (await Should.ThrowAsync<ArgumentNullException>(() => QualificationHost.ReadRequestAsync(null!, TestContext.Current.CancellationToken)))
+            .ParamName.ShouldBe("stream");
+        (await Should.ThrowAsync<ArgumentNullException>(() => QualificationHttpHost.HandleAsync("executor", "execute", null!, Context("role-channel", true),
+            "role-channel", null, null, null, null, TestContext.Current.CancellationToken))).ParamName.ShouldBe("configuration");
+        (await Should.ThrowAsync<ArgumentNullException>(() => QualificationHttpHost.HandleAsync("executor", "execute", Configuration(), null!,
+            "role-channel", null, null, null, null, TestContext.Current.CancellationToken))).ParamName.ShouldBe("context");
+    }
+
     [Theory]
     [InlineData("executor", "execute")]
     [InlineData("observer", "observe")]
@@ -25,6 +38,27 @@ public sealed class QualificationHostTests
         result.Body.ToJsonString().ShouldContain("installedProviderSignerAndScopeAuthority");
         result.Body.ToJsonString().ShouldContain("independentDurableOriginalStore");
         result.Body.ToJsonString().ShouldContain("acceptedPublicProofVerifier");
+    }
+
+    [Theory]
+    [InlineData("provider", "qualification.executor.installedProviderSignerAndScopeAuthority")]
+    [InlineData("store", "qualification.executor.independentDurableOriginalStore")]
+    [InlineData("verifier", "qualification.executor.acceptedPublicProofVerifier")]
+    public async Task EachMissingDependencyDeniesBeforeAuthorizationOrOriginalRetention(string missing, string expected)
+    {
+        var provider = new TestProvider();
+        var store = new TestStore();
+        QualificationHostResult result = await QualificationHost.HandleAsync("executor", "execute", Configuration(), Request(),
+            missing == "provider" ? null : provider, missing == "store" ? null : store,
+            missing == "verifier" ? null : new TestVerifier(), TestContext.Current.CancellationToken, Caller());
+        result.StatusCode.ShouldBe(503);
+        result.Body["missingInputs"]!.AsArray().Select(value => value!.GetValue<string>()).ShouldBe([expected]);
+        result.Body["qualificationEffects"]!.GetValue<int>().ShouldBe(0);
+        result.Body["productionMutationAllowed"]!.GetValue<bool>().ShouldBeFalse();
+        provider.AuthorizedRequests.ShouldBeEmpty();
+        provider.Operations.ShouldBeEmpty();
+        store.Original.ShouldBeNull();
+        store.Result.ShouldBeNull();
     }
 
     [Fact]
@@ -130,6 +164,7 @@ public sealed class QualificationHostTests
         var verifier = new QualificationProofVerifier(new Dictionary<string, QualificationProofBinding> { ["executor"] = binding }, new FixedClock(Fixtures.Now));
         JsonObject envelope = Sign(Payload(Request()), key);
         verifier.Verify("executor", Request(), envelope, TestContext.Current.CancellationToken).ShouldBeTrue();
+        verifier.Verify("executor", Request(), null!, TestContext.Current.CancellationToken).ShouldBeFalse();
         Should.Throw<ArgumentException>(() => new QualificationProofBinding("executor", "v1", new byte[4097], hash));
         // File paths (including FIFO names) cannot be opened by this API: only validated PEM bytes are accepted.
         Should.Throw<ArgumentException>(() => new QualificationProofBinding("executor", "v1", Encoding.ASCII.GetBytes("/tmp/untrusted-public-anchor.fifo"), hash));
@@ -320,6 +355,7 @@ public sealed class QualificationHostTests
     [InlineData("enrollment-operation")]
     public async Task MalformedActualProtocolRequestsCannotReachAnyProviderCallback(string defect)
     {
+        ArgumentNullException.ThrowIfNull(defect);
         string role = defect.StartsWith("enrollment", StringComparison.Ordinal) ? "enrollment" : "executor";
         var provider = new TestProvider { RoleName = role };
         var store = new TestStore();
@@ -491,7 +527,7 @@ public sealed class QualificationHostTests
             Operations.Add(operation);
             Requests.Add(original);
             Applied = true;
-            if (WaitAfterApply) { await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken); }
+            if (WaitAfterApply) { await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken).ConfigureAwait(false); }
             if (Lose) { throw new IOException("lost result"); }
             if (Response is not null) { return Response(original); }
             return new JsonObject { ["payload"] = new JsonObject { ["outcome"] = "Denied", ["observedAt"] = 1, ["validUntil"] = 2 }, ["signature"] = "offline-test" };

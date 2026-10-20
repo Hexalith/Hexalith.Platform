@@ -4,7 +4,7 @@ namespace Hexalith.Platform.Secrets.Runtime;
 public sealed record QualificationDenial(int StatusCode, IReadOnlyList<string> MissingInputs, int QualificationEffects)
 {
     /// <summary>Gets whether production mutation is allowed. This delivery never allows it.</summary>
-    public bool ProductionMutationAllowed => false;
+    public bool ProductionMutationAllowed { get; }
 
     /// <summary>Names the qualification blockers. A missing inventory or profile reference is not attributed to this check.</summary>
     public static QualificationDenial Evaluate(SecretsRuntimeConfiguration? configuration)

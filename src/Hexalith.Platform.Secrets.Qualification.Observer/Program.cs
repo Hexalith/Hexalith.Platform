@@ -12,6 +12,6 @@ async Task<IResult> Handle(string operation, HttpContext context, IServiceProvid
 {
     QualificationHostResult result = await QualificationHttpHost.HandleAsync("observer", operation, configuration, context,
         builder.Configuration["APP_API_TOKEN"], services.GetService<IQualificationCallerAuthenticator>(),
-        services.GetService<IQualificationObserverProvider>(), services.GetService<IQualificationOriginalStore>(), services.GetService<IQualificationPublicProofVerifier>(), cancellation);
+        services.GetService<IQualificationObserverProvider>(), services.GetService<IQualificationOriginalStore>(), services.GetService<IQualificationPublicProofVerifier>(), cancellation).ConfigureAwait(false);
     return Results.Text(result.Body.ToJsonString(), "application/json", statusCode: result.StatusCode);
 }

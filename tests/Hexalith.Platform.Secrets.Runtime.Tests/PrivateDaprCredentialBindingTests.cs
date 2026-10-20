@@ -35,20 +35,20 @@ public sealed class PrivateDaprCredentialBindingTests
             var requests = new List<(string Headers, string Body)>();
             for (int index = 0; index < 2; index++)
             {
-                using TcpClient socket = await listener.AcceptTcpClientAsync(cancellation);
+                using TcpClient socket = await listener.AcceptTcpClientAsync(cancellation).ConfigureAwait(false);
                 using NetworkStream stream = socket.GetStream();
                 using var reader = new StreamReader(stream, Encoding.ASCII, leaveOpen: true);
                 var headers = new StringBuilder();
                 int length = 0;
-                while (await reader.ReadLineAsync(cancellation) is { Length: > 0 } line)
+                while (await reader.ReadLineAsync(cancellation).ConfigureAwait(false) is { Length: > 0 } line)
                 {
                     headers.AppendLine(line);
                     if (line.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase)) { length = int.Parse(line[15..]); }
                 }
                 char[] body = new char[length];
-                (await reader.ReadBlockAsync(body.AsMemory(), cancellation)).ShouldBe(length);
+                (await reader.ReadBlockAsync(body.AsMemory(), cancellation).ConfigureAwait(false)).ShouldBe(length);
                 requests.Add((headers.ToString(), new string(body)));
-                await stream.WriteAsync(Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\n{}"), cancellation);
+                await stream.WriteAsync(Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\n{}"), cancellation).ConfigureAwait(false);
             }
             return requests;
         }, cancellation);
@@ -72,6 +72,7 @@ public sealed class PrivateDaprCredentialBindingTests
 
     [Theory]
     [InlineData("missing")]
+    [InlineData("null")]
     [InlineData("empty")]
     [InlineData("oversize")]
     [InlineData("header-injection")]
@@ -93,7 +94,7 @@ public sealed class PrivateDaprCredentialBindingTests
                 string token = scenario switch { "empty" => "", "oversize" => new string('a', 8193), "header-injection" => "token\r\nAuthorization: substitute", _ => "synthetic-token" };
                 await File.WriteAllTextAsync(path, token, cancellation);
             }
-            string reference = scenario == "non-file-reference" ? "namespace/Secret/private#token" : "file:" + path;
+            string reference = scenario switch { "null" => null!, "non-file-reference" => "namespace/Secret/private#token", _ => "file:" + path };
             string destination = scenario == "credential-as-app-id" ? reference : "private-owner";
             (await invoker.InvokeCredentialBoundAsync(destination, reference, "effect", "{}", cancellation)).ShouldBeNull();
             listener.Pending().ShouldBeFalse();
@@ -153,16 +154,16 @@ public sealed class PrivateDaprCredentialBindingTests
         {
             if (scenario == "replay-endpoint")
             {
-                await new DaprReplayRegistrarAdapter(configuration, invoker).LookupAsync(new("issuer", "nonce", "tenant", "command", "k1", new string('a', 64)), TestContext.Current.CancellationToken);
+                await new DaprReplayRegistrarAdapter(configuration, invoker).LookupAsync(new("issuer", "nonce", "tenant", "command", "k1", new string('a', 64)), TestContext.Current.CancellationToken).ConfigureAwait(false);
             }
             else if (scenario == "compromise-credential")
             {
-                await new DaprCompromiseRegistrarAdapter(configuration, invoker).LookupAsync(Envelope(), TestContext.Current.CancellationToken);
+                await new DaprCompromiseRegistrarAdapter(configuration, invoker).LookupAsync(Envelope(), TestContext.Current.CancellationToken).ConfigureAwait(false);
             }
             else
             {
                 var payload = new DeletionBatchCapabilityV1("issuer", "audience", "tenant", "request", "seal", "batch", 1, "batch-1", new string('a', 64), "guard", 1, 1, 1, "k1");
-                await new DaprSigningProviderAdapter(configuration, invoker).LookupAsync(payload, "original", TestContext.Current.CancellationToken);
+                await new DaprSigningProviderAdapter(configuration, invoker).LookupAsync(payload, "original", TestContext.Current.CancellationToken).ConfigureAwait(false);
             }
         });
         exception.Input.ShouldBe(expected);
@@ -418,25 +419,25 @@ public sealed class PrivateDaprCredentialBindingTests
         var requests = new List<CapturedRequest>();
         for (int index = 0; index < count; index++)
         {
-            using TcpClient socket = await listener.AcceptTcpClientAsync(cancellation);
+            using TcpClient socket = await listener.AcceptTcpClientAsync(cancellation).ConfigureAwait(false);
             using NetworkStream stream = socket.GetStream();
             using var reader = new StreamReader(stream, Encoding.ASCII, leaveOpen: true);
-            string target = (await reader.ReadLineAsync(cancellation))!.Split(' ')[1];
+            string target = (await reader.ReadLineAsync(cancellation).ConfigureAwait(false))!.Split(' ')[1];
             var headers = new StringBuilder();
             int length = 0;
-            while (await reader.ReadLineAsync(cancellation) is { Length: > 0 } line)
+            while (await reader.ReadLineAsync(cancellation).ConfigureAwait(false) is { Length: > 0 } line)
             {
                 headers.AppendLine(line);
                 if (line.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase)) { length = int.Parse(line[15..]); }
             }
             char[] body = new char[length];
-            (await reader.ReadBlockAsync(body.AsMemory(), cancellation)).ShouldBe(length);
+            (await reader.ReadBlockAsync(body.AsMemory(), cancellation).ConfigureAwait(false)).ShouldBe(length);
             var request = new CapturedRequest(target, headers.ToString(), new string(body));
             requests.Add(request);
             var response = respond(index, request);
             string location = response.Location is null ? "" : $"Location: {response.Location}\r\n";
             string wire = $"HTTP/1.1 {response.Status} Result\r\nContent-Length: {Encoding.UTF8.GetByteCount(response.Body)}\r\n{location}Connection: close\r\n\r\n{response.Body}";
-            await stream.WriteAsync(Encoding.UTF8.GetBytes(wire), cancellation);
+            await stream.WriteAsync(Encoding.UTF8.GetBytes(wire), cancellation).ConfigureAwait(false);
         }
         return requests;
     }

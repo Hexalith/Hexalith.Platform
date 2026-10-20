@@ -24,17 +24,17 @@ public sealed class DaprSecretsInvokerHttpTests
         bool bodyCompleted = false;
         Task server = Task.Run(async () =>
         {
-            using TcpClient socket = await listener.AcceptTcpClientAsync(cancellation);
+            using TcpClient socket = await listener.AcceptTcpClientAsync(cancellation).ConfigureAwait(false);
             using NetworkStream stream = socket.GetStream();
             using var reader = new StreamReader(stream, Encoding.ASCII, leaveOpen: true);
-            while (await reader.ReadLineAsync(cancellation) is { Length: > 0 }) { }
-            await stream.WriteAsync(Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nContent-Type: application/json\r\nConnection: close\r\n\r\n100001\r\n"), cancellation);
-            await stream.WriteAsync(new byte[SecretsProof.MaximumBytes + 1], cancellation);
-            await stream.WriteAsync(Encoding.ASCII.GetBytes("\r\n"), cancellation);
-            await stream.FlushAsync(cancellation);
+            while (await reader.ReadLineAsync(cancellation).ConfigureAwait(false) is { Length: > 0 }) { }
+            await stream.WriteAsync(Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nContent-Type: application/json\r\nConnection: close\r\n\r\n100001\r\n"), cancellation).ConfigureAwait(false);
+            await stream.WriteAsync(new byte[SecretsProof.MaximumBytes + 1], cancellation).ConfigureAwait(false);
+            await stream.WriteAsync(Encoding.ASCII.GetBytes("\r\n"), cancellation).ConfigureAwait(false);
+            await stream.FlushAsync(cancellation).ConfigureAwait(false);
             oversizedSent.SetResult();
-            await releaseBody.Task.WaitAsync(cancellation);
-            try { await stream.WriteAsync(Encoding.ASCII.GetBytes("0\r\n\r\n"), cancellation); bodyCompleted = true; }
+            await releaseBody.Task.WaitAsync(cancellation).ConfigureAwait(false);
+            try { await stream.WriteAsync(Encoding.ASCII.GetBytes("0\r\n\r\n"), cancellation).ConfigureAwait(false); bodyCompleted = true; }
             catch (IOException) { } // The bounded invoker may already have closed the oversized response.
         }, cancellation);
         try

@@ -34,7 +34,7 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
     /// <inheritdoc/>
     public async Task<string?> InvokeCredentialBoundAsync(string appId, string credentialReference, string method, string jsonBody, CancellationToken cancellationToken)
     {
-        if (!SecretsProvisioning.IsDaprApplicationId(appId)) { return null; }
+        if (!SecretsProvisioning.IsDaprApplicationId(appId) || credentialReference is null) { return null; }
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         budget.CancelAfter(TimeSpan.FromSeconds(30));
         try
@@ -78,7 +78,8 @@ public sealed class DaprSecretsInvoker(DaprClient client) : ISecretsCredentialBo
         int descriptor = LinuxOpen(path, 0x800 | 0x80000); // O_RDONLY | O_NONBLOCK | O_CLOEXEC
         if (descriptor < 0) { return null; }
         using var handle = new SafeFileHandle((IntPtr)descriptor, ownsHandle: true);
-        await using var stream = new FileStream(handle, FileAccess.Read, 1, isAsync: false);
+        var stream = new FileStream(handle, FileAccess.Read, 1, isAsync: false);
+        await using var streamLifetime = stream.ConfigureAwait(false);
         if (!stream.CanSeek || stream.Length is <= 0 or > maximumBytes) { return null; }
         byte[] bytes = new byte[maximumBytes + 1];
         try

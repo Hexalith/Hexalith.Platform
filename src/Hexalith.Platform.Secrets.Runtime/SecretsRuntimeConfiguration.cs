@@ -118,6 +118,7 @@ public sealed record SecretsRuntimeConfiguration
     /// <summary>Copies known public fields. Duplicate names return null; unmapped names are ignored.</summary>
     public static SecretsRuntimeConfiguration? Parse(string json)
     {
+        ArgumentNullException.ThrowIfNull(json);
         JsonObject? document = SecretsProof.ParseDocument(json);
         if (document is null) { return null; }
         JsonObject runtime = Nested(document, "runtime");

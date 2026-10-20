@@ -43,6 +43,7 @@ public static class QualificationHost
     /// <summary>Reads a bounded request body; malformed and oversized bodies grant no authority.</summary>
     public static async Task<JsonObject?> ReadRequestAsync(Stream stream, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(stream);
         string? body = await DaprSecretsInvoker.ReadBoundedAsync(stream, cancellationToken).ConfigureAwait(false);
         return body is null ? null : SecretsProof.Parse(body);
     }
@@ -57,7 +58,7 @@ public static class QualificationHost
         if (store is null) { missing.Add($"qualification.{role}.independentDurableOriginalStore"); }
         if (verifier is null) { missing.Add($"qualification.{role}.acceptedPublicProofVerifier"); }
         if (configuration.CallTimeout is not { } timeout || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30)) { missing.Add("runtime.callTimeout"); }
-        if (missing.Count > 0) { return Deny(missing); }
+        if (missing.Count > 0 || provider is null || store is null || verifier is null) { return Deny(missing); }
         if (request is null || SecretsProof.Parse(request.ToJsonString()) is not { } original
             || !SecretsProof.SameText(original, "targetCommit", configuration.AcceptedReplacementCommit)
             || !QualificationProtocolSchema.ValidRequest(role, operation, original)) { return Deny(["ExactAcceptedIsolatedOriginalRequest"]); }
@@ -74,16 +75,16 @@ public static class QualificationHost
                 ? "protocol runId targetCommit isolatedTargetId planSha256 requestId operation"
                 : "protocol runId targetCommit isolatedTargetId planSha256 requestId caseId caseTargetId enrolledScope").Split(' '))
             { ownerRequest[field] = request[field]!.DeepClone(); }
-            if (!await provider!.AuthorizeAsync((JsonObject)ownerRequest.DeepClone(), caller!, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false))
+            if (!await provider.AuthorizeAsync((JsonObject)ownerRequest.DeepClone(), caller!, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false))
             { return Deny(["IndependentCurrentAcceptedBindingAndIsolatedScope"], executionUncertain); }
             // Keep the complete original for cross-restart identity checks, including a lost result.
             // An existing or failed original publication may follow an applied predecessor.
             // From this boundary onward only exact lookup can resolve executor uncertainty.
             executionUncertain = role == "executor";
-            bool first = await store!.BeginAsync(role, id, (JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
+            bool first = await store.BeginAsync(role, id, (JsonObject)request.DeepClone(), budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             string effectiveOperation = role == "executor" && (!first || operation == "lookup") ? "lookup" : operation;
             JsonObject? result = await provider.InvokeAsync(effectiveOperation, ownerRequest, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
-            if (result is null || SecretsProof.Parse(result.ToJsonString()) is null || !verifier!.Verify(role, request, result, budget.Token))
+            if (result is null || SecretsProof.Parse(result.ToJsonString()) is null || !verifier.Verify(role, request, result, budget.Token))
             { return Deny(["ExactOriginalOwnerResultAndIndependentSignature"], executionUncertain); }
             var stable = (JsonObject)result["payload"]!.DeepClone();
             stable.Remove("observedAt");

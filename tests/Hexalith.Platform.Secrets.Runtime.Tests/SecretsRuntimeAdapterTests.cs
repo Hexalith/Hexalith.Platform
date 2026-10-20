@@ -374,6 +374,10 @@ public sealed class SecretsRuntimeAdapterTests
         QualificationDenial ready = QualificationDenial.Evaluate(enrolled);
         ready.MissingInputs.ShouldBeEmpty();
         ready.ProductionMutationAllowed.ShouldBeFalse();
+        JsonNode.Parse(System.Text.Json.JsonSerializer.Serialize(ready))!["ProductionMutationAllowed"]!.GetValue<bool>().ShouldBeFalse();
+        System.Text.Json.JsonSerializer.Deserialize<QualificationDenial>("""{"StatusCode":200,"MissingInputs":[],"QualificationEffects":0,"ProductionMutationAllowed":true}""")!
+            .ProductionMutationAllowed.ShouldBeFalse();
+        (ready with { StatusCode = 200, QualificationEffects = 1 }).ProductionMutationAllowed.ShouldBeFalse();
         ready.QualificationEffects.ShouldBe(0);
         ObserverEndpoint.Observe(enrolled, journal).ShouldBe(503);
         journal.Read().ShouldBeEmpty();

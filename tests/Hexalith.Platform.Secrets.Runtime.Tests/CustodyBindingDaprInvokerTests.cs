@@ -307,9 +307,9 @@ public sealed class CustodyBindingDaprInvokerTests
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             Calls++;
-            if (Fault == "cancellation") { await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken); }
+            if (Fault == "cancellation") { await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken).ConfigureAwait(false); }
             if (Fault == "lost-result") { throw new HttpRequestException("Synthetic lost result."); }
-            byte[] frame = await request.Content!.ReadAsByteArrayAsync(cancellationToken);
+            byte[] frame = await request.Content!.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
             frame[0].ShouldBe((byte)0);
             ProtobufBytes = BinaryPrimitives.ReadInt32BigEndian(frame.AsSpan(1, 4));
             ProtobufBytes.ShouldBe(frame.Length - 5);

@@ -60,6 +60,7 @@ public sealed class QualificationProofVerifier(IReadOnlyDictionary<string, Quali
         try
         {
             cancellationToken.ThrowIfCancellationRequested();
+            if (envelope is null) { return false; }
             // Normalize protocol JSON integers and reject malformed/secret-bearing envelopes before schema checks.
             if (SecretsProof.Parse(envelope.ToJsonString()) is not { } parsed) { return false; }
             envelope = parsed;
