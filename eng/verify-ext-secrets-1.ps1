@@ -30,6 +30,8 @@ $project = Join-Path $root 'tests/Hexalith.Platform.Custody.Tests/Hexalith.Platf
 $buildLog = Join-Path $EvidenceDirectory 'local-build.log'
 $testLog = Join-Path $EvidenceDirectory 'local-tests.log'
 $xmlPath = Join-Path $EvidenceDirectory 'local-tests.xml'
+$modelReportPath = Join-Path $EvidenceDirectory 'custody-shared-cut-model.json'
+. (Join-Path $PSScriptRoot 'ext-secrets-1/model_audit.ps1')
 $buildArgs = @('build', $project, '-c', 'Debug', '--artifacts-path', $ArtifactsDirectory, '-m:1', '-p:NuGetAudit=false', '-p:MinVerVersionOverride=1.0.0', '-p:UseHexalithProjectReferences=true', "-p:HexalithEventStoreRoot=$EventStoreSourceRoot")
 & dotnet @buildArgs *> $buildLog
 if ($LASTEXITCODE -ne 0) { throw "Local custody build failed; see $buildLog" }
@@ -64,18 +66,9 @@ $requiredClasses = @(
 $testArgs = @($assemblyPath)
 foreach ($class in $requiredClasses) { $testArgs += @('-class', $class) }
 $testArgs += @('-result-xml', $xmlPath)
-$previousModelReport = $env:HEXALITH_CUSTODY_MODEL_REPORT
-$modelReportPath = Join-Path $EvidenceDirectory 'custody-shared-cut-model.json'
-try {
-    $env:HEXALITH_CUSTODY_MODEL_REPORT = $modelReportPath
+$modelReportSha256 = Invoke-CustodySharedCutModelAudit -ReportPath $modelReportPath -XmlPath $xmlPath -RunTests {
     & dotnet @testArgs *> $testLog
-} finally {
-    $env:HEXALITH_CUSTODY_MODEL_REPORT = $previousModelReport
-}
-if ($LASTEXITCODE -ne 0) { throw "Local custody tests failed; see $testLog" }
-$modelReport = Get-Content -LiteralPath $modelReportPath -Raw | ConvertFrom-Json
-if ($modelReport.Kind -ne 'OfflineModelOnly' -or $modelReport.LiveReady -ne $false -or $modelReport.DependencyAvailable -ne $false -or $modelReport.States -le 0 -or $modelReport.ReachablePublishedStates -le 0 -or $modelReport.UnsafeCounterexamples.Count -lt 3) {
-    throw 'Local offline custody model evidence is missing or malformed.'
+    if ($LASTEXITCODE -ne 0) { throw "Local custody tests failed; see $testLog" }
 }
 [xml]$results = Get-Content -Raw $xmlPath
 $assembly = $results.assemblies.assembly
@@ -121,9 +114,8 @@ $pythonLog = Join-Path $EvidenceDirectory 'python-tests.log'
 if ($LASTEXITCODE -ne 0) { throw "Local qualification/packet regressions failed; see $pythonLog" }
 @{
     Mode = 'Local'; LiveReady = $false; DependencyAvailable = $false
-    Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations and offline shared-cut model; no live qualification'; RequiredClasses = $classEvidence
-    ModelReportSha256 = (Get-FileHash $modelReportPath -Algorithm SHA256).Hash.ToLowerInvariant()
-    ModelStates = [int]$modelReport.States; ModelMaximumDepth = [int]$modelReport.Bounds.MaximumDepth
+    Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations; no live qualification'; RequiredClasses = $classEvidence
+    ModelReportSha256 = $modelReportSha256; ModelReportPath = $modelReportPath
     RuntimePassed = [int]$runtimeAssembly.passed; RuntimeXmlSha256 = (Get-FileHash $runtimeXmlPath -Algorithm SHA256).Hash.ToLowerInvariant()
     Total = [int]$assembly.total
     Passed = [int]$assembly.passed; BuildArguments = $buildArgs; TestArguments = $testArgs
