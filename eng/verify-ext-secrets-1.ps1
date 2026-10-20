@@ -41,6 +41,7 @@ $assemblyPath = Join-Path $ArtifactsDirectory 'bin/Hexalith.Platform.Custody.Tes
 $requiredClasses = @(
     'Hexalith.Platform.Custody.Tests.DaprPlatformHmacBindingTests',
     'Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests',
+    'Hexalith.Platform.Custody.Tests.CustodySharedCutModelTests',
     'Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
     'Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests',
     'Hexalith.Platform.Custody.Tests.DeletionBatchExecutionCoordinatorTests',
@@ -63,8 +64,19 @@ $requiredClasses = @(
 $testArgs = @($assemblyPath)
 foreach ($class in $requiredClasses) { $testArgs += @('-class', $class) }
 $testArgs += @('-result-xml', $xmlPath)
-& dotnet @testArgs *> $testLog
+$previousModelReport = $env:HEXALITH_CUSTODY_MODEL_REPORT
+$modelReportPath = Join-Path $EvidenceDirectory 'custody-shared-cut-model.json'
+try {
+    $env:HEXALITH_CUSTODY_MODEL_REPORT = $modelReportPath
+    & dotnet @testArgs *> $testLog
+} finally {
+    $env:HEXALITH_CUSTODY_MODEL_REPORT = $previousModelReport
+}
 if ($LASTEXITCODE -ne 0) { throw "Local custody tests failed; see $testLog" }
+$modelReport = Get-Content -LiteralPath $modelReportPath -Raw | ConvertFrom-Json
+if ($modelReport.Kind -ne 'OfflineModelOnly' -or $modelReport.LiveReady -ne $false -or $modelReport.DependencyAvailable -ne $false -or $modelReport.States -le 0 -or $modelReport.ReachablePublishedStates -le 0 -or $modelReport.UnsafeCounterexamples.Count -lt 3) {
+    throw 'Local offline custody model evidence is missing or malformed.'
+}
 [xml]$results = Get-Content -Raw $xmlPath
 $assembly = $results.assemblies.assembly
 if ($null -eq $assembly -or [int]$assembly.total -le 0 -or [int]$assembly.passed -ne [int]$assembly.total -or [int]$assembly.failed -ne 0 -or [int]$assembly.errors -ne 0 -or [int]$assembly.skipped -ne 0 -or [int]$assembly.'not-run' -ne 0) {
@@ -109,7 +121,9 @@ $pythonLog = Join-Path $EvidenceDirectory 'python-tests.log'
 if ($LASTEXITCODE -ne 0) { throw "Local qualification/packet regressions failed; see $pythonLog" }
 @{
     Mode = 'Local'; LiveReady = $false; DependencyAvailable = $false
-    Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations; no live qualification'; RequiredClasses = $classEvidence
+    Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations and offline shared-cut model; no live qualification'; RequiredClasses = $classEvidence
+    ModelReportSha256 = (Get-FileHash $modelReportPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    ModelStates = [int]$modelReport.States; ModelMaximumDepth = [int]$modelReport.Bounds.MaximumDepth
     RuntimePassed = [int]$runtimeAssembly.passed; RuntimeXmlSha256 = (Get-FileHash $runtimeXmlPath -Algorithm SHA256).Hash.ToLowerInvariant()
     Total = [int]$assembly.total
     Passed = [int]$assembly.passed; BuildArguments = $buildArgs; TestArguments = $testArgs

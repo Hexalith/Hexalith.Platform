@@ -31,10 +31,10 @@ GROUPS = {
     },
     "lifecycle": {
         "owner": "Architecture and lifecycle/protection owners",
-        "kind": "BlockedArchitectureAndImplementation",
-        "action": "Select and approve the concrete separate custody hierarchy, complete copy inventory and independently surviving erasure/fencing authority; implement the existing lifecycle provider/authority and protection interfaces. Demonstrate atomic destruction, nonrollback original outcomes, old-backup non-revival and root-reissue protection before returning installed references. Ordinary OpenBao HMAC/KV/Raft semantics cannot supply this proof.",
+        "kind": "BlockedComponentFeasibilityAndImplementation",
+        "action": "Implement the approved Dapr-only shared-cut/recoverable-original custody design using a qualified semantic custody-lifecycle-v1 component; no application native provider dependency. Return the immutable component artifact, independently placed current authority, complete copy/holder inventory, original/restore references and measured operating/retention limits in custody-component.proposed.json. The offline F0 model supplies no physical guarantee: F1 transport/authorization/buffer proof and separately authorized F2/F3 physical all-copy non-revival, survivor and root-reissue proofs remain required. Ordinary OpenBao HMAC/KV/Raft semantics cannot supply this proof.",
         "dependsOn": ["profile", "private-compromise"],
-        "contracts": ["src/Hexalith.Platform.Custody/ICustodyKeyLifecycleProvider.cs", "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleAuthority.cs", "docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md"],
+        "contracts": ["src/Hexalith.Platform.Custody/ICustodyKeyLifecycleProvider.cs", "src/Hexalith.Platform.Custody/ICustodyKeyLifecycleAuthority.cs", "docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md", "docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md", "eng/ext-secrets-1/provisioning/custody-component.proposed.json"],
     },
     "private-replay": {
         "owner": "EventStore / private replay composition owner",

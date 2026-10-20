@@ -1,0 +1,68 @@
+{
+  "schema": "EXT-SECRETS-1.custody-component-provisioning.v1",
+  "apply": false,
+  "installed": false,
+  "dependencyAvailable": false,
+  "productionMutationAllowed": false,
+  "credentialValuesPermitted": false,
+  "logicalRole": "interaction-custody",
+  "protocol": "custody-lifecycle-v1",
+  "proposedComponentType": "bindings.hexalithcustody",
+  "componentApiVersion": "v1",
+  "owner": "Independent custody component, infrastructure and public-trust owners",
+  "requiredReferences": {
+    "immutableComponentArtifactReference": null,
+    "componentArtifactSha256": null,
+    "configuredLogicalBindingReference": null,
+    "deployedComponentReference": null,
+    "currentAuthorityId": null,
+    "authorityIncarnation": null,
+    "opaqueStoreTarget": null,
+    "providerProfileId": null,
+    "trustProfileRevision": null,
+    "publishedAnchorSetReference": null,
+    "artifactProfileDigest": null,
+    "independentFailureAndRestoreDomainReference": null,
+    "componentCredentialReference": null,
+    "exactPrivateOperationProofAuthorityReference": null,
+    "independentObserverReadScopeReference": null,
+    "forwardOnlyAuthorityRecoveryReference": null,
+    "gatedEnvelopeRecoveryReference": null,
+    "retainedOriginalsRecoveryReference": null,
+    "completeCopyAndHolderInventoryReference": null,
+    "nativeIntentAndKeyUseCompletionReference": null,
+    "daprTransportLimitsRetriesAndBufferProofReference": null,
+    "sharedCutAndExactOriginalRecoveryProofReference": null,
+    "oldBackupNonRevivalAndRootReissueProofReference": null,
+    "survivorRecoveryAndRestoreBarrierProofReference": null,
+    "numericalOperatingRetentionAndAdmissionLimitsReference": null
+  },
+  "operations": [
+    "wrap", "unwrap", "pin", "unpin", "destroy-manifest", "lookup-original",
+    "read-current", "admit-transition", "record-transition", "recover-transition",
+    "verify-transition", "lookup-transition", "read-original-page", "complete-key-use"
+  ],
+  "requiredEvidence": [
+    "IndependentlyCurrentChallengeBoundAuthorityAndExactOperationScope",
+    "B0ProtectionReservationAndB1WholeTenantFreeze",
+    "B2SurvivorPreparationAndPermanentAlternateTaintedEpochRetirement",
+    "B3ConditionalArmAndB4SingleSharedPhysicalCut",
+    "B5AllCopyHolderClosureSurvivorRecoveryAndImmutableOriginalPublication",
+    "DuplicateExecuteAndLostResultUseOriginalStatusOrLookupOnly",
+    "EphemeralKeyDeliveryNeverPersistsOrReplaysRawKeyResponse",
+    "UDSAccessLimitedToDaprdAndComponentWithPinnedProtocolAndReflection",
+    "Complete1000TargetRequestAndBoundedAuthenticatedOriginalResultPages",
+    "NativeSendUnknownAndLostSidecarDoNotCloseOutstandingHolders",
+    "FirstReleaseAuthorityReplacementAndAppNativeInfrastructureBypassDenied",
+    "CurrentIndependentEnrollmentRevocationAndOldRestoreDenial"
+  ],
+  "recoveryClasses": [
+    "interaction-custody-authority-v1",
+    "interaction-custody-envelopes-v1",
+    "interaction-custody-originals-v1"
+  ],
+  "notAuthorizedByThisTemplate": [
+    "InfrastructureDeployment", "NativeExperiment", "DestructiveQualification",
+    "OwnerLiveOrCohortCommand", "RegisterAcceptanceOrAvailableDeclaration"
+  ]
+}
