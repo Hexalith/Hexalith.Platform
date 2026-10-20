@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "projects": [
+    {
+      "path": "src/Hexalith.Sample.AppHost/Hexalith.Sample.AppHost.csproj",
+      "kind": "AppHost",
+      "owner": "pending: module owner",
+      "consumers": [
+        "pending: identify every consumer"
+      ],
+      "state": "frozen",
+      "replacementPlan": "pending: replace with producer-owned Platform hosting after producer adoption",
+      "retirementPlan": "pending: retain frozen until every applicable gate has owner-reviewed exact-subject evidence; inventory grants no retirement authority",
+      "gates": {
+        "producerAdoption": "pending",
+        "ownerReviewedSourcePackageDeployedParity": "pending",
+        "eventStoreAd22ExactSubjectRemovalAuthority": "pending: obtain EventStore AD-22 exact-subject removal authority when applicable; otherwise record owner-reviewed not-applicable reason"
+      }
+    },
+    {
+      "path": "src/Hexalith.Sample.Aspire/Hexalith.Sample.Aspire.csproj",
+      "kind": "Aspire",
+      "owner": "pending: module owner",
+      "consumers": [
+        "pending: identify every consumer"
+      ],
+      "state": "frozen",
+      "replacementPlan": "pending: replace with producer-owned Platform hosting after producer adoption",
+      "retirementPlan": "pending: retain frozen until every applicable gate has owner-reviewed exact-subject evidence; inventory grants no retirement authority",
+      "gates": {
+        "producerAdoption": "pending",
+        "ownerReviewedSourcePackageDeployedParity": "pending",
+        "eventStoreAd22ExactSubjectRemovalAuthority": "pending: obtain EventStore AD-22 exact-subject removal authority when applicable; otherwise record owner-reviewed not-applicable reason"
+      }
+    },
+    {
+      "path": "src/Hexalith.Sample.ServiceDefaults/Hexalith.Sample.ServiceDefaults.csproj",
+      "kind": "ServiceDefaults",
+      "owner": "pending: module owner",
+      "consumers": [
+        "pending: identify every consumer"
+      ],
+      "state": "frozen",
+      "replacementPlan": "pending: replace with producer-owned Platform hosting after producer adoption",
+      "retirementPlan": "pending: retain frozen until every applicable gate has owner-reviewed exact-subject evidence; inventory grants no retirement authority",
+      "gates": {
+        "producerAdoption": "pending",
+        "ownerReviewedSourcePackageDeployedParity": "pending",
+        "eventStoreAd22ExactSubjectRemovalAuthority": "pending: obtain EventStore AD-22 exact-subject removal authority when applicable; otherwise record owner-reviewed not-applicable reason"
+      }
+    }
+  ]
+}

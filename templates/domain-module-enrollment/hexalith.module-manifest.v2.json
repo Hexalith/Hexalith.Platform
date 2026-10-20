@@ -1,0 +1,71 @@
+{
+  "schema": "hexalith.module-manifest.v2",
+  "modules": [
+    {
+      "identity": {
+        "moduleId": "sample",
+        "servers": [
+          {
+            "id": "server",
+            "appId": "sample",
+            "resourceId": "sample",
+            "enabled": true,
+            "required": true
+          }
+        ],
+        "dependencies": [
+          "eventstore",
+          "tenants",
+          "memories"
+        ]
+      },
+      "runtime": {
+        "dapr": [
+          {
+            "role": "events",
+            "capability": "pubsub",
+            "recoveryClass": "rebuild-only",
+            "configurationKey": "Sample:Dapr:EventsComponent",
+            "servers": [
+              "server"
+            ]
+          }
+        ]
+      },
+      "surfaces": {
+        "interfaces": []
+      },
+      "integration": {
+        "topics": [
+          {
+            "name": "sample-events",
+            "role": "events",
+            "deadLetter": {
+              "strategy": "topic",
+              "topic": "sample-dead-letter"
+            },
+            "subscription": {
+              "server": "server",
+              "route": "/events/sample"
+            }
+          }
+        ]
+      },
+      "lifecycle": {
+        "readiness": [
+          {
+            "server": "server",
+            "kind": "http",
+            "endpoint": "/ready"
+          }
+        ],
+        "tasks": [],
+        "startup": {},
+        "classification": {
+          "changeClass": "additive",
+          "reason": "Initial domain enrollment; owner must customize and review."
+        }
+      }
+    }
+  ]
+}

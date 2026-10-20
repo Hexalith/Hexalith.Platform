@@ -62,6 +62,16 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
+## Domain-module enrollment
+
+Use the [enrollment guide](docs/domain-module-enrollment.md) and
+[starter templates](templates/domain-module-enrollment/) for owner-led declaration,
+direct-only initialization, source mapping, Dapr conventions, hosting inventory
+and human SM-2 evidence. The Story 1.13 `validate --adoption` extension is a local
+release candidate; the accepted published pin remains `4.34.0` until Builds owner
+review, gated upstream publication and fresh Platform acceptance. See
+[Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
+
 ## Run and debug a technical module
 
 EventStore, Memories and McpCli run and debug from this workspace, never from

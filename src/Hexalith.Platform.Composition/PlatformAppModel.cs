@@ -77,7 +77,7 @@ public static class PlatformAppModel
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
         Dictionary<string, string> configuration = new(StringComparer.Ordinal);
-        foreach (string server in new[] { "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/clock", "memories/telemetry" })
+        foreach (string server in new[] { "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/clock", "memories/telemetry" })
         {
             configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
             configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
@@ -247,6 +247,12 @@ public static class PlatformAppModel
                         .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__TenantId", "*")
                         .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__Domain", "tenants")
                         .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_tenants_v1__Version", "v1");
+                if (servers.Any(s => s.AppId == "parties"))
+                    eventStore.WithEnvironment("EventStore__DomainServices__Registrations__wildcard_party_v1__AppId", "parties")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_party_v1__MethodName", "process")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_party_v1__TenantId", "*")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_party_v1__Domain", "party")
+                        .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_party_v1__Version", "v1");
                 if (hasTimesheets)
                     eventStore.WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__AppId", "timesheets")
                         .WithEnvironment("EventStore__DomainServices__Registrations__*|timesheets|v1__MethodName", "process")

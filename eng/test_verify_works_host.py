@@ -598,11 +598,15 @@ class WorksEvidenceGateTests(unittest.TestCase):
         early_receipt = state((1, '2026-10-19T07:00:01Z'))
         early_receipt['points'][0]['UnixTimeNanoseconds'] = utc_ticks('2026-10-19T07:00:06Z') * 100
         self.assertFalse(check(early_receipt), 'A late export with an early receipt must not qualify')
-        for invalid_export_time in [True, False, float(utc_ticks('2026-10-19T07:00:06Z') * 100)]:
-            invalid_export = state((1, '2026-10-19T07:00:06Z'))
-            invalid_export['points'][0]['UnixTimeNanoseconds'] = invalid_export_time
-            with self.subTest(invalid_export_time=invalid_export_time):
-                self.assertFalse(check(invalid_export), 'Exporter time must be an integer, never a boolean or float')
+        float_export = state((1, '2026-10-19T07:00:06Z'))
+        float_export['points'][0]['UnixTimeNanoseconds'] = float(utc_ticks('2026-10-19T07:00:06Z') * 100)
+        self.assertFalse(check(float_export), 'Exporter time must be an integer, never a float')
+        # True and False compare as 1 and 0 ns; only a pre-epoch observation lets the time order accept those values.
+        pre_epoch = state((1, '1970-01-01T00:00:01Z'), at='1969-12-31T23:59:59Z')
+        for export_time, qualifies in [(1, True), (0, True), (True, False), (False, False)]:
+            pre_epoch['points'][0]['UnixTimeNanoseconds'] = export_time
+            with self.subTest(export_time=export_time):
+                self.assertEqual(check(pre_epoch), qualifies, 'Exporter time must be an integer, never a boolean')
         for name, refused in [
                 ('startup point only', state((1, '2026-10-19T07:00:01+00:00'))),
                 ('same tick', state((1, observed))),

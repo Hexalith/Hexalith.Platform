@@ -78,6 +78,7 @@ public static class PlatformLocalProfile
             else environment[key.Replace(":", "__", StringComparison.Ordinal)] = value;
             string? runtime = (id, server, key) switch
             {
+                ("parties", "domain", "EventStore:AppChannelToken") => "APP_API_TOKEN",
                 ("eventstore", "gateway", "EventStore:AppChannelToken") => "APP_API_TOKEN",
                 ("tenants", "domain", "Tenants:AppChannelToken") => "APP_API_TOKEN",
                 ("tenants", "api", "Tenants:ApiDaprToken") => "DAPR_API_TOKEN",
