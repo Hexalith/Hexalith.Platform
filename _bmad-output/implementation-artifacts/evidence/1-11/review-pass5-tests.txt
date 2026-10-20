@@ -1,0 +1,19 @@
+# Review pass 5 (2026-10-20), Builds Hexalith.Builds.Module.Tests on branch test/1-11-review-pass5, commit
+# b59e014 on origin/main e40ed9c (test-only; Runtime and the McpCli tests are unchanged from 24322f5 and the v4.34.0
+# tag 5d03f1d). Built in a separate worktree with -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false
+# -p:MinVerVersionOverride=1.0.0 (0 warnings, 0 errors), run with dotnet exec on the test DLL.
+# New: McpCliRunReportsTheRunScopedBuildAndDownDeletesItAsync is a theory over debugAttach (run and debug);
+# McpCliBuildReturningAfterTheDeadlineStopsBeforeTheModelBuildAsync uses a build that ignores the startup token.
+
+$ dotnet exec Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests
+   Hexalith.Builds.Module.Tests  Total: 31, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 21.886s
+
+$ dotnet exec Hexalith.Builds.Module.Tests.dll
+   Hexalith.Builds.Module.Tests  Total: 1118, Errors: 0, Failed: 0, Skipped: 3, Not Run: 0, Time: 121.896s
+
+# Mutation check (reverted; the engine file was restored byte-for-byte and rebuilt before the runs above):
+# deleting the post-McpCli-build deadline check (CompositionEngine.cs:184-187) and guarding the McpCli HXI010 with
+# plan.DebugAttach, then rebuilding, fails exactly the two new cases:
+   McpCliRunBuildTests.McpCliBuildReturningAfterTheDeadlineStopsBeforeTheModelBuildAsync [FAIL]
+   McpCliRunBuildTests.McpCliRunReportsTheRunScopedBuildAndDownDeletesItAsync(debugAttach: False) [FAIL]
+   Hexalith.Builds.Module.Tests  Total: 31, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 21.411s

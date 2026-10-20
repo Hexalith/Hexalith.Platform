@@ -1,0 +1,133 @@
+## Inputs 2026-10-20T11:23:02Z
+$ dotnet tool restore
+Restore was successful.
+$ dotnet tool run hexalith-module --version
+4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc
+pin: 4.34.0
+Platform HEAD f3ce5611497fbad30564c94ed17e5d63f9498e5c; committed toolVersionRange [4.33.1, 5.0.0-0)
+references/Hexalith.Builds staged 5d03f1db9c38db34ecac7fe6048937478ffb82cc checkout 5d03f1db9c38db34ecac7fe6048937478ffb82cc committed 5d03f1db9c38db34ecac7fe6048937478ffb82cc
+references/Hexalith.EventStore staged f6b545cd02632f662136d0b4b8e6952baa7afec3 checkout f6b545cd02632f662136d0b4b8e6952baa7afec3 committed f6b545cd02632f662136d0b4b8e6952baa7afec3
+references/Hexalith.Tenants staged fc2d4821e002ea56eaed79b2acae4cc0bfc8ef10 checkout fc2d4821e002ea56eaed79b2acae4cc0bfc8ef10 committed fc2d4821e002ea56eaed79b2acae4cc0bfc8ef10
+references/Hexalith.Memories staged c082f8151328b1ac91939cda8733ab78ae68e1c4 checkout c082f8151328b1ac91939cda8733ab78ae68e1c4 committed c082f8151328b1ac91939cda8733ab78ae68e1c4
+HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2
+$ git -C references/Hexalith.Memories status --short --ignored
+!! node_modules/
+!! src/Hexalith.Memories.AccessTelemetry.Clock/bin/
+!! src/Hexalith.Memories.AccessTelemetry.Clock/obj/
+!! src/Hexalith.Memories.AccessTelemetry.Contracts/bin/
+!! src/Hexalith.Memories.AccessTelemetry.Contracts/obj/
+!! src/Hexalith.Memories.AccessTelemetry/bin/
+!! src/Hexalith.Memories.AccessTelemetry/obj/
+!! src/Hexalith.Memories.Aspire/bin/
+!! src/Hexalith.Memories.Aspire/obj/
+!! src/Hexalith.Memories.Contracts/bin/
+!! src/Hexalith.Memories.Contracts/obj/
+!! src/Hexalith.Memories.EventStore/bin/
+!! src/Hexalith.Memories.EventStore/obj/
+!! src/Hexalith.Memories.Server/bin/
+!! src/Hexalith.Memories.Server/obj/
+!! src/Hexalith.Memories.ServiceDefaults/bin/
+!! src/Hexalith.Memories.ServiceDefaults/obj/
+!! src/Hexalith.Memories.Telemetry/bin/
+!! src/Hexalith.Memories.Telemetry/obj/
+!! tests/Hexalith.Memories.Server.Tests/bin/
+!! tests/Hexalith.Memories.Server.Tests/obj/
+!! tests/Hexalith.Memories.TestHelpers/bin/
+!! tests/Hexalith.Memories.TestHelpers/obj/
+!! tests/tooling/access_telemetry_lifecycle/__pycache__/
+!! tools/MigrateEmbeddingVectors/bin/
+!! tools/MigrateEmbeddingVectors/obj/
+!! tools/__pycache__/
+(end status)
+containers before: dapr_placement dapr_redis dapr_scheduler dapr_zipkin 
+
+## debug 2026-10-20T11:23:04Z
+$ dotnet tool run hexalith-module -- debug --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+ready: Success
+HXI010 Topology None field=readiness: Every run resource reported healthy. deadline='600s'.
+HXI010 Topology None field=eventstore: Project 'eventstore' launcher process id '698730'.
+HXI010 Topology None field=memories: Project 'memories' launcher process id '713498'.
+HXI010 Topology None field=memories-access-telemetry: Project 'memories-access-telemetry' launcher process id '713499'.
+HXI010 Topology None field=memories-access-telemetry-clock: Project 'memories-access-telemetry-clock' launcher process id '713500'.
+exit 0 (2026-10-20T11:24:37Z)
+run=736f7c00e9d2b10cc9de1bce2c8abc6f
+status Ready startupDurationSeconds 93.0410002 effectiveDeadlineSeconds 600
+resource dapr-placement-mtls container Healthy module-ready
+resource dapr-scheduler-mtls container Healthy module-ready
+resource dapr-sentry container Healthy module-ready
+resource eventstore project Healthy module-ready
+resource eventstore-dapr-cli executable Healthy module-ready
+resource memories project Healthy module-ready
+resource memories-access-telemetry project Healthy module-ready
+resource memories-access-telemetry-clock project Healthy module-ready
+resource memories-access-telemetry-clock-dapr-cli executable Healthy module-ready
+resource memories-access-telemetry-dapr-cli executable Healthy module-ready
+resource memories-dapr-cli executable Healthy module-ready
+resource memories-graph container Healthy module-ready
+resource memories-vectors container Healthy module-ready
+resource redis container Healthy module-ready
+projectProcessIds [698724, 698730, 713494, 713495, 713496, 713498, 713499, 713500]
+plan active module and McpCli tool: memories None
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/tools': No such file or directory
+
+## checkout after the build 2026-10-20T11:24:37Z
+$ git -C references/Hexalith.Memories status --short --ignored
+!! node_modules/
+!! src/Hexalith.Memories.AccessTelemetry.Clock/bin/
+!! src/Hexalith.Memories.AccessTelemetry.Clock/obj/
+!! src/Hexalith.Memories.AccessTelemetry.Contracts/bin/
+!! src/Hexalith.Memories.AccessTelemetry.Contracts/obj/
+!! src/Hexalith.Memories.AccessTelemetry/bin/
+!! src/Hexalith.Memories.AccessTelemetry/obj/
+!! src/Hexalith.Memories.Aspire/bin/
+!! src/Hexalith.Memories.Aspire/obj/
+!! src/Hexalith.Memories.Contracts/bin/
+!! src/Hexalith.Memories.Contracts/obj/
+!! src/Hexalith.Memories.EventStore/bin/
+!! src/Hexalith.Memories.EventStore/obj/
+!! src/Hexalith.Memories.Server/bin/
+!! src/Hexalith.Memories.Server/obj/
+!! src/Hexalith.Memories.ServiceDefaults/bin/
+!! src/Hexalith.Memories.ServiceDefaults/obj/
+!! src/Hexalith.Memories.Telemetry/bin/
+!! src/Hexalith.Memories.Telemetry/obj/
+!! tests/Hexalith.Memories.Server.Tests/bin/
+!! tests/Hexalith.Memories.Server.Tests/obj/
+!! tests/Hexalith.Memories.TestHelpers/bin/
+!! tests/Hexalith.Memories.TestHelpers/obj/
+!! tests/tooling/access_telemetry_lifecycle/__pycache__/
+!! tools/MigrateEmbeddingVectors/bin/
+!! tools/MigrateEmbeddingVectors/obj/
+!! tools/__pycache__/
+(end status)
+
+## down 2026-10-20T11:24:37Z
+$ dotnet tool run hexalith-module -- down --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+failed: UsageOrManifest
+HXR024 Usage Usage field=runId: A matching v2 run identity is required.
+down exit 1
+## after down 2026-10-20T11:24:38Z
+/home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f
+containers after: dapr-placement-mtls-wzvbracn dapr-scheduler-mtls-nrtnegar dapr-sentry-drpazfbh dapr_placement dapr_redis dapr_scheduler dapr_zipkin hexalith-g4-736f7c00e9d2b10cc9de1bce2c8abc6f-redis memories-graph-tgtknmzq memories-vectors-vacxqfec 
+698724 /home/administrator/.hexalith/dapr/1.18.2/tools/dapr run --app-id eventstore --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.eventstore.yaml --dapr-internal-grpc-port 24194 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --runtime-path /home/administrator/.hexalith/dapr/1.18.2 --scheduler-host-address localhost:51006 --app-port 35667 --dapr-grpc-port 16616 --dapr-http-port 10214 --metrics-port 19506 --app-channel-address localhost --app-protocol http
+698816 /home/administrator/.hexalith/dapr/1.18.2/.dapr/bin/daprd --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.eventstore.yaml --app-protocol http --log-level info --app-max-concurrency -1 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --max-body-size 4Mi --read-buffer-size 4Ki --scheduler-host-address localhost:51006 --app-id eventstore --app-channel-address localhost --app-port 35667 --dapr-http-port 10214 --dapr-grpc-port 16616 --profile-port -1 --metrics-port 19506 --dapr-internal-grpc-port 24194 --enable-mtls --sentry-address localhost:50001
+713494 /home/administrator/.hexalith/dapr/1.18.2/tools/dapr run --app-id memories-access-telemetry-clock --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.memories-access-telemetry-clock.yaml --dapr-internal-grpc-port 20563 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --runtime-path /home/administrator/.hexalith/dapr/1.18.2 --scheduler-host-address localhost:51006 --app-port 42149 --dapr-grpc-port 17981 --dapr-http-port 11957 --metrics-port 28326 --app-channel-address localhost --app-protocol http
+713495 /home/administrator/.hexalith/dapr/1.18.2/tools/dapr run --app-id memories --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.memories.yaml --dapr-internal-grpc-port 11067 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --runtime-path /home/administrator/.hexalith/dapr/1.18.2 --scheduler-host-address localhost:51006 --app-port 43289 --dapr-grpc-port 19829 --dapr-http-port 26403 --metrics-port 18555 --app-channel-address localhost --app-protocol http
+713496 /home/administrator/.hexalith/dapr/1.18.2/tools/dapr run --app-id memories-access-telemetry --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.memories-access-telemetry.yaml --dapr-internal-grpc-port 11987 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --runtime-path /home/administrator/.hexalith/dapr/1.18.2 --scheduler-host-address localhost:51006 --app-port 40913 --dapr-grpc-port 11491 --dapr-http-port 22523 --metrics-port 25311 --app-channel-address localhost --app-protocol http
+713704 /home/administrator/.hexalith/dapr/1.18.2/.dapr/bin/daprd --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.memories-access-telemetry.yaml --app-protocol http --log-level info --app-max-concurrency -1 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --max-body-size 4Mi --read-buffer-size 4Ki --scheduler-host-address localhost:51006 --app-id memories-access-telemetry --app-channel-address localhost --app-port 40913 --dapr-http-port 22523 --dapr-grpc-port 11491 --profile-port -1 --metrics-port 25311 --dapr-internal-grpc-port 11987 --enable-mtls --sentry-address localhost:50001
+713705 /home/administrator/.hexalith/dapr/1.18.2/.dapr/bin/daprd --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.memories-access-telemetry-clock.yaml --app-protocol http --log-level info --app-max-concurrency -1 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --max-body-size 4Mi --read-buffer-size 4Ki --scheduler-host-address localhost:51006 --app-id memories-access-telemetry-clock --app-channel-address localhost --app-port 42149 --dapr-http-port 11957 --dapr-grpc-port 17981 --profile-port -1 --metrics-port 28326 --dapr-internal-grpc-port 20563 --enable-mtls --sentry-address localhost:50001
+713728 /home/administrator/.hexalith/dapr/1.18.2/.dapr/bin/daprd --config /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/accesscontrol.memories.yaml --app-protocol http --log-level info --app-max-concurrency -1 --placement-host-address localhost:51005 --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components/subscriptions --resources-path /home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f/platform-components --max-body-size 4Mi --read-buffer-size 4Ki --scheduler-host-address localhost:51006 --app-id memories --app-channel-address localhost --app-port 43289 --dapr-http-port 26403 --dapr-grpc-port 19829 --profile-port -1 --metrics-port 18555 --dapr-internal-grpc-port 11067 --enable-mtls --sentry-address localhost:50001
+(end)
+
+## down with the run id 2026-10-20T11:25:07Z
+$ dotnet tool run hexalith-module -- down --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json --run-id 736f7c00e9d2b10cc9de1bce2c8abc6f
+completed: Success
+HXI001 Cleanup None field=down: Runner-owned invocation cleanup completed.
+down exit 0
+## after down 2026-10-20T11:25:11Z
+ls: cannot access '/home/administrator/.local/share/hexalith-builds/g4-workspaces/736f7c00e9d2b10cc9de1bce2c8abc6f': No such file or directory
+containers after: dapr_placement dapr_redis dapr_scheduler dapr_zipkin 
+run processes: 2
+$ git -C references/Hexalith.Memories status --short (tracked changes)
+(end status)
+# (The 2 processes counted above were the recording shell, whose command line holds the run id; pgrep excluding shells: 0.)

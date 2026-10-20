@@ -1,0 +1,19 @@
+# Builds commit on branch test/1-11-review-pass5 (review pass 5, test-only), validated with Builds' pinned commitlint
+@commitlint/cli@21.2.4
+⧗   --- input ---
+test(tool): cover McpCli run builds and the post-build deadline
+
+The McpCli ready-path test set DebugAttach, so only debug proved that a run
+builds McpCli and reports its HXI010; moving that report under the debug
+branch failed no default test. The test is now a theory over run and debug.
+
+The deadline test's build override honoured the startup token, so it always
+ended by cancellation and never reached the check that stops a run whose
+McpCli build returns after the deadline. A new test uses a build that ignores
+the token and returns late, and asserts HXR021 with no Platform model build.
+Removing that check, or reporting the build for debug only, now fails these
+tests.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+✔   found 0 problems, 0 warnings
+commitlint exit 0

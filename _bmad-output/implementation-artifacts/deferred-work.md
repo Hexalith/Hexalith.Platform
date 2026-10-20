@@ -902,7 +902,7 @@
 
 - source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
   summary: Restore Platform's `CentralPackageTransitivePinningEnabled` in the pinned-catalog Platform model build.
-  evidence: Review pass 2 (BH6). `PlatformManifestCommand.BuildModelAsync` passes `PinnedCatalogArguments`, so `-p:ImportDirectoryPackagesProps=false` skips Platform `Directory.Packages.props:2`, which enables transitive pinning. The Builds catalog sets only `ManagePackageVersionsCentrally`, so the catalog's transitive security pins (for example GHSA-334f, `Props/Directory.Packages.props:224`) do not apply to the model build. Story 1.11 fixed this for the McpCli build only. Pre-existing.
+  evidence: Review pass 2 (BH6). `PlatformManifestCommand.BuildModelAsync` passes `PinnedCatalogArguments`, so `-p:ImportDirectoryPackagesProps=false` skips Platform `Directory.Packages.props:2`, which enables transitive pinning. The Builds catalog sets only `ManagePackageVersionsCentrally`, so the catalog's transitive security pins (for example GHSA-334f, `Props/Directory.Packages.props:224`) do not apply to the model build. Story 1.11 fixed this for the McpCli build only. Pre-existing. Pass 5 (P5-BH6): both builds now share `PinnedCatalogArguments`, so moving `-p:CentralPackageTransitivePinningEnabled=true` into it fixes both; this needs a Builds release and a check that the Platform model restore still succeeds.
   status: open
 
 - source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
@@ -935,4 +935,11 @@
 - source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
   summary: Clarify the cached Epic 1 current/previous-major compatibility rule to retain the explicit v1 enrollment exclusion.
   evidence: Review pass 4 P4-BH6. epic-1-context.md:30 accepts current and previous majors without qualifying its preceding rule that v1 is never accepted for enrollment. The context wording can mislead later planning despite the explicit runtime/schema rejection; edits to agent context are deferred by the build review workflow.
+  status: open
+
+## Deferred from: code review of spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md (2026-10-20, pass 5)
+
+- source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
+  summary: Add an automatic check that the `.config/dotnet-tools.json` pin is within `hexalith-platform.json`'s `toolVersionRange` and that the committed `references/Hexalith.Builds` gitlink equals the commit of tag `v<version>`.
+  evidence: Review pass 5 (P5-VG3). No Platform test or CI reads the tool pin; the README's claim that only the pinned version is guaranteed to embed the catalog rests on hand-run evidence (`evidence/1-11/release-current.json`). The pin and gitlink drifted apart once during this story (pass-2 ledger entry: pin 4.33.1, gitlink untagged `cf97810`) with no test failing. Pre-existing Story 1.9 process rule; a Composition test comparing the pin with `git ls-tree HEAD references/Hexalith.Builds` and the tag would fit.
   status: open

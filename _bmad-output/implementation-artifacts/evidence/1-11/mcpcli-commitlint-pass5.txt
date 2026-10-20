@@ -1,0 +1,13 @@
+# McpCli commit on branch docs/1-11-review-pass5 (review pass 5, README only), validated with McpCli's pinned commitlint from the sibling checkout (config SHA-256 matches the owning config)
+@commitlint/cli@21.2.2
+⧗   --- input ---
+docs(module): point to the Platform README for the current tool pin
+
+The Platform section named Platform's exact Builds tool pin, which goes stale
+at the next pin move. It now says Platform pins 4.34.0 or later, the first
+release that builds run-scoped McpCli, and links the Platform README for the
+current pin.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+✔   found 0 problems, 0 warnings
+commitlint exit 0

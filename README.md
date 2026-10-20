@@ -31,9 +31,11 @@ Those hosting concerns live here.
 
 The local tool manifest pins `hexalith.builds.module.cli` `4.34.0`, accepted for
 Platform `run` and `debug`. `hexalith-platform.json` accepts versions in
-`[4.33.1, 5.0.0-0)`. The previously accepted `4.33.0` is now outside that range:
-its packaged host has a mismatched Tooling identity and build-machine paths,
-which prevent v2 `run` and `debug`; `4.33.1` fixes both defects. Later 4.x
+`[4.34.0, 5.0.0-0)`, from the first release that can run and debug every
+technical module. The previously accepted `4.33.1` is now outside that range: it
+composes only servers and builds no McpCli. The earlier `4.33.0` was excluded
+because its packaged host has a mismatched Tooling identity and build-machine
+paths, which prevent v2 `run` and `debug`. Later 4.x
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
 `5d03f1db9c38db34ecac7fe6048937478ffb82cc`, matching both the Builds gitlink
@@ -42,12 +44,14 @@ catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
 AppHost SDK pins, and nothing compares them with the catalog yet. When the
 exact pin moves, the Builds gitlink moves to that version's release-tag commit.
 See the [Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
-for the released-tool verification; the [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
+for the released-tool verification of McpCli, EventStore and Memories; the
+[Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
 records the earlier EventStore and Memories proof with `4.33.1`.
 
 Versions below the configured range are not Platform-accepted, including the published
-`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts. From `4.31.0`, a tool outside the
-range is refused with `HXW010` in package mode and warned in source mode.
+`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts, `4.33.0` and `4.33.1`. From
+`4.31.0`, a tool outside the range is refused with `HXW010` in package mode and
+warned in source mode.
 Older tools do not check the range, so run the pinned tool through
 `dotnet tool run`.
 
@@ -169,8 +173,9 @@ expected project path; no other copy, such as a sibling `../mcpcli` checkout,
 is used. Package mode builds no McpCli; package-mode McpCli arrives in Epic 3.
 The started EventStore gateway is the target of connected execution, which also
 arrives in Epic 3; the debugger recipe below uses offline verbs only. The build
-requires `4.34.0` or later; the pinned `4.34.0` includes it. The earlier
-`4.33.1` composes only servers and reports no McpCli build.
+requires `4.34.0` or later, the floor of the accepted range. The earlier `4.33.1`
+composes only servers and builds no McpCli; it is outside the range, so it is
+warned (`HXW010`) in source mode and refused in package mode.
 
 `debug` does not print the run id. It is the file name of the run state
 `<runId>.json` under `${XDG_DATA_HOME:-$HOME/.local/share}/hexalith-builds/g4-runs/`
@@ -203,7 +208,7 @@ with `down`.
 McpCli exits after each command, so launch the reported DLL under the debugger
 instead of attaching. Offline discovery verbs (`modules`, `operations`,
 `describe`) need no gateway URL. With [netcoredbg](https://github.com/Samsung/netcoredbg)
-(MIT; download it outside the repository):
+(MIT; verified with 3.2.0; download it outside the repository):
 
 ```bash
 tool="<path reported by HXI010>"
