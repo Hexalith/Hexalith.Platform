@@ -47,7 +47,31 @@ class InputReconciliationTests(unittest.TestCase):
             self.assertTrue(row["sourceContracts"])
             self.assertTrue(set(row["dependsOnGroups"]) <= set(r.GROUPS))
             self.assertFalse(row["resolvedByThisPacket"])
-        self.assertEqual("BlockedArchitectureAndImplementation", next(row for row in rows if row["input"] == "QualifiedAllCopyLifecycleAdapter")["resolutionKind"])
+        self.assertEqual("BlockedComponentFeasibilityAndImplementation", next(row for row in rows if row["input"] == "QualifiedAllCopyLifecycleAdapter")["resolutionKind"])
+
+    def test_lifecycle_requests_bind_approved_dapr_boundary_and_uninstalled_component_template(self):
+        report = self.prepare()
+        lifecycle = next(row for row in report["inputs"] if row["input"] == "QualifiedAllCopyLifecycleAdapter")
+        self.assertIn("approved Dapr-only", lifecycle["action"])
+        self.assertIn("F1", lifecycle["action"])
+        self.assertIn("F2/F3", lifecycle["action"])
+        root = Path(r.__file__).resolve().parents[2]
+        template_path = root / "eng/ext-secrets-1/provisioning/custody-component.proposed.json"
+        template = q.read_json(template_path)
+        self.assertFalse(template["installed"])
+        self.assertFalse(template["apply"])
+        self.assertFalse(template["dependencyAvailable"])
+        self.assertFalse(template["credentialValuesPermitted"])
+        self.assertEqual("custody-lifecycle-v1", template["protocol"])
+        self.assertGreater(len(template["requiredReferences"]), 20)
+        self.assertTrue(all(value is None for value in template["requiredReferences"].values()))
+        self.assertIn("read-current", template["operations"])
+        self.assertIn("lookup-original", template["operations"])
+        self.assertIn("read-original-page", template["operations"])
+        evidence = {entry["path"]: entry["sha256"] for entry in report["sourceEvidence"]}
+        self.assertEqual(hashlib.sha256(template_path.read_bytes()).hexdigest(), evidence[str(template_path)])
+        self.assertIn("docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md", lifecycle["sourceContracts"])
+        self.assertEqual(67, len(report["inputs"]))
 
     def test_public_configuration_and_source_bytes_are_hash_bound_without_values(self):
         source = self.root / "public-source.cs"

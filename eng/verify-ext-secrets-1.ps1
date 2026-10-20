@@ -30,6 +30,8 @@ $project = Join-Path $root 'tests/Hexalith.Platform.Custody.Tests/Hexalith.Platf
 $buildLog = Join-Path $EvidenceDirectory 'local-build.log'
 $testLog = Join-Path $EvidenceDirectory 'local-tests.log'
 $xmlPath = Join-Path $EvidenceDirectory 'local-tests.xml'
+$modelReportPath = Join-Path $EvidenceDirectory 'custody-shared-cut-model.json'
+. (Join-Path $PSScriptRoot 'ext-secrets-1/model_audit.ps1')
 $buildArgs = @('build', $project, '-c', 'Debug', '--artifacts-path', $ArtifactsDirectory, '-m:1', '-p:NuGetAudit=false', '-p:MinVerVersionOverride=1.0.0', '-p:UseHexalithProjectReferences=true', "-p:HexalithEventStoreRoot=$EventStoreSourceRoot")
 & dotnet @buildArgs *> $buildLog
 if ($LASTEXITCODE -ne 0) { throw "Local custody build failed; see $buildLog" }
@@ -41,6 +43,7 @@ $assemblyPath = Join-Path $ArtifactsDirectory 'bin/Hexalith.Platform.Custody.Tes
 $requiredClasses = @(
     'Hexalith.Platform.Custody.Tests.DaprPlatformHmacBindingTests',
     'Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests',
+    'Hexalith.Platform.Custody.Tests.CustodySharedCutModelTests',
     'Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests',
     'Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests',
     'Hexalith.Platform.Custody.Tests.DeletionBatchExecutionCoordinatorTests',
@@ -63,8 +66,10 @@ $requiredClasses = @(
 $testArgs = @($assemblyPath)
 foreach ($class in $requiredClasses) { $testArgs += @('-class', $class) }
 $testArgs += @('-result-xml', $xmlPath)
-& dotnet @testArgs *> $testLog
-if ($LASTEXITCODE -ne 0) { throw "Local custody tests failed; see $testLog" }
+$modelReportSha256 = Invoke-CustodySharedCutModelAudit -ReportPath $modelReportPath -XmlPath $xmlPath -RunTests {
+    & dotnet @testArgs *> $testLog
+    if ($LASTEXITCODE -ne 0) { throw "Local custody tests failed; see $testLog" }
+}
 [xml]$results = Get-Content -Raw $xmlPath
 $assembly = $results.assemblies.assembly
 if ($null -eq $assembly -or [int]$assembly.total -le 0 -or [int]$assembly.passed -ne [int]$assembly.total -or [int]$assembly.failed -ne 0 -or [int]$assembly.errors -ne 0 -or [int]$assembly.skipped -ne 0 -or [int]$assembly.'not-run' -ne 0) {
@@ -110,6 +115,7 @@ if ($LASTEXITCODE -ne 0) { throw "Local qualification/packet regressions failed;
 @{
     Mode = 'Local'; LiveReady = $false; DependencyAvailable = $false
     Scope = 'Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations; no live qualification'; RequiredClasses = $classEvidence
+    ModelReportSha256 = $modelReportSha256; ModelReportPath = $modelReportPath
     RuntimePassed = [int]$runtimeAssembly.passed; RuntimeXmlSha256 = (Get-FileHash $runtimeXmlPath -Algorithm SHA256).Hash.ToLowerInvariant()
     Total = [int]$assembly.total
     Passed = [int]$assembly.passed; BuildArguments = $buildArgs; TestArguments = $testArgs
