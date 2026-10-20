@@ -203,7 +203,7 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Theory]
-    [InlineData("tenants", new[] { "eventstore POST /process", "eventstore POST /query", "eventstore POST /project", "eventstore POST /replay-state", "eventstore POST /admin/operational-index-metadata" })]
+    [InlineData("tenants", new[] { "eventstore POST /process", "eventstore POST /query", "eventstore POST /project", "eventstore POST /replay-state", "eventstore POST /admin/operational-index-metadata", "parties GET /ready" })]
     [InlineData("tenants-api", new string[0])]
     [InlineData("memories", new string[0])]
     [InlineData("memories-access-telemetry-clock", new[] { "memories POST /v1/time/attest", "memories-access-telemetry POST /v1/time/attest" })]

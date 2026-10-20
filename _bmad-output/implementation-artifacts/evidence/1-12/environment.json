@@ -1,0 +1,57 @@
+{
+  "acceptedDaprHome": "/home/administrator/.hexalith/dapr/1.18.2",
+  "independentClone": "/tmp/hexalith-story-1-12/Hexalith.Parties",
+  "packagedTooling": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.34.0/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+  "utc": {
+    "command": [
+      "date",
+      "-u",
+      "+%FT%TZ"
+    ],
+    "exitCode": 0,
+    "stdout": "2026-10-20T12:37:08Z",
+    "stderr": ""
+  },
+  "dotnet": {
+    "command": [
+      "dotnet",
+      "--info"
+    ],
+    "exitCode": 0,
+    "stdout": ".NET SDK:\n Version:           10.0.402\n Commit:            a8dd0577c5\n Workload version:  10.0.400-manifests.da132f47\n MSBuild version:   18.9.15+a8dd0577c\n\nRuntime Environment:\n OS Name:     ubuntu\n OS Version:  26.04\n OS Platform: Linux\n RID:         linux-x64\n Base Path:   /home/administrator/.dotnet/sdk/10.0.402/\n\n.NET workloads installed:\nThere are no installed workloads to display.\nConfigured to use workload sets when installing new manifests.\nNo workload sets are installed. Run \"dotnet workload restore\" to install a workload set.\n\nHost:\n  Version:      10.0.13\n  Architecture: x64\n  Commit:       4099f83977\n\n.NET SDKs installed:\n  10.0.302 [/home/administrator/.dotnet/sdk]\n  10.0.400 [/home/administrator/.dotnet/sdk]\n  10.0.401 [/home/administrator/.dotnet/sdk]\n  10.0.402 [/home/administrator/.dotnet/sdk]\n\n.NET runtimes installed:\n  Microsoft.AspNetCore.App 10.0.10 [/home/administrator/.dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.11 [/home/administrator/.dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.12 [/home/administrator/.dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.13 [/home/administrator/.dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.NETCore.App 10.0.10 [/home/administrator/.dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.11 [/home/administrator/.dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.12 [/home/administrator/.dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.13 [/home/administrator/.dotnet/shared/Microsoft.NETCore.App]\n\nOther architectures found:\n  None\n\nEnvironment variables:\n  DOTNET_BUNDLE_EXTRACT_BASE_DIR           [/home/administrator/.cache/dotnet_bundle_extract]\n  DOTNET_ROOT                              [/home/administrator/.dotnet]\n\nglobal.json file:\n  /tmp/hexalith-story-1-12/Hexalith.Parties/global.json\n\nLearn more:\n  https://aka.ms/dotnet/info\n\nDownload .NET:\n  https://aka.ms/dotnet/download",
+    "stderr": ""
+  },
+  "aspire": {
+    "command": [
+      "aspire",
+      "--version"
+    ],
+    "exitCode": 0,
+    "stdout": "13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8",
+    "stderr": ""
+  },
+  "docker": {
+    "command": [
+      "docker",
+      "version",
+      "--format",
+      "{{.Client.Version}} / {{.Server.Version}}"
+    ],
+    "exitCode": 0,
+    "stdout": "29.8.2 / 29.8.2",
+    "stderr": ""
+  },
+  "moduleTool": {
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "--version"
+    ],
+    "exitCode": 0,
+    "stdout": "4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "stderr": ""
+  }
+}

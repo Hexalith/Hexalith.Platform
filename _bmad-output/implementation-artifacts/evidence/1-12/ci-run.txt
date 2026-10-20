@@ -1,0 +1,64 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Parties.Ci.Tests
+  Discovered:  Hexalith.Parties.Ci.Tests
+  Starting:    Hexalith.Parties.Ci.Tests
+    Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.SupportPackingRequiresExactProducedPackageMetadata [FAIL]
+      Shouldly.ShouldAssertException : exitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Traceback (most recent call last):
+        File "<string>", line 102, in <module>
+          module.pack_support_packages(
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+              temporary_root / "exact", commons_version, event_store_version, front_composer_version, tenants_version
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          )
+          ^
+        File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/validate-consumer-package-references.py", line 221, in pack_support_packages
+          raise ValueError(f"Support package project not found: {project_path}")
+      ValueError: Support package project not found: /home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj
+      
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs(1202,0): at Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.SupportPackingRequiresExactProducedPackageMetadata()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.MsbuildPropertyResolverReturnsCurrentCentralVersion [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Props/Directory.Packages.props'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+           at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy)
+           at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+           at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+           at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+        tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs(1245,0): at Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.ReadCentralPackageVersion(String packageId)
+        tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs(125,0): at Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.MsbuildPropertyResolverReturnsCurrentCentralVersion()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.ReleasePackingKeepsCommonsHttpDependencyOnPublishedSupportVersion [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Props/Directory.Packages.props'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+           at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy)
+           at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+           at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+           at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+        tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs(1245,0): at Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.ReadCentralPackageVersion(String packageId)
+        tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs(1241,0): at Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.ReadCentralCommonsHttpPackageVersion()
+        tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs(82,0): at Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests.ReleasePackingKeepsCommonsHttpDependencyOnPublishedSupportVersion()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Parties.Ci.Tests (ID = '9063ea8a126a0c74310cfd9f0a172384edffbc3b9e4cce65a0e39d797daa4926')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Ci.Tests  Total: 34, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 6.814s

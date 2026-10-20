@@ -1,0 +1,13 @@
+test_build_files_leave_all_source_selection_to_the_tool (test_platform_declaration.PlatformDeclarationTests.test_build_files_leave_all_source_selection_to_the_tool) ... ok
+test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting (test_platform_declaration.PlatformDeclarationTests.test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting) ... /tmp/tmpdbxqlcz5/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpdbxqlcz5/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpdbxqlcz5/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpdbxqlcz5/accesscontrol.yaml: Platform declaration: Unsafe operation grant
+ok
+test_owner_acl_is_the_exact_declaration_authority (test_platform_declaration.PlatformDeclarationTests.test_owner_acl_is_the_exact_declaration_authority) ... ok
+test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed (test_platform_declaration.PlatformDeclarationTests.test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.010s
+
+OK

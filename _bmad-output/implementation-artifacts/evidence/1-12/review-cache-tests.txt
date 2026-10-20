@@ -1,0 +1,13 @@
+cwd: /home/administrator/projects/hexalith/platform
+command: ["python3", "-B", "-m", "unittest", "discover", "-s", "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/1-12/tools", "-p", "test_run_reference_checks.py", "-v"]
+exit: 0
+full-output-sha256: d60c6ffc2944c8274ea987a083508f8aac2156a719b5d52b3f049e5751c83abb
+
+test_configured_nuget_cache_is_authoritative (test_run_reference_checks.RestoredValidatorTests.test_configured_nuget_cache_is_authoritative) ... ok
+test_missing_pinned_tool_reports_the_restore_prerequisite (test_run_reference_checks.RestoredValidatorTests.test_missing_pinned_tool_reports_the_restore_prerequisite) ... ok
+test_normal_user_cache_is_used_without_an_override (test_run_reference_checks.RestoredValidatorTests.test_normal_user_cache_is_used_without_an_override) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.036s
+
+OK

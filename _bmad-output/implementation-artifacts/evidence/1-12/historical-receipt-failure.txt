@@ -1,0 +1,39 @@
+The exact failing FinalDependencyReceiptsMatchTheSelectedPackageAndSourceGraph method and Builds describe constant are unchanged at pre-adoption 3608e121364198e2ea0643769e680df29bc8efe0 and local adoption e935bb59ff4e942735d1333f97c9b434611ff9c2. Unrelated concurrent changes elsewhere in that file are shown in receipt-test-diff.patch.
+Path: tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+CurrentSourceDescribes line 64 pins v4.33.1-49-g5d03f1db. The strict assertion around line 701 compares git describe output; accepted tag v4.34.0 now exists at the same 5d03f1db9c38db34ecac7fe6048937478ffb82cc commit.
+Historical validation was not modified.
+
+    Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.FinalDependencyReceiptsMatchTheSelectedPackageAndSourceGraph [FAIL]
+      Shouldly.ShouldAssertException : RunGit(root, "-C", path, "describe", "--tags", "--always", "--abbrev=8", "HEAD")
+                          .Trim()
+          should be
+      "v4.33.1-49-g5d03f1db"
+          but was
+      "v4.34.0"
+          difference
+      Difference     |                      |         |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                     |                     \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   
+      Expected Value | v    4    .    3    3    .    1    -    4    9    -    g    5    d    0    3    f    1    d    b    
+      Actual Value   | v    4    .    3    4    .    0                                                                     
+      Expected Code  | 118  52   46   51   51   46   49   45   52   57   45   103  53   100  48   51   102  49   100  98   
+      Actual Code    | 118  52   46   51   52   46   48                                                                    
+      
+      Additional Info:
+          references/Hexalith.Builds
+      Stack Trace:
+        tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs(700,0): at Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.FinalDependencyReceiptsMatchTheSelectedPackageAndSourceGraph()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.Parties","Message":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","State":{"ComplianceWarning":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","{OriginalFormat}":"{ComplianceWarning}"}}
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.Parties","Message":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","State":{"ComplianceWarning":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","{OriginalFormat}":"{ComplianceWarning}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 1 domains (party [Aggregate: PartyAggregate])","State":{"DomainCount":1,"DomainDetails":"party [Aggregate: PartyAggregate]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 1 domains (party [Aggregate: PartyAggregate])","State":{"DomainCount":1,"DomainDetails":"party [Aggregate: PartyAggregate]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+{"EventId":45,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.EphemeralDataProtectionProvider","Message":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown.","State":{"{OriginalFormat}":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown."}}
+{"EventId":45,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.EphemeralDataProtectionProvider","Message":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown.","State":{"{OriginalFormat}":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown."}}
+{"EventId":0,"LogLevel":"Warning","Category":"Hexalith.Parties","Message":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","State":{"ComplianceWarning":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","{OriginalFormat}":"{ComplianceWarning}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 1 domains (party [Aggregate: PartyAggregate])","State":{"DomainCount":1,"DomainDetails":"party [Aggregate: PartyAggregate]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+{"EventId":45,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.EphemeralDataProtectionProvider","Message":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown.","State":{"{OriginalFormat}":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown."}}
+{"EventId":1,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting starting","State":{"{OriginalFormat}":"Hosting starting"}}
+{"EventId":1,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting starting","State":{"{OriginalFormat}":"Hosting starting"}}
+{"EventId":1,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting starting","State":{"{OriginalFormat}":"Hosting starting"}}

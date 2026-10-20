@@ -1,0 +1,56 @@
+diff --git a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+index b50f492e..8e1b2731 100644
+--- a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
++++ b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+@@ -821,6 +821,42 @@ public sealed class PlatformApiPrerequisitesTests
+         }
+     }
+ 
++    [Theory]
++    [InlineData("Hexalith.McpCli")]
++    [InlineData("references/Hexalith.McpCli")]
++    public void McpCliSiblingLayoutsSelectAbstractionsProjectWithoutNestedCheckout(string relativeMcpCliRoot)
++    {
++        string root = RepositoryRoot.Locate();
++        string temporaryRoot = Path.Combine(Path.GetTempPath(), $"parties-mcpcli-layout-{Guid.NewGuid():N}");
++        string partiesRoot = Path.Combine(temporaryRoot, "Hexalith.Parties");
++        string contractsRelativePath = "src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj";
++        string contractsProject = Path.Combine(partiesRoot, contractsRelativePath);
++        string abstractionsProject = Path.Combine(temporaryRoot, relativeMcpCliRoot,
++            "src/Hexalith.McpCli.Abstractions/Hexalith.McpCli.Abstractions.csproj");
++        try
++        {
++            Directory.CreateDirectory(Path.GetDirectoryName(contractsProject)!);
++            Directory.CreateDirectory(Path.GetDirectoryName(abstractionsProject)!);
++            File.Copy(Path.Combine(root, "Directory.Build.props"), Path.Combine(partiesRoot, "Directory.Build.props"));
++            File.Copy(Path.Combine(root, contractsRelativePath), contractsProject);
++            File.WriteAllText(abstractionsProject, "<Project />");
++            Directory.Exists(Path.Combine(partiesRoot, "references/Hexalith.McpCli")).ShouldBeFalse();
++
++            EvaluatedProjectGraph graph = EvaluateProjectGraph(partiesRoot, contractsProject, useSource: true);
++
++            graph.Properties["HexalithMcpCliFromSource"].ShouldBe("true");
++            graph.ProjectReferences.ShouldContain(Path.GetFullPath(abstractionsProject).Replace('\\', '/'));
++            graph.PackageReferences.ShouldNotContain("Hexalith.McpCli.Abstractions");
++        }
++        finally
++        {
++            if (Directory.Exists(temporaryRoot))
++            {
++                Directory.Delete(temporaryRoot, recursive: true);
++            }
++        }
++    }
++
+     [Theory]
+     [InlineData("", PayloadProtectionEventStoreSha, "missing")]
+     [InlineData("0000000000000000000000000000000000000000", PayloadProtectionEventStoreSha, "mismatched")]
+@@ -1144,7 +1180,7 @@ public sealed class PlatformApiPrerequisitesTests
+             "msbuild",
+             relativeProject,
+             "-nologo",
+-            "-getProperty:HexalithEventStoreVersion,HexalithCommonsVersion,HexalithMemoriesVersion,UseHexalithProjectReferences,HexalithEventStoreFromSource,HexalithCommonsHttpFromSource,HexalithMemoriesFromSource",
++            "-getProperty:HexalithEventStoreVersion,HexalithCommonsVersion,HexalithMemoriesVersion,UseHexalithProjectReferences,HexalithEventStoreFromSource,HexalithCommonsHttpFromSource,HexalithMemoriesFromSource,HexalithMcpCliRoot,HexalithMcpCliFromSource",
+             "-getItem:PackageReference,ProjectReference",
+             $"-p:UseHexalithProjectReferences={useSource.ToString().ToLowerInvariant()}",
+             "-p:NuGetAudit=false",

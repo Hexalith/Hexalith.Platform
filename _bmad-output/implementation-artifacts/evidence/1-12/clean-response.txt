@@ -1,0 +1,30 @@
+Run dfb47581c5a8ef6f62b9c0283e574319
+Parties HEAD 7ec755a664ff1910d377cc144e0b6a482b188472
+Working tree: clean
+Launcher 2704135; service child 2710430
+GET http://127.0.0.1:25668/ready
+200
+X-Hexalith-Parties-Mvp-Compliance-Warning: Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.
+{
+  "status": "Healthy",
+  "results": {
+    "dapr-sidecar": {
+      "status": "Healthy",
+      "description": "Dapr sidecar is responsive.",
+      "duration": "00:00:00.0006312",
+      "data": {}
+    },
+    "dapr-statestore": {
+      "status": "Healthy",
+      "description": "Dapr state store \u0027statestore\u0027 is accessible.",
+      "duration": "00:00:00.0016639",
+      "data": {}
+    },
+    "tenants-integration": {
+      "status": "Healthy",
+      "description": "Tenants service \u0027tenants\u0027 is ready.",
+      "duration": "00:00:00.0056459",
+      "data": {}
+    }
+  }
+}

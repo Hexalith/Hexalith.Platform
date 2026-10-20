@@ -1,0 +1,51 @@
+{
+  "src/Hexalith.Platform.Composition/Declarations/eventstore.json": {
+    "baseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+    "unchangedIgnoringLineEndings": true
+  },
+  "tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs": {
+    "baseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+    "unchangedIgnoringLineEndings": true
+  },
+  "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": {
+    "baseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+    "unchangedIgnoringLineEndings": true
+  },
+  "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": {
+    "baseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+    "unchangedIgnoringLineEndings": true
+  },
+  "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs": {
+    "baseline": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "unchangedIgnoringLineEndings": true
+  },
+  "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs": {
+    "baseline": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "unchangedIgnoringLineEndings": true
+  },
+  "assessment": {
+    "snapshotFailures": "Existing EventStore snapshot provenance is 3.120.0 but the accepted catalog expects 3.126.0; no Story 1.12 edit changes this snapshot or release lookup.",
+    "fixtureFailures": "Copied owner manifests have executable test-entry files absent from isolated fixture roots; Story 1.12 changes only the expected Tenants receiver grant in PlatformDaprBindingsTests.",
+    "seedFailure": "Four gateway subscription cases pass when run alone; one failed in the parallel broad run with a content-root directory error.",
+    "broadRun": {
+      "total": 210,
+      "failed": 11,
+      "skipped": 7
+    },
+    "focusedAdoption": {
+      "total": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focusedReceiverGrants": {
+      "total": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focusedGatewaySeeds": {
+      "total": 4,
+      "failed": 0,
+      "skipped": 0
+    }
+  }
+}

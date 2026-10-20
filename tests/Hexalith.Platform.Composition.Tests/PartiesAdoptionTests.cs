@@ -81,7 +81,21 @@ public sealed class PartiesAdoptionTests
         ProjectResource parties = servers.Single(server => server.Name == "parties");
         DaprSidecarOptions sidecar = parties.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
         string[] subscriptions = sidecar.ResourcesPaths!.SelectMany(directory => Directory.GetFiles(directory, "subscription.*")).Select(File.ReadAllText).ToArray();
-        subscriptions.ShouldContain(content => content.Contains("system.tenants.events", StringComparison.Ordinal) && content.Contains("/tenants/events", StringComparison.Ordinal) && content.Contains("parties", StringComparison.Ordinal));
+        JsonElement[] partySubscriptions = subscriptions.Select(content =>
+        {
+            using JsonDocument document = JsonDocument.Parse(content);
+            return document.RootElement.Clone();
+        }).Where(subscription => subscription.GetProperty("scopes").EnumerateArray().Any(scope => scope.GetString() == "parties")).ToArray();
+        JsonElement tenantSubscription = partySubscriptions.ShouldHaveSingleItem();
+        tenantSubscription.GetProperty("apiVersion").GetString().ShouldBe("dapr.io/v2alpha1");
+        tenantSubscription.GetProperty("kind").GetString().ShouldBe("Subscription");
+        tenantSubscription.GetProperty("scopes").EnumerateArray().Select(scope => scope.GetString()).ShouldBe(["parties"]);
+        JsonElement specification = tenantSubscription.GetProperty("spec");
+        specification.GetProperty("pubsubname").GetString().ShouldBe("pubsub");
+        specification.GetProperty("topic").GetString().ShouldBe("system.tenants.events");
+        specification.GetProperty("routes").EnumerateObject().Select(route => (route.Name, route.Value.GetString()))
+            .ShouldBe([("default", "/tenants/events")]);
+        specification.TryGetProperty("deadLetterTopic", out _).ShouldBeFalse();
         PlatformServerBinding tenants = servers.Single(server => server.Name == "tenants").Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
         JsonElement[] rules = tenants.Module.Declaration.GetProperty("surfaces").GetProperty("interfaces").EnumerateArray().Where(surface => surface.TryGetProperty("invocationRules", out _)).SelectMany(surface => surface.GetProperty("invocationRules").EnumerateArray()).Where(rule => rule.GetProperty("caller").GetString() == "parties").ToArray();
         rules.Length.ShouldBe(1);

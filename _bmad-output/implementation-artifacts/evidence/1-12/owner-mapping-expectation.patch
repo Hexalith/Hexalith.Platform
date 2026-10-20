@@ -1,0 +1,26 @@
+diff --git a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+index 8e1b2731..7a195107 100644
+--- a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
++++ b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+@@ -824,7 +824,7 @@ public sealed class PlatformApiPrerequisitesTests
+     [Theory]
+     [InlineData("Hexalith.McpCli")]
+     [InlineData("references/Hexalith.McpCli")]
+-    public void McpCliSiblingLayoutsSelectAbstractionsProjectWithoutNestedCheckout(string relativeMcpCliRoot)
++    public void McpCliSiblingLayoutsDoNotSelectSourceWithoutToolMapping(string relativeMcpCliRoot)
+     {
+         string root = RepositoryRoot.Locate();
+         string temporaryRoot = Path.Combine(Path.GetTempPath(), $"parties-mcpcli-layout-{Guid.NewGuid():N}");
+@@ -844,9 +844,9 @@ public sealed class PlatformApiPrerequisitesTests
+ 
+             EvaluatedProjectGraph graph = EvaluateProjectGraph(partiesRoot, contractsProject, useSource: true);
+ 
+-            graph.Properties["HexalithMcpCliFromSource"].ShouldBe("true");
+-            graph.ProjectReferences.ShouldContain(Path.GetFullPath(abstractionsProject).Replace('\\', '/'));
+-            graph.PackageReferences.ShouldNotContain("Hexalith.McpCli.Abstractions");
++            graph.Properties["HexalithMcpCliFromSource"].ShouldNotBe("true");
++            graph.ProjectReferences.ShouldNotContain(Path.GetFullPath(abstractionsProject).Replace('\\', '/'));
++            graph.PackageReferences.ShouldContain("Hexalith.McpCli.Abstractions");
+         }
+         finally
+         {

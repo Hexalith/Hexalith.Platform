@@ -1,0 +1,39 @@
+diff --git a/README.md b/README.md
+index 8b3f0d20..4aa17cc3 100644
+--- a/README.md
++++ b/README.md
+@@ -34,7 +34,7 @@ source projects in Debug, and waits for exactly `parties`, `eventstore`, `tenant
+ `tenants-api`, `memories`, `memories-clock`, and `memories-access-telemetry`.
+ The tool reports its run ID and source mapping; attach the debugger to the Parties
+ service child process. Stop that exact environment with
+-`dotnet tool run hexalith-module -- down --run-id <run-id>`.
++`dotnet tool run hexalith-module -- down --manifest module/hexalith.module-manifest.v2.json --run-id <run-id>`.
+ Initialize only this checkout's direct references; leave their nested references
+ uninitialized. Ordinary package CI keeps package references and Release builds.
+ 
+diff --git a/docs/development-guide.md b/docs/development-guide.md
+index 86a408a4..15837fe1 100644
+--- a/docs/development-guide.md
++++ b/docs/development-guide.md
+@@ -260,7 +260,7 @@ direct references, including Platform, Memories and McpCli. The tool selects the
+ seven-server dependency closure and emits a run ID, mapping and diagnostics.
+ Break in `MvpComplianceWarningMiddleware.InvokeAsync` on `/ready`; a disposable
+ edit to `MvpComplianceWarning.Message` must change the existing warning header.
+-Restore the edit, stop the exact run (`down --run-id <run-id>`), and rerun clean.
++Restore the edit, stop the exact run (`down --manifest module/hexalith.module-manifest.v2.json --run-id <run-id>`), and rerun clean.
+ Record full revisions, environment, active source/PDB paths, results and cleanup.
+ Owner review and upstream integration are required before qualification is complete.
+ 
+diff --git a/docs/getting-started.md b/docs/getting-started.md
+index 6545f1d6..e3231089 100644
+--- a/docs/getting-started.md
++++ b/docs/getting-started.md
+@@ -46,7 +46,7 @@ It uses only mapped direct projects and Debug assets. Missing selected source fa
+ with a diagnostic; sibling checkouts and packages are not fallback sources.
+ Do not initialize references inside those direct references.
+ Memories is a required reference service; optional rich Parties search remains disabled.
+-Stop only this run with `dotnet tool run hexalith-module -- down --run-id <run-id>`.
++Stop only this run with `dotnet tool run hexalith-module -- down --manifest module/hexalith.module-manifest.v2.json --run-id <run-id>`.
+ 
+ **Legacy hosting scope:** the retained `Hexalith.Parties.AppHost` command
+ `dotnet aspire run --project src/Hexalith.Parties.AppHost` remains available for

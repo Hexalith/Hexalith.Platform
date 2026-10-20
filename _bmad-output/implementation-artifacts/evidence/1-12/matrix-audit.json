@@ -1,0 +1,57 @@
+{
+  "own-workspace-debug": {
+    "evidence": [
+      "canonical-clean-ready-state.json",
+      "canonical-debugger-attach.txt",
+      "edit-response.txt",
+      "clean-response.txt",
+      "platform-smoke-ready-state.json"
+    ],
+    "result": "passed; exact seven healthy servers, breakpoint and edit; clean rerun and exact cleanup"
+  },
+  "mapping": {
+    "tests": [
+      "PartiesAdoptionTests.MissingOrOverriddenPartiesSourceRefusesBeforeComposition",
+      "PlatformApiPrerequisitesTests.McpCliSiblingLayoutsDoNotSelectSourceWithoutToolMapping"
+    ],
+    "evidence": [
+      "coordinator-adoption-tests.txt",
+      "owner-mapping-expectation-tests.txt",
+      "canonical-source-project-selection.json",
+      "canonical-package-project-selection.json"
+    ],
+    "result": "passed; no skipped covering cases"
+  },
+  "ACL-source": {
+    "tests": [
+      "PlatformDeclarationTests.test_owner_acl_is_the_exact_declaration_authority",
+      "PlatformDeclarationTests.test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed",
+      "PlatformDeclarationTests.test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting"
+    ],
+    "evidence": [
+      "coordinator-declaration-tests.txt",
+      "coordinator-declaration-check.txt"
+    ],
+    "result": "passed; no skipped covering cases"
+  },
+  "components-topics": {
+    "tests": [
+      "SecurityComponentBindingTests",
+      "ConfiguredComponentHealthCheckTests.RegistrationsProbeBoundNamesAndRetainReadinessSemantics",
+      "PartiesAdoptionTests.CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription",
+      "SecurityRegistrationTests.ProductionRegistrationsBindSecurityStoreForErasureAuditAndRotationRoundTrips",
+      "SecurityRegistrationTests.InvalidSecurityStoreFailsAtStartupBeforeDaprOperations",
+      "HealthEndpointIntegrationTests.ConfiguredComponentsAreUsedByProgramReadinessAndHealthAsync"
+    ],
+    "evidence": [
+      "coordinator-security-binding-tests.txt",
+      "coordinator-health-tests.txt",
+      "coordinator-adoption-tests.txt",
+      "coordinator-receiver-tests.txt",
+      "review-owner-integration-tests.txt",
+      "review-security-tests.txt",
+      "review-adoption-tests.txt"
+    ],
+    "result": "passed; default/custom names through production registration and Program, startup rejection, unchanged record keys, exact declarative subscription, no covering skips"
+  }
+}

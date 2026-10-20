@@ -1,0 +1,47 @@
+cwd: /home/administrator/projects/hexalith/platform
+command: ["python3", "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/1-12/tools/run_reference_checks.py"]
+exit: 0
+full-output-sha256: 4408b5d6740a40624e1675471775c7bdb4063c9eafe671ea88b42932c5133589
+
+Using the accepted packaged validator: /home/administrator/.nuget/packages/hexalith.builds.module.cli/4.34.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll
+PASS comment-only deny: effective ACL refusal
+PASS reordered broad allow: effective ACL refusal
+PASS caller namespace drift: effective ACL refusal
+PASS caller trust-domain drift: effective ACL refusal
+PASS extra caller: effective ACL refusal
+PASS widened admin rule: effective ACL refusal
+PASS admin default drift: effective ACL refusal
+PASS admin namespace drift: effective ACL refusal
+PASS duplicate spec: effective ACL refusal
+PASS duplicate access control: effective ACL refusal
+PASS resource kind drift: effective ACL refusal
+PASS resource name drift: effective ACL refusal
+PASS Tenants copy resource kind drift: effective ACL refusal
+PASS Tenants copy resource name drift: effective ACL refusal
+PASS Tenants copy extra caller: effective ACL refusal
+PASS Tenants copy widened bootstrap: effective ACL refusal
+PASS duplicate identity: atomic refusal with source and field
+PASS absent readiness: atomic refusal with source and field
+PASS unapproved exception: atomic refusal with source and field
+PASS fifth exception: atomic refusal with source and field
+PASS unmarked coordination: atomic refusal with source and field
+PASS missing exception name: atomic refusal with source and field
+PASS missing exception transitional: atomic refusal with source and field
+PASS array exception name: atomic refusal with source and field
+PASS object exception name: atomic refusal with source and field
+PASS missing identity: atomic refusal with source and field
+PASS missing runtime: atomic refusal with source and field
+PASS null provider exception: atomic refusal with source and field
+PASS scalar provider exception: atomic refusal with source and field
+PASS renamed owner: atomic refusal with source and field
+PASS invented domain dependency: atomic refusal with source and field
+PASS extra secrets in 0: atomic policy refusal
+PASS extra egress in 0: atomic policy refusal
+PASS extra secrets in 1: atomic policy refusal
+PASS extra egress in 1: atomic policy refusal
+PASS extra secrets in 2: atomic policy refusal
+PASS extra egress in 2: atomic policy refusal
+PASS malformed json: atomic refusal with public source and field
+PASS non-object root: atomic refusal with public source and field
+PASS invalid utf-8: atomic refusal with public source and field
+PASS joint declaration set, readiness, routes, inventories and empty tasks

@@ -943,3 +943,16 @@
   summary: Add an automatic check that the `.config/dotnet-tools.json` pin is within `hexalith-platform.json`'s `toolVersionRange` and that the committed `references/Hexalith.Builds` gitlink equals the commit of tag `v<version>`.
   evidence: Review pass 5 (P5-VG3). No Platform test or CI reads the tool pin; the README's claim that only the pinned version is guaranteed to embed the catalog rests on hand-run evidence (`evidence/1-11/release-current.json`). The pin and gitlink drifted apart once during this story (pass-2 ledger entry: pin 4.33.1, gitlink untagged `cf97810`) with no test failing. Pre-existing Story 1.9 process rule; a Composition test comparing the pin with `git ls-tree HEAD references/Hexalith.Builds` and the tag would fit.
   status: open
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Repair the pre-existing EventStore release snapshot/catalog provenance mismatch in package composition tests.
+  evidence: Story 1.12's normal composition build passes, but eight broad-test failures use unchanged EventStore snapshot 3.120.0 against accepted catalog 3.126.0; `evidence/1-12/coordinator-broad-failure-assessment.json` records the baseline comparison and `coordinator-composition-tests.txt` the failures.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Copy declared executable test entries into the pre-existing isolated owner-manifest fixtures.
+  evidence: Two composition fixture cases fail because newer owner manifests reference test-entry files absent from copied fixture roots; implicated test bodies are unchanged from the 1.12 baseline, recorded in `evidence/1-12/coordinator-broad-failure-assessment.json`.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Isolate the pre-existing gateway seed test content root during parallel composition tests.
+  evidence: The broad run reports one gateway-seed DirectoryNotFound failure; all four unchanged gateway seed cases pass in isolation (`evidence/1-12/coordinator-seed-tests.txt`), so the parallel fixture/content-root interference needs investigation.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Make the historical Parties catalog receipt independent of mutable git-describe tag selection.
+  evidence: The unchanged receipt assertion expects `v4.33.1-49-g5d03f1db`, while the same catalog commit now has tag `v4.34.0`; owner run passes 2004/2005, with the exact failure and unchanged-method diff in `evidence/1-12/historical-receipt-failure.txt` and `receipt-test-diff.patch`.

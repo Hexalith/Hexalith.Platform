@@ -1,0 +1,11 @@
+diff --git a/src/Hexalith.Parties/Compliance/MvpComplianceWarning.cs b/src/Hexalith.Parties/Compliance/MvpComplianceWarning.cs
+index 1caf40c6..d9b667cf 100644
+--- a/src/Hexalith.Parties/Compliance/MvpComplianceWarning.cs
++++ b/src/Hexalith.Parties/Compliance/MvpComplianceWarning.cs
+@@ -7,5 +7,5 @@ public static class MvpComplianceWarning
+     public const string HeaderName = "X-Hexalith-Parties-Mvp-Compliance-Warning";
+ 
+     public const string Message =
+-        "Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.";
++        "Hexalith.Parties MVP [platform-1-12-edit] is not for regulated EU personal data until v1.1 GDPR features are active.";
+ }

@@ -1,0 +1,83 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Parties.Ci.Tests
+  Discovered:  Hexalith.Parties.Ci.Tests
+  Starting:    Hexalith.Parties.Ci.Tests
+    Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.UiGeneratedAndPublishedRuntimeConfigurations_RequireFixedSharedFrameworks [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties.UI/obj/project.assets.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Int32 bufferSize)
+           at System.IO.File.ReadAllText(String path, Encoding encoding)
+        tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs(39,0): at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.UiGeneratedAndPublishedRuntimeConfigurations_RequireFixedSharedFrameworks()
+        --- End of stack trace from previous location ---
+    Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.Contracts.Tests") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(assetsPath)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          CI must restore the configured solution before executing its verification lane.
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs(20,0): at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.Client.Tests") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(assetsPath)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          CI must restore the configured solution before executing its verification lane.
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs(20,0): at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project)
+           at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.AdminPortal.Tests") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(assetsPath)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          CI must restore the configured solution before executing its verification lane.
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs(20,0): at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project)
+           at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.ConsumerPortal.Tests") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(assetsPath)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          CI must restore the configured solution before executing its verification lane.
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs(20,0): at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project)
+           at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.UI.Tests") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(assetsPath)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          CI must restore the configured solution before executing its verification lane.
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs(20,0): at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project)
+           at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Parties.Ci.Tests (ID = '0da36c09ee2b7874686a38efe359ab90e62c6a881288721da7c982c265f3b033')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Ci.Tests  Total: 148, Errors: 0, Failed: 6, Skipped: 0, Not Run: 0, Time: 11.301s

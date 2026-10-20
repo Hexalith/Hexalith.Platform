@@ -1,0 +1,15 @@
+{
+  "base": "b38fcdb7200f0ed4a46627b460caf84d0fb30499",
+  "docs_and_mapping_test": "e873ac00bf19059638e3d91cb4ae4aaa0ba9c819",
+  "integrated": "10de88c7ecd441b6c616096d74629aa46293819c",
+  "proof_final": "fedbb9ecf5388bd08543be5350f72edb15794646",
+  "runtimeIdenticalToTestedAdoptionBase": true,
+  "gitlinks": [
+    "160000 commit 17179e59843ee8cfb35892a74a2c18d3136fc9cf\treferences/Hexalith.Platform",
+    "160000 commit 9a94131a26d0c5d80d5540706e267ee123d54b68\treferences/Hexalith.Tenants"
+  ],
+  "auditFollowup": "ae00820347b87483cc90538012c27464375ad9a1",
+  "auditChanges": "Restore existing CLR constructor signatures with unchanged defaults; exercise configured DI selection; correct onboarding resource names and Dapr prerequisite.",
+  "reviewCandidate": "895e04c4a5cc46faab0ac2d780aeff6de4e9f777",
+  "reviewFollowup": "Explicit optimized-Python ACL checks; joint declaration CI gate; real registration and host tests. Runtime host, manifest and configuration unchanged from audit candidate."
+}

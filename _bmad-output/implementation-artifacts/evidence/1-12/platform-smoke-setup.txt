@@ -1,0 +1,131 @@
+$ git clone --shared --no-recurse-submodules /home/administrator/projects/hexalith/platform /tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform'...
+done.
+
+$ git checkout --detach 17179e59843ee8cfb35892a74a2c18d3136fc9cf
+HEAD is now at 17179e5 fix: stories
+
+$ git config -f .gitmodules --get-regexp '^submodule\..*\.path$'
+submodule.references/Hexalith.AI.Tools.path references/Hexalith.AI.Tools
+submodule.references/Hexalith.Agents.path references/Hexalith.Agents
+submodule.references/Hexalith.Builds.path references/Hexalith.Builds
+submodule.references/Hexalith.ChatBot.path references/Hexalith.ChatBot
+submodule.references/Hexalith.Commons.path references/Hexalith.Commons
+submodule.references/Hexalith.Conversations.path references/Hexalith.Conversations
+submodule.references/Hexalith.EventStore.path references/Hexalith.EventStore
+submodule.references/Hexalith.Folders.path references/Hexalith.Folders
+submodule.references/Hexalith.FrontComposer.path references/Hexalith.FrontComposer
+submodule.references/Hexalith.McpCli.path references/Hexalith.McpCli
+submodule.references/Hexalith.Memories.path references/Hexalith.Memories
+submodule.references/Hexalith.Parties.path references/Hexalith.Parties
+submodule.references/Hexalith.PolymorphicSerializations.path references/Hexalith.PolymorphicSerializations
+submodule.references/Hexalith.Projects.path references/Hexalith.Projects
+submodule.references/Hexalith.Tenants.path references/Hexalith.Tenants
+submodule.references/Hexalith.Timesheets.path references/Hexalith.Timesheets
+submodule.references/Hexalith.Works.path references/Hexalith.Works
+
+$ git config submodule.references/Hexalith.AI.Tools.url /home/administrator/projects/hexalith/platform/references/Hexalith.AI.Tools
+
+$ git config submodule.references/Hexalith.Agents.url /home/administrator/projects/hexalith/platform/references/Hexalith.Agents
+
+$ git config submodule.references/Hexalith.Builds.url /home/administrator/projects/hexalith/platform/references/Hexalith.Builds
+
+$ git config submodule.references/Hexalith.ChatBot.url /home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot
+
+$ git config submodule.references/Hexalith.Commons.url /home/administrator/projects/hexalith/platform/references/Hexalith.Commons
+
+$ git config submodule.references/Hexalith.Conversations.url /home/administrator/projects/hexalith/platform/references/Hexalith.Conversations
+
+$ git config submodule.references/Hexalith.EventStore.url /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore
+
+$ git config submodule.references/Hexalith.Folders.url /home/administrator/projects/hexalith/platform/references/Hexalith.Folders
+
+$ git config submodule.references/Hexalith.FrontComposer.url /home/administrator/projects/hexalith/platform/references/Hexalith.FrontComposer
+
+$ git config submodule.references/Hexalith.McpCli.url /home/administrator/projects/hexalith/platform/references/Hexalith.McpCli
+
+$ git config submodule.references/Hexalith.Memories.url /home/administrator/projects/hexalith/platform/references/Hexalith.Memories
+
+$ git config submodule.references/Hexalith.Parties.url /tmp/hexalith-story-1-12/Hexalith.Parties
+
+$ git config submodule.references/Hexalith.PolymorphicSerializations.url /home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations
+
+$ git config submodule.references/Hexalith.Projects.url /home/administrator/projects/hexalith/platform/references/Hexalith.Projects
+
+$ git config submodule.references/Hexalith.Tenants.url /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants
+
+$ git config submodule.references/Hexalith.Timesheets.url /home/administrator/projects/hexalith/platform/references/Hexalith.Timesheets
+
+$ git config submodule.references/Hexalith.Works.url /home/administrator/projects/hexalith/platform/references/Hexalith.Works
+
+$ git -c protocol.file.allow=always submodule update --init
+Submodule path 'references/Hexalith.AI.Tools': checked out '3f194e17174994d308ec84af9ee2b5aa68674d0d'
+Submodule path 'references/Hexalith.Agents': checked out 'd0d3fa3ff943cebb731fbb40c06d326d99141e42'
+Submodule path 'references/Hexalith.Builds': checked out '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
+Submodule path 'references/Hexalith.ChatBot': checked out '40ef31750c9acb25d217729c8772399e297f3691'
+Submodule path 'references/Hexalith.Commons': checked out '5c23c818f639c5bb3175f964c5549440bd5b876d'
+Submodule path 'references/Hexalith.Conversations': checked out '984daa891ad6afafa378bff305748bf3e62bc04c'
+Submodule path 'references/Hexalith.EventStore': checked out 'f6b545cd02632f662136d0b4b8e6952baa7afec3'
+Submodule path 'references/Hexalith.Folders': checked out 'ec3523ada1b32362bf9f31c555b95c312b8df4b1'
+Submodule path 'references/Hexalith.FrontComposer': checked out 'a706a8ae261268f839feb743e930e5311bb2a95b'
+Submodule path 'references/Hexalith.McpCli': checked out 'f1e89629a9a9d8332d20a69f08e574a026ab5332'
+Submodule path 'references/Hexalith.Memories': checked out 'c082f8151328b1ac91939cda8733ab78ae68e1c4'
+Submodule path 'references/Hexalith.Parties': checked out '3608e121364198e2ea0643769e680df29bc8efe0'
+Submodule path 'references/Hexalith.PolymorphicSerializations': checked out '221ac4592ba908ae7661ba1fa9e2d1fcc23baee0'
+Submodule path 'references/Hexalith.Projects': checked out '02ce53a039d2fd3c87b7c7232662eaa89ec2ddd7'
+Submodule path 'references/Hexalith.Tenants': checked out 'fc2d4821e002ea56eaed79b2acae4cc0bfc8ef10'
+Submodule path 'references/Hexalith.Timesheets': checked out '525859841e3dc329f65970b7067d3ef3bd1a91fa'
+Submodule path 'references/Hexalith.Works': checked out '26bfec542a7718239a7c9b1c02e561da119863c0'
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.AI.Tools'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Agents'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Builds'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.ChatBot'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Commons'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Conversations'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.EventStore'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Folders'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.FrontComposer'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.McpCli'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Memories'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Parties'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.PolymorphicSerializations'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Projects'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Tenants'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Timesheets'...
+done.
+Cloning into '/tmp/hexalith-story-1-12/platform-smoke/Hexalith.Platform/references/Hexalith.Works'...
+done.
+
+$ git checkout --detach fedbb9ecf5388bd08543be5350f72edb15794646
+Previous HEAD position was 3608e121 fix(bmad): reject duplicate array identifiers
+HEAD is now at fedbb9ec test: require tool mapping for sibling source
+
+$ git checkout --detach 9a94131a26d0c5d80d5540706e267ee123d54b68
+Previous HEAD position was fc2d4821 docs(tooling): bind Story 5.2 gitlink audit to its historical closure
+HEAD is now at 9a94131a build: merge origin/main into main via /pushall
+
+$ git add references/Hexalith.Parties references/Hexalith.Tenants
+
+$ git diff --cached --stat
+ references/Hexalith.Parties | 2 +-
+ references/Hexalith.Tenants | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+[detached HEAD 89a2003] build(platform): pin Parties adoption for local proof
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+

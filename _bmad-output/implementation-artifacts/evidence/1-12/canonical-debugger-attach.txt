@@ -1,0 +1,51 @@
+Curated debugger transcript; complete local log SHA256 280b0fc8b2972c6004e88a4200508dfa5a25157b6ace647d2501e7772cf23869.
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Private.CoreLib.dll
+no symbols loaded, base address: 0x755ab2670000, size: 15895552(0xf28c00)
+
+library loaded: /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/bin/Debug/net10.0/Hexalith.Parties.dll
+symbols loaded, base address: 0x751a0671c000, size: 439296(0x6b400)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Runtime.dll
+library loaded: /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/bin/Debug/net10.0/Google.Protobuf.dll
+no symbols loaded, base address: 0x7519c402d000, size: 501400(0x7a698)
+You are debugging a Release build of FluentValidation.dll. Using Just My Code with Release builds using compiler optimizations results in a degraded debugging experience (e.g. breakpoints will not be hit).
+library loaded: /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/bin/Debug/net10.0/FluentValidation.dll
+symbols loaded, base address: 0x7519be776000, size: 549888(0x86400)
+
+library loaded: /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/bin/Debug/net10.0/Dapr.Actors.dll
+no symbols loaded, base address: 0x7519be418000, size: 214016(0x34400)
+You are debugging a Release build of FluentValidation.DependencyInjectionExtensions.dll. Using Just My Code with Release builds using compiler optimizations results in a degraded debugging experience (e.g. breakpoints will not be hit).
+library loaded: /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/bin/Debug/net10.0/FluentValidation.DependencyInjectionExtensions.dll
+symbols loaded, base address: 0x7519c4001000, size: 15360(0x3c00)
+
+stopped, reason: interrupted, thread id: 2576321, stopped threads: all, frame={System.Private.CoreLib.dll` System.Threading.Monitor.Wait()}
+
+>>> break /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs:9
+ Breakpoint 1 at /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs:9
+
+>>> continue
+^running
+
+thread created, id: 2613301
+Microsoft.AspNetCore.Hosting.Diagnostics: Information: Request starting HTTP/1.1 GET http://127.0.0.1:31821/ready - - -
+
+stopped, reason: breakpoint 1 hit, thread id: 2594160, stopped threads: all, times= 1, frame={Hexalith.Parties.Middleware.MvpComplianceWarningMiddleware.<InvokeAsync>d__3.MoveNext() at /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs:9}
+
+>>> backtrace
+#0: 0x0000755ab96c405f Hexalith.Parties.dll` Hexalith.Parties.Middleware.MvpComplianceWarningMiddleware.<InvokeAsync>d__3.MoveNext() at /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs:9
+#1: 0x0000755ab96c3b27 Hexalith.Parties.dll` Hexalith.Parties.Middleware.MvpComplianceWarningMiddleware.InvokeAsync()
+#2: 0x0000755ab96c05a5 Hexalith.Commons.Http.dll` Hexalith.Commons.Http.HttpCorrelation.<InvokeAsync>d__0.MoveNext() at /tmp/hexalith-story-1-12/Hexalith.Parties/references/Hexalith.Commons/src/libraries/Hexalith.Commons.Http/HttpCorrelation.cs:47
+#3: 0x0000755ab96bff56 Hexalith.Commons.Http.dll` Hexalith.Commons.Http.HttpCorrelation.InvokeAsync()
+#4: 0x0000755ab96bf804 Hexalith.Parties.dll` Hexalith.Parties.Middleware.CorrelationIdMiddleware.<InvokeAsync>d__5.MoveNext() at /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties/Middleware/CorrelationIdMiddleware.cs:14
+>>> delete
+
+>>> detach
+
+READY RESPONSE: [(200, 'Hexalith.Parties MVP [platform-1-12-edit] is not for regulated EU personal data until v1.1 GDPR features are active.', '{\n  "status": "Healthy",\n  "results": {\n    "dapr-sidecar": {\n      "status": "Healthy",\n      "description": "Dapr sidecar is responsive.",\n      "duration": "00:00:00.0007170",\n      "data": {}\n    },\n    "dapr-statestore": {\n      "status": "Healthy",\n      "description": "Dapr state store \\u0027statestore\\u0027 is accessible.",\n      "duration": "00:00:00.0018780",\n      "data": {}\n    },\n    "tenants-integration": {\n      "status": "Healthy",\n      "description": "Tenants service \\u0027tenants\\u0027 is ready.",\n      "duration": "00:00:00.0087581",\n      "data": {}\n    }\n  }\n}')]
+BREAKPOINT PROOF PASSED
+
+>>> detach
+
+>>> quit
+^exit

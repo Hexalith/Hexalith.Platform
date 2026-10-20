@@ -1,0 +1,46 @@
+{
+  "d9eb8946ff63acfdbce097571bfc7280": {
+    "workspaceRemoved": true,
+    "remainingContainers": []
+  },
+  "8c07fd47fb0f4b2f97d41d45668f2655": {
+    "workspaceRemoved": true,
+    "remainingContainers": []
+  },
+  "dfb47581c5a8ef6f62b9c0283e574319": {
+    "workspaceRemoved": true,
+    "remainingContainers": []
+  },
+  "containers": {
+    "ownedBefore": [
+      "135d7d250cb5",
+      "e4f632b73079",
+      "ab852cde6e23",
+      "e147fcf4b35a",
+      "083f3c9af599",
+      "72a3c1000326"
+    ],
+    "allOwnedRemoved": true,
+    "foreignStillPresent": [
+      "0fd334ed338d",
+      "9a2ac432fa5a",
+      "ac934f92bd15",
+      "f1e0a30a3a93",
+      "8623af8b7bbd",
+      "8d0788f8322f",
+      "cb7c12622c18"
+    ],
+    "foreignDestroyedDuringConcurrentWork": {
+      "9fe4d956e370": 1792499677,
+      "b9cff6229163": 1792499678,
+      "1e935e71e77f": 1792499677,
+      "90526e5ae8e4": 1792499726
+    },
+    "downCompletedUnix": 1792499555.8635604,
+    "note": "Concurrent Works fixtures were removed independently after this exact down completed; see Docker event timestamps. Only explicit down --manifest ... --run-id ... commands were used by this story."
+  },
+  "nestedReferences": "all nested references remain uninitialized",
+  "probeRestored": true,
+  "proofCloneStatus": "",
+  "finalLocalPartiesHead": "fedbb9ecf5388bd08543be5350f72edb15794646"
+}

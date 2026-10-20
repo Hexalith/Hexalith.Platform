@@ -1,0 +1,6 @@
+Working directory: /tmp/hexalith-parties-1-12-20261020
+Command: HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manifest.v2.json
+failed: TopologyOrLifecycle
+HXP020 Topology TopologyOrLifecycle field=platform: parties/domain: project: mapped source project is unavailable.
+Cause: WorkspaceRootResolver uses the active checkout directory name as identity. The disposable checkout was moved to /tmp/hexalith-story-1-12/Hexalith.Parties and rerun.
+No resources were started.

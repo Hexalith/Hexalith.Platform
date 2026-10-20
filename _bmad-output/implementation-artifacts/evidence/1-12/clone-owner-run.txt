@@ -1,0 +1,39 @@
+Curated output; full local log SHA256 7dc44f18e94e28517313948ea2ed1ad52c9868252c9be6334cb38e66508a0a2e.
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Parties.Tests
+  Discovered:  Hexalith.Parties.Tests
+  Starting:    Hexalith.Parties.Tests
+    Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.FinalDependencyReceiptsMatchTheSelectedPackageAndSourceGraph [FAIL]
+      Shouldly.ShouldAssertException : RunGit(root, "-C", path, "describe", "--tags", "--always", "--abbrev=8", "HEAD")
+                          .Trim()
+          should be
+      "v4.33.1-49-g5d03f1db"
+          but was
+      "v4.34.0"
+          difference
+   Hexalith.Parties.Tests  Total: 2005, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 18.529s
+[intervening routine output omitted]
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 1 domains (party [Aggregate: PartyAggregate])","State":{"DomainCount":1,"DomainDetails":"party [Aggregate: PartyAggregate]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+{"EventId":45,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.EphemeralDataProtectionProvider","Message":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown.","State":{"{OriginalFormat}":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown."}}
+{"EventId":1,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting starting","State":{"{OriginalFormat}":"Hosting starting"}}
+{"EventId":62,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager","Message":"User profile is available. Using \u0027/home/administrator/.aspnet/DataProtection-Keys\u0027 as key repository; keys will not be encrypted at rest.","State":{"FullName":"/home/administrator/.aspnet/DataProtection-Keys","{OriginalFormat}":"User profile is available. Using \u0027{FullName}\u0027 as key repository; keys will not be encrypted at rest."}}
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.Parties.CryptoShredding","Message":"Crypto-shredding configuration: IsEnabled=True, CircuitBreakerThreshold=3, BreakDuration=00:01:00","State":{"IsEnabled":true,"Threshold":3,"Duration":"00:01:00","{OriginalFormat}":"Crypto-shredding configuration: IsEnabled={IsEnabled}, CircuitBreakerThreshold={Threshold}, BreakDuration={Duration}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties","State":{"ContentRoot":"/tmp/hexalith-story-1-12/Hexalith.Parties/src/Hexalith.Parties","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":2,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting started","State":{"{OriginalFormat}":"Hosting started"}}
+{"EventId":1,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request starting HTTP/1.1 POST http://localhost/process - application/json;\u002Bcharset=utf-8 702","State":{"Protocol":"HTTP/1.1","Method":"POST","ContentType":"application/json; charset=utf-8","ContentLength":702,"Scheme":"http","Host":"localhost","PathBase":"","Path":"/process","QueryString":"","{OriginalFormat}":"Request starting {Protocol} {Method} {Scheme}://{Host}{PathBase}{Path}{QueryString} - {ContentType} {ContentLength}"}}
+{"EventId":0,"LogLevel":"Debug","Category":"Hexalith.Parties.Authentication.PartiesClaimsTransformation","Message":"Parties claims transformation normalized 0 tenant claim(s).","State":{"TenantClaimCount":0,"{OriginalFormat}":"Parties claims transformation normalized {TenantClaimCount} tenant claim(s)."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Routing.EndpointMiddleware","Message":"Executing endpoint \u0027HTTP: POST /process\u0027","State":{"EndpointName":"HTTP: POST /process","{OriginalFormat}":"Executing endpoint \u0027{EndpointName}\u0027"}}
+{"EventId":1,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Http.Result.OkObjectResult","Message":"Setting HTTP status code 200.","State":{"StatusCode":200,"{OriginalFormat}":"Setting HTTP status code {StatusCode}."}}
+{"EventId":3,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Http.Result.OkObjectResult","Message":"Writing value of type \u0027DomainServiceWireResult\u0027 as Json.","State":{"Type":"DomainServiceWireResult","{OriginalFormat}":"Writing value of type \u0027{Type}\u0027 as Json."}}
+{"EventId":1,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Routing.EndpointMiddleware","Message":"Executed endpoint \u0027HTTP: POST /process\u0027","State":{"EndpointName":"HTTP: POST /process","{OriginalFormat}":"Executed endpoint \u0027{EndpointName}\u0027"}}
+{"EventId":2,"LogLevel":"Information","Category":"Microsoft.AspNetCore.Hosting.Diagnostics","Message":"Request finished HTTP/1.1 POST http://localhost/process - 200 - application/json;\u002Bcharset=utf-8 17.9348ms","State":{"ElapsedMilliseconds":17.9348,"StatusCode":200,"ContentType":"application/json; charset=utf-8","ContentLength":null,"Protocol":"HTTP/1.1","Method":"POST","Scheme":"http","Host":"localhost","PathBase":"","Path":"/process","QueryString":"","{OriginalFormat}":"Request finished {Protocol} {Method} {Scheme}://{Host}{PathBase}{Path}{QueryString} - {StatusCode} {ContentLength} {ContentType} {ElapsedMilliseconds}ms"}}
+{"EventId":3,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopping","State":{"{OriginalFormat}":"Hosting stopping"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+{"EventId":3,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopping","State":{"{OriginalFormat}":"Hosting stopping"}}
+{"EventId":4,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopped","State":{"{OriginalFormat}":"Hosting stopped"}}
+{"EventId":4,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopped","State":{"{OriginalFormat}":"Hosting stopped"}}
+  Finished:    Hexalith.Parties.Tests (ID = '78ee5def4a817c6f58291ebc2a8521c8b85019bbd7841b31505c9d14df51cd8d')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Tests  Total: 2005, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 18.529s
