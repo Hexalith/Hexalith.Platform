@@ -62,7 +62,12 @@
       "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       "originalRootReference": "synthetic-original-root",
       "keyUseLeaseId": "synthetic-lease",
-      "deliveryAttemptId": "synthetic-delivery"
+      "deliveryAttemptId": "synthetic-delivery",
+      "tenantId": "synthetic-tenant",
+      "authorityIncarnation": "synthetic-authority-1",
+      "rootGeneration": "synthetic-root-generation-1",
+      "sourceGeneration": "synthetic-source-generation-1",
+      "destinationGeneration": "synthetic-destination-generation-1"
     },
     "admissionInventory": [
       {
@@ -71,14 +76,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-0",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-0",
+          "parentHolderId": "synthetic-sdk-protobuf",
+          "parentCopyId": "synthetic-admitted-copy-1",
+          "admissionSequence": 8
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -87,14 +102,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-1",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-1",
+          "parentHolderId": "synthetic-grpc-dotnet",
+          "parentCopyId": "synthetic-admitted-copy-2",
+          "admissionSequence": 7
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -103,14 +128,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-2",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-2",
+          "parentHolderId": "synthetic-daprd-grpc-go",
+          "parentCopyId": "synthetic-admitted-copy-3",
+          "admissionSequence": 6
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -119,14 +154,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-3",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-3",
+          "parentHolderId": "synthetic-uds-kernel",
+          "parentCopyId": "synthetic-admitted-copy-6",
+          "admissionSequence": 5
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -135,14 +180,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-4",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-4",
+          "parentHolderId": "synthetic-native-sdk-tls",
+          "parentCopyId": "synthetic-admitted-copy-5",
+          "admissionSequence": 3
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -151,14 +206,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-5",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-5",
+          "parentHolderId": "synthetic-provider-internal",
+          "parentCopyId": "synthetic-admitted-copy-10",
+          "admissionSequence": 2
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -167,14 +232,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-6",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-6",
+          "parentHolderId": "synthetic-component",
+          "parentCopyId": "synthetic-admitted-copy-4",
+          "admissionSequence": 4
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -183,14 +258,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-7",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-7",
+          "parentHolderId": "synthetic-daprd-grpc-go",
+          "parentCopyId": "synthetic-admitted-copy-3",
+          "admissionSequence": 9
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -199,14 +284,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-8",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-8",
+          "parentHolderId": "synthetic-host-memory",
+          "parentCopyId": "synthetic-admitted-copy-7",
+          "admissionSequence": 10
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -215,14 +310,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-9",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-9",
+          "parentHolderId": "synthetic-daprd-grpc-go",
+          "parentCopyId": "synthetic-admitted-copy-3",
+          "admissionSequence": 11
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -231,14 +336,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-10",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-10",
+          "parentHolderId": null,
+          "parentCopyId": null,
+          "admissionSequence": 1
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -247,14 +362,24 @@
         "processIncarnation": "synthetic-process-2",
         "transportIncarnation": "synthetic-transport-2",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-11",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-11",
+          "parentHolderId": "synthetic-delayed-queues",
+          "parentCopyId": "synthetic-admitted-copy-9",
+          "admissionSequence": 12
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       }
     ],
@@ -265,14 +390,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-0",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-0",
+          "parentHolderId": "synthetic-sdk-protobuf",
+          "parentCopyId": "synthetic-admitted-copy-1",
+          "admissionSequence": 8
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -281,14 +416,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-1",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-1",
+          "parentHolderId": "synthetic-grpc-dotnet",
+          "parentCopyId": "synthetic-admitted-copy-2",
+          "admissionSequence": 7
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -297,14 +442,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-2",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-2",
+          "parentHolderId": "synthetic-daprd-grpc-go",
+          "parentCopyId": "synthetic-admitted-copy-3",
+          "admissionSequence": 6
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -313,14 +468,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-3",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-3",
+          "parentHolderId": "synthetic-uds-kernel",
+          "parentCopyId": "synthetic-admitted-copy-6",
+          "admissionSequence": 5
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -329,14 +494,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-4",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-4",
+          "parentHolderId": "synthetic-native-sdk-tls",
+          "parentCopyId": "synthetic-admitted-copy-5",
+          "admissionSequence": 3
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -345,14 +520,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-5",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-5",
+          "parentHolderId": "synthetic-provider-internal",
+          "parentCopyId": "synthetic-admitted-copy-10",
+          "admissionSequence": 2
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -361,14 +546,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-6",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-6",
+          "parentHolderId": "synthetic-component",
+          "parentCopyId": "synthetic-admitted-copy-4",
+          "admissionSequence": 4
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -377,14 +572,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-7",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-7",
+          "parentHolderId": "synthetic-daprd-grpc-go",
+          "parentCopyId": "synthetic-admitted-copy-3",
+          "admissionSequence": 9
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -393,14 +598,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-8",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-8",
+          "parentHolderId": "synthetic-host-memory",
+          "parentCopyId": "synthetic-admitted-copy-7",
+          "admissionSequence": 10
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -409,14 +624,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-9",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-9",
+          "parentHolderId": "synthetic-daprd-grpc-go",
+          "parentCopyId": "synthetic-admitted-copy-3",
+          "admissionSequence": 11
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -425,14 +650,24 @@
         "processIncarnation": "synthetic-process-1",
         "transportIncarnation": "synthetic-transport-1",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-10",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-10",
+          "parentHolderId": null,
+          "parentCopyId": null,
+          "admissionSequence": 1
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       },
       {
@@ -441,14 +676,24 @@
         "processIncarnation": "synthetic-process-2",
         "transportIncarnation": "synthetic-transport-2",
         "hostIncarnation": "synthetic-host-1",
-        "copyLineage": "synthetic-admitted-copy-11",
+        "copyLineage": {
+          "copyId": "synthetic-admitted-copy-11",
+          "parentHolderId": "synthetic-delayed-queues",
+          "parentCopyId": "synthetic-admitted-copy-9",
+          "admissionSequence": 12
+        },
         "originalIdentity": {
           "operationId": "synthetic-original-operation",
           "intentId": "synthetic-original-intent",
           "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "originalRootReference": "synthetic-original-root",
           "keyUseLeaseId": "synthetic-lease",
-          "deliveryAttemptId": "synthetic-delivery"
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
         }
       }
     ],
@@ -456,41 +701,345 @@
     "observedHighWatermark": 12,
     "queueSeals": [
       {
+        "queueId": "synthetic-sdk-retry-1",
         "queueClass": "sdk-retry",
+        "participants": [
+          {
+            "holderId": "synthetic-grpc-dotnet",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        },
         "sealed": true,
         "sealedThroughSequence": 12,
         "observedThroughSequence": 12,
         "newAdmissionRejected": true
       },
       {
+        "queueId": "synthetic-sidecar-queue-1",
         "queueClass": "sidecar",
+        "participants": [
+          {
+            "holderId": "synthetic-daprd-grpc-go",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        },
         "sealed": true,
         "sealedThroughSequence": 12,
         "observedThroughSequence": 12,
         "newAdmissionRejected": true
       },
       {
+        "queueId": "synthetic-sidecar-queue-2",
+        "queueClass": "sidecar",
+        "participants": [
+          {
+            "holderId": "synthetic-daprd-replacement",
+            "processIncarnation": "synthetic-process-2",
+            "transportIncarnation": "synthetic-transport-2",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        },
+        "sealed": true,
+        "sealedThroughSequence": 12,
+        "observedThroughSequence": 12,
+        "newAdmissionRejected": true
+      },
+      {
+        "queueId": "synthetic-component-native-1",
         "queueClass": "component-native",
+        "participants": [
+          {
+            "holderId": "synthetic-component",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          },
+          {
+            "holderId": "synthetic-native-sdk-tls",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        },
         "sealed": true,
         "sealedThroughSequence": 12,
         "observedThroughSequence": 12,
         "newAdmissionRejected": true
       },
       {
+        "queueId": "synthetic-uds-kernel-1",
         "queueClass": "uds-kernel",
+        "participants": [
+          {
+            "holderId": "synthetic-uds-kernel",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        },
         "sealed": true,
         "sealedThroughSequence": 12,
         "observedThroughSequence": 12,
         "newAdmissionRejected": true
       },
       {
+        "queueId": "synthetic-delayed-delivery-1",
         "queueClass": "delayed-delivery",
+        "participants": [
+          {
+            "holderId": "synthetic-delayed-queues",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        },
         "sealed": true,
         "sealedThroughSequence": 12,
         "observedThroughSequence": 12,
         "newAdmissionRejected": true
       }
-    ]
+    ],
+    "queueInventory": [
+      {
+        "queueId": "synthetic-sdk-retry-1",
+        "queueClass": "sdk-retry",
+        "participants": [
+          {
+            "holderId": "synthetic-grpc-dotnet",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        }
+      },
+      {
+        "queueId": "synthetic-sidecar-queue-1",
+        "queueClass": "sidecar",
+        "participants": [
+          {
+            "holderId": "synthetic-daprd-grpc-go",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        }
+      },
+      {
+        "queueId": "synthetic-sidecar-queue-2",
+        "queueClass": "sidecar",
+        "participants": [
+          {
+            "holderId": "synthetic-daprd-replacement",
+            "processIncarnation": "synthetic-process-2",
+            "transportIncarnation": "synthetic-transport-2",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        }
+      },
+      {
+        "queueId": "synthetic-component-native-1",
+        "queueClass": "component-native",
+        "participants": [
+          {
+            "holderId": "synthetic-component",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          },
+          {
+            "holderId": "synthetic-native-sdk-tls",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        }
+      },
+      {
+        "queueId": "synthetic-uds-kernel-1",
+        "queueClass": "uds-kernel",
+        "participants": [
+          {
+            "holderId": "synthetic-uds-kernel",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        }
+      },
+      {
+        "queueId": "synthetic-delayed-delivery-1",
+        "queueClass": "delayed-delivery",
+        "participants": [
+          {
+            "holderId": "synthetic-delayed-queues",
+            "processIncarnation": "synthetic-process-1",
+            "transportIncarnation": "synthetic-transport-1",
+            "hostIncarnation": "synthetic-host-1"
+          }
+        ],
+        "originalIdentity": {
+          "operationId": "synthetic-original-operation",
+          "intentId": "synthetic-original-intent",
+          "requestDigest": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "originalRootReference": "synthetic-original-root",
+          "keyUseLeaseId": "synthetic-lease",
+          "deliveryAttemptId": "synthetic-delivery",
+          "tenantId": "synthetic-tenant",
+          "authorityIncarnation": "synthetic-authority-1",
+          "rootGeneration": "synthetic-root-generation-1",
+          "sourceGeneration": "synthetic-source-generation-1",
+          "destinationGeneration": "synthetic-destination-generation-1"
+        }
+      }
+    ],
+    "originalSyntheticFixtureSha256": "175dbbc0f3a94643d049290f9a7ad9a99f32700da7fabeb7ce578de0c2ea756c"
   },
   "unproved": [
     "No durable installed lease/copy journal, admission controller, queue barrier or independent verifier.",

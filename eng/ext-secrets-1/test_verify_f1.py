@@ -3,8 +3,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import call, patch
 
-from verify_f1 import audit, BEHAVIORAL_COVERAGE, verify_owner_capture_fixture, OWNER_CAPTURE_FIXTURE, OWNER_CAPTURE_PATH, OWNER_CAPTURE_SHA256, CANDIDATE_CAPTURES
+from verify_f1 import audit, BEHAVIORAL_COVERAGE, verify_owner_capture_fixture, OWNER_CAPTURE_FIXTURE, OWNER_CAPTURE_PATH, OWNER_CAPTURE_SHA256, CANDIDATE_CAPTURES, EXPECTED_DEPENDENCIES, run
 
 
 class F1EvidenceAuditTests(unittest.TestCase):
@@ -94,6 +95,34 @@ class F1EvidenceAuditTests(unittest.TestCase):
         for cls, methods in BEHAVIORAL_COVERAGE.items():
             with self.subTest(class_name=cls), self.assertRaisesRegex(ValueError, "behavioral coverage"):
                 self.check(omit=(cls, methods[0]))
+
+    def test_clean_wrong_dependency_revision_is_rejected_before_any_build(self):
+        for wrong_dependency in ("Builds", "EventStore"):
+            with self.subTest(dependency=wrong_dependency), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                builds, eventstore = root / "Builds", root / "EventStore"
+                builds.mkdir(); eventstore.mkdir()
+                # A valid owner fixture cannot make a clean but wrong EventStore revision acceptable.
+                external = eventstore / OWNER_CAPTURE_PATH
+                external.parent.mkdir(parents=True)
+                external.write_bytes(OWNER_CAPTURE_FIXTURE.read_bytes())
+                self.assertEqual(OWNER_CAPTURE_SHA256, verify_owner_capture_fixture(eventstore)["sha256"])
+
+                def clean_revision(dependency_root, *arguments):
+                    if arguments == ("status", "--porcelain"):
+                        return ""
+                    self.assertEqual(("rev-parse", "HEAD"), arguments)
+                    name = Path(dependency_root).name
+                    return "0" * 40 if name == wrong_dependency else EXPECTED_DEPENDENCIES[name]
+
+                with patch("verify_f1.git", side_effect=clean_revision) as source_git, patch("verify_f1.subprocess.run") as build:
+                    with self.assertRaisesRegex(ValueError, wrong_dependency + " source dependency must match the spec revision"):
+                        run(builds, eventstore, root / "artifacts", root / "output")
+                    build.assert_not_called()
+                    source_git.assert_has_calls([call(root / wrong_dependency, "status", "--porcelain"),
+                                                 call(root / wrong_dependency, "rev-parse", "HEAD")])
+                self.assertFalse((root / "artifacts").exists())
+                self.assertFalse((root / "output").exists())
 
 
 if __name__ == "__main__":

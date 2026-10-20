@@ -2,7 +2,7 @@
 title: 'Resolve EXT-SECRETS-1 F1 transport and completion prerequisites'
 type: 'feature'
 created: '2026-10-20'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 3d51fed1f3d99acf36ef690f150136593298bd95
@@ -57,13 +57,34 @@ Acceptance: Given absent semantic component/backend and completion proof, when l
 ## Implementation Notes
 
 - Implemented 17 F1-scoped files; all match the isolated snapshot based on `17179e59843ee8cfb35892a74a2c18d3136fc9cf`. Concurrent unrelated workspace work is preserved and excluded from the F1 review diff.
-- Detached F1 verification: 238 Runtime tests, 101 F1 cases, 29 behavioral methods; zero warnings/errors. Full Python suite: 181 tests passed. Evidence and source archive: `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-transport-completion-20261020/`.
+- Detached F1 verification: 238 Runtime tests, 101 F1 cases, 29 behavioral methods; zero warnings/errors. Full Python suite initially passed 181 tests; final reviewed suite passed 189 tests. Evidence and source archive: `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-transport-completion-20261020/`.
 - Exact SDK captures: retained manifest 24,692,931 API protobuf bytes; 32 MiB transition 44,740,962 API protobuf bytes; one call each. These are local handler witnesses only.
 - Proposed 128 MiB profile and exact unapplied header-units patch, private proof bounds, termination protocol and negative packet audit delivered. No component/backend or independent termination verifier is installed; all release/availability/Live gates remain closed.
 
 ## Spec Change Log
 
+- Review corrections preserved the approved intent and all C# behavior. Pinned all prerequisite declarations, exact patch and immutable synthetic original/parent/queue identities; added omission/substitution and dependency-revision negative controls. No public surface or completion authority was added.
+
 ## Review Triage Log
+
+All 14 findings below are addressed by the four-file review patch. Root independently inspected the complete patch, verified disposable-source application against exact base/result hashes, and reran F1 plus all 189 Python tests using new detached source/artifacts. No findings deferred. Final evidence: `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/platform-f1-transport-reviewed-eqo129lx/delivery-verification.json`. The 17 delivered source files exactly match that verified snapshot.
+
+| Finding | Verdict / route | Evidence and correction required |
+|---|---|---|
+| B1 | medium / patch | Changing proposed retry instructions still passes packet conformance; require the pinned no-resend/original identity rules. |
+| B2 | medium / patch | Removing completeResponseEnforcement still passes; require complete frame/content-type/unknown-field/compression rules. |
+| B3 | medium / patch | Removing backendRequirements still passes; require complete-object capacity, atomic manifest transaction, retention and current-authority prerequisites. |
+| B4 | medium / patch | DecodeCapBytes=1 in SDK summary still passes although limits and verifier disagree; validate all summary bounds. |
+| B5 | medium / patch | Self-declared hash allows replacement patch bytes; pin approved path/hash and retain pinned base/result hashes. |
+| B6 | medium / patch | Removing old sidecar from both inventories passes while replacement satisfies class count; bind admission to an immutable original fixture baseline. |
+| B7 | low / patch | Coordinated arbitrary lineage labels pass; pin original lineage and validate the concrete witness relationships. Actual journal/descendant proof remains unimplemented. |
+| B8 | medium / patch | Generic queue-class seals cannot distinguish old/replacement sidecars; bind concrete seals to exact queue/participant identities and original, with complete coverage. |
+| B9 | medium / patch | Synthetic original omits tenant/authority/generations and accepts a malformed digest; include protocol bindings and validate digest shape. |
+| B10 | low / patch | Omitted verifier/profile/measured-capacity keys are accepted as explicit null; require the absence declarations. |
+| E1 | medium / patch | Independently reproduced replacement of headerPatch.path/hash with unrelated Markdown; same cause/correction as B5. |
+| E2 | medium / patch | Independently reproduced removal of backend, response and retry requirements; same omissions as B1–B3. |
+| E3 | medium / patch | Independently reproduced coordinated loss of old sidecar; same missing baseline binding as B6. |
+| V1 | medium / patch | Wrong dependency revision rejection is untested at run(); add clean wrong-revision cases for both dependencies, proving rejection before build. |
 
 ## Design Notes
 
