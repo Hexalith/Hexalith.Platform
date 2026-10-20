@@ -72,8 +72,18 @@ HEXALITH_DAPR_HOME=/home/administrator/.hexalith/dapr/1.18.2 dotnet tool run hex
 Result: Ready in 287.04 seconds, exactly seven healthy application servers;
 state and workspace removed by exact down. Setup, pinned commitlint, revisions,
 source mapping, direct-reference status, readiness and cleanup are committed.
-Owner approval and upstream integration remain; the parent pin is included in the local review commit.
+Owner approval and upstream integration are complete; see `upstream-integration.json`.
 
 ## Final review reruns
 
 See `review-check-results.json` for exact coordinator commands, working directories and zero exits. The owner normal Release and composition normal Debug builds also pass; review build summaries retain their full-output hashes. No test/source exclusion was used in these final builds.
+
+## Authorized upstream integration
+
+Fetched Parties and Platform with `git fetch --no-recurse-submodules origin`.
+Rebased the four approved Parties commits onto the new upstream projection commit,
+verified the complete patch remained byte-identical, ran the seven checks in
+`integration-check-results.json`, then pushed Parties before Platform. Both remote
+main heads were verified with `git ls-remote`; no forced push or nested initialization
+was used. The user approval, full revisions and ordering are recorded in
+`upstream-integration.json`.

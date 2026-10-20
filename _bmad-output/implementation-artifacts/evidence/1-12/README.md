@@ -1,6 +1,6 @@
 # Story 1.12 local implementation evidence
 
-**Current primary owner review candidate: `895e04c4a5cc46faab0ac2d780aeff6de4e9f777`.**
+**Integrated upstream Parties revision: `35d891d202a87fd4f494f2cadd26c277df44b84a`.**
 This includes the compatibility audit and all accepted review patches. The
 isolated clone revisions and live debugger/edit/rerun records below are older
 historical proof inputs; they are not labeled as the current primary candidate.
@@ -11,8 +11,10 @@ module tool **4.34.0**, accepted catalog `5d03f1db9c38db34ecac7fe6048937478ffb82
 .NET SDK 10.0.402, Aspire CLI 13.6.1 and isolated Dapr home
 `/home/administrator/.hexalith/dapr/1.18.2`.
 
-**Remaining:** module-owner approval and upstream integration.
-The final Parties pin is included in the local Platform review commit. Local owner integration and live Platform-workspace smoke are complete.
+**Integration complete:** the user approved the owner changes and authorized
+pushing Parties before Platform. Both remote `main` heads were verified.
+`upstream-integration.json` records approval, the preserved upstream commit,
+the unchanged approved patch and the integrated Platform pin. Local owner integration and live Platform-workspace smoke are complete.
 The smoke used clean Platform proof revision `89a20036053fb4dfbcc7478b884a8d953898de5c`
 with Parties `fedbb9ecf5388bd08543be5350f72edb15794646`, reached all seven servers
 healthy in 287.04 seconds, and exact-run cleanup removed its state/workspace.
@@ -20,8 +22,9 @@ See `platform-smoke-*.json` and `platform-smoke-debug.txt`/`platform-smoke-down.
 Local owner revision `10de88c7ecd441b6c616096d74629aa46293819c` integrates those pins,
 command fixes and mapping expectations on the externally merged owner branch;
 its runtime/manifests/build files are identical to the tested adoption base.
-No remote push/fetch, remote submodule update or nested initialization was performed
-by this implementation session. Other sessions advanced owner repositories;
+During local implementation/proof, no remote push/fetch, remote submodule update
+or nested initialization was performed. The subsequent authorized integration
+fetched/pushed only Parties and Platform, without recursive submodule operations. Other sessions advanced owner repositories;
 those external commits and working-tree/index changes were preserved.
 
 ## Canonical revisions and local handoff
@@ -168,6 +171,18 @@ explicitly deferred in the shared ledger; neither broad test gate is claimed gre
 The independent live proof uses the older revisions listed above. Subsequent
 runtime changes only restore the original constructor signatures; the review
 follow-up changes tests, rendering, CI and documentation, and leaves the live
-manifest and host configuration unchanged. Owner approval and remote integration
-have not been inferred from approval of the implementation spec. Story status
-therefore remains in review.
+manifest and host configuration unchanged. The later explicit user approval authorized owner acceptance and remote
+integration. Both are now complete and the implementation spec is marked done;
+sprint tracking remains at review as required by the build workflow.
+
+## Approved upstream integration
+
+Parties rebased its four approved commits onto upstream projection improvement
+`32fa72e2cb223d7f8554d3a5439fa6e15212ec26`. The approved diff remained byte-identical. Published Parties
+`35d891d202a87fd4f494f2cadd26c277df44b84a` retains P1 and the reviewed Tenants pin. Platform adoption
+`e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058` pins that upstream Parties commit; its unpublished predecessor
+was amended so published Platform history does not introduce an unavailable
+Parties pin. Post-rebase builds, 15 host/configuration cases, 14 upstream
+projection cases, five renderer cases, three adoption cases and joint declaration
+validation all pass. Exact commands/results are in `integration-check-results.json`.
+The prior live proof is retained at its recorded source revisions.

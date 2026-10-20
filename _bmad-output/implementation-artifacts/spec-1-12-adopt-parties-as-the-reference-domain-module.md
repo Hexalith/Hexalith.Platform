@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 12
 created: '2026-10-20'
-status: 'in-review'
+status: 'done'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -57,7 +57,7 @@ Aliases: `P = references/Hexalith.Parties`, `C = src/Hexalith.Platform.Compositi
 - [x] `C/PlatformServerBindings.cs`, `C/PlatformAppModel.cs`, `C/PlatformLocalProfile.cs`, `C/Declarations/local-profile.json` -- add Parties executable, shared local authentication/app-channel binding, component inputs and `party` routing. `T/module/hexalith.module-manifest.v2.json` -- restore the existing local Parties-to-Tenants `GET /ready` permission without broadening other routes.
 - [x] `P/tests/Hexalith.Parties.Ci.Tests/CommonsHttpRestoreRoutingTests.cs`, `P/tests/Hexalith.Parties.Tests/FitnessTests/AppHostTenantsTopologyTests.cs` -- replace obsolete expectations. New `P/tests/Hexalith.Parties.Security.Tests/SecurityComponentBindingTests.cs`, `P/tests/Hexalith.Parties.Tests/HealthChecks/ConfiguredComponentHealthCheckTests.cs`, `P/scripts/test_platform_declaration.py`, `tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs` -- test matrix, configured writes/probes, ACL drift and seven-server composition.
 - [x] `P/README.md`, `P/docs/getting-started.md`, `P/docs/development-guide.md`, `P/docs/ci.md`, `README.md` -- document pinned-tool adoption and retained legacy-host scope.
-- [ ] `P/references/Hexalith.Platform`, `P/references/Hexalith.Tenants`, `references/Hexalith.Parties`, `references/Hexalith.Tenants` -- integrate reviewed Tenants permission, Platform support P1, Parties adoption Q1 pinning P1, then Platform pinning Q1. Keep Q1 pinned to P1. No Builds release expected.
+- [x] `P/references/Hexalith.Platform`, `P/references/Hexalith.Tenants`, `references/Hexalith.Parties`, `references/Hexalith.Tenants` -- integrate reviewed Tenants permission, Platform support P1, Parties adoption Q1 pinning P1, then Platform pinning Q1. Keep Q1 pinned to P1. No Builds release expected.
 - [x] `_bmad-output/implementation-artifacts/evidence/1-12/` -- record debugger/edit proof, clean rerun, Platform smoke, full revisions, tool/environment, mapping, diagnostics and cleanup. Initialize only the clone's direct references; Platform nested references remain uninitialized.
 
 **Acceptance Criteria:**
@@ -73,6 +73,8 @@ Aliases: `P = references/Hexalith.Parties`, `C = src/Hexalith.Platform.Compositi
 - 2026-10-20 coordinator audit: local Parties integration is `ae00820347b87483cc90538012c27464375ad9a1` with Platform support P1 and Tenants `9a94131a26d0c5d80d5540706e267ee123d54b68`. Independent own-workspace breakpoint/edit/clean proof and live Platform proof `89a20036053fb4dfbcc7478b884a8d953898de5c` passed; all exact runs were removed. The final audit restores existing CLR constructor signatures and corrects onboarding; six configured-DI binding cases pass. Normal composition build passes; the broad 210-case run has 11 unchanged snapshot/fixture/content-root failures and seven opt-in skips, recorded separately. Focused adoption 3, receiver 5, seed 4, onboarding 1 and security 250 cases pass. Matrix coverage is recorded in `evidence/1-12/matrix-audit.json`. Owner review and upstream integration remain an explicit incomplete gate; step 3 permitted no remote VCS operations.
 
 - 2026-10-20 final review: all three review layers completed and every finding is triaged below. Owner candidate `895e04c4a5cc46faab0ac2d780aeff6de4e9f777` includes every accepted patch; coordinator checks pass (250 security, 15 host/configuration, three adoption, five renderer, three cache cases, reference matrix and joint validation). Four pre-existing broad-test problems are appended to the deferred-work ledger. Local owner integration and final parent pin are prepared. Status stays `in-review` because the approved frozen constraint requires module-owner approval and upstream integration for completion; neither has been inferred from the earlier spec approval. The build workflow prohibits automatic push.
+
+- 2026-10-20 upstream completion: the user explicitly approved the reviewed owner changes and authorized pushing Parties, then Platform. The four approved Parties commits were rebased onto upstream `32fa72e2cb223d7f8554d3a5439fa6e15212ec26` with a byte-identical patch, yielding published `35d891d202a87fd4f494f2cadd26c277df44b84a`. Platform adoption `e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058` pins that reachable upstream commit while Parties retains P1 and Tenants. Both remote main heads were verified. Post-rebase builds and all seven integration checks pass, including 15 host/configuration, 14 upstream projection, five renderer and three adoption cases. Approval, revisions, ordering and patch equivalence are recorded in `evidence/1-12/upstream-integration.json`. The integration gate is satisfied; the spec is done, sprint tracking remains review per the build workflow, and the four pre-existing test problems remain deferred.
 
 ## Spec Change Log
 

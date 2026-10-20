@@ -1,0 +1,118 @@
+[
+  {
+    "name": "integration-owner-build",
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "--configuration",
+      "Release",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:HexalithBuildsRoot=/tmp/hexalith-story-1-12/Hexalith.Parties/references/Hexalith.Builds",
+      "-p:NuGetAudit=false",
+      "-p:MinVerVersionOverride=1.0.0"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "afda8e7cf0aa0f61489d64e467aff05625903e125c6feb6cc6ce447acb6a6075"
+  },
+  {
+    "name": "integration-projections-build",
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj",
+      "--configuration",
+      "Release",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:HexalithBuildsRoot=/tmp/hexalith-story-1-12/Hexalith.Parties/references/Hexalith.Builds",
+      "-p:NuGetAudit=false",
+      "-p:MinVerVersionOverride=1.0.0"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "c81ca6687765f54dcb19b811d84ed5dd9b459d95edcdc5917688ec3a4c8d67ab"
+  },
+  {
+    "name": "integration-owner-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll",
+      "-class",
+      "Hexalith.Parties.Tests.Security.SecurityRegistrationTests",
+      "-class",
+      "Hexalith.Parties.Tests.HealthChecks.HealthEndpointIntegrationTests",
+      "-class",
+      "Hexalith.Parties.Tests.HealthChecks.ConfiguredComponentHealthCheckTests"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "660203888cb8c98f2846033fd14e2c45982df62464ca903b0b7419755dc3b975"
+  },
+  {
+    "name": "integration-upstream-projection-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Parties.Projections.Tests/bin/Release/net10.0/Hexalith.Parties.Projections.Tests.dll",
+      "-class",
+      "Hexalith.Parties.Projections.Tests.Handlers.PartyDetailRebuildReadTests"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "ba56a2555f7e8d5c62cc9063301ecdbdf8bc12c9a038e202a265dbbec36feee8"
+  },
+  {
+    "name": "integration-declaration-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "test_platform_declaration.py",
+      "-v"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "29617fe8a49b2eeb0a7d86fb8dfe0405ba09343d4f3991a79fa140ee8194a5fb"
+  },
+  {
+    "name": "integration-joint-validation",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "validate",
+      "--manifest",
+      "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "references/Hexalith.Memories/module/hexalith.module-manifest.v2.json"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "670f8f82620ce8ee37554566e6d02a245a5c0bab0f76359e0d2b35bed45cb199"
+  },
+  {
+    "name": "integration-adoption-tests",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests"
+    ],
+    "exit": 0,
+    "fullOutputSha256": "1c899c82e9918ff556395c5c14e88d9b80e520eecadf561bcfb25fdfe20d3f6f"
+  }
+]
