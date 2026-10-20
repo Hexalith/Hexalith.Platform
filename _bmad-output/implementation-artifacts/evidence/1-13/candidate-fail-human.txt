@@ -1,0 +1,12 @@
+failed: UsageOrManifest
+HXA001 Manifest Manifest source=.config/dotnet-tools.json field=tool-pin: Pin hexalith.builds.module.cli in .config/dotnet-tools.json.
+PASS workspace file=.git: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS declaration file=hexalith.module-manifest.v2.json: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS references file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS gitlinks file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS nested-references file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+FAIL tool-pin file=.config/dotnet-tools.json: Pin hexalith.builds.module.cli in .config/dotnet-tools.json.
+PASS hosting-inventory file=module/hosting-inventory.json: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS dependency-selectors file=.: No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS dapr-subscriptions file=.: No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.

@@ -1,0 +1,1621 @@
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.CreateTestEvidenceMatchesReadinessCanonicalBindingCommand [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/ModuleRunEvidenceSerializationTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunEvidenceSerializationTests.CreateTestEvidenceMatchesReadinessCanonicalBindingCommand()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Builds.ModuleTool.Tests.PublicCompositionCommandTests.ExecutableDownRemovesMatchingRunAndLeavesForeignRunAsync [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXR024"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PublicCompositionCommandTests.cs(171,0): at Hexalith.Builds.ModuleTool.Tests.PublicCompositionCommandTests.ExecutableDownRemovesMatchingRunAndLeavesForeignRunAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/PublicCompositionCommandTests.cs(171,0): at Hexalith.Builds.ModuleTool.Tests.PublicCompositionCommandTests.ExecutableDownRemovesMatchingRunAndLeavesForeignRunAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PublicCompositionCommandTests.ExecutableRunReportsMissingDaprWithoutCreatingStateAsync [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          Root: /tmp/hexalith-g4-unit-7064165a30944c04ad324f0cadf85a38
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PublicCompositionCommandTests.cs(63,0): at Hexalith.Builds.ModuleTool.Tests.PublicCompositionCommandTests.ExecutableRunReportsMissingDaprWithoutCreatingStateAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "unknown-schema.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM001", "HXM016", "HXM016"]
+          should be
+      ["HXM001"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM001", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "duplicate-id.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM003", "HXM016", "HXM016"]
+          should be
+      ["HXM003"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM003", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "absolute-path.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM004", "HXM016", "HXM016"]
+          should be
+      ["HXM004"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM004", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "path-escape.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM004", "HXM016", "HXM016"]
+          should be
+      ["HXM004"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM004", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "missing-descriptor.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM005", "HXM016", "HXM016"]
+          should be
+      ["HXM005"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM005", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "placeholder.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM006", "HXM016", "HXM016"]
+          should be
+      ["HXM006"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM006", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "secret-bearing.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM007", "HXM016", "HXM016"]
+          should be
+      ["HXM007"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM007", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "malformed-dependency.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM008", "HXM016", "HXM016"]
+          should be
+      ["HXM008"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM008", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "invalid-profile.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM009", "HXM016", "HXM016"]
+          should be
+      ["HXM009"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM009", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "unsupported-profile-class.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM014", "HXM016", "HXM016"]
+          should be
+      ["HXM014"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM014", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "missing-required-value.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM015", "HXM016", "HXM016"]
+          should be
+      ["HXM015"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM015", *"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "tampered-platform-pin.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM016", "HXM016"]
+          should be
+      ["HXM016"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM016", *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "superseded-platform-pin.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM016", "HXM016"]
+          should be
+      ["HXM016"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM016", *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(fileName: "superseded-frontcomposer-pin.json") [FAIL]
+      Shouldly.ShouldAssertException : ["HXM016", "HXM016"]
+          should be
+      ["HXM016"]
+          but was not (case sensitive comparison)
+          difference
+      ["HXM016", *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(String fileName)
+           at InvokeStub_PersistedFixtureAssetTests.LoadManifestNegativeControlReturnsStableRule(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadP0TwoModuleManifestReturnsValidContract [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/PersistedFixtureAssetTests.cs(30,0): at Hexalith.Builds.ModuleTool.Tests.PersistedFixtureAssetTests.LoadP0TwoModuleManifestReturnsValidContract()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync [FAIL]
+      System.IO.FileLoadException : Could not load file or assembly 'Hexalith.Builds.Tooling, Version=4.34.0.0, Culture=neutral, PublicKeyToken=null'. The located assembly's manifest definition does not match the assembly reference. (0x80131040)
+      ---- System.IO.FileLoadException : Could not load file or assembly '/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll'. The located assembly's manifest definition does not match the assembly reference. (0x80131040)
+      Stack Trace:
+           at System.Signature..ctor(IRuntimeMethodInfo methodHandle, RuntimeType declaringType)
+           at System.Reflection.RuntimeMethodInfo.<get_Signature>g__LazyCreateSignature|25_0()
+           at System.Reflection.MethodBaseInvoker..ctor(RuntimeMethodInfo method)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        /_/src/hosts/Hexalith.Builds.Module.AppHost/RunTopology.cs(300,0): at Hexalith.Builds.ModuleHosts.AppHost.RunTopology.ComposePlatform(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey)
+        /_/src/hosts/Hexalith.Builds.Module.AppHost/RunTopology.cs(52,0): at Hexalith.Builds.ModuleHosts.AppHost.RunTopology.Compose(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey)
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceAppHostTests.cs(203,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+           at System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(String assemblyPath)
+        /_/src/hosts/Hexalith.Builds.Module.AppHost/RunTopology.cs(292,0): at Hexalith.Builds.ModuleHosts.AppHost.RunTopology.<>c__DisplayClass9_0.<ComposePlatform>b__0(AssemblyLoadContext context, AssemblyName name)
+           at System.Runtime.Loader.AssemblyLoadContext.GetFirstResolvedAssemblyFromResolvingEvent(AssemblyName assemblyName)
+           at System.Runtime.Loader.AssemblyLoadContext.ResolveUsingEvent(AssemblyName assemblyName)
+    Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.McpCliBuildIsBoundedByTheStartupDeadlineAsync [FAIL]
+      Shouldly.ShouldAssertException : null
+          should not be null but was
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/McpCliRunBuildTests.cs(420,0): at Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests.McpCliBuildIsBoundedByTheStartupDeadlineAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+g4: HXR026 resource='selected' appId='selected-app' status='HTTP 503;probe-timeout'.
+g4: HXR026 resource='selected' appId='selected-app' status='connection-unavailable;probe-timeout'.
+    Hexalith.Builds.ModuleTool.Tests.ManifestValidationTests.PlatformPinSchemaAndRuntimeValidationRemainInParity [FAIL]
+      Shouldly.ShouldAssertException : "3.126.0"
+          should be
+      "3.120.0"
+          but was not
+          difference
+      Difference     |                      |             
+                     |                     \|/            
+      Index          | 0    1    2    3    4    5    6    
+      Expected Value | 3    .    1    2    0    .    0    
+      Actual Value   | 3    .    1    2    6    .    0    
+      Expected Code  | 51   46   49   50   48   46   48   
+      Actual Code    | 51   46   49   50   54   46   48   
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/ManifestValidationTests.cs(218,0): at Hexalith.Builds.ModuleTool.Tests.ManifestValidationTests.PlatformPinSchemaAndRuntimeValidationRemainInParity()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DescriptorLoadingUsesRemainingDeadlineAsync [FAIL]
+      Shouldly.ShouldAssertException : "HXM016"
+          should be
+      "HXR021"
+          but was not
+          difference
+      Difference     |            |         |    |   
+                     |           \|/       \|/  \|/  
+      Index          | 0    1    2    3    4    5    
+      Expected Value | H    X    R    0    2    1    
+      Actual Value   | H    X    M    0    1    6    
+      Expected Code  | 72   88   82   48   50   49   
+      Actual Code    | 72   88   77   48   49   54   
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DescriptorLoadingUsesRemainingDeadlineAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupCoordinationTests.cs(310,0): at Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "run", kind: "v1") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      3
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupCoordinationTests.cs(132,0): at Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(String command, String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupCoordinationTests.cs(141,0): at Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(String command, String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "debug", kind: "v1") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      3
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupCoordinationTests.cs(132,0): at Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(String command, String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupCoordinationTests.cs(141,0): at Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(String command, String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+g4: HXR026 resource='selected' appId='selected-app' status='request-timeout;probe-timeout'.
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRunPlanTests.EngineWritesResolvedMappingIntoPlanAndWorkspaceAsync(mode: Source) [FAIL]
+      System.IO.FileNotFoundException : Could not find file '/tmp/hexalith-g4-unit-f665bf62da434a0aac1eb5160e770ff0/fake-apphost/out/captured-plan.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.AsyncStreamReader(String path, Encoding encoding)
+           at System.IO.File.InternalReadAllTextAsync(String path, Encoding encoding, CancellationToken cancellationToken)
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceRunPlanTests.cs(158,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRunPlanTests.EngineWritesResolvedMappingIntoPlanAndWorkspaceAsync(WorkspaceMode mode)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          failed: UsageOrManifest
+      HXM016 Manifest Manifest field=platform.eventStoreVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      HXM016 Manifest Manifest field=platform.frontComposerVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(316,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(318,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(318,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRunPlanTests.EngineWritesResolvedMappingIntoPlanAndWorkspaceAsync(mode: Package) [FAIL]
+      System.IO.FileNotFoundException : Could not find file '/tmp/hexalith-g4-unit-ac2bb702924f44fdb4379f43799ce6db/fake-apphost/out/captured-plan.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.AsyncStreamReader(String path, Encoding encoding)
+           at System.IO.File.InternalReadAllTextAsync(String path, Encoding encoding, CancellationToken cancellationToken)
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceRunPlanTests.cs(158,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRunPlanTests.EngineWritesResolvedMappingIntoPlanAndWorkspaceAsync(WorkspaceMode mode)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(316,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(318,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(318,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnFailureAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(aspireAvailable: True) [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(614,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(Boolean aspireAvailable)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(624,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(Boolean aspireAvailable)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(624,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(Boolean aspireAvailable)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.TimeoutListsEveryUnreadyResourceAndPreservesDiagnosticsAsync [FAIL]
+      Shouldly.ShouldAssertException : "HXM016"
+          should be
+      "HXR021"
+          but was not
+          difference
+      Difference     |            |         |    |   
+                     |           \|/       \|/  \|/  
+      Index          | 0    1    2    3    4    5    
+      Expected Value | H    X    R    0    2    1    
+      Actual Value   | H    X    M    0    1    6    
+      Expected Code  | 72   88   82   48   50   49   
+      Actual Code    | 72   88   77   48   49   54   
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(222,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.TimeoutListsEveryUnreadyResourceAndPreservesDiagnosticsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineStartsBeforePrerequisitesAsync [FAIL]
+      Shouldly.ShouldAssertException : "HXM016"
+          should be
+      "HXR021"
+          but was not
+          difference
+      Difference     |            |         |    |   
+                     |           \|/       \|/  \|/  
+      Index          | 0    1    2    3    4    5    
+      Expected Value | H    X    R    0    2    1    
+      Actual Value   | H    X    M    0    1    6    
+      Expected Code  | 72   88   82   48   50   49   
+      Actual Code    | 72   88   77   48   49   54   
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(463,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineStartsBeforePrerequisitesAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(aspireAvailable: False) [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(614,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(Boolean aspireAvailable)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(624,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(Boolean aspireAvailable)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(624,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceNonexecutableManifestReportsHxr003Async(Boolean aspireAvailable)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: "v1") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      0
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(573,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(597,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicRunPreservesInitializedDirectManifestOnGitlinkMismatchAsync [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(870,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicRunPreservesInitializedDirectManifestOnGitlinkMismatchAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceProfileErrorPrecedesHxr003Async [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXC002"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(758,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceProfileErrorPrecedesHxr003Async()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(761,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceProfileErrorPrecedesHxr003Async()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(761,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceProfileErrorPrecedesHxr003Async()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(command: "run", expectedRule: "HXR015") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(717,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(String command, String expectedRule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(719,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(String command, String expectedRule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(719,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(String command, String expectedRule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(command: "test", expectedRule: "HXC002") [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXC002"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(718,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(String command, String expectedRule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(719,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(String command, String expectedRule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(719,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.RootManifestEarlyFailureDoesNotInitializeReferenceAsync(String command, String expectedRule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          failed: UsageOrManifest
+      HXM016 Manifest Manifest field=platform.eventStoreVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      HXM016 Manifest Manifest field=platform.frontComposerVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(403,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(410,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(410,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(403,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(410,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(410,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCatalogFailureRetainsHxw009BeforeDescriptorsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          failed: UsageOrManifest
+      HXM016 Manifest Manifest field=platform.eventStoreVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      HXM016 Manifest Manifest field=platform.frontComposerVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(354,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(363,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(363,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(354,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(363,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(363,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageRefusalReportsSeveralIdentityConditionsAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(mode: "source") [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXW007"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(147,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(155,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(155,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(mode: "package") [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXW007"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(140,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(155,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(155,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicNoGitRunWritesActiveOnlyPlanAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: "ready-no-pid") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(673,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(684,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: "ready-partial-pid") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(673,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(684,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      0
+          but was not
+      
+      Additional Info:
+          failed: UsageOrManifest
+      HXM016 Manifest Manifest field=platform.eventStoreVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      HXM016 Manifest Manifest field=platform.frontComposerVersion: The manifest platform pins are not supported by this runner. (Use the supported package and runtime pins for this runner release.)
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(281,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(282,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(282,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      0
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(281,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(282,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(282,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicSourceWarningAppearsOnSuccessAsync(String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(outsideMapping: False) [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXM005"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(467,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(Boolean outsideMapping)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(469,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(Boolean outsideMapping)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(469,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(Boolean outsideMapping)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(outsideMapping: True) [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      3
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(466,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(Boolean outsideMapping)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(469,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(Boolean outsideMapping)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(469,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestReportsPrimaryNativePathBeforeCompositionAsync(Boolean outsideMapping)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(kind: "module") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      3
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1037,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1041,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1041,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(kind: "ui") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      3
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1037,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1041,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1041,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PackageOriginDescriptorFailsBeforeChildAsync(String kind)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.NonexecutableManifestReportsHxr003BeforeAspireProbeAsync [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXR003"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(563,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.NonexecutableManifestReportsHxr003BeforeAspireProbeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(566,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.NonexecutableManifestReportsHxr003BeforeAspireProbeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(566,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.NonexecutableManifestReportsHxr003BeforeAspireProbeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True) [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          The manifest platform pins are not supported by this runner.
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(127,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(Boolean debugAttach)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(149,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(Boolean debugAttach)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(command: "run") [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXW004"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1257,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1260,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1260,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1260,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(command: "test") [FAIL]
+      Shouldly.ShouldAssertException : "{"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest",..."
+          should contain (case insensitive comparison)
+      "HXW004"
+          but did not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1257,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1260,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1260,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1260,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicPackageModeSkipsMissingDirectSourceAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False) [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          The manifest platform pins are not supported by this runner.
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(127,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(Boolean debugAttach)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs(149,0): at Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(Boolean debugAttach)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.InvalidDirectDeclarationUsesTopologyExitCodeAsync [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      3
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(799,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.InvalidDirectDeclarationUsesTopologyExitCodeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(801,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.InvalidDirectDeclarationUsesTopologyExitCodeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(801,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.InvalidDirectDeclarationUsesTopologyExitCodeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceExecutableManifestProbesAspireAfterCheckoutAsync [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(673,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceExecutableManifestProbesAspireAfterCheckoutAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(678,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceExecutableManifestProbesAspireAfterCheckoutAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(678,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DirectReferenceExecutableManifestProbesAspireAfterCheckoutAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(command: "run", mode: "source") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(command: "run", mode: "package") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(command: "test", mode: "source") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(command: "test", mode: "package") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(command: "run", mode: null) [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(command: "test", mode: null) [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(78,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicCommandWritesResolvedMappingIntoEnginePlanAsync(String command, String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DescriptorModuleProjectOutsideMappingStopsEngineAsync [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1148,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.DescriptorModuleProjectOutsideMappingStopsEngineAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(mode: "source", profile: "full") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(515,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(mode: "package", profile: "full") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(515,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(mode: "source", profile: "full-mtp") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(515,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(mode: "package", profile: "full-mtp") [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(515,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(530,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.PublicTestCarriesResolvedHashIntoNativeProcessAsync(String mode, String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.ReturnedUiMarkerUnderPackageOriginFailsMappingGuardAsync [FAIL]
+      Shouldly.ShouldAssertException : False
+          should be
+      True
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceCommandModeTests.cs(1077,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceCommandModeTests.ReturnedUiMarkerUnderPackageOriginFailsMappingGuardAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAppHostIsUnavailableBeforeAnyResourceAsync [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(232,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAppHostIsUnavailableBeforeAnyResourceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAspireOrchestrationIsUnavailableBeforeAnyResourceAsync [FAIL]
+      Shouldly.ShouldAssertException : "failed"
+          should be
+      "unavailable"
+          but was not
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |   
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   
+      Expected Value | u    n    a    v    a    i    l    a    b    l    e    
+      Actual Value   | f    a    i    l    e    d                             
+      Expected Code  | 117  110  97   118  97   105  108  97   98   108  101  
+      Actual Code    | 102  97   105  108  101  100                           
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(276,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAspireOrchestrationIsUnavailableBeforeAnyResourceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "exit", expectedRuleId: "HXR020") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "never", expectedRuleId: "HXR021") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "foreign", expectedRuleId: "HXR022") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "cause", expectedRuleId: "HXR027") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "unsafe-name", expectedRuleId: "HXR022") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "unsafe-detail", expectedRuleId: "HXR022") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "unsafe-task", expectedRuleId: "HXR022") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: "diagnostics-io", expectedRuleId: "HXR027") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.TopologyOrLifecycle
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(579,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(String mode, String expectedRuleId)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AppHostReceivesLocalAspireOrchestrationAndRunPrivateDirectoriesAsync [FAIL]
+      System.IO.FileNotFoundException : Could not find file '/tmp/hexalith-g4-unit-351f7936b4dd4379ba7d718c9fe39b5e/fake-apphost/out/captured-environment.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.File.InternalReadAllTextAsync(String path, Encoding encoding, CancellationToken cancellationToken)
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(322,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AppHostReceivesLocalAspireOrchestrationAndRunPrivateDirectoriesAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UncleanTeardownAfterReadinessFailureReportsAndPersistsHxr023Async [FAIL]
+      Shouldly.ShouldAssertException : ["HXM016", "HXM016"]
+          should be
+      ["HXR021", "HXR023"]
+          but was not (case sensitive comparison)
+          difference
+      [*"HXM016"*, *"HXM016"*]
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(633,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UncleanTeardownAfterReadinessFailureReportsAndPersistsHxr023Async()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(command: "run") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(524,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(527,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(527,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(command: "test") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"UsageOrManifest","phase":"Manifest","category":"Manifest","ruleId":"HXM016"},"diagnostics":[{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.eventStoreVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null},{"ruleId":"HXM016","phase":"Manifest","category":"Manifest","message":"The manifest platform pins are not supported by this runner.","field":"platform.frontComposerVersion","hint":"Use the supported package and runtime pins for this runner release.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(524,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(527,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(527,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PublicCommandChecksLivePrerequisitesForExecutableFixtureAsync(String command)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PreRunTimeoutSurvivesDiagnosticsIoFailureAsync [FAIL]
+      Shouldly.ShouldAssertException : "HXM016"
+          should be
+      "HXR021"
+          but was not
+          difference
+      Difference     |            |         |    |   
+                     |           \|/       \|/  \|/  
+      Index          | 0    1    2    3    4    5    
+      Expected Value | H    X    R    0    2    1    
+      Actual Value   | H    X    M    0    1    6    
+      Expected Code  | 72   88   82   48   50   49   
+      Actual Code    | 72   88   77   48   49   54   
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(824,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.PreRunTimeoutSurvivesDiagnosticsIoFailureAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: "run", format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(794,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(802,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(804,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: "run", format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(794,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(802,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(804,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: "debug", format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(794,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(802,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(804,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: "debug", format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(794,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(802,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(804,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: "test", format: "json") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(794,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(802,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(804,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(command: "test", format: "human") [FAIL]
+      Shouldly.ShouldAssertException : 1
+          should be
+      2
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(794,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(802,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(804,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AspireMismatchStopsPublicStartupAsync(String command, String format)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: "missing") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(733,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: "malformed") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(733,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: "different") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(733,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: "empty") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(733,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: "failed") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(733,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(mode: "timeout") [FAIL]
+      Shouldly.ShouldAssertException : ToolExitCode.UsageOrManifest
+          should be
+      ToolExitCode.PrerequisiteUnavailable
+          but was not
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(733,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UnavailableAspireCreatesNoRunArtifactsAsync(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingPrerequisitesStopBeforeAnyResourceAsync [FAIL]
+      Shouldly.ShouldAssertException : "failed"
+          should be
+      "unavailable"
+          but was not
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |   
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   
+      Expected Value | u    n    a    v    a    i    l    a    b    l    e    
+      Actual Value   | f    a    i    l    e    d                             
+      Expected Code  | 117  110  97   118  97   105  108  97   98   108  101  
+      Actual Code    | 102  97   105  108  101  100                           
+      Stack Trace:
+        /_/test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(196,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingPrerequisitesStopBeforeAnyResourceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+g4: HXR028 resource='stdin-listener' appId='-' status='blocked-after-stop'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0123ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.007ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0099ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.008ms with message '(null)'
+g4: waiting for resource 'first' to become healthy.
+g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: every resource is healthy.
+g4: waiting for resource 'redis' to become healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check infrastructure-redis with status Unhealthy completed after 4.4702ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.2856ms with message '(null)'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'worker' to become healthy.
+g4: HXR027 resource='eventstore' appId='eventstore' status='fault-OptionsValidationException'.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'f10c51322a4738a419c3d694398a2df2aee0df3f708898e259b4b46f4930a895')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 1138, Errors: 0, Failed: 99, Skipped: 0, Not Run: 0, Time: 195.614s

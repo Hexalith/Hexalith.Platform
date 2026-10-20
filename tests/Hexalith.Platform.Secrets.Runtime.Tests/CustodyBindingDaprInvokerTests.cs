@@ -146,6 +146,7 @@ public sealed class CustodyBindingDaprInvokerTests
     [InlineData("lost-result")]
     [InlineData("cancellation")]
     [InlineData("oversized-response")]
+    [InlineData("one-mib-response")]
     [InlineData("malformed")]
     [InlineData("identity")]
     [InlineData("key-response")]
@@ -281,6 +282,67 @@ public sealed class CustodyBindingDaprInvokerTests
         (await Invoker(client, exactAuthority).InvokeAsync(changed, TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)).State.ShouldBe(CustodyBindingTransportState.Unknown);
     }
 
+    [Fact]
+    public async Task ForwardedMetadataIsAccountedSeparatelyAndCandidateSettingsDoNotOpenInvoker()
+    {
+        var metadata = new Dictionary<string, string> { ["traceparent"] = "00-" + new string('a', 32) + "-" + new string('b', 16) + "-01",
+            ["dapr-app-id"] = "synthetic", ["baggage"] = new string('x', 4096) };
+        using var encoded = new MemoryStream();
+        using (var output = new CodedOutputStream(encoded, leaveOpen: true))
+        {
+            output.WriteTag(1, WireFormat.WireType.LengthDelimited); output.WriteBytes(ByteString.CopyFrom(new byte[12]));
+            foreach (var pair in metadata)
+            {
+                using var entry = new MemoryStream();
+                using (var map = new CodedOutputStream(entry, leaveOpen: true))
+                {
+                    map.WriteTag(1, WireFormat.WireType.LengthDelimited); map.WriteString(pair.Key);
+                    map.WriteTag(2, WireFormat.WireType.LengthDelimited); map.WriteString(pair.Value);
+                }
+                output.WriteTag(2, WireFormat.WireType.LengthDelimited); output.WriteBytes(ByteString.CopyFrom(entry.ToArray()));
+            }
+            output.WriteTag(3, WireFormat.WireType.LengthDelimited); output.WriteString("destroy-manifest");
+        }
+        CustodyBindingDaprInvoker.ComponentRequestSize("destroy-manifest", 12, metadata).ShouldBe((int)encoded.Length);
+        CustodyBindingDaprInvoker.ComponentRequestUpperBound("destroy-manifest", 12).ShouldBeGreaterThan((int)encoded.Length);
+        var handler = new CaptureHandler(); using DaprClient client = Client(handler, candidate: true);
+        var oversized = CustodyBindingFixture.Manifest(1000, new string('x', 2048), maximal: true);
+        (await Invoker(client, new CustodyBindingFixture.Authority()).InvokeAsync(oversized, TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken))
+            .State.ShouldBe(CustodyBindingTransportState.Refused);
+        handler.Calls.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task ForwardedMetadataReserveRefusesNearDefaultRequestBeforeSdkSend()
+    {
+        byte[] bytes = new byte[3 * 1024 * 1024 - 20 * 1024];
+        var transition = new AnchoredStateTransition("owner|purpose", 1, 2, CustodyBindingFixture.Digest,
+            CustodyBindingContract.Hash(bytes), bytes);
+        var request = CustodyBindingFixture.Bind(new(CustodyBindingFixture.Envelope("admit-transition", target: transition.TargetDigest), Transition: transition));
+        int dataBytes = CustodyBindingContract.Encode(request).Length;
+        CustodyBindingDaprInvoker.ApiRequestSize("synthetic-configured-role", "admit-transition", dataBytes).ShouldBeLessThan(CustodyBindingContract.DefaultMessageBytes);
+        CustodyBindingDaprInvoker.ComponentRequestUpperBound("admit-transition", dataBytes).ShouldBeGreaterThan(CustodyBindingContract.DefaultMessageBytes);
+        var handler = new CaptureHandler(); using DaprClient client = Client(handler, candidate: true);
+        (await Invoker(client, new CustodyBindingFixture.Authority()).InvokeAsync(request, TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken))
+            .State.ShouldBe(CustodyBindingTransportState.Refused);
+        handler.Calls.ShouldBe(0);
+    }
+
+    internal sealed record CandidateSdkCapture(int DataBytes, string DataSha256, int ApiProtobufBytes, string ApiProtobufSha256,
+        int GrpcFrameBytes, int SdkCalls, int MaxSendMessageBytes, int MaxReceiveMessageBytes, bool RealSidecarPathExecuted = false);
+
+    // Test-only direct SDK witness. No production invoker profile or DI registration is enabled.
+    internal static async Task<CandidateSdkCapture> CaptureCandidateAsync(CustodyBindingRequestV1 request, CancellationToken cancellationToken)
+    {
+        byte[] data = CustodyBindingContract.Encode(request);
+        var handler = new CaptureHandler(); using DaprClient client = Client(handler, candidate: true);
+        await client.InvokeBindingAsync(new BindingRequest("synthetic-configured-role", request.Envelope.Operation) { Data = data }, cancellationToken);
+        handler.Calls.ShouldBe(1); handler.Data.ShouldBe(data);
+        handler.ProtobufBytes.ShouldBe(CustodyBindingDaprInvoker.ApiRequestSize(handler.Name, handler.Operation, data.Length));
+        return new(data.Length, CustodyBindingContract.Hash(data), handler.ProtobufBytes, handler.ProtobufSha256,
+            handler.ProtobufBytes + 5, handler.Calls, CustodyBindingContract.CandidateRequestMessageBytes, CustodyBindingContract.MaximumPageFrameBytes - 1);
+    }
+
     private sealed class ExactAuthority(byte[] enrolledExactBytes) : ICustodyBindingCurrentAuthority
     {
         public Task<bool> AuthorizeAsync(CustodyBindingRequestV1 exact, string method, CancellationToken cancellationToken)
@@ -288,8 +350,10 @@ public sealed class CustodyBindingDaprInvokerTests
     }
     private sealed class DenyAuthority : ICustodyBindingCurrentAuthority;
 
-    internal static DaprClient Client(HttpMessageHandler handler) => new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1")
-        .UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
+    internal static DaprClient Client(HttpMessageHandler handler, bool candidate = false) => new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1")
+        .UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler,
+            MaxSendMessageSize = candidate ? CustodyBindingContract.CandidateRequestMessageBytes : CustodyBindingContract.DefaultMessageBytes,
+            MaxReceiveMessageSize = candidate ? CustodyBindingContract.MaximumPageFrameBytes - 1 : CustodyBindingContract.DefaultMessageBytes }).Build();
     private static CustodyBindingDaprInvoker Invoker(DaprClient client, ICustodyBindingCurrentAuthority authority)
         => new(client, new Dictionary<string, string> { [CustodyBindingContract.LogicalRole] = "synthetic-configured-role" }, authority);
 
@@ -300,6 +364,7 @@ public sealed class CustodyBindingDaprInvokerTests
         internal string Operation { get; private set; } = "";
         internal byte[] Data { get; private set; } = [];
         internal int ProtobufBytes { get; private set; }
+        internal string ProtobufSha256 { get; private set; } = "";
         internal string? Fault { get; set; }
         internal byte[]? PageBytes { get; set; }
         internal Action? BeforeReturn { get; set; }
@@ -313,6 +378,7 @@ public sealed class CustodyBindingDaprInvokerTests
             frame[0].ShouldBe((byte)0);
             ProtobufBytes = BinaryPrimitives.ReadInt32BigEndian(frame.AsSpan(1, 4));
             ProtobufBytes.ShouldBe(frame.Length - 5);
+            ProtobufSha256 = CustodyBindingContract.Hash(frame.AsSpan(5));
             using var input = new CodedInputStream(frame, 5, frame.Length - 5);
             uint tag;
             while ((tag = input.ReadTag()) != 0)
@@ -344,6 +410,7 @@ public sealed class CustodyBindingDaprInvokerTests
                 Current: current, Page: page, TransitionVerified: decoded.Transition is not null || Fault == "mixed-response" ? true : null);
             byte[] response = JsonSerializer.SerializeToUtf8Bytes(ResponseChange?.Invoke(decoded, responseObject) ?? responseObject, CustodyBindingContract.Json);
             if (Fault == "oversized-response") { response = new byte[CustodyBindingContract.DefaultMessageBytes + 1]; }
+            if (Fault == "one-mib-response") { response = Enumerable.Repeat((byte)' ', CustodyBindingContract.MaximumPageFrameBytes).Concat(response).ToArray(); }
             if (Fault == "malformed") { response = [0, 1]; }
             if (Fault == "key-response") { response = "{\"RawKey\":\"forbidden\"}"u8.ToArray(); }
             if (Fault == "padded-page") { response = Enumerable.Repeat((byte)' ', CustodyBindingContract.MaximumPageFrameBytes).Concat(response).ToArray(); }

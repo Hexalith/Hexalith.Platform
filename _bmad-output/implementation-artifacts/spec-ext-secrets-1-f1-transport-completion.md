@@ -2,7 +2,7 @@
 title: 'Resolve EXT-SECRETS-1 F1 transport and completion prerequisites'
 type: 'feature'
 created: '2026-10-20'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 3d51fed1f3d99acf36ef690f150136593298bd95
@@ -45,16 +45,21 @@ Do not initialize nested submodules, deploy, inspect credentials, perform native
 
 ## Tasks & Acceptance
 
-- [ ] Runtime contract/invoker and focused tests — account for the private proof-shape gap, conservative full-request bounds and forwarded metadata; preserve default/key refusal and public contracts.
-- [ ] Existing SDK/feasibility tests — serialize the retained maximum request with explicit candidate channel settings; retain exact bytes/hashes and one-call/denial controls. Report no executed sidecar/backend path.
-- [ ] F1 `transport-profile.json` and `transport-profile.md` — pin source revisions, 128 MiB candidate request settings at SDK/API/component, bounded headers/metadata, sub-1-MiB full responses and backend retention/transaction requirements. Include exact patches/hashes if required; absent artifacts/approvals remain absent.
-- [ ] F1 `termination-protocol.md` and machine-readable packet — define durable lease/copy lineage, all SDK/sidecar/component/native/kernel/host/delayed holders, admission, sealing, watermarks, capacity and independently verified termination/sanitation. Missing installed verifier means no completion permission.
-- [ ] `eng/ext-secrets-1/` packet checker/tests and verifier coverage — reject missing holder classes, substituted incarnations, unsealed queues and synthetic availability claims without weakening existing audits.
-- [ ] Existing F1 README, buffer accounting and F2/F3 prerequisites — connect verified changes to the exact outstanding proof and next qualification packet.
+- [x] Runtime contract/invoker and focused tests — account for the private proof-shape gap, conservative full-request bounds and forwarded metadata; preserve default/key refusal and public contracts.
+- [x] Existing SDK/feasibility tests — serialize the retained maximum request with explicit candidate channel settings; retain exact bytes/hashes and one-call/denial controls. Report no executed sidecar/backend path.
+- [x] F1 `transport-profile.json` and `transport-profile.md` — pin source revisions, 128 MiB candidate request settings at SDK/API/component, bounded headers/metadata, sub-1-MiB full responses and backend retention/transaction requirements. Include exact patches/hashes if required; absent artifacts/approvals remain absent.
+- [x] F1 `termination-protocol.md` and machine-readable packet — define durable lease/copy lineage, all SDK/sidecar/component/native/kernel/host/delayed holders, admission, sealing, watermarks, capacity and independently verified termination/sanitation. Missing installed verifier means no completion permission.
+- [x] `eng/ext-secrets-1/` packet checker/tests and verifier coverage — reject missing holder classes, substituted incarnations, unsealed queues and synthetic availability claims without weakening existing audits.
+- [x] Existing F1 README, buffer accounting and F2/F3 prerequisites — connect verified changes to the exact outstanding proof and next qualification packet.
 
 Acceptance: Given absent semantic component/backend and completion proof, when local verification passes, then keep DependencyAvailable=false, LiveReady=false and key delivery closed, and return the pinned next packet with precise unproved items.
 
 ## Implementation Notes
+
+- Implemented 17 F1-scoped files; all match the isolated snapshot based on `17179e59843ee8cfb35892a74a2c18d3136fc9cf`. Concurrent unrelated workspace work is preserved and excluded from the F1 review diff.
+- Detached F1 verification: 238 Runtime tests, 101 F1 cases, 29 behavioral methods; zero warnings/errors. Full Python suite: 181 tests passed. Evidence and source archive: `/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-transport-completion-20261020/`.
+- Exact SDK captures: retained manifest 24,692,931 API protobuf bytes; 32 MiB transition 44,740,962 API protobuf bytes; one call each. These are local handler witnesses only.
+- Proposed 128 MiB profile and exact unapplied header-units patch, private proof bounds, termination protocol and negative packet audit delivered. No component/backend or independent termination verifier is installed; all release/availability/Live gates remain closed.
 
 ## Spec Change Log
 

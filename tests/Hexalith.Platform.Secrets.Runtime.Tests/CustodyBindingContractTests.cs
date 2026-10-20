@@ -78,6 +78,33 @@ public sealed class CustodyBindingContractTests
         DeletionBatchCapabilityIdentity.CanonicalPayload(m.Original.Capability with { DestructionSealId = new string('\u0800', 2048) }).ShouldNotBeEmpty();
     }
 
+    [Theory]
+    [InlineData("HoldId")]
+    [InlineData("DispatchReceiptId")]
+    [InlineData("ProtectionReservationReceiptId")]
+    public void PrivateProofFieldsAreBoundedWithoutChangingOwnerIdentity(string field)
+    {
+        var request = CustodyBindingFixture.Manifest();
+        var e = request.Envelope;
+        var p = e.Proof;
+        string oversized = new('\u0001', 2049);
+        p = field switch
+        {
+            "HoldId" => p with { HoldId = oversized },
+            "DispatchReceiptId" => p with { DispatchReceiptId = oversized },
+            _ => p with { ProtectionReservationReceiptId = oversized },
+        };
+        var changed = request with { Envelope = e with { Proof = p } };
+        changed.Envelope.RequestDigest.ShouldBe(request.Envelope.RequestDigest);
+        CustodyBindingContract.Validate(changed).ShouldBeFalse();
+        Should.Throw<ArgumentException>(() => CustodyBindingContract.Encode(changed));
+        var bounded = request with { Envelope = e with { Proof = e.Proof with { HoldId = new string('\u0001', 2048) } } };
+        CustodyBindingContract.Validate(bounded).ShouldBeTrue();
+        CustodyBindingContract.Decode(CustodyBindingContract.Encode(bounded)).ShouldNotBeNull();
+        CustodyBindingContract.MaximumManifestRequestBound.ShouldBeLessThan(CustodyBindingContract.MaximumRequestBytes);
+        CustodyBindingContract.MaximumTransitionRequestBound.ShouldBeLessThan(CustodyBindingContract.MaximumRequestBytes);
+    }
+
     [Fact]
     public void ContradictoryWrapRegistrationEnvelopeIsRejected()
     {

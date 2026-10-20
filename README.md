@@ -69,6 +69,24 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
+## Parties reference domain
+
+An independent `Hexalith.Parties` checkout uses its pinned module tool 4.34.0:
+
+```bash
+dotnet tool restore
+dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manifest.v2.json
+```
+
+Parties declares EventStore, Tenants and Memories, giving seven ready servers
+including `parties`; source and Debug bindings use only the tool-selected direct
+references. Platform routes the singular `party` domain to `parties/process`,
+binds the existing state/pubsub keys and renders the declarative tenant subscription.
+Rich Parties search stays disabled. Legacy domain AppHost, Aspire, UI/MCP and sample
+hosts remain frozen outside this qualification. Owner review, upstream integration
+and the [Story 1.12 evidence](_bmad-output/implementation-artifacts/evidence/1-12/README.md)
+are required before the adoption can be considered complete.
+
 ## Domain-module enrollment
 
 Use the [enrollment guide](docs/domain-module-enrollment.md) and

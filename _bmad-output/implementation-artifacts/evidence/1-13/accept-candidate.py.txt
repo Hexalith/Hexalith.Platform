@@ -1,0 +1,27 @@
+from pathlib import Path
+import subprocess,tempfile,json,shutil,hashlib
+root=Path('/home/administrator/projects/hexalith/platform'); evidence=root/'_bmad-output/implementation-artifacts/evidence/1-13';cli=root/'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll'
+def git(cwd,*args):return subprocess.check_output(['git','-C',str(cwd),*args],text=True,stderr=subprocess.STDOUT)
+with tempfile.TemporaryDirectory(prefix='enrollment-acceptance-') as tmp:
+ w=Path(tmp);git(w,'init','-q')
+ for name in ('Platform','Builds','McpCli','EventStore','Tenants','Memories'):
+  d=w/'references'/f'Hexalith.{name}';(d/'.config').mkdir(parents=True);shutil.copy(root/'.config/dotnet-tools.json',d/'.config/dotnet-tools.json');git(d,'init','-q');git(d,'add','.');git(d,'-c','user.name=Enrollment Test','-c','user.email=enrollment@example.invalid','commit','-qm','fixture identity');commit=git(d,'rev-parse','HEAD').strip();git(w,'update-index','--add','--cacheinfo',f'160000,{commit},references/Hexalith.{name}')
+  with (w/'.gitmodules').open('a') as f:f.write(f'[submodule "references/Hexalith.{name}"]\n path = references/Hexalith.{name}\n url = https://example.invalid/Hexalith.{name}.git\n')
+ (w/'module').mkdir();(w/'.config').mkdir();shutil.copy(root/'.config/dotnet-tools.json',w/'.config/dotnet-tools.json');shutil.copy(root/'templates/domain-module-enrollment/hexalith.module-manifest.v2.json',w/'module/hexalith.module-manifest.v2.json');(w/'module/hosting-inventory.json').write_text('{"schemaVersion":1,"projects":[]}\n');git(w,'add','.gitmodules','.config','module')
+ records=[]
+ for state in ('pass','fail'):
+  if state=='fail':(w/'.config/dotnet-tools.json').write_text('{}\n')
+  for mode in ('human','json'):
+   before=git(w,'status','--porcelain=v1','--untracked-files=all');snapshot={str(p.relative_to(w)):hashlib.sha256(p.read_bytes()).hexdigest() for p in w.rglob('*') if p.is_file()}
+   cmd=['dotnet',str(cli),'validate','--manifest','module/hexalith.module-manifest.v2.json','--adoption','--output',mode]
+   run=subprocess.run(cmd,cwd=w,text=True,capture_output=True)
+   after=git(w,'status','--porcelain=v1','--untracked-files=all');post={str(p.relative_to(w)):hashlib.sha256(p.read_bytes()).hexdigest() for p in w.rglob('*') if p.is_file()}
+   assert before==after and snapshot==post, 'validator changed workspace'
+   assert run.returncode==(0 if state=='pass' else 1),(run.returncode,run.stdout,run.stderr)
+   (evidence/f'candidate-{state}-{mode}.txt').write_text(run.stdout)
+   (evidence/f'candidate-{state}-{mode}.stderr.txt').write_text(run.stderr)
+   (evidence/f'candidate-{state}-{mode}.git-before.txt').write_text(before)
+   (evidence/f'candidate-{state}-{mode}.git-after.txt').write_text(after)
+   records.append({'state':state,'format':mode,'command':cmd,'exitCode':run.returncode,'gitUnchanged':before==after,'allFileHashesUnchanged':snapshot==post})
+ (evidence/'candidate-commands.json').write_text(json.dumps({'scope':'Local source candidate only; no publication or SM-2 evidence','workingDirectory':'disposable enrolled module Git workspace; removed after verification','commands':records},indent=2)+'\n')
+ print('4 candidate commands passed: human/JSON success=0 and failure=1; Git state and every file hash unchanged.')

@@ -30,7 +30,9 @@
               "server"
             ]
           }
-        ]
+        ],
+        "extensions": [],
+        "resources": []
       },
       "surfaces": {
         "interfaces": []
@@ -48,8 +50,21 @@
               "server": "server",
               "route": "/events/sample"
             }
+          },
+          {
+            "name": "sample-dead-letter",
+            "role": "events",
+            "deadLetter": {
+              "strategy": "none"
+            }
           }
-        ]
+        ],
+        "secrets": [],
+        "dynamicSecretNamespaces": [],
+        "identityNeeds": [],
+        "egress": [],
+        "providers": [],
+        "workers": []
       },
       "lifecycle": {
         "readiness": [
@@ -64,7 +79,15 @@
         "classification": {
           "changeClass": "additive",
           "reason": "Initial domain enrollment; owner must customize and review."
-        }
+        },
+        "recoveryHooks": [],
+        "fenceHooks": [],
+        "replay": {
+          "reopenBeforeReplay": false
+        },
+        "criticalFlows": [],
+        "smokeSurfaces": [],
+        "recoveryInventory": []
       }
     }
   ]

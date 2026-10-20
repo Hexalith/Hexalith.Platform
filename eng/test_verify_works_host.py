@@ -231,12 +231,30 @@ class WorksEvidenceGateTests(unittest.TestCase):
                                               'sdkAssemblies': sdk} for name in names],
                           'hostingStartups': startups, 'compositionGuard': guard, 'effectiveEnvironment': effective}
 
-    def verify(self, root, assembly, *records, runtime_artifacts=None):
+    def verify(self, root, assembly, *records, runtime_artifacts=None, control_plane_ports=None):
         path = root / 'starts.jsonl'
         path.write_text(''.join(json.dumps(record) + '\n' for record in records))
         return verify_host_records(path, assembly, root, VERSION,
                                    runtime_artifacts={str(assembly): sha256(assembly)} if runtime_artifacts is None else runtime_artifacts,
-                                   host_runtime=root / 'bin/release/Hexalith.Platform.Works.Runtime.dll', composition_literals=LITERALS)
+                                   host_runtime=root / 'bin/release/Hexalith.Platform.Works.Runtime.dll', composition_literals=LITERALS,
+                                   control_plane_ports=control_plane_ports)
+
+    def test_every_start_binds_run_owned_ports_and_preserves_prebuilt_dependencies(self):
+        root = self.directory()
+        assembly, record = self.host_record(root, ha=True)
+        ports = {'sentry': 61001, 'placement': 61005, 'scheduler': 61006}
+        record.update(controlPlanePorts=ports, dependencyBuildsSuppressed=True)
+        self.assertEqual(len(self.verify(root, assembly, record, control_plane_ports=ports)), 1)
+        for changed in [record | {'controlPlanePorts': None}, record | {'controlPlanePorts': ports | {'sentry': 50001}},
+                        record | {'dependencyBuildsSuppressed': False}, record | {'dependencyBuildsSuppressed': None}]:
+            with self.subTest(changed=changed), self.assertRaises(ValueError):
+                self.verify(root, assembly, changed, control_plane_ports=ports)
+
+    def test_control_plane_port_selection_uses_distinct_unprivileged_ports(self):
+        ports = verify_works_host.select_control_plane_ports()
+        self.assertEqual(set(ports), {'sentry', 'placement', 'scheduler'})
+        self.assertEqual(len(set(ports.values())), 3)
+        self.assertTrue(all(type(port) is int and 1024 <= port <= 65535 for port in ports.values()))
 
     def test_another_host_or_scheduler_cannot_qualify_platform(self):
         root = self.directory()

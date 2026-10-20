@@ -12,7 +12,7 @@ namespace Hexalith.Platform.Secrets.Runtime.Tests;
 public sealed class CustodyBindingFeasibilityTests
 {
     [Fact]
-    public void EmitDeterministicF1Evidence()
+    public async Task EmitDeterministicF1Evidence()
     {
         var requests = new List<object>();
         foreach (var construction in new (string Name, int Count, string? Field, bool Maximal)[] { ("single", 1, null, false),
@@ -45,6 +45,18 @@ public sealed class CustodyBindingFeasibilityTests
                 SidecarComponentRequestProtobufBytes = component, ComponentServerDefaultReceiveLimitBytes = CustodyBindingContract.DefaultMessageBytes,
                 FitsPinnedDefault = sdk <= CustodyBindingContract.DefaultMessageBytes && component <= CustodyBindingContract.DefaultMessageBytes });
         }
+
+        var retainedMaximum = CustodyBindingFixture.Manifest(1000, new string('\u0001', 2048), maximal: true);
+        DeletionConsumptionIdentity.Capture(retainedMaximum.Manifest!.Original);
+        var retainedSdk = await CustodyBindingDaprInvokerTests.CaptureCandidateAsync(retainedMaximum, TestContext.Current.CancellationToken);
+        retainedSdk.DataBytes.ShouldBe(24_692_881); retainedSdk.ApiProtobufBytes.ShouldBe(24_692_931);
+        var transitionBytes = new byte[RecoverableAnchoredState.MaximumPendingBytes];
+        var transition = new AnchoredStateTransition("owner|purpose", 1, 2, CustodyBindingFixture.Digest,
+            CustodyBindingContract.Hash(transitionBytes), transitionBytes);
+        var transitionRequest = CustodyBindingFixture.Bind(new(CustodyBindingFixture.Envelope("admit-transition", target: transition.TargetDigest), Transition: transition));
+        var transitionSdk = await CustodyBindingDaprInvokerTests.CaptureCandidateAsync(transitionRequest, TestContext.Current.CancellationToken);
+        transitionSdk.DataBytes.ShouldBeLessThan(CustodyBindingContract.MaximumTransitionRequestBound);
+        CustodyBindingContract.Encode(retainedMaximum).Length.ShouldBeLessThan(CustodyBindingContract.MaximumManifestRequestBound);
 
         // Legal owner input with large escaped targets/receipts; conservative structural bound remains 64 MiB.
         var maximum = CustodyBindingFixture.Manifest(1000, new string('\u0001', 2048), maximal: true);
@@ -82,6 +94,12 @@ public sealed class CustodyBindingFeasibilityTests
             PhysicalEvidence = false, NativeEffects = 0, RealSidecarPathExecuted = false,
             SdkSerialization = "Real pinned SDK exercised against a local HttpMessageHandler in CustodyBindingDaprInvokerTests; not daprd/component/provider evidence",
             RequestVectors = requests,
+            CandidateSdkCaptures = new { RetainedMaximumManifest = retainedSdk, MaximumPendingTransition = transitionSdk,
+                ComponentForwardedMetadataWireBudgetBytes = CustodyBindingDaprInvoker.MaximumForwardedMetadataWireBytes,
+                FullManifestRequestBoundBytes = CustodyBindingContract.MaximumManifestRequestBound,
+                FullTransitionRequestBoundBytes = CustodyBindingContract.MaximumTransitionRequestBound,
+                DecodeCapBytes = CustodyBindingContract.MaximumRequestBytes,
+                SidecarOrComponentExecuted = false, ProductionInvokerProfileChanged = false },
             OriginalResult = new { InputActualOwnerCapturePassed = true, Measurement = "Large legal-owner-input synthetic result; not physical evidence or a tight legal maximum", JsonBytes = resultBytes.Length, JsonSha256 = CustodyBindingContract.Hash(resultBytes),
                 MaximumAssemblyBytes = CustodyBindingContract.MaximumOriginalBytes, DerivedClosedResultUpperBoundBytes = resultUpperBound,
                 PageDataBytes = CustodyBindingContract.MaximumPageBytes, FullPageJsonBytes = fullPageFrameBytes,
@@ -95,7 +113,7 @@ public sealed class CustodyBindingFeasibilityTests
                 Construction = "Structural field/count-bound witness, not a reachable original schedule: 1000 fixed-width distinct objects; ten distinct Pinned requests/outcomes and ten retained pins per object; text=2044 U+0001+D4, <=2048 UTF8 bytes; exact JSON array accounting from equal-width entries. No current-authority or admitted revision history is proved.",
                 CompletionCapacityProven = false,
                 Required = "Component must reserve byte/native/buffer completion headroom at admission; count limits alone cannot fit every legal retained actor ledger. Existing actor limits/policy remain unchanged." },
-            QualificationStop = "Worst legal full atomic input exceeds pinned supported defaults; require separately approved supported transport/component revision. No tighter public fields or splitting.",
+            QualificationStop = "Pinned defaults remain closed; bounded 128 MiB candidate SDK serialization is synthetic only. Component/backend, installed header/metadata limits, independent completion verifier and separate authorization remain absent. No tighter public fields or splitting.",
             BufferClosure = "Unproved: SDK ByteString/read-only response, grpc/sidecar/component and late I/O copies require actual holder inventory and accepted zeroing or termination proof.",
         };
         string? path = Environment.GetEnvironmentVariable("EXT_SECRETS_1_F1_EVIDENCE");

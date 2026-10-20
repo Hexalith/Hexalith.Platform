@@ -1,0 +1,11 @@
+--- a/pkg/api/grpc/server.go
++++ b/pkg/api/grpc/server.go
+@@ -345,7 +345,7 @@
+ 	opts = append(opts,
+ 		grpcGo.MaxRecvMsgSize(s.config.MaxRequestBodySize),
+ 		grpcGo.MaxSendMsgSize(s.config.MaxRequestBodySize),
+-		grpcGo.MaxHeaderListSize(uint32(s.config.ReadBufferSize<<10)),
++		grpcGo.MaxHeaderListSize(uint32(s.config.ReadBufferSize)),
+ 	)
+ 
+ 	if s.sec == nil {

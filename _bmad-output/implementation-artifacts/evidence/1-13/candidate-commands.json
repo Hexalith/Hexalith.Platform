@@ -1,0 +1,74 @@
+{
+  "scope": "Local source candidate only; no publication or SM-2 evidence",
+  "workingDirectory": "disposable enrolled module Git workspace; removed after verification",
+  "commands": [
+    {
+      "state": "pass",
+      "format": "human",
+      "command": [
+        "dotnet",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "exitCode": 0,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "pass",
+      "format": "json",
+      "command": [
+        "dotnet",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "fail",
+      "format": "human",
+      "command": [
+        "dotnet",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "exitCode": 1,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "fail",
+      "format": "json",
+      "command": [
+        "dotnet",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "exitCode": 1,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    }
+  ]
+}

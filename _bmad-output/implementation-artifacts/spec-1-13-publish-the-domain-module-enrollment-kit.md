@@ -4,8 +4,9 @@ type: 'feature'
 epic: 1
 story: 13
 created: '2026-10-20'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
+builds_baseline_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
 route: 'dispatch'
 review_loop_iteration: 0
 context:
@@ -53,14 +54,14 @@ Match the tool pin to the direct Platform checkout. Audit tracked module-owned f
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `docs/domain-module-enrollment.md`, `README.md` — guide direct-only initialization, template customization, exact accepted-tool restore, mapping-only source selection, configured Dapr names/declarative subscriptions, required human source audit, and validation/run/debug/down recipes.
-- [ ] `templates/domain-module-enrollment/hexalith.module-manifest.v2.json` — valid domain example: all five groups, minimum dependencies, readiness, logical Dapr roles/keys, declarative dead-letter subscription. Explain owner customization.
-- [ ] `templates/domain-module-enrollment/hosting-inventory.json` — per-project path/kind/owner/consumers, frozen state and replacement/retirement plan. Require producer adoption, owner-reviewed source/package/deployed parity and applicable EventStore AD-22 exact-subject removal authority before retirement. Defaults remain pending.
-- [ ] `templates/domain-module-enrollment/sm-2-checklist.md` — human source audit and pending demonstration: module/revision, Platform/tool identity, environment/run/mapping, command, breakpoint/hit, edit/runtime effect, direct-only/nested check, result, diagnostics, verifier/date. Feed Story 3.11.
-- [ ] Builds `src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs` and sibling result types — implement the matrix and fixed requirements: references/gitlinks, nested check, declaration, pin, dependency selectors, Dapr/subscriptions, hosting-record completeness. Keep one C# type per file.
-- [ ] Builds CLI/Diagnostics files above — wire `--adoption`, all requirement rows and failing exit behavior; require manifests inside the active workspace.
-- [ ] Builds `test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs` and `PlatformManifestCommandTests.cs` — positive workspace and one failure per requirement, malformed/missing files, valid guards, frozen-directory confinement, read-only behavior, human/JSON rows and legacy compatibility.
-- [ ] `tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs` — validate starter with real technical declarations, inventory defaults and candidate-tool commands in a disposable workspace.
+- [x] `docs/domain-module-enrollment.md`, `README.md` — guide direct-only initialization, template customization, exact accepted-tool restore, mapping-only source selection, configured Dapr names/declarative subscriptions, required human source audit, and validation/run/debug/down recipes.
+- [x] `templates/domain-module-enrollment/hexalith.module-manifest.v2.json` — valid domain example: all five groups, minimum dependencies, readiness, logical Dapr roles/keys, declarative dead-letter subscription. Explain owner customization.
+- [x] `templates/domain-module-enrollment/hosting-inventory.json` — per-project path/kind/owner/consumers, frozen state and replacement/retirement plan. Require producer adoption, owner-reviewed source/package/deployed parity and applicable EventStore AD-22 exact-subject removal authority before retirement. Defaults remain pending.
+- [x] `templates/domain-module-enrollment/sm-2-checklist.md` — human source audit and pending demonstration: module/revision, Platform/tool identity, environment/run/mapping, command, breakpoint/hit, edit/runtime effect, direct-only/nested check, result, diagnostics, verifier/date. Feed Story 3.11.
+- [x] Builds `src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs` and sibling result types — implement the matrix and fixed requirements: references/gitlinks, nested check, declaration, pin, dependency selectors, Dapr/subscriptions, hosting-record completeness. Keep one C# type per file.
+- [x] Builds CLI/Diagnostics files above — wire `--adoption`, all requirement rows and failing exit behavior; require manifests inside the active workspace.
+- [x] Builds `test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs` and `PlatformManifestCommandTests.cs` — positive workspace and one failure per requirement, malformed/missing files, valid guards, frozen-directory confinement, read-only behavior, human/JSON rows and legacy compatibility.
+- [x] `tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs` — validate starter with real technical declarations, inventory defaults and candidate-tool commands in a disposable workspace.
 - [ ] `.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md`, `_bmad-output/implementation-artifacts/evidence/1-13/README.md` — after review/release, pin actual published version, raise the floor to it, retain upper bound `5.0.0-0`, and record canonical revisions, owner review, release and fresh acceptance evidence.
 
 **Acceptance Criteria:**
@@ -73,6 +74,8 @@ Match the tool pin to the direct Platform checkout. Audit tracked module-owned f
 
 Planning assessment: no unresolved intent choices. Footprint: kit, Builds validator/CLI/results/tests, Platform tests/pins/evidence. NuGet publication is irreversible and requires the existing release approval gate; no publication during planning.
 
+Implementation baseline: Builds `5d03f1db9c38db34ecac7fe6048937478ffb82cc`. A concurrent `/pushall` commit captured in-progress local files at `1c560aa3ad0407717ef0e2ce5fb5e48f0ffd32a1`; review from the original Builds baseline through the final worktree, not HEAD-only. This does not establish owner approval, publication or Platform release acceptance.
+
 Implementation handoff: execute sequentially. Step 3 permits local work only: no pushes or remote operations. Prepare and verify the local release candidate; leave publication/pinning for the orchestrator after review. Preserve concurrent work and stage only story-owned paths. Read owning repository guidance before edits. Work in the owning repository for Git operations.
 
 ## Spec Change Log
@@ -84,3 +87,7 @@ Implementation handoff: execute sequentially. Step 3 permits local work only: no
 - Build and execute focused Builds test classes directly with xUnit v3; run the owning test project checks required for release.
 - Run `DomainEnrollmentKitTests` and both output modes of released pinned `validate --adoption` on disposable passing/failing workspaces; confirm nonzero failure exits and unchanged Git state.
 - Verify published version, release tag/gitlink equality and supported range; retain exact commands/results in story evidence.
+
+Local implementation verification: Builds focused Release build (zero warnings/errors), 97 focused adoption/manifest-command tests passed; Platform disposable focused lane ran the actual `DomainEnrollmentKitTests` against the same validator (4 passed); four direct candidate CLI human/JSON pass/fail commands preserved every workspace file hash and Git state. Normal Platform Release build and full Builds test suite remain blocked/failing amid existing/concurrent non-story dependency and legacy-fixture changes. See `evidence/1-13/README.md` and retained raw outputs. Owner review, actual upstream release, release-tag gitlink/pin/floor update, released-tool acceptance and human SM-2 remain pending.
+
+Coordinator matrix audit: read the complete story-scoped combined Platform/Builds diff at `/tmp/story-1-13-review-zwttdunt.diff`. CompleteWorkspacePassesAndRemainsUnchangedAsync covers happy/read-only/sibling/legitimate guards; EveryRequirementFailureIsReportedAsync covers missing/malformed inputs, pins, direct references, gitlinks and forbidden patterns; InitializedNestedReferenceFailsReadOnlyAsync covers nested initialization; FrozenInventoryIsConfinedToExactHostingDirectoryAsync and arbitrary-exclusion cover inventory confinement; ReportsRenderRowsAndLeaveLegacyJsonUnchangedAsync plus PlatformManifestCommandTests cover legacy compatibility and output modes. All ran in the 97-pass output. Platform tests and four direct commands cover shipped templates and candidate behavior. Local implementation tasks are verified; the explicitly post-review publication/acceptance task remains open.

@@ -58,7 +58,8 @@ internal sealed class CustodyBindingDaprInvoker
             byte[] data = CustodyBindingContract.Encode(original);
             var request = CustodyBindingContract.Decode(data);
             if (request is null || request.Envelope.Operation is "wrap" or "unwrap"
-                || ApiRequestSize(_binding, request.Envelope.Operation, data.Length) > CustodyBindingContract.DefaultMessageBytes)
+                || ApiRequestSize(_binding, request.Envelope.Operation, data.Length) > CustodyBindingContract.DefaultMessageBytes
+                || ComponentRequestUpperBound(request.Envelope.Operation, data.Length) > CustodyBindingContract.DefaultMessageBytes)
             { return new(CustodyBindingTransportState.Refused); }
             CheckBudget();
             // Key delivery is unsupported until SDK/sidecar/component holder/buffer closure can be qualified.
@@ -79,10 +80,7 @@ internal sealed class CustodyBindingDaprInvoker
             // No retry loop. Runtime/proxy/component retry disablement still requires deployment evidence.
             BindingResponse result = await _client.InvokeBindingAsync(bindingRequest, budget.Token).WaitAsync(budget.Token).ConfigureAwait(false);
             CheckBudget();
-            if (result.Data.Length == 0 || ResponseWireSize(result.Data.Length, result.Metadata) - 5 > CustodyBindingContract.DefaultMessageBytes)
-            { return new(CustodyBindingTransportState.Unknown); }
-            if (request.Envelope.Operation == "read-original-page"
-                && ResponseWireSize(result.Data.Length, result.Metadata) >= CustodyBindingContract.MaximumPageFrameBytes)
+            if (result.Data.Length == 0 || ResponseWireSize(result.Data.Length, result.Metadata) >= CustodyBindingContract.MaximumPageFrameBytes)
             { return new(CustodyBindingTransportState.Unknown); }
             CustodyBindingContract.RejectDuplicateProperties(result.Data.Span);
             var response = JsonSerializer.Deserialize<CustodyBindingResponseV1>(result.Data.Span, CustodyBindingContract.Json);
@@ -153,13 +151,33 @@ internal sealed class CustodyBindingDaprInvoker
             && result.ReceiptId == request.Registration!.WrapReceiptId;
     }
 
-    // Exact protobuf message size for pinned InvokeBindingRequest: name=1,data=2,operation=4; metadata=3 empty.
-    // gRPC's five-byte stream prefix is separate from its protobuf message-size limit.
-    internal static int ApiRequestSize(string name, string operation, int dataLength)
-        => checked(Field(Encoding.UTF8.GetByteCount(name)) + Field(dataLength) + Field(Encoding.UTF8.GetByteCount(operation)));
+    internal const int MaximumForwardedMetadataEntries = 64;
+    internal const int MaximumForwardedMetadataBytes = 64 * 1024;
+    // Includes map-entry tags/varints, sanitized header prefixes and generated trace metadata.
+    // This is a candidate admission budget, not evidence of an installed header limiter.
+    internal const int MaximumForwardedMetadataWireBytes = MaximumForwardedMetadataBytes + MaximumForwardedMetadataEntries * 16;
 
-    internal static int ComponentRequestSize(string operation, int dataLength)
-        => checked(Field(dataLength) + Field(Encoding.UTF8.GetByteCount(operation)));
+    // Exact protobuf message size for pinned InvokeBindingRequest: name=1,data=2,operation=4; metadata=3.
+    // gRPC's five-byte stream prefix is separate from its protobuf message-size limit.
+    internal static int ApiRequestSize(string name, string operation, int dataLength, IReadOnlyDictionary<string, string>? metadata = null)
+        => checked(Field(Encoding.UTF8.GetByteCount(name)) + Field(dataLength) + Field(Encoding.UTF8.GetByteCount(operation)) + MetadataSize(metadata));
+
+    internal static int ComponentRequestSize(string operation, int dataLength, IReadOnlyDictionary<string, string>? forwardedMetadata = null)
+        => checked(Field(dataLength) + Field(Encoding.UTF8.GetByteCount(operation)) + MetadataSize(forwardedMetadata));
+
+    internal static int ComponentRequestUpperBound(string operation, int dataLength)
+        => checked(ComponentRequestSize(operation, dataLength) + MaximumForwardedMetadataWireBytes);
+
+    private static int MetadataSize(IReadOnlyDictionary<string, string>? metadata)
+    {
+        int total = 0;
+        if (metadata is not null)
+        {
+            foreach (var pair in metadata)
+            { total = checked(total + Field(checked(Field(Encoding.UTF8.GetByteCount(pair.Key)) + Field(Encoding.UTF8.GetByteCount(pair.Value))))); }
+        }
+        return total;
+    }
 
     // SDK-visible-field size only: actual data (including whitespace), visible metadata and a gRPC prefix.
     // Unknown protobuf fields/content_type may already be discarded. Full frame enforcement requires

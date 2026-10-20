@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from verify_f1 import audit, BEHAVIORAL_COVERAGE, verify_owner_capture_fixture, OWNER_CAPTURE_FIXTURE, OWNER_CAPTURE_PATH, OWNER_CAPTURE_SHA256
+from verify_f1 import audit, BEHAVIORAL_COVERAGE, verify_owner_capture_fixture, OWNER_CAPTURE_FIXTURE, OWNER_CAPTURE_PATH, OWNER_CAPTURE_SHA256, CANDIDATE_CAPTURES
 
 
 class F1EvidenceAuditTests(unittest.TestCase):
@@ -26,8 +26,18 @@ class F1EvidenceAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "approved pin"):
                 verify_owner_capture_fixture(root, changed_fixture)
 
+    def evidence(self, available=False, live=False):
+        captures = {name: {"DataBytes": values[0], "DataSha256": values[1], "ApiProtobufBytes": values[2],
+                           "ApiProtobufSha256": values[3], "GrpcFrameBytes": values[2] + 5, "SdkCalls": 1,
+                           "MaxSendMessageBytes": 134217728, "MaxReceiveMessageBytes": 1048575, "RealSidecarPathExecuted": False}
+                    for name, values in CANDIDATE_CAPTURES.items()}
+        captures.update(SidecarOrComponentExecuted=False, ProductionInvokerProfileChanged=False, DecodeCapBytes=67108864,
+                        FullManifestRequestBoundBytes=45508608, FullTransitionRequestBoundBytes=48933548,
+                        ComponentForwardedMetadataWireBudgetBytes=66560)
+        return {"DependencyAvailable": available, "LiveReady": live, "CandidateSdkCaptures": captures}
+
     def check(self, *, result="Pass", method="EmitDeterministicF1Evidence", total=None,
-              available=False, live=False, evidence=True, behavioral=True, omit=None):
+              available=False, live=False, evidence=True, behavioral=True, omit=None, mutate=None):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             xml, report = root / "tests.xml", root / "report.json"
@@ -39,13 +49,24 @@ class F1EvidenceAuditTests(unittest.TestCase):
             xml.write_text(f'<assemblies><assembly total="{count}" passed="{count}" failed="0" errors="0" skipped="0" not-run="0">'
                            f'<collection>{tests}</collection></assembly></assemblies>')
             if evidence:
-                report.write_text(json.dumps({"DependencyAvailable": available, "LiveReady": live}))
+                data = self.evidence(available, live)
+                if mutate:
+                    mutate(data)
+                report.write_text(json.dumps(data))
             return audit(xml, report)
 
     def test_passing_synthetic_report_stays_unavailable(self):
         counts, report = self.check()
         self.assertEqual(1 + sum(map(len, BEHAVIORAL_COVERAGE.values())), counts["f1Passed"])
         self.assertFalse(report["DependencyAvailable"])
+
+    def test_candidate_capture_requires_exact_bytes_hashes_one_call_and_explicit_limits(self):
+        for key, value in (("DataBytes", 1), ("ApiProtobufSha256", "0" * 64), ("SdkCalls", 2),
+                           ("MaxSendMessageBytes", 4194304), ("RealSidecarPathExecuted", True)):
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.check(mutate=lambda e: e["CandidateSdkCaptures"]["RetainedMaximumManifest"].update({key: value}))
+        with self.assertRaises(ValueError):
+            self.check(mutate=lambda e: e.pop("CandidateSdkCaptures"))
 
     def test_missing_report_cannot_use_earlier_evidence(self):
         with self.assertRaises(FileNotFoundError):

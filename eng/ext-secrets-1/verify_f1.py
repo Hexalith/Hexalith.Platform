@@ -8,6 +8,8 @@ from pathlib import Path
 import subprocess
 import xml.etree.ElementTree as ET
 
+from check_f1_packets import check_packets
+
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj"
@@ -16,10 +18,20 @@ OWNER_CAPTURE_FIXTURE = ROOT / "tests/Hexalith.Platform.Secrets.Runtime.Tests/Ow
 OWNER_CAPTURE_SHA256 = "117018c8279062487a7766c73f8443c4133e49a9b4f3c79edaceb802afda145c"
 
 
+EXPECTED_DEPENDENCIES = {"Builds": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+                         "EventStore": "c9f47dd5ba72918445dfd24a674a5b2c310589bd"}
+CANDIDATE_CAPTURES = {
+    "RetainedMaximumManifest": (24692881, "72D99146B808B66DBA54DE3D336E284E5F37E5E9D8605A8ABE85640F70EC5DBF",
+                                24692931, "50AB9B289AB78F2A6E2B70C77D6153E46D50A15A6F115DE685AFE377419CACCB"),
+    "MaximumPendingTransition": (44740912, "0EFF8B317B90E1ED456DF4DDE1C8F7D229D8186639F47EBEE9DEFC0E50490D6C",
+                                 44740962, "B37D39DFDC6E5F9FB0CCE40B89CB9EE814F1E8D97124271067EFF5DBD9DDBC38"),
+}
+
 # Explicit behavioral coverage contract; the measurement producer alone is insufficient.
 BEHAVIORAL_COVERAGE = {
     "Hexalith.Platform.Secrets.Runtime.Tests.CustodyBindingContractTests": (
         "PinUnpinAndExactReadOnlyLookupRetainOriginalIdentityAndDigest",
+        "PrivateProofFieldsAreBoundedWithoutChangingOwnerIdentity",
         "CustodyMetadataRetainsExistingUtf8ByteBoundsIndependently",
         "ManifestRejectsReversedDispatchAndInvalidJwsUnicodeIndependently",
         "ContradictoryWrapRegistrationEnvelopeIsRejected",
@@ -35,6 +47,8 @@ BEHAVIORAL_COVERAGE = {
         "CancellationAtCompletedSendBoundariesCannotExposeAResult",
         "PageSourceChecksCancellationBeforeFactoryAndAfterCompletedFactory",
         "ActualPinnedSdkSerializesRawBytesOnceWithoutJsonByteArrayBase64Wrapping",
+        "ForwardedMetadataIsAccountedSeparatelyAndCandidateSettingsDoNotOpenInvoker",
+        "ForwardedMetadataReserveRefusesNearDefaultRequestBeforeSdkSend",
         "LostCancelledOrAmbiguousSdkResultIsUnknownWithOneAttempt",
         "MissingCurrentAuthorityUnsupportedKeyDeliveryAndOversizeRefuseBeforeSdkSend",
         "DistinctAnchorPhasesBindExactBytesAndRequireSeparateRecoveryAuthority",
@@ -103,6 +117,20 @@ def audit(xml_path, evidence_path):
     # Synthetic checks cannot ever authorize a physical or Live claim.
     if evidence.get("DependencyAvailable") is not False or evidence.get("LiveReady") is not False:
         raise ValueError("F1 evidence must explicitly leave dependency and Live unavailable")
+    captures = evidence.get("CandidateSdkCaptures", {})
+    for name, (data_bytes, data_hash, api_bytes, api_hash) in CANDIDATE_CAPTURES.items():
+        capture = captures.get(name, {})
+        expected = {"DataBytes": data_bytes, "DataSha256": data_hash, "ApiProtobufBytes": api_bytes,
+                    "ApiProtobufSha256": api_hash, "GrpcFrameBytes": api_bytes + 5, "SdkCalls": 1,
+                    "MaxSendMessageBytes": 134217728, "MaxReceiveMessageBytes": 1048575}
+        if any(type(capture.get(key)) is not type(value) or capture.get(key) != value for key, value in expected.items()):
+            raise ValueError("Missing or changed complete candidate SDK capture: " + name)
+        if capture.get("RealSidecarPathExecuted") is not False:
+            raise ValueError("Candidate SDK serialization cannot establish a sidecar path")
+    if (captures.get("SidecarOrComponentExecuted") is not False or captures.get("ProductionInvokerProfileChanged") is not False
+            or captures.get("DecodeCapBytes") != 67108864 or captures.get("FullManifestRequestBoundBytes") != 45508608
+            or captures.get("FullTransitionRequestBoundBytes") != 48933548 or captures.get("ComponentForwardedMetadataWireBudgetBytes") != 66560):
+        raise ValueError("Candidate bounds or unqualified transport claims changed")
     return {"total": total, "passed": total, "f1Passed": len(f1_tests), "behavioralMethodsCovered": len(required)}, evidence
 
 
@@ -117,9 +145,13 @@ def run(builds, eventstore, artifacts, output):
         if git(root, "status", "--porcelain"):
             raise ValueError(f"{name} source dependency must be clean")
         inputs[name] = {"root": str(root), "commit": git(root, "rev-parse", "HEAD")}
+        if inputs[name]["commit"] != EXPECTED_DEPENDENCIES[name]:
+            raise ValueError(f"{name} source dependency must match the spec revision")
     owner_capture = verify_owner_capture_fixture(eventstore)
+    packet_report = check_packets()
     output.mkdir(parents=True)
     before = snapshot(ROOT)
+    (output / "f1-packet-check.json").write_text(json.dumps(packet_report, sort_keys=True, indent=2) + "\n")
     (output / "source-sha256.json").write_text(json.dumps(before, sort_keys=True, indent=2) + "\n")
     (output / "owner-capture-source.json").write_text(json.dumps(owner_capture, sort_keys=True, indent=2) + "\n")
     evidence = output / "custody-binding-f1.json"

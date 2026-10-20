@@ -42,6 +42,15 @@ internal static class CustodyBindingContract
     internal const string Protocol = "custody-lifecycle-v1";
     internal const string LogicalRole = "interaction-custody";
     internal const int DefaultMessageBytes = 4 * 1024 * 1024;
+    internal const int MaximumRequestBytes = 64 * 1024 * 1024;
+    internal const int CandidateRequestMessageBytes = 128 * 1024 * 1024;
+    // At most 1000 target triples. Every other textual occurrence fits a deliberately
+    // over-counted 128 * 4096 UTF-16 units; signed canonical bytes add their Base64 size.
+    // 1 MiB covers property names, numeric tokens, signatures, JWS and punctuation.
+    internal const int MaximumManifestRequestBound = 1000 * (3 * 2048 * 6 + 256)
+        + 128 * 4096 * 6 + 4 * ((128 * 4096 * 6 + 2) / 3) + 1024 * 1024;
+    internal const int MaximumTransitionRequestBound = 4 * ((RecoverableAnchoredState.MaximumPendingBytes + 2) / 3)
+        + 128 * 4096 * 6 + 1024 * 1024;
     internal const int MaximumPageBytes = 256 * 1024;
     internal const int MaximumPageFrameBytes = 1024 * 1024;
     // A complete value-free original has <=1000 receipts, each with five <=2048 UTF-16 strings
@@ -86,14 +95,16 @@ internal static class CustodyBindingContract
     internal static byte[] Encode(CustodyBindingRequestV1 request)
     {
         if (!Validate(request)) { throw new ArgumentException("Invalid closed custody binding request."); }
-        return JsonSerializer.SerializeToUtf8Bytes(request, Json);
+        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(request, Json);
+        if (bytes.Length > MaximumRequestBytes) { throw new ArgumentException("Custody request exceeds the private decode cap."); }
+        return bytes;
     }
 
     internal static CustodyBindingRequestV1? Decode(ReadOnlySpan<byte> bytes)
     {
         try
         {
-            if (bytes.Length is 0 or > MaximumOriginalBytes) { return null; }
+            if (bytes.Length is 0 or > MaximumRequestBytes) { return null; }
             RejectDuplicateProperties(bytes);
             var request = JsonSerializer.Deserialize<CustodyBindingRequestV1>(bytes, Json);
             return request is not null && Validate(request) ? request : null;
@@ -130,6 +141,7 @@ internal static class CustodyBindingContract
                 || p.AuthorityIncarnation != e.Enrollment.AuthorityIncarnation || p.TenantId != e.TenantId
                 || p.Action != e.Operation || p.ExpectedCustodyRevision != e.ExpectedCustodyRevision || p.CheckpointDigest != e.CheckpointDigest
                 || !Digest(p.TargetVectorDigest) || p.Signature is not { Length: > 0 and <= 8192 }
+                || !OptionalText(p.HoldId) || !OptionalText(p.DispatchReceiptId) || !OptionalText(p.ProtectionReservationReceiptId)
                 || p.DispatchRevision < 0 || !Pair(p.GuardRevision, p.GuardReceiptId) || !Pair(p.ReleaseGuardRevision, p.ReleaseGuardReceiptId)
                 || e.RequestDigest != OriginalRequestDigest(r)) { return false; }
             int branches = (r.Registration is null ? 0 : 1) + (r.Manifest is null ? 0 : 1) + (r.Transition is null ? 0 : 1) + (r.Page is null ? 0 : 1);
@@ -182,6 +194,7 @@ internal static class CustodyBindingContract
         catch (Exception ex) when (ex is ArgumentException or NullReferenceException or OverflowException) { return false; }
     }
 
+    private static bool OptionalText(string? value) => value is null || Text(value);
     private static bool Pair(long? revision, string? receipt) => revision is null ? receipt is null : revision > 0 && Text(receipt);
     private static bool ValidKeyUse(CustodyBindingKeyUseV1? k, CustodyKeyRegistration r) => k is not null && Text(k.KeyUseLeaseId)
         && Text(k.DeliveryAttemptId) && Text(k.RecipientProcessIncarnation) && Text(k.TransportIncarnation)

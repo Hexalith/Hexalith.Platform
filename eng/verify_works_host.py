@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import os
+import socket
 from pathlib import Path
 import subprocess
 import tempfile
@@ -13,6 +14,7 @@ import re
 import xml.etree.ElementTree as ET
 import zipfile
 
+import isolated_daprd
 
 from verify_works_producer import qualify_runtime_source, runtime_source_snapshot, source_files
 
@@ -323,7 +325,7 @@ def require_platform_composition(record, literals):
     return observed
 
 
-def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None):
+def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None):
     """Bind target starts and the deliberate retained-host rollback to their exact artifacts."""
     assembly_version = version + ".0"
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
@@ -333,6 +335,10 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
     if not any("works-ha" in {module.get("resource") for module in record.get("runtimeModules", [])} for record in target):
         raise ValueError("No platform-target start bound the independent works-ha replica module")
     for record in records:
+        if control_plane_ports is not None and record.get("controlPlanePorts") != control_plane_ports:
+            raise ValueError("A live start did not bind the run-owned control-plane ports")
+        if control_plane_ports is not None and record.get("dependencyBuildsSuppressed") is not True:
+            raise ValueError("A live start did not preserve the serially prebuilt dependency outputs")
         binary = Path(record["assembly"])
         if binary.parent.name != "release":
             raise ValueError("A qualifying host must use the selected Release deployment output")
@@ -806,6 +812,35 @@ def require_published_runtime_source(snapshot, published_producers):
             "checkoutCommit": snapshot["commit"], "matchesPublishedProducer": True}
 
 
+def select_control_plane_ports():
+    """Choose distinct loopback ports free in both address families without touching foreign fleets."""
+    listeners = []
+    try:
+        selected = {}
+        for name in ("sentry", "placement", "scheduler"):
+            for _ in range(100):
+                ipv4 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                ipv6 = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                try:
+                    ipv4.bind(("127.0.0.1", 0))
+                    port = ipv4.getsockname()[1]
+                    ipv6.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 1)
+                    ipv6.bind(("::1", port))
+                except OSError:
+                    ipv4.close()
+                    ipv6.close()
+                    continue
+                listeners.extend((ipv4, ipv6))
+                selected[name] = port
+                break
+            else:
+                raise ValueError("No free dual-stack loopback port for the owned " + name)
+        return selected
+    finally:
+        for listener in listeners:
+            listener.close()
+
+
 def run_verification(args):
     platform = Path(__file__).resolve().parents[1]
     works = args.works_root.resolve()
@@ -880,9 +915,9 @@ def run_verification(args):
         summary["fixtureSources"] = fixture_sources(works)
         summary["verifierSha256"] = sha256(Path(__file__))
         summary["verifierHelpers"] = {name: sha256(Path(__file__).with_name(name)) for name in
-            ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py"]}
+            ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py", "isolated_daprd.py", "test_isolated_daprd.py"]}
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer", "test_isolated_daprd"], platform / "eng")
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", "--artifacts-path", str(artifacts / "agents-full")],
             expected_refusal="DependencyNotAvailable: EXT-HOST-1")
         summary["checks"]["agentsFull"] = "expected-unavailable; not a Works prerequisite"
@@ -986,11 +1021,23 @@ def run_verification(args):
             summary["status"] = "preparation-passed; parity-incomplete"
             return 0
         environment = os.environ.copy()
+        control_plane_ports = select_control_plane_ports()
+        summary["controlPlanePorts"] = control_plane_ports
+        isolated_runtime = artifacts / "isolated-daprd"
+        summary["isolatedRuntime"] = isolated_daprd.prepare(isolated_runtime,
+            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
         runtime_environment = {"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
             "WORKS_PLATFORM_ROOT": str(platform), "WORKS_PLATFORM_WORKS_ROOT": str(works),
             "Platform__Works__SourceRoot": str(works), "Platform__Identity__Enabled": "false",
             "Version": version, "MinVerVersionOverride": version,
             "ArtifactsPath": str(runtime_output), "UseArtifactsOutput": "true", "WORKS_PLATFORM_RUNTIME_ARTIFACTS": str(runtime_output),
+            # Every dependency was built serially above. Parallel dotnet-run resource starts must not
+            # rewrite those shared outputs; the final artifact hash checks remain authoritative.
+            "BuildProjectReferences": "false",
+            "WORKS_PLATFORM_SENTRY_PORT": str(control_plane_ports["sentry"]),
+            "WORKS_PLATFORM_PLACEMENT_PORT": str(control_plane_ports["placement"]),
+            "WORKS_PLATFORM_SCHEDULER_PORT": str(control_plane_ports["scheduler"]),
+            "WORKS_PLATFORM_DAPRD_RUNTIME_PATH": str(isolated_runtime),
             "UseHexalithProjectReferences": "false", "UseNuGetDeps": "true",
             "HexalithEventStoreRoot": str(runtime_sdk), "HexalithEventStoreVersion": version, "HexalithAspireHostingDaprVersion": adapter,
             "Platform__Works__EventStoreSourceRoot": str(runtime_sdk), "WORKS_PLATFORM_SDK_SOURCE_ROOT": str(runtime_sdk),
@@ -1016,7 +1063,9 @@ def run_verification(args):
         summary["checks"]["liveProjection"] = require_passed_tests(projection_xml, ["ActualPlatformSharedRebuildAndConcurrentCatchUpPreserveCompleteFamily"])
         summary["actualStarts"] = verify_host_records(artifacts / "host-starts.jsonl", assembly, platform, version,
             runtime_artifacts=summary["runtimeArtifacts"], host_runtime=host_runtime,
-            composition_literals=platform_composition_literals(platform / "src/Hexalith.Platform.Composition/WorksPreviewModel.cs"))
+            composition_literals=platform_composition_literals(platform / "src/Hexalith.Platform.Composition/WorksPreviewModel.cs"),
+            control_plane_ports=control_plane_ports)
+        summary["isolatedRuntimeEvidence"] = isolated_daprd.verify(isolated_runtime, summary["isolatedRuntime"], summary["actualStarts"])
         for row in summary["rows"].values():
             row["targetCommands"] = [entry for entry in summary["commands"] if entry["name"] in ("platform-recovery", "platform-historical", "platform-ha", "platform-projection")]
         for source in summary["sourceProducers"].values():
