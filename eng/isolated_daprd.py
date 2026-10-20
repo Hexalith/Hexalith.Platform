@@ -21,7 +21,8 @@ def prepare(directory, runtime, sentry_port):
     if type(sentry_port) is not int or not 1024 <= sentry_port <= 65535:
         raise ValueError("An isolated unprivileged Sentry port is required")
     directory.mkdir(parents=True, exist_ok=False)
-    shim = directory / "daprd"
+    shim = directory / ".dapr/bin/daprd"
+    shim.parent.mkdir(parents=True)
     shutil.copyfile(Path(__file__), shim)
     shim.chmod(0o700)
     binding = {"runtime": str(runtime), "runtimeSha256": digest(runtime), "shimSha256": digest(shim),
@@ -57,7 +58,7 @@ def execute(directory, arguments, executor=os.execv):
         raise ValueError("Invalid isolated Sentry endpoint")
     if not runtime.is_absolute() or runtime.resolve() != runtime or digest(runtime) != binding["runtimeSha256"]:
         raise ValueError("The original daprd differs from the selected runtime")
-    if digest(directory / "daprd") != binding["shimSha256"]:
+    if digest(directory / ".dapr/bin/daprd") != binding["shimSha256"]:
         raise ValueError("The isolated launch adapter changed")
     result = translated(arguments, endpoint)
     if "--enable-mtls" in result:
@@ -80,7 +81,7 @@ def execute(directory, arguments, executor=os.execv):
 def verify(directory, binding, starts):
     """Bind every successful host's sidecars to the actual adapter launches and unchanged runtime."""
     directory = Path(directory)
-    if json.loads((directory / "binding.json").read_text()) != binding or digest(directory / "daprd") != binding["shimSha256"] \
+    if json.loads((directory / "binding.json").read_text()) != binding or digest(directory / ".dapr/bin/daprd") != binding["shimSha256"] \
             or digest(binding["runtime"]) != binding["runtimeSha256"]:
         raise ValueError("The isolated runtime binding changed during verification")
     launches = [json.loads(line) for line in (directory / "launches.jsonl").read_text().splitlines() if line]
@@ -102,7 +103,7 @@ def verify(directory, binding, starts):
 
 if __name__ == "__main__":
     try:
-        execute(Path(__file__).resolve().parent, sys.argv[1:])
+        execute(Path(__file__).resolve().parents[2], sys.argv[1:])
     except (OSError, ValueError, KeyError, TypeError) as error:
         print("Isolated daprd refused: " + str(error), file=sys.stderr)
         sys.exit(1)

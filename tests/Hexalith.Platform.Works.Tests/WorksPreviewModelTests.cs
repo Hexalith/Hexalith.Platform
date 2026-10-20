@@ -62,6 +62,13 @@ public sealed class WorksPreviewModelTests
         foreach (EnvironmentCallbackAnnotation callback in works.Annotations.OfType<EnvironmentCallbackAnnotation>())
             await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, works, environment,
                 TestContext.Current.CancellationToken));
+        environment["Dapr__DeclarativeSubscriptions"].ShouldBe("true");
+        IDaprSidecarResource sidecar = works.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+        DaprSidecarOptions options = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+        string subscription = File.ReadAllText(Path.Combine(options.ResourcesPaths!.Single(), "subscription.work.events.yaml"));
+        subscription.ShouldContain("deadLetterTopic: deadletter.work.events");
+        subscription.ShouldContain("default: /work/events");
+        subscription.ShouldContain("  - works");
         environment["Works__Projection__UseSdkDelivery"].ShouldBe("true");
         environment["Works__Recovery__UseSdkRuntime"].ShouldBe("true");
         environment["Authentication__Workload__Audience"].ShouldBe("works");

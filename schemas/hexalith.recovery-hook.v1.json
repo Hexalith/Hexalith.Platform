@@ -27,11 +27,6 @@
       "maxLength": 128,
       "pattern": "^[a-z0-9][a-z0-9._:-]*(?![\\s\\S])"
     },
-    "token": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 256
-    },
     "digest": {
       "type": "string",
       "pattern": "^sha256:[a-f0-9]{64}(?![\\s\\S])"
@@ -64,7 +59,8 @@
     },
     "timestamp": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt][0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([Zz]|[+-][0-9]{2}:[0-9]{2})(?![\\s\\S])"
     },
     "positionDescriptor": {
       "type": "object",
@@ -399,6 +395,32 @@
               ]
             }
           }
+        },
+        {
+          "if": {
+            "required": [
+              "phase"
+            ],
+            "properties": {
+              "phase": {
+                "enum": [
+                  "fence",
+                  "integrity",
+                  "external-effect-reconciliation"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "implementation": {
+                "enum": [
+                  "implemented",
+                  "missing"
+                ]
+              }
+            }
+          }
         }
       ]
     },
@@ -497,7 +519,8 @@
                     "const": "admission-purge"
                   }
                 }
-              }
+              },
+              "maxContains": 1
             },
             {
               "contains": {
@@ -510,7 +533,8 @@
                     "const": "credentials"
                   }
                 }
-              }
+              },
+              "maxContains": 1
             },
             {
               "contains": {
@@ -523,7 +547,8 @@
                     "const": "rebuild"
                   }
                 }
-              }
+              },
+              "maxContains": 1
             },
             {
               "contains": {
@@ -536,7 +561,8 @@
                     "const": "integrity"
                   }
                 }
-              }
+              },
+              "maxContains": 1
             },
             {
               "contains": {
@@ -549,14 +575,63 @@
                     "const": "external-effect-reconciliation"
                   }
                 }
-              }
+              },
+              "maxContains": 1
             }
           ]
         },
         "workloadId": {
           "$ref": "#/$defs/id"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "positionDefinitions"
+            ],
+            "properties": {
+              "positionDefinitions": {
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "recoveryClass"
+                  ],
+                  "properties": {
+                    "recoveryClass": {
+                      "const": "rebuild-only"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "hooks": {
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "phase",
+                    "implementation"
+                  ],
+                  "properties": {
+                    "phase": {
+                      "const": "rebuild"
+                    },
+                    "implementation": {
+                      "enum": [
+                        "implemented",
+                        "missing"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "issuer": {
       "type": "object",
@@ -1308,6 +1383,96 @@
             "properties": {
               "reopeningEligible": {
                 "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "succeeded"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "integrity": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed",
+                      "not-run"
+                    ]
+                  }
+                }
+              },
+              "externalEffects": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "reconciled",
+                      "not-run",
+                      "not-applicable"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "reopeningEligible"
+            ],
+            "properties": {
+              "reopeningEligible": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "integrity": {
+                "properties": {
+                  "status": {
+                    "const": "passed"
+                  }
+                }
+              },
+              "externalEffects": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "reconciled",
+                      "not-applicable"
+                    ]
+                  }
+                }
+              },
+              "replay": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "complete",
+                      "pending",
+                      "not-applicable"
+                    ]
+                  }
+                }
+              },
+              "achievedPositions": {
+                "items": {
+                  "properties": {
+                    "targetReached": {
+                      "const": true
+                    }
+                  }
+                }
               }
             }
           }

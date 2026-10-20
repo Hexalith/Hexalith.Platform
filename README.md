@@ -59,15 +59,8 @@ The canonical [candidate evidence and attachment policy v1](docs/contracts/candi
 fixes committed PR merge-result evidence, prohibits reuse across decisions and
 sets finite attachment holds. This publishes Platform policy for downstream
 descriptor and runner adoption; it does not establish implemented support or
-change the accepted tool pin. Builds adoption and Platform integration
-qualification remain prerequisites to accepting evidence or attachments under it.
-
-From the Platform root, restore and check the pinned tool with:
-
-```bash
-dotnet tool restore
-dotnet tool run hexalith-module --version
-```
+change the accepted tool pin. Accepting attachments under it requires Builds
+adoption; accepting evidence also requires a Platform-accepted, integration-qualified tool.
 
 ## Parties reference domain
 

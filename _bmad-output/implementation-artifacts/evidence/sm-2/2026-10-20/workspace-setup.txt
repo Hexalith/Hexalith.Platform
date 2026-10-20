@@ -1,0 +1,52 @@
+$ ['git', 'rev-parse', 'HEAD']
+4f036ced45aa40700948c19949bb874881c960b5
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform'...
+done.
+
+$ ['git', 'checkout', '--detach', '4f036ced45aa40700948c19949bb874881c960b5']
+HEAD is now at 4f036ce build(platform): merge approved adoption records
+
+$ ['git', 'config', 'submodule.references/Hexalith.AI.Tools.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.AI.Tools']
+
+$ ['git', 'config', 'submodule.references/Hexalith.Builds.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Builds']
+
+$ ['git', 'config', 'submodule.references/Hexalith.Commons.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Commons']
+
+$ ['git', 'config', 'submodule.references/Hexalith.PolymorphicSerializations.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations']
+
+$ ['git', 'config', 'submodule.references/Hexalith.EventStore.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore']
+
+$ ['git', 'config', 'submodule.references/Hexalith.Tenants.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants']
+
+$ ['git', 'config', 'submodule.references/Hexalith.Memories.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Memories']
+
+$ ['git', 'config', 'submodule.references/Hexalith.McpCli.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli']
+
+$ ['git', '-c', 'submodule.recurse=false', '-c', 'protocol.file.allow=always', 'submodule', 'update', '--init', '--checkout', '--', 'references/Hexalith.AI.Tools', 'references/Hexalith.Builds', 'references/Hexalith.Commons', 'references/Hexalith.PolymorphicSerializations', 'references/Hexalith.EventStore', 'references/Hexalith.Tenants', 'references/Hexalith.Memories', 'references/Hexalith.McpCli']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.AI.Tools'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Builds'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Commons'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.EventStore'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Memories'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.PolymorphicSerializations'...
+done.
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Tenants'...
+done.
+Submodule path 'references/Hexalith.AI.Tools': checked out '3f194e17174994d308ec84af9ee2b5aa68674d0d'
+Submodule path 'references/Hexalith.Builds': checked out 'fff4a212180d8cd1c5c0759655a9bc4fb6963c45'
+Submodule path 'references/Hexalith.Commons': checked out '5c23c818f639c5bb3175f964c5549440bd5b876d'
+Submodule path 'references/Hexalith.EventStore': checked out 'f6b545cd02632f662136d0b4b8e6952baa7afec3'
+Submodule path 'references/Hexalith.McpCli': checked out '9354dc08176744c75c2ddb61d924c0948b373b98'
+Submodule path 'references/Hexalith.Memories': checked out '35df7e2080c369003cacac12f5b44117d7f3ed35'
+Submodule path 'references/Hexalith.PolymorphicSerializations': checked out '221ac4592ba908ae7661ba1fa9e2d1fcc23baee0'
+Submodule path 'references/Hexalith.Tenants': checked out '9a94131a26d0c5d80d5540706e267ee123d54b68'
+

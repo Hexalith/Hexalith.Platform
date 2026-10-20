@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import tempfile
+import subprocess
 import unittest
 
 import isolated_daprd
@@ -40,7 +41,7 @@ class IsolatedDaprdTests(unittest.TestCase):
                 isolated_daprd.execute(self.directory, arguments, executor=lambda *_: self.fail("Unexpected execution"))
 
     def test_runtime_and_adapter_substitution_are_refused(self):
-        for path in [self.runtime, self.directory / "daprd"]:
+        for path in [self.runtime, self.directory / ".dapr/bin/daprd"]:
             original = path.read_bytes()
             path.write_bytes(original + b"changed")
             with self.subTest(path=path), self.assertRaises(ValueError):
@@ -52,6 +53,16 @@ class IsolatedDaprdTests(unittest.TestCase):
         isolated_daprd.execute(self.directory, ["--version"], executor=lambda *args: calls.append(args))
         self.assertEqual(calls, [(str(self.runtime), [str(self.runtime), "--version"])])
         self.assertFalse((self.directory / "launches.jsonl").exists())
+
+    def test_cli_runtime_home_layout_executes_the_original_binary(self):
+        runtime = self.root / "executable-daprd"
+        runtime.write_text("#!/bin/sh\nprintf '%s\\n' \"$@\"\n")
+        runtime.chmod(0o700)
+        home = self.root / "cli-runtime-home"
+        isolated_daprd.prepare(home, runtime, 61001)
+        shim = home / ".dapr/bin/daprd"
+        result = subprocess.run([str(shim), *self.arguments], check=True, capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.stdout.splitlines(), [*self.arguments[:-1], "127.0.0.1:61001"])
 
     def test_every_successful_start_must_match_an_actual_bound_sidecar_launch(self):
         isolated_daprd.execute(self.directory, self.arguments, executor=lambda *_: None)

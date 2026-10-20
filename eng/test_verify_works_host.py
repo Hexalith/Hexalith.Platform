@@ -331,6 +331,22 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 self.verify(root, assembly, record, changed)
 
+    def test_retained_startup_preflight_cannot_supply_platform_or_rollback_parity(self):
+        root = self.directory()
+        assembly, record = self.host_record(root)
+        retained = root / 'runtime/bin/Hexalith.Works.AppHost/release/Hexalith.Works.AppHost.dll'
+        retained.parent.mkdir(parents=True)
+        retained.write_bytes(b'exact historical host')
+        record.update(role='retained-rollback', assembly=str(retained), sha256=sha256(retained))
+        path = root / 'preflight.jsonl'
+        path.write_text(json.dumps(record) + '\n')
+        self.assertEqual(len(verify_host_records(path, assembly, root, VERSION,
+            retained_assembly=retained, retained_preflight=True)), 1)
+        with self.assertRaisesRegex(ValueError, 'No actual Platform starts'):
+            verify_host_records(path, assembly, root, VERSION, retained_assembly=retained)
+        with self.assertRaisesRegex(ValueError, 'exactly one'):
+            verify_host_records(path, assembly, root, VERSION, retained_preflight=True)
+
     def test_mixed_or_missing_fleet_configuration_cannot_qualify(self):
         root = self.directory()
         release, record = self.host_record(root, ha=True)
@@ -774,6 +790,25 @@ class WorksEvidenceGateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'differs from its selected public archive'):
             require_archive_assembly(artifact, assembly)
 
+    def test_canonical_inventory_binds_full_revision_and_ordinary_test_changes(self):
+        root = self.directory()
+        fixture = root / 'tests' / 'fixture.cs'
+        fixture.parent.mkdir()
+        fixture.write_text('original fixture')
+        helper = root / 'eng' / 'helper.py'
+        helper.parent.mkdir()
+        helper.write_text('helper')
+        head = 'a' * 40
+        names = b'tests/fixture.cs\0eng/helper.py\0_bmad-output/evidence.json\0'
+        with patch('verify_works_host.subprocess.check_output', side_effect=[names, head + '\n', names, head + '\n']):
+            before = verify_works_host.canonical_source_snapshot(root)
+            fixture.write_text('changed fixture')
+            after = verify_works_host.canonical_source_snapshot(root)
+        self.assertEqual(before['commit'], head)
+        self.assertEqual(set(before['sourceFiles']), {'tests/fixture.cs', 'eng/helper.py'})
+        self.assertNotEqual(before['inventorySha256'], after['inventorySha256'])
+        self.assertNotEqual(before['sourceFiles']['tests/fixture.cs'], after['sourceFiles']['tests/fixture.cs'])
+
     def test_fixture_inventory_is_bound_before_the_first_command(self):
         works = self.directory()
         artifacts = self.directory() / 'evidence'
@@ -788,6 +823,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.require_host_package_pins', return_value={}), \
                 patch('verify_works_host.source_snapshot', return_value=snapshot), \
                 patch('verify_works_host.fixture_sources', return_value=fixtures), \
+                patch('verify_works_host.canonical_source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
                 patch('verify_works_host.subprocess.run', side_effect=command):
             self.assertEqual(verify_works_host.run_verification(args), 1)
         self.assertIn('pre-command inventory', json.loads((artifacts / 'ledger.json').read_text())['failure'])

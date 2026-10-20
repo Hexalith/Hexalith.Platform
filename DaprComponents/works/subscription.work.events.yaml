@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: works-domain-events
+spec:
+  pubsubname: pubsub
+  topic: work.events
+  routes:
+    default: /work/events
+  deadLetterTopic: deadletter.work.events
+scopes:
+  - works

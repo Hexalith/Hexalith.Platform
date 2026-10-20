@@ -18,10 +18,14 @@ module recovery qualification or runtime epoch enforcement.
 Every release record MUST bind the exact recovery contract version used by its
 module declarations, requests and results. Consumers MUST select that version
 explicitly; they MUST NOT silently select a latest version or fall back to another
-major. Unknown versions fail closed. The major in the schema filename and endpoint
-identifies the wire family; `contractVersion` selects the exact contract within it.
-Published versions and schemas are immutable. A changed contract needs a new exact
-version and its own conformance evidence, even if its wire family stays the same.
+major. Unknown versions fail closed. The endpoint major identifies the wire family;
+`contractVersion` selects the exact contract within it. The schema for exactly
+`1.0.0` is `schemas/hexalith.recovery-hook.v1.json`. Every later exact version
+publishes its own schema as `schemas/hexalith.recovery-hook.<major>.<minor>.<patch>.json`
+with a matching `$id`, and consumers select the schema by exact `contractVersion`.
+A version and its schema become immutable when the first release record binds
+them. After that, a changed contract needs a new exact version and its own
+conformance evidence, even if its wire family stays the same.
 
 The in-place entry point and pinned off-site recovery workflows MUST support every
 version referenced by any rollback target or retained recovery point's release.
@@ -57,10 +61,15 @@ identity. Within a retry, arrays MUST retain their original representation.
 `targetPositions` MUST contain exactly the cut positions owned by the invoked
 module. Every result MUST report exactly those `achievedPositions`. A reported
 position MUST preserve the target's full typed descriptor. `targetReached: true`
-requires the exact target value and relation to the cut. An owner MAY report an
-earlier achieved value with `targetReached: false`; that outcome cannot succeed.
-The owner, rather than this generic validator, verifies any earlier boundary.
-The cut's own target may already be `before-cut`.
+requires the exact target value and relation to the cut. A position is due from
+the phase that reaches it: `authoritative-restore` and `live-authority-only`
+positions from the module's first hook, `rebuild-only` positions from `rebuild`.
+A successful result MUST have reached every due position. Before `rebuild`, a
+result reports a `rebuild-only` position with the owner's current value and
+`targetReached: false`. An owner MAY report an earlier value for a due position
+only with `targetReached: false`; that outcome cannot succeed. The owner, rather
+than this generic validator, verifies any earlier boundary. The cut's own target
+may already be `before-cut`.
 
 ## Declarations and capabilities
 
@@ -68,18 +77,23 @@ A declaration binds `releaseId` (an immutable SHA-256 release identity), `module
 its owning `workloadId`, module `dependencies`, position definitions,
 `reopenBeforeReplay`, the internal `endpoint`, `survivingAuthorities` and `hooks`.
 Every module dependency MUST exist in the release declaration set. Module and
-task dependency graphs MUST be acyclic. Module, hook, authority, position, task,
-delivery and result IDs MUST be unique in their documented scope.
+task dependency graphs MUST be acyclic. `moduleId`, `positionId` and `authorityId`
+are unique across the release declaration set, so each surviving authority has
+exactly one owning module, fence hook and reissue procedure. `hookId` is unique
+within its module. `taskId` and `invocationId` are unique within the attempt; a
+result is identified by its `invocationId`.
 
 Each module MUST declare exactly one hook for each ordinary phase below. Multiple
 fence hooks are permitted, one for each surviving authority. A hook capability
 declares `implementation` as `implemented`, `missing` or `not-applicable`.
-The last two require a non-secret `reasonCode`. `missing` ALWAYS leaves the
-attempt unqualified; an empty result set or a placeholder MUST NOT imply support.
+The last two require a non-secret `reasonCode`. A `missing` hook ALWAYS leaves
+an attempt that requires it unqualified; in-place attempts do not require fence
+hooks. An empty result set or a placeholder MUST NOT imply support.
 `not-applicable` is an explicit owner declaration, consumed and qualified with
 that release. Integrity, reconciliation and fence hooks MUST NOT be marked
-`not-applicable`. A reconciliation hook with no external operations can report
-`externalEffects.status: not-applicable` with an evidence reference.
+`not-applicable`, and neither may the `rebuild` hook of a module that owns a
+`rebuild-only` position. A reconciliation hook with no external operations can
+report `externalEffects.status: not-applicable` with an evidence reference.
 
 An authority entry binds `authorityId`, its `fenceHookId` and an owner-maintained
 `reissueProcedureRef`. The fence hook MUST name that same authority. Those
@@ -183,8 +197,10 @@ unavailable current authority with 503. Refusal responses MUST use
 `Content-Type: text/plain; charset=utf-8` and exactly the stable, non-secret reason
 code as their body, with no surrounding JSON, trailing newline, reflected input or
 credential details. For example, an epoch conflict can return HTTP 409 with that
-content type and the exact body `stale-epoch`. Runtime
-implementations MUST fail closed when authoritative state is unavailable.
+content type and the exact body `stale-epoch`. Reason codes use the ID character
+set, stay stable within an implementation and are diagnostics only; executors
+MUST branch on the HTTP status alone. Runtime implementations MUST fail closed
+when authoritative state is unavailable.
 
 ## Retry identity and atomic commit obligations
 
@@ -232,25 +248,29 @@ external-effect reconciliation, replay state and `reopeningEligible`.
 requires a stable `reasonCode` and `reopeningEligible: false`. Missing
 implementations are unqualified. Missing results and unfinished required work
 are incomplete. Failed integrity and unknown integrity/external-operation states
-MUST NOT establish success. A successful ordinary phase may report gate fields
-`not-run` when those later phases have not executed; a successful integrity hook
-requires `integrity.status: passed`, and a successful reconciliation hook requires
+MUST NOT establish success. Each gate belongs to a phase: replay to `rebuild`,
+integrity to `integrity` and external effects to `external-effect-reconciliation`.
+A result from an earlier phase MUST report that gate `not-run`, because its hook
+has not observed it. A successful integrity hook requires
+`integrity.status: passed`, and a successful reconciliation hook requires
 `externalEffects.status: reconciled` or evidenced `not-applicable`.
 
 `replay.status` is `complete`, `pending`, `not-run` or `not-applicable`. Complete,
-pending and not-applicable states require evidence references. A rebuild hook
-cannot succeed with replay pending unless its release declaration explicitly
-permits `reopenBeforeReplay: true`. This exception requires every declared target
-already reached, integrity passed, external effects reconciled and documented
-owner evidence that pending replay is safe after reopening. It does not waive
-erasure, admission, external-effect or other gates. With the declaration false,
-unfinished required replay remains incomplete and blocks reopening.
+pending and not-applicable states require evidence references. Successful rebuild
+and reconciliation hooks MUST report replay state. A hook cannot succeed with
+replay pending unless its release declaration explicitly permits
+`reopenBeforeReplay: true`. The module's final reconciliation result carries this
+exception and requires every declared target reached, integrity passed, external
+effects reconciled and documented owner evidence that pending replay is safe after
+reopening. It does not waive erasure, admission, external-effect or other gates.
+With the declaration false, unfinished required replay remains incomplete and
+blocks reopening.
 
-`reopeningEligible: true` is an advisory module gate: it requires succeeded status,
-all targets reached, passed integrity, reconciled or evidenced not-applicable
-external effects, and complete/not-applicable replay or the explicit pending
-replay exception. Each module's final reconciliation result MUST summarize those
-gates for that module. It MUST NOT contradict earlier task evidence or hide an
+`reopeningEligible: true` is an advisory module gate that only the module's final
+reconciliation result may set: it requires succeeded status, all targets reached,
+passed integrity, reconciled or evidenced not-applicable external effects, and
+complete/not-applicable replay or the explicit pending replay exception. That
+result MUST summarize those gates for the module. It MUST NOT contradict earlier task evidence or hide an
 unresolved failure. Evidence references identify owner-maintained proof, not
 proof verified by JSON Schema. A failed attempt stays failed unless an explicitly
 permitted retry resolves that task and produces fresh gate evidence.

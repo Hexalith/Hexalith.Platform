@@ -41,7 +41,10 @@ uv run --locked --project eng/recovery-contract python eng/recovery-contract/val
 ```
 
 That mode reports `outcome: shape-valid`, with both reopening eligibility and
-runtime qualification false. It does not check cross-record semantics.
+runtime qualification false. The schema carries every rule a single record can
+express. ID uniqueness within arrays, phase-dependent rules (position due phases,
+premature gate and reopening claims) and all cross-record semantics need full
+chain validation.
 
 The CLI writes one compact JSON report to stdout. Success is deterministic;
 diagnostics contain stable codes and never reflect JSON values, property names,
@@ -59,9 +62,11 @@ credential references and binding metadata, never credential values. The valid
 chain includes all three recovery classes, scoped opaque EventStore/Memories
 positions, dependency ordering and a custody fence. `declaration.json`,
 `invocation.json` and `result.json` are individual shape examples extracted from
-that chain. `invalid-shape.json`, `incomplete-chain.json`, `failed-chain.json` and
-`takeover-context.json` exercise the four matrix outcomes. Tests also derive
-in-place, retry, replay-exception, cycle and mismatch cases from the valid chain.
+that chain. The matrix rows map to fixtures as follows: `valid-chain.json` is the
+conforming chain, `invalid-shape.json` the invalid shape, `takeover-context.json`
+the authority mismatch, and `incomplete-chain.json` and `failed-chain.json` the
+incomplete recovery. Tests also derive unqualified, in-place, retry,
+replay-exception, cycle and mismatch cases from the valid chain.
 
 To exercise independent epoch takeover, replace the commit-context argument with
 `eng/recovery-contract/fixtures/takeover-context.json`; expect exit 2 and

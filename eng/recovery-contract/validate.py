@@ -23,6 +23,8 @@ PHASES = ("fence", "admission-purge", "credentials", "rebuild", "integrity",
 BINDINGS = ("contractVersion", "releaseId", "environmentId", "instanceId", "attemptId",
             "attemptKind", "epoch", "recoveryMode")
 DESCRIPTOR = ("positionId", "ownerModule", "scope", "kind", "recoveryClass", "encoding")
+GATE_PHASES = {"replay": "rebuild", "integrity": "integrity",
+               "externalEffects": "external-effect-reconciliation"}
 
 
 class Refusal(Exception):
@@ -110,6 +112,12 @@ def positions(items):
     return result
 
 
+def due(position, phase):
+    # Restored and live boundaries hold from the first hook; rebuild-only state is reached by rebuild.
+    return (position["recoveryClass"] != "rebuild-only"
+            or PHASES.index(phase) >= PHASES.index("rebuild"))
+
+
 def same_cut(left, right):
     return (left["cutId"] == right["cutId"]
             and positions(left["positions"]) == positions(right["positions"]))
@@ -157,6 +165,7 @@ def declarations_for(chain, context):
     declarations = indexed(chain["declarations"], "moduleId", "duplicate-module-id")
     cut = positions(context["cut"]["positions"])
     declared_positions = {}
+    authority_ids = set()
     for module, declaration in declarations.items():
         require(declaration["releaseId"] == context["releaseId"], "release-binding-mismatch")
         require(all(dep in declarations and dep != module for dep in declaration["dependencies"]),
@@ -168,14 +177,13 @@ def declarations_for(chain, context):
             require(name in cut and all(definition[k] == cut[name][k] for k in DESCRIPTOR),
                     "position-definition-mismatch")
             declared_positions[name] = definition
+        # The schema fixes one hook per ordinary phase and which hooks may be not-applicable.
         hooks = indexed(declaration["hooks"], "hookId", "duplicate-hook-id")
-        ordinary = [h["phase"] for h in hooks.values() if h["phase"] != "fence"]
-        require(sorted(ordinary) == sorted(PHASES[1:]), "phase-coverage-mismatch")
-        require(all(h["implementation"] != "not-applicable" for h in hooks.values()
-                    if h["phase"] in ("integrity", "external-effect-reconciliation", "fence")),
-                "required-hook-not-applicable")
         authorities = indexed(declaration["survivingAuthorities"], "authorityId",
                               "duplicate-authority-id")
+        # One owning module, fence hook and reissue procedure per surviving authority.
+        require(authority_ids.isdisjoint(authorities), "duplicate-authority-id")
+        authority_ids.update(authorities)
         fences = [h for h in hooks.values() if h["phase"] == "fence"]
         require(len(fences) == len(authorities), "fence-coverage-mismatch")
         for authority in authorities.values():
@@ -240,32 +248,29 @@ def validate_result(result, invocation, declaration, hook, commit_context):
         # Opaque encodings belong to modules; this validator never orders them.
         if item["targetReached"]:
             require(position == target, "achieved-target-mismatch")
+    # Only the final reconciliation result summarizes the module gates for reopening.
+    require(not result["reopeningEligible"] or hook["phase"] == "external-effect-reconciliation",
+            "unsafe-reopening-claim")
+    for gate, phase in GATE_PHASES.items():
+        # A hook before a gate's phase has not observed that gate.
+        if PHASES.index(hook["phase"]) < PHASES.index(phase):
+            require(result[gate]["status"] == "not-run", "premature-gate-claim")
+    # The schema refuses success with failed/unknown integrity or unknown external effects.
     integrity = result["integrity"]["status"]
     external = result["externalEffects"]["status"]
     replay = result["replay"]["status"]
-    reached = all(p["targetReached"] for p in result["achievedPositions"])
     if result["status"] == "succeeded":
-        require(reached, "success-with-unreached-position")
-        require(integrity not in ("failed", "unknown"), "success-with-uncertain-integrity")
-        require(external != "unknown", "success-with-unknown-external-effect")
-        if replay == "pending":
-            require(declaration["reopenBeforeReplay"] and integrity == "passed"
-                    and external in ("reconciled", "not-applicable"),
-                    "pending-replay-gates-not-satisfied")
+        require(all(p["targetReached"] for p in result["achievedPositions"]
+                    if due(p["position"], hook["phase"])), "success-with-unreached-position")
+        # Integrity and reconciliation hooks verify the other gates of a pending replay.
+        require(replay != "pending" or declaration["reopenBeforeReplay"], "pending-replay-not-permitted")
         if hook["phase"] == "integrity":
             require(integrity == "passed", "integrity-not-passed")
         if hook["phase"] == "external-effect-reconciliation":
             require(integrity == "passed", "final-integrity-not-passed")
             require(external in ("reconciled", "not-applicable"), "external-effects-not-reconciled")
         if hook["phase"] in ("rebuild", "external-effect-reconciliation"):
-            require(replay in ("complete", "not-applicable")
-                    or (replay == "pending" and declaration["reopenBeforeReplay"]),
-                    "rebuild-replay-incomplete")
-    eligible = (result["status"] == "succeeded" and reached and integrity == "passed"
-                and external in ("reconciled", "not-applicable")
-                and (replay in ("complete", "not-applicable")
-                     or (replay == "pending" and declaration["reopenBeforeReplay"])))
-    require(not result["reopeningEligible"] or eligible, "unsafe-reopening-claim")
+            require(replay != "not-run", "rebuild-replay-incomplete")
 
 
 def validate_chain(chain, context, commit_context):

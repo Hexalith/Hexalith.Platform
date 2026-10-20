@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace Hexalith.Platform.Composition;
 
 using Aspire.Hosting;
@@ -78,6 +80,7 @@ public static class WorksPreviewModel
         string pubSubPath = Component("pubsub.yaml");
         string configStorePath = Component("configstore.yaml");
         string sentryPath = Component("sentry.yaml");
+        _ = Component(Path.Combine("works", "subscription.work.events.yaml"));
 
         string? configuredPlacement = builder.Configuration[AspireDaprLocalServiceEndpoints.PlacementHostAddressKey];
         string? configuredScheduler = builder.Configuration[AspireDaprLocalServiceEndpoints.SchedulerHostAddressKey];
@@ -146,6 +149,7 @@ public static class WorksPreviewModel
 
         var works = builder.AddProject("works", worksProject)
             .WithHttpEndpoint()
+            .WithEnvironment("Dapr__DeclarativeSubscriptions", "true")
             .WithEnvironment("Works__Projection__UseSdkDelivery", "true")
             .WithEnvironment("Works__Recovery__UseSdkRuntime", "true")
             .WithEnvironment("Works__Query__GatewayWorkloadId", "eventstore")
@@ -164,6 +168,14 @@ public static class WorksPreviewModel
                 daprSchedulerHostAddress: schedulerAddress)
             .WithEnvironment("EventStore__CommandGateway__BaseAddress", eventStore.GetEndpoint("http"))
             .WaitFor(eventStoreResources.StateStore);
+
+        IDaprSidecarResource worksSidecar = SidecarOf(works.Resource)!;
+        DaprSidecarOptionsAnnotation options = worksSidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+        worksSidecar.Annotations.Remove(options);
+        worksSidecar.Annotations.Add(new DaprSidecarOptionsAnnotation(options.Options with
+        {
+            ResourcesPaths = (options.Options.ResourcesPaths ?? []).Append(Path.Combine(components, "works")).ToImmutableHashSet(StringComparer.Ordinal),
+        }));
 
         // Gateway startup discovers this module's protected metadata. A readiness wait in the opposite
         // direction prevents either service from starting; keep the SDK's references and sidecar wiring.

@@ -321,7 +321,7 @@ public sealed partial class PlatformAppModelTests
                 Directory.CreateDirectory(properties);
                 File.WriteAllText(Path.Combine(properties, "launchSettings.json"), "{\"profiles\":{\"http\":{\"commandName\":\"Project\",\"applicationUrl\":\"http://localhost:5010\"}}}");
             }
-            foreach (string relative in new[] { "accesscontrol.yaml", "accesscontrol.works.yaml", "accesscontrol.eventstore-admin.yaml", "accesscontrol.eventstore-operations.yaml", "resiliency/resiliency.yaml", "statestore.yaml", "pubsub.yaml", "configstore.yaml", "sentry.yaml" })
+            foreach (string relative in new[] { "accesscontrol.yaml", "accesscontrol.works.yaml", "accesscontrol.eventstore-admin.yaml", "accesscontrol.eventstore-operations.yaml", "resiliency/resiliency.yaml", "statestore.yaml", "pubsub.yaml", "configstore.yaml", "sentry.yaml", "works/subscription.work.events.yaml" })
             {
                 string target = Path.Combine(platform, "DaprComponents", relative);
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
@@ -336,6 +336,13 @@ public sealed partial class PlatformAppModelTests
             builder.Resources.OfType<ProjectResource>().Select(resource => resource.Name).Order().ShouldBe(new[] { "eventstore", "eventstore-admin", "eventstore-operations", "works" }.Order());
             builder.Resources.ShouldNotContain(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any() || resource.Name.StartsWith("tenants", StringComparison.Ordinal) || resource.Name.StartsWith("memories", StringComparison.Ordinal));
             builder.Resources.OfType<ProjectResource>().ShouldAllBe(resource => resource.Annotations.OfType<DaprSidecarAnnotation>().Count() == 1);
+            ProjectResource works = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "works");
+            DaprSidecarOptions worksOptions = works.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+            worksOptions.ResourcesPaths!.ShouldContain(Path.Combine(platform, "DaprComponents", "works"));
+            string subscription = File.ReadAllText(Path.Combine(worksOptions.ResourcesPaths!.Single(), "subscription.work.events.yaml"));
+            subscription.ShouldContain("deadLetterTopic: deadletter.work.events");
+            subscription.ShouldContain("default: /work/events");
+            subscription.ShouldContain("  - works");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-sentry");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-placement-mtls");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-scheduler-mtls");

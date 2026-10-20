@@ -944,6 +944,13 @@
   evidence: Review pass 5 (P5-VG3). No Platform test or CI reads the tool pin; the README's claim that only the pinned version is guaranteed to embed the catalog rests on hand-run evidence (`evidence/1-11/release-current.json`). The pin and gitlink drifted apart once during this story (pass-2 ledger entry: pin 4.33.1, gitlink untagged `cf97810`) with no test failing. Pre-existing Story 1.9 process rule; a Composition test comparing the pin with `git ls-tree HEAD references/Hexalith.Builds` and the tag would fit.
   status: open
 
+## Deferred from: code review of spec-2-1-decide-the-candidate-and-attachment-policy.md (2026-10-20)
+
+- source_spec: `spec-2-1-decide-the-candidate-and-attachment-policy.md`
+  summary: Point downstream Epic 2/3 planning at the published `hexalith.platform.candidate-and-attachment-policy.v1` record.
+  evidence: Code review of commit 8b7a1fe (Blind Hunter). epic-2-context.md says "planning does not already choose these values" with no link to `docs/contracts/candidate-and-attachment-policy-v1.md`; epics.md Story 2.2's descriptor field list lacks `policyId`, decision identity, reuse lineage, executed-suite/completion and tool-qualification bindings; Stories 3.1/3.9 still carry pre-C-01 wording ("policy from Story 3.1", reuse "under the policy's recorded reuse conditions"). Story spec authors reading planning context may miss the policy. Edits to planning/agent-context artifacts are deferred by the review workflow.
+  status: open
+
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md`
   summary: Repair the pre-existing EventStore release snapshot/catalog provenance mismatch in package composition tests.
   evidence: Story 1.12's normal composition build passes, but eight broad-test failures use unchanged EventStore snapshot 3.120.0 against accepted catalog 3.126.0; `evidence/1-12/coordinator-broad-failure-assessment.json` records the baseline comparison and `coordinator-composition-tests.txt` the failures.

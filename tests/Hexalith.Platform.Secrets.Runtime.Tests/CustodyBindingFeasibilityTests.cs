@@ -14,6 +14,7 @@ public sealed class CustodyBindingFeasibilityTests
     [Fact]
     public async Task EmitDeterministicF1Evidence()
     {
+        await CustodyBindingLocalTransport.RunIfConfiguredAsync(TestContext.Current.CancellationToken);
         var requests = new List<object>();
         foreach (var construction in new (string Name, int Count, string? Field, bool Maximal)[] { ("single", 1, null, false),
             ("ordinary-1000", 1000, null, false), ("ascii-2048x1000", 1000, new string('x', 2048), true),

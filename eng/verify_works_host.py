@@ -15,6 +15,8 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 import isolated_daprd
+import retained_works_host
+import works_host_snapshot
 
 from verify_works_producer import qualify_runtime_source, runtime_source_snapshot, source_files
 
@@ -23,7 +25,7 @@ CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
 ROWS = {
     "R1": ("Aspire/Dapr composition", "Hexalith.EventStore.Aspire", "AddHexalithEventStore/AddEventStoreDomainModule", "P/src/Hexalith.Platform.Composition/WorksPreviewModel.cs"),
     "R2": ("SDK defaults, readiness and telemetry", "Hexalith.EventStore.DomainService", "AddEventStoreDomainService", "src/Hexalith.Works/Runtime/WorksHost.cs"),
-    "R3": ("Origin, redelivery and quarantine", "Hexalith.EventStore.DomainService", "UseEventStoreDomainService", "src/Hexalith.Works/Runtime/Events/WorksDomainEventEndpointExtensions.cs"),
+    "R3": ("Origin, redelivery and quarantine", "Hexalith.EventStore.DomainService", "UseEventStoreDomainService", "src/Hexalith.Works/Runtime/WorksHost.cs"),
     "R4": ("Projection family and fenced rebuild", "Hexalith.EventStore.Client", "SharedProjectionEpochCoordinator", "src/Hexalith.Works/Projections/SharedRebuild/WorkItemSharedProjectionRebuildHandler.cs"),
     "R5": ("Authorized and filtered queries", "Hexalith.EventStore.DomainService", "IDomainQueryHandler", "src/Hexalith.Works/Queries/WhatsNextQueryHandler.cs"),
     "R6": ("Typed reminders and lost firing/HA", "Hexalith.EventStore.DomainService", "AddEventStoreReminders", "src/Hexalith.Works/Runtime/WorksRecoveryExtensions.cs"),
@@ -178,7 +180,9 @@ def fixture_sources(works):
     """Bind every Works IntegrationTests C# source outside build outputs, plus the retained host's path resolver."""
     root = works / "tests/Hexalith.Works.IntegrationTests"
     files = [path for path in root.rglob("*.cs") if not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
-    files.append(works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs")
+    resolver = works / "src/Hexalith.Works.AppHost/ProjectMetadataPaths.cs"
+    if resolver.is_file():
+        files.append(resolver)
     return {str(path.relative_to(works)): sha256(path) for path in sorted(files)}
 
 
@@ -325,15 +329,19 @@ def require_platform_composition(record, literals):
     return observed
 
 
-def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None):
+def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None, retained_assembly=None, retained_preflight=False):
     """Bind target starts and the deliberate retained-host rollback to their exact artifacts."""
     assembly_version = version + ".0"
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
     target = [record for record in records if record.get("role") == "platform-target"]
-    if not target:
-        raise ValueError("No actual Platform starts were recorded")
-    if not any("works-ha" in {module.get("resource") for module in record.get("runtimeModules", [])} for record in target):
-        raise ValueError("No platform-target start bound the independent works-ha replica module")
+    if retained_preflight:
+        if target or len(records) != 1 or retained_assembly is None or records[0].get("role") != "retained-rollback":
+            raise ValueError("Retained startup preflight requires exactly one separately bound historical host; it cannot supply parity or rollback proof")
+    else:
+        if not target:
+            raise ValueError("No actual Platform starts were recorded")
+        if not any("works-ha" in {module.get("resource") for module in record.get("runtimeModules", [])} for record in target):
+            raise ValueError("No platform-target start bound the independent works-ha replica module")
     for record in records:
         if control_plane_ports is not None and record.get("controlPlanePorts") != control_plane_ports:
             raise ValueError("A live start did not bind the run-owned control-plane ports")
@@ -386,7 +394,8 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
             if composition_literals is not None:
                 record["platformComposition"] = require_platform_composition(record, composition_literals)
         elif record.get("role") == "retained-rollback":
-            if binary.resolve() == assembly.resolve() or "Hexalith.Works.AppHost" not in binary.name:
+            if (binary.resolve() == assembly.resolve() or "Hexalith.Works.AppHost" not in binary.name
+                    or (retained_assembly is not None and binary.resolve() != Path(retained_assembly).resolve())):
                 raise ValueError("Rollback did not select the retained Works host")
         else:
             raise ValueError("An unknown host role cannot qualify parity")
@@ -841,6 +850,32 @@ def select_control_plane_ports():
             listener.close()
 
 
+def canonical_source_snapshot(root):
+    """Bind full canonical revisions and all ordinary build, source, fixture and verifier inputs."""
+    output = subprocess.check_output(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
+    names = [name for name in output.decode().strip("\0").split("\0") if name]
+    directories = {"src", "tests", "eng", "DaprComponents", "config", "schemas", ".config"}
+    inventory = {name: sha256(root / name) for name in sorted(set(names))
+                 if (len(Path(name).parts) == 1 or Path(name).parts[0] in directories) and (root / name).is_file()}
+    return {"root": str(root), "commit": subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
+            "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
+
+
+def linked_fixture_snapshot(works):
+    """Bind the explicitly source-only Identity graph and Parties Compile links used by the proof."""
+    parties = works / "references/Hexalith.Parties"
+    identity = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
+    files = set(identity.rglob("*.cs")) | {identity / "Hexalith.Platform.Identity.csproj"}
+    project = works / "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj"
+    for item in ET.parse(project).getroot().iter("Compile"):
+        include = item.get("Include", "")
+        if include.startswith("$(HexalithPartiesRoot)/"):
+            files.add(parties / include.removeprefix("$(HexalithPartiesRoot)/"))
+    return {"sourceFiles": {str(path): sha256(path) for path in sorted(files) if not {"bin", "obj"}.intersection(path.parts)},
+            "commits": {str(root): subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+                        for root in (parties, identity.parents[1])}}
+
+
 def run_verification(args):
     platform = Path(__file__).resolve().parents[1]
     works = args.works_root.resolve()
@@ -913,11 +948,20 @@ def run_verification(args):
             if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
         summary["worksConsumerSource"] = source_snapshot(works)
         summary["fixtureSources"] = fixture_sources(works)
+        snapshot_manifest = getattr(args, "platform_source_binding", None)
+        summary["canonicalSources"] = {"Works": canonical_source_snapshot(works)}
+        if snapshot_manifest:
+            summary["platformSourceSnapshot"] = works_host_snapshot.verify(snapshot_manifest, platform)
+            summary["canonicalSources"]["Platform"] = canonical_source_snapshot(Path(summary["platformSourceSnapshot"]["originRoot"]))
+        else:
+            summary["canonicalSources"]["Platform"] = canonical_source_snapshot(platform)
+        summary["linkedFixtureSources"] = linked_fixture_snapshot(works)
         summary["verifierSha256"] = sha256(Path(__file__))
-        summary["verifierHelpers"] = {name: sha256(Path(__file__).with_name(name)) for name in
-            ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py", "isolated_daprd.py", "test_isolated_daprd.py"]}
+        summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in
+            ["verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py", "isolated_daprd.py", "test_isolated_daprd.py", "retained_works_host.py", "test_retained_works_host.py",
+             "retained-works-host/manifest.json", "retained-works-host/works-source.tar.gz", "works_host_snapshot.py", "test_works_host_snapshot.py"]}
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer", "test_isolated_daprd"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot"], platform / "eng")
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", "--artifacts-path", str(artifacts / "agents-full")],
             expected_refusal="DependencyNotAvailable: EXT-HOST-1")
         summary["checks"]["agentsFull"] = "expected-unavailable; not a Works prerequisite"
@@ -933,7 +977,8 @@ def run_verification(args):
                   extra=["-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version] if args.runtime_sdk_root is not None else [])
             executable = platform_test_output / configuration.lower() / "bin/Hexalith.Platform.Works.Tests" / configuration.lower() / "Hexalith.Platform.Works.Tests"
             xml = artifacts / ("platform-" + configuration.lower() + ".xml")
-            run("platform-tests-" + configuration.lower(), [executable, "-noLogo", "-result-xml", xml])
+            run("platform-tests-" + configuration.lower(), [executable, "-noLogo", "-result-xml", xml],
+                environment=os.environ.copy() | {"Platform__Works__SourceRoot": str(works)})
             summary["checks"][configuration] = require_passed_tests(xml)
             if configuration == "Debug":
                 summary["platformDebugSdkAssemblies"] = {path.name: sha256(path) for path in
@@ -1004,7 +1049,10 @@ def run_verification(args):
         runtime_projects = [works / "src/Hexalith.Works/Hexalith.Works.csproj", *[
             runtime_sdk / "src" / name / (name + ".csproj") for name in
             ("Hexalith.EventStore", "Hexalith.EventStore.Operations", "Hexalith.EventStore.Admin.Server.Host")]]
-        runtime_projects.append(works / "src/Hexalith.Works.AppHost/Hexalith.Works.AppHost.csproj")
+        retained_root = artifacts / "retained-works-source"
+        summary["retainedHostSource"] = retained_works_host.prepare(platform / "eng/retained-works-host", works, retained_root)
+        runtime_projects += [retained_root / "src/Hexalith.Works.ServiceDefaults/Hexalith.Works.ServiceDefaults.csproj",
+                             retained_root / "src/Hexalith.Works.AppHost/Hexalith.Works.AppHost.csproj"]
         runtime_output = artifacts / "runtime"
         runtime_properties = ["-p:Version=" + version, "-p:MinVerVersionOverride=" + version,
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
@@ -1012,8 +1060,12 @@ def run_verification(args):
             "-p:HexalithAspireHostingDaprVersion=" + adapter]
         runtime_directories = []
         for index, project in enumerate(runtime_projects):
-            build("runtime-release-prebuild-" + str(index), str(project), "Release", works, runtime_output, extra=runtime_properties)
+            properties = runtime_properties + (["-p:BuildProjectReferences=false"] if "Hexalith.Works.AppHost" in project.stem else [])
+            build("runtime-release-prebuild-" + str(index), str(project), "Release", works, runtime_output, extra=properties)
             runtime_directories.append(runtime_output / "bin" / project.stem / "release")
+        retained_assembly = runtime_output / "bin/Hexalith.Works.AppHost/release/Hexalith.Works.AppHost.dll"
+        summary["retainedHostSource"]["assembly"] = str(retained_assembly)
+        summary["retainedHostSource"]["assemblySha256"] = sha256(retained_assembly)
         summary["runtimeArtifacts"] = {str(path): sha256(path) for directory in runtime_directories
             for path in sorted(directory.rglob("*")) if path.is_file()}
         save()
@@ -1028,6 +1080,8 @@ def run_verification(args):
             os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
         runtime_environment = {"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
             "WORKS_PLATFORM_ROOT": str(platform), "WORKS_PLATFORM_WORKS_ROOT": str(works),
+            "WORKS_RETAINED_HOST_ROOT": str(retained_root), "WORKS_RETAINED_HOST_ASSEMBLY": str(retained_assembly),
+            "WORKS_RETAINED_HOST_SHA256": sha256(retained_assembly),
             "Platform__Works__SourceRoot": str(works), "Platform__Identity__Enabled": "false",
             "Version": version, "MinVerVersionOverride": version,
             "ArtifactsPath": str(runtime_output), "UseArtifactsOutput": "true", "WORKS_PLATFORM_RUNTIME_ARTIFACTS": str(runtime_output),
@@ -1047,24 +1101,45 @@ def run_verification(args):
         summary["runtimeEnvironment"] = runtime_environment
         save()
         executable = consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests"
+        # The archive must actually start before expensive write/snapshot/restore scenarios begin.
+        # Its isolated evidence never enters the matrix's actualStarts or rollback phase records.
+        preflight_runtime = artifacts / "isolated-daprd-retained-preflight"
+        summary["retainedPreflightRuntime"] = isolated_daprd.prepare(preflight_runtime,
+            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
+        preflight_environment = environment | {"WORKS_PLATFORM_HOST_EVIDENCE": str(artifacts / "retained-preflight-starts.jsonl"),
+            "WORKS_SDK_PROOF_EVIDENCE_PATH": str(artifacts / "retained-preflight-states.jsonl"),
+            "WORKS_PLATFORM_DAPRD_RUNTIME_PATH": str(preflight_runtime)}
+        preflight_xml = artifacts / "retained-preflight.xml"
+        run("retained-host-preflight", [executable, "-noLogo", "-explicit", "on", "-class",
+            "Hexalith.Works.IntegrationTests.WorksPlatformRetainedHostPreflightTests", "-result-xml", preflight_xml], works, preflight_environment)
+        summary["checks"]["retainedStartupPreflight"] = require_passed_tests(preflight_xml, ["ArchivedTopologyReachesHealthyReadiness"])
+        summary["retainedPreflightStarts"] = verify_host_records(artifacts / "retained-preflight-starts.jsonl", assembly, platform, version,
+            runtime_artifacts=summary["runtimeArtifacts"], control_plane_ports=control_plane_ports,
+            retained_assembly=retained_assembly, retained_preflight=True)
+        summary["retainedPreflightRuntimeEvidence"] = isolated_daprd.verify(preflight_runtime,
+            summary["retainedPreflightRuntime"], summary["retainedPreflightStarts"])
+        save()
         xml = artifacts / "platform-recovery.xml"
-        run("platform-recovery", [executable, "-noLogo", "-class", "Hexalith.Works.IntegrationTests.WorksSdkRecoveryPipelineSmokeTests", "-result-xml", xml], works, environment)
+        run("platform-recovery", [executable, "-noLogo", "-explicit", "on", "-class", "Hexalith.Works.IntegrationTests.WorksSdkRecoveryPipelineSmokeTests", "-result-xml", xml], works, environment)
         summary["checks"]["liveRecovery"] = require_passed_tests(xml,
             ["SuccessfulCallbacksRegisterSdkReminderAndProcessWithoutPeriodicRecovery", "SdkRemindersAndCascadeConvergeThroughPersistedReceiptsAcrossRestart"])
         historical_xml = artifacts / "platform-historical.xml"
-        run("platform-historical", [executable, "-noLogo", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformHistoricalPipelineSmokeTests.PlatformLifecycleTreeClaimFilteringAndSecuritySurviveRestart", "-result-xml", historical_xml], works, environment)
+        run("platform-historical", [executable, "-noLogo", "-explicit", "on", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformHistoricalPipelineSmokeTests.PlatformLifecycleTreeClaimFilteringAndSecuritySurviveRestart", "-result-xml", historical_xml], works, environment)
         summary["checks"]["liveHistorical"] = require_passed_tests(historical_xml, ["PlatformLifecycleTreeClaimFilteringAndSecuritySurviveRestart"])
         ha_xml = artifacts / "platform-ha.xml"
-        run("platform-ha", [executable, "-noLogo", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformHaPipelineSmokeTests.TwoWorksHostsRecoverLostFiringAfterPrimaryStopsWithoutDuplicateEffect", "-result-xml", ha_xml], works, environment)
+        run("platform-ha", [executable, "-noLogo", "-explicit", "on", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformHaPipelineSmokeTests.TwoWorksHostsRecoverLostFiringAfterPrimaryStopsWithoutDuplicateEffect", "-result-xml", ha_xml], works, environment)
         summary["checks"]["liveHa"] = require_passed_tests(ha_xml, ["TwoWorksHostsRecoverLostFiringAfterPrimaryStopsWithoutDuplicateEffect"])
+        mtls_xml = artifacts / "platform-mtls.xml"
+        run("platform-mtls", [executable, "-noLogo", "-explicit", "on", "-class", "Hexalith.Works.IntegrationTests.WorksMtlsAuthorizationSmokeTests", "-result-xml", mtls_xml], works, environment)
+        summary["checks"]["liveMtls"] = require_passed_tests(mtls_xml, ["Mtls_allows_event_store_and_denies_an_unauthorized_caller_at_works_process"])
         # The focused eleven-source rebuild is the exact fact that failed on public 3.124.0; R4 binds its outcome.
         projection_xml = artifacts / "platform-projection.xml"
-        run("platform-projection", [executable, "-noLogo", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformProjectionPipelineSmokeTests.ActualPlatformSharedRebuildAndConcurrentCatchUpPreserveCompleteFamily", "-result-xml", projection_xml], works, environment)
+        run("platform-projection", [executable, "-noLogo", "-explicit", "on", "-method", "Hexalith.Works.IntegrationTests.WorksPlatformProjectionPipelineSmokeTests.ActualPlatformSharedRebuildAndConcurrentCatchUpPreserveCompleteFamily", "-result-xml", projection_xml], works, environment)
         summary["checks"]["liveProjection"] = require_passed_tests(projection_xml, ["ActualPlatformSharedRebuildAndConcurrentCatchUpPreserveCompleteFamily"])
         summary["actualStarts"] = verify_host_records(artifacts / "host-starts.jsonl", assembly, platform, version,
             runtime_artifacts=summary["runtimeArtifacts"], host_runtime=host_runtime,
             composition_literals=platform_composition_literals(platform / "src/Hexalith.Platform.Composition/WorksPreviewModel.cs"),
-            control_plane_ports=control_plane_ports)
+            control_plane_ports=control_plane_ports, retained_assembly=retained_assembly)
         summary["isolatedRuntimeEvidence"] = isolated_daprd.verify(isolated_runtime, summary["isolatedRuntime"], summary["actualStarts"])
         for row in summary["rows"].values():
             row["targetCommands"] = [entry for entry in summary["commands"] if entry["name"] in ("platform-recovery", "platform-historical", "platform-ha", "platform-projection")]
@@ -1090,9 +1165,22 @@ def run_verification(args):
         if sha256(Path(__file__)) != summary["verifierSha256"]:
             raise ValueError("The verifier changed during execution")
         for name, digest in summary["verifierHelpers"].items():
-            if sha256(Path(__file__).with_name(name)) != digest:
+            if sha256(Path(__file__).parent / name) != digest:
                 raise ValueError("A verifier helper changed during execution: " + name)
         require_unchanged_fixture_sources(works, summary["fixtureSources"])
+        retained_works_host.verify(summary["retainedHostSource"])
+        if linked_fixture_snapshot(works) != summary["linkedFixtureSources"]:
+            raise ValueError("Explicit linked test-only Identity or Parties fixture sources changed during execution")
+        for name, baseline in summary["canonicalSources"].items():
+            if name == "Platform" and snapshot_manifest:
+                observed = works_host_snapshot.verify(snapshot_manifest, platform)
+                if observed["manifestSha256"] != summary["platformSourceSnapshot"]["manifestSha256"]:
+                    raise ValueError("The Platform snapshot manifest changed during execution")
+                summary["platformSourceSnapshotFinal"] = observed
+                continue
+            current = canonical_source_snapshot(Path(baseline["root"]))
+            if current != baseline:
+                raise ValueError("Canonical " + name + " revision or ordinary build/source/test/verifier inputs changed during execution")
         summary["rollback"] = bind_persisted_outcomes(artifacts / "persisted-states.jsonl", summary["rows"], summary["actualStarts"])
         summary["status"] = "passed-disposable-synthetic-parity-and-rollback"
         return 0
@@ -1110,6 +1198,7 @@ def main():
     parser.add_argument("--works-root", type=Path, default=Path(__file__).resolve().parents[2] / "works")
     parser.add_argument("--artifacts-path", type=Path)
     parser.add_argument("--runtime-sdk-root", type=Path, help="Explicit producer source directory; independently qualified against official commit trees and exact Git blobs")
+    parser.add_argument("--platform-source-binding", type=Path, help="Explicit adjacent manifest for this run-owned immutable Platform export; exact export and current canonical bytes must remain equal")
     parser.add_argument("--prepare-only", action="store_true", help="Run build/profile checks only; never accepts parity")
     args = parser.parse_args()
     return run_verification(args)
