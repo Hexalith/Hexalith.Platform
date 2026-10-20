@@ -1,12 +1,17 @@
 # Story 1.11 evidence: run and debug McpCli from the Platform workspace
 
-Current status, 2026-10-20: [exact-source CI passed](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39389674513)
-for 5d03f1db9c38db34ecac7fe6048937478ffb82cc. [Replacement release 39396175115](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39396175115)
-passed its source guard and received production approval from jpiquot. Release
-qualification is running, and remote main still equals the approved source.
-Publication, tool/tag pinning and pinned-tool AC1 remain open; 4.33.1 is still
-configured. See [release-current.json](release-current.json). No agent approval
-or duplicate dispatch was submitted.
+Current status, 2026-10-20: [release 4.34.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.34.0)
+and [release run 39396175115](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39396175115)
+succeeded after human production approval. Platform pins 4.34.0 and Builds
+5d03f1db9c38db34ecac7fe6048937478ffb82cc, the release-tag commit. Tool restore
+succeeds, and the pinned-tool debugger proof passed: ready, mapped run-scoped
+McpCli build, all four runtime PDBs, one function-breakpoint hit, offline
+`catalog_empty` exit 2, and complete `down` cleanup. See [pinned-proof.json](pinned-proof.json),
+[the transcript](pinned-proof.txt), and [release-current.json](release-current.json).
+The proof built McpCli b616db3092a9b1c5af196538a3de37a5c7f2d7ca; final gitlink
+d6176acee1999965881e423b9c0e2e8a3725b5a8 adds only documentation/evidence, with
+`src` and `module` unchanged. Both READMEs name the released version. The final default test also automatically verifies all four portable PDBs and usable source sequence points ([review-pass4-tests.txt](review-pass4-tests.txt)). Earlier
+checkpoints below describe historical states.
 
 Earlier checkpoint after production approval, 2026-10-20: the initial release
 stopped before publication when Builds main advanced. Its replacement
@@ -65,6 +70,11 @@ gitlink (`fc5cfc0`, then `24322f5`) differs from the `cf97810` pin, so
 
 | File | Proves |
 | --- | --- |
+| [review-pass4-tests.txt](review-pass4-tests.txt) | Default automatic declaration test passes after verifying real McpCli portable PDB source documents and usable sequence points for all four first-party assemblies; private run workspace removed in finally |
+| [pinned-proof.json](pinned-proof.json), [pinned-proof.txt](pinned-proof.txt) | Released pinned-tool AC1: readiness, run-scoped Debug DLL and mapped project, all four PDB source origins, CatalogService.cs:11 breakpoint hit, offline exit 2, clean checkout and down cleanup |
+| [g4-tool-package-inventory.json](g4-tool-package-inventory.json) | Published release inventory retained byte-for-byte; its SHA-256 is recorded in release-current.json |
+| [implementation-revalidation-current-source.txt](implementation-revalidation-current-source.txt) | Fresh Builds McpCli matrix 29/29 and Platform real declaration/casing/environment selection 1/1 at Builds `5d03f1db9c38db34ecac7fe6048937478ffb82cc` and McpCli `b616db3092a9b1c5af196538a3de37a5c7f2d7ca`; records the corrected source-mode and Tooling-version build commands and transient concurrent-checkout refusal |
+| [release-current.json](release-current.json) | Current-source successful push CI, successful replacement release, human production approval, exact tool/tag identity and completed pinned-tool proof |
 | [prerelease-proof.txt](prerelease-proof.txt) | AC1 with the pre-release tool: the inputs, `debug` reaching ready, `HXI010` naming the run-scoped Debug DLL, run id `493239030fb3522402ccfed7d355fca0`, the DLL and PDB hashes, the full document lists of the two PDBs inspected (`Hexalith.McpCli.pdb`, `Hexalith.McpCli.Core.pdb`; the pinned rerun covers all four first-party PDBs), the netcoredbg hit at `CatalogService.cs:12` while `modules` runs offline (`catalog_empty`, exit 2), a clean checkout, and `down` removing the workspace and the DLL |
 | [prerelease-tool.txt](prerelease-tool.txt) | The pack from a clean scratch clone of `d7c828a`, the packaged-loader gate, the package hashes and the scratch tool install |
 | [validation.txt](validation.txt) | AC2: the McpCli declaration validates with the pinned `4.33.1` and the pre-release tool; adding an `mcp` interface fails with `HXP002` and `HXP023` (plus `HXP024`, the unknown server) |
@@ -81,6 +91,7 @@ gitlink (`fc5cfc0`, then `24322f5`) differs from the `cf97810` pin, so
 
 ## Acceptance criteria
 
+- **AC1 (released pinned tool).** Passed with 4.34.0, run `0d8b26aad6e2cde1811cd47cfac54317`; see [pinned-proof.json](pinned-proof.json) and the transcript. The following pre-release record is retained as history.
 - **AC1 (pre-release).** From the Platform root with `HEXALITH_DAPR_HOME` set,
   `debug` on the McpCli manifest reached ready in 67 s with `eventstore` as the
   only project. `HXI010` (field `mcpcli`) named

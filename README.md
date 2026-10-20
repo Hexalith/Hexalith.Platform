@@ -29,20 +29,21 @@ Those hosting concerns live here.
 
 ## Module tool
 
-The local tool manifest pins `hexalith.builds.module.cli` `4.33.1`, accepted for
+The local tool manifest pins `hexalith.builds.module.cli` `4.34.0`, accepted for
 Platform `run` and `debug`. `hexalith-platform.json` accepts versions in
 `[4.33.1, 5.0.0-0)`. The previously accepted `4.33.0` is now outside that range:
 its packaged host has a mismatched Tooling identity and build-machine paths,
 which prevent v2 `run` and `debug`; `4.33.1` fixes both defects. Later 4.x
 releases, prereleases included, are accepted without a Platform edit, and 5.0
 prereleases are excluded. The catalog commit is
-`c6f56c011ce3a83cdf6100c322352daf125c6af9`, matching both the Builds gitlink
-and release tag `v4.33.1`. Only the pinned version is guaranteed to embed that
+`5d03f1db9c38db34ecac7fe6048937478ffb82cc`, matching both the Builds gitlink
+and release tag `v4.34.0`. Only the pinned version is guaranteed to embed that
 catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
 AppHost SDK pins, and nothing compares them with the catalog yet. When the
 exact pin moves, the Builds gitlink moves to that version's release-tag commit.
-See the [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
-for the released-tool verification.
+See the [Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
+for the released-tool verification; the [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
+records the earlier EventStore and Memories proof with `4.33.1`.
 
 Versions below the configured range are not Platform-accepted, including the published
 `4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts. From `4.31.0`, a tool outside the
@@ -168,8 +169,8 @@ expected project path; no other copy, such as a sibling `../mcpcli` checkout,
 is used. Package mode builds no McpCli; package-mode McpCli arrives in Epic 3.
 The started EventStore gateway is the target of connected execution, which also
 arrives in Epic 3; the debugger recipe below uses offline verbs only. The build
-requires a tool release that builds McpCli runs; `4.33.1` composes only
-servers and reports no McpCli build.
+requires `4.34.0` or later; the pinned `4.34.0` includes it. The earlier
+`4.33.1` composes only servers and reports no McpCli build.
 
 `debug` does not print the run id. It is the file name of the run state
 `<runId>.json` under `${XDG_DATA_HOME:-$HOME/.local/share}/hexalith-builds/g4-runs/`

@@ -1,10 +1,10 @@
 {
-  "observed_at_utc": "2026-10-20T08:57:12.349523+00:00",
+  "observed_at_utc": "2026-10-20T09:54:40.535211+00:00",
   "release": {
-    "conclusion": "",
+    "conclusion": "success",
     "databaseId": 39396175115,
     "headSha": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
-    "status": "in_progress",
+    "status": "completed",
     "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39396175115"
   },
   "exact_source_ci": {
@@ -25,9 +25,23 @@
     }
   ],
   "agent_submitted_approval": false,
-  "remaining": [
-    "Publication",
-    "Exact tool/tag pin",
-    "Pinned-tool AC1"
-  ]
+  "remaining": [],
+  "published_release": {
+    "publishedAt": "2026-10-20T09:39:47Z",
+    "tagName": "v4.34.0",
+    "targetCommitish": "main",
+    "url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.34.0"
+  },
+  "release_tag_commit": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "pinned_tool_version": "4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "published_inventory_sha256": "befef8bbeccdbaba65036cb177f8d6c9056ddcd1ab9c4e96041d2a89516d81cd",
+  "pinned_proof": "pinned-proof.json",
+  "mcpcli_final_commit": "d6176acee1999965881e423b9c0e2e8a3725b5a8",
+  "mcpcli_final_ci": {
+    "conclusion": "success",
+    "databaseId": 39402934135,
+    "headSha": "d6176acee1999965881e423b9c0e2e8a3725b5a8",
+    "status": "completed",
+    "url": "https://github.com/Hexalith/Hexalith.McpCli/actions/runs/39402934135"
+  }
 }

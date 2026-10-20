@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 11
 created: '2026-10-19'
-status: 'in-progress'
+status: 'done'
 baseline_commit: 'f0e33167fcdb5f539da159c54f7505b72a65c9b2'
 mcpcli_baseline_commit: '447085c42ec606f642240c4cae0415e7c2f97467'
 builds_baseline_commit: 'b435f2e3b3892e03f69322d24de6003b0baf7a7d'
@@ -14,7 +14,8 @@ release_run_id: 39396175115
 superseded_release_run_id: 39389191662
 release_ci_run_id: 39389674513
 release_source_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
-release_status: 'approved-qualification-running'
+release_status: 'complete'
+release_version: '4.34.0'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -128,7 +129,7 @@ Platform:
   3. Run `debug` from the Platform root with a netcoredbg breakpoint.
 - [x] `PlatformServerBindings.cs` and `BuildsSourceStartupTests.cs` -- map `mcpcli` to `Hexalith.McpCli`, and add a gated live `mcpcli` case that expects `["eventstore"]`.
 - [x] `README.md` -- add the McpCli row, plus a recipe that launches the run-scoped build under the debugger. A CLI is short-lived, so it is launched, not attached.
-- [ ] *(Orchestrator, after review)* -- release and pin:
+- [x] *(Orchestrator, after review)* -- release and pin:
   1. Push McpCli and Builds, wait for green CI, and dispatch `build-release.yml` for the gate approval.
   2. In Platform, pin the release, move the Builds gitlink to its tag, stage the McpCli gitlink, and update the README tool record.
   3. Rerun AC1 with the pinned tool.
@@ -185,6 +186,10 @@ Rejected:
 - AA9 (the story commit includes an `epic-1-context.md` rewrite) — false: it is this spec's own `context` document, recompiled for the story.
 
 ## Implementation Notes
+
+- **Pinned-tool acceptance passed (2026-10-20).** Tool 4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc reached ready from the Platform root, reporting only the eventstore project and the run-scoped McpCli DLL. Run `0d8b26aad6e2cde1811cd47cfac54317` hit the README function breakpoint at CatalogService.cs:11; all four first-party PDBs reference mapped McpCli sources and run-workspace generated files. Offline `modules` returned `catalog_empty`, exit 2. `down` removed the DLL and workspace; the McpCli checkout and four-container baseline were unchanged. See [pinned-proof.json](evidence/1-11/pinned-proof.json) and [pinned-proof.txt](evidence/1-11/pinned-proof.txt). Both READMEs name 4.34.0. The final McpCli documentation commit `d6176acee1999965881e423b9c0e2e8a3725b5a8` includes a documentation/evidence-only upstream advance; `git diff b616db3092a9b1c5af196538a3de37a5c7f2d7ca -- src module` is empty. Fresh focused checks passed 29/29 and 1/1 in [implementation-revalidation-current-source.txt](evidence/1-11/implementation-revalidation-current-source.txt).
+
+- **Release published and pinned (2026-10-20).** Release 39396175115 succeeded after human production approval. Tag v4.34.0 resolves to 5d03f1db9c38db34ecac7fe6048937478ffb82cc, already the Platform Builds gitlink. Platform now pins tool 4.34.0; `dotnet tool restore --no-http-cache` succeeds and `--version` reports 4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc. The README records that version and catalog. Published inventory and release identity are retained in [release-current.json](evidence/1-11/release-current.json) and [g4-tool-package-inventory.json](evidence/1-11/g4-tool-package-inventory.json). Pinned-tool acceptance proof is running.
 
 - **Approved current-source release (2026-10-20).** Exact-source push CI 39389674513 passed for 5d03f1db9c38db34ecac7fe6048937478ffb82cc. Replacement release 39396175115 passed its source guard, and jpiquot approved its production environment. On resumption, remote main still equals that source commit and release qualification is running. The agent submitted no approval and dispatched no duplicate run. Publication, the exact tool/tag pin and pinned-tool AC1 remain open.
 
@@ -286,6 +291,29 @@ Three independent reviewers inspected the combined story diff, including Builds 
 | P3-VG1 | Real build token/deadline forwarding is not exercised | medium | Pre-verified gap; carried from pass-2 VG2, already tracked in the shared real-process cancellation/deadline entry. Defer there without a duplicate. |
 | P3-VG2 | Released pinned-tool acceptance evidence is absent | medium | Carried from pass-2 release/pin finding. The orchestrator must release, pin and rerun AC1 before completing this spec. |
 
+
+### Review pass 4 — released and pinned tool, 2026-10-20
+
+Three independent reviewers inspected the combined story diff through released Builds 4.34.0 and McpCli d6176acee1999965881e423b9c0e2e8a3725b5a8. Every finding is classified below before grouping. The released-tool debugger proof passed; the new symbol-regression gap routes to a default Platform test so the released Builds source/tag remains the accepted pin.
+
+| ID | Finding | Verdict | Evidence and route |
+| --- | --- | --- | --- |
+| P4-BH1 | Process timeout may report HXR020 rather than HXR021 | low | Carried from P3-BH5 and pass-2 BH4/EH1/VG: same simultaneous-timer path and existing rejection. Reject; no new evidence or patch. |
+| P4-BH2 | Real blocking-build cancellation is untested | medium | Carried from P3-BH4/P3-VG1 and pass-2 VG2. Defer remains tracked in deferred-work.md:907; do not duplicate it. |
+| P4-BH3 | Preservation test compares filenames rather than existing artifact contents | low | The statement about Files() is true, but no overwrite by the current command is demonstrated: the argument test requires --artifacts-path, and the real-build test verifies generated obj under the run and unchanged checkout file sets. Reject the extra seeded-artifact/hash fixture as unlikely-case test complexity; the live proof also preserves the actual checkout. |
+| P4-BH4 | Real-workspace declaration test fails while unrelated gitlinks move | low | The recorded transient failure is real. This test intentionally validates the actual mapped workspace, whose documented prerequisite is aligned staged gitlinks; it passes once those are aligned. Reject separate isolation/gating complexity for concurrent mutation of that prerequisite. |
+| P4-BH5 | Relocated test binaries can dereference a missing repository ancestor | false | Carried from pass-2 BH14/EH7: same locator and layout claim, already rejected under the repository's established test-layout convention. No new patch or deferral. |
+| P4-BH6 | Cached current/previous-major wording appears to admit forbidden v1 | low | epic-1-context.md:30 omits the v1 exclusion in its compatibility sentence, conflicting with the preceding explicit rule. Defer the direct agent-context clarification under the workflow; append one new ledger entry. |
+| P4-BH7 | Completed release/pin ledger item remains open | low | Verified deferred-work.md:897-900 still describes 4.33.1 and missing pinned-tool AC1 despite release-current.json and pinned-proof.json. Patch: close that entry with the completion evidence. |
+| P4-BH8 | Cached stack pins are obsolete | low | Carried from P3-BH8: same context lines and accepted SDK/Aspire versions. Keep its existing context-refresh deferral without duplicating it. |
+| P4-BH9 | Cached Works preview decision omits Development | low | Carried from P3-BH9: same decision and enforced runtime guard. Keep its existing context-refresh deferral without duplicating it. |
+| P4-BH10 | Sprint state remains in-progress during review | low | Verified sprint-status.yaml:49 while spec status is in-review. Patch the workflow tracking to review now; final presentation marks the spec done and retains sprint review for the human handoff. |
+| P4-BH11 | No public missing-checkout test proves McpCli's build refusal | false | ModuleCommandExecutionService.cs:123-143 deliberately resolves direct references before parsing, and WorkspaceCommandModeTests.PublicRunRestoresAbsentDirectManifestBeforeParsingAsync already covers that public initialization boundary. Initializing the recorded direct checkout is expected source mapping, not a sibling/package fallback. New McpCli builder absence/project failures are separately covered by the passing 29-case matrix; no changed public resolver path is unverified by this finding. |
+| P4-EH1 | Build timer may beat startup cancellation | low | Carried from P3-EH2, pass-2 EH1/BH4 and pass-1 EH1/VG5. Retain the same timer-race rejection; no new evidence or patch. |
+| P4-VG1 | Automatic tests do not inspect usable McpCli symbols or mapped PDB documents | medium | Pre-verified gap: -p:DebugType=None could leave the existing DLL/configuration/readiness tests green while breaking source breakpoints. Patch the default Platform McpCli declaration test to build into a private run workspace and inspect the actual portable PDB source documents and sequence points; the released pin and production code need no change. |
+| P4-VG2 | Deadline override test bypasses real builder cancellation forwarding | medium | Carried from pass-2 VG2 and P3-VG1. Existing shared real-process cancellation/deadline ledger entry remains open; do not duplicate it. |
+
+Pass-4 patches completed: the default McpCli declaration test now builds the actual tool under a private run workspace and verifies all four portable PDBs contain mapped source documents and usable sequence points. Coordinator verification passed 1/1 in 8.946 s with no skips ([review-pass4-tests.txt](evidence/1-11/review-pass4-tests.txt)); the earlier 29-case Builds matrix and released pinned-tool debugger proof remain valid because production code is unchanged. The release/pin ledger entry is resolved, sprint state is review, and the context clarification plus existing shared cancellation/model-build follow-ups remain deferred. McpCli final-commit CI passed (recorded in release-current.json).
 
 ## Design Notes
 

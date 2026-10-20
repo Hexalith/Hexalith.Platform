@@ -1,0 +1,29 @@
+{
+  "tool_version": "4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "platform_commit_at_proof": "94915019c5a0727c7d3f9cdd873cd5db2c72448c",
+  "builds_release_commit": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "mcpcli_commit_at_proof": "b616db3092a9b1c5af196538a3de37a5c7f2d7ca",
+  "mcpcli_final_documentation_commit": "d6176acee1999965881e423b9c0e2e8a3725b5a8",
+  "mcpcli_src_and_module_unchanged_after_proof": true,
+  "run_id": "0d8b26aad6e2cde1811cd47cfac54317",
+  "tool_path": "/home/administrator/.local/share/hexalith-builds/g4-workspaces/0d8b26aad6e2cde1811cd47cfac54317/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll",
+  "ready": true,
+  "debugger": "netcoredbg 3.2.0",
+  "breakpoint": "references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:11",
+  "breakpoint_hits": 1,
+  "pdb_source_origin_verified": [
+    "Hexalith.McpCli",
+    "Hexalith.McpCli.Core",
+    "Hexalith.McpCli.Abstractions",
+    "Hexalith.McpCli.Mcp"
+  ],
+  "offline_modules_exit_code": 2,
+  "offline_modules_error": "catalog_empty",
+  "down_succeeded": true,
+  "dll_removed": true,
+  "workspace_removed": true,
+  "checkout_untouched": true,
+  "container_baseline_preserved": true,
+  "transcript_sha256": "7473068623e70965aeee8122d1dad783566f15f4aa25795e72542e372fc79da4",
+  "note": "The debugger wrapper prints a harmless BrokenPipeError on closing its already-exited child; netcoredbg and the proof driver both exit 0. The later McpCli commits change documentation/evidence only."
+}

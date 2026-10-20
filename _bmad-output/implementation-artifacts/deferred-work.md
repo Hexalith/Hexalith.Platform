@@ -897,7 +897,8 @@
 - source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
   summary: Release Builds with the run-scoped McpCli build, pin it in Platform, move the Builds gitlink to its tag, and rerun AC1 with the pinned tool.
   evidence: Review pass 2 (BH2, AA2, AA3). `.config/dotnet-tools.json` pins `4.33.1`, which builds no McpCli. The Platform Builds gitlink is at untagged `cf97810`. The only AC1 proof used `4.34.0-local.1` at `d7c828a`, before the review fixes, so the post-review `HXI010` text (DLL plus project) has no Platform record. This is tracked by the spec's open orchestrator task "release and pin". The rerun should use the README's function-breakpoint recipe as written.
-  status: open
+  status: resolved
+  resolution: Builds 4.34.0 was released and pinned with the Builds gitlink at its release tag; see [release-current.json](evidence/1-11/release-current.json). The pinned-tool AC1 proof reached ready, hit the README's function breakpoint, verified all four first-party PDB source origins, and removed the DLL and workspace with down; see [pinned-proof.json](evidence/1-11/pinned-proof.json).
 
 - source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
   summary: Restore Platform's `CentralPackageTransitivePinningEnabled` in the pinned-catalog Platform model build.
@@ -929,4 +930,9 @@
 - source_spec: spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md
   summary: Restore the Works preview Development-only condition in the cached Epic 1 technical decision.
   evidence: Pass-3 P3-BH9. _bmad-output/implementation-artifacts/epic-1-context.md:69 describes only Platform:Works:Enabled, while src/Hexalith.Platform.Composition/WorksPreviewModel.cs:55 enforces Development as well. Defer edits to agent context under the build review workflow.
+  status: open
+
+- source_spec: `spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md`
+  summary: Clarify the cached Epic 1 current/previous-major compatibility rule to retain the explicit v1 enrollment exclusion.
+  evidence: Review pass 4 P4-BH6. epic-1-context.md:30 accepts current and previous majors without qualifying its preceding rule that v1 is never accepted for enrollment. The context wording can mislead later planning despite the explicit runtime/schema rejection; edits to agent context are deferred by the build review workflow.
   status: open

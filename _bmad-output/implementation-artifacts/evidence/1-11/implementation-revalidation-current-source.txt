@@ -1,0 +1,117 @@
+# Story 1.11 current-source focused revalidation, 2026-10-20 08:57 UTC
+# Working directory: /home/administrator/projects/hexalith/platform
+# Platform HEAD at verification start: 56e36a269e8296022293f02643aac67e174c1fd0
+# Builds HEAD: 5d03f1db9c38db34ecac7fe6048937478ffb82cc
+# McpCli HEAD: b616db3092a9b1c5af196538a3de37a5c7f2d7ca
+# SDK: 10.0.402; xUnit runtime: .NET 10.0.13.
+# The complete spec and its context document were loaded before verification.
+# Implementation and review patches were already present; this pass changes evidence only.
+# The orchestrator owns release/pin and the pinned-tool AC1 proof.
+
+## Builds: fresh Debug build and McpCli I/O matrix
+
+$ cd references/Hexalith.Builds
+$ dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --no-restore --configuration Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:50.98
+exit=0
+
+$ dotnet exec test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests
+   Hexalith.Builds.Module.Tests  Total: 29, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 17.980s
+exit=0
+
+# Includes real successful and failed builds; Debug/artifacts-path/pinned-catalog
+# arguments; seven catalog-authority refusals; missing and linked-outside checkout
+# refusal; sibling exclusion; other-module/package-mode exclusion; declaration and
+# MCP-interface validation; ready diagnostic; down cleanup; and startup deadline.
+
+## Platform: build mode correction and real-workspace blocker
+
+$ cd /home/administrator/projects/hexalith/platform
+$ dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --no-restore --configuration Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+Build FAILED.
+references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Events/EventIdentityValidator.cs(1,16): error CS0234: The type or namespace name 'Commons' does not exist in the namespace 'Hexalith'
+    0 Warning(s)
+    1 Error(s)
+Time Elapsed 00:00:38.69
+exit=1
+
+# EventStore's local defaults selected package dependencies against source-restored
+# assets. Passing Platform's source choice as a global property propagates it to
+# the dependent projects without changing repository configuration or packages.
+
+$ dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --no-restore --configuration Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 -p:UseHexalithProjectReferences=true
+Build succeeded.
+    1 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:49.24
+exit=0
+
+# Existing warning MSB3277 in Hexalith.Platform.Composition.csproj: primary
+# StackExchange.Redis assembly 2.0.0.0 (package 2.13.17) is selected over 3.0.0.0
+# referenced by Hexalith.Builds.Tooling.dll. No dependency changes were made.
+
+$ dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.McpCliDeclarationTests
+Hexalith.Platform.Composition.Tests.McpCliDeclarationTests.ActualMcpCliDeclarationValidatesAndSelectsOnlyTheEventStoreGatewayAsync [FAIL]
+Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Required source 'Hexalith.Conversations' at '/home/administrator/projects/hexalith/platform/references/Hexalith.Conversations' is unavailable: Checkout HEAD 'aeca17f120aa731d0d47b79b7d1b54fb63144bb8' does not match the root's staged gitlink '1f3891274eba5cae0754987ee79b4ffc87944401'.; Tool version 1.0.0-20261020085649 is outside Platform range [4.33.1, 5.0.0-0) at '/home/administrator/projects/hexalith/platform/hexalith-platform.json'.
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 1.138s
+exit=1
+
+# The casing assertion and real McpCli manifest validation precede ResolveAsync
+# and completed successfully; selecting the real environment was not reached.
+# The 1.0.0 version is from the verification build's MinVerVersionOverride, not
+# a released tool. This result is not pinned-tool acceptance evidence.
+# Concurrent work also moved FrontComposer, Tenants, Timesheets and Works checkouts
+# away from their staged gitlinks. No unrelated gitlink or index entry was changed
+# to make this test pass. Historical passing real-workspace evidence remains in
+# implementation-revalidation.txt and post-review-verification.txt.
+
+## Checkout constraints
+
+$ git -C references/Hexalith.Builds status --short
+(empty)
+$ git -C references/Hexalith.McpCli status --short --ignored
+(empty)
+$ git -C references/Hexalith.McpCli submodule status
+# All 17 nested submodules remain uninitialized (each line begins with '-').
+$ git diff --check
+(empty)
+
+# No live environment, container, package publication, Git mutation or nested
+# submodule initialization was performed by this verification pass.
+# No product patch is needed based on the focused checks; release/pin and the
+# pinned-tool proof remain with the orchestrator.
+
+## Corrected focused retry after the concurrent workspace synchronization
+
+# A concurrent /pushall aligned the unrelated gitlinks at Platform
+# 94915019c5a0727c7d3f9cdd873cd5db2c72448c. This verification agent did not
+# change them. Builds and McpCli remained at the revisions recorded above.
+# Only Tooling was rebuilt, using a version accepted by the Platform range.
+
+$ cd references/Hexalith.Builds
+$ dotnet build src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj --no-restore --configuration Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=4.34.0
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:20.88
+exit=0
+
+$ cd /home/administrator/projects/hexalith/platform
+$ cp references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.pdb tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/
+exit=0
+
+# The copy updates only the ignored test output with the same current-source
+# Tooling assembly and symbols; no source files, dependencies or test code changed.
+
+$ dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.McpCliDeclarationTests
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 1.330s
+exit=0
+
+# The complete real-declaration test now passes: Linux repository casing,
+# manifest validation, workspace source mapping and selection of only the
+# eventstore gateway. The prior failure is retained above for reproducibility.
+# The McpCli checkout still has empty status --short --ignored output.
+# This is focused implementation evidence, not released pinned-tool AC1 proof.
