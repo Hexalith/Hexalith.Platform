@@ -1,0 +1,26 @@
+{
+  "recordedAtUtc": "2026-10-20T02:44:20.638476+00:00",
+  "ownerMessage": "I approve",
+  "scope": [
+    "OA-1",
+    "OA-2",
+    "OA-3",
+    "OA-4",
+    "OA-5",
+    "OA-6"
+  ],
+  "approvalKind": "architecture adoption; not provisioning or qualification",
+  "reviewedPlatformCandidate": "ad1c770d680f70af3a9638306635ba514426ef36",
+  "basis": [
+    {
+      "path": "decision.md",
+      "sha256": "77ace95a80767f8696ca5f67a301b305079e93963c88ca3cfc0d24db61da4d38"
+    },
+    {
+      "path": "custody-spine.md",
+      "sha256": "6337b829678db03418a933dbce6bdcdc0ca592a4e54de638e2727deb4e9e43c9"
+    }
+  ],
+  "subsequentOwnerConstraint": "we must keep infrastructure abstraction given by DAPR, any infrastructure dependency should be avoided.",
+  "effectiveApproval": "Dapr-only amended adoption; no native application adapter/AD-9 exception or mandatory cloud dependency; no deployment/qualification authorization"
+}

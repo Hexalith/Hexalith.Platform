@@ -1,0 +1,37 @@
+{
+  "recordedAtUtc": "2026-10-20T02:48:11.957765+00:00",
+  "ownerConstraint": "we must keep infrastructure abstraction given by DAPR, any infrastructure dependency should be avoided.",
+  "runtimeVersion": "1.18.1",
+  "existingSourceDaprClientVersion": "1.18.10",
+  "proto": {
+    "source": "https://raw.githubusercontent.com/dapr/dapr/v1.18.1/dapr/proto/components/v1/bindings.proto",
+    "sha256": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d",
+    "outputBindingMethods": [
+      "Init",
+      "Invoke",
+      "ListOperations",
+      "Ping"
+    ]
+  },
+  "primaryDocs": [
+    "https://docs.dapr.io/reference/api/bindings_api/",
+    "https://docs.dapr.io/developing-applications/develop-components/pluggable-components/develop-pluggable/",
+    "https://docs.dapr.io/operations/components/pluggable-components-registration/",
+    "https://docs.dapr.io/reference/components-reference/supported-cryptography/",
+    "https://docs.dapr.io/operations/resiliency/policies/retries/retries-overview/"
+  ],
+  "newComponentInstalled": false,
+  "completeErasureProviderVerified": false,
+  "directNativePlatformAdapterApproved": false,
+  "catalogObservation": {
+    "repositoryCommit": "24322f56177b8fe86a78b2be7125f873c0a682bd",
+    "path": "Props/Directory.Packages.props",
+    "sha256": "806922385b3209e0f396ccb8478870bfca59a60ac9432fd6c97c63a22b34f337",
+    "acceptedRuntimeInferred": false
+  },
+  "responseLimit": {
+    "bytes": 4194304,
+    "pinnedPluggableClientOverrideVerified": false,
+    "conformance": "bounded immutable value-free original pages; full input fit remains F1 gate"
+  }
+}

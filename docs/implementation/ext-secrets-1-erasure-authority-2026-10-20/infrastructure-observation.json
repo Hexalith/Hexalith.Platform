@@ -1,0 +1,212 @@
+{
+  "observedAtUtc": "2026-10-20T02:27:15.876957+00:00",
+  "secretsRead": false,
+  "runtimeQualificationPerformed": false,
+  "observations": [
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--request-timeout=10s",
+        "get",
+        "nodes",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selectedPublicMetadata": [
+        {
+          "kind": "Node",
+          "name": "node1",
+          "kubeletVersion": "v1.34.9",
+          "osImage": "Ubuntu 24.04.3 LTS",
+          "architecture": "amd64"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--request-timeout=10s",
+        "get",
+        "storageclass",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selectedPublicMetadata": [
+        {
+          "kind": "StorageClass",
+          "name": "openebs-hostpath",
+          "provisioner": "openebs.io/local",
+          "reclaimPolicy": "Delete",
+          "volumeBindingMode": "WaitForFirstConsumer"
+        },
+        {
+          "kind": "StorageClass",
+          "name": "openebs-hostpath-retain",
+          "provisioner": "openebs.io/local",
+          "reclaimPolicy": "Retain",
+          "volumeBindingMode": "WaitForFirstConsumer"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/home/administrator/.kube/hexalith-production",
+        "--request-timeout=10s",
+        "get",
+        "statefulsets,deployments",
+        "-A",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "selectedPublicMetadata": [
+        {
+          "kind": "StatefulSet",
+          "name": "dapr-placement-server",
+          "namespace": "dapr-system",
+          "images": [
+            "ghcr.io/dapr/placement:1.18.1"
+          ],
+          "readyReplicas": 3
+        },
+        {
+          "kind": "StatefulSet",
+          "name": "dapr-scheduler-server",
+          "namespace": "dapr-system",
+          "images": [
+            "ghcr.io/dapr/scheduler:1.18.1"
+          ],
+          "readyReplicas": 3
+        },
+        {
+          "kind": "StatefulSet",
+          "name": "registry-idp-db",
+          "namespace": "ext-secrets-1-isolated",
+          "images": [
+            "docker.io/library/postgres:18.6-trixie@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "StatefulSet",
+          "name": "registry-state",
+          "namespace": "ext-secrets-1-isolated",
+          "images": [
+            "redis/redis-stack-server:7.4.0-v8@sha256:798ab84d9f266936b034ab11c4d04a2b8e4b441884c5aa7d17ac951eefdf742a"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "StatefulSet",
+          "name": "hexalith-keys",
+          "namespace": "openbao",
+          "images": [
+            "quay.io/openbao/openbao:2.6.2@sha256:11fd73a2102cda9c55d5d881a8c3210303146a7ec1e8ac76f526e175c6d24641"
+          ],
+          "readyReplicas": 3
+        },
+        {
+          "kind": "Deployment",
+          "name": "barman-cloud",
+          "namespace": "cnpg-system",
+          "images": [
+            "ghcr.io/cloudnative-pg/plugin-barman-cloud:v0.15.0@sha256:563c680fe7fda3466ca2b1f55a1397ed2ddc9e760360107dd7724f1959c1a536"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "Deployment",
+          "name": "cnpg-controller-manager",
+          "namespace": "cnpg-system",
+          "images": [
+            "ghcr.io/cloudnative-pg/cloudnative-pg:1.30.0@sha256:a2701eb97cdd2a34b1fdb2cb51987f544b706e40bec72ae7146cd8580efefebb"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "Deployment",
+          "name": "dapr-operator",
+          "namespace": "dapr-system",
+          "images": [
+            "ghcr.io/dapr/operator:1.18.1"
+          ],
+          "readyReplicas": 3
+        },
+        {
+          "kind": "Deployment",
+          "name": "dapr-sentry",
+          "namespace": "dapr-system",
+          "images": [
+            "ghcr.io/dapr/sentry:1.18.1"
+          ],
+          "readyReplicas": 3
+        },
+        {
+          "kind": "Deployment",
+          "name": "dapr-sidecar-injector",
+          "namespace": "dapr-system",
+          "images": [
+            "ghcr.io/dapr/injector:1.18.1"
+          ],
+          "readyReplicas": 3
+        },
+        {
+          "kind": "Deployment",
+          "name": "eventstore",
+          "namespace": "ext-secrets-1-isolated",
+          "images": [
+            "registry.hexalith.com/ext-secrets-1-eventstore@sha256:7cc365ff65351070e7156fef2ab858ff26a05943985b532b838b33ffc39878c1",
+            "ghcr.io/dapr/daprd:1.18.1"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "Deployment",
+          "name": "inventory",
+          "namespace": "ext-secrets-1-isolated",
+          "images": [
+            "registry.hexalith.com/ext-secrets-1-inventory@sha256:06e869c7dd6cf51ea63d5aa48f89c57b2c36021da02b2dc313df572b7640a856",
+            "ghcr.io/dapr/daprd:1.18.1"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "Deployment",
+          "name": "registry-idp",
+          "namespace": "ext-secrets-1-isolated",
+          "images": [
+            "quay.io/keycloak/keycloak@sha256:82a77884f3af238beab1e7afd63b5f530e1b5c0590bd7aa60b40a40463e29b2c"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "Deployment",
+          "name": "tenants",
+          "namespace": "ext-secrets-1-isolated",
+          "images": [
+            "registry.hexalith.com/ext-secrets-1-tenants@sha256:d2e67a06bacf9f88e30270cb5f47a8de8bc6b568d3bcf1b5831eb908cdf8fd0b",
+            "ghcr.io/dapr/daprd:1.18.1"
+          ],
+          "readyReplicas": 1
+        },
+        {
+          "kind": "Deployment",
+          "name": "velero",
+          "namespace": "velero",
+          "images": [
+            "docker.io/velero/velero@sha256:b839e52bc2c69eb3b5a84b010b8b3c7f714f3c5ef50b77ec7770a382a8f2e0ab"
+          ],
+          "readyReplicas": 1
+        }
+      ]
+    }
+  ]
+}

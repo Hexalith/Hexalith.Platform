@@ -1,0 +1,43 @@
+# Provider-neutral custody binding contract v1
+
+The infrastructure component implements the semantic operations in the adopted decision. This is a new contract to implement/qualify, not an installed component. Application requests contain no provider API call, resource ARN, connection string or infrastructure credential.
+
+## Immutable request and authority
+
+`ProtocolVersion=custody-lifecycle-v1`, operation, original `OperationId`, `RequestDigest`, authenticated owner/purpose scope, expected custody revision/checkpoint digest and authenticated exact private operation proof form the common envelope. Key-scoped operations require complete existing CustodyKeyObjectIdentity; manifest operations require the full target vector; anchor operations require their existing complete AnchoredStateTransition scope without inventing a key identity. Action-specific original data is preserved without reinterpretation: registration/KEK/opaque-wrap receipt; HoldId/authorized release; or original BatchId/ManifestDigest/sorted complete target vector and protection ReservationReceiptId. Use the existing source canonical identity/digest/order routines; do not introduce a different target sort or recanonicalize signed capabilities.
+
+The closed `ControlAdmissionProofV1` binds issuer, audience, proof ID, authority incarnation, tenant, full target-vector digest, action, HoldId and exact registered/release guard revision/receipt when applicable, exact dispatch revision/receipt, original protection reservation for destruction, DecisionVersion, expected custody revision/checkpoint hash and signature. Source owners authenticate their receipts; a container assembler, Dapr app ID or metadata field grants no ordering authority. Current enrollment/revocation remains independently verified.
+
+Initial `AuthorityEnrollmentV1` binds opaque AuthorityId, AuthorityIncarnation, StoreTarget, ProviderProfileId, TrustProfileRevision, PublishedAnchorSetId and ArtifactProfileDigest. Native provider identities remain private infrastructure configuration. First-release replacement/rollover is unsupported; app restore cannot mint enrollment.
+
+## Original wrapped key bytes
+
+Keep existing `CustodyKeyWrapCore` and C0 AAD unchanged. Inner C0 encoding is RFC8785 canonical JSON with closed `Identity`, `KekVersion`, `Nonce`, `Ciphertext`, `Tag`; Identity retains exact existing property names/string values, Purpose is its case-sensitive enum name, binary fields are unpadded base64url and Unicode is not normalized.
+
+`OuterEnvelopeV1` binds Identity, original KekVersion, original OpaqueWrappedKeyReference, OuterKeyGeneration, fresh 12-byte nonce, ciphertext and 16-byte tag. D and X are 32 bytes. Outer AAD is existing `PlatformCanonicalBytes.Components` over, in order: `custody-epoch-outer-v1`, TenantId, ObjectId, Purpose.ToString(), KeyAlias, KeyVersion, LifecycleVersion, StoreTarget, ContractVersion, KekVersion, OpaqueWrappedKeyReference, OuterKeyGeneration. Allocate the opaque reference before encryption; it cannot depend on C1's hash. Current opaque epoch/encrypted-X references belong to the authenticated checkpoint outside immutable C1/AAD.
+
+No bare C0/key bytes persist. Existing key-provider ports may require owned key delivery; all Dapr/protobuf/JSON/SDK/sidecar/component copies then join closure. An assumed serializer cleanup is insufficient. Exact wire vectors and safe buffer handling are F1 gates, not guarantees supplied by this document.
+
+## Checkpoints, physical intents and results
+
+`CustodyCheckpointV1` binds authority/incarnation/tenant/revision/predecessor digest, current/staging/tainted opaque epoch inventory, complete sorted registrations/allocation exclusions/pins/restrictive intents/copy graph/key-use/native intents, immutable owner-original/receipt indexes and admitted actor transitions. Start with full immutable snapshots selected by opaque checkpoint reference/digest. No independently committed target shards or provider item keys enter application contracts.
+
+The component owns `NativeIntentV1`: tenant, original operation/intent/digest, producer incarnation, opaque source/destination generation identities, target digest, expected head revision and phase. Sending is committed once; uncertain send is retained, never replayed after restart. ResultDurable retains only value-free outcome or gated encrypted-original metadata, never a raw key response or bare C0. Close only after that persistence and real I/O/buffer completion. Dapr delivery duplicates return original status/result; they never repeat native send.
+
+Value-free responses retain existing statuses and complete original vectors/signature bytes. Key-bearing unwrap/owned-key delivery is ephemeral: never persist D/X/K or replay a cached raw response. Admit each KeyUseLeaseId/DeliveryAttemptId for exact recipient-process and transport incarnation before release; commit one send. Duplicate/lookup after release admission yields status/proof only. Closed/frozen/erased leases cannot emit keys; later legitimate use requires fresh current key-use admission for the same original root. Every actual sidecar/transport delivery joins that holder inventory; uncertainty blocks closure. Verify a provider-neutral signed evidence profile binding exact request/reservation/target identity, current authority, physical cut, full copy/holder inventory and restore barrier. Profile-specific native evidence validation lives inside the component/independent infrastructure observer; app verification uses enrolled public trust and opaque proof references. Unknown/outage/malformed proof cannot become NotStarted, Destroyed or Consumed. Per-key interaction Destroy references the original complete manifest rather than exposing a separate physical deletion.
+
+## Anchored transition phases
+
+Map AdmitTransitionAsync to `admit-transition`, RecordTransitionAsync to `record-transition`, RecoverTransitionAsync to `recover-transition`, and VerifyTransitionAsync to `verify-transition`. `lookup-transition` is authenticated read-only recovery evidence. All phases preserve existing complete owner/purpose, predecessor/target revision/digest and admitted transition bytes. Admit retains current original permission before primary staging without advancing the independent anchor. Record compares predecessor and advances/retains original proof atomically. Recover requires separately current recovery authority and exact independently retained admitted original at unchanged predecessor, mutates only the anchor/journal and repeats no physical effect. Verify/lookup perform fresh independent reads and never advance an anchor. Missing/unknown authority denies.
+
+## Current reads and registration
+
+`read-current` performs a fresh linearizable read on every invocation and binds proof to a new RequestAttemptId/challenge, current authority incarnation and observed revision/digest. It is never an immutable-original cache hit. Enforce accepted call deadline/current authorization, and consume a fresh native comparison at each later release/effect. Historical original receipts prove prior outcomes, not present permission.
+
+UDS access is limited to daprd/component by mount/ownership/ACL; the application has no socket access. Require pinned imported protos, gRPC reflection and correct discovery socket/type naming. Init binds enrolled opaque authority/store/incarnation and public configuration/trust digest; same-profile re-init retains originals/intents/uncertain holders. Reject changed identities/profiles through Init; no first-release authority rollover.
+
+## Bounded original-result reads
+
+Dapr 1.18.1's pluggable client response has a 4 MiB default ceiling without a verified runtime configuration override. The manifest operation returns a bounded header binding immutable OriginalResultReference, original request/reservation/manifest identity, full exact-byte length/count and SHA-256. `read-original-page` authenticates current exact lookup permission and returns ≤256 KiB original bytes with offset/length/page digest and matching header identity; encoded frame ≤1 MiB. Reassemble contiguous complete bytes and verify total hash/identity/vector/signature before exposing Consumed. Interrupted assembly is Unknown, never a partial receipt vector. Page lookup starts no physical effect; immutable framing does not split target admission or physical cut. No key-bearing payload is paged or cached.
+
+The full input manifest remains one invocation. F1 must prove worst legal request size fits the pinned supported SDK/sidecar/component server limits; no hidden override, stricter public field limit, truncation or split consumption is inferred. Failure stops qualification or requires an explicitly approved supported runtime/component change.
