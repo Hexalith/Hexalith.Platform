@@ -908,3 +908,25 @@
   summary: Add one real-process cancellation and deadline test that covers `BuildMcpCliAsync` and `BuildModelAsync`.
   evidence: Review pass 2 (VG2). Both builders pass the remaining time and the startup token to `CompositionProcess.RunAsync`, but their tests replace the whole builder (`McpCliBuildOverride`, `PlatformModelBuildOverride`). Passing `CancellationToken.None` would fail no test. A fake project whose build blocks (an `Exec` that sleeps), with a cancelled token or a short deadline, should end within seconds with `OperationCanceledException`. The model-build gap is pre-existing.
   status: open
+
+## Deferred from: story 1.11 resumed review (2026-10-20, pass 3)
+
+- source_spec: spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md
+  summary: Make McpCli's existing test dependency gate handle approved MSBuild property-based Include expressions without rejecting their raw forms.
+  evidence: Pass-3 P3-BH2/P3-EH1. references/Hexalith.McpCli/tests/Hexalith.McpCli.Manifest.Tests/DependencyPolicyTests.cs:892-901 concatenates raw Include values with evaluated items; the checker rejects an unresolved raw expression even when its evaluated package or project is approved. Introduced by McpCli story 4.7 commit f2242b76e117c93f3bcf77320ca5d133a61e9308, before this story's declaration change.
+  status: open
+
+- source_spec: spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md
+  summary: Cover inactive conditional test dependencies declared in imported MSBuild props in McpCli's dependency gate.
+  evidence: Pass-3 P3-BH3. references/Hexalith.McpCli/tests/Hexalith.McpCli.Manifest.Tests/DependencyPolicyTests.cs:892-901 reads literal declarations only from the csproj; Debug/Release evaluation also omits a forbidden imported reference whose condition is false in both configurations. Pre-existing story 4.7 behavior, outside the McpCli run-scoped build.
+  status: open
+
+- source_spec: spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md
+  summary: Refresh the cached Epic 1 stack pins from the accepted tool/catalog and SDK configuration.
+  evidence: Pass-3 P3-BH8. _bmad-output/implementation-artifacts/epic-1-context.md:47-52 says SDK 10.0.401/Aspire 13.5.4 with no upgrades, while global.json and the accepted-tool evidence use 10.0.402/13.6.1. Defer edits to agent context under the build review workflow.
+  status: open
+
+- source_spec: spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md
+  summary: Restore the Works preview Development-only condition in the cached Epic 1 technical decision.
+  evidence: Pass-3 P3-BH9. _bmad-output/implementation-artifacts/epic-1-context.md:69 describes only Platform:Works:Enabled, while src/Hexalith.Platform.Composition/WorksPreviewModel.cs:55 enforces Development as well. Defer edits to agent context under the build review workflow.
+  status: open

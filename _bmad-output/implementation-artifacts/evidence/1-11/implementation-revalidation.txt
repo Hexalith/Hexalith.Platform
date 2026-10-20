@@ -1,0 +1,73 @@
+# Story 1.11 implementation revalidation, 2026-10-20
+# Working directory: /home/administrator/projects/hexalith/platform
+# Platform HEAD: 23a35074b10f999946ed5fdd621e4bb60af73de8
+# Builds HEAD and locally recorded origin/main: 24322f56177b8fe86a78b2be7125f873c0a682bd
+# McpCli HEAD and locally recorded origin/main: 742f5b6ead66937f62025b73d77452e0f8126658
+# Both gitlinks match the committed Platform tree. No remote queries or mutations were performed.
+# SDK: 10.0.402; runtime reported by xUnit: .NET 10.0.13.
+# This revalidation changes only evidence; all implementation and review patches were already committed.
+
+## Builds: build and focused I/O matrix
+
+$ cd references/Hexalith.Builds
+$ dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --no-restore --configuration Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:01:04.94
+exit=0
+
+$ dotnet exec test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.McpCliRunBuildTests
+   Hexalith.Builds.Module.Tests  Total: 29, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 42.962s
+exit=0
+
+# Covers Debug/artifacts-path/pinned-catalog arguments; active-module/source-mode selection;
+# missing/uninitialized/project-less/linked-outside checkouts; mapped checkout over sibling;
+# a real successful build with run-only artifacts, no package and no checkout/sibling outputs;
+# a real failed build; seven catalog-authority drift refusals; declaration/MCP rejection;
+# ready HXI010 project and tool paths, down cleanup; other-module exclusion; pre-launch refusal;
+# HXR020 build diagnostics; and the startup deadline.
+
+## Platform: real declaration and Linux repository casing
+
+$ cd /home/administrator/projects/hexalith/platform
+$ dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --no-restore --configuration Debug -m:1 -nodeReuse:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+Build succeeded.
+    1 Warning(s)
+    0 Error(s)
+Time Elapsed 00:01:25.17
+exit=0
+
+# Existing dependency warning, separate from the story checks:
+# MSB3277: conflict between StackExchange.Redis assembly versions 2.0.0.0 and 3.0.0.0
+# in src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj.
+# The primary package stackexchange.redis/2.13.17 was chosen over the reference
+# from Hexalith.Builds.Tooling.dll. No package/version changes were made here.
+
+$ dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.McpCliDeclarationTests
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 2.518s
+exit=0
+
+# Loads the actual references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json,
+# validates it, asserts Repository("mcpcli") == "Hexalith.McpCli", resolves the source
+# mapping, and asserts that PlatformAppModel.Prepare selects only the eventstore gateway.
+
+## Checkout constraints and scope
+
+$ git -C references/Hexalith.McpCli status --short --ignored
+(empty)
+$ git -C references/Hexalith.Builds status --short
+(empty)
+$ git -C references/Hexalith.McpCli submodule status
+# All 17 entries remain prefixed '-' (uninitialized), including references/Hexalith.Platform.
+$ git diff --check
+(empty)
+
+# No live environment or container was started. Full suites were not repeated; historical
+# full-suite results and the known Platform failures remain in post-review-verification.txt
+# and review-pass2-tests.txt. Existing breakpoint/down proof is review-pass2-debug.txt;
+# own-identity proof remains clone-identity.txt, explicitly non-Platform evidence.
+# Remaining orchestrator handoff: release Builds with production approval, pin the released
+# tool and Builds tag in Platform, update the README version records, and rerun AC1 with
+# dotnet tool run hexalith-module -- debug --manifest references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json.
+# The currently pinned 4.33.1 still does not build McpCli, so pinned-tool AC1 remains open.

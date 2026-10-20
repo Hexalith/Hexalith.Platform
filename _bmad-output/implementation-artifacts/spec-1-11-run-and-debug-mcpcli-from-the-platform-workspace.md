@@ -10,6 +10,9 @@ mcpcli_baseline_commit: '447085c42ec606f642240c4cae0415e7c2f97467'
 builds_baseline_commit: 'b435f2e3b3892e03f69322d24de6003b0baf7a7d'
 route: 'dispatch'
 review_loop_iteration: 0
+release_run_id: 39363818307
+release_source_commit: '24322f56177b8fe86a78b2be7125f873c0a682bd'
+release_status: 'waiting-production-approval'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
 ---
@@ -181,6 +184,9 @@ Rejected:
 
 ## Implementation Notes
 
+
+- **Resumed release handoff (2026-10-20).** At Platform 23a35074b10f999946ed5fdd621e4bb60af73de8, fresh focused verification passed (Builds 29/29; Platform actual McpCli declaration/casing 1/1), and review pass 3 found no new McpCli-run product patch. Builds 24322f56177b8fe86a78b2be7125f873c0a682bd is current remote main and push CI 39360743339 passed. McpCli's reviewed checkout 742f5b6ead66937f62025b73d77452e0f8126658 has successful CI; remote main has since advanced to documentation-only 0779fd98df7bffcfde79a8ce121076390c30284c, so this run did not move or push that checkout. The exact-source/CI release guard passed, and the orchestrator dispatched build-release.yml as run 39363818307. Its source-check job passed; production approval is pending with the human, as the frozen decisions require. No approval API was invoked. See [release-handoff.json](evidence/1-11/release-handoff.json). The tool remains pinned to 4.33.1 until publication, so the release/pin task and pinned-tool AC1 remain incomplete. Earlier local/unpushed notes below describe historical execution states.
+
 - **Review fixes (amended into both commits).** Builds is now `cf978100f7668de135eb8a2adcd535e21b26471b` (was `d7c828a`) and McpCli `943b75ce85cbedc83b73f3b90277dcd3d4fae83b` (was `13568c0`). The Platform McpCli gitlink is restaged at `943b75c`. The changes:
   - **Builds:**
     - The McpCli build passes `-p:CentralPackageTransitivePinningEnabled=true`. A real Debug build has 0 warnings and restores with transitive pinning (`evidence/1-11/transitive-pinning-build.txt`).
@@ -246,6 +252,30 @@ The diff covered:
 | BH14b | A pinned-catalog failure is labelled a build failure | low | The catalog is materialized immediately before (`CompositionEngine.cs:168`), which matches the model path. The fix adds a branch. | reject |
 | BH15 | Test assertions are thinner than the behaviour | false | No product defect is shown. The arguments are present in `McpCliBuildArguments`, and the plan value is asserted through the deserialized `session.Plan.McpCliToolPath`. | reject |
 | EH4 | `down` while a user-launched McpCli holds the DLL | low | Linux deletes open files. Windows is not a supported dev host here (1.10 pass 3). `down` stops only run-owned resources by contract. Detection adds complexity. | reject |
+
+
+### Review pass 3 — resumed build, 2026-10-20
+
+Three independent reviewers inspected the combined story diff, including Builds and McpCli changes from the recorded baselines. Fresh checks passed: Builds McpCli matrix 29/29 and Platform real declaration/casing 1/1. No new McpCli-run product patch is required. The release/pin task remains open and is being executed by the orchestrator; the spec is not complete.
+
+| ID | Finding | Verdict | Evidence and route |
+| --- | --- | --- | --- |
+| P3-BH1 | Pinned 4.33.1 cannot build McpCli | medium | Carried from pass-2 BH2/AA2/AA3: the manifest still selects 4.33.1. Retain the open release/pin task and existing ledger entry; no duplicate deferral. |
+| P3-BH2 | Raw MSBuild Include expressions can reject approved test references | medium | Verified DependencyPolicyTests.EvaluateReferences concatenates raw project XML with evaluated Debug/Release items; DependencyPolicyGate.CheckTestProjects then rejects the unresolved expression. The change belongs to pre-existing McpCli story 4.7 commit f2242b76e117c93f3bcf77320ca5d133a61e9308, preceding this story's declaration commit. Defer to its owner. |
+| P3-BH3 | Inactive forbidden references in imported props evade the literal scan | medium | Verified the fallback reads only XDocument.Load(project), while the MSBuild query omits items whose conditions are false. Imported inactive items are absent from both sets. Pre-existing McpCli story 4.7 behavior; defer with its own regression case. |
+| P3-BH4 | Real-process cancellation is untested | medium | Carried from pass-2 VG2: real builder tests finish normally; the deadline test substitutes the builder. Keep the existing shared cancellation/deadline ledger entry without duplicating it. |
+| P3-BH5 | Build process timeout can report HXR020 rather than HXR021 | low | Carried from pass-2 BH4/EH1/VG and pass-1 VG5/BH4/EH1: simultaneous timers can race, matching the existing model builder. Reject under the recorded unlikely-case/added-branch decision. |
+| P3-BH6 | Referenced source links can reach a sibling | low | Carried from pass-2 EH3/EH8: executable-project containment is checked; checking the entire project/source graph adds complexity for an unlikely case. Reject under the recorded decision. |
+| P3-BH7 | Model build omits transitive pinning | medium | Carried from pass-2 BH6: BuildModelAsync retains its pre-existing catalog arguments. Keep the existing ledger entry; no duplicate deferral. |
+| P3-BH8 | Cached epic context mandates obsolete SDK/Aspire pins | low | Verified context lists 10.0.401/13.5.4 while global.json and accepted-tool evidence use 10.0.402/13.6.1. A later planning/implementation agent could copy obsolete versions. Defer because the fix edits agent context, per the review workflow. |
+| P3-BH9 | Cached Works decision omits the Development restriction | low | Verified WorksPreviewModel still rejects non-Development environments, but the compiled context names only the feature switch. A later agent could remove the guard on that basis. Defer because the fix edits agent context. |
+| P3-BH10 | Spec state and historical execution records disagree | low | The release task is still incomplete and sprint status remains in-progress; old implementation notes describe earlier runs. Reject the requested spec-only fix under the review rule. Current revalidation evidence records canonical revisions and the remaining handoff. |
+| P3-EH1 | Approved property-based Include is rejected as raw text | medium | Same verified behavior as P3-BH2; the review's EvaluateInclude guard snippet is absent from the actual source. Group with P3-BH2's pre-existing policy issue and defer once. |
+| P3-EH2 | Process timer can win the startup cancellation race | low | Carried from pass-2 EH1/BH4 and pass-1 EH1/VG5. Keep the recorded rejection; no new implementation change. |
+| P3-EH3 | Pinned command starts servers without building McpCli | medium | Carried from pass-2 BH2/AA2/AA3. Existing release/pin task remains open; no duplicate deferral. |
+| P3-VG1 | Real build token/deadline forwarding is not exercised | medium | Pre-verified gap; carried from pass-2 VG2, already tracked in the shared real-process cancellation/deadline entry. Defer there without a duplicate. |
+| P3-VG2 | Released pinned-tool acceptance evidence is absent | medium | Carried from pass-2 release/pin finding. The orchestrator must release, pin and rerun AC1 before completing this spec. |
+
 
 ## Design Notes
 
