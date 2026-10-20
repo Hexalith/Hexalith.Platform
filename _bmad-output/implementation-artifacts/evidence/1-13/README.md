@@ -1,8 +1,7 @@
-# Story 1.13 — local enrollment candidate
+# Story 1.13 — released domain-module enrollment kit
 
-Status: local implementation and verification; **not released or Platform accepted**.
-Builds owner review, gated upstream publication and released-pin acceptance remain
-pending. The kit leaves SM-2 for module-owner verification after adoption; no live
+Status: **complete**. The owner-approved candidate was published as `4.35.0`
+through the gated Builds release workflow and passed fresh Platform acceptance. The kit leaves SM-2 for module-owner verification after adoption; no live
 demonstration was performed or fabricated by this story.
 
 ## Canonical identities
@@ -12,13 +11,16 @@ demonstration was performed or fabricated by this story.
   `5d03f1db9c38db34ecac7fe6048937478ffb82cc`.
 - During local implementation, an independent `/pushall` operation committed
   in-progress files to Builds `1c560aa3ad0407717ef0e2ce5fb5e48f0ffd32a1`.
-  Review the **original baseline through the final working tree**, including both
-  that commit and subsequent uncommitted corrections. This implementation session
-  did not commit, push, publish or change remote state.
-- Accepted published tool pin remains `4.34.0`; supported range remains
-  `[4.34.0, 5.0.0-0)`. A concurrent gitlink change is not a new release acceptance.
+  The reviewed product diff covers the **original baseline through the final
+  candidate**, including that commit and subsequent corrections. Owner-authorized
+  release operations are recorded below.
+- Accepted published tool pin: `4.35.0`, with `rollForward: false`.
+- Supported range: `[4.35.0, 5.0.0-0)`.
+- Builds gitlink and `v4.35.0` release tag:
+  `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`.
+- [Canonical release and acceptance identities](accepted-release-identities.json).
 
-## Local commands
+## Prepublication local commands (historical)
 
 From `references/Hexalith.Builds`:
 
@@ -55,7 +57,7 @@ Read-only assertions compare Git status and file inventories before and after.
 Human source review covers unsupported constructs; static rows leave SM-2
 separately unverified. Focused and owning-project results are recorded below.
 
-## Required release and acceptance handoff
+## Release acceptance procedure (steps 1–5 completed)
 
 1. Obtain Builds owner review of the complete baseline-to-worktree candidate.
 2. Follow the existing Builds source/CI/package qualification and environment
@@ -123,7 +125,7 @@ The failing cleanup method passed all **4/4** cases on a separate serial retry
 ([output](builds-cleanup-retry.txt)) and the final full serial run.
 The initial 99 fixture failures below did not recur in the stable snapshot.
 
-## Reviewed candidate awaiting owner approval
+## Owner-approved candidate and gated release
 
 - Builds implementation/corrections: `b6642fecff8617e1765d835e71ebde316e3f71a5`.
 - Final additional-regression candidate: `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`.
@@ -133,9 +135,73 @@ The initial 99 fixture failures below did not recur in the stable snapshot.
   ([Builds](builds-commitlint.txt), [regression](regression-commitlint.txt),
   [Platform](platform-commitlint.txt)).
 
-The session created local commits only. Owner approval, upstream release and fresh
-released-tool Platform acceptance are still required before changing the accepted
-pin/range or claiming Story 1.13 complete. The active pin remains `4.34.0`.
+The owner explicitly approved this exact candidate and its gated release at
+2026-10-20T12:57:36Z: “Approve candidate and release”
+([record](owner-approval.json)). Builds main was pushed to the approved candidate.
+GitHub accepted the owner-account push using its configured branch-rule bypass;
+the release source, CI, qualification and production environment gates remain
+unchanged. No guard configuration was changed or waived.
+
+Exact-source [CI 39426403061](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39426403061)
+passed ([machine result](ci-result.json), [suite summaries](ci-test-summaries.txt)):
+Module 1,188 total / 1,185 passed / 3 skipped; Evidence 107/107 passed;
+Tooling integration 13 total / 1 passed / 12 skipped. The G-4 package qualification
+and Python/CodeQL checks passed. The skipped tests require their documented
+external context; they were not converted into passes.
+
+The official [release run 39431435493](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39431435493)
+uses the approved full source SHA. Its exact-current-main/green-push-CI source
+guard passed. The recorded owner authorization was applied through the ordinary
+`production` environment approval API under the configured reviewer
+([approval response](production-gate-approval.json)). The workflow completed
+successfully and [published `v4.35.0`](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.35.0)
+at 2026-10-20T14:14:32Z. See [workflow result](release-result.json),
+[release metadata](published-release.json),
+[qualified package inventory](published-package-inventory.json) and
+[publisher's remote verification](release-publication-hashes.txt).
+
+## Released-tool Platform acceptance
+
+Platform now pins `4.35.0`, disables roll-forward, sets the range floor to `4.35.0`
+and retains upper bound `5.0.0-0`. The exact Builds release-tag commit is the
+Platform gitlink. The runtime catalog, SDK pin and AppHost topology are unchanged
+from `v4.34.0`; this story upgrades no runtime dependency.
+
+A fresh [Platform restore](platform-released-tool-restore.txt) from NuGet.org reports
+[`4.35.0+fff4a212180d8cd1c5c0759655a9bc4fb6963c45`](platform-released-tool-version.txt).
+The acceptance harness uses an empty `DOTNET_CLI_HOME`, an empty package cache,
+an explicit `globalPackagesFolder` and NuGet.org as its sole source. It downloads
+the public package, records its SHA-256 and runs all four documented tool commands:
+human/JSON success exits `0`, missing inventory exits `1`, and Git state plus
+every workspace file hash remain unchanged. Retained before/after inventories
+bind the read-only assertions to every invocation. See
+[commands and hashes](released-package/released-commands.json),
+[restore](released-package/tool-restore.txt),
+[version](released-package/tool-version.txt) and
+[reproduction script](released-package/accept-released.py.txt).
+An initial harness attempt stopped before validation because the existing .NET
+tool cache was reused; explicit CLI-home and package-folder isolation corrected
+the harness. The successful run above used an empty cache.
+
+NuGet repository signing changes the archive hash. The fresh download's signed
+SHA-256 matches the public hash verified by the official publisher. The publisher
+also verified every uncompressed payload entry against the qualified unsigned
+package, excluding only the repository signature. The release inventory binds
+that qualified package to the exact clean approved source. Both hashes are
+preserved in [acceptance identities](accepted-release-identities.json).
+
+All **4/4 Platform kit tests** passed against the official released CLI
+([test output](platform-released-kit-tests.txt)). The earlier normal Platform
+build passed with zero warnings/errors; the exact-source upstream CI ran
+**1,188 Module tests: 1,185 passed, zero failed, 3 context-dependent skips**.
+All 17 review findings were corrected; none were deferred. The final acceptance
+commit message passed the pinned Platform commitlint CLI
+([validation](acceptance-commitlint.txt)).
+
+No other module was adopted or retired. Module owners still perform their real
+active-checkout breakpoint/edit and direct-only SM-2 demonstration and record it
+in the pending checklist for Story 3.11. Static acceptance supplies no retirement
+permission or live SM-2 evidence.
 
 ## Initial implementation verification (historical)
 

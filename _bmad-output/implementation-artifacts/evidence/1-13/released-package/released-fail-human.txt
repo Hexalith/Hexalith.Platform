@@ -1,0 +1,14 @@
+failed: UsageOrManifest
+HXA001 Manifest Manifest source=module/hosting-inventory.json field=hosting-inventory: Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist.
+HXA001 Manifest Manifest source=module/hosting-inventory.json field=dependency-selectors: Tracked audit file is missing, unreadable or physically escapes the active workspace.
+HXA001 Manifest Manifest source=module/hosting-inventory.json field=dapr-subscriptions: Tracked audit file is missing, unreadable or physically escapes the active workspace.
+PASS workspace file=.git: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS declaration file=hexalith.module-manifest.v2.json: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS references file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS gitlinks file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS nested-references file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS tool-pin file=.config/dotnet-tools.json: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+FAIL hosting-inventory file=module/hosting-inventory.json: Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist.
+FAIL dependency-selectors file=module/hosting-inventory.json: Tracked audit file is missing, unreadable or physically escapes the active workspace.
+FAIL dapr-subscriptions file=module/hosting-inventory.json: Tracked audit file is missing, unreadable or physically escapes the active workspace.
+Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.

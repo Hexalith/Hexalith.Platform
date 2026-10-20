@@ -1,0 +1,21 @@
+Build and test	Test Hexalith.Builds.Module.Tests	2026-10-20T13:29:29.8352284Z Test run summary: Passed!
+Build and test	Test Hexalith.Builds.Module.Tests	2026-10-20T13:29:29.8357804Z   total: 1188
+Build and test	Test Hexalith.Builds.Module.Tests	2026-10-20T13:29:29.8358259Z   failed: 0
+Build and test	Test Hexalith.Builds.Module.Tests	2026-10-20T13:29:29.8358800Z   succeeded: 1185
+Build and test	Test Hexalith.Builds.Module.Tests	2026-10-20T13:29:29.8359316Z   skipped: 3
+Build and test	Test Hexalith.Builds.Module.Tests	2026-10-20T13:29:29.8359835Z   duration: 4m 56s 762ms
+Build and test	Test Hexalith.Builds.Evidence.Tests	﻿2026-10-20T13:29:29.8654277Z ##[group]Run dotnet test test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --no-restore --configuration Release
+Build and test	Test Hexalith.Builds.Evidence.Tests	2026-10-20T13:29:35.2448741Z Test run summary: Passed!
+Build and test	Test Hexalith.Builds.Evidence.Tests	2026-10-20T13:29:35.2455608Z   total: 107
+Build and test	Test Hexalith.Builds.Evidence.Tests	2026-10-20T13:29:35.2456047Z   failed: 0
+Build and test	Test Hexalith.Builds.Evidence.Tests	2026-10-20T13:29:35.2456591Z   succeeded: 107
+Build and test	Test Hexalith.Builds.Evidence.Tests	2026-10-20T13:29:35.2457135Z   skipped: 0
+Build and test	Test Hexalith.Builds.Evidence.Tests	2026-10-20T13:29:35.2457585Z   duration: 1s 633ms
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	﻿2026-10-20T13:29:35.2748789Z ##[group]Run dotnet test test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj --no-restore --configuration Release
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	2026-10-20T13:29:40.9794688Z Test run summary: Passed!
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	2026-10-20T13:29:40.9799380Z   total: 13
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	2026-10-20T13:29:40.9799756Z   failed: 0
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	2026-10-20T13:29:40.9800207Z   succeeded: 1
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	2026-10-20T13:29:40.9800668Z   skipped: 12
+Build and test	Test Hexalith.Builds.Tooling.IntegrationTests	2026-10-20T13:29:40.9801087Z   duration: 1s 017ms
+Build and test	Qualify G-4 tool source and Release packages	﻿2026-10-20T13:29:41.0090614Z ##[group]Run pwsh -NoProfile -File ./Tools/test-g4-tool-package-contracts.ps1 -Version "0.0.0-ci.$env:GITHUB_RUN_NUMBER" -RequireControls -SkipSourceValidation

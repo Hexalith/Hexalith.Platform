@@ -29,31 +29,31 @@ Those hosting concerns live here.
 
 ## Module tool
 
-The local tool manifest pins `hexalith.builds.module.cli` `4.34.0`, accepted for
-Platform `run` and `debug`. `hexalith-platform.json` accepts versions in
-`[4.34.0, 5.0.0-0)`, from the first release that can run and debug every
-technical module. The previously accepted `4.33.1` is now outside that range: it
-composes only servers and builds no McpCli. The earlier `4.33.0` was excluded
-because its packaged host has a mismatched Tooling identity and build-machine
-paths, which prevent v2 `run` and `debug`. Later 4.x
-releases, prereleases included, are accepted without a Platform edit, and 5.0
+The local tool manifest pins `hexalith.builds.module.cli` `4.35.0`, accepted for
+Platform `run`, `debug` and opt-in domain enrollment validation.
+`hexalith-platform.json` accepts versions in `[4.35.0, 5.0.0-0)`.
+The floor includes the Story 1.13 `validate --adoption` report. Later 4.x
+releases, prereleases included, are accepted without a Platform edit; 5.0
 prereleases are excluded. The catalog commit is
-`5d03f1db9c38db34ecac7fe6048937478ffb82cc`, matching both the Builds gitlink
-and release tag `v4.34.0`. Only the pinned version is guaranteed to embed that
-catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
-AppHost SDK pins, and nothing compares them with the catalog yet. When the
-exact pin moves, the Builds gitlink moves to that version's release-tag commit.
-See the [Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
-for the released-tool verification of McpCli, EventStore and Memories; the
+`fff4a212180d8cd1c5c0759655a9bc4fb6963c45`, matching both the Builds gitlink
+and release tag `v4.35.0`. Its runtime catalog and run/debug topology are unchanged
+from `4.34.0`. Only the pinned version is guaranteed to embed that catalog.
+Another accepted 4.x tool brings its own embedded Dapr, Redis and AppHost SDK
+pins, and nothing compares them with the catalog yet. When the exact pin moves,
+the Builds gitlink moves to that version's release-tag commit.
+See the [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md)
+for owner approval, gated publication and fresh released-tool acceptance. The
+[Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
+records McpCli, EventStore and Memories verification with `4.34.0`; the
 [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
 records the earlier EventStore and Memories proof with `4.33.1`.
 
-Versions below the configured range are not Platform-accepted, including the published
-`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts, `4.33.0` and `4.33.1`. From
-`4.31.0`, a tool outside the range is refused with `HXW010` in package mode and
-warned in source mode.
-Older tools do not check the range, so run the pinned tool through
-`dotnet tool run`.
+Versions below the configured range are not Platform-accepted, including `4.34.0`.
+That release first built McpCli; `4.33.1` composed only servers. The earlier
+`4.33.0` also had a mismatched packaged Tooling identity and build-machine paths.
+From `4.31.0`, a tool outside the range is refused with `HXW010` in package mode
+and warned in source mode. Older tools do not check the range, so run the pinned
+tool through `dotnet tool run`.
 
 The canonical [candidate evidence and attachment policy v1](docs/contracts/candidate-and-attachment-policy-v1.md)
 fixes committed PR merge-result evidence, prohibits reuse across decisions and
@@ -92,9 +92,9 @@ are required before the adoption can be considered complete.
 Use the [enrollment guide](docs/domain-module-enrollment.md) and
 [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
 direct-only initialization, source mapping, Dapr conventions, hosting inventory
-and human SM-2 evidence. The Story 1.13 `validate --adoption` extension is a local
-release candidate; the accepted published pin remains `4.34.0` until Builds owner
-review, gated upstream publication and fresh Platform acceptance. See
+and human SM-2 evidence. The accepted `4.35.0` tool provides read-only
+`validate --adoption` reports in human and JSON formats. Static reports leave
+SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
 
 ## Run and debug a technical module
@@ -208,7 +208,7 @@ expected project path; no other copy, such as a sibling `../mcpcli` checkout,
 is used. Package mode builds no McpCli; package-mode McpCli arrives in Epic 3.
 The started EventStore gateway is the target of connected execution, which also
 arrives in Epic 3; the debugger recipe below uses offline verbs only. The build
-requires `4.34.0` or later, the floor of the accepted range. The earlier `4.33.1`
+first shipped in `4.34.0`; use the current accepted range above. The earlier `4.33.1`
 composes only servers and builds no McpCli; it is outside the range, so it is
 warned (`HXW010`) in source mode and refused in package mode.
 

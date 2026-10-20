@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 13
 created: '2026-10-20'
-status: 'in-review'
+status: 'done'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
 builds_baseline_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
 route: 'dispatch'
@@ -62,7 +62,7 @@ Match the tool pin to the direct Platform checkout. Audit tracked module-owned f
 - [x] Builds CLI/Diagnostics files above — wire `--adoption`, all requirement rows and failing exit behavior; require manifests inside the active workspace.
 - [x] Builds `test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs` and `PlatformManifestCommandTests.cs` — positive workspace and one failure per requirement, malformed/missing files, valid guards, frozen-directory confinement, read-only behavior, human/JSON rows and legacy compatibility.
 - [x] `tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs` — validate starter with real technical declarations, inventory defaults and candidate-tool commands in a disposable workspace.
-- [ ] `.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md`, `_bmad-output/implementation-artifacts/evidence/1-13/README.md` — after review/release, pin actual published version, raise the floor to it, retain upper bound `5.0.0-0`, and record canonical revisions, owner review, release and fresh acceptance evidence.
+- [x] `.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md`, `_bmad-output/implementation-artifacts/evidence/1-13/README.md` — after review/release, pin actual published version, raise the floor to it, retain upper bound `5.0.0-0`, and record canonical revisions, owner review, release and fresh acceptance evidence.
 
 **Acceptance Criteria:**
 - Given the kit, when followed, then all six Story 1.13 enrollment topics have commands and identified human verification.
@@ -71,6 +71,8 @@ Match the tool pin to the direct Platform checkout. Audit tracked module-owned f
 - Given hosting projects, when inventoried, then each is frozen with an explicit gated retirement plan; inventory completeness grants no retirement authority.
 
 ## Implementation Notes
+
+Owner approved reviewed Builds candidate `fff4a212180d8cd1c5c0759655a9bc4fb6963c45` and the gated release on 2026-10-20 at 12:57:36 UTC (reply: “Approve candidate and release”). Recorded in evidence/1-13/owner-approval.json. Upstream source push is authorized; exact-source CI and the existing release pipeline remain required before pinning.
 
 Planning assessment: no unresolved intent choices. Footprint: kit, Builds validator/CLI/results/tests, Platform tests/pins/evidence. NuGet publication is irreversible and requires the existing release approval gate; no publication during planning.
 
@@ -108,7 +110,7 @@ Every finding was classified before grouping. All surviving entries are local co
 
 Grouping: BH1; BH2; BH3; BH4/EH2; BH5; BH6; BH7/VG3; BH8/EH4; BH9/VG1; BH10; EH1; EH3; VG2. All route to patch. Publication and broad-gate failures remain unresolved acceptance work, not fabricated completion evidence.
 
-All 17 findings are fixed and their targeted regressions passed (65 cases plus 3 final generic-configuration format cases). No finding was deferred. The earlier broad failures were superseded by a restored normal Platform build and stable full Builds verification; publication remains pending owner review.
+All 17 findings are fixed and their targeted regressions passed (65 cases plus 3 final generic-configuration format cases). No finding was deferred. The earlier broad failures were superseded by a restored normal Platform build and stable full Builds verification; owner approval, gated publication and fresh released-pin acceptance are complete (see final verification below).
 
 ## Verification
 
@@ -116,8 +118,11 @@ All 17 findings are fixed and their targeted regressions passed (65 cases plus 3
 - Run `DomainEnrollmentKitTests` and both output modes of released pinned `validate --adoption` on disposable passing/failing workspaces; confirm nonzero failure exits and unchanged Git state.
 - Verify published version, release tag/gitlink equality and supported range; retain exact commands/results in story evidence.
 
-Local implementation verification: Builds focused Release build (zero warnings/errors), 97 focused adoption/manifest-command tests passed; Platform disposable focused lane ran the actual `DomainEnrollmentKitTests` against the same validator (4 passed); four direct candidate CLI human/JSON pass/fail commands preserved every workspace file hash and Git state. Normal Platform Release build and full Builds test suite remain blocked/failing amid existing/concurrent non-story dependency and legacy-fixture changes. See `evidence/1-13/README.md` and retained raw outputs. Owner review, actual upstream release, release-tag gitlink/pin/floor update, released-tool acceptance and human SM-2 remain pending.
+Historical initial implementation verification (superseded by the final checks below): Builds focused Release build (zero warnings/errors), 97 focused adoption/manifest-command tests passed; Platform disposable focused lane ran the actual `DomainEnrollmentKitTests` against the same validator (4 passed); four direct candidate CLI human/JSON pass/fail commands preserved every workspace file hash and Git state. Normal Platform Release build and full Builds test suite remain blocked/failing amid existing/concurrent non-story dependency and legacy-fixture changes. See `evidence/1-13/README.md` and retained raw outputs. At that initial checkpoint, release acceptance was pending. The final checks below supersede that state; human SM-2 remains a later module-owner responsibility.
 
 Coordinator matrix audit: read the complete story-scoped combined Platform/Builds diff at `/tmp/story-1-13-review-zwttdunt.diff`. CompleteWorkspacePassesAndRemainsUnchangedAsync covers happy/read-only/sibling/legitimate guards; EveryRequirementFailureIsReportedAsync covers missing/malformed inputs, pins, direct references, gitlinks and forbidden patterns; InitializedNestedReferenceFailsReadOnlyAsync covers nested initialization; FrozenInventoryIsConfinedToExactHostingDirectoryAsync and arbitrary-exclusion cover inventory confinement; ReportsRenderRowsAndLeaveLegacyJsonUnchangedAsync plus PlatformManifestCommandTests cover legacy compatibility and output modes. All ran in the 97-pass output. Platform tests and four direct commands cover shipped templates and candidate behavior. Local implementation tasks are verified; the explicitly post-review publication/acceptance task remains open.
 
-Final coordinator verification: stable full Builds suite ran 1,185 cases, 1,182 passed, zero failed, three enclosing-Platform-dependent skips. Three final generic configuration regressions also passed independently. Freshly restored normal Platform composition test project builds with zero warnings/errors and passes all four DomainEnrollmentKitTests. Four commands through a locally packaged tool and actual dotnet tool run pass in human/JSON success/failure modes, preserving all file hashes and Git state. All review findings are fixed, with none deferred. Builds local commits: `b6642fecff8617e1765d835e71ebde316e3f71a5` and `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`. Complete product diff, source hashes and raw outputs are retained in evidence/1-13. Spec remains in-review because the approved completion constraint requires Builds owner review, upstream publication and released-pin acceptance. Never mark those complete from local candidate evidence.
+Final coordinator verification: stable full Builds suite ran 1,185 cases, 1,182 passed, zero failed, three enclosing-Platform-dependent skips. Three final generic configuration regressions also passed independently. Freshly restored normal Platform composition test project builds with zero warnings/errors and passes all four DomainEnrollmentKitTests. Four commands through a locally packaged tool and actual dotnet tool run pass in human/JSON success/failure modes, preserving all file hashes and Git state. All review findings are fixed, with none deferred. Builds local commits: `b6642fecff8617e1765d835e71ebde316e3f71a5` and `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`. Complete product diff, source hashes and raw outputs are retained in evidence/1-13. The spec remained in-review at that local checkpoint; public release and fresh acceptance were completed afterward as recorded below.
+
+
+Released acceptance — 2026-10-20: owner-approved source `fff4a212180d8cd1c5c0759655a9bc4fb6963c45` passed exact-source CI `39426403061` (Module 1,188 total, 1,185 passed, 0 failed, 3 context skips) and official release `39431435493`. Published `v4.35.0` points to that exact commit. Platform pins published tool `4.35.0` with roll-forward disabled, range `[4.35.0, 5.0.0-0)` and the matching Builds gitlink. Fresh NuGet-only restoration into an empty CLI home/package cache passed all four human/JSON success/failure commands with unchanged Git state and every file hash. All four Platform kit tests passed against the official released CLI. The fresh signed-package hash matches the publisher-verified remote package and its source-bound qualified inventory. Runtime catalog and AppHost topology are unchanged from v4.34.0. No review finding was deferred. All story execution tasks are complete; module-owner live SM-2 and retirement gates remain explicitly pending in their templates for later adoption. Canonical records, approval, workflow/release links and reproducible outputs are in `evidence/1-13/README.md`.

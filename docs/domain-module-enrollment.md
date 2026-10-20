@@ -1,13 +1,12 @@
 # Enroll a domain module
 
 The module owner uses this kit to prepare enrollment in Platform. Static validation
-and the human demonstration are separate gates. The current accepted published
-tool is `4.34.0`; its ordinary `validate --manifest` command is available now.
-The `--adoption` extension in Story 1.13 is a **local release candidate**, pending
-Builds owner review and the existing gated upstream release. Do not add that flag
-to the 4.34.0 command or claim adoption completion before the new published release
-is accepted and pinned here. Follow [release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
-for the remaining gate and precise candidate commands.
+and the human demonstration are separate gates. The accepted published tool is
+`4.35.0`, including ordinary declaration validation and the read-only `--adoption`
+report. Copy the exact pin from the direct Platform checkout as described below.
+[Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
+records owner approval, gated publication and fresh acceptance. Static PASS rows
+leave the owner's live SM-2 demonstration separately unverified.
 
 ## 1. Declare and initialize the minimum workspace
 
@@ -76,8 +75,7 @@ dotnet tool run hexalith-module --version
 dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json
 ```
 
-After the reviewed Story 1.13 release is published, accepted and pinned in Platform,
-repeat the copy/restore and run both adoption output modes:
+Run both adoption output modes with the restored accepted tool:
 
 ```bash
 dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json --adoption
