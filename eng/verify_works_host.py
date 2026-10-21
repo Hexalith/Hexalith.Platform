@@ -17,12 +17,13 @@ import zipfile
 import isolated_daprd
 import retained_works_host
 import works_host_snapshot
+import works_toolchain
 
 from verify_works_producer import qualify_runtime_source, runtime_source_snapshot, source_files
 
 CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
 VERIFIER_HELPERS = (
-    "verify_works_producer.py", "test_verify_works_host.py", "test_verify_works_producer.py",
+    "verify_works_producer.py", "works_toolchain.py", "test_works_toolchain.py", "test_verify_works_host.py", "test_verify_works_producer.py",
     "isolated_daprd.py", "test_isolated_daprd.py", "retained_works_host.py", "test_retained_works_host.py",
     "retained-works-host/manifest.json", "retained-works-host/works-source.tar.gz",
     "works_host_snapshot.py", "test_works_host_snapshot.py", "verify-agents-host.sh", "verify-platform-pins.py",
@@ -41,9 +42,15 @@ ROWS = {
     "R7": ("Paged process, reissue and restart", "Hexalith.EventStore.DomainService", "AddEventStoreProcesses", "src/Hexalith.Works/Recovery/WorksProcessTranslator.cs"),
     "R8": ("Recovery operations, audit and alerts", "Hexalith.EventStore.DomainService", "ProcessDispositionService", "src/Hexalith.Works/Recovery/WorksProcessDispositionEndpoints.cs"),
     "R9": ("Works SDK consumption", "Hexalith.EventStore.DomainService", "AddEventStoreDomainService/UseEventStoreDomainService", "src/Hexalith.Works/Runtime/WorksHost.cs"),
-    "R10": ("AD-24 transport and production admission", "Hexalith.EventStore.ServiceDefaults", "EventStoreWorkloadAuthenticationDefaults", "src/Hexalith.Works/Runtime/WorksHost.cs"),
+    "R10": ("AD-24 transport and production admission", "Hexalith.EventStore.ServiceDefaults", "EventStoreWorkloadAuthenticationDefaults", "src/Hexalith.Works/Runtime/WorksDomainAdapters.cs"),
     "R11": ("Trusted submission and receipt replay", "Hexalith.EventStore.Client", "HttpTrustedEffectSubmitter", "src/Hexalith.Works/Recovery/WorksProcessDelegationProvider.cs"),
 }
+
+
+def target_commands(commands):
+    """Attach every executed live and retained-readiness command to the row audit."""
+    names = {"retained-host-preflight", "platform-recovery", "platform-historical", "platform-ha", "platform-mtls", "platform-projection"}
+    return [entry for entry in commands if entry["name"] in names]
 
 
 def verification_profile(name):
@@ -932,10 +939,12 @@ def canonical_source_snapshot(root):
 
 
 def linked_fixture_snapshot(works):
-    """Bind the explicitly source-only Identity graph and Parties Compile links used by the proof."""
+    """Bind the explicitly source-only Identity/Composition graphs and Parties Compile links used by the proof."""
     parties = works / "references/Hexalith.Parties"
     identity = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
+    composition = works / "references/Hexalith.Platform/src/Hexalith.Platform.Composition"
     files = set(identity.rglob("*.cs")) | {identity / "Hexalith.Platform.Identity.csproj"}
+    files |= set(composition.rglob("*.cs")) | {composition / "Hexalith.Platform.Composition.csproj"}
     project = works / "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj"
     for item in ET.parse(project).getroot().iter("Compile"):
         include = item.get("Include", "")
@@ -1024,7 +1033,7 @@ def run_verification(args):
         summary["verifierSha256"] = sha256(Path(__file__))
         summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in VERIFIER_HELPERS}
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot"], platform / "eng")
         run("component-evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_full", "test_prepare_acceptance"], platform / "eng/ext-host-1")
         agents_configuration = ["--configuration", profile["agentsConfiguration"]]
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", *agents_configuration, "--artifacts-path", str(artifacts / "agents-full")],
@@ -1093,7 +1102,7 @@ def run_verification(args):
             "project": str(identity_root / "Hexalith.Platform.Identity.csproj"),
             "projectSha256": sha256(identity_root / "Hexalith.Platform.Identity.csproj"),
             "qualifiedAssemblySha256": sha256(consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Platform.Identity.dll")}
-        summary["dependencyModes"] = {"Release": "public NuGet " + version + " consumer graph plus explicitly named test-only Platform.Identity and Platform runtime source"}
+        summary["dependencyModes"] = {"Release": "public NuGet " + version + " consumer graph plus explicitly named test-only Platform.Identity, Platform.Composition and conditional Platform.Works.Runtime source"}
         if "Debug" in profile["consumerConfigurations"]:
             summary["dependencyModes"]["Debug"] = "sibling source project graph; independently built and hashed"
         for row in summary["rows"].values():
@@ -1151,6 +1160,8 @@ def run_verification(args):
             "excludedReservedRanges": [list(bounds) for bounds in reserved_ranges],
             "excludedDockerBoundaryPorts": [65535], "selected": control_plane_ports,
             "policy": "Distinct dual-stack available ports outside application/reserved ranges; Docker WSL boundary port 65535 excluded"}
+        summary["qualifiedToolchain"] = works_toolchain.qualify(platform,
+            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")))
         isolated_runtime = artifacts / "isolated-daprd"
         summary["isolatedRuntime"] = isolated_daprd.prepare(isolated_runtime,
             os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
@@ -1218,7 +1229,7 @@ def run_verification(args):
             control_plane_ports=control_plane_ports, retained_assembly=retained_assembly)
         summary["isolatedRuntimeEvidence"] = isolated_daprd.verify(isolated_runtime, summary["isolatedRuntime"], summary["actualStarts"])
         for row in summary["rows"].values():
-            row["targetCommands"] = [entry for entry in summary["commands"] if entry["name"] in ("platform-recovery", "platform-historical", "platform-ha", "platform-projection")]
+            row["targetCommands"] = target_commands(summary["commands"])
         for source in summary["sourceProducers"].values():
             current = runtime_source_snapshot(source["root"]) if source["commit"] is None else source_snapshot(source["root"], producer=True)
             if current["commit"] != source["commit"] or current["inventorySha256"] != source["inventorySha256"]:

@@ -157,6 +157,33 @@ class WorksEvidenceGateTests(unittest.TestCase):
         self.assertIn('-p:UseHexalithProjectReferences=true', debug)
         self.assertIn('-p:UseNuGetDeps=false', debug)
 
+    def test_r10_points_at_the_current_workload_policy_and_attaches_all_live_commands(self):
+        self.assertEqual(ROWS['R10'][3], 'src/Hexalith.Works/Runtime/WorksDomainAdapters.cs')
+        names = ['retained-host-preflight', 'platform-recovery', 'platform-historical', 'platform-ha', 'platform-mtls', 'platform-projection']
+        commands = [{'name': name, 'exitCode': 0} for name in names + ['build-only']]
+        self.assertEqual(verify_works_host.target_commands(commands), commands[:-1])
+
+    def test_linked_composition_source_exception_is_bound_and_detects_mutation(self):
+        works = self.directory()
+        for project in ('Identity', 'Composition'):
+            directory = works / ('references/Hexalith.Platform/src/Hexalith.Platform.' + project)
+            directory.mkdir(parents=True)
+            (directory / ('Hexalith.Platform.' + project + '.csproj')).write_text('<Project />')
+            (directory / 'Adapter.cs').write_text('// original ' + project)
+            (directory / 'bin').mkdir()
+            (directory / 'bin/Generated.cs').write_text('// excluded')
+        test_project = works / 'tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj'
+        test_project.parent.mkdir(parents=True)
+        test_project.write_text('<Project />')
+        with patch('verify_works_host.subprocess.check_output', return_value='fixture-commit\n'):
+            before = verify_works_host.linked_fixture_snapshot(works)
+            composition = works / 'references/Hexalith.Platform/src/Hexalith.Platform.Composition/Adapter.cs'
+            self.assertIn(str(composition), before['sourceFiles'])
+            self.assertFalse(any('/bin/' in name for name in before['sourceFiles']))
+            composition.write_text('// changed composition')
+            after = verify_works_host.linked_fixture_snapshot(works)
+            self.assertNotEqual(before['sourceFiles'][str(composition)], after['sourceFiles'][str(composition)])
+
     def test_ci_execution_records_release_checks_without_claiming_absent_debug_success(self):
         works = self.directory()
         artifacts = self.directory() / 'evidence'
@@ -982,6 +1009,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.fixture_sources', return_value=fixtures), \
                 patch('verify_works_host.canonical_source_snapshot', return_value=snapshot), \
                 patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
+                patch('verify_works_host.sha256', return_value=DIGEST), \
                 patch('verify_works_host.subprocess.run', side_effect=command):
             self.assertEqual(verify_works_host.run_verification(args), 1)
         self.assertIn('pre-command inventory', json.loads((artifacts / 'ledger.json').read_text())['failure'])
@@ -1006,6 +1034,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     patch('verify_works_host.require_host_package_pins', return_value={}), \
                     patch('verify_works_host.source_snapshot', return_value=snapshot | {'root': str(works)}, side_effect=failures.get('snapshot')), \
                     patch('verify_works_host.fixture_sources', return_value={}), \
+                    patch('verify_works_host.sha256', return_value=DIGEST), \
                     patch('verify_works_host.subprocess.run', side_effect=failures.get('run', AssertionError('no command expected'))):
                 self.assertEqual(verify_works_host.run_verification(args), 1)
                 ledger = json.loads((artifacts / 'ledger.json').read_text())
