@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 13
 created: '2026-10-20'
-status: 'in-review'
+status: 'in-progress'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
 builds_baseline_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
 route: 'dispatch'
@@ -163,6 +163,54 @@ Rejected (pass 3):
 - `false` README hunk carries Story 1.12/2.1 paragraphs — an artifact of reviewing a shared file across the range, not a defect of this change.
 - `false` §4 topics lack commands (AC1) — §3's `validate --adoption` commands verify the source-mapping and Dapr topics, and the checklist carries human verification; the missing injection example is kept as a patch above.
 - `low` release push again used the owner-account branch-rule bypass — owner-authorized and previously rejected; CI, qualification and production gates ran.
+
+Code review 2026-10-21 (pass 4) of the full story product diff: Platform `3d51fed..70cae9d` story paths plus `evidence/1-13/README.md`, and Builds `5d03f1d..1ae50de` story paths (byte-identical to the reviewed candidate `af4bf9f`). Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor; none failed. Triage confirmed with `git ls-remote` that no remote ref holds `1ae50de`, while Platform `origin/main` records it as the Builds gitlink. It also confirmed the sibling-path and nested-generic forms in real Tenants, Folders, EventStore and Parties sources.
+
+- [ ] [Review][Patch] Restore Platform's Builds gitlink and checkout to the pinned `v4.35.1` release tag (decision P4-D1A, 2026-10-21) [references/Hexalith.Builds] — Keep `af4bf9f`/`1ae50de` on a Builds scratch branch. Concurrent `/pushall` `0523573` moved `references/Hexalith.Builds` to `1ae50de`. No remote branch or tag holds it (Builds `main`=`2744d54`, `v4.35.1`=`f8599224`), so a fresh `git submodule update --init` cannot reliably fetch it. The pin stays `4.35.1`, which is built from `f8599224`. Consequences: `DomainEnrollmentKitTests.cs:113` (gitlink == tool source metadata) fails deterministically at HEAD in both formats. Its in-process `staticReport` (line 103) compiles the unpublished validator, while the CLI half runs the published one. `README.md:45-50` ("catalog commit is `f8599224…`"; "the Builds gitlink moves to that version's release-tag commit") is false at HEAD. Platform's catalog identity also picks up the unreleased `HexalithPartiesVersion` 1.5.0 → 1.5.1 bump from `Props/Directory.Packages.props`. This violates the frozen completion constraint ("actual published tool pin/release-tag gitlink"). Options: (A) restore the gitlink to `v4.35.1`/`f8599224`, keeping `af4bf9f`/`1ae50de` on a Builds scratch branch per the retained rollback; (B) obtain new owner approval, release the pass-3 candidate and pin it. [blind-hunter+edge-case-hunter+verification-gap+acceptance-auditor; high]
+- [ ] [Review][Patch] Make the enrollment guide describe the accepted `4.35.1` tool and list the pass-3 checks as pending the next release (decision P4-D1A, 2026-10-21) [docs/domain-module-enrollment.md:78] — `665c5e3` added three statements to `docs/domain-module-enrollment.md` that only hold in the unpublished `af4bf9f`. Line 78: a frozen directory's final segment must match its project stem. Line 157: the Dapr audit reads only `.cs`/`appsettings*`. Line 160: immediately asserted existence probes are accepted. Published `f8599224` has no `ShouldBe`/`Assert` exemption, denies only `src`/`test`/`tests`, and audits `.csproj`/`.props`/`.ps1`/… for Dapr too. Owners who follow the guide with the pinned tool therefore still get the Parties asserted-probe false failure. The fix depends on the gitlink decision: under (A), describe 4.35.1 behaviour and list these checks as pending the next release; under (B), the text becomes correct once the new pin lands. [blind-hunter+edge-case-hunter+verification-gap+acceptance-auditor; medium]
+- [ ] [Review][Patch] Flag segment-built sibling paths in `dependency-selectors` (decision P4-D2a, 2026-10-21) [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:212] — `HasDependencyProbe` (`PlatformAdoptionSourceAudit.cs:212`) matches only joined `../Hexalith.*`/`references/Hexalith.*` text inside a probe's own argument. The sibling fallbacks below all report PASS:
+  - Tenants `PackageGovernanceTests.cs:2121-2122`: `.Where(File.Exists)` over `Path.Combine(repoRoot, "..", "Hexalith.Builds", …)`.
+  - Folders `ClientGenerationTests.cs:1600`: `if (!File.Exists(source))`, then `Path.Combine(RepositoryRoot, "..", "Hexalith.Builds")`.
+  - EventStore `RuntimeIdentityValidator.cs:730-731`.
+
+  These are known sibling/package-fallback helpers that the spec says to audit. Options:
+  - (a) Flag any executable `Path.Combine`/`os.path.join`/`Join-Path` whose `".."` (or `"..", "references"`) segment is directly followed by a `"Hexalith.*"` segment. Tenants and Folders owners then remove those fallbacks during enrollment.
+  - (b) Normalize segments only inside existing probe arguments. This catches neither real case.
+  - (c) State in guide §4 that split-segment path construction is outside the bounded check and left to human review.
+
+  [edge-case-hunter; medium]
+- [ ] [Review][Patch] No offline pin ↔ gitlink identity assertion; the only check needs a restored tool and runs by hand [tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs:46] — `/pushall` moved the gitlink with no failure. In `AcceptedToolPinEqualsSupportedRangeFloor`, assert that `git rev-parse HEAD:references/Hexalith.Builds` equals `git -C references/Hexalith.Builds rev-parse v<pin>^{commit}`. [verification-gap; medium]
+- [ ] [Review][Patch] Nested generic Dapr calls escape the literal component-name audit [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:19] — `(?:<[^>\r\n]+>)?` cannot span `GetStateAsync<List<Order>>("statestore", key)`. Parties production `KeyOperationAuditService.cs:59` and its tests use this form. Allow one nested level, e.g. `(?:<(?:[^<>\r\n]|<[^<>\r\n]*>)+>)?`, and add a failing literal regression plus a passing configured-name control. [edge-case-hunter; medium]
+- [ ] [Review][Patch] The `Exists`-guarded dependency-item rule is never the only rule a test trips [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:145] — Every failing fixture also trips a generated/mapped/cross-module rule, so deleting `(dependency && Match(condition, "Exists("))` leaves the suite green. A marker-file selector such as `<PackageReference Include="Hexalith.EventStore.Contracts" Condition="!Exists('use-source.marker')" />` would then pass. Add that row and the mapped `ProjectReference … Condition="Exists('use-source.marker')"` row as failures in `BuildReferencesDistinguishLocalAndMappedDependenciesAsync`. [verification-gap; medium]
+- [ ] [Review][Patch] The asserted-probe exemption has no negative tests for non-adjacent assertions [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:221] — The only negative row is rejected by `&&`, so dropping either the `^` or `$` anchor would silently exempt real probes. Add failing rows to `DependencyProbesRequireDependencyTargetsAsync`:
+  - `Assert.True(ready);` followed by `if (Directory.Exists("../Hexalith.EventStore")) return Select();`
+  - `var found = Directory.Exists("../Hexalith.EventStore");` followed by `found.ShouldBeTrue();`
+
+  [verification-gap; medium]
+- [ ] [Review][Patch] Evidence README presents stale identities and step completion as current [_bmad-output/implementation-artifacts/evidence/1-13/README.md:227] — "Canonical identities" (not marked historical) still names pin `4.35.0`, range `[4.35.0, 5.0.0-0)` and gitlink `fff4a21`, and links the v4.35.0 identity file. "Release acceptance procedure (steps 1–5 completed)" (line 280) contradicts the file's own status: step 4's gitlink no longer holds. Mark the section historical or update it to 4.35.1/`f8599224` with `post-release-patch/release/accepted-identities.json`, and record the gitlink state and the chosen next action. [blind-hunter+acceptance-auditor; low]
+- [ ] [Review][Patch] Parent-directory lookups in `Import Project` are not checked [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:146] — Pass-3 patch "flag `GetPathOfFileAbove`/`GetDirectoryNameOfFileAbove` whose start directory resolves outside the module root" applies only to `PropertyGroup` leaf values. A root-level `<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />` passes: `IsCrossModulePath` returns false on `$(`, which imports the enclosing workspace's props. Also run `HasExternalAncestorLookup` on `pathReference` includes. The `tests/` forms in Tenants/EventStore/Memories/Agents resolve inside the module and must keep passing. [edge-case-hunter+acceptance-auditor; low]
+- [ ] [Review][Patch] Documented `$(…)` and `{{ … }}` component placeholders are untested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs:431] — The guide advertises `$(Sample:Dapr:EventsComponent)` and `{{ Sample.Dapr.EventsComponent }}`, but only `${…}`, empty and null are exercised. Add passing JSON/YAML rows for both. [blind-hunter; low]
+- [ ] [Review][Patch] Equivalent script existence probes are missed [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:234] — `test -L/-r/-s/-x ../Hexalith.X` and PowerShell `[IO.Path]::Exists('../Hexalith.X')` pass. Broaden `-[def]` to the file-test operators and add `Path` to the `::Exists` type alternation (line 212), with regressions. [edge-case-hunter; low]
+
+Rejected (pass 4):
+- `low` kit test `RunAsync` has no timeout (blind-hunter, edge-case-hunter) — previously rejected twice; the xUnit token applies and a kill path is new logic.
+- `low` `tool-pin` ignores the executing binary/range — previously rejected three times; the spec requires matching the direct Platform checkout.
+- `low` the guide does not say which revision the module's own Builds reference must use — unverified that any tool path requires it (it would need a check that `run`/`debug` compares that checkout with the catalog); if true, it is a doc-only low gap, so it is rejected.
+- `low` hash-comment masking of `$#`/`${#…}`, PowerShell `<# #>`, Python `'''`, heredocs and here-strings — previously rejected; per-language lexing.
+- `low` quadratic slicing/rescans in `HasDependencyProbe`/`HasGenericComponentBinding` (blind-hunter, edge-case-hunter) — needs a file with hundreds of probes; each call stays bounded and the fix is a restructure.
+- `low` `gitlinks` and inventory report only the first failure (blind-hunter, edge-case-hunter) — previously rejected; not independent requirements.
+- `low` C# masker `#region` apostrophe and `@$` verbatim — previously rejected.
+- `low` YAML alias fan-out/recursion and merge keys — previously rejected three times; owner-authored configuration.
+- `low` `$(MSBuildProjectDirectory)`/`$(SolutionDir)` prefixes, Windows cross-drive includes and semicolon `Include` lists — previously rejected.
+- `low` `CreateProperty`/`Exec -p:` reserved-property overrides in targets — no module uses them; new branches.
+- `low` unsupported script/project extensions get no owner-review row — previously rejected; the guide declares the bounded scope.
+- `low` Windows symlink `FileInfo.Length` — undemonstrated on target platforms; needs a resolved-target guard.
+- `low` `.fsproj`/`.vbproj` hosting projects — previously rejected; every target module uses C#.
+- `low` untracked pin in an uninitialized Platform folder — previously rejected; `gitlinks` still fails.
+- `false` null or empty `manifestPaths` on the public `ValidateAsync` — a null element throws `ArgumentNullException` loudly (correct for an invalid argument); an empty list yields a FAIL `declaration` row with its reason.
+- `low` Windows read-only cleanup in the kit test — previously rejected.
+- `low` `hosting-inventory` passes `"projects": []` when `workspace` already failed — the report still fails on `workspace`; the fix adds a guard for a rare state.
+- `false` README's "The floor includes corrected Story 1.13 adoption checks for real workspaces" overclaims — 4.35.1 does include the pass-2 real-workspace corrections (large `ls-files`, intra-repository references, JSONC).
 
 ## Implementation Notes
 
