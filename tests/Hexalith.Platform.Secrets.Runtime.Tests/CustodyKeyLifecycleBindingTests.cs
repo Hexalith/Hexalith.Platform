@@ -46,7 +46,7 @@ public sealed class CustodyKeyLifecycleBindingTests
     [Fact]
     public async Task AbsentBindingAndNullWitnessWriteNothing_TransportSuccessIsNotAReceipt()
     {
-        using var store = Store(out var witness, out var target, out _);
+        using var store = Store(out var witness, out var target, out var other);
         int writes = store.Mutations;
         var absent = new CustodyComponentBindingCall(store, present: false);
         var provider = new CustodyKeyLifecycleBindingProvider(absent, witness, store);
@@ -74,6 +74,26 @@ public sealed class CustodyKeyLifecycleBindingTests
         recording.Commands.Single().Operation.ShouldBe("destroy-manifest");
         store.PhysicalCuts.ShouldBe(0);
         Decrypts(store, target).ShouldBeTrue();
+
+        var forged = Request(target, "forged-conflict", CustodyKeyLifecycleAction.Pin, "hold-a");
+        recording.Commands.Clear();
+        recording.Claim = new CustodyComponentOutcome(CustodyComponentStatus.Conflict, forged.OperationId, Digest("forged-conflict"), Identity: target);
+        (await claimed.ExecuteAsync(Registration(target), forged, Digest("forged-conflict"), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+        store.PhysicalCuts.ShouldBe(0);
+
+        witness.TryAdmit(Original("reservation-forged", target));
+        var forgedBlock = new CustodyKeyLifecycleRequest(target, "forged-block", CustodyKeyLifecycleAction.Destroy, 1, null, "fence-token", 2, "decision", "reservation-forged");
+        recording.Claim = new CustodyComponentOutcome(CustodyComponentStatus.BlockedByPin, forgedBlock.OperationId, Digest("forged-block"), Identity: target);
+        (await claimed.ExecuteAsync(Registration(target), forgedBlock, Digest("forged-block"), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Unknown);
+        store.PhysicalCuts.ShouldBe(0);
+        Decrypts(store, target).ShouldBeTrue();
+
+        witness.TryAdmit(Original("reservation-absent", other));
+        var absentKey = new CustodyKeyLifecycleRequest(target, "destroy-absent", CustodyKeyLifecycleAction.Destroy, 1, null, "fence-token", 2, "decision", "reservation-absent");
+        recording.Commands.Clear();
+        (await claimed.ExecuteAsync(Registration(target), absentKey, Digest("destroy-absent"), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyKeyLifecycleStatus.Conflict);
+        recording.Commands.ShouldBeEmpty();
+        store.PhysicalCuts.ShouldBe(0);
     }
 
     [Fact]
@@ -160,14 +180,17 @@ public sealed class CustodyKeyLifecycleBindingTests
     }
 
     [Fact]
-    public void UnconfiguredDaprRoleRefusesBeforeTheClient_AndDoesNotSortAManifest()
+    public async Task UnconfiguredDaprRoleRefusesBeforeTheClient_AndDoesNotSortAManifest()
     {
         var client = Substitute.For<DaprClient>();
         var call = new CustodyBindingDaprCall(client, new Dictionary<string, string>(), new CustodyBindingFixture.Authority { Allowed = false });
         call.Present.ShouldBeFalse();
-        client.ReceivedCalls().ShouldBeEmpty();
         var identity = Key("interaction-0001");
         var pin = Request(identity, "pin-build", CustodyKeyLifecycleAction.Pin, "hold-a");
+        var reply = await call.DispatchAsync(new("pin", true, pin, Digest("pin-build"), null), TestContext.Current.CancellationToken);
+        reply.Transport.ShouldBe(CustodyBindingTransportState.Refused);
+        reply.Outcome.ShouldBeNull();
+        client.ReceivedCalls().ShouldBeEmpty();
         var built = CustodyBindingDaprCall.Build(new("pin", true, pin, Digest("pin-build"), null));
         built.ShouldNotBeNull();
         built.Envelope.Operation.ShouldBe("pin");

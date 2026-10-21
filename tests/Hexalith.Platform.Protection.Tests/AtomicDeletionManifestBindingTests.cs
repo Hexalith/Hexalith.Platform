@@ -97,6 +97,43 @@ public sealed class AtomicDeletionManifestBindingTests
         (await provider.LookupAsync(request, "reservation-restore", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
     }
 
+    [Fact]
+    public async Task FalseDestructionUnresolvedTargetAndNullWitnessStayUnknown_ReleasedPinRetriesTheSameBatch()
+    {
+        using var store = Store(out var witness, out var target, out var other);
+        var request = Request("reservation-false", target);
+        var claim = new DestroyedClaimBinding(new CustodyComponentOutcome(CustodyComponentStatus.Destroyed, "batch-reservation-false", Digest("false"), "fake-receipt", "fake-barrier", Identity: target));
+        var falseProvider = new AtomicDeletionManifestBindingProvider(claim, witness, store);
+        (await falseProvider.ConsumeAsync(request, "reservation-false", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        store.PhysicalCuts.ShouldBe(0);
+        Decrypts(store, target).ShouldBeTrue();
+
+        var unresolved = new CustodyComponentBindingCall(store);
+        var unresolvedProvider = new AtomicDeletionManifestBindingProvider(unresolved, witness, store);
+        (await unresolvedProvider.ConsumeAsync(Request("reservation-missing", Key("interaction-missing")), "reservation-missing", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        unresolved.Operations.ShouldBeEmpty();
+        store.PhysicalCuts.ShouldBe(0);
+
+        var silent = new CustodyComponentBindingCall(store);
+        var nullWitness = new AtomicDeletionManifestBindingProvider(silent, null, store);
+        (await nullWitness.ConsumeAsync(request, "reservation-false", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        silent.Operations.ShouldBeEmpty();
+        store.PhysicalCuts.ShouldBe(0);
+
+        store.Pin(new(target, "pin", CustodyKeyLifecycleAction.Pin, 1, "hold-a", "fence-token", 2, "decision"), Digest("pin"));
+        var binding = new CustodyComponentBindingCall(store);
+        var provider = new AtomicDeletionManifestBindingProvider(binding, witness, store);
+        var blocked = Request("reservation-release", target);
+        (await provider.ConsumeAsync(blocked, "reservation-release", TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+        store.PhysicalCuts.ShouldBe(0);
+        store.Unpin(new(target, "unpin", CustodyKeyLifecycleAction.Unpin, 1, "hold-a", "fence-token", 2, "decision"), Digest("unpin")).Status.ShouldBe(CustodyComponentStatus.Unpinned);
+        var destroyed = await provider.ConsumeAsync(blocked, "reservation-release", TestContext.Current.CancellationToken);
+        destroyed.State.ShouldBe(DeletionManifestProviderState.Consumed);
+        Decrypts(store, target).ShouldBeFalse();
+        Decrypts(store, other).ShouldBeTrue();
+        store.PhysicalCuts.ShouldBe(1);
+    }
+
     private static CustodyComponentStore Store(out CustodyOutsideWitness witness, out CustodyKeyObjectIdentity target, out CustodyKeyObjectIdentity other)
     {
         witness = new CustodyOutsideWitness();
@@ -131,4 +168,12 @@ public sealed class AtomicDeletionManifestBindingTests
     }
 
     private static string Digest(string text) => Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(text)));
+
+    private sealed class DestroyedClaimBinding(CustodyComponentOutcome claim) : ICustodyLifecycleBinding
+    {
+        public bool Present => true;
+
+        public Task<CustodyLifecycleBindingReply> DispatchAsync(CustodyLifecycleBindingCommand command, CancellationToken cancellationToken)
+            => Task.FromResult(new CustodyLifecycleBindingReply(CustodyBindingTransportState.ReceivedUnverified, claim, false));
+    }
 }

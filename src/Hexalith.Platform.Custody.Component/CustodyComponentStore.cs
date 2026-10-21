@@ -66,8 +66,10 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
         lock (_gate)
         {
             CustodyKeyObjectIdentity? found = null;
-            foreach (var identity in _volume.Envelopes.Select(e => e.Identity))
+            foreach (var envelope in _volume.Envelopes)
             {
+                if (envelope.IsZeroed || Witness is not null && Witness.IsDestroyed(envelope.Identity)) { continue; }
+                var identity = envelope.Identity;
                 if (identity.TenantId != target.TenantId || identity.ObjectId != target.AgentInteractionId || identity.KeyAlias != target.TargetProtectionKeyAlias)
                 { continue; }
                 if (found is not null) { return null; }
@@ -126,12 +128,12 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
 
     internal bool VolumeHoldsEpochBytes(string generation)
     {
-        lock (_gate) { return _volume.HoldsEpochBytes(generation); }
+        lock (_gate) { return !_disposed && _volume.HoldsEpochBytes(generation); }
     }
 
     internal bool EpochIsLive(string generation)
     {
-        lock (_gate) { return Witness is not null && Witness.IsLive(generation); }
+        lock (_gate) { return !_disposed && Witness is not null && Witness.IsLive(generation); }
     }
 
     internal bool TryRepromoteEpoch(string generation)
@@ -141,7 +143,7 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
 
     internal byte[] CaptureVolume()
     {
-        lock (_gate) { return _volume.Capture(); }
+        lock (_gate) { return _disposed ? [] : _volume.Capture(); }
     }
 
     internal void RestoreVolume(byte[] snapshot)
@@ -176,7 +178,7 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
                     ? Result(operationId, requestDigest, prior.Status, named, receipt, prior.RestoreBarrierReceiptId, prior.Receipts)
                     : Result(operationId, requestDigest, CustodyComponentStatus.Conflict, named);
             }
-            if (Witness.FindFact(operationId) is { } existing)
+            if (Witness.FindFact(operationId) is { } existing && !ReleasedBlock(existing, requestDigest))
             {
                 return existing.RequestDigest == requestDigest
                     ? FromFact(existing)
@@ -209,7 +211,7 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
             }
             if (gate != CustodySharedCutGate.Published)
             {
-                return Remember(Result(operationId, requestDigest, CustodyComponentStatus.Unknown, named));
+                return Result(operationId, requestDigest, CustodyComponentStatus.Conflict, named);
             }
             var draftVolume = _volume.Clone();
             var draftWitness = Witness.Clone();
@@ -233,7 +235,7 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
     {
         lock (_gate)
         {
-            if (Witness is null) { return Result(operationId, requestDigest, CustodyComponentStatus.Unavailable, null); }
+            if (_disposed || Witness is null) { return Result(operationId, requestDigest, CustodyComponentStatus.Unavailable, null); }
             if (!Witness.Available) { return Result(operationId, requestDigest, CustodyComponentStatus.Unknown, null); }
             if (Witness.FindFact(operationId) is not { } fact) { return Result(operationId, requestDigest, CustodyComponentStatus.NotStarted, null); }
             return fact.RequestDigest == requestDigest ? FromFact(fact) : Result(operationId, requestDigest, CustodyComponentStatus.Conflict, fact.Identity);
@@ -244,7 +246,7 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
     {
         lock (_gate)
         {
-            if (Witness is null) { return Result(reservationId, requestDigest, CustodyComponentStatus.Unavailable, null); }
+            if (_disposed || Witness is null) { return Result(reservationId, requestDigest, CustodyComponentStatus.Unavailable, null); }
             if (!Witness.Available) { return Result(reservationId, requestDigest, CustodyComponentStatus.Unknown, null); }
             if (Witness.FindManifest(reservationId) is not { } record)
             {
@@ -266,6 +268,9 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
             if (_disposed) { return; }
             CryptographicOperations.ZeroMemory(_kek);
             foreach (byte[] dek in _deks.Values) { CryptographicOperations.ZeroMemory(dek); }
+            _deks.Clear();
+            _volume.ZeroSecrets();
+            Witness?.ZeroAbandoned();
             _disposed = true;
         }
     }
@@ -292,6 +297,10 @@ internal sealed class CustodyComponentStore : ICustodyOriginalManifestSource, ID
             return Remember(Result(request.OperationId, requestDigest, status, request.Identity, (pin ? "pin-" : "unpin-") + request.HoldId, holdId: request.HoldId));
         }
     }
+
+    private bool ReleasedBlock(CustodyWitnessFact fact, string requestDigest)
+        => fact.Status == CustodyComponentStatus.BlockedByPin && fact.RequestDigest == requestDigest && fact.HoldId is { } hold
+            && !Witness!.Pins.Any(p => p.HoldId == hold);
 
     private bool Live(CustodyKeyObjectIdentity identity, CustodyComponentEnvelope envelope)
         => Witness!.TrySuccessor(identity, out var successor) ? Witness.IsLive(successor.Generation) : Witness.IsLive(envelope.WrapGeneration);

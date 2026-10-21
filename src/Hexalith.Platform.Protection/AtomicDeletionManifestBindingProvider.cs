@@ -38,7 +38,7 @@ internal sealed class AtomicDeletionManifestBindingProvider : IAtomicDeletionMan
         var unknown = new DeletionManifestProviderResult(request.Capability.TenantId, request.Capability.BatchId, reservationReceiptId, DeletionManifestProviderState.Unknown, []);
         if (_binding is not { Present: true } || _witness is null || _store is null) { return unknown; }
         if (!_witness.Available) { return unknown; }
-        if (!TryResolve(request, out var identities)) { return unknown; }
+        if (!TryResolve(request, out var identities) && !TryRecover(request, reservationReceiptId, out identities)) { return unknown; }
         var manifest = new CustodyOriginalManifest(reservationReceiptId, request.Capability.BatchId, request.Capability.ManifestDigest, identities);
         string digest = RequestDigest(request);
         var reply = await _binding.DispatchAsync(new(effect ? "destroy-manifest" : "lookup-original", effect, null, digest, manifest), cancellationToken).ConfigureAwait(false);
@@ -54,6 +54,23 @@ internal sealed class AtomicDeletionManifestBindingProvider : IAtomicDeletionMan
             return new(request.Capability.TenantId, request.Capability.BatchId, reservationReceiptId, DeletionManifestProviderState.NotStarted, []);
         }
         return unknown;
+    }
+
+    private bool TryRecover(DeletionBatchConsumptionRequest request, string reservationReceiptId, out IReadOnlyList<CustodyKeyObjectIdentity> identities)
+    {
+        var admitted = _store!.FindOriginal(reservationReceiptId);
+        if (admitted is null || admitted.Targets.Count != request.Targets.Count
+            || DeletionBatchCapabilityIdentity.TargetManifestDigest(request.Targets) != request.Capability.ManifestDigest)
+        { identities = []; return false; }
+        for (int i = 0; i < request.Targets.Count; i++)
+        {
+            var target = request.Targets[i];
+            var identity = admitted.Targets[i];
+            if (identity.TenantId != target.TenantId || identity.ObjectId != target.AgentInteractionId || identity.KeyAlias != target.TargetProtectionKeyAlias)
+            { identities = []; return false; }
+        }
+        identities = admitted.Targets;
+        return true;
     }
 
     private bool TryResolve(DeletionBatchConsumptionRequest request, out IReadOnlyList<CustodyKeyObjectIdentity> identities)

@@ -39,7 +39,9 @@ internal sealed class CustodyComponentVolume
     internal void ZeroSecrets()
     {
         foreach (byte[] key in _epochs.Values) { CryptographicOperations.ZeroMemory(key); }
+        _epochs.Clear();
         foreach (var envelope in _envelopes) { envelope.Zero(); }
+        _envelopes.Clear();
     }
 
     internal void ZeroEnvelope(CustodyKeyObjectIdentity identity) => Find(identity)?.Zero();

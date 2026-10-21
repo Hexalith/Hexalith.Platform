@@ -48,7 +48,8 @@ internal sealed class CustodyOutsideWitness : ICustodyOutsideWitness, ICustodyOr
         if (!_facts.TryGetValue(request.OperationId, out var fact) || fact.Identity != outcome.Identity) { return false; }
         if (outcome.Status == CustodyKeyLifecycleStatus.Conflict)
         {
-            if (fact.RequestDigest != outcome.RequestDigest) { return true; }
+            if (fact.RequestDigest != outcome.RequestDigest)
+            { return outcome.ReceiptId is null && outcome.RestoreBarrierReceiptId is null; }
             return fact.Status == CustodyComponentStatus.Conflict && fact.ReceiptId == outcome.ReceiptId
                 && fact.RestoreBarrierReceiptId == outcome.RestoreBarrierReceiptId && fact.HoldId == request.HoldId;
         }
@@ -133,7 +134,10 @@ internal sealed class CustodyOutsideWitness : ICustodyOutsideWitness, ICustodyOr
     internal void ZeroAbandoned()
     {
         foreach (byte[] key in _liveEpochs.Values) { CryptographicOperations.ZeroMemory(key); }
+        _liveEpochs.Clear();
+        _tenantLive.Clear();
         foreach (var wrap in _successors.Values) { ZeroWrap(wrap); }
+        _successors.Clear();
     }
 
     internal bool TryRepromote(string generation)
