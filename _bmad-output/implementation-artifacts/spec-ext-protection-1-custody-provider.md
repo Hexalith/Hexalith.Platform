@@ -2,9 +2,10 @@
 title: 'EXT-PROTECTION-1 custody provider'
 type: 'feature'
 created: '2026-10-21'
-status: 'draft'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: 'f97065cc31c2bdc1afd11c515298cc8f1a51380b'
 context:
   - '{project-root}/../agents/_bmad-output/planning-artifacts/external-dependency-register.md'
   - '{project-root}/../eventstore/docs/implementation/ext-protection-1-owner-acceptance.md'
@@ -50,13 +51,13 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `src/Hexalith.Platform.Custody.Component/` — private store: envelopes, copy inventory, outside witness, shared-cut destroy, pin fence, exact lookup. No Dapr, OpenBao, or cloud SDK.
-- [ ] `src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingProvider.cs` — provider. Pin/Unpin call `pin`/`unpin`; root Destroy calls `destroy-manifest`. Lookup sends no effect.
-- [ ] `src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingAuthority.cs` — authority. Null witness denies.
-- [ ] `src/Hexalith.Platform.Protection/AtomicDeletionManifestBindingProvider.cs` — manifest `ConsumeAsync`/`LookupAsync`. EventStore.Server reference only here. `InternalsVisibleTo` from Secrets.Runtime.
-- [ ] `Hexalith.Platform.slnx` — add the new projects and test projects.
-- [ ] `tests/Hexalith.Platform.Custody.Component.Tests/` plus secrets-runtime and protection tests — matrix, including backup non-revival.
-- [ ] Commit only those Platform sources and tests after `npx commitlint --edit` accepts the subject.
+- [x] `src/Hexalith.Platform.Custody.Component/` — private store: envelopes, copy inventory, outside witness, shared-cut destroy, pin fence, exact lookup. No Dapr, OpenBao, or cloud SDK.
+- [x] `src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingProvider.cs` — provider. Pin/Unpin call `pin`/`unpin`; root Destroy calls `destroy-manifest`. Lookup sends no effect.
+- [x] `src/Hexalith.Platform.Secrets.Runtime/CustodyKeyLifecycleBindingAuthority.cs` — authority. Null witness denies.
+- [x] `src/Hexalith.Platform.Protection/AtomicDeletionManifestBindingProvider.cs` — manifest `ConsumeAsync`/`LookupAsync`. EventStore.Server reference only here. `InternalsVisibleTo` from Secrets.Runtime.
+- [x] `Hexalith.Platform.slnx` — add the new projects and test projects.
+- [x] `tests/Hexalith.Platform.Custody.Component.Tests/` plus secrets-runtime and protection tests — matrix, including backup non-revival.
+- [x] Commit only those Platform sources and tests after `npx commitlint --edit` accepts the subject.
 
 **Acceptance Criteria:**
 - Given the disposable component, when its pre-destruction volume is restored, then the destroyed key cannot decrypt and an unrelated key can.

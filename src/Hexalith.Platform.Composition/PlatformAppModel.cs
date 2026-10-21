@@ -309,7 +309,7 @@ public static class PlatformAppModel
                 else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);
                 else containers[server.ResourceId].WaitFor(containers[target.ResourceId]);
             }
-            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates));
+            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, selectedSentryPort is null ? null : "localhost:" + selectedSentryPort));
             if (options.RunPlan is null)
             {
                 builder.Services.AddSingleton(_ => new PlatformCompositionWorkspace(rendered));

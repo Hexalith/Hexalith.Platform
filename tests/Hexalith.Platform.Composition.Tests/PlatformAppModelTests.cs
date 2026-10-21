@@ -221,6 +221,7 @@ public sealed partial class PlatformAppModelTests
         foreach (PlatformServerBinding server in servers)
         {
             ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.ResourceId + "-dapr-cli");
+            sidecar.Command.ShouldBe(Path.Combine(Root, "test-dapr-not-started"));
             IResource application = model.Resources.Single(resource => resource.Name == server.ResourceId);
             DaprSidecarOptions options = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
             string subscriptionDirectory = options.ResourcesPaths.Single();

@@ -4,27 +4,53 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Eventing;
 using Aspire.Hosting.Lifecycle;
+using CommunityToolkit.Aspire.Hosting.Dapr;
 
 /// <summary>Applies allocated Dapr listener ports and each server's channel tokens to the actual CLI process.</summary>
-internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null) : IDistributedApplicationEventingSubscriber
+internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null, string? sentryAddress = null) : IDistributedApplicationEventingSubscriber
 {
     /// <inheritdoc />
     public Task SubscribeAsync(IDistributedApplicationEventing eventing, DistributedApplicationExecutionContext executionContext, CancellationToken cancellationToken)
     {
         _ = eventing.Subscribe<BeforeStartEvent>((startup, _) =>
         {
-            Apply(startup.Model, servers, certificateDirectory);
+            Apply(startup.Model, servers, certificateDirectory, sentryAddress);
             return Task.CompletedTask;
         });
         return Task.CompletedTask;
     }
 
     /// <summary>Configures generated CLI resources after the Dapr integration creates them.</summary>
-    internal static void Apply(DistributedApplicationModel model, IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null)
+    internal static void Apply(DistributedApplicationModel model, IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null, string? sentryAddress = null)
     {
         foreach (PlatformServerBinding server in servers)
         {
             ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.ResourceId + "-dapr-cli");
+            if (sentryAddress is not null)
+            {
+                IResource application = model.Resources.Single(resource => resource.Name == server.ResourceId);
+                string runtimeHome = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations
+                    .OfType<DaprSidecarOptionsAnnotation>().Single().Options.RuntimePath
+                    ?? throw new InvalidDataException("An isolated Sentry endpoint requires the selected Dapr runtime home.");
+                sidecar.Annotations.OfType<ExecutableAnnotation>().Last().Command = Path.Combine(runtimeHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd");
+                sidecar.Annotations.Add(new CommandLineArgsCallbackAnnotation((IList<object> arguments) =>
+                {
+                    // Dapr CLI 1.18.0 hardcodes localhost:50001 when it enables mTLS. Use the
+                    // same verified native runtime and generated callbacks, with its supported flag.
+                    if (arguments.Count == 0 || arguments[0] is not "run"
+                        || arguments.OfType<string>().Any(argument => argument is "--run-file" or "--"))
+                        throw new InvalidDataException("The selected retention sidecar requires a sidecar-only Dapr run command.");
+                    arguments.RemoveAt(0);
+                    int runtimePath = arguments.IndexOf("--runtime-path");
+                    if (runtimePath < 0 || runtimePath + 1 >= arguments.Count)
+                        throw new InvalidDataException("The selected retention sidecar has no explicit Dapr runtime path.");
+                    arguments.RemoveAt(runtimePath + 1);
+                    arguments.RemoveAt(runtimePath);
+                    arguments.Add("--enable-mtls");
+                    arguments.Add("--sentry-address");
+                    arguments.Add(sentryAddress);
+                }));
+            }
             foreach (EndpointAnnotation endpoint in sidecar.Annotations.OfType<EndpointAnnotation>().Where(endpoint => endpoint.Name is "http" or "grpc" or "metrics"))
             {
                 endpoint.TargetPort = endpoint.Port;

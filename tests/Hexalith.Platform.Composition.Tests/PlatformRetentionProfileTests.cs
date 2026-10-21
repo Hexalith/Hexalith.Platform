@@ -10,6 +10,8 @@ using System.Text;
 using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Eventing;
+using Aspire.Hosting.Lifecycle;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -194,10 +196,13 @@ public sealed partial class PlatformAppModelTests
         {
             CompositionRunPlan initial = RetentionPlan();
             var mapping = initial.SourceMapping! with { Entries = [.. initial.SourceMapping.Entries, new Hexalith.Builds.Tooling.Workspace.SourceMappingEntry("Hexalith.Platform", "source", Root)] };
-            CompositionRunPlan plan = CompositionRunPlanFactory.Create(initial.RunId, workspace, workspace, CompositionPortAllocator.Allocate(3), [], [], mapping, initial.PlatformDeclarationPaths, "memories", typeof(PlatformAppModel).Assembly.Location) with { SelectedTest = initial.SelectedTest };
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(initial.RunId, workspace, workspace, CompositionPortAllocator.Allocate(3), [], [], mapping, initial.PlatformDeclarationPaths, "memories", typeof(PlatformAppModel).Assembly.Location) with { SelectedTest = initial.SelectedTest, DaprHome = Path.Combine(workspace, "dapr-home") };
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             IDistributedApplicationBuilder builder = Builder();
             builder.Environment.EnvironmentName = "Development";
+            builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(workspace, "test-dcp-not-started");
+            builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(workspace, "test-dashboard-not-started");
+            builder.AddDapr(options => options.EnableTelemetry = false);
             PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
             builder.Services.ShouldContain(service => service.ServiceType == typeof(ICompositionTestObservationProvider));
             AssertContainerImage(builder, "dapr-sentry", "ghcr.io/dapr/sentry", "1.18.1", "2f98508dff56c75329dbd51674c89f41ce349e06c7744ab2519cb69ba338d41f");
@@ -237,6 +242,54 @@ public sealed partial class PlatformAppModelTests
             config.ShouldContain("localhost:" + sentry);
             builder.Resources.Single(resource => resource.Name == "dapr-placement-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port.ShouldBe(plan.Ports.Placement);
             builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port.ShouldBe(plan.Ports.Scheduler);
+
+            // Run the real integration/subscriber handoff without starting any executable or container.
+            string credentials = Path.Combine(workspace, "platform-components", "dapr-credentials");
+            foreach (string file in new[] { "ca.crt", "issuer.crt", "issuer.key" }) File.WriteAllText(Path.Combine(credentials, file), "fixture-" + file);
+            int allocatedAppPort = 32000;
+            foreach (IResource application in builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
+                foreach (EndpointAnnotation endpoint in application.Annotations.OfType<EndpointAnnotation>())
+                    endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", endpoint.Port ?? allocatedAppPort++);
+            await using DistributedApplication app = builder.Build();
+            DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
+            IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
+            foreach (IDistributedApplicationEventingSubscriber subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
+                await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+            await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken);
+            ExecutableResource[] selectedSidecars = model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ToArray();
+            selectedSidecars.Length.ShouldBe(4);
+            foreach (ExecutableResource sidecar in selectedSidecars)
+            {
+                IResource application = model.Resources.Single(resource => resource.Name + "-dapr-cli" == sidecar.Name);
+                sidecar.Command.ShouldBe(Path.Combine(plan.DaprHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
+                List<object> arguments = [];
+                foreach (CommandLineArgsCallbackAnnotation callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+                    await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
+                List<string> resolved = [];
+                foreach (object argument in arguments)
+                    resolved.Add(argument is IValueProvider value ? (await value.GetValueAsync(TestContext.Current.CancellationToken))! : argument.ToString()!);
+                resolved.ShouldNotContain("run");
+                resolved.ShouldNotContain("--runtime-path");
+                resolved.ShouldContain("--enable-mtls");
+                resolved[resolved.IndexOf("--sentry-address") + 1].ShouldBe("localhost:" + sentry);
+                resolved[resolved.IndexOf("--placement-host-address") + 1].ShouldBe("localhost:" + plan.Ports.Placement);
+                resolved[resolved.IndexOf("--scheduler-host-address") + 1].ShouldBe("localhost:" + plan.Ports.Scheduler);
+                resolved[resolved.IndexOf("--app-port") + 1].ShouldBe(application.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "http").AllocatedEndpoint!.Port.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                resolved[resolved.IndexOf("--config") + 1].ShouldStartWith(Path.Combine(workspace, "platform-components", "accesscontrol."));
+                resolved.ShouldContain("--resources-path");
+                foreach ((string name, string flag) in new[] { ("http", "--dapr-http-port"), ("grpc", "--dapr-grpc-port"), ("metrics", "--metrics-port") })
+                    resolved[resolved.IndexOf(flag) + 1].ShouldBe(sidecar.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == name).Port!.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                Dictionary<string, object> environment = [];
+                foreach (EnvironmentCallbackAnnotation callback in sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                    await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, sidecar, environment, TestContext.Current.CancellationToken));
+                environment["DAPR_TRUST_ANCHORS"].ShouldBe("fixture-ca.crt");
+                environment["DAPR_CERT_CHAIN"].ShouldBe("fixture-issuer.crt");
+                environment["DAPR_CERT_KEY"].ShouldBe("fixture-issuer.key");
+                environment["DAPR_CONTROLPLANE_TRUST_DOMAIN"].ShouldBe("localhost");
+                PlatformServerBinding binding = application.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+                foreach (string token in new[] { "APP_API_TOKEN", "DAPR_API_TOKEN" })
+                    if (binding.Environment.TryGetValue(token, out string? value)) environment[token].ShouldBe(value);
+            }
         }
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
     }
