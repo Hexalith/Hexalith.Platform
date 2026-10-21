@@ -1,0 +1,29 @@
+from pathlib import Path
+import json
+import subprocess
+import sys
+import time
+
+run_id, prefix = sys.argv[1:3]
+root = Path(__file__).resolve().parent
+expected_source = json.loads((root / 'owner-approval.json').read_text())['integratedReleaseSource']
+previous = None
+while True:
+    command = ['gh', 'run', 'view', run_id, '--repo', 'Hexalith/Hexalith.Builds', '--json', 'databaseId,headSha,headBranch,event,status,conclusion,url,jobs,createdAt,updatedAt']
+    result = subprocess.run(command, text=True, capture_output=True)
+    if result.returncode:
+        print(result.stderr, flush=True)
+        time.sleep(40)
+        continue
+    report = json.loads(result.stdout)
+    assert report['headSha'] == expected_source, report
+    (root / (prefix + '-result.json')).write_text(json.dumps(report, indent=2) + '\n')
+    summary = {'status': report['status'], 'conclusion': report['conclusion'], 'jobs': [{'name': job['name'], 'status': job['status'], 'conclusion': job['conclusion'], 'step': next((step['name'] for step in job.get('steps', []) if step['status'] == 'in_progress'), None)} for job in report['jobs']]}
+    if summary != previous:
+        print(json.dumps(summary), flush=True)
+        with (root / (prefix + '-progress.jsonl')).open('a') as stream:
+            stream.write(json.dumps(summary) + '\n')
+        previous = summary
+    if report['status'] == 'completed':
+        sys.exit(0 if report['conclusion'] == 'success' else 1)
+    time.sleep(40)

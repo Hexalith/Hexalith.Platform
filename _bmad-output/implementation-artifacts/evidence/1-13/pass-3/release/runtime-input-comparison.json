@@ -1,0 +1,29 @@
+{
+  "baseline": "f8599224457dda99e7c0ae4870147dd51b464feb",
+  "releaseSource": "1ae50de72e0755a2a43a1b33764b6b87eecba154",
+  "comparedPaths": [
+    "Props",
+    "global.json",
+    "NuGet.Config",
+    "Directory.Build.props",
+    "Directory.Build.targets",
+    "Directory.Packages.props",
+    "src/hosts",
+    "src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+    "src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj"
+  ],
+  "diffBytes": 1038,
+  "unchanged": false,
+  "changedPaths": [
+    "Props/Directory.Packages.props"
+  ],
+  "catalogDelta": {
+    "property": "HexalithPartiesVersion",
+    "before": "1.5.0",
+    "after": "1.5.1",
+    "origin": "pre-existing upstream commit 4878668412fe8803c3ef232e1775b1dd09f2f857",
+    "storyChangedCatalog": false
+  },
+  "hostingSdkDaprRedisInputsUnchanged": true,
+  "scope": "The concurrent upstream Parties package pin and its audit provenance are preserved. Other central versions, SDK pin, packaged host source and tool dependency declarations are unchanged from published v4.35.1."
+}

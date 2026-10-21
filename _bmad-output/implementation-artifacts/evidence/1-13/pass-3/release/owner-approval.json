@@ -1,0 +1,53 @@
+{
+  "recordedAtUtc": "2026-10-21T14:24:24.007529+00:00",
+  "approval": "approve",
+  "approvedBy": "workspace user / Builds owner",
+  "scope": "Push the reviewed candidate for exact-source upstream CI and existing gated publication, then Platform published-tool pin/range/release-tag acceptance",
+  "approvedBuildsCandidate": "af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260",
+  "approvedPlatformCandidate": "665c5e318bbb5f2fc7a51097e63e5a6deea15d6d",
+  "sourceSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "147ad297c06d66a0f1c5ba72f3b9cfd62621d4926173ad4310fdac84c7e6e1a2",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs": "2a59c43cd5eec8015bd1c0a22a4595a1d5fd4147a30b7cb25f5f7dbfde4e5e9f",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs": "7f82e3188ca663f49ec913f401966e27e80339178c1ffdd37227ac4865da2618",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "d9c9704d9400319ec3fe57179ad85b5adeb825883481c332bea9abbe1ad9632c"
+  },
+  "status": "owner intentionally retained remote rollback; publication stopped before dispatch",
+  "integratedReleaseSource": "1ae50de72e0755a2a43a1b33764b6b87eecba154",
+  "interveningRemoteCommit": "2744d549270298cfe73679f76b477a7368429006",
+  "integration": "Preserved the approved candidate as a parent and merged only the pre-existing upstream Parties 1.5.1 pin and its audit provenance. All reviewed validator/test source hashes remain unchanged.",
+  "upstreamChangedPaths": [
+    "Props/Directory.Packages.props",
+    "Tools/package-version-audit.json"
+  ],
+  "ciRunId": 39616688160,
+  "ciUrl": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39616688160",
+  "sourcePush": "Integrated current main under explicit owner approval; GitHub used configured owner-account branch-rule bypass. No rules, qualification steps or release gates were changed.",
+  "publication": "not dispatched",
+  "interruption": {
+    "atUtc": "2026-10-21T14:38:46Z",
+    "type": "force_push",
+    "actor": "jpiquot",
+    "before": "1ae50de72e0755a2a43a1b33764b6b87eecba154",
+    "after": "2744d549270298cfe73679f76b477a7368429006",
+    "ciConclusion": "cancelled",
+    "action": "Retained local approved commits and package pin; requested clarification before counteracting the owner-account rollback."
+  },
+  "rollbackDisposition": {
+    "recordedAtUtc": "2026-10-21T14:43:34.431990+00:00",
+    "ownerReply": "Intentional \u2014 retain the rollback",
+    "action": "Do not restore the removed integration or dispatch a release; preserve reviewed local commits.",
+    "buildsRemoteMain": "2744d549270298cfe73679f76b477a7368429006"
+  },
+  "platformAtStop": {
+    "head": "0523573cf1e9b0b7b7ada22d9ac050f219070a49",
+    "concurrentCommit": "0523573cf1e9b0b7b7ada22d9ac050f219070a49",
+    "concurrentCommitMessage": "build: sync local changes via /pushall",
+    "toolVersion": "4.35.1+f8599224457dda99e7c0ae4870147dd51b464feb",
+    "toolVersionRange": "[4.35.1, 5.0.0-0)",
+    "recordedBuildsGitlink": "1ae50de72e0755a2a43a1b33764b6b87eecba154",
+    "publishedToolSource": "f8599224457dda99e7c0ae4870147dd51b464feb",
+    "gitlinkMatchesPublishedTool": false,
+    "action": "Preserved the concurrent pointer change; this release session did not stage a Builds gitlink or change the tool pin/range. Current HEAD is not claimed as released-pin acceptance."
+  },
+  "sourcePushLogFormatting": "Trailing whitespace removed from Git CLI output; message content preserved."
+}

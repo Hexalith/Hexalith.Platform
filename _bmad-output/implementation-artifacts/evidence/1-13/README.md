@@ -1,17 +1,41 @@
 # Story 1.13 — domain-module enrollment kit
 
-Status: **local pass-3 corrections reviewed and verified — new owner approval/release pending**.
-All local accepted corrections and required review layers are complete. Owner review,
-exact-source upstream CI, gated publication and fresh Platform acceptance remain pending.
-The accepted pin remains 4.35.1 until those gates complete. No other module is
-adopted or retired here. Human SM-2 and retirement authority remain separate
-module-owner gates for later adoption.
+Status: **owner retained remote rollback; new publication stopped**. Story remains
+**in-review**, with the final publication/pin acceptance task open.
 
-See [pass-3 local correction evidence](pass-3/README.md) for the current candidate, tests and remaining gates.
+The owner approved the reviewed pass-3 candidate with “approve”. Approved Builds
+`af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260` was preserved as a parent of integration
+`1ae50de72e0755a2a43a1b33764b6b87eecba154`, which retained the upstream Parties
+1.5.1 catalog pin and unchanged reviewed validator/test bytes. The ordinary push
+started [exact-source CI 39616688160](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39616688160).
+At 14:38:46 UTC, an owner-account force-push restored remote `main` to
+`2744d549270298cfe73679f76b477a7368429006`, canceling that CI before completion.
+The owner confirmed: **“Intentional — retain the rollback”**. The integration was
+not restored and no release workflow was dispatched
+([owner decision](pass-3/release/owner-approval.json),
+[canceled CI](pass-3/release/ci-39616688160-cancelled.json),
+[repository activity](pass-3/release/repository-activity-after-ci-cancellation.json)).
 
-Latest local candidate: `af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260`. All 1,420 Builds cases and five Platform kit cases pass with no failures/skips. See [final local verification](pass-3/README.md#final-reviewed-local-candidate).
+The published tool pin remains **4.35.1**, roll-forward disabled, with range
+**[4.35.1, 5.0.0-0)** and binary source
+`f8599224457dda99e7c0ae4870147dd51b464feb`. A concurrent `/pushall` commit
+`0523573cf1e9b0b7b7ada22d9ac050f219070a49` independently moved Platform's Builds
+gitlink to the unpublished integration `1ae50de72e0755a2a43a1b33764b6b87eecba154`.
+That concurrent commit is preserved. **Current Platform HEAD's gitlink does not
+match the published tool source**, so the earlier five passing kit cases are
+historical verification, not acceptance of this new HEAD. No new pin, support-floor
+or release-tag acceptance is claimed.
 
-## Published correction and Platform acceptance — 2026-10-21
+The reviewed candidate and integration remain local. Final local verification
+passed **1,420/1,420 Builds cases** and **5/5 Platform kit cases** before the
+concurrent pointer change; see [pass-3 verification and disposition](pass-3/README.md).
+A later read-only preflight on the updated real Parties checkout preserves all
+6,098 tracked hashes/status and passes workspace/dependency-selection audits
+([preflight](pass-3/release/current-parties-preflight-summary.json)). The prepared
+fresh-package harness was not executed for a new release. No other module was
+adopted or retired; human SM-2 and retirement authority remain module-owner gates.
+
+## Previous published correction and Platform acceptance (historical) — 2026-10-21
 
 The owner approved the reviewed correction with “I approve”
 ([approval](post-release-patch/release/owner-approval.json)). Approved Builds

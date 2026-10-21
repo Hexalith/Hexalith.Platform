@@ -299,3 +299,27 @@ Coordinator leaf-value correction — 2026-10-21: the first pass-3 real-Parties 
 Final resumed-build coordinator verification — 2026-10-21: all 18 accepted pass-3 patches, the coordinator's non-path leaf-value correction and all eight surviving independent-review groups are complete. Three review layers completed; all 16 findings were classified individually, with prior rejected edge cases retained and no new deferral. Final Builds Release build has zero warnings/errors; 168 affected cases passed before the last context refinement, then all 56 final Dapr cases passed after a direct analyzer correction. The unfiltered final Builds suite passes **1,420/1,420**, zero errors/failures/skips/not-run cases, in 563.736 seconds. Normal Platform Release build has zero warnings/errors and all five released-pin kit cases pass. Both final real-Parties formats preserve status and all 6,035 tracked hashes; workspace and dependency-selectors pass, with expected overall failure for incomplete module enrollment. Source/artifact hashes and every matrix row are recorded under `evidence/1-13/pass-3/`. Delegated full output without a summary/exit and intentionally cancelled runs are not passing evidence.
 
 Reviewed local Builds candidate: `af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260`. Its exact source bytes match final verification. Platform retains published 4.35.1, support range `[4.35.1, 5.0.0-0)` and release-tag gitlink `f8599224457dda99e7c0ae4870147dd51b464feb`; the checked-out Builds HEAD is the new local candidate, intentionally ahead of that accepted gitlink. No push or remote mutation occurred. The explicit frozen completion requirement still needs owner approval, upstream exact-source CI, gated publication and fresh released-pin/range/tag/gitlink acceptance. Preserve **in-review**, rather than the generic workflow's automatic done status, until that acceptance task is complete.
+
+
+Owner-directed rollback disposition — 2026-10-21: the owner approved the reviewed
+pass-3 candidate with “approve”. Integration `1ae50de72e0755a2a43a1b33764b6b87eecba154`
+preserves approved source `af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260` and the concurrent
+upstream Parties 1.5.1 package pin; all four reviewed source hashes are unchanged.
+Its ordinary push started exact-source CI `39616688160`. At 14:38:46 UTC the owner
+account force-pushed Builds main back to `2744d549270298cfe73679f76b477a7368429006`,
+which canceled CI before the build completed. The owner clarified **“Intentional —
+retain the rollback”**. Do not restore that integration or dispatch a release under
+the earlier approval. No release was dispatched and no new tool pin/range was set.
+Both reviewed local commits remain available. Record: `evidence/1-13/pass-3/release/owner-approval.json`.
+
+Concurrent Platform `/pushall` commit `0523573cf1e9b0b7b7ada22d9ac050f219070a49`
+moved its Builds gitlink to the unpublished integration. Preserve that concurrent
+commit. The actual published tool still reports `4.35.1+f8599224457dda99e7c0ae4870147dd51b464feb`,
+so current HEAD has a pin/gitlink mismatch and is not accepted as a new release.
+The earlier five passing kit cases predate that pointer change. The reviewed
+candidate's full 1,420-case local verification remains valid for its unchanged
+source bytes; a new read-only preflight on updated Parties `63cd1279a82df47af3d16dd0ff9f002f3e4c86eb`
+preserves all 6,098 tracked hashes/status and passes workspace/dependency audits.
+The final publication/pin task stays unchecked, spec **in-review**, sprint **review**.
+The current owner decision stops this release attempt; human SM-2/retirement and
+other module adoption remain separate owner-led work.

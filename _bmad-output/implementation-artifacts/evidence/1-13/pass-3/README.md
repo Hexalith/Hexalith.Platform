@@ -1,5 +1,35 @@
 # Pass-3 local corrections — 2026-10-21
 
+## Current disposition: owner retained rollback
+
+The owner first approved this candidate with “approve”, then explicitly answered
+**“Intentional — retain the rollback”** after an external owner-account force-push
+removed integrated source `1ae50de72e0755a2a43a1b33764b6b87eecba154` from remote
+Builds `main`. [Exact-source CI 39616688160](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39616688160)
+was canceled before completion; Python contracts and CodeQL passed, while the main
+build did not finish. No release workflow was dispatched and the source was not
+restored. The reviewed candidate `af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260` and
+its integration remain local. See [owner approval and rollback disposition](release/owner-approval.json),
+[activity](release/repository-activity-after-ci-cancellation.json) and
+[recovery checks](release/rollback-recovery-check.json).
+
+Platform still pins the published `4.35.1` binary with source `f8599224457dda99e7c0ae4870147dd51b464feb`
+and range `[4.35.1, 5.0.0-0)`. Concurrent `/pushall` commit `0523573cf1e9b0b7b7ada22d9ac050f219070a49`
+changed its Builds gitlink to the unpublished integration. That commit is preserved;
+the pin/gitlink mismatch prevents current-HEAD released-pin acceptance. The five
+passing kit cases below predate that concurrent pointer change. Story status remains
+**in-review**, sprint status **review**, and final publication/pin acceptance stays open.
+
+The release source preserves the pre-existing upstream Parties package pin from
+1.5.0 to 1.5.1; other SDK/Dapr/Redis/hosting inputs are unchanged
+([comparison](release/runtime-input-comparison.json)). The updated real Parties
+checkout passes a read-only preflight with all 6,098 tracked-file hashes/status
+unchanged ([summary](release/current-parties-preflight-summary.json)). This is
+local-candidate verification; no new package was published or accepted. The prepared
+[released-package harness](release/accept-released.py.txt) was not run for a new release.
+
+## Historical local verification before owner approval
+
 All 18 accepted pass-3 patch findings are implemented locally. The source and artifact hashes, exact commands and outputs are recorded in [verification.json](verification.json). No other module was edited or enrolled, and no new publication or accepted pin is claimed. The accepted tool remains 4.35.1 with the existing release-tag gitlink.
 
 Builds Release build passes with zero warnings/errors. The adoption and manifest-command classes passed 325/325 before the final optional-file guard refinement. The final 15-case custom-property group, including that new legitimate guard, passed afterward. The coordinator then found a false failure on Parties' HTTPS-validation regex; the leaf-property correction below supersedes that candidate. That delegated full run ended without a final summary or exit status and is incomplete; the final coordinator run below supersedes it. The earlier deliberately interrupted broad run is retained separately with its cancellation reason.
