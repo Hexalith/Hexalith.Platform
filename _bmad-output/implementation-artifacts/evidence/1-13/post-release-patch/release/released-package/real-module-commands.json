@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "/tmp/enrollment-nuget-odal0s4n/hexalith.builds.module.cli/4.35.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "validate",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--adoption",
+      "--output",
+      "human"
+    ],
+    "format": "human",
+    "exitCode": 1,
+    "unchanged": true,
+    "moduleCommit": "6d9e3417f7abcd03e66a04de5084909c4b6c6115",
+    "trackedPathBytes": 474480,
+    "hashedTrackedFiles": 6035
+  },
+  {
+    "command": [
+      "dotnet",
+      "/tmp/enrollment-nuget-odal0s4n/hexalith.builds.module.cli/4.35.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "validate",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--adoption",
+      "--output",
+      "json"
+    ],
+    "format": "json",
+    "exitCode": 1,
+    "unchanged": true,
+    "moduleCommit": "6d9e3417f7abcd03e66a04de5084909c4b6c6115",
+    "trackedPathBytes": 474480,
+    "hashedTrackedFiles": 6035
+  }
+]

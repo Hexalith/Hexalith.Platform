@@ -1,0 +1,27 @@
+{
+  "recordedAtUtc": "2026-10-21T08:05:40.491749+00:00",
+  "approval": "I approve",
+  "approvedBy": "workspace user / Builds owner",
+  "scope": "Push the reviewed candidate for exact-source upstream CI, existing gated publication, then Platform published-tool pin/range/release-tag acceptance",
+  "approvedBuildsCandidate": "4841778b0b018ff017cd31805aafea5f4ae3c011",
+  "approvedPlatformCandidate": "cec03d32adfce691155b2e7c85bba434e6294da2",
+  "integratedReleaseSource": "f8599224457dda99e7c0ae4870147dd51b464feb",
+  "interveningRemoteCommit": "92fd7a37b632f713833705c91ff35a373af997cc",
+  "integration": "Preserved approved candidate as parent; imported only documentation/evidence/attribute files from remote main. Product, tests, tooling, schemas, package catalog and workflows unchanged from approved candidate. All recorded Builds product/source hashes match.",
+  "sourcePush": {
+    "branch": "main",
+    "from": "92fd7a37b632f713833705c91ff35a373af997cc",
+    "to": "f8599224457dda99e7c0ae4870147dd51b464feb",
+    "remoteRuleNotice": "GitHub accepted configured owner-account branch-rule bypass for PR and expected-status requirements; no rules or release gates were changed. Exact-source green push CI and production approval still required."
+  },
+  "ciRunId": 39566514011,
+  "ciUrl": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39566514011",
+  "ciConclusion": "success",
+  "releaseSourceGuard": "Passed before dispatch: exact current main and successful exact-SHA push CI.",
+  "releaseRunId": 39571131558,
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/39571131558",
+  "productionEnvironmentApproval": "Applied the explicit interactive owner approval through the ordinary pending-deployments review API under configured jpiquot reviewer; no environment or release gate configuration changed.",
+  "releaseConclusion": "success",
+  "publishedVersion": "4.35.1",
+  "publishedAtUtc": "2026-10-21T09:28:21Z"
+}

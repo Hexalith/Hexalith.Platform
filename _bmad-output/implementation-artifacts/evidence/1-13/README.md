@@ -1,14 +1,84 @@
-# Story 1.13 — domain-module enrollment kit and correction candidate
+# Story 1.13 — completed domain-module enrollment kit
 
-Status: **post-release corrections locally verified; new review/publication/pin acceptance pending**.
-The earlier owner-approved candidate was published as `4.35.0` through the gated
-Builds release workflow. The subsequent review reproduced enrollment defects in
-real module workspaces; the local correction evidence is recorded below. The
-existing pin remains `4.35.0` until the corrected candidate passes owner review
-and the existing release gates. The kit leaves SM-2 for module-owner verification
-after adoption; no live demonstration was performed or fabricated by this story.
+Status: **completed — corrected tool 4.35.1 published, pinned and freshly accepted**.
+All local review corrections, owner review, exact-source upstream CI, existing
+gated publication and Platform released-tool acceptance are complete. No other
+module was adopted or retired. Human SM-2 and retirement authority remain separate
+module-owner gates for later adoption.
 
-## Final reviewed correction candidate — 2026-10-21
+## Published correction and Platform acceptance — 2026-10-21
+
+The owner approved the reviewed correction with “I approve”
+([approval](post-release-patch/release/owner-approval.json)). Approved Builds
+`4841778b0b018ff017cd31805aafea5f4ae3c011` remains a parent of integrated source
+`f8599224457dda99e7c0ae4870147dd51b464feb`; intervening remote changes were
+documentation/evidence/attributes only. Approved product hashes are unchanged.
+
+[Exact-source CI 39566514011](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39566514011)
+passed: Module 1,293 total / 1,290 passed / zero failed / three context skips;
+Evidence 107/107; integration one passed / twelve context skips. The local full
+Module run executed all 1,293 without skips. CI also passed packaged-tool
+qualification, CodeQL and Python contracts
+([CI result](post-release-patch/release/ci-result.json),
+[suite summaries](post-release-patch/release/ci-test-summaries.txt)).
+
+The [official release run 39571131558](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39571131558)
+passed both exact-current-main/green-push-CI guards, the configured production
+approval, source/package and version-specific qualification, then publication.
+The interactive owner approval was applied through the ordinary production
+review API under its configured reviewer; no gate configuration was changed
+([pending gate](post-release-patch/release/production-gate-pending.json),
+[approval response](post-release-patch/release/production-gate-approval.json)).
+It [published v4.35.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.35.1)
+at **2026-10-21T09:28:21Z** from the exact integrated source above
+([workflow result](post-release-patch/release/release-result.json),
+[release metadata](post-release-patch/release/published-release.json),
+[tag target](post-release-patch/release/tag-target.json)).
+
+Platform pins **4.35.1** with roll-forward disabled, accepted range
+**[4.35.1, 5.0.0-0)** and the exact release-tag Builds gitlink. Runtime versions,
+SDK pins, hosting inputs and dependency declarations are unchanged from v4.35.0
+([comparison](post-release-patch/release/runtime-input-comparison.json)).
+
+Fresh restoration used NuGet.org as the sole source with empty package and CLI-home
+caches. All four human/JSON success/failure commands passed with unchanged Git state
+and every file hash. The passing fixture exercises a tracked-path inventory above
+65,536 bytes, oversized evidence JSON, JSONC, the exact bootstrap default and valid
+local project/import guards. The restored version is
+`4.35.1+f8599224457dda99e7c0ae4870147dd51b464feb`
+([fresh commands](post-release-patch/release/released-package/released-commands.json),
+[reproduction](post-release-patch/release/accept-released.py.txt),
+[restore](post-release-patch/release/released-package/tool-restore.txt)).
+
+The fresh signed Module archive SHA-256 matches the official publisher's verified
+remote hash. The publisher compared every uncompressed payload entry with the
+qualified unsigned package, excluding only NuGet's repository signature
+([publication hashes](post-release-patch/release/publication-hashes.txt),
+[source-bound qualification inventory](post-release-patch/release/g4-tool-package-inventory.json),
+[canonical accepted identities](post-release-patch/release/accepted-identities.json)).
+
+Both human/JSON commands through that same fresh published binary also ran
+read-only on real Parties source `6d9e3417f7abcd03e66a04de5084909c4b6c6115`.
+Workspace enumeration passes across **474,480 tracked-path bytes**; status and
+**6,035 tracked-file hashes** are unchanged. Overall exit `1` correctly reports
+that module's incomplete enrollment (uninitialized required direct references,
+missing hosting inventory and bounded legacy source findings)
+([real commands](post-release-patch/release/released-package/real-module-commands.json)).
+No other module was enrolled or edited.
+
+Platform's normal Release build passes with **zero warnings/errors**, and all
+**five kit tests** pass against the published pin
+([restore](post-release-patch/release/platform-tool-restore.txt),
+[version](post-release-patch/release/platform-tool-version.txt),
+[build](post-release-patch/release/platform-build.txt),
+[tests](post-release-patch/release/platform-kit-tests.txt)). All accepted review
+findings are corrected; none were deferred. SM-2 breakpoint/edit evidence and
+hosting retirement gates remain pending in the templates for module owners.
+
+The earlier candidate and v4.35.0 observations below are historical snapshots;
+the acceptance above supersedes their pending-release status.
+
+## Reviewed correction candidate before approval (historical) — 2026-10-21
 
 Exact local Builds source: `4841778b0b018ff017cd31805aafea5f4ae3c011`.
 The three required review layers completed. All 11 surviving root-cause groups

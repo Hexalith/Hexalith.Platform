@@ -1,0 +1,116 @@
+from pathlib import Path
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import tempfile
+
+root = Path('/home/administrator/projects/hexalith/platform')
+evidence = root / '_bmad-output/implementation-artifacts/evidence/1-13/post-release-patch/release/released-package'
+evidence.mkdir(parents=True, exist_ok=True)
+version = json.loads((root / '.config/dotnet-tools.json').read_text())['tools']['hexalith.builds.module.cli']['version']
+
+def git(cwd, *args):
+    return subprocess.check_output(['git', '-C', str(cwd), *args], text=True, stderr=subprocess.STDOUT)
+
+def snapshot(workspace):
+    return {str(p.relative_to(workspace)): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(workspace.rglob('*')) if p.is_file()}
+
+with tempfile.TemporaryDirectory(prefix='enrollment-acceptance-') as tmp, tempfile.TemporaryDirectory(prefix='enrollment-nuget-') as cache:
+    workspace = Path(tmp)
+    env = dict(os.environ, NUGET_PACKAGES=cache, DOTNET_CLI_HOME=str(Path(cache) / 'cli-home'))
+    config = Path(cache) / 'NuGet.Config'
+    config.write_text(f'<configuration><config><add key="globalPackagesFolder" value="{cache}" /></config><packageSources><clear/><add key="nuget.org" value="https://api.nuget.org/v3/index.json" /></packageSources></configuration>')
+    git(workspace, 'init', '-q')
+    for name in ('Platform', 'Builds', 'McpCli', 'EventStore', 'Tenants', 'Memories'):
+        direct = workspace / 'references' / f'Hexalith.{name}'
+        (direct / '.config').mkdir(parents=True)
+        shutil.copy(root / '.config/dotnet-tools.json', direct / '.config/dotnet-tools.json')
+        git(direct, 'init', '-q')
+        git(direct, 'add', '.')
+        git(direct, '-c', 'user.name=Enrollment Test', '-c', 'user.email=enrollment@example.invalid', 'commit', '-qm', 'fixture identity')
+        commit = git(direct, 'rev-parse', 'HEAD').strip()
+        git(workspace, 'update-index', '--add', '--cacheinfo', f'160000,{commit},references/Hexalith.{name}')
+        with (workspace / '.gitmodules').open('a') as stream:
+            stream.write(f'[submodule "references/Hexalith.{name}"]\n path = references/Hexalith.{name}\n url = https://example.invalid/Hexalith.{name}.git\n')
+    (workspace / 'module').mkdir()
+    (workspace / '.config').mkdir()
+    shutil.copy(root / '.config/dotnet-tools.json', workspace / '.config/dotnet-tools.json')
+    shutil.copy(root / 'templates/domain-module-enrollment/hexalith.module-manifest.v2.json', workspace / 'module/hexalith.module-manifest.v2.json')
+    (workspace / 'module/hosting-inventory.json').write_text('{"schemaVersion":1,"projects":[]}\n')
+    # Reproduce the reported real-workspace failures against the published package.
+    (workspace / 'evidence').mkdir()
+    for index in range(800):
+        (workspace / 'evidence' / (str(index) + 'x' * 90 + '.txt')).write_text('tracked evidence')
+    (workspace / 'evidence/report.json').write_text(' ' * 1_048_577)
+    (workspace / 'appsettings.Development.json').write_text('{ /* JSONC */ "Sample":{"Dapr":{"EventsComponent":""}}, }')
+    (workspace / 'Directory.Build.props').write_text("<Project><PropertyGroup><HexalithBuildsRoot Condition=\"'$(HexalithBuildsRoot)' == ''\">$(MSBuildThisFileDirectory)references/Hexalith.Builds</HexalithBuildsRoot></PropertyGroup><Import Project=\"$(HexalithBuildsRoot)/Hexalith.Build.props\" /><Import Project=\"eng/Hexalith.Sample.Optional.props\" Condition=\"Exists('eng/Hexalith.Sample.Optional.props')\" /></Project>")
+    project = workspace / 'src/libraries/Hexalith.Sample/Hexalith.Sample.csproj'
+    project.parent.mkdir(parents=True)
+    project.write_text("<Project><ItemGroup><ProjectReference Include=\"../Hexalith.Sample.Contracts/Hexalith.Sample.Contracts.csproj\" Condition=\"Exists('../Hexalith.Sample.Contracts/Hexalith.Sample.Contracts.csproj')\" /></ItemGroup></Project>")
+    git(workspace, 'add', '.')
+    tracked_path_bytes = len(subprocess.check_output(['git', 'ls-files', '-z'], cwd=workspace))
+    assert tracked_path_bytes > 65_536, tracked_path_bytes
+    restore_cmd = ['dotnet', 'tool', 'restore', '--configfile', str(config), '--no-cache']
+    restore = subprocess.run(restore_cmd, cwd=workspace, env=env, text=True, capture_output=True)
+    (evidence / 'tool-restore.txt').write_text(restore.stdout + restore.stderr)
+    assert restore.returncode == 0, restore.stdout + restore.stderr
+    installed = subprocess.run(['dotnet', 'tool', 'run', 'hexalith-module', '--', '--version'], cwd=workspace, env=env, text=True, capture_output=True)
+    (evidence / 'tool-version.txt').write_text(installed.stdout + installed.stderr)
+    assert installed.returncode == 0, installed.stdout + installed.stderr
+    assert installed.stdout.strip().split('+')[0] == version, installed.stdout + installed.stderr
+    approved = json.loads((evidence.parent / 'owner-approval.json').read_text())['integratedReleaseSource']
+    assert installed.stdout.strip().endswith('+' + approved), installed.stdout
+    package = Path(cache) / 'hexalith.builds.module.cli' / version / f'hexalith.builds.module.cli.{version}.nupkg'
+    package_sha256 = hashlib.sha256(package.read_bytes()).hexdigest()
+    records = []
+    for state in ('pass', 'fail'):
+        if state == 'fail':
+            (workspace / 'module/hosting-inventory.json').unlink()
+        for mode in ('human', 'json'):
+            before = git(workspace, 'status', '--porcelain=v1', '--untracked-files=all')
+            files_before = snapshot(workspace)
+            cmd = ['dotnet', 'tool', 'run', 'hexalith-module', '--', 'validate', '--manifest', 'module/hexalith.module-manifest.v2.json', '--adoption', '--output', mode]
+            run = subprocess.run(cmd, cwd=workspace, env=env, text=True, capture_output=True)
+            after = git(workspace, 'status', '--porcelain=v1', '--untracked-files=all')
+            files_after = snapshot(workspace)
+            for suffix, value in [('txt', run.stdout), ('stderr.txt', run.stderr), ('git-before.txt', before), ('git-after.txt', after)]:
+                (evidence / f'released-{state}-{mode}.{suffix}').write_text(value)
+            (evidence / f'released-{state}-{mode}.file-hashes.json').write_text(json.dumps({'before': files_before, 'after': files_after}, indent=2) + '\n')
+            assert before == after and files_before == files_after, 'validator changed workspace'
+            assert run.returncode == (0 if state == 'pass' else 1), (run.returncode, run.stdout, run.stderr)
+            records.append({'state': state, 'format': mode, 'command': cmd, 'exitCode': run.returncode, 'gitUnchanged': before == after, 'allFileHashesUnchanged': files_before == files_after})
+    (evidence / 'released-commands.json').write_text(json.dumps({
+        'scope': 'Official published pinned tool restored from NuGet.org into an empty package cache; static enrollment proof only, no SM-2 evidence',
+        'version': version, 'sourceRevision': approved, 'packageSha256': package_sha256, 'trackedPathBytes': tracked_path_bytes,
+        'workingDirectory': 'disposable enrolled module Git workspace; removed after verification',
+        'isolation': 'Empty DOTNET_CLI_HOME and NUGET_PACKAGES; explicit NuGet globalPackagesFolder and sole NuGet.org source',
+        'restoreCommand': restore_cmd, 'commands': records}, indent=2) + '\n')
+    # Execute the same fresh published binary read-only in a real module Git root.
+    module = root / 'references/Hexalith.Parties'
+    binaries = list(package.parent.rglob('Hexalith.Builds.Module.Cli.dll'))
+    assert len(binaries) == 1, binaries
+    def real_snapshot():
+        tracked = subprocess.check_output(['git', '-c', 'submodule.recurse=false', '-C', str(module), 'ls-files', '-z'])
+        hashes = {name: hashlib.sha256((module / name).read_bytes()).hexdigest() for name in tracked.decode().split('\0') if name and (module / name).is_file()}
+        return {'head':git(module, 'rev-parse', 'HEAD').strip(), 'status':git(module, 'status', '--porcelain=v1', '--untracked-files=all'), 'trackedPathBytes':len(tracked), 'trackedFileHashes':hashes}
+    real_runs = []
+    for mode in ('human', 'json'):
+        before = real_snapshot()
+        command = ['dotnet', str(binaries[0]), 'validate', '--manifest', 'module/hexalith.module-manifest.v2.json', '--adoption', '--output', mode]
+        result = subprocess.run(command, cwd=module, env=env, text=True, capture_output=True, timeout=120)
+        after = real_snapshot()
+        (evidence / ('real-parties-' + mode + '.stdout.txt')).write_text(result.stdout)
+        (evidence / ('real-parties-' + mode + '.stderr.txt')).write_text(result.stderr)
+        (evidence / ('real-parties-' + mode + '.inventories.json')).write_text(json.dumps({'before':before,'after':after},indent=2)+'\n')
+        assert before == after, 'Published validator changed real module workspace'
+        assert result.returncode == 1, result.stdout + result.stderr
+        if mode == 'json':
+            rows = json.loads(result.stdout)['adoption']
+            assert next(row for row in rows if row['requirement'] == 'workspace')['passed'], rows
+            assert all('Cannot enumerate tracked' not in row['reason'] and 'exceeds the bounded' not in row['reason'] for row in rows), rows
+        real_runs.append({'command':command,'format':mode,'exitCode':result.returncode,'unchanged':before==after,'moduleCommit':before['head'],'trackedPathBytes':before['trackedPathBytes'],'hashedTrackedFiles':len(before['trackedFileHashes'])})
+    (evidence / 'real-module-commands.json').write_text(json.dumps(real_runs,indent=2)+'\n')
+    print(f'Published {version}: four disposable commands and two real-module commands passed; Git state and file hashes unchanged.')

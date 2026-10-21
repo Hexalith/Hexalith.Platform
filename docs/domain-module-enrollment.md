@@ -2,14 +2,11 @@
 
 The module owner uses this kit to prepare enrollment in Platform. Static validation
 and the human demonstration are separate gates. The accepted published tool is
-`4.35.0`, including ordinary declaration validation and the read-only `--adoption`
+`4.35.1`, including ordinary declaration validation and the read-only `--adoption`
 report. Copy the exact pin from the direct Platform checkout as described below.
 [Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
 records owner approval, gated publication and fresh acceptance. Static PASS rows
-leave the owner's live SM-2 demonstration separately unverified. Post-release
-validation corrections in the current Builds source still require owner review,
-gated publication and fresh Platform pin acceptance; see the release evidence
-for the current candidate's status.
+leave the owner's live SM-2 demonstration separately unverified.
 
 ## 1. Declare and initialize the minimum workspace
 
