@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MODE=Full
+CONFIGURATION=Debug
 PROFILE=""
 ARTIFACTS_DIR="${TMPDIR:-/tmp}/hexalith-agents54-host-artifacts"
 fail() {
@@ -12,6 +13,11 @@ fail() {
 }
 while (($#)); do
   case "$1" in
+    --configuration)
+      (($# >= 2)) || fail "--configuration requires Debug or Release"
+      CONFIGURATION="$2"
+      shift 2
+      ;;
     --mode)
       (($# >= 2)) || fail "--mode requires Full or LocalScaffold"
       MODE="$2"
@@ -36,6 +42,11 @@ case "$MODE" in
   Full|LocalScaffold) ;;
   *) fail "unknown mode: $MODE" ;;
 esac
+case "$CONFIGURATION" in
+  Debug) project_references=true; nuget_dependencies=false ;;
+  Release) project_references=false; nuget_dependencies=true ;;
+  *) fail "unknown configuration: $CONFIGURATION" ;;
+esac
 case "$ARTIFACTS_DIR" in
   /*) ;;
   *) ARTIFACTS_DIR="$(pwd)/$ARTIFACTS_DIR" ;;
@@ -59,16 +70,17 @@ if [[ -d "$ROOT/src/Hexalith.Agents.AppHost" \
   fail "Agents module hosting projects must not live in Hexalith.Platform"
 fi
 if [[ "$MODE" == Full ]]; then
-  full_args=(--artifacts-path "$ARTIFACTS_DIR")
+  full_args=(--artifacts-path "$ARTIFACTS_DIR" --configuration "$CONFIGURATION")
   if [[ -n "$PROFILE" ]]; then
     full_args+=(--profile "$PROFILE")
   fi
   python3 "$ROOT/eng/ext-host-1/verify_full.py" "${full_args[@]}"
   echo "Component qualification passed. Live qualification and the OQ-5.4-1 cohort remain gated."
 else
-  echo "Building local Platform scaffold (Debug)..."
+  echo "Building local Platform scaffold ($CONFIGURATION)..."
   # The file-based AppHost requires full property syntax, rather than -warnaserror shorthand.
-  dotnet build ./apphost.cs -c Debug --artifacts-path "$ARTIFACTS_DIR" \
-    -p:TreatWarningsAsErrors=true -p:AspireUseCliBundle=true -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+  dotnet build ./apphost.cs -c "$CONFIGURATION" --artifacts-path "$ARTIFACTS_DIR" \
+    -p:TreatWarningsAsErrors=true -p:AspireUseCliBundle=true -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 \
+    -p:UseHexalithProjectReferences="$project_references" -p:UseNuGetDeps="$nuget_dependencies"
   echo "LocalScaffold build succeeded. Full EXT-HOST-1 qualification remains unavailable."
 fi

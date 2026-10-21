@@ -1,5 +1,17 @@
 # Works host parity and rollback
 
+## Canonical local and CI profiles
+
+`eng/verify-works-host.sh --profile full` is the default local gate: source Debug and public-package Release consumer checks, followed by every explicit live R1–R11 proof and complete-fleet rollback. `--profile ci` uses only Release/public-package consumer checks and Release/package Agents scaffold probes, as required by the Hexalith CI baseline. The existing unpublished Platform Identity/runtime test-source exceptions remain explicit. Runtime SDK executables still build in Release from independently qualified exact public producer source; their external dependencies use packages.
+
+Both profiles execute the same live recovery, callback, historical lifecycle/security, restart, HA, mTLS, shared rebuild and retained-fleet rollback path. Both retain public producer qualification and final source, fixture, archive, runtime and launcher closure. A CI profile does not weaken an R1–R11 proof or satisfy source Debug conformance: its ledger records `profile.name=ci`, only `Release` in consumer configurations/checks/dependency modes, `agentsConfiguration=Release`, and source conformance as not requested. It never records an absent Debug check as passed. `--prepare-only` remains nonqualifying in either profile. Both still require status `passed-disposable-synthetic-parity-and-rollback`, all 44 proof kinds and complete rollback.
+
+Agents Full component probes receive the same selected configuration through `verify-agents-host.sh` and `ext-host-1/verify_full.py`. Their custody and EventStore guard `dotnet test` calls explicitly select that configuration and its matching source/package flags; CI never relies on the implicit Debug default. Component evidence records the actual configuration and dependency mode, and each suite retains its exact `command.json`. Release attempt identity includes that mode, so a retained Debug component attempt cannot qualify a Release request. The default Debug attempt identity remains compatible with historical local attempts. These nested helpers and their regression tests are explicitly hash-bound before execution and checked at final closure.
+
+The Works-owned CI bootstrap supplies root-declared dependencies and an exact public SDK export to this verifier; it owns no topology or proof implementation. For isolated execution, `works_host_snapshot.create(..., upstream_origin=...)` additionally binds the original owner working overlay to a run-owned Git origin and its execution export. Admission and final closure verify all three ordinary source inventories and selected revisions, while the existing dependency-link/catalog binding remains on the isolated origin/export. Any relevant original-owner, isolated-origin or execution-export drift refuses qualification. Default snapshot callers retain their existing binding contract.
+
+The qualification records below preserve their exact historical revisions and profiles. New source or profile changes require fresh complete runs; these older packets are not relabeled.
+
 Story 4.16 synthetic parity and rollback are **qualified on public EventStore 3.126.0**. The implementation is ready for review.
 The accepted 4.15 evidence remains preserved. A passing supporting build or an
 individual live scenario does not accept the complete Works gate. The retained

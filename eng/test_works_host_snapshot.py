@@ -85,6 +85,31 @@ class WorksHostSnapshotTests(unittest.TestCase):
         (self.origin / "src/new.cs").write_text("changed ordinary fixture")
         with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
 
+    def test_isolated_origin_also_binds_the_original_owner_working_overlay(self):
+        upstream = self.root / 'upstream'
+        subprocess.run(['git', 'clone', '--shared', str(self.origin), str(upstream)], check=True,
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for name in snapshot.origin_files(upstream).keys() - snapshot.origin_files(self.origin).keys():
+            (upstream / name).unlink()
+        for name in snapshot.origin_files(self.origin):
+            target = upstream / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((self.origin / name).read_bytes())
+        export, manifest = self.root / 'upstream-export', self.root / 'upstream-binding.json'
+        snapshot.create(self.origin, export, manifest, upstream_origin=upstream)
+        observed = snapshot.verify(manifest, export)
+        self.assertEqual(observed['upstreamOrigin']['root'], str(upstream))
+        (upstream / 'src/runtime.cs').write_text('foreign owner overlay')
+        with self.assertRaisesRegex(ValueError, 'upstream owner ordinary'):
+            snapshot.verify(manifest, export)
+
+    def test_a_different_upstream_overlay_cannot_be_selected(self):
+        upstream = self.root / 'different-upstream'
+        subprocess.run(['git', 'clone', '--shared', str(self.origin), str(upstream)], check=True,
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        with self.assertRaisesRegex(ValueError, 'Upstream owner revision or ordinary overlay differs'):
+            snapshot.create(self.origin, self.root / 'rejected-export', self.root / 'rejected-binding.json', upstream_origin=upstream)
+
     def test_generated_debugger_history_is_never_read_or_exported_as_source(self):
         (self.origin / ".netcoredbg_hist").write_text("private debugger history")
         original = Path.read_bytes

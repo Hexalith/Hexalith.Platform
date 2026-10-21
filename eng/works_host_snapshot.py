@@ -85,7 +85,7 @@ def dependency_inputs(root):
     return {name: digest((root / name).read_bytes())}
 
 
-def create(origin, root, manifest):
+def create(origin, root, manifest, upstream_origin=None):
     origin, root, manifest = origin.resolve(), root.resolve(), manifest.resolve()
     if root.exists() or manifest.exists() or manifest.is_relative_to(root):
         raise ValueError("Snapshot root and adjacent manifest must be new, separate paths")
@@ -112,6 +112,11 @@ def create(origin, root, manifest):
               "workingOverlays": {name: {"baseSha256": baseline.get(name), "exportSha256": files.get(name)}
                   for name in sorted(files.keys() | baseline.keys()) if files.get(name) != baseline.get(name)},
               "dependencyLinks": links, "dependencyInputs": dependency_inputs(origin)}
+    if upstream_origin is not None:
+        upstream = Path(upstream_origin).resolve()
+        if origin_files(upstream) != files or revision(upstream) != commit:
+            raise ValueError("Upstream owner revision or ordinary overlay differs from the isolated origin")
+        record["upstreamOrigin"] = {"root": str(upstream), "commit": commit}
     manifest.write_text(json.dumps(record, indent=2) + "\n")
     verify(manifest, root)
     return record
@@ -140,6 +145,17 @@ def verify(manifest, root):
     relevant = lambda files: {name: value for name, value in files.items() if not unrelated(name)}
     if export_files(root) != record["sourceFiles"] or relevant(current) != relevant(record["sourceFiles"]):
         raise ValueError("Snapshot or current canonical ordinary source inputs changed")
+    upstream_observation = None
+    if "upstreamOrigin" in record:
+        upstream = Path(record["upstreamOrigin"]["root"])
+        selected_commit = record["upstreamOrigin"]["commit"]
+        if selected_commit != record["originCommit"] or git(upstream, "rev-parse", selected_commit + "^{commit}").decode().strip() != selected_commit:
+            raise ValueError("Snapshot upstream owner revision differs")
+        upstream_files = origin_files(upstream)
+        if relevant(upstream_files) != relevant(record["sourceFiles"]):
+            raise ValueError("Snapshot upstream owner ordinary source inputs changed")
+        upstream_observation = {"root": str(upstream), "selectedCommit": selected_commit, "observedCommit": revision(upstream),
+                                "currentRelevantSourceFiles": relevant(upstream_files)}
     if declared_links(origin) != record["dependencyLinks"]:
         raise ValueError("Snapshot origin dependency declarations or targets changed")
     if dependency_inputs(origin) != record["dependencyInputs"] or dependency_inputs(root) != record["dependencyInputs"]:
@@ -152,6 +168,7 @@ def verify(manifest, root):
             "root": str(root), "originRoot": str(origin), "inventorySha256": record["inventorySha256"],
             "sourceFiles": record["sourceFiles"], "dependencyLinks": record["dependencyLinks"],
             "dependencyInputs": record["dependencyInputs"],
+            "upstreamOrigin": upstream_observation,
             "currentRelevantSourceFiles": relevant(current),
             "unrelatedOriginInputDrift": {name: {"exportSha256": record["sourceFiles"].get(name), "currentSha256": current.get(name)}
                 for name in sorted(current.keys() | record["sourceFiles"].keys())
@@ -163,5 +180,6 @@ if __name__ == "__main__":
     parser.add_argument("--origin", required=True, type=Path)
     parser.add_argument("--root", required=True, type=Path)
     parser.add_argument("--manifest", required=True, type=Path)
+    parser.add_argument("--upstream-origin", type=Path, help="Original owner checkout whose exact ordinary overlay the isolated origin preserves")
     args = parser.parse_args()
-    create(args.origin, args.root, args.manifest)
+    create(args.origin, args.root, args.manifest, args.upstream_origin)

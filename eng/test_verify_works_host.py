@@ -4,7 +4,9 @@ import hashlib
 import http.client
 import io
 import json
+import os
 import socket
+import subprocess
 from pathlib import Path
 import tempfile
 import tarfile
@@ -124,6 +126,102 @@ def valid_states():
 
 
 class WorksEvidenceGateTests(unittest.TestCase):
+    def test_agents_nested_compile_helpers_are_explicitly_hash_bound(self):
+        helpers = set(verify_works_host.VERIFIER_HELPERS)
+        self.assertTrue({"verify-agents-host.sh", "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py",
+                         "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py"}.issubset(helpers))
+        self.assertEqual(len(helpers), len(verify_works_host.VERIFIER_HELPERS))
+        for name in helpers:
+            self.assertTrue((Path(__file__).parent / name).is_file(), name)
+
+    def test_full_and_ci_profiles_record_their_real_dependency_checks_and_same_live_requirement(self):
+        full = verify_works_host.verification_profile('full')
+        ci = verify_works_host.verification_profile('ci')
+        self.assertEqual(full['consumerConfigurations'], ['Debug', 'Release'])
+        self.assertEqual(full['agentsConfiguration'], 'Debug')
+        self.assertEqual(ci['consumerConfigurations'], ['Release'])
+        self.assertEqual(ci['agentsConfiguration'], 'Release')
+        self.assertEqual(ci['sourceConformance'], 'not-requested; full-local-profile-only')
+        self.assertEqual(full['liveProofs'], ci['liveProofs'])
+        with self.assertRaises(ValueError): verify_works_host.verification_profile('reduced')
+
+    def test_ci_consumer_builds_are_release_and_package_only(self):
+        for project in ['apphost.cs', 'tests/consumer.csproj']:
+            for configuration in verify_works_host.verification_profile('ci')['consumerConfigurations']:
+                command = verify_works_host.consumer_build_command(project, configuration, VERSION)
+                self.assertEqual(command[command.index('-c') + 1], 'Release')
+                self.assertIn('-p:UseHexalithProjectReferences=false', command)
+                self.assertIn('-p:UseNuGetDeps=true', command)
+                self.assertNotIn('-p:UseHexalithProjectReferences=true', command)
+        debug = verify_works_host.consumer_build_command('consumer.csproj', 'Debug', VERSION)
+        self.assertIn('-p:UseHexalithProjectReferences=true', debug)
+        self.assertIn('-p:UseNuGetDeps=false', debug)
+
+    def test_ci_execution_records_release_checks_without_claiming_absent_debug_success(self):
+        works = self.directory()
+        artifacts = self.directory() / 'evidence'
+        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts,
+                                'prepare_only': False, 'profile': 'ci'})()
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        def command(arguments, **kwargs):
+            name = Path(kwargs['stdout'].name).stem
+            if name == 'platform-file-host-release': raise RuntimeError('stopped after profile checks')
+            if name == 'agents-full-refusal':
+                kwargs['stdout'].write('DependencyNotAvailable: EXT-HOST-1')
+                return subprocess.CompletedProcess(arguments, 1)
+            return subprocess.CompletedProcess(arguments, 0)
+        with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
+                patch('verify_works_host.require_consumer_pins', return_value={}), \
+                patch('verify_works_host.require_host_package_pins', return_value={}), \
+                patch('verify_works_host.source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.fixture_sources', return_value={}), \
+                patch('verify_works_host.canonical_source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
+                patch('verify_works_host.sha256', return_value=DIGEST), \
+                patch('verify_works_host.require_passed_tests', return_value={'total': 1, 'passed': 1, 'skipped': 0}), \
+                patch('verify_works_host.subprocess.run', side_effect=command):
+            self.assertEqual(verify_works_host.run_verification(args), 1)
+        ledger = json.loads((artifacts / 'ledger.json').read_text())
+        self.assertEqual(ledger['profile']['name'], 'ci')
+        self.assertIn('Release', ledger['checks'])
+        self.assertNotIn('Debug', ledger['checks'])
+        self.assertEqual(set(ledger['sourceProducers']), {'worksRuntimeSdk'})
+        self.assertIn('stopped after profile checks', ledger['failure'])
+        for entry in ledger['commands']:
+            if entry['name'].startswith('agents-'):
+                self.assertIn('--configuration', entry['command'])
+                self.assertIn('Release', entry['command'])
+            if entry['command'][0] == 'dotnet':
+                self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
+                self.assertIn('-p:UseNuGetDeps=true', entry['command'])
+
+    def test_agents_scaffold_defaults_to_source_debug_but_accepts_package_release(self):
+        directory = self.directory()
+        commands = directory / 'bin'
+        commands.mkdir()
+        captured = directory / 'dotnet-args'
+        for name, body in {'python3': '#!/bin/sh\nexit 0\n',
+                           'dotnet': '#!/bin/sh\nprintf "%s\\n" "$@" > "$AGENTS_BUILD_ARGS"\n'}.items():
+            executable = commands / name
+            executable.write_text(body)
+            executable.chmod(0o755)
+        environment = os.environ.copy() | {'PATH': str(commands) + os.pathsep + os.environ['PATH'], 'AGENTS_BUILD_ARGS': str(captured)}
+        script = Path(__file__).parent / 'verify-agents-host.sh'
+        for configuration in ['Debug', 'Release']:
+            options = [] if configuration == 'Debug' else ['--configuration', 'Release']
+            result = subprocess.run(['bash', script, '--mode', 'LocalScaffold', *options, '--artifacts-path', directory / configuration],
+                                    env=environment, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            arguments = captured.read_text().splitlines()
+            self.assertEqual(arguments[arguments.index('-c') + 1], configuration)
+            self.assertIn('-p:UseNuGetDeps=' + ('true' if configuration == 'Release' else 'false'), arguments)
+            self.assertIn('-p:UseHexalithProjectReferences=' + ('false' if configuration == 'Release' else 'true'), arguments)
+        captured.unlink()
+        refused = subprocess.run(['bash', script, '--configuration', 'Custom'], env=environment,
+                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertFalse(captured.exists())
+
     def result(self, attributes='', test='<test method="Required" result="Pass" />'):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)

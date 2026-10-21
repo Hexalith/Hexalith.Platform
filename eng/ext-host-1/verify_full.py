@@ -69,14 +69,29 @@ def binding_gaps(profile_path):
     return gaps
 
 
-def run_suite(root, project, test_filter, results, log_name):
+def suite_mode(configuration):
+    if configuration not in ("Debug", "Release"):
+        raise ValueError("Unsupported component suite configuration: " + str(configuration))
+    return {"configuration": configuration,
+            "dependencyMode": "public-packages" if configuration == "Release" else "source-projects"}
+
+
+def suite_command(project, test_filter, results, configuration="Debug"):
+    suite_mode(configuration)
+    return ["dotnet", "test", str(project), "--configuration", configuration,
+            "-p:UseHexalithProjectReferences=" + ("false" if configuration == "Release" else "true"),
+            "-p:UseNuGetDeps=" + ("true" if configuration == "Release" else "false"),
+            "--filter", test_filter, "--results-directory", str(results),
+            "--report-xunit-trx", "--report-xunit-trx-filename", "results.trx"]
+
+
+def run_suite(root, project, test_filter, results, log_name, configuration="Debug"):
     results.mkdir(parents=True, exist_ok=True)
     for previous in results.glob("**/results.trx"):
         previous.unlink()
     log = results / log_name
-    command = ["dotnet", "test", str(project), "--filter", test_filter,
-               "--results-directory", str(results),
-               "--report-xunit-trx", "--report-xunit-trx-filename", "results.trx"]
+    command = suite_command(project, test_filter, results, configuration)
+    (results / "command.json").write_bytes(canonical({"command": command, **suite_mode(configuration)}))
     try:
         completed = subprocess.run(command, cwd=root, text=True, capture_output=True, timeout=3600)
     except subprocess.TimeoutExpired as error:
@@ -242,18 +257,20 @@ def suite_projects(root):
     return custody_project, guard_project
 
 
-def run_suites(root, artifacts):
+def run_suites(root, artifacts, configuration="Debug"):
     custody_project, guard_project = suite_projects(root)
-    custody_code, custody_names = run_suite(root, custody_project, CUSTODY_FILTER, artifacts / "custody", "custody.log")
+    custody_code, custody_names = run_suite(root, custody_project, CUSTODY_FILTER, artifacts / "custody", "custody.log", configuration)
     guard_code, guard_names = run_suite(
-        root, guard_project, "FullyQualifiedName~GovernanceScopeGuardTests", artifacts / "guard", "guard.log")
+        root, guard_project, "FullyQualifiedName~GovernanceScopeGuardTests", artifacts / "guard", "guard.log", configuration)
     suites = {"custodyExitCode": custody_code, "guardExitCode": guard_code,
-              "custodyTests": len(custody_names), "guardTests": len(guard_names), "started": True}
+              "custodyTests": len(custody_names), "guardTests": len(guard_names), "started": True,
+              **suite_mode(configuration)}
     return custody_code, guard_code, custody_names + guard_names, suites
 
 
-def suites_not_started():
-    return {"custodyExitCode": None, "guardExitCode": None, "custodyTests": 0, "guardTests": 0, "started": False}
+def suites_not_started(configuration="Debug"):
+    return {"custodyExitCode": None, "guardExitCode": None, "custodyTests": 0, "guardTests": 0, "started": False,
+            **suite_mode(configuration)}
 
 
 def profile_status(path):
@@ -276,8 +293,11 @@ def git_head(root):
     return head
 
 
-def attempt_key(head, profile):
-    return hashlib.sha256(canonical({"head": head, "plan": prepare.plan(), "profile": profile})).hexdigest()
+def attempt_key(head, profile, configuration="Debug"):
+    selected = {"head": head, "plan": prepare.plan(), "profile": profile}
+    if configuration != "Debug":
+        selected["buildMode"] = suite_mode(configuration)
+    return hashlib.sha256(canonical(selected)).hexdigest()
 
 
 def read_attempt(artifacts):
@@ -294,7 +314,7 @@ def read_attempt(artifacts):
     return document
 
 
-def write_attempt(artifacts, key, head, profile, code):
+def write_attempt(artifacts, key, head, profile, code, configuration="Debug"):
     document = {
         "attemptKey": key,
         "componentQualification": code == 0,
@@ -308,17 +328,19 @@ def write_attempt(artifacts, key, head, profile, code):
         "productionEngineRegistered": False,
         "profileSha256": prepare.digest(profile),
         "schema": "EXT-HOST-1.component-attempt.v1",
+        **suite_mode(configuration),
     }
     (artifacts / ATTEMPT_NAME).write_bytes(canonical(document))
 
 
-def refuse_profile(evidence, profile):
-    publish(evidence, binding_gaps(profile), suites_not_started(), [], False, [])
+def refuse_profile(evidence, profile, configuration="Debug"):
+    publish(evidence, binding_gaps(profile), suites_not_started(configuration), [], False, [])
     print("ERROR: " + REFUSAL, file=sys.stderr)
     return 1
 
 
-def verify(root, artifacts, profile):
+def verify(root, artifacts, profile, configuration="Debug"):
+    suite_mode(configuration)
     root, artifacts = Path(root).resolve(), Path(artifacts).resolve()
     evidence = artifacts / "evidence"
     evidence.mkdir(parents=True, exist_ok=True)
@@ -328,26 +350,26 @@ def verify(root, artifacts, profile):
             if read_attempt(artifacts) is not None:
                 print("ERROR: " + REFUSAL, file=sys.stderr)
                 return 1
-            return refuse_profile(evidence, profile)
+            return refuse_profile(evidence, profile, configuration)
         try:
             head = git_head(root)
         except (OSError, subprocess.SubprocessError, ValueError):
             print("ERROR: EXT-HOST-1 component target is not a commit.", file=sys.stderr)
             return 1
-        key = attempt_key(head, loaded)
+        key = attempt_key(head, loaded, configuration)
         stored = read_attempt(artifacts)
         if stored is not None:
             if stored.get("attemptKey") == key:
                 return int(stored["exitCode"])
             print("ERROR: EXT-HOST-1 keeps the first complete attempt.", file=sys.stderr)
             return 1
-        custody_code, guard_code, names, suites = run_suites(root, artifacts)
+        custody_code, guard_code, names, suites = run_suites(root, artifacts, configuration)
         gaps = binding_gaps(profile)
         coverage = coverage_gaps(names, custody_code, guard_code, True)
         qualified = not gaps and not coverage and custody_code == 0 and guard_code == 0
         publish(evidence, gaps, suites, names, qualified, coverage)
         code = 0 if qualified else 1
-        write_attempt(artifacts, key, head, loaded, code)
+        write_attempt(artifacts, key, head, loaded, code, configuration)
         if qualified:
             return 0
         if custody_code != 0 or guard_code != 0:
@@ -357,7 +379,7 @@ def verify(root, artifacts, profile):
     if read_attempt(artifacts) is not None:
         print("ERROR: " + REFUSAL, file=sys.stderr)
         return 1
-    custody_code, guard_code, names, suites = run_suites(root, artifacts)
+    custody_code, guard_code, names, suites = run_suites(root, artifacts, configuration)
     gaps = binding_gaps(profile)
     coverage = coverage_gaps(names, custody_code, guard_code, True)
     publish(evidence, gaps, suites, names, False, coverage)
@@ -372,9 +394,10 @@ def main():
     parser.add_argument("--artifacts-path", required=True)
     parser.add_argument("--profile")
     parser.add_argument("--root")
+    parser.add_argument("--configuration", choices=("Debug", "Release"), default="Debug")
     args = parser.parse_args()
     root = args.root or Path(__file__).resolve().parents[2]
-    return verify(root, args.artifacts_path, args.profile)
+    return verify(root, args.artifacts_path, args.profile, args.configuration)
 
 
 if __name__ == "__main__":

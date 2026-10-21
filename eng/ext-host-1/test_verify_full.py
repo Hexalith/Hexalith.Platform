@@ -2,6 +2,7 @@ import json
 import os
 import stat
 import subprocess
+import sys
 import tempfile
 import unittest
 from io import StringIO
@@ -26,6 +27,51 @@ def write_trx(results, name):
 
 
 class VerifyFullTests(unittest.TestCase):
+    def test_release_configuration_reaches_both_real_full_probe_compile_commands(self):
+        platform = Path(__file__).resolve().parents[2]
+        script = platform / "eng/verify-agents-host.sh"
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            commands = root / "bin"
+            commands.mkdir()
+            captured = root / "dotnet-commands.jsonl"
+            # Bypass only prerequisite Python checks. The real shell -> verify_full -> run_suites ->
+            # run_suite call chain executes, with only dotnet itself replaced at the process boundary.
+            python = commands / "python3"
+            python.write_text('#!/bin/sh\ncase "$1" in *verify-platform-pins.py|-m) exit 0 ;; esac\nexec "$REAL_PYTHON" "$@"\n')
+            dotnet = commands / "dotnet"
+            dotnet.write_text('#!/usr/bin/env python3\nimport json, os, sys\n'
+                              'with open(os.environ["CAPTURED_DOTNET"], "a") as output:\n'
+                              ' output.write(json.dumps(sys.argv[1:]) + "\\n")\n'
+                              'sys.exit(17)\n')
+            python.chmod(stat.S_IRWXU)
+            dotnet.chmod(stat.S_IRWXU)
+            env = os.environ | {"PATH": str(commands) + os.pathsep + os.environ["PATH"],
+                                "REAL_PYTHON": sys.executable, "CAPTURED_DOTNET": str(captured)}
+            for configuration in ["Debug", "Release"]:
+                captured.unlink(missing_ok=True)
+                options = [] if configuration == "Debug" else ["--configuration", configuration]
+                artifacts = root / configuration
+                result = subprocess.run(["bash", script, "--mode", "Full", *options, "--artifacts-path", artifacts],
+                                        env=env, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn(verify.REFUSAL, result.stderr)
+                executed = [json.loads(line) for line in captured.read_text().splitlines()]
+                self.assertEqual(len(executed), 2)
+                self.assertEqual({Path(command[1]).stem for command in executed},
+                                 {"Hexalith.Platform.Custody.Tests", "Hexalith.EventStore.Server.Tests"})
+                for command in executed:
+                    self.assertEqual(command[command.index("--configuration") + 1], configuration)
+                    self.assertIn("-p:UseHexalithProjectReferences=" + ("false" if configuration == "Release" else "true"), command)
+                    self.assertIn("-p:UseNuGetDeps=" + ("true" if configuration == "Release" else "false"), command)
+                recorded = json.loads((artifacts / "evidence/blocked.json").read_text())["suites"]
+                self.assertEqual(recorded["configuration"], configuration)
+                self.assertEqual(recorded["dependencyMode"], "public-packages" if configuration == "Release" else "source-projects")
+                for lane in ["custody", "guard"]:
+                    evidence = json.loads((artifacts / lane / "command.json").read_text())
+                    self.assertEqual(evidence["configuration"], configuration)
+                    self.assertIn(evidence["command"], [["dotnet", *command] for command in executed])
+
     def test_non_object_and_pending_are_binding_gaps(self):
         with tempfile.TemporaryDirectory() as temp:
             array = Path(temp) / "array.json"
@@ -155,22 +201,56 @@ def passed_names():
     return names
 
 
-def passed_suite(root, project, test_filter, results, log_name):
+def passed_suite(root, project, test_filter, results, log_name, configuration="Debug"):
     return 0, passed_names()
 
 
 class QualificationMatrixTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.platform = Path(temporary.name)
+        subprocess.run(["git", "init", "-q", self.platform], check=True)
+        subprocess.run(["git", "-C", self.platform, "-c", "user.name=Component fixture",
+                        "-c", "user.email=component@example.invalid", "commit", "--allow-empty", "-qm", "test: component fixture"],
+                       check=True)
+
+    def test_component_attempt_identity_cannot_reuse_debug_evidence_for_release(self):
+        profile = complete_profile()
+        head = "a" * 40
+        self.assertEqual(verify.attempt_key(head, profile), verify.attempt_key(head, profile, "Debug"))
+        self.assertNotEqual(verify.attempt_key(head, profile, "Debug"), verify.attempt_key(head, profile, "Release"))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            selected = write_profile(root, profile)
+            artifacts = root / "attempt"
+            with patch.object(verify, "git_head", return_value=head), \
+                    patch.object(verify, "run_suite", side_effect=passed_suite) as started:
+                self.assertEqual(verify.verify(root, artifacts, selected), 0)
+                self.assertEqual(started.call_count, 2)
+                recorded = {path.relative_to(artifacts): path.read_bytes() for path in artifacts.rglob("*") if path.is_file()}
+                self.assertEqual(verify.verify(root, artifacts, selected, "Release"), 1)
+                self.assertEqual(started.call_count, 2)
+                self.assertEqual(recorded, {path.relative_to(artifacts): path.read_bytes() for path in artifacts.rglob("*") if path.is_file()})
+                release_artifacts = root / "release-attempt"
+                self.assertEqual(verify.verify(root, release_artifacts, selected, "Release"), 0)
+                self.assertTrue(all(call.args[-1] == "Release" for call in started.call_args_list[-2:]))
+            attempt = json.loads((release_artifacts / verify.ATTEMPT_NAME).read_text())
+            self.assertEqual(attempt["configuration"], "Release")
+            self.assertEqual(attempt["dependencyMode"], "public-packages")
+            self.assertEqual(attempt["attemptKey"], verify.attempt_key(head, profile, "Release"))
+
     def test_profile_absent_refuses_when_every_required_cell_passed(self):
         with tempfile.TemporaryDirectory() as temp:
             artifacts = Path(temp) / "artifacts"
 
-            def every_cell(root, project, test_filter, results, log_name):
+            def every_cell(root, project, test_filter, results, log_name, configuration="Debug"):
                 return 0, [{"name": name, "outcome": "Passed"} for name in verify.REQUIRED_CELLS]
 
             with patch.object(verify, "run_suite", side_effect=every_cell) as started:
                 stderr = StringIO()
                 with patch.object(verify.sys, "stderr", stderr):
-                    code = verify.verify(Path(__file__).resolve().parents[2], artifacts, None)
+                    code = verify.verify(self.platform, artifacts, None)
             self.assertEqual(1, code)
             self.assertEqual(2, started.call_count)
             self.assertIn(verify.REFUSAL, stderr.getvalue())
@@ -208,7 +288,7 @@ class QualificationMatrixTests(unittest.TestCase):
                     with patch.object(verify, "run_suite") as started:
                         stderr = StringIO()
                         with patch.object(verify.sys, "stderr", stderr):
-                            code = verify.verify(Path(__file__).resolve().parents[2], artifacts, path)
+                            code = verify.verify(self.platform, artifacts, path)
                     self.assertEqual(1, code)
                     started.assert_not_called()
                     text = stderr.getvalue()
@@ -234,7 +314,7 @@ class QualificationMatrixTests(unittest.TestCase):
             with patch.object(verify, "run_suite") as started:
                 stderr = StringIO()
                 with patch.object(verify.sys, "stderr", stderr):
-                    code = verify.verify(Path(__file__).resolve().parents[2], root / "pending", cases["pending"])
+                    code = verify.verify(self.platform, root / "pending", cases["pending"])
             self.assertEqual(1, code)
             started.assert_not_called()
             self.assertIn(verify.REFUSAL, stderr.getvalue())
@@ -247,7 +327,7 @@ class QualificationMatrixTests(unittest.TestCase):
             with patch.object(verify, "run_suite", side_effect=passed_suite) as started:
                 stderr = StringIO()
                 with patch.object(verify.sys, "stderr", stderr):
-                    code = verify.verify(Path(__file__).resolve().parents[2], artifacts, profile)
+                    code = verify.verify(self.platform, artifacts, profile)
                 self.assertEqual(0, code)
                 self.assertNotIn(verify.REFUSAL, stderr.getvalue())
                 self.assertEqual(2, started.call_count)
@@ -255,7 +335,7 @@ class QualificationMatrixTests(unittest.TestCase):
                 attempt_bytes = (artifacts / verify.ATTEMPT_NAME).read_bytes()
                 stderr = StringIO()
                 with patch.object(verify.sys, "stderr", stderr):
-                    again = verify.verify(Path(__file__).resolve().parents[2], artifacts, profile)
+                    again = verify.verify(self.platform, artifacts, profile)
             self.assertEqual(0, again)
             self.assertEqual("", stderr.getvalue())
             self.assertEqual(2, started.call_count)
@@ -289,12 +369,12 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertEqual(list(verify.MISSING_RUNTIME_INPUTS), attempt["missingRuntimeInputs"])
 
     def test_missing_cell_or_suite_names_gap_and_keeps_prior_evidence(self):
-        platform = Path(__file__).resolve().parents[2]
+        platform = self.platform
         with tempfile.TemporaryDirectory() as temp:
             profile = write_profile(temp, complete_profile())
             omitted = "LostRecorderAcknowledgementRecoversExactSourceBeforeSpoolAck"
 
-            def unnamed(root, project, test_filter, results, log_name):
+            def unnamed(root, project, test_filter, results, log_name, configuration="Debug"):
                 names = [item for item in passed_names() if omitted not in item["name"]]
                 names.append({"name": "Hexalith.Platform.Custody.Tests.Cell." + omitted + "Extra", "outcome": "Passed"})
                 return 0, names
@@ -331,7 +411,7 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertEqual(blocked_bytes, (evidence / "blocked.json").read_bytes())
             self.assertEqual(attempt_bytes, (artifacts / verify.ATTEMPT_NAME).read_bytes())
 
-            def failed(root, project, test_filter, results, log_name):
+            def failed(root, project, test_filter, results, log_name, configuration="Debug"):
                 names = passed_names()
                 names[0] = {"name": names[0]["name"], "outcome": "Failed"}
                 return 0, names
@@ -347,7 +427,7 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertEqual(["RoutingUsesAuthenticatedOriginAndRetainedReceiptDigest"], failed_blocked["coverageGaps"])
             self.assertEqual(0, failed_blocked["effects"])
 
-            def mixed(root, project, test_filter, results, log_name):
+            def mixed(root, project, test_filter, results, log_name, configuration="Debug"):
                 method = "ExactLookupDoesNotMutateAndRequiresCurrentPrivateAuthority"
                 names = passed_names()
                 names.append({"name": "Hexalith.Platform.Custody.Tests.Cell." + method, "outcome": "Failed"})
@@ -361,7 +441,7 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertFalse(mixed_blocked["componentQualification"])
             self.assertIn("ExactLookupDoesNotMutateAndRequiresCurrentPrivateAuthority", mixed_blocked["coverageGaps"])
 
-            def empty(root, project, test_filter, results, log_name):
+            def empty(root, project, test_filter, results, log_name, configuration="Debug"):
                 return 1, []
 
             suite_artifacts = Path(temp) / "suite"
@@ -388,7 +468,7 @@ class QualificationMatrixTests(unittest.TestCase):
             other_body["failureModel"] = "ref-failureModel-other"
             other = write_profile(temp, other_body, "other.json")
             artifacts = Path(temp) / "artifacts"
-            platform = Path(__file__).resolve().parents[2]
+            platform = self.platform
             with patch.object(verify, "run_suite", side_effect=passed_suite) as started:
                 self.assertEqual(0, verify.verify(platform, artifacts, first))
                 snapshot = {
