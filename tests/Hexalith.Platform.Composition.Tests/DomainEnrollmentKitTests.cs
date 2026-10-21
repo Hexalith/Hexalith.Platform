@@ -43,7 +43,7 @@ public sealed class DomainEnrollmentKitTests
     }
 
     [Fact]
-    public void AcceptedToolPinEqualsSupportedRangeFloor()
+    public async Task AcceptedToolPinEqualsSupportedRangeFloorAsync()
     {
         string root = Root();
         using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config/dotnet-tools.json")));
@@ -56,6 +56,9 @@ public sealed class DomainEnrollmentKitTests
         range.MinVersion.ShouldBe(version);
         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
         tool.GetProperty("commands").EnumerateArray().Select(command => command.GetString()).ShouldBe(["hexalith-module"]);
+        string recordedBuilds = (await GitAsync(root, "rev-parse", "HEAD:references/Hexalith.Builds")).Trim();
+        string releaseBuilds = (await GitAsync(Path.Combine(root, "references/Hexalith.Builds"), "rev-parse", "v" + version.ToNormalizedString() + "^{commit}")).Trim();
+        recordedBuilds.ShouldBe(releaseBuilds, "The Platform gitlink must identify the exact pinned published Builds release.");
     }
 
     [Theory]
@@ -127,6 +130,28 @@ public sealed class DomainEnrollmentKitTests
             failedCode.ShouldBe(1, failedOutput + failedError);
             failedOutput.ShouldContain("hosting-inventory");
             if (format == "human") failedOutput.ShouldContain("FAIL hosting-inventory");
+            else
+            {
+                using JsonDocument failedReport = JsonDocument.Parse(failedOutput);
+                JsonElement failedRoot = failedReport.RootElement;
+                failedRoot.GetProperty("adoptionScope").GetString().ShouldBe(PlatformAdoptionValidator.Scope);
+                JsonElement[] failedRows = [.. failedRoot.GetProperty("adoption").EnumerateArray()];
+                failedRows.Select(row => row.GetProperty("requirement").GetString()).Distinct().ShouldBe(
+                    ["workspace", "declaration", "references", "gitlinks", "nested-references", "tool-pin", "hosting-inventory", "dependency-selectors", "dapr-subscriptions"], ignoreOrder: true);
+                foreach (JsonElement row in failedRows)
+                {
+                    row.GetProperty("file").GetString().ShouldNotBeNullOrWhiteSpace();
+                    row.GetProperty("reason").GetString().ShouldNotBeNullOrWhiteSpace();
+                    if (row.GetProperty("requirement").GetString() is not "hosting-inventory" and not "dapr-subscriptions")
+                    {
+                        row.GetProperty("passed").GetBoolean().ShouldBeTrue();
+                    }
+                }
+
+                JsonElement hosting = failedRows.Single(row => row.GetProperty("requirement").GetString() == "hosting-inventory");
+                hosting.GetProperty("passed").GetBoolean().ShouldBeFalse();
+                hosting.GetProperty("file").GetString().ShouldBe("module/hosting-inventory.json");
+            }
         }
         finally
         {

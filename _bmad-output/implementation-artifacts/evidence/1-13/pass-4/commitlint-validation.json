@@ -1,0 +1,60 @@
+[
+  {
+    "repository": "/home/administrator/projects/hexalith/platform",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/enrollment-pass4-platform-commit.txt"
+    ],
+    "version": "21.2.1",
+    "message": "fix(platform): restore published builds gitlink\n",
+    "exitCode": 0
+  },
+  {
+    "repository": "/tmp/hexalith-builds-enrollment-pass-4",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/enrollment-pass4-builds-commit.txt"
+    ],
+    "version": "21.2.4",
+    "message": "fix(tool): close remaining enrollment audit gaps\n",
+    "exitCode": 0,
+    "setup": {
+      "workingDirectory": "/tmp/hexalith-builds-enrollment-pass-4",
+      "command": [
+        "ln",
+        "-s",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/node_modules",
+        "node_modules"
+      ],
+      "cleanupAfterCommit": [
+        "rm",
+        "node_modules"
+      ]
+    }
+  },
+  {
+    "repository": "/tmp/hexalith-builds-enrollment-pass-4",
+    "command": [
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/enrollment-pass4-reviewed-commit.txt"
+    ],
+    "version": "21.2.4",
+    "message": "fix(tool): handle remaining enrollment syntax forms\n",
+    "exitCode": 0,
+    "candidateCommit": "750b1a0e739b73c48e31f3ee812d37ab7950d8c3"
+  },
+  {
+    "repository": "/home/administrator/projects/hexalith/platform",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "/tmp/enrollment-pass4-platform-final-commit.txt"
+    ],
+    "version": "21.2.1",
+    "message": "fix(platform): harden domain module enrollment kit\n",
+    "exitCode": 0
+  }
+]

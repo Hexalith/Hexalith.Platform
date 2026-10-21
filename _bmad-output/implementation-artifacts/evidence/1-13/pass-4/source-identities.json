@@ -1,0 +1,35 @@
+{
+  "scope": "Local unpublished pass-4 candidate; accepted Platform checkout stays at v4.35.1",
+  "platformHead": "f97065cc31c2bdc1afd11c515298cc8f1a51380b",
+  "acceptedBuilds": "f8599224457dda99e7c0ae4870147dd51b464feb",
+  "candidateBase": "1ae50de72e0755a2a43a1b33764b6b87eecba154",
+  "branch": "fix/domain-enrollment-pass-4",
+  "worktree": "/tmp/hexalith-builds-enrollment-pass-4",
+  "sourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "7db824193912fb6a155166353fac9ccc4c905c0151128f939aae8d552e44af99",
+    "test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "cd7ef63234d198c8428d012180d1e151f8a8d059887ebc7a815f1ebb8629d92e"
+  },
+  "artifactSha256": {
+    "src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll": "077e3a59b19fe0213a46b63dc1cd60fe5ff5e4564014f6b40174089d6259c7e8",
+    "src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "6871a7b0a22a7f58e0f42aa3d4e12297e41e7d2870a6e9a2fd732e9e5815b0bc",
+    "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "463b4363ce1ec5116fc9d2cc8f2593d343a3cf53c71a623c3a9025027c6d0877"
+  },
+  "candidateCommit": "26317ab0060fc53dc842193729a503e144d142be",
+  "candidateWorkingTreeClean": true,
+  "verifiedSourceBytesUnchangedAfterCommit": true,
+  "fullVerification": {
+    "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll -parallel none -noLogo",
+    "exitCode": 0,
+    "total": 1459,
+    "passed": 1456,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 3,
+    "notRun": 0,
+    "seconds": 786.275,
+    "rawOutput": "full-builds-tests.txt",
+    "sentinel": "full-builds-tests.exitcode"
+  },
+  "freshPublishedPackageSha256MatchesPriorQualification": "330c33fc006dbed31c5c685a8dbbcc08a11ae7d1e3c3d0d08715473d5e2b263e",
+  "checkpoint": "Pre-review verified candidate; final review corrections are recorded in review-fixes/source-identities.json"
+}

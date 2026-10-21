@@ -1,0 +1,53 @@
+import hashlib
+import json
+import subprocess
+from datetime import datetime, timezone
+from pathlib import Path
+
+root = Path('/home/administrator/projects/hexalith/platform')
+workspace = root / 'references/Hexalith.Parties'
+cli = Path('/tmp/hexalith-builds-enrollment-pass-4/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll')
+out = root / '_bmad-output/implementation-artifacts/evidence/1-13/pass-4/real-module'
+out.mkdir(exist_ok=True)
+
+def git(*args):
+    return subprocess.run(['git', '-C', str(workspace), *args], check=True, capture_output=True).stdout
+
+def snapshot():
+    paths = git('ls-files', '-z').split(b'\0')
+    hashes = {}
+    for raw in paths:
+        if not raw:
+            continue
+        relative = raw.decode()
+        path = workspace / relative
+        if path.is_symlink():
+            hashes[relative] = 'symlink:' + str(path.readlink())
+        elif path.is_file():
+            hashes[relative] = hashlib.file_digest(path.open('rb'), 'sha256').hexdigest()
+        else:
+            hashes[relative] = '<directory-or-missing>'
+    return {'status': git('status', '--porcelain=v1', '--untracked-files=all').decode(), 'hashes': hashes}
+
+before = snapshot()
+commands = []
+for format in ['human', 'json']:
+    command = ['dotnet', str(cli), 'validate', '--manifest', 'module/hexalith.module-manifest.v2.json', '--adoption', '--output', format]
+    result = subprocess.run(command, cwd=workspace, capture_output=True, text=True, timeout=120)
+    (out / f'{format}.stdout.txt').write_text(result.stdout)
+    (out / f'{format}.stderr.txt').write_text(result.stderr)
+    after = snapshot()
+    assert after == before, 'read-only validation changed Git state or tracked content'
+    assert result.returncode == 1, f'expected incomplete enrollment, got {result.returncode}'
+    record = {'command': command, 'format': format, 'exitCode': result.returncode, 'unchangedGitStateAndHashes': True}
+    if format == 'json':
+        report = json.loads(result.stdout)
+        assert any(row['requirement'] == 'workspace' and row['passed'] for row in report['adoption'])
+        assert all(row['passed'] for row in report['adoption'] if row['requirement'] == 'dependency-selectors'), 'Parties dependency audit must pass without the regex false failure'
+        assert not any(row['requirement'] == 'dependency-selectors' and row['file'].endswith('PlatformApiPrerequisitesTests.cs') for row in report['adoption']), 'asserted probes still fail'
+        record['failedRows'] = [{'requirement': row['requirement'], 'file': row['file'], 'reason': row['reason']} for row in report['adoption'] if not row['passed']]
+    commands.append(record)
+summary = {'verifiedUtc': datetime.now(timezone.utc).isoformat(), 'workspace': str(workspace), 'revision': git('rev-parse', 'HEAD').decode().strip(), 'trackedPathBytes': len(git('ls-files', '-z')), 'trackedFileHashes': sum(value != '<directory-or-missing>' for value in before['hashes'].values()), 'candidate': str(cli), 'candidateSha256': hashlib.file_digest(cli.open('rb'), 'sha256').hexdigest(), 'candidateToolingSha256': hashlib.file_digest((cli.parent / 'Hexalith.Builds.Tooling.dll').open('rb'), 'sha256').hexdigest(), 'commands': commands, 'scope': 'Local corrected candidate; no released-pin or completed-adoption claim. Human SM-2 is unverified.'}
+(out / 'commands.json').write_text(json.dumps(summary, indent=2) + '\n')
+print(json.dumps({key:value for key,value in summary.items() if key != 'commands'}, indent=2))
+print('Both candidate modes: expected exit 1; workspace/dependency-selectors PASS; all tracked hashes and Git state unchanged.')

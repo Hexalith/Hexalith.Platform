@@ -1,6 +1,6 @@
 # Story 1.13 — domain-module enrollment kit
 
-Status: **owner retained remote rollback; new publication stopped**. Story remains
+Status: **accepted 4.35.1 gitlink restored; owner retained remote rollback; new publication stopped**. Story remains
 **in-review**, with the final publication/pin acceptance task open.
 
 The owner approved the reviewed pass-3 candidate with “approve”. Approved Builds
@@ -21,10 +21,18 @@ The published tool pin remains **4.35.1**, roll-forward disabled, with range
 `f8599224457dda99e7c0ae4870147dd51b464feb`. A concurrent `/pushall` commit
 `0523573cf1e9b0b7b7ada22d9ac050f219070a49` independently moved Platform's Builds
 gitlink to the unpublished integration `1ae50de72e0755a2a43a1b33764b6b87eecba154`.
-That concurrent commit is preserved. **Current Platform HEAD's gitlink does not
-match the published tool source**, so the earlier five passing kit cases are
-historical verification, not acceptance of this new HEAD. No new pin, support-floor
-or release-tag acceptance is claimed.
+That concurrent commit is preserved in history. The pass-4 correction restores
+Platform's recorded Builds gitlink and checkout to the published source above in
+local commit `f97065cc31c2bdc1afd11c515298cc8f1a51380b`; the unpublished candidate and integration remain on local
+Builds branch `fix/domain-enrollment-pass-4` and its isolated worktree. No remote
+rollback was restored, release dispatched, or tool pin/support floor changed.
+Fresh verification of this restored accepted identity is recorded under [pass 4](pass-4/README.md).
+The new unpublished local Builds candidate is
+`26317ab0060fc53dc842193729a503e144d142be`, retaining both prior reviewed commits.
+Its full serial suite passes 1,459 cases (1,456 passed; zero errors/failures; three
+existing location-dependent skips). The restored accepted Platform build and all
+five kit tests pass; fresh published-package commands preserve every Git state/file
+hash. No new owner approval, upstream integration or publication is claimed.
 
 The reviewed candidate and integration remain local. Final local verification
 passed **1,420/1,420 Builds cases** and **5/5 Platform kit cases** before the
@@ -224,7 +232,13 @@ the accepted tool entry while retaining an existing `aspirate` `9.1.0` pin. See
 [check script](post-release-patch/check-guide.py.txt) and
 [output](post-release-patch/guide-commands.txt).
 
-## Canonical identities
+## Canonical identities (historical v4.35.0 snapshot)
+
+Current accepted identities are **4.35.1**, range **[4.35.1, 5.0.0-0)** and
+Builds **f8599224457dda99e7c0ae4870147dd51b464feb**; see
+[canonical accepted identities](post-release-patch/release/accepted-identities.json).
+The pass-4 action restores that published gitlink while retaining unpublished
+corrections locally; the owner-directed upstream rollback remains in effect.
 
 - Original Platform story baseline: `3d51fed1f3d99acf36ef690f150136593298bd95`.
 - Original Builds implementation baseline / accepted release tag `v4.34.0`:
@@ -277,7 +291,7 @@ Read-only assertions compare Git status and file inventories before and after.
 Human source review covers unsupported constructs; static rows leave SM-2
 separately unverified. Focused and owning-project results are recorded below.
 
-## Release acceptance procedure (steps 1–5 completed)
+## Release acceptance procedure (historical v4.35.0 completion)
 
 1. Obtain Builds owner review of the complete baseline-to-worktree candidate.
 2. Follow the existing Builds source/CI/package qualification and environment

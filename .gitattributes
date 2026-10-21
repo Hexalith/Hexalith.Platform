@@ -17,3 +17,6 @@ docs/implementation/ext-secrets-1-f1-2026-10-20/** -text
 
 # Retain the exact pinned owner validator bytes used only by F1 conformance tests.
 tests/Hexalith.Platform.Secrets.Runtime.Tests/OwnerConformance/** -text
+
+# Preserve the Story 1.13 saved patch bytes and required blank-line context.
+_bmad-output/implementation-artifacts/evidence/1-13/pass-4/builds-pass4.patch -text -whitespace

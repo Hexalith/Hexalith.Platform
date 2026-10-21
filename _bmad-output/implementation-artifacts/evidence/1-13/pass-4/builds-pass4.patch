@@ -1,0 +1,307 @@
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs b/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs
+index c58a4ed..23311f1 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs
+@@ -16,7 +16,7 @@ internal static class PlatformAdoptionSourceAudit
+ {
+     private const string _reservedPropertyPattern = @"(?:UseNuGetDeps|UseHexalithProjectReferences|Hexalith\w*(?:FromSource|Root)|HexalithTenantsBasePath|HexalithSourceMapping\w*)";
+ 
+-    private const string _daprApiPattern = @"\b(?:GetStateAsync|GetBulkStateAsync|GetStateEntryAsync|GetStateAndETagAsync|SaveStateAsync|SaveBulkStateAsync|TrySaveStateAsync|QueryStateAsync|DeleteStateAsync|TryDeleteStateAsync|DeleteBulkStateAsync|ExecuteStateTransactionAsync|PublishEventAsync|PublishBulkEventAsync|PublishByteEventAsync|InvokeBindingAsync|GetSecretAsync|GetBulkSecretAsync)\s*(?:<[^>\r\n]+>)?\s*\(";
++    private const string _daprApiPattern = @"\b(?:GetStateAsync|GetBulkStateAsync|GetStateEntryAsync|GetStateAndETagAsync|SaveStateAsync|SaveBulkStateAsync|TrySaveStateAsync|QueryStateAsync|DeleteStateAsync|TryDeleteStateAsync|DeleteBulkStateAsync|ExecuteStateTransactionAsync|PublishEventAsync|PublishBulkEventAsync|PublishByteEventAsync|InvokeBindingAsync|GetSecretAsync|GetBulkSecretAsync)\s*(?:<(?:[^<>\r\n]|<[^<>\r\n]*>)+>)?\s*\(";
+ 
+     private static readonly TimeSpan _regexTimeout = TimeSpan.FromSeconds(1);
+ 
+@@ -72,10 +72,12 @@ internal static class PlatformAdoptionSourceAudit
+                         string commentsMasked = MaskNonExecutable(content, maskStrings: false, hashComments: extension != ".CS");
+                         const string dependencyTarget = @"references[/\\]Hexalith\.|(?:\.\.[/\\])+Hexalith\.|UseNuGetDeps|UseHexalithProjectReferences|Hexalith\w*(?:FromSource|Root)|HexalithTenantsBasePath|HexalithSourceMapping\w*";
+                         string executable = MaskNonExecutable(content, hashComments: extension != ".CS");
+-                        bool discovery = HasDependencyProbe(commentsMasked, executable, dependencyTarget);
++                        bool discovery = HasDependencyProbe(commentsMasked, executable, dependencyTarget)
++                            || HasSegmentBuiltDependencyPath(commentsMasked, executable);
+                         bool helper = MatchCode(commentsMasked, executable, @"(?:Resolve|Find|Get)[-_]?(?:Hexalith|Sibling)\w*(?:Root|Path)|(?:sibling|nested|package)[-_]?fallback")
+                             || MatchCode(commentsMasked, executable, @"(?:Resolve|Find|Get)[-_]?(?:Repository|Source)\w*(?:Root|Path)\s*\([^()\r\n]*(?:" + dependencyTarget + ")");
+-                        bool assignment = Match(executable, @"(?<![\w.])\$?" + _reservedPropertyPattern + @"\s*=(?!=)");
++                        bool assignment = Match(executable, @"(?<![\w.])\$?" + _reservedPropertyPattern + @"\s*=(?!=)")
++                            || HasDotnetPropertyOverride(commentsMasked, executable);
+                         if (helper || discovery || assignment)
+                         {
+                             rows.Add(new PlatformAdoptionRow("dependency-selectors", false, path, "Known sibling/nested/package-fallback helper or file-based dependency/mode selection; use only the tool-resolved mapping."));
+@@ -94,6 +96,7 @@ internal static class PlatformAdoptionSourceAudit
+                     const string componentLiteral = @"(?:@?""+[^""]+""+|(?:\$@?|@\$)""[^""{}]+"")";
+                     if (MatchCode(syntax, executable, _daprApiPattern + @"\s*(?:(?:storeName|pubsubName|secretStoreName|componentName|bindingName)\s*:\s*)?" + componentLiteral)
+                         || MatchCode(syntax, executable, @"\b(?:StateStoreName|PubSubName|SecretStoreName|bindingName)\s*[:=]\s*" + componentLiteral)
++                        || HasNamedDaprComponentLiteral(syntax, executable, componentLiteral)
+                         || HasGenericComponentBinding(syntax, executable, componentLiteral))
+                     {
+                         rows.Add(new PlatformAdoptionRow("dapr-subscriptions", false, path, "Literal Dapr component name; obtain the name from the declared configuration key."));
+@@ -143,7 +146,8 @@ internal static class PlatformAdoptionSourceAudit
+             bool package = name.Equals("PackageReference", StringComparison.OrdinalIgnoreCase) && include.StartsWith("Hexalith.", StringComparison.OrdinalIgnoreCase);
+             bool dependency = generated || mode || mappedPath || crossModulePath || package;
+             if (crossModulePath || (dependency && Match(condition, @"\bExists\s*\("))
+-                || HasBuildDependencyProbe(root, path, condition) || (property && HasExternalAncestorLookup(root, path, value)))
++                || HasBuildDependencyProbe(root, path, condition) || (property && HasExternalAncestorLookup(root, path, value))
++                || (pathReference && HasExternalAncestorLookup(root, path, include)))
+             {
+                 rows.Add(new PlatformAdoptionRow("dependency-selectors", false, path, "File-based dependency selection or sibling/nested fallback; consume only tool-mapped roots and project/package pairs."));
+                 return;
+@@ -164,6 +168,55 @@ internal static class PlatformAdoptionSourceAudit
+     private static bool HasReservedPropertyAssignment(string? value) =>
+         value is not null && Match(value, @"(?:^|;)\s*" + _reservedPropertyPattern + @"\s*=");
+ 
++    private static bool HasDotnetPropertyOverride(string syntax, string executable)
++    {
++        foreach (Match command in Regex.Matches(executable, @"(?:^|[;{}\r\n|&])\s*(?:(?:then|do|exec)\s+|&\s*)?dotnet(?:\.exe)?\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
++        {
++            int start = command.Index + command.Length;
++            int end = ProbeArgumentEnd(executable, start, call: false);
++            if (Match(syntax[start..end], @"(?:^|\s)['""]?(?:-p:|/p:|--property(?::|=|\s+))" + _reservedPropertyPattern + @"\s*="))
++            {
++                return true;
++            }
++        }
++
++        return false;
++    }
++
++    private static bool HasNamedDaprComponentLiteral(string syntax, string executable, string literal)
++    {
++        foreach (Match call in Regex.Matches(executable, _daprApiPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
++        {
++            int start = call.Index + call.Length;
++            int end = ProbeArgumentEnd(executable, start, call: true);
++            int argumentStart = start;
++            int depth = 0;
++            for (int index = start; index <= end; index++)
++            {
++                if (index < end && executable[index] == '(')
++                {
++                    depth++;
++                }
++                else if (index < end && executable[index] == ')')
++                {
++                    depth--;
++                }
++
++                if (index == end || (executable[index] == ',' && depth == 0))
++                {
++                    if (Match(syntax[argumentStart..index], @"^\s*(?:storeName|pubsubName|secretStoreName|componentName|bindingName)\s*:\s*" + literal))
++                    {
++                        return true;
++                    }
++
++                    argumentStart = index + 1;
++                }
++            }
++        }
++
++        return false;
++    }
++
+     private static bool HasGenericComponentBinding(string syntax, string executable, string literal)
+     {
+         foreach (Match assignment in Regex.Matches(syntax, @"\b(?<name>StoreName|ComponentName)\s*(?<operator>[:=])\s*" + literal, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
+@@ -207,9 +260,25 @@ internal static class PlatformAdoptionSourceAudit
+             || Match(relative, @"^references/Hexalith\.[^/]+(?:/|$)");
+     }
+ 
++    private static bool HasSegmentBuiltDependencyPath(string syntax, string executable, bool includeDirectReferences = false)
++    {
++        foreach (Match construction in Regex.Matches(executable, @"\b(?:Path\s*\.\s*Combine|os\s*\.\s*path\s*\.\s*join)\s*\(|\bJoin-Path\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
++        {
++            int start = construction.Index + construction.Length;
++            int end = ProbeArgumentEnd(executable, start, call: construction.Value.EndsWith('('));
++            if (Match(syntax[start..end], @"@?['""]\.\.['""]\s*,?\s*(?:@?['""]references['""]\s*,?\s*)?@?['""]Hexalith\.[^'""]+['""]")
++                || (includeDirectReferences && Match(syntax[start..end], @"@?['""]references['""]\s*,?\s*@?['""]Hexalith\.[^'""]+['""]")))
++            {
++                return true;
++            }
++        }
++
++        return false;
++    }
++
+     private static bool HasDependencyProbe(string syntax, string executable, string dependencyTarget)
+     {
+-        foreach (Match probe in Regex.Matches(executable, @"(?:\b(?:File\s*\.\s*Exists|Directory\s*\.\s*Exists|Path\s*\.\s*Exists|os\s*\.\s*path\s*\.\s*(?:exists|isdir|isfile|lexists)|Path)|\[\s*(?:System\s*\.\s*)?IO\s*\.\s*(?:Directory|File)\s*\]\s*::\s*Exists)\s*\(", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
++        foreach (Match probe in Regex.Matches(executable, @"(?:\b(?:File\s*\.\s*Exists|Directory\s*\.\s*Exists|Path\s*\.\s*Exists|os\s*\.\s*path\s*\.\s*(?:exists|isdir|isfile|lexists)|Path)|\[\s*(?:System\s*\.\s*)?IO\s*\.\s*(?:Directory|File|Path)\s*\]\s*::\s*Exists)\s*\(", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
+         {
+             int start = probe.Index + probe.Length;
+             int end = ProbeArgumentEnd(executable, start, call: true);
+@@ -225,16 +294,19 @@ internal static class PlatformAdoptionSourceAudit
+                 continue;
+             }
+ 
+-            if (Match(syntax[start..end], dependencyTarget))
++            if (Match(syntax[start..end], dependencyTarget)
++                || HasSegmentBuiltDependencyPath(syntax[start..end], executable[start..end], includeDirectReferences: true))
+             {
+                 return true;
+             }
+         }
+ 
+-        foreach (Match probe in Regex.Matches(executable, @"\bTest-Path\b|\btest\s+-[def]\b|\[\s*-[def]\s", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
++        foreach (Match probe in Regex.Matches(executable, @"\bTest-Path\b|\btest\s+(?:!\s+)?-(?-i:[abcdefghkLprSstuwxOGN])\b|\[\s*(?:!\s+)?-(?-i:[abcdefghkLprSstuwxOGN])\s", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, _regexTimeout))
+         {
+             int start = probe.Index + probe.Length;
+-            if (Match(syntax[start..ProbeArgumentEnd(executable, start, call: false)], dependencyTarget))
++            int end = ProbeArgumentEnd(executable, start, call: false);
++            if (Match(syntax[start..end], dependencyTarget)
++                || HasSegmentBuiltDependencyPath(syntax[start..end], executable[start..end], includeDirectReferences: true))
+             {
+                 return true;
+             }
+diff --git a/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs b/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs
+index 754040f..e575daa 100644
+--- a/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs
+@@ -407,6 +407,16 @@ public sealed class PlatformAdoptionValidationTests
+     [InlineData("// app.MapSubscribeHandler /* comment */ ();", true)]
+     [InlineData("var text = @\"MapSubscribeHandler /* comment */ (\";", true)]
+     [InlineData("var text = \"\"\"dapr.PublishEventAsync(@\"pubsub\", topic, data)\"\"\";", true)]
++    [InlineData("await dapr.GetStateAsync<List<Order>>(\"statestore\", key);", false)]
++    [InlineData("await dapr.GetStateAsync<List<Order>>(configuration[\"Sample:Dapr:StateComponent\"], key);", true)]
++    [InlineData("await dapr.GetStateAsync<Dictionary<string, Order>>(\"statestore\", key);", false)]
++    [InlineData("await dapr.GetStateAsync<Order>(key: GetKey(), storeName: \"literal\");", false)]
++    [InlineData("await dapr.GetStateAsync<Order>(key: GetKey(), storeName: configuration[\"Sample:Dapr:StateComponent\"]);", true)]
++    [InlineData("await dapr.GetStateAsync<Order>(key: GetKey(CreateKey()), storeName: \"literal\");", false)]
++    [InlineData("await dapr.PublishEventAsync(data: CreateEvent(), pubsubName: \"literal\", topicName: topic);", false)]
++    [InlineData("await dapr.InvokeBindingAsync(data: CreateData(), bindingName: \"literal\", operation: \"create\");", false)]
++    [InlineData("var value = business.Load(key: GetKey(), storeName: \"BusinessStore\");", true)]
++    [InlineData("await dapr.GetStateAsync<Order>(key: business.Create(storeName: \"BusinessStore\"), storeName: configuredName);", true)]
+     public async Task DaprAuditUsesExecutableSyntaxAsync(string source, bool passes)
+     {
+         using PlatformAdoptionTestWorkspace workspace = await PlatformAdoptionTestWorkspace.CreateAsync().ConfigureAwait(true);
+@@ -434,6 +444,12 @@ public sealed class PlatformAdoptionValidationTests
+     [InlineData("json", null, true)]
+     [InlineData("yaml", null, true)]
+     [InlineData("yml", null, true)]
++    [InlineData("json", "$(Sample:Dapr:EventsComponent)", true)]
++    [InlineData("json", "{{ Sample.Dapr.EventsComponent }}", true)]
++    [InlineData("yaml", "$(Sample:Dapr:EventsComponent)", true)]
++    [InlineData("yaml", "{{ Sample.Dapr.EventsComponent }}", true)]
++    [InlineData("yml", "$(Sample:Dapr:EventsComponent)", true)]
++    [InlineData("yml", "{{ Sample.Dapr.EventsComponent }}", true)]
+     public async Task DeclaredDaprConfigurationDefaultsAreAuditedAsync(string format, string? value, bool passes)
+     {
+         using PlatformAdoptionTestWorkspace workspace = await PlatformAdoptionTestWorkspace.CreateAsync().ConfigureAwait(true);
+@@ -691,6 +707,50 @@ public sealed class PlatformAdoptionValidationTests
+     [InlineData("eng/check.sh", "echo 'dotnet build -p:UseHexalithProjectReferences=false'", true)]
+     [InlineData("eng/check.py", "# UseHexalithProjectReferences = False\nmessage = 'UseNuGetDeps = True'", true)]
+     [InlineData("eng/check.sh", "dotnet build -p:Configuration=Release", true)]
++    [InlineData("eng/check.cs", "Assert.True(ready); if (Directory.Exists(\"../Hexalith.EventStore\")) return Select();", false)]
++    [InlineData("eng/check.cs", "var found = Directory.Exists(\"../Hexalith.EventStore\"); found.ShouldBeTrue();", false)]
++    [InlineData("eng/check.cs", "var source = new[] { Path.Combine(repoRoot, \"..\", \"Hexalith.Builds\", \"Props\") }.Where(File.Exists);", false)]
++    [InlineData("eng/check.cs", "if (!File.Exists(source)) source = Path.Combine(RepositoryRoot, \"..\", \"Hexalith.Builds\");", false)]
++    [InlineData("eng/check.cs", "var source = Path.Combine(repoRoot, \"..\", \"references\", \"Hexalith.Builds\");", false)]
++    [InlineData("eng/check.cs", "var source = Path.Combine(\nrepoRoot, \"..\",\n\"Hexalith.Builds\", \"Props\");", false)]
++    [InlineData("eng/check.py", "source = os.path.join(repo_root, '..', 'Hexalith.Builds')", false)]
++    [InlineData("eng/check.py", "source = os.path.join(repo_root, '..', 'references', 'Hexalith.Builds')", false)]
++    [InlineData("eng/check.ps1", "$source = Join-Path $root '..' 'Hexalith.Builds'", false)]
++    [InlineData("eng/check.ps1", "$source = Join-Path $root '..' 'references' 'Hexalith.Builds'", false)]
++    [InlineData("eng/check.cs", "// Path.Combine(repoRoot, \"..\", \"Hexalith.Builds\");", true)]
++    [InlineData("eng/check.cs", "var text = \"Path.Combine(root, \\\"..\\\", \\\"Hexalith.Builds\\\")\";", true)]
++    [InlineData("eng/check.cs", "var path = Path.Combine(repoRoot, \"..\", \"artifacts\");", true)]
++    [InlineData("eng/check.cs", "var path = Path.Combine(repoRoot, \"..\", \"data\", \"Hexalith.Other\");", true)]
++    [InlineData("eng/check.py", "# os.path.join(root, '..', 'Hexalith.Builds')\nsource = os.path.join(root, '..', 'data')", true)]
++    [InlineData("eng/check.ps1", "# Join-Path $root '..' 'Hexalith.Builds'\nJoin-Path $root '..' 'data'", true)]
++    [InlineData("eng/check.ps1", "[IO.Path]::Exists('../Hexalith.Other')", false)]
++    [InlineData("eng/check.sh", "test -L ../Hexalith.Other", false)]
++    [InlineData("eng/check.sh", "test -r ../Hexalith.Other", false)]
++    [InlineData("eng/check.sh", "test -s ../Hexalith.Other", false)]
++    [InlineData("eng/check.sh", "test -x ../Hexalith.Other", false)]
++    [InlineData("eng/check.sh", "[ -L ../Hexalith.Other ]", false)]
++    [InlineData("eng/check.sh", "test -r data", true)]
++    [InlineData("eng/check.sh", "test -n ../Hexalith.Other", true)]
++    [InlineData("eng/check.cs", "if (Directory.Exists(Path.Combine(root, \"references\", \"Hexalith.Other\"))) return Select();", false)]
++    [InlineData("eng/check.cs", "if (File.Exists(Path.Combine(root, \"references\", \"Hexalith.Other\", \"Other.csproj\"))) return Select();", false)]
++    [InlineData("eng/check.py", "os.path.exists(os.path.join(root, 'references', 'Hexalith.Other'))", false)]
++    [InlineData("eng/check.ps1", "Test-Path (Join-Path $root 'references' 'Hexalith.Other')", false)]
++    [InlineData("eng/check.cs", "Directory.Exists(Path.Combine(root, \"references\", \"Hexalith.Other\")).ShouldBeFalse();", true)]
++    [InlineData("eng/check.cs", "Assert.True(Directory.Exists(Path.Combine(root, \"references\", \"Hexalith.Other\")));", true)]
++    [InlineData("eng/check.cs", "var path = Path.Combine(root, \"references\", \"Hexalith.Other\");", true)]
++    [InlineData("eng/check.cs", "if (Directory.Exists(Path.Combine(root, \"references\", \"data\"))) return Select();", true)]
++    [InlineData("eng/check.sh", "[ ! -d ../Hexalith.Other ]", false)]
++    [InlineData("eng/check.sh", "test ! -d ../Hexalith.Other", false)]
++    [InlineData("eng/check.sh", "[ ! -d data ]", true)]
++    [InlineData("eng/check.sh", "test ! -d data", true)]
++    [InlineData("eng/check.sh", "dotnet build \"-p:UseNuGetDeps=false\"", false)]
++    [InlineData("eng/check.ps1", "dotnet build '-p:UseHexalithProjectReferences=false'", false)]
++    [InlineData("eng/check.sh", "dotnet build \"--property:HexalithTenantsRoot=../Hexalith.Tenants\"", false)]
++    [InlineData("eng/check.sh", "dotnet build \"-p:Configuration=Release\"", true)]
++    [InlineData("eng/check.sh", "echo 'dotnet build \"-p:UseNuGetDeps=false\"'", true)]
++    [InlineData("eng/check.sh", "echo dotnet build \"-p:UseNuGetDeps=false\"", true)]
++    [InlineData("eng/check.sh", "# dotnet build \"-p:UseNuGetDeps=false\"\necho ready", true)]
++    [InlineData("eng/check.ps1", "Write-Host 'dotnet build \"-p:UseNuGetDeps=false\"'", true)]
+     public async Task DependencyProbesRequireDependencyTargetsAsync(string path, string source, bool passes)
+     {
+         using PlatformAdoptionTestWorkspace workspace = await PlatformAdoptionTestWorkspace.CreateAsync().ConfigureAwait(true);
+@@ -699,6 +759,27 @@ public sealed class PlatformAdoptionValidationTests
+         (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed.ShouldBe(passes);
+     }
+ 
++    /// <summary>Verifies imports cannot discover parent build files outside the active module.</summary>
++    /// <param name="path">The importing build file.</param>
++    /// <param name="method">The MSBuild lookup method.</param>
++    /// <param name="passes">Whether its search starts inside the module.</param>
++    /// <returns>The assertion task.</returns>
++    [Theory]
++    [InlineData("Directory.Build.props", "GetPathOfFileAbove", false)]
++    [InlineData("Directory.Build.props", "GetDirectoryNameOfFileAbove", false)]
++    [InlineData("tests/Directory.Build.props", "GetPathOfFileAbove", true)]
++    [InlineData("tests/Directory.Build.props", "GetDirectoryNameOfFileAbove", true)]
++    public async Task AncestorImportsStayWithinActiveModuleAsync(string path, string method, bool passes)
++    {
++        using PlatformAdoptionTestWorkspace workspace = await PlatformAdoptionTestWorkspace.CreateAsync().ConfigureAwait(true);
++        string arguments = method == "GetPathOfFileAbove"
++            ? "'Directory.Build.props', '$(MSBuildThisFileDirectory)../'"
++            : "'$(MSBuildThisFileDirectory)../', 'Directory.Build.props'";
++        workspace.Write(path, "<Project><Import Project=\"$([MSBuild]::" + method + "(" + arguments + "))\" /></Project>");
++        await workspace.TrackAsync().ConfigureAwait(true);
++        (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed.ShouldBe(passes);
++    }
++
+     /// <summary>Verifies malformed frozen inventories cannot grant source-scan exclusions.</summary>
+     /// <param name="mutation">The invalid record or confinement case.</param>
+     /// <returns>The assertion task.</returns>
+@@ -827,6 +908,8 @@ public sealed class PlatformAdoptionValidationTests
+     [InlineData("<ProjectReference Include=\"$(HexalithTenantsBasePath)/Tenants.csproj\" Condition=\"'$(UseHexalithProjectReferences)' == 'true'\" />", true)]
+     [InlineData("<ProjectReference Include=\"$(HexalithEventStoreRoot)/src/Contracts.csproj\" Condition=\"Exists('$(HexalithEventStoreRoot)/src/Contracts.csproj')\" />", false)]
+     [InlineData("<Import Project=\"$(HexalithTenantsBasePath)/Tenants.props\" Condition=\"Exists('$(HexalithTenantsBasePath)/Tenants.props')\" />", false)]
++    [InlineData("<PackageReference Include=\"Hexalith.EventStore.Contracts\" Condition=\"!Exists('use-source.marker')\" />", false)]
++    [InlineData("<ProjectReference Include=\"$(HexalithEventStoreRoot)/Contracts.csproj\" Condition=\"Exists('use-source.marker')\" />", false)]
+     public async Task BuildReferencesDistinguishLocalAndMappedDependenciesAsync(string body, bool passes)
+     {
+         ArgumentNullException.ThrowIfNull(body);
+diff --git a/test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs b/test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs
+index d1cac05..195658d 100644
+--- a/test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs
+@@ -834,6 +834,28 @@ public sealed class PlatformManifestCommandTests
+         {
+             failed.Output.ShouldContain("FAIL hosting-inventory");
+         }
++        else
++        {
++            using JsonDocument failedReport = JsonDocument.Parse(failed.Output);
++            JsonElement failedRoot = failedReport.RootElement;
++            failedRoot.GetProperty("adoptionScope").GetString().ShouldBe(Hexalith.Builds.Tooling.Manifest.PlatformAdoptionValidator.Scope);
++            JsonElement[] failedRows = [.. failedRoot.GetProperty("adoption").EnumerateArray()];
++            failedRows.Select(row => row.GetProperty("requirement").GetString()).Distinct().ShouldBe(
++                ["workspace", "declaration", "references", "gitlinks", "nested-references", "tool-pin", "hosting-inventory", "dependency-selectors", "dapr-subscriptions"], ignoreOrder: true);
++            foreach (JsonElement row in failedRows)
++            {
++                row.GetProperty("file").GetString().ShouldNotBeNullOrWhiteSpace();
++                row.GetProperty("reason").GetString().ShouldNotBeNullOrWhiteSpace();
++                if (row.GetProperty("requirement").GetString() is not "hosting-inventory" and not "dapr-subscriptions")
++                {
++                    row.GetProperty("passed").GetBoolean().ShouldBeTrue();
++                }
++            }
++
++            JsonElement hosting = failedRows.Single(row => row.GetProperty("requirement").GetString() == "hosting-inventory");
++            hosting.GetProperty("passed").GetBoolean().ShouldBeFalse();
++            hosting.GetProperty("file").GetString().ShouldBe("module/hosting-inventory.json");
++        }
+     }
+ 
+     private static async Task AssertMutationAsync(string path, string json, string field, string format)

@@ -1,0 +1,31 @@
+{
+  "scope": "Final reviewed local candidate; new owner approval, upstream integration and publication remain pending",
+  "candidateBuildHead": "26317ab0060fc53dc842193729a503e144d142be",
+  "sourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "9327041cad915b275300d4127a0c8aec2a13baeb999a2978dad7618d854e876e",
+    "test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "ab496d4aa0cc94f969c2d02261a82bb7bde2a20a1ca0ec7c45b0ff9e3e177645",
+    "test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs": "b33a75bd7897a2ed8979914522d282b56d935ba4cd55778b590010de34287533"
+  },
+  "artifactSha256": {
+    "src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll": "a6c5e31c7e8b39cd588443d9550b3892cbdb17c1d6a9befe23683227b52de112",
+    "src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "feaa57a51c06ed8b53f083bc83602354948deeb4961fb3444b8930cc09e1f9db",
+    "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "90e38d45954ce3df50d2cfc892aa3f7b0d405716bc4edf36be5451591486fb00"
+  },
+  "platformTestSha256": "5525b9a20cfd65a1e9fedfe061ee0d04e49e18da1e5be1bc1be97dfa35cc6f93",
+  "candidateCommit": "750b1a0e739b73c48e31f3ee812d37ab7950d8c3",
+  "candidateWorkingTreeClean": true,
+  "verifiedSourceBytesUnchangedAfterCommit": true,
+  "fullVerification": {
+    "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll -parallel none -noLogo",
+    "exitCode": 0,
+    "total": 1486,
+    "passed": 1483,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 3,
+    "notRun": 0,
+    "seconds": 814.266,
+    "rawOutput": "full-builds-tests.txt",
+    "sentinel": "full-builds-tests.exitcode"
+  }
+}

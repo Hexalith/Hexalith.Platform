@@ -1,0 +1,14 @@
+The '-parallel' switch has been deprecated in favor of '-parallelMode' and will be removed in the next major version
+
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync [SKIP]
+      This repository is not inside the Platform root with its EventStore checkout.
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync [SKIP]
+      This repository is not inside the Platform root with its Commons checkout.
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync [SKIP]
+      This integration assertion requires the enclosing Platform checkout.
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'd29b299c5927295ceb569f96379be1eeccb78457acd3dcd6314748ed2490b6e7')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 3, Errors: 0, Failed: 0, Skipped: 3, Not Run: 0, Time: 0.144s
