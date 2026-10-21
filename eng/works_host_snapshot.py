@@ -10,7 +10,7 @@ import subprocess
 import tarfile
 
 DIRECTORIES = {"src", "tests", "eng", "DaprComponents", "config", "schemas", ".config"}
-OUTPUTS = {"bin", "obj", "__pycache__", "artifacts"}
+OUTPUTS = {"bin", "obj", "__pycache__", "artifacts", ".netcoredbg_hist"}
 VERIFIER_DOCUMENTS = {"docs/ext-host-1-agents-composition.md",
     "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md"}
 # Audited separately: none is imported, invoked, read or compiled by verify_works_host,

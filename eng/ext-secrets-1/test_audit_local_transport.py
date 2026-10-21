@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from audit_local_transport import FLAGS, check_authority, check_frame, check_inventory, check_probe_matrix
+from audit_local_transport import FLAGS, check_authority, check_fault_history, check_frame, check_inventory, check_probe_matrix
 
 _spec = importlib.util.spec_from_file_location("local_protocol", Path(__file__).parent / "local-transport/protocol.py")
 _protocol = importlib.util.module_from_spec(_spec)
@@ -73,7 +73,7 @@ class ExecutedBoundaryMatrixTests(unittest.TestCase):
             names |= {f"header-{hop}-{n}" for n in (65535, 65536, 65537)} | {f"compression-{hop}"}
             for field, values in (("entries", (63, 64, 65)), ("key", (256, 257)), ("value", (4096, 4097)), ("aggregate", (65535, 65536, 65537)), ("response", (1048575, 1048576, 1048577))):
                 names |= {f"{field}-{hop}-{n}" for n in values}
-            names |= {f"response-unknown-{hop}", f"response-compression-{hop}"}
+            names |= {f"response-unknown-{hop}", f"response-compression-{hop}", f"nested-request-{hop}", f"response-nested-unknown-{hop}"}
         return [{"name": name} for name in sorted(names)]
 
     def test_every_boundary_is_mandatory_including_over_limit_and_each_hop(self):
@@ -92,7 +92,7 @@ class ExecutedBoundaryMatrixTests(unittest.TestCase):
 class IndependentFrameTests(unittest.TestCase):
     def frame(self):
         return {"dataBytes": 100, "dataSha256": "data-digest", "protobufBytes": 150, "wireBytes": 155,
-                "sha256": "protobuf-digest", "compressed": False, "unknownBytes": 0,
+                "sha256": "protobuf-digest", "compressed": False, "unknownBytes": 0, "rawWireValid":True, "nestedUnknownBytes":0,
                 "metadata": {"entries": 64, "maximumKeyUtf8Bytes": 256, "maximumValueUtf8Bytes": 4096, "aggregateUtf8Bytes": 65536}}
 
     def test_complete_frame_and_full_metadata_boundaries_are_inclusive(self):
@@ -137,3 +137,345 @@ class RetainedProtocolEquivalenceTests(unittest.TestCase):
             if mutation == "missing-service": descriptor[0]["service"] = []
             if mutation == "extra-message": descriptor[0]["messageType"].append({"name": "Unexpected"})
             with self.subTest(mutation=mutation), self.assertRaises(ValueError): self.check(descriptor)
+
+
+class OriginalFaultHistoryTests(unittest.TestCase):
+    def observations(self):
+        faults, sink = [], []
+        for fault, count in (("cancellation", 1), ("late-duplicate", 2), ("lost-result", 1), ("reconnect", 1)):
+            identity = "synthetic-original-" + fault
+            faults += [{"Name": fault, "SdkCalls": 1, "Result": "ReceivedSyntheticUnverified" if fault == "reconnect" else "Unknown:RpcException", "CancellationUnixMilliseconds": 11},
+                       {"Name": "status-" + fault, "SdkCalls": 1, "Result": "ReceivedSyntheticUnverified", "LookupAttempts": count,
+                        "LookupIdentity": identity, "LookupOriginalDataSha256": "digest-" + fault, "LookupOriginalProducerIncarnation": "component-1"}]
+            for number in range(1, count + 1):
+                sink.append({"kind": "sink", "path": "/send", "identity": identity, "attempts": number,
+                             "dataSha256": "digest-" + fault, "producerIncarnation": "component-1", "timeUnixNano": number * 10000000})
+            sink.append({"kind": "sink", "path": "/status", "identity": identity, "attempts": count, "dataSha256": "digest-" + fault,
+                         "producerIncarnation": "component-2" if fault == "reconnect" else "component-1", "timeUnixNano": 30000000})
+        return faults, sink
+
+    def test_original_delivery_and_status_keep_uncertainty_and_old_incarnation(self):
+        check_fault_history(*self.observations())
+
+    def test_missing_duplicate_or_changed_attempt_cannot_be_claimed_closed(self):
+        original_faults, original_sink = self.observations()
+        for mutation in ("missing-original", "blind-resend", "changed-lookup-digest", "changed-status-count", "failed-lookup", "extra-sdk-send", "new-original-identity", "dropped-old-incarnation", "early-duplicate", "false-sequence"):
+            faults, sink = copy.deepcopy(original_faults), copy.deepcopy(original_sink)
+            if mutation == "missing-original": sink.pop(0)
+            if mutation == "blind-resend": sink.append(copy.deepcopy(sink[0]))
+            if mutation == "changed-lookup-digest": sink[1]["dataSha256"] = "other"
+            if mutation == "changed-status-count": faults[1]["LookupAttempts"] = 2
+            if mutation == "failed-lookup": faults[1]["Result"] = "Unknown:RpcException"
+            if mutation == "extra-sdk-send": faults[0]["SdkCalls"] = 2
+            if mutation == "new-original-identity": faults[1]["LookupIdentity"] = "replacement"
+            if mutation == "dropped-old-incarnation": sink[-2]["producerIncarnation"] = "component-2"
+            if mutation == "early-duplicate": sink[3]["timeUnixNano"] = 10000000
+            if mutation == "false-sequence": sink[3]["attempts"] = 1
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): check_fault_history(faults, sink)
+
+# Keep these offline: test the producer/consumer contracts using local bytes.
+import os
+import subprocess
+import sys
+import audit_local_transport as audit
+
+
+def local_module(name):
+    directory = Path(__file__).parent / "local-transport"
+    sys.path.insert(0, str(directory))
+    try:
+        spec = importlib.util.spec_from_file_location("f1_test_" + name, directory / (name + ".py"))
+        module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+        return module
+    finally:
+        sys.path.pop(0)
+
+
+class BuildProducerConsumerTests(unittest.TestCase):
+    def test_source_record_written_by_builder_is_exact_auditor_input_without_downloads(self):
+        builder = local_module("build")
+        with tempfile.TemporaryDirectory() as directory:
+            (Path(directory) / "source").mkdir()
+            record = builder.emit_source_inputs(directory, builder.DAPR_ARCHIVE_SHA256, builder.GO_ARCHIVE_SHA256,
+                                                builder.PATCH_SHA256, builder.PATCHED_SOURCE_SHA256)
+            self.assertEqual(record, audit.read(Path(directory) / "source/source-inputs.json"))
+            audit.check_source_inputs(record)
+            for key in record:
+                changed = record | {key:"unretained"}
+                with self.subTest(key=key), self.assertRaises(ValueError): audit.check_source_inputs(changed)
+            with self.assertRaises(ValueError): builder.emit_source_inputs(directory, "bad", builder.GO_ARCHIVE_SHA256, builder.PATCH_SHA256, builder.PATCHED_SOURCE_SHA256)
+
+    def test_go_overrides_and_checksum_exclusions_are_isolated_and_audited(self):
+        builder = local_module("build")
+        inherited = {"PATH":os.environ["PATH"],"GOFLAGS":"-overlay=evil.json -modfile=evil.mod", "GOWORK":"evil.work", "GOENV":"evil-env",
+                     "GONOSUMDB":"*", "GOPRIVATE":"*", "GOINSECURE":"*", "GOROOT":"evil", "CGO_CFLAGS":"evil"}
+        with tempfile.TemporaryDirectory() as directory:
+            environment = builder.isolated_go_environment(directory, inherited)
+            self.assertNotIn("GOROOT", environment); self.assertNotIn("CGO_CFLAGS", environment)
+            record = {"required":builder.GO_SETTINGS,"effective":environment.copy()}
+            audit.check_go_environment(record, directory)
+            for key in builder.GO_SETTINGS:
+                changed = copy.deepcopy(record); changed["effective"][key] = "inherited-override"
+                with self.subTest(key=key), self.assertRaises(ValueError): audit.check_go_environment(changed, directory)
+
+    def test_full_app_local_sdk_closure_includes_runtime_eventstore_grpc_and_runtimeconfig(self):
+        sealer = local_module("seal_build")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("driver.dll", "driver.deps.json", "driver.runtimeconfig.json", "Hexalith.Platform.Secrets.Runtime.dll", "Hexalith.EventStore.Server.dll", "Grpc.Net.Client.dll"):
+                (root / name).write_text(name)
+            sealed = sealer.sdk_dependency_closure(root / "driver.dll")
+            audit.check_sdk_closure(root / "driver.dll", sealed)
+            for path in list(sealed):
+                changed = sealed.copy(); del changed[path]
+                with self.subTest(path=path), self.assertRaises(ValueError): audit.check_sdk_closure(root / "driver.dll", changed)
+            (root / "driver.runtimeconfig.json").write_text("changed")
+            with self.assertRaises(ValueError): audit.check_sdk_closure(root / "driver.dll", sealed)
+            (root / "new-dependency.dll").write_text("new")
+            with self.assertRaises(ValueError): audit.check_sdk_closure(root / "driver.dll", sealed)
+
+    def test_sealed_retained_and_executed_binary_hashes_are_joined(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); (root / "bin").mkdir()
+            for name in ("daprd-stable","f1fixture"): (root/"bin"/name).write_text(name)
+            sealed={"binaries":{name:audit.sha(root/"bin"/name) for name in ("daprd-stable","f1fixture")}}
+            execution={"binarySha256":{"daprd":sealed["binaries"]["daprd-stable"],"fixture":sealed["binaries"]["f1fixture"]}}
+            audit.check_binary_bindings(root,execution,sealed)
+            for name,label in (("daprd-stable","daprd"),("f1fixture","fixture")):
+                changed=copy.deepcopy(sealed);changed["binaries"][name]="changed"
+                with self.assertRaises(ValueError):audit.check_binary_bindings(root,execution,changed)
+                changed=copy.deepcopy(execution);changed["binarySha256"][label]="changed"
+                with self.assertRaises(ValueError):audit.check_binary_bindings(root,changed,sealed)
+
+    def test_short_lived_executable_is_bound_before_exit(self):
+        runner=local_module("run")
+        with open(os.devnull,"wb") as stream:
+            for argv in [["/usr/bin/true"]] * 12 + [[audit.shutil.which("dotnet"), "--version"]]:
+                process,binding=runner.launch_bound(argv,os.environ.copy(),Path.cwd(),stream)
+                self.assertEqual(process.wait(timeout=5),0)
+                self.assertEqual(binding["executionImageSha256"],audit.sha(argv[0]))
+                self.assertEqual(binding["imageBinding"],"opened-executable-fd")
+                self.assertTrue(binding["startTicks"])
+                terminal=runner.terminal_binding(process,binding)
+                self.assertEqual(terminal["terminalImageSha256"],binding["executionImageSha256"])
+
+
+class ProbeEnforcementTests(unittest.TestCase):
+    def metadata(self, hop="component", size=64):
+        digest=hashlib.sha256(b"").hexdigest()
+        summary={"entries":size,"maximumKeyUtf8Bytes":1,"maximumValueUtf8Bytes":1,"aggregateUtf8Bytes":size*2}
+        result={"kind":"probeResult","code":"OK","dataBytes":0,"dataSha256":digest,"timeUnixNano":5}
+        probe={"name":f"entries-{hop}-{size}","hop":hop,"result":result}
+        observations=[{"timeUnixNano":1},result]
+        component=[{"kind":"componentAdmission","timeUnixNano":3,"dataBytes":0,"dataSha256":digest,"metadata":summary}]
+        sink=[{"kind":"sink","path":"/send","timeUnixNano":4,"dataBytes":0,"dataSha256":digest}]
+        return probe,observations,component,sink,{"api":[],"component":[]}
+
+    def test_each_accepted_metadata_probe_requires_its_own_correct_sink_arrival(self):
+        for hop in ("api","component"):
+            args=self.metadata(hop);audit.check_probe_observations(*args)
+            for change in ("missing","different-digest","outside-invocation","duplicate"):
+                modified=copy.deepcopy(args)
+                if change=="missing":modified[3].clear()
+                if change=="different-digest":modified[3][0]["dataSha256"]="other"
+                if change=="outside-invocation":modified[3][0]["timeUnixNano"]=6
+                if change=="duplicate":modified[3].append(copy.deepcopy(modified[3][0]))
+                with self.subTest(hop=hop,change=change),self.assertRaises(ValueError):audit.check_probe_observations(*modified)
+
+    def test_negative_metadata_requires_expected_status_and_metadata_guard(self):
+        args=list(self.metadata(size=65));args[0]["result"]["code"]="ResourceExhausted";args[3]=[]
+        args[2].append({"kind":"componentRefusal","stage":"metadata","timeUnixNano":4})
+        audit.check_probe_observations(*args)
+        for change in ("wrong-status","wrong-boundary","sink-arrival"):
+            modified=copy.deepcopy(args)
+            if change=="wrong-status":modified[0]["result"]["code"]="Unavailable"
+            if change=="wrong-boundary":modified[2][-1]["stage"]="data"
+            if change=="sink-arrival":modified[3]=self.metadata()[3]
+            with self.subTest(change=change),self.assertRaises(ValueError):audit.check_probe_observations(*modified)
+
+    def test_over_limit_headers_require_actual_rst_frame_size_error(self):
+        result={"timeUnixNano":5,"result":"RST_STREAM:FRAME_SIZE_ERROR","grpcStatus":""}
+        probe={"name":"header-api-65537","hop":"api","result":result};obs=[{"timeUnixNano":1},result]
+        wire={"api":[{"kind":"decodedHeaders","direction":"request","timeUnixNano":2,"decodedListBytes":65537},
+                     {"kind":"streamReset","direction":"response","timeUnixNano":4,"code":"FRAME_SIZE_ERROR"}],"component":[]}
+        audit.check_probe_observations(probe,obs,[],[],wire)
+        for change in ("disconnect","wrong-reset","no-reset"):
+            p,o,w=copy.deepcopy((probe,obs,wire))
+            if change=="disconnect":p["result"]["result"]="connection-closed"
+            if change=="wrong-reset":w["api"][-1]["code"]="CANCEL"
+            if change=="no-reset":w["api"].pop()
+            with self.subTest(change=change),self.assertRaises(ValueError):audit.check_probe_observations(p,o,[],[],w)
+
+    def test_sdk_case_cannot_borrow_later_go_frames_or_sink_with_same_digest(self):
+        n=45508608;case=f"data-{n}";digest="same-data"
+        frame=IndependentFrameTests().frame() | {"dataBytes":n,"dataSha256":digest,"syntheticCase":case,"kind":"grpcFrame","direction":"request"}
+        wire={hop:[copy.deepcopy(frame)] for hop in ("api","component")}
+        sdk=[{"Name":case,"SdkCalls":1,"DataBytes":n,"Result":"ReceivedSyntheticUnverified","DataSha256":digest}]
+        component=[{"kind":"componentAdmission","syntheticCase":case,"dataBytes":n,"dataSha256":digest}]
+        sink=[{"kind":"sink","path":"/send","syntheticCase":case,"dataBytes":n,"dataSha256":digest}]
+        audit.check_sdk_data_delivery(n,sdk,wire,component,sink)
+        for target in (wire["component"][0],component[0],sink[0]):
+            target["syntheticCase"]="later-go-probe"
+            with self.assertRaises(ValueError):audit.check_sdk_data_delivery(n,sdk,wire,component,sink)
+            target["syntheticCase"]=case
+
+
+class ProcessInventoryTests(unittest.TestCase):
+    def inventory(self, root):
+        names={"descriptors":"descriptors","sink":"sink","component-1":"component","component-2":"component","component-observer":"proxy","api-observer":"proxy","daprd":None,
+               "sdk-witnesses":None,"sdk-faults":None,"sdk-reconnect-lookup":None}
+        commands=[];cleanup=[]
+        for index,(name,mode) in enumerate(names.items(),1):
+            image=root/"bin"/("daprd-stable" if name=="daprd" else "f1fixture")
+            argv=[str(image),"--mode",mode or "test"]
+            if name.startswith("sdk-"):image=Path(audit.shutil.which("dotnet"));argv=[str(image),str(root/"driver.dll")]
+            record={"name":name,"argv":argv,"pid":index,"startTicks":str(index),"executionImageSha256":audit.sha(image),"imageBinding":"opened-executable-fd",
+                    "executableFile":str(image),"executableDevice":image.stat().st_dev,"executableInode":image.stat().st_ino,"sdkDriverSha256":"driver-hash"}
+            commands.append(record)
+            cleanup.append(record | {"stopped":True,"terminalObserved":True,"returncode":0,"terminalPid":index,"terminalStartTicks":str(index),
+                "terminalImageSha256":record["executionImageSha256"],"terminalExecutableDevice":record["executableDevice"],"terminalExecutableInode":record["executableInode"],
+                "terminalObservation":"waitpid-owned-child-and-opened-image-fd"})
+        execution={"assembly":str(root/"driver.dll"),"binarySha256":{"daprd":audit.sha(root/"bin/daprd-stable"),"fixture":audit.sha(root/"bin/f1fixture"),"sdkDriver":"driver-hash"}}
+        return commands,cleanup,[],execution,root
+
+    def test_complete_inventory_and_matching_terminal_identity_are_mandatory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/"bin").mkdir()
+            for name in ("daprd-stable","f1fixture"):(root/"bin"/name).write_text(name)
+            args=self.inventory(root);audit.check_process_inventory(*args)
+            for change in ("empty","missing","pid","startTicks","image","not-terminal","terminal-image","wrong-named-image","unknown-mode"):
+                modified=copy.deepcopy(args)
+                if change=="empty":modified[0].clear();modified[1].clear()
+                if change=="missing":modified[1].pop()
+                if change=="pid":modified[1][0]["pid"]=999
+                if change=="startTicks":modified[1][0]["startTicks"]="other"
+                if change=="image":modified[1][0]["executionImageSha256"]="other"
+                if change=="not-terminal":modified[1][0]["terminalObserved"]=False
+                if change=="terminal-image":modified[1][0]["terminalImageSha256"]="changed"
+                if change=="wrong-named-image":modified[0][6]["argv"][0]=str(root/"bin/f1fixture")
+                if change=="unknown-mode":modified[0][0]["argv"][-1]="sink"
+                with self.subTest(change=change),self.assertRaises(ValueError):audit.check_process_inventory(*modified)
+
+class PublishedPacketChecksTests(unittest.TestCase):
+    def packet(self):
+        return audit.read(Path(__file__).resolve().parents[2] / "docs/implementation/ext-secrets-1-f1-2026-10-20/local-transport.json")
+
+    def test_exact_published_configuration_headers_metadata_and_derived_bounds(self):
+        packet=self.packet()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/"resources").mkdir()
+            for name in ("configuration.yaml","isolation.json","resources/binding.yaml","resources/resiliency.yaml"):
+                (root/name).write_text(name)
+            packet["configurationSha256"]={name:audit.sha(root/name) for name in ("configuration.yaml","isolation.json","resources/binding.yaml","resources/resiliency.yaml")}
+            (root/"probes.json").write_text(json.dumps([{"name":"metadata-baseline","log":"baseline.jsonl"}]))
+            (root/"baseline.jsonl").write_text('{"timeUnixNano":1}\n{"timeUnixNano":5}\n')
+            (root/"component.jsonl").write_text(json.dumps({"kind":"componentAdmission","timeUnixNano":3,"metadata":packet["forwardedMetadata"]["goApiBaseline"]})+'\n')
+            audit.check_published_limits(packet,root)
+            for change in ("empty-config","missing-config","header-one","metadata-one","manifest-one","transition-one","api-one","drop-assumption"):
+                changed=copy.deepcopy(packet)
+                if change=="empty-config":changed["configurationSha256"]={}
+                if change=="missing-config":changed["configurationSha256"].pop("isolation.json")
+                if change=="header-one":changed["headers"]["advertisedLimitBytes"]=1
+                if change=="metadata-one":changed["forwardedMetadata"]["maximumEntries"]=1
+                if change=="manifest-one":changed["sufficiency"]["manifestDataUpperBoundBytes"]=1
+                if change=="transition-one":changed["sufficiency"]["transitionDataUpperBoundBytes"]=1
+                if change=="api-one":changed["sufficiency"]["apiProtobufLooseUpperBoundAtDataCap"]=1
+                if change=="drop-assumption":changed["sufficiency"]["assumptions"]=[]
+                with self.subTest(change=change),self.assertRaises(ValueError):audit.check_published_limits(changed,root)
+
+    def test_template_cannot_drop_null_inputs_or_change_runtime_fixture_binding(self):
+        packet=self.packet()
+        template=audit.read(Path(__file__).resolve().parents[2] / "docs/implementation/ext-secrets-1-f1-2026-10-20/next-qualification.template.json")
+        packet_hash=template["localTransport"]["packetSha256"];manifest_hash=template["localTransport"]["evidenceManifestSha256"]
+        audit.check_template(template,packet,packet_hash,manifest_hash)
+        for section,keys in audit.TEMPLATE_INPUTS.items():
+            for key in keys:
+                changed=copy.deepcopy(template);del changed[section][key]
+                with self.subTest(section=section,key=key),self.assertRaises(ValueError):audit.check_template(changed,packet,packet_hash,manifest_hash)
+        for key in ("fixtureArtifactSha256","runtimeArtifactSha256","evidenceManifestSha256","packetSha256"):
+            changed=copy.deepcopy(template);changed["localTransport"][key]="different"
+            with self.assertRaises(ValueError):audit.check_template(changed,packet,packet_hash,manifest_hash)
+
+    def independent(self, root):
+        (root/"bin").mkdir();(root/"bin/daprd-stable").write_text("runtime")
+        independent=root/"independent";source=independent/"source-and-header";runtime=independent/"runtime-headers"
+        source.mkdir(parents=True);runtime.mkdir()
+        packet=self.packet();packet["build"]["binaries"]["daprd-stable"]=audit.sha(root/"bin/daprd-stable")
+        packet["evidence"]["independentRoot"]=str(independent)
+        def write(path,data):path.write_text(json.dumps(data))
+        write(source/"verification.json",{"kind":"IndependentDisposableHeaderPatchCheck","sourceCommit":packet["build"]["daprCommit"],
+              "patchSha256":"c19d126445132b1b08894a98f75a653f8d1f6ce53a9386fd4d3d8743d28efbfd",
+              "resultSha256":"41d6010a43956eda01ae0d5c4bc94daa95e61e8523f5031c417e81cd1879be4a","parsedReadBufferBytes":65536,"patchedHeaderListBytes":65536,"productionArtifactQualified":False})
+        tree={"pkg/api/grpc/server.go":"41d6010a43956eda01ae0d5c4bc94daa95e61e8523f5031c417e81cd1879be4a"}
+        write(source/"candidate-source-tree-sha256.json",tree);write(root/"runtime-source-tree-sha256.json",tree)
+        write(source/"candidate-source-archive-verification.json",{"filesCompared":4185,"sourceArchiveSha256":packet["build"]["sourceArchiveSha256"],
+              "modifiedFiles":[{"path":"pkg/api/grpc/server.go","base":"1b4f56b441e92822a0b42c63d54b4450cfe45a94fe2a4736ad14ff54dc7dfbe3","candidate":tree["pkg/api/grpc/server.go"]}]})
+        write(source/"retained-protocol-source-comparison.json",packet["build"]["retainedProtocols"])
+        write(source/"go-toolchain-hash-verification.json",{"kind":"IndependentGoToolchainModuleHash","module":"golang.org/toolchain","version":"v0.0.1-go1.26.4.linux-amd64",
+              "archiveSha256":"0221cfe82f9c88c717677cb5c1f59f598d177cd7eac18c11f90ae29432d356f9","moduleContentHash":"h1:wAoHYF9gHXZdyCyZT4yuWhbjdIC/Iv5dpQsE+H3FgGU=","publicSumdbLookupMatched":True,"sumdbSignatureIndependentlyVerified":False})
+        write(source/"stable-candidate-binary-verification.json",{"sha256":packet["build"]["binaries"]["daprd-stable"],"bytes":7,"goVersion":"go1.26.4","stablecomponents":True,"grpcGo1_80_0":True,"componentsContrib1_18_0":True})
+        (runtime/"config.yaml").write_text("synthetic")
+        write(runtime/"cleanup.json",{"stopped":True,"returncode":0})
+        header=source/"independent-runtime-header-boundaries.json"
+        write(header,{"kind":"IndependentRawHpackPatchedDaprHeaderBoundary","binarySha256":packet["build"]["binaries"]["daprd-stable"],"CompletionPermission":False,"configurationSha256":audit.sha(runtime/"config.yaml"),
+              "observations":[{"decodedHeaderListBytes":n,"advertisedHeaderListBytes":[65536],"headerTransportAccepted":n<=65536,"frames":[] if n<=65536 else [{"type":3,"rstCode":6}]} for n in (65535,65536,65537)]})
+        packet["headers"]["independentDifferentImplementationReport"]=str(header)
+        write(source/"bound-arithmetic.json",{"manifestDataUpperBound":45508608,"transitionDataUpperBound":48933548,"dataCap":67108864,"completeApiProtobufLooseUpperBoundAtDataCap":67181835,"completeComponentProtobufLooseUpperBoundAtDataCap":67175688,"protobufCap":134217728,"finiteWitnessIsExhaustive":False,"semanticOrCompletionAuthority":False})
+        self.reseal_independent(root,packet)
+        return packet
+
+    def reseal_independent(self,root,packet):
+        independent=root/"independent"
+        (root/"independent-sha256.json").write_text(json.dumps({str(p.relative_to(independent)):audit.sha(p) for p in independent.rglob('*') if p.is_file()}))
+        packet["evidence"]["independentManifestSha256"]=audit.sha(root/"independent-sha256.json")
+
+    def test_independent_reports_require_retained_hashes_artifacts_results_and_false_authority(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);packet=self.independent(root);audit.check_independent_reports(packet,root)
+            header=Path(packet["headers"]["independentDifferentImplementationReport"]);original=header.read_text()
+            for change in ("unsealed-tamper","artifact","authority","result","rst"):
+                header.write_text(original);data=json.loads(original)
+                if change=="unsealed-tamper":data["binarySha256"]="changed"
+                if change=="artifact":data["binarySha256"]="changed"
+                if change=="authority":data["CompletionPermission"]=True
+                if change=="result":data["observations"][-1]["headerTransportAccepted"]=True
+                if change=="rst":data["observations"][-1]["frames"]=[]
+                header.write_text(json.dumps(data))
+                if change!="unsealed-tamper":self.reseal_independent(root,packet)
+                with self.subTest(change=change),self.assertRaises(ValueError):audit.check_independent_reports(packet,root)
+                header.write_text(original);self.reseal_independent(root,packet)
+
+    def detached(self,root):
+        output=root/"verification";output.mkdir()
+        assembly=root/"artifacts/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll"
+        assembly.parent.mkdir(parents=True);assembly.write_text("detached fixture")
+        packet=self.packet();packet["build"]["dotnetSourceDependencies"]={}
+        def write(name,data):(output/name).write_text(json.dumps(data))
+        write("commands.json",[["dotnet","build","project","--artifacts-path",str(root/"artifacts")],["dotnet",str(assembly)]])
+        write("f1-packet-check.json",{"CompletionPermission":False,"DependencyAvailable":False,"KeyDeliveryEnabled":False,"LiveReady":False,"installedPathProved":False,"physicalCompletionProved":False,"terminationPacketConforms":True,"transportPacketConforms":True})
+        write("custody-binding-f1.json",{"Kind":"SyntheticF1SourceContractOnly","DaprClient":"1.18.10","DependencyAvailable":False,"LiveReady":False,"QualifiedComponentInstalled":False,"PhysicalEvidence":False,"RealSidecarPathExecuted":False,"NativeEffects":0})
+        (output/"runtime-build.log").write_text("0 Warning(s)\n0 Error(s)\n")
+        for name in ("runtime-tests.log","runtime-tests.xml","owner-capture-source.json"):(output/name).write_text(name)
+        repo=Path(__file__).resolve().parents[2]
+        write("source-sha256.json",{name:audit.sha(repo/name) for name in ("eng/ext-secrets-1/audit_local_transport.py","eng/ext-secrets-1/local-transport/main.go","eng/ext-secrets-1/local-transport/wire.go","eng/ext-secrets-1/local-transport/build.py","eng/ext-secrets-1/local-transport/run.py","eng/ext-secrets-1/local-transport/seal_build.py")})
+        write("verification.json",{"kind":"SyntheticF1SourceContractOnly","candidateBaseCommit":packet["candidateSourceHead"],"counts":{"behavioralMethodsCovered":29,"f1Passed":101,"passed":238,"total":238},"dependencyAvailable":False,"runtimeQualificationCompleted":False,"qualificationEffects":0,"sourceInputs":{},"sha256":{p.name:audit.sha(p) for p in output.iterdir()}})
+        log=root/"python.log";log.write_text("Ran focused tests\n\nOK\n")
+        verification={"authority":"Source contract only","f1Artifacts":str(root/"artifacts"),"f1Directory":str(output),"pythonSuiteLog":str(log),"requiredRuntimeTests":238,
+                      "f1ReportSha256":audit.sha(output/"verification.json"),"pythonSuiteSha256":audit.sha(log),"f1AssemblySha256":audit.sha(assembly)}
+        return verification,packet
+
+    def test_detached_reports_and_executables_require_hashes_passing_results_false_authority(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);verification,packet=self.detached(root);audit.check_detached_verification(verification,packet,root)
+            report=Path(verification["f1Directory"])/"verification.json";original=report.read_text()
+            for change in ("unsealed-tamper","failed","authority","source-identity","assembly"):
+                data=json.loads(original)
+                if change=="unsealed-tamper":data["counts"]["passed"]=0
+                if change=="failed":data["counts"]["passed"]=237
+                if change=="authority":data["dependencyAvailable"]=True
+                if change=="source-identity":data["candidateBaseCommit"]="different"
+                if change=="assembly":verification["f1AssemblySha256"]="different"
+                report.write_text(json.dumps(data))
+                if change!="unsealed-tamper":verification["f1ReportSha256"]=audit.sha(report)
+                with self.subTest(change=change),self.assertRaises(ValueError):audit.check_detached_verification(verification,packet,root)
+                report.write_text(original);verification["f1ReportSha256"]=audit.sha(report)

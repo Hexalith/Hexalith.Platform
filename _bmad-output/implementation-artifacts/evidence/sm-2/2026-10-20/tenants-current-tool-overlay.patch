@@ -1,0 +1,39 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+new file mode 100644
+index 00000000..57c78bb7
+--- /dev/null
++++ b/.config/dotnet-tools.json
+@@ -0,0 +1,13 @@
++{
++  "version": 1,
++  "isRoot": true,
++  "tools": {
++    "hexalith.builds.module.cli": {
++      "version": "4.35.0",
++      "commands": [
++        "hexalith-module"
++      ],
++      "rollForward": false
++    }
++  }
++}
+Submodule references/Hexalith.Builds 5d03f1db..fff4a212:
+  > test(tool): cover generic enrollment component defaults
+  > feat(tool): publish domain module enrollment validation
+  > build: sync local changes via /pushall
+  > build: merge test/1-11-review-pass5 into main via /pushall
+  > build: merge origin/main into main via /pushall
+  > build: sync local changes via /pushall
+  > build: sync local changes via /pushall
+Submodule references/Hexalith.Platform 11893ca9..4f036ced:
+  > build(platform): merge approved adoption records
+  > feat(platform): accept released domain enrollment kit
+  > feat(platform): adopt Parties as reference module
+  > feat(platform): publish domain module enrollment kit
+  > fix(secrets): harden F1 transport and completion packets
+  > build: sync local changes via /pushall
+  > docs: decide the candidate and attachment policy (story 2.1)
+  > fix: stories
+  > feat: define the recovery hook contract
+  > fix: story 1.11
+  > fix(secrets): restore F1 verification under root build analyzers

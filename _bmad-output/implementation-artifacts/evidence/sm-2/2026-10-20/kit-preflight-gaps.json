@@ -1,0 +1,68 @@
+[
+  {
+    "module": "Parties",
+    "preflightResult": "failed",
+    "failedRows": [
+      {
+        "requirement": "workspace",
+        "passed": false,
+        "file": ".git",
+        "reason": "Cannot enumerate tracked module-owned files."
+      },
+      {
+        "requirement": "hosting-inventory",
+        "passed": false,
+        "file": "module/hosting-inventory.json",
+        "reason": "Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist."
+      },
+      {
+        "requirement": "dependency-selectors",
+        "passed": false,
+        "file": ".",
+        "reason": "No tracked module files were available for bounded static inspection."
+      },
+      {
+        "requirement": "dapr-subscriptions",
+        "passed": false,
+        "file": ".",
+        "reason": "No tracked module files were available for bounded static inspection."
+      }
+    ]
+  },
+  {
+    "module": "Tenants",
+    "preflightResult": "failed",
+    "failedRows": [
+      {
+        "requirement": "workspace",
+        "passed": false,
+        "file": ".git",
+        "reason": "Cannot enumerate tracked module-owned files."
+      },
+      {
+        "requirement": "declaration",
+        "passed": false,
+        "file": "hexalith.module-manifest.v2.json",
+        "reason": "Declare the distinct minimum server dependencies eventstore, tenants and memories, excluding self."
+      },
+      {
+        "requirement": "hosting-inventory",
+        "passed": false,
+        "file": "module/hosting-inventory.json",
+        "reason": "Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist."
+      },
+      {
+        "requirement": "dependency-selectors",
+        "passed": false,
+        "file": ".",
+        "reason": "No tracked module files were available for bounded static inspection."
+      },
+      {
+        "requirement": "dapr-subscriptions",
+        "passed": false,
+        "file": ".",
+        "reason": "No tracked module files were available for bounded static inspection."
+      }
+    ]
+  }
+]

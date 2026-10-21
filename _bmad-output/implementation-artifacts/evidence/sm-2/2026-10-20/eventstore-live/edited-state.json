@@ -1,0 +1,67 @@
+{
+  "schema": "hexalith.g4-run-state.v1",
+  "runId": "b3caf6a6aff8be66a673ad539a160eed",
+  "status": "Ready",
+  "manifestHash": "6193CCFD67EF325E990E3C6E15C1E0B5040F939530C9EBAE47DAF00F2D62A9EE",
+  "workspace": "/tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/b3caf6a6aff8be66a673ad539a160eed",
+  "appHostProcessId": 2342705,
+  "appHostStartedAt": "2026-10-20T15:03:12.3110004+00:00",
+  "ruleId": null,
+  "updatedAt": "2026-10-20T15:04:00.9539577+00:00",
+  "startupDurationSeconds": 72.7543893,
+  "readinessResults": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2345943
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2345941
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    }
+  ],
+  "effectiveDeadlineSeconds": 600,
+  "effectiveDeadlineIsOverride": false,
+  "effectiveDeadlineJustification": null,
+  "effectiveDeadlineModuleId": null,
+  "diagnosticsPath": "/tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-runs/diagnostics/b3caf6a6aff8be66a673ad539a160eed",
+  "projectProcessIds": [
+    2345941,
+    2345943
+  ],
+  "selectedTest": null,
+  "testRun": null
+}

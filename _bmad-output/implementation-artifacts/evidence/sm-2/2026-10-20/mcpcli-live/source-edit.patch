@@ -1,0 +1,12 @@
+diff --git a/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs b/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs
+index f8256e1..5053428 100644
+--- a/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs
++++ b/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs
+@@ -9,6 +9,7 @@ public sealed class CatalogService(CatalogProvider provider, ExecutionAvailabili
+     /// <inheritdoc />
+     public CatalogLookupResult<ModulesDocument> ListModules()
+     {
++        Console.Error.WriteLine("mcpcli-sm2-20261020");
+         CatalogAccess access = provider.Get(strict);
+         if (access.Catalog is null)
+         {

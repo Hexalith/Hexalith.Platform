@@ -1,0 +1,29 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index c0b19e6d..4eb1fe9c 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -10,7 +10,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "4.34.0",
++      "version": "4.35.0",
+       "commands": [
+         "hexalith-module"
+       ],
+Submodule references/Hexalith.Builds 5d03f1db..fff4a212:
+  > test(tool): cover generic enrollment component defaults
+  > feat(tool): publish domain module enrollment validation
+  > build: sync local changes via /pushall
+  > build: merge test/1-11-review-pass5 into main via /pushall
+  > build: merge origin/main into main via /pushall
+  > build: sync local changes via /pushall
+  > build: sync local changes via /pushall
+Submodule references/Hexalith.Platform 17179e59..4f036ced:
+  > build(platform): merge approved adoption records
+  > feat(platform): accept released domain enrollment kit
+  > feat(platform): adopt Parties as reference module
+  > feat(platform): publish domain module enrollment kit
+  > fix(secrets): harden F1 transport and completion packets
+  > build: sync local changes via /pushall
+  > docs: decide the candidate and attachment policy (story 2.1)

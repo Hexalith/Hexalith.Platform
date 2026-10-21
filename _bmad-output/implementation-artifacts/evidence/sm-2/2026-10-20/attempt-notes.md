@@ -1,0 +1,12 @@
+# Attempt history and acceptance rules
+
+Only directories named `<module>-live` with a final `result.json`, restored source bytes, successful exact-run cleanup and coherent source-mapping identities count as accepted current-pin runtime evidence.
+
+- Initial source materialization exhausted disk while making large disposable checkouts. Only the disposable tree was removed. Root references were then preseeded from shared local Git objects, with sparse checkouts for unused content. Active repository files were preserved.
+- The first EventStore command reached readiness, then its process group ended with the command session. It supplied no breakpoint acceptance. The proof driver now stays alive through debugger attachment and exact-run down.
+- EventStore source-anchor assertions were corrected before the accepted edit was applied. The accepted `eventstore-live` result records the actual HTTP marker and breakpoint, with restoration and cleanup. `eventstore-baseline` separately records the original source breakpoint and absent marker.
+- The first Parties/Tenants pin overlays were staged without changing their committed owner identity. Their mapping recorded HXW008/HXW009 and an older catalog. These runs are archived under `*-superseded-staged-pins` and excluded from accepted current-pin results. `*-qualification` records local disposable commits aligning references with the exact Platform snapshot; application source and declarations are unchanged by those commits. Owner branches were not updated and qualification commits were not pushed.
+- Initial Tenants sparse preparation omitted an existing declared Memories test entry. It was restored from Git before the runnable baseline. The provisional edited Tenants run then exited before readiness (HXR025); its transcript remains archived. The proof's temporary await now follows the repository's ConfigureAwait policy. The accepted rerun, when present, uses coherent committed pins and all declared entry files.
+- The current proof driver rejects a run unless committed identity, composition identity and checkout identity all match Platform `4f036ced45aa40700948c19949bb874881c960b5` and catalog `fff4a212180d8cd1c5c0759655a9bc4fb6963c45` before any runtime observation is accepted.
+
+The source/Debug Platform snapshot is untagged. Any HXW011 finding is retained in source mappings; this work claims source-mode development evidence only.

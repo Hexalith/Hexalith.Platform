@@ -1,0 +1,13 @@
+diff --git a/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs b/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs
+index 8cb69909..2791f47d 100644
+--- a/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs
++++ b/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs
+@@ -8,6 +8,8 @@ public sealed class MvpComplianceWarningMiddleware(RequestDelegate next, IConfig
+     {
+         ArgumentNullException.ThrowIfNull(context);
+ 
++        context.Response.Headers["X-Hexalith-Sm2-Probe"] = "parties-sm2-20261020";
++
+         if (!configuration.GetValue<bool>(MvpComplianceWarning.ActivationConfigurationKey))
+         {
+             context.Response.OnStarting(static state =>

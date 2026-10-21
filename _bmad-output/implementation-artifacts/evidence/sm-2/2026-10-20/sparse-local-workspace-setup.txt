@@ -1,0 +1,285 @@
+$ ['git', 'config', '-f', '.gitmodules', '--get-regexp', '^submodule\\..*\\.path$']
+submodule.references/Hexalith.AI.Tools.path references/Hexalith.AI.Tools
+submodule.references/Hexalith.Agents.path references/Hexalith.Agents
+submodule.references/Hexalith.Builds.path references/Hexalith.Builds
+submodule.references/Hexalith.ChatBot.path references/Hexalith.ChatBot
+submodule.references/Hexalith.Commons.path references/Hexalith.Commons
+submodule.references/Hexalith.Conversations.path references/Hexalith.Conversations
+submodule.references/Hexalith.EventStore.path references/Hexalith.EventStore
+submodule.references/Hexalith.Folders.path references/Hexalith.Folders
+submodule.references/Hexalith.FrontComposer.path references/Hexalith.FrontComposer
+submodule.references/Hexalith.McpCli.path references/Hexalith.McpCli
+submodule.references/Hexalith.Memories.path references/Hexalith.Memories
+submodule.references/Hexalith.Parties.path references/Hexalith.Parties
+submodule.references/Hexalith.PolymorphicSerializations.path references/Hexalith.PolymorphicSerializations
+submodule.references/Hexalith.Projects.path references/Hexalith.Projects
+submodule.references/Hexalith.Tenants.path references/Hexalith.Tenants
+submodule.references/Hexalith.Timesheets.path references/Hexalith.Timesheets
+submodule.references/Hexalith.Works.path references/Hexalith.Works
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.AI.Tools']
+3f194e17174994d308ec84af9ee2b5aa68674d0d
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', '3f194e17174994d308ec84af9ee2b5aa68674d0d']
+HEAD is now at 3f194e1 docs: add section on Hexalith MCP and CLI ownership guidelines
+
+$ ['git', 'config', 'submodule.references/Hexalith.AI.Tools.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.AI.Tools']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Agents']
+d0d3fa3ff943cebb731fbb40c06d326d99141e42
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', 'd0d3fa3ff943cebb731fbb40c06d326d99141e42']
+HEAD is now at d0d3fa3 build: sync local changes via /pushall
+
+$ ['git', 'config', 'submodule.references/Hexalith.Agents.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Agents']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Builds']
+fff4a212180d8cd1c5c0759655a9bc4fb6963c45
+
+$ ['git', 'checkout', '--detach', 'fff4a212180d8cd1c5c0759655a9bc4fb6963c45']
+HEAD is now at fff4a21 test(tool): cover generic enrollment component defaults
+
+$ ['git', 'config', 'submodule.references/Hexalith.Builds.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Builds']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.ChatBot']
+dd640b6c3bbafe381808022c5b3973d6e7c4a720
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', 'dd640b6c3bbafe381808022c5b3973d6e7c4a720']
+HEAD is now at dd640b6 fix: story 1.6
+
+$ ['git', 'config', 'submodule.references/Hexalith.ChatBot.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Commons']
+5c23c818f639c5bb3175f964c5549440bd5b876d
+
+$ ['git', 'checkout', '--detach', '5c23c818f639c5bb3175f964c5549440bd5b876d']
+HEAD is now at 5c23c81 chore(release): 2.30.3 [skip ci]
+
+$ ['git', 'config', 'submodule.references/Hexalith.Commons.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Commons']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Conversations']
+2539b963486d2c6d96b6f035892f754f8d388d6c
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', '2539b963486d2c6d96b6f035892f754f8d388d6c']
+HEAD is now at 2539b96 feat(authoring): add measured SM-2 v2 evidence tooling
+
+$ ['git', 'config', 'submodule.references/Hexalith.Conversations.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Conversations']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.EventStore']
+f6b545cd02632f662136d0b4b8e6952baa7afec3
+
+$ ['git', 'checkout', '--detach', 'f6b545cd02632f662136d0b4b8e6952baa7afec3']
+HEAD is now at f6b545cd0 fix: story 3.21
+
+$ ['git', 'config', 'submodule.references/Hexalith.EventStore.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Folders']
+eed43a86c94b49e030b233beb37fe6128456f649
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', 'eed43a86c94b49e030b233beb37fe6128456f649']
+HEAD is now at eed43a86 build: sync local changes via /pushall
+
+$ ['git', 'config', 'submodule.references/Hexalith.Folders.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Folders']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.FrontComposer']
+ff93f53d25b3032fc2a0676b531258a2855949cc
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.FrontComposer', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.FrontComposer']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.FrontComposer'...
+done.
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', 'ff93f53d25b3032fc2a0676b531258a2855949cc']
+HEAD is now at ff93f53d docs(13.7): close reusable ux assertion story after strict validation
+
+$ ['git', 'config', 'submodule.references/Hexalith.FrontComposer.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.FrontComposer']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.McpCli']
+9354dc08176744c75c2ddb61d924c0948b373b98
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli'...
+done.
+
+$ ['git', 'checkout', '--detach', '9354dc08176744c75c2ddb61d924c0948b373b98']
+HEAD is now at 9354dc0 build: merge docs/1-11-review-pass5 into main via /pushall
+
+$ ['git', 'config', 'submodule.references/Hexalith.McpCli.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Memories']
+35df7e2080c369003cacac12f5b44117d7f3ed35
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.Memories', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Memories']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Memories'...
+done.
+
+$ ['git', 'checkout', '--detach', '35df7e2080c369003cacac12f5b44117d7f3ed35']
+HEAD is now at 35df7e20 fix: story 27.4
+
+$ ['git', 'config', 'submodule.references/Hexalith.Memories.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Memories']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Parties']
+35d891d202a87fd4f494f2cadd26c277df44b84a
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Parties']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Parties'...
+done.
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', '35d891d202a87fd4f494f2cadd26c277df44b84a']
+HEAD is now at 35d891d2 fix(platform): harden Parties enrollment checks
+
+$ ['git', 'config', 'submodule.references/Hexalith.Parties.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.PolymorphicSerializations']
+221ac4592ba908ae7661ba1fa9e2d1fcc23baee0
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.PolymorphicSerializations']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.PolymorphicSerializations'...
+done.
+
+$ ['git', 'checkout', '--detach', '221ac4592ba908ae7661ba1fa9e2d1fcc23baee0']
+HEAD is now at 221ac45 chore(release): 1.19.5 [skip ci]
+
+$ ['git', 'config', 'submodule.references/Hexalith.PolymorphicSerializations.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Projects']
+7096ee4caf4757a76e086f878c5f79bd52559d3e
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.Projects', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Projects']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Projects'...
+done.
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', '7096ee4caf4757a76e086f878c5f79bd52559d3e']
+HEAD is now at 7096ee4 fix: story 6.4
+
+$ ['git', 'config', 'submodule.references/Hexalith.Projects.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Projects']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Tenants']
+9a94131a26d0c5d80d5540706e267ee123d54b68
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Tenants']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Tenants'...
+done.
+
+$ ['git', 'checkout', '--detach', '9a94131a26d0c5d80d5540706e267ee123d54b68']
+HEAD is now at 9a94131a build: merge origin/main into main via /pushall
+
+$ ['git', 'config', 'submodule.references/Hexalith.Tenants.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Timesheets']
+d72899b4489aaca0b9a9b96d0ac267165920caf8
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.Timesheets', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Timesheets']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Timesheets'...
+done.
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', 'd72899b4489aaca0b9a9b96d0ac267165920caf8']
+HEAD is now at d72899b test(architecture): apply story 5.2 round-9 code review patches
+
+$ ['git', 'config', 'submodule.references/Hexalith.Timesheets.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Timesheets']
+
+$ ['git', 'rev-parse', 'HEAD:references/Hexalith.Works']
+696781961155d764ed805843f55b40dc5882e887
+
+$ ['git', 'clone', '--shared', '--no-checkout', '/home/administrator/projects/hexalith/platform/references/Hexalith.Works', '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Works']
+Cloning into '/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Works'...
+done.
+
+$ ['git', 'sparse-checkout', 'set', '--no-cone', '/module/', '/hexalith-llm-instructions.md', '/hexalith-git-instructions.md', '/.gitmodules']
+
+$ ['git', 'checkout', '--detach', '696781961155d764ed805843f55b40dc5882e887']
+HEAD is now at 6967819 fix: story 4.16
+
+$ ['git', 'config', 'submodule.references/Hexalith.Works.url', '/home/administrator/projects/hexalith/platform/references/Hexalith.Works']
+
+$ ['git', 'submodule', 'absorbgitdirs', '--', 'references/Hexalith.AI.Tools', 'references/Hexalith.Agents', 'references/Hexalith.Builds', 'references/Hexalith.ChatBot', 'references/Hexalith.Commons', 'references/Hexalith.Conversations', 'references/Hexalith.EventStore', 'references/Hexalith.Folders', 'references/Hexalith.FrontComposer', 'references/Hexalith.McpCli', 'references/Hexalith.Memories', 'references/Hexalith.Parties', 'references/Hexalith.PolymorphicSerializations', 'references/Hexalith.Projects', 'references/Hexalith.Tenants', 'references/Hexalith.Timesheets', 'references/Hexalith.Works']
+Migrating git directory of 'references/Hexalith.AI.Tools' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.AI.Tools/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.AI.Tools'
+Migrating git directory of 'references/Hexalith.Agents' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Agents/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Agents'
+Migrating git directory of 'references/Hexalith.Builds' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Builds/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Builds'
+Migrating git directory of 'references/Hexalith.ChatBot' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.ChatBot/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.ChatBot'
+Migrating git directory of 'references/Hexalith.Commons' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Commons/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Commons'
+Migrating git directory of 'references/Hexalith.Conversations' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Conversations/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Conversations'
+Migrating git directory of 'references/Hexalith.EventStore' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.EventStore/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.EventStore'
+Migrating git directory of 'references/Hexalith.Folders' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Folders/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Folders'
+Migrating git directory of 'references/Hexalith.FrontComposer' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.FrontComposer/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.FrontComposer'
+Migrating git directory of 'references/Hexalith.McpCli' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.McpCli'
+Migrating git directory of 'references/Hexalith.Memories' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Memories/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Memories'
+Migrating git directory of 'references/Hexalith.Parties' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Parties/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Parties'
+Migrating git directory of 'references/Hexalith.PolymorphicSerializations' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.PolymorphicSerializations/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.PolymorphicSerializations'
+Migrating git directory of 'references/Hexalith.Projects' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Projects/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Projects'
+Migrating git directory of 'references/Hexalith.Tenants' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Tenants/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Tenants'
+Migrating git directory of 'references/Hexalith.Timesheets' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Timesheets/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Timesheets'
+Migrating git directory of 'references/Hexalith.Works' from
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Works/.git' to
+'/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/.git/modules/references/Hexalith.Works'
+
+$ ['git', 'submodule', 'status']
+ 3f194e17174994d308ec84af9ee2b5aa68674d0d references/Hexalith.AI.Tools (heads/main)
+ d0d3fa3ff943cebb731fbb40c06d326d99141e42 references/Hexalith.Agents (v1.1.0-5-gd0d3fa3)
+ fff4a212180d8cd1c5c0759655a9bc4fb6963c45 references/Hexalith.Builds (v4.35.0)
+ dd640b6c3bbafe381808022c5b3973d6e7c4a720 references/Hexalith.ChatBot (v1.82.0-217-gdd640b6)
+ 5c23c818f639c5bb3175f964c5549440bd5b876d references/Hexalith.Commons (v2.30.3)
+ 2539b963486d2c6d96b6f035892f754f8d388d6c references/Hexalith.Conversations (v1.2.0-24-g2539b96)
+ f6b545cd02632f662136d0b4b8e6952baa7afec3 references/Hexalith.EventStore (v3.126.0-19-gf6b545cd0)
+ eed43a86c94b49e030b233beb37fe6128456f649 references/Hexalith.Folders (v1.3.0-7-geed43a86)
+ ff93f53d25b3032fc2a0676b531258a2855949cc references/Hexalith.FrontComposer (v4.7.0-14-gff93f53d)
+ 9354dc08176744c75c2ddb61d924c0948b373b98 references/Hexalith.McpCli (v1.0.0-32-g9354dc0)
+ 35df7e2080c369003cacac12f5b44117d7f3ed35 references/Hexalith.Memories (v2.29.5)
+ 35d891d202a87fd4f494f2cadd26c277df44b84a references/Hexalith.Parties (v1.5.0-30-g35d891d2)
+ 221ac4592ba908ae7661ba1fa9e2d1fcc23baee0 references/Hexalith.PolymorphicSerializations (v1.19.5)
+ 7096ee4caf4757a76e086f878c5f79bd52559d3e references/Hexalith.Projects (v1.1.0-139-g7096ee4)
+ 9a94131a26d0c5d80d5540706e267ee123d54b68 references/Hexalith.Tenants (v5.9.0-24-g9a94131a)
+ d72899b4489aaca0b9a9b96d0ac267165920caf8 references/Hexalith.Timesheets (v1.0.0-10-gd72899b)
+ 696781961155d764ed805843f55b40dc5882e887 references/Hexalith.Works (v1.0.2-7-g6967819)
+
+$ ['git', 'status', '--porcelain']
+

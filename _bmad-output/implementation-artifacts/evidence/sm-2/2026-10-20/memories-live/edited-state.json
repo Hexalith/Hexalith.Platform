@@ -1,0 +1,129 @@
+{
+  "schema": "hexalith.g4-run-state.v1",
+  "runId": "c656c5d8acef92545ac964079cc81790",
+  "status": "Ready",
+  "manifestHash": "1265D887617A15B904D88F0FF42AF3E118D418B449B3E3F73796EE509D1A361F",
+  "workspace": "/tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/c656c5d8acef92545ac964079cc81790",
+  "appHostProcessId": 2602369,
+  "appHostStartedAt": "2026-10-20T15:15:10.3264037+00:00",
+  "ruleId": null,
+  "updatedAt": "2026-10-20T15:16:18.9331403+00:00",
+  "startupDurationSeconds": 85.944285,
+  "readinessResults": [
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2605840
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2605837
+    },
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2614665
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2614646
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2614641
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2614640
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2614626
+    },
+    {
+      "name": "memories-dapr-cli",
+      "kind": "executable",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": 2614629
+    },
+    {
+      "name": "memories-graph",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "memories-vectors",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    },
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "module-ready",
+      "processId": null
+    }
+  ],
+  "effectiveDeadlineSeconds": 600,
+  "effectiveDeadlineIsOverride": false,
+  "effectiveDeadlineJustification": null,
+  "effectiveDeadlineModuleId": null,
+  "diagnosticsPath": "/tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-runs/diagnostics/c656c5d8acef92545ac964079cc81790",
+  "projectProcessIds": [
+    2605837,
+    2605840,
+    2614626,
+    2614629,
+    2614640,
+    2614641,
+    2614646,
+    2614665
+  ],
+  "selectedTest": null,
+  "testRun": null
+}

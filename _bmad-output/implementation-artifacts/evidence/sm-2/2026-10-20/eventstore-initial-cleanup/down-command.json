@@ -1,0 +1,23 @@
+{
+  "command": [
+    "dotnet",
+    "tool",
+    "run",
+    "hexalith-module",
+    "--",
+    "down",
+    "--manifest",
+    "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+    "--run-id",
+    "a9a39d08791492d6082c5ffa6f04c7ca"
+  ],
+  "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform",
+  "startedAtUtc": "2026-10-20T14:57:07.338224+00:00",
+  "finishedAtUtc": "2026-10-20T14:57:07.728702+00:00",
+  "durationSeconds": 0.39,
+  "exitCode": 0,
+  "environment": {
+    "XDG_DATA_HOME": "/tmp/hexalith-sm2-20261020-zw8t88ea/state",
+    "HEXALITH_DAPR_HOME": "/home/administrator/.hexalith/dapr/1.18.2"
+  }
+}

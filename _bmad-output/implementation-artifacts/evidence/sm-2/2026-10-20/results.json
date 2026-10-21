@@ -1,0 +1,82 @@
+{
+  "platformRevision": "4f036ced45aa40700948c19949bb874881c960b5",
+  "toolVersion": "4.35.0",
+  "overallSm2SignOff": "open",
+  "modules": [
+    {
+      "module": "EventStore",
+      "runtimeProof": "passed",
+      "sourceRevision": "f6b545cd02632f662136d0b4b8e6952baa7afec3",
+      "editedRunId": "b3caf6a6aff8be66a673ad539a160eed",
+      "breakpointHit": true,
+      "sourceEditMarker": "eventstore-sm2-20261020",
+      "sourceRestored": true,
+      "cleanupPassed": true,
+      "workspaceKind": "technical",
+      "adoptionAndOwnerAcceptance": "owner acceptance of this evidence pending",
+      "evidence": "eventstore-live"
+    },
+    {
+      "module": "Memories",
+      "runtimeProof": "passed",
+      "sourceRevision": "35df7e2080c369003cacac12f5b44117d7f3ed35",
+      "editedRunId": "c656c5d8acef92545ac964079cc81790",
+      "breakpointHit": true,
+      "sourceEditMarker": "memories-sm2-20261020",
+      "sourceRestored": true,
+      "cleanupPassed": true,
+      "workspaceKind": "technical",
+      "adoptionAndOwnerAcceptance": "owner acceptance of this evidence pending",
+      "evidence": "memories-live"
+    },
+    {
+      "module": "McpCli",
+      "runtimeProof": "passed",
+      "sourceRevision": "9354dc08176744c75c2ddb61d924c0948b373b98",
+      "editedRunId": "581a1a23b77b76ddc0245ce9c69ee0bf",
+      "breakpointHit": true,
+      "sourceEditMarker": "mcpcli-sm2-20261020",
+      "sourceRestored": true,
+      "cleanupPassed": true,
+      "workspaceKind": "technical",
+      "adoptionAndOwnerAcceptance": "owner acceptance of this evidence pending",
+      "evidence": "mcpcli-live"
+    },
+    {
+      "module": "Parties",
+      "runtimeProof": "passed",
+      "sourceRevision": "413f63b0373c1be4a65597d4920fbebf8b92a938",
+      "editedRunId": "d0525a7c366877534da69906b5357513",
+      "breakpointHit": true,
+      "sourceEditMarker": "parties-sm2-20261020",
+      "sourceRestored": true,
+      "cleanupPassed": true,
+      "workspaceKind": "domain",
+      "adoptionAndOwnerAcceptance": "open; see kit-preflight-gaps.md",
+      "evidence": "parties-live"
+    },
+    {
+      "module": "Tenants",
+      "runtimeProof": "passed",
+      "sourceRevision": "f92546366fa60feb6173a7c76811fe19ea874d72",
+      "editedRunId": "61b362eebf8f5be4fd3806ab35a47884",
+      "breakpointHit": true,
+      "sourceEditMarker": "tenants-sm2-20261020",
+      "sourceRestored": true,
+      "cleanupPassed": true,
+      "workspaceKind": "domain",
+      "adoptionAndOwnerAcceptance": "open; see kit-preflight-gaps.md",
+      "evidence": "tenants-live"
+    },
+    {
+      "module": "Folders",
+      "runtimeProof": "open",
+      "reason": "No v2 declaration at the Platform-recorded revision"
+    },
+    {
+      "module": "Projects",
+      "runtimeProof": "open",
+      "reason": "No v2 declaration at the Platform-recorded revision"
+    }
+  ]
+}

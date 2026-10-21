@@ -4,6 +4,7 @@ import hashlib
 import http.client
 import io
 import json
+import socket
 from pathlib import Path
 import tempfile
 import tarfile
@@ -254,7 +255,65 @@ class WorksEvidenceGateTests(unittest.TestCase):
         ports = verify_works_host.select_control_plane_ports()
         self.assertEqual(set(ports), {'sentry', 'placement', 'scheduler'})
         self.assertEqual(len(set(ports.values())), 3)
-        self.assertTrue(all(type(port) is int and 1024 <= port <= 65535 for port in ports.values()))
+        self.assertTrue(all(type(port) is int and 1024 <= port < 65535 for port in ports.values()))
+        lower, upper = verify_works_host.host_ephemeral_port_range()
+        self.assertTrue(all(not lower <= port <= upper for port in ports.values()))
+
+    def test_control_plane_ports_cannot_collide_with_later_application_allocator(self):
+        # A very wide allocator forces explicit selection into its small complement.
+        with patch.object(verify_works_host, 'host_ephemeral_port_range', return_value=(1024, 65000)):
+            ports = verify_works_host.select_control_plane_ports()
+        self.assertTrue(all(65000 < port < 65535 for port in ports.values()))
+        with self.assertRaisesRegex(ValueError, 'outside the host ephemeral range'):
+            verify_works_host.select_control_plane_ports((1024, 65535))
+
+    def test_docker_wsl_boundary_port_cannot_be_selected_even_when_socket_bind_succeeds(self):
+        # A free socket is insufficient: an actual owned Alpine publish on 65535 times out.
+        with patch.object(verify_works_host.socket, 'socket') as socket_factory:
+            ports = verify_works_host.select_control_plane_ports((1024, 65531), ())
+        self.assertTrue(all(65531 < port < 65535 for port in ports.values()))
+        self.assertNotIn(65535, [call.args[0][1] for call in socket_factory.return_value.bind.call_args_list])
+        with self.assertRaisesRegex(ValueError, 'outside the host ephemeral range'):
+            verify_works_host.select_control_plane_ports((1024, 65534), ())
+
+    def test_administrator_reserved_ports_are_never_selected(self):
+        ports = verify_works_host.select_control_plane_ports((1024, 65000), ((65530, 65534),))
+        self.assertTrue(all(65000 < port < 65530 for port in ports.values()))
+        with self.assertRaisesRegex(ValueError, 'outside the host ephemeral range'):
+            verify_works_host.select_control_plane_ports((1024, 65000), ((65001, 65535),))
+
+    def test_reserved_port_ranges_are_read_and_invalid_or_unreadable_policy_refuses(self):
+        path = self.directory() / 'reserved-ports'
+        with self.assertRaisesRegex(ValueError, 'Cannot establish'):
+            verify_works_host.host_reserved_port_ranges(path)
+        for value, expected in [('', ()), ('15001,65000-65010', ((15001, 15001), (65000, 65010)))]:
+            path.write_text(value)
+            self.assertEqual(verify_works_host.host_reserved_port_ranges(path), expected)
+        for value in ('invalid', '65000-1024', '0', '1024,', '65536', '1-2-3'):
+            with self.subTest(value=value):
+                path.write_text(value)
+                with self.assertRaisesRegex(ValueError, 'Cannot establish'):
+                    verify_works_host.host_reserved_port_ranges(path)
+
+    def test_control_plane_selection_rejects_an_ipv6_only_occupied_port(self):
+        candidate = verify_works_host.select_control_plane_ports()['sentry']
+        with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) as occupied:
+            occupied.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 1)
+            occupied.bind(('::1', candidate))
+            self.assertNotIn(candidate, verify_works_host.select_control_plane_ports().values())
+            # The failed IPv6 attempt must release its successful IPv4 probe too.
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ipv4:
+                ipv4.bind(('127.0.0.1', candidate))
+
+    def test_unreadable_or_invalid_host_ephemeral_range_refuses(self):
+        path = self.directory() / 'ephemeral-range'
+        with self.assertRaisesRegex(ValueError, 'Cannot establish'):
+            verify_works_host.host_ephemeral_port_range(path)
+        for value in ('invalid', '32768', '65000 1024', '0 65535', '1024 65536'):
+            with self.subTest(value=value):
+                path.write_text(value)
+                with self.assertRaisesRegex(ValueError, 'Cannot establish'):
+                    verify_works_host.host_ephemeral_port_range(path)
 
     def test_another_host_or_scheduler_cannot_qualify_platform(self):
         root = self.directory()

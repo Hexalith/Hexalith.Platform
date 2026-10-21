@@ -1,0 +1,72 @@
+From f92546366fa60feb6173a7c76811fe19ea874d72 Mon Sep 17 00:00:00 2001
+From: SM-2 Verification <sm2@example.invalid>
+Date: Tue, 20 Oct 2026 17:38:08 +0200
+Subject: [PATCH] test(platform): qualify current SM-2 pins
+
+---
+ .config/dotnet-tools.json         | 13 +++++++++++++
+ references/Hexalith.Builds        |  2 +-
+ references/Hexalith.FrontComposer |  2 +-
+ references/Hexalith.McpCli        |  2 +-
+ references/Hexalith.Memories      |  2 +-
+ references/Hexalith.Platform      |  2 +-
+ 6 files changed, 18 insertions(+), 5 deletions(-)
+ create mode 100644 .config/dotnet-tools.json
+
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+new file mode 100644
+index 00000000..57c78bb7
+--- /dev/null
++++ b/.config/dotnet-tools.json
+@@ -0,0 +1,13 @@
++{
++  "version": 1,
++  "isRoot": true,
++  "tools": {
++    "hexalith.builds.module.cli": {
++      "version": "4.35.0",
++      "commands": [
++        "hexalith-module"
++      ],
++      "rollForward": false
++    }
++  }
++}
+diff --git a/references/Hexalith.Builds b/references/Hexalith.Builds
+index 5d03f1db..fff4a212 160000
+--- a/references/Hexalith.Builds
++++ b/references/Hexalith.Builds
+@@ -1 +1 @@
+-Subproject commit 5d03f1db9c38db34ecac7fe6048937478ffb82cc
++Subproject commit fff4a212180d8cd1c5c0759655a9bc4fb6963c45
+diff --git a/references/Hexalith.FrontComposer b/references/Hexalith.FrontComposer
+index a706a8ae..ff93f53d 160000
+--- a/references/Hexalith.FrontComposer
++++ b/references/Hexalith.FrontComposer
+@@ -1 +1 @@
+-Subproject commit a706a8ae261268f839feb743e930e5311bb2a95b
++Subproject commit ff93f53d25b3032fc2a0676b531258a2855949cc
+diff --git a/references/Hexalith.McpCli b/references/Hexalith.McpCli
+index 040fd406..9354dc08 160000
+--- a/references/Hexalith.McpCli
++++ b/references/Hexalith.McpCli
+@@ -1 +1 @@
+-Subproject commit 040fd406d71723772fb14cb3a3bac9434003b6a4
++Subproject commit 9354dc08176744c75c2ddb61d924c0948b373b98
+diff --git a/references/Hexalith.Memories b/references/Hexalith.Memories
+index c082f815..35df7e20 160000
+--- a/references/Hexalith.Memories
++++ b/references/Hexalith.Memories
+@@ -1 +1 @@
+-Subproject commit c082f8151328b1ac91939cda8733ab78ae68e1c4
++Subproject commit 35df7e2080c369003cacac12f5b44117d7f3ed35
+diff --git a/references/Hexalith.Platform b/references/Hexalith.Platform
+index 11893ca9..4f036ced 160000
+--- a/references/Hexalith.Platform
++++ b/references/Hexalith.Platform
+@@ -1 +1 @@
+-Subproject commit 11893ca9fd85644cab8a0414b2076bf346f108f6
++Subproject commit 4f036ced45aa40700948c19949bb874881c960b5
+-- 
+2.53.0
+

@@ -84,32 +84,55 @@ internal static class CustodyBindingLocalTransport
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             timeout.CancelAfter(60_000);
             string result = "ReceivedSyntheticUnverified";
+            string grpcStatus = "OK";
+            long? cancellationUnixMilliseconds = null;
+            int? lookupAttempts = null;
+            string? lookupIdentity = null;
+            string? lookupOriginalDataSha256 = null;
+            string? lookupOriginalProducer = null;
             try
             {
                 var binding = new BindingRequest("synthetic-configured-role", operation) { Data = data };
                 foreach (var entry in metadata) { binding.Metadata.Add(entry.Key, entry.Value); }
-                Task send = client.InvokeBindingAsync(binding, timeout.Token);
+                Task<BindingResponse> send = client.InvokeBindingAsync(binding, timeout.Token);
                 if (cancelMilliseconds > 0)
                 {
                     bool admitted = false;
                     for (int attempt = 0; attempt < 1000 && !send.IsCompleted; attempt++)
                     {
                         if (File.ReadAllText(config.SinkObservations).Contains("\"identity\":\"" + syntheticIdentity + "\"", StringComparison.Ordinal))
-                        { admitted = true; timeout.Cancel(); break; }
+                        { admitted = true; cancellationUnixMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); timeout.Cancel(); break; }
                         await Task.Delay(10, cancellationToken);
                     }
                     if (!admitted) { throw new InvalidOperationException("Cancellation fault requires an independently observed sink admission."); }
                 }
-                await send;
+                BindingResponse received = await send;
+                if (operation == "fixture-status")
+                {
+                    using var status = JsonDocument.Parse(received.Data);
+                    lookupIdentity = status.RootElement.GetProperty("identity").GetString();
+                    lookupAttempts = status.RootElement.GetProperty("attempts").GetInt32();
+                    lookupOriginalDataSha256 = status.RootElement.GetProperty("originalDataSha256").GetString();
+                    lookupOriginalProducer = status.RootElement.GetProperty("originalProducerIncarnation").GetString();
+                    if (lookupIdentity != syntheticIdentity || !status.RootElement.GetProperty("statusOnly").GetBoolean()
+                        || status.RootElement.GetProperty("CompletionPermission").GetBoolean()
+                        || !StringComparer.OrdinalIgnoreCase.Equals(lookupOriginalDataSha256, CustodyBindingContract.Hash(data)))
+                    { throw new InvalidOperationException("Synthetic status lookup changed the original identity/digest or claimed authority."); }
+                }
             }
-            catch (Exception exception) when (exception is OperationCanceledException or Grpc.Core.RpcException or HttpRequestException)
+            catch (Exception exception) when (exception is OperationCanceledException or Grpc.Core.RpcException or HttpRequestException or Dapr.DaprException)
             {
                 result = "Unknown:" + exception.GetType().Name;
+                grpcStatus = (exception as Grpc.Core.RpcException ?? exception.InnerException as Grpc.Core.RpcException)?.StatusCode.ToString() ?? "CancelledOrUnavailable";
             }
             observations.Add(new { Name = name, Operation = operation, DataBytes = data.Length,
                 DataSha256 = CustodyBindingContract.Hash(data), SdkCalls = handler.Calls,
                 Result = result, ConfiguredRetries = 0, MaxSendMessageBytes = 134_217_728,
-                MaxReceiveMessageBytes = 1_048_575, CompletionPermission = false });
+                MaxReceiveMessageBytes = 1_048_575, GrpcStatus = grpcStatus,
+                ProcessId = Environment.ProcessId, ChannelIncarnation = "sdk-" + Environment.ProcessId + "-" + name,
+                LookupAttempts = lookupAttempts, LookupIdentity = lookupIdentity, LookupOriginalDataSha256 = lookupOriginalDataSha256,
+                LookupOriginalProducerIncarnation = lookupOriginalProducer,
+                CancellationUnixMilliseconds = cancellationUnixMilliseconds, CompletionPermission = false });
             // Allow a deliberately late fixture delivery to remain observable
             // before the next independent original. This is no closure proof.
             if (cancelMilliseconds > 0) { await Task.Delay(500, cancellationToken); }

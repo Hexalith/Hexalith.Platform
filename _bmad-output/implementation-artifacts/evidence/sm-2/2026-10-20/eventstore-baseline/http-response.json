@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "probeHeader": null,
+  "partiesWarning": null,
+  "body": "{\n  \"status\": \"Healthy\",\n  \"results\": {\n    \"dapr-sidecar\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Dapr sidecar is responsive.\",\n      \"duration\": \"00:00:00.0007234\",\n      \"data\": {}\n    },\n    \"dapr-actor-placement\": {\n      \"status\": \"Healthy\",\n      \"description\": \"DAPR actor host ready (placement: connected).\",\n      \"duration\": \"00:00:00.0130425\",\n      \"data\": {}\n    },\n    \"dapr-statestore\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Dapr state store \\u0027statestore\\u0027 is accessible.\",\n      \"duration\": \"00:00:00.0119617\",\n      \"data\": {}\n    },\n    \"dapr-pubsub\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Dapr pub/sub component \\u0027pubsub\\u0027 is available (type: pubsub.redis).\",\n      \"duration\": \"00:00:00.0119486\",\n      \"data\": {}\n    },\n    \"dapr-configstore\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Dapr config store \\u0027configstore\\u0027 is accessible (type: configuration.redis).\",\n      \"duration\": \"00:00:00.0118926\",\n      \"data\": {}\n    },\n    \"dapr-app-channel-token\": {\n      \"status\": \"Healthy\",\n      \"description\": null,\n      \"duration\": \"00:00:00.0000069\",\n      \"data\": {}\n    },\n    \"projection-delivery-writer-protocol\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Projection delivery writer protocol v2 is active.\",\n      \"duration\": \"00:00:00.0122210\",\n      \"data\": {}\n    },\n    \"projection-delivery-unresolved-conflict\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Projection delivery has no unresolved durable conflict evidence.\",\n      \"duration\": \"00:00:00.0125218\",\n      \"data\": {}\n    }\n  }\n}",
+  "pid": 2228505,
+  "source": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs",
+  "line": 221,
+  "url": "http://localhost:44257/ready",
+  "breakpointHit": true
+}

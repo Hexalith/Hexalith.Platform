@@ -1,0 +1,12 @@
+diff --git a/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs b/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs
+index 30795810f..a64a0a379 100644
+--- a/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs
++++ b/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs
+@@ -218,6 +218,7 @@ public static class EventStoreServiceCollectionExtensions {
+             // no human tenant claim. Unverified traffic remains in the anonymous partition.
+             var tenantLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => {
+                 // Health endpoints must never be rate limited (H2)
++                context.Response.Headers["X-Hexalith-Sm2-Probe"] = "eventstore-sm2-20261020";
+                 string path = context.Request.Path.Value ?? string.Empty;
+                 if (path.Equals("/health", StringComparison.OrdinalIgnoreCase) ||
+                     path.Equals("/alive", StringComparison.OrdinalIgnoreCase) ||

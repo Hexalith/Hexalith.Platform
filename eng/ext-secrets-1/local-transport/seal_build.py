@@ -8,11 +8,24 @@ from pathlib import Path
 import subprocess
 import tarfile
 
-from build import DAPR_ARCHIVE_SHA256, GO_ARCHIVE_SHA256, PIN, GO_VERSION, ROOT
+from build import DAPR_ARCHIVE_SHA256, GO_ARCHIVE_SHA256, PIN, GO_VERSION, ROOT, isolated_go_environment
 
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def sdk_dependency_closure(assembly):
+    assembly = Path(assembly).resolve()
+    # Seal every app-local file, including managed/native assemblies, deps,
+    # runtimeconfig, apphost and configuration/resources loaded from this folder.
+    paths = [p for p in sorted(assembly.parent.rglob("*")) if p.is_file()]
+    if any(not p.resolve().is_relative_to(assembly.parent) for p in paths):
+        raise ValueError("SDK dependency escapes app-local closure")
+    files = {str(p.resolve()): sha(p) for p in paths}
+    if str(assembly) not in files or str(assembly.with_suffix(".deps.json")) not in files or str(assembly.with_suffix(".runtimeconfig.json")) not in files:
+        raise ValueError("Executable, deps and runtimeconfig are required")
+    return files
 
 
 def seal(build, assembly):
@@ -40,14 +53,15 @@ def seal(build, assembly):
         raise ValueError("Unexpected/missing pinned runtime source file")
     fixture = build / "source/fixture"
     local = Path(__file__).resolve().parent
-    for name in ("main.go", "go.sum"):
+    source_names = sorted(p.name for p in local.glob("*.go")) + ["go.sum"]
+    for name in source_names:
         if sha(fixture / name) != sha(local / name):
             raise ValueError("Built fixture source changed: " + name)
     fixture_mod = (fixture / "go.mod").read_text().split("\nreplace ")[0].strip()
     if fixture_mod != (local / "go.mod").read_text().strip():
         raise ValueError("Built fixture dependency lock changed")
     go = build / "tools" / f"golang.org/toolchain@{GO_VERSION}/bin/go"
-    environment = dict(os.environ, GOTOOLCHAIN="local")
+    environment = isolated_go_environment(build)
     for name in ("daprd-stable", "f1fixture"):
         info = subprocess.check_output([str(go), "version", "-m", str(build / "bin" / name)], env=environment).decode()
         (build / (name + "-build-info.log")).write_text(info)
@@ -62,11 +76,11 @@ def seal(build, assembly):
     manifest = {"daprCommit": PIN, "runtimeFileCount": len(tree), "runtimeChangedFiles": changed,
                 "archiveSha256": sha(archive_path), "goToolchainArchiveSha256": sha(toolzip),
                 "patchedSourceSha256": tree["pkg/api/grpc/server.go"], "dependencyOrigins": origins,
-                "fixtureSources": {name: sha(fixture / name) for name in ("main.go", "go.mod", "go.sum")},
+                "fixtureSources": {name: sha(fixture / name) for name in source_names + ["go.mod"]},
                 "generatedSources": {name: digest for name, digest in tree.items() if name.startswith("pkg/proto/")},
                 "retainedProtocols": {name: digest for name, digest in tree.items() if name in ("dapr/proto/components/v1/bindings.proto", "dapr/proto/components/v1/common.proto")},
                 "binaries": {name: sha(build / "bin" / name) for name in ("daprd-stable", "f1fixture")},
-                "sdkDriver": {str(p): sha(p) for p in (assembly, assembly.parent / "Dapr.Client.dll", assembly.with_suffix(".deps.json"))}}
+                "sdkDriver": sdk_dependency_closure(assembly), "goBuildEnvironmentSha256": sha(build / "go-build-environment.json")}
     (build / "runtime-source-tree-sha256.json").write_text(json.dumps(tree, sort_keys=True, indent=2) + "\n")
     (build / "sealed-build.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
     return manifest

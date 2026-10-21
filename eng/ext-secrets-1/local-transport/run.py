@@ -36,6 +36,35 @@ def port():
         return sock.getsockname()[1]
 
 
+def launch_bound(argv, environment, cwd, stream):
+    executable = Path(argv[0]) if Path(argv[0]).is_absolute() else Path(shutil.which(str(argv[0])))
+    # The kernel executes this opened inode, so even a process that exits before
+    # /proc/PID/exe can be opened is bound to the measured executable bytes.
+    with executable.open("rb") as image:
+        digest = hashlib.file_digest(image, "sha256").hexdigest()
+        image.seek(0)
+        stat = os.fstat(image.fileno())
+        process = subprocess.Popen(list(map(str, argv)), executable=f"/proc/self/fd/{image.fileno()}", pass_fds=(image.fileno(),),
+                                   env=environment, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
+        process._f1_image_fd = os.dup(image.fileno())
+        binding = {"pid": process.pid, "startTicks": Path(f"/proc/{process.pid}/stat").read_text().split()[21],
+                   "executionImageSha256": digest, "imageBinding": "opened-executable-fd",
+                   "executableFile": str(executable), "executableDevice": stat.st_dev, "executableInode": stat.st_ino}
+    return process, binding
+
+
+def terminal_binding(process, binding):
+    # wait()/poll() is the OS terminal observation for this owned PID. The same
+    # opened image inode remains available even after /proc/PID/exe disappears.
+    with os.fdopen(process._f1_image_fd, "rb") as image:
+        image.seek(0)
+        digest = hashlib.file_digest(image, "sha256").hexdigest()
+        stat = os.fstat(image.fileno())
+    return {"terminalPid": process.pid, "terminalStartTicks": binding["startTicks"],
+            "terminalImageSha256": digest, "terminalExecutableDevice": stat.st_dev, "terminalExecutableInode": stat.st_ino,
+            "terminalObservation": "waitpid-owned-child-and-opened-image-fd"}
+
+
 def run(build, assembly, output):
     build, assembly, output = map(lambda p: Path(p).resolve(), (build, assembly, output))
     if output.exists() or output.is_relative_to(ROOT):
@@ -93,10 +122,10 @@ spec:
 
     def start(name, argv, extra=None):
         stream = (output / (name + ".log")).open("wb")
-        process = subprocess.Popen(list(map(str, argv)), env=dict(environment, **(extra or {})), cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
-        processes.append((name, process, stream))
-        commands.append({"name": name, "argv": list(map(str, argv)), "pid": process.pid,
-                         "startTicks": Path(f"/proc/{process.pid}/stat").read_text().split()[21]})
+        process, binding = launch_bound(argv, dict(environment, **(extra or {})), ROOT, stream)
+        processes.append((name, process, stream, binding))
+        commands.append({"name": name, "argv": list(map(str, argv)), **binding,
+                         "sdkDriverSha256": sha(assembly) if name.startswith("sdk-") else None})
         write(output / "commands.json", commands)
         return process
 
@@ -118,7 +147,7 @@ spec:
     probe_index = 0
     probes = []
 
-    def probe(name, hop="api", data=0, metadata=None, operation="fixture-send", protobuf=0, raw_headers=None, compressed=False):
+    def probe(name, hop="api", data=0, metadata=None, operation="fixture-send", protobuf=0, raw_headers=None, compressed=False, nested=False):
         nonlocal probe_index
         probe_index += 1
         target = f"127.0.0.1:{api_proxy}" if hop == "api" else str(discovery / "f1fixture.sock")
@@ -129,6 +158,8 @@ spec:
             argv += ["--header-list-bytes", str(raw_headers)]
         if compressed:
             argv += ["--compressed"]
+        if nested:
+            argv += ["--nested-unknown"]
         if raw_headers is None and not compressed:
             argv += ["--data-bytes", str(data), "--metadata", json.dumps(metadata or {}, separators=(",", ":")), "--operation", operation]
             if protobuf:
@@ -155,6 +186,8 @@ spec:
         component = start("component-1", [binary, "--mode", "component", "--listen", implementation, "--target", sink_socket,
                                             "--log", output / "component.jsonl", "--incarnation", "component-1"])
         ready(implementation, component)
+        socket_incarnations = [{"incarnation": "component-1", "pid": component.pid, "inode": implementation.stat().st_ino,
+                                "device": implementation.stat().st_dev, "mode": oct(implementation.stat().st_mode & 0o777)}]
         component_proxy = start("component-observer", [binary, "--mode", "proxy", "--listen", discovery / "f1fixture.sock", "--target", implementation,
                                                         "--hop", "component", "--log", output / "component-wire.jsonl"])
         ready(discovery / "f1fixture.sock", component_proxy)
@@ -192,6 +225,7 @@ spec:
             for n in (65535, 65536, 65537):
                 probe(f"header-{hop}-{n}", hop=hop, raw_headers=n)
             probe(f"compression-{hop}", hop=hop, compressed=True)
+            probe(f"nested-request-{hop}", hop=hop, nested=True)
         # Bound the exact received component map. Then exercise the Dapr path:
         # its generated/forwarded entries are measured, never assumed absent.
         probe("metadata-baseline")
@@ -217,6 +251,7 @@ spec:
             for n in (1048575, 1048576, 1048577):
                 probe(f"response-{hop}-{n}", hop=hop, operation="fixture-response", metadata={"response-wire-bytes": str(n)})
             probe(f"response-unknown-{hop}", hop=hop, operation="fixture-response", metadata={"response-unknown": "true"})
+            probe(f"response-nested-unknown-{hop}", hop=hop, operation="fixture-response", metadata={"response-nested-unknown": "true"})
             probe(f"response-compression-{hop}", hop=hop, operation="fixture-response", metadata={"response-compression": "true"})
         sdk("sdk-faults", ["cancellation", "status-cancellation", "late-duplicate", "status-late-duplicate", "lost-result", "status-lost-result", "reconnect"])
         component.terminate(); component.wait(timeout=10)
@@ -226,6 +261,9 @@ spec:
         replacement = start("component-2", [binary, "--mode", "component", "--listen", implementation, "--target", sink_socket,
                                              "--log", output / "component.jsonl", "--incarnation", "component-2"])
         ready(implementation, replacement)
+        socket_incarnations.append({"incarnation": "component-2", "pid": replacement.pid, "inode": implementation.stat().st_ino,
+                                    "device": implementation.stat().st_dev, "mode": oct(implementation.stat().st_mode & 0o777)})
+        write(output / "socket-incarnations.json", socket_incarnations)
         time.sleep(2)
         sdk("sdk-reconnect-lookup", ["status-reconnect"])
         write(output / "execution.json", {"kind": "ExecutedSyntheticLocalF1Transport", "status": "MeasuredLocalTransportOnly",
@@ -233,18 +271,18 @@ spec:
               "PhysicalEvidence": False, "SemanticComponentQualified": False, "ProductionInvokerActivated": False,
               "buildRoot": str(build), "assembly": str(assembly), "binarySha256": {"daprd": sha(daprd), "fixture": sha(binary), "sdkDriver": sha(assembly)},
               "configuredRetries": 0, "transparentDuplicatesExcluded": False,
-              "responseCompression": "No compressor registered; actual gzip request refusal separately measured; fixture refuses compressed response selection before send",
+              "responseCompression": "No component compressor registered; actual component gzip requests refused, stock API gzip requests accepted/decompressed; fixture refuses compressed response selection before send",
               "incarnations": ["component-1", "component-2"], "originalUncertaintyRetained": True})
     finally:
         cleanup = []
-        for name, process, stream in reversed(processes):
+        for name, process, stream, binding in reversed(processes):
             if process.poll() is None:
                 process.terminate()
                 try:
                     process.wait(timeout=10)
                 except subprocess.TimeoutExpired:
                     process.kill(); process.wait(timeout=10)
-            cleanup.append({"name": name, "pid": process.pid, "returncode": process.returncode, "stopped": process.poll() is not None})
+            cleanup.append({"name": name, **binding, **terminal_binding(process, binding), "returncode": process.returncode, "stopped": process.poll() is not None, "terminalObserved": process.returncode is not None})
             stream.close()
         write(output / "cleanup.json", cleanup)
         write(output / "sha256.json", {str(p.relative_to(output)): sha(p) for p in sorted(output.rglob("*")) if p.is_file() and p.name != "sha256.json"})

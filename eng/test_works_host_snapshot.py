@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import works_host_snapshot as snapshot
 
@@ -83,6 +84,16 @@ class WorksHostSnapshotTests(unittest.TestCase):
     def test_current_origin_drift_refuses(self):
         (self.origin / "src/new.cs").write_text("changed ordinary fixture")
         with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
+
+    def test_generated_debugger_history_is_never_read_or_exported_as_source(self):
+        (self.origin / ".netcoredbg_hist").write_text("private debugger history")
+        original = Path.read_bytes
+        def read(path):
+            if path.name == ".netcoredbg_hist": raise AssertionError("Debugger contents must not enter source inventory")
+            return original(path)
+        with patch.object(Path, "read_bytes", read):
+            self.assertNotIn(".netcoredbg_hist", snapshot.origin_files(self.origin))
+            self.verify()
 
     def test_only_demonstrated_unrelated_canonical_inputs_may_drift_and_are_recorded(self):
         for name in snapshot.UNRELATED_CANONICAL_INPUTS:

@@ -1,0 +1,55 @@
+[
+  {
+    "label": "edited-debug",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "debug",
+      "--manifest",
+      "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform",
+    "exitCode": 0,
+    "durationSeconds": 73.06,
+    "utc": "2026-10-20T15:04:00.996331+00:00"
+  },
+  {
+    "label": "debugger",
+    "command": [
+      "python3",
+      "/tmp/sm2-attach.py",
+      "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/35fcd17a-5c45-46ba-b2d0-c3870d8c170c/scratchpad/tools/netcoredbg/netcoredbg",
+      "2355753",
+      "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs",
+      "221",
+      "http://localhost:41381/ready",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/sm-2/2026-10-20/eventstore-live/edited-http.json"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform",
+    "exitCode": 0,
+    "durationSeconds": 3.1,
+    "utc": "2026-10-20T15:04:04.165437+00:00"
+  },
+  {
+    "label": "cleanup-b3caf6a6aff8be66a673ad539a160eed-down",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "down",
+      "--manifest",
+      "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+      "--run-id",
+      "b3caf6a6aff8be66a673ad539a160eed"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform",
+    "exitCode": 0,
+    "durationSeconds": 4.16,
+    "utc": "2026-10-20T15:04:08.330230+00:00"
+  }
+]

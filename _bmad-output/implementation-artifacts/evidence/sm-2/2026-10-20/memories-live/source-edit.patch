@@ -1,0 +1,17 @@
+diff --git a/src/Hexalith.Memories.Server/Program.cs b/src/Hexalith.Memories.Server/Program.cs
+index 7a9f419e..83b635b5 100644
+--- a/src/Hexalith.Memories.Server/Program.cs
++++ b/src/Hexalith.Memories.Server/Program.cs
+@@ -22,6 +22,12 @@ builder.AddMemoriesServerServices();
+ 
+ WebApplication app = builder.Build();
+ 
++app.Use(async (context, next) =>
++{
++    context.Response.Headers["X-Hexalith-Sm2-Probe"] = "memories-sm2-20261020";
++    await next(context);
++});
++
+ RetryPolicyBuilder.Initialize(app.Services.GetRequiredService<IOptions<IngestionSettings>>().Value);
+ 
+ // Story 9.2 Task 5.7: publish the NL options snapshot so IngestionWorkflow can read

@@ -1,0 +1,1877 @@
+{
+  "CompletionPermission": false,
+  "DependencyAvailable": false,
+  "KeyDeliveryEnabled": false,
+  "LiveReady": false,
+  "PhysicalEvidence": false,
+  "ProductionInvokerActivated": false,
+  "SemanticComponentQualified": false,
+  "boundaryProbes": [
+    {
+      "hop": "api",
+      "log": "probe-001-data-45508608.jsonl",
+      "name": "data-45508608",
+      "result": {
+        "code": "OK",
+        "dataBytes": 45508608,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "data-45508608",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 45508654,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508644374088570
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-002-data-48933548.jsonl",
+      "name": "data-48933548",
+      "result": {
+        "code": "OK",
+        "dataBytes": 48933548,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "data-48933548",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 48933594,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508645366018427
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-003-data-67108863.jsonl",
+      "name": "data-67108863",
+      "result": {
+        "code": "OK",
+        "dataBytes": 67108863,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "data-67108863",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 67108909,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508646352291664
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-004-data-67108864.jsonl",
+      "name": "data-67108864",
+      "result": {
+        "code": "OK",
+        "dataBytes": 67108864,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "data-67108864",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 67108910,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508647158926034
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-005-data-67108865.jsonl",
+      "name": "data-67108865",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 67108865,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "data-67108865",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 67108911,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508647698170177
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-006-protobuf-api-134217727.jsonl",
+      "name": "protobuf-api-134217727",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "protobuf-api-134217727",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 134217727,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508648253169166
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-007-protobuf-api-134217728.jsonl",
+      "name": "protobuf-api-134217728",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "protobuf-api-134217728",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 134217728,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508648707662118
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-008-protobuf-api-134217729.jsonl",
+      "name": "protobuf-api-134217729",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "protobuf-api-134217729",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 134217729,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508648879368993
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-009-header-api-65535.jsonl",
+      "name": "header-api-65535",
+      "result": {
+        "compressed": false,
+        "decodedListBytes": 65535,
+        "grpcStatus": "13",
+        "hop": "api",
+        "incarnation": "header-api-65535",
+        "kind": "rawProbeResult",
+        "result": "Trailers",
+        "timeUnixNano": 1792508648979904145
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-010-header-api-65536.jsonl",
+      "name": "header-api-65536",
+      "result": {
+        "compressed": false,
+        "decodedListBytes": 65536,
+        "grpcStatus": "13",
+        "hop": "api",
+        "incarnation": "header-api-65536",
+        "kind": "rawProbeResult",
+        "result": "Trailers",
+        "timeUnixNano": 1792508649022992267
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-011-header-api-65537.jsonl",
+      "name": "header-api-65537",
+      "result": {
+        "compressed": false,
+        "decodedListBytes": 65537,
+        "grpcStatus": "",
+        "hop": "api",
+        "incarnation": "header-api-65537",
+        "kind": "rawProbeResult",
+        "result": "RST_STREAM:FRAME_SIZE_ERROR",
+        "timeUnixNano": 1792508649057509363
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-012-compression-api.jsonl",
+      "name": "compression-api",
+      "result": {
+        "compressed": true,
+        "decodedListBytes": 366,
+        "grpcStatus": "0",
+        "hop": "api",
+        "incarnation": "compression-api",
+        "kind": "rawProbeResult",
+        "result": "Trailers",
+        "timeUnixNano": 1792508649098618442
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-013-protobuf-component-134217727.jsonl",
+      "name": "protobuf-component-134217727",
+      "result": {
+        "code": "InvalidArgument",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "protobuf-component-134217727",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 134217727,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508649637726265
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-014-protobuf-component-134217728.jsonl",
+      "name": "protobuf-component-134217728",
+      "result": {
+        "code": "InvalidArgument",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "protobuf-component-134217728",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 134217728,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508650216048566
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-015-protobuf-component-134217729.jsonl",
+      "name": "protobuf-component-134217729",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "protobuf-component-134217729",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 134217729,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508650375427328
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-016-header-component-65535.jsonl",
+      "name": "header-component-65535",
+      "result": {
+        "compressed": false,
+        "decodedListBytes": 65535,
+        "grpcStatus": "0",
+        "hop": "component",
+        "incarnation": "header-component-65535",
+        "kind": "rawProbeResult",
+        "result": "Trailers",
+        "timeUnixNano": 1792508650423532505
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-017-header-component-65536.jsonl",
+      "name": "header-component-65536",
+      "result": {
+        "compressed": false,
+        "decodedListBytes": 65536,
+        "grpcStatus": "0",
+        "hop": "component",
+        "incarnation": "header-component-65536",
+        "kind": "rawProbeResult",
+        "result": "Trailers",
+        "timeUnixNano": 1792508650457293127
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-018-header-component-65537.jsonl",
+      "name": "header-component-65537",
+      "result": {
+        "compressed": false,
+        "decodedListBytes": 65537,
+        "grpcStatus": "",
+        "hop": "component",
+        "incarnation": "header-component-65537",
+        "kind": "rawProbeResult",
+        "result": "RST_STREAM:FRAME_SIZE_ERROR",
+        "timeUnixNano": 1792508650492350868
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-019-compression-component.jsonl",
+      "name": "compression-component",
+      "result": {
+        "compressed": true,
+        "decodedListBytes": 371,
+        "grpcStatus": "12",
+        "hop": "component",
+        "incarnation": "compression-component",
+        "kind": "rawProbeResult",
+        "result": "Trailers",
+        "timeUnixNano": 1792508650510461186
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-020-metadata-baseline.jsonl",
+      "name": "metadata-baseline",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "metadata-baseline",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 41,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508650558022626
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-021-entries-component-63.jsonl",
+      "name": "entries-component-63",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "entries-component-63",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 644,
+        "responseWireBytes": 94,
+        "timeUnixNano": 1792508650619616673
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-022-entries-component-64.jsonl",
+      "name": "entries-component-64",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "entries-component-64",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 654,
+        "responseWireBytes": 94,
+        "timeUnixNano": 1792508650646649089
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-023-entries-component-65.jsonl",
+      "name": "entries-component-65",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "entries-component-65",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 664,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508650669691741
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-024-key-component-256.jsonl",
+      "name": "key-component-256",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "key-component-256",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 279,
+        "responseWireBytes": 94,
+        "timeUnixNano": 1792508650698154930
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-025-key-component-257.jsonl",
+      "name": "key-component-257",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "key-component-257",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 280,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508650719238332
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-026-value-component-4096.jsonl",
+      "name": "value-component-4096",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "value-component-4096",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 4119,
+        "responseWireBytes": 94,
+        "timeUnixNano": 1792508650751618883
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-027-value-component-4097.jsonl",
+      "name": "value-component-4097",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "value-component-4097",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 4120,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508650787495635
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-028-aggregate-component-65535.jsonl",
+      "name": "aggregate-component-65535",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "aggregate-component-65535",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 65685,
+        "responseWireBytes": 94,
+        "timeUnixNano": 1792508650824606910
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-029-aggregate-component-65536.jsonl",
+      "name": "aggregate-component-65536",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "aggregate-component-65536",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 65686,
+        "responseWireBytes": 94,
+        "timeUnixNano": 1792508650852504606
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-030-aggregate-component-65537.jsonl",
+      "name": "aggregate-component-65537",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "aggregate-component-65537",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 65687,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508650880036931
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-031-entries-api-63.jsonl",
+      "name": "entries-api-63",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "entries-api-63",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 631,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508650926511034
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-032-entries-api-64.jsonl",
+      "name": "entries-api-64",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "entries-api-64",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 641,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508650979553220
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-033-entries-api-65.jsonl",
+      "name": "entries-api-65",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "entries-api-65",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 651,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651008874079
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-034-key-api-256.jsonl",
+      "name": "key-api-256",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "key-api-256",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 306,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508651048191649
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-035-key-api-257.jsonl",
+      "name": "key-api-257",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "key-api-257",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 307,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651083663624
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-036-value-api-4096.jsonl",
+      "name": "value-api-4096",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "value-api-4096",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 4146,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508651125983630
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-037-value-api-4097.jsonl",
+      "name": "value-api-4097",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "value-api-4097",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 4147,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651158918829
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-038-aggregate-api-65535.jsonl",
+      "name": "aggregate-api-65535",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "aggregate-api-65535",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 65565,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508651205511512
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-039-aggregate-api-65536.jsonl",
+      "name": "aggregate-api-65536",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "aggregate-api-65536",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 65566,
+        "responseWireBytes": 76,
+        "timeUnixNano": 1792508651248299547
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-040-aggregate-api-65537.jsonl",
+      "name": "aggregate-api-65537",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "aggregate-api-65537",
+        "kind": "probeResult",
+        "operation": "fixture-send",
+        "protobufBytes": 65567,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651281587462
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-041-response-component-1048575.jsonl",
+      "name": "response-component-1048575",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-component-1048575",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 50,
+        "responseWireBytes": 1048575,
+        "timeUnixNano": 1792508651312153543
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-042-response-component-1048576.jsonl",
+      "name": "response-component-1048576",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-component-1048576",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 50,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651339852124
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-043-response-component-1048577.jsonl",
+      "name": "response-component-1048577",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-component-1048577",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 50,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651366786032
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-044-response-unknown-component.jsonl",
+      "name": "response-unknown-component",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-unknown-component",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 44,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651394371712
+      }
+    },
+    {
+      "hop": "component",
+      "log": "probe-045-response-compression-component.jsonl",
+      "name": "response-compression-component",
+      "result": {
+        "code": "InvalidArgument",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-compression-component",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 48,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651413927156
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-046-response-api-1048575.jsonl",
+      "name": "response-api-1048575",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-api-1048575",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 77,
+        "responseWireBytes": 1048557,
+        "timeUnixNano": 1792508651462352309
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-047-response-api-1048576.jsonl",
+      "name": "response-api-1048576",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-api-1048576",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 77,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651530100148
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-048-response-api-1048577.jsonl",
+      "name": "response-api-1048577",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-api-1048577",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 77,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651568275859
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-049-response-unknown-api.jsonl",
+      "name": "response-unknown-api",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-unknown-api",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 71,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651597574296
+      }
+    },
+    {
+      "hop": "api",
+      "log": "probe-050-response-compression-api.jsonl",
+      "name": "response-compression-api",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-compression-api",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 75,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651625780265
+      }
+    }
+  ],
+  "build": {
+    "binaries": {
+      "daprd-stable": "241b88af7f853b388f01084d0b83591bf25590f944ee5a566146d8ce1c02577c",
+      "f1fixture": "17253dbca1caf71c7a8b92946388bccf7cee190ee800dc9e81ef707b88ac3d94"
+    },
+    "daprCommit": "4cef924a0b1360c69d810deec8cd59bf853f6721",
+    "dependencyOrigins": {
+      "github.com/dapr/components-contrib": {
+        "commit": "72e6a52340620aa41c4deecc40cbc6f0007b9afe",
+        "infoSha256": "2240c5b448c8a03c8a9037294b00a50c38a2234c12918f6bc29d3706c591c3f1",
+        "version": "v1.18.0"
+      },
+      "google.golang.org/grpc": {
+        "commit": "397e45edaa68f8763773bbaaf539cf7894169cd2",
+        "infoSha256": "97f8b47fb42adad7d00a9acfe90a7da8135116e48a216b409b5473e55e43dd96",
+        "version": "v1.80.0"
+      }
+    },
+    "dotnetSourceDependencies": {
+      "Builds": {
+        "commit": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+        "root": "/home/administrator/projects/hexalith/agents/references/Hexalith.Builds"
+      },
+      "EventStore": {
+        "commit": "c9f47dd5ba72918445dfd24a674a5b2c310589bd",
+        "root": "/home/administrator/projects/hexalith/agents/references/Hexalith.EventStore"
+      }
+    },
+    "fixtureSources": {
+      "go.mod": "6fd10479b28773139bca18fcacc399b655358c395b9b3e16f187f0e311768e62",
+      "go.sum": "5eb77f3c7a9f2edcca320e1c2fccc51d365b22b12fbc0b3b9d8e0f572a153e29",
+      "main.go": "6d59e423dd87cfaad04cf270d874299acf7fdf669c11a3ed45b5c98836cec8c5"
+    },
+    "generatedSources": {
+      "pkg/proto/common/v1/common.pb.go": "0b9403c81f4b1e06caecd261ccc734265b607d73e81d885d3622cbc11a8c273d",
+      "pkg/proto/components/v1/bindings.pb.go": "bd7288ab49497062016f053b8cf0c9cc44ad998bfe1f2e3a548666b9678cec00",
+      "pkg/proto/components/v1/bindings_grpc.pb.go": "282f8302e7f517cedf6d621065eb02ac5d1956b6faa0e3ffa4723e7bc8ae5b69",
+      "pkg/proto/components/v1/common.pb.go": "fcb1407fe04ffca9bc9d011a40281fc9311784f1cffa032b63795dfd9b18ccef",
+      "pkg/proto/components/v1/componentsconnect/bindings.connect.go": "ebe0b7743f2eeed732738a3fe1bfd1b6905df1a1f630a9befc13034206067fa5",
+      "pkg/proto/components/v1/componentsconnect/pubsub.connect.go": "d4162621a3e4450d19f52c1174ab9397f7caaba05a421cc7b21006f7dc485e6e",
+      "pkg/proto/components/v1/componentsconnect/secretstore.connect.go": "994512bfb7c31cc1d402d3b1417fc5a3e1a5bbf04792ad5ecac04d17debcf52a",
+      "pkg/proto/components/v1/componentsconnect/state.connect.go": "0dc08481f84dceadca412b285b6e4ed1510a69e797ba31f557c343ef79ae292f",
+      "pkg/proto/components/v1/pubsub.pb.go": "01870d562085adaeff9ce22c0ab33bf8d586c8d5072d1ab8734beaf8bdc1ceef",
+      "pkg/proto/components/v1/pubsub_grpc.pb.go": "d1d63d2a139b5b6e9580f2cfdaaab7a89e5fc1dbddc0e086c380e920f5d0c494",
+      "pkg/proto/components/v1/secretstore.pb.go": "5c43d93238f1da6aa79366ec308789885dd0179561190c579836e82a04b35afa",
+      "pkg/proto/components/v1/secretstore_grpc.pb.go": "92bfb8f288aa9813d2efa0128c4e88c2ca1a4b2190bb4d9eed53fac11ee3d657",
+      "pkg/proto/components/v1/state.pb.go": "a51d9d563c24884b2a3ca1c51c47059a2c5261bcaf99e6d71b1d7c255467cd18",
+      "pkg/proto/components/v1/state_grpc.pb.go": "2bdd05bdda6c366fedb9e50b3cbaaf501238346a98b93204c6e1b05a407ccec5",
+      "pkg/proto/internals/v1/apiversion.pb.go": "a61a0483bc37bff33f8050323f9b5def7a7658e1f83707655701dbd8b4f901b2",
+      "pkg/proto/internals/v1/internalsconnect/service_invocation.connect.go": "84292d90839ca91dc03d21359fb563ed4f69eb6f3ac535c6e130d7ede96e5fee",
+      "pkg/proto/internals/v1/jobs.pb.go": "37631a378d41123158292ed46e26cf6e8ceaa992a11d9300b395d085730b0c05",
+      "pkg/proto/internals/v1/reminders.pb.go": "a04c1d970d70548265724f1e61899a97db050aa6246a7ef0320a0fa02ce30b43",
+      "pkg/proto/internals/v1/service_invocation.pb.go": "81faa146a9438239b30df3117be69279897e0b7c50e70123b4f4b6737d1f1061",
+      "pkg/proto/internals/v1/service_invocation_additional.go": "40106826a8d18daf037fbd7518e1035704bf0865dfa6a9f5aa2cb98c8966ab49",
+      "pkg/proto/internals/v1/service_invocation_additional_test.go": "bbfc95545cdd87d67e740e30a136aec276103bcc312615e02be015efd88c5916",
+      "pkg/proto/internals/v1/service_invocation_grpc.pb.go": "c7870bcf1026861bd1aafed038d85868c143ea9569c7dcd9a7bb88a17e60bff3",
+      "pkg/proto/internals/v1/status.pb.go": "f935fc6b7e25808d50ec4e2d3ec938fd08eb172c1c9530b41b41bdb5bfcbb293",
+      "pkg/proto/operator/v1/operator.pb.go": "63d04098405bcd4b6123eb2b35ef643ee7f5a8f3449c2c872e3115d028a17263",
+      "pkg/proto/operator/v1/operator_grpc.pb.go": "483eae3c856ba683f87dae7f5005dac49b636bb7fd711712636b664e2e562721",
+      "pkg/proto/operator/v1/operatorconnect/operator.connect.go": "3a9480e814c56d700c91aaef56f7ee33ae8c1bdb7a23e56119b04e8ee85487f1",
+      "pkg/proto/operator/v1/resource.pb.go": "a15212804a0a8d66cd12e7d0d2db0871333000fcd474e0cddb3369f0f121e7d4",
+      "pkg/proto/placement/v1/placement.pb.go": "b5e93ea64e7f67e939247eaa4101929c52514c28ab73e8d65487e5eb5045212a",
+      "pkg/proto/placement/v1/placement_grpc.pb.go": "7828391d0b6d3858c252d9b1f6257fde708e90f6342a8265a7b258e2f3d42ec1",
+      "pkg/proto/placement/v1/placementconnect/placement.connect.go": "04da50bccba9e1f530ec8edc2f43ece9c3832cd021e71190472d42fb4b59e952",
+      "pkg/proto/placement/v1/state.pb.go": "131aafb4fd5e7a09505c6524d0b8b14e79a164b3faa9d00ad50be86f857e6f68",
+      "pkg/proto/proto.go": "182a1486513e3fbe09ba3f0884876350e2f7102a9572756bd2a7a3ccb23f64c4",
+      "pkg/proto/runtime/v1/actors.pb.go": "c834c8999093f276a93c1e382f67a226f365b3bb9ba60d21036b495043db16df",
+      "pkg/proto/runtime/v1/ai.pb.go": "402f489ee88b7d3643186f2efd7ff52db1010bc5cc9ea73b6f828cd9211ab961",
+      "pkg/proto/runtime/v1/appcallback.pb.go": "0ee018f97138a889a4da5c24dab5f22824db6f90079791dbcd91e91a9affe172",
+      "pkg/proto/runtime/v1/appcallback_grpc.pb.go": "7074729f955969ba1f9d32c81c3bf662bf55a332ebd0df7f0a5ac1c85c026b86",
+      "pkg/proto/runtime/v1/binding.pb.go": "725d670f20537cbde59bc7473e02ec89fc64e452ba47c8a971613a5587a39618",
+      "pkg/proto/runtime/v1/configuration.pb.go": "e4cf540507114b9c782336be804e07b662e437476a45431d1d890ef5d7268e2f",
+      "pkg/proto/runtime/v1/crypto.pb.go": "404ee9e29aaafd733b5eaa2fa0556875f1900b6ce33cc8f94040958aaa081010",
+      "pkg/proto/runtime/v1/dapr.pb.go": "32be4c6b565dbb41740d855b6385886b6e7e94f3f9cb57d7c5f4793f66e3bdf6",
+      "pkg/proto/runtime/v1/dapr_additional.go": "4d5fedbefe78e191b513572ac61a462f091080cf23f0e391c28a178d088f42bc",
+      "pkg/proto/runtime/v1/dapr_grpc.pb.go": "5f8bfc5c5fb4c37334b3fcf334c95bd5ecebfadab42b858a7376901ca847464b",
+      "pkg/proto/runtime/v1/dapr_tracing.go": "1d9698ab724a1d8161232d179958428b36901a3935b687787d4835a02283a8e6",
+      "pkg/proto/runtime/v1/dapr_tracing_test.go": "ebf96a18242d7e2fbf454a888ebce3c82199bfa1b2d451f5defb0b17b4d5a559",
+      "pkg/proto/runtime/v1/invoke.pb.go": "0b7dc0f66df5facefc82eb624cf601847315269adc2caa833b49a8fc6d41af0c",
+      "pkg/proto/runtime/v1/jobs.pb.go": "bcc8ca123b9e4c6d7032d7e4257dfbbb619c8cda7d718ab423e42f311c69b0d0",
+      "pkg/proto/runtime/v1/lock.pb.go": "e75899e4165a3026879c301dddf464a4e3cbc267dbf1119792e7ee0a1a9b8a27",
+      "pkg/proto/runtime/v1/metadata.pb.go": "6303223e343b87648f85e37497b51180c7f98ee4606c76af4907d49ee5cbcdda",
+      "pkg/proto/runtime/v1/pubsub.pb.go": "e8c4286da479161c3c1eb910ab476879f80414f372f709ed11dbff0132020aec",
+      "pkg/proto/runtime/v1/runtimeconnect/appcallback.connect.go": "5ea7ec58935759d6b6d0eeadce0eb7ea1e8ca6458f1e1d3df6f34ea1d9d8ddff",
+      "pkg/proto/runtime/v1/runtimeconnect/dapr.connect.go": "875361f25f514ec7a4db6b2ae0b005c678b7afebb4201d3d201ce3851a10548b",
+      "pkg/proto/runtime/v1/secret.pb.go": "11adceb616f0f67916df004a2c98f728cc470b539a6ac0c2b9638f532e74c2d0",
+      "pkg/proto/runtime/v1/state.pb.go": "49f3e762ef28ece6a0ff19eaf80bf6ac93bbc2920b4b08eb9f971f5705f9c062",
+      "pkg/proto/runtime/v1/workflow.pb.go": "ea2b4a638684f0edc3d5284f30c05043a8aaf569ed2ca69292f5839ec8f76af8",
+      "pkg/proto/scheduler/v1/failurepolicy.pb.go": "5c0ede6a4b53629d6292f6c701ad470211a5ea0af754274835b3b20795f57840",
+      "pkg/proto/scheduler/v1/scheduler.pb.go": "fdfdd6a73c8d65cfbd2a3d5b660e149d3415432580f05c3322f448ee91057b36",
+      "pkg/proto/scheduler/v1/scheduler_grpc.pb.go": "447fa3d8cce7396d83b5a5a686dd3da3de861ef6228b09176f1fd6023f2259c9",
+      "pkg/proto/scheduler/v1/schedulerconnect/scheduler.connect.go": "bcdb7bf4445a22711abe2ee94c2a1685ddb6d7eff1b21a571c9ad2c0bae6be9c",
+      "pkg/proto/sentry/v1/sentry.pb.go": "2d0a5753e417e794a041fb3d49fee87c3c389884e10b7fa780173c06a141119f",
+      "pkg/proto/sentry/v1/sentry_grpc.pb.go": "9d826c01394e016044624d77488f94b3518f0a7a82eb2cf37fa94f90175e8e67",
+      "pkg/proto/sentry/v1/sentryconnect/sentry.connect.go": "7bd1c4dcc57bdb576b5cbbc22e9734db3331e6c86023ca2d0d47c2d75c7d4404",
+      "pkg/proto/workflows/v1/mcp.pb.go": "1b74e6b057f5a48c981357c2956efb28ac0b9d4da18d383fdb314aa2e79b5540"
+    },
+    "goToolchainArchiveSha256": "0221cfe82f9c88c717677cb5c1f59f598d177cd7eac18c11f90ae29432d356f9",
+    "retainedProtocols": {
+      "dapr/proto/components/v1/bindings.proto": "cccf28040eedce15edd44c7bc0589b232ed28dd40de40f205d69f93edb663d5d",
+      "dapr/proto/components/v1/common.proto": "b1f7bfbd62f76fd6b91d52969a5dea66f2615c3ed847fe9ed49f7229b1a9555d"
+    },
+    "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a",
+    "runtimeChangedFiles": [
+      "pkg/api/grpc/server.go"
+    ],
+    "runtimeFileCount": 4185,
+    "runtimeTreeManifestSha256": "fcf27b64f72d99ab377dbf8bd9cb0a874d22b48d25a4315460a26f09214580e1",
+    "sdkDriver": {
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/dotnet-artifacts-6/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Dapr.Client.dll": "cc7b8e629416c52be2569d7610c5c830b19ba690d4f54300ffdee901dec99115",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/dotnet-artifacts-6/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.deps.json": "539fd841521c65842eb2203f7634eb49c26697eddf3708c63ebf3f6f29de0f8b",
+      "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/dotnet-artifacts-6/bin/Hexalith.Platform.Secrets.Runtime.Tests/debug/Hexalith.Platform.Secrets.Runtime.Tests.dll": "90e0dc45d9d4ff78e327cdd20bf726622cfb3060e90303e640a3d6069a62d591"
+    },
+    "sealedManifestSha256": "94973ec72f3b248da274ce5f694fe8483f599f13ab714db3ca863b5dd5638ee6",
+    "sourceArchiveSha256": "321eabbc9124a516ec00fd8350db3e5950ceb2da66c35a223b55a32fddb7ab4e"
+  },
+  "candidateSourceHead": "642b5bdbdf33ec1588eeef3b9a7e9f1a02aebc40",
+  "compression": {
+    "componentResponseCompression": "Refused before send; no registered compressor; every measured full response uncompressed",
+    "configuredSdkCompression": false,
+    "observedComponentGzipRequest": "Unimplemented before component admission/sink",
+    "observedStockApiGzipRequest": "Accepted and decompressed before uncompressed component forwarding"
+  },
+  "configurationSha256": {
+    "configuration.yaml": "ace52a322c89c5109b060c052289f2399c7edccd3de39df83266d1c030b473e4",
+    "isolation.json": "9ee65c86f7e4b23bf23252042be08d4053e10e1ae1bc000272dbf9905cfa2acb",
+    "resources/binding.yaml": "e92f5d2220e2de7d0816afa018127f7433ba8ef676b215c6bc199fcd35d8de49",
+    "resources/resiliency.yaml": "8a0c871952c2db9702a7d8d526d264da1f5a3a3855805f995b0d1297929c4efa"
+  },
+  "evidence": {
+    "auditSha256": "b45aa4ee522e514c6704de1bc5065b80014cce9af50a245650c95f4898d15fe8",
+    "independentManifestSha256": "5c732800251ee32563f63465555d3a75d9ad5cac4ba9fdd2a8334ebb586f9b80",
+    "independentRoot": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/independent",
+    "manifestSha256": "b25f6587d761921c9bc6d0a89ac1e3c659921e728b54a147de1304873aa07d98",
+    "root": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-execution-d"
+  },
+  "faults": {
+    "durableAdmissionImplemented": false,
+    "oldIncarnationSanitized": false,
+    "sdkObservations": [
+      {
+        "CancellationUnixMilliseconds": 1792508652032,
+        "ChannelIncarnation": "sdk-2365361-cancellation",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 82,
+        "DataSha256": "07110C90FEC60A9FB4764A9C1D148D65FBBA30D376C4888293C5EE1D928A63BE",
+        "GrpcStatus": "Cancelled",
+        "LookupAttempts": null,
+        "LookupIdentity": null,
+        "LookupOriginalDataSha256": null,
+        "LookupOriginalProducerIncarnation": null,
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "cancellation",
+        "Operation": "fixture-send",
+        "ProcessId": 2365361,
+        "Result": "Unknown:DaprException",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2365361-status-cancellation",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 82,
+        "DataSha256": "07110C90FEC60A9FB4764A9C1D148D65FBBA30D376C4888293C5EE1D928A63BE",
+        "GrpcStatus": "OK",
+        "LookupAttempts": 1,
+        "LookupIdentity": "synthetic-original-cancellation",
+        "LookupOriginalDataSha256": "07110c90fec60a9fb4764a9c1d148d65fbba30d376c4888293c5ee1d928a63be",
+        "LookupOriginalProducerIncarnation": "component-1",
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "status-cancellation",
+        "Operation": "fixture-status",
+        "ProcessId": 2365361,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": 1792508652612,
+        "ChannelIncarnation": "sdk-2365361-late-duplicate",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 84,
+        "DataSha256": "1F74ACEB49898BDCEDC6C998F0B21B6DD01DD22908BD8FCDA138F76414828BDF",
+        "GrpcStatus": "Cancelled",
+        "LookupAttempts": null,
+        "LookupIdentity": null,
+        "LookupOriginalDataSha256": null,
+        "LookupOriginalProducerIncarnation": null,
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "late-duplicate",
+        "Operation": "fixture-send",
+        "ProcessId": 2365361,
+        "Result": "Unknown:DaprException",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2365361-status-late-duplicate",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 84,
+        "DataSha256": "1F74ACEB49898BDCEDC6C998F0B21B6DD01DD22908BD8FCDA138F76414828BDF",
+        "GrpcStatus": "OK",
+        "LookupAttempts": 2,
+        "LookupIdentity": "synthetic-original-late-duplicate",
+        "LookupOriginalDataSha256": "1f74aceb49898bdcedc6c998f0b21b6dd01dd22908bd8fcda138f76414828bdf",
+        "LookupOriginalProducerIncarnation": "component-1",
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "status-late-duplicate",
+        "Operation": "fixture-status",
+        "ProcessId": 2365361,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2365361-lost-result",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 81,
+        "DataSha256": "8C83A2328E9A72300E9C5619B03A5DF6CBCE4AE099FA2DF4DC400B26A08450F1",
+        "GrpcStatus": "Internal",
+        "LookupAttempts": null,
+        "LookupIdentity": null,
+        "LookupOriginalDataSha256": null,
+        "LookupOriginalProducerIncarnation": null,
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "lost-result",
+        "Operation": "fixture-send",
+        "ProcessId": 2365361,
+        "Result": "Unknown:DaprException",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2365361-status-lost-result",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 81,
+        "DataSha256": "8C83A2328E9A72300E9C5619B03A5DF6CBCE4AE099FA2DF4DC400B26A08450F1",
+        "GrpcStatus": "OK",
+        "LookupAttempts": 1,
+        "LookupIdentity": "synthetic-original-lost-result",
+        "LookupOriginalDataSha256": "8c83a2328e9a72300e9c5619b03a5df6cbce4ae099fa2df4dc400b26a08450f1",
+        "LookupOriginalProducerIncarnation": "component-1",
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "status-lost-result",
+        "Operation": "fixture-status",
+        "ProcessId": 2365361,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2365361-reconnect",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 79,
+        "DataSha256": "57A9B0DA466F13ABF9172EAD065759BCBE0FD2CAFAAB43133E3C58DB0EA836B3",
+        "GrpcStatus": "OK",
+        "LookupAttempts": null,
+        "LookupIdentity": null,
+        "LookupOriginalDataSha256": null,
+        "LookupOriginalProducerIncarnation": null,
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "reconnect",
+        "Operation": "fixture-send",
+        "ProcessId": 2365361,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      },
+      {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2369328-status-reconnect",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 79,
+        "DataSha256": "57A9B0DA466F13ABF9172EAD065759BCBE0FD2CAFAAB43133E3C58DB0EA836B3",
+        "GrpcStatus": "OK",
+        "LookupAttempts": 1,
+        "LookupIdentity": "synthetic-original-reconnect",
+        "LookupOriginalDataSha256": "57a9b0da466f13abf9172ead065759bcbe0fd2cafaab43133e3c58db0ea836b3",
+        "LookupOriginalProducerIncarnation": "component-1",
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "status-reconnect",
+        "Operation": "fixture-status",
+        "ProcessId": 2369328,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      }
+    ],
+    "sinkObservations": [
+      {
+        "attempts": 1,
+        "dataBytes": 82,
+        "dataSha256": "07110c90fec60a9fb4764a9c1d148d65fbba30d376c4888293c5ee1d928a63be",
+        "identity": "synthetic-original-cancellation",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508652021109003
+      },
+      {
+        "attempts": 1,
+        "dataBytes": 82,
+        "dataSha256": "07110c90fec60a9fb4764a9c1d148d65fbba30d376c4888293c5ee1d928a63be",
+        "identity": "synthetic-original-cancellation",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/status",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508652565546263
+      },
+      {
+        "attempts": 1,
+        "dataBytes": 84,
+        "dataSha256": "1f74aceb49898bdcedc6c998f0b21b6dd01dd22908bd8fcda138f76414828bdf",
+        "identity": "synthetic-original-late-duplicate",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508652601534635
+      },
+      {
+        "attempts": 2,
+        "dataBytes": 84,
+        "dataSha256": "1f74aceb49898bdcedc6c998f0b21b6dd01dd22908bd8fcda138f76414828bdf",
+        "identity": "synthetic-original-late-duplicate",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508652804091034
+      },
+      {
+        "attempts": 2,
+        "dataBytes": 84,
+        "dataSha256": "1f74aceb49898bdcedc6c998f0b21b6dd01dd22908bd8fcda138f76414828bdf",
+        "identity": "synthetic-original-late-duplicate",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/status",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508653129919518
+      },
+      {
+        "attempts": 1,
+        "dataBytes": 81,
+        "dataSha256": "8c83a2328e9a72300e9c5619b03a5df6cbce4ae099fa2df4dc400b26a08450f1",
+        "identity": "synthetic-original-lost-result",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508653163391702
+      },
+      {
+        "attempts": 1,
+        "dataBytes": 81,
+        "dataSha256": "8c83a2328e9a72300e9c5619b03a5df6cbce4ae099fa2df4dc400b26a08450f1",
+        "identity": "synthetic-original-lost-result",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/status",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508653188133005
+      },
+      {
+        "attempts": 1,
+        "dataBytes": 79,
+        "dataSha256": "57a9b0da466f13abf9172ead065759bcbe0fd2cafaab43133e3c58db0ea836b3",
+        "identity": "synthetic-original-reconnect",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508653215217990
+      },
+      {
+        "attempts": 1,
+        "dataBytes": 79,
+        "dataSha256": "57a9b0da466f13abf9172ead065759bcbe0fd2cafaab43133e3c58db0ea836b3",
+        "identity": "synthetic-original-reconnect",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/status",
+        "producerIncarnation": "component-2",
+        "timeUnixNano": 1792508661548225978
+      }
+    ],
+    "socketIncarnations": [
+      {
+        "device": 2096,
+        "incarnation": "component-1",
+        "inode": 11685577,
+        "mode": "0o600",
+        "pid": 2357311
+      },
+      {
+        "device": 2096,
+        "incarnation": "component-2",
+        "inode": 11686971,
+        "mode": "0o600",
+        "pid": 2368556
+      }
+    ],
+    "uncertaintyClosed": false
+  },
+  "forwardedMetadata": {
+    "aggregateUtf8Bytes": 65536,
+    "completePostSanitizationMapEnforcedAt": "test-only component before sink; includes generated traceparent and forwarded incoming headers",
+    "goApiBaseline": {
+      "aggregateUtf8Bytes": 147,
+      "entries": 4,
+      "maximumKeyUtf8Bytes": 14,
+      "maximumValueUtf8Bytes": 55
+    },
+    "maximumEntries": 64,
+    "maximumKeyUtf8Bytes": 256,
+    "maximumValueUtf8Bytes": 4096,
+    "protobufReserveBytes": 66560
+  },
+  "fullResponses": [
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651301317535,
+          "unknownBytes": 0,
+          "wireBytes": 1048575
+        }
+      ],
+      "independentFullFrames": [
+        {
+          "compressed": false,
+          "connection": 20,
+          "contentTypeBytes": 16,
+          "dataBytes": 1048526,
+          "direction": "response",
+          "hop": "component",
+          "incarnation": "synthetic-1",
+          "kind": "grpcFrame",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "protobufBytes": 1048570,
+          "sha256": "cda5cb8fb1a1add215c30f29c80d2d9aef17563f8a972255b643ac259be79c15",
+          "stream": 1,
+          "timeUnixNano": 1792508651308341897,
+          "unknownBytes": 0,
+          "wireBytes": 1048575
+        }
+      ],
+      "name": "response-component-1048575",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-component-1048575",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 50,
+        "responseWireBytes": 1048575,
+        "timeUnixNano": 1792508651312153543
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651336288061,
+          "unknownBytes": 0,
+          "wireBytes": 1048576
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-component-1048576",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-component-1048576",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 50,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651339852124
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651362796709,
+          "unknownBytes": 0,
+          "wireBytes": 1048577
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-component-1048577",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-component-1048577",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 50,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651366786032
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651390528152,
+          "unknownBytes": 3,
+          "wireBytes": 48
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-unknown-component",
+      "result": {
+        "code": "ResourceExhausted",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-unknown-component",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 44,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651394371712
+      }
+    },
+    {
+      "fullResponseGuards": [],
+      "independentFullFrames": [],
+      "name": "response-compression-component",
+      "result": {
+        "code": "InvalidArgument",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "component",
+        "incarnation": "response-compression-component",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 48,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651413927156
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651440663235,
+          "unknownBytes": 0,
+          "wireBytes": 1048575
+        }
+      ],
+      "independentFullFrames": [
+        {
+          "compressed": false,
+          "connection": 2,
+          "contentTypeBytes": 16,
+          "dataBytes": 1048526,
+          "direction": "response",
+          "hop": "component",
+          "incarnation": "synthetic-1",
+          "kind": "grpcFrame",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "protobufBytes": 1048570,
+          "sha256": "cda5cb8fb1a1add215c30f29c80d2d9aef17563f8a972255b643ac259be79c15",
+          "stream": 65,
+          "timeUnixNano": 1792508651448254428,
+          "unknownBytes": 0,
+          "wireBytes": 1048575
+        }
+      ],
+      "name": "response-api-1048575",
+      "result": {
+        "code": "OK",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-api-1048575",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 77,
+        "responseWireBytes": 1048557,
+        "timeUnixNano": 1792508651462352309
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651523877959,
+          "unknownBytes": 0,
+          "wireBytes": 1048576
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-api-1048576",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-api-1048576",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 77,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651530100148
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651562587732,
+          "unknownBytes": 0,
+          "wireBytes": 1048577
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-api-1048577",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-api-1048577",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 77,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651568275859
+      }
+    },
+    {
+      "fullResponseGuards": [
+        {
+          "contentTypeBytes": 16,
+          "incarnation": "component-1",
+          "kind": "responseGuard",
+          "metadata": {
+            "aggregateUtf8Bytes": 16,
+            "entries": 1,
+            "maximumKeyUtf8Bytes": 7,
+            "maximumValueUtf8Bytes": 9
+          },
+          "timeUnixNano": 1792508651591960959,
+          "unknownBytes": 3,
+          "wireBytes": 48
+        }
+      ],
+      "independentFullFrames": [],
+      "name": "response-unknown-api",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-unknown-api",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 71,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651597574296
+      }
+    },
+    {
+      "fullResponseGuards": [],
+      "independentFullFrames": [],
+      "name": "response-compression-api",
+      "result": {
+        "code": "Internal",
+        "dataBytes": 0,
+        "headerPaddingBytes": 0,
+        "hop": "api",
+        "incarnation": "response-compression-api",
+        "kind": "probeResult",
+        "operation": "fixture-response",
+        "protobufBytes": 75,
+        "responseWireBytes": 5,
+        "timeUnixNano": 1792508651625780265
+      }
+    }
+  ],
+  "headers": {
+    "acceptedAtHeaderTransport": [
+      65535,
+      65536
+    ],
+    "advertisedLimitBytes": 65536,
+    "boundaryBytes": [
+      65535,
+      65536,
+      65537
+    ],
+    "decodedListEntryOverheadBytes": 32,
+    "independentDifferentImplementationReport": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/independent/source-and-header/independent-runtime-header-boundaries.json",
+    "rejectedBeforeComponent": [
+      65537
+    ]
+  },
+  "historicalProposedPacketsChanged": false,
+  "isolation": {
+    "appExcludedMountProven": false,
+    "environment": {
+      "DAPR_COMPONENTS_SOCKETS_FOLDER": "/tmp/f1-local-i15mueb6/discovery",
+      "GOMAXPROCS": "4"
+    },
+    "loopbackPorts": {
+      "api": 56337,
+      "apiObserver": 42121,
+      "http": 56353,
+      "internalGrpc": 53769,
+      "metricsUnused": 49131
+    },
+    "paths": {
+      "/tmp/f1-local-i15mueb6": "0o700",
+      "/tmp/f1-local-i15mueb6/discovery": "0o700",
+      "/tmp/f1-local-i15mueb6/discovery/f1fixture.sock": "0o600",
+      "/tmp/f1-local-i15mueb6/implementation.sock": "0o600",
+      "/tmp/f1-local-i15mueb6/sink.sock": "0o600"
+    },
+    "productionIsolationQualified": false,
+    "sameUidIsolation": false,
+    "socketRoot": "/tmp/f1-local-i15mueb6",
+    "uid": 1000
+  },
+  "kind": "ExecutedSyntheticLocalF1TransportPacket",
+  "limitations": [
+    "Synthetic transport only; no semantic custody component, backend, provider activation, credentials or native effects",
+    "Same-UID processes can access0600 sockets inside0700 directories; no app-excluded mount or production process identity isolation proved",
+    "Sink original digest/count map is process memory, not durable admission, lineage, queue sealing or recovery after sink loss",
+    "No secure erasure, host/kernel/provider sanitation, independent completion verifier, all-copy/shared-cut/hold/survivor/restore proof or measured capacity",
+    "Owned module/compiler scratch relocated to /dev/shm during shared disk exhaustion; persistent source archives, final binaries, lockfiles and evidence retained",
+    "Production invoker remains on existing4MiB/refusal behavior; wrap/unwrap remain closed"
+  ],
+  "nextQualificationTemplate": "next-qualification.template.json",
+  "retainedAttempts": {
+    "a": "Actual witnesses plus expected negativeSDK wrapper classification failure; cleaned up",
+    "b": "Completed measurements but direct UDS driver wrong-stageUnavailable; nonqualifying and retained",
+    "c": "Development run overlaps fixture relink; excluded from final evidence claim",
+    "d": "Final sealed binary process identities and complete audit pass"
+  },
+  "retry": {
+    "configuredRetries": 0,
+    "daprd": "Loaded exact f1NoRetry outbound binding policy with maxRetries0",
+    "exactlyOnceClaim": false,
+    "pluggableClient": "Pinned stock client has no configured retry service policy; transparent transport replay is not excluded",
+    "sdk": "Empty ServiceConfig; MaxRetryAttempts=1; one observed SDK call per original",
+    "sink": "Synthetic HTTP POST with no application retry loop; late-duplicate fault is deliberate injection"
+  },
+  "sourceState": "Scoped working tree; unrelated external commit642b5bd landed during implementation; no commit or push by this implementation",
+  "specBaselineCommit": "e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058",
+  "status": "MeasuredLocalTransportOnly",
+  "sufficiency": {
+    "apiProtobufLooseUpperBoundAtDataCap": 67181835,
+    "assumptions": [
+      "Complete closed-DTO field counts and private bounds in unchanged retained transport profile",
+      "Binding name<=2048UTF16 units and operation<=256UTF8 bytes",
+      "Complete post-sanitization metadata map<=66560 protobuf bytes",
+      "Uncompressed configured SDK messages; one complete request per manifest; no target splitting"
+    ],
+    "backendCapacityProven": false,
+    "componentProtobufLooseUpperBoundAtDataCap": 67175688,
+    "dataCapBytes": 67108864,
+    "finiteWitnessIsExhaustive": false,
+    "manifestDataUpperBoundBytes": 45508608,
+    "proof": "Field-derived conservative bound plus measured configured hop ceilings; finite witnesses are not exhaustive",
+    "protobufCapBytes": 134217728,
+    "transitionDataUpperBoundBytes": 48933548
+  },
+  "verification": {
+    "authority": "Detached verifier reports are authoritative; no physical or Live qualification",
+    "f1Artifacts": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-final-artifacts-b",
+    "f1Directory": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-final-verification-b",
+    "pythonSuiteLog": "/home/administrator/hexalith-secrets-evidence/ext-secrets-1/f1-local-20261020-a/final-python-suite.log",
+    "requiredRuntimeTests": 238
+  },
+  "witnesses": {
+    "manifest": {
+      "hops": {
+        "api": {
+          "compressed": false,
+          "connection": 1,
+          "dataBytes": 24692881,
+          "dataSha256": "72d99146b808b66dba54de3d336e284e5f37e5e9d8605a8abe85640f70ec5dbf",
+          "direction": "request",
+          "hop": "api",
+          "incarnation": "synthetic-1",
+          "kind": "grpcFrame",
+          "metadata": {
+            "aggregateUtf8Bytes": 0,
+            "entries": 0,
+            "maximumKeyUtf8Bytes": 0,
+            "maximumValueUtf8Bytes": 0
+          },
+          "operation": "destroy-manifest",
+          "protobufBytes": 24692931,
+          "sha256": "50ab9b289ab78f2a6e2b70c77d6153e46d50a15a6f115de685afe377419caccb",
+          "stream": 1,
+          "syntheticCase": "manifest",
+          "timeUnixNano": 1792508632165276926,
+          "unknownBytes": 0,
+          "wireBytes": 24692936
+        },
+        "component": {
+          "compressed": false,
+          "connection": 2,
+          "dataBytes": 24692881,
+          "dataSha256": "72d99146b808b66dba54de3d336e284e5f37e5e9d8605a8abe85640f70ec5dbf",
+          "direction": "request",
+          "hop": "component",
+          "incarnation": "synthetic-1",
+          "kind": "grpcFrame",
+          "metadata": {
+            "aggregateUtf8Bytes": 329,
+            "entries": 6,
+            "maximumKeyUtf8Bytes": 25,
+            "maximumValueUtf8Bytes": 133
+          },
+          "operation": "destroy-manifest",
+          "protobufBytes": 24693271,
+          "sha256": "7e430f973ba5e57c5b450ba9bc9c76455b5abc940b1c0d139ff0aa32a53bc31d",
+          "stream": 5,
+          "timeUnixNano": 1792508632306987420,
+          "unknownBytes": 0,
+          "wireBytes": 24693276
+        }
+      },
+      "sdk": {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2357419-manifest",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 24692881,
+        "DataSha256": "72D99146B808B66DBA54DE3D336E284E5F37E5E9D8605A8ABE85640F70EC5DBF",
+        "GrpcStatus": "OK",
+        "LookupAttempts": null,
+        "LookupIdentity": null,
+        "LookupOriginalDataSha256": null,
+        "LookupOriginalProducerIncarnation": null,
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "manifest",
+        "Operation": "destroy-manifest",
+        "ProcessId": 2357419,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      },
+      "sink": {
+        "attempts": 1,
+        "dataBytes": 24692881,
+        "dataSha256": "72d99146b808b66dba54de3d336e284e5f37e5e9d8605a8abe85640f70ec5dbf",
+        "identity": "72d99146b808b66dba54de3d336e284e5f37e5e9d8605a8abe85640f70ec5dbf",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508632410025319
+      }
+    },
+    "transition": {
+      "hops": {
+        "api": {
+          "compressed": false,
+          "connection": 2,
+          "dataBytes": 44740912,
+          "dataSha256": "0eff8b317b90e1ed456df4dde1c8f7d229d8186639f47ebee9defc0e50490d6c",
+          "direction": "request",
+          "hop": "api",
+          "incarnation": "synthetic-1",
+          "kind": "grpcFrame",
+          "metadata": {
+            "aggregateUtf8Bytes": 0,
+            "entries": 0,
+            "maximumKeyUtf8Bytes": 0,
+            "maximumValueUtf8Bytes": 0
+          },
+          "operation": "admit-transition",
+          "protobufBytes": 44740962,
+          "sha256": "b37d39dfdc6e5f9fb0cce40b89cb9ee814f1e8d97124271067eff5dbd9ddbc38",
+          "stream": 1,
+          "syntheticCase": "transition",
+          "timeUnixNano": 1792508632806589593,
+          "unknownBytes": 0,
+          "wireBytes": 44740967
+        },
+        "component": {
+          "compressed": false,
+          "connection": 2,
+          "dataBytes": 44740912,
+          "dataSha256": "0eff8b317b90e1ed456df4dde1c8f7d229d8186639f47ebee9defc0e50490d6c",
+          "direction": "request",
+          "hop": "component",
+          "incarnation": "synthetic-1",
+          "kind": "grpcFrame",
+          "metadata": {
+            "aggregateUtf8Bytes": 331,
+            "entries": 6,
+            "maximumKeyUtf8Bytes": 25,
+            "maximumValueUtf8Bytes": 133
+          },
+          "operation": "admit-transition",
+          "protobufBytes": 44741304,
+          "sha256": "1bfc5d281c12985612e660d9db486e4c4e45fe4f230efab9bbb7b56f8d5b04c9",
+          "stream": 7,
+          "timeUnixNano": 1792508632998480606,
+          "unknownBytes": 0,
+          "wireBytes": 44741309
+        }
+      },
+      "sdk": {
+        "CancellationUnixMilliseconds": null,
+        "ChannelIncarnation": "sdk-2357419-transition",
+        "CompletionPermission": false,
+        "ConfiguredRetries": 0,
+        "DataBytes": 44740912,
+        "DataSha256": "0EFF8B317B90E1ED456DF4DDE1C8F7D229D8186639F47EBEE9DEFC0E50490D6C",
+        "GrpcStatus": "OK",
+        "LookupAttempts": null,
+        "LookupIdentity": null,
+        "LookupOriginalDataSha256": null,
+        "LookupOriginalProducerIncarnation": null,
+        "MaxReceiveMessageBytes": 1048575,
+        "MaxSendMessageBytes": 134217728,
+        "Name": "transition",
+        "Operation": "admit-transition",
+        "ProcessId": 2357419,
+        "Result": "ReceivedSyntheticUnverified",
+        "SdkCalls": 1
+      },
+      "sink": {
+        "attempts": 1,
+        "dataBytes": 44740912,
+        "dataSha256": "0eff8b317b90e1ed456df4dde1c8f7d229d8186639f47ebee9defc0e50490d6c",
+        "identity": "0eff8b317b90e1ed456df4dde1c8f7d229d8186639f47ebee9defc0e50490d6c",
+        "incarnation": "sink-1",
+        "kind": "sink",
+        "path": "/send",
+        "producerIncarnation": "component-1",
+        "timeUnixNano": 1792508633154277590
+      }
+    }
+  }
+}

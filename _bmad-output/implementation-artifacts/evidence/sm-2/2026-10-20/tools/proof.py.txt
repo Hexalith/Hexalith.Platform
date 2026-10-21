@@ -1,0 +1,78 @@
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib,json,os,re,subprocess,sys,time,urllib.request
+c=json.loads(Path('/tmp/hexalith-sm2-context.json').read_text());module=sys.argv[1];only_edit='--edit-only' in sys.argv
+cwd=Path(c[module.lower()+'Workspace'] if module in ('Parties','Tenants') else c['platformWorkspace']);manifest='module/hexalith.module-manifest.v2.json' if module in ('Parties','Tenants') else f'references/Hexalith.{module}/module/hexalith.module-manifest.v2.json';repo=cwd if module in ('Parties','Tenants') else cwd/f'references/Hexalith.{module}';target={'EventStore':'eventstore','Memories':'memories','Parties':'parties','Tenants':'tenants','McpCli':'eventstore'}[module];base=Path(c['evidence'])/(module.lower()+'-live');base.mkdir(exist_ok=True);env=dict(os.environ,XDG_DATA_HOME=c['dataHome'],HEXALITH_DAPR_HOME=c['daprHome'],GIT_TERMINAL_PROMPT='0');commands=json.loads((base/'commands.json').read_text()) if (base/'commands.json').exists() else [];owned=set();counter=0;original=None;source=None;state=None
+
+def save():
+ (base/'commands.json').write_text(json.dumps(commands,indent=2)+'\n')
+def run(args,label,expected=(0,)):
+ print(label,flush=True);start=time.monotonic();r=subprocess.run(args,cwd=cwd,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);(base/(label+'.txt')).write_text(r.stdout);commands.append({'label':label,'command':args,'cwd':str(cwd),'exitCode':r.returncode,'durationSeconds':round(time.monotonic()-start,2),'utc':datetime.now(timezone.utc).isoformat()});save();assert r.returncode in expected,(label,r.returncode,r.stdout[-2500:]);return r.stdout
+
+def tool(action,*extra):return ['dotnet','tool','run','hexalith-module','--',action,'--manifest',manifest,*extra]
+def states():return {p.stem:p for p in (Path(c['dataHome'])/'hexalith-builds/g4-runs').glob('*.json')}
+def start(label):
+ before=set(states())
+ try:run(tool('debug'),label+'-debug')
+ finally:
+  after=states();ids=set(after)-before;owned.update(ids)
+ assert len(ids)==1,ids
+ rid=ids.pop();s=json.loads(after[rid].read_text());assert s['status']=='Ready';os.kill(s['appHostProcessId'],0);(base/(label+'-state.json')).write_text(json.dumps(s,indent=2)+'\n');w=Path(s['workspace']);(base/(label+'-source-mapping.json')).write_bytes((w/'source-mapping/mapping.json').read_bytes());identity=json.loads((w/'source-mapping/mapping.json').read_text())['PlatformIdentity'];assert identity['Commit']==c['sourcePlatformCommit'] and identity['CompositionCommit']==c['sourcePlatformCommit'] and identity['CheckoutCommit']==c['sourcePlatformCommit'] and identity['CatalogCommit']=='fff4a212180d8cd1c5c0759655a9bc4fb6963c45',identity;ready=json.loads((w/'readiness.json').read_text());return s,ready
+
+def stop(s,label):
+ rid=s['runId'];run(tool('down','--run-id',rid),label+'-down');assert not Path(s['workspace']).exists();assert rid not in states();owned.discard(rid)
+
+def endpoint(ready):
+ if module in ('EventStore','McpCli'):return ready['eventStoreEndpoint'].rstrip('/')+'/ready'
+ launcher=next(x['processId'] for x in state['readinessResults'] if x['name']==target)
+ children=subprocess.check_output(['ps','--ppid',str(launcher),'-o','pid='],text=True).split();assert len(children)==1,children
+ settings=dict(part.split(b'=',1) for part in (Path('/proc')/children[0]/'environ').read_bytes().split(b'\0') if b'=' in part)
+ urls=(settings.get(b'ASPNETCORE_URLS') or settings.get(b'DOTNET_URLS') or b'').decode();assert urls,'No server URL exposed by selected application process'
+ from urllib.parse import urlsplit
+ parsed=next(urlsplit(value) for value in urls.split(';') if value.startswith('http://'))
+ return f'http://localhost:{parsed.port}/ready'
+
+def http(url,label):
+ with urllib.request.urlopen(url,timeout=60) as r:response={'url':url,'status':r.status,'probeHeader':r.headers.get('X-Hexalith-Sm2-Probe'),'body':r.read().decode()}
+ (base/(label+'-http.json')).write_text(json.dumps(response,indent=2)+'\n');assert response['status']==200;return response
+
+def get_process(s):
+ launcher=next(x['processId'] for x in s['readinessResults'] if x['name']==target);text=subprocess.check_output(['ps','--ppid',str(launcher),'-o','pid=,args='],text=True);(base/'application-process.txt').write_text(text);pid=int(text.strip().split()[0]);exe=(Path('/proc')/str(pid)/'exe').resolve();hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in exe.parent.iterdir() if p.name.startswith('Hexalith.') and p.suffix in ('.dll','.pdb')};(base/'loaded-build-hashes.json').write_text(json.dumps({'pid':pid,'launcher':launcher,'executable':str(exe),'assembliesAndPdbs':hashes},indent=2)+'\n');return pid
+
+try:
+ if module=='EventStore':source=repo/'src/Hexalith.EventStore/Extensions/ServiceCollectionExtensions.cs'
+ elif module in ('Memories','Tenants'):source=repo/('src/Hexalith.Memories.Server/Program.cs' if module=='Memories' else 'src/Hexalith.Tenants/Program.cs')
+ elif module=='Parties':source=repo/'src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs'
+ else:source=repo/'src/Hexalith.McpCli.Core/Catalog/CatalogService.cs'
+ original=source.read_bytes();newline=b'\r\n' if b'\r\n' in original else b'\n';marker=module.lower()+'-sm2-20261020';(Path(c['workRoot'])/(module.lower()+'-proof-original.bin')).write_bytes(original)
+ if not only_edit:
+  state,ready=start('baseline')
+  if module=='McpCli':
+   dll=Path(state['workspace'])/'tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll';assert dll.exists();out=run(['dotnet',str(dll),'modules'],'baseline-cli',(2,));assert marker not in out
+  else:assert http(endpoint(ready),'baseline')['probeHeader'] is None
+  stop(state,'baseline');state=None
+ if module=='EventStore':
+  needle=b'string path = context.Request.Path.Value ?? string.Empty;';assert original.count(needle)>=1;statement=f'context.Response.Headers["X-Hexalith-Sm2-Probe"] = "{marker}";'.encode();edited=original.replace(needle,statement+newline+b'                '+needle,1)
+ elif module in ('Memories','Tenants'):
+  needle=b'WebApplication app = builder.Build();';assert original.count(needle)==1;statement=f'    context.Response.Headers["X-Hexalith-Sm2-Probe"] = "{marker}";'.encode();probe=newline+newline+b'app.Use(async (context, next) =>'+newline+b'{'+newline+statement+newline+b'    await next(context).ConfigureAwait(false);'+newline+b'});';edited=original.replace(needle,needle+probe,1)
+ elif module=='Parties':
+  needle=b'ArgumentNullException.ThrowIfNull(context);';assert original.count(needle)==1
+  statement=f'context.Response.Headers["X-Hexalith-Sm2-Probe"] = "{marker}";'.encode();edited=original.replace(needle,needle+newline+newline+b'        '+statement,1)
+ else:
+  needle=b'CatalogAccess access = provider.Get(strict);';assert needle in original;statement=f'Console.Error.WriteLine("{marker}");'.encode();edited=original.replace(needle,statement+newline+b'        '+needle,1)
+ source.write_bytes(edited);line=next(i for i,s in enumerate(source.read_text().splitlines(),1) if marker in s);patch=subprocess.check_output(['git','-C',str(repo),'diff','--',str(source)],text=True);(base/'source-edit.patch').write_text(patch);assert marker in patch
+ state,ready=start('edited')
+ if module=='McpCli':
+  dll=Path(state['workspace'])/'tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll';assert dll.exists();out=run(['python3',str(Path(c['sourcePlatformRoot'])/'_bmad-output/implementation-artifacts/evidence/1-11/tools/ncdb_launch.py'),c['debugger'],str(dll),str(cwd),str(source)+':'+str(line),'--','modules'],'debugger');assert 'breakpoint hits=1' in out and marker in out and 'catalog_empty' in out
+  hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in dll.parent.iterdir() if p.name.startswith('Hexalith.McpCli') and p.suffix in ('.dll','.pdb')};(base/'loaded-build-hashes.json').write_text(json.dumps(hashes,indent=2)+'\n')
+ else:
+  pid=get_process(state);url=endpoint(ready);run(['python3','/tmp/sm2-attach.py',c['debugger'],str(pid),str(source),str(line),url,str(base/'edited-http.json')],'debugger');response=json.loads((base/'edited-http.json').read_text());assert response['probeHeader']==marker,response
+ result={'module':module,'workspace':str(cwd),'ownerBaseRevision':c.get(module.lower()+'SourceRevision'),'qualificationCommit':c.get(module.lower()+'QualificationCommit'),'sourceRevision':subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip(),'platformRevision':c['sourcePlatformCommit'],'tool':'4.35.0+fff4a212180d8cd1c5c0759655a9bc4fb6963c45','source':str(source),'originalSourceSha256':hashlib.sha256(original).hexdigest(),'editedSourceSha256':hashlib.sha256(edited).hexdigest(),'breakpointLine':line,'runId':state['runId'],'breakpointHit':True,'observedSourceEditMarker':marker,'runtimeProof':'passed','utc':datetime.now(timezone.utc).isoformat()};(base/'result.json').write_text(json.dumps(result,indent=2)+'\n');print('LIVE SOURCE PROOF PASSED: '+module,flush=True)
+finally:
+ if original is not None and source is not None:
+  source.write_bytes(original);assert source.read_bytes()==original;(base/'source-restored.json').write_text(json.dumps({'source':str(source),'restoredByteForByte':True,'sha256':hashlib.sha256(original).hexdigest()},indent=2)+'\n')
+ for rid in list(owned):
+  try:
+   s=json.loads(states()[rid].read_text());stop(s,'cleanup-'+rid)
+  except Exception as error:print('CLEANUP ERROR:',repr(error),flush=True)
+ print('Module proof finished: '+module,flush=True)

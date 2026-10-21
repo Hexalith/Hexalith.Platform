@@ -34,6 +34,7 @@ import (
 	"google.golang.org/grpc/stats"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 )
@@ -127,6 +128,7 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 	fr.SetMaxReadFrameSize(16 * 1024 * 1024)
 	decoder := hpack.NewDecoder(4096, nil)
 	data := map[uint32][]byte{}
+	discarded := map[uint32]bool{}
 	headerBlocks := map[uint32][]byte{}
 	cases := map[uint32]string{}
 	for {
@@ -141,7 +143,9 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 		switch x := f.(type) {
 		case *http2.DataFrame:
 			b := x.Data()
-			data[h.StreamID] = append(data[h.StreamID], b...)
+			if !discarded[h.StreamID] {
+				data[h.StreamID] = append(data[h.StreamID], b...)
+			}
 			if len(data[h.StreamID]) > requestCap+65536 {
 				record(map[string]any{"kind": "observerCap", "hop": hop})
 				return
@@ -150,7 +154,9 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 				buf := data[h.StreamID]
 				n := int(binary.BigEndian.Uint32(buf[1:5]))
 				if n > requestCap {
-					record(map[string]any{"kind": "declaredOverCap", "hop": hop, "bytes": n})
+					record(map[string]any{"kind": "declaredOverCap", "hop": hop, "direction": direction, "connection": connection, "stream": h.StreamID, "bytes": n})
+					delete(data, h.StreamID)
+					discarded[h.StreamID] = true
 					break
 				}
 				if len(buf) < n+5 {
@@ -175,30 +181,40 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 						message = &components.InvokeResponse{}
 					}
 				}
-				if buf[0] == 0 && proto.Unmarshal(body, message) == nil {
-					switch p := message.(type) {
-					case *runtimev1.InvokeBindingRequest:
-						m["dataBytes"] = len(p.Data)
-						m["dataSha256"] = digest(p.Data)
-						m["operation"] = p.Operation
-						m["metadata"] = metaSummary(p.Metadata)
-					case *components.InvokeRequest:
-						m["dataBytes"] = len(p.Data)
-						m["dataSha256"] = digest(p.Data)
-						m["operation"] = p.Operation
-						m["metadata"] = metaSummary(p.Metadata)
-					case *components.InvokeResponse:
-						m["dataBytes"] = len(p.Data)
-						m["contentTypeBytes"] = len(p.ContentType)
-						m["metadata"] = metaSummary(p.Metadata)
-					case *runtimev1.InvokeBindingResponse:
-						m["dataBytes"] = len(p.Data)
-						m["metadata"] = metaSummary(p.Metadata)
+				if buf[0] == 0 {
+					u, n, wireErr := rawUnknown(body, message.ProtoReflect().Descriptor(), 0)
+					m["rawWireValid"] = wireErr == nil && u == 0
+					m["rawUnknownBytes"] = u
+					m["nestedUnknownBytes"] = n
+					if proto.Unmarshal(body, message) == nil {
+						switch p := message.(type) {
+						case *runtimev1.InvokeBindingRequest:
+							m["dataBytes"] = len(p.Data)
+							m["dataSha256"] = digest(p.Data)
+							m["operation"] = p.Operation
+							m["metadata"] = metaSummary(p.Metadata)
+						case *components.InvokeRequest:
+							if value := p.Metadata["x-f1-case"]; value != "" {
+								m["syntheticCase"] = value
+							}
+							m["dataBytes"] = len(p.Data)
+							m["dataSha256"] = digest(p.Data)
+							m["operation"] = p.Operation
+							m["metadata"] = metaSummary(p.Metadata)
+						case *components.InvokeResponse:
+							m["dataBytes"] = len(p.Data)
+							m["contentTypeBytes"] = len(p.ContentType)
+							m["metadata"] = metaSummary(p.Metadata)
+						case *runtimev1.InvokeBindingResponse:
+							m["dataBytes"] = len(p.Data)
+							m["metadata"] = metaSummary(p.Metadata)
+						}
+						m["topLevelUnknownBytes"] = len(message.ProtoReflect().GetUnknown())
+						m["unknownBytes"] = u
 					}
-					m["unknownBytes"] = len(message.ProtoReflect().GetUnknown())
 				}
 				record(m)
-				data[h.StreamID] = buf[n+5:]
+				consumeStream(data, h.StreamID, n+5)
 			}
 			payload = append([]byte(nil), b...)
 		case *http2.HeadersFrame:
@@ -258,6 +274,7 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 		case *http2.PingFrame:
 			outErr = fr.WritePing(x.IsAck(), x.Data)
 		case *http2.RSTStreamFrame:
+			record(map[string]any{"kind": "streamReset", "hop": hop, "direction": direction, "connection": connection, "stream": h.StreamID, "code": x.ErrCode.String()})
 			outErr = fr.WriteRSTStream(h.StreamID, x.ErrCode)
 		case *http2.GoAwayFrame:
 			outErr = fr.WriteGoAway(x.LastStreamID, x.ErrCode, x.DebugData())
@@ -269,6 +286,12 @@ func observe(src net.Conn, dst net.Conn, hop, direction string, connection int, 
 		}
 		if outErr != nil {
 			return
+		}
+		if h.Type == http2.FrameRSTStream || ((h.Type == http2.FrameData || h.Type == http2.FrameHeaders) && h.Flags.Has(http2.FlagDataEndStream)) {
+			delete(data, h.StreamID)
+			delete(discarded, h.StreamID)
+			delete(headerBlocks, h.StreamID)
+			delete(cases, h.StreamID)
 		}
 	}
 }
@@ -317,11 +340,13 @@ func (*binding) ListOperations(context.Context, *components.ListOperationsReques
 	return &components.ListOperationsResponse{Operations: []string{"destroy-manifest", "admit-transition", "fixture-send", "fixture-status", "fixture-response"}}, nil
 }
 func (b *binding) Invoke(ctx context.Context, r *components.InvokeRequest) (*components.InvokeResponse, error) {
-	record(map[string]any{"kind": "componentAdmission", "operation": r.Operation, "dataBytes": len(r.Data), "dataSha256": digest(r.Data), "protobufBytes": proto.Size(r), "metadata": metaSummary(r.Metadata)})
+	record(map[string]any{"kind": "componentAdmission", "syntheticCase": r.Metadata["x-f1-case"], "operation": r.Operation, "dataBytes": len(r.Data), "dataSha256": digest(r.Data), "protobufBytes": proto.Size(r), "metadata": metaSummary(r.Metadata)})
 	if len(r.Data) > dataCap {
+		record(map[string]any{"kind": "componentRefusal", "stage": "data", "syntheticCase": r.Metadata["x-f1-case"]})
 		return nil, status.Error(codes.ResourceExhausted, "synthetic data cap")
 	}
 	if err := validateMetadata(r.Metadata); err != nil {
+		record(map[string]any{"kind": "componentRefusal", "stage": "metadata", "syntheticCase": r.Metadata["x-f1-case"]})
 		return nil, err
 	}
 	if len(r.ProtoReflect().GetUnknown()) > 0 {
@@ -343,7 +368,11 @@ func (b *binding) Invoke(ctx context.Context, r *components.InvokeRequest) (*com
 		if r.Metadata["response-unknown"] == "true" {
 			response.ProtoReflect().SetUnknown([]byte{0x98, 0x06, 0x01})
 		}
+		if r.Metadata["response-nested-unknown"] == "true" {
+			response.Metadata["fixture-nested-response"] = "true"
+		}
 		if r.Metadata["response-compression"] == "true" {
+			record(map[string]any{"kind": "componentRefusal", "stage": "response-compression"})
 			return nil, status.Error(codes.InvalidArgument, "closed profile refuses compression")
 		}
 	} else {
@@ -354,6 +383,7 @@ func (b *binding) Invoke(ctx context.Context, r *components.InvokeRequest) (*com
 		if r.Operation == "fixture-status" {
 			path = "/status"
 		}
+		var sinkResult []byte
 		call := func() error {
 			req, err := http.NewRequest(http.MethodPost, "http://synthetic"+path, bytes.NewReader(r.Data))
 			if err != nil {
@@ -361,16 +391,26 @@ func (b *binding) Invoke(ctx context.Context, r *components.InvokeRequest) (*com
 			}
 			req.Header.Set("X-F1-Identity", r.Metadata["fixture-identity"])
 			req.Header.Set("X-F1-Incarnation", incarnation)
+			req.Header.Set("X-F1-Case", r.Metadata["x-f1-case"])
 			resp, err := client.Do(req)
 			if err != nil {
 				return err
 			}
 			defer resp.Body.Close()
-			_, err = io.Copy(io.Discard, resp.Body)
+			if resp.StatusCode != http.StatusOK {
+				return fmt.Errorf("synthetic sink refused")
+			}
+			sinkResult, err = io.ReadAll(io.LimitReader(resp.Body, responseExclusive))
+			if len(sinkResult) >= responseExclusive {
+				return fmt.Errorf("synthetic sink response cap")
+			}
 			return err
 		}
 		if err := call(); err != nil {
 			return nil, status.Error(codes.Unavailable, "synthetic sink unavailable")
+		}
+		if r.Operation == "fixture-status" {
+			response.Data = sinkResult
 		}
 		if r.Metadata["fixture-fault"] == "late-duplicate" {
 			time.Sleep(200 * time.Millisecond)
@@ -388,12 +428,13 @@ func (b *binding) Invoke(ctx context.Context, r *components.InvokeRequest) (*com
 	n := proto.Size(response) + 5
 	record(map[string]any{"kind": "responseGuard", "wireBytes": n, "unknownBytes": len(response.ProtoReflect().GetUnknown()), "contentTypeBytes": len(response.ContentType), "metadata": metaSummary(response.Metadata)})
 	if n >= responseExclusive || len(response.ProtoReflect().GetUnknown()) > 0 {
+		record(map[string]any{"kind": "componentRefusal", "stage": "response-size-or-unknown"})
 		return nil, status.Error(codes.ResourceExhausted, "synthetic complete response cap or unknown fields")
 	}
 	return response, nil
 }
 func component(address, sink string) {
-	server := grpc.NewServer(grpc.StatsHandler(wireStats{}), grpc.MaxRecvMsgSize(requestCap), grpc.MaxSendMsgSize(responseExclusive-1), grpc.MaxHeaderListSize(65536), grpc.UnaryInterceptor(func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+	server := grpc.NewServer(grpc.ForceServerCodec(closedCodec{}), grpc.StatsHandler(wireStats{}), grpc.MaxRecvMsgSize(requestCap), grpc.MaxSendMsgSize(responseExclusive-1), grpc.MaxHeaderListSize(65536), grpc.UnaryInterceptor(func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 		md, _ := metadata.FromIncomingContext(ctx)
 		if vals := md.Get("grpc-encoding"); len(vals) > 0 && vals[0] != "identity" {
 			return nil, status.Error(codes.InvalidArgument, "compressed requests refused")
@@ -418,6 +459,8 @@ func (wireStats) HandleRPC(_ context.Context, s stats.RPCStats) {
 func sink(address string) {
 	var mu sync.Mutex
 	counts := map[string]int{}
+	originalDigests := map[string]string{}
+	originalProducers := map[string]string{}
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		data, err := io.ReadAll(io.LimitReader(r.Body, dataCap+1))
@@ -435,12 +478,23 @@ func sink(address string) {
 		}
 		mu.Lock()
 		defer mu.Unlock()
+		dataHash := digest(data)
+		if previous, exists := originalDigests[identity]; exists && previous != dataHash {
+			w.WriteHeader(http.StatusConflict)
+			return
+		}
 		if r.URL.Path == "/send" {
+			if counts[identity] == 0 {
+				originalDigests[identity] = dataHash
+				originalProducers[identity] = r.Header.Get("X-F1-Incarnation")
+			}
 			counts[identity]++
 		}
-		record(map[string]any{"kind": "sink", "path": r.URL.Path, "identity": identity, "attempts": counts[identity], "dataBytes": len(data), "dataSha256": digest(data), "producerIncarnation": r.Header.Get("X-F1-Incarnation")})
+		record(map[string]any{"kind": "sink", "syntheticCase": r.Header.Get("X-F1-Case"), "path": r.URL.Path, "identity": identity, "attempts": counts[identity], "dataBytes": len(data), "dataSha256": digest(data), "producerIncarnation": r.Header.Get("X-F1-Incarnation")})
 		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]any{"synthetic": true, "attempts": counts[identity], "CompletionPermission": false})
+		_ = json.NewEncoder(w).Encode(map[string]any{"synthetic": true, "identity": identity, "attempts": counts[identity],
+			"originalDataSha256": originalDigests[identity], "originalProducerIncarnation": originalProducers[identity],
+			"statusOnly": r.URL.Path == "/status", "CompletionPermission": false})
 	})
 	die(http.Serve(listen(address), h))
 }
@@ -560,10 +614,14 @@ func rawProbe(address, hop string, headerList int, compressed bool) {
 
 // Probe sends one attempt with grpc-go retries explicitly disabled. SDK witnesses
 // use the separately compiled .NET driver, never this helper.
-func probe(address, hop, operation string, n int, meta map[string]string, headers int, pbBytes int) {
+func probe(address, hop, operation string, n int, meta map[string]string, headers int, pbBytes int, nested bool) {
+	if nested {
+		meta = map[string]string{"k": "v"}
+	}
 	options := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDisableRetry(), grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(requestCap+65536), grpc.MaxCallRecvMsgSize(responseExclusive-1))}
 	if strings.HasPrefix(address, "/") {
-		options = append(options, grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return dial(address) }))
+		socketPath := address
+		options = append(options, grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return dial(socketPath) }))
 		address = "passthrough:///synthetic"
 	}
 	conn, err := grpc.NewClient(address, options...)
@@ -605,8 +663,16 @@ func probe(address, hop, operation string, n int, meta map[string]string, header
 		}
 		request.ProtoReflect().SetUnknown(unknown)
 	}
-	err = conn.Invoke(ctx, method, request, response)
-	record(map[string]any{"kind": "probeResult", "hop": hop, "operation": operation, "dataBytes": n, "protobufBytes": proto.Size(request), "headerPaddingBytes": headers, "code": status.Code(err).String(), "responseWireBytes": proto.Size(response) + 5})
+	callOptions := []grpc.CallOption{}
+	if nested {
+		field := protowire.Number(2)
+		if hop == "api" {
+			field = 3
+		}
+		callOptions = append(callOptions, grpc.ForceCodec(nestedProbeCodec{mapField: field}))
+	}
+	err = conn.Invoke(ctx, method, request, response, callOptions...)
+	record(map[string]any{"kind": "probeResult", "hop": hop, "operation": operation, "dataBytes": n, "protobufBytes": proto.Size(request), "headerPaddingBytes": headers, "dataSha256": digest(make([]byte, n)), "code": status.Code(err).String(), "responseWireBytes": proto.Size(response) + 5})
 }
 func descriptors(path string) {
 	files := []any{}
@@ -640,6 +706,7 @@ func main() {
 	pb := flag.Int("protobuf-bytes", 0, "pad request with unknown field")
 	listBytes := flag.Int("header-list-bytes", 0, "complete decoded header-list bytes")
 	compressed := flag.Bool("compressed", false, "actual gzip frame for refusal probe")
+	nested := flag.Bool("nested-unknown", false, "inject real unknown field into metadata map entry")
 	metadataJSON := flag.String("metadata", "{}", "synthetic metadata JSON")
 	flag.Parse()
 	incarnation = *inc
@@ -668,7 +735,7 @@ func main() {
 	case "probe":
 		var m map[string]string
 		die(json.Unmarshal([]byte(*metadataJSON), &m))
-		probe(*target, *hop, *operation, *n, m, *headers, *pb)
+		probe(*target, *hop, *operation, *n, m, *headers, *pb, *nested)
 	default:
 		fmt.Fprintln(os.Stderr, "unknown mode")
 		os.Exit(2)

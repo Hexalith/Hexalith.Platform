@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "probeHeader": "memories-sm2-20261020",
+  "partiesWarning": null,
+  "body": "{\"schemaVersion\":1,\"status\":\"Healthy\",\"totalDurationMs\":1,\"entries\":{\"redis-ping\":{\"status\":\"Healthy\",\"description\":\"Redis PING succeeded in 1 ms.\",\"durationMs\":0,\"affectedCapabilities\":[]},\"dapr-sidecar\":{\"status\":\"Healthy\",\"description\":\"Dapr sidecar is responsive.\",\"durationMs\":1,\"affectedCapabilities\":[]},\"dapr-statestore\":{\"status\":\"Healthy\",\"description\":\"Dapr state store \\u0027statestore\\u0027 is accessible.\",\"durationMs\":1,\"affectedCapabilities\":[]},\"redisearch\":{\"status\":\"Healthy\",\"description\":\"RediSearch module reachable; 1 indexes loaded.\",\"durationMs\":0,\"affectedCapabilities\":[]},\"redis-vector\":{\"status\":\"Healthy\",\"description\":\"Redis Vector capability reachable.\",\"durationMs\":0,\"affectedCapabilities\":[]},\"falkordb\":{\"status\":\"Healthy\",\"description\":\"FalkorDB reachable; 0 graphs.\",\"durationMs\":0,\"affectedCapabilities\":[]}}}",
+  "pid": 2620047,
+  "source": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.Memories/src/Hexalith.Memories.Server/Program.cs",
+  "line": 27,
+  "url": "http://localhost:24578/ready",
+  "breakpointHit": true
+}

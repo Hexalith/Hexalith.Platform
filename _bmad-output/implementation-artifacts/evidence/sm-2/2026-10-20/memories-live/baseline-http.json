@@ -1,0 +1,6 @@
+{
+  "url": "http://localhost:25607/ready",
+  "status": 200,
+  "probeHeader": null,
+  "body": "{\"schemaVersion\":1,\"status\":\"Healthy\",\"totalDurationMs\":3,\"entries\":{\"redis-ping\":{\"status\":\"Healthy\",\"description\":\"Redis PING succeeded in 2 ms.\",\"durationMs\":2,\"affectedCapabilities\":[]},\"dapr-sidecar\":{\"status\":\"Healthy\",\"description\":\"Dapr sidecar is responsive.\",\"durationMs\":0,\"affectedCapabilities\":[]},\"dapr-statestore\":{\"status\":\"Healthy\",\"description\":\"Dapr state store \\u0027statestore\\u0027 is accessible.\",\"durationMs\":3,\"affectedCapabilities\":[]},\"redisearch\":{\"status\":\"Healthy\",\"description\":\"RediSearch module reachable; 1 indexes loaded.\",\"durationMs\":3,\"affectedCapabilities\":[]},\"redis-vector\":{\"status\":\"Healthy\",\"description\":\"Redis Vector capability reachable.\",\"durationMs\":3,\"affectedCapabilities\":[]},\"falkordb\":{\"status\":\"Healthy\",\"description\":\"FalkorDB reachable; 0 graphs.\",\"durationMs\":3,\"affectedCapabilities\":[]}}}"
+}

@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,subprocess,sys,os
+c=json.loads(Path('/tmp/hexalith-sm2-context.json').read_text());name=sys.argv[1];root=Path(c['sourcePlatformRoot']);w=Path(c['workRoot'])/('Hexalith.'+name);b=Path(c['evidence'])/(name.lower()+'-qualification');b.mkdir(exist_ok=True);source=root/('references/Hexalith.'+name);base=subprocess.check_output(['git','rev-parse',c['sourcePlatformCommit']+':references/Hexalith.'+name],cwd=root,text=True).strip()
+with (b/'setup.txt').open('w') as log:
+ def run(args,cwd=None,expected=(0,)):
+  r=subprocess.run(args,cwd=cwd,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);log.write('$ '+str(args)+'\n'+r.stdout+'\n');log.flush();assert r.returncode in expected,r.stdout[-3000:];return r.stdout
+ def sparse(p):run(['git','sparse-checkout','set','--cone','src','module','eng','Tools','tools','Props','Targets','Sdk','schemas','config','DaprComponents','deploy','.config','references'],p)
+ if not w.exists():run(['git','clone','--shared','--no-checkout',str(source),str(w)]);sparse(w);run(['git','checkout','--detach',base],w)
+ run(['git','status','--short','--branch'],w);run(['git','remote','-v'],w);run(['git','log','-4','--oneline'],w);assert not run(['git','diff','--','src'],w)
+ paths=[]
+ for row in run(['git','config','-f','.gitmodules','--get-regexp',r'^submodule\..*\.path$'],w).splitlines():
+  key,path=row.split(None,1);n=Path(path).name;src=Path(c['platformWorkspace']) if n=='Hexalith.Platform' else root/path;sha=c['sourcePlatformCommit'] if n=='Hexalith.Platform' else run(['git','rev-parse',c['sourcePlatformCommit']+':'+path],root).strip();p=w/path
+  if not (p/'.git').exists():run(['git','clone','--shared','--no-checkout',str(src),str(p)]);sparse(p)
+  run(['git','checkout','--detach',sha],p);run(['git','config',key[:-5]+'.url',str(src)],w);run(['git','update-index','--cacheinfo',f'160000,{sha},{path}'],w);paths.append(path)
+ run(['git','submodule','absorbgitdirs','--',*paths],w)
+ p=w/'.config/dotnet-tools.json';pin=json.loads(p.read_text()) if p.exists() else {'version':1,'isRoot':True,'tools':{}};pin['tools']['hexalith.builds.module.cli']={'version':'4.35.0','commands':['hexalith-module'],'rollForward':False};p.parent.mkdir(exist_ok=True);p.write_text(json.dumps(pin,indent=2)+'\n');run(['git','add','.config/dotnet-tools.json'],w)
+ for repo in [w,*[w/path for path in paths]]:
+  f=repo/'module/hexalith.module-manifest.v2.json'
+  if not f.exists():continue
+  for m in json.loads(f.read_text()).get('modules',[]):
+   for t in m.get('tests',[]):
+    entry=t.get('entry')
+    if entry and not (repo/entry).is_file():
+     sparsefile=Path(run(['git','rev-parse','--git-path','info/sparse-checkout'],repo).strip());sparsefile=sparsefile if sparsefile.is_absolute() else repo/sparsefile;patterns=sparsefile.read_text()+'\n/'+entry+'\n';r=subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],cwd=repo,input=patterns,text=True,capture_output=True);assert r.returncode==0,r.stderr;assert (repo/entry).is_file()
+ lock=json.loads((w/'package-lock.json').read_text())['packages']['node_modules/@commitlint/cli']['version'];original=source/'node_modules';installed=original/'@commitlint/cli/package.json'
+ if not (w/'node_modules').exists():
+  if installed.exists() and json.loads(installed.read_text())['version']==lock:os.symlink(original,w/'node_modules',target_is_directory=True)
+  else:run(['npm','ci','--ignore-scripts'],w)
+ assert json.loads((w/'node_modules/@commitlint/cli/package.json').read_text())['version']==lock
+ validation=run(['./node_modules/.bin/commitlint','--edit','/tmp/sm2-qualification-message.txt','--verbose'],w);(b/'commitlint.txt').write_text(validation)
+ run(['git','-c','user.name=SM-2 Verification','-c','user.email=sm2@example.invalid','commit','-F','/tmp/sm2-qualification-message.txt'],w);sha=run(['git','rev-parse','HEAD'],w).strip();assert not run(['git','diff',base,sha,'--','src','module'],w)
+ (b/'qualification.patch').write_text(run(['git','format-patch','-1','--stdout','--binary'],w));(b/'qualification-commit.txt').write_text(run(['git','cat-file','commit',sha],w));(b/'identity.json').write_text(json.dumps({'ownerBaseRevision':base,'localQualificationCommit':sha,'published':False,'applicationSourceAndDeclarationUnchanged':True,'scope':'Local disposable fixture only; all direct references/tool pin aligned with Platform snapshot '+c['sourcePlatformCommit'],'commitlintVersion':lock},indent=2)+'\n')
+ c[name.lower()+'Workspace']=str(w);c[name.lower()+'QualificationCommit']=sha;c[name.lower()+'SourceRevision']=base;Path('/tmp/hexalith-sm2-context.json').write_text(json.dumps(c,indent=2)+'\n');(Path(c['evidence'])/'context.json').write_text(json.dumps(c,indent=2)+'\n');run(['dotnet','tool','restore'],w);print(name+' qualified at '+sha,flush=True)

@@ -1,0 +1,257 @@
+# utc=2026-10-20T15:19:57Z cwd=/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform
+# $ /tmp/claude-1000/-home-administrator-projects-hexalith-platform/35fcd17a-5c45-46ba-b2d0-c3870d8c170c/scratchpad/tools/netcoredbg/netcoredbg --interpreter=cli -- dotnet /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll modules
+
+>>> break /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12
+ Breakpoint 1 at CatalogService.cs:12 --pending, warning: No executable code of the debugger's target code type is associated with this line.
+
+>>> run
+^running
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Private.CoreLib.dll
+no symbols loaded, base address: 0x762e2cc70000, size: 15895552(0xf28c00)
+
+thread created, id: 2699326
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.dll
+symbols loaded, base address: 0x762e2c330000, size: 86528(0x15200)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Runtime.dll
+no symbols loaded, base address: 0x762eac328000, size: 44880(0xaf50)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Console.dll
+no symbols loaded, base address: 0x762e2dd60000, size: 516608(0x7e200)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.Core.dll
+symbols loaded, base address: 0x762e2c2d0000, size: 192000(0x2ee00)
+breakpoint modified,  Breakpoint 1 at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Hosting.Abstractions.dll
+no symbols loaded, base address: 0x762e2c2c2000, size: 54056(0xd328)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+no symbols loaded, base address: 0x762e2c2b1000, size: 65872(0x10150)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/System.CommandLine.dll
+no symbols loaded, base address: 0x762e2c28c000, size: 151352(0x24f38)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Linq.dll
+no symbols loaded, base address: 0x762e2de20000, size: 1014272(0xf7a00)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Collections.dll
+no symbols loaded, base address: 0x762e2df40000, size: 606720(0x94200)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Memory.dll
+no symbols loaded, base address: 0x762e2e060000, size: 470016(0x72c00)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.ComponentModel.dll
+no symbols loaded, base address: 0x762e2e0f0000, size: 334848(0x51c00)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Private.Uri.dll
+no symbols loaded, base address: 0x762e2e150000, size: 563200(0x89800)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Collections.Immutable.dll
+no symbols loaded, base address: 0x762e2e1f0000, size: 1302016(0x13de00)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Text.Json.dll
+no symbols loaded, base address: 0x762e2e340000, size: 2200576(0x219400)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Text.RegularExpressions.dll
+no symbols loaded, base address: 0x762e2e580000, size: 1354240(0x14aa00)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Hosting.dll
+no symbols loaded, base address: 0x762e2c033000, size: 71976(0x11928)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.Abstractions.dll
+no symbols loaded, base address: 0x762e2c022000, size: 66856(0x10528)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Diagnostics.Abstractions.dll
+no symbols loaded, base address: 0x762e2c01a000, size: 31056(0x7950)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.Abstractions.dll
+no symbols loaded, base address: 0x762e2c013000, size: 28496(0x6f50)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.dll
+no symbols loaded, base address: 0x762e2c006000, size: 51536(0xc950)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.Console.dll
+no symbols loaded, base address: 0x762e256ea000, size: 76072(0x12928)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Options.dll
+no symbols loaded, base address: 0x762e24224000, size: 65320(0xff28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Http.dll
+no symbols loaded, base address: 0x762e2420d000, size: 92968(0x16b28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.Mcp.dll
+symbols loaded, base address: 0x762e256e1000, size: 34816(0x8800)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.dll
+no symbols loaded, base address: 0x762e24202000, size: 44880(0xaf50)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Primitives.dll
+no symbols loaded, base address: 0x762e241f7000, size: 44840(0xaf28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.DependencyInjection.dll
+no symbols loaded, base address: 0x762e241df000, size: 95528(0x17528)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+no symbols loaded, base address: 0x762e2c000000, size: 21840(0x5550)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Threading.dll
+no symbols loaded, base address: 0x762e2e720000, size: 391680(0x5fa00)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.FileProviders.Abstractions.dll
+no symbols loaded, base address: 0x762e241c6000, size: 23336(0x5b28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.FileProviders.Physical.dll
+no symbols loaded, base address: 0x762e241ba000, size: 45392(0xb150)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.FileExtensions.dll
+no symbols loaded, base address: 0x762e241b3000, size: 28456(0x6f28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.CommandLine.dll
+no symbols loaded, base address: 0x762e241ac000, size: 25424(0x6350)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Diagnostics.dll
+no symbols loaded, base address: 0x762e241a3000, size: 36136(0x8d28)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Diagnostics.DiagnosticSource.dll
+no symbols loaded, base address: 0x762e2e7d0000, size: 815616(0xc7200)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.Json.dll
+no symbols loaded, base address: 0x762e24122000, size: 27944(0x6d28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.UserSecrets.dll
+no symbols loaded, base address: 0x762e2411b000, size: 26408(0x6728)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Configuration.Binder.dll
+no symbols loaded, base address: 0x762e24110000, size: 43304(0xa928)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.IO.FileSystem.Watcher.dll
+no symbols loaded, base address: 0x762e2e8c0000, size: 419328(0x66600)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.ComponentModel.Primitives.dll
+no symbols loaded, base address: 0x762e2e930000, size: 388608(0x5ee00)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Collections.Concurrent.dll
+no symbols loaded, base address: 0x762e2e9a0000, size: 545792(0x85400)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.FileSystemGlobbing.dll
+no symbols loaded, base address: 0x762e240a1000, size: 47912(0xbb28)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Runtime.InteropServices.dll
+no symbols loaded, base address: 0x762e2ea50000, size: 420352(0x66a00)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Threading.Thread.dll
+no symbols loaded, base address: 0x762e256dd000, size: 15696(0x3d50)
+
+thread created, id: 2699470
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.Configuration.dll
+no symbols loaded, base address: 0x762e2407c000, size: 28456(0x6f28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.Debug.dll
+no symbols loaded, base address: 0x762e24077000, size: 19752(0x4d28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.EventSource.dll
+no symbols loaded, base address: 0x762e2406e000, size: 34640(0x8750)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Logging.EventLog.dll
+no symbols loaded, base address: 0x762e24067000, size: 24912(0x6150)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+no symbols loaded, base address: 0x762e24061000, size: 21800(0x5528)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Diagnostics.Tracing.dll
+no symbols loaded, base address: 0x762e2405d000, size: 16168(0x3f28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.EventStore.Client.dll
+no symbols loaded, base address: 0x7600e99ce000, size: 943104(0xe6400)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Net.Http.dll
+no symbols loaded, base address: 0x762e2eb60000, size: 2044416(0x1f3200)
+
+thread created, id: 2699483
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Threading.ThreadPool.dll
+no symbols loaded, base address: 0x762e2401f000, size: 15656(0x3d28)
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.McpCli.Abstractions.dll
+symbols loaded, base address: 0x762eac320000, size: 10752(0x2a00)
+
+stopped, reason: breakpoint 1 hit, thread id: 2699326, stopped threads: all, times= 1, frame={Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12}
+
+# HIT=1 utc=2026-10-20T15:19:59Z
+
+>>> backtrace
+#0: 0x0000762e2dce025e Hexalith.McpCli.Core.dll` Hexalith.McpCli.Core.Catalog.CatalogService.ListModules() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli.Core/Catalog/CatalogService.cs:12
+#1: 0x0000762e2dcdfd47 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<>c.<CreateModules>b__18_1() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:330
+#2: 0x0000762e2dca2787 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36.MoveNext() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:830
+#3: 0x0000762e2d2c28fc System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36>()
+#4: 0x0000762e2dc931e1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<int>.Start<Hexalith.McpCli.Cli.CliRunner.<RunAsync>d__36>()
+#5: 0x0000762e2dca1e9e Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.RunAsync()
+#6: 0x0000762e2dca1d76 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.RunAsync() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:804
+#7: 0x0000762e2dca1d0d Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<CreateModules>b__18_0() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:327
+#8: 0x0000762e2dca1c1f System.CommandLine.dll` System.CommandLine.Invocation.AnonymousAsynchronousCommandLineAction.InvokeAsync()
+#9: 0x0000762e2dca13bc System.CommandLine.dll` System.CommandLine.Invocation.InvocationPipeline.<InvokeAsync>d__0.MoveNext()
+#10: 0x0000762e2dca0d1c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<System.CommandLine.Invocation.InvocationPipeline.<InvokeAsync>d__0>()
+#11: 0x0000762e2dca0c8c System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<int>.Start<System.CommandLine.Invocation.InvocationPipeline.<InvokeAsync>d__0>()
+#12: 0x0000762e2dca0c40 System.CommandLine.dll` System.CommandLine.Invocation.InvocationPipeline.InvokeAsync()
+#13: 0x0000762e2dca0bc9 System.CommandLine.dll` System.CommandLine.ParseResult.InvokeAsync()
+#14: 0x0000762e2dc94023 Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12.MoveNext() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Cli/CliRunner.cs:141
+#15: 0x0000762e2d2c28fc System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start<Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12>()
+#16: 0x0000762e2dc931e1 System.Private.CoreLib.dll` System.Runtime.CompilerServices.AsyncTaskMethodBuilder<int>.Start<Hexalith.McpCli.Cli.CliRunner.<InvokeAsync>d__12>()
+#17: 0x0000762e2dc930ef Hexalith.McpCli.dll` Hexalith.McpCli.Cli.CliRunner.InvokeAsync()
+#18: 0x0000762e2dc91a56 Hexalith.McpCli.dll` Hexalith.McpCli.Program.Main() at /tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Platform/references/Hexalith.McpCli/src/Hexalith.McpCli/Program.cs:21
+#19: 0x0000762e2dc91896 Hexalith.McpCli.dll` Hexalith.McpCli.Program.<Main>()
+
+
+>>> continue
+^running
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/Microsoft.Win32.Primitives.dll
+no symbols loaded, base address: 0x762e2401b000, size: 15656(0x3d28)
+mcpcli-sm2-20261020
+
+library loaded: /tmp/hexalith-sm2-20261020-zw8t88ea/state/hexalith-builds/g4-workspaces/581a1a23b77b76ddc0245ce9c69ee0bf/tools/mcpcli/bin/Hexalith.McpCli/debug/Hexalith.EventStore.Contracts.dll
+no symbols loaded, base address: 0x7600e9926000, size: 685568(0xa7600)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Text.Encoding.Extensions.dll
+no symbols loaded, base address: 0x762e24017000, size: 15656(0x3d28)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Text.Encodings.Web.dll
+no symbols loaded, base address: 0x762e2eee0000, size: 431616(0x69600)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Numerics.Vectors.dll
+no symbols loaded, base address: 0x762e24013000, size: 15656(0x3d28)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Reflection.Emit.Lightweight.dll
+no symbols loaded, base address: 0x762e2400f000, size: 15696(0x3d50)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Reflection.Primitives.dll
+no symbols loaded, base address: 0x762e2400b000, size: 15656(0x3d28)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.Reflection.Emit.ILGeneration.dll
+no symbols loaded, base address: 0x762e24007000, size: 15656(0x3d28)
+
+library loaded: /home/administrator/.dotnet/shared/Microsoft.NETCore.App/10.0.13/System.IO.Pipelines.dll
+no symbols loaded, base address: 0x762e2f080000, size: 498688(0x79c00)
+{
+  "error": {
+    "code": "catalog_empty",
+    "message": "The Catalog exposes no valid Operations."
+  }
+}
+
+thread created, id: 2699343
+
+thread exited, id: 2699483
+
+stopped, reason: exited, exit-code: 2
+^exit
+
+>>> quit
+
+# netcoredbg exit=0 breakpoint hits=1
+Exception ignored while finalizing file <_io.BufferedWriter name=4>:
+BrokenPipeError: [Errno 32] Broken pipe

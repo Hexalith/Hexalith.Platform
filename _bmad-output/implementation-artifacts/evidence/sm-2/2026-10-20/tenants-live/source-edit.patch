@@ -1,0 +1,17 @@
+diff --git a/src/Hexalith.Tenants/Program.cs b/src/Hexalith.Tenants/Program.cs
+index eb198ef4..69a6235f 100644
+--- a/src/Hexalith.Tenants/Program.cs
++++ b/src/Hexalith.Tenants/Program.cs
+@@ -162,6 +162,12 @@ builder.Services.AddControllers()
+ 
+ WebApplication app = builder.Build();
+ 
++app.Use(async (context, next) =>
++{
++    context.Response.Headers["X-Hexalith-Sm2-Probe"] = "tenants-sm2-20261020";
++    await next(context).ConfigureAwait(false);
++});
++
+ app.UseMiddleware<CorrelationIdMiddleware>();
+ app.UseExceptionHandler();
+ app.UseCloudEvents();

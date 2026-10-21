@@ -17,6 +17,12 @@ PIN = "4cef924a0b1360c69d810deec8cd59bf853f6721"
 GO_VERSION = "v0.0.1-go1.26.4.linux-amd64"
 DAPR_ARCHIVE_SHA256 = "321eabbc9124a516ec00fd8350db3e5950ceb2da66c35a223b55a32fddb7ab4e"
 GO_ARCHIVE_SHA256 = "0221cfe82f9c88c717677cb5c1f59f598d177cd7eac18c11f90ae29432d356f9"
+PATCH_SHA256 = "c19d126445132b1b08894a98f75a653f8d1f6ce53a9386fd4d3d8743d28efbfd"
+PATCHED_SOURCE_SHA256 = "41d6010a43956eda01ae0d5c4bc94daa95e61e8523f5031c417e81cd1879be4a"
+GO_SETTINGS = {"GOENV": "off", "GOWORK": "off", "GOFLAGS": "", "GOTOOLCHAIN": "local", "CGO_ENABLED": "0",
+               "GOOS": "linux", "GOARCH": "amd64", "GOAMD64": "v1", "GOEXPERIMENT": "", "GOINSECURE": "",
+               "GOPRIVATE": "", "GONOPROXY": "none", "GONOSUMDB": "none", "GOVCS": "*:off",
+               "GOPROXY": "https://proxy.golang.org", "GOSUMDB": "sum.golang.org https://proxy.golang.org/sumdb/sum.golang.org"}
 DOCS = ROOT / "docs/implementation/ext-secrets-1-f1-2026-10-20"
 
 
@@ -32,11 +38,36 @@ def download(url, path):
     subprocess.run(["curl", "--fail", "--location", "--connect-timeout", "15", "--max-time", "240", url, "--output", str(path)], check=True)
 
 
+def isolated_go_environment(output, inherited=None):
+    # Remove all inherited Go overrides, including GOROOT and checksum exclusions.
+    environment = {key: value for key, value in (os.environ if inherited is None else inherited).items()
+                   if not key.startswith("GO") and not key.startswith("CGO_")}
+    return environment | GO_SETTINGS | {"GOCACHE": str(Path(output) / "go-cache"), "GOMODCACHE": str(Path(output) / "go-modules"), "GOMAXPROCS": "6"}
+
+
+def emit_source_inputs(output, archive_digest, toolchain_digest, patch_digest, patched_digest):
+    record = {"daprCommit": PIN, "archiveSha256": archive_digest, "goToolchainArchiveSha256": toolchain_digest,
+              "patchSha256": patch_digest, "patchedSourceSha256": patched_digest}
+    if (archive_digest, toolchain_digest, patch_digest, patched_digest) != (DAPR_ARCHIVE_SHA256, GO_ARCHIVE_SHA256, PATCH_SHA256, PATCHED_SOURCE_SHA256):
+        raise ValueError("Exact pinned source/toolchain/candidate correction inputs required")
+    write(Path(output) / "source/source-inputs.json", record)
+    return record
+
+
 def build(output, builds, eventstore):
     output = Path(output).resolve()
     if output.exists() or output.is_relative_to(ROOT):
         raise ValueError("A fresh detached build directory is required")
     output.mkdir(parents=True, mode=0o700)
+    profile = json.loads((DOCS / "transport-profile.json").read_text())
+    dependencies = {}
+    for name, directory in (("Builds", builds), ("EventStore", eventstore)):
+        directory = Path(directory).resolve()
+        commit = subprocess.check_output(["git", "-C", str(directory), "rev-parse", "HEAD"]).decode().strip()
+        if commit != profile["dependencies"][name] or subprocess.check_output(["git", "-C", str(directory), "status", "--porcelain"]):
+            raise ValueError("Pinned clean source dependency required: " + name)
+        dependencies[name] = {"root": str(directory), "commit": commit}
+    write(output / "source-dependencies.json", dependencies)
     source, tools = output / "source", output / "tools"
     source.mkdir(); tools.mkdir(); (output / "bin").mkdir()
     toolzip = tools / "go-toolchain.zip"
@@ -62,7 +93,6 @@ def build(output, builds, eventstore):
         imported = dapr / name.lstrip("*")
         if sha(retained) != digest or sha(imported) != digest:
             raise ValueError("Retained and imported protocol source mismatch: " + name)
-    profile = json.loads((DOCS / "transport-profile.json").read_text())
     patch = DOCS / profile["headerPatch"]["path"]
     server = dapr / "pkg/api/grpc/server.go"
     if sha(patch) != profile["headerPatch"]["sha256"] or sha(server) != profile["headerPatch"]["baseSourceSha256"]:
@@ -71,11 +101,14 @@ def build(output, builds, eventstore):
     subprocess.run(["git", "apply", str(patch)], cwd=dapr, check=True)
     if sha(server) != profile["headerPatch"]["resultSourceSha256"]:
         raise ValueError("Pinned patch result mismatch")
+    emit_source_inputs(output, sha(archive_path), sha(toolzip), sha(patch), sha(server))
     fixture = source / "fixture"
     shutil.copytree(HERE, fixture, ignore=shutil.ignore_patterns("__pycache__"))
-    environment = dict(os.environ, GOCACHE=str(output / "go-cache"), GOMODCACHE=str(output / "go-modules"),
-                       GOTOOLCHAIN="local", CGO_ENABLED="0", GOMAXPROCS="6",
-                       GOSUMDB="sum.golang.org https://proxy.golang.org/sumdb/sum.golang.org")
+    environment = isolated_go_environment(output)
+    effective = json.loads(subprocess.check_output([str(go), "env", "-json"], env=environment))
+    if any(effective.get(key) != value for key, value in GO_SETTINGS.items()):
+        raise ValueError("Effective Go settings differ from the isolated pinned build profile")
+    write(output / "go-build-environment.json", {"required": GO_SETTINGS, "effective": effective})
     commands = []
 
     def execute(command, cwd, log):
@@ -84,7 +117,7 @@ def build(output, builds, eventstore):
         with (output / log).open("wb") as stream:
             subprocess.run(list(map(str, command)), cwd=cwd, env=environment, stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=1800)
 
-    execute([go, "build", "-tags", "stablecomponents", "-p", "4", "-trimpath", "-o", output / "bin/daprd-stable", "./cmd/daprd"], dapr, "daprd-stable-build.log")
+    execute([go, "build", "-mod=readonly", "-tags", "stablecomponents", "-p", "4", "-trimpath", "-o", output / "bin/daprd-stable", "./cmd/daprd"], dapr, "daprd-stable-build.log")
     execute([go, "mod", "edit", f"-replace=github.com/dapr/dapr=../dapr-{PIN}"], fixture, "fixture-config.log")
     execute([go, "build", "-mod=readonly", "-p", "2", "-trimpath", "-o", output / "bin/f1fixture", "."], fixture, "fixture-build.log")
     execute(["dotnet", "build", ROOT / "tests/Hexalith.Platform.Secrets.Runtime.Tests/Hexalith.Platform.Secrets.Runtime.Tests.csproj", "-c", "Debug",

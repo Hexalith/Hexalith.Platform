@@ -1,0 +1,58 @@
+from pathlib import Path
+import json,hashlib
+c=json.loads(Path('/tmp/hexalith-sm2-context.json').read_text());b=Path(c['evidence']);rows=[]
+for module in ('EventStore','Memories','McpCli','Parties','Tenants','Folders','Projects'):
+ d=b/(module.lower()+'-live');p=d/'result.json'
+ if not p.exists():rows.append({'module':module,'runtimeProof':'open','reason':'No v2 declaration at the Platform-recorded revision' if module in ('Folders','Projects') else 'Live check in progress'});continue
+ r=json.loads(p.read_text());restore=json.loads((d/'source-restored.json').read_text());assert restore['restoredByteForByte'] and restore['sha256']==r['originalSourceSha256'];s=json.loads((d/'edited-state.json').read_text());mapping=d/'edited-source-mapping.json';m=json.loads(mapping.read_text());assert m['Mode']=='source' and m['PlatformIdentity']['CatalogCommit']=='fff4a212180d8cd1c5c0759655a9bc4fb6963c45';assert all(m['PlatformIdentity'][key]==c['sourcePlatformCommit'] for key in ('Commit','CompositionCommit','CheckoutCommit'));assert all(f['RuleId']=='HXW011' for f in m['IdentityFindings'])
+ for entry in m['Entries']:
+  if entry['Origin']=='source':assert Path(entry['Path']).resolve().is_relative_to(Path(r['workspace']).resolve()),entry
+ commands=json.loads((d/'commands.json').read_text());cleanups=[x for x in commands if 'down' in x['label'] and x['exitCode']==0 and '--run-id' in x['command'] and r['runId'] in x['command']];assert cleanups;assert not Path(s['workspace']).exists();assert not (Path(c['dataHome'])/'hexalith-builds/g4-runs'/(r['runId']+'.json')).exists()
+ projects=[x['name'] for x in s['readinessResults'] if x['kind']=='project'];kind='domain' if module in ('Parties','Tenants') else 'technical';row={'module':module,'runtimeProof':'passed','sourceRevision':r['sourceRevision'],'editedRunId':r['runId'],'breakpointHit':r['breakpointHit'],'sourceEditMarker':r['observedSourceEditMarker'],'sourceRestored':True,'cleanupPassed':True,'workspaceKind':kind,'adoptionAndOwnerAcceptance':'open; see kit-preflight-gaps.md' if kind=='domain' else 'owner acceptance of this evidence pending','evidence':d.name};rows.append(row)
+ overlay='[local qualification commit](../'+module.lower()+'-qualification/identity.json) and [patch](../'+module.lower()+'-qualification/qualification.patch)' if kind=='domain' else 'Platform snapshot at its recorded gitlinks'
+ direct='[direct-only-references.json](direct-only-references.json)' if kind=='domain' else '[Platform direct-only references](../platform-direct-only-references.json)'
+ note='The owner workspace uses the recorded disposable current-tool/Platform overlay. Its complete kit adoption remains open; see [preflight gaps](../kit-preflight-gaps.md).' if kind=='domain' else 'The technical module runs from the Platform workspace.'
+ text=f'''# {module} — live source-development evidence
+
+Runtime proof: **PASS**. Verifier: Codex driving netcoredbg and real local processes. UTC: `{r['utc']}`. Module-owner acceptance and the human audit fields below remain pending.
+
+{note}
+
+| Evidence | Observed value |
+| --- | --- |
+| Tested module revision | `{r['sourceRevision']}` (local qualification commit for domain modules) |
+| Owner source base | `{r.get('ownerBaseRevision') or r['sourceRevision']}`; qualification changes only pins |
+| Workspace | `{r['workspace']}` |
+| Direct Platform revision | `{c['sourcePlatformCommit']}`; source mode; release tag `{m['PlatformIdentity']['ReleaseTag']}` |
+| Builds gitlink / release tag | `fff4a212180d8cd1c5c0759655a9bc4fb6963c45` / `v4.35.0` |
+| Restored tool | `{r['tool']}`; exact accepted pin |
+| Environment / debugger identity | [environment.json](../environment.json) |
+| Commands / working directories / exits | [commands.json](commands.json) |
+| Committed inputs and disposable overlay | {overlay} |
+| Edited environment / run identity | `{r['runId']}` |
+| Source mapping | [edited-source-mapping.json](edited-source-mapping.json), SHA-256 `{hashlib.sha256(mapping.read_bytes()).hexdigest()}` |
+| Selected project resources | {', '.join('`'+p+'`' for p in projects)} |
+| Loaded build identities / Debug | [loaded-build-hashes.json](loaded-build-hashes.json); source/Debug mapping |
+| Human source audit | Pending owner acceptance; [kit preflight gaps](../kit-preflight-gaps.md) preserve static failures |
+| Human Dapr / ACL / mTLS audit | Pending owner acceptance; [edited-state.json](edited-state.json) records observed sidecar/control-plane readiness |
+| Breakpoint | `{r['source']}:{r['breakpointLine']}`; [actual debugger transcript](debugger.txt) |
+| Source edit and runtime effect | [source-edit.patch](source-edit.patch); observed `{r['observedSourceEditMarker']}` |
+| Original / edited source hashes | [result.json](result.json) |
+| Direct gitlinks / nested references | {direct}; initialized nested count zero |
+| Hosting inventory / retirement gates | Existing owner freeze/retirement policy retained; no hosting retirement performed |
+| Readiness / deadline | `Ready`; effective deadline `{s['effectiveDeadlineSeconds']}` seconds; [edited-state.json](edited-state.json) |
+| Down / cleanup | Exact run-ID down returned exit `0`; runner asserted state and workspace removal; [commands.json](commands.json) |
+| Source restoration | Byte-for-byte original restored; [source-restored.json](source-restored.json) |
+| Story 3.11 / owner acceptance | Supports the evidence story; overall sign-off remains open |
+
+- [x] Observed active-checkout breakpoint hit.
+- [x] Observed source-edit runtime effect after rebuilding through the module tool.
+- [x] Restored source bytes and completed exact-run cleanup.
+- [x] Captured direct-only gitlinks and absent initialized nested references.
+- [ ] Module owner accepted the source/Dapr audit and this evidence.
+
+Scope: source/Debug development through `/ready` (server modules) or offline `modules` (McpCli). Business-flow qualification and source/package/deployed retirement parity remain separate gates.
+'''
+ (d/'sm-2-checklist.md').write_text(text)
+(b/'results.json').write_text(json.dumps({'platformRevision':c['sourcePlatformCommit'],'toolVersion':'4.35.0','overallSm2SignOff':'open','modules':rows},indent=2)+'\n')
+print([(r['module'],r['runtimeProof']) for r in rows])

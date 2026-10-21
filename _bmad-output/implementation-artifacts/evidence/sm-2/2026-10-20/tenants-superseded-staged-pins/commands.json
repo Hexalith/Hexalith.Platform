@@ -1,0 +1,108 @@
+[
+  {
+    "label": "baseline-debug",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "debug",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Tenants",
+    "exitCode": 3,
+    "durationSeconds": 0.69,
+    "utc": "2026-10-20T15:20:53.137378+00:00"
+  },
+  {
+    "label": "baseline-debug",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "debug",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Tenants",
+    "exitCode": 3,
+    "durationSeconds": 0.65,
+    "utc": "2026-10-20T15:24:04.226227+00:00"
+  },
+  {
+    "label": "baseline-debug",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "debug",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Tenants",
+    "exitCode": 0,
+    "durationSeconds": 149.25,
+    "utc": "2026-10-20T15:27:08.310337+00:00"
+  },
+  {
+    "label": "baseline-down",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "down",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--run-id",
+      "d60e96e781a5c6db6f7496dfaa7cecb7"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Tenants",
+    "exitCode": 0,
+    "durationSeconds": 4.48,
+    "utc": "2026-10-20T15:27:12.892546+00:00"
+  },
+  {
+    "label": "edited-debug",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "debug",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Tenants",
+    "exitCode": 3,
+    "durationSeconds": 158.26,
+    "utc": "2026-10-20T15:29:51.156828+00:00"
+  },
+  {
+    "label": "cleanup-511e32a55da859d616d8a5f6d5fc250d-down",
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "down",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--run-id",
+      "511e32a55da859d616d8a5f6d5fc250d"
+    ],
+    "cwd": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Tenants",
+    "exitCode": 0,
+    "durationSeconds": 0.45,
+    "utc": "2026-10-20T15:29:51.606963+00:00"
+  }
+]

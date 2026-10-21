@@ -821,18 +821,56 @@ def require_published_runtime_source(snapshot, published_producers):
             "checkoutCommit": snapshot["commit"], "matchesPublishedProducer": True}
 
 
-def select_control_plane_ports():
-    """Choose distinct loopback ports free in both address families without touching foreign fleets."""
+def host_ephemeral_port_range(path=Path("/proc/sys/net/ipv4/ip_local_port_range")):
+    """Read the actual allocator range used by later Aspire application bind(0) calls."""
+    try:
+        values = Path(path).read_text().split()
+        if len(values) != 2:
+            raise ValueError("Expected exactly two range bounds")
+        lower, upper = map(int, values)
+        if not 1024 <= lower <= upper <= 65535:
+            raise ValueError("Invalid unprivileged port range")
+        return lower, upper
+    except (OSError, ValueError) as error:
+        raise ValueError("Cannot establish the host ephemeral application-port range: " + str(path)) from error
+
+
+def host_reserved_port_ranges(path=Path("/proc/sys/net/ipv4/ip_local_reserved_ports")):
+    """Respect administrator-reserved ports without changing the host's networking policy."""
+    try:
+        value = Path(path).read_text().strip()
+        ranges = []
+        for token in value.split(",") if value else []:
+            if not re.fullmatch(r"[0-9]+(?:-[0-9]+)?", token):
+                raise ValueError("Invalid reserved port range")
+            bounds = [int(part) for part in token.split("-")]
+            lower, upper = bounds[0], bounds[-1]
+            if not 1 <= lower <= upper <= 65535:
+                raise ValueError("Invalid reserved port range")
+            ranges.append((lower, upper))
+        return tuple(ranges)
+    except (OSError, ValueError) as error:
+        raise ValueError("Cannot establish the host reserved-port ranges: " + str(path)) from error
+
+
+def select_control_plane_ports(ephemeral_range=None, reserved_ranges=None):
+    """Use available dual-stack ports outside application and administrator-reserved ranges."""
+    lower, upper = host_ephemeral_port_range() if ephemeral_range is None else ephemeral_range
+    reserved = host_reserved_port_ranges() if reserved_ranges is None else reserved_ranges
     listeners = []
     try:
         selected = {}
         for name in ("sentry", "placement", "scheduler"):
-            for _ in range(100):
+            # Docker Desktop's WSL proxy accepts bind(65535), but publishing that boundary port
+            # leaves even an Alpine container in Created until the start API times out. The exact
+            # owned-container counterexample is retained with Story 4.9; adjacent ports pass.
+            for port in range(65534, 1023, -1):
+                if lower <= port <= upper or any(start <= port <= end for start, end in reserved):
+                    continue
                 ipv4 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 ipv6 = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 try:
-                    ipv4.bind(("127.0.0.1", 0))
-                    port = ipv4.getsockname()[1]
+                    ipv4.bind(("127.0.0.1", port))
                     ipv6.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 1)
                     ipv6.bind(("::1", port))
                 except OSError:
@@ -843,7 +881,7 @@ def select_control_plane_ports():
                 selected[name] = port
                 break
             else:
-                raise ValueError("No free dual-stack loopback port for the owned " + name)
+                raise ValueError("No free dual-stack loopback port outside the host ephemeral range for the owned " + name)
         return selected
     finally:
         for listener in listeners:
@@ -1073,8 +1111,16 @@ def run_verification(args):
             summary["status"] = "preparation-passed; parity-incomplete"
             return 0
         environment = os.environ.copy()
-        control_plane_ports = select_control_plane_ports()
+        ephemeral_range = host_ephemeral_port_range()
+        reserved_ranges = host_reserved_port_ranges()
+        control_plane_ports = select_control_plane_ports(ephemeral_range, reserved_ranges)
         summary["controlPlanePorts"] = control_plane_ports
+        summary["controlPlanePortSelection"] = {"ephemeralRangePath": "/proc/sys/net/ipv4/ip_local_port_range",
+            "excludedEphemeralRange": list(ephemeral_range),
+            "reservedRangesPath": "/proc/sys/net/ipv4/ip_local_reserved_ports",
+            "excludedReservedRanges": [list(bounds) for bounds in reserved_ranges],
+            "excludedDockerBoundaryPorts": [65535], "selected": control_plane_ports,
+            "policy": "Distinct dual-stack available ports outside application/reserved ranges; Docker WSL boundary port 65535 excluded"}
         isolated_runtime = artifacts / "isolated-daprd"
         summary["isolatedRuntime"] = isolated_daprd.prepare(isolated_runtime,
             os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
@@ -1181,6 +1227,10 @@ def run_verification(args):
             current = canonical_source_snapshot(Path(baseline["root"]))
             if current != baseline:
                 raise ValueError("Canonical " + name + " revision or ordinary build/source/test/verifier inputs changed during execution")
+        if host_ephemeral_port_range() != ephemeral_range:
+            raise ValueError("The host ephemeral application-port range changed during execution")
+        if host_reserved_port_ranges() != reserved_ranges:
+            raise ValueError("The host reserved-port ranges changed during execution")
         summary["rollback"] = bind_persisted_outcomes(artifacts / "persisted-states.jsonl", summary["rows"], summary["actualStarts"])
         summary["status"] = "passed-disposable-synthetic-parity-and-rollback"
         return 0

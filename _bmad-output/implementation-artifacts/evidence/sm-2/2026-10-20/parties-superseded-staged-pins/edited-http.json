@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "probeHeader": "parties-sm2-20261020",
+  "partiesWarning": "Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.",
+  "body": "{\n  \"status\": \"Healthy\",\n  \"results\": {\n    \"dapr-sidecar\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Dapr sidecar is responsive.\",\n      \"duration\": \"00:00:00.0062755\",\n      \"data\": {}\n    },\n    \"dapr-statestore\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Dapr state store \\u0027statestore\\u0027 is accessible.\",\n      \"duration\": \"00:00:00.0067378\",\n      \"data\": {}\n    },\n    \"tenants-integration\": {\n      \"status\": \"Healthy\",\n      \"description\": \"Tenants service \\u0027tenants\\u0027 is ready.\",\n      \"duration\": \"00:00:00.0215773\",\n      \"data\": {}\n    }\n  }\n}",
+  "pid": 2533654,
+  "source": "/tmp/hexalith-sm2-20261020-zw8t88ea/Hexalith.Parties/src/Hexalith.Parties/Middleware/MvpComplianceWarningMiddleware.cs",
+  "line": 11,
+  "url": "http://localhost:16193/ready",
+  "breakpointHit": true
+}

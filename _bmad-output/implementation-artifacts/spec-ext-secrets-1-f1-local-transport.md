@@ -2,7 +2,7 @@
 title: 'Execute the local F1 whole-request transport gate'
 type: 'feature'
 created: '2026-10-20'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058
@@ -65,6 +65,30 @@ No unresolved intent gaps or irreversible operations. User authorization covers 
 ## Spec Change Log
 
 ## Review Triage Log
+
+| Finding | Verdict / route | Evidence and disposition |
+|---|---|---|
+| B1 | medium / patch | Fresh builder writes build-manifest.json, while audit reads source/source-inputs.json; no supplied writer exists. Emit the consumed record and test the producer/consumer connection. |
+| B2 | medium / patch | Pinned decoder discards unknown fields within metadata map entries before top-level GetUnknown. Validate raw nested wire before loss; independently report it and add a real nested-unknown probe. |
+| B3 | medium / patch | Auditor compares current binaries with execution and packet with seal separately, permitting stale seal linkage. Require seal, retained artifact and executed image hashes to agree. |
+| B4 | medium / patch | SDK seal omits app-local Runtime/EventStore/gRPC assemblies and runtimeconfig loaded by the driver. Bind and verify the complete app dependency directory. |
+| B5 | medium / patch | Inherited Go flags/workspace/checksum exclusions can alter build inputs while source files remain pinned. Isolate effective build settings and retain them. |
+| B6 | medium / patch | Negative probes accept any non-OK/empty status; unrelated connection loss can satisfy rejection. Require the observed intended status/reset and enforcement boundary. |
+| B7 | medium / patch | SDK opaque requests and later Go probes share body digests. Component/sink digest-only matching can borrow Go evidence. Correlate the SDK case across forwarded metadata and sink. |
+| B8 | medium / patch | all([]) and command iteration allow empty process/cleanup inventories. Require the complete expected named process inventory with matching PID/start/image/terminal observations. |
+| B9 | medium / patch | Published independent evidence and detached verifier reports are referenced but not opened/hashed by check_packet. Authenticate those retained bindings and passing/closed outcomes. |
+| B10 | medium / patch | Nonempty all-null sections permit omitted prerequisites; template artifact hashes are unchecked. Require exact prerequisite keys and executed artifact bindings. |
+| E1 | medium / patch | Independently confirmed the same missing source-input manifest producer as B1; group by that root cause. |
+| E2 | medium / patch | Independently confirmed stale seal/execution binary linkage as B3; group by that root cause. |
+| E3 | low / reject | Malformed response-size control outside the fixed runner schedule can panic the fixture. The retained runner supplies only 1048575/1048576/1048577; extra input guards are not needed for ordinary use of this fixed gate. |
+| E4 | low / reject | Unrepresentable padding can loop for arbitrary CLI values, but all retained exact 128MiB boundary constructions are representable and executed. A generic padding search extension is unnecessary for this fixed schedule. |
+| E5 | medium / patch | Completed streams remain in the observer data map with slices backed by large allocations. The persistent component connection handles many large streams in this actual schedule; remove consumed buffers and ended stream state. |
+| E6 | medium / patch | Same demonstrated wrong rejection-cause acceptance as B6; group by that root cause. |
+| E7 | medium / patch | Short descriptor/probe processes can exit before /proc/PID/exe opens; this records null and causes a correct run to fail audit. Bind the exact executed file robustly for short-lived children. |
+| V1 | medium / patch | Preverified gap: deleting eight accepted metadata sink arrivals and refreshing inventory still passes full audit. Require positive send sink evidence and an adversarial regression. |
+| V2 | medium / patch | Preverified producer/consumer gap repeats B1; no new root cause. |
+| R1 | medium / patch | Root reproduced acceptance of empty configuration hashes, advertised header limit=1 and derived manifest bound=1 in temporary packets with rebound template hash. Pin complete published configuration, header/metadata/sufficiency declarations. |
+| R2 | medium / patch | Root independently reproduced omission of all but one termination prerequisite; same root cause as B10. |
 
 ## Verification
 
