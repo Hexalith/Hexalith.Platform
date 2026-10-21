@@ -1,0 +1,54 @@
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+g4: HXR028 resource='stdin-listener' appId='-' status='blocked-after-stop'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0127ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0074ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0067ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0076ms with message '(null)'
+g4: waiting for resource 'first' to become healthy.
+g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: every resource is healthy.
+g4: waiting for resource 'redis' to become healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check infrastructure-redis with status Unhealthy completed after 1.0656ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0882ms with message '(null)'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR027 resource='eventstore' appId='eventstore' status='fault-OptionsValidationException'.
+g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: HXR026 resource='selected' appId='selected-app' status='HTTP 503;probe-timeout'.
+g4: HXR026 resource='selected' appId='selected-app' status='connection-unavailable;probe-timeout'.
+g4: HXR026 resource='selected' appId='selected-app' status='request-timeout;probe-timeout'.
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'f10c51322a4738a419c3d694398a2df2aee0df3f708898e259b4b46f4930a895')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 1293, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 486.110s

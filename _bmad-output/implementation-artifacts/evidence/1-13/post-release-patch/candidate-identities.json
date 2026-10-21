@@ -1,0 +1,135 @@
+{
+  "recordedUtc": "2026-10-21T07:23:02.299212+00:00",
+  "status": "reviewed local correction candidate; final 1293 Builds and 5 Platform tests passed; owner approval, gated publication and new pin acceptance pending",
+  "originalPlatformBaseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+  "originalBuildsBaseline": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "postReleasePlatformBaseline": "258269e3896c533d763a2fdb233ed9d4287272d5",
+  "postReleaseBuildsBaseline": "fff4a212180d8cd1c5c0759655a9bc4fb6963c45",
+  "platformHead": "7b5548f0d308d27af9d5fda5b68c6b959c053185",
+  "buildsHead": "4841778b0b018ff017cd31805aafea5f4ae3c011",
+  "platformRecordedBuildsGitlink": "160000 4841778b0b018ff017cd31805aafea5f4ae3c011 0\treferences/Hexalith.Builds",
+  "concurrentBuildsCommits": [
+    "1e87f193d7d8450233faa1e46a7a646edfaf5c79",
+    "32af59cdaa2ae4786ab80c59433e17adccbba62b",
+    "17d0c6ffec5fb3c8d8058e67cb85644460cb5256"
+  ],
+  "concurrentPlatformCommits": [
+    "bc36d21d4b049911253beffaf45deb9bb806024e",
+    "7b5548f0d308d27af9d5fda5b68c6b959c053185"
+  ],
+  "toolPin": {
+    "version": "4.35.0",
+    "commands": [
+      "hexalith-module"
+    ],
+    "rollForward": false
+  },
+  "supportedToolRange": "[4.35.0, 5.0.0-0)",
+  "restoredPublishedToolVersion": "4.35.0+fff4a212180d8cd1c5c0759655a9bc4fb6963c45",
+  "localBuildVersionOverride": "4.35.0 (local artifacts only; not a new publication)",
+  "newPublication": false,
+  "pinChangedByThisImplementation": false,
+  "runtimeDependenciesChanged": false,
+  "sourceFileSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "11ea11196b4369ec527cc9b0c410c7a2f3335f8e4a0d8661ed5a7332b80f7208",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionRow.cs": "656fb374fdb09429b6a3bd5dd3cf2e13b0dd69f6d36a275358b1574ad5ba8072",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidationResult.cs": "9f301094c790c794f1c777106ab4572e784bc134d90e4360b9b12222e7b5f704",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs": "64242630131f7e637110ad0df6e0971685170d87ede60ee72f15e119d3ad92c3",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "ff54e1775d27a2eeb91eee83454f008e20b4937c2ab4db36a3242575dd343971",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs": "0cff7bb5cc21d646ad049eecad0a4984ed53819e39a8701749a981069de8e0c5",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Diagnostics/ToolCommandResult.cs": "1aa45b4e48d4537ed5dd447591a50a4383728144c0fd50bfa1bbb0a9f50faa68",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Diagnostics/ToolDiagnosticFormatter.cs": "d7872e0b9ab33d4c2b6ecc50d16be9c05405c5d99006f47e0a9e46ef450eebd1",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/GitWorkspaceProcess.cs": "c710b56f34e9325565a180d68caf008f95b0ed1c441d6413ad58877dfd1ce5c5",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformAdoptionTestWorkspace.cs": "5ec90b199657e2b3dfd5539d1c909cfcee7aa4f76e66dce9d5e0b90d05836ee2",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "8f53a9b19d002a76cac41a38f67ea04a3a5c71fd96cfd2ea0206104b4306dfb6",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs": "3646e0b91938d01d06d7bb1acd3be2d09945e045a9a05ff3158d6272fe5c7691",
+    "README.md": "d3eea1fe803e85f8239f4e0f696dc93cd4972b16424a0a8863a1f0043333321c",
+    "docs/domain-module-enrollment.md": "d24b44cdaf36f0bb4517bf07d567570a361af6eb42731e19dba5a3a8cea68ffc",
+    "templates/domain-module-enrollment/hexalith.module-manifest.v2.json": "9146acfb6cbb74056aab386dbd52ff4a168d2093358b558939ad93b8d62e3dd5",
+    "templates/domain-module-enrollment/hosting-inventory.json": "32d224adf052598411d4385942ab704f16e81091fbf6e29eef8abc7750c0058e",
+    "templates/domain-module-enrollment/sm-2-checklist.md": "9f9124be09f0cede8a5ad66f3c13d3f5e3a99761a2a630b2d6dc3b4bebce30ce",
+    "tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs": "856b9f76345f74045a2a7764e6e2b83b6673b34adda42b26a2e1e39dbe761f42",
+    ".config/dotnet-tools.json": "3dda23cc6569b8c4fde0a6efcdece1077f1df05c359f0602a378f65b67ca52ca",
+    "hexalith-platform.json": "6b8551032063b13ef5c3f40f79e4a454c0a3c335a8ef22ea43924b2af97a4998"
+  },
+  "artifactSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll": "afe9a040781908579df97183a4ba489114db863e2ad2420da7a1669c8f82719f",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "d3ca07440138b608fbcee3de379d2c503c60bfd077af569e3cdfd7a3ff2907d7",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "ca917e769500f79b59c279746f0fd4246f4a5e3e7ac0a260688a7dee707d1935",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "d3ca07440138b608fbcee3de379d2c503c60bfd077af569e3cdfd7a3ff2907d7",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll": "bf3e603d03e9c89c6ebc8d27c6125f258f8156303467038d3c9c450be2bed62e",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "d3ca07440138b608fbcee3de379d2c503c60bfd077af569e3cdfd7a3ff2907d7"
+  },
+  "reviewPatchSha256": {
+    "builds-original-story.patch": "e3806a1521c61488280767dc134a69180986b1f387d2a1555cec14163efd84e1",
+    "builds-post-release.patch": "8fb5be335743cbf29a65339e0185ac8910866d2ccd978da31fac2fcf988d4896",
+    "platform-original-story.patch": "573a5bc7463682fbe9d751fa1b4a0c544e3fb0d43c8c9fc164054e6592d18807",
+    "platform-post-release.patch": "5bcd23f54ef60caa3d19eb1351587e406bce9cbb6fe8ae5c55cbae305068d1ed"
+  },
+  "verificationResults": {
+    "builds-focused-tests.txt": {
+      "total": 188,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "builds-full-tests.txt": {
+      "total": 1235,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "platform-kit-tests.txt": {
+      "total": 5,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "builds-post-review-full-tests.txt": {
+      "total": 1293,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "builds-review-fixes-tests.txt": {
+      "total": 173,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "builds-review-fixes-final-cases.txt": {
+      "total": 17,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "platform-post-review-kit-tests.txt": {
+      "total": 5,
+      "errors": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    }
+  },
+  "verificationOutputSha256": {
+    "builds-build.txt": "e83e1a032f8220ce0129ea6693d0ebc042584e5948f06a3da774895f72db5377",
+    "builds-focused-tests.txt": "41cffb5d35b70706c40e8f2e13ee0d2416a5e20367292ca358fe4bf31b1d6654",
+    "builds-full-tests.txt": "e203f1809c730140948a2fa3bc5ec0ef180060480fc2ee77b6bbd771093b8ef6",
+    "platform-release-restore.txt": "df06c3c33358b7a8adb8c1596824fba9f10dd0a1a1d73578534030a1ffb6c015",
+    "platform-build.txt": "358e06032fd9b05256b219bbcfcd09655fadbcbd052057eaa3418fe9a588410f",
+    "platform-kit-tests.txt": "cccc113f2175ecb9940d5482bf3503a91d3cc9e109f57d9b542c145e477428db",
+    "guide-commands.txt": "7bd38f5288fffb31d0121fdb9665fafbb10d8453401418cb443497140252e4b2",
+    "real-workspace-commands.json": "924221bd865123d49db4fd67eaf9b4b1d45fcdf22ffa4c99d684e8833c080c80",
+    "builds-post-review-full-tests.txt": "b8d2ba86b22b5e3c6eb672a9722ca528bfbd959f48806105f5802adec9b294da",
+    "builds-review-fixes-tests.txt": "ee0493574db070dfdb7815ae79ba16af1fb58d52a9b381d34040d99bda19cc25",
+    "builds-review-fixes-final-cases.txt": "b4fb0c404b8b58c20c2f384a70c98bc2a2759523b169a3f81f4eae1ec7a90fdc",
+    "platform-post-review-build.txt": "088bd6c2783261dba058fe7b5a07e5296905f4f55fbe80628e77e61b9124b9bd",
+    "platform-post-review-kit-tests.txt": "0e3716d270a1b563e201ffac54eb3ab782f110c29bb6153d8d81beae82e4716a"
+  }
+}

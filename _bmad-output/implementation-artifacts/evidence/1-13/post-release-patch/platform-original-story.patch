@@ -1,0 +1,688 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index fd57bd2..57c78bb 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -3,7 +3,7 @@
+   "isRoot": true,
+   "tools": {
+     "hexalith.builds.module.cli": {
+-      "version": "4.34.0",
++      "version": "4.35.0",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/README.md b/README.md
+index b7f95b2..048afda 100644
+--- a/README.md
++++ b/README.md
+@@ -29,39 +29,82 @@ Those hosting concerns live here.
+ 
+ ## Module tool
+ 
+-The local tool manifest pins `hexalith.builds.module.cli` `4.34.0`, accepted for
+-Platform `run` and `debug`. `hexalith-platform.json` accepts versions in
+-`[4.34.0, 5.0.0-0)`, from the first release that can run and debug every
+-technical module. The previously accepted `4.33.1` is now outside that range: it
+-composes only servers and builds no McpCli. The earlier `4.33.0` was excluded
+-because its packaged host has a mismatched Tooling identity and build-machine
+-paths, which prevent v2 `run` and `debug`. Later 4.x
+-releases, prereleases included, are accepted without a Platform edit, and 5.0
++From the Platform root, restore and check its exact local tool pin:
++
++```bash
++dotnet tool restore
++dotnet tool run hexalith-module --version
++```
++
++The local tool manifest pins `hexalith.builds.module.cli` `4.35.0`, accepted for
++Platform `run`, `debug` and opt-in domain enrollment validation.
++`hexalith-platform.json` accepts versions in `[4.35.0, 5.0.0-0)`.
++The floor includes the Story 1.13 `validate --adoption` report. Later 4.x
++releases, prereleases included, are accepted without a Platform edit; 5.0
+ prereleases are excluded. The catalog commit is
+-`5d03f1db9c38db34ecac7fe6048937478ffb82cc`, matching both the Builds gitlink
+-and release tag `v4.34.0`. Only the pinned version is guaranteed to embed that
+-catalog. Another accepted 4.x tool brings its own embedded Dapr, Redis and
+-AppHost SDK pins, and nothing compares them with the catalog yet. When the
+-exact pin moves, the Builds gitlink moves to that version's release-tag commit.
+-See the [Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
+-for the released-tool verification of McpCli, EventStore and Memories; the
++`fff4a212180d8cd1c5c0759655a9bc4fb6963c45`, matching release tag `v4.35.0`.
++The current Builds checkout contains unreleased enrollment corrections; its
++release-tag gitlink acceptance remains pending. The pinned tool's runtime catalog
++and run/debug topology are unchanged
++from `4.34.0`. Only the pinned version is guaranteed to embed that catalog.
++Another accepted 4.x tool brings its own embedded Dapr, Redis and AppHost SDK
++pins, and nothing compares them with the catalog yet. When the exact pin moves,
++the Builds gitlink moves to that version's release-tag commit.
++See the [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md)
++for owner approval, gated publication and fresh released-tool acceptance. The
++[Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
++records McpCli, EventStore and Memories verification with `4.34.0`; the
+ [Story 1.10 evidence](_bmad-output/implementation-artifacts/evidence/1-10/README.md)
+ records the earlier EventStore and Memories proof with `4.33.1`.
+ 
+-Versions below the configured range are not Platform-accepted, including the published
+-`4.20.0–4.27.4` and `4.29.1–4.32.0` cohorts, `4.33.0` and `4.33.1`. From
+-`4.31.0`, a tool outside the range is refused with `HXW010` in package mode and
+-warned in source mode.
+-Older tools do not check the range, so run the pinned tool through
+-`dotnet tool run`.
++Versions below the configured range are not Platform-accepted, including `4.34.0`.
++That release first built McpCli; `4.33.1` composed only servers. The earlier
++`4.33.0` also had a mismatched packaged Tooling identity and build-machine paths.
++From `4.31.0`, a tool outside the range is refused with `HXW010` in package mode
++and warned in source mode. Older tools do not check the range, so run the pinned
++tool through `dotnet tool run`.
++
++The canonical [candidate evidence and attachment policy v1](docs/contracts/candidate-and-attachment-policy-v1.md)
++fixes committed PR merge-result evidence, prohibits reuse across decisions and
++sets finite attachment holds. This publishes Platform policy for downstream
++descriptor and runner adoption; it does not establish implemented support or
++change the accepted tool pin. Accepting attachments under it requires Builds
++adoption; accepting evidence also requires a Platform-accepted, integration-qualified tool.
++
++## Parties reference domain
+ 
+-From the Platform root, restore and check the pinned tool with:
++The qualified independent `Hexalith.Parties` checkout pins module tool `4.34.0`
++against its own direct Platform gitlink `17179e5`, whose accepted range is
++`[4.34.0, 5.0.0-0)`. That historical qualification does not change this checkout's
++current minimum above. From that Parties checkout:
+ 
+ ```bash
+ dotnet tool restore
+-dotnet tool run hexalith-module --version
++dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manifest.v2.json
+ ```
+ 
++Parties declares EventStore, Tenants and Memories, giving seven ready servers
++including `parties`; source and Debug bindings use only the tool-selected direct
++references. Platform routes the singular `party` domain to `parties/process`,
++binds the existing state/pubsub keys and renders the declarative tenant subscription.
++Rich Parties search stays disabled. Legacy domain AppHost, Aspire, UI/MCP and sample
++hosts remain frozen outside this qualification. Owner review and upstream
++integration are complete; the [Story 1.12 evidence](_bmad-output/implementation-artifacts/evidence/1-12/README.md)
++records the accepted adoption and its exact revisions.
++
++## Domain-module enrollment
++
++Use the [enrollment guide](docs/domain-module-enrollment.md) and
++[starter templates](templates/domain-module-enrollment/) for owner-led declaration,
++direct-only initialization, source mapping, Dapr conventions, hosting inventory
++and human SM-2 evidence. The accepted `4.35.0` tool provides read-only
++`validate --adoption` reports in human and JSON formats. Static reports leave
++SM-2 for the module owner to demonstrate. See
++[Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
++The current Builds source includes post-release enrollment corrections; those
++corrections require owner review, gated publication and fresh Platform pin
++acceptance before they are available through the published tool pin.
++
+ ## Run and debug a technical module
+ 
+ EventStore, Memories and McpCli run and debug from this workspace, never from
+@@ -173,7 +216,7 @@ expected project path; no other copy, such as a sibling `../mcpcli` checkout,
+ is used. Package mode builds no McpCli; package-mode McpCli arrives in Epic 3.
+ The started EventStore gateway is the target of connected execution, which also
+ arrives in Epic 3; the debugger recipe below uses offline verbs only. The build
+-requires `4.34.0` or later, the floor of the accepted range. The earlier `4.33.1`
++first shipped in `4.34.0`; use the current accepted range above. The earlier `4.33.1`
+ composes only servers and builds no McpCli; it is outside the range, so it is
+ warned (`HXW010`) in source mode and refused in package mode.
+ 
+diff --git a/docs/domain-module-enrollment.md b/docs/domain-module-enrollment.md
+new file mode 100644
+index 0000000..3bac175
+--- /dev/null
++++ b/docs/domain-module-enrollment.md
+@@ -0,0 +1,174 @@
++# Enroll a domain module
++
++The module owner uses this kit to prepare enrollment in Platform. Static validation
++and the human demonstration are separate gates. The accepted published tool is
++`4.35.0`, including ordinary declaration validation and the read-only `--adoption`
++report. Copy the exact pin from the direct Platform checkout as described below.
++[Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
++records owner approval, gated publication and fresh acceptance. Static PASS rows
++leave the owner's live SM-2 demonstration separately unverified. Post-release
++validation corrections in the current Builds source still require owner review,
++gated publication and fresh Platform pin acceptance; see the release evidence
++for the current candidate's status.
++
++## 1. Declare and initialize the minimum workspace
++
++Use the module repository as the active Git root. Declare direct root submodules
++in `.gitmodules`: `Hexalith.Platform`, `Hexalith.Builds`, `Hexalith.McpCli`,
++`Hexalith.EventStore`, `Hexalith.Tenants`, `Hexalith.Memories`, and every additional
++declared server dependency. Exclude the active module itself; the three minimum
++server dependencies are distinct identities. Commit gitlinks at the selected
++revisions. Use repository folders named `references/Hexalith.<id>`, compared
++case-insensitively with the declared module identity. Add each missing direct
++reference from the module root (replace the URL and ID):
++
++```bash
++git submodule add '<url>' 'references/Hexalith.<Id>'
++```
++
++Initialize the following minimum root paths at their recorded gitlinks, excluding
++self; append every additional declared dependency's direct path to the command:
++
++```bash
++git -c submodule.recurse=false submodule update --init --checkout -- \
++  references/Hexalith.Platform references/Hexalith.Builds references/Hexalith.McpCli \
++  references/Hexalith.EventStore references/Hexalith.Tenants references/Hexalith.Memories
++git submodule status
++```
++
++Never add `--recursive` or `--remote`. Do not initialize a direct dependency's own
++`references/*`. An already initialized nested submodule fails validation; its owner
++must deinitialize that exact path before proceeding. Keep each checkout HEAD equal
++to its module root's recorded gitlink. A sibling checkout's presence has no effect.
++
++## 2. Customize the declaration and inventory
++
++Copy each starter file only when absent; merge an existing declaration or inventory
++with owner review. Then replace the sample identities, app/resource/server
++IDs, routes, topic names, configuration keys and readiness endpoint with the real
++module contract. Keep all five groups: identity, runtime, surfaces, integration and
++lifecycle. Dependencies name module identities, not repository paths. Add every
++server dependency to both the declaration and the direct workspace references.
++Readiness must describe the actual ready endpoint. The example declares a logical
++pub/sub role, injected component key, explicit subscription route and dead-letter
++topic; Platform assigns the physical scoped component names. Do not copy a literal
++state-store, pub/sub or secret-store component name into code or configuration.
++
++```bash
++mkdir -p module
++for file in hexalith.module-manifest.v2.json hosting-inventory.json sm-2-checklist.md; do
++  if [ ! -e "module/$file" ]; then
++    cp "references/Hexalith.Platform/templates/domain-module-enrollment/$file" "module/$file"
++  fi
++done
++```
++
++Inventory every existing module-owned `*.AppHost`, `*.Aspire` and
++`*.ServiceDefaults` project by exact tracked `.csproj` path, kind, accountable owner
++and consumers. Replace every pending owner and consumer with an identified value;
++use `"consumers": ["none"]` only when no consumers exist. Unedited pending defaults
++fail adoption validation; plans and gates may remain pending. Rename the sample
++inventory entries to existing projects; remove entries for projects that do not
++exist. Use `"projects": []` if there are none.
++Do not create sample hosting projects. Keep existing projects frozen, with explicit
++replacement and retirement plans and pending gates. Do not add cross-module wiring.
++
++Inventory completeness grants no retirement authority. Retirement requires producer
++adoption, owner-reviewed **source/package/deployed parity**, and, when applicable,
++EventStore **AD-22 exact-subject consumer-removal authority**. Record exact evidence
++and authorized subject; never infer permission from a successful static report.
++Only exact frozen hosting-project directories are excluded from bounded source
++scans. Root build files and dependency checks always remain in scope.
++
++## 3. Restore exactly the accepted tool
++
++Merge only the `hexalith.builds.module.cli` tool entry from the **direct Platform
++checkout**, preserving the exact version and disabled roll-forward as well as every
++other local tool entry. Do not pick the newest NuGet version. For example, with
++Python 3:
++
++```bash
++mkdir -p .config
++python3 - <<'PYTHON'
++import json
++from pathlib import Path
++accepted = json.loads(Path("references/Hexalith.Platform/.config/dotnet-tools.json").read_text())
++path = Path(".config/dotnet-tools.json")
++local = json.loads(path.read_text()) if path.exists() else {"version": 1, "isRoot": True, "tools": {}}
++local.setdefault("tools", {})["hexalith.builds.module.cli"] = accepted["tools"]["hexalith.builds.module.cli"]
++path.write_text(json.dumps(local, indent=2) + "\n")
++PYTHON
++dotnet tool restore
++dotnet tool run hexalith-module --version
++dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json
++```
++
++Run both adoption output modes with the restored accepted tool:
++
++```bash
++dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json --adoption
++dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json --adoption --output json
++```
++
++Every static requirement reports PASS/FAIL, file and reason. Failures produce a
++nonzero exit while independent requirements are still checked. Validation is
++read-only: it never initializes references, resolves a source mapping, restores
++packages or starts resources. It inspects tracked module-owned source, build,
++configuration and helper files. Add enrollment files to normal owner review so
++that source scans see the intended tracked workspace.
++
++## 4. Use the tool's source mapping and Dapr conventions
++
++Remove sibling/ancestor/nested checkout discovery and package-fallback helpers.
++Remove file-based dependency/mode selectors and module assignments to tool-owned
++root/mode properties. Project/package pairs may consume `UseHexalithProjectReferences`
++and the tool-provided `Hexalith*Root` values; only the tool selects source/Debug or
++package/Release. An `Exists` guard on an unrelated optional import is legitimate.
++An `Exists` guard that chooses a dependency, root or mode is forbidden. The sole
++bootstrap exception is `HexalithBuildsRoot` defaulting to
++`$(MSBuildThisFileDirectory)references/Hexalith.Builds` only when that property is
++empty; the tool supplies its mapping before this inert default is evaluated.
++
++Read configured Dapr component names using declared configuration keys. Declare
++subscriptions, delivery routes and dead-letter policy in the manifest. Remove
++`[Topic]`, `WithTopic`, subscribe-handler mapping and `/dapr/subscribe` discovery.
++Preserve module ACL files as authoritative inputs. Review local mTLS,
++deny-by-default receiver ACLs and scoped components with the owner.
++
++The audit is a **bounded static check**, limited to known patterns in supported
++tracked files up to 1 MiB each after file-type filtering. JSON/YAML/YML are scanned
++only as `appsettings*.json`, `appsettings*.yaml` or `appsettings*.yml` configuration
++for Dapr defaults; evidence and OpenAPI documents do not enter either audit.
++Human source review must inspect unusual configuration filenames, indirection,
++unsupported languages, generated code and any constructs outside that bound.
++Passing rows cannot prove runtime behavior or replace SM-2.
++
++## 5. Run, debug and stop the active checkout
++
++Install the exact SDK/Aspire/Dapr prerequisites documented in the direct Platform
++[README](../README.md#requirements), including its isolated Dapr home. From the
++module Git root:
++
++```bash
++dotnet tool run hexalith-module -- run --manifest module/hexalith.module-manifest.v2.json --mode source
++dotnet tool run hexalith-module -- down --manifest module/hexalith.module-manifest.v2.json
++dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manifest.v2.json
++dotnet tool run hexalith-module -- down --manifest module/hexalith.module-manifest.v2.json
++```
++
++`run` and `debug` wait for declared readiness and required tasks; default deadline
++is ten minutes unless a justified finite declared override applies. Failures must
++identify the unready dependency and preserve diagnostics. `down` stops only the
++tool-owned run resources. Record returned run identity and mapping. Package mode
++uses released images and catalog packages; it also requires a clean, tagged direct
++Platform checkout matching its committed identity.
++
++## 6. Perform and record human SM-2 verification
++
++Use the copied checklist. Bind module, direct Platform and tool identities to the
++environment/run/mapping. Attach the debugger to the reported active-checkout
++process; record a real breakpoint hit. Edit active-checkout source, run the intended
++flow and record the runtime effect. Inspect direct-only initialization and absent
++initialized nested references. Preserve command/output, diagnostics, verifier and
++date, including failures. Keep all defaults pending until observed. Feed this
++record into **Story 3.11**; static PASS rows leave SM-2 separately unverified.
+diff --git a/hexalith-platform.json b/hexalith-platform.json
+index e7b46e0..494a0cb 100644
+--- a/hexalith-platform.json
++++ b/hexalith-platform.json
+@@ -1,4 +1,4 @@
+ {
+   "schemaVersion": 1,
+-  "toolVersionRange": "[4.34.0, 5.0.0-0)"
++  "toolVersionRange": "[4.35.0, 5.0.0-0)"
+ }
+diff --git a/templates/domain-module-enrollment/hexalith.module-manifest.v2.json b/templates/domain-module-enrollment/hexalith.module-manifest.v2.json
+new file mode 100644
+index 0000000..08e4ed1
+--- /dev/null
++++ b/templates/domain-module-enrollment/hexalith.module-manifest.v2.json
+@@ -0,0 +1,94 @@
++{
++  "schema": "hexalith.module-manifest.v2",
++  "modules": [
++    {
++      "identity": {
++        "moduleId": "sample",
++        "servers": [
++          {
++            "id": "server",
++            "appId": "sample",
++            "resourceId": "sample",
++            "enabled": true,
++            "required": true
++          }
++        ],
++        "dependencies": [
++          "eventstore",
++          "tenants",
++          "memories"
++        ]
++      },
++      "runtime": {
++        "dapr": [
++          {
++            "role": "events",
++            "capability": "pubsub",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "Sample:Dapr:EventsComponent",
++            "servers": [
++              "server"
++            ]
++          }
++        ],
++        "extensions": [],
++        "resources": []
++      },
++      "surfaces": {
++        "interfaces": []
++      },
++      "integration": {
++        "topics": [
++          {
++            "name": "sample-events",
++            "role": "events",
++            "deadLetter": {
++              "strategy": "topic",
++              "topic": "sample-dead-letter"
++            },
++            "subscription": {
++              "server": "server",
++              "route": "/events/sample"
++            }
++          },
++          {
++            "name": "sample-dead-letter",
++            "role": "events",
++            "deadLetter": {
++              "strategy": "none"
++            }
++          }
++        ],
++        "secrets": [],
++        "dynamicSecretNamespaces": [],
++        "identityNeeds": [],
++        "egress": [],
++        "providers": [],
++        "workers": []
++      },
++      "lifecycle": {
++        "readiness": [
++          {
++            "server": "server",
++            "kind": "http",
++            "endpoint": "/ready"
++          }
++        ],
++        "tasks": [],
++        "startup": {},
++        "classification": {
++          "changeClass": "additive",
++          "reason": "Initial domain enrollment; owner must customize and review."
++        },
++        "recoveryHooks": [],
++        "fenceHooks": [],
++        "replay": {
++          "reopenBeforeReplay": false
++        },
++        "criticalFlows": [],
++        "smokeSurfaces": [],
++        "recoveryInventory": []
++      }
++    }
++  ]
++}
+diff --git a/templates/domain-module-enrollment/hosting-inventory.json b/templates/domain-module-enrollment/hosting-inventory.json
+new file mode 100644
+index 0000000..77239f8
+--- /dev/null
++++ b/templates/domain-module-enrollment/hosting-inventory.json
+@@ -0,0 +1,53 @@
++{
++  "schemaVersion": 1,
++  "projects": [
++    {
++      "path": "src/Hexalith.Sample.AppHost/Hexalith.Sample.AppHost.csproj",
++      "kind": "AppHost",
++      "owner": "pending: module owner",
++      "consumers": [
++        "pending: identify every consumer; use [\"none\"] explicitly when no consumers exist"
++      ],
++      "state": "frozen",
++      "replacementPlan": "pending: replace with producer-owned Platform hosting after producer adoption",
++      "retirementPlan": "pending: retain frozen until every applicable gate has owner-reviewed exact-subject evidence; inventory grants no retirement authority",
++      "gates": {
++        "producerAdoption": "pending",
++        "ownerReviewedSourcePackageDeployedParity": "pending",
++        "eventStoreAd22ExactSubjectRemovalAuthority": "pending: obtain EventStore AD-22 exact-subject removal authority when applicable; otherwise record owner-reviewed not-applicable reason"
++      }
++    },
++    {
++      "path": "src/Hexalith.Sample.Aspire/Hexalith.Sample.Aspire.csproj",
++      "kind": "Aspire",
++      "owner": "pending: module owner",
++      "consumers": [
++        "pending: identify every consumer; use [\"none\"] explicitly when no consumers exist"
++      ],
++      "state": "frozen",
++      "replacementPlan": "pending: replace with producer-owned Platform hosting after producer adoption",
++      "retirementPlan": "pending: retain frozen until every applicable gate has owner-reviewed exact-subject evidence; inventory grants no retirement authority",
++      "gates": {
++        "producerAdoption": "pending",
++        "ownerReviewedSourcePackageDeployedParity": "pending",
++        "eventStoreAd22ExactSubjectRemovalAuthority": "pending: obtain EventStore AD-22 exact-subject removal authority when applicable; otherwise record owner-reviewed not-applicable reason"
++      }
++    },
++    {
++      "path": "src/Hexalith.Sample.ServiceDefaults/Hexalith.Sample.ServiceDefaults.csproj",
++      "kind": "ServiceDefaults",
++      "owner": "pending: module owner",
++      "consumers": [
++        "pending: identify every consumer; use [\"none\"] explicitly when no consumers exist"
++      ],
++      "state": "frozen",
++      "replacementPlan": "pending: replace with producer-owned Platform hosting after producer adoption",
++      "retirementPlan": "pending: retain frozen until every applicable gate has owner-reviewed exact-subject evidence; inventory grants no retirement authority",
++      "gates": {
++        "producerAdoption": "pending",
++        "ownerReviewedSourcePackageDeployedParity": "pending",
++        "eventStoreAd22ExactSubjectRemovalAuthority": "pending: obtain EventStore AD-22 exact-subject removal authority when applicable; otherwise record owner-reviewed not-applicable reason"
++      }
++    }
++  ]
++}
+diff --git a/templates/domain-module-enrollment/sm-2-checklist.md b/templates/domain-module-enrollment/sm-2-checklist.md
+new file mode 100644
+index 0000000..09177b8
+--- /dev/null
++++ b/templates/domain-module-enrollment/sm-2-checklist.md
+@@ -0,0 +1,37 @@
++# Domain enrollment SM-2 record — pending
++
++This template records human evidence for Story 3.11. Static adoption validation is
++bounded and does not establish runtime behavior. Replace pending values only with
++observed evidence; attach source audit notes and diagnostic paths.
++
++| Evidence | Owner-recorded value |
++| --- | --- |
++| Module / repository / revision / dirty state | pending |
++| Direct Platform revision / release tag | pending |
++| Builds catalog gitlink / release tag commit | pending |
++| Tool package / exact restored version / pin comparison | pending |
++| Verifier / owner / UTC date | pending |
++| Environment / OS / SDK / Aspire / Dapr identity | pending |
++| Command / working directory / output mode / exit | pending |
++| Environment ID / run ID / mapping path and hash | pending |
++| Loaded project/package identities and Debug configuration | pending |
++| Human source audit: dependency selectors, helpers, unsupported/generated constructs | pending |
++| Human Dapr audit: injected names, declarative routes/dead-letter, ACLs and mTLS | pending |
++| Breakpoint: active file / line / process / loaded assembly / hit evidence | pending |
++| Active-checkout edit / rebuild or reload / observed runtime effect | pending |
++| Direct root .gitmodules / recorded gitlinks / checkout HEAD comparison | pending |
++| Direct-only initialization command / before and after state | pending |
++| Initialized nested reference check / result | pending |
++| Hosting inventory / freeze / gated retirement review | pending |
++| Readiness / tasks / duration / deadline / diagnostic files | pending |
++| Down command / run identity / cleanup outcome | pending |
++| Result / failures / corrective action / evidence links | pending |
++| Story 3.11 evidence reference / owner acceptance | pending |
++
++- [ ] Owner reviewed every module-owned source/build/helper path, including constructs outside the static scanner's supported patterns.
++- [ ] Tool pin equals the direct Platform checkout; published release and gitlink identities verified.
++- [ ] Breakpoint hit and source-edit runtime effect observed in the active checkout.
++- [ ] Direct-only/nested checks captured; no sibling or nested fallback selected.
++- [ ] No hosting project retired without producer adoption, owner-reviewed source/package/deployed parity and applicable EventStore AD-22 exact-subject removal authority.
++
++Result: **pending / SM-2 unverified**. Never infer completion from static PASS rows.
+diff --git a/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs b/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs
+new file mode 100644
+index 0000000..030f40e
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs
+@@ -0,0 +1,158 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Diagnostics;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++using Hexalith.Builds.Tooling.Manifest;
++using Shouldly;
++
++public sealed class DomainEnrollmentKitTests
++{
++    [Fact]
++    public void StarterValidatesWithRealTechnicalDeclarations()
++    {
++        string root = Root();
++        string starter = Path.Combine(root, "templates/domain-module-enrollment/hexalith.module-manifest.v2.json");
++        string[] manifests = [starter, .. new[] { "EventStore", "Tenants", "Memories", "McpCli" }.Select(name => Path.Combine(root, "references/Hexalith." + name + "/module/hexalith.module-manifest.v2.json"))];
++        PlatformManifestValidationResult report = PlatformManifestValidator.Validate(manifests, TestContext.Current.CancellationToken);
++        report.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, report.Diagnostics));
++        report.Declarations!.Select(declaration => declaration.Declaration.GetProperty("identity").GetProperty("moduleId").GetString()).ShouldContain("sample");
++    }
++
++    [Fact]
++    public void InventoryAndHumanChecklistKeepUnobservedEvidencePending()
++    {
++        string kit = Path.Combine(Root(), "templates/domain-module-enrollment");
++        using JsonDocument inventory = JsonDocument.Parse(File.ReadAllText(Path.Combine(kit, "hosting-inventory.json")));
++        JsonElement[] projects = [.. inventory.RootElement.GetProperty("projects").EnumerateArray()];
++        projects.Select(project => project.GetProperty("kind").GetString()).ShouldBe(["AppHost", "Aspire", "ServiceDefaults"]);
++        foreach (JsonElement project in projects)
++        {
++            project.GetProperty("state").GetString().ShouldBe("frozen");
++            project.GetProperty("owner").GetString().ShouldStartWith("pending");
++            project.GetProperty("consumers").GetArrayLength().ShouldBeGreaterThan(0);
++            project.GetProperty("retirementPlan").GetString()!.ShouldContain("no retirement authority");
++            foreach (JsonProperty gate in project.GetProperty("gates").EnumerateObject()) gate.Value.GetString().ShouldStartWith("pending");
++        }
++        string checklist = File.ReadAllText(Path.Combine(kit, "sm-2-checklist.md"));
++        checklist.ShouldContain("SM-2 unverified");
++        checklist.ShouldContain("Story 3.11");
++        checklist.ShouldContain("Breakpoint");
++        checklist.ShouldContain("runtime effect");
++        checklist.ShouldNotContain("[x]");
++    }
++
++    [Fact]
++    public void AcceptedToolPinEqualsSupportedRangeFloor()
++    {
++        string root = Root();
++        using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config/dotnet-tools.json")));
++        using JsonDocument identity = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "hexalith-platform.json")));
++        JsonElement tool = manifest.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
++        NuGet.Versioning.NuGetVersion version = NuGet.Versioning.NuGetVersion.Parse(tool.GetProperty("version").GetString()!);
++        NuGet.Versioning.VersionRange range = NuGet.Versioning.VersionRange.Parse(identity.RootElement.GetProperty("toolVersionRange").GetString()!);
++        range.Satisfies(version).ShouldBeTrue();
++        range.IsMinInclusive.ShouldBeTrue();
++        range.MinVersion.ShouldBe(version);
++        tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
++        tool.GetProperty("commands").EnumerateArray().Select(command => command.GetString()).ShouldBe(["hexalith-module"]);
++    }
++
++    [Theory]
++    [InlineData("human")]
++    [InlineData("json")]
++    public async Task ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(string format)
++    {
++        string root = Root();
++        string temporary = Path.Combine(Path.GetTempPath(), "platform-enrollment-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(temporary);
++        try
++        {
++            await GitAsync(temporary, "init", "-q");
++            foreach (string name in new[] { "Platform", "Builds", "McpCli", "EventStore", "Tenants", "Memories" })
++            {
++                string path = Path.Combine(temporary, "references/Hexalith." + name);
++                Directory.CreateDirectory(Path.Combine(path, ".config"));
++                File.Copy(Path.Combine(root, ".config/dotnet-tools.json"), Path.Combine(path, ".config/dotnet-tools.json"));
++                await GitAsync(path, "init", "-q");
++                await GitAsync(path, "add", ".");
++                await GitAsync(path, "-c", "user.name=Enrollment Test", "-c", "user.email=enrollment@example.invalid", "commit", "-qm", "fixture identity");
++                string commit = (await GitAsync(path, "rev-parse", "HEAD")).Trim();
++                await GitAsync(temporary, "update-index", "--add", "--cacheinfo", "160000," + commit + ",references/Hexalith." + name);
++                File.AppendAllText(Path.Combine(temporary, ".gitmodules"), $"[submodule \"references/Hexalith.{name}\"]\n\tpath = references/Hexalith.{name}\n\turl = https://example.invalid/Hexalith.{name}.git\n");
++            }
++            Directory.CreateDirectory(Path.Combine(temporary, "module"));
++            Directory.CreateDirectory(Path.Combine(temporary, ".config"));
++            File.Copy(Path.Combine(root, ".config/dotnet-tools.json"), Path.Combine(temporary, ".config/dotnet-tools.json"));
++            string kit = Path.Combine(root, "templates/domain-module-enrollment");
++            File.Copy(Path.Combine(kit, "hexalith.module-manifest.v2.json"), Path.Combine(temporary, "module/hexalith.module-manifest.v2.json"));
++            JsonNode inventory = JsonNode.Parse(File.ReadAllText(Path.Combine(kit, "hosting-inventory.json")))!;
++            foreach (JsonNode? entry in inventory["projects"]!.AsArray())
++            {
++                entry!["owner"] = "Enrollment fixture owner";
++                entry["consumers"] = new JsonArray("none");
++                string project = Path.Combine(temporary, entry["path"]!.GetValue<string>());
++                Directory.CreateDirectory(Path.GetDirectoryName(project)!);
++                File.WriteAllText(project, "<Project />");
++                File.WriteAllText(Path.Combine(Path.GetDirectoryName(project)!, "Program.cs"), "app.MapSubscribeHandler(); // frozen legacy host");
++            }
++            File.WriteAllText(Path.Combine(temporary, "module/hosting-inventory.json"), inventory.ToJsonString());
++            await GitAsync(temporary, "add", ".gitmodules", ".config", "module", "src");
++            string before = await GitAsync(temporary, "status", "--porcelain=v1", "--untracked-files=all");
++            string[] filesBefore = Directory.GetFiles(temporary, "*", SearchOption.AllDirectories);
++            PlatformAdoptionValidationResult staticReport = await PlatformAdoptionValidator.ValidateAsync([Path.Combine(temporary, "module/hexalith.module-manifest.v2.json")], temporary, TestContext.Current.CancellationToken);
++            staticReport.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, staticReport.Rows.Where(row => !row.Passed)));
++            // Restore the exact Platform pin before this test: dotnet tool restore (from Platform root).
++            (int versionCode, string versionOutput, string versionError) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--version");
++            versionCode.ShouldBe(0, "Run dotnet tool restore from the Platform root before enrollment acceptance. " + versionError);
++            using JsonDocument pin = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config/dotnet-tools.json")));
++            string exactVersion = pin.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli").GetProperty("version").GetString()!;
++            versionOutput.Trim().Split('+')[0].ShouldBe(exactVersion);
++            (int code, string output, string error) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--", "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
++            code.ShouldBe(0, output + error);
++            output.ShouldContain("SM-2 remains separately unverified");
++            if (format == "json")
++            {
++                using JsonDocument report = JsonDocument.Parse(output);
++                report.RootElement.GetProperty("adoption").GetArrayLength().ShouldBe(9);
++            }
++            else output.ShouldContain("PASS hosting-inventory");
++            (await GitAsync(temporary, "status", "--porcelain=v1", "--untracked-files=all")).ShouldBe(before);
++            Directory.GetFiles(temporary, "*", SearchOption.AllDirectories).ShouldBe(filesBefore, ignoreOrder: true);
++            File.Delete(Path.Combine(temporary, "module/hosting-inventory.json"));
++            (int failedCode, string failedOutput, string failedError) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--", "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
++            failedCode.ShouldBe(1, failedOutput + failedError);
++            failedOutput.ShouldContain("hosting-inventory");
++            if (format == "human") failedOutput.ShouldContain("FAIL hosting-inventory");
++        }
++        finally
++        {
++            Directory.Delete(temporary, true);
++        }
++    }
++
++    private static string Root()
++    {
++        DirectoryInfo? directory = new(AppContext.BaseDirectory);
++        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "hexalith-platform.json"))) directory = directory.Parent;
++        return directory!.FullName;
++    }
++
++    private static async Task<string> GitAsync(string directory, params string[] arguments)
++    {
++        (int code, string output, string error) = await RunAsync(directory, "git", arguments);
++        code.ShouldBe(0, output + error);
++        return output;
++    }
++
++    private static async Task<(int Code, string Output, string Error)> RunAsync(string directory, string command, params string[] arguments)
++    {
++        ProcessStartInfo start = new(command) { WorkingDirectory = directory, UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
++        foreach (string argument in arguments) start.ArgumentList.Add(argument);
++        using Process process = Process.Start(start)!;
++        Task<string> stdout = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
++        Task<string> stderr = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
++        await process.WaitForExitAsync(TestContext.Current.CancellationToken);
++        return (process.ExitCode, await stdout, await stderr);
++    }
++}

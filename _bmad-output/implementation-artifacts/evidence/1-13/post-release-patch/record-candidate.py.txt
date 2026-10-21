@@ -1,0 +1,92 @@
+import datetime
+import hashlib
+import json
+import pathlib
+import re
+import subprocess
+
+root = pathlib.Path.cwd().resolve()
+builds = root / "references/Hexalith.Builds"
+evidence = root / "_bmad-output/implementation-artifacts/evidence/1-13/post-release-patch"
+builds_paths = [
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionRow.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidationResult.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Diagnostics/ToolCommandResult.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Diagnostics/ToolDiagnosticFormatter.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Workspace/GitWorkspaceProcess.cs",
+    "test/Hexalith.Builds.Module.Tests/PlatformAdoptionTestWorkspace.cs",
+    "test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs",
+    "test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs",
+]
+platform_paths = [
+    "README.md", "docs/domain-module-enrollment.md",
+    "templates/domain-module-enrollment/hexalith.module-manifest.v2.json",
+    "templates/domain-module-enrollment/hosting-inventory.json",
+    "templates/domain-module-enrollment/sm-2-checklist.md",
+    "tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs",
+    ".config/dotnet-tools.json", "hexalith-platform.json",
+]
+
+def git(directory, *arguments):
+    return subprocess.check_output(["git", "-C", str(directory), *arguments])
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+patches = {}
+for name, directory, original, post_release, paths in (
+    ("builds", builds, "5d03f1db9c38db34ecac7fe6048937478ffb82cc", "fff4a212180d8cd1c5c0759655a9bc4fb6963c45", builds_paths),
+    ("platform", root, "3d51fed1f3d99acf36ef690f150136593298bd95", "258269e3896c533d763a2fdb233ed9d4287272d5", platform_paths),
+):
+    for label, baseline in (("original-story", original), ("post-release", post_release)):
+        filename = name + "-" + label + ".patch"
+        patch = git(directory, "diff", "--binary", baseline, "--", *paths)
+        (evidence / filename).write_bytes(patch)
+        patches[filename] = hashlib.sha256(patch).hexdigest()
+
+artifacts = [
+    builds / "src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+    builds / "src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+    builds / "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll",
+    builds / "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+    root / "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    root / "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+]
+verification_files = ["builds-build.txt", "builds-focused-tests.txt", "builds-full-tests.txt", "platform-release-restore.txt", "platform-build.txt", "platform-kit-tests.txt", "guide-commands.txt", "real-workspace-commands.json", "builds-post-review-full-tests.txt", "builds-review-fixes-tests.txt", "builds-review-fixes-final-cases.txt", "platform-post-review-build.txt", "platform-post-review-kit-tests.txt"]
+verification_results = {}
+for filename in ("builds-focused-tests.txt", "builds-full-tests.txt", "platform-kit-tests.txt", "builds-post-review-full-tests.txt", "builds-review-fixes-tests.txt", "builds-review-fixes-final-cases.txt", "platform-post-review-kit-tests.txt"):
+    match = re.search(r"Total: (\d+), Errors: (\d+), Failed: (\d+), Skipped: (\d+), Not Run: (\d+)", (evidence / filename).read_text())
+    assert match is not None, filename
+    verification_results[filename] = dict(zip(("total", "errors", "failed", "skipped", "notRun"), map(int, match.groups())))
+
+record = {
+    "recordedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "status": "reviewed local correction candidate; final 1293 Builds and 5 Platform tests passed; owner approval, gated publication and new pin acceptance pending",
+    "originalPlatformBaseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+    "originalBuildsBaseline": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "postReleasePlatformBaseline": "258269e3896c533d763a2fdb233ed9d4287272d5",
+    "postReleaseBuildsBaseline": "fff4a212180d8cd1c5c0759655a9bc4fb6963c45",
+    "platformHead": git(root, "rev-parse", "HEAD").decode().strip(),
+    "buildsHead": git(builds, "rev-parse", "HEAD").decode().strip(),
+    "platformRecordedBuildsGitlink": git(root, "ls-files", "--stage", "references/Hexalith.Builds").decode().strip(),
+    "concurrentBuildsCommits": ["1e87f193d7d8450233faa1e46a7a646edfaf5c79", "32af59cdaa2ae4786ab80c59433e17adccbba62b", "17d0c6ffec5fb3c8d8058e67cb85644460cb5256"],
+    "concurrentPlatformCommits": ["bc36d21d4b049911253beffaf45deb9bb806024e", "7b5548f0d308d27af9d5fda5b68c6b959c053185"],
+    "toolPin": json.loads((root / ".config/dotnet-tools.json").read_text())["tools"]["hexalith.builds.module.cli"],
+    "supportedToolRange": json.loads((root / "hexalith-platform.json").read_text())["toolVersionRange"],
+    "restoredPublishedToolVersion": subprocess.check_output(["dotnet", "tool", "run", "hexalith-module", "--version"], cwd=root, text=True).strip(),
+    "localBuildVersionOverride": "4.35.0 (local artifacts only; not a new publication)",
+    "newPublication": False,
+    "pinChangedByThisImplementation": False,
+    "runtimeDependenciesChanged": False,
+    "sourceFileSha256": {"references/Hexalith.Builds/" + path: digest(builds / path) for path in builds_paths} | {path: digest(root / path) for path in platform_paths},
+    "artifactSha256": {str(path.relative_to(root)): digest(path) for path in artifacts},
+    "reviewPatchSha256": patches,
+    "verificationResults": verification_results,
+    "verificationOutputSha256": {filename: digest(evidence / filename) for filename in verification_files},
+}
+(evidence / "candidate-identities.json").write_text(json.dumps(record, indent=2) + "\n")
+print("Recorded exact story/post-release review patches, source and artifact hashes, unchanged pin and pending release status.")

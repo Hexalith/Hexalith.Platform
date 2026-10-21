@@ -1,0 +1,4 @@
+# These review patches are byte-bound by candidate-identities.json; retain diff context whitespace.
+*.patch -text -whitespace
+# Keep raw command and reproduction output bytes, including CRLF diagnostics.
+*.txt -text whitespace=cr-at-eol

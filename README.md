@@ -42,8 +42,10 @@ Platform `run`, `debug` and opt-in domain enrollment validation.
 The floor includes the Story 1.13 `validate --adoption` report. Later 4.x
 releases, prereleases included, are accepted without a Platform edit; 5.0
 prereleases are excluded. The catalog commit is
-`fff4a212180d8cd1c5c0759655a9bc4fb6963c45`, matching both the Builds gitlink
-and release tag `v4.35.0`. Its runtime catalog and run/debug topology are unchanged
+`fff4a212180d8cd1c5c0759655a9bc4fb6963c45`, matching release tag `v4.35.0`.
+The current Builds checkout contains unreleased enrollment corrections; its
+release-tag gitlink acceptance remains pending. The pinned tool's runtime catalog
+and run/debug topology are unchanged
 from `4.34.0`. Only the pinned version is guaranteed to embed that catalog.
 Another accepted 4.x tool brings its own embedded Dapr, Redis and AppHost SDK
 pins, and nothing compares them with the catalog yet. When the exact pin moves,
@@ -99,6 +101,9 @@ and human SM-2 evidence. The accepted `4.35.0` tool provides read-only
 `validate --adoption` reports in human and JSON formats. Static reports leave
 SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
+The current Builds source includes post-release enrollment corrections; those
+corrections require owner review, gated publication and fresh Platform pin
+acceptance before they are available through the published tool pin.
 
 ## Run and debug a technical module
 

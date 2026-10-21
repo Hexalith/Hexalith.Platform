@@ -1,8 +1,126 @@
-# Story 1.13 — released domain-module enrollment kit
+# Story 1.13 — domain-module enrollment kit and correction candidate
 
-Status: **complete**. The owner-approved candidate was published as `4.35.0`
-through the gated Builds release workflow and passed fresh Platform acceptance. The kit leaves SM-2 for module-owner verification after adoption; no live
-demonstration was performed or fabricated by this story.
+Status: **post-release corrections locally verified; new review/publication/pin acceptance pending**.
+The earlier owner-approved candidate was published as `4.35.0` through the gated
+Builds release workflow. The subsequent review reproduced enrollment defects in
+real module workspaces; the local correction evidence is recorded below. The
+existing pin remains `4.35.0` until the corrected candidate passes owner review
+and the existing release gates. The kit leaves SM-2 for module-owner verification
+after adoption; no live demonstration was performed or fabricated by this story.
+
+## Final reviewed correction candidate — 2026-10-21
+
+Exact local Builds source: `4841778b0b018ff017cd31805aafea5f4ae3c011`.
+The three required review layers completed. All 11 surviving root-cause groups
+were patched and tested; three low findings were rejected with individual reasons
+in the story triage log. Nothing was deferred.
+
+Final coordinator verification supersedes the pre-review outputs below:
+
+- Complete Builds Module suite: **1,293/1,293 passed**, zero errors/failures/skips,
+  486.110 seconds ([output](post-release-patch/builds-post-review-full-tests.txt)).
+- Review patches: **173 adoption tests passed**, followed by **17 final path/CLI
+  cases passed** after fixture cleanup ([adoption](post-release-patch/builds-review-fixes-tests.txt),
+  [final cases](post-release-patch/builds-review-fixes-final-cases.txt)); the complete
+  suite above also ran these final cases.
+- Final normal Platform build: zero warnings/errors
+  ([output](post-release-patch/platform-post-review-build.txt)); **5/5** kit tests
+  pass against the actual published `4.35.0` pin
+  ([output](post-release-patch/platform-post-review-kit-tests.txt)).
+- Final real-Parties human/JSON runs both preserve Git status and all **6,035**
+  tracked-file hashes; workspace enumeration passes across **474,480 bytes**.
+  Both exit `1` for the real module's incomplete enrollment
+  ([commands](post-release-patch/real-workspace-commands.json)).
+
+The local source commit and its message passed pinned commitlint. The candidate
+remains **unpublished**, and tool pin `4.35.0` does not contain these corrections.
+Owner review, exact-source upstream CI, existing gated publication and fresh
+Platform published-pin/range-floor/release-tag-gitlink acceptance remain pending.
+Story status stays **in-review** until those explicit completion gates pass.
+
+## Initial correction verification before required review — 2026-10-21
+
+These corrections implement the approved patch findings in the story spec. They
+have not established a new published or Platform-accepted release. No pin, support
+floor or runtime dependency was changed by this local implementation. Builds owner
+review, exact-source CI, gated publication, the actual published pin/release-tag
+gitlink and fresh released-tool acceptance remain required for these corrections.
+
+During this implementation an independent `/pushall` captured in-progress files:
+Builds `1e87f193d7d8450233faa1e46a7a646edfaf5c79` and
+`32af59cdaa2ae4786ab80c59433e17adccbba62b` and
+`17d0c6ffec5fb3c8d8058e67cb85644460cb5256`, and Platform
+`bc36d21d4b049911253beffaf45deb9bb806024e` and
+`7b5548f0d308d27af9d5fda5b68c6b959c053185`. Those commits are concurrent
+observations, not owner approval or release evidence. Review the final worktree
+against the original story baselines below, including these captured edits; do not
+use a HEAD-only diff. The post-release correction baseline is Builds
+`fff4a212180d8cd1c5c0759655a9bc4fb6963c45` and Platform acceptance
+`258269e3896c533d763a2fdb233ed9d4287272d5` (preserve subsequent unrelated work).
+
+The final Builds Release build passes with **zero warnings/errors**
+([output](post-release-patch/builds-build.txt)). All **188/188** focused adoption
+and manifest-command cases pass with no skips
+([output](post-release-patch/builds-focused-tests.txt)). The final complete serial
+Module suite passes **1,235/1,235**, with zero errors, failures or skips in
+441.130 seconds ([output](post-release-patch/builds-full-tests.txt)). The first
+full run exposed one newly added helper-argument regression; bounding the match to
+the actual argument fixed it. The subsequent focused and complete runs above
+supersede that [initial result](post-release-patch/builds-full-before-argument-bound.txt).
+
+Platform's normal composition test project builds with **zero warnings/errors**
+([output](post-release-patch/platform-build.txt)) after a fresh Release restore
+using **only the existing local NuGet cache**
+([output](post-release-patch/platform-release-restore.txt)). The initial
+[stale-assets build](post-release-patch/platform-stale-assets-build.txt) is
+superseded. All **5/5 kit cases** pass against the actual pinned published
+`4.35.0` tool via `dotnet tool run`, including the exact pin/range-floor and
+roll-forward assertions ([output](post-release-patch/platform-kit-tests.txt)).
+The CLI tests parse stdout independently from stderr and customize the pending
+inventory owner/consumer fields. To reproduce from Platform:
+
+```bash
+dotnet tool restore
+dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
+  -c Release -m:1 -p:NuGetAudit=false -p:MinVerVersionOverride=4.35.0 --no-restore
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll \
+  -class '*DomainEnrollmentKitTests' -parallelMode none -noLogo
+```
+
+The local `MinVerVersionOverride=4.35.0` identifies build artifacts only; it does
+not publish or accept these corrections as version `4.35.0`. The released CLI
+assertion uses the restored published package separately from the source validator.
+These pre-review outputs were superseded by the final reviewed checks above. Scoped `git diff --check`
+passes in both owning repositories.
+
+The current candidate's [source/artifact identities](post-release-patch/candidate-identities.json)
+include exact hashes and original-story/post-release review patch hashes. The
+[Builds story diff](post-release-patch/builds-original-story.patch) and
+[Platform story diff](post-release-patch/platform-original-story.patch) retain the
+original-baseline view. The narrower correction diffs are
+[Builds](post-release-patch/builds-post-release.patch) and
+[Platform](post-release-patch/platform-post-release.patch). Their retained context
+whitespace is intentional; the local evidence attributes preserve their bytes.
+
+The corrected local CLI was also exercised read-only in the real Parties module
+checkout at `6d9e3417f7abcd03e66a04de5084909c4b6c6115`. Its tracked-path output
+is **474,480 bytes**, and the workspace requirement passes. Human and JSON runs
+both preserve Git status and SHA-256 hashes of **6,035 tracked files**. Both exit
+`1`, correctly leaving adoption incomplete: this nested checkout has uninitialized
+required direct references, no hosting inventory and legacy Dapr patterns; the
+bounded dependency audit also identifies a dependency-directory probe in a fitness
+test. No other module was enrolled or edited, and no initialization was performed.
+The source scans finish without the former enumeration or oversized evidence
+failures. See [exact commands and results](post-release-patch/real-workspace-commands.json),
+[human output](post-release-patch/parties-human.stdout.txt),
+[JSON output](post-release-patch/parties-json.stdout.txt) and
+[reproduction script](post-release-patch/verify-real-workspace.py.txt). The retained
+before/after inventories bind the read-only check to each invocation.
+
+The documentation command check copies templates only when absent and merges only
+the accepted tool entry while retaining an existing `aspirate` `9.1.0` pin. See
+[check script](post-release-patch/check-guide.py.txt) and
+[output](post-release-patch/guide-commands.txt).
 
 ## Canonical identities
 
@@ -16,7 +134,7 @@ demonstration was performed or fabricated by this story.
   release operations are recorded below.
 - Accepted published tool pin: `4.35.0`, with `rollForward: false`.
 - Supported range: `[4.35.0, 5.0.0-0)`.
-- Builds gitlink and `v4.35.0` release tag:
+- Previously accepted Builds gitlink (2026-10-20) and `v4.35.0` release tag:
   `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`.
 - [Canonical release and acceptance identities](accepted-release-identities.json).
 
@@ -77,7 +195,7 @@ Hosting inventory completeness grants no retirement authority. Every applicable
 producer-adoption, owner-reviewed source/package/deployed parity and EventStore
 AD-22 exact-subject consumer-removal gate remains independently required.
 
-## Post-review verification
+## Prior release verification — 2026-10-20
 
 All 17 findings from three independent review passes were corrected. The targeted
 regressions passed **65/65**, with zero build warnings/errors
@@ -160,7 +278,7 @@ at 2026-10-20T14:14:32Z. See [workflow result](release-result.json),
 [qualified package inventory](published-package-inventory.json) and
 [publisher's remote verification](release-publication-hashes.txt).
 
-## Released-tool Platform acceptance
+## Prior v4.35.0 Platform acceptance — 2026-10-20
 
 Platform now pins `4.35.0`, disables roll-forward, sets the range floor to `4.35.0`
 and retains upper bound `5.0.0-0`. The exact Builds release-tag commit is the

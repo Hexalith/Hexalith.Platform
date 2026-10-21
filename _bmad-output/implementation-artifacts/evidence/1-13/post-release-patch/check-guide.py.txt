@@ -1,0 +1,30 @@
+import json
+import pathlib
+import re
+import subprocess
+import tempfile
+root=pathlib.Path.cwd()
+guide=(root/'docs/domain-module-enrollment.md').read_text()
+copy_block=next(block for block in re.findall(r'```bash\n(.*?)```',guide,re.S) if block.startswith('mkdir -p module'))
+merge_block=next(block for block in re.findall(r'```bash\n(.*?)```',guide,re.S) if block.startswith('mkdir -p .config')).split('dotnet tool restore')[0]
+with tempfile.TemporaryDirectory(prefix='enrollment-guide-') as directory:
+    workspace=pathlib.Path(directory)
+    direct=workspace/'references/Hexalith.Platform'
+    (direct/'templates').mkdir(parents=True)
+    (direct/'templates/domain-module-enrollment').symlink_to(root/'templates/domain-module-enrollment',target_is_directory=True)
+    (direct/'.config').mkdir()
+    (direct/'.config/dotnet-tools.json').write_bytes((root/'.config/dotnet-tools.json').read_bytes())
+    (workspace/'module').mkdir()
+    existing=workspace/'module/hexalith.module-manifest.v2.json'
+    existing.write_text('existing owner declaration\n')
+    (workspace/'.config').mkdir()
+    other={'version':'9.1.0','commands':['aspirate']}
+    (workspace/'.config/dotnet-tools.json').write_text(json.dumps({'version':1,'isRoot':True,'tools':{'aspirate':other}}))
+    subprocess.run(['bash','-euc',copy_block],cwd=workspace,check=True)
+    subprocess.run(['bash','-euc',merge_block],cwd=workspace,check=True)
+    assert existing.read_text()=='existing owner declaration\n'
+    assert (workspace/'module/hosting-inventory.json').read_bytes()==(root/'templates/domain-module-enrollment/hosting-inventory.json').read_bytes()
+    manifest=json.loads((workspace/'.config/dotnet-tools.json').read_text())
+    assert manifest['tools']['aspirate']==other
+    assert manifest['tools']['hexalith.builds.module.cli']==json.loads((root/'.config/dotnet-tools.json').read_text())['tools']['hexalith.builds.module.cli']
+print('PASS: guide copy preserves existing declaration; accepted-tool entry merge preserves aspirate 9.1.0 and exact pin.')
