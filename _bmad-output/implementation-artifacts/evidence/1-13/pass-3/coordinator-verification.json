@@ -1,0 +1,90 @@
+{
+  "startedUtc": "2026-10-21T14:06:38.275228+00:00",
+  "scope": "Final coordinator verification of local corrected candidate; owner review, publication and fresh accepted pin remain pending.",
+  "checks": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--no-restore",
+        "-m:1",
+        "-p:NuGetAudit=false"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "output": "post-review-platform-build.txt",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests",
+        "-parallelMode",
+        "none"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "output": "post-review-platform-kit-tests.txt",
+      "exitCode": 0,
+      "tests": {
+        "total": 5,
+        "errors": 0,
+        "failed": 0,
+        "skipped": 0,
+        "notRun": 0
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/1-13/pass-3/real-module-check.py.txt"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "output": "post-review-real-module-check.txt",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-parallelMode",
+        "none"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "output": "post-review-full-builds-tests.txt",
+      "exitCode": 0,
+      "tests": {
+        "total": 1420,
+        "errors": 0,
+        "failed": 0,
+        "skipped": 0,
+        "notRun": 0
+      }
+    }
+  ],
+  "sourceSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "147ad297c06d66a0f1c5ba72f3b9cfd62621d4926173ad4310fdac84c7e6e1a2",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs": "2a59c43cd5eec8015bd1c0a22a4595a1d5fd4147a30b7cb25f5f7dbfde4e5e9f",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs": "7f82e3188ca663f49ec913f401966e27e80339178c1ffdd37227ac4865da2618",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "d9c9704d9400319ec3fe57179ad85b5adeb825883481c332bea9abbe1ad9632c",
+    "tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs": "1ca41b9ea17c9a0b939229ab1021f058c515a205212a267ee093f8e05cfe43d1",
+    "docs/domain-module-enrollment.md": "542273a2397f9aaff7a07b24b9d706c09095305fb54cb124d996a2b3aa3ae3b2",
+    "README.md": "1fbfdb11a8a74bcdb0ce5e93366da4694bb7429d81710e7a05a56938f3577d36",
+    ".config/dotnet-tools.json": "9e21fa262e48d20f4a29b9de40c6544c95bd14e2fd9e624f8d23ab73d419e25a",
+    "hexalith-platform.json": "a2bef51e9bb0f11ccc6b49757a9cf28a7d71692ed588448a73b12f0a3d0db103"
+  },
+  "artifactSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll": "7fbb482efda6151feae5cb1623dc0997147064fb681bfa2920415e093fb95b8c",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "ef6340b8827e87f3bcf16b254e5aa760203927d68611c4c16c1df0ef0b70a2ba",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "db5c70f1f6cdb6a83a903aedca608d17974abad6c71ea7eb4ce5979d1b96c7da",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll": "df2a4c7f407cb65f79c2f16cd91a676e3b1aa919c94469a41d2bccd02762f516"
+  },
+  "fullSuite": "passed",
+  "finishedUtc": "2026-10-21T14:16:12.997918+00:00",
+  "sourceHashesUnchanged": true,
+  "reviewedBuildsCandidateCommit": "af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260",
+  "platformRecordedBuildsGitlink": "f8599224457dda99e7c0ae4870147dd51b464feb"
+}

@@ -1,10 +1,15 @@
-# Story 1.13 — completed domain-module enrollment kit
+# Story 1.13 — domain-module enrollment kit
 
-Status: **completed — corrected tool 4.35.1 published, pinned and freshly accepted**.
-All local review corrections, owner review, exact-source upstream CI, existing
-gated publication and Platform released-tool acceptance are complete. No other
-module was adopted or retired. Human SM-2 and retirement authority remain separate
+Status: **local pass-3 corrections reviewed and verified — new owner approval/release pending**.
+All local accepted corrections and required review layers are complete. Owner review,
+exact-source upstream CI, gated publication and fresh Platform acceptance remain pending.
+The accepted pin remains 4.35.1 until those gates complete. No other module is
+adopted or retired here. Human SM-2 and retirement authority remain separate
 module-owner gates for later adoption.
+
+See [pass-3 local correction evidence](pass-3/README.md) for the current candidate, tests and remaining gates.
+
+Latest local candidate: `af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260`. All 1,420 Builds cases and five Platform kit cases pass with no failures/skips. See [final local verification](pass-3/README.md#final-reviewed-local-candidate).
 
 ## Published correction and Platform acceptance — 2026-10-21
 
@@ -60,9 +65,12 @@ qualified unsigned package, excluding only NuGet's repository signature
 Both human/JSON commands through that same fresh published binary also ran
 read-only on real Parties source `6d9e3417f7abcd03e66a04de5084909c4b6c6115`.
 Workspace enumeration passes across **474,480 tracked-path bytes**; status and
-**6,035 tracked-file hashes** are unchanged. Overall exit `1` correctly reports
-that module's incomplete enrollment (uninitialized required direct references,
-missing hosting inventory and bounded legacy source findings)
+**6,035 tracked-file hashes** are unchanged. Overall exit `1` reports incomplete
+enrollment: uninitialized required direct references, missing hosting inventory,
+an older pin, programmatic discovery and literal Dapr defaults/source names. The
+published validator also falsely rejects immediately asserted existence probes in
+Parties' prerequisite tests; pass 3 corrects that separate false failure. Story 1.12
+qualification predates the kit, and Parties is not enrolled under `validate --adoption`
 ([real commands](post-release-patch/release/released-package/real-module-commands.json)).
 No other module was enrolled or edited.
 

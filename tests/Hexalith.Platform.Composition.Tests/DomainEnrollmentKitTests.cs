@@ -107,7 +107,10 @@ public sealed class DomainEnrollmentKitTests
             versionCode.ShouldBe(0, "Run dotnet tool restore from the Platform root before enrollment acceptance. " + versionError);
             using JsonDocument pin = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config/dotnet-tools.json")));
             string exactVersion = pin.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli").GetProperty("version").GetString()!;
-            versionOutput.Trim().Split('+')[0].ShouldBe(exactVersion);
+            string[] versionIdentity = versionOutput.Trim().Split('+');
+            versionIdentity.Length.ShouldBe(2);
+            versionIdentity[0].ShouldBe(exactVersion);
+            versionIdentity[1].ShouldBe((await GitAsync(root, "rev-parse", "HEAD:references/Hexalith.Builds")).Trim());
             (int code, string output, string error) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--", "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
             code.ShouldBe(0, output + error);
             output.ShouldContain("SM-2 remains separately unverified");

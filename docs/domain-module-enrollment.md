@@ -74,8 +74,9 @@ Inventory completeness grants no retirement authority. Retirement requires produ
 adoption, owner-reviewed **source/package/deployed parity**, and, when applicable,
 EventStore **AD-22 exact-subject consumer-removal authority**. Record exact evidence
 and authorized subject; never infer permission from a successful static report.
-Only exact frozen hosting-project directories are excluded from bounded source
-scans. Root build files and dependency checks always remain in scope.
+Only exact frozen hosting-project directories are excluded from the Dapr audit.
+Each directory's final segment must match its project file's stem, ignoring case.
+Root build files and dependency checks always remain in scope.
 
 ## 3. Restore exactly the accepted tool
 
@@ -120,7 +121,10 @@ Remove sibling/ancestor/nested checkout discovery and package-fallback helpers.
 Remove file-based dependency/mode selectors and module assignments to tool-owned
 root/mode properties. Project/package pairs may consume `UseHexalithProjectReferences`
 and the tool-provided `Hexalith*Root` values; only the tool selects source/Debug or
-package/Release. An `Exists` guard on an unrelated optional import is legitimate.
+package/Release. Every `Hexalith*Root` and `Hexalith*FromSource` property name is
+reserved for the tool, including names that describe the module's own repository.
+Rename module-local properties, for example `HexalithProjectsRepositoryRoot` to
+`ProjectsRepositoryDirectory`. An `Exists` guard on an unrelated optional import is legitimate.
 An `Exists` guard that chooses a dependency, root or mode is forbidden. The sole
 bootstrap exception is `HexalithBuildsRoot` defaulting to
 `$(MSBuildThisFileDirectory)references/Hexalith.Builds` only when that property is
@@ -132,10 +136,30 @@ subscriptions, delivery routes and dead-letter policy in the manifest. Remove
 Preserve module ACL files as authoritative inputs. Review local mTLS,
 deny-by-default receiver ACLs and scoped components with the owner.
 
+Leave the declared component key empty or use an injected placeholder; for example,
+in `appsettings.json`:
+
+```json
+{ "Sample": { "Dapr": { "EventsComponent": "" } } }
+```
+
+Read the injected name from `IConfiguration`, for example
+`configuration["Sample:Dapr:EventsComponent"]`, and pass that value to Dapr.
+`${SAMPLE_EVENTS_COMPONENT}`, `$(Sample:Dapr:EventsComponent)` and
+`{{ Sample.Dapr.EventsComponent }}` are also accepted placeholders for an external
+configuration provider to replace. The static audit accepts these forms; Platform
+injects the declared configuration key during the run.
+
 The audit is a **bounded static check**, limited to known patterns in supported
-tracked files up to 1 MiB each after file-type filtering. JSON/YAML/YML are scanned
-only as `appsettings*.json`, `appsettings*.yaml` or `appsettings*.yml` configuration
-for Dapr defaults; evidence and OpenAPI documents do not enter either audit.
+tracked files up to 1 MiB each after file-type filtering. Every tracked `.cs`,
+`.csproj`, `.props`, `.targets`, `.ps1`, `.sh` and `.py` file is in scope, including
+tests and tracked evidence copies. The dependency audit inspects those extensions;
+the Dapr audit inspects only `.cs` and `appsettings*.json`, `appsettings*.yaml` or
+`appsettings*.yml` configuration. Only exact frozen hosting-project directories
+are excluded from the Dapr audit. Other JSON/YAML files, including evidence JSON
+and OpenAPI YAML, are not read. Immediately asserted existence probes such as
+`Directory.Exists(path).ShouldBeFalse()` and `Assert.True(File.Exists(path))` verify
+workspace state; other probes targeting dependencies remain forbidden selectors.
 Human source review must inspect unusual configuration filenames, indirection,
 unsupported languages, generated code and any constructs outside that bound.
 Passing rows cannot prove runtime behavior or replace SM-2.

@@ -88,7 +88,12 @@ binds the existing state/pubsub keys and renders the declarative tenant subscrip
 Rich Parties search stays disabled. Legacy domain AppHost, Aspire, UI/MCP and sample
 hosts remain frozen outside this qualification. Owner review and upstream
 integration are complete; the [Story 1.12 evidence](_bmad-output/implementation-artifacts/evidence/1-12/README.md)
-records the accepted adoption and its exact revisions.
+records that qualification and its exact revisions. Story 1.12 predates the
+enrollment kit: Parties is not enrolled under `validate --adoption`. Its current
+checkout still has programmatic subscription discovery, literal Dapr component
+names, a missing hosting inventory and the older pin. Those changes belong to
+Parties' owner-led enrollment; see the
+[Story 1.13 findings](_bmad-output/implementation-artifacts/spec-1-13-publish-the-domain-module-enrollment-kit.md#review-findings).
 
 ## Domain-module enrollment
 

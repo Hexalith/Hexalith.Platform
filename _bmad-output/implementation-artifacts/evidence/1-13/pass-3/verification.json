@@ -1,0 +1,119 @@
+{
+  "verifiedUtc": "2026-10-21T13:43:54.816849+00:00",
+  "scope": "Local candidate reviewed and verified; owner approval, upstream CI, publication and new accepted pin remain pending.",
+  "platformHead": "6382f1c2e6427fae42151f2eea747d1b23652ee1",
+  "buildsHead": "f8599224457dda99e7c0ae4870147dd51b464feb",
+  "recordedBuildsGitlink": "f8599224457dda99e7c0ae4870147dd51b464feb",
+  "publishedToolVersion": "4.35.1+f8599224457dda99e7c0ae4870147dd51b464feb",
+  "sourceSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": "147ad297c06d66a0f1c5ba72f3b9cfd62621d4926173ad4310fdac84c7e6e1a2",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs": "2a59c43cd5eec8015bd1c0a22a4595a1d5fd4147a30b7cb25f5f7dbfde4e5e9f",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs": "7f82e3188ca663f49ec913f401966e27e80339178c1ffdd37227ac4865da2618",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs": "d9c9704d9400319ec3fe57179ad85b5adeb825883481c332bea9abbe1ad9632c",
+    "tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs": "1ca41b9ea17c9a0b939229ab1021f058c515a205212a267ee093f8e05cfe43d1",
+    "docs/domain-module-enrollment.md": "542273a2397f9aaff7a07b24b9d706c09095305fb54cb124d996a2b3aa3ae3b2",
+    "README.md": "1fbfdb11a8a74bcdb0ce5e93366da4694bb7429d81710e7a05a56938f3577d36",
+    ".config/dotnet-tools.json": "9e21fa262e48d20f4a29b9de40c6544c95bd14e2fd9e624f8d23ab73d419e25a",
+    "hexalith-platform.json": "a2bef51e9bb0f11ccc6b49757a9cf28a7d71692ed588448a73b12f0a3d0db103"
+  },
+  "artifactSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll": "7fbb482efda6151feae5cb1623dc0997147064fb681bfa2920415e093fb95b8c",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "ef6340b8827e87f3bcf16b254e5aa760203927d68611c4c16c1df0ef0b70a2ba",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "db5c70f1f6cdb6a83a903aedca608d17974abad6c71ea7eb4ce5979d1b96c7da",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll": "df2a4c7f407cb65f79c2f16cd91a676e3b1aa919c94469a41d2bccd02762f516"
+  },
+  "commands": [
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "command": "dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --configuration Release --no-restore -m:1 -p:NuGetAudit=false",
+      "exitCode": 0,
+      "result": "zero warnings/errors",
+      "output": "builds-build-final.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests -class Hexalith.Builds.ModuleTool.Tests.PlatformManifestCommandTests -parallel none",
+      "exitCode": 0,
+      "result": "325 passed, zero errors/failures/skips; before final optional-guard refinement",
+      "output": "focused-tests.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll -method Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.CustomBuildPropertiesCannotSelectDependencyPathsAsync -parallelMode none",
+      "exitCode": 0,
+      "result": "15 passed, zero errors/failures/skips, after final optional-guard refinement",
+      "output": "final-guard-tests.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-restore -m:1 -p:NuGetAudit=false",
+      "exitCode": 1,
+      "result": "stale assets; 174 namespace/reference errors; superseded by Release restore and final successful build",
+      "output": "platform-build-stale-assets.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "command": "dotnet restore tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -p:Configuration=Release -p:NuGetAudit=false --ignore-failed-sources",
+      "exitCode": 0,
+      "output": "platform-restore.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-restore -m:1 -p:NuGetAudit=false",
+      "exitCode": 0,
+      "result": "zero warnings/errors",
+      "output": "platform-build-final.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests -parallelMode none",
+      "exitCode": 0,
+      "result": "5 passed, zero errors/failures/skips; actual published pin and full gitlink metadata assertion",
+      "output": "platform-kit-tests-final.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll -parallelMode none",
+      "status": "incomplete-superseded",
+      "execSession": 40991,
+      "output": "full-builds-tests.txt",
+      "exitCodeFile": "full-builds-tests.exitcode",
+      "sessionScope": "Implementation agent only; coordinator should monitor output and exit-code file.",
+      "result": "No final summary/exit was retained; final coordinator run is authoritative."
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "command": "dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --configuration Release --no-restore -m:1 -p:NuGetAudit=false",
+      "exitCode": 0,
+      "result": "zero warnings/errors after leaf-value correction",
+      "output": "builds-build-leaf-correction.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll -method Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.CustomBuildPropertiesCannotSelectDependencyPathsAsync -parallelMode none",
+      "exitCode": 0,
+      "result": "21 passed, zero errors/failures/skips, including exact Parties regex, HTTPS URL, container images and dependency-path failure controls",
+      "output": "leaf-value-tests.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-restore -m:1 -p:NuGetAudit=false",
+      "exitCode": 0,
+      "result": "zero warnings/errors after leaf-value correction",
+      "output": "platform-build-leaf-correction.txt"
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests -parallelMode none",
+      "exitCode": 0,
+      "result": "5 passed, zero errors/failures/skips after leaf-value correction; published pin unchanged",
+      "output": "platform-kit-tests-leaf-correction.txt"
+    }
+  ],
+  "interruptedRun": "full-builds-tests-interrupted.txt was deliberately cancelled to narrow the optional-file guard check before the final rebuild. Its cancellation failure is not a product test failure; final serial run supersedes it.",
+  "realModule": "Final real-module-commands.json records both expected exit-1 modes, workspace PASS, dependency-selectors PASS, unchanged Git status and all 6,035 tracked hashes. Pre-correction snapshots are labeled real-module-before-leaf-correction-*.",
+  "coordinatorCorrection": "The real Parties HTTPS validation regex begins with \\A. Normalizing every leaf value as a filesystem path misclassified it as rooted. Leaf normalization now requires an explicit filesystem path form; tool-reserved properties and ancestor lookup checks remain strict. The updated real-module harness requires the entire dependency-selectors requirement to PASS.",
+  "interruptedLeafCorrectionRun": "full-builds-tests-before-leaf-correction-interrupted.txt records the deliberately cancelled 60956 run (774 cases before cancellation). Cancellation raised one OperationCanceledException; this was not a product failure. Final run 40991 supersedes it and writes full-builds-tests.exitcode on completion.",
+  "finalCoordinatorVerification": "coordinator-verification.json",
+  "reviewedBuildsCandidateCommit": "af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260"
+}

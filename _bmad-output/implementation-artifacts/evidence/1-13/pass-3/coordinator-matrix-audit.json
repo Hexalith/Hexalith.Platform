@@ -1,0 +1,71 @@
+{
+  "platformBaseline": "3d51fed1f3d99acf36ef690f150136593298bd95",
+  "buildsBaseline": "5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+  "reviewDiffs": {
+    "fullDiff": "/tmp/story-1-13-coordinator-dlg78nd4.full.diff",
+    "storyDiff": "/tmp/story-1-13-coordinator-dlg78nd4.full.story.diff",
+    "pass3Diff": "/tmp/story-1-13-coordinator-dlg78nd4.full.pass3.diff",
+    "fullBytes": 19572839,
+    "storyBytes": 184744,
+    "storyLines": 2854,
+    "pass3Bytes": 59523,
+    "platformHead": "6382f1c2e6427fae42151f2eea747d1b23652ee1",
+    "buildsHead": "f8599224457dda99e7c0ae4870147dd51b464feb",
+    "reviewedBuildsCandidateCommit": "af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260",
+    "storySha256": "29e085ca19070bbddac7727ca01e6cf1724cfb236211a4d5dd85ad67d0670084",
+    "acceptedGitlinkPreserved": "f8599224457dda99e7c0ae4870147dd51b464feb",
+    "scope": "Platform index preserves published gitlink; Builds diff includes reviewed local candidate."
+  },
+  "diffScope": "Original-baseline story product diff read completely; whole-repository diff retained separately because it contains unrelated stories and historical evidence. Current pass-3 diff also retained.",
+  "frozenIntentUnchanged": true,
+  "sourceAndArtifactHashesMatch": true,
+  "matrix": [
+    {
+      "row": "Complete fixture passes; SM-2 unverified",
+      "tests": [
+        "CompleteWorkspacePassesAndRemainsUnchangedAsync",
+        "AdoptionFlagReportsAllRequirementsAndFailuresAsync (human/json)"
+      ],
+      "result": "Executed and passed in final unfiltered 1,420-case coordinator suite; zero failures/skips/not-run cases."
+    },
+    {
+      "row": "Invalid inputs yield independent failures with file/reason and nonzero exit",
+      "tests": [
+        "EveryRequirementFailureIsReportedAsync",
+        "InitializedNestedReferenceFailsReadOnlyAsync",
+        "AdoptionFlagReportsAllRequirementsAndFailuresAsync (human/json)"
+      ],
+      "result": "Executed and passed in final unfiltered 1,420-case coordinator suite; zero failures/skips/not-run cases."
+    },
+    {
+      "row": "Harmless Exists, generated mapping selectors and external sibling",
+      "tests": [
+        "CompleteWorkspacePassesAndRemainsUnchangedAsync",
+        "OrdinaryPathAccessPassesAsync",
+        "BuildReferencesDistinguishLocalAndMappedDependenciesAsync",
+        "CustomBuildPropertiesCannotSelectDependencyPathsAsync"
+      ],
+      "result": "Executed and passed in final unfiltered 1,420-case coordinator suite; zero failures/skips/not-run cases."
+    },
+    {
+      "row": "Missing inventory and arbitrary exclusions cannot bypass root/dependency checks",
+      "tests": [
+        "EveryRequirementFailureIsReportedAsync",
+        "FrozenInventoryIsConfinedToExactHostingDirectoryAsync",
+        "FrozenHostsCannotBypassDependencyOrExistenceChecksAsync",
+        "InvalidHostingRecordsGrantNoExemptionAsync"
+      ],
+      "result": "Executed and passed in final unfiltered 1,420-case coordinator suite; zero failures/skips/not-run cases."
+    },
+    {
+      "row": "Ordinary validate compatibility",
+      "tests": [
+        "ReportsRenderRowsAndLeaveLegacyJsonUnchangedAsync",
+        "PlatformManifestCommandTests (ordinary validation cases)"
+      ],
+      "result": "Executed and passed in final unfiltered 1,420-case coordinator suite; zero failures/skips/not-run cases."
+    }
+  ],
+  "acceptance": "All local implementation, independent review patches and matrix verification complete. Owner approval, upstream CI, gated publication and fresh release/pin acceptance remain pending.",
+  "reviewedBuildsCandidateCommit": "af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260"
+}

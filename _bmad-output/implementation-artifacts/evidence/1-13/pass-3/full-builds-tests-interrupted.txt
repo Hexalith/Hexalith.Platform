@@ -1,0 +1,16 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+Cancelling... (Press Ctrl+C again to terminate)
+    Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: "IncludeAssets", sourceMode: True) [FAIL]
+      System.OperationCanceledException : The operation was canceled.
+      Stack Trace:
+           at System.Threading.CancellationToken.ThrowOperationCanceledException()
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs(282,0): at Hexalith.Builds.Tooling.Runtime.CompositionProcess.RunCoreAsync(ProcessStartInfo start, TimeSpan timeout, Int32 maximumOutputCharacters, Nullable`1 selectedStopTimeout, Action`1 onStopping, CancellationToken cancellationToken)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs(283,0): at Hexalith.Builds.Tooling.Runtime.CompositionProcess.RunCoreAsync(ProcessStartInfo start, TimeSpan timeout, Int32 maximumOutputCharacters, Nullable`1 selectedStopTimeout, Action`1 onStopping, CancellationToken cancellationToken)
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceMsBuildTests.cs(426,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(String metadata, Boolean sourceMode)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'f10c51322a4738a419c3d694398a2df2aee0df3f708898e259b4b46f4930a895')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 42, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 61.679s

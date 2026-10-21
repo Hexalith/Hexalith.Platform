@@ -1,0 +1,63 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+g4: HXR028 resource='stdin-listener' appId='-' status='blocked-after-stop'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0168ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0122ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0113ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0147ms with message '(null)'
+g4: waiting for resource 'first' to become healthy.
+g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: every resource is healthy.
+g4: waiting for resource 'redis' to become healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check infrastructure-redis with status Unhealthy completed after 1.4114ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0986ms with message '(null)'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR027 resource='eventstore' appId='eventstore' status='fault-OptionsValidationException'.
+g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+Cancelling... (Press Ctrl+C again to terminate)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyOnlyFileFailuresDoNotEnterDaprAuditAsync(extension: "ps1", mutation: "oversized") [FAIL]
+      System.OperationCanceledException : The operation was canceled.
+      Stack Trace:
+           at System.Threading.CancellationToken.ThrowOperationCanceledException()
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs(282,0): at Hexalith.Builds.Tooling.Runtime.CompositionProcess.RunCoreAsync(ProcessStartInfo start, TimeSpan timeout, Int32 maximumOutputCharacters, Nullable`1 selectedStopTimeout, Action`1 onStopping, CancellationToken cancellationToken)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs(283,0): at Hexalith.Builds.Tooling.Runtime.CompositionProcess.RunCoreAsync(ProcessStartInfo start, TimeSpan timeout, Int32 maximumOutputCharacters, Nullable`1 selectedStopTimeout, Action`1 onStopping, CancellationToken cancellationToken)
+        /_/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceGitFixture.cs(188,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceGitFixture.RunGitAsync(String directory, String[] arguments)
+        /_/test/Hexalith.Builds.Module.Tests/PlatformAdoptionTestWorkspace.cs(36,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionTestWorkspace.CreateAsync(Boolean nested)
+        /_/test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(880,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyOnlyFileFailuresDoNotEnterDaprAuditAsync(String extension, String mutation)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'f10c51322a4738a419c3d694398a2df2aee0df3f708898e259b4b46f4930a895')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 774, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 327.290s

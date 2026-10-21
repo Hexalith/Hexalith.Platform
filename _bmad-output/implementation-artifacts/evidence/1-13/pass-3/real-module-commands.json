@@ -1,0 +1,215 @@
+{
+  "verifiedUtc": "2026-10-21T13:42:16.755577+00:00",
+  "workspace": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+  "revision": "6d9e3417f7abcd03e66a04de5084909c4b6c6115",
+  "trackedPathBytes": 474480,
+  "trackedFileHashes": 6035,
+  "candidate": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+  "candidateSha256": "9ae0bfd045267f8b66123084494b5f881a697edfeb11e1e5dc8a92e0880d6305",
+  "candidateToolingSha256": "ef22c9befee01cb3987d1ed0114ffcd2d4b894514e461d6515580f9cc926c5ad",
+  "commands": [
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "format": "human",
+      "exitCode": 1,
+      "unchangedGitStateAndHashes": true
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "format": "json",
+      "exitCode": 1,
+      "unchangedGitStateAndHashes": true,
+      "failedRows": [
+        {
+          "requirement": "gitlinks",
+          "file": ".gitmodules",
+          "reason": "Initialize only the recorded required direct reference: references/Hexalith.Builds."
+        },
+        {
+          "requirement": "tool-pin",
+          "file": "references/Hexalith.Platform/.config/dotnet-tools.json",
+          "reason": "Supply a readable tool manifest inside the workspace at references/Hexalith.Platform/.config/dotnet-tools.json."
+        },
+        {
+          "requirement": "hosting-inventory",
+          "file": "module/hosting-inventory.json",
+          "reason": "Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "_bmad-output/implementation-artifacts/tests/branch-b-resume-2026-10-08/current-source/source-observation/appsettings.json",
+          "reason": "Literal Dapr component default in configuration; Platform injects the declared configuration key. Bounded static check only."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "_bmad-output/implementation-artifacts/tests/http-qualification-2026-10-07/post-change/src/Hexalith.Parties/Program.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "_bmad-output/implementation-artifacts/tests/http-qualification-2026-10-07/pre-change/src/Hexalith.Parties/Program.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "_bmad-output/implementation-artifacts/tests/http-qualification-2026-10-07/review-fixes/post-change/src/Hexalith.Parties/Program.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "_bmad-output/implementation-artifacts/tests/http-qualification-2026-10-07/review-fixes/pre-change/src/Hexalith.Parties/Program.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "src/Hexalith.Parties.Security/ErasureVerificationService.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "src/Hexalith.Parties/Extensions/PartiesServiceCollectionExtensions.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "src/Hexalith.Parties/HealthChecks/PartiesHealthCheckExtensions.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "src/Hexalith.Parties/Program.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "src/Hexalith.Parties/appsettings.Development.json",
+          "reason": "Literal Dapr component default in configuration; Platform injects the declared configuration key. Bounded static check only."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "src/Hexalith.Parties/appsettings.json",
+          "reason": "Literal Dapr component default in configuration; Platform injects the declared configuration key. Bounded static check only."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.EventStoreGateway.TestHost/Program.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.IntegrationTests/Events/EventPublishingVerificationTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Security.Tests/CryptoKeyManagementCompatibilityHarnessTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Security.Tests/ErasureVerificationServiceTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Security.Tests/KeyOperationAuditServiceTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Configuration/TenantIntegrationOptionsValidatorTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Domain/PartyDomainProcessorValidationTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Gateway/PartySdkCrossInstanceErasureTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/HealthChecks/ConfiguredComponentHealthCheckTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/HealthChecks/DaprStateStoreHealthCheckTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/HealthChecks/TenantsIntegrationHealthCheckTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Projections/PartyDetailSdkProjectionRecoveryTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryCleanupCancellationTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryCleanupServiceTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryMappingConcurrencyTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryMappingState.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryUnitMappingStoreTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Search/PartySearchErasureFenceTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Tenants/TenantEventInfrastructureTests.cs",
+          "reason": "Programmatic subscription discovery is forbidden; declare delivery routes and dead-letter policy in the module declaration."
+        },
+        {
+          "requirement": "dapr-subscriptions",
+          "file": "tests/Hexalith.Parties.Tests/Tenants/TenantEventInfrastructureTests.cs",
+          "reason": "Literal Dapr component name; obtain the name from the declared configuration key."
+        }
+      ]
+    }
+  ],
+  "scope": "Local corrected candidate; no released-pin or completed-adoption claim. Human SM-2 is unverified."
+}
