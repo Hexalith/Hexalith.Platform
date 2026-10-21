@@ -962,3 +962,10 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md`
   summary: Make the historical Parties catalog receipt independent of mutable git-describe tag selection.
   evidence: The unchanged receipt assertion expects `v4.33.1-49-g5d03f1db`, while the same catalog commit now has tag `v4.34.0`; owner run passes 2004/2005, with the exact failure and unchanged-method diff in `evidence/1-12/historical-receipt-failure.txt` and `receipt-test-diff.patch`.
+
+## Deferred from: code review of spec-1-13-publish-the-domain-module-enrollment-kit.md (2026-10-21, pass 3)
+
+- source_spec: `spec-1-13-publish-the-domain-module-enrollment-kit.md`
+  summary: Remove programmatic subscription discovery and literal Dapr component names from Parties production code before its kit enrollment.
+  evidence: Released `4.35.1` `validate --adoption` on real Parties `6d9e341` fails `dapr-subscriptions` on `src/Hexalith.Parties/Program.cs:75` (`app.MapSubscribeHandler()`), `src/Hexalith.Parties/Extensions/PartiesServiceCollectionExtensions.cs`, `HealthChecks/PartiesHealthCheckExtensions.cs`, `src/Hexalith.Parties.Security/ErasureVerificationService.cs` and `appsettings*.json` (`evidence/1-13/post-release-patch/release/released-package/real-parties-human.stdout.txt`). The Story 1.12 README says Platform renders the declarative tenant subscription; the epic requires programmatic discovery to be disabled. This is Parties-owned code, and Story 1.13 must not adopt another module. Feed it into the Story 1.12 review and Parties' kit enrollment.
+  status: open
