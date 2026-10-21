@@ -29,6 +29,13 @@ Those hosting concerns live here.
 
 ## Module tool
 
+From the Platform root, restore and check its exact local tool pin:
+
+```bash
+dotnet tool restore
+dotnet tool run hexalith-module --version
+```
+
 The local tool manifest pins `hexalith.builds.module.cli` `4.35.0`, accepted for
 Platform `run`, `debug` and opt-in domain enrollment validation.
 `hexalith-platform.json` accepts versions in `[4.35.0, 5.0.0-0)`.
@@ -64,7 +71,10 @@ adoption; accepting evidence also requires a Platform-accepted, integration-qual
 
 ## Parties reference domain
 
-An independent `Hexalith.Parties` checkout uses its pinned module tool 4.34.0:
+The qualified independent `Hexalith.Parties` checkout pins module tool `4.34.0`
+against its own direct Platform gitlink `17179e5`, whose accepted range is
+`[4.34.0, 5.0.0-0)`. That historical qualification does not change this checkout's
+current minimum above. From that Parties checkout:
 
 ```bash
 dotnet tool restore
@@ -76,9 +86,9 @@ including `parties`; source and Debug bindings use only the tool-selected direct
 references. Platform routes the singular `party` domain to `parties/process`,
 binds the existing state/pubsub keys and renders the declarative tenant subscription.
 Rich Parties search stays disabled. Legacy domain AppHost, Aspire, UI/MCP and sample
-hosts remain frozen outside this qualification. Owner review, upstream integration
-and the [Story 1.12 evidence](_bmad-output/implementation-artifacts/evidence/1-12/README.md)
-are required before the adoption can be considered complete.
+hosts remain frozen outside this qualification. Owner review and upstream
+integration are complete; the [Story 1.12 evidence](_bmad-output/implementation-artifacts/evidence/1-12/README.md)
+records the accepted adoption and its exact revisions.
 
 ## Domain-module enrollment
 

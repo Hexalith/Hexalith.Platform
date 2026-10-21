@@ -15,7 +15,16 @@ in `.gitmodules`: `Hexalith.Platform`, `Hexalith.Builds`, `Hexalith.McpCli`,
 `Hexalith.EventStore`, `Hexalith.Tenants`, `Hexalith.Memories`, and every additional
 declared server dependency. Exclude the active module itself; the three minimum
 server dependencies are distinct identities. Commit gitlinks at the selected
-revisions. Initialize only these root paths at their recorded gitlinks:
+revisions. Use repository folders named `references/Hexalith.<id>`, compared
+case-insensitively with the declared module identity. Add each missing direct
+reference from the module root (replace the URL and ID):
+
+```bash
+git submodule add '<url>' 'references/Hexalith.<Id>'
+```
+
+Initialize the following minimum root paths at their recorded gitlinks, excluding
+self; append every additional declared dependency's direct path to the command:
 
 ```bash
 git -c submodule.recurse=false submodule update --init --checkout -- \
@@ -31,7 +40,8 @@ to its module root's recorded gitlink. A sibling checkout's presence has no effe
 
 ## 2. Customize the declaration and inventory
 
-Copy the starter files, then replace the sample identities, app/resource/server
+Copy each starter file only when absent; merge an existing declaration or inventory
+with owner review. Then replace the sample identities, app/resource/server
 IDs, routes, topic names, configuration keys and readiness endpoint with the real
 module contract. Keep all five groups: identity, runtime, surfaces, integration and
 lifecycle. Dependencies name module identities, not repository paths. Add every
@@ -43,14 +53,18 @@ state-store, pub/sub or secret-store component name into code or configuration.
 
 ```bash
 mkdir -p module
-cp references/Hexalith.Platform/templates/domain-module-enrollment/hexalith.module-manifest.v2.json module/
-cp references/Hexalith.Platform/templates/domain-module-enrollment/hosting-inventory.json module/
-cp references/Hexalith.Platform/templates/domain-module-enrollment/sm-2-checklist.md module/
+for file in hexalith.module-manifest.v2.json hosting-inventory.json sm-2-checklist.md; do
+  if [ ! -e "module/$file" ]; then
+    cp "references/Hexalith.Platform/templates/domain-module-enrollment/$file" "module/$file"
+  fi
+done
 ```
 
 Inventory every existing module-owned `*.AppHost`, `*.Aspire` and
 `*.ServiceDefaults` project by exact tracked `.csproj` path, kind, accountable owner
-and consumers. Rename the sample inventory entries to existing projects; remove
+and consumers. Replace every pending owner and consumer with an identified value;
+use `"consumers": ["none"]` only when no consumers exist. Unedited pending defaults
+fail adoption validation; plans and gates may remain pending. Rename the sample inventory entries to existing projects; remove
 entries for projects that do not exist. Use `"projects": []` if there are none.
 Do not create sample hosting projects. Keep existing projects frozen, with explicit
 replacement and retirement plans and pending gates. Do not add cross-module wiring.
@@ -64,12 +78,22 @@ scans. Root build files and dependency checks always remain in scope.
 
 ## 3. Restore exactly the accepted tool
 
-Copy the accepted tool manifest from the **direct Platform checkout**, preserving
-the exact version and disabled roll-forward. Do not pick the newest NuGet version.
+Merge only the `hexalith.builds.module.cli` tool entry from the **direct Platform
+checkout**, preserving the exact version and disabled roll-forward as well as every
+other local tool entry. Do not pick the newest NuGet version. For example, with
+Python 3:
 
 ```bash
 mkdir -p .config
-cp references/Hexalith.Platform/.config/dotnet-tools.json .config/dotnet-tools.json
+python3 - <<'PYTHON'
+import json
+from pathlib import Path
+accepted = json.loads(Path("references/Hexalith.Platform/.config/dotnet-tools.json").read_text())
+path = Path(".config/dotnet-tools.json")
+local = json.loads(path.read_text()) if path.exists() else {"version": 1, "isRoot": True, "tools": {}}
+local.setdefault("tools", {})["hexalith.builds.module.cli"] = accepted["tools"]["hexalith.builds.module.cli"]
+path.write_text(json.dumps(local, indent=2) + "\n")
+PYTHON
 dotnet tool restore
 dotnet tool run hexalith-module --version
 dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json
@@ -96,7 +120,10 @@ Remove file-based dependency/mode selectors and module assignments to tool-owned
 root/mode properties. Project/package pairs may consume `UseHexalithProjectReferences`
 and the tool-provided `Hexalith*Root` values; only the tool selects source/Debug or
 package/Release. An `Exists` guard on an unrelated optional import is legitimate.
-An `Exists` guard that chooses a dependency, root or mode is forbidden.
+An `Exists` guard that chooses a dependency, root or mode is forbidden. The sole
+bootstrap exception is `HexalithBuildsRoot` defaulting to
+`$(MSBuildThisFileDirectory)references/Hexalith.Builds` only when that property is
+empty; the tool supplies its mapping before this inert default is evaluated.
 
 Read configured Dapr component names using declared configuration keys. Declare
 subscriptions, delivery routes and dead-letter policy in the manifest. Remove
@@ -105,7 +132,10 @@ Preserve module ACL files as authoritative inputs. Review local mTLS,
 deny-by-default receiver ACLs and scoped components with the owner.
 
 The audit is a **bounded static check**, limited to known patterns in supported
-tracked files up to 1 MiB each. Human source review must inspect indirection,
+tracked files up to 1 MiB each after file-type filtering. JSON/YAML/YML are scanned
+only as `appsettings*.json`, `appsettings*.yaml` or `appsettings*.yml` configuration
+for Dapr defaults; evidence and OpenAPI documents do not enter either audit.
+Human source review must inspect unusual configuration filenames, indirection,
 unsupported languages, generated code and any constructs outside that bound.
 Passing rows cannot prove runtime behavior or replace SM-2.
 
