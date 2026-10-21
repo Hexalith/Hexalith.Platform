@@ -42,10 +42,26 @@ public sealed class DomainEnrollmentKitTests
         checklist.ShouldNotContain("[x]");
     }
 
+    [Fact]
+    public void AcceptedToolPinEqualsSupportedRangeFloor()
+    {
+        string root = Root();
+        using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config/dotnet-tools.json")));
+        using JsonDocument identity = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "hexalith-platform.json")));
+        JsonElement tool = manifest.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+        NuGet.Versioning.NuGetVersion version = NuGet.Versioning.NuGetVersion.Parse(tool.GetProperty("version").GetString()!);
+        NuGet.Versioning.VersionRange range = NuGet.Versioning.VersionRange.Parse(identity.RootElement.GetProperty("toolVersionRange").GetString()!);
+        range.Satisfies(version).ShouldBeTrue();
+        range.IsMinInclusive.ShouldBeTrue();
+        range.MinVersion.ShouldBe(version);
+        tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+        tool.GetProperty("commands").EnumerateArray().Select(command => command.GetString()).ShouldBe(["hexalith-module"]);
+    }
+
     [Theory]
     [InlineData("human")]
     [InlineData("json")]
-    public async Task CandidateToolValidatesDisposableWorkspaceWithoutWrites(string format)
+    public async Task ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(string format)
     {
         string root = Root();
         string temporary = Path.Combine(Path.GetTempPath(), "platform-enrollment-" + Guid.NewGuid().ToString("N"));
@@ -73,7 +89,9 @@ public sealed class DomainEnrollmentKitTests
             JsonNode inventory = JsonNode.Parse(File.ReadAllText(Path.Combine(kit, "hosting-inventory.json")))!;
             foreach (JsonNode? entry in inventory["projects"]!.AsArray())
             {
-                string project = Path.Combine(temporary, entry!["path"]!.GetValue<string>());
+                entry!["owner"] = "Enrollment fixture owner";
+                entry["consumers"] = new JsonArray("none");
+                string project = Path.Combine(temporary, entry["path"]!.GetValue<string>());
                 Directory.CreateDirectory(Path.GetDirectoryName(project)!);
                 File.WriteAllText(project, "<Project />");
                 File.WriteAllText(Path.Combine(Path.GetDirectoryName(project)!, "Program.cs"), "app.MapSubscribeHandler(); // frozen legacy host");
@@ -84,10 +102,14 @@ public sealed class DomainEnrollmentKitTests
             string[] filesBefore = Directory.GetFiles(temporary, "*", SearchOption.AllDirectories);
             PlatformAdoptionValidationResult staticReport = await PlatformAdoptionValidator.ValidateAsync([Path.Combine(temporary, "module/hexalith.module-manifest.v2.json")], temporary, TestContext.Current.CancellationToken);
             staticReport.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, staticReport.Rows.Where(row => !row.Passed)));
-            string candidate = Environment.GetEnvironmentVariable("HEXALITH_ENROLLMENT_CANDIDATE") ?? Path.Combine(root, "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll");
-            File.Exists(candidate).ShouldBeTrue("Build the Builds Module CLI Release candidate before running enrollment acceptance.");
-            (int code, string output) = await RunAsync(temporary, "dotnet", candidate, "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
-            code.ShouldBe(0, output);
+            // Restore the exact Platform pin before this test: dotnet tool restore (from Platform root).
+            (int versionCode, string versionOutput, string versionError) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--version");
+            versionCode.ShouldBe(0, "Run dotnet tool restore from the Platform root before enrollment acceptance. " + versionError);
+            using JsonDocument pin = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config/dotnet-tools.json")));
+            string exactVersion = pin.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli").GetProperty("version").GetString()!;
+            versionOutput.Trim().Split('+')[0].ShouldBe(exactVersion);
+            (int code, string output, string error) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--", "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
+            code.ShouldBe(0, output + error);
             output.ShouldContain("SM-2 remains separately unverified");
             if (format == "json")
             {
@@ -97,11 +119,11 @@ public sealed class DomainEnrollmentKitTests
             else output.ShouldContain("PASS hosting-inventory");
             (await GitAsync(temporary, "status", "--porcelain=v1", "--untracked-files=all")).ShouldBe(before);
             Directory.GetFiles(temporary, "*", SearchOption.AllDirectories).ShouldBe(filesBefore, ignoreOrder: true);
-            File.WriteAllText(Path.Combine(temporary, ".config/dotnet-tools.json"), "{}");
-            (int failedCode, string failedOutput) = await RunAsync(temporary, "dotnet", candidate, "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
-            failedCode.ShouldBe(1, failedOutput);
-            failedOutput.ShouldContain("tool-pin");
-            if (format == "human") failedOutput.ShouldContain("FAIL tool-pin");
+            File.Delete(Path.Combine(temporary, "module/hosting-inventory.json"));
+            (int failedCode, string failedOutput, string failedError) = await RunAsync(temporary, "dotnet", "tool", "run", "hexalith-module", "--", "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format);
+            failedCode.ShouldBe(1, failedOutput + failedError);
+            failedOutput.ShouldContain("hosting-inventory");
+            if (format == "human") failedOutput.ShouldContain("FAIL hosting-inventory");
         }
         finally
         {
@@ -118,12 +140,12 @@ public sealed class DomainEnrollmentKitTests
 
     private static async Task<string> GitAsync(string directory, params string[] arguments)
     {
-        (int code, string output) = await RunAsync(directory, "git", arguments);
-        code.ShouldBe(0, output);
+        (int code, string output, string error) = await RunAsync(directory, "git", arguments);
+        code.ShouldBe(0, output + error);
         return output;
     }
 
-    private static async Task<(int Code, string Output)> RunAsync(string directory, string command, params string[] arguments)
+    private static async Task<(int Code, string Output, string Error)> RunAsync(string directory, string command, params string[] arguments)
     {
         ProcessStartInfo start = new(command) { WorkingDirectory = directory, UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
         foreach (string argument in arguments) start.ArgumentList.Add(argument);
@@ -131,6 +153,6 @@ public sealed class DomainEnrollmentKitTests
         Task<string> stdout = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
         Task<string> stderr = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
         await process.WaitForExitAsync(TestContext.Current.CancellationToken);
-        return (process.ExitCode, await stdout + await stderr);
+        return (process.ExitCode, await stdout, await stderr);
     }
 }

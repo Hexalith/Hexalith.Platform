@@ -1,0 +1,43 @@
+import hashlib
+import json
+import pathlib
+import subprocess
+
+platform = pathlib.Path.cwd().resolve()
+module = platform / "references/Hexalith.Parties"
+cli = platform / "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll"
+evidence = platform / "_bmad-output/implementation-artifacts/evidence/1-13/post-release-patch"
+
+def git(*arguments):
+    return subprocess.check_output(["git", "-c", "submodule.recurse=false", "-C", str(module), *arguments])
+
+def snapshot():
+    tracked = git("ls-files", "-z")
+    hashes = {}
+    for name in tracked.decode().split("\0"):
+        if name:
+            path = module / name
+            if path.is_file():
+                hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return {"head": git("rev-parse", "HEAD").decode().strip(), "status": git("status", "--porcelain=v1", "--untracked-files=all").decode(), "trackedPathBytes": len(tracked), "trackedFileHashes": hashes}
+
+runs = []
+for format in ("human", "json"):
+    before = snapshot()
+    command = ["dotnet", str(cli), "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", format]
+    result = subprocess.run(command, cwd=module, capture_output=True, text=True, timeout=120)
+    after = snapshot()
+    (evidence / ("parties-" + format + ".stdout.txt")).write_text(result.stdout)
+    (evidence / ("parties-" + format + ".stderr.txt")).write_text(result.stderr)
+    (evidence / ("parties-" + format + ".before.json")).write_text(json.dumps(before, indent=2) + "\n")
+    (evidence / ("parties-" + format + ".after.json")).write_text(json.dumps(after, indent=2) + "\n")
+    assert before == after, "Real module workspace changed"
+    entry = {"command": command, "workingDirectory": str(module), "exitCode": result.returncode, "unchanged": before == after, "moduleCommit": before["head"], "trackedPathBytes": before["trackedPathBytes"], "hashedTrackedFiles": len(before["trackedFileHashes"])}
+    if format == "json":
+        report = json.loads(result.stdout)
+        entry["rows"] = report["adoption"]
+        assert next(row for row in report["adoption"] if row["requirement"] == "workspace")["passed"]
+        assert all("Cannot enumerate tracked" not in row["reason"] and "exceeds the bounded" not in row["reason"] for row in report["adoption"])
+    runs.append(entry)
+(evidence / "real-workspace-commands.json").write_text(json.dumps(runs, indent=2) + "\n")
+print(json.dumps([{key: value for key, value in run.items() if key != "rows"} for run in runs], indent=2))
