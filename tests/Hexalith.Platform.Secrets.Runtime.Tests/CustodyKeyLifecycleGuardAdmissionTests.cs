@@ -100,8 +100,16 @@ public sealed class CustodyKeyLifecycleGuardAdmissionTests
         (await authority.RecordTransitionAsync(changed, ct)).ShouldBeFalse();
         (await authority.RecoverTransitionAsync(changed, ct)).ShouldBeFalse();
         journal.TryAdmit(changed).ShouldBeFalse();
+        var forgedTarget = Transition(Tenant, Revision, StateDigest, Target) with { TargetDigest = Digest("not-the-bytes") };
+        (await authority.AdmitTransitionAsync(forgedTarget, ct)).ShouldBeFalse();
         journal.Writes.ShouldBe(0);
         journal.Admitted.ShouldBeNull();
+
+        var divergent = new CustodyNonrollbackJournal(Revision, Digest("divergent-head"));
+        var divergentAuthority = Authority(guard, divergent);
+        (await divergentAuthority.AuthorizeOperationAsync(Key(Tenant), Operation, Method, RequestDigest, ct)).ShouldBeFalse();
+        (await divergentAuthority.ValidateStateAsync(Tenant, Revision, divergent.HeadDigest, ct)).ShouldBeFalse();
+        divergent.Writes.ShouldBe(0);
     }
 
     [Fact]
