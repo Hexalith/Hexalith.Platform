@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+    <PackageReference Include="Hexalith.EventStore.Contracts" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Hexalith.Platform.Custody.Component.Tests" />
+    <InternalsVisibleTo Include="Hexalith.Platform.Secrets.Runtime" />
+    <InternalsVisibleTo Include="Hexalith.Platform.Secrets.Runtime.Tests" />
+    <InternalsVisibleTo Include="Hexalith.Platform.Protection" />
+    <InternalsVisibleTo Include="Hexalith.Platform.Protection.Tests" />
+  </ItemGroup>
+</Project>
