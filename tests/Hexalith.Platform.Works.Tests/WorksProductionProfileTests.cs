@@ -68,6 +68,21 @@ public sealed class WorksProductionProfileTests
         Should.Throw<InvalidDataException>(() => WorksProductionProfile.Validate(candidate.ToJsonString()));
     }
 
+    /// <summary>Self-invocation cannot use runtimes with absent or caller-supplied attribution.</summary>
+    [Theory]
+    [InlineData("1.18.3")]
+    [InlineData("1.18.6")]
+    [InlineData("1.17.99")]
+    [InlineData("1.18.7-preview")]
+    [InlineData("01.18.7")]
+    public void UnsafeDaprRuntimeIsRefused(string runtime)
+    {
+        JsonObject candidate = Candidate();
+        candidate["daprRuntimeVersion"] = runtime;
+        Should.Throw<InvalidDataException>(() => WorksProductionProfile.Validate(candidate.ToJsonString()))
+            .Message.ShouldContain("1.18.7");
+    }
+
     /// <summary>Both mandatory transport protections must remain enabled.</summary>
     [Theory]
     [InlineData("mtlsEnabled")]
@@ -104,7 +119,7 @@ public sealed class WorksProductionProfileTests
 
     internal static JsonObject Candidate() => new()
     {
-        ["trustDomain"] = "platform.example", ["namespace"] = "works-production", ["mtlsEnabled"] = true,
+        ["daprRuntimeVersion"] = "1.18.7", ["trustDomain"] = "platform.example", ["namespace"] = "works-production", ["mtlsEnabled"] = true,
         ["gatewayCaller"] = "eventstore", ["moduleCaller"] = "works", ["operatorCaller"] = "eventstore-admin",
         ["brokerTlsEnabled"] = true, ["brokerPolicySha256"] = new string('a', 64), ["networkPolicySha256"] = new string('b', 64),
         ["workloadAuthority"] = "https://authority.example", ["workloadKeyReference"] = "key-v1",

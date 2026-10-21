@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition;
 
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 /// <summary>Validates the required production binding manifest before any Works resources are composed.</summary>
 /// <remarks>Manifest validation does not qualify providers or authorize preview hosting in production.</remarks>
@@ -8,7 +9,7 @@ public static class WorksProductionProfile
 {
     private static readonly string[] Required =
     [
-        "trustDomain", "namespace", "mtlsEnabled", "gatewayCaller", "moduleCaller", "operatorCaller",
+        "daprRuntimeVersion", "trustDomain", "namespace", "mtlsEnabled", "gatewayCaller", "moduleCaller", "operatorCaller",
         "brokerTlsEnabled", "brokerPolicySha256", "networkPolicySha256", "workloadAuthority",
         "workloadKeyReference", "delegationProvider", "secretsProvider", "schedulerProvider",
         "stateProvider", "auditProvider", "backupSet", "retentionPolicy", "telemetryEndpoint",
@@ -46,6 +47,10 @@ public static class WorksProductionProfile
                 || value.GetString() != value.GetString()!.Trim())
                 throw new InvalidDataException($"Works production profile requires a nonempty {name} reference.");
         }
+        string runtime = profile.GetProperty("daprRuntimeVersion").GetString()!;
+        if (!Regex.IsMatch(runtime, @"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
+            || !Version.TryParse(runtime, out Version? selectedRuntime) || selectedRuntime < new Version(1, 18, 7))
+            throw new InvalidDataException("Works production requires Dapr runtime 1.18.7 or later for self-invocation caller attribution.");
         foreach ((string name, string expected) in new[]
         {
             ("gatewayCaller", "eventstore"), ("moduleCaller", "works"), ("operatorCaller", "eventstore-admin"),
