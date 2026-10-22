@@ -1,0 +1,418 @@
+{
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+        "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "meta.helm.sh/release-name": "reference",
+            "meta.helm.sh/release-namespace": "reference"
+        },
+        "creationTimestamp": "2026-10-22T17:35:22Z",
+        "generation": 3,
+        "labels": {
+            "app.kubernetes.io/managed-by": "Helm",
+            "app.kubernetes.io/part-of": "hexalith-reference"
+        },
+        "name": "eventstore",
+        "namespace": "reference",
+        "resourceVersion": "1388",
+        "uid": "4d929b8d-04e3-4b0b-a2f6-2786092ce65d"
+    },
+    "spec": {
+        "progressDeadlineSeconds": 600,
+        "replicas": 2,
+        "revisionHistoryLimit": 10,
+        "selector": {
+            "matchLabels": {
+                "app.kubernetes.io/name": "eventstore"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": "25%",
+                "maxUnavailable": "25%"
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "annotations": {
+                    "dapr.io/api-token-secret": "fixture-eventstore-api",
+                    "dapr.io/app-id": "eventstore",
+                    "dapr.io/app-port": "8080",
+                    "dapr.io/app-protocol": "http",
+                    "dapr.io/app-token-secret": "fixture-eventstore-app",
+                    "dapr.io/config": "platform-eventstore",
+                    "dapr.io/enable-api-logging": "false",
+                    "dapr.io/enabled": "true",
+                    "dapr.io/sidecar-listen-addresses": "127.0.0.1"
+                },
+                "labels": {
+                    "app.kubernetes.io/name": "eventstore"
+                }
+            },
+            "spec": {
+                "automountServiceAccountToken": true,
+                "containers": [
+                    {
+                        "env": [
+                            {
+                                "name": "APP_API_TOKEN",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-eventstore-app"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "ASPNETCORE_URLS",
+                                "value": "http://0.0.0.0:8080"
+                            },
+                            {
+                                "name": "Authentication__DaprInternal",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__DaprInternal__AllowedCallers",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__DaprInternal__Audience",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__DaprInternal__MaximumLifetimeSeconds",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__AllowInsecureSymmetricKey",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__AllowedAlgorithms",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__Audience",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__Authority",
+                                "value": "https://identity.fixture.invalid/realm"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__Issuer",
+                                "value": "https://identity.fixture.invalid/realm"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__RequireHttpsMetadata",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__SigningKey",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-credential"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "Authentication__JwtBearer__ValidAudiences",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer",
+                                "value": "https://identity.fixture.invalid/realm"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__AudienceScopePrefix",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__ClientId",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__ClientSecret",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-credential"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__LifetimeSeconds",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__OperationScopePrefix",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__TokenEndpoint",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Authentication__WorkloadIssuer__Workload",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "DAPR_API_TOKEN",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-eventstore-api"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "Dapr__DeclarativeSubscriptions",
+                                "value": "true"
+                            },
+                            {
+                                "name": "EventStore__AppChannelToken",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-eventstore-app"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "EventStore__CommandStatus__StateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "EventStore__DaprConfigPath",
+                                "value": "/etc/hexalith/environment/daprconfigpath.yaml"
+                            },
+                            {
+                                "name": "EventStore__DomainServices__ConfigStoreName",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionChanges__PubSubName",
+                                "value": "pubsub"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDeliveryIdempotency",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDeliveryIdempotency__CompletedReceiptLimit",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDeliveryIdempotency__MaxStateTransitionAttempts",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDeliveryIdempotency__ReservationLease",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch__MaxRetryAttempts",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch__RetryBaseDelay",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch__RetryLeaseDuration",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch__RetryMaxDelay",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch__RetryScanBatchSize",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__ProjectionDispatch__RetryWorkerInterval",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__CheckpointStateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "EventStore__Projections__DefaultRefreshIntervalMs",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__Domains",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__ReadModelStateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "EventStore__Projections__RebuildIndexCleanupCadenceSeconds",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__RebuildMaxPrefixBytes",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__RebuildMaxPrefixEventCount",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__RebuildPageSize",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__Projections__WorkersEnabled",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStore__PubSubComponentPath",
+                                "value": "/etc/hexalith/environment/pubsubcomponentpath.yaml"
+                            },
+                            {
+                                "name": "EventStore__Publisher__PubSubName",
+                                "value": "pubsub"
+                            },
+                            {
+                                "name": "EventStore__RateLimiting__ConfigurationStoreName",
+                                "value": "configstore"
+                            },
+                            {
+                                "name": "EventStore__StateStoreComponentPath",
+                                "value": "/etc/hexalith/environment/statestorecomponentpath.yaml"
+                            }
+                        ],
+                        "image": "qualification.invalid/eventstore@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "app",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "name": "http",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/ready",
+                                "port": "http",
+                                "scheme": "HTTP"
+                            },
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "512Mi"
+                            },
+                            "requests": {
+                                "cpu": "10m",
+                                "memory": "32Mi"
+                            }
+                        },
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true,
+                            "runAsUser": 1654,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/tmp",
+                                "name": "tmp"
+                            },
+                            {
+                                "mountPath": "/etc/hexalith/environment",
+                                "name": "environment-components",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "imagePullSecrets": [
+                    {
+                        "name": "fixture-registry"
+                    }
+                ],
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "runAsNonRoot": true,
+                    "runAsUser": 1654,
+                    "seccompProfile": {
+                        "type": "RuntimeDefault"
+                    }
+                },
+                "terminationGracePeriodSeconds": 30,
+                "volumes": [
+                    {
+                        "emptyDir": {},
+                        "name": "tmp"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "fixture-components"
+                        },
+                        "name": "environment-components"
+                    }
+                ]
+            }
+        }
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastTransitionTime": "2026-10-22T17:35:22Z",
+                "lastUpdateTime": "2026-10-22T17:35:30Z",
+                "message": "ReplicaSet \"eventstore-f94576b5c\" has successfully progressed.",
+                "reason": "NewReplicaSetAvailable",
+                "status": "True",
+                "type": "Progressing"
+            },
+            {
+                "lastTransitionTime": "2026-10-22T17:35:32Z",
+                "lastUpdateTime": "2026-10-22T17:35:32Z",
+                "message": "Deployment does not have minimum availability.",
+                "reason": "MinimumReplicasUnavailable",
+                "status": "False",
+                "type": "Available"
+            }
+        ],
+        "observedGeneration": 3,
+        "replicas": 2,
+        "terminatingReplicas": 0,
+        "unavailableReplicas": 2,
+        "updatedReplicas": 2
+    }
+}

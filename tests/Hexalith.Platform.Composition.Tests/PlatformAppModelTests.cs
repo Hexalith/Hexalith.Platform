@@ -231,6 +231,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
             var subscriptions = Directory.GetFiles(subscriptionDirectory, "*.yaml").ToDictionary(path => Path.GetFileName(path)!, File.ReadAllText);
             subscriptions.Count.ShouldBe(2);
             subscriptions.Values.ShouldAllBe(content => JsonDocument.Parse(content).RootElement.GetProperty("kind").GetString() == "Subscription");
+            foreach (var endpoint in sidecar.Annotations.OfType<EndpointAnnotation>())
+                endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", endpoint.TargetPort ?? endpoint.Port ?? 32000);
             List<object> arguments = [];
             foreach (CommandLineArgsCallbackAnnotation callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
                 await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
@@ -306,7 +308,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
     }
 
     [Fact]
-    public void WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers()
+    public async Task WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers()
     {
         string directory = Path.Combine(Path.GetTempPath(), "works-graph-test-" + Guid.NewGuid().ToString("N"));
         string platform = Path.Combine(directory, "platform");
@@ -350,6 +352,37 @@ public sealed partial class PlatformAppModelTests : IDisposable
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-sentry");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-placement-mtls");
             builder.Resources.ShouldContain(resource => resource.Name == "dapr-scheduler-mtls");
+            string home = Path.Combine(directory, "qualified-runtime");
+            Directory.CreateDirectory(Path.Combine(home, ".dapr", "bin"));
+            File.WriteAllText(Path.Combine(home, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model-only runtime");
+            int currentSentry = CompositionPortAllocator.Allocate(1).PlacementHealth;
+            foreach (var project in builder.Resources.OfType<ProjectResource>())
+            {
+                var sidecar = project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+                var old = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+                sidecar.Annotations[sidecar.Annotations.IndexOf(old)] = new DaprSidecarOptionsAnnotation(old.Options with { RuntimePath = home });
+                foreach (var endpoint in project.Annotations.OfType<EndpointAnnotation>())
+                    endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", 32000);
+            }
+            builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(directory, "test-dcp-not-started");
+            builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(directory, "test-dashboard-not-started");
+            builder.AddDapr(options => options.EnableTelemetry = false);
+            await using var application = builder.Build();
+            var model = application.Services.GetRequiredService<DistributedApplicationModel>();
+            var eventing = application.Services.GetRequiredService<IDistributedApplicationEventing>();
+            foreach (var subscriber in application.Services.GetServices<IDistributedApplicationEventingSubscriber>())
+                await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+            await eventing.PublishAsync(new BeforeStartEvent(application.Services, model), TestContext.Current.CancellationToken);
+            builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port = currentSentry;
+            foreach (var sidecar in model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)))
+            {
+                List<object> arguments = [];
+                foreach (var callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+                    await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
+                arguments[arguments.IndexOf("--sentry-address") + 1].ShouldBe("127.0.0.1:" + currentSentry);
+                sidecar.Command.ShouldBe(Path.Combine(home, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
+            }
+
         }
         finally { Directory.Delete(directory, true); }
     }

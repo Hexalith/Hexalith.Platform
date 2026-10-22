@@ -1,4 +1,5 @@
 """Parties positive persisted projection checks through the source-defined Gateway API."""
+import hashlib
 import secrets
 
 
@@ -19,7 +20,7 @@ def query(context, party_id=None, pending=False):
 
 def lifecycle(context):
     invocation = context.invocation
-    party_id = invocation['invocationId'][:110] + '-party'
+    party_id = 'check-party-' + hashlib.sha256(invocation['invocationId'].encode()).hexdigest()
     # Source validator admits nonblank ULID-safe message identifiers; random bytes use its ULID alphabet.
     message_id = ''.join(secrets.choice('0123456789ABCDEFGHJKMNPQRSTVWXYZ') for _ in range(26))
     message_id = '0' + message_id[1:]

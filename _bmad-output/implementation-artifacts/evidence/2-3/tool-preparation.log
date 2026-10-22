@@ -1,0 +1,10 @@
+docker create --name platform-23-tools-0e4a91b10f82 --label hexalith.platform.verification=2-3 --entrypoint /placement daprio/dapr:1.18.7
+8d12a361f0de7df2a7f15de063db9f6097d175ac839ac714bd92e7637394cf05
+exit=0
+docker cp platform-23-tools-0e4a91b10f82:/placement /tmp/platform-2-3-tool-inputs-y9ophakd/.dapr/bin/placement
+exit=0
+docker cp platform-23-tools-0e4a91b10f82:/scheduler /tmp/platform-2-3-tool-inputs-y9ophakd/.dapr/bin/scheduler
+exit=0
+docker rm platform-23-tools-0e4a91b10f82
+platform-23-tools-0e4a91b10f82
+exit=0

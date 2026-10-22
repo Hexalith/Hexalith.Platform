@@ -1,37 +1,29 @@
 {
-    "apiVersion": "dapr.io/v1alpha1",
-    "kind": "Component",
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
+    },
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:11:08Z",
-        "generation": 1,
+        "creationTimestamp": "2026-10-22T17:35:15Z",
         "managedFields": [
             {
-                "apiVersion": "dapr.io/v1alpha1",
+                "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:scopes": {},
-                    "f:spec": {
-                        "f:metadata": {},
-                        "f:type": {},
-                        "f:version": {}
+                    "f:stringData": {
+                        "f:token": {}
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:11:08Z"
+                "time": "2026-10-22T17:35:15Z"
             }
         ],
-        "name": "environment-preserved",
+        "name": "fixture-credential",
         "namespace": "reference",
-        "resourceVersion": "904",
-        "uid": "b21ff220-5065-4149-ac13-8dd0fdf94745"
+        "resourceVersion": "915",
+        "uid": "930db497-6f8a-4201-ba3b-f04abe71ecc0"
     },
-    "scopes": [
-        "environment-owner"
-    ],
-    "spec": {
-        "metadata": [],
-        "type": "secretstores.kubernetes",
-        "version": "v1"
-    }
+    "type": "Opaque"
 }

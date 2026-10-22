@@ -1,29 +1,44 @@
 {
     "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
-    },
-    "kind": "Secret",
+    "kind": "Namespace",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:11:08Z",
+        "creationTimestamp": "2026-10-22T17:35:14Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "reference",
+            "pod-security.kubernetes.io/audit": "restricted",
+            "pod-security.kubernetes.io/enforce": "restricted",
+            "pod-security.kubernetes.io/enforce-version": "v1.35",
+            "pod-security.kubernetes.io/warn": "restricted"
+        },
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
+                    "f:metadata": {
+                        "f:labels": {
+                            "f:pod-security.kubernetes.io/audit": {},
+                            "f:pod-security.kubernetes.io/enforce": {},
+                            "f:pod-security.kubernetes.io/enforce-version": {},
+                            "f:pod-security.kubernetes.io/warn": {}
+                        }
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:11:08Z"
+                "time": "2026-10-22T17:35:14Z"
             }
         ],
-        "name": "fixture-credential",
-        "namespace": "reference",
-        "resourceVersion": "897",
-        "uid": "da8ad268-1ea7-48fa-8d4d-4c80aeea6762"
+        "name": "reference",
+        "resourceVersion": "909",
+        "uid": "42873e6d-3f3c-411f-a994-ad980699567f"
     },
-    "type": "Opaque"
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
 }

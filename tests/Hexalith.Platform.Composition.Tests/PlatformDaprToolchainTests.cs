@@ -8,6 +8,7 @@ using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Shouldly;
 
 public sealed partial class PlatformAppModelTests
@@ -58,6 +59,8 @@ public sealed partial class PlatformAppModelTests
                 options.RuntimePath.ShouldBe(selectedHome, server.Name);
                 ExecutableResource cli = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.Name + "-dapr-cli");
                 cli.Command.ShouldBe(Path.Combine(selectedHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
+                foreach (var endpoint in cli.Annotations.OfType<EndpointAnnotation>())
+                    endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", endpoint.TargetPort ?? endpoint.Port ?? 32000);
                 List<object> arguments = [];
                 foreach (CommandLineArgsCallbackAnnotation callback in cli.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
                     await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
@@ -98,15 +101,20 @@ public sealed partial class PlatformAppModelTests
             builder.AddDapr(options => options.EnableTelemetry = false);
             PlatformAppModel.Compose(builder, Options(active: "eventstore"));
             string config = builder.Resources.Single(resource => resource.Name == "eventstore").Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config!;
-            await using var app = builder.Build();
-            var model = app.Services.GetRequiredService<DistributedApplicationModel>();
-            var eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
-            foreach (var subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
-                await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
-            var failure = await Should.ThrowAsync<InvalidDataException>(async () => await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken));
-            failure.Message.ShouldContain("selected Dapr native runtime is unavailable");
-            failure.Message.ShouldContain(Path.Combine(workspace, "missing-runtime"));
-            File.Exists(config).ShouldBeTrue();
+            await using (var app = builder.Build())
+            {
+                // Resolve the real registrations before failure, just as host startup does.
+                app.Services.GetServices<IHostedService>().OfType<PlatformCompositionWorkspace>().Count().ShouldBe(1);
+                var model = app.Services.GetRequiredService<DistributedApplicationModel>();
+                var eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
+                foreach (var subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
+                    await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+                var failure = await Should.ThrowAsync<InvalidDataException>(async () => await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken));
+                failure.Message.ShouldContain("selected Dapr native runtime is unavailable");
+                failure.Message.ShouldContain(Path.Combine(workspace, "missing-runtime"));
+            }
+            File.Exists(config).ShouldBeTrue("registered-service disposal must retain failed-start diagnostics");
+            File.ReadAllText(Path.Combine(Path.GetDirectoryName(config)!, "composition-failure.txt")).ShouldContain("selected Dapr native runtime is unavailable");
             File.ReadAllText(foreign).ShouldBe("untouched");
             await CompositionWorkspace.TryDeleteAsync(Path.GetDirectoryName(config)!, CancellationToken.None);
         }

@@ -264,6 +264,8 @@ public sealed partial class PlatformAppModelTests
             {
                 IResource application = model.Resources.Single(resource => resource.Name + "-dapr-cli" == sidecar.Name);
                 sidecar.Command.ShouldBe(Path.Combine(plan.DaprHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
+                foreach (var endpoint in sidecar.Annotations.OfType<EndpointAnnotation>())
+                    endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", endpoint.TargetPort ?? endpoint.Port ?? 32000);
                 List<object> arguments = [];
                 foreach (CommandLineArgsCallbackAnnotation callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
                     await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));

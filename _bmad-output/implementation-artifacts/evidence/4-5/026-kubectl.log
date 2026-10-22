@@ -1,48 +1,30 @@
 {
     "apiVersion": "v1",
-    "kind": "PersistentVolumeClaim",
+    "data": {
+        ".dockerconfigjson": "eyJhdXRocyI6e319"
+    },
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:11:08Z",
-        "finalizers": [
-            "kubernetes.io/pvc-protection"
-        ],
+        "creationTimestamp": "2026-10-22T17:35:15Z",
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:spec": {
-                        "f:accessModes": {},
-                        "f:resources": {
-                            "f:requests": {
-                                "f:storage": {}
-                            }
-                        }
-                    }
+                    "f:stringData": {
+                        "f:.dockerconfigjson": {}
+                    },
+                    "f:type": {}
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:11:08Z"
+                "time": "2026-10-22T17:35:15Z"
             }
         ],
-        "name": "fixture-storage",
-        "namespace": "environment",
-        "resourceVersion": "900",
-        "uid": "64a7e58b-b053-4e14-a553-6f884d189ee6"
+        "name": "fixture-registry",
+        "namespace": "reference",
+        "resourceVersion": "916",
+        "uid": "b0fb6cd4-477a-4e22-8569-efc250192128"
     },
-    "spec": {
-        "accessModes": [
-            "ReadWriteOnce"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "1Mi"
-            }
-        },
-        "storageClassName": "standard",
-        "volumeMode": "Filesystem"
-    },
-    "status": {
-        "phase": "Pending"
-    }
+    "type": "kubernetes.io/dockerconfigjson"
 }

@@ -108,6 +108,10 @@ Independent review pass 1, 2026-10-22. All three layers reported before triage. 
 | EH-6 | medium | patch (BH-6) | Same linked destination success followed by validation refusal. |
 | EH-7 | medium | patch | CLI File.ReadAllBytes allocates before ValidateDocument applies the 4 MiB cap. Bound the existing document-read path before allocation. |
 
+| Parent-1 | medium | patch | A real packaged denial check run without PYTHONDONTWRITEBYTECODE passed but created payload/__pycache__/tenants.cpython-314.pyc, making later immutable-package validation fail. The existing CLI test masks this with an environment flag. Disable bytecode writes in the entrypoint and test unchanged payload files without that override. |
+
+| Parent-2 | low | patch | Concurrent Story 4.5 review recorded the 110-character Party ID truncation collision. Distinct accepted invocation IDs sharing that prefix generated the same aggregate. A direct SHA-256 derivation from the complete invocation removes the collision; a two-invocation regression pins it. The existing deferred ledger entry is preserved. |
+
 ## Verification
 
 - Builds: `dotnet test test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --configuration Debug` — contract, package and CLI tests pass; use focused built-assembly execution if environment-blocked.

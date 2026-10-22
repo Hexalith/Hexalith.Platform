@@ -1,7 +1,7 @@
 {
   "schema": "hexalith.helm-qualification.v1",
-  "started": "2026-10-22T17:08:04.144934+00:00",
-  "status": "passed",
+  "started": "2026-10-22T17:32:18.521905+00:00",
+  "status": "failed",
   "commands": [
     {
       "argv": [
@@ -77,7 +77,7 @@
       ],
       "returncode": 0,
       "log": "006-git.log",
-      "logSha256": "16d7bd6aa7abb49fabc86468ae72d9e2544de63940d9ba1021a4db9207792ece",
+      "logSha256": "d544a1e40c8eff1cb37944b92eaeb61af2331026d59931876677799f96339c20",
       "stdinSha256": null
     },
     {
@@ -87,13 +87,13 @@
         "--apphost",
         "/home/administrator/projects/hexalith/platform/apphost.cs",
         "--output-path",
-        "/tmp/h45-4wtnvty2/native-output",
+        "/tmp/h45-3wkv_pq5/native-output",
         "--non-interactive",
         "--include-exception-details"
       ],
       "returncode": 0,
       "log": "007-aspire.log",
-      "logSha256": "f6b4bbb0aab5f066d1a00cd4395f06521eefbcc905d44a57cb96cb374b35e83c",
+      "logSha256": "9b1b38e68dece0b48d9748d2ac84931fad6781476a1fac297cb4cf9e5c829684",
       "stdinSha256": null
     },
     {
@@ -101,7 +101,7 @@
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "template",
         "native",
-        "/tmp/h45-4wtnvty2/native-output",
+        "/tmp/h45-3wkv_pq5/native-output",
         "--namespace",
         "reference"
       ],
@@ -124,7 +124,7 @@
       ],
       "returncode": 0,
       "log": "009-python3.log",
-      "logSha256": "fc06106c11625af8852d74326dc26c86c916976f25f075b9543686180ce28fdf",
+      "logSha256": "571db30ff2d7274cee794fa5aa7dd668e67ef5cc8aa0945a38ecb90f4e504f6f",
       "stdinSha256": null
     },
     {
@@ -133,11 +133,11 @@
         "package",
         "/home/administrator/projects/hexalith/platform/eng/helm-qualification/chart",
         "--destination",
-        "/tmp/h45-4wtnvty2"
+        "/tmp/h45-3wkv_pq5"
       ],
       "returncode": 0,
       "log": "010-helm.log",
-      "logSha256": "cd608e3cb8d09af71b9295626ef2d77fa99e46b3234a26ba9779ffb1e204530b",
+      "logSha256": "8969564197a661eb75f4210827b0a1937d11a99f5bfcd12c4356e2f588071406",
       "stdinSha256": null
     },
     {
@@ -157,24 +157,24 @@
         "create",
         "cluster",
         "--name",
-        "h45-73cdc620733c",
+        "h45-cdece7eae911",
         "--image",
         "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--wait",
         "180s"
       ],
       "returncode": 0,
       "log": "012-kind.log",
-      "logSha256": "614a602080d9a1984b026077bb1af53651cedf29d313a3e256c5cb6ae49b8741",
+      "logSha256": "f75529f63e7ad1b235c742d0f5632b97c985732ffb88b4a885c05d5b504dee4f",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "config",
         "view",
         "-o",
@@ -182,16 +182,16 @@
       ],
       "returncode": 0,
       "log": "013-kubectl.log",
-      "logSha256": "6a1968e0ce1aa6df6a101b9585ed152dfc01ee6b073ac592fecc9fb9ffe0cba9",
+      "logSha256": "bffb5406c5ad6bb57aa880958fcc77ab72f6292f739a62506ba98c628ccb12d8",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "namespace",
         "kube-system",
@@ -200,37 +200,73 @@
       ],
       "returncode": 0,
       "log": "014-kubectl.log",
-      "logSha256": "d45e01e50113bf707676fc420370a2d3f852740305b0a2fcf53148731bc2a6bc",
+      "logSha256": "5ca17006ae084de60485c93318229e80e4d07ac0611e4fbd121af57474476bd8",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/h45-3wkv_pq5/gateway.yaml",
+        "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml"
+      ],
+      "returncode": 0,
+      "log": "015-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "apply",
         "--server-side",
         "--field-manager=h45-environment",
         "-f",
-        "/tmp/h45-4wtnvty2/gateway.yaml"
+        "/tmp/h45-3wkv_pq5/gateway.yaml"
       ],
       "returncode": 0,
-      "log": "015-kubectl.log",
+      "log": "016-kubectl.log",
       "logSha256": "ca1bce72fc3508f89aecd1a2741f6ebeece8d0247e14f74a0cb1b07b933e1d04",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/h45-3wkv_pq5/dapr.tgz",
+        "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz"
+      ],
+      "returncode": 0,
+      "log": "017-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "install",
         "dapr",
-        "/tmp/h45-4wtnvty2/dapr.tgz",
+        "/tmp/h45-3wkv_pq5/dapr.tgz",
         "--namespace",
         "dapr-system",
         "--create-namespace",
@@ -253,17 +289,17 @@
         "dapr_sidecar_injector.sidecarDropALLCapabilities=true"
       ],
       "returncode": 0,
-      "log": "016-helm.log",
-      "logSha256": "4ebd329110c77f5e56acf94b58334eea39cfb895dae03afcf6d66e2a38d4d27d",
+      "log": "018-helm.log",
+      "logSha256": "ed77b5f03b9bc84e1560e1e3c2815f845d5dc0bc02bb53ee9a35e3b52fb2d056",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "pods",
         "-n",
@@ -272,17 +308,17 @@
         "json"
       ],
       "returncode": 0,
-      "log": "017-kubectl.log",
-      "logSha256": "92b342b00441f02346164ab9520d7618e805305afae284fdcbb120ddce374f90",
+      "log": "019-kubectl.log",
+      "logSha256": "c017d9441b2c3f933ece40794e4031a7c463bcb655300af2f7c953af4dacffed",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "serviceaccount",
         "replicaset-controller",
@@ -292,19 +328,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "018-kubectl.log",
-      "logSha256": "7ce402c134982f9cd0799bec94338c5d8699e1e66847b45456dd5ebb5e2d005e",
+      "log": "020-kubectl.log",
+      "logSha256": "04ce90b91ca1500f0090eafa9a0797f6c57ac8f202f8c816aa01eef8695093f5",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -314,17 +350,17 @@
         "json"
       ],
       "returncode": 0,
-      "log": "019-kubectl.log",
-      "logSha256": "8a0ec8238f88f4dba283d3dce26d19924b5d32a482827493a15f50ee35586af2",
+      "log": "021-kubectl.log",
+      "logSha256": "6d5fd72b5e2492d4766d3b620e3b4fa6fc8fd5255ff93be4ef3afca44841a770",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "apply",
         "--server-side",
         "--field-manager=h45-environment",
@@ -332,17 +368,17 @@
         "-"
       ],
       "returncode": 0,
-      "log": "020-kubectl.log",
-      "logSha256": "97eb75d10f69d8fe09ad18a45dbc9d7cedd8f70fb8bdb52fd7a5d5aa2dbf6856",
-      "stdinSha256": "cdf37b2870b88049e04cbbca18900a681e9980d85d9d235c531ac90531f9e2f7"
+      "log": "022-kubectl.log",
+      "logSha256": "92d6e1645f84d562597db2c12a3e29978ff443d70129a03b655a8fa53fa2fc9a",
+      "stdinSha256": "b6dde0008015f25008237ba8f611e403a6b0b6d6632f6368acafaf86c1c7c043"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Namespace",
         "reference",
@@ -351,17 +387,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "021-kubectl.log",
-      "logSha256": "49eb53ea4cfafd0791955fff616201c40d42d051f8b17c7e47f8b1f3a9a076bb",
+      "log": "023-kubectl.log",
+      "logSha256": "4d9bde70c97785a7055802bdbe47a67c6ad64480e22526f8161dd80a2d84095d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Namespace",
         "environment",
@@ -370,17 +406,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "022-kubectl.log",
-      "logSha256": "a10079fee109ad009d49f597853d584019867e2f7fb0ab82ecd4b67860723653",
+      "log": "024-kubectl.log",
+      "logSha256": "8f064f44f211ea833877f0724faafdb30fbde283dba11d68fe87687d8c5561a5",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Secret",
         "fixture-credential",
@@ -391,17 +427,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "023-kubectl.log",
-      "logSha256": "bf887761cf57e4d96f711078bf71c05e1e54b46cdd610b4e14b049c7b2f6f9ae",
+      "log": "025-kubectl.log",
+      "logSha256": "7e4d9ac4c9f6be14f202984c933706e9f36aed053d9ae994a577eb7dbd6b62b8",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Secret",
         "fixture-registry",
@@ -412,17 +448,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "024-kubectl.log",
-      "logSha256": "f79d0c3159eec2a0c1595020c0a5d1d0f9b2ae8f2e5316640f84c4300c331ff5",
+      "log": "026-kubectl.log",
+      "logSha256": "602dd8fc91923c7670dd311ab8d5cd52f28a6da4aa661a6882ab2a00c00cd3af",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "ConfigMap",
         "fixture-components",
@@ -433,17 +469,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "025-kubectl.log",
-      "logSha256": "fd8a0711b3bb4ca85770cada58876bde6a517d154509a19e731547f9ea1a04dc",
+      "log": "027-kubectl.log",
+      "logSha256": "484785ac2d236a022dc1cfbbfe57c9256bcedc30e1b93702c55f82f8f9bad762",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "PersistentVolumeClaim",
         "fixture-storage",
@@ -454,17 +490,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "026-kubectl.log",
-      "logSha256": "e9a568cfd840da145ba0a4d1e4011d46c9a4813cf4eeae35a9b03932272bc17f",
+      "log": "028-kubectl.log",
+      "logSha256": "77bd6fc46cd1976ca5050be2eaa5d705e8a0a4fcce57c0145e52cfd83afd92b2",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "GatewayClass",
         "fixture",
@@ -473,17 +509,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "027-kubectl.log",
-      "logSha256": "89b5284922a1df16f61c5cc08760b45bacb52f41c13c74fa304711ad39829147",
+      "log": "029-kubectl.log",
+      "logSha256": "f6620aee8a4746f1eedc9480847fbf05061db230df4fab74bea0f93cac7ab9c6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Gateway",
         "fixture-gateway",
@@ -494,17 +530,311 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "028-kubectl.log",
-      "logSha256": "10d456e7923f6dd5d958dd44dd7f4e0a53acc501373cfe6448b730755e51801c",
+      "log": "030-kubectl.log",
+      "logSha256": "98ebbc37e75a3adfe1b3db665a86ec726e210a6244773782e2ba8cef1c111c9b",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-eventstore-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "031-kubectl.log",
+      "logSha256": "3b07a8181d9cf6ae6717e672aa95fa84e27f7358683a9a61f0d25494ed767470",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-eventstore-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "032-kubectl.log",
+      "logSha256": "8b1652045190e9abc7a1f251b7d0e6cd1c266ccb3abead28788c3a7900ec90c8",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "033-kubectl.log",
+      "logSha256": "32fe638616398fc524a39f1fedc8b23df1e6399c5cad31f05f12c5b4e91af425",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "034-kubectl.log",
+      "logSha256": "b0163bb8dab511a05ca5c0ec046b63eb3b590a8b60a37d27c65340290775260e",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-clock-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "035-kubectl.log",
+      "logSha256": "b8fc0704ba2a875d575f96278c1cb3d73e35f48a559ddbb4a09753d4c3ade717",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-clock-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "036-kubectl.log",
+      "logSha256": "20242cb6201f03043106a32d9e550f86a5895e1550b0e49148f57e70c7085b6d",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "037-kubectl.log",
+      "logSha256": "18aba6e0c2ff74df961a7489fe734ebd7133705003423ac4946a8694381bf228",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "038-kubectl.log",
+      "logSha256": "3ca898d72c3f4a783553326f7e9206e0a6f1475abfde278249103038c850515d",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-parties-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "039-kubectl.log",
+      "logSha256": "7333ef6227877dd538dd2764f05e0d647d56568fb26a16c2ef584f17d6e7b2a0",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-parties-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "040-kubectl.log",
+      "logSha256": "3a18e7b15216aeda27a5d350ba59c33479fd341b577ce5d75894ce1260d6bc28",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "041-kubectl.log",
+      "logSha256": "4295f9f189bde895fe0c97a076c66cc1420cb46226f8ca784efd0a81b0cabb7a",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "042-kubectl.log",
+      "logSha256": "6f292ae2e18bb80e757848949103f164564050f297e5e92850bf09dd6eea8658",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "043-kubectl.log",
+      "logSha256": "4f225ab7d89164107b7b022917c624015bad056337fedc324c56b2818a9b77e6",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "044-kubectl.log",
+      "logSha256": "5df2e122d1c7d98396fe6137a3d9af639c3840390da911e6f1f1dda972d213ec",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
         "get",
         "Component",
         "environment-preserved",
@@ -515,63 +845,63 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "029-kubectl.log",
-      "logSha256": "03ab13877b65abea7946522a0eafcc8f0817889e7a69d75487ee60e540461a97",
+      "log": "045-kubectl.log",
+      "logSha256": "9926df3c19443b5b89381ae2b36fed12e0f31af8e091d87da1f9a4850a72becb",
       "stdinSha256": null
     },
     {
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "install",
         "reference",
-        "/tmp/h45-4wtnvty2/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-3wkv_pq5/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-4wtnvty2/values.json",
+        "/tmp/h45-3wkv_pq5/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--timeout",
         "60s"
       ],
       "returncode": 0,
-      "log": "030-helm.log",
-      "logSha256": "bb3154193b7c64d63be9199c3d40fbb5304a7fc24df7a1d18c0c6b792c8e26cc",
+      "log": "046-helm.log",
+      "logSha256": "23ad9c051b9abd111b0a0b13d3f1f1f2fb92aae07afeb7a0c67b56180013aefc",
       "stdinSha256": null
     },
     {
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "template",
         "reference",
-        "/tmp/h45-4wtnvty2/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-3wkv_pq5/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-4wtnvty2/values.json"
+        "/tmp/h45-3wkv_pq5/values.json"
       ],
       "returncode": 0,
-      "log": "031-helm.log",
-      "logSha256": "3ea6259777afb8c4ab00c23eab81483268d7b2097db409a764bb398dd56cf6fc",
+      "log": "047-helm.log",
+      "logSha256": "d214bc7c545da38f264ceff6997cec480edf52a72a850fa7f2e2181bfa506244",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -583,19 +913,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "032-kubectl.log",
-      "logSha256": "7ee6bdb9824e044b2e3cd44b2e487a733e0cda45c0fd9d3a01f6516e163b2eaa",
-      "stdinSha256": "8ca80aee1696afaa528dc109e9f7444801d5eb6f53fd1962c88281b29f147eaf"
+      "log": "048-kubectl.log",
+      "logSha256": "3181da0ddf52fdedcfc1f9c714779d3f6d64fe9f45edf50a9adbc0a9e7fb358e",
+      "stdinSha256": "ac950414cfb6cec7fc39d05df77c5b50adaa064ba965bd97f9d5d834d6841e08"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -607,19 +937,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "033-kubectl.log",
-      "logSha256": "c4620e29026a6282a3f024fbe0ce4782b321be7ae0df75c7a2c93a10fcf6da0f",
-      "stdinSha256": "d40502fca87d67d1b53b4b69f8aa99372db4f02eaa3a3253b4bb75d052a8661e"
+      "log": "049-kubectl.log",
+      "logSha256": "d90ab638b524ec76bff512a93cdb3a27f521ac7b915da2178d02a8234ab08152",
+      "stdinSha256": "2bd12262bef95d89ecccd06200091a95d9f3b23bc3b439d632dd3fac2746202f"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -631,19 +961,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "034-kubectl.log",
-      "logSha256": "c32cefb64d8412becbbf7afb6be87ce297adef858edf2b015b30a7f612e1f93a",
-      "stdinSha256": "a2b24c2c83798b368276997915b5d65f0c316105427076af07f6ac89320c6bfc"
+      "log": "050-kubectl.log",
+      "logSha256": "08b66a274c18ae7e4f43a9e39d5cbe7fab89fed9858cca9d863781ef93e709fa",
+      "stdinSha256": "579799fd5124ae1ed5d96355f867ca0bad231199c8d722c3339808e272afe9ed"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -655,19 +985,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "035-kubectl.log",
-      "logSha256": "359d632aeadbc18f70a2816b163e98db7e79505b0d78030c207fd99245086395",
-      "stdinSha256": "20b31fdad101093dd329a50d745451ba159d6544bbd356632e5325291fe2c154"
+      "log": "051-kubectl.log",
+      "logSha256": "edf71bca530c565047917eff215834f26b9a1ec4316a9c706217fd36db542f1c",
+      "stdinSha256": "36d5b3382152a95efa6f08af05d600f69fd59b693fc76130552f72588bc9d4e0"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -679,19 +1009,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "036-kubectl.log",
-      "logSha256": "21fc515fb2c7156dbb5a00347c44da672e38e2cfa2d5449cb036e5a88583e73c",
-      "stdinSha256": "b2f35f8162f16f49b0c06630b9d5e4cbdce39e49a09b2d730cd77b94fc8a8747"
+      "log": "052-kubectl.log",
+      "logSha256": "5e3eeade6d5f01461d6c8b3faab17efe842a7ff089233e8ff27c19f10134ab35",
+      "stdinSha256": "3867e28829f812180003ad62f4d71029a8a65a91e4f06611e2367ee8ce8d024a"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -703,19 +1033,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "037-kubectl.log",
-      "logSha256": "765eebf31a092ea9f205e11bd79cdf1ef6067412dc193f7fbcd72b7deda93a99",
-      "stdinSha256": "90364a93a4f380d5db521626ffc9ca45f3849e9512838583a1b63df339842489"
+      "log": "053-kubectl.log",
+      "logSha256": "f2bf55e41b5a42e7ca30a4d22ca50910ecee30d37713268cd07093e931135dfb",
+      "stdinSha256": "848480a6849da261ce444f3ed14d434d20d4cbaba6c694d9261b130e841793c4"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -727,19 +1057,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "038-kubectl.log",
-      "logSha256": "dcd8999a5e13eff55ff7d91ccbc0abf857a00bd05aac8154f3ab7bec79e4ce21",
-      "stdinSha256": "fee6d23cc9ce097d60df66e8507e71767c21c7e14c06ea9137ae2db17196a2a9"
+      "log": "054-kubectl.log",
+      "logSha256": "1b30e2228f8f33a236b4557ed3abef030043fc1ec90bc222582faf18da034d82",
+      "stdinSha256": "c2a2b9099f8cde44878804d9e2681e834292fe07fde0d3ff63e6b063fb6f031a"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "--as-uid=d648d19d-f80c-4238-a8df-2465d77e780e",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -749,7 +1079,7 @@
         "-"
       ],
       "returncode": 1,
-      "log": "039-kubectl.log",
+      "log": "055-kubectl.log",
       "logSha256": "11cf405cd6f0aa317f8e0812d6fa244a265a3a6a6080cccebb4299c7b91f0b38",
       "stdinSha256": "8cb887fded97f45dd78642cb79d9c9ba904fae59af830c570c9166ac0f1fa2a1"
     },
@@ -757,9 +1087,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "eventstore",
@@ -770,17 +1100,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "040-kubectl.log",
-      "logSha256": "89f0ebc650a638faa176ccdc48732fea51c6f0273eae39d25eb516cde2f812d7",
+      "log": "056-kubectl.log",
+      "logSha256": "007201bd994ba0ce122caad954c0303d024f3715bfb2c12a1ba988afb0b13e45",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "tenants",
@@ -791,17 +1121,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "041-kubectl.log",
-      "logSha256": "557786e4ea1c4d1b70cbd1fa6d49695c8f6ba2d4c9c21b5d7e85bb47c547b24c",
+      "log": "057-kubectl.log",
+      "logSha256": "672ecd183946bea64fd9b0bdb635af240af9a19ff129d00c56b44de7604e949d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "tenants-api",
@@ -812,17 +1142,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "042-kubectl.log",
-      "logSha256": "40bddf5c9f9caa78bab960e53f41d3258c91d01bd69f92c4e7feff7b1ca9b36f",
+      "log": "058-kubectl.log",
+      "logSha256": "a754442d0ffea103929f2c34dab33e5c4130a170c0d78ef2d8df6746ba06b682",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "memories",
@@ -833,17 +1163,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "043-kubectl.log",
-      "logSha256": "d10a7bf52871f5f7f6a6eafa4a4b4cd295241997a7f3005ebf175b1ea5d8eb0a",
+      "log": "059-kubectl.log",
+      "logSha256": "3c85dacf6a36deab2d5524e3dec8b392d0bc48d317f5ced08fbb9c60b31e7c91",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "memories-access-telemetry-clock",
@@ -854,17 +1184,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "044-kubectl.log",
-      "logSha256": "9b9385010dae223b1c3c99c913810f2e7a8b6ef3407b16fd4a8b77cc7578373a",
+      "log": "060-kubectl.log",
+      "logSha256": "050f2b141887dc8dbd21018636e2736518ed5e4d90ec56b04d52a108faa2d698",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "memories-access-telemetry",
@@ -875,17 +1205,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "045-kubectl.log",
-      "logSha256": "f8a03b32361f0a1045bc8bcf5ae3eba868e4fe90bc4ed1cb1407e16f919f2170",
+      "log": "061-kubectl.log",
+      "logSha256": "850374077cca5af2b48beea5ba964f1c324c1bcfc3afa66d7cdf6986c9aa2131",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "parties",
@@ -896,41 +1226,41 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "046-kubectl.log",
-      "logSha256": "967282763df097a510a60941035cfbc87a75b8cf7461ec75af2853adb2459cf2",
+      "log": "062-kubectl.log",
+      "logSha256": "ab14a34f245d23641f9249093df14b825f694807254ff1ddd4914d6435e987d1",
       "stdinSha256": null
     },
     {
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "upgrade",
         "reference",
-        "/tmp/h45-4wtnvty2/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-3wkv_pq5/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-4wtnvty2/values.json",
+        "/tmp/h45-3wkv_pq5/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--set",
         "mode=recovery"
       ],
       "returncode": 0,
-      "log": "047-helm.log",
-      "logSha256": "42dbe12145045be7c75e25976ff612de4c05d54e58b50baecc2351328c03c574",
+      "log": "063-helm.log",
+      "logSha256": "baf453fa47394cb7b732dc716f9e24c274dad1a73213c8b3cad5cabf5dc61bc8",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployments",
         "-n",
@@ -939,17 +1269,17 @@
         "json"
       ],
       "returncode": 0,
-      "log": "048-kubectl.log",
-      "logSha256": "0581d791714052b20efb93c179c2b5f07649ea9146626c0fa3c09a3b319f8972",
+      "log": "064-kubectl.log",
+      "logSha256": "53024387212f3e547a46946fa170981b45696071387a7ed1fc63e6b3f7181ffb",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "httproutes",
         "-n",
@@ -958,7 +1288,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "049-kubectl.log",
+      "log": "065-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -966,9 +1296,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "apply",
         "--server-side",
         "--field-manager=h45-rival",
@@ -977,7 +1307,7 @@
         "-"
       ],
       "returncode": 0,
-      "log": "050-kubectl.log",
+      "log": "066-kubectl.log",
       "logSha256": "877799348677d371664179a472906066f9583dc5a3860fe1f95fa9e0bec0c4bf",
       "stdinSha256": "ed56760f15320486b6b0ab26e447e1b5437938395ed500a5f6fbc3b289cd4b04"
     },
@@ -985,23 +1315,23 @@
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "upgrade",
         "reference",
-        "/tmp/h45-4wtnvty2/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-3wkv_pq5/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-4wtnvty2/values.json",
+        "/tmp/h45-3wkv_pq5/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--set",
         "mode=recovery"
       ],
       "returncode": 1,
-      "log": "051-helm.log",
+      "log": "067-helm.log",
       "logSha256": "e26ba4152a6f86d71bdec7dcf5a20b29b02a3f0eb7e47c62c8152786a037bca2",
       "stdinSha256": null
     },
@@ -1009,9 +1339,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployment",
         "eventstore",
@@ -1021,41 +1351,41 @@
         "json"
       ],
       "returncode": 0,
-      "log": "052-kubectl.log",
-      "logSha256": "49b89c6de58cc3d26415966316f168f8a2c31e350718e11f122a52c519f0ecb2",
+      "log": "068-kubectl.log",
+      "logSha256": "98756ae264d7e534db688170fcc69ba27da388ba5539b0206b84b287b2d7db28",
       "stdinSha256": null
     },
     {
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "upgrade",
         "reference",
-        "/tmp/h45-4wtnvty2/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-3wkv_pq5/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-4wtnvty2/values.json",
+        "/tmp/h45-3wkv_pq5/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--set",
         "mode=remove-workloads"
       ],
       "returncode": 0,
-      "log": "053-helm.log",
-      "logSha256": "ea4c36262966d099d25c62c96d408e30a2d37546dadf2f899e7583b14fc9c5cf",
+      "log": "069-helm.log",
+      "logSha256": "555f14797051281312bd5dd09d85d6071e317e5e6ceb95c160097060d799be35",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "deployments",
         "-n",
@@ -1064,7 +1394,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "054-kubectl.log",
+      "log": "070-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -1072,9 +1402,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "services",
         "-n",
@@ -1083,7 +1413,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "055-kubectl.log",
+      "log": "071-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -1091,9 +1421,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "httproutes",
         "-n",
@@ -1102,7 +1432,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "056-kubectl.log",
+      "log": "072-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -1110,9 +1440,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "wait",
         "--for=delete",
         "pod",
@@ -1122,17 +1452,17 @@
         "--timeout=90s"
       ],
       "returncode": 0,
-      "log": "057-kubectl.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "073-kubectl.log",
+      "logSha256": "1600da79781992a06ad91147168e08b274da8bdf8db80220caa9d2140ca9ecda",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "pods",
         "-n",
@@ -1141,7 +1471,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "058-kubectl.log",
+      "log": "074-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -1149,9 +1479,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Namespace",
         "reference",
@@ -1160,17 +1490,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "059-kubectl.log",
-      "logSha256": "49eb53ea4cfafd0791955fff616201c40d42d051f8b17c7e47f8b1f3a9a076bb",
+      "log": "075-kubectl.log",
+      "logSha256": "4d9bde70c97785a7055802bdbe47a67c6ad64480e22526f8161dd80a2d84095d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Namespace",
         "environment",
@@ -1179,17 +1509,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "060-kubectl.log",
-      "logSha256": "a10079fee109ad009d49f597853d584019867e2f7fb0ab82ecd4b67860723653",
+      "log": "076-kubectl.log",
+      "logSha256": "8f064f44f211ea833877f0724faafdb30fbde283dba11d68fe87687d8c5561a5",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Secret",
         "fixture-credential",
@@ -1200,17 +1530,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "061-kubectl.log",
-      "logSha256": "bf887761cf57e4d96f711078bf71c05e1e54b46cdd610b4e14b049c7b2f6f9ae",
+      "log": "077-kubectl.log",
+      "logSha256": "7e4d9ac4c9f6be14f202984c933706e9f36aed053d9ae994a577eb7dbd6b62b8",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Secret",
         "fixture-registry",
@@ -1221,17 +1551,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "062-kubectl.log",
-      "logSha256": "f79d0c3159eec2a0c1595020c0a5d1d0f9b2ae8f2e5316640f84c4300c331ff5",
+      "log": "078-kubectl.log",
+      "logSha256": "602dd8fc91923c7670dd311ab8d5cd52f28a6da4aa661a6882ab2a00c00cd3af",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "ConfigMap",
         "fixture-components",
@@ -1242,17 +1572,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "063-kubectl.log",
-      "logSha256": "fd8a0711b3bb4ca85770cada58876bde6a517d154509a19e731547f9ea1a04dc",
+      "log": "079-kubectl.log",
+      "logSha256": "484785ac2d236a022dc1cfbbfe57c9256bcedc30e1b93702c55f82f8f9bad762",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "PersistentVolumeClaim",
         "fixture-storage",
@@ -1263,17 +1593,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "064-kubectl.log",
-      "logSha256": "e9a568cfd840da145ba0a4d1e4011d46c9a4813cf4eeae35a9b03932272bc17f",
+      "log": "080-kubectl.log",
+      "logSha256": "77bd6fc46cd1976ca5050be2eaa5d705e8a0a4fcce57c0145e52cfd83afd92b2",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "GatewayClass",
         "fixture",
@@ -1282,17 +1612,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "065-kubectl.log",
-      "logSha256": "89b5284922a1df16f61c5cc08760b45bacb52f41c13c74fa304711ad39829147",
+      "log": "081-kubectl.log",
+      "logSha256": "f6620aee8a4746f1eedc9480847fbf05061db230df4fab74bea0f93cac7ab9c6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Gateway",
         "fixture-gateway",
@@ -1303,17 +1633,311 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "066-kubectl.log",
-      "logSha256": "10d456e7923f6dd5d958dd44dd7f4e0a53acc501373cfe6448b730755e51801c",
+      "log": "082-kubectl.log",
+      "logSha256": "98ebbc37e75a3adfe1b3db665a86ec726e210a6244773782e2ba8cef1c111c9b",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-eventstore-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "083-kubectl.log",
+      "logSha256": "3b07a8181d9cf6ae6717e672aa95fa84e27f7358683a9a61f0d25494ed767470",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-eventstore-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "084-kubectl.log",
+      "logSha256": "8b1652045190e9abc7a1f251b7d0e6cd1c266ccb3abead28788c3a7900ec90c8",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "085-kubectl.log",
+      "logSha256": "32fe638616398fc524a39f1fedc8b23df1e6399c5cad31f05f12c5b4e91af425",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "086-kubectl.log",
+      "logSha256": "b0163bb8dab511a05ca5c0ec046b63eb3b590a8b60a37d27c65340290775260e",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-clock-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "087-kubectl.log",
+      "logSha256": "b8fc0704ba2a875d575f96278c1cb3d73e35f48a559ddbb4a09753d4c3ade717",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-clock-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "088-kubectl.log",
+      "logSha256": "20242cb6201f03043106a32d9e550f86a5895e1550b0e49148f57e70c7085b6d",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "089-kubectl.log",
+      "logSha256": "18aba6e0c2ff74df961a7489fe734ebd7133705003423ac4946a8694381bf228",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "090-kubectl.log",
+      "logSha256": "3ca898d72c3f4a783553326f7e9206e0a6f1475abfde278249103038c850515d",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-parties-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "091-kubectl.log",
+      "logSha256": "7333ef6227877dd538dd2764f05e0d647d56568fb26a16c2ef584f17d6e7b2a0",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-parties-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "092-kubectl.log",
+      "logSha256": "3a18e7b15216aeda27a5d350ba59c33479fd341b577ce5d75894ce1260d6bc28",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "093-kubectl.log",
+      "logSha256": "4295f9f189bde895fe0c97a076c66cc1420cb46226f8ca784efd0a81b0cabb7a",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "094-kubectl.log",
+      "logSha256": "6f292ae2e18bb80e757848949103f164564050f297e5e92850bf09dd6eea8658",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "095-kubectl.log",
+      "logSha256": "4f225ab7d89164107b7b022917c624015bad056337fedc324c56b2818a9b77e6",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "096-kubectl.log",
+      "logSha256": "5df2e122d1c7d98396fe6137a3d9af639c3840390da911e6f1f1dda972d213ec",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
         "get",
         "Component",
         "environment-preserved",
@@ -1324,17 +1948,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "067-kubectl.log",
-      "logSha256": "03ab13877b65abea7946522a0eafcc8f0817889e7a69d75487ee60e540461a97",
+      "log": "097-kubectl.log",
+      "logSha256": "9926df3c19443b5b89381ae2b36fed12e0f31af8e091d87da1f9a4850a72becb",
       "stdinSha256": null
     },
     {
       "argv": [
         "/tmp/hexalith-helm-tools/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--kube-context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "uninstall",
         "reference",
         "-n",
@@ -1344,7 +1968,7 @@
         "60s"
       ],
       "returncode": 0,
-      "log": "068-helm.log",
+      "log": "098-helm.log",
       "logSha256": "43bbe5c89c18e801bb2eb5d6a9c796f2e91a924afde0d133c67feb940e570c2f",
       "stdinSha256": null
     },
@@ -1352,9 +1976,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Namespace",
         "reference",
@@ -1363,17 +1987,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "069-kubectl.log",
-      "logSha256": "49eb53ea4cfafd0791955fff616201c40d42d051f8b17c7e47f8b1f3a9a076bb",
+      "log": "099-kubectl.log",
+      "logSha256": "4d9bde70c97785a7055802bdbe47a67c6ad64480e22526f8161dd80a2d84095d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Namespace",
         "environment",
@@ -1382,17 +2006,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "070-kubectl.log",
-      "logSha256": "a10079fee109ad009d49f597853d584019867e2f7fb0ab82ecd4b67860723653",
+      "log": "100-kubectl.log",
+      "logSha256": "8f064f44f211ea833877f0724faafdb30fbde283dba11d68fe87687d8c5561a5",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Secret",
         "fixture-credential",
@@ -1403,17 +2027,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "071-kubectl.log",
-      "logSha256": "bf887761cf57e4d96f711078bf71c05e1e54b46cdd610b4e14b049c7b2f6f9ae",
+      "log": "101-kubectl.log",
+      "logSha256": "7e4d9ac4c9f6be14f202984c933706e9f36aed053d9ae994a577eb7dbd6b62b8",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Secret",
         "fixture-registry",
@@ -1424,17 +2048,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "072-kubectl.log",
-      "logSha256": "f79d0c3159eec2a0c1595020c0a5d1d0f9b2ae8f2e5316640f84c4300c331ff5",
+      "log": "102-kubectl.log",
+      "logSha256": "602dd8fc91923c7670dd311ab8d5cd52f28a6da4aa661a6882ab2a00c00cd3af",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "ConfigMap",
         "fixture-components",
@@ -1445,17 +2069,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "073-kubectl.log",
-      "logSha256": "fd8a0711b3bb4ca85770cada58876bde6a517d154509a19e731547f9ea1a04dc",
+      "log": "103-kubectl.log",
+      "logSha256": "484785ac2d236a022dc1cfbbfe57c9256bcedc30e1b93702c55f82f8f9bad762",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "PersistentVolumeClaim",
         "fixture-storage",
@@ -1466,17 +2090,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "074-kubectl.log",
-      "logSha256": "e9a568cfd840da145ba0a4d1e4011d46c9a4813cf4eeae35a9b03932272bc17f",
+      "log": "104-kubectl.log",
+      "logSha256": "77bd6fc46cd1976ca5050be2eaa5d705e8a0a4fcce57c0145e52cfd83afd92b2",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "GatewayClass",
         "fixture",
@@ -1485,17 +2109,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "075-kubectl.log",
-      "logSha256": "89b5284922a1df16f61c5cc08760b45bacb52f41c13c74fa304711ad39829147",
+      "log": "105-kubectl.log",
+      "logSha256": "f6620aee8a4746f1eedc9480847fbf05061db230df4fab74bea0f93cac7ab9c6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
         "get",
         "Gateway",
         "fixture-gateway",
@@ -1506,17 +2130,311 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "076-kubectl.log",
-      "logSha256": "10d456e7923f6dd5d958dd44dd7f4e0a53acc501373cfe6448b730755e51801c",
+      "log": "106-kubectl.log",
+      "logSha256": "98ebbc37e75a3adfe1b3db665a86ec726e210a6244773782e2ba8cef1c111c9b",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
         "--context",
-        "kind-h45-73cdc620733c",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-eventstore-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "107-kubectl.log",
+      "logSha256": "3b07a8181d9cf6ae6717e672aa95fa84e27f7358683a9a61f0d25494ed767470",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-eventstore-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "108-kubectl.log",
+      "logSha256": "8b1652045190e9abc7a1f251b7d0e6cd1c266ccb3abead28788c3a7900ec90c8",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "109-kubectl.log",
+      "logSha256": "32fe638616398fc524a39f1fedc8b23df1e6399c5cad31f05f12c5b4e91af425",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "110-kubectl.log",
+      "logSha256": "b0163bb8dab511a05ca5c0ec046b63eb3b590a8b60a37d27c65340290775260e",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-clock-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "111-kubectl.log",
+      "logSha256": "b8fc0704ba2a875d575f96278c1cb3d73e35f48a559ddbb4a09753d4c3ade717",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-access-telemetry-clock-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "112-kubectl.log",
+      "logSha256": "20242cb6201f03043106a32d9e550f86a5895e1550b0e49148f57e70c7085b6d",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "113-kubectl.log",
+      "logSha256": "18aba6e0c2ff74df961a7489fe734ebd7133705003423ac4946a8694381bf228",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-memories-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "114-kubectl.log",
+      "logSha256": "3ca898d72c3f4a783553326f7e9206e0a6f1475abfde278249103038c850515d",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-parties-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "115-kubectl.log",
+      "logSha256": "7333ef6227877dd538dd2764f05e0d647d56568fb26a16c2ef584f17d6e7b2a0",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-parties-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "116-kubectl.log",
+      "logSha256": "3a18e7b15216aeda27a5d350ba59c33479fd341b577ce5d75894ce1260d6bc28",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "117-kubectl.log",
+      "logSha256": "4295f9f189bde895fe0c97a076c66cc1420cb46226f8ca784efd0a81b0cabb7a",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api-api",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "118-kubectl.log",
+      "logSha256": "6f292ae2e18bb80e757848949103f164564050f297e5e92850bf09dd6eea8658",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-api-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "119-kubectl.log",
+      "logSha256": "4f225ab7d89164107b7b022917c624015bad056337fedc324c56b2818a9b77e6",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
+        "get",
+        "Secret",
+        "fixture-tenants-app",
+        "-o",
+        "json",
+        "--show-managed-fields=true",
+        "-n",
+        "reference"
+      ],
+      "returncode": 0,
+      "log": "120-kubectl.log",
+      "logSha256": "5df2e122d1c7d98396fe6137a3d9af639c3840390da911e6f1f1dda972d213ec",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-3wkv_pq5/kubeconfig",
+        "--context",
+        "kind-h45-cdece7eae911",
         "get",
         "Component",
         "environment-preserved",
@@ -1527,8 +2445,8 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "077-kubectl.log",
-      "logSha256": "03ab13877b65abea7946522a0eafcc8f0817889e7a69d75487ee60e540461a97",
+      "log": "121-kubectl.log",
+      "logSha256": "9926df3c19443b5b89381ae2b36fed12e0f31af8e091d87da1f9a4850a72becb",
       "stdinSha256": null
     },
     {
@@ -1537,13 +2455,13 @@
         "delete",
         "cluster",
         "--name",
-        "h45-73cdc620733c",
+        "h45-cdece7eae911",
         "--kubeconfig",
-        "/tmp/h45-4wtnvty2/kubeconfig"
+        "/tmp/h45-3wkv_pq5/kubeconfig"
       ],
       "returncode": 0,
-      "log": "078-kind.log",
-      "logSha256": "a264532e82f688cbfac937b166ded623a7f3ed1e2b075da5d010aea50490182a",
+      "log": "122-kind.log",
+      "logSha256": "6e5f0990574331d0f289a0dcc2d522704279f9b8ee0ff094ded72e008edcb42e",
       "stdinSha256": null
     },
     {
@@ -1553,7 +2471,7 @@
         "clusters"
       ],
       "returncode": 0,
-      "log": "079-kind.log",
+      "log": "123-kind.log",
       "logSha256": "9144424a2ea42eac9d9e20a7759791e3893d366d2ee9e038145ee053f0fd782c",
       "stdinSha256": null
     },
@@ -1563,12 +2481,12 @@
         "ps",
         "-a",
         "--filter",
-        "label=io.x-k8s.kind.cluster=h45-73cdc620733c",
+        "label=io.x-k8s.kind.cluster=h45-cdece7eae911",
         "--format",
         "{{.ID}}"
       ],
       "returncode": 0,
-      "log": "080-docker.log",
+      "log": "124-docker.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     }
@@ -2240,7 +3158,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       },
@@ -2556,7 +3474,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       },
@@ -2862,7 +3780,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       },
@@ -3301,7 +4219,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       },
@@ -3705,7 +4623,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       },
@@ -4124,7 +5042,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       },
@@ -4417,7 +5335,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T17:11:12Z"
+            "time": "2026-10-22T17:35:22Z"
           }
         ]
       }
@@ -4429,64 +5347,150 @@
         "kind": "Namespace",
         "name": "reference",
         "namespace": null,
-        "uid": "1d73e0f3-8615-41b0-a77c-5af16548ecd3"
+        "uid": "42873e6d-3f3c-411f-a994-ad980699567f"
       },
       {
         "kind": "Namespace",
         "name": "environment",
         "namespace": null,
-        "uid": "db6a90a1-0060-4058-ac39-572fedcb932e"
+        "uid": "82238f62-b4f9-4692-abd9-fb9e42589900"
       },
       {
         "kind": "Secret",
         "name": "fixture-credential",
         "namespace": "reference",
-        "uid": "da8ad268-1ea7-48fa-8d4d-4c80aeea6762"
+        "uid": "930db497-6f8a-4201-ba3b-f04abe71ecc0"
       },
       {
         "kind": "Secret",
         "name": "fixture-registry",
         "namespace": "reference",
-        "uid": "392f8d41-d8be-46eb-99f4-a6400071b063"
+        "uid": "b0fb6cd4-477a-4e22-8569-efc250192128"
       },
       {
         "kind": "ConfigMap",
         "name": "fixture-components",
         "namespace": "reference",
-        "uid": "9108448c-f6e4-4f41-b8df-203a1f5a7e23"
+        "uid": "8ec01077-1a45-4cc7-a17c-115116b6a4b5"
       },
       {
         "kind": "PersistentVolumeClaim",
         "name": "fixture-storage",
         "namespace": "environment",
-        "uid": "64a7e58b-b053-4e14-a553-6f884d189ee6"
+        "uid": "b271518a-06bd-485b-862d-e1bde5c684ac"
       },
       {
         "kind": "GatewayClass",
         "name": "fixture",
         "namespace": null,
-        "uid": "68e3b2b8-1d46-4084-9066-723ad3413031"
+        "uid": "6bdfc4e7-3dce-459c-8285-04ef936b3fb9"
       },
       {
         "kind": "Gateway",
         "name": "fixture-gateway",
         "namespace": "environment",
-        "uid": "3cd08751-06aa-4497-8abc-310e9efc00b0"
+        "uid": "d844a1d4-7386-4439-9430-ec5dce732cdf"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-eventstore-api",
+        "namespace": "reference",
+        "uid": "deafe6fe-ceaf-41c3-b32b-3184e73bd158"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-eventstore-app",
+        "namespace": "reference",
+        "uid": "498040fc-0b73-47d2-aa6f-7a7ff9428a37"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-memories-access-telemetry-api",
+        "namespace": "reference",
+        "uid": "29e3d687-ed34-4204-ad42-e3fea6af2722"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-memories-access-telemetry-app",
+        "namespace": "reference",
+        "uid": "e7d0d034-42ec-4158-b7fe-959c5ce806c3"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-memories-access-telemetry-clock-api",
+        "namespace": "reference",
+        "uid": "2e8e53f9-21e9-449a-818b-bc1a24e0c7bf"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-memories-access-telemetry-clock-app",
+        "namespace": "reference",
+        "uid": "d33826d2-3cb1-4ddb-830e-37f95a6d0047"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-memories-api",
+        "namespace": "reference",
+        "uid": "d01d439b-613b-45bf-b99d-e08b4836ec4a"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-memories-app",
+        "namespace": "reference",
+        "uid": "219cc4e3-741e-4f0d-9bc2-74e1a141db94"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-parties-api",
+        "namespace": "reference",
+        "uid": "fbe60d29-d9de-4189-91eb-ab0a48ed7f3b"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-parties-app",
+        "namespace": "reference",
+        "uid": "34a0858c-5251-4165-95a1-74967500a1dc"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-tenants-api",
+        "namespace": "reference",
+        "uid": "02cb02da-6fb2-45b3-8b9f-8a2a6c1922c1"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-tenants-api-api",
+        "namespace": "reference",
+        "uid": "56fc5058-797b-4af1-b391-4fc3e15aa278"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-tenants-api-app",
+        "namespace": "reference",
+        "uid": "41ccf096-17d7-4183-9348-d444a5b0d7c6"
+      },
+      {
+        "kind": "Secret",
+        "name": "fixture-tenants-app",
+        "namespace": "reference",
+        "uid": "fcddd9d7-36ba-49c8-bdc9-7168999bbc75"
       },
       {
         "kind": "Component",
         "name": "environment-preserved",
         "namespace": "reference",
-        "uid": "b21ff220-5065-4149-ac13-8dd0fdf94745"
+        "uid": "4a456bd9-6325-472a-849f-7b06acb3601d"
       }
     ],
     "uninstallPreservesEnvironment": true
   },
   "cleanup": {
     "complete": true,
-    "ownedCluster": "h45-73cdc620733c",
+    "ownedCluster": "h45-cdece7eae911",
     "onlyInvocationOwnedResourcesDeleted": true,
-    "temporaryKubeconfigRemoved": true
+    "temporaryKubeconfigRemoved": true,
+    "clusterRemovalVerified": true,
+    "temporaryDirectoryRemoved": true
   },
   "exclusions": [
     "OCI publication and attestation",
@@ -4522,18 +5526,19 @@
     }
   },
   "source": {
-    "revision": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+    "revision": "f4181e5b94b55cdee56223c0adb44802818f3e98",
     "files": {
       "apphost.cs": "47de90759cf793885de595cec29b34402195e6fa6299b11c0041a7d22aff146a",
-      "eng/helm-qualification/README.md": "170f5ee9c91f6b6171ec7f45c10b94da62022f3e63b03c44468909fab8a0b62d",
+      "eng/helm-qualification/README.md": "1e3077b0262a24dd1c51fb5e4ab365ef59495de6ca20b6f6f0ca407ee0b85ed8",
       "eng/helm-qualification/chart/Chart.yaml": "b5c7d2eb27d2ec237620088a13bd4c45a67a1ba424f0b9e0b01429aca9a8da7a",
       "eng/helm-qualification/chart/reference-graph.json": "6d6e28d4b190540fbd82559dc39b484c758853897709c6ea4473345fd2de4d87",
-      "eng/helm-qualification/chart/templates/_helpers.tpl": "9669cd5fe89d77705e51870ae196fac323633b9c5e05608c9e529df4fb615602",
-      "eng/helm-qualification/chart/templates/application.yaml": "de139f7e467ac505723daa675756ea78800e69ef8c3f46b6b06c3d9c693a2af2",
+      "eng/helm-qualification/chart/templates/_helpers.tpl": "b4bdf5e0dc705bb0745f83e7ba7befebc124c210d56754e87846314bc4891145",
+      "eng/helm-qualification/chart/templates/application.yaml": "1befe9f88ceb530807adaef32694aecd546f9b65c3eb54594ce63bba6cabbe7a",
       "eng/helm-qualification/chart/templates/dapr.yaml": "4aa781088e3e3e50b441385d9605fe51a9bd1f2ec72e7288281abb3b35dfa1e5",
-      "eng/helm-qualification/chart/values.yaml": "1505ac0dabbed663a1bf41ad432f09ebb6a9ea85243d7721878b7d17bb4ea489",
-      "eng/helm-qualification/qualify.py": "fe96d26c55d582e38031c19a801768a903396c27f335200fb38679b90619bff2",
-      "eng/helm-qualification/test_chart.py": "8a9f3ba57207ae55e46cd046359f9386a814660c4ea8cb41bb50ef870092489d",
+      "eng/helm-qualification/chart/values.yaml": "1d7873e046862d488f886e53a04a35a9c44291c1ac77514e3d18c9773b2c1e8f",
+      "eng/helm-qualification/qualify.py": "8234e3058ee9464ccc1bbd7d60a54e0d39535a55af48a30664bfe007bea75887",
+      "eng/helm-qualification/test_chart.py": "03880040b38f0accabfa8cbb4b7b9a2e6478beffab52496bef4c4581895c96c1",
+      "eng/helm-qualification/test_qualify.py": "ae94964c92f8ad35cf745e7d29a879254a6701225d8ea359e713c9f97906f2ca",
       "eng/helm-qualification/toolchain.json": "00748adc6377af60992319eeb1a9a6870ebbfc25bf29c0f2d16fa7ec64f4cee4",
       "references/Hexalith.Builds/Props/Directory.Packages.props": "59b67048d2ec5fd22c44f10e6b8b374f1096b9b2abe8fcbfa78d2022acd4ec83",
       "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json": "0fd4457a1801fa13053ef8821eb16a0cfcc6a5edac94b6ce89e8f220e8a30511",
@@ -4545,12 +5550,12 @@
       "src/Hexalith.Platform.Composition/Declarations/provenance.json": "8ab18487c4a62b1d4ab41067ec85b136ccf069e40489c3b64b0c831565a356b7",
       "src/Hexalith.Platform.Composition/Declarations/tenants.json": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
       "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "5adfd9894015dd552b1fc53f01f7e37c1c06730026401b9e2836deb14babae3e",
-      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "95263cb8d5f4b1dd912256860f69999bebb42ac19f7f5304820a9b33c4072ab7",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "4371f247c026ddf3f8099e3e86f8a25ce65a47590a8f2409b53936bb9875e360",
       "src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs": "42378f4ac70f4145bf414c4007ba7a0f3a69b4dfa7edb02de8206e7134427374",
       "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs": "701afefa07424c905dab202a368f6100fb6c42f3d4b14e2750ca43c17eacb54c",
-      "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": "c4bdc2a721be5ef26e74e9b934432d4abb2c8b42a6370ae164036c3a494d1fa7",
+      "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": "8b9cbcb30547956ffbfe74cc0435e4c0c3d38b58400c563163f3a19043ac6049",
       "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs": "18a0a7535ee3827e9c98d559079d53761e702463c96b57a63e3c24dd7d3a0db8",
-      "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs": "aaca8dfeadff49dd06c77e1fe1054ba98b4f2f384a0ce56f1020d717b630fe1c",
+      "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs": "e8c442e1f4fb739af63659bfe076b64f65ce0a53c5dbeeec2ea0c75597990810",
       "src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs": "187a544710fbbd4d6074a56229cf9c61cc2e0cfafd73a9f664462df5c58075af",
       "src/Hexalith.Platform.Composition/PlatformGatewayConfiguration.cs": "8f158eaa188610032df2179b49203fd149702a05a1095705097aeca4fb055b76",
       "src/Hexalith.Platform.Composition/PlatformGatewayStartup.cs": "901c9faa34c572d470675def9ceb7776b0783cbd95ff0beb772a759a00e1bbcc",
@@ -4565,7 +5570,7 @@
       "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "0ce5b022201d8bc7fa1c7617d1198e3c9ad84d792658d3ffafc675d2ba34db77",
       "src/Hexalith.Platform.Composition/PlatformTimesheetsBinding.cs": "9aeb4ba3adade96b728c4ec74c5708ea86d2b5f525b8e0436b9351519ef889a2",
       "src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs": "ec57f02a8453306aff5f31978f9374694daa39fba2c82f86141e1ba557fd140f",
-      "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": "dfe45aea2973c72888e053f1632bf1b3d97244d5e1f24639207b9ba289537b68",
+      "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": "8d75ce41eaf9be13f85d3c253fab4452a0635f617797ccf510a6a192dd459fe1",
       "src/Hexalith.Platform.Composition/WorksProductionProfile.cs": "1dca97f316ec39e56f755403907bbc85acae50b044b43ed7809a2cf5c114c9e7",
       "tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs": "73657f25fd850c7885b37040eebf6726ac1d52b0a9392d51fb8cccb07c4297b3"
     }
@@ -4573,8 +5578,8 @@
   "inputs": {
     "graphSha256": "6d6e28d4b190540fbd82559dc39b484c758853897709c6ea4473345fd2de4d87",
     "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
-    "valuesSha256": "aa5b996fcf5cd232cc0a5fbf3ad4b6790bd42dfe019776a38fa30ee16ec56c9a",
-    "renderedSha256": "3ea6259777afb8c4ab00c23eab81483268d7b2097db409a764bb398dd56cf6fc"
+    "valuesSha256": "bc1633ec16bbc9df812d06556280eb3dbd1592e4ba24beb34cf536e1e6dcaf24",
+    "renderedSha256": "d214bc7c545da38f264ceff6997cec480edf52a72a850fa7f2e2181bfa506244"
   },
   "exportDecision": {
     "selected": "maintained-chart",
@@ -4612,14 +5617,14 @@
   },
   "package": {
     "file": "hexalith-reference-0.1.0.tgz",
-    "sha256": "a8d5655b66c487257c716fd0a3280ac39e37de398223e9cc3fc0c397acd80b10"
+    "sha256": "312db64e6dd7f56f16bf5dfb4da41f0e12afdb5d78d20ea3cd2d1857a38dd7ca"
   },
   "preexistingClusters": [],
   "cluster": {
-    "name": "h45-73cdc620733c",
-    "context": "kind-h45-73cdc620733c",
-    "uid": "1ceef017-9eb5-42c5-ba97-11f8c408272d",
-    "endpoint": "https://127.0.0.1:33825",
+    "name": "h45-cdece7eae911",
+    "context": "kind-h45-cdece7eae911",
+    "uid": "0157cdff-220e-49c5-8fc5-df1599752afc",
+    "endpoint": "https://127.0.0.1:34045",
     "ambientKubeconfigUsed": false
   },
   "downloads": {
@@ -4645,7 +5650,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T17:09:36Z",
+          "creationTimestamp": "2026-10-22T17:33:56Z",
           "generateName": "dapr-operator-74bf8cfb58-",
           "generation": 1,
           "labels": {
@@ -4657,7 +5662,7 @@
             "app.kubernetes.io/version": "1.18.7",
             "pod-template-hash": "74bf8cfb58"
           },
-          "name": "dapr-operator-74bf8cfb58-pkhhj",
+          "name": "dapr-operator-74bf8cfb58-hk626",
           "namespace": "dapr-system",
           "ownerReferences": [
             {
@@ -4666,11 +5671,11 @@
               "controller": true,
               "kind": "ReplicaSet",
               "name": "dapr-operator-74bf8cfb58",
-              "uid": "7433de6a-3050-4aad-99a4-59f4d9470c96"
+              "uid": "c3979484-7edf-4d84-ae90-59ed5da00377"
             }
           ],
-          "resourceVersion": "879",
-          "uid": "2f2ec1c7-2613-487e-85ef-92887d418510"
+          "resourceVersion": "895",
+          "uid": "de34238d-7c1e-410f-ad0b-b3cf3ad5515f"
         },
         "spec": {
           "affinity": {
@@ -4789,7 +5794,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-4h955",
+                  "name": "kube-api-access-gzmkh",
                   "readOnly": true
                 }
               ]
@@ -4797,7 +5802,7 @@
           ],
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
-          "nodeName": "h45-73cdc620733c-control-plane",
+          "nodeName": "h45-cdece7eae911-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -4851,7 +5856,7 @@
               }
             },
             {
-              "name": "kube-api-access-4h955",
+              "name": "kube-api-access-gzmkh",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -4894,35 +5899,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:42Z",
+              "lastTransitionTime": "2026-10-22T17:34:01Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:36Z",
+              "lastTransitionTime": "2026-10-22T17:33:57Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:11:06Z",
+              "lastTransitionTime": "2026-10-22T17:35:13Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:11:06Z",
+              "lastTransitionTime": "2026-10-22T17:35:13Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:36Z",
+              "lastTransitionTime": "2026-10-22T17:33:56Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -4930,7 +5935,7 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://752e1b1e6dfe236af44758a693e1432c318deaaecee7fbcc4785763473b91660",
+              "containerID": "containerd://4a1793031b5e86a3558f47b0cc188cc267d044eec46c02cb7a74a15b5c0a0240",
               "image": "ghcr.io/dapr/operator:1.18.7",
               "imageID": "ghcr.io/dapr/operator@sha256:42192d91b0942afd694740336e4bd047d55235ebfb3b9cbd4ec0e05ae4026cae",
               "lastState": {},
@@ -4941,7 +5946,7 @@
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T17:09:41Z"
+                  "startedAt": "2026-10-22T17:34:01Z"
                 }
               },
               "user": {
@@ -4972,7 +5977,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-4h955",
+                  "name": "kube-api-access-gzmkh",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -4994,7 +5999,7 @@
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T17:09:36Z"
+          "startTime": "2026-10-22T17:33:57Z"
         }
       },
       {
@@ -5007,7 +6012,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T17:09:37Z",
+          "creationTimestamp": "2026-10-22T17:33:58Z",
           "generateName": "dapr-placement-server-",
           "generation": 1,
           "labels": {
@@ -5030,11 +6035,11 @@
               "controller": true,
               "kind": "StatefulSet",
               "name": "dapr-placement-server",
-              "uid": "574b6a4d-3946-4192-8cef-455a54fad4c7"
+              "uid": "3a5e8e80-a6e0-4845-9277-3e49029cdc10"
             }
           ],
-          "resourceVersion": "733",
-          "uid": "84fa010a-2cd9-4032-a744-a289082c9f24"
+          "resourceVersion": "902",
+          "uid": "b9c2613b-0999-4914-aaaf-47e2a3fcb591"
         },
         "spec": {
           "affinity": {
@@ -5169,7 +6174,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-9n6jb",
+                  "name": "kube-api-access-xv8tw",
                   "readOnly": true
                 }
               ]
@@ -5178,7 +6183,7 @@
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
           "hostname": "dapr-placement-server-0",
-          "nodeName": "h45-73cdc620733c-control-plane",
+          "nodeName": "h45-cdece7eae911-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -5228,7 +6233,7 @@
               }
             },
             {
-              "name": "kube-api-access-9n6jb",
+              "name": "kube-api-access-xv8tw",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -5271,35 +6276,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:52Z",
+              "lastTransitionTime": "2026-10-22T17:34:10Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:37Z",
+              "lastTransitionTime": "2026-10-22T17:33:58Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:54Z",
+              "lastTransitionTime": "2026-10-22T17:35:13Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:54Z",
+              "lastTransitionTime": "2026-10-22T17:35:13Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:37Z",
+              "lastTransitionTime": "2026-10-22T17:33:58Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -5307,7 +6312,7 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://0aad8add4b7bb311a7ee8be50741d056cec16320bd945a6fd942c5d4d4359608",
+              "containerID": "containerd://bd4d6c9126baf431c58963ce4c245dd54cc6a90fb8d788917147d4aa7bf3e8f4",
               "image": "ghcr.io/dapr/placement:1.18.7",
               "imageID": "ghcr.io/dapr/placement@sha256:c9da106eddcbb625c94baea31af4ed576d32750741b442c99f51518c420e76cc",
               "lastState": {},
@@ -5318,7 +6323,7 @@
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T17:09:52Z"
+                  "startedAt": "2026-10-22T17:34:09Z"
                 }
               },
               "user": {
@@ -5343,7 +6348,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-9n6jb",
+                  "name": "kube-api-access-xv8tw",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -5365,7 +6370,7 @@
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T17:09:37Z"
+          "startTime": "2026-10-22T17:33:58Z"
         }
       },
       {
@@ -5378,7 +6383,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T17:09:36Z",
+          "creationTimestamp": "2026-10-22T17:33:56Z",
           "generateName": "dapr-sentry-5677685946-",
           "generation": 1,
           "labels": {
@@ -5390,7 +6395,7 @@
             "app.kubernetes.io/version": "1.18.7",
             "pod-template-hash": "5677685946"
           },
-          "name": "dapr-sentry-5677685946-72vzr",
+          "name": "dapr-sentry-5677685946-l4qhv",
           "namespace": "dapr-system",
           "ownerReferences": [
             {
@@ -5399,11 +6404,11 @@
               "controller": true,
               "kind": "ReplicaSet",
               "name": "dapr-sentry-5677685946",
-              "uid": "ae1e7404-3dc3-4236-bf59-2218fb5fdeb6"
+              "uid": "d3452aad-9618-4805-a7c4-2bc044299f83"
             }
           ],
-          "resourceVersion": "808",
-          "uid": "a5e2073f-2084-4794-923d-5a0bfebbf25f"
+          "resourceVersion": "858",
+          "uid": "86f53205-f3c3-46a4-99ef-ac6df12d069a"
         },
         "spec": {
           "affinity": {
@@ -5511,7 +6516,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-bbw95",
+                  "name": "kube-api-access-bmxqw",
                   "readOnly": true
                 }
               ]
@@ -5519,7 +6524,7 @@
           ],
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
-          "nodeName": "h45-73cdc620733c-control-plane",
+          "nodeName": "h45-cdece7eae911-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -5551,7 +6556,7 @@
               }
             },
             {
-              "name": "kube-api-access-bbw95",
+              "name": "kube-api-access-bmxqw",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -5594,35 +6599,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:45Z",
+              "lastTransitionTime": "2026-10-22T17:34:04Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:36Z",
+              "lastTransitionTime": "2026-10-22T17:33:57Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:10:17Z",
+              "lastTransitionTime": "2026-10-22T17:34:51Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:10:17Z",
+              "lastTransitionTime": "2026-10-22T17:34:51Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:36Z",
+              "lastTransitionTime": "2026-10-22T17:33:56Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -5630,7 +6635,7 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://1a47be18dfbb6e3b7ea371a504eaed4b2b3fe74504d377f416cbd85dd12009eb",
+              "containerID": "containerd://d74fc8ee330b99e665bef5b05c69155e3f2ac0c914f8bc6de8130c0e3a553ede",
               "image": "ghcr.io/dapr/sentry:1.18.7",
               "imageID": "ghcr.io/dapr/sentry@sha256:b9fc166085289661f516150dc1c47ac3495b9e6d1e666079cb71cd2374ca7256",
               "lastState": {},
@@ -5641,7 +6646,7 @@
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T17:09:44Z"
+                  "startedAt": "2026-10-22T17:34:04Z"
                 }
               },
               "user": {
@@ -5662,7 +6667,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-bbw95",
+                  "name": "kube-api-access-bmxqw",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -5677,14 +6682,14 @@
           ],
           "observedGeneration": 1,
           "phase": "Running",
-          "podIP": "10.244.0.6",
+          "podIP": "10.244.0.7",
           "podIPs": [
             {
-              "ip": "10.244.0.6"
+              "ip": "10.244.0.7"
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T17:09:36Z"
+          "startTime": "2026-10-22T17:33:57Z"
         }
       },
       {
@@ -5697,7 +6702,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T17:09:36Z",
+          "creationTimestamp": "2026-10-22T17:33:56Z",
           "generateName": "dapr-sidecar-injector-8959cbc76-",
           "generation": 1,
           "labels": {
@@ -5709,7 +6714,7 @@
             "app.kubernetes.io/version": "1.18.7",
             "pod-template-hash": "8959cbc76"
           },
-          "name": "dapr-sidecar-injector-8959cbc76-b4dkg",
+          "name": "dapr-sidecar-injector-8959cbc76-kc9jw",
           "namespace": "dapr-system",
           "ownerReferences": [
             {
@@ -5718,11 +6723,11 @@
               "controller": true,
               "kind": "ReplicaSet",
               "name": "dapr-sidecar-injector-8959cbc76",
-              "uid": "55bd7ecf-1cc4-4ea0-a5de-a33a1c1c5116"
+              "uid": "4bf2d89b-3a66-4b70-a3ba-57a8fe7bd052"
             }
           ],
-          "resourceVersion": "740",
-          "uid": "6fa462db-03fe-46db-969d-512d24e528ea"
+          "resourceVersion": "816",
+          "uid": "91963e98-6cc2-4350-b90f-03699e553dc7"
         },
         "spec": {
           "affinity": {
@@ -5899,7 +6904,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-7jbxg",
+                  "name": "kube-api-access-jrhv4",
                   "readOnly": true
                 }
               ]
@@ -5907,7 +6912,7 @@
           ],
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
-          "nodeName": "h45-73cdc620733c-control-plane",
+          "nodeName": "h45-cdece7eae911-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -5954,7 +6959,7 @@
               }
             },
             {
-              "name": "kube-api-access-7jbxg",
+              "name": "kube-api-access-jrhv4",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -5997,35 +7002,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:48Z",
+              "lastTransitionTime": "2026-10-22T17:34:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:36Z",
+              "lastTransitionTime": "2026-10-22T17:33:57Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:55Z",
+              "lastTransitionTime": "2026-10-22T17:34:32Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:55Z",
+              "lastTransitionTime": "2026-10-22T17:34:32Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T17:09:36Z",
+              "lastTransitionTime": "2026-10-22T17:33:56Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -6033,26 +7038,18 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://5cd8a44c71e51d70994533ad8f5c53a808e9b6ea37cddd508e09b90316b88c36",
+              "containerID": "containerd://d114bb5d3a82e43e6756fa50abf4093a40d8de02ba5ca53d59f17b18756dce58",
               "image": "ghcr.io/dapr/injector:1.18.7",
               "imageID": "ghcr.io/dapr/injector@sha256:4a7b491b2ac5d27c92f0c4192fedd54319452c0dd7d6ae30cda6a4266f751943",
-              "lastState": {
-                "terminated": {
-                  "containerID": "containerd://096d5c0418230d7bb66f0c2063759ec263514607f56b9320b7fb5a940d945be7",
-                  "exitCode": 1,
-                  "finishedAt": "2026-10-22T17:09:52Z",
-                  "reason": "Error",
-                  "startedAt": "2026-10-22T17:09:48Z"
-                }
-              },
+              "lastState": {},
               "name": "dapr-sidecar-injector",
               "ready": true,
               "resources": {},
-              "restartCount": 1,
+              "restartCount": 0,
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T17:09:53Z"
+                  "startedAt": "2026-10-22T17:34:07Z"
                 }
               },
               "user": {
@@ -6079,7 +7076,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-7jbxg",
+                  "name": "kube-api-access-jrhv4",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -6094,14 +7091,14 @@
           ],
           "observedGeneration": 1,
           "phase": "Running",
-          "podIP": "10.244.0.7",
+          "podIP": "10.244.0.6",
           "podIPs": [
             {
-              "ip": "10.244.0.7"
+              "ip": "10.244.0.6"
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T17:09:36Z"
+          "startTime": "2026-10-22T17:33:57Z"
         }
       }
     ],
@@ -6114,12 +7111,12 @@
     "kind": "SelfSubjectReview",
     "apiVersion": "authentication.k8s.io/v1",
     "metadata": {
-      "creationTimestamp": "2026-10-22T17:11:07Z"
+      "creationTimestamp": "2026-10-22T17:35:14Z"
     },
     "status": {
       "userInfo": {
         "username": "system:serviceaccount:kube-system:replicaset-controller",
-        "uid": "b09ebeae-ff14-43f1-a0d2-e73c241b391b",
+        "uid": "d648d19d-f80c-4238-a8df-2465d77e780e",
         "groups": [
           "system:serviceaccounts",
           "system:serviceaccounts:kube-system",
@@ -6128,7 +7125,14 @@
       }
     }
   },
-  "sourceChangedDuringRun": [],
+  "sourceChangedDuringRun": {
+    "added": [],
+    "removed": [],
+    "modified": [
+      "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs"
+    ]
+  },
+  "failure": "AssertionError: source inventory or contents changed during qualification; rerun against stable inputs",
   "remainingClusters": [],
-  "finished": "2026-10-22T17:11:39.233105+00:00"
+  "finished": "2026-10-22T17:35:53.330822+00:00"
 }

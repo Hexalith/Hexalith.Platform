@@ -1,0 +1,18 @@
+{
+    "kind": "SelfSubjectReview",
+    "apiVersion": "authentication.k8s.io/v1",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T17:35:14Z"
+    },
+    "status": {
+        "userInfo": {
+            "username": "system:serviceaccount:kube-system:replicaset-controller",
+            "uid": "d648d19d-f80c-4238-a8df-2465d77e780e",
+            "groups": [
+                "system:serviceaccounts",
+                "system:serviceaccounts:kube-system",
+                "system:authenticated"
+            ]
+        }
+    }
+}

@@ -74,3 +74,16 @@ no checkout or application model changed.
 
 Final cleanup removed both owned run workspaces and labelled resources. The
 pre-existing Tenants AppHost remains running; see `after-applications.json`.
+
+
+## Review corrections
+
+This directory explicitly retains its redacted `.log` receipts through its local
+`.gitignore`, so the linked passing and failing evidence is visible in review.
+The original concurrent pass captured persisted and Docker-bound ports. Review
+adds metadata-only receipts for every actual native HTTP, gRPC, internal gRPC and
+metrics listener; the next full verification must collect that expanded inventory.
+Scoped review checks cover diagnostic retention through real service disposal,
+all mapped checkout exclusions, certificate cleanup ownership, aggregate cleanup
+failures, native-listener inventory and the existing Works qualification adapter.
+They do not expand the Works live qualification claim.

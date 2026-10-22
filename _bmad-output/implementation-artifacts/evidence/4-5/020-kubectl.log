@@ -1,9 +1,11 @@
-namespace/reference serverside-applied
-namespace/environment serverside-applied
-secret/fixture-credential serverside-applied
-secret/fixture-registry serverside-applied
-configmap/fixture-components serverside-applied
-persistentvolumeclaim/fixture-storage serverside-applied
-gatewayclass.gateway.networking.k8s.io/fixture serverside-applied
-gateway.gateway.networking.k8s.io/fixture-gateway serverside-applied
-component.dapr.io/environment-preserved serverside-applied
+{
+    "apiVersion": "v1",
+    "kind": "ServiceAccount",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T17:33:38Z",
+        "name": "replicaset-controller",
+        "namespace": "kube-system",
+        "resourceVersion": "309",
+        "uid": "d648d19d-f80c-4238-a8df-2465d77e780e"
+    }
+}

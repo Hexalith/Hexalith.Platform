@@ -1,0 +1,21 @@
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class *PlatformConcurrentRunTests
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync [FAIL]
+      Shouldly.ShouldAssertException : started.IsReady
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          HXR013: The isolated Dapr runtime binaries do not report the selected runtime version.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs(50,0): at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync()
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 4.513s
+
+exit=1

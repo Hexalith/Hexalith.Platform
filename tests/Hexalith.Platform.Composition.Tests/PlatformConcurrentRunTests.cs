@@ -195,7 +195,7 @@ public sealed class PlatformConcurrentRunTests
     }
 
     [Fact]
-    public void NativeInventoryIncludesEverySecondaryListenerAndOmitsOtherArguments()
+    public async Task NativeInventoryIncludesEverySecondaryListenerAndOmitsOtherArguments()
     {
         string directory = Path.Combine(Path.GetTempPath(), "platform-native-inventory-" + Guid.NewGuid().ToString("N"));
         string rendered = Path.Combine(directory, "platform-components");
@@ -207,7 +207,7 @@ public sealed class PlatformConcurrentRunTests
             {
                 List<object> arguments = ["--app-id", name, "--app-api-token", "must-not-be-recorded"];
                 foreach (string flag in new[] { "--dapr-http-port", "--dapr-grpc-port", "--dapr-internal-grpc-port", "--metrics-port" }) arguments.AddRange([flag, port++]);
-                File.WriteAllText(PlatformDaprEndpointSubscriber.ListenerInventoryPath(rendered, name), JsonSerializer.Serialize(new { Resource = name, Listeners = PlatformDaprEndpointSubscriber.NativeListenerPorts(arguments) }));
+                File.WriteAllText(PlatformDaprEndpointSubscriber.ListenerInventoryPath(rendered, name), JsonSerializer.Serialize(new { Resource = name, Listeners = await PlatformDaprEndpointSubscriber.NativeListenerPortsAsync(arguments, TestContext.Current.CancellationToken) }));
             }
             var inventory = NativeListenerInventory(directory, ["eventstore", "secondary"]);
             inventory["secondary"].Values.Order().ShouldBe([23004, 23005, 23006, 23007]);
@@ -228,7 +228,7 @@ public sealed class PlatformConcurrentRunTests
             document.RootElement.GetProperty("Resource").GetString().ShouldBe(resource);
             var ports = JsonSerializer.Deserialize<Dictionary<string, int>>(document.RootElement.GetProperty("Listeners")).ShouldNotBeNull();
             ports.Keys.Order().ShouldBe(new[] { "--dapr-http-port", "--dapr-grpc-port", "--dapr-internal-grpc-port", "--metrics-port" }.Order());
-            ports.Values.ShouldAllBe(port => port is >= 1 and <= 65535);
+            ports.Values.ShouldAllBe(port => port >= 1 && port <= 65535);
             inventory.Add(resource, ports);
         }
         inventory.Values.SelectMany(ports => ports.Values).Distinct().Count().ShouldBe(inventory.Count * 4);

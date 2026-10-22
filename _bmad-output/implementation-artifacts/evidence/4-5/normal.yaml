@@ -113,8 +113,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-eventstore"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-eventstore-app"
+        dapr.io/api-token-secret: "fixture-eventstore-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -151,7 +151,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-eventstore-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: Authentication__DaprInternal
@@ -204,14 +204,14 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-eventstore-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EventStore__AppChannelToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-eventstore-app
             - name: EventStore__CommandStatus__StateStoreName
               value: statestore
             - name: EventStore__DaprConfigPath
@@ -308,8 +308,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-tenants"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-tenants-app"
+        dapr.io/api-token-secret: "fixture-tenants-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -346,7 +346,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: Authentication__JwtBearer__AllowInsecureSymmetricKey
@@ -378,7 +378,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EventStore__Authentication__Audience
@@ -422,12 +422,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-api
             - name: Tenants__AppChannelToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-app
             - name: Tenants__BootstrapGlobalAdminEnabled
               value: fixture
             - name: Tenants__BootstrapGlobalAdminUserId
@@ -472,8 +472,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-tenants-api"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-tenants-api-app"
+        dapr.io/api-token-secret: "fixture-tenants-api-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -510,7 +510,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-api-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: Authentication__JwtBearer__AllowInsecureSymmetricKey
@@ -542,7 +542,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-api-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EventStore__Authentication__Audience
@@ -582,12 +582,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-api-api
             - name: Tenants__AppChannelToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-tenants-api-app
             - name: Tenants__BootstrapGlobalAdminEnabled
               value: fixture
             - name: Tenants__BootstrapGlobalAdminUserId
@@ -632,8 +632,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-memories"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-memories-app"
+        dapr.io/api-token-secret: "fixture-memories-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -670,7 +670,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: AccessTelemetryLifecycle__AttestationVerificationKey
@@ -756,7 +756,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EmbeddingProviders__Google__ApiBaseUrl
@@ -783,12 +783,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-app
             - name: Memories__DaprApiToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-api
             - name: Memories__LlmComponentPath
               value: /etc/hexalith/environment/llmcomponentpath.yaml
             - name: Memories__SecretStoreName
@@ -843,8 +843,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-memories-access-telemetry-clock"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-memories-access-telemetry-clock-app"
+        dapr.io/api-token-secret: "fixture-memories-access-telemetry-clock-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -881,7 +881,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-clock-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: AccessTelemetryLifecycle__AttestationVerificationKey
@@ -963,7 +963,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-clock-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EmbeddingProviders__Google__ApiBaseUrl
@@ -984,12 +984,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-clock-app
             - name: Memories__DaprApiToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-clock-api
             - name: Memories__LlmComponentPath
               value: /etc/hexalith/environment/llmcomponentpath.yaml
             - name: NaturalLanguage__RetryWorkerEnabled
@@ -1040,8 +1040,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-memories-access-telemetry"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-memories-access-telemetry-app"
+        dapr.io/api-token-secret: "fixture-memories-access-telemetry-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -1078,7 +1078,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: AccessTelemetryLifecycle__AttestationVerificationKey
@@ -1166,7 +1166,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EmbeddingProviders__Google__ApiBaseUrl
@@ -1187,12 +1187,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-app
             - name: Memories__DaprApiToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-memories-access-telemetry-api
             - name: Memories__LlmComponentPath
               value: /etc/hexalith/environment/llmcomponentpath.yaml
             - name: NaturalLanguage__RetryWorkerEnabled
@@ -1243,8 +1243,8 @@ spec:
         dapr.io/app-port: "8080"
         dapr.io/app-protocol: http
         dapr.io/config: "platform-parties"
-        dapr.io/app-token-secret: "fixture-credential"
-        dapr.io/api-token-secret: "fixture-credential"
+        dapr.io/app-token-secret: "fixture-parties-app"
+        dapr.io/api-token-secret: "fixture-parties-api"
         dapr.io/sidecar-listen-addresses: "127.0.0.1"
         dapr.io/enable-api-logging: "false"
     spec:
@@ -1281,7 +1281,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-parties-app
             - name: ASPNETCORE_URLS
               value: http://0.0.0.0:8080
             - name: Authentication__JwtBearer__AllowInsecureSymmetricKey
@@ -1313,14 +1313,14 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-parties-api
             - name: Dapr__DeclarativeSubscriptions
               value: "true"
             - name: EventStore__AppChannelToken
               valueFrom:
                 secretKeyRef:
                   key: token
-                  name: fixture-credential
+                  name: fixture-parties-app
             - name: EventStore__CommandStatus__StateStoreName
               value: statestore
             - name: EventStore__DataProtection__PersistToStateStore
@@ -1849,7 +1849,7 @@ spec:
     - name: fixture-gateway
       namespace: environment
       sectionName: https
-  hostnames: ["reference.fixture.invalid"]
+  hostnames: ["eventstore.fixture.invalid"]
   rules:
     - matches:
         - path: {type: PathPrefix, value: "/api/v1"}
@@ -1867,7 +1867,7 @@ spec:
     - name: fixture-gateway
       namespace: environment
       sectionName: https
-  hostnames: ["reference.fixture.invalid"]
+  hostnames: ["tenants-api.fixture.invalid"]
   rules:
     - matches:
         - path: {type: PathPrefix, value: "/api/global-administrators"}
@@ -1895,7 +1895,7 @@ spec:
     - name: fixture-gateway
       namespace: environment
       sectionName: https
-  hostnames: ["reference.fixture.invalid"]
+  hostnames: ["memories.fixture.invalid"]
   rules:
     - matches:
         - path: {type: PathPrefix, value: "/api/v1"}

@@ -3,17 +3,17 @@
   "kind": "Pod",
   "metadata": {
     "annotations": {
-      "dapr.io/api-token-secret": "fixture-credential",
+      "dapr.io/api-token-secret": "fixture-tenants-api",
       "dapr.io/app-id": "tenants",
       "dapr.io/app-port": "8080",
       "dapr.io/app-protocol": "http",
-      "dapr.io/app-token-secret": "fixture-credential",
+      "dapr.io/app-token-secret": "fixture-tenants-app",
       "dapr.io/config": "platform-tenants",
       "dapr.io/enable-api-logging": "false",
       "dapr.io/enabled": "true",
       "dapr.io/sidecar-listen-addresses": "127.0.0.1"
     },
-    "creationTimestamp": "2026-10-22T17:11:15Z",
+    "creationTimestamp": "2026-10-22T17:35:24Z",
     "generation": 1,
     "labels": {
       "app.kubernetes.io/name": "tenants",
@@ -23,7 +23,7 @@
     },
     "name": "dry-tenants",
     "namespace": "reference",
-    "uid": "fade7c1c-a6dd-4732-a375-eae4e8f993cb"
+    "uid": "8f880483-0092-46e2-bb2e-4d90b8995005"
   },
   "spec": {
     "automountServiceAccountToken": true,
@@ -35,7 +35,7 @@
             "valueFrom": {
               "secretKeyRef": {
                 "key": "token",
-                "name": "fixture-credential"
+                "name": "fixture-tenants-app"
               }
             }
           },
@@ -97,7 +97,7 @@
             "valueFrom": {
               "secretKeyRef": {
                 "key": "token",
-                "name": "fixture-credential"
+                "name": "fixture-tenants-api"
               }
             }
           },
@@ -181,7 +181,7 @@
             "valueFrom": {
               "secretKeyRef": {
                 "key": "token",
-                "name": "fixture-credential"
+                "name": "fixture-tenants-api"
               }
             }
           },
@@ -190,7 +190,7 @@
             "valueFrom": {
               "secretKeyRef": {
                 "key": "token",
-                "name": "fixture-credential"
+                "name": "fixture-tenants-app"
               }
             }
           },
@@ -278,7 +278,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-htjj2",
+            "name": "kube-api-access-nl895",
             "readOnly": true
           }
         ]
@@ -329,7 +329,7 @@
           },
           {
             "name": "DAPR_TRUST_ANCHORS",
-            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAyKgMgbKE1nqfaWglnX6ldzAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxNjU0NDRaFw0yNzEwMjIxNzA5NDRa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQCtVW5cqg3Y6v9n\nCPdKsiguUeIhL3511+k98mQgdU9LIKNCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFE9myc+AN3Tk2V5peTGI9D+zNhzTMAUGAytl\ncANBALQAOI7DsuiUzwDqZfrIqaFxfKF7p39b6EmzGo4lK5JIvg5IJtq53DFysjos\ntBehjSucNAVmnLLHv6jHypaGbAw=\n-----END CERTIFICATE-----\n"
+            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEA3h/NlxpQ0kBgZJFvrW2rAzAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxNzE5MDRaFw0yNzEwMjIxNzM0MDRa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQB08hjYFPXY4JK3\neCn4ex+ObYnmxsZSxJ23zS6SSUAVzKNCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFBu8L1pL1r6pwPG9twycxWzepqhyMAUGAytl\ncANBAGb+jeWgUnvOQCTXbwHP2dKyPlDORlw1yffVUOp0RiETLrOm5mbzG0Qr7HFg\nDnKbWETTRPs6+NcBBq7hBvzMmgA=\n-----END CERTIFICATE-----\n"
           },
           {
             "name": "POD_NAME",
@@ -353,7 +353,7 @@
             "valueFrom": {
               "secretKeyRef": {
                 "key": "token",
-                "name": "fixture-credential"
+                "name": "fixture-tenants-api"
               }
             }
           },
@@ -362,7 +362,7 @@
             "valueFrom": {
               "secretKeyRef": {
                 "key": "token",
-                "name": "fixture-credential"
+                "name": "fixture-tenants-app"
               }
             }
           }
@@ -436,7 +436,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-htjj2",
+            "name": "kube-api-access-nl895",
             "readOnly": true
           }
         ]
@@ -490,7 +490,7 @@
         "name": "environment-components"
       },
       {
-        "name": "kube-api-access-htjj2",
+        "name": "kube-api-access-nl895",
         "projected": {
           "defaultMode": 420,
           "sources": [

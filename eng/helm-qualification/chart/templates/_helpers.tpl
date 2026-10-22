@@ -106,6 +106,7 @@ dapr.io/enable-api-logging: "false"
 {{- define "reference.flatten" -}}
 {{- $key := replace ":" "__" .key -}}
 {{- $value := .value -}}
+{{- include "reference.nonCredentialKey" $key -}}
 {{- if and (kindIs "string" $value) (or (hasPrefix "[" (trim $value)) (hasPrefix "{" (trim $value))) -}}
 {{- $value = mustFromJson $value -}}
 {{- end -}}
@@ -139,7 +140,7 @@ dapr.io/enable-api-logging: "false"
 {{- end -}}
 
 {{- define "reference.nonCredentialKey" -}}
-{{- if regexMatch "(?i)(password|clientsecret|signingkey|authenticationtoken|accesstoken|apikey|privatekey|appchanneltoken|daprapitoken|apidaprtoken|authorization)$" . -}}{{ fail "credential leaves require existing Secret references in credentials" }}{{- end -}}
+{{- if regexMatch "(?i)(password|clientsecret|signingkey|authenticationtokens?|accesstokens?|apikeys?|privatekey|appchanneltoken|daprapitoken|apidaprtoken|authorization|secrets?|tokens?)(__|$)" . -}}{{ fail "credential leaves require existing Secret references in credentials" }}{{- end -}}
 {{- end -}}
 
 {{- define "reference.environment" -}}
@@ -155,6 +156,7 @@ dapr.io/enable-api-logging: "false"
 {{- $_ := set $declared .key true -}}
 {{- if not (hasKey $binding.configuration .key) -}}{{ fail (printf "%s/%s binding is missing" $workload.identity .key) }}{{- end -}}
 {{- $value := index $binding.configuration .key -}}
+{{- if or (kindIs "invalid" $value) (and (kindIs "string" $value) (eq (trim $value) "")) -}}{{ fail "configuration binding cannot be null or empty" }}{{- end -}}
 {{- $key := replace ":" "__" .key -}}
 {{- if has .source (list "secret" "dynamic-secret") -}}
 {{- include "reference.secretRef" $value | trunc 0 -}}

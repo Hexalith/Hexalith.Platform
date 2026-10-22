@@ -8,6 +8,8 @@ using Shouldly;
 using System.Text.Json.Nodes;
 using System.Net;
 using System.Net.Sockets;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 public sealed partial class PlatformAppModelTests
 {
@@ -135,6 +137,77 @@ public sealed partial class PlatformAppModelTests
         }
         finally { Directory.Delete(directory, recursive: true); }
     }
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void CertificateParentRejectsMappedOwnerCheckoutOutsidePlatformAsync(bool symlink)
+    {
+        using PlatformOwnerFixture owner = PlatformOwnerFixture.Copy(Root, "eventstore");
+        string directory = Path.Combine(Path.GetTempPath(), "platform-external-owner-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            string parent = Path.Combine(owner.Root, "private-certificates");
+            if (symlink)
+            {
+                string link = Path.Combine(directory, "owner-link");
+                Directory.CreateSymbolicLink(link, owner.Root);
+                parent = Path.Combine(link, "private-certificates");
+            }
+            var builder = Builder();
+            builder.Configuration["Dapr:Mtls:CertificateDirectory"] = parent;
+            var options = Options(active: "eventstore");
+            options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == "Hexalith.EventStore" ? entry with { Path = owner.Root } : entry).ToArray() } };
+            var failure = Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder, options));
+            failure.Message.ShouldContain("must resolve outside the repository");
+            failure.Message.ShouldContain(owner.Root);
+            builder.Resources.ShouldBeEmpty();
+            Directory.Exists(Path.Combine(owner.Root, "private-certificates")).ShouldBeFalse();
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    [Fact]
+    public async Task ConfiguredCertificateParentDisposalDeletesOnlyOwnedChildAsync()
+    {
+        string parent = Path.Combine(Path.GetTempPath(), "platform-certificate-parent-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(parent);
+        string foreign = Path.Combine(parent, "foreign.txt");
+        File.WriteAllText(foreign, "untouched");
+        List<DistributedApplication> apps = [];
+        List<string> credentials = [];
+        try
+        {
+            for (int index = 0; index < 2; index++)
+            {
+                var builder = Builder();
+                builder.Configuration["Dapr:Mtls:CertificateDirectory"] = parent;
+                builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(parent, "test-dcp-not-started");
+                builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(parent, "test-dashboard-not-started");
+                PlatformAppModel.Compose(builder, Options(active: "eventstore"));
+                credentials.Add(builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials").Source!);
+                File.WriteAllText(Path.Combine(credentials[index], "issuer.key"), "owned-" + index);
+                var app = builder.Build();
+                apps.Add(app);
+                app.Services.GetServices<IHostedService>().OfType<PlatformCompositionWorkspace>().Count().ShouldBe(2);
+            }
+            await apps[0].DisposeAsync();
+            Directory.Exists(credentials[0]).ShouldBeFalse();
+            Directory.Exists(parent).ShouldBeTrue();
+            File.ReadAllText(foreign).ShouldBe("untouched");
+            File.ReadAllText(Path.Combine(credentials[1], "issuer.key")).ShouldBe("owned-1");
+            await apps[1].DisposeAsync();
+            Directory.Exists(credentials[1]).ShouldBeFalse();
+            Directory.Exists(parent).ShouldBeTrue();
+            File.ReadAllText(foreign).ShouldBe("untouched");
+        }
+        finally
+        {
+            foreach (var app in apps) await app.DisposeAsync();
+            Directory.Delete(parent, recursive: true);
+        }
+    }
+
     [Fact]
     public async Task OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync()
     {

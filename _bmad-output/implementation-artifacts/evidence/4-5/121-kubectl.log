@@ -1,0 +1,37 @@
+{
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T17:35:15Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "dapr.io/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:scopes": {},
+                    "f:spec": {
+                        "f:metadata": {},
+                        "f:type": {},
+                        "f:version": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T17:35:15Z"
+            }
+        ],
+        "name": "environment-preserved",
+        "namespace": "reference",
+        "resourceVersion": "936",
+        "uid": "4a456bd9-6325-472a-849f-7b06acb3601d"
+    },
+    "scopes": [
+        "environment-owner"
+    ],
+    "spec": {
+        "metadata": [],
+        "type": "secretstores.kubernetes",
+        "version": "v1"
+    }
+}

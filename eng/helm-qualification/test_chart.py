@@ -221,6 +221,9 @@ class ChartTests(unittest.TestCase):
         for structured in [r'[{"Authentication\u0054oken":"review-literal"}]',
                            '[{"authenticationtoken":"literal"}]',
                            '[{"Nested":{"ClientSecret":"literal"}}]',
+                           '[{"AuthenticationToken":{"Value":"literal"}}]',
+                           '[{"AuthenticationTokens":["literal"]}]',
+                           '[{"Secret":"literal"}]',
                            '[{"Endpoint":{"endpoint":"identity"},"AuthenticationToken":{"configMapKeyRef":{"name":"x","key":"token"}}}]']:
             values = fixture_values()
             values['bindings']['memories/clock']['configuration']['Clock:Sources'] = structured
@@ -301,6 +304,10 @@ class ChartTests(unittest.TestCase):
     def test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail(self):
         self.bad({})
         variants = []
+        for empty in (None, '', '   '):
+            values = fixture_values()
+            values['bindings']['eventstore/gateway']['configuration']['Authentication:JwtBearer:Audience'] = empty
+            self.bad(values)
         for mutate in [lambda v: v.update(mode='unknown'), lambda v: v['images'].clear(),
                        lambda v: v['bindings'].clear(), lambda v: v.update(imagePullSecret=''),
                        lambda v: v['endpoints'].update(data='redis://user:password@host:6379'),

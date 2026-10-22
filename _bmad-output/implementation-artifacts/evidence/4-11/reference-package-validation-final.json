@@ -1,0 +1,116 @@
+{
+  "packageRoot": "/tmp/story411-verified-packages-gd9d44f0",
+  "reports": [
+    {
+      "module": "parties",
+      "operation": "package",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:0e9049af0da9abfd25a249929bb84382ddfc3268ccdb350c46eca3f31507c23a"
+      }
+    },
+    {
+      "module": "parties",
+      "operation": "validate",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:0e9049af0da9abfd25a249929bb84382ddfc3268ccdb350c46eca3f31507c23a"
+      }
+    },
+    {
+      "module": "eventstore",
+      "operation": "package",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:9767c0bb03aa2c71e839fb069c309068369289c23bb17952608f19036ea84e7b"
+      }
+    },
+    {
+      "module": "eventstore",
+      "operation": "validate",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:9767c0bb03aa2c71e839fb069c309068369289c23bb17952608f19036ea84e7b"
+      }
+    },
+    {
+      "module": "tenants",
+      "operation": "package",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:63d5d69a516203a514c216849d5fbfc87e5179251d25c30e24f1f8a76728abd0"
+      }
+    },
+    {
+      "module": "tenants",
+      "operation": "validate",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:63d5d69a516203a514c216849d5fbfc87e5179251d25c30e24f1f8a76728abd0"
+      }
+    },
+    {
+      "module": "memories",
+      "operation": "package",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:57766eda26c680a33c3794f1b8d296fea9dce68438df41b6febb6f6f66d469fe"
+      }
+    },
+    {
+      "module": "memories",
+      "operation": "validate",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:57766eda26c680a33c3794f1b8d296fea9dce68438df41b6febb6f6f66d469fe"
+      }
+    },
+    {
+      "module": "mcpcli",
+      "operation": "package",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:3654cbee2853bb8f9e20eec2a62ab8fa67208d7af3b85788b90ab71efa16dd8a"
+      }
+    },
+    {
+      "module": "mcpcli",
+      "operation": "validate",
+      "exit": 0,
+      "report": {
+        "valid": true,
+        "diagnostics": [],
+        "suiteDigest": "sha256:3654cbee2853bb8f9e20eec2a62ab8fa67208d7af3b85788b90ab71efa16dd8a"
+      }
+    },
+    {
+      "operation": "coverage",
+      "exit": 6,
+      "report": {
+        "valid": false,
+        "diagnostics": [
+          "HXS006"
+        ],
+        "suiteDigest": null
+      }
+    }
+  ]
+}

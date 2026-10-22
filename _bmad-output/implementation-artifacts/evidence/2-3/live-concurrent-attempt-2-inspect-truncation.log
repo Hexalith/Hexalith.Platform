@@ -1,0 +1,22 @@
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class *PlatformConcurrentRunTests
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync [FAIL]
+      System.Text.Json.JsonReaderException : Expected start of a property name or value, but instead reached end of data. LineNumber: 1631 | BytePositionInLine: 2.
+      Stack Trace:
+           at System.Text.Json.ThrowHelper.ThrowJsonReaderException(Utf8JsonReader& json, ExceptionResource resource, Byte nextByte, ReadOnlySpan`1 bytes)
+           at System.Text.Json.Utf8JsonReader.ConsumeNextToken(Byte marker)
+           at System.Text.Json.Utf8JsonReader.ReadSingleSegment()
+           at System.Text.Json.JsonDocument.Parse(ReadOnlySpan`1 utf8JsonSpan, JsonReaderOptions readerOptions, MetadataDb& database, StackRowStack& stack)
+           at System.Text.Json.JsonDocument.Parse(ReadOnlyMemory`1 utf8Json, JsonReaderOptions readerOptions, Byte[] extraRentedArrayPoolBytes, PooledByteBufferWriter extraPooledByteBufferWriter, Boolean allowDuplicateProperties)
+           at System.Text.Json.JsonDocument.Parse(ReadOnlyMemory`1 json, JsonDocumentOptions options)
+           at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync()
+           at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 509.025s
+
+exit=1

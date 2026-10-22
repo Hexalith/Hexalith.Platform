@@ -1,11 +1,31 @@
+RUNNING <lambda>
+PASSED <lambda>
+RUNNING <lambda>
+PASSED <lambda>
+RUNNING <lambda>
+PASSED <lambda>
+RUNNING <lambda>
+PASSED <lambda>
+RUNNING <lambda>
+PASSED <lambda>
+RUNNING <lambda>
+PASSED <lambda>
+test_decoded_credentials_aliases_and_token_overrides_fail (test_chart.ChartTests.test_decoded_credentials_aliases_and_token_overrides_fail) ... ok
+test_host_collisions_image_registry_ports_and_integer_replicas (test_chart.ChartTests.test_host_collisions_image_registry_ports_and_integer_replicas) ... ok
 test_identity_readiness_and_shared_dapr_security (test_chart.ChartTests.test_identity_readiness_and_shared_dapr_security) ... ok
 test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail (test_chart.ChartTests.test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail) ... ok
 test_modes_determinism_and_archive_parity (test_chart.ChartTests.test_modes_determinism_and_archive_parity) ... ok
+test_nested_references_and_literal_https_leaves (test_chart.ChartTests.test_nested_references_and_literal_https_leaves) ... ok
 test_no_secrets_providers_or_persistent_environment_resources (test_chart.ChartTests.test_no_secrets_providers_or_persistent_environment_resources) ... ok
 test_structured_configuration_flattens_and_canonical_dapr_bindings_win (test_chart.ChartTests.test_structured_configuration_flattens_and_canonical_dapr_bindings_win) ... ok
 test_values_only_digest_change (test_chart.ChartTests.test_values_only_digest_change) ... ok
+test_cleanup_failure_stays_failed_in_durable_result (test_qualify.QualifierFailureTests.test_cleanup_failure_stays_failed_in_durable_result) ... ok
+test_command_logs_are_visible_to_version_control (test_qualify.QualifierFailureTests.test_command_logs_are_visible_to_version_control) ... ok
+test_private_files_removed_when_cluster_delete_or_inventory_fails (test_qualify.QualifierFailureTests.test_private_files_removed_when_cluster_delete_or_inventory_fails) ... ok
+test_source_inventory_detects_added_deleted_and_changed_files (test_qualify.QualifierFailureTests.test_source_inventory_detects_added_deleted_and_changed_files) ... ok
+test_trickled_download_has_a_complete_transfer_deadline (test_qualify.QualifierFailureTests.test_trickled_download_has_a_complete_transfer_deadline) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 21.536s
+Ran 14 tests in 46.888s
 
 OK

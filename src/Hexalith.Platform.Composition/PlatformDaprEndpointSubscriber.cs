@@ -43,8 +43,9 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
                 string runtime = Path.Combine(runtimeHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd");
                 if (!File.Exists(runtime)) throw new InvalidDataException($"The selected Dapr native runtime is unavailable at '{runtime}'. Install the catalog-pinned runtime; isolated Sentry requires native daprd.");
                 sidecar.Annotations.OfType<ExecutableAnnotation>().Last().Command = runtime;
-                sidecar.Annotations.Add(new CommandLineArgsCallbackAnnotation((IList<object> arguments) =>
+                sidecar.Annotations.Add(new CommandLineArgsCallbackAnnotation(async context =>
                 {
+                    IList<object> arguments = context.Args;
                     // Dapr CLI 1.18.0 hardcodes localhost:50001 when it enables mTLS. Use the
                     // same verified native runtime and generated callbacks, with its supported flag.
                     if (arguments.Count == 0 || arguments[0] is not "run"
@@ -67,7 +68,7 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
                         File.WriteAllText(ListenerInventoryPath(workspace, application.Name), System.Text.Json.JsonSerializer.Serialize(new
                         {
                             Resource = application.Name,
-                            Listeners = NativeListenerPorts(arguments),
+                            Listeners = await NativeListenerPortsAsync(arguments, context.CancellationToken).ConfigureAwait(false),
                         }));
                 }));
             }
@@ -95,14 +96,18 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
     internal static string ListenerInventoryPath(string workspace, string resource) => Path.Combine(workspace, "native-listeners." + resource + ".json");
 
     /// <summary>Reads the four explicit native listener arguments without retaining other process arguments.</summary>
-    internal static IReadOnlyDictionary<string, int> NativeListenerPorts(IList<object> arguments)
+    internal static async Task<IReadOnlyDictionary<string, int>> NativeListenerPortsAsync(IList<object> arguments, CancellationToken cancellationToken)
     {
         Dictionary<string, int> listeners = [];
         foreach (string flag in new[] { "--dapr-http-port", "--dapr-grpc-port", "--dapr-internal-grpc-port", "--metrics-port" })
         {
             int index = arguments.IndexOf(flag);
-            if (index < 0 || index + 1 >= arguments.Count || arguments.Count(argument => Equals(argument, flag)) != 1
-                || !int.TryParse(Convert.ToString(arguments[index + 1], System.Globalization.CultureInfo.InvariantCulture), out int port) || port is < 1 or > 65535)
+            if (index < 0 || index + 1 >= arguments.Count || arguments.Count(argument => Equals(argument, flag)) != 1)
+                throw new InvalidDataException($"The native sidecar requires exactly one explicit valid {flag} listener.");
+            string? value = arguments[index + 1] is IValueProvider provider
+                ? await provider.GetValueAsync(cancellationToken).ConfigureAwait(false)
+                : Convert.ToString(arguments[index + 1], System.Globalization.CultureInfo.InvariantCulture);
+            if (!int.TryParse(value, out int port) || port is < 1 or > 65535)
                 throw new InvalidDataException($"The native sidecar requires exactly one explicit valid {flag} listener.");
             listeners.Add(flag, port);
         }

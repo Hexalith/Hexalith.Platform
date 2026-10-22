@@ -238,6 +238,17 @@ class ReferenceSuiteTests(unittest.TestCase):
                 result = runner.execute(self.invocation(descriptor['checks'][0]), descriptor, TOKEN)
                 self.assertEqual(result['outcome'], 'failed')
 
+    def test_distinct_long_invocations_create_distinct_synthetic_parties(self):
+        descriptor = self.descriptor('parties')
+        for suffix in ('first', 'second'):
+            invocation = self.invocation(descriptor['checks'][0])
+            invocation['invocationId'] = 'x' * 110 + '-' + suffix
+            self.assertEqual(runner.execute(invocation, descriptor, TOKEN)['outcome'], 'passed')
+        identifiers = [body['aggregateId'] for method, path, _, body in Endpoint.calls
+                       if method == 'POST' and path == '/api/v1/commands']
+        self.assertEqual(len(identifiers), 2)
+        self.assertEqual(len(set(identifiers)), 2)
+
     def test_memory_completion_requires_indexed_failure_free_output(self):
         descriptor = self.descriptor('memories')
         for mode in ('ingest-failed', 'ingest-uncertain', 'ingest-summary', 'ingest-unindexed', 'ingest-empty-id'):
@@ -399,7 +410,10 @@ class ReferenceSuiteTests(unittest.TestCase):
             (root / 'descriptor.json').write_text(json.dumps(descriptor))
             (root / 'invocation.json').write_text(json.dumps(self.invocation(descriptor['checks'][1])))
             import os
-            environment = {'PATH': os.environ['PATH'], 'HEXALITH_CHECK_TOKEN': TOKEN, 'PYTHONDONTWRITEBYTECODE': '1'}
+            environment = {'PATH': os.environ['PATH'], 'HEXALITH_CHECK_TOKEN': TOKEN}
+            payload_bytes = {path.relative_to(root / 'payload'): path.read_bytes()
+                             for path in (root / 'payload').rglob('*') if path.is_file()}
+            descriptor_bytes = (root / 'descriptor.json').read_bytes()
             for mode, expected in (('passed', 0), ('failed', 1)):
                 Endpoint.mode = mode
                 process = subprocess.run([sys.executable, str(root / 'payload' / 'runner.py'), '--invocation', str(root / 'invocation.json')],
@@ -407,6 +421,9 @@ class ReferenceSuiteTests(unittest.TestCase):
                 self.assertEqual(process.returncode, expected)
                 self.assertNotIn(TOKEN, process.stdout + process.stderr)
                 self.assertEqual(json.loads(process.stdout)['outcome'], mode)
+                self.assertEqual({path.relative_to(root / 'payload'): path.read_bytes()
+                                  for path in (root / 'payload').rglob('*') if path.is_file()}, payload_bytes)
+                self.assertEqual((root / 'descriptor.json').read_bytes(), descriptor_bytes)
 
 
 if __name__ == '__main__':

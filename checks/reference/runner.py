@@ -17,6 +17,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+# Retained payloads stay byte-identical when their suite modules are imported.
+sys.dont_write_bytecode = True
+
 IDENTITY = ('invocationId', 'checkId', 'attemptId', 'environment', 'executionMode',
             'servedReleaseDigest', 'suiteDigest', 'descriptorDigest', 'profileDigest',
             'configurationDigest', 'workingBaseline')
