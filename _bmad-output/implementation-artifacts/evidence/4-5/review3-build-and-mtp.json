@@ -1,0 +1,38 @@
+[
+  {
+    "label": "build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "--no-restore",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:UseNuGetDeps=false",
+      "-p:RunAnalyzers=false",
+      "-nodeReuse:false",
+      "-m:1"
+    ],
+    "returncode": 0,
+    "log": "review3-build.log",
+    "logSha256": "1d61eaa402ede519c90437b510e5c9066c503fd686165a2e06d3a974c0e86fc8"
+  },
+  {
+    "label": "mtp-hosted",
+    "command": [
+      "dotnet",
+      "test",
+      "--project",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "--no-build",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:UseNuGetDeps=false",
+      "-p:RunAnalyzers=false",
+      "--",
+      "--filter-class",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests"
+    ],
+    "returncode": 0,
+    "log": "review3-mtp-hosted.log",
+    "logSha256": "ebb98236101165b54516ed24392ba6614ba65812a79ec03f3a7ec7c43fa72821"
+  }
+]

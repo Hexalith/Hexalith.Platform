@@ -40,6 +40,9 @@ public static class PlatformServerBindings
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(declarations);
+        foreach (PlatformModuleDeclaration module in declarations)
+            if (PlatformDeclarationSet.Id(module.Declaration) == "timesheets" && !options.TimesheetsEnabled)
+                throw Failure(module, "timesheets/host", "Platform:Timesheets:Enabled", "explicit Development/source opt-in is required");
         dapr ??= PlatformDaprBindings.Resolve(declarations);
         List<PlatformServerBinding> result = [];
         Dictionary<string, string> secretValues = new(StringComparer.Ordinal);
@@ -48,48 +51,46 @@ public static class PlatformServerBindings
         {
             PlatformModuleDeclaration module = workload.Module;
             string id = PlatformDeclarationSet.Id(module.Declaration);
-            if (id == "timesheets" && !options.TimesheetsEnabled)
-                throw Failure(module, "timesheets/host", "Platform:Timesheets:Enabled", "explicit Development/source opt-in is required");
             string serverId = workload.ServerId;
             string identity = workload.Identity;
-                string? project = null;
-                string? image = null;
-                SourceMappingEntry? source = options.Mapping.Entries.SingleOrDefault(e => e.Identity.Equals(Repository(id), StringComparison.OrdinalIgnoreCase));
-                if (options.Mapping.Mode == WorkspaceMode.Source)
-                {
-                    string? relative = options.Projects.GetValueOrDefault(identity);
-                    if (identity == "timesheets/host" && relative is null) relative = PlatformTimesheetsBinding.Project;
-                    if (source?.Origin != "source" || source.Path is null || relative is null)
-                        throw Failure(module, identity, "project", "mapped source project is unavailable");
-                    project = Path.GetFullPath(Path.Combine(source.Path, relative));
-                    if (identity == "timesheets/host" && project != Path.GetFullPath(Path.Combine(source.Path, PlatformTimesheetsBinding.Project)))
-                        throw Failure(module, identity, project, "only the actual mapped Timesheets host project is supported");
-                    // ContainsProject uses Builds' RepositoryPathResolver. Limit this validation view to
-                    // the selected owner so a link into another mapped repository cannot pass containment.
-                    if (!(options.Mapping with { Entries = [source] }).ContainsProject(project))
-                        throw Failure(module, identity, project, "mapped project is missing or physically outside its owner root");
-                }
-                else if (identity == "eventstore/gateway")
-                {
-                    project = options.EventStoreSeedProject;
-                    if (project is null || !File.Exists(project)) throw Failure(module, identity, project ?? "EventStoreHost", "package-mode EventStoreHost seed is unavailable");
-                }
-                else
-                {
-                    if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository)) throw Failure(module, identity, "image", "released image is unavailable");
-                    image = repository + ":" + Version(options, id, module.Source);
-                }
-                Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
-                foreach (var pair in dapr.Environment(id, serverId)) environment[pair.Key] = pair.Value;
-                environment["Dapr__DeclarativeSubscriptions"] = "true";
-                IReadOnlyList<JsonElement> tasks = workload.Tasks;
-                foreach (JsonElement task in tasks)
-                {
-                    string executable = task.GetProperty("executable").GetString()!;
-                    string ownerRoot = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, module);
-                    if (!File.Exists(Path.Combine(ownerRoot, executable))) throw Failure(module, identity, "lifecycle.tasks.executable", $"task '{task.GetProperty("name").GetString()}' executable '{executable}' is unavailable");
-                }
-                result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks));
+            string? project = null;
+            string? image = null;
+            SourceMappingEntry? source = options.Mapping.Entries.SingleOrDefault(e => e.Identity.Equals(Repository(id), StringComparison.OrdinalIgnoreCase));
+            if (options.Mapping.Mode == WorkspaceMode.Source)
+            {
+                string? relative = options.Projects.GetValueOrDefault(identity);
+                if (identity == "timesheets/host" && relative is null) relative = PlatformTimesheetsBinding.Project;
+                if (source?.Origin != "source" || source.Path is null || relative is null)
+                    throw Failure(module, identity, "project", "mapped source project is unavailable");
+                project = Path.GetFullPath(Path.Combine(source.Path, relative));
+                if (identity == "timesheets/host" && project != Path.GetFullPath(Path.Combine(source.Path, PlatformTimesheetsBinding.Project)))
+                    throw Failure(module, identity, project, "only the actual mapped Timesheets host project is supported");
+                // ContainsProject uses Builds' RepositoryPathResolver. Limit this validation view to
+                // the selected owner so a link into another mapped repository cannot pass containment.
+                if (!(options.Mapping with { Entries = [source] }).ContainsProject(project))
+                    throw Failure(module, identity, project, "mapped project is missing or physically outside its owner root");
+            }
+            else if (identity == "eventstore/gateway")
+            {
+                project = options.EventStoreSeedProject;
+                if (project is null || !File.Exists(project)) throw Failure(module, identity, project ?? "EventStoreHost", "package-mode EventStoreHost seed is unavailable");
+            }
+            else
+            {
+                if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository)) throw Failure(module, identity, "image", "released image is unavailable");
+                image = repository + ":" + Version(options, id, module.Source);
+            }
+            Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
+            foreach (var pair in dapr.Environment(id, serverId)) environment[pair.Key] = pair.Value;
+            environment["Dapr__DeclarativeSubscriptions"] = "true";
+            IReadOnlyList<JsonElement> tasks = workload.Tasks;
+            foreach (JsonElement task in tasks)
+            {
+                string executable = task.GetProperty("executable").GetString()!;
+                string ownerRoot = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, module);
+                if (!File.Exists(Path.Combine(ownerRoot, executable))) throw Failure(module, identity, "lifecycle.tasks.executable", $"task '{task.GetProperty("name").GetString()}' executable '{executable}' is unavailable");
+            }
+            result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks));
         }
         if (result.Count(s => s.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
         if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);

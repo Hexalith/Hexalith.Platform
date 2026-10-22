@@ -36,7 +36,8 @@ underlying data services, Gateway/listeners, namespace, identity authority,
 credential Secrets, registry credential, component-file ConfigMap and persistent
 infrastructure. The application chart creates none of those prerequisites.
 Existing component manifest files are mounted read-only from the environment
-ConfigMap when an owner requires a component path. The environment writer supplies its control-plane trust domain and a non-secret
+ConfigMap on every workload, so that ConfigMap is a prerequisite for every Deployment.
+The environment writer supplies its control-plane trust domain and a non-secret
 Sentry endpoint parameter. Each public workload requires a hostname in
 `hostnames["module/server"]`; the reference EventStore and Memories `/api/v1`
 backends therefore use distinct hosts. Identical normalized host/listener/path
@@ -62,7 +63,11 @@ Dapr/security bindings or declared channel/API-token inputs. Distinct app and AP
 Secret references are supported and must agree with their respective declared inputs.
 Credential literals inside structured configuration fail.
 Endpoint parameters permit HTTPS or TLS data-service schemes and reject embedded
-credentials, queries, fragments and loopback/local endpoints. Dapr token Secret
+credentials, fragments and loopback/local endpoints. PostgreSQL requires the single
+query `sslmode=verify-full`, `sslmode=require` or `sslmode=verify-ca`. Scheme-less
+`host:port[,option…]` inputs require canonical non-loopback IPv4 or DNS authorities,
+an explicit port in 1..65535 and `ssl=true`; `ssl=false` is rejected. Sentry and
+all `endpointFormat: authority` bindings require explicit ports. Dapr token Secret
 references use the `token` key and must agree with the owner's channel inputs.
 No plaintext credentials belong in values. `fixture_values()` supplies synthetic
 admission-test inputs; it is not a deployable staging profile.
@@ -81,15 +86,16 @@ DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props" \
   -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false
 HELM_BIN=/absolute/path/to/verified/helm python3 -m unittest discover \
   -s eng/helm-qualification -p 'test_*.py' -v
-HELM_BIN=/absolute/path/to/verified/helm python3 eng/helm-qualification/qualify.py
+python3 eng/helm-qualification/qualify.py
 ```
 
 `toolchain.json` pins Helm 4.2.0, kind, the digest-qualified Kubernetes node image,
 Gateway CRDs and the Builds-catalog Dapr patch. Downloaded CRDs and the Dapr chart
-must match the recorded SHA256 values. Helm's distribution URL and SHA256 are
-provided for a local tool install. The transfer requires curl and bounds the whole
-download with a deadline, including response bodies. The qualifier requires the pinned Helm binary
-and records its binary hash. Missing tools or failed checks return nonzero;
+must match the recorded SHA256 values. The qualifier downloads Helm from its pinned
+distribution URL, verifies the archive SHA256, extracts its binary into its private
+directory and supplies that binary to the chart tests. Every transfer requires curl
+and bounds the whole download with a deadline, including response bodies. It records
+the Helm binary hash. Missing tools or failed checks return nonzero;
 there are no skipped qualification checks.
 
 The qualifier creates a unique `h45-*` kind cluster and private kubeconfig, passes
@@ -100,7 +106,10 @@ actual Pod for each rendered Deployment template with server dry-run. Both the
 real templates and unsafe control use the observed ReplicaSet-controller service
 account UID and groups, matching the Deployment admission caller. The injector
 [authorizes these controllers](https://docs.dapr.io/concepts/dapr-services/sidecar-injector/);
-its pinned fixture settings require dropping ALL sidecar capabilities. It requires
+the environment-owned Dapr injector must set `sidecarRunAsNonRoot=true`,
+`sidecarRunAsUser=1654`, `sidecarReadOnlyRootFilesystem=true` and
+`sidecarDropALLCapabilities=true`. These are prerequisites for restricted admission,
+and the qualification fixture installs Dapr with those settings. It requires
 injected `daprd`, inspects every regular/init container's security settings and
 requires an unsafe Pod rejection. A Deployment dry-run does not satisfy this
 check.
@@ -126,6 +135,11 @@ does not close the story. The evidence excludes OCI publication/attestation,
 off-site restoration, staging deployment and functional application readiness
 with retained production images. Those are separate downstream acceptances. The
 Timesheets enrollment candidate is unchanged.
+
+Each run clears prior numbered command logs before its first command. Source
+evidence records the root revision, porcelain status and submodule revisions, so
+the record identifies an uncommitted qualification tree. Commands run in private
+process groups that are terminated together on timeout; MSBuild node reuse is disabled.
 
 Source builds use the qualification-owned `source-packages.props` import boundary.
 It loads each project's original nearest central package props, preserving owner

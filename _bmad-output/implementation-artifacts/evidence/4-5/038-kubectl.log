@@ -1,29 +1,21 @@
 {
     "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLW1lbW9yaWVzLWFwaQ=="
-    },
-    "kind": "Secret",
+    "kind": "Namespace",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:49:12Z",
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T17:49:12Z"
-            }
-        ],
-        "name": "fixture-memories-api",
-        "namespace": "reference",
-        "resourceVersion": "771",
-        "uid": "f508f0a5-26e1-4f06-8820-6fa8df88cc5f"
+        "creationTimestamp": "2026-10-22T21:55:44Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "kube-system"
+        },
+        "name": "kube-system",
+        "resourceVersion": "4",
+        "uid": "1f894bff-5441-4c25-bcf8-24cd902af71b"
     },
-    "type": "Opaque"
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
 }

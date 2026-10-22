@@ -744,9 +744,9 @@ spec:
             - name: Clock__Sources
               value: fixture
             - name: ConnectionStrings__falkordb
-              value: fixture
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
             - name: ConnectionStrings__redis
-              value: fixture
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
             - name: Conversation__ProviderApiKey
               valueFrom:
                 secretKeyRef:
@@ -951,9 +951,9 @@ spec:
             - name: Clock__Sources
               value: fixture
             - name: ConnectionStrings__falkordb
-              value: fixture
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
             - name: ConnectionStrings__redis
-              value: fixture
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
             - name: Conversation__ProviderApiKey
               valueFrom:
                 secretKeyRef:
@@ -1154,9 +1154,9 @@ spec:
             - name: Clock__Sources
               value: fixture
             - name: ConnectionStrings__falkordb
-              value: fixture
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
             - name: ConnectionStrings__redis
-              value: fixture
+              value: rediss://fixture-data.environment.svc.cluster.local:6380
             - name: Conversation__ProviderApiKey
               valueFrom:
                 secretKeyRef:

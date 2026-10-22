@@ -7,7 +7,7 @@
             "meta.helm.sh/release-name": "reference",
             "meta.helm.sh/release-namespace": "reference"
         },
-        "creationTimestamp": "2026-10-22T18:30:43Z",
+        "creationTimestamp": "2026-10-22T21:57:27Z",
         "generation": 1,
         "labels": {
             "app.kubernetes.io/managed-by": "Helm",
@@ -66,12 +66,97 @@
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"Authentication__JwtBearer__AllowInsecureSymmetricKey\"}": {
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__AttestationVerificationKey\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"Authentication__JwtBearer__AllowedAlgorithms\"}": {
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__CapabilityEvidence\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__CapacityEvidenceId\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__ClockSignerKeyEpoch\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__ComponentProfileHash\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__ConfigurationEpoch\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__ConfigurationStoreComponentPath\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__ConfigurationStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__DeploymentId\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__Enabled\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__MarkerKeyGeneration\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__MarkerKeyReference\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__PhysicalReclamationEvidenceId\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__RetentionSource\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__SecretStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__StateStoreComponentPath\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
@@ -103,25 +188,64 @@
                                                     "f:secretKeyRef": {}
                                                 }
                                             },
-                                            "k:{\"name\":\"Authentication__JwtBearer__ValidAudiences\"}": {
+                                            "k:{\"name\":\"Authentication__JwtBearer__TenantClaimName\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"Authentication__Workload__AllowedCallers\"}": {
+                                            "k:{\"name\":\"Authentication__JwtBearer__ValidAlgorithms\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"Authentication__Workload__Audience\"}": {
+                                            "k:{\"name\":\"Clock__AllowDevelopmentSources\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"Authentication__Workload__MaximumLifetimeSeconds\"}": {
+                                            "k:{\"name\":\"Clock__SecretStoreName\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Clock__SignerKeyEpoch\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Clock__SigningKeySecretName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Clock__SourceAuthenticationTokens\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:valueFrom": {
+                                                    "f:secretKeyRef": {}
+                                                }
+                                            },
+                                            "k:{\"name\":\"Clock__Sources\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"ConnectionStrings__falkordb\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"ConnectionStrings__redis\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Conversation__ProviderApiKey\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:valueFrom": {
+                                                    "f:secretKeyRef": {}
+                                                }
                                             },
                                             "k:{\"name\":\"DAPR_API_TOKEN\"}": {
                                                 ".": {},
@@ -135,84 +259,106 @@
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__AppChannelToken\"}": {
+                                            "k:{\"name\":\"EmbeddingProviders__Google__ApiBaseUrl\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EmbeddingProviders__Ollama__BaseUrl\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EmbeddingProviders__Ollama__OidcClientId\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EmbeddingProviders__Ollama__OidcScope\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EmbeddingProviders__Ollama__OidcTokenEndpoint\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Embedding__CredentialNamespace\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EventStoreIntegration__Routing__PubSubName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EventStoreIntegration__StateStore__StateStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Ingestion__WorkflowPayloadStore__StateStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"IsStubBackfill__Enabled\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Memories__AppChannelToken\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:valueFrom": {
                                                     "f:secretKeyRef": {}
                                                 }
                                             },
-                                            "k:{\"name\":\"EventStore__CommandStatus__StateStoreName\"}": {
+                                            "k:{\"name\":\"Memories__DaprApiToken\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:valueFrom": {
+                                                    "f:secretKeyRef": {}
+                                                }
+                                            },
+                                            "k:{\"name\":\"Memories__LlmComponentPath\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__DataProtection__PersistToStateStore\"}": {
+                                            "k:{\"name\":\"Memories__SecretStoreName\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__DataProtection__StateStoreName\"}": {
+                                            "k:{\"name\":\"NaturalLanguage__DaprComponentName\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__DomainService__AppId\"}": {
+                                            "k:{\"name\":\"NaturalLanguage__RetryWorkerEnabled\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__ProjectionChanges__PubSubName\"}": {
+                                            "k:{\"name\":\"OrphanSemanticIndex__Enabled\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__Projections__CheckpointStateStoreName\"}": {
+                                            "k:{\"name\":\"TenantEventRouting__AutoProvisionRoutedTenants\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"EventStore__Projections__ReadModelStateStoreName\"}": {
+                                            "k:{\"name\":\"WorkflowReplaySafety__Enabled\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
-                                            "k:{\"name\":\"Parties__MemoriesSearch__Enabled\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Parties__MemoriesSearch__MappingStore__StateStoreName\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Parties__Security__StateStoreName\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Tenants__CommandApiAppId\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Tenants__Enabled\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Tenants__PubSubName\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Tenants__ServiceName\"}": {
-                                                ".": {},
-                                                "f:name": {},
-                                                "f:value": {}
-                                            },
-                                            "k:{\"name\":\"Tenants__TopicName\"}": {
+                                            "k:{\"name\":\"retentionSeconds\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
@@ -300,7 +446,7 @@
                 },
                 "manager": "helm",
                 "operation": "Apply",
-                "time": "2026-10-22T18:30:43Z"
+                "time": "2026-10-22T21:57:27Z"
             },
             {
                 "apiVersion": "apps/v1",
@@ -343,13 +489,13 @@
                 "manager": "kube-controller-manager",
                 "operation": "Update",
                 "subresource": "status",
-                "time": "2026-10-22T18:30:43Z"
+                "time": "2026-10-22T21:57:28Z"
             }
         ],
-        "name": "parties",
+        "name": "memories",
         "namespace": "reference",
-        "resourceVersion": "1132",
-        "uid": "63d7e8ea-3dea-4eda-bd9f-645316103780"
+        "resourceVersion": "1136",
+        "uid": "0328e390-55d3-475d-a701-ba3129b849ef"
     },
     "spec": {
         "progressDeadlineSeconds": 600,
@@ -357,7 +503,7 @@
         "revisionHistoryLimit": 10,
         "selector": {
             "matchLabels": {
-                "app.kubernetes.io/name": "parties"
+                "app.kubernetes.io/name": "memories"
             }
         },
         "strategy": {
@@ -370,18 +516,18 @@
         "template": {
             "metadata": {
                 "annotations": {
-                    "dapr.io/api-token-secret": "fixture-parties-api",
-                    "dapr.io/app-id": "parties",
+                    "dapr.io/api-token-secret": "fixture-memories-api",
+                    "dapr.io/app-id": "memories",
                     "dapr.io/app-port": "8080",
                     "dapr.io/app-protocol": "http",
-                    "dapr.io/app-token-secret": "fixture-parties-app",
-                    "dapr.io/config": "platform-parties",
+                    "dapr.io/app-token-secret": "fixture-memories-app",
+                    "dapr.io/config": "platform-memories",
                     "dapr.io/enable-api-logging": "false",
                     "dapr.io/enabled": "true",
                     "dapr.io/sidecar-listen-addresses": "127.0.0.1"
                 },
                 "labels": {
-                    "app.kubernetes.io/name": "parties"
+                    "app.kubernetes.io/name": "memories"
                 }
             },
             "spec": {
@@ -394,7 +540,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-parties-app"
+                                        "name": "fixture-memories-app"
                                     }
                                 }
                             },
@@ -403,12 +549,80 @@
                                 "value": "http://0.0.0.0:8080"
                             },
                             {
-                                "name": "Authentication__JwtBearer__AllowInsecureSymmetricKey",
+                                "name": "AccessTelemetryLifecycle__AttestationVerificationKey",
                                 "value": "fixture"
                             },
                             {
-                                "name": "Authentication__JwtBearer__AllowedAlgorithms",
+                                "name": "AccessTelemetryLifecycle__CapabilityEvidence",
                                 "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__CapacityEvidenceId",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__ClockSignerKeyEpoch",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__ComponentProfileHash",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__ConfigurationEpoch",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__ConfigurationStoreComponentPath",
+                                "value": "/etc/hexalith/environment/configurationstorecomponentpath.yaml"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__ConfigurationStoreName",
+                                "value": "access-telemetry-config"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__DeploymentId",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__Enabled",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__MarkerKeyGeneration",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__MarkerKeyReference",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__PhysicalReclamationEvidenceId",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__RetentionSource",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__SecretStoreName",
+                                "value": "access-telemetry-secrets"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__StateStoreComponentPath",
+                                "value": "/etc/hexalith/environment/statestorecomponentpath.yaml"
                             },
                             {
                                 "name": "Authentication__JwtBearer__Audience",
@@ -436,27 +650,65 @@
                                 }
                             },
                             {
-                                "name": "Authentication__JwtBearer__ValidAudiences",
+                                "name": "Authentication__JwtBearer__TenantClaimName",
                                 "value": "fixture"
                             },
                             {
-                                "name": "Authentication__Workload__AllowedCallers",
+                                "name": "Authentication__JwtBearer__ValidAlgorithms",
                                 "value": "fixture"
                             },
                             {
-                                "name": "Authentication__Workload__Audience",
+                                "name": "Clock__AllowDevelopmentSources",
                                 "value": "fixture"
                             },
                             {
-                                "name": "Authentication__Workload__MaximumLifetimeSeconds",
+                                "name": "Clock__SecretStoreName",
                                 "value": "fixture"
+                            },
+                            {
+                                "name": "Clock__SignerKeyEpoch",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Clock__SigningKeySecretName",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Clock__SourceAuthenticationTokens",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-credential"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "Clock__Sources",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "ConnectionStrings__falkordb",
+                                "value": "rediss://fixture-data.environment.svc.cluster.local:6380"
+                            },
+                            {
+                                "name": "ConnectionStrings__redis",
+                                "value": "rediss://fixture-data.environment.svc.cluster.local:6380"
+                            },
+                            {
+                                "name": "Conversation__ProviderApiKey",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-credential"
+                                    }
+                                }
                             },
                             {
                                 "name": "DAPR_API_TOKEN",
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-parties-api"
+                                        "name": "fixture-memories-api"
                                     }
                                 }
                             },
@@ -465,76 +717,97 @@
                                 "value": "true"
                             },
                             {
-                                "name": "EventStore__AppChannelToken",
+                                "name": "EmbeddingProviders__Google__ApiBaseUrl",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EmbeddingProviders__Ollama__BaseUrl",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EmbeddingProviders__Ollama__OidcClientId",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EmbeddingProviders__Ollama__OidcScope",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EmbeddingProviders__Ollama__OidcTokenEndpoint",
+                                "value": "https://identity.fixture.invalid/realm"
+                            },
+                            {
+                                "name": "Embedding__CredentialNamespace",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "EventStoreIntegration__Routing__PubSubName",
+                                "value": "pubsub"
+                            },
+                            {
+                                "name": "EventStoreIntegration__StateStore__StateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "Ingestion__WorkflowPayloadStore__StateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "IsStubBackfill__Enabled",
+                                "value": "fixture"
+                            },
+                            {
+                                "name": "Memories__AppChannelToken",
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-parties-app"
+                                        "name": "fixture-memories-app"
                                     }
                                 }
                             },
                             {
-                                "name": "EventStore__CommandStatus__StateStoreName",
-                                "value": "statestore"
+                                "name": "Memories__DaprApiToken",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "token",
+                                        "name": "fixture-memories-api"
+                                    }
+                                }
                             },
                             {
-                                "name": "EventStore__DataProtection__PersistToStateStore",
+                                "name": "Memories__LlmComponentPath",
+                                "value": "/etc/hexalith/environment/llmcomponentpath.yaml"
+                            },
+                            {
+                                "name": "Memories__SecretStoreName",
+                                "value": "secretstore"
+                            },
+                            {
+                                "name": "NaturalLanguage__DaprComponentName",
+                                "value": "llm"
+                            },
+                            {
+                                "name": "NaturalLanguage__RetryWorkerEnabled",
                                 "value": "fixture"
                             },
                             {
-                                "name": "EventStore__DataProtection__StateStoreName",
-                                "value": "statestore"
-                            },
-                            {
-                                "name": "EventStore__DomainService__AppId",
+                                "name": "OrphanSemanticIndex__Enabled",
                                 "value": "fixture"
                             },
                             {
-                                "name": "EventStore__ProjectionChanges__PubSubName",
-                                "value": "pubsub"
-                            },
-                            {
-                                "name": "EventStore__Projections__CheckpointStateStoreName",
-                                "value": "statestore"
-                            },
-                            {
-                                "name": "EventStore__Projections__ReadModelStateStoreName",
-                                "value": "statestore"
-                            },
-                            {
-                                "name": "Parties__MemoriesSearch__Enabled",
+                                "name": "TenantEventRouting__AutoProvisionRoutedTenants",
                                 "value": "fixture"
                             },
                             {
-                                "name": "Parties__MemoriesSearch__MappingStore__StateStoreName",
-                                "value": "statestore"
-                            },
-                            {
-                                "name": "Parties__Security__StateStoreName",
-                                "value": "statestore"
-                            },
-                            {
-                                "name": "Tenants__CommandApiAppId",
+                                "name": "WorkflowReplaySafety__Enabled",
                                 "value": "fixture"
                             },
                             {
-                                "name": "Tenants__Enabled",
-                                "value": "fixture"
-                            },
-                            {
-                                "name": "Tenants__PubSubName",
-                                "value": "pubsub"
-                            },
-                            {
-                                "name": "Tenants__ServiceName",
-                                "value": "fixture"
-                            },
-                            {
-                                "name": "Tenants__TopicName",
+                                "name": "retentionSeconds",
                                 "value": "fixture"
                             }
                         ],
-                        "image": "qualification.invalid/parties@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "image": "qualification.invalid/memories@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         "imagePullPolicy": "IfNotPresent",
                         "name": "app",
                         "ports": [
@@ -629,17 +902,17 @@
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2026-10-22T18:30:43Z",
-                "lastUpdateTime": "2026-10-22T18:30:43Z",
+                "lastTransitionTime": "2026-10-22T21:57:28Z",
+                "lastUpdateTime": "2026-10-22T21:57:28Z",
                 "message": "Deployment does not have minimum availability.",
                 "reason": "MinimumReplicasUnavailable",
                 "status": "False",
                 "type": "Available"
             },
             {
-                "lastTransitionTime": "2026-10-22T18:30:43Z",
-                "lastUpdateTime": "2026-10-22T18:30:43Z",
-                "message": "ReplicaSet \"parties-857b449446\" is progressing.",
+                "lastTransitionTime": "2026-10-22T21:57:28Z",
+                "lastUpdateTime": "2026-10-22T21:57:28Z",
+                "message": "ReplicaSet \"memories-55676c9fd5\" is progressing.",
                 "reason": "ReplicaSetUpdated",
                 "status": "True",
                 "type": "Progressing"

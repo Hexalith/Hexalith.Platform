@@ -1071,3 +1071,39 @@
   summary: Scope configuration inputs and secrets per server instead of per module.
   evidence: `runtime.extensions[].configurationInputs` is module-scoped, so `PlatformHostedPublishing.Describe` and `PlatformLocalProfile.Bind` give every enabled server the full list. Each of the three Memories workloads gets 48 inputs, including `Conversation:ProviderApiKey` and the JWT signing key; `tenants-api` gets every Tenants domain secret. This is pre-existing declaration shape, and story 4.5 forbids altering module declarations. It needs a declaration-contract change before real staging Secrets bind, for least-privilege exposure.
   status: open
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Zero every owned custody binding secret buffer on both success and exceptions.
+  evidence: BindingService decodes wrap input twice; its first RootKey is never cleared and exceptions bypass success-only byte-array clearing.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Implement custody delivery completion before allowing deletion closure.
+  evidence: KeyExchange records deliveries, ClosureRules requires Closed deliveries, and SemanticProvider does not implement advertised complete-key-use.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Persist a value-free durable completion and recovery path for custody unwrap intents.
+  evidence: Unwrap leaves its intent SendCommitted while CloseNativeIntentAsync requires ResultDurable, preventing native closure.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Allow custody completion writes to consume reserved completion capacity.
+  evidence: AwsAuthorityStore subtracts CompletionReserveBytes from the ceiling for admissions and completions alike, so the reserve cannot be used.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Compare canonical public keys when enforcing independent custody signing roles.
+  evidence: ComponentProfile checks PEM string inequality, allowing the same cryptographic key under distinct whitespace or encodings.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Encode custody lease and delivery-attempt identifiers unambiguously.
+  evidence: Colon concatenation maps (a:b,c) and (a,b:c) to the same delivery/native-intent identity; contract text validation allows both.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Retain sanitized local composition failure diagnostics without retaining generated credential material.
+  evidence: PlatformAppModel writes composition-failure.txt and PlatformCompositionWorkspace preserves the entire marked directory after failure.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Test the new custody Dapr binding exact-proof rejection boundary.
+  evidence: Verification review found no tests of the new executable; older local-component tests do not execute SemanticProvider authorization.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Test custody worker uncertainty and restart behavior across native I/O failures.
+  evidence: Verification review found no RecoverableLifecycle test proving the durable SendCommitted intent survives a lost native acknowledgement and prevents resend.

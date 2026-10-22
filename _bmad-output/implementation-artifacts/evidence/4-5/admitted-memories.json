@@ -13,7 +13,7 @@
       "dapr.io/enabled": "true",
       "dapr.io/sidecar-listen-addresses": "127.0.0.1"
     },
-    "creationTimestamp": "2026-10-22T18:30:45Z",
+    "creationTimestamp": "2026-10-22T21:57:29Z",
     "generation": 1,
     "labels": {
       "app.kubernetes.io/name": "memories",
@@ -23,7 +23,7 @@
     },
     "name": "dry-memories",
     "namespace": "reference",
-    "uid": "e463c843-88c1-48f1-990d-6277abb2aeba"
+    "uid": "fffb1b3c-3299-4fb3-bd0a-c61e299449fc"
   },
   "spec": {
     "automountServiceAccountToken": true,
@@ -183,11 +183,11 @@
           },
           {
             "name": "ConnectionStrings__falkordb",
-            "value": "fixture"
+            "value": "rediss://fixture-data.environment.svc.cluster.local:6380"
           },
           {
             "name": "ConnectionStrings__redis",
-            "value": "fixture"
+            "value": "rediss://fixture-data.environment.svc.cluster.local:6380"
           },
           {
             "name": "Conversation__ProviderApiKey",
@@ -373,7 +373,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-kj9fq",
+            "name": "kube-api-access-b5hxq",
             "readOnly": true
           }
         ]
@@ -424,7 +424,7 @@
           },
           {
             "name": "DAPR_TRUST_ANCHORS",
-            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEA87HAK3r4Udr/x60D0vV1vTAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxODE0MThaFw0yNzEwMjIxODI5MTha\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQD3Q8mXL1RQXBxa\nJ5KfjoyWSzMFwqEdq1+RrRiVVAkjK6NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFKaM6dub9PpOGbgpptfSUxe3ks9QMAUGAytl\ncANBAAenxFdPbJiuBKrrB29oRJjIpfnRTnxngaMff8dfDQn+L9EJdLDjV9wDJdPN\n7t+xYCZJD8SZOd8lWP0k6kr3OAw=\n-----END CERTIFICATE-----\n"
+            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAqc2qGTrbyOtsuMZ0q4hzKDAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIyMTQxMTNaFw0yNzEwMjIyMTU2MTNa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQBzj4v47TUk/ZY8\njVSRJktTf4fsgS9EJWmKfh9pNT95WqNCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFE+6AgImB5KnQOTlcclTkjH8EClOMAUGAytl\ncANBAHvNYyG69jS84KYHa0bXWIn0hUOnvvQsT2hoAO2gcSpgHjeUlPbI0vok4lxE\n5WrYqSjBtBf9Pp2QKNWw6DxfDA8=\n-----END CERTIFICATE-----\n"
           },
           {
             "name": "POD_NAME",
@@ -531,7 +531,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-kj9fq",
+            "name": "kube-api-access-b5hxq",
             "readOnly": true
           }
         ]
@@ -585,7 +585,7 @@
         "name": "environment-components"
       },
       {
-        "name": "kube-api-access-kj9fq",
+        "name": "kube-api-access-b5hxq",
         "projected": {
           "defaultMode": 420,
           "sources": [

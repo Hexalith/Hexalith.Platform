@@ -1,1 +1,29 @@
-deployment.apps/eventstore serverside-applied
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXRlbmFudHMtYXBpLWFwcA=="
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T21:57:22Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T21:57:22Z"
+            }
+        ],
+        "name": "fixture-tenants-api-app",
+        "namespace": "reference",
+        "resourceVersion": "963",
+        "uid": "6d42f370-f49e-487f-b33f-0cd8c8da972f"
+    },
+    "type": "Opaque"
+}

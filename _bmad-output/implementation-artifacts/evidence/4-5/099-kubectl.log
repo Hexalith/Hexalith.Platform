@@ -1,30 +1,44 @@
 {
     "apiVersion": "v1",
-    "data": {
-        ".dockerconfigjson": "eyJhdXRocyI6e319"
-    },
-    "kind": "Secret",
+    "kind": "Namespace",
     "metadata": {
-        "creationTimestamp": "2026-10-22T18:30:36Z",
+        "creationTimestamp": "2026-10-22T21:57:22Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "reference",
+            "pod-security.kubernetes.io/audit": "restricted",
+            "pod-security.kubernetes.io/enforce": "restricted",
+            "pod-security.kubernetes.io/enforce-version": "v1.35",
+            "pod-security.kubernetes.io/warn": "restricted"
+        },
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:stringData": {
-                        "f:.dockerconfigjson": {}
-                    },
-                    "f:type": {}
+                    "f:metadata": {
+                        "f:labels": {
+                            "f:pod-security.kubernetes.io/audit": {},
+                            "f:pod-security.kubernetes.io/enforce": {},
+                            "f:pod-security.kubernetes.io/enforce-version": {},
+                            "f:pod-security.kubernetes.io/warn": {}
+                        }
+                    }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T18:30:36Z"
+                "time": "2026-10-22T21:57:22Z"
             }
         ],
-        "name": "fixture-registry",
-        "namespace": "reference",
+        "name": "reference",
         "resourceVersion": "938",
-        "uid": "8b26e562-e38d-44f3-87c4-15ea87f5827a"
+        "uid": "6118e5b7-e7fc-46ad-8662-f0cfddd26f60"
     },
-    "type": "kubernetes.io/dockerconfigjson"
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
 }

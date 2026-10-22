@@ -3,27 +3,27 @@
     "kind": "Pod",
     "metadata": {
         "annotations": {
-            "dapr.io/api-token-secret": "fixture-parties-api",
-            "dapr.io/app-id": "parties",
+            "dapr.io/api-token-secret": "fixture-memories-api",
+            "dapr.io/app-id": "memories",
             "dapr.io/app-port": "8080",
             "dapr.io/app-protocol": "http",
-            "dapr.io/app-token-secret": "fixture-parties-app",
-            "dapr.io/config": "platform-parties",
+            "dapr.io/app-token-secret": "fixture-memories-app",
+            "dapr.io/config": "platform-memories",
             "dapr.io/enable-api-logging": "false",
             "dapr.io/enabled": "true",
             "dapr.io/sidecar-listen-addresses": "127.0.0.1"
         },
-        "creationTimestamp": "2026-10-22T18:30:46Z",
+        "creationTimestamp": "2026-10-22T21:57:29Z",
         "generation": 1,
         "labels": {
-            "app.kubernetes.io/name": "parties",
-            "dapr.io/app-id": "parties",
+            "app.kubernetes.io/name": "memories",
+            "dapr.io/app-id": "memories",
             "dapr.io/metrics-enabled": "true",
             "dapr.io/sidecar-injected": "true"
         },
-        "name": "dry-parties",
+        "name": "dry-memories",
         "namespace": "reference",
-        "uid": "e8a9e81c-23d1-49e2-b2a3-31c89d4a9f30"
+        "uid": "fffb1b3c-3299-4fb3-bd0a-c61e299449fc"
     },
     "spec": {
         "automountServiceAccountToken": true,
@@ -35,7 +35,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-parties-app"
+                                "name": "fixture-memories-app"
                             }
                         }
                     },
@@ -44,12 +44,80 @@
                         "value": "http://0.0.0.0:8080"
                     },
                     {
-                        "name": "Authentication__JwtBearer__AllowInsecureSymmetricKey",
+                        "name": "AccessTelemetryLifecycle__AttestationVerificationKey",
                         "value": "fixture"
                     },
                     {
-                        "name": "Authentication__JwtBearer__AllowedAlgorithms",
+                        "name": "AccessTelemetryLifecycle__CapabilityEvidence",
                         "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__CapacityEvidenceId",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__ClockSignerKeyEpoch",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__ComponentProfileHash",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__ConfigurationEpoch",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__ConfigurationStoreComponentPath",
+                        "value": "/etc/hexalith/environment/configurationstorecomponentpath.yaml"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__ConfigurationStoreName",
+                        "value": "access-telemetry-config"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__DeploymentId",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__Enabled",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__MarkerKeyGeneration",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__MarkerKeyReference",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__PhysicalReclamationEvidenceId",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__PhysicalReclamationReporterImageDigest",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__RetentionSource",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__SecretStoreName",
+                        "value": "access-telemetry-secrets"
+                    },
+                    {
+                        "name": "AccessTelemetryLifecycle__StateStoreComponentPath",
+                        "value": "/etc/hexalith/environment/statestorecomponentpath.yaml"
                     },
                     {
                         "name": "Authentication__JwtBearer__Audience",
@@ -77,27 +145,65 @@
                         }
                     },
                     {
-                        "name": "Authentication__JwtBearer__ValidAudiences",
+                        "name": "Authentication__JwtBearer__TenantClaimName",
                         "value": "fixture"
                     },
                     {
-                        "name": "Authentication__Workload__AllowedCallers",
+                        "name": "Authentication__JwtBearer__ValidAlgorithms",
                         "value": "fixture"
                     },
                     {
-                        "name": "Authentication__Workload__Audience",
+                        "name": "Clock__AllowDevelopmentSources",
                         "value": "fixture"
                     },
                     {
-                        "name": "Authentication__Workload__MaximumLifetimeSeconds",
+                        "name": "Clock__SecretStoreName",
                         "value": "fixture"
+                    },
+                    {
+                        "name": "Clock__SignerKeyEpoch",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Clock__SigningKeySecretName",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Clock__SourceAuthenticationTokens",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-credential"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Clock__Sources",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "ConnectionStrings__falkordb",
+                        "value": "rediss://fixture-data.environment.svc.cluster.local:6380"
+                    },
+                    {
+                        "name": "ConnectionStrings__redis",
+                        "value": "rediss://fixture-data.environment.svc.cluster.local:6380"
+                    },
+                    {
+                        "name": "Conversation__ProviderApiKey",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-credential"
+                            }
+                        }
                     },
                     {
                         "name": "DAPR_API_TOKEN",
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-parties-api"
+                                "name": "fixture-memories-api"
                             }
                         }
                     },
@@ -106,72 +212,93 @@
                         "value": "true"
                     },
                     {
-                        "name": "EventStore__AppChannelToken",
+                        "name": "EmbeddingProviders__Google__ApiBaseUrl",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EmbeddingProviders__Ollama__BaseUrl",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EmbeddingProviders__Ollama__OidcClientId",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EmbeddingProviders__Ollama__OidcScope",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EmbeddingProviders__Ollama__OidcTokenEndpoint",
+                        "value": "https://identity.fixture.invalid/realm"
+                    },
+                    {
+                        "name": "Embedding__CredentialNamespace",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "EventStoreIntegration__Routing__PubSubName",
+                        "value": "pubsub"
+                    },
+                    {
+                        "name": "EventStoreIntegration__StateStore__StateStoreName",
+                        "value": "statestore"
+                    },
+                    {
+                        "name": "Ingestion__WorkflowPayloadStore__StateStoreName",
+                        "value": "statestore"
+                    },
+                    {
+                        "name": "IsStubBackfill__Enabled",
+                        "value": "fixture"
+                    },
+                    {
+                        "name": "Memories__AppChannelToken",
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-parties-app"
+                                "name": "fixture-memories-app"
                             }
                         }
                     },
                     {
-                        "name": "EventStore__CommandStatus__StateStoreName",
-                        "value": "statestore"
+                        "name": "Memories__DaprApiToken",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "token",
+                                "name": "fixture-memories-api"
+                            }
+                        }
                     },
                     {
-                        "name": "EventStore__DataProtection__PersistToStateStore",
+                        "name": "Memories__LlmComponentPath",
+                        "value": "/etc/hexalith/environment/llmcomponentpath.yaml"
+                    },
+                    {
+                        "name": "Memories__SecretStoreName",
+                        "value": "secretstore"
+                    },
+                    {
+                        "name": "NaturalLanguage__DaprComponentName",
+                        "value": "llm"
+                    },
+                    {
+                        "name": "NaturalLanguage__RetryWorkerEnabled",
                         "value": "fixture"
                     },
                     {
-                        "name": "EventStore__DataProtection__StateStoreName",
-                        "value": "statestore"
-                    },
-                    {
-                        "name": "EventStore__DomainService__AppId",
+                        "name": "OrphanSemanticIndex__Enabled",
                         "value": "fixture"
                     },
                     {
-                        "name": "EventStore__ProjectionChanges__PubSubName",
-                        "value": "pubsub"
-                    },
-                    {
-                        "name": "EventStore__Projections__CheckpointStateStoreName",
-                        "value": "statestore"
-                    },
-                    {
-                        "name": "EventStore__Projections__ReadModelStateStoreName",
-                        "value": "statestore"
-                    },
-                    {
-                        "name": "Parties__MemoriesSearch__Enabled",
+                        "name": "TenantEventRouting__AutoProvisionRoutedTenants",
                         "value": "fixture"
                     },
                     {
-                        "name": "Parties__MemoriesSearch__MappingStore__StateStoreName",
-                        "value": "statestore"
-                    },
-                    {
-                        "name": "Parties__Security__StateStoreName",
-                        "value": "statestore"
-                    },
-                    {
-                        "name": "Tenants__CommandApiAppId",
+                        "name": "WorkflowReplaySafety__Enabled",
                         "value": "fixture"
                     },
                     {
-                        "name": "Tenants__Enabled",
-                        "value": "fixture"
-                    },
-                    {
-                        "name": "Tenants__PubSubName",
-                        "value": "pubsub"
-                    },
-                    {
-                        "name": "Tenants__ServiceName",
-                        "value": "fixture"
-                    },
-                    {
-                        "name": "Tenants__TopicName",
+                        "name": "retentionSeconds",
                         "value": "fixture"
                     },
                     {
@@ -187,7 +314,7 @@
                         "value": "http"
                     }
                 ],
-                "image": "qualification.invalid/parties@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "image": "qualification.invalid/memories@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "imagePullPolicy": "IfNotPresent",
                 "name": "app",
                 "ports": [
@@ -246,7 +373,7 @@
                     },
                     {
                         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                        "name": "kube-api-access-cp42l",
+                        "name": "kube-api-access-b5hxq",
                         "readOnly": true
                     }
                 ]
@@ -265,7 +392,7 @@
                     "--dapr-public-port",
                     "3501",
                     "--app-id",
-                    "parties",
+                    "memories",
                     "--app-protocol",
                     "http",
                     "--log-level",
@@ -284,7 +411,7 @@
                     "--metrics-port",
                     "9090",
                     "--config",
-                    "platform-parties",
+                    "platform-memories",
                     "--placement-host-address",
                     "dapr-placement-server.dapr-system.svc.cluster.local:50005",
                     "--enable-api-logging=false",
@@ -297,7 +424,7 @@
                     },
                     {
                         "name": "DAPR_TRUST_ANCHORS",
-                        "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEA87HAK3r4Udr/x60D0vV1vTAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxODE0MThaFw0yNzEwMjIxODI5MTha\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQD3Q8mXL1RQXBxa\nJ5KfjoyWSzMFwqEdq1+RrRiVVAkjK6NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFKaM6dub9PpOGbgpptfSUxe3ks9QMAUGAytl\ncANBAAenxFdPbJiuBKrrB29oRJjIpfnRTnxngaMff8dfDQn+L9EJdLDjV9wDJdPN\n7t+xYCZJD8SZOd8lWP0k6kr3OAw=\n-----END CERTIFICATE-----\n"
+                        "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAqc2qGTrbyOtsuMZ0q4hzKDAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIyMTQxMTNaFw0yNzEwMjIyMTU2MTNa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQBzj4v47TUk/ZY8\njVSRJktTf4fsgS9EJWmKfh9pNT95WqNCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFE+6AgImB5KnQOTlcclTkjH8EClOMAUGAytl\ncANBAHvNYyG69jS84KYHa0bXWIn0hUOnvvQsT2hoAO2gcSpgHjeUlPbI0vok4lxE\n5WrYqSjBtBf9Pp2QKNWw6DxfDA8=\n-----END CERTIFICATE-----\n"
                     },
                     {
                         "name": "POD_NAME",
@@ -321,7 +448,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-parties-api"
+                                "name": "fixture-memories-api"
                             }
                         }
                     },
@@ -330,7 +457,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-parties-app"
+                                "name": "fixture-memories-app"
                             }
                         }
                     }
@@ -404,7 +531,7 @@
                     },
                     {
                         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                        "name": "kube-api-access-cp42l",
+                        "name": "kube-api-access-b5hxq",
                         "readOnly": true
                     }
                 ]
@@ -458,7 +585,7 @@
                 "name": "environment-components"
             },
             {
-                "name": "kube-api-access-cp42l",
+                "name": "kube-api-access-b5hxq",
                 "projected": {
                     "defaultMode": 420,
                     "sources": [

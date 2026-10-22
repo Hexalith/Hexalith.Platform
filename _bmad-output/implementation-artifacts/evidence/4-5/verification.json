@@ -1,26 +1,21 @@
 {
   "schema": "hexalith.helm-qualification.verification.v1",
-  "recordedAt": "2026-10-22T18:35:00.885031+00:00",
+  "recordedAt": "2026-10-22T21:59:08.208050+00:00",
   "qualificationStatus": "passed",
-  "qualificationSha256": "72d4613d91365e9294afc2137cb53b329640d8d87b254f630e7dd9ebd497b355",
+  "qualificationSha256": "c8e90df9c7b56e35c522fd4c719e5bce58b22cace50827ddc97c699a1e6f9af2",
   "sourceSnapshot": {
-    "metadataFile": "isolated-verification.json",
-    "metadataSha256": "7ade12d1f123f0540e4a90dfd2eb9cdbe9181e7407d8108dee55b6ffe6d24760",
+    "strategy": "current working tree with complete source input hashes",
+    "revision": "04045b679ff329b54a2a2131a32bc4707944087e",
+    "dirtyTreeRecorded": true,
+    "statusPorcelainSha256": "576f6d46b3990eb4891f3cb172e4f423e931704d22dd743372182baffb92004b",
+    "submoduleStatusSha256": "0828c75fd4a4fc9edeac1cd0a88d347bdd083854945aaddd64242127f4294c69",
     "inputCount": 1441,
     "drift": {
       "added": [],
       "removed": [],
       "modified": []
     },
-    "deliverableInputDifferences": [],
-    "sourceOverrides": {
-      "archive": "isolated-source-overrides.tgz",
-      "archiveSha256": "d82878fdfe7e6038b8af9b65a60f41b9ba0e4e949f507f2b1feb9d36aa96df3b",
-      "manifest": "isolated-source-overrides.json",
-      "manifestSha256": "6a3f18eaf42e77e15247a4613091e5a14fcba987b07ceca68c92fd3495d1d2b5",
-      "count": 206
-    },
-    "sourceHashesVerifiedBeforeWorktreeCleanup": true
+    "currentSourceHashesVerifiedAfterBuild": true
   },
   "focusedCompositionTests": [
     {
@@ -35,34 +30,16 @@
         "-class",
         "*PlatformDaprBindingsTests",
         "-result-xml",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/_bmad-output/implementation-artifacts/evidence/4-5/isolated-focused-hosted-and-parties.xml"
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review4-focused-hosted-and-parties.xml"
       ],
-      "passed": 10,
+      "returncode": 0,
+      "passed": 17,
       "failed": 0,
       "skipped": 0,
-      "xml": "isolated-focused-hosted-and-parties.xml",
-      "xmlSha256": "d8e0f1869ec96f15df6a9971ac77acd8605f7c5be7af3643ddff6ec7721f966c",
-      "log": "isolated-focused-hosted-and-parties.log",
-      "logSha256": "501e7d32f398ac23462cf7bb75217804af929f089bad9b0f0c365e131b43521e",
-      "result": {
-        "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
-        "id": "1efb71a1-f368-477c-9dc3-239eb6041a24",
-        "name": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
-        "run-date": "2026-10-22",
-        "run-time": "18:26:51",
-        "start-rtf": "2026-10-22T18:26:51.3947208+00:00",
-        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
-        "target-framework": ".NETCoreApp,Version=v10.0",
-        "errors": "0",
-        "failed": "0",
-        "finish-rtf": "2026-10-22T18:26:52.3397374+00:00",
-        "not-run": "0",
-        "passed": "10",
-        "skipped": "0",
-        "time": "0.945",
-        "time-rtf": "00:00:00.9450000",
-        "total": "10"
-      }
+      "xml": "review4-focused-hosted-and-parties.xml",
+      "log": "review4-focused-hosted-and-parties.log",
+      "logSha256": "17411d320c2d3b19779f1137f3462911106abf726c8905d2a4f1bd342fa68619",
+      "xmlSha256": "6d98c3b42dde481f697909105b110133f53ab8c58a6f615a27385c3eefe92cf6"
     },
     {
       "label": "shared-dapr",
@@ -104,34 +81,16 @@
         "-method",
         "*ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary",
         "-result-xml",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/_bmad-output/implementation-artifacts/evidence/4-5/isolated-focused-shared-dapr.xml"
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review4-focused-shared-dapr.xml"
       ],
+      "returncode": 0,
       "passed": 40,
       "failed": 0,
       "skipped": 0,
-      "xml": "isolated-focused-shared-dapr.xml",
-      "xmlSha256": "5e84f3c46982ab39cda23ff5b55e817a66aa2b248b3161ec5ee916a134f37336",
-      "log": "isolated-focused-shared-dapr.log",
-      "logSha256": "1dc822906eefdd62da2319e768e74c8226df8651c63a93453ca6418b22876828",
-      "result": {
-        "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
-        "id": "2e9d3f0a-6939-4a66-b972-3c53e5f17bca",
-        "name": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
-        "run-date": "2026-10-22",
-        "run-time": "18:26:52",
-        "start-rtf": "2026-10-22T18:26:52.5638680+00:00",
-        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
-        "target-framework": ".NETCoreApp,Version=v10.0",
-        "errors": "0",
-        "failed": "0",
-        "finish-rtf": "2026-10-22T18:26:53.9061967+00:00",
-        "not-run": "0",
-        "passed": "40",
-        "skipped": "0",
-        "time": "1.342",
-        "time-rtf": "00:00:01.3420000",
-        "total": "40"
-      }
+      "xml": "review4-focused-shared-dapr.xml",
+      "log": "review4-focused-shared-dapr.log",
+      "logSha256": "8715b76123bfac09542391415bae4c16638308a71d9ce94fda98e74f560684a8",
+      "xmlSha256": "212db560a751ba98e620a4735fe4c8096eef59825ea93b74fc578667435d2b54"
     },
     {
       "label": "readiness-diagnostics",
@@ -141,159 +100,150 @@
         "-method",
         "*UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic",
         "-result-xml",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/_bmad-output/implementation-artifacts/evidence/4-5/isolated-focused-readiness-diagnostics.xml"
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review4-focused-readiness-diagnostics.xml"
       ],
+      "returncode": 0,
       "passed": 2,
       "failed": 0,
       "skipped": 0,
-      "xml": "isolated-focused-readiness-diagnostics.xml",
-      "xmlSha256": "99ba26903d38fbd99aeda46e30b7ec1e0947ad29fe0b8431dc26b80c7436e834",
-      "log": "isolated-focused-readiness-diagnostics.log",
-      "logSha256": "e7ea77293b5c988406520f60341c5526520c054edc1bf35dee54e155016cb40d",
-      "result": {
-        "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
-        "id": "b684872f-654b-4add-a528-115a576f63a6",
-        "name": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
-        "run-date": "2026-10-22",
-        "run-time": "18:26:54",
-        "start-rtf": "2026-10-22T18:26:54.1392027+00:00",
-        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
-        "target-framework": ".NETCoreApp,Version=v10.0",
-        "errors": "0",
-        "failed": "0",
-        "finish-rtf": "2026-10-22T18:26:54.5327877+00:00",
-        "not-run": "0",
-        "passed": "2",
-        "skipped": "0",
-        "time": "0.394",
-        "time-rtf": "00:00:00.3940000",
-        "total": "2"
-      }
+      "xml": "review4-focused-readiness-diagnostics.xml",
+      "log": "review4-focused-readiness-diagnostics.log",
+      "logSha256": "d1da0536de53580ebfe670d5a5ff982b77b281ef24fcc63a4d094683401e0319",
+      "xmlSha256": "c10348426a6eed92860096f9545696ce2969044e469bc1bac1d01327867071e9"
     }
   ],
-  "focusedTotal": 52,
-  "focusedFailed": 0,
-  "focusedSkipped": 0,
-  "pythonTests": {
-    "chart": 12,
-    "qualifier": 9,
-    "total": 21,
+  "focusedCompositionTotals": {
+    "passed": 59,
+    "failed": 0,
+    "skipped": 0
+  },
+  "buildAndRepositoryRunnerChecks": [
+    {
+      "label": "build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "--no-restore",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:UseNuGetDeps=false",
+        "-p:RunAnalyzers=false",
+        "-nodeReuse:false",
+        "-m:1"
+      ],
+      "returncode": 0,
+      "log": "review3-build.log",
+      "logSha256": "1d61eaa402ede519c90437b510e5c9066c503fd686165a2e06d3a974c0e86fc8"
+    },
+    {
+      "label": "mtp-hosted",
+      "command": [
+        "dotnet",
+        "test",
+        "--project",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "--no-build",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:UseNuGetDeps=false",
+        "-p:RunAnalyzers=false",
+        "--",
+        "--filter-class",
+        "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests"
+      ],
+      "returncode": 0,
+      "log": "review4-mtp-hosted.log",
+      "logSha256": "9eac71fbbf71d278bad2b7ad0c7be95961e527b5a1438020327b64892f916707"
+    }
+  ],
+  "pythonUnitSuite": {
+    "command": [
+      "/usr/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/home/administrator/projects/hexalith/platform/eng/helm-qualification",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "passed": 32,
     "failed": 0,
     "skipped": 0,
-    "execution": "The complete unittest discovery command and output are retained in qualification.json commands."
+    "log": "033-python3.log",
+    "logSha256": "0b38832d98e916648c7defdd5de81c0cde8ed152019f208e80e40304d8721845"
+  },
+  "commandLogIntegrity": {
+    "referenced": 169,
+    "present": 169,
+    "allHashesMatch": true,
+    "unreferencedNumberedLogs": []
+  },
+  "liveQualification": {
+    "admittedWorkloads": 7,
+    "helmApplyOwnershipWorkloads": 7,
+    "unsafePodRejected": true,
+    "recoveryQuiescesAndClosesRoutes": true,
+    "unforcedConflictRefusal": true,
+    "uninstallPreservesEnvironment": true,
+    "preservedEnvironmentFixtureCount": 23
   },
   "package": {
     "file": "hexalith-reference-0.1.0.tgz",
-    "sha256": "daafe18f740d55281c28f066f17d94528da9c205e405e5da9fac3c6d87d97d11"
-  },
-  "commandLogIntegrity": {
-    "count": 166,
-    "allHashesMatch": true,
-    "allVersionControlVisible": true
-  },
-  "resolvedKubernetesIntegration": {
-    "package": "Aspire.Hosting.Kubernetes",
-    "version": "13.6.1-preview.1.26506.6",
-    "expectedVersion": "13.6.1-preview.1.26506.6",
-    "resolved": {
-      "native": {
-        "version": "13.6.1-preview.1.26506.6",
-        "assetsFile": "resolved-native-project.assets.json",
-        "assetsSha256": "666eaf9c3c534cac1a80a6d724c17525bf8615d581b32d971c5492d961cc6dcc",
-        "packageSha512": "40lFCkAutU7ZnoAneB9m7PPSOwdkg854ySvSUNrmY0Uv8APOR/qurSAINhPvaLT2ZdwQ4hyi1zCVN3Tj4SK/lw=="
-      },
-      "composition": {
-        "version": "13.6.1-preview.1.26506.6",
-        "assetsFile": "resolved-composition-project.assets.json",
-        "assetsSha256": "bd4a00a34034b695502a239fe542794705b8f22609dff66bc9fdbdb971ae27a4",
-        "packageSha512": "40lFCkAutU7ZnoAneB9m7PPSOwdkg854ySvSUNrmY0Uv8APOR/qurSAINhPvaLT2ZdwQ4hyi1zCVN3Tj4SK/lw=="
-      }
-    }
+    "sha256": "d89cff4fd8c2c2df21d9de2b474ef93f34dbdd76940b65a5d9957b1fe3059b83"
   },
   "cleanup": {
     "complete": true,
-    "ownedCluster": "h45-831c5cd233a1",
+    "ownedCluster": "h45-1e52851b2eca",
     "onlyInvocationOwnedResourcesDeleted": true,
     "temporaryKubeconfigRemoved": true,
     "clusterRemovalVerified": true,
     "temporaryDirectoryRemoved": true
   },
-  "fullCompositionSuite": {
-    "recordedAt": "2026-10-22T17:55:48.293954+00:00",
-    "command": [
-      "dotnet",
-      "test",
-      "--project",
-      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "-p:UseHexalithProjectReferences=true",
-      "-p:UseNuGetDeps=false",
-      "-p:RunAnalyzers=false",
-      "-p:DirectoryPackagesPropsPath=/home/administrator/projects/hexalith/platform/eng/helm-qualification/source-packages.props"
-    ],
-    "exitCode": 2,
-    "passed": 230,
-    "failed": 6,
-    "skipped": 9,
-    "log": "composition-full-current.log",
-    "logSha256": "1cb0c8bf922dd9907d0c5b9fed58202c52095f2acbc8d6b23cc36f5d750525c9",
-    "failures": [
-      "GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
-      "DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(human)",
-      "DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(json)",
-      "DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
-      "OwnerOptionBindingTests.MemoriesProfileBindsAndValidatesActualOwnerOptionsAsync",
-      "TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync"
-    ],
-    "notes": "Broad regression result; required hosted/graph/Dapr/readiness tests separately passed 52/52 without skips. Owner subprocess does not inherit the command-line import-wrapper property."
-  },
-  "retainedAttempts": [
-    {
-      "directory": "superseded-catalog-drift",
-      "status": "failed",
-      "reportSha256": "9069b799a5d3151a685f5c33bb85094a2ab77398e6b7c5925e3820d9fa26caad",
-      "commandLogCount": 125,
-      "commandLogIssues": []
-    },
-    {
-      "directory": "superseded-catalog-integration",
-      "status": "failed",
-      "reportSha256": "dd06e327409efa957721f3def3c67abc01a96ab0ac4c5e899a062cb7c1395e85",
-      "commandLogCount": 8,
-      "commandLogIssues": []
-    },
-    {
-      "directory": "superseded-forced-root-props",
-      "status": "failed",
-      "reportSha256": "7c80790a848b10872750b6c7af467de6e19a68919b9dc9ab8cb19bdc6354af80",
-      "commandLogCount": 9,
-      "commandLogIssues": []
-    },
-    {
-      "directory": "superseded-parent-source-drift",
-      "status": "failed",
-      "reportSha256": "734bdf2e513330959ea99144bc9ef22efe93a6adbf2700363c41403c38515dfe",
-      "commandLogCount": 166,
-      "commandLogIssues": []
-    },
-    {
-      "directory": "superseded-source-drift",
-      "status": "failed",
-      "reportSha256": "02601c0933853b72abda6921f4bb25d5149ca3698cb4b76df5abdd3dd2ad6232",
-      "commandLogCount": 125,
-      "commandLogIssues": []
-    }
+  "knownBroaderSuiteLimitations": [
+    "The pre-existing TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync fixture failure reproduced in a broader local selection; it is listed in parent-full-suite.json and remains outside this change.",
+    "Fresh-build dotnet test invocations exhibited the existing MTP handshake/zero-tests issue. A separate zero-warning build and repository-runner --no-build invocation passed all 11 hosted tests; the complete focused selection passed 59 tests with the native xUnit runner."
   ],
-  "temporaryWorktreeCleanup": {
-    "complete": true,
-    "removed": [
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Tenants",
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Parties",
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Memories",
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore",
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons",
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds",
-      "/tmp/bmad-4-5-frozen-nfaju0ri/platform"
-    ],
-    "temporaryParentRemoved": true
+  "exclusions": [
+    "OCI publication and attestation",
+    "off-site restoration",
+    "staging deployment",
+    "application functional readiness with retained images",
+    "future environment policy qualification"
+  ],
+  "notes": "Parent verification after independent review patches. This successful working-tree qualification supersedes Review 3 and earlier package snapshots. All 59 focused C# cases, 11 repository-runner hosted cases, 32 Python cases and the complete live lifecycle passed; historical isolated-source and broader-suite artifacts remain separately labeled.",
+  "matrixAudit": {
+    "Modes": {
+      "tests": [
+        "test_modes_determinism_and_archive_parity",
+        "test_identity_readiness_and_shared_dapr_security",
+        "test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail"
+      ],
+      "result": "passed",
+      "liveChecks": [
+        "recoveryQuiescesAndClosesRoutes",
+        "removalPreservesEnvironment"
+      ]
+    },
+    "Bindings": {
+      "tests": [
+        "test_scheme_less_authorities_require_native_tls_and_postgresql_states_tls",
+        "test_component_metadata_rejects_objects_and_lists_before_rendering",
+        "test_credential_keys_share_one_denylist_for_configuration_and_metadata",
+        "test_values_only_digest_change",
+        "test_each_validation_rule_fails_with_its_own_message"
+      ],
+      "result": "passed"
+    },
+    "Export boundary": {
+      "tests": [
+        "HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment",
+        "HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput"
+      ],
+      "result": "passed",
+      "liveChecks": [
+        "nativeProbeAndGraphParity"
+      ]
+    }
   }
 }

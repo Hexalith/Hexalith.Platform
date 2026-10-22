@@ -22,7 +22,7 @@ spec:
         {{- include "reference.secretRef" $binding.credential | nindent 8 }}
     {{- range $key, $value := $binding.metadata }}
     - name: {{ $key | quote }}
-      value: {{ toString $value | quote }}
+      value: {{ include "reference.scalar" $value | quote }}
     {{- end }}
 scopes:
   {{- toYaml .consumers | nindent 2 }}

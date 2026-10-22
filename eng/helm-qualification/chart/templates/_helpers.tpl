@@ -14,8 +14,9 @@
 {{- range $key, $endpoint := .Values.endpoints -}}
 {{- include "reference.endpoint" $endpoint -}}
 {{- end -}}
-{{- $_ := required "existing Sentry endpoint parameter is required" (index .Values.endpoints .Values.environment.sentryEndpoint) -}}
 {{- if empty .Values.endpoints -}}{{ fail "non-secret endpoint parameters are required" }}{{- end -}}
+{{- $sentry := required "existing Sentry endpoint parameter is required" (index .Values.endpoints .Values.environment.sentryEndpoint) -}}
+{{- include "reference.authority" (dict "authority" (urlParse $sentry).host "requirePort" true) -}}
 {{- $graph := include "reference.graph" . | fromJson -}}
 {{- range $graph.capabilities -}}
 {{- $binding := required (printf "environment component %s is required" .name) (index $.Values.environment.components .name) -}}
@@ -28,12 +29,16 @@
 {{- if not (has (default "url" $binding.endpointFormat) (list "url" "authority")) -}}{{ fail "unknown endpoint metadata format" }}{{- end -}}
 {{- if and (hasSuffix ".redis" $binding.type) (ne (toString $binding.metadata.enableTLS) "true") -}}{{ fail "hosted Redis bindings require native TLS" }}{{- end -}}
 {{- range $key, $value := $binding.metadata -}}
+{{- if or (kindIs "map" $value) (kindIs "slice" $value) -}}{{ fail "provider metadata values must be scalar" }}{{- end -}}
 {{- include "reference.credentialLiteral" $value -}}
-{{- if or (regexMatch "(?i)(password|secret|token|apikey|authorization|connectionstring)" $key) (eq $key $binding.endpointMetadataKey) (eq $key $binding.credentialMetadataKey) -}}{{ fail "provider credentials and endpoints require references" }}{{- end -}}
+{{- if or (eq (include "reference.isCredentialKey" $key) "true") (eq (lower $key) (lower $binding.endpointMetadataKey)) (eq (lower $key) (lower $binding.credentialMetadataKey)) -}}{{ fail "provider credentials and endpoints require references" }}{{- end -}}
 {{- if regexMatch "(?i)(://|localhost|127[.]|password=|token=)" (toString $value) -}}{{ fail "unsafe provider metadata literal" }}{{- end -}}
 {{- end -}}
 {{- $endpoint := required "component endpoint reference is required" $binding.endpoint -}}
-{{- $_ := required "component endpoint parameter is missing" (index $.Values.endpoints $endpoint) -}}
+{{- $value := required "component endpoint parameter is missing" (index $.Values.endpoints $endpoint) -}}
+{{- if eq (default "url" $binding.endpointFormat) "authority" -}}
+{{- include "reference.authority" (dict "authority" (urlParse $value).host "requirePort" true) -}}
+{{- end -}}
 {{- include "reference.secretRef" $binding.credential | fromYaml | toJson | trunc 0 -}}
 {{- end -}}
 {{- $matches := dict -}}
@@ -68,8 +73,14 @@
 {{- end -}}
 
 {{- define "reference.endpoint" -}}
-{{- if or (not (kindIs "string" .)) (not (regexMatch "^(https|rediss|postgresql)://[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]{1,5})?(/[a-zA-Z0-9._~/-]*)?$" (toString .))) -}}{{ fail "unsafe endpoint: use a non-secret TLS endpoint without credentials, query or fragment" }}{{- end -}}
-{{- $authority := (urlParse .).host -}}
+{{- if or (not (kindIs "string" .)) (not (regexMatch "^(https|rediss)://[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]{1,5})?(/[a-zA-Z0-9._~/-]*)?$|^postgresql://[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]{1,5})?(/[a-zA-Z0-9._~/-]*)?[?]sslmode=(verify-full|require|verify-ca)$" (toString .))) -}}{{ fail "unsafe endpoint: use a non-secret TLS endpoint; PostgreSQL requires a single sslmode=verify-full, require or verify-ca query" }}{{- end -}}
+{{- include "reference.authority" (dict "authority" (urlParse .).host "requirePort" false) -}}
+{{- end -}}
+
+{{- define "reference.authority" -}}
+{{- $authority := .authority -}}
+{{- if not (regexMatch "^[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]{1,5})?$" $authority) -}}{{ fail "invalid endpoint authority" }}{{- end -}}
+{{- if and .requirePort (not (contains ":" $authority)) -}}{{ fail "endpoint authority requires an explicit port" }}{{- end -}}
 {{- $host := regexFind "^[^:]+" $authority | lower -}}
 {{- if contains ":" $authority -}}
 {{- $port := int (last (splitList ":" $authority)) -}}
@@ -89,8 +100,38 @@
 {{- end -}}
 {{- end -}}
 
+{{- define "reference.connectionString" -}}
+{{- $literal := trim (toString .value) -}}
+{{- $key := lower .key -}}
+{{- $duration := and (regexMatch "^[0-9]{1,2}:[0-5][0-9]$" $literal) (not (hasSuffix "__endpoint" $key)) -}}
+{{- $authority := and (regexMatch "^[^:[:space:],/]+[[:space:]]*:[[:space:]]*[0-9]+[[:space:]]*(,.*)?$" $literal) (not $duration) -}}
+{{- if or (hasPrefix "connectionstrings__" $key) $authority -}}
+{{- if contains "://" $literal -}}
+{{- include "reference.authority" (dict "authority" (urlParse $literal).host "requirePort" true) -}}
+{{- else -}}
+{{- $endpoint := false -}}
+{{- $tls := false -}}
+{{- range splitList "," $literal -}}
+{{- $part := trim . -}}
+{{- if contains "=" $part -}}
+{{- $option := splitList "=" $part -}}
+{{- if eq (lower (trim (first $option))) "ssl" -}}
+{{- if or (ne (len $option) 2) (ne (lower (trim (last $option))) "true") -}}{{ fail "scheme-less data-service endpoints require ssl=true and forbid ssl=false" }}{{- end -}}
+{{- $tls = true -}}
+{{- end -}}
+{{- else -}}
+{{- include "reference.authority" (dict "authority" $part "requirePort" true) -}}
+{{- $endpoint = true -}}
+{{- end -}}
+{{- end -}}
+{{- if not $endpoint -}}{{ fail "connection strings require at least one endpoint authority" }}{{- end -}}
+{{- if not $tls -}}{{ fail "scheme-less data-service endpoints require ssl=true and forbid ssl=false" }}{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "reference.credentialLiteral" -}}
-{{- if regexMatch `(?i)(^|[;,\s\p{Zs}])(password|pwd|user[ _]*id|uid|user[ _]*name|access[ _]*token|authentication[ _]*token|token|api[ _-]*key|client[ _]*secret|secret|authorization)[\s\p{Zs}]*=` (toString .) -}}{{ fail "credential-bearing connection-string literals require existing references" }}{{- end -}}
+{{- if regexMatch `(?i)(^|[;,\s\p{Zs}])(password|pwd|user[ _]*id|uid|user[ _]*name|access[ _]*token|authentication[ _]*token|token|api[ _-]*key|client[ _]*secret|secret|authorization|access[ _]*key|account[ _]*key|master[ _]*key|shared[ _]*access[ _]*key|passphrase|credentials?)[\s\p{Zs}]*=` (toString .) -}}{{ fail "credential-bearing connection-string literals require existing references" }}{{- end -}}
 {{- end -}}
 
 {{- define "reference.secretRef" -}}
@@ -151,6 +192,7 @@ dapr.io/enable-api-logging: "false"
 {{- if hasKey $value "endpoint" -}}
 {{- $endpoint := required "endpoint parameter is missing" (index .root.Values.endpoints (toString $value.endpoint)) -}}
 {{- include "reference.endpoint" $endpoint -}}
+{{- include "reference.connectionString" (dict "key" $key "value" $endpoint) -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "value" $endpoint) "environment" .environment "seen" .seen) -}}
 {{- else -}}
 {{- include "reference.secretRef" $value.configMapKeyRef | trunc 0 -}}
@@ -170,12 +212,22 @@ dapr.io/enable-api-logging: "false"
 {{- include "reference.credentialLiteral" $value -}}
 {{- if regexMatch "(?i)(localhost|127[.]0[.]0[.]1|/tmp/|secretsFile|conversation[.]echo|secretstores[.]local|password=|token=|clientsecret|authenticationtoken|accesstoken|privatekey)" (toString $value) -}}{{ fail "unsafe or credential-bearing configuration literal" }}{{- end -}}
 {{- if contains "://" (toString $value) -}}{{ include "reference.endpoint" $value }}{{- end -}}
-{{- include "reference.put" (dict "key" $key "entry" (dict "value" (toString $value)) "environment" .environment "seen" .seen) -}}
+{{- include "reference.connectionString" (dict "key" $key "value" $value) -}}
+{{- include "reference.put" (dict "key" $key "entry" (dict "value" (include "reference.scalar" $value)) "environment" .environment "seen" .seen) -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "reference.nonCredentialKey" -}}
-{{- if regexMatch "(?i)(password|clientsecret|signingkey|authenticationtokens?|accesstokens?|apikeys?|privatekey|appchanneltoken|daprapitoken|apidaprtoken|authorization|secrets?|tokens?)(__|$)" . -}}{{ fail "credential leaves require existing Secret references in credentials" }}{{- end -}}
+{{- if eq (include "reference.isCredentialKey" .) "true" -}}{{ fail "credential leaves require existing Secret references in credentials" }}{{- end -}}
+{{- end -}}
+
+{{- define "reference.isCredentialKey" -}}
+{{- regexMatch "(?i)(password|pwd|clientsecret|signingkey|authenticationtokens?|accesstokens?|apikeys?|accesskey|accountkey|masterkey|sharedaccesskey|passphrase|credentials?|privatekey|appchanneltoken|daprapitoken|apidaprtoken|authorization|secrets?|tokens?)(__|$)|connectionstrings?$" . -}}
+{{- end -}}
+
+{{/* JSON preserves ordinary integral floats without Helm's scientific notation. */}}
+{{- define "reference.scalar" -}}
+{{- if kindIs "string" . -}}{{ . }}{{- else -}}{{ toJson . }}{{- end -}}
 {{- end -}}
 
 {{- define "reference.environment" -}}

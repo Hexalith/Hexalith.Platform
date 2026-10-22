@@ -1,29 +1,23 @@
-{
-    "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
-    },
-    "kind": "Secret",
-    "metadata": {
-        "creationTimestamp": "2026-10-22T18:30:36Z",
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T18:30:36Z"
-            }
-        ],
-        "name": "fixture-credential",
-        "namespace": "reference",
-        "resourceVersion": "937",
-        "uid": "c5c2a980-19e1-48b2-9f3c-cff54c304e73"
-    },
-    "type": "Opaque"
-}
+namespace/reference serverside-applied
+namespace/environment serverside-applied
+secret/fixture-credential serverside-applied
+secret/fixture-registry serverside-applied
+configmap/fixture-components serverside-applied
+persistentvolumeclaim/fixture-storage serverside-applied
+gatewayclass.gateway.networking.k8s.io/fixture serverside-applied
+gateway.gateway.networking.k8s.io/fixture-gateway serverside-applied
+secret/fixture-eventstore-api serverside-applied
+secret/fixture-eventstore-app serverside-applied
+secret/fixture-memories-access-telemetry-api serverside-applied
+secret/fixture-memories-access-telemetry-app serverside-applied
+secret/fixture-memories-access-telemetry-clock-api serverside-applied
+secret/fixture-memories-access-telemetry-clock-app serverside-applied
+secret/fixture-memories-api serverside-applied
+secret/fixture-memories-app serverside-applied
+secret/fixture-parties-api serverside-applied
+secret/fixture-parties-app serverside-applied
+secret/fixture-tenants-api serverside-applied
+secret/fixture-tenants-api-api serverside-applied
+secret/fixture-tenants-api-app serverside-applied
+secret/fixture-tenants-app serverside-applied
+component.dapr.io/environment-preserved serverside-applied

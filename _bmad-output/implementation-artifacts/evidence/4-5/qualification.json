@@ -1,16 +1,34 @@
 {
   "schema": "hexalith.helm-qualification.v1",
-  "started": "2026-10-22T18:27:05.336799+00:00",
+  "started": "2026-10-22T21:53:44.526929+00:00",
   "status": "passed",
   "commands": [
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/h45-906e3ppv/helm.tar.gz",
+        "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz"
+      ],
+      "returncode": 0,
+      "log": "000-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "version",
         "--short"
       ],
       "returncode": 0,
-      "log": "000-helm.log",
+      "log": "001-helm.log",
       "logSha256": "020b1d6747838c6846e2f7d07e280141da653dd8ca9fdf428393d0b28d5a7a18",
       "stdinSha256": null
     },
@@ -20,7 +38,7 @@
         "version"
       ],
       "returncode": 0,
-      "log": "001-kind.log",
+      "log": "002-kind.log",
       "logSha256": "4f20456ed346280834cc128a7048efa0f53a361cdbbba88c18b1f9124b018ba3",
       "stdinSha256": null
     },
@@ -33,7 +51,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "002-kubectl.log",
+      "log": "003-kubectl.log",
       "logSha256": "554d17a2af6df290e7fbad7a8c6643bc6b78f4b25691b2c4aef7d94b03773329",
       "stdinSha256": null
     },
@@ -43,7 +61,7 @@
         "--version"
       ],
       "returncode": 0,
-      "log": "003-aspire.log",
+      "log": "004-aspire.log",
       "logSha256": "1508bd63df5af6e1b15ec072b855bb9d4347343a919848c9a970afba8d36de84",
       "stdinSha256": null
     },
@@ -53,7 +71,7 @@
         "--version"
       ],
       "returncode": 0,
-      "log": "004-dotnet.log",
+      "log": "005-dotnet.log",
       "logSha256": "44ea2595bc5a7acabc030531952071226aa70862fd008ed7327d752b39c8513c",
       "stdinSha256": null
     },
@@ -65,7 +83,7 @@
         "{{.ServerVersion}}"
       ],
       "returncode": 0,
-      "log": "005-docker.log",
+      "log": "006-docker.log",
       "logSha256": "c007c7e1712540ee77c9ce8e454890d905ff0193ec24907cb08ffd9d00b25d98",
       "stdinSha256": null
     },
@@ -75,7 +93,7 @@
         "--version"
       ],
       "returncode": 0,
-      "log": "006-curl.log",
+      "log": "007-curl.log",
       "logSha256": "4870e27617372477dc169f5899702e7181c831502810d4c9310ae350ed43a077",
       "stdinSha256": null
     },
@@ -86,232 +104,204 @@
         "HEAD"
       ],
       "returncode": 0,
-      "log": "007-git.log",
-      "logSha256": "ad21e0fe230b7082f20f6fd21ee04bd6839b201523f52f6669108438de43aab3",
+      "log": "008-git.log",
+      "logSha256": "f2fb1e47abdd36a4110259b7d3a4473a6d8bdfcaac395f325d93d0651e6c2446",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "returncode": 0,
+      "log": "009-git.log",
+      "logSha256": "b19277227179e411ea4910bdc091d2579a647514307d6bd8e88e2d27897803ac",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "status"
+      ],
+      "returncode": 0,
+      "log": "010-git.log",
+      "logSha256": "0828c75fd4a4fc9edeac1cd0a88d347bdd083854945aaddd64242127f4294c69",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
         "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
         "-getProperty:ProjectAssetsFile"
-      ],
-      "returncode": 0,
-      "log": "008-dotnet.log",
-      "logSha256": "ec67957c2bb181dc6b141424bee98738415b650b5db9e5496ebcddb7f7075f3b",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-a8f54e0aca45e56d.xml"
-      ],
-      "returncode": 0,
-      "log": "009-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
-      ],
-      "returncode": 0,
-      "log": "010-dotnet.log",
-      "logSha256": "72f70c986c61d2482457bcd2aa7533b33f954b80bd62de9705b383cdd90c2ef3",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-36ff069aaa55b7fa.xml"
       ],
       "returncode": 0,
       "log": "011-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "d1e6bd5783e22e206547f8493c3fd3c0834ec6849966b78af4fa371dfbbc5d4a",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-0c2b0e9696e614a7.xml"
       ],
       "returncode": 0,
       "log": "012-dotnet.log",
-      "logSha256": "b93f8bf59c5251752ef6a8622968d56fabfa6c84a6f1206415e1126afd595de6",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-e3fcd10c56e7811b.xml"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "013-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "6c188ff42899bd2f60f7af770db7f5bccf3e98ee37edae2c56ec49e0fab2a1b4",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-aca3b6c535d5133f.xml"
       ],
       "returncode": 0,
       "log": "014-dotnet.log",
-      "logSha256": "3f4f954c84f21465cc217f746193b3181fad3cbc0f7d76460118579577eb517f",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-f389aaeafbb84b75.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "015-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "1829a69bcd5cbfe3cd4380434e89e639dd8ea0eb4baeaff37d9bf5988e5abace",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-d968fdf95789511c.xml"
       ],
       "returncode": 0,
       "log": "016-dotnet.log",
-      "logSha256": "3d77ba13f01a6646d2ff76c712bd925c58734f0627bc4e9d7b33761d73851f5b",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-47d35ebf806af2db.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "017-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "489a147d970187a2f0fb6537152bfb2b9e81ed1c9954591a41481dcf3421af79",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-ed3bfe8e0eab0ee2.xml"
       ],
       "returncode": 0,
       "log": "018-dotnet.log",
-      "logSha256": "6ce80b6c08e4ab2233f2431c14d3af10db12bafdb8bad47b09d013b1fc7739b1",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-ec4736e6665769c5.xml"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "019-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "0d4931fb74e99a43946bea1d975748e4deb0db1806ff630f99cf8806d3e01c8a",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-57ad944ae3e40545.xml"
       ],
       "returncode": 0,
       "log": "020-dotnet.log",
-      "logSha256": "bd24cdfe9c09f3eecdb9b84d1f0a42a920b054e29452cbe594412acd48cf2365",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-4d5ed0a9fcfd0701.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "021-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "fd4c0967774fb8b4581f81358161b49868bac8e6bcc7dc028de9b756b3fa0d92",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-5622219f6c1cfc53.xml"
       ],
       "returncode": 0,
       "log": "022-dotnet.log",
-      "logSha256": "3bc75469f274670006643b55a7588ff3178315d3b2b03a22b91b9658107093bb",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-9ad1368965f527ac.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "023-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "e7515cf7ac050bf1e9b8893ac599de5d51d385669862b9dab063bbbaca5c24ed",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-3f94421e1b3540a8.xml"
       ],
       "returncode": 0,
       "log": "024-dotnet.log",
-      "logSha256": "88546270f5ad97ff353c40006dca435b1f7feb1c39d011dec67ad8d0095a5ed1",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-3ee213df8a87837b.xml"
-      ],
-      "returncode": 0,
-      "log": "025-dotnet.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
@@ -319,24 +309,74 @@
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
         "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
         "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
-      "log": "026-dotnet.log",
-      "logSha256": "0d6102a6136f1661e14dfcdd05a024046bdfc322a3fc6711d783ee60d51e2d5e",
+      "log": "025-dotnet.log",
+      "logSha256": "075a034b67a648619f683f841e9f759a82731bf1d6c6ce025c7952722c6070dd",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-f54fd39cd6f15f54.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-e573be186f79b2f0.xml"
+      ],
+      "returncode": 0,
+      "log": "026-dotnet.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "027-dotnet.log",
+      "logSha256": "5dec371ec83b9674e6c7947a8ef01fccab5fbe2314493d1f7c55db4d02e77416",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-813bc1b0ad2bcdbc.xml"
+      ],
+      "returncode": 0,
+      "log": "028-dotnet.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
+      ],
+      "returncode": 0,
+      "log": "029-dotnet.log",
+      "logSha256": "e81b28f80029a7834be4ab108f713929d33eec51a0405611c1d5a556bc73f2d1",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-df8a2090059a2bee.xml"
+      ],
+      "returncode": 0,
+      "log": "030-dotnet.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
@@ -345,28 +385,28 @@
         "aspire",
         "publish",
         "--apphost",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/apphost.cs",
+        "/home/administrator/projects/hexalith/platform/apphost.cs",
         "--output-path",
-        "/tmp/h45-v6xbg5kt/native-output",
+        "/tmp/h45-906e3ppv/native-output",
         "--non-interactive",
         "--include-exception-details"
       ],
       "returncode": 0,
-      "log": "028-aspire.log",
-      "logSha256": "3dfaa54ce88b21b53f327a7646d2efbc9856397658bba7cdeaa862e1d6b7e993",
+      "log": "031-aspire.log",
+      "logSha256": "ab51a58719ff6e8470d07a8cb074e5b2d9d240063da050f7d4aaadf1a2f1ca2c",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "template",
         "native",
-        "/tmp/h45-v6xbg5kt/native-output",
+        "/tmp/h45-906e3ppv/native-output",
         "--namespace",
         "reference"
       ],
       "returncode": 0,
-      "log": "029-helm.log",
+      "log": "032-helm.log",
       "logSha256": "f12cd2f4104e39a71a24a18829aa3932e5a35f808619d97c72e376be1aa7ad19",
       "stdinSha256": null
     },
@@ -377,27 +417,27 @@
         "unittest",
         "discover",
         "-s",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/eng/helm-qualification",
+        "/home/administrator/projects/hexalith/platform/eng/helm-qualification",
         "-p",
         "test_*.py",
         "-v"
       ],
       "returncode": 0,
-      "log": "030-python3.log",
-      "logSha256": "8840ba2e0aeda15816ab30ed876e60af2f76ec9ded4318b4ea6b6a50522e9a4a",
+      "log": "033-python3.log",
+      "logSha256": "0b38832d98e916648c7defdd5de81c0cde8ed152019f208e80e40304d8721845",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "package",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/eng/helm-qualification/chart",
+        "/home/administrator/projects/hexalith/platform/eng/helm-qualification/chart",
         "--destination",
-        "/tmp/h45-v6xbg5kt"
+        "/tmp/h45-906e3ppv"
       ],
       "returncode": 0,
-      "log": "031-helm.log",
-      "logSha256": "80e5c2fba52c9d6ac415e41b35617e235f8bcfd1ccdf1d0defd56d6361ff917d",
+      "log": "034-helm.log",
+      "logSha256": "733b503605986e6e57600434533a7c04688804099c4aca6cbf0e7409c3b46074",
       "stdinSha256": null
     },
     {
@@ -407,7 +447,7 @@
         "clusters"
       ],
       "returncode": 0,
-      "log": "032-kind.log",
+      "log": "035-kind.log",
       "logSha256": "9144424a2ea42eac9d9e20a7759791e3893d366d2ee9e038145ee053f0fd782c",
       "stdinSha256": null
     },
@@ -417,41 +457,41 @@
         "create",
         "cluster",
         "--name",
-        "h45-831c5cd233a1",
+        "h45-1e52851b2eca",
         "--image",
         "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--wait",
         "180s"
       ],
       "returncode": 0,
-      "log": "033-kind.log",
-      "logSha256": "765ff7cd1f5dcfb5f4ffdbf63eab4ce78167e315e208f2f662fddafa5cf47771",
+      "log": "036-kind.log",
+      "logSha256": "bfd8bc6799ecd9502dcd81dfa895dc02fb8c7ae1430b0019756293af50a252fe",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "config",
         "view",
         "-o",
         "json"
       ],
       "returncode": 0,
-      "log": "034-kubectl.log",
-      "logSha256": "1140f85378ff5e777a616d321a179ad87b32e9e5bff197bd52ec1efe13271b49",
+      "log": "037-kubectl.log",
+      "logSha256": "219cc3ecfa41f7bbd9236768f4cdfcd39107d74a2d68cb2a541e9815d4d7e582",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "namespace",
         "kube-system",
@@ -459,8 +499,8 @@
         "json"
       ],
       "returncode": 0,
-      "log": "035-kubectl.log",
-      "logSha256": "c32edf0867036a5adb6cd7b3faeb6076f68faf20741369b11680fcf93268de59",
+      "log": "038-kubectl.log",
+      "logSha256": "f3e2175860c1367a666eb91cfff06b9810ef5a6b2f9d41ac50a161a5e1d19133",
       "stdinSha256": null
     },
     {
@@ -473,11 +513,11 @@
         "--max-time",
         "60",
         "--output",
-        "/tmp/h45-v6xbg5kt/gateway.yaml",
+        "/tmp/h45-906e3ppv/gateway.yaml",
         "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml"
       ],
       "returncode": 0,
-      "log": "036-curl.log",
+      "log": "039-curl.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
@@ -485,17 +525,17 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "apply",
         "--server-side",
         "--field-manager=h45-environment",
         "-f",
-        "/tmp/h45-v6xbg5kt/gateway.yaml"
+        "/tmp/h45-906e3ppv/gateway.yaml"
       ],
       "returncode": 0,
-      "log": "037-kubectl.log",
+      "log": "040-kubectl.log",
       "logSha256": "ca1bce72fc3508f89aecd1a2741f6ebeece8d0247e14f74a0cb1b07b933e1d04",
       "stdinSha256": null
     },
@@ -509,24 +549,24 @@
         "--max-time",
         "60",
         "--output",
-        "/tmp/h45-v6xbg5kt/dapr.tgz",
+        "/tmp/h45-906e3ppv/dapr.tgz",
         "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz"
       ],
       "returncode": 0,
-      "log": "038-curl.log",
+      "log": "041-curl.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "install",
         "dapr",
-        "/tmp/h45-v6xbg5kt/dapr.tgz",
+        "/tmp/h45-906e3ppv/dapr.tgz",
         "--namespace",
         "dapr-system",
         "--create-namespace",
@@ -549,17 +589,17 @@
         "dapr_sidecar_injector.sidecarDropALLCapabilities=true"
       ],
       "returncode": 0,
-      "log": "039-helm.log",
-      "logSha256": "0bd9474da711ee342523753231f8c9d8343acf2a70c698d6719713113db7ef41",
+      "log": "042-helm.log",
+      "logSha256": "7b2b8e1b8846e74c367c40015305cb5bcc8ecd4e858225257ed6105189b1c651",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "pods",
         "-n",
@@ -568,17 +608,17 @@
         "json"
       ],
       "returncode": 0,
-      "log": "040-kubectl.log",
-      "logSha256": "62eb76b31abe3fbf38eec25e5b2afd9e0eec374ef0306dd3401cc4481d892437",
+      "log": "043-kubectl.log",
+      "logSha256": "f6be6bd05575e390e9efdefdd3ac73d135cc71d757b9a4cade146e280b55d78d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "serviceaccount",
         "replicaset-controller",
@@ -588,19 +628,19 @@
         "json"
       ],
       "returncode": 0,
-      "log": "041-kubectl.log",
-      "logSha256": "36ab586bb1aa78ba5def63a6dde3afc8509db8aa58e1f1543c881c7840505603",
+      "log": "044-kubectl.log",
+      "logSha256": "cb3e3e1a14e58d652e05698db2656930f5cd349715c97cfd0485da17c32cd772",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -610,17 +650,17 @@
         "json"
       ],
       "returncode": 0,
-      "log": "042-kubectl.log",
-      "logSha256": "f7e242fa5c9283409060d48d22d473e7bd165ab4a3743ef29830425090d6e116",
+      "log": "045-kubectl.log",
+      "logSha256": "36d3422e38bd99ad2f04ad9be914a96aa8c37e323025ce605d1a4dda45557b51",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "apply",
         "--server-side",
         "--field-manager=h45-environment",
@@ -628,7 +668,7 @@
         "-"
       ],
       "returncode": 0,
-      "log": "043-kubectl.log",
+      "log": "046-kubectl.log",
       "logSha256": "92d6e1645f84d562597db2c12a3e29978ff443d70129a03b655a8fa53fa2fc9a",
       "stdinSha256": "b6dde0008015f25008237ba8f611e403a6b0b6d6632f6368acafaf86c1c7c043"
     },
@@ -636,9 +676,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Namespace",
         "reference",
@@ -647,17 +687,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "044-kubectl.log",
-      "logSha256": "1b2394a6a6566a549fcef99ad0bd1813887334a2623a317bdb039f4f7a676b65",
+      "log": "047-kubectl.log",
+      "logSha256": "0f581182a81ec8f1a1823cdd6c45fe265a5172430dc6cfd192a63947efea7a7c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Namespace",
         "environment",
@@ -666,17 +706,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "045-kubectl.log",
-      "logSha256": "6baf0f6ff01d27ed563549e963e33d918c4f95f264bbf73c8f48873dd1f4baee",
+      "log": "048-kubectl.log",
+      "logSha256": "ecca2c6450aaba98b3d8dd025b428beb4648312c036a42ff7a4d70a12283f2b6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-credential",
@@ -687,17 +727,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "046-kubectl.log",
-      "logSha256": "d4b6c898ed7d25d04f491fd820eca1fda7d6cd1a7e3ea6e82ca1cf9dd55a3759",
+      "log": "049-kubectl.log",
+      "logSha256": "b885c00ee54faa9521ba1eda8da3a67991f308a037bca374a431b0df64a6a242",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-registry",
@@ -708,17 +748,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "047-kubectl.log",
-      "logSha256": "c2868f75ab9df6c77da48ca17b2ae5dd19658a00546c53563bfd05f5383ebb6c",
+      "log": "050-kubectl.log",
+      "logSha256": "7d8ff4da62a0d0f7f8d54bcdbdc4b379b645c5b606bf316c5d8cbad531e6fe89",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "ConfigMap",
         "fixture-components",
@@ -729,17 +769,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "048-kubectl.log",
-      "logSha256": "d167a57d5bd07351c447c82107666f321d33378d0105ea172050cdbaaed05ea3",
+      "log": "051-kubectl.log",
+      "logSha256": "ae10b34cad4a5683cb3cc649530425a213a3ad0f988fd1f169ea3185ee662814",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "PersistentVolumeClaim",
         "fixture-storage",
@@ -750,17 +790,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "049-kubectl.log",
-      "logSha256": "ca330781c822bceb8a7f3b05a407cb789f5d4ff5212d8fafbe4fb25fb41412c7",
+      "log": "052-kubectl.log",
+      "logSha256": "50296f4aa107bd343cb16cf29379af28082be126a38eef5fca75a60a7a0e9eec",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "GatewayClass",
         "fixture",
@@ -769,17 +809,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "050-kubectl.log",
-      "logSha256": "e35b1601ffaa484fc7c7d5517e91fc6b45a0f46f01f894e1593af61bec3c91fd",
+      "log": "053-kubectl.log",
+      "logSha256": "38743efdce8a786d3f1ac8e98d08adbe4b4d97b2f3a781c47b2445d02f1a831c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Gateway",
         "fixture-gateway",
@@ -790,17 +830,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "051-kubectl.log",
-      "logSha256": "ab4c9ff997080dc6f589ed895c93570a293e9441d5852ffff7a4e05d70370bba",
+      "log": "054-kubectl.log",
+      "logSha256": "012dff9242b95f0459be82beb31b0aaaccee2ae3ef1d3902aa996f76d5a22a37",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-eventstore-api",
@@ -811,17 +851,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "052-kubectl.log",
-      "logSha256": "056c566488547e8a381f0e4ea0b145e8c0bac21fc83a708b6fdc735d1e27456c",
+      "log": "055-kubectl.log",
+      "logSha256": "7a46f2cada4d0ad954d00ee71efbb6f1a8d506c4fb54cfa32df92e14444a822c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-eventstore-app",
@@ -832,17 +872,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "053-kubectl.log",
-      "logSha256": "1db4ee0c009bb9c4809f7a51fe88447b6804def65ae06034c95e7111b245d824",
+      "log": "056-kubectl.log",
+      "logSha256": "d2e2aac62ed452b03340a9df9f1c8a66c65a7bc6828e91f617e30c63bc1a9468",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-api",
@@ -853,17 +893,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "054-kubectl.log",
-      "logSha256": "88dc23fa10ab7366611859aa46ca97dcff890904a7b530823db5a44d8103883c",
+      "log": "057-kubectl.log",
+      "logSha256": "7972c5268aa55dde242d18a458553a6517282078e61e1553bd618c0df5d2bc87",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-app",
@@ -874,17 +914,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "055-kubectl.log",
-      "logSha256": "8a1da2508aec87e0193bed3f7c12ba60accc4cdac20fde805e6921e034f4329a",
+      "log": "058-kubectl.log",
+      "logSha256": "caa881dc19c6602bb08a68ab388f5e4278b61322e5d3f725ca117c0ac35d3cc6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-clock-api",
@@ -895,17 +935,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "056-kubectl.log",
-      "logSha256": "438cc34cfef3f40ae90571e7ee0ab1b8459ba20113efa4a0a90c797da04e7049",
+      "log": "059-kubectl.log",
+      "logSha256": "7d38d1e5f480455520b41916d358f7a168e0cd2d384f7d5b5bb8ce460377484e",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-clock-app",
@@ -916,17 +956,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "057-kubectl.log",
-      "logSha256": "225cc2a7d80e9488d5533398d2d50215b8f475fe43efb98f9f74a6584b00911b",
+      "log": "060-kubectl.log",
+      "logSha256": "1a5207602a66222966e433c0d47c156f9103ada2e5f6b3f82f0021f5df0ce204",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-api",
@@ -937,17 +977,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "058-kubectl.log",
-      "logSha256": "967e664fa81a4e563d359fdaad006ddb0729b720945aaf192ab10ebc714f7855",
+      "log": "061-kubectl.log",
+      "logSha256": "655c41edae5ed9ec8a20e882d321465245e4a4222c3fafd21932b6f79a4dc14b",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-app",
@@ -958,17 +998,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "059-kubectl.log",
-      "logSha256": "ebdf0c4b7a16ac2ec09442404cd8fd8e8cc272aa4b2e1e3392975a3340dfd747",
+      "log": "062-kubectl.log",
+      "logSha256": "d4f37ea1cdf3075d8036e05304084ee00b0af68c0f0ac89af25692e8aded2028",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-parties-api",
@@ -979,17 +1019,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "060-kubectl.log",
-      "logSha256": "cda4d4ac99648302fa343eec443db174b9fce644aa41e65d1468dc31c6135721",
+      "log": "063-kubectl.log",
+      "logSha256": "ac8afc7a25f646f06e9d78f66675b45f4104e97fad008f508d89b9b2f996fa2d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-parties-app",
@@ -1000,17 +1040,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "061-kubectl.log",
-      "logSha256": "bc769986cc1dfe0ddfa0476e384eaa9a18a69201b1c02cfb926811dd89d6137d",
+      "log": "064-kubectl.log",
+      "logSha256": "9be6a6074171c71e79aae228bcc22fbbe18aabbb58cbfc2f68a6751a06343086",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api",
@@ -1021,17 +1061,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "062-kubectl.log",
-      "logSha256": "6617a7f15e47aa21ff6d01204b02805f274c3f0c6a810ba05a68110783ee3523",
+      "log": "065-kubectl.log",
+      "logSha256": "92335feae6337d6a0adbe1c3c308d4f204bde3c39b40488d1367844e95441131",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api-api",
@@ -1042,17 +1082,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "063-kubectl.log",
-      "logSha256": "f59b6700c1bb82f517f9b9c61787b69d49802d0b64f30750c731a603af9ab168",
+      "log": "066-kubectl.log",
+      "logSha256": "e51d214f57433d1552bd92e475c5215ecb6b6fc3e1b66e29cd6260dd6faa527a",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api-app",
@@ -1063,17 +1103,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "064-kubectl.log",
-      "logSha256": "83bd642b63c7e47d61f136306bba359627fc452e35b732393e4301eae7cfbad9",
+      "log": "067-kubectl.log",
+      "logSha256": "4f32d3a4be8a729392516b241a1837e35b6a96728b333c0a76c3de64c097d0da",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-app",
@@ -1084,17 +1124,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "065-kubectl.log",
-      "logSha256": "8c2fac72bdc1b48fce73654557c177bcffb91162c43df714996860da7f6db693",
+      "log": "068-kubectl.log",
+      "logSha256": "26b69bf96f60178f21ae151ab37547eafb8460f2ffcefb27c87feb80bb6acae4",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Component",
         "environment-preserved",
@@ -1105,135 +1145,63 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "066-kubectl.log",
-      "logSha256": "bc018f52aee2821742f8531b4a4a60beb0d1a2424baec9b366547804226b89ac",
+      "log": "069-kubectl.log",
+      "logSha256": "bc0a6c46fb38a2f6282c5d16c4e7acaaabdfe0fcae67773f04e3d20697ac02ff",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "install",
         "reference",
-        "/tmp/h45-v6xbg5kt/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-906e3ppv/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-v6xbg5kt/values.json",
+        "/tmp/h45-906e3ppv/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--timeout",
         "60s"
       ],
       "returncode": 0,
-      "log": "067-helm.log",
-      "logSha256": "86fed2c6affde26752364913ba1c532543cf25377efaaaba7e86b409903753d0",
+      "log": "070-helm.log",
+      "logSha256": "c7a4fff5c6692ae2f52f7475804b34ead54722c25fe813a943fc63c9bd7185bf",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "template",
         "reference",
-        "/tmp/h45-v6xbg5kt/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-906e3ppv/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-v6xbg5kt/values.json"
+        "/tmp/h45-906e3ppv/values.json"
       ],
       "returncode": 0,
-      "log": "068-helm.log",
-      "logSha256": "d214bc7c545da38f264ceff6997cec480edf52a72a850fa7f2e2181bfa506244",
+      "log": "071-helm.log",
+      "logSha256": "7636787cd356bfd2e6363fe4b1010be9aab0c57b7a3d366e9029bbcc8739e134",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
-        "--as-group=system:serviceaccounts",
-        "--as-group=system:serviceaccounts:kube-system",
-        "--as-group=system:authenticated",
-        "create",
-        "--dry-run=server",
-        "-f",
-        "-",
-        "-o",
-        "json"
-      ],
-      "returncode": 0,
-      "log": "069-kubectl.log",
-      "logSha256": "c101ef593b30713a6e990171e7e51e50b86c591a478ad716f447f1b92a65996d",
-      "stdinSha256": "ac950414cfb6cec7fc39d05df77c5b50adaa064ba965bd97f9d5d834d6841e08"
-    },
-    {
-      "argv": [
-        "kubectl",
-        "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
-        "--context",
-        "kind-h45-831c5cd233a1",
-        "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
-        "--as-group=system:serviceaccounts",
-        "--as-group=system:serviceaccounts:kube-system",
-        "--as-group=system:authenticated",
-        "create",
-        "--dry-run=server",
-        "-f",
-        "-",
-        "-o",
-        "json"
-      ],
-      "returncode": 0,
-      "log": "070-kubectl.log",
-      "logSha256": "6a8db8708e6f7e52d7b4d9222a5da3810ae8e2e334d0ac55b1c4ed363b7d76ef",
-      "stdinSha256": "2bd12262bef95d89ecccd06200091a95d9f3b23bc3b439d632dd3fac2746202f"
-    },
-    {
-      "argv": [
-        "kubectl",
-        "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
-        "--context",
-        "kind-h45-831c5cd233a1",
-        "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
-        "--as-group=system:serviceaccounts",
-        "--as-group=system:serviceaccounts:kube-system",
-        "--as-group=system:authenticated",
-        "create",
-        "--dry-run=server",
-        "-f",
-        "-",
-        "-o",
-        "json"
-      ],
-      "returncode": 0,
-      "log": "071-kubectl.log",
-      "logSha256": "a694afe93dacb289cbe258c6993126fd095c29b8fc44cd90d3d9efcf11aaf8fe",
-      "stdinSha256": "579799fd5124ae1ed5d96355f867ca0bad231199c8d722c3339808e272afe9ed"
-    },
-    {
-      "argv": [
-        "kubectl",
-        "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
-        "--context",
-        "kind-h45-831c5cd233a1",
-        "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -1246,18 +1214,18 @@
       ],
       "returncode": 0,
       "log": "072-kubectl.log",
-      "logSha256": "44a1c71bc1a8c6741f008c10a1ecb3ccacbc3442aa7e3c6e5276be1fe05c4f01",
-      "stdinSha256": "36d5b3382152a95efa6f08af05d600f69fd59b693fc76130552f72588bc9d4e0"
+      "logSha256": "86003726d16314c0cb65f77edecee5d087e6b6ad74685d6a572470772249ee40",
+      "stdinSha256": "ac950414cfb6cec7fc39d05df77c5b50adaa064ba965bd97f9d5d834d6841e08"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -1270,18 +1238,18 @@
       ],
       "returncode": 0,
       "log": "073-kubectl.log",
-      "logSha256": "4c1a3df7956f7e38c7c6ff8e7a6858d27b1b689235238be52d9f26f683ad1e90",
-      "stdinSha256": "3867e28829f812180003ad62f4d71029a8a65a91e4f06611e2367ee8ce8d024a"
+      "logSha256": "a6a4ddfbcb2830e30e81e2a8562a402c529f93c3d7a0dbd6fbd6fa5a27237925",
+      "stdinSha256": "2bd12262bef95d89ecccd06200091a95d9f3b23bc3b439d632dd3fac2746202f"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -1294,18 +1262,18 @@
       ],
       "returncode": 0,
       "log": "074-kubectl.log",
-      "logSha256": "f8bcffde2a345b2ddc89ebb737e880f3326356b8e09e13ba37b8e78f94d86bf0",
-      "stdinSha256": "848480a6849da261ce444f3ed14d434d20d4cbaba6c694d9261b130e841793c4"
+      "logSha256": "a6d4abcf71fb5eb374624c06c7714c44919dbf2c122955e44d6fdd818f860e14",
+      "stdinSha256": "579799fd5124ae1ed5d96355f867ca0bad231199c8d722c3339808e272afe9ed"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -1318,18 +1286,90 @@
       ],
       "returncode": 0,
       "log": "075-kubectl.log",
-      "logSha256": "a2c168130ecaf37d7e56a2614b01916585b424b52d435d2b386571b8fdcc7a2f",
+      "logSha256": "24bcb85cadf94a53de319fcb18f8de6e9acee7f938d2efbd54426f4aa79c2d2d",
+      "stdinSha256": "b26b229897666fee605d02349c9f01590cb4fc0bb0e494f67712af9d228373a3"
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
+        "--context",
+        "kind-h45-1e52851b2eca",
+        "--as=system:serviceaccount:kube-system:replicaset-controller",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
+        "--as-group=system:serviceaccounts",
+        "--as-group=system:serviceaccounts:kube-system",
+        "--as-group=system:authenticated",
+        "create",
+        "--dry-run=server",
+        "-f",
+        "-",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "log": "076-kubectl.log",
+      "logSha256": "8090922a48b245fe0936f89c04cd99de980fe79ae5018c88dce98ec113789c81",
+      "stdinSha256": "f6a88f85e093cdbb13f0a6b152d123c2c0eb43b8de19bededa48036fee4efd89"
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
+        "--context",
+        "kind-h45-1e52851b2eca",
+        "--as=system:serviceaccount:kube-system:replicaset-controller",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
+        "--as-group=system:serviceaccounts",
+        "--as-group=system:serviceaccounts:kube-system",
+        "--as-group=system:authenticated",
+        "create",
+        "--dry-run=server",
+        "-f",
+        "-",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "log": "077-kubectl.log",
+      "logSha256": "af3b381d99091099a0b202a85f375b64eb5c7c332512054b5168e9ba0a3352d4",
+      "stdinSha256": "98775f840795bac4db0e37666a116cb7df921322d42ac63ed002b0aba2ddaa20"
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
+        "--context",
+        "kind-h45-1e52851b2eca",
+        "--as=system:serviceaccount:kube-system:replicaset-controller",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
+        "--as-group=system:serviceaccounts",
+        "--as-group=system:serviceaccounts:kube-system",
+        "--as-group=system:authenticated",
+        "create",
+        "--dry-run=server",
+        "-f",
+        "-",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "log": "078-kubectl.log",
+      "logSha256": "793ee723b5de6e02331fc829f89e1e7c086610b44c293b4a331a2fef0b5111e7",
       "stdinSha256": "c2a2b9099f8cde44878804d9e2681e834292fe07fde0d3ff63e6b063fb6f031a"
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "--as=system:serviceaccount:kube-system:replicaset-controller",
-        "--as-uid=5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "--as-uid=bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "--as-group=system:serviceaccounts",
         "--as-group=system:serviceaccounts:kube-system",
         "--as-group=system:authenticated",
@@ -1339,7 +1379,7 @@
         "-"
       ],
       "returncode": 1,
-      "log": "076-kubectl.log",
+      "log": "079-kubectl.log",
       "logSha256": "11cf405cd6f0aa317f8e0812d6fa244a265a3a6a6080cccebb4299c7b91f0b38",
       "stdinSha256": "8cb887fded97f45dd78642cb79d9c9ba904fae59af830c570c9166ac0f1fa2a1"
     },
@@ -1347,9 +1387,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "eventstore",
@@ -1360,17 +1400,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "077-kubectl.log",
-      "logSha256": "38c0295923f6cd604f0c1852533097cdea0cd467ab1d435c5f30995e3b4c2f75",
+      "log": "080-kubectl.log",
+      "logSha256": "983c7436d7a9ddc8b638b616c9db0c0a54aa0a04306757bc41c53518a6a8c6c1",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "tenants",
@@ -1381,17 +1421,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "078-kubectl.log",
-      "logSha256": "3f4a615b662054d3336222507bfd82c1b4aa3c32e82f12e07c0b35ecad3de5a1",
+      "log": "081-kubectl.log",
+      "logSha256": "6f557cfb1a3c31dcc9d37e2d70066a11f5c9fb8ecb8f3c4b590664678783d3a2",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "tenants-api",
@@ -1402,17 +1442,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "079-kubectl.log",
-      "logSha256": "575930d3e74f83cabe5522ccc74dad00588d3177bb3640780463c8724eb74d19",
+      "log": "082-kubectl.log",
+      "logSha256": "59f523d14db1c84d9e1887f2a51fd299a13cff447684e5a9fbd7b372d35e7105",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "memories",
@@ -1423,17 +1463,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "080-kubectl.log",
-      "logSha256": "31938a3ad53c7a284a974eb5def169d798ac6731a1d701de9e2bf402da3be955",
+      "log": "083-kubectl.log",
+      "logSha256": "af06e63fe5ac147b781b958dee9a747906fd4e54afec9e769286542a16b98ee4",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "memories-access-telemetry-clock",
@@ -1444,17 +1484,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "081-kubectl.log",
-      "logSha256": "b162ae74fc52b29a0edbcd896dfc62ac4601abd42cfad40aaf33e2a274398e2a",
+      "log": "084-kubectl.log",
+      "logSha256": "3fae9cc3dcd3024ae907b52ace85205f47adf4116b804d2d4b0c83cf90a8c12f",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "memories-access-telemetry",
@@ -1465,17 +1505,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "082-kubectl.log",
-      "logSha256": "ffe3754e1f96ba083af591e0f0e7f7604df3c5fe9365ace7382cbc4a63eaaf0f",
+      "log": "085-kubectl.log",
+      "logSha256": "930bee05f8e26e14b5b16b1c77bf56147d3c5e4c813ff09f11911970c31d3fe5",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "parties",
@@ -1486,41 +1526,41 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "083-kubectl.log",
-      "logSha256": "5e280a22510e33935bc2372d0c0da737a9177e2e6c34bc51895f598e58ce6643",
+      "log": "086-kubectl.log",
+      "logSha256": "5f51fa156cee194e2a792555d15cf65793e5d2e097111b7651301163d469affc",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "upgrade",
         "reference",
-        "/tmp/h45-v6xbg5kt/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-906e3ppv/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-v6xbg5kt/values.json",
+        "/tmp/h45-906e3ppv/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--set",
         "mode=recovery"
       ],
       "returncode": 0,
-      "log": "084-helm.log",
-      "logSha256": "885a522bfeb65e17fa6678f08fcf0f926b92b3b15765ec2cbc1ad425395f9e02",
+      "log": "087-helm.log",
+      "logSha256": "941bd2c8c387bc3795a5fadc8d13c98d9bd4d5724e6fba3c16ae0e05bfac34c5",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployments",
         "-n",
@@ -1529,17 +1569,17 @@
         "json"
       ],
       "returncode": 0,
-      "log": "085-kubectl.log",
-      "logSha256": "c6d4d64fb169ad3379da103bb0c706827340beb216d76cdbeef875e07825e3c7",
+      "log": "088-kubectl.log",
+      "logSha256": "9f026a5e8df63c75c6a2d146b5245e62d1817e7a81475ee252b2bb6c35e3a48d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "httproutes",
         "-n",
@@ -1548,7 +1588,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "086-kubectl.log",
+      "log": "089-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -1556,9 +1596,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "apply",
         "--server-side",
         "--field-manager=h45-rival",
@@ -1567,31 +1607,31 @@
         "-"
       ],
       "returncode": 0,
-      "log": "087-kubectl.log",
+      "log": "090-kubectl.log",
       "logSha256": "877799348677d371664179a472906066f9583dc5a3860fe1f95fa9e0bec0c4bf",
       "stdinSha256": "ed56760f15320486b6b0ab26e447e1b5437938395ed500a5f6fbc3b289cd4b04"
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "upgrade",
         "reference",
-        "/tmp/h45-v6xbg5kt/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-906e3ppv/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-v6xbg5kt/values.json",
+        "/tmp/h45-906e3ppv/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--set",
         "mode=recovery"
       ],
       "returncode": 1,
-      "log": "088-helm.log",
+      "log": "091-helm.log",
       "logSha256": "e26ba4152a6f86d71bdec7dcf5a20b29b02a3f0eb7e47c62c8152786a037bca2",
       "stdinSha256": null
     },
@@ -1599,9 +1639,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployment",
         "eventstore",
@@ -1611,41 +1651,41 @@
         "json"
       ],
       "returncode": 0,
-      "log": "089-kubectl.log",
-      "logSha256": "daeb92b185aebea45efd1206301a5d41b908f7d76bd3e87421d6b008dfc20206",
+      "log": "092-kubectl.log",
+      "logSha256": "b6d99446ac29cc48b3a0d2bb4159ab0766ec8fd71c2a4a5edfe9d26283b6a071",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "upgrade",
         "reference",
-        "/tmp/h45-v6xbg5kt/hexalith-reference-0.1.0.tgz",
+        "/tmp/h45-906e3ppv/hexalith-reference-0.1.0.tgz",
         "-n",
         "reference",
         "-f",
-        "/tmp/h45-v6xbg5kt/values.json",
+        "/tmp/h45-906e3ppv/values.json",
         "--server-side=true",
         "--wait=hookOnly",
         "--set",
         "mode=remove-workloads"
       ],
       "returncode": 0,
-      "log": "090-helm.log",
-      "logSha256": "316687d6e46fd96b01aa9124f7a0eb0b8acd3c232a8e3b9519dd5e65e19bcc95",
+      "log": "093-helm.log",
+      "logSha256": "be60caa98cd4eaa284f39c233f4a80964e04f547ba803805df5d8927176a9e62",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "deployments",
         "-n",
@@ -1654,7 +1694,7 @@
         "json"
       ],
       "returncode": 0,
-      "log": "091-kubectl.log",
+      "log": "094-kubectl.log",
       "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
       "stdinSha256": null
     },
@@ -1662,69 +1702,11 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "services",
-        "-n",
-        "reference",
-        "-o",
-        "json"
-      ],
-      "returncode": 0,
-      "log": "092-kubectl.log",
-      "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "kubectl",
-        "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
-        "--context",
-        "kind-h45-831c5cd233a1",
-        "get",
-        "httproutes",
-        "-n",
-        "reference",
-        "-o",
-        "json"
-      ],
-      "returncode": 0,
-      "log": "093-kubectl.log",
-      "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "kubectl",
-        "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
-        "--context",
-        "kind-h45-831c5cd233a1",
-        "wait",
-        "--for=delete",
-        "pod",
-        "--all",
-        "-n",
-        "reference",
-        "--timeout=90s"
-      ],
-      "returncode": 0,
-      "log": "094-kubectl.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "kubectl",
-        "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
-        "--context",
-        "kind-h45-831c5cd233a1",
-        "get",
-        "pods",
         "-n",
         "reference",
         "-o",
@@ -1739,9 +1721,67 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
+        "get",
+        "httproutes",
+        "-n",
+        "reference",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "log": "096-kubectl.log",
+      "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
+        "--context",
+        "kind-h45-1e52851b2eca",
+        "wait",
+        "--for=delete",
+        "pod",
+        "--all",
+        "-n",
+        "reference",
+        "--timeout=90s"
+      ],
+      "returncode": 0,
+      "log": "097-kubectl.log",
+      "logSha256": "b9bc7f0f1cd02a149375df8bf23ac98b1b5bfeb50869a472d386cc6c5d9543ba",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
+        "--context",
+        "kind-h45-1e52851b2eca",
+        "get",
+        "pods",
+        "-n",
+        "reference",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "log": "098-kubectl.log",
+      "logSha256": "7a779468a2dde976a9b896541df1e4ef805e813093bd5edb40ef1a6eea588edf",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
+        "--context",
+        "kind-h45-1e52851b2eca",
         "get",
         "Namespace",
         "reference",
@@ -1750,17 +1790,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "096-kubectl.log",
-      "logSha256": "1b2394a6a6566a549fcef99ad0bd1813887334a2623a317bdb039f4f7a676b65",
+      "log": "099-kubectl.log",
+      "logSha256": "0f581182a81ec8f1a1823cdd6c45fe265a5172430dc6cfd192a63947efea7a7c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Namespace",
         "environment",
@@ -1769,17 +1809,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "097-kubectl.log",
-      "logSha256": "6baf0f6ff01d27ed563549e963e33d918c4f95f264bbf73c8f48873dd1f4baee",
+      "log": "100-kubectl.log",
+      "logSha256": "ecca2c6450aaba98b3d8dd025b428beb4648312c036a42ff7a4d70a12283f2b6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-credential",
@@ -1790,17 +1830,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "098-kubectl.log",
-      "logSha256": "d4b6c898ed7d25d04f491fd820eca1fda7d6cd1a7e3ea6e82ca1cf9dd55a3759",
+      "log": "101-kubectl.log",
+      "logSha256": "b885c00ee54faa9521ba1eda8da3a67991f308a037bca374a431b0df64a6a242",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-registry",
@@ -1811,17 +1851,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "099-kubectl.log",
-      "logSha256": "c2868f75ab9df6c77da48ca17b2ae5dd19658a00546c53563bfd05f5383ebb6c",
+      "log": "102-kubectl.log",
+      "logSha256": "7d8ff4da62a0d0f7f8d54bcdbdc4b379b645c5b606bf316c5d8cbad531e6fe89",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "ConfigMap",
         "fixture-components",
@@ -1832,17 +1872,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "100-kubectl.log",
-      "logSha256": "d167a57d5bd07351c447c82107666f321d33378d0105ea172050cdbaaed05ea3",
+      "log": "103-kubectl.log",
+      "logSha256": "ae10b34cad4a5683cb3cc649530425a213a3ad0f988fd1f169ea3185ee662814",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "PersistentVolumeClaim",
         "fixture-storage",
@@ -1853,17 +1893,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "101-kubectl.log",
-      "logSha256": "ca330781c822bceb8a7f3b05a407cb789f5d4ff5212d8fafbe4fb25fb41412c7",
+      "log": "104-kubectl.log",
+      "logSha256": "50296f4aa107bd343cb16cf29379af28082be126a38eef5fca75a60a7a0e9eec",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "GatewayClass",
         "fixture",
@@ -1872,17 +1912,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "102-kubectl.log",
-      "logSha256": "e35b1601ffaa484fc7c7d5517e91fc6b45a0f46f01f894e1593af61bec3c91fd",
+      "log": "105-kubectl.log",
+      "logSha256": "38743efdce8a786d3f1ac8e98d08adbe4b4d97b2f3a781c47b2445d02f1a831c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Gateway",
         "fixture-gateway",
@@ -1893,17 +1933,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "103-kubectl.log",
-      "logSha256": "ab4c9ff997080dc6f589ed895c93570a293e9441d5852ffff7a4e05d70370bba",
+      "log": "106-kubectl.log",
+      "logSha256": "012dff9242b95f0459be82beb31b0aaaccee2ae3ef1d3902aa996f76d5a22a37",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-eventstore-api",
@@ -1914,17 +1954,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "104-kubectl.log",
-      "logSha256": "056c566488547e8a381f0e4ea0b145e8c0bac21fc83a708b6fdc735d1e27456c",
+      "log": "107-kubectl.log",
+      "logSha256": "7a46f2cada4d0ad954d00ee71efbb6f1a8d506c4fb54cfa32df92e14444a822c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-eventstore-app",
@@ -1935,17 +1975,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "105-kubectl.log",
-      "logSha256": "1db4ee0c009bb9c4809f7a51fe88447b6804def65ae06034c95e7111b245d824",
+      "log": "108-kubectl.log",
+      "logSha256": "d2e2aac62ed452b03340a9df9f1c8a66c65a7bc6828e91f617e30c63bc1a9468",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-api",
@@ -1956,17 +1996,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "106-kubectl.log",
-      "logSha256": "88dc23fa10ab7366611859aa46ca97dcff890904a7b530823db5a44d8103883c",
+      "log": "109-kubectl.log",
+      "logSha256": "7972c5268aa55dde242d18a458553a6517282078e61e1553bd618c0df5d2bc87",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-app",
@@ -1977,17 +2017,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "107-kubectl.log",
-      "logSha256": "8a1da2508aec87e0193bed3f7c12ba60accc4cdac20fde805e6921e034f4329a",
+      "log": "110-kubectl.log",
+      "logSha256": "caa881dc19c6602bb08a68ab388f5e4278b61322e5d3f725ca117c0ac35d3cc6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-clock-api",
@@ -1998,17 +2038,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "108-kubectl.log",
-      "logSha256": "438cc34cfef3f40ae90571e7ee0ab1b8459ba20113efa4a0a90c797da04e7049",
+      "log": "111-kubectl.log",
+      "logSha256": "7d38d1e5f480455520b41916d358f7a168e0cd2d384f7d5b5bb8ce460377484e",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-clock-app",
@@ -2019,17 +2059,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "109-kubectl.log",
-      "logSha256": "225cc2a7d80e9488d5533398d2d50215b8f475fe43efb98f9f74a6584b00911b",
+      "log": "112-kubectl.log",
+      "logSha256": "1a5207602a66222966e433c0d47c156f9103ada2e5f6b3f82f0021f5df0ce204",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-api",
@@ -2040,17 +2080,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "110-kubectl.log",
-      "logSha256": "967e664fa81a4e563d359fdaad006ddb0729b720945aaf192ab10ebc714f7855",
+      "log": "113-kubectl.log",
+      "logSha256": "655c41edae5ed9ec8a20e882d321465245e4a4222c3fafd21932b6f79a4dc14b",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-app",
@@ -2061,17 +2101,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "111-kubectl.log",
-      "logSha256": "ebdf0c4b7a16ac2ec09442404cd8fd8e8cc272aa4b2e1e3392975a3340dfd747",
+      "log": "114-kubectl.log",
+      "logSha256": "d4f37ea1cdf3075d8036e05304084ee00b0af68c0f0ac89af25692e8aded2028",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-parties-api",
@@ -2082,17 +2122,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "112-kubectl.log",
-      "logSha256": "cda4d4ac99648302fa343eec443db174b9fce644aa41e65d1468dc31c6135721",
+      "log": "115-kubectl.log",
+      "logSha256": "ac8afc7a25f646f06e9d78f66675b45f4104e97fad008f508d89b9b2f996fa2d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-parties-app",
@@ -2103,17 +2143,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "113-kubectl.log",
-      "logSha256": "bc769986cc1dfe0ddfa0476e384eaa9a18a69201b1c02cfb926811dd89d6137d",
+      "log": "116-kubectl.log",
+      "logSha256": "9be6a6074171c71e79aae228bcc22fbbe18aabbb58cbfc2f68a6751a06343086",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api",
@@ -2124,17 +2164,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "114-kubectl.log",
-      "logSha256": "6617a7f15e47aa21ff6d01204b02805f274c3f0c6a810ba05a68110783ee3523",
+      "log": "117-kubectl.log",
+      "logSha256": "92335feae6337d6a0adbe1c3c308d4f204bde3c39b40488d1367844e95441131",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api-api",
@@ -2145,17 +2185,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "115-kubectl.log",
-      "logSha256": "f59b6700c1bb82f517f9b9c61787b69d49802d0b64f30750c731a603af9ab168",
+      "log": "118-kubectl.log",
+      "logSha256": "e51d214f57433d1552bd92e475c5215ecb6b6fc3e1b66e29cd6260dd6faa527a",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api-app",
@@ -2166,17 +2206,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "116-kubectl.log",
-      "logSha256": "83bd642b63c7e47d61f136306bba359627fc452e35b732393e4301eae7cfbad9",
+      "log": "119-kubectl.log",
+      "logSha256": "4f32d3a4be8a729392516b241a1837e35b6a96728b333c0a76c3de64c097d0da",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-app",
@@ -2187,17 +2227,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "117-kubectl.log",
-      "logSha256": "8c2fac72bdc1b48fce73654557c177bcffb91162c43df714996860da7f6db693",
+      "log": "120-kubectl.log",
+      "logSha256": "26b69bf96f60178f21ae151ab37547eafb8460f2ffcefb27c87feb80bb6acae4",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Component",
         "environment-preserved",
@@ -2208,17 +2248,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "118-kubectl.log",
-      "logSha256": "bc018f52aee2821742f8531b4a4a60beb0d1a2424baec9b366547804226b89ac",
+      "log": "121-kubectl.log",
+      "logSha256": "bc0a6c46fb38a2f6282c5d16c4e7acaaabdfe0fcae67773f04e3d20697ac02ff",
       "stdinSha256": null
     },
     {
       "argv": [
-        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "/tmp/h45-906e3ppv/linux-amd64/helm",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--kube-context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "uninstall",
         "reference",
         "-n",
@@ -2228,7 +2268,7 @@
         "60s"
       ],
       "returncode": 0,
-      "log": "119-helm.log",
+      "log": "122-helm.log",
       "logSha256": "43bbe5c89c18e801bb2eb5d6a9c796f2e91a924afde0d133c67feb940e570c2f",
       "stdinSha256": null
     },
@@ -2236,9 +2276,9 @@
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Namespace",
         "reference",
@@ -2247,17 +2287,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "120-kubectl.log",
-      "logSha256": "1b2394a6a6566a549fcef99ad0bd1813887334a2623a317bdb039f4f7a676b65",
+      "log": "123-kubectl.log",
+      "logSha256": "0f581182a81ec8f1a1823cdd6c45fe265a5172430dc6cfd192a63947efea7a7c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Namespace",
         "environment",
@@ -2266,17 +2306,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "121-kubectl.log",
-      "logSha256": "6baf0f6ff01d27ed563549e963e33d918c4f95f264bbf73c8f48873dd1f4baee",
+      "log": "124-kubectl.log",
+      "logSha256": "ecca2c6450aaba98b3d8dd025b428beb4648312c036a42ff7a4d70a12283f2b6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-credential",
@@ -2287,17 +2327,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "122-kubectl.log",
-      "logSha256": "d4b6c898ed7d25d04f491fd820eca1fda7d6cd1a7e3ea6e82ca1cf9dd55a3759",
+      "log": "125-kubectl.log",
+      "logSha256": "b885c00ee54faa9521ba1eda8da3a67991f308a037bca374a431b0df64a6a242",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-registry",
@@ -2308,17 +2348,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "123-kubectl.log",
-      "logSha256": "c2868f75ab9df6c77da48ca17b2ae5dd19658a00546c53563bfd05f5383ebb6c",
+      "log": "126-kubectl.log",
+      "logSha256": "7d8ff4da62a0d0f7f8d54bcdbdc4b379b645c5b606bf316c5d8cbad531e6fe89",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "ConfigMap",
         "fixture-components",
@@ -2329,17 +2369,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "124-kubectl.log",
-      "logSha256": "d167a57d5bd07351c447c82107666f321d33378d0105ea172050cdbaaed05ea3",
+      "log": "127-kubectl.log",
+      "logSha256": "ae10b34cad4a5683cb3cc649530425a213a3ad0f988fd1f169ea3185ee662814",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "PersistentVolumeClaim",
         "fixture-storage",
@@ -2350,17 +2390,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "125-kubectl.log",
-      "logSha256": "ca330781c822bceb8a7f3b05a407cb789f5d4ff5212d8fafbe4fb25fb41412c7",
+      "log": "128-kubectl.log",
+      "logSha256": "50296f4aa107bd343cb16cf29379af28082be126a38eef5fca75a60a7a0e9eec",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "GatewayClass",
         "fixture",
@@ -2369,17 +2409,17 @@
         "--show-managed-fields=true"
       ],
       "returncode": 0,
-      "log": "126-kubectl.log",
-      "logSha256": "e35b1601ffaa484fc7c7d5517e91fc6b45a0f46f01f894e1593af61bec3c91fd",
+      "log": "129-kubectl.log",
+      "logSha256": "38743efdce8a786d3f1ac8e98d08adbe4b4d97b2f3a781c47b2445d02f1a831c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Gateway",
         "fixture-gateway",
@@ -2390,17 +2430,17 @@
         "environment"
       ],
       "returncode": 0,
-      "log": "127-kubectl.log",
-      "logSha256": "ab4c9ff997080dc6f589ed895c93570a293e9441d5852ffff7a4e05d70370bba",
+      "log": "130-kubectl.log",
+      "logSha256": "012dff9242b95f0459be82beb31b0aaaccee2ae3ef1d3902aa996f76d5a22a37",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-eventstore-api",
@@ -2411,17 +2451,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "128-kubectl.log",
-      "logSha256": "056c566488547e8a381f0e4ea0b145e8c0bac21fc83a708b6fdc735d1e27456c",
+      "log": "131-kubectl.log",
+      "logSha256": "7a46f2cada4d0ad954d00ee71efbb6f1a8d506c4fb54cfa32df92e14444a822c",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-eventstore-app",
@@ -2432,17 +2472,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "129-kubectl.log",
-      "logSha256": "1db4ee0c009bb9c4809f7a51fe88447b6804def65ae06034c95e7111b245d824",
+      "log": "132-kubectl.log",
+      "logSha256": "d2e2aac62ed452b03340a9df9f1c8a66c65a7bc6828e91f617e30c63bc1a9468",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-api",
@@ -2453,17 +2493,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "130-kubectl.log",
-      "logSha256": "88dc23fa10ab7366611859aa46ca97dcff890904a7b530823db5a44d8103883c",
+      "log": "133-kubectl.log",
+      "logSha256": "7972c5268aa55dde242d18a458553a6517282078e61e1553bd618c0df5d2bc87",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-app",
@@ -2474,17 +2514,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "131-kubectl.log",
-      "logSha256": "8a1da2508aec87e0193bed3f7c12ba60accc4cdac20fde805e6921e034f4329a",
+      "log": "134-kubectl.log",
+      "logSha256": "caa881dc19c6602bb08a68ab388f5e4278b61322e5d3f725ca117c0ac35d3cc6",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-clock-api",
@@ -2495,17 +2535,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "132-kubectl.log",
-      "logSha256": "438cc34cfef3f40ae90571e7ee0ab1b8459ba20113efa4a0a90c797da04e7049",
+      "log": "135-kubectl.log",
+      "logSha256": "7d38d1e5f480455520b41916d358f7a168e0cd2d384f7d5b5bb8ce460377484e",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-access-telemetry-clock-app",
@@ -2516,17 +2556,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "133-kubectl.log",
-      "logSha256": "225cc2a7d80e9488d5533398d2d50215b8f475fe43efb98f9f74a6584b00911b",
+      "log": "136-kubectl.log",
+      "logSha256": "1a5207602a66222966e433c0d47c156f9103ada2e5f6b3f82f0021f5df0ce204",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-api",
@@ -2537,17 +2577,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "134-kubectl.log",
-      "logSha256": "967e664fa81a4e563d359fdaad006ddb0729b720945aaf192ab10ebc714f7855",
+      "log": "137-kubectl.log",
+      "logSha256": "655c41edae5ed9ec8a20e882d321465245e4a4222c3fafd21932b6f79a4dc14b",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-memories-app",
@@ -2558,17 +2598,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "135-kubectl.log",
-      "logSha256": "ebdf0c4b7a16ac2ec09442404cd8fd8e8cc272aa4b2e1e3392975a3340dfd747",
+      "log": "138-kubectl.log",
+      "logSha256": "d4f37ea1cdf3075d8036e05304084ee00b0af68c0f0ac89af25692e8aded2028",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-parties-api",
@@ -2579,17 +2619,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "136-kubectl.log",
-      "logSha256": "cda4d4ac99648302fa343eec443db174b9fce644aa41e65d1468dc31c6135721",
+      "log": "139-kubectl.log",
+      "logSha256": "ac8afc7a25f646f06e9d78f66675b45f4104e97fad008f508d89b9b2f996fa2d",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-parties-app",
@@ -2600,17 +2640,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "137-kubectl.log",
-      "logSha256": "bc769986cc1dfe0ddfa0476e384eaa9a18a69201b1c02cfb926811dd89d6137d",
+      "log": "140-kubectl.log",
+      "logSha256": "9be6a6074171c71e79aae228bcc22fbbe18aabbb58cbfc2f68a6751a06343086",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api",
@@ -2621,17 +2661,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "138-kubectl.log",
-      "logSha256": "6617a7f15e47aa21ff6d01204b02805f274c3f0c6a810ba05a68110783ee3523",
+      "log": "141-kubectl.log",
+      "logSha256": "92335feae6337d6a0adbe1c3c308d4f204bde3c39b40488d1367844e95441131",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api-api",
@@ -2642,17 +2682,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "139-kubectl.log",
-      "logSha256": "f59b6700c1bb82f517f9b9c61787b69d49802d0b64f30750c731a603af9ab168",
+      "log": "142-kubectl.log",
+      "logSha256": "e51d214f57433d1552bd92e475c5215ecb6b6fc3e1b66e29cd6260dd6faa527a",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-api-app",
@@ -2663,17 +2703,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "140-kubectl.log",
-      "logSha256": "83bd642b63c7e47d61f136306bba359627fc452e35b732393e4301eae7cfbad9",
+      "log": "143-kubectl.log",
+      "logSha256": "4f32d3a4be8a729392516b241a1837e35b6a96728b333c0a76c3de64c097d0da",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Secret",
         "fixture-tenants-app",
@@ -2684,17 +2724,17 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "141-kubectl.log",
-      "logSha256": "8c2fac72bdc1b48fce73654557c177bcffb91162c43df714996860da7f6db693",
+      "log": "144-kubectl.log",
+      "logSha256": "26b69bf96f60178f21ae151ab37547eafb8460f2ffcefb27c87feb80bb6acae4",
       "stdinSha256": null
     },
     {
       "argv": [
         "kubectl",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig",
+        "/tmp/h45-906e3ppv/kubeconfig",
         "--context",
-        "kind-h45-831c5cd233a1",
+        "kind-h45-1e52851b2eca",
         "get",
         "Component",
         "environment-preserved",
@@ -2705,232 +2745,182 @@
         "reference"
       ],
       "returncode": 0,
-      "log": "142-kubectl.log",
-      "logSha256": "bc018f52aee2821742f8531b4a4a60beb0d1a2424baec9b366547804226b89ac",
+      "log": "145-kubectl.log",
+      "logSha256": "bc0a6c46fb38a2f6282c5d16c4e7acaaabdfe0fcae67773f04e3d20697ac02ff",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
         "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
         "-getProperty:ProjectAssetsFile"
-      ],
-      "returncode": 0,
-      "log": "143-dotnet.log",
-      "logSha256": "ec67957c2bb181dc6b141424bee98738415b650b5db9e5496ebcddb7f7075f3b",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-a8f54e0aca45e56d.xml"
-      ],
-      "returncode": 0,
-      "log": "144-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
-      ],
-      "returncode": 0,
-      "log": "145-dotnet.log",
-      "logSha256": "72f70c986c61d2482457bcd2aa7533b33f954b80bd62de9705b383cdd90c2ef3",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-36ff069aaa55b7fa.xml"
       ],
       "returncode": 0,
       "log": "146-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "d1e6bd5783e22e206547f8493c3fd3c0834ec6849966b78af4fa371dfbbc5d4a",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-0c2b0e9696e614a7.xml"
       ],
       "returncode": 0,
       "log": "147-dotnet.log",
-      "logSha256": "f69ca2fe83f2f167e71c30d12089e62e9278a22d56aa41857bce140f7b87b6ec",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-e3fcd10c56e7811b.xml"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "148-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "6c188ff42899bd2f60f7af770db7f5bccf3e98ee37edae2c56ec49e0fab2a1b4",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-aca3b6c535d5133f.xml"
       ],
       "returncode": 0,
       "log": "149-dotnet.log",
-      "logSha256": "3f4f954c84f21465cc217f746193b3181fad3cbc0f7d76460118579577eb517f",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-f389aaeafbb84b75.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "150-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "1829a69bcd5cbfe3cd4380434e89e639dd8ea0eb4baeaff37d9bf5988e5abace",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-d968fdf95789511c.xml"
       ],
       "returncode": 0,
       "log": "151-dotnet.log",
-      "logSha256": "3d77ba13f01a6646d2ff76c712bd925c58734f0627bc4e9d7b33761d73851f5b",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-47d35ebf806af2db.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "152-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "489a147d970187a2f0fb6537152bfb2b9e81ed1c9954591a41481dcf3421af79",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-ed3bfe8e0eab0ee2.xml"
       ],
       "returncode": 0,
       "log": "153-dotnet.log",
-      "logSha256": "f58536ff99964fe2de85bcbeee21dd9b1abef28752220952036a5e29aa5dbc5c",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-ec4736e6665769c5.xml"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "154-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "0d4931fb74e99a43946bea1d975748e4deb0db1806ff630f99cf8806d3e01c8a",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-57ad944ae3e40545.xml"
       ],
       "returncode": 0,
       "log": "155-dotnet.log",
-      "logSha256": "a5687d531c4d766ac46ea3c6351c1e55374cae76581532b0455bce2f51e53f7d",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-4d5ed0a9fcfd0701.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "156-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "fd4c0967774fb8b4581f81358161b49868bac8e6bcc7dc028de9b756b3fa0d92",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-5622219f6c1cfc53.xml"
       ],
       "returncode": 0,
       "log": "157-dotnet.log",
-      "logSha256": "318ce113a64f17da2a9467c91750d2e0f7574effbe706b70239f26d99aa4ef7c",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-9ad1368965f527ac.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "158-dotnet.log",
-      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "logSha256": "e7515cf7ac050bf1e9b8893ac599de5d51d385669862b9dab063bbbaca5c24ed",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
-        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
-        "-getProperty:ProjectAssetsFile"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-3f94421e1b3540a8.xml"
       ],
       "returncode": 0,
       "log": "159-dotnet.log",
-      "logSha256": "fbf5311f1f4174c471d782d26ab5bade004ffa980c4e9beeaa4633b6971befad",
-      "stdinSha256": null
-    },
-    {
-      "argv": [
-        "dotnet",
-        "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-3ee213df8a87837b.xml"
-      ],
-      "returncode": 0,
-      "log": "160-dotnet.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
@@ -2938,24 +2928,74 @@
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
         "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
         "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
-      "log": "161-dotnet.log",
-      "logSha256": "35b6fc137fd1115f555e7cbec21f834bf5b960269100a4b34dc59955bfd03a5e",
+      "log": "160-dotnet.log",
+      "logSha256": "075a034b67a648619f683f841e9f759a82731bf1d6c6ce025c7952722c6070dd",
       "stdinSha256": null
     },
     {
       "argv": [
         "dotnet",
         "msbuild",
-        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
-        "-preprocess:/tmp/h45-v6xbg5kt/imports-f54fd39cd6f15f54.xml"
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-e573be186f79b2f0.xml"
+      ],
+      "returncode": 0,
+      "log": "161-dotnet.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
       ],
       "returncode": 0,
       "log": "162-dotnet.log",
+      "logSha256": "5dec371ec83b9674e6c7947a8ef01fccab5fbe2314493d1f7c55db4d02e77416",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-813bc1b0ad2bcdbc.xml"
+      ],
+      "returncode": 0,
+      "log": "163-dotnet.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference",
+        "-getProperty:ProjectAssetsFile"
+      ],
+      "returncode": 0,
+      "log": "164-dotnet.log",
+      "logSha256": "e81b28f80029a7834be4ab108f713929d33eec51a0405611c1d5a556bc73f2d1",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "msbuild",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "-preprocess:/tmp/h45-906e3ppv/imports-df8a2090059a2bee.xml"
+      ],
+      "returncode": 0,
+      "log": "165-dotnet.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     },
@@ -2965,13 +3005,13 @@
         "delete",
         "cluster",
         "--name",
-        "h45-831c5cd233a1",
+        "h45-1e52851b2eca",
         "--kubeconfig",
-        "/tmp/h45-v6xbg5kt/kubeconfig"
+        "/tmp/h45-906e3ppv/kubeconfig"
       ],
       "returncode": 0,
-      "log": "163-kind.log",
-      "logSha256": "075fc8ef328c67f1bf4da7108cd2b104123819fdf0574edb57492a2d4087e87e",
+      "log": "166-kind.log",
+      "logSha256": "b54781afc8f8ee263540c4169447b05815ee128a5ad520cb3816c266484ea9dd",
       "stdinSha256": null
     },
     {
@@ -2981,7 +3021,7 @@
         "clusters"
       ],
       "returncode": 0,
-      "log": "164-kind.log",
+      "log": "167-kind.log",
       "logSha256": "9144424a2ea42eac9d9e20a7759791e3893d366d2ee9e038145ee053f0fd782c",
       "stdinSha256": null
     },
@@ -2991,12 +3031,12 @@
         "ps",
         "-a",
         "--filter",
-        "label=io.x-k8s.kind.cluster=h45-831c5cd233a1",
+        "label=io.x-k8s.kind.cluster=h45-1e52851b2eca",
         "--format",
         "{{.ID}}"
       ],
       "returncode": 0,
-      "log": "165-docker.log",
+      "log": "168-docker.log",
       "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdinSha256": null
     }
@@ -3669,7 +3709,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       },
@@ -3985,7 +4025,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       },
@@ -4291,7 +4331,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       },
@@ -4730,7 +4770,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       },
@@ -5134,7 +5174,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       },
@@ -5553,7 +5593,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       },
@@ -5846,7 +5886,7 @@
             },
             "manager": "helm",
             "operation": "Apply",
-            "time": "2026-10-22T18:30:43Z"
+            "time": "2026-10-22T21:57:27Z"
           }
         ]
       }
@@ -5858,146 +5898,146 @@
         "kind": "Namespace",
         "name": "reference",
         "namespace": null,
-        "uid": "08fc3625-f621-454a-9712-a0708ba51e3d"
+        "uid": "6118e5b7-e7fc-46ad-8662-f0cfddd26f60"
       },
       {
         "kind": "Namespace",
         "name": "environment",
         "namespace": null,
-        "uid": "5144b719-775c-4bbe-83b8-07d06770fc09"
+        "uid": "0a255760-a217-493c-90ba-a4c91eb84af1"
       },
       {
         "kind": "Secret",
         "name": "fixture-credential",
         "namespace": "reference",
-        "uid": "c5c2a980-19e1-48b2-9f3c-cff54c304e73"
+        "uid": "85da9c33-ed6e-4077-842e-0ef4f17c836d"
       },
       {
         "kind": "Secret",
         "name": "fixture-registry",
         "namespace": "reference",
-        "uid": "8b26e562-e38d-44f3-87c4-15ea87f5827a"
+        "uid": "0f95f3fb-a7b9-44cc-8daa-210ece4e5ca0"
       },
       {
         "kind": "ConfigMap",
         "name": "fixture-components",
         "namespace": "reference",
-        "uid": "47cf00b3-f729-4493-a838-885079017bd1"
+        "uid": "855e2033-a4a3-43f4-93dc-b746093a1dfa"
       },
       {
         "kind": "PersistentVolumeClaim",
         "name": "fixture-storage",
         "namespace": "environment",
-        "uid": "6b014b37-2cb5-46ba-a39c-b37642e7a5b2"
+        "uid": "121fcb71-0a44-41b0-91b8-39fcb77dc4c1"
       },
       {
         "kind": "GatewayClass",
         "name": "fixture",
         "namespace": null,
-        "uid": "8040980a-3b9d-4b36-b37a-42828d81e207"
+        "uid": "0f2da07e-07e5-4cd6-8fa4-6c2983cee5cb"
       },
       {
         "kind": "Gateway",
         "name": "fixture-gateway",
         "namespace": "environment",
-        "uid": "1e1c70db-71b3-499d-9310-571fe8193490"
+        "uid": "d229cb93-e950-44a1-8a1e-1c9781581c81"
       },
       {
         "kind": "Secret",
         "name": "fixture-eventstore-api",
         "namespace": "reference",
-        "uid": "cdb852bd-c692-4a30-b943-b758d197710c"
+        "uid": "6fa51a38-ffac-4785-ab67-15b4595a112e"
       },
       {
         "kind": "Secret",
         "name": "fixture-eventstore-app",
         "namespace": "reference",
-        "uid": "da9edf58-a7be-4cee-bcea-bf8aaf5f3a85"
+        "uid": "d44913ba-e094-4712-a6d3-d74f61602b69"
       },
       {
         "kind": "Secret",
         "name": "fixture-memories-access-telemetry-api",
         "namespace": "reference",
-        "uid": "476dd82a-f6d5-4f2e-b9c7-2f1e28ba83cd"
+        "uid": "d9cfe715-d52d-4b15-a237-e232ed90cdae"
       },
       {
         "kind": "Secret",
         "name": "fixture-memories-access-telemetry-app",
         "namespace": "reference",
-        "uid": "1ac0be76-23c4-4e6e-b8a7-1def57cf8b12"
+        "uid": "7841b7db-b231-448c-9b77-ea4371ede814"
       },
       {
         "kind": "Secret",
         "name": "fixture-memories-access-telemetry-clock-api",
         "namespace": "reference",
-        "uid": "27b86da0-c9b6-4df4-a275-3530c3fa70b4"
+        "uid": "02fc81b5-fc91-4741-9355-b83a04f64df1"
       },
       {
         "kind": "Secret",
         "name": "fixture-memories-access-telemetry-clock-app",
         "namespace": "reference",
-        "uid": "7aa68479-bf27-43ed-afa5-3bbf36001c75"
+        "uid": "0f3e5ae0-a036-4289-ad9b-472c79630e3c"
       },
       {
         "kind": "Secret",
         "name": "fixture-memories-api",
         "namespace": "reference",
-        "uid": "786c4c62-8325-4fa8-aa29-098219d391cf"
+        "uid": "b133817b-1d3c-4e7f-8a7c-921e298092d8"
       },
       {
         "kind": "Secret",
         "name": "fixture-memories-app",
         "namespace": "reference",
-        "uid": "b08a86ee-fe95-4858-9b36-fc25d352158c"
+        "uid": "76fc63ab-b5e6-4f41-a02e-36bd2f4435f8"
       },
       {
         "kind": "Secret",
         "name": "fixture-parties-api",
         "namespace": "reference",
-        "uid": "d7e92571-e4e4-4a18-8f30-a101ebc7a648"
+        "uid": "85cf40e8-653b-4641-8c94-0350a701cc92"
       },
       {
         "kind": "Secret",
         "name": "fixture-parties-app",
         "namespace": "reference",
-        "uid": "3d6e0808-1c94-4daf-a02c-9649a11a96ff"
+        "uid": "a1f314cd-d492-41f4-8be8-35154653a4c8"
       },
       {
         "kind": "Secret",
         "name": "fixture-tenants-api",
         "namespace": "reference",
-        "uid": "b385394b-d4cd-4407-a1b4-1de317ae5e82"
+        "uid": "b653ac0b-16de-4de5-8ff7-2a3988c61723"
       },
       {
         "kind": "Secret",
         "name": "fixture-tenants-api-api",
         "namespace": "reference",
-        "uid": "d4667bd0-2e48-41d7-a297-aa6f522ce5c6"
+        "uid": "703c06cf-c9b0-4fba-8fc4-7b424a9bd7ba"
       },
       {
         "kind": "Secret",
         "name": "fixture-tenants-api-app",
         "namespace": "reference",
-        "uid": "9ef863a7-47b0-4c48-b38d-092080c872ff"
+        "uid": "6d42f370-f49e-487f-b33f-0cd8c8da972f"
       },
       {
         "kind": "Secret",
         "name": "fixture-tenants-app",
         "namespace": "reference",
-        "uid": "61bface7-afca-496a-93f5-15c17e6b0f77"
+        "uid": "3508d7e6-7882-4759-a1b5-ae3fea923eec"
       },
       {
         "kind": "Component",
         "name": "environment-preserved",
         "namespace": "reference",
-        "uid": "221c850c-c3b7-4550-b0dc-a154216ad650"
+        "uid": "03260c99-8f5b-4f57-8c31-f7321d4fa551"
       }
     ],
     "uninstallPreservesEnvironment": true
   },
   "cleanup": {
     "complete": true,
-    "ownedCluster": "h45-831c5cd233a1",
+    "ownedCluster": "h45-1e52851b2eca",
     "onlyInvocationOwnedResourcesDeleted": true,
     "temporaryKubeconfigRemoved": true,
     "clusterRemovalVerified": true,
@@ -6010,6 +6050,20 @@
     "application functional readiness with retained images",
     "future environment policy qualification"
   ],
+  "downloads": {
+    "helm": {
+      "url": "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz",
+      "sha256": "97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096"
+    },
+    "gateway": {
+      "url": "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml",
+      "sha256": "751002b3b91a87f7ae3bd2517c79a47a8d7ed6702901808a1cf9bd97d284f9b8"
+    },
+    "dapr": {
+      "url": "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz",
+      "sha256": "bd540acd198dc8efa4314208325d8e7eaf89f54accdbd1fad62b484fcf9cabf2"
+    }
+  },
   "tools": {
     "helm": {
       "version": "v4.2.0+g0646808",
@@ -6047,20 +6101,22 @@
         "native": {
           "version": "13.6.1-preview.1.26506.6",
           "assetsFile": "resolved-native-project.assets.json",
-          "assetsSha256": "666eaf9c3c534cac1a80a6d724c17525bf8615d581b32d971c5492d961cc6dcc",
+          "assetsSha256": "bfd759b6756564a0b14e5bae0af33cd679550bacfa792ecd071ca8cecaa1a00e",
           "packageSha512": "40lFCkAutU7ZnoAneB9m7PPSOwdkg854ySvSUNrmY0Uv8APOR/qurSAINhPvaLT2ZdwQ4hyi1zCVN3Tj4SK/lw=="
         },
         "composition": {
           "version": "13.6.1-preview.1.26506.6",
           "assetsFile": "resolved-composition-project.assets.json",
-          "assetsSha256": "bd4a00a34034b695502a239fe542794705b8f22609dff66bc9fdbdb971ae27a4",
+          "assetsSha256": "ea149e05e5093693614c7e9852098ef69e0ed0f645f426d6d7f1368c950925ef",
           "packageSha512": "40lFCkAutU7ZnoAneB9m7PPSOwdkg854ySvSUNrmY0Uv8APOR/qurSAINhPvaLT2ZdwQ4hyi1zCVN3Tj4SK/lw=="
         }
       }
     }
   },
   "source": {
-    "revision": "cebbf6a701ff537a3a8f9654338b914b2e70f7f4",
+    "revision": "04045b679ff329b54a2a2131a32bc4707944087e",
+    "statusPorcelain": " M _bmad-output/implementation-artifacts/deferred-work.md\n D _bmad-output/implementation-artifacts/evidence/4-5/000-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/001-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/002-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/003-aspire.log\n D _bmad-output/implementation-artifacts/evidence/4-5/004-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/005-docker.log\n D _bmad-output/implementation-artifacts/evidence/4-5/006-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/006-git.log\n D _bmad-output/implementation-artifacts/evidence/4-5/007-aspire.log\n D _bmad-output/implementation-artifacts/evidence/4-5/007-git.log\n D _bmad-output/implementation-artifacts/evidence/4-5/008-aspire.log\n D _bmad-output/implementation-artifacts/evidence/4-5/008-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/008-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/009-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/009-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/009-python3.log\n D _bmad-output/implementation-artifacts/evidence/4-5/010-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/010-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/010-python3.log\n D _bmad-output/implementation-artifacts/evidence/4-5/011-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/011-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/011-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/012-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/012-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/013-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/013-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/013-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/014-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/014-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/015-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/015-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/015-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/016-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/016-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/016-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/016-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/017-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/017-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/017-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/018-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/018-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/018-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/018-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/019-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/019-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/019-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/020-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/020-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/021-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/021-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/022-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/022-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/023-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/023-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/024-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/024-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/025-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/025-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/026-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/026-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/027-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/027-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/028-aspire.log\n D _bmad-output/implementation-artifacts/evidence/4-5/028-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/029-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/029-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/030-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/030-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/030-python3.log\n D _bmad-output/implementation-artifacts/evidence/4-5/031-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/031-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/032-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/032-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/033-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/033-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/034-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/035-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/036-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/036-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/037-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/038-curl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/038-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/039-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/039-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/040-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/041-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/042-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/043-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/044-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/045-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/046-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/046-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/047-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/047-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/048-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/048-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/049-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/050-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/051-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/051-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/052-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/053-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/053-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/054-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/055-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/056-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/057-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/058-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/059-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/060-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/061-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/062-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/063-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/063-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/064-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/064-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/065-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/066-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/067-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/067-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/068-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/068-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/069-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/069-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/070-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/070-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/071-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/072-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/073-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/074-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/075-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/076-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/077-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/078-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/078-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/079-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/079-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/080-docker.log\n D _bmad-output/implementation-artifacts/evidence/4-5/080-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/081-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/082-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/083-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/084-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/084-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/085-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/086-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/087-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/088-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/088-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/089-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/090-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/090-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/091-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/092-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/093-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/094-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/095-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/096-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/097-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/098-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/098-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/099-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/099-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/100-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/101-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/102-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/103-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/104-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/105-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/106-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/107-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/108-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/109-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/110-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/111-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/112-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/113-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/114-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/115-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/116-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/117-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/118-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/119-helm.log\n D _bmad-output/implementation-artifacts/evidence/4-5/119-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/120-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/121-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/122-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/122-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/123-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/123-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/124-docker.log\n D _bmad-output/implementation-artifacts/evidence/4-5/124-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/124-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/125-docker.log\n D _bmad-output/implementation-artifacts/evidence/4-5/125-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/126-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/127-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/128-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/129-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/130-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/131-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/132-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/133-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/134-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/135-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/136-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/137-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/138-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/139-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/140-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/141-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/142-kubectl.log\n D _bmad-output/implementation-artifacts/evidence/4-5/143-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/144-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/145-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/146-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/147-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/148-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/149-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/150-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/151-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/152-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/153-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/154-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/155-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/156-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/157-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/158-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/159-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/160-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/161-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/162-dotnet.log\n D _bmad-output/implementation-artifacts/evidence/4-5/163-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/164-kind.log\n D _bmad-output/implementation-artifacts/evidence/4-5/165-docker.log\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-eventstore.json\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-memories-access-telemetry-clock.json\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-memories-access-telemetry.json\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-memories.json\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-parties.json\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-tenants-api.json\n M _bmad-output/implementation-artifacts/evidence/4-5/admitted-tenants.json\n M _bmad-output/implementation-artifacts/evidence/4-5/hexalith-reference-0.1.0.tgz\n M _bmad-output/implementation-artifacts/evidence/4-5/qualification.json\n M _bmad-output/implementation-artifacts/evidence/4-5/resolved-composition-project.assets.json\n M _bmad-output/implementation-artifacts/evidence/4-5/resolved-native-project.assets.json\n M _bmad-output/implementation-artifacts/evidence/4-5/verification.json\n M _bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md\n M eng/helm-qualification/README.md\n M eng/helm-qualification/chart/templates/_helpers.tpl\n M eng/helm-qualification/chart/templates/dapr.yaml\n M eng/helm-qualification/qualify.py\n M eng/helm-qualification/test_chart.py\n M eng/helm-qualification/test_qualify.py\n M references/Hexalith.FrontComposer\n M src/Hexalith.Platform.Composition/PlatformServerBindings.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs\n?? _bmad-output/implementation-artifacts/evidence/4-5/000-curl.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/001-helm.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/002-kind.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/003-kubectl.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/004-aspire.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/005-dotnet.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/006-docker.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/007-curl.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/008-git.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-build-and-mtp.json\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-build.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-hosted-and-parties.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-hosted-and-parties.xml\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-readiness-diagnostics.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-readiness-diagnostics.xml\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-shared-dapr.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-shared-dapr.xml\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-focused-tests.json\n?? _bmad-output/implementation-artifacts/evidence/4-5/review3-mtp-hosted.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-focused-hosted-and-parties.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-focused-hosted-and-parties.xml\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-focused-readiness-diagnostics.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-focused-readiness-diagnostics.xml\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-focused-shared-dapr.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-focused-shared-dapr.xml\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-mtp-hosted.log\n?? _bmad-output/implementation-artifacts/evidence/4-5/review4-parent-qualification.log\n",
+    "submoduleStatus": " 3f194e17174994d308ec84af9ee2b5aa68674d0d references/Hexalith.AI.Tools (heads/main)\n dd1639439c6822337a747e254fcd626151b27000 references/Hexalith.Agents (v1.2.0-1-gdd16394)\n 90d364d413139da157c6dbd21cb4e5bf1e4bbb60 references/Hexalith.Builds (v4.35.2-18-g90d364d)\n 6b92c2970d8fd7fb6bc2d3ad26f864e80313e111 references/Hexalith.ChatBot (v1.82.0-234-g6b92c29)\n 1663028fb6d9f46a0bf17919edeb21bb99be1587 references/Hexalith.Commons (v2.30.3-4-g1663028)\n 60f18214d7a4565d28096628af95d867ddd5e874 references/Hexalith.Conversations (v1.3.0-2-g60f1821)\n 2361e7b6760a7d0065c67661c2e95c2af94bdb4d references/Hexalith.EventStore (v3.126.1-30-g2361e7b67)\n 28513763ec5c0405ab942b1e5266a483573f451d references/Hexalith.Folders (v1.3.1-6-g28513763)\n+110bc0ef5165b2949aba97243511df7d2d9529f6 references/Hexalith.FrontComposer (v4.7.0-58-g110bc0ef)\n ab7d6a9ef2b8dc3b0a4f4206c93450aeeabdd7fb references/Hexalith.McpCli (v1.0.0-55-gab7d6a9)\n 779db8694087c4459174429287ee07c1caff1a84 references/Hexalith.Memories (v2.29.8-14-g779db869)\n 3ace477aa61f6cd936bd9c06d99fd8fe59a205a8 references/Hexalith.Parties (v1.5.2-15-g3ace477a)\n 221ac4592ba908ae7661ba1fa9e2d1fcc23baee0 references/Hexalith.PolymorphicSerializations (v1.19.5)\n 0247ccb999d788a6d92984362e5717955d58caa8 references/Hexalith.Projects (v1.2.0-2-g0247ccb)\n 4354b0e0687766c0995383f630ec54f9b2a29730 references/Hexalith.Tenants (v5.10.1-21-g4354b0e0)\n 61ccd95e7ad3b0fdab9bdc9abae98b1847bdeb34 references/Hexalith.Timesheets (v2.0.1-1-g61ccd95)\n 8a10f1da505e207c1f417363d712b62aa3c98422 references/Hexalith.Works (v1.0.2-25-g8a10f1d)\n",
     "files": {
       "/home/administrator/.dotnet/sdk/10.0.402/Containers/build/Microsoft.NET.Build.Containers.props": "ba1e06fba8d467e835c01432c670885306d724ca096c236766b19089fce2b135",
       "/home/administrator/.dotnet/sdk/10.0.402/Containers/build/Microsoft.NET.Build.Containers.targets": "adb3452951768ef6f279fbb118d089c3d302715c4c7bcbb449785c5d11192df0",
@@ -6197,17 +6253,17 @@
       "Directory.Build.targets": "2aba9feae72b95412779c70691e4408cf80829f84882c748b6541f16a027b439",
       "Directory.Packages.props": "71bbbb3b3bf472b00e24c0fa29130ee60851f9c929b8e2e0f32ae19c6c1c8b29",
       "apphost.cs": "47de90759cf793885de595cec29b34402195e6fa6299b11c0041a7d22aff146a",
-      "eng/helm-qualification/README.md": "0d61aadc089ce96fc45a0b196969afcd39992d0e012038d2d8554c41b25b5979",
+      "eng/helm-qualification/README.md": "9bfd2bb489d01fc7c692c1f151a8155a62decb0ab531aadf9113f430df224b20",
       "eng/helm-qualification/chart/Chart.yaml": "b5c7d2eb27d2ec237620088a13bd4c45a67a1ba424f0b9e0b01429aca9a8da7a",
       "eng/helm-qualification/chart/reference-graph.json": "6d6e28d4b190540fbd82559dc39b484c758853897709c6ea4473345fd2de4d87",
-      "eng/helm-qualification/chart/templates/_helpers.tpl": "1a2798f7770072ad4847da4e93273db2889e7fabd698f0d1a868ae59f8df3c1a",
+      "eng/helm-qualification/chart/templates/_helpers.tpl": "cf9baf17864808a0f304887ec35b7c970aa7c88cefc3cdd0128efb91cd0e44bf",
       "eng/helm-qualification/chart/templates/application.yaml": "1befe9f88ceb530807adaef32694aecd546f9b65c3eb54594ce63bba6cabbe7a",
-      "eng/helm-qualification/chart/templates/dapr.yaml": "4aa781088e3e3e50b441385d9605fe51a9bd1f2ec72e7288281abb3b35dfa1e5",
+      "eng/helm-qualification/chart/templates/dapr.yaml": "739e42a61d6d921b12c3d5062cbc42e425e12a078bc3095f3ec5ba79c9ae2fd2",
       "eng/helm-qualification/chart/values.yaml": "1d7873e046862d488f886e53a04a35a9c44291c1ac77514e3d18c9773b2c1e8f",
-      "eng/helm-qualification/qualify.py": "c3bf1e368f477bd6d1daa091ce81f52af172f89dc3f378ebf3de8a8b3e70138f",
+      "eng/helm-qualification/qualify.py": "fb25f041dd7acf71c08fdf912a0fb20721d21b77c9f2aefeaaaf010d60674747",
       "eng/helm-qualification/source-packages.props": "0efbb760b4349c1825c35499a1f301b35281efee50c759e6658542de1ae5b451",
-      "eng/helm-qualification/test_chart.py": "6d474a99499e87a45a4e572cd41cdcb64f0a346156d0a0e06373ebd97fee446b",
-      "eng/helm-qualification/test_qualify.py": "20b187ec8138220c0606dee45e4fdf06f1efed36b1ed9d00c2ebc6d484af3508",
+      "eng/helm-qualification/test_chart.py": "808fc3efd5c3cc2a1500dcbae1e2691862046857e85b11ac160b620bf759ee21",
+      "eng/helm-qualification/test_qualify.py": "7fb562ca3c36df73cf58696c9921a258fa45c48cdf56ebe021e8535f0c8b3b04",
       "eng/helm-qualification/toolchain.json": "00748adc6377af60992319eeb1a9a6870ebbfc25bf29c0f2d16fa7ec64f4cee4",
       "global.json": "4ec97d7c7e6bee864d2da2c965f18b94b0bd84e71058427f1f6fa69ee6824652",
       "nuget.config": "eae1b6dcb61e63c93b4146f0903414053f5bad17a6513de07ce63ada3382979c",
@@ -6218,14 +6274,14 @@
       "references/Hexalith.Builds/Hexalith.Package.props": "bd08eac68e76d49b7ba9a95803ea4be303516ca4c25d53990430113525d2f02d",
       "references/Hexalith.Builds/Props/Directory.Packages.props": "f020b65a89a5e6256cf7f09bbe02a2e288a89d2eff00f68e978af8b99409276a",
       "references/Hexalith.Builds/Props/Environment.Build.props": "e5d210cc151a8835d52e56addbd4e17debfa528c110b453aad6604b0a979989d",
-      "references/Hexalith.Builds/README.md": "576267fff5d3271f02c876ee18999327984534f95f9bab89d7cb0ccc2e2d6b27",
+      "references/Hexalith.Builds/README.md": "4354fb97f6162f400e118f6b988a4ade24767f209323a0bfbd1f7c18f619079e",
       "references/Hexalith.Builds/Tools/write-platform-version-catalog.ps1": "15d239155e0520dc872ff309b1121b8dcf7d6fbb29df3cd70093c2f8b0010bd0",
       "references/Hexalith.Builds/icon.png": "4cd931759caa30083f6885fdd5b4835757d0c3a53b4b9f2520b1e6b6957206eb",
       "references/Hexalith.Builds/schemas/hexalith.check-invocation.v1.json": "9d16a729e2e4914cc88dcda6945296c0132a03708577f4378d2a8dc287fe2cba",
       "references/Hexalith.Builds/schemas/hexalith.check-result.v1.json": "76cdc496c518791a593ecf2a69b3fdd0dded266c611b1f59c23dc6edee8d5a0f",
       "references/Hexalith.Builds/schemas/hexalith.check-suite.v1.json": "3498bc1dd1646f9ca8808536448366bb69e7078d2a4c0bc96f3671d146d26a44",
       "references/Hexalith.Builds/schemas/hexalith.module-manifest.v2.json": "888d719b58493b4ebe14975e96262eca87e00afee8fe3a451a83ac7da366293e",
-      "references/Hexalith.Builds/schemas/hexalith.module-run-evidence.v1.json": "114fa0a43068704d0665d23ddeea63464003175a08be3a63ed1f73d4a504f072",
+      "references/Hexalith.Builds/schemas/hexalith.module-run-evidence.v1.json": "1dfcc2aa062af8d0af1ee57a8d6086de5f5abad0f65328aee850db1d0e9834f2",
       "references/Hexalith.Builds/schemas/hexalith.release-records.v1.json": "0609f1331d13d6ac7fa8a65dfaaafe546957eb453ef1c5acedb6847f323d97f5",
       "references/Hexalith.Builds/schemas/hexalith.test-environment.v1.json": "8d98ce1bfa1b536a22b083050033d6ea67c088129ff1e575cee9121affa710ea",
       "references/Hexalith.Builds/schemas/hexalith.test-result.v1.json": "b5d5055219e61646cc58cef9064f9190b139467a4c729b840686284f4a38ebfb",
@@ -6302,7 +6358,7 @@
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEnvironment.cs": "9a780e0a009a294a1034f9e692662e914999053cc353979a9abf7044d8480acf",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidence.cs": "612ff154c70158d1fd553823db495a305b71e8bdbdc0fd0cfce59bd28c18131f",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactSummary.cs": "307572bd14b46e4682d3eb76218685cb102ac694c030b43e6d0a98449a9de426",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs": "3521416d79c3998f4a626a65e92edeca11f14b13a73568163be5b3805c190296",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs": "e40085744bc4705f64564ac80b993186447f72ad12b108dbfeff64208ace7f2f",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceFactory.cs": "60b6cf38be23fdf8063920240e2d4c9803d48c8492cc59f0f69c473e5ac0b572",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceWriteResult.cs": "a9af6a9573494200454a0cdc591a1c43e1041b1fee785258d41e0cffc32817d0",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceWriter.cs": "c5781f424b588a076f136afba91c850142ddc4babda25dd954275e02feb51a7a",
@@ -6324,7 +6380,7 @@
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs": "75b70fffc32b9577a23c5c72f86b86d71c48f99b071f7022f92f214e19cc1043",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDownResult.cs": "819b0aee3a8f37386d7e7827f5822fbcc9db7ea0a1106cdccc1d8a65e1f0c44c",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEffectiveDeadline.cs": "036f733b0b6660feb872509c1fc7fa00061b81fdedde283c56b75a53e035d87a",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "84cf458dca45fedbc661f73b3fded5b86ff6d76baae9fe9603c64373f9a1ed7f",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "b8bccc1f7010c2c46ac7fb6b3e85aa4b971548d3d52e3fadbb710c216722ade7",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "5613bcdcb18f5e04c07232fe3d4fb0369d209101669bb32ba2314a3884a5fa68",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEnvironment.cs": "36e6ee97096c1e5aedd7ca0d60fb9a2c00a419d5fb5857260c2aaf0ac7cd46f7",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionLaunchConfiguration.cs": "c28f913426a644c2b91f43bbc4e242077f72786c1320c40ae1b1a7a4173bf769",
@@ -6337,7 +6393,7 @@
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadinessProgress.cs": "f0176f537b1bd92ff994f4f2ec1eb7dde8f289aadb7e1d0239243850abaf7775",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaim.cs": "ad1e1fe7db2f2861cf564fc8240d697d75a1297e3d727681b0804b7aa4551181",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimConflictException.cs": "ef57ff68b9585d8d007fc639806e427b9e420cad56e008007c7ed55aa4ac079b",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs": "c55c54f654c56d4b136e6fe9873aa1a1d944d141b8fa531b5b6ab8d5303db534",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs": "055d56cfd90856ea79e2ed231e2f9de0452b024fd322da2b77094230f726bb92",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceController.cs": "5f2b1f172e6d36b8b2a7f8427c6328640cfae81ce4e58bc5cc62926935588288",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceEndpoint.cs": "cf045c874f847f912d9a34a6656995e3dd02b8b0b20a08ee9203a5a803cba0f2",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceReadiness.cs": "73ca81260e29e2b6e826fc11b6bc6c304cf8704a93865d18256ba4045ac099fc",
@@ -6373,7 +6429,7 @@
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs": "46187808be13b00d3ff6f299062e2c227c19a03c1bb566c14df4a648b7bb2918",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionTestObservationProvider.cs": "21670a64931dee565cca4599639dca173cd7e1060a659ebff0580604951cd29e",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ImmutableArrayJsonConverter.cs": "425e5e13aa61e112327ac8e80a4f1314ec0a7158b65304cf9448c9e14d0bd874",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "620e428c86fce31666b713d4f21b423148c57ab697bd1085a60e5ff760d5680d",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "9ac63c8d47a02453a488103734ffbf3c1f2cd79cdb2c1b7d6e7b0d43a0ea0f9e",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleInvocationCommand.cs": "71ab17f31fc97c0c16fda3c96ba89e3e0f348c31a72951b901161505d2873db7",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleInvocationState.cs": "4c0163b9fbbf19afb0171f228e0c2e1bad176c9f9a5c15663219d10f04d7169f",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleInvocationStateStore.cs": "1cf88d430773d7c010c381800d6600a1d0dc7801da8b936a21c73b7d3245faa3",
@@ -6384,7 +6440,7 @@
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestRunRecord.cs": "bd2812524c2a98774a8387749f39bced8731061e53f7ffe4c76ec32704980010",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs": "3242a7d30bd62e2d82b04596ccf2724c9a5e99e17ae6249dd4500887adfc3603",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs": "bf8aa08b6c1e09b238c80e7b3ee637cc20dd00118bdfa16b3f6c4bf84c380dc6",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "d8a705b935362b6c91c2b047b07295ea91834761629fa63e6700d0e4c5f74ce5",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "094a2029b7f83c83315b89f15b189abaef7d0b7e24e80f3523469f57532562f3",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs": "90672895e6800a989431ae304177fda5766dfa5527bb26d05dae9650e3d56b48",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestReportRedactor.cs": "93483d3bc27bf8fbf9e33a50812e8911b626c5893799e1ab5a7888ee5e45db63",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PackagedHostProject.cs": "3edab547223d2cd494dcc83964b0c18d6b995e14a97ca0a720837df4d30adb60",
@@ -6396,13 +6452,13 @@
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileModule.cs": "bde45bd93965b22fc8770e416c95a6ee7b150006613af066f2aae32b8e18a8c7",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileNativeTests.cs": "1965e0027c612f936098634a0aa64405106147cab01ff559d976668d4c9bf9aa",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileStore.cs": "eebbdfb04a92b57ad941d93e64e07d04bae9db526427f7446e261ffa393de726",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs": "a472fd4d7f48b8fdf8e57717c2f68fe14469c72d23aa94bf1e43207d31dd83ed",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs": "cfeaacfb2d790bdcc1391cb12c9a6536f2fd3f9a8071ce0003677c767611a92e",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/RuntimePrerequisiteCheck.cs": "5d6584ed87df26b91c3e1515da9855d64aaf698b2ed1188d2af9e77d22fd1fc0",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/RuntimePrerequisiteGate.cs": "da86bc0f938fb01a7a8c0608fcfe77d1868a7e4c6db077de8f55ac6eea2b6fdc",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs": "4981b34ddedeb94f015c6a1c5da3ab5981d7cb2909cc36f86cd9644783c85207",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReadResult.cs": "d81b21685e55337161e2f0501ee50285daad49fa6cd02d60170bce1f8266fc6e",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs": "b2f1f61cbcd10f57ccd9c015ac99d161cf23439a37da04ec2bbe232d8ca96cf4",
-      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs": "8727e5fc738313f1c56831c9cdc2d0cc19504a15e3484eddc8ab47feda148bf0",
+      "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs": "aae1f628fe0307e22a2a3c8edf320bfd1b38dc410e1137af42a932d36960e4e1",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestReports/NativeTestReport.cs": "13272172a5f02755f4d66755b15d29c922542a8016cb74027dd999d21dc28745",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestReports/NativeTestReportLoadResult.cs": "83035405a7defb29fee6bc902daf77aa54694f7bf1a66f9e21bfedc3f32e6380",
       "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestReports/NativeTestReportLoader.cs": "ffb68138a9d89d969d8d37bf5ffc15b4d167f879d4da7174cac40b9be05378c9",
@@ -7306,8 +7362,8 @@
       "references/Hexalith.Projects/Directory.Packages.props": "db026ea147622209d4280cc35d27de75f3c2c5f480e8502272a2376ea0f07d5e",
       "references/Hexalith.Tenants/Directory.Packages.props": "c8351c554ea90792eae487eadd8d6a08faeb0719e62341a929d81f7f44fdcd08",
       "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522",
-      "references/Hexalith.Timesheets/Directory.Packages.props": "35cd66b52362a6cf9d8e284bf65d55cef6e5e7b115d82c3f31a66ef37ade930a",
-      "references/Hexalith.Works/Directory.Packages.props": "6c7f64234d95e0fa1d49d41329b0d04d51457e1b9f644ae37bdc659a3a8ce42d",
+      "references/Hexalith.Timesheets/Directory.Packages.props": "be59977a614f48a4f11c356447961344bd9f704cc1b8057c26171bd344f9df51",
+      "references/Hexalith.Works/Directory.Packages.props": "fec0ca5911070d362e6e3c01c1f2d3a2280dc69461f368348f835107dcd8b909",
       "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "54ddb1d5398ebb5624001f8f1b630c22fc7e3a9eb6b80e804a4d5ec3268e7652",
       "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "ad026cd806ec92140439425ff6f36bbc5c465553a201c947f03d6a2e5e36f0e9",
       "src/Hexalith.Platform.Composition/Declarations/eventstore.json": "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
@@ -7316,7 +7372,7 @@
       "src/Hexalith.Platform.Composition/Declarations/provenance.json": "8ab18487c4a62b1d4ab41067ec85b136ccf069e40489c3b64b0c831565a356b7",
       "src/Hexalith.Platform.Composition/Declarations/tenants.json": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
       "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "5adfd9894015dd552b1fc53f01f7e37c1c06730026401b9e2836deb14babae3e",
-      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "e96ce9ddd4c8e797ec00fac05331486cd2804b463e5855646d64304fceb9bc9b",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "fdf60f4f4db0ccd03767b88ed087b30615afc53275a193441775a7726a9d09b6",
       "src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs": "42378f4ac70f4145bf414c4007ba7a0f3a69b4dfa7edb02de8206e7134427374",
       "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs": "701afefa07424c905dab202a368f6100fb6c42f3d4b14e2750ca43c17eacb54c",
       "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": "8b9cbcb30547956ffbfe74cc0435e4c0c3d38b58400c563163f3a19043ac6049",
@@ -7330,10 +7386,10 @@
       "src/Hexalith.Platform.Composition/PlatformMappedArtifact.cs": "b14c693049de9fd0505cf2ed815bd9879f2e30a83245a117665fc5579fd07d5f",
       "src/Hexalith.Platform.Composition/PlatformPostgresqlHealthCheck.cs": "694dad5a9ba81a1aa5c7d2938a64057933ff87d43252f9657e8a33518a9d9751",
       "src/Hexalith.Platform.Composition/PlatformRedisHealthCheck.cs": "2548f5dd02b64c639f0f08bd6ca43ef29ffe80688c26f10097820978ddc086a9",
-      "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": "fc6e1fbd94e62a84eafc0927996d33e45d164c97e9d64aceb9047b8189b3363b",
+      "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": "f28e7bca6ebdca3292d1b4b3568ba2fdaf54ef66027665224902e31f2ca67556",
       "src/Hexalith.Platform.Composition/PlatformServerAnnotation.cs": "e6e694457827249572c3b44006235ccbcf761c047ebb3d558b2e54c9bcbc33c2",
       "src/Hexalith.Platform.Composition/PlatformServerBinding.cs": "fe5a8e652c3a77effce4eb28ab39a22d0ca3d2bd25139d1a70093c1f8e3dafed",
-      "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "0ce5b022201d8bc7fa1c7617d1198e3c9ad84d792658d3ffafc675d2ba34db77",
+      "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "21a49f775e6d7e862c3a61761b5cc625ef1fca212152edb6c317536726f40f6e",
       "src/Hexalith.Platform.Composition/PlatformTimesheetsBinding.cs": "9aeb4ba3adade96b728c4ec74c5708ea86d2b5f525b8e0436b9351519ef889a2",
       "src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs": "ec57f02a8453306aff5f31978f9374694daa39fba2c82f86141e1ba557fd140f",
       "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": "8d75ce41eaf9be13f85d3c253fab4452a0635f617797ccf510a6a192dd459fe1",
@@ -7502,29 +7558,15 @@
       "src/Hexalith.Platform.Works.Runtime/WorksRecoveryTelemetrySnapshot.cs": "16c3499eec4f5686dba550ad57cf41184ecb38b9664bcac36c9313934729d08a",
       "src/Hexalith.Platform.Works.Runtime/WorksSyntheticDispositionAuditSink.cs": "c71ac4e8e364d80a10f0a3cfe2eabf65e0090ac4cea3026d908918a2577187e3",
       "src/Hexalith.Platform.Works.Runtime/WorksSyntheticDispositionAuthorizer.cs": "8d1f816bf90f333cae5ea61c933afa19be8292ba3d310b5d471cd6861c0c93a9",
-      "tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs": "73657f25fd850c7885b37040eebf6726ac1d52b0a9392d51fb8cccb07c4297b3"
-    },
-    "isolatedSnapshot": {
-      "root": "/tmp/bmad-4-5-frozen-nfaju0ri/platform",
-      "originalRoot": "/home/administrator/projects/hexalith/platform",
-      "rootRevision": "cebbf6a701ff537a3a8f9654338b914b2e70f7f4",
-      "ownerRevisions": {
-        "Hexalith.Builds": "66b9136a0b223925e51177a51eb48852e2f12787",
-        "Hexalith.Commons": "1663028fb6d9f46a0bf17919edeb21bb99be1587",
-        "Hexalith.EventStore": "175082be7f108c95ea61e93b9df1ccf0a240534c",
-        "Hexalith.Memories": "74e4434fe2bffa7d850df99c5919706ba080cb31",
-        "Hexalith.Parties": "7b7898307e8eca3774843b145d339e9986018409",
-        "Hexalith.Tenants": "165bd76c908003fa92008632360ff8335cfd997a"
-      },
-      "workingChangesCaptured": true
+      "tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs": "81950bf01da4d093d56305ea8ddaaec66711c25ed52cb71a3a86200f9080f8f0"
     }
   },
   "inputs": {
     "graphSha256": "6d6e28d4b190540fbd82559dc39b484c758853897709c6ea4473345fd2de4d87",
     "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
-    "sourcePackageProps": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/eng/helm-qualification/source-packages.props",
-    "valuesSha256": "bc1633ec16bbc9df812d06556280eb3dbd1592e4ba24beb34cf536e1e6dcaf24",
-    "renderedSha256": "d214bc7c545da38f264ceff6997cec480edf52a72a850fa7f2e2181bfa506244"
+    "sourcePackageProps": "/home/administrator/projects/hexalith/platform/eng/helm-qualification/source-packages.props",
+    "valuesSha256": "89b246e88b2875f6676f2e7c6ae309930f4a922402a3009939680dd5ff0664cb",
+    "renderedSha256": "7636787cd356bfd2e6363fe4b1010be9aab0c57b7a3d366e9029bbcc8739e134"
   },
   "exportDecision": {
     "selected": "maintained-chart",
@@ -7562,25 +7604,15 @@
   },
   "package": {
     "file": "hexalith-reference-0.1.0.tgz",
-    "sha256": "daafe18f740d55281c28f066f17d94528da9c205e405e5da9fac3c6d87d97d11"
+    "sha256": "d89cff4fd8c2c2df21d9de2b474ef93f34dbdd76940b65a5d9957b1fe3059b83"
   },
   "preexistingClusters": [],
   "cluster": {
-    "name": "h45-831c5cd233a1",
-    "context": "kind-h45-831c5cd233a1",
-    "uid": "641c0844-13bd-4067-a43d-6f083347ae81",
-    "endpoint": "https://127.0.0.1:39839",
+    "name": "h45-1e52851b2eca",
+    "context": "kind-h45-1e52851b2eca",
+    "uid": "1f894bff-5441-4c25-bcf8-24cd902af71b",
+    "endpoint": "https://127.0.0.1:43651",
     "ambientKubeconfigUsed": false
-  },
-  "downloads": {
-    "gateway": {
-      "url": "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml",
-      "sha256": "751002b3b91a87f7ae3bd2517c79a47a8d7ed6702901808a1cf9bd97d284f9b8"
-    },
-    "dapr": {
-      "url": "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz",
-      "sha256": "bd540acd198dc8efa4314208325d8e7eaf89f54accdbd1fad62b484fcf9cabf2"
-    }
   },
   "daprControlPlane": {
     "apiVersion": "v1",
@@ -7595,7 +7627,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T18:29:11Z",
+          "creationTimestamp": "2026-10-22T21:56:07Z",
           "generateName": "dapr-operator-74bf8cfb58-",
           "generation": 1,
           "labels": {
@@ -7607,7 +7639,7 @@
             "app.kubernetes.io/version": "1.18.7",
             "pod-template-hash": "74bf8cfb58"
           },
-          "name": "dapr-operator-74bf8cfb58-c2jp9",
+          "name": "dapr-operator-74bf8cfb58-stfk2",
           "namespace": "dapr-system",
           "ownerReferences": [
             {
@@ -7616,11 +7648,11 @@
               "controller": true,
               "kind": "ReplicaSet",
               "name": "dapr-operator-74bf8cfb58",
-              "uid": "9ecb9c01-4e5c-4f43-8b42-d5164458d0b1"
+              "uid": "3cd0a726-661c-40ad-bf3c-cac06b410ac4"
             }
           ],
-          "resourceVersion": "914",
-          "uid": "38ec9a9a-b42a-4368-bc97-84dd36c2a35d"
+          "resourceVersion": "888",
+          "uid": "c439f5eb-9a29-4b3f-a18a-55c229414c5f"
         },
         "spec": {
           "affinity": {
@@ -7739,7 +7771,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-dtvqf",
+                  "name": "kube-api-access-9fpfr",
                   "readOnly": true
                 }
               ]
@@ -7747,7 +7779,7 @@
           ],
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
-          "nodeName": "h45-831c5cd233a1-control-plane",
+          "nodeName": "h45-1e52851b2eca-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -7801,7 +7833,7 @@
               }
             },
             {
-              "name": "kube-api-access-dtvqf",
+              "name": "kube-api-access-9fpfr",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -7844,35 +7876,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:16Z",
+              "lastTransitionTime": "2026-10-22T21:56:16Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:11Z",
+              "lastTransitionTime": "2026-10-22T21:56:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:30:32Z",
+              "lastTransitionTime": "2026-10-22T21:57:03Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:30:32Z",
+              "lastTransitionTime": "2026-10-22T21:57:03Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:11Z",
+              "lastTransitionTime": "2026-10-22T21:56:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -7880,26 +7912,18 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://3016b9c13c1e0de28e166d188082b91732ac6402fb975f70f9ad848fb4694ddc",
+              "containerID": "containerd://48a92a829728044749e7b5d27a2dc8f670fc89deec3e6e0f1af25c7493e026da",
               "image": "ghcr.io/dapr/operator:1.18.7",
               "imageID": "ghcr.io/dapr/operator@sha256:42192d91b0942afd694740336e4bd047d55235ebfb3b9cbd4ec0e05ae4026cae",
-              "lastState": {
-                "terminated": {
-                  "containerID": "containerd://08563d0bdb18c78beedad84c1737e41d1dfcf6212973486fdd959bea38b0f02a",
-                  "exitCode": 1,
-                  "finishedAt": "2026-10-22T18:30:30Z",
-                  "reason": "Error",
-                  "startedAt": "2026-10-22T18:29:15Z"
-                }
-              },
+              "lastState": {},
               "name": "dapr-operator",
               "ready": true,
               "resources": {},
-              "restartCount": 1,
+              "restartCount": 0,
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T18:30:31Z"
+                  "startedAt": "2026-10-22T21:56:16Z"
                 }
               },
               "user": {
@@ -7930,7 +7954,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-dtvqf",
+                  "name": "kube-api-access-9fpfr",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -7945,14 +7969,14 @@
           ],
           "observedGeneration": 1,
           "phase": "Running",
-          "podIP": "10.244.0.5",
+          "podIP": "10.244.0.6",
           "podIPs": [
             {
-              "ip": "10.244.0.5"
+              "ip": "10.244.0.6"
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T18:29:11Z"
+          "startTime": "2026-10-22T21:56:07Z"
         }
       },
       {
@@ -7965,7 +7989,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T18:29:12Z",
+          "creationTimestamp": "2026-10-22T21:56:08Z",
           "generateName": "dapr-placement-server-",
           "generation": 1,
           "labels": {
@@ -7988,11 +8012,11 @@
               "controller": true,
               "kind": "StatefulSet",
               "name": "dapr-placement-server",
-              "uid": "280844b2-04a7-41a6-963b-7d5fa63bc926"
+              "uid": "ccb15909-b399-41ed-85dc-31a6b2e12c7d"
             }
           ],
-          "resourceVersion": "925",
-          "uid": "3fa6208a-64ef-4a29-9200-8269f8c5c87e"
+          "resourceVersion": "894",
+          "uid": "ad0cf496-d1da-470d-b71e-32ba1cdfa865"
         },
         "spec": {
           "affinity": {
@@ -8127,7 +8151,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-lv5gw",
+                  "name": "kube-api-access-j5rw4",
                   "readOnly": true
                 }
               ]
@@ -8136,7 +8160,7 @@
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
           "hostname": "dapr-placement-server-0",
-          "nodeName": "h45-831c5cd233a1-control-plane",
+          "nodeName": "h45-1e52851b2eca-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -8186,7 +8210,7 @@
               }
             },
             {
-              "name": "kube-api-access-lv5gw",
+              "name": "kube-api-access-j5rw4",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -8229,35 +8253,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:24Z",
+              "lastTransitionTime": "2026-10-22T21:56:19Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:12Z",
+              "lastTransitionTime": "2026-10-22T21:56:08Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:30:35Z",
+              "lastTransitionTime": "2026-10-22T21:57:03Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:30:35Z",
+              "lastTransitionTime": "2026-10-22T21:57:03Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:12Z",
+              "lastTransitionTime": "2026-10-22T21:56:08Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -8265,7 +8289,7 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://30062e4000bb833c27a27d38fbe90a1d09027a695375fc43f49feb43a2c7233b",
+              "containerID": "containerd://c35cece03c4403c2d0e20955757442575a21dd0053de2b30c8d78102b0d7da2f",
               "image": "ghcr.io/dapr/placement:1.18.7",
               "imageID": "ghcr.io/dapr/placement@sha256:c9da106eddcbb625c94baea31af4ed576d32750741b442c99f51518c420e76cc",
               "lastState": {},
@@ -8276,7 +8300,7 @@
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T18:29:24Z"
+                  "startedAt": "2026-10-22T21:56:19Z"
                 }
               },
               "user": {
@@ -8301,7 +8325,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-lv5gw",
+                  "name": "kube-api-access-j5rw4",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -8323,7 +8347,7 @@
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T18:29:12Z"
+          "startTime": "2026-10-22T21:56:08Z"
         }
       },
       {
@@ -8336,7 +8360,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T18:29:11Z",
+          "creationTimestamp": "2026-10-22T21:56:07Z",
           "generateName": "dapr-sentry-5677685946-",
           "generation": 1,
           "labels": {
@@ -8348,7 +8372,7 @@
             "app.kubernetes.io/version": "1.18.7",
             "pod-template-hash": "5677685946"
           },
-          "name": "dapr-sentry-5677685946-2pt4z",
+          "name": "dapr-sentry-5677685946-wbt7j",
           "namespace": "dapr-system",
           "ownerReferences": [
             {
@@ -8357,11 +8381,11 @@
               "controller": true,
               "kind": "ReplicaSet",
               "name": "dapr-sentry-5677685946",
-              "uid": "4356a109-12a4-42ad-a69c-aa8a74389e09"
+              "uid": "0788cdcb-7115-4080-abfb-213569cd7a5a"
             }
           ],
-          "resourceVersion": "898",
-          "uid": "5dbcf5d3-fc28-4816-8fc3-cbb02002a12b"
+          "resourceVersion": "877",
+          "uid": "d00732e3-b325-4f45-9bc0-d2df9dd21829"
         },
         "spec": {
           "affinity": {
@@ -8469,7 +8493,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-tfwb7",
+                  "name": "kube-api-access-kpttx",
                   "readOnly": true
                 }
               ]
@@ -8477,7 +8501,7 @@
           ],
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
-          "nodeName": "h45-831c5cd233a1-control-plane",
+          "nodeName": "h45-1e52851b2eca-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -8509,7 +8533,7 @@
               }
             },
             {
-              "name": "kube-api-access-tfwb7",
+              "name": "kube-api-access-kpttx",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -8552,35 +8576,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:19Z",
+              "lastTransitionTime": "2026-10-22T21:56:13Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:11Z",
+              "lastTransitionTime": "2026-10-22T21:56:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:30:31Z",
+              "lastTransitionTime": "2026-10-22T21:57:01Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:30:31Z",
+              "lastTransitionTime": "2026-10-22T21:57:01Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:11Z",
+              "lastTransitionTime": "2026-10-22T21:56:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -8588,7 +8612,7 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://b7c236534731b392814abebf43a7a97d403d28cc294bd63f5cb2c10f4232c843",
+              "containerID": "containerd://8b4bc158858081fd0b9ecc1acb6c81e93a004125e1cfe1da082754a08bcc4948",
               "image": "ghcr.io/dapr/sentry:1.18.7",
               "imageID": "ghcr.io/dapr/sentry@sha256:b9fc166085289661f516150dc1c47ac3495b9e6d1e666079cb71cd2374ca7256",
               "lastState": {},
@@ -8599,7 +8623,7 @@
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T18:29:18Z"
+                  "startedAt": "2026-10-22T21:56:13Z"
                 }
               },
               "user": {
@@ -8620,7 +8644,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-tfwb7",
+                  "name": "kube-api-access-kpttx",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -8635,14 +8659,14 @@
           ],
           "observedGeneration": 1,
           "phase": "Running",
-          "podIP": "10.244.0.6",
+          "podIP": "10.244.0.5",
           "podIPs": [
             {
-              "ip": "10.244.0.6"
+              "ip": "10.244.0.5"
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T18:29:11Z"
+          "startTime": "2026-10-22T21:56:07Z"
         }
       },
       {
@@ -8655,7 +8679,7 @@
             "prometheus.io/port": "9090",
             "prometheus.io/scrape": "true"
           },
-          "creationTimestamp": "2026-10-22T18:29:11Z",
+          "creationTimestamp": "2026-10-22T21:56:07Z",
           "generateName": "dapr-sidecar-injector-8959cbc76-",
           "generation": 1,
           "labels": {
@@ -8667,7 +8691,7 @@
             "app.kubernetes.io/version": "1.18.7",
             "pod-template-hash": "8959cbc76"
           },
-          "name": "dapr-sidecar-injector-8959cbc76-l7x92",
+          "name": "dapr-sidecar-injector-8959cbc76-2vq75",
           "namespace": "dapr-system",
           "ownerReferences": [
             {
@@ -8676,11 +8700,11 @@
               "controller": true,
               "kind": "ReplicaSet",
               "name": "dapr-sidecar-injector-8959cbc76",
-              "uid": "98755440-c156-45db-8139-c315781581a2"
+              "uid": "fd8da699-700e-4959-ba12-779e6e6a86bd"
             }
           ],
-          "resourceVersion": "812",
-          "uid": "969c7ed8-2ac7-4ec1-b6e8-5a0b863a596b"
+          "resourceVersion": "932",
+          "uid": "014aa4ba-bed2-42e9-a727-b63c394acfba"
         },
         "spec": {
           "affinity": {
@@ -8857,7 +8881,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-v7zl8",
+                  "name": "kube-api-access-h9vnj",
                   "readOnly": true
                 }
               ]
@@ -8865,7 +8889,7 @@
           ],
           "dnsPolicy": "ClusterFirst",
           "enableServiceLinks": true,
-          "nodeName": "h45-831c5cd233a1-control-plane",
+          "nodeName": "h45-1e52851b2eca-control-plane",
           "preemptionPolicy": "PreemptLowerPriority",
           "priority": 0,
           "restartPolicy": "Always",
@@ -8912,7 +8936,7 @@
               }
             },
             {
-              "name": "kube-api-access-v7zl8",
+              "name": "kube-api-access-h9vnj",
               "projected": {
                 "defaultMode": 420,
                 "sources": [
@@ -8955,35 +8979,35 @@
           "conditions": [
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:22Z",
+              "lastTransitionTime": "2026-10-22T21:56:11Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodReadyToStartContainers"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:11Z",
+              "lastTransitionTime": "2026-10-22T21:56:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Initialized"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:45Z",
+              "lastTransitionTime": "2026-10-22T21:57:21Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "Ready"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:45Z",
+              "lastTransitionTime": "2026-10-22T21:57:21Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "ContainersReady"
             },
             {
               "lastProbeTime": null,
-              "lastTransitionTime": "2026-10-22T18:29:11Z",
+              "lastTransitionTime": "2026-10-22T21:56:07Z",
               "observedGeneration": 1,
               "status": "True",
               "type": "PodScheduled"
@@ -8991,26 +9015,18 @@
           ],
           "containerStatuses": [
             {
-              "containerID": "containerd://a434fc496d7682d5e57e5ab3692ce2885151312f02422d7e781fb1c7d059c3a3",
+              "containerID": "containerd://8750cad3d43d3c0e31b1b14ff0b42477f79b85081e0541e5365f2e56ae2d3d98",
               "image": "ghcr.io/dapr/injector:1.18.7",
               "imageID": "ghcr.io/dapr/injector@sha256:4a7b491b2ac5d27c92f0c4192fedd54319452c0dd7d6ae30cda6a4266f751943",
-              "lastState": {
-                "terminated": {
-                  "containerID": "containerd://6d96cb2e547448dd3ef8831f5a7ec6e7f8ac3881d10dde349040a157d529f9b5",
-                  "exitCode": 1,
-                  "finishedAt": "2026-10-22T18:29:38Z",
-                  "reason": "Error",
-                  "startedAt": "2026-10-22T18:29:21Z"
-                }
-              },
+              "lastState": {},
               "name": "dapr-sidecar-injector",
               "ready": true,
               "resources": {},
-              "restartCount": 1,
+              "restartCount": 0,
               "started": true,
               "state": {
                 "running": {
-                  "startedAt": "2026-10-22T18:29:39Z"
+                  "startedAt": "2026-10-22T21:56:10Z"
                 }
               },
               "user": {
@@ -9037,7 +9053,7 @@
                 },
                 {
                   "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                  "name": "kube-api-access-v7zl8",
+                  "name": "kube-api-access-h9vnj",
                   "readOnly": true,
                   "recursiveReadOnly": "Disabled"
                 }
@@ -9059,7 +9075,7 @@
             }
           ],
           "qosClass": "BestEffort",
-          "startTime": "2026-10-22T18:29:11Z"
+          "startTime": "2026-10-22T21:56:07Z"
         }
       }
     ],
@@ -9072,12 +9088,12 @@
     "kind": "SelfSubjectReview",
     "apiVersion": "authentication.k8s.io/v1",
     "metadata": {
-      "creationTimestamp": "2026-10-22T18:30:35Z"
+      "creationTimestamp": "2026-10-22T21:57:22Z"
     },
     "status": {
       "userInfo": {
         "username": "system:serviceaccount:kube-system:replicaset-controller",
-        "uid": "5cf62983-6a4d-48b2-8dd8-09c45c1b0e89",
+        "uid": "bc8375fd-1b04-4f3a-881e-e0f7c82c007b",
         "groups": [
           "system:serviceaccounts",
           "system:serviceaccounts:kube-system",
@@ -9092,5 +9108,5 @@
     "modified": []
   },
   "remainingClusters": [],
-  "finished": "2026-10-22T18:31:22.723293+00:00"
+  "finished": "2026-10-22T21:57:58.452868+00:00"
 }

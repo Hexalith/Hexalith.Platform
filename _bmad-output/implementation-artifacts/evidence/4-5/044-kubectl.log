@@ -1,44 +1,11 @@
 {
     "apiVersion": "v1",
-    "kind": "Namespace",
+    "kind": "ServiceAccount",
     "metadata": {
-        "creationTimestamp": "2026-10-22T18:30:36Z",
-        "labels": {
-            "kubernetes.io/metadata.name": "reference",
-            "pod-security.kubernetes.io/audit": "restricted",
-            "pod-security.kubernetes.io/enforce": "restricted",
-            "pod-security.kubernetes.io/enforce-version": "v1.35",
-            "pod-security.kubernetes.io/warn": "restricted"
-        },
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:metadata": {
-                        "f:labels": {
-                            "f:pod-security.kubernetes.io/audit": {},
-                            "f:pod-security.kubernetes.io/enforce": {},
-                            "f:pod-security.kubernetes.io/enforce-version": {},
-                            "f:pod-security.kubernetes.io/warn": {}
-                        }
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T18:30:36Z"
-            }
-        ],
-        "name": "reference",
-        "resourceVersion": "931",
-        "uid": "08fc3625-f621-454a-9712-a0708ba51e3d"
-    },
-    "spec": {
-        "finalizers": [
-            "kubernetes"
-        ]
-    },
-    "status": {
-        "phase": "Active"
+        "creationTimestamp": "2026-10-22T21:55:47Z",
+        "name": "replicaset-controller",
+        "namespace": "kube-system",
+        "resourceVersion": "297",
+        "uid": "bc8375fd-1b04-4f3a-881e-e0f7c82c007b"
     }
 }

@@ -3,6 +3,7 @@
 import argparse
 import copy
 from datetime import datetime, timezone
+import fcntl
 import hashlib
 import json
 import os
@@ -52,8 +53,28 @@ class Qualification:
     DOWNLOAD_TIMEOUT_SECONDS = 60
 
     def __init__(self, evidence):
-        self.evidence = evidence
+        self.evidence = evidence.resolve()
         self.evidence.mkdir(parents=True, exist_ok=True)
+        self._evidence_lock = os.open(self.evidence, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            fcntl.flock(self._evidence_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as error:
+            self.close()
+            raise RuntimeError('qualification evidence directory is already in use: ' + str(self.evidence)) from error
+        try:
+            self._initialize()
+        except BaseException:
+            self.close()
+            raise
+
+    def close(self):
+        if self._evidence_lock is not None:
+            os.close(self._evidence_lock)
+            self._evidence_lock = None
+
+    def _initialize(self):
+        for log in self.evidence.glob('[0-9][0-9][0-9]-*.log'):
+            log.unlink()
         self.record = {'schema': 'hexalith.helm-qualification.v1', 'started': datetime.now(timezone.utc).isoformat(),
                        'status': 'failed', 'commands': [], 'checks': {}, 'cleanup': {},
                        'exclusions': ['OCI publication and attestation', 'off-site restoration', 'staging deployment',
@@ -66,23 +87,37 @@ class Qualification:
         self.env = dict(os.environ)
         self.env.pop('KUBECONFIG', None)
         self.env['KUBECONFIG'] = str(self.kubeconfig)
+        self.env['MSBUILDDISABLENODEREUSE'] = '1'
+        self.env['HELM_BIN'] = str(self.temp / 'linux-amd64/helm')
         self.tools = json.loads((HERE / 'toolchain.json').read_text())
-        self.helm = os.environ.get('HELM_BIN') or shutil.which('helm')
+        self.helm = self.env['HELM_BIN']
 
     def run(self, args, *, data=None, ok=True, timeout=120):
         args = [str(a) for a in args]
-        try:
-            result = subprocess.run(args, input=data, capture_output=True, text=True, env=self.env,
-                                    cwd=ROOT, timeout=timeout)
-        except subprocess.TimeoutExpired as error:
-            self.record['commands'].append({'argv': args, 'timeoutSeconds': timeout, 'timedOut': True})
-            raise RuntimeError('bounded command timed out: ' + args[0]) from error
+        with subprocess.Popen(args, stdin=subprocess.PIPE if data is not None else subprocess.DEVNULL,
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=self.env,
+                              cwd=ROOT, start_new_session=True) as process:
+            timed_out = False
+            try:
+                stdout, stderr = process.communicate(data, timeout=timeout)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                os.killpg(process.pid, signal.SIGKILL)
+                stdout, stderr = process.communicate()
+            except BaseException:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.communicate()
+                raise
+            result = subprocess.CompletedProcess(args, process.returncode, stdout, stderr)
         index = len(self.record['commands'])
         log = self.evidence / f'{index:03d}-{Path(args[0]).name}.log'
         log.write_text(result.stdout + result.stderr)
         self.record['commands'].append({'argv': args, 'returncode': result.returncode,
                                       'log': log.name, 'logSha256': sha(log),
                                       'stdinSha256': hashlib.sha256((data or '').encode()).hexdigest() if data is not None else None})
+        if timed_out:
+            self.record['commands'][-1].update(timeoutSeconds=timeout, timedOut=True)
+            raise RuntimeError('bounded command timed out: ' + args[0])
         if ok and result.returncode:
             raise RuntimeError(f'command failed ({result.returncode}): {args[0]} — {result.stderr[-1500:]}')
         return result
@@ -113,7 +148,11 @@ class Qualification:
     def preflight(self):
         for tool in ('docker', 'kind', 'kubectl', 'dotnet', 'aspire', 'curl'):
             if not shutil.which(tool): raise RuntimeError('required tool is missing: ' + tool)
-        if not self.helm: raise RuntimeError('Helm 4.2.0+ required; set HELM_BIN')
+        archive = self.download('helm', 'helm.tar.gz')
+        with tarfile.open(archive, 'r:gz') as distribution:
+            member = distribution.getmember('linux-amd64/helm')
+            if not member.isfile(): raise RuntimeError('pinned Helm archive has no regular binary')
+            distribution.extract(member, self.temp, filter='data')
         versions = {'helm': self.run([self.helm, 'version', '--short']).stdout.strip(),
                     'kind': self.run(['kind', 'version']).stdout.strip(),
                     'kubectl': json.loads(self.run(['kubectl', 'version', '--client', '-o', 'json']).stdout)['clientVersion']['gitVersion'],
@@ -133,6 +172,8 @@ class Qualification:
         self.record['tools'] = {k: {'version': v, 'binarySha256': sha(self.helm if k == 'helm' else shutil.which(k))}
                                 for k, v in versions.items()}
         self.record['source'] = {'revision': self.run(['git', 'rev-parse', 'HEAD']).stdout.strip(),
+                                 'statusPorcelain': self.run(['git', 'status', '--porcelain']).stdout,
+                                 'submoduleStatus': self.run(['git', 'submodule', 'status']).stdout,
                                  'files': self.source_inventory()}
         self.record['inputs'] = {'graphSha256': sha(CHART / 'reference-graph.json'), 'nodeImage': self.tools['nodeImage'],
                                  'sourcePackageProps': str(HERE / 'source-packages.props')}
@@ -270,7 +311,7 @@ class Qualification:
         self.record['checks']['nativeProbeAndGraphParity'] = True
 
     def static_checks(self):
-        self.run([sys.executable, '-m', 'unittest', 'discover', '-s', str(HERE), '-p', 'test_*.py', '-v'])
+        self.run([sys.executable, '-m', 'unittest', 'discover', '-s', str(HERE), '-p', 'test_*.py', '-v'], timeout=600)
         self.record['checks']['chartMatrix'] = True
         values = self.temp / 'values.json'; values.write_text(json.dumps(fixture_values(), sort_keys=True))
         self.values = values
@@ -423,7 +464,7 @@ class Qualification:
 
     def cleanup(self):
         cleanup = {'complete': False, 'ownedCluster': self.cluster,
-                   'onlyInvocationOwnedResourcesDeleted': True, 'temporaryKubeconfigRemoved': False}
+                   'onlyInvocationOwnedResourcesDeleted': False, 'temporaryKubeconfigRemoved': False}
         self.record['cleanup'] = cleanup
         try:
             if self.created:
@@ -433,6 +474,7 @@ class Qualification:
                 self.record['remainingClusters'] = clusters
                 if not set(self.record.get('preexistingClusters', [])).issubset(clusters):
                     raise AssertionError('a preexisting cluster disappeared during qualification')
+                cleanup['onlyInvocationOwnedResourcesDeleted'] = True
                 nodes = self.run(['docker', 'ps', '-a', '--filter', 'label=io.x-k8s.kind.cluster=' + self.cluster, '--format', '{{.ID}}']).stdout.strip()
                 if nodes: raise AssertionError('owned kind nodes remain after cleanup')
             cleanup['clusterRemovalVerified'] = True
@@ -461,11 +503,14 @@ class Qualification:
             failure = error
             self.record['failure'] = f'{type(error).__name__}: {error}'
         finally:
-            try: self.cleanup()
-            except Exception as error:
-                self.record['status'] = 'failed'; self.record['cleanup'].update(complete=False, error=str(error)); failure = failure or error
-            self.record['finished'] = datetime.now(timezone.utc).isoformat()
-            (self.evidence / 'qualification.json').write_text(json.dumps(self.record, indent=2) + '\n')
+            try:
+                try: self.cleanup()
+                except Exception as error:
+                    self.record['status'] = 'failed'; self.record['cleanup'].update(complete=False, error=str(error)); failure = failure or error
+                self.record['finished'] = datetime.now(timezone.utc).isoformat()
+                (self.evidence / 'qualification.json').write_text(json.dumps(self.record, indent=2) + '\n')
+            finally:
+                self.close()
         if failure: raise failure
 
 
@@ -474,10 +519,12 @@ def main():
     parser.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE)
     args = parser.parse_args()
     def interrupted(signum, frame):
-        raise InterruptedError('qualification interrupted; cleaning owned resources')
+        # InterruptedError is swallowed as an interrupted system call by selectors.
+        raise RuntimeError('qualification interrupted; cleaning owned resources')
     signal.signal(signal.SIGTERM, interrupted)
-    qualification = Qualification(args.evidence.resolve())
-    try: qualification.execute()
+    try:
+        qualification = Qualification(args.evidence.resolve())
+        qualification.execute()
     except Exception as error:
         print('QUALIFICATION FAILED: ' + str(error), file=sys.stderr); return 1
     print('QUALIFICATION PASSED: ' + str(qualification.evidence / 'qualification.json')); return 0

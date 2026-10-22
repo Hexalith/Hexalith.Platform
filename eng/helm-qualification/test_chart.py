@@ -52,6 +52,8 @@ def fixture_values():
         for i in w['inputs']:
             if i['source'] in ('secret', 'dynamic-secret'):
                 value = copy.deepcopy(ref)
+            elif i['key'].startswith('ConnectionStrings:'):
+                value = {'endpoint': 'data'}
             elif any(s in i['key'].lower() for s in ('authority', 'issuer', 'endpoint')) and 'workloadissuer:' not in i['key'].lower():
                 value = {'endpoint': 'identity'}
             elif i['key'].endswith('Path'):
@@ -83,6 +85,39 @@ def documents(output):
     return [d for d in yaml.safe_load_all(output) if d]
 
 
+def expected_environment(workload, values):
+    binding = values['bindings'][workload['identity']]
+    environment = {}
+    def flatten(key, value):
+        key = key.replace(':', '__')
+        if isinstance(value, str) and value.strip().startswith(('[', '{')):
+            value = json.loads(value)
+        if isinstance(value, dict):
+            if 'endpoint' in value:
+                environment[key] = {'name': key, 'value': values['endpoints'][value['endpoint']]}
+            elif 'configMapKeyRef' in value:
+                environment[key] = {'name': key, 'valueFrom': value}
+            else:
+                for child, leaf in value.items(): flatten(key + '__' + child, leaf)
+        elif isinstance(value, list):
+            for index, leaf in enumerate(value): flatten(key + '__' + str(index), leaf)
+        else:
+            environment[key] = {'name': key, 'value': str(value).lower() if isinstance(value, bool) else str(value)}
+    for item in workload['inputs']:
+        key = item['key'].replace(':', '__'); value = binding['configuration'][item['key']]
+        if item['source'] in ('secret', 'dynamic-secret'):
+            environment[key] = {'name': key, 'valueFrom': {'secretKeyRef': value}}
+        else: flatten(key, value)
+    for key, value in binding.get('credentials', {}).items():
+        key = key.replace(':', '__')
+        environment[key] = {'name': key, 'valueFrom': {'secretKeyRef': value}}
+    for key, value in {**workload['environment'], 'ASPNETCORE_URLS': 'http://0.0.0.0:8080', 'Dapr__DeclarativeSubscriptions': 'true'}.items():
+        environment[key] = {'name': key, 'value': value}
+    for key, value in [('APP_API_TOKEN', binding['appToken']), ('DAPR_API_TOKEN', binding['apiToken'])]:
+        environment[key] = {'name': key, 'valueFrom': {'secretKeyRef': value}}
+    return [environment[key] for key in sorted(environment)]
+
+
 class ChartTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -97,10 +132,12 @@ class ChartTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         return result.stdout, documents(result.stdout)
 
-    def bad(self, values):
+    def bad(self, values, expected_message=None):
         result = render(values)
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(result.stdout, '')
+        if expected_message is not None:
+            self.assertIn(expected_message, result.stderr)
 
     def assert_subscriptions(self, docs):
         expected = []
@@ -152,6 +189,27 @@ class ChartTests(unittest.TestCase):
             self.assertEqual(app['ports'], [{'name': 'http', 'containerPort': 8080}])
             workload = next(w for w in workloads if w['resourceId'] == service['metadata']['name'])
             self.assertEqual(app['readinessProbe']['httpGet'], {'path': workload['readiness'], 'port': 'http'})
+            binding = values['bindings'][workload['identity']]
+            security = {'runAsNonRoot': True, 'runAsUser': 1654, 'seccompProfile': {'type': 'RuntimeDefault'}}
+            self.assertEqual(deployment['spec']['template'], {
+                'metadata': {'labels': selector, 'annotations': {
+                    'dapr.io/enabled': 'true', 'dapr.io/app-id': workload['appId'], 'dapr.io/app-port': '8080',
+                    'dapr.io/app-protocol': 'http', 'dapr.io/config': 'platform-' + workload['appId'],
+                    'dapr.io/app-token-secret': binding['appToken']['name'], 'dapr.io/api-token-secret': binding['apiToken']['name'],
+                    'dapr.io/sidecar-listen-addresses': '127.0.0.1', 'dapr.io/enable-api-logging': 'false'}},
+                'spec': {'automountServiceAccountToken': True, 'imagePullSecrets': [{'name': values['imagePullSecret']}],
+                    'securityContext': security,
+                    'containers': [{'name': 'app', 'image': values['images'][workload['identity']],
+                        'ports': [{'name': 'http', 'containerPort': 8080}],
+                        'readinessProbe': {'httpGet': {'path': workload['readiness'], 'port': 'http'}},
+                        'securityContext': {**security, 'allowPrivilegeEscalation': False, 'readOnlyRootFilesystem': True,
+                                            'capabilities': {'drop': ['ALL']}},
+                        'env': expected_environment(workload, values),
+                        'volumeMounts': [{'name': 'tmp', 'mountPath': '/tmp'},
+                                         {'name': 'environment-components', 'mountPath': '/etc/hexalith/environment', 'readOnly': True}],
+                        'resources': {'requests': {'cpu': '10m', 'memory': '32Mi'}, 'limits': {'cpu': '1', 'memory': '512Mi'}}}],
+                    'volumes': [{'name': 'tmp', 'emptyDir': {}},
+                                {'name': 'environment-components', 'configMap': {'name': values['environment']['componentConfigMap']}}]}})
 
     def assert_complete_dapr(self, docs, values):
         expected = []
@@ -347,9 +405,14 @@ class ChartTests(unittest.TestCase):
         chart_hash = hashlib.sha256(b''.join(p.read_bytes() for p in sorted(CHART.rglob('*')) if p.is_file())).hexdigest()
         values['images'] = {k: v[:-64] + 'b' * 64 for k, v in values['images'].items()}
         _, after = self.good(values)
+        self.assertEqual(len(before), len(after))
         for b, a in zip(before, after):
             if b['kind'] == 'Deployment':
-                b['spec']['template']['spec']['containers'][0]['image'] = a['spec']['template']['spec']['containers'][0]['image']
+                workload = next(w for w in graph()['workloads'] if w['resourceId'] == a['metadata']['name'])
+                image = a['spec']['template']['spec']['containers'][0]['image']
+                self.assertEqual(image, values['images'][workload['identity']])
+                self.assertTrue(image.endswith('@sha256:' + 'b' * 64))
+                b['spec']['template']['spec']['containers'][0]['image'] = image
             self.assertEqual(b, a)
         self.assertEqual(chart_hash, hashlib.sha256(b''.join(p.read_bytes() for p in sorted(CHART.rglob('*')) if p.is_file())).hexdigest())
 
@@ -366,6 +429,124 @@ class ChartTests(unittest.TestCase):
         for endpoint in ('https://10.20.30.40:443/path', 'https://identity.fixture.invalid/path'):
             values = fixture_values(); values['endpoints']['identity'] = endpoint
             self.good(values)
+
+    def test_scheme_less_authorities_require_native_tls_and_postgresql_states_tls(self):
+        cases = [('redis.data.svc:6379,ssl=false', 'require ssl=true'),
+                 ('redis.data.svc,ssl=false', 'requires an explicit port'),
+                 ('127.1', 'requires an explicit port'),
+                 ('redis.data.svc:6379,ssl=true,127.0.0.2:6379', 'loopback or unspecified'),
+                 ('redis.data.svc:6379,ssl=true,secondary.data.svc', 'requires an explicit port'),
+                 ('redis.data.svc:6379,ssl=true,secondary.data.svc:65536', 'invalid endpoint port'),
+                 ('  redis.data.svc:6379,ssl=false  ', 'require ssl=true'),
+                 ('redis.data.svc:6379 ,ssl=false', 'require ssl=true'),
+                 ('redis.data.svc: 6379,ssl=true', 'invalid endpoint authority'),
+                 ('redis.data.svc:6379', 'require ssl=true'),
+                 ('127.1:6379,ssl=true', 'canonical non-loopback IPv4'),
+                 ('127.0.0.2:6379,ssl=true', 'loopback or unspecified'),
+                 ('2130706433:6379,ssl=true', 'canonical non-loopback IPv4'),
+                 ('0177.0.0.1:6379,ssl=true', 'ambiguous numeric'),
+                 ('redis.data.svc:0,ssl=true', 'invalid endpoint port'),
+                 ('redis.data.svc:65536,ssl=true', 'invalid endpoint port'),
+                 ('redis.data.svc:6379,ssl=true,ssl=false', 'forbid ssl=false')]
+        for literal, message in cases:
+            values = fixture_values()
+            values['bindings']['memories/server']['configuration']['ConnectionStrings:redis'] = literal
+            with self.subTest(literal=literal): self.bad(values, message)
+        for literal in ('redis.data.svc:6379,ssl=true', '10.20.30.40:6379,ssl=true',
+                        'redis.data.svc:6379,ssl=true,secondary.data.svc:6380',
+                        'ssl=true,redis.data.svc:6379,10.20.30.40:6380,connectRetry=3'):
+            values = fixture_values()
+            values['bindings']['memories/server']['configuration']['ConnectionStrings:redis'] = literal
+            self.good(values)
+        for literal, message in [('127.0.0.2:6379,ssl=false', 'loopback or unspecified'),
+                                 ('redis.data.svc:6379,ssl=false', 'require ssl=true'),
+                                 ('00:10', 'canonical non-loopback IPv4')]:
+            values = fixture_values()
+            values['bindings']['memories/clock']['configuration']['Clock:Sources'] = [{'Endpoint': literal}]
+            with self.subTest(clock_endpoint=literal): self.bad(values, message)
+        for duration in ('00:00:10', '00:10', '1.00:00:10'):
+            values = fixture_values()
+            values['bindings']['eventstore/gateway']['configuration']['EventStore:ProjectionDispatch:RetryBaseDelay'] = duration
+            _, docs = self.good(values)
+            app = next(d for d in docs if d['kind'] == 'Deployment' and d['metadata']['name'] == 'eventstore')['spec']['template']['spec']['containers'][0]
+            self.assertIn({'name': 'EventStore__ProjectionDispatch__RetryBaseDelay', 'value': duration}, app['env'])
+        for suffix in ('', '?sslmode=disable', '?sslmode=require&other=true', '?sslmode=require#fragment'):
+            values = fixture_values()
+            values['environment']['components']['statestore'].update(type='state.postgresql', endpointFormat='url', endpointMetadataKey='connectionEndpoint')
+            values['endpoints']['data'] = 'postgresql://pg.data.svc:5432/db' + suffix
+            with self.subTest(suffix=suffix): self.bad(values, 'PostgreSQL requires a single sslmode=')
+        for mode in ('verify-full', 'require', 'verify-ca'):
+            values['endpoints']['data'] = 'postgresql://pg.data.svc:5432/db?sslmode=' + mode
+            self.good(values)
+
+    def test_component_metadata_rejects_objects_and_lists_before_rendering(self):
+        for structured in ({'password': 'synthetic-review-marker'}, ['synthetic-review-marker'], {}, []):
+            values = fixture_values()
+            values['environment']['components']['statestore']['metadata']['options'] = structured
+            with self.subTest(structured=structured):
+                self.bad(values, 'provider metadata values must be scalar')
+
+    def test_large_numeric_leaves_and_component_metadata_keep_integer_notation(self):
+        values = fixture_values()
+        values['bindings']['memories/server']['configuration']['retentionSeconds'] = 2592000
+        values['bindings']['memories/clock']['configuration']['Clock:Sources'] = '[{"RetentionSeconds":2000000}]'
+        values['environment']['components']['statestore']['metadata']['retentionSeconds'] = 2592000
+        _, docs = self.good(values)
+        for resource, key, expected in [('memories', 'retentionSeconds', '2592000'),
+                                         ('memories-access-telemetry-clock', 'Clock__Sources__0__RetentionSeconds', '2000000')]:
+            app = next(d for d in docs if d['kind'] == 'Deployment' and d['metadata']['name'] == resource)['spec']['template']['spec']['containers'][0]
+            self.assertIn({'name': key, 'value': expected}, app['env'])
+        component = next(d for d in docs if d['kind'] == 'Component' and d['metadata']['name'] == 'statestore')
+        self.assertIn({'name': 'retentionSeconds', 'value': '2592000'}, component['spec']['metadata'])
+
+    def test_credential_keys_share_one_denylist_for_configuration_and_metadata(self):
+        for key in ('Pwd', 'AccessKey', 'AccountKey', 'MasterKey', 'SharedAccessKey', 'Passphrase', 'Credential', 'Credentials'):
+            for encode in (lambda x: x, json.dumps):
+                values = fixture_values()
+                values['bindings']['memories/clock']['configuration']['Clock:Sources'] = encode([{key: 'hunter2'}])
+                with self.subTest(key=key, site='configuration'):
+                    self.bad(values, 'credential leaves require existing Secret references')
+            values = fixture_values()
+            values['environment']['components']['statestore']['metadata'][key.lower()] = 'hunter2'
+            with self.subTest(key=key, site='component'):
+                self.bad(values, 'provider credentials and endpoints require references')
+            values = fixture_values()
+            values['bindings']['memories/clock']['configuration']['Clock:Sources'] = [{'Name': key + ' = hunter2'}]
+            with self.subTest(key=key, site='literal'):
+                self.bad(values, 'credential-bearing connection-string literals require existing references')
+        for key in ('RedisHost', 'REDISPASSWORD'):
+            values = fixture_values()
+            values['environment']['components']['statestore']['metadata'][key] = 'literal'
+            self.bad(values, 'provider credentials and endpoints require references')
+
+    def test_authority_format_and_sentry_require_explicit_ports(self):
+        for parameter, endpoint in [('sentry', 'https://dapr-sentry.dapr-system.svc.cluster.local'),
+                                    ('data', 'rediss://fixture-data.environment.svc.cluster.local')]:
+            values = fixture_values(); values['endpoints'][parameter] = endpoint
+            with self.subTest(parameter=parameter): self.bad(values, 'requires an explicit port')
+
+    def test_each_validation_rule_fails_with_its_own_message(self):
+        component = lambda v: v['environment']['components']['statestore']
+        cases = [
+            (lambda v: component(v).update(endpointMetadataKey='invalid-key'), 'provider metadata keys are required'),
+            (lambda v: component(v).update(endpointFormat='invalid'), 'unknown endpoint metadata format'),
+            (lambda v: component(v)['metadata'].update(enableTLS='false'), 'hosted Redis bindings require native TLS'),
+            (lambda v: component(v)['metadata'].update(redisPassword='literal'), 'provider credentials and endpoints require references'),
+            (lambda v: component(v)['metadata'].update(example='http://unsafe.invalid'), 'unsafe provider metadata literal'),
+            (lambda v: v['endpoints'].update(identity='https://host.invalid:65535'), None),
+            (lambda v: v['endpoints'].update(identity='https://host.invalid:65536'), 'invalid endpoint port'),
+            (lambda v: v['endpoints'].update(identity='https://127.1'), 'canonical non-loopback IPv4'),
+            (lambda v: v['endpoints'].update(identity='https://localhost'), 'localhost endpoint authority'),
+            (lambda v: v['bindings']['memories/clock']['configuration'].update({'Clock:Sources': [{'Path': '/tmp/literal'}]}), 'unsafe or credential-bearing configuration literal'),
+            (lambda v: v['bindings']['memories/clock'].update(credentials={'ASPNETCORE_URLS': {'name': 'override', 'key': 'value'}}), 'credentials cannot override canonical Dapr/security values'),
+            (lambda v: v['bindings']['eventstore/gateway']['apiToken'].update(key='wrong'), 'Dapr token references must use the token key'),
+            (lambda v: v['bindings']['eventstore/gateway']['apiToken'].update(extra='wrong'), 'existing reference requires only name and key'),
+            (lambda v: v['endpoints'].clear(), 'non-secret endpoint parameters are required')]
+        for mutate, message in cases:
+            values = fixture_values(); mutate(values)
+            with self.subTest(message=message):
+                if message: self.bad(values, message)
+                else: self.good(values)
 
     def test_empty_bindings_and_recursive_nulls_fail(self):
         for value in ({}, [], '{}', '[]', {'Nested': None}, '[null]', '[{"Endpoint":null}]', '{"Nested":{}}'):
