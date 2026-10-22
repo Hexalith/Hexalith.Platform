@@ -2,9 +2,11 @@
 title: '2.2 Define the test environment descriptor and result contract'
 type: 'feature'
 created: '2026-10-22'
-status: 'draft'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: '46a5b3a289892fc06a4db7afc0db8b765aed4a3b'
+builds_baseline_commit: '2210aaaf54c779b8763dbf1e8767bdc1b422bc6d'
 story_key: '2-2-define-the-test-environment-descriptor-and-result-contract'
 context:
   - '_bmad-output/implementation-artifacts/epic-2-context.md'

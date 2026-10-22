@@ -2,7 +2,7 @@
 title: '2.3 Make local composition resources run-scoped'
 type: 'feature'
 created: '2026-10-22'
-status: 'draft'
+status: 'ready-for-dev'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '2-3-make-local-composition-resources-run-scoped'
