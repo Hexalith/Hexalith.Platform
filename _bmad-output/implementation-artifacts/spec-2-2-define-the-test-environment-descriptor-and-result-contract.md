@@ -2,7 +2,7 @@
 title: '2.2 Define the test environment descriptor and result contract'
 type: 'feature'
 created: '2026-10-22'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '46a5b3a289892fc06a4db7afc0db8b765aed4a3b'
@@ -69,6 +69,52 @@ Paths below are workspace-relative; Builds changes belong to its own repository.
 - Given unsupported descriptor/result versions, when the Builds consumer reads them, then it refuses and names supported versions.
 - Given future candidate/loaded-identity values, when reserved fields are populated, then v1 still validates without granting evidence acceptance.
 - Given terminal results, when consumers validate them, then precisely the four required outcomes are accepted independently of cleanup disposition.
+
+### Review Findings
+
+Code review pass 2 (2026-10-22). Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor — none failed. Claims were reproduced with a probe against the built reader (`Hexalith.Builds.Tooling.dll` from 19:22, matching the reviewed source). During the review a concurrent session committed the reviewed files unchanged: Builds `66b9136`, plus the Platform gitlink.
+
+- [ ] [Review][Patch] (decision resolved 2026-10-22: option a, recommendation adopted) Terminal outcome and cause are not coupled — `$defs.terminal` lets `outcome` and `cause` vary independently. `passed`+`hold-expired`, `passed`+`startup-timeout` and `withdrawn`+`tests-completed` all validate. `FourOutcomesRemainIndependentOfCleanup` asserts `withdrawn`/`cancelled` with `tests-completed`. The policy says a withdrawn run can never become a pass. Choose: an outcome→cause mapping (plus `withdrawn` ⇒ attached role), or document `cause` as advisory. (medium; blind+auditor+edge)
+- [ ] [Review][Patch] (decision resolved 2026-10-22: option a, recommendation adopted) Integer-typed fields accept spellings and magnitudes the reader and consumers misread — a hold of `1800e-4294967296` with `expiresAt == acceptedAt` validates: the schema sees 1800 and the reader's decimal sees 0, which bypasses the hold arithmetic check. `attemptSequence` `1e-4294967296` and `1e308` validate. Holds of `3e2`/`300.0` validate, then `JsonElement.GetInt32` throws on the validated document. Choose: the reader refuses integer fields that are not plain Int32, or document `GetDecimal` consumption and add schema maximums. (medium; edge+auditor)
+- [ ] [Review][Patch] (decision resolved 2026-10-22: option a, recommendation adopted) Endpoint URIs can carry credentials into retained results — `$defs.endpoint.uri` accepts `http://user:secret@host/?token=…`. Results outlive resource deletion, and the policy requires redacted results. Choose: forbid userinfo/query credentials (secrets travel on a separate channel), or require result producers to redact endpoints. (medium; blind)
+- [ ] [Review][Patch] (decision resolved 2026-10-22: option a, recommendation adopted) Run/hold identity relationships are undefined and unchecked — the attached `run` branch requires both `runId` and `attachedRunId` without defining how they differ. A hold with `environmentId: other-env`/`ownerRunId: other-owner` validates inside a `sample-environment` descriptor, and `role: owner` with `runId ≠ ownerRunId` validates. Choose: define and enforce the bindings, or define them in the doc only and leave enforcement to Story 2.6. (medium; blind+auditor+edge)
+- [ ] [Review][Patch] (decision resolved 2026-10-22: option a, recommendation adopted) `composition` and `catalog` cannot be `not-yet-populated` — `environment.required` forces them, so Epic 2 producers must invent identities. The doc (line 209) assigns catalog/composition identity to Epic 3, and Story 3.3 names the run-scoped catalog instance in the descriptor. Choose: add the reserved branch, or keep them required and correct the doc's ownership line. (medium; auditor)
+- [ ] [Review][Patch] (decision resolved 2026-10-22: option a, recommendation adopted) `termination.failures` and `cleanup.failures` have no defined referent — these are bare identity arrays that are never resolved, so Stories 2.5 and 2.7 will produce and consume them inconsistently. Choose: item/resource IDs that resolve in the document, or diagnostic IDs, or doc-only. (medium; blind)
+- [ ] [Review][Patch] Non-`expired` hold end at/after `expiresAt` is accepted [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs:172] — a 300 s hold ending at 15:00 or exactly 12:05 with `terminal-outcome` validates. Expiry is exclusive and the hold ends at the earliest of outcome, expiry or withdrawal. (medium; blind+auditor+edge)
+- [ ] [Review][Patch] Scoped identity guard covers only resources, endpoints and diagnostics [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs:263] — these all validate: duplicate startup `taskId` (passed and failed), duplicate readiness `resourceId`, readiness for a nonexistent resource, duplicate hold `originalAttachmentRequestId`, duplicate completion `testId`, duplicate termination item `id`. (medium; blind+edge)
+- [ ] [Review][Patch] Shared descriptor/result `$defs` parity is untested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:29] — about 1,400 lines are duplicated across the two schemas. They are identical today, but no test keeps them aligned. (medium; blind)
+- [ ] [Review][Patch] `not-overridden` startup budget other than 600 s is never tested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:221] (medium; verification)
+- [ ] [Review][Patch] `MismatchedTinyStartupOverridesAreRefused` never reaches the override comparison [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:379] (medium; verification)
+- [ ] [Review][Patch] No positive read of populated `termination`/`retention`/startup tasks/attached run, and the sample read never asserts `terminal.outcome` [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:319] (medium; verification+auditor+blind)
+- [ ] [Review][Patch] Nested qualification/decision `policyId` refusal is untested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:89] (medium; verification)
+- [ ] [Review][Patch] `pr-merge` decision without `pr` is never refused in tests [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:319] (medium; verification)
+- [ ] [Review][Patch] Omitted-hold 1,800 s schema default is untested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:204] (medium; verification)
+- [ ] [Review][Patch] HXT101/HXT102 `Message`/`Source` metadata-only and policy-naming claims are unasserted [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:61] (medium; verification)
+- [ ] [Review][Patch] CLI package contract check omits both new schemas [references/Hexalith.Builds/Tools/test-g4-tool-package-contracts.ps1:1026] (medium; verification+blind)
+- [ ] [Review][Patch] BOM-counted byte bound is untested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:286] (low; verification)
+- [ ] [Review][Patch] Wrongly typed `schema` version is untested [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs:61] — the reader already refuses `42` with HXT101. (low; blind)
+- [ ] [Review][Patch] Unrepresentable hold/deadline timestamps refuse as HXT103, but the doc table assigns them to HXT106 [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs:125] (low; blind+edge)
+- [ ] [Review][Patch] Doc understates identity rules: leading/trailing whitespace is excluded and length is capped at 2,048 [docs/contracts/test-environment-v1.md:47] (low; blind)
+- [ ] [Review][Patch] Samples link points into the submodule path and 404s on GitHub [docs/contracts/test-environment-v1.md:13] (low; blind)
+- [ ] [Review][Patch] Builds README says samples leave unavailable producers `not-yet-populated`, but they populate fictional isolation/readiness/tasks/attachments [references/Hexalith.Builds/README.md:226] (low; auditor)
+- [x] [Review][Defer] Non-seekable input HXT105 path is untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs:74] — deferred: needs a platform-specific FIFO harness; the cost exceeds the protection in this change.
+- [x] [Review][Defer] Platform mirror parity unittest is not run by any automated runner [tests/contracts/test_test_environment_contract_mirrors.py:1] — deferred: Platform has no Python test runner or CI workflow yet, and plain `discover -s tests` finds zero tests (no `__init__.py`). Wire it into the future contract verification script.
+
+Rejected:
+
+- low — Cleanup `complete` with leftovers/failures, `not-retained` with IDs, and CI `failure-retained` all validate. These are runner lifecycle coherence rules that the doc assigns to Stories 2.5/2.8, the fix adds guards, and only a buggy runner produces them.
+- low — Task `finishedAt` before `startedAt`, `passed` without `finishedAt`, `recordedAt` before the startup origin, and partial `not-declared` execution fields. These are observational chronology fields that no decision reads, and the fix adds guards.
+- low — Candidate/decision/`reuseLineage` cross-field agreement is unchecked. The doc assigns this proof verification to Epic 3, and the reader grants no evidence.
+- low — Top-level `diagnostics` has no `not-yet-populated` state. An empty list is a truthful producer statement, and reshaping it adds complexity.
+- low — NBSP/U+3000/U+2028 identities pass as nonblank. Identities are runner-issued, and the fix needs a non-portable regex dialect change in four schema copies.
+- low — Commit SHAs accept uppercase, and that is untested. Git emits lowercase, and narrowing the pattern is a guard.
+- low — FIFO blocks before the `CanSeek` check. This was rejected previously; the fix needs platform-specific file-type detection.
+- low — Cancellation during parse returns an accurate refusal instead of OCE. The window is microseconds.
+- low — Refusal `field: "$"` and the `ToolPhase.Manifest` tag. The fixed location is documented, the Manifest phase means "parsing and validation", and no consumer routes by phase.
+- low — Year `0000` in non-timing timestamps is accepted. The input is unlikely, and the fix is a guard.
+- false — The mirror test fails on a clean checkout because the Builds schemas are untracked. Builds `66b9136` now commits both schemas, and the Platform gitlink points to it.
+- false — CRLF/LF divergence breaks mirror parity. Neither repo sets eol attributes or `core.autocrlf` for these paths, so one checkout converts both identically.
+- rejected — The "79 focused tests" claim is stale. The fix would edit the spec under review, and Final verification already records 119.
 
 ## Implementation Notes
 

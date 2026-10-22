@@ -1052,3 +1052,15 @@
 - source_spec: `spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Persist external issuer-child ownership for crash-safe runner lifecycle cleanup and leftover reporting.
   evidence: Story 2.3 creates a private child under an explicitly selected external certificate parent, with normal AppHost-disposal cleanup. Forced termination bypasses disposal and workspace-only runner cleanup cannot discover that external child. Verify by terminating an owned AppHost before disposal; resolve with the runner lifecycle retention/cleanup work without touching foreign parent contents.
+
+## Deferred from: code review of spec-2-2-define-the-test-environment-descriptor-and-result-contract.md (2026-10-22)
+
+- source_spec: `spec-2-2-define-the-test-environment-descriptor-and-result-contract.md`
+  summary: Test the HXT105 refusal for non-seekable contract input.
+  evidence: `TestEnvironmentContractReader.Read` refuses `!stream.CanSeek` with HXT105, but every test reads a regular temporary file. Without that check, `stream.Length` would throw `NotSupportedException` and the input would surface as HXT106, and no test would fail. Needs a platform-specific FIFO harness; the opening FIFO hang itself was rejected as low.
+  status: open
+
+- source_spec: `spec-2-2-define-the-test-environment-descriptor-and-result-contract.md`
+  summary: Run the Platform canonical/Builds mirror schema parity unittest automatically.
+  evidence: `tests/contracts/test_test_environment_contract_mirrors.py` only runs manually with `-s tests/contracts`. Plain `python3 -m unittest discover -s tests` finds zero tests because there is no `__init__.py`, and Platform has no workflow or script that invokes it. A Builds-only mirror edit or a Platform-only canonical edit would diverge unnoticed. Wire it into the contract verification script once one owns `docs/contracts`.
+  status: open
