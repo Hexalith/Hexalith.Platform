@@ -32,6 +32,20 @@ class IsolatedDaprdTests(unittest.TestCase):
         self.assertEqual(record["configSha256"], isolated_daprd.digest(self.config))
         self.assertEqual(record["originalSentryAddress"], "localhost:50001")
 
+    def test_exact_bound_native_endpoint_is_accepted_unchanged_and_verified(self):
+        arguments = [*self.arguments[:-1], self.binding["sentryAddress"]]
+        calls = []
+        isolated_daprd.execute(self.directory, arguments, executor=lambda *args: calls.append(args))
+        self.assertEqual(calls, [(str(self.runtime), [str(self.runtime), *arguments])])
+        record = json.loads((self.directory / "launches.jsonl").read_text())
+        self.assertEqual(record["originalSentryAddress"], self.binding["sentryAddress"])
+        start = {"daprdRuntimePath": str(self.directory), "sidecarLaunches": [
+            {"appId": "works", "config": str(self.config), "configSha256": isolated_daprd.digest(self.config)}]}
+        self.assertEqual(isolated_daprd.verify(self.directory, self.binding, [start])["launchCount"], 1)
+        for foreign in ["127.0.0.1:61002", "localhost:61001", "foreign:61001"]:
+            with self.subTest(foreign=foreign), self.assertRaises(ValueError):
+                isolated_daprd.execute(self.directory, [*arguments[:-1], foreign], executor=lambda *_: self.fail("Foreign endpoint"))
+
     def test_unexpected_or_ambiguous_launch_arguments_refuse_before_execution(self):
         for arguments in [[], ["--enable-mtls"], self.arguments[:-1], self.arguments[:-1] + ["foreign:50001"],
                           self.arguments + ["--sentry-address", "localhost:50001"], self.arguments + ["--sentry-address=localhost:50001"],

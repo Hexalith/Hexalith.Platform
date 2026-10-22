@@ -1,0 +1,9 @@
+Shouldly.ShouldAssertException: started.IsReady
+    should be
+True
+    but was
+False
+
+Additional Info:
+    HXR013: The isolated Dapr runtime binaries do not report the selected runtime version.
+   at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync() in /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs:line 50

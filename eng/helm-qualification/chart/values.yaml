@@ -1,0 +1,21 @@
+mode: normal
+replicas: 1
+images: {}
+# Each declaration input is bound per workload by its full configuration key.
+# Configuration accepts non-secret values, endpoint parameters, or existing ConfigMap keys.
+# Credentials accept existing Secret references only.
+bindings: {}
+endpoints: {}
+imagePullSecret: ""
+environment:
+  trustDomain: ""
+  controlPlaneTrustDomain: ""
+  sentryEndpoint: ""
+  components: {}
+  componentConfigMap: ""
+gateway:
+  name: ""
+  namespace: ""
+  sectionName: ""
+# Public workloads require independent hostname bindings, keyed by module/server.
+hostnames: {}

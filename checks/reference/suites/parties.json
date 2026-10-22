@@ -1,0 +1,42 @@
+{
+  "schema": "hexalith.check-suite.v1",
+  "suiteId": "parties-reference",
+  "version": "1.0.0",
+  "module": "parties",
+  "owner": "@jpiquot",
+  "source": "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json",
+  "runtime": "python3",
+  "entrypoint": "runner.py",
+  "payload": [
+    "parties.py",
+    "runner.py"
+  ],
+  "checks": [
+    {
+      "id": "parties.management",
+      "surface": "party-domain",
+      "kind": "e2e",
+      "assertion": "positive",
+      "environments": [
+        "staging"
+      ],
+      "timeoutSeconds": 120,
+      "effect": "synthetic-write",
+      "tenancy": "run-scoped-synthetic"
+    },
+    {
+      "id": "parties.read",
+      "surface": "party-domain",
+      "kind": "smoke",
+      "assertion": "positive",
+      "environments": [
+        "staging",
+        "production"
+      ],
+      "timeoutSeconds": 30,
+      "cadenceSeconds": 300,
+      "effect": "read",
+      "tenancy": "existing-synthetic"
+    }
+  ]
+}

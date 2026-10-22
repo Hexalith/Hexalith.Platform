@@ -677,7 +677,7 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
-    public void FailedFileCompositionDeletesItsPrivateWorkspace()
+    public void FailedFileCompositionRetainsDiagnosticsAndLeavesForeignWorkspaceAlone()
     {
         using PlatformOwnerFixture fixture = PlatformOwnerFixture.Copy(Root, "eventstore");
         string directory = fixture.Root;
@@ -693,7 +693,11 @@ public sealed partial class PlatformAppModelTests
             InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
             failure.Message.ShouldContain("appsettings: JSON is invalid");
             builder.Resources.ShouldBeEmpty();
-            Directory.GetDirectories(tempRoot).Order(StringComparer.Ordinal).ShouldBe(before);
+            string[] created = Directory.GetDirectories(tempRoot).Except(before).Where(path =>
+                File.Exists(Path.Combine(path, "composition-failure.txt")) && File.ReadAllText(Path.Combine(path, "composition-failure.txt")) == failure.Message).ToArray();
+            created.Length.ShouldBe(1);
+            Directory.Exists(directory).ShouldBeTrue();
+            Directory.Delete(created[0], recursive: true);
         }
         finally { File.Delete(Path.Combine(directory, "appsettings.json")); }
     }

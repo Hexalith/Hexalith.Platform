@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Test-only adapter for Dapr CLI 1.18's hardcoded local Sentry address.
 
-Every launch retains the original hashed daprd and every argument except the exact
-CLI-generated localhost:50001 value. Production topology never selects this adapter.
+Every launch retains the original hashed daprd. Only the exact CLI-generated
+localhost:50001 value may change; the exact bound endpoint is also accepted unchanged.
+Production topology never selects this adapter.
 """
 import hashlib
 import json
@@ -39,7 +40,7 @@ def translated(arguments, endpoint):
     if arguments.count("--enable-mtls") != 1 or len(indexes) != 1:
         raise ValueError("Expected exactly the Dapr CLI's mTLS Sentry argument")
     index = indexes[0]
-    if arguments[index] != "--sentry-address" or index + 1 >= len(arguments) or arguments[index + 1] != "localhost:50001":
+    if arguments[index] != "--sentry-address" or index + 1 >= len(arguments) or arguments[index + 1] not in ("localhost:50001", endpoint):
         raise ValueError("Unexpected Dapr CLI Sentry endpoint; refusing an implicit override")
     result = list(arguments)
     result[index + 1] = endpoint
@@ -71,7 +72,7 @@ def execute(directory, arguments, executor=os.execv):
             return arguments[index + 1]
         config = value("--config")
         record = binding | {"appId": value("--app-id"), "config": config, "configSha256": digest(config),
-                            "originalSentryAddress": "localhost:50001",
+                            "originalSentryAddress": arguments[arguments.index("--sentry-address") + 1],
                             "argumentsSha256": hashlib.sha256(json.dumps(result, separators=(",", ":")).encode()).hexdigest()}
         with (directory / "launches.jsonl").open("a") as output:
             output.write(json.dumps(record) + "\n")
@@ -87,7 +88,7 @@ def verify(directory, binding, starts):
     launches = [json.loads(line) for line in (directory / "launches.jsonl").read_text().splitlines() if line]
     observed = set()
     for launch in launches:
-        if any(launch.get(key) != value for key, value in binding.items()) or launch.get("originalSentryAddress") != "localhost:50001":
+        if any(launch.get(key) != value for key, value in binding.items()) or launch.get("originalSentryAddress") not in ("localhost:50001", binding["sentryAddress"]):
             raise ValueError("An isolated daprd launch used a foreign runtime or endpoint")
         observed.add((launch["appId"], launch["config"], launch["configSha256"]))
     required = set()

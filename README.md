@@ -70,6 +70,12 @@ descriptor and runner adoption; it does not establish implemented support or
 change the accepted tool pin. Accepting attachments under it requires Builds
 adoption; accepting evidence also requires a Platform-accepted, integration-qualified tool.
 
+The versioned [test environment and terminal result contracts](docs/contracts/test-environment-v1.md)
+publish strict, offline-readable schemas for runner endpoints, composition identity,
+reserved candidate proof, attachment holds and the four terminal outcomes. Builds
+ships the schemas and consumer reader; lifecycle and evidence adoption remain
+downstream responsibilities.
+
 ## Parties reference domain
 
 The qualified independent `Hexalith.Parties` checkout pins module tool `4.34.0`
@@ -197,9 +203,27 @@ dotnet tool run hexalith-module -- down --manifest references/Hexalith.McpCli/mo
 `references/` checkouts in Debug, waits for each server's declared `/ready`
 endpoint (10-minute default deadline), and reports one process id per project.
 `run` starts the same composition without reporting process ids. `down` stops
-only the resources tagged with that run. Runs share fixed Dapr control-plane
-ports (Sentry `50001`, placement `51005`, scheduler `51006`), so start one at a
-time.
+only the resources tagged with that run. Each signed runner plan and direct file
+AppHost allocates its own Sentry, placement, scheduler and sidecar listeners;
+persisted runner ports are honored. Each run owns its Redis, scheduler data,
+Memories vector/graph data, issuer credentials, secrets and SQLite discovery registry
+outside the checkout. Allocation probes release their sockets before startup;
+a competing bind fails startup instead of selecting shared resources.
+
+Set `HEXALITH_DAPR_HOME` to an installation containing the catalog-pinned CLI at
+`tools/dapr` and native runtime at `.dapr/bin/daprd` (plus placement/scheduler for
+Builds prerequisite checks). Installed binaries and component templates can be
+shared read-only. The file entry also accepts the user's installed native runtime
+when no home is selected. An unavailable selected runtime fails startup.
+`Dapr:Mtls:CertificateDirectory` selects an external parent for a private child per
+run; checkout paths, including symlinks into the checkout, are rejected.
+
+Reference compositions start their own Redis, never consume dapr-init Redis or
+acquire exported fixture locks, and instantiate no Keycloak. Legacy technical
+own-repository fixtures are outside Platform integration evidence; descriptor
+migration is Story 2.9. Works remains an opt-in development preview with its existing
+qualification scope. See [concurrency verification](docs/platform-apphost-form.md)
+for the gated two-session proof and its current evidence limits.
 
 McpCli is a short-lived CLI, not a server. For the McpCli manifest, `run` and
 `debug` also build `references/Hexalith.McpCli/src/Hexalith.McpCli`

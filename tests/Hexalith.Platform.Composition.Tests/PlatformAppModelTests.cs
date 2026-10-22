@@ -198,6 +198,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
         builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(Root, "test-dashboard-not-started");
         builder.AddDapr(options => { options.EnableTelemetry = false; options.DaprPath = Path.Combine(Root, "test-dapr-not-started"); });
         PlatformAppModel.Compose(builder, Options() with { Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-only", ["tenants/domain/Tenants:AppChannelToken"] = "domain-only" } });
+        string privateCredentials = builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials").Source!;
+        foreach (string file in new[] { "ca.crt", "issuer.crt", "issuer.key" }) File.WriteAllText(Path.Combine(privateCredentials, file), "fixture-" + file);
         await using DistributedApplication app = builder.Build();
         _ = app.Services.GetRequiredService<PlatformCompositionWorkspace>();
         DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
@@ -222,9 +224,9 @@ public sealed partial class PlatformAppModelTests : IDisposable
         foreach (PlatformServerBinding server in servers)
         {
             ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.ResourceId + "-dapr-cli");
-            sidecar.Command.ShouldBe(Path.Combine(Root, "test-dapr-not-started"));
             IResource application = model.Resources.Single(resource => resource.Name == server.ResourceId);
             DaprSidecarOptions options = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+            sidecar.Command.ShouldBe(Path.Combine(options.RuntimePath!, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
             string subscriptionDirectory = options.ResourcesPaths.Single();
             var subscriptions = Directory.GetFiles(subscriptionDirectory, "*.yaml").ToDictionary(path => Path.GetFileName(path)!, File.ReadAllText);
             subscriptions.Count.ShouldBe(2);
@@ -511,10 +513,12 @@ public sealed partial class PlatformAppModelTests : IDisposable
                 ["HEXALITH_SOURCE_MAPPING_HASH"] = mapping.ContentHash,
             };
         }
+        bool ownsHost = false;
         try
         {
-            CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["start", "--apphost", apphost, "--non-interactive", "--format", "Json"], Root, launchEnvironment), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
-            start.ExitCode.ShouldBe(0, start.Output);
+            CompositionProcessResult start = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["start", "--apphost", apphost, "--isolated", "--non-interactive", "--format", "Json"], Root, launchEnvironment), TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken);
+            ownsHost = start.ExitCode == 0;
+            start.ExitCode.ShouldBe(0, start.Output + start.ErrorOutput);
             foreach (string server in new[] { "eventstore", "tenants", "tenants-api", "memories", "memories-access-telemetry-clock", "memories-access-telemetry" })
             {
                 CompositionProcessResult ready = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["wait", server, "--apphost", apphost, "--non-interactive", "--timeout", "120"], Root, null), TimeSpan.FromMinutes(3), TestContext.Current.CancellationToken);
@@ -529,9 +533,12 @@ public sealed partial class PlatformAppModelTests : IDisposable
         }
         finally
         {
-            CompositionProcessResult stopped = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["stop", "--apphost", apphost, "--non-interactive"], Root, null), TimeSpan.FromSeconds(30), CancellationToken.None);
-            stopped.TimedOut.ShouldBeFalse(stopped.Output + stopped.ErrorOutput);
-            stopped.ExitCode.ShouldBe(0, stopped.Output + stopped.ErrorOutput);
+            if (ownsHost)
+            {
+                CompositionProcessResult stopped = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo(aspire, ["stop", "--apphost", apphost, "--non-interactive"], Root, null), TimeSpan.FromSeconds(30), CancellationToken.None);
+                stopped.TimedOut.ShouldBeFalse(stopped.Output + stopped.ErrorOutput);
+                stopped.ExitCode.ShouldBe(0, stopped.Output + stopped.ErrorOutput);
+            }
         }
     }
 

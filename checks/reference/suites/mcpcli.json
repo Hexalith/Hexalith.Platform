@@ -1,0 +1,42 @@
+{
+  "schema": "hexalith.check-suite.v1",
+  "suiteId": "mcpcli-reference",
+  "version": "1.0.0",
+  "module": "mcpcli",
+  "owner": "@jpiquot",
+  "source": "references/Hexalith.McpCli/src/Hexalith.McpCli/Hosting/HostFactory.cs",
+  "runtime": "python3",
+  "entrypoint": "runner.py",
+  "payload": [
+    "mcpcli.py",
+    "runner.py"
+  ],
+  "checks": [
+    {
+      "id": "mcpcli.query",
+      "surface": "mcpcli-cli",
+      "kind": "e2e",
+      "assertion": "positive",
+      "environments": [
+        "staging"
+      ],
+      "timeoutSeconds": 120,
+      "effect": "read",
+      "tenancy": "existing-synthetic"
+    },
+    {
+      "id": "mcpcli.read",
+      "surface": "mcpcli-cli",
+      "kind": "smoke",
+      "assertion": "positive",
+      "environments": [
+        "staging",
+        "production"
+      ],
+      "timeoutSeconds": 30,
+      "cadenceSeconds": 300,
+      "effect": "read",
+      "tenancy": "existing-synthetic"
+    }
+  ]
+}

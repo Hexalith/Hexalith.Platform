@@ -1,0 +1,21 @@
+{
+  "helm": {
+    "version": "4.2.0",
+    "url": "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz",
+    "sha256": "97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096"
+  },
+  "kind": "0.31.0",
+  "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
+  "gateway": {
+    "version": "1.5.1",
+    "url": "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml",
+    "sha256": "751002b3b91a87f7ae3bd2517c79a47a8d7ed6702901808a1cf9bd97d284f9b8"
+  },
+  "dapr": {
+    "version": "1.18.7",
+    "url": "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz",
+    "sha256": "bd540acd198dc8efa4314208325d8e7eaf89f54accdbd1fad62b484fcf9cabf2"
+  },
+  "aspire": "13.6.1",
+  "aspireKubernetes": "13.6.1-preview.1.26506.6"
+}

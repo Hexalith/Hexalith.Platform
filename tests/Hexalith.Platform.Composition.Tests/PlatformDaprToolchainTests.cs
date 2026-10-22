@@ -12,18 +12,6 @@ using Shouldly;
 
 public sealed partial class PlatformAppModelTests
 {
-    [Fact]
-    public void ControlPlaneWithoutOwnedSchedulerDataUsesThePreservedNamedVolume()
-    {
-        IDistributedApplicationBuilder builder = Builder();
-        var sentry = builder.AddContainer("dapr-sentry", "fixture");
-        var (_, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, Path.Combine(Path.GetTempPath(), "platform-volume-fixture"));
-        ContainerMountAnnotation data = scheduler.Resource.Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/lock");
-        data.Type.ShouldBe(ContainerMountType.Volume);
-        data.Source.ShouldBe("hexalith-platform-dapr-scheduler");
-        data.IsReadOnly.ShouldBeFalse();
-    }
-
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -33,7 +21,8 @@ public sealed partial class PlatformAppModelTests
         string ambientHome = Path.Combine(workspace, "ambient dapr");
         string selectedHome = signedRun ? Path.Combine(workspace, "signed dapr") : ambientHome;
         string? previousHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
-        Directory.CreateDirectory(selectedHome);
+        Directory.CreateDirectory(Path.Combine(selectedHome, ".dapr", "bin"));
+        File.WriteAllText(Path.Combine(selectedHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model fixture");
         try
         {
             Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", ambientHome);
@@ -68,18 +57,62 @@ public sealed partial class PlatformAppModelTests
                 DaprSidecarOptions options = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
                 options.RuntimePath.ShouldBe(selectedHome, server.Name);
                 ExecutableResource cli = model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == server.Name + "-dapr-cli");
-                cli.Command.ShouldBe(Path.Combine(selectedHome, "tools", OperatingSystem.IsWindows() ? "dapr.exe" : "dapr"));
+                cli.Command.ShouldBe(Path.Combine(selectedHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
                 List<object> arguments = [];
                 foreach (CommandLineArgsCallbackAnnotation callback in cli.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
                     await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
                 string[] commandLine = arguments.Select(argument => argument.ToString()!).ToArray();
-                commandLine.Count(argument => argument == "--runtime-path").ShouldBe(1);
-                commandLine[Array.IndexOf(commandLine, "--runtime-path") + 1].ShouldBe(selectedHome);
+                commandLine.ShouldNotContain("run");
+                commandLine.ShouldNotContain("--runtime-path");
+                commandLine.ShouldContain("--enable-mtls");
+                int sentry = model.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+                commandLine[Array.IndexOf(commandLine, "--sentry-address") + 1].ShouldBe("localhost:" + sentry);
+                commandLine[Array.IndexOf(commandLine, "--placement-host-address") + 1].ShouldBe(options.PlacementHostAddress);
+                commandLine[Array.IndexOf(commandLine, "--scheduler-host-address") + 1].ShouldBe(options.SchedulerHostAddress);
+                commandLine[Array.IndexOf(commandLine, "--config") + 1].ShouldBe(options.Config);
+                string configuration = File.ReadAllText(options.Config!);
+                configuration.ShouldContain("nameResolution");
+                configuration.ShouldContain("name-resolution.db");
             }
         }
         finally
         {
             Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", previousHome);
+            Directory.Delete(workspace, recursive: true);
+        }
+    }
+    [Fact]
+    public async Task MissingSelectedNativeRuntimeRefusesStartupAndPreservesOwnedDiagnosticsAsync()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "platform-missing-runtime-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(workspace);
+        string foreign = Path.Combine(workspace, "foreign-resource");
+        File.WriteAllText(foreign, "untouched");
+        string? previous = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
+        try
+        {
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", Path.Combine(workspace, "missing-runtime"));
+            var builder = Builder();
+            builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(workspace, "test-dcp-not-started");
+            builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(workspace, "test-dashboard-not-started");
+            builder.AddDapr(options => options.EnableTelemetry = false);
+            PlatformAppModel.Compose(builder, Options(active: "eventstore"));
+            string config = builder.Resources.Single(resource => resource.Name == "eventstore").Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config!;
+            await using var app = builder.Build();
+            var model = app.Services.GetRequiredService<DistributedApplicationModel>();
+            var eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
+            foreach (var subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
+                await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+            var failure = await Should.ThrowAsync<InvalidDataException>(async () => await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken));
+            failure.Message.ShouldContain("selected Dapr native runtime is unavailable");
+            failure.Message.ShouldContain(Path.Combine(workspace, "missing-runtime"));
+            File.Exists(config).ShouldBeTrue();
+            File.ReadAllText(foreign).ShouldBe("untouched");
+            await CompositionWorkspace.TryDeleteAsync(Path.GetDirectoryName(config)!, CancellationToken.None);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", previous);
             Directory.Delete(workspace, recursive: true);
         }
     }

@@ -43,15 +43,15 @@ public static class PlatformServerBindings
         dapr ??= PlatformDaprBindings.Resolve(declarations);
         List<PlatformServerBinding> result = [];
         Dictionary<string, string> secretValues = new(StringComparer.Ordinal);
-        foreach (PlatformModuleDeclaration module in declarations)
+        PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(declarations, dapr);
+        foreach (PlatformWorkload workload in graph.Workloads)
         {
+            PlatformModuleDeclaration module = workload.Module;
             string id = PlatformDeclarationSet.Id(module.Declaration);
             if (id == "timesheets" && !options.TimesheetsEnabled)
                 throw Failure(module, "timesheets/host", "Platform:Timesheets:Enabled", "explicit Development/source opt-in is required");
-            foreach (JsonElement server in module.Declaration.GetProperty("identity").GetProperty("servers").EnumerateArray().Where(s => s.GetProperty("enabled").GetBoolean()))
-            {
-                string serverId = server.GetProperty("id").GetString()!;
-                string identity = id + "/" + serverId;
+            string serverId = workload.ServerId;
+            string identity = workload.Identity;
                 string? project = null;
                 string? image = null;
                 SourceMappingEntry? source = options.Mapping.Entries.SingleOrDefault(e => e.Identity.Equals(Repository(id), StringComparison.OrdinalIgnoreCase));
@@ -79,22 +79,17 @@ public static class PlatformServerBindings
                     if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository)) throw Failure(module, identity, "image", "released image is unavailable");
                     image = repository + ":" + Version(options, id, module.Source);
                 }
-                JsonElement[] probes = module.Declaration.GetProperty("lifecycle").GetProperty("readiness").EnumerateArray().Where(r => r.GetProperty("server").GetString() == serverId).ToArray();
-                if (probes.Length != 1) throw Failure(module, identity, "lifecycle.readiness", "this Platform model requires exactly one readiness check per enabled server");
-                JsonElement readiness = probes[0];
-                if (readiness.GetProperty("kind").GetString() != "http") throw Failure(module, identity, "lifecycle.readiness", "this Platform model requires a declared HTTP readiness check");
                 Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
                 foreach (var pair in dapr.Environment(id, serverId)) environment[pair.Key] = pair.Value;
                 environment["Dapr__DeclarativeSubscriptions"] = "true";
-                JsonElement[] tasks = module.Declaration.GetProperty("lifecycle").GetProperty("tasks").EnumerateArray().Select(t => t.Clone()).ToArray();
+                IReadOnlyList<JsonElement> tasks = workload.Tasks;
                 foreach (JsonElement task in tasks)
                 {
                     string executable = task.GetProperty("executable").GetString()!;
                     string ownerRoot = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, module);
                     if (!File.Exists(Path.Combine(ownerRoot, executable))) throw Failure(module, identity, "lifecycle.tasks.executable", $"task '{task.GetProperty("name").GetString()}' executable '{executable}' is unavailable");
                 }
-                result.Add(new PlatformServerBinding(module, serverId, server.GetProperty("resourceId").GetString()!, server.GetProperty("appId").GetString()!, project, image, readiness.GetProperty("endpoint").GetString()!, environment, tasks));
-            }
+                result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks));
         }
         if (result.Count(s => s.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
         if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);

@@ -2,7 +2,7 @@
 title: '2.2 Define the test environment descriptor and result contract'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '46a5b3a289892fc06a4db7afc0db8b765aed4a3b'
@@ -55,13 +55,13 @@ Paths below are workspace-relative; Builds changes belong to its own repository.
 
 **Execution:**
 
-- [ ] `docs/contracts/test-environment-v1.md` — document fields, population states, version rejection, outcome/hold semantics, shared descriptor/result bindings and downstream responsibilities; link from `README.md`.
-- [ ] `docs/contracts/schemas/hexalith.test-environment.v1.json` and `hexalith.test-result.v1.json` in that directory — publish self-contained Draft 2020-12 schemas with closed objects and typed reserved fields; define all policy handoff bindings without requiring future producers now.
-- [ ] `references/Hexalith.Builds/schemas/hexalith.test-environment.v1.json` and `hexalith.test-result.v1.json` in that directory — mirror canonical schema content for independent consumption.
-- [ ] `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs` and `TestEnvironmentContractReadResult.cs` in that directory — implement descriptor/result reads returning detached validated JSON or diagnostics, explicit version/policy refusal and bounded strict parsing; never return partial documents or fetch remote schemas.
-- [ ] `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj` — embed mirrors; `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj` — include both packaged schemas; document consumption in Builds `README.md` while preserving its existing edits.
-- [ ] `references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs` and `references/Hexalith.Builds/test/fixtures/module/test-environment-v1/descriptor.json` and `result.json` there — test published/embedded agreement, endpoint consumption, every matrix row, four outcomes, hold boundaries and later population; samples confer no runtime qualification.
-- [ ] `_bmad-output/implementation-artifacts/sprint-status.yaml` — synchronize only Story 2.2 as the workflow advances; preserve Epic 2 and unrelated statuses.
+- [x] `docs/contracts/test-environment-v1.md` — document fields, population states, version rejection, outcome/hold semantics, shared descriptor/result bindings and downstream responsibilities; link from `README.md`.
+- [x] `docs/contracts/schemas/hexalith.test-environment.v1.json` and `hexalith.test-result.v1.json` in that directory — publish self-contained Draft 2020-12 schemas with closed objects and typed reserved fields; define all policy handoff bindings without requiring future producers now.
+- [x] `references/Hexalith.Builds/schemas/hexalith.test-environment.v1.json` and `hexalith.test-result.v1.json` in that directory — mirror canonical schema content for independent consumption.
+- [x] `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentContractReader.cs` and `TestEnvironmentContractReadResult.cs` in that directory — implement descriptor/result reads returning detached validated JSON or diagnostics, explicit version/policy refusal and bounded strict parsing; never return partial documents or fetch remote schemas.
+- [x] `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj` — embed mirrors; `references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj` — include both packaged schemas; document consumption in Builds `README.md` while preserving its existing edits.
+- [x] `references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs` and `references/Hexalith.Builds/test/fixtures/module/test-environment-v1/descriptor.json` and `result.json` there — test published/embedded agreement, endpoint consumption, every matrix row, four outcomes, hold boundaries and later population; samples confer no runtime qualification.
+- [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` — synchronize only Story 2.2 as the workflow advances; preserve Epic 2 and unrelated statuses.
 
 **Acceptance Criteria:**
 
@@ -72,10 +72,59 @@ Paths below are workspace-relative; Builds changes belong to its own repository.
 
 ## Implementation Notes
 
+- Published self-contained, closed Draft 2020-12 descriptor/result schemas and identical Builds mirrors. Shared bindings cover the complete policy handoff; reserved producers use typed `not-yet-populated` branches, with future candidate/baseline and loaded-identity branches available under v1.
+- Added the offline `TestEnvironmentContractReader` and detached atomic read result. It rejects unsupported versions/policies, duplicate keys, malformed UTF-8/Unicode/JSON, unknown properties, excessive bytes/depth and inconsistent hold/deadline timing. Diagnostics use unused `HXT101`–`HXT107` and never echo input values, keys or paths.
+- Embedded/package schema assets, documented Platform ownership and independent Builds consumption, and added diagnostic-only samples and 79 focused tests. Native handoff/internal records, services, tool/catalog pins and Git recording operations remain untouched by this story.
+- Preserved concurrent unrelated Platform and Builds work, including other sprint statuses and additional schema resources in Tooling.csproj.
+
 ## Spec Change Log
 
 ## Review Triage Log
 
+
+All three review layers returned. Each finding was checked before grouping. Corrections reuse existing contract fields and reader entry points; they add no new public API or producer responsibility. The full concurrent baseline diff is retained separately; independent review used the complete Story 2.2 implementation diff with unrelated concurrent changes and the claims file removed (the edge layer received claims separately).
+
+| Finding | Verdict | Evidence and disposition |
+| --- | --- | --- |
+| Blind 1: tiny unequal budgets underflow | medium | Reader converts positive declared decimals to zero and compares equality after loss; identical origin/expiry can then pass. Patch exact representable tick arithmetic and reject sub-tick/underflowing budgets. |
+| Blind 2: identity edge controls | medium | The first/last `\S` bypass the middle class control exclusion; single control-character identifiers validate and reach endpoint/run consumers. Patch the existing identity constraint in all four schema copies. |
+| Blind 3: FIFO blocks before seekability check | low | File.OpenRead can block on a named pipe before CanSeek; ordinary runner descriptors are local regular files. Reject this rare unsupported input concern: nonblocking special-file detection adds platform-specific machinery to a synchronous file reader. |
+| Blind 4: leap-second inconsistency | low | Schema permits :60 in terminal time but DateTimeOffset arithmetic cannot represent it in deadlines. Patch the existing UTC constraint consistently to the reader's representable seconds 00–59 and document it. |
+| Blind 5: duration without execution deadline | medium | The closed not-declared branch excludes the already-defined origin and actual-duration fields, preventing known execution observations without an invented timeout. Patch that branch to permit the existing timing fields independently of an expiry. |
+| Blind 6: nonexistent cleanup attempt required | medium | A populated not-requested cleanup requires attemptId although no attempt exists. Patch the existing attempt requirement by disposition and remove invented attempts from samples/tests. |
+| Blind 7: premature expiry end | medium | Reader only compares hold end with acceptance, so an expired reason before its bound expiry passes. Patch the demonstrated contradictory chronology check. |
+| Blind 8: duplicate resource/endpoint identities | medium | Closed schemas permit duplicate resource IDs and endpoint names with distinct URIs; the reader has no uniqueness guard, leaving test endpoint selection ambiguous. Patch checks for these demonstrated duplicate states and document selection identities. |
+| Blind 9: dangling diagnostic IDs | medium | terminal/readiness/task diagnosticIds can name no top-level classified diagnostic; schema/timing guards do not resolve them. Patch document-local resolution and unique diagnostic IDs, preserving opaque external reference contents. |
+| Blind 10: canonical parity unprotected | medium | The automated test compares Builds disk/embedded assets only; canonical Platform edits are covered solely by the one-time manual comparison. Patch a narrow Platform-side parity test and execute it. |
+| Edge 1: fractional deadline loses tick | medium | AddSeconds(double) can produce .5699999 for a valid .57-second interval. Same numeric precision root as Blind 1; patch exact integral tick computation with supported precision. |
+| Edge 2: boundary control characters | medium | Verified identity pattern defect independently, including NUL at string edges. Same root and patch as Blind 2. |
+| Verification 1: execution-expiry negative path untested | medium | Filed regression evidence shows only valid execution timing and negative startup/hold cases; removing execution arithmetic validation would leave these tests green. Patch descriptor/result negative execution-expiry cases. |
+| Verification 2: end-before-acceptance path untested | medium | Filed regression evidence shows only a valid actual hold end; removing chronology validation would leave tests green. Patch both reader methods, including equality as the valid boundary. |
+
+
+Review corrections were inspected individually in `/tmp/story-2-2-review-fixes.patch`. Applied every accepted patch: exact decimal/exponent-to-tick arithmetic; controls and leap-second constraints; existing deadline-free execution observations; conditional cleanup attempt identity; expired/end chronology; scoped resource/endpoint uniqueness; document-local classified diagnostic references; direct negative timing cases; and the Platform parity unittest. No intent gap, spec loopback or deferred work remains. Existing entry points, v1 identities and the frozen approved block are preserved.
+
 ## Verification
 
 From Builds: `dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1`, then invoke its built xUnit v3 assembly with `-class Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests`. Run relevant existing schema/handoff regressions. Verify CLI package-item inclusion without publishing, canonical/mirror JSON equality, local documentation links and whitespace. No services are needed for contract checks.
+
+### Executed verification (2026-10-22)
+
+- The shared Builds Debug build was attempted as specified. It is blocked by concurrent `CheckSuites`/`ReleaseRecords` compilation/analyzer errors, unrelated to Story 2.2. The latest shared retry has no Story 2.2 errors; see `/tmp/story-2-2-shared-build-final.log` (38 concurrent-work errors). No build gate was weakened and no concurrent source was removed or edited.
+- Isolated verification used `git archive 2210aaaf54c779b8763dbf1e8767bdc1b422bc6d | tar -x -C /tmp/story-2-2-builds-verify`, then copied the eight Story 2.2 Builds files listed in `/tmp/story-2-2-builds-verify/story-2-2-copied-files.txt`, byte-compared them and added only the two Story 2.2 schema entries to the archived baseline project files. This created no branch/index changes and excluded concurrent code solely in that temporary snapshot.
+- In that snapshot, `dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1 -p:MinVerVersionOverride=1.0.0` passed with zero warnings/errors. The version override supplies metadata in the archive without Git history; it changes no dependency or tool pin. Log: `/tmp/story-2-2-isolated-build.log`.
+- `dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests` passed all 79 tests, zero failures/skips. Log: `/tmp/story-2-2-contract-tests.log`.
+- The same assembly with `-class Hexalith.Builds.ModuleTool.Tests.PlatformManifestValidationTests -class Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests -class Hexalith.Builds.ModuleTool.Tests.NativeTestReportLoaderTests` passed all 180 relevant existing regressions, zero failures/skips. Log: `/tmp/story-2-2-regression-tests.log`.
+- All verified Story 2.2 code, schemas, tests and fixtures still byte-match the shared tree. Both canonical/mirror pairs match byte-for-byte; schema references are local and objects closed. Evaluated CLI `None` items include both schemas with `Pack=true` and `PackagePath=tools/net10.0/any/schemas/`, without publishing. New local documentation links and whitespace checks pass. No services were needed or started.
+
+- Parent verification: independently reran all 79 contract tests with XML results at `/tmp/story-2-2-parent-contract-tests.xml`; all passed, zero skips. Audited every matrix row against executed tests: detached samples; version refusals; policy/shape/strict JSON/size/depth refusals; unpopulated and future-populated bindings; invalid outcomes and hold requests. Confirmed the verified task files still match the shared tree, canonical/mirror schemas and shared schema definitions agree, and the frozen approved block is unchanged (SHA-256 `95765eb38845f04298b2cbb115c0e4912a8998d4188c885f9e04fff2f0f609b8`). Full baseline diff, including concurrent changes, is staged as `/tmp/story-2-2-full-t0an20sq.patch`; Story 2.2 review scope is `/tmp/story-2-2-task.patch`.
+
+
+### Final parent verification after review corrections (2026-10-22)
+
+- The earlier concurrent shared-build blocker is resolved. From `references/Hexalith.Builds`, `dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1` passed with **zero warnings and zero errors**. Log: `/tmp/story-2-2-shared-parent-final-build.log`.
+- Against that integrated shared build, `dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.TestEnvironmentContractReaderTests -class Hexalith.Builds.ModuleTool.Tests.PlatformManifestValidationTests -class Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests -class Hexalith.Builds.ModuleTool.Tests.NativeTestReportLoaderTests -result-xml /tmp/story-2-2-shared-final-tests.xml` passed **299 tests**: 119 contract cases and 180 existing regressions, zero failures/skips/not-run. Independently parsed XML confirms all counts and passes. The same final 299 tests also passed in the isolated snapshot.
+- `python3 -m unittest discover -s tests/contracts -p test_test_environment_contract_mirrors.py -v` passed the canonical/mirror parity unittest. Both schema pairs and all shared definitions match; updated objects remain closed and references local. New-file whitespace, tracked diff whitespace and contract documentation links pass.
+- Rechecked every matrix row against executed contract tests, including all review timing/identity/reference corrections; all tasks remain complete. Refreshed `/tmp/story-2-2-review-tay5xwek.patch` for all Story 2.2 implementation changes and retained the full concurrent baseline diff separately. No services, remote operations, commits, releases or pin changes were performed by this story.
+
+- Completion honors the approved frozen exclusion of Git recording operations: changes remain uncommitted, overriding the generated presentation step's default local-commit action.

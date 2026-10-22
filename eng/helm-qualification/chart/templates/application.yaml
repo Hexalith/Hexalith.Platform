@@ -1,0 +1,101 @@
+{{- include "reference.validate" . -}}
+{{- $graph := include "reference.graph" . | fromJson -}}
+{{- if ne .Values.mode "remove-workloads" -}}
+{{- range $graph.workloads }}
+{{- $w := . -}}
+{{- $binding := index $.Values.bindings .identity }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .resourceId }}
+  labels:
+    app.kubernetes.io/part-of: hexalith-reference
+spec:
+  replicas: {{ if eq $.Values.mode "recovery" }}0{{ else }}{{ $.Values.replicas }}{{ end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .resourceId }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .resourceId }}
+      annotations:
+        {{- include "reference.dapr" (dict "workload" . "binding" $binding) | nindent 8 }}
+    spec:
+      automountServiceAccountToken: true
+      imagePullSecrets:
+        - name: {{ $.Values.imagePullSecret }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          image: {{ index $.Values.images .identity | quote }}
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: {{ .readiness | quote }}
+              port: http
+          securityContext:
+            {{- include "reference.security" $ | nindent 12 }}
+          env:
+            {{- include "reference.environment" (dict "workload" . "binding" $binding "root" $) | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: environment-components
+              mountPath: /etc/hexalith/environment
+              readOnly: true
+          resources:
+            requests: {cpu: 10m, memory: 32Mi}
+            limits: {cpu: "1", memory: 512Mi}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: environment-components
+          configMap:
+            name: {{ $.Values.environment.componentConfigMap }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .resourceId }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .resourceId }}
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+{{- if and (eq $.Values.mode "normal") .publicRoutes }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .resourceId }}
+spec:
+  parentRefs:
+    - name: {{ $.Values.gateway.name }}
+      namespace: {{ $.Values.gateway.namespace }}
+      sectionName: {{ $.Values.gateway.sectionName }}
+  hostnames: [{{ index $.Values.hostnames .identity | lower | trimSuffix "." | quote }}]
+  rules:
+    {{- $prefixes := dict }}
+    {{- range .publicRoutes }}
+    {{- $_ := set $prefixes (trimSuffix "/" (regexFind "^[^{]*" .) | default "/") true }}
+    {{- end }}
+    {{- range $prefix, $_ := $prefixes }}
+    - matches:
+        - path: {type: PathPrefix, value: {{ $prefix | quote }}}
+      backendRefs:
+        - name: {{ $w.resourceId }}
+          port: 80
+    {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

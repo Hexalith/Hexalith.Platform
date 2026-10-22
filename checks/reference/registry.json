@@ -1,0 +1,163 @@
+{
+  "schema": "hexalith.reference-check-registry.v1",
+  "modules": [
+    {
+      "module": "parties",
+      "owner": "@jpiquot",
+      "source": "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json",
+      "sourceKind": "manifest",
+      "suite": "parties-reference",
+      "descriptor": "checks/reference/suites/parties.json",
+      "package": "parties/1.0.0",
+      "criticalFlows": [
+        {
+          "name": "party-management",
+          "surface": "party-domain",
+          "checks": [
+            "parties.management"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ],
+      "smokeSurfaces": [
+        {
+          "name": "parties-smoke",
+          "surface": "party-domain",
+          "checks": [
+            "parties.read"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ]
+    },
+    {
+      "module": "eventstore",
+      "owner": "@jpiquot",
+      "source": "src/Hexalith.Platform.Composition/Declarations/eventstore.json",
+      "sourceKind": "manifest",
+      "suite": "eventstore-reference",
+      "descriptor": "checks/reference/suites/eventstore.json",
+      "package": "eventstore/1.0.0",
+      "criticalFlows": [
+        {
+          "name": "submit-command",
+          "surface": "eventstore-gateway",
+          "checks": [
+            "eventstore.command-status"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ],
+      "smokeSurfaces": [
+        {
+          "name": "eventstore-smoke",
+          "surface": "eventstore-gateway",
+          "checks": [
+            "eventstore.query"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ]
+    },
+    {
+      "module": "tenants",
+      "owner": "@jpiquot",
+      "source": "src/Hexalith.Platform.Composition/Declarations/tenants.json",
+      "sourceKind": "manifest",
+      "suite": "tenants-reference",
+      "descriptor": "checks/reference/suites/tenants.json",
+      "package": "tenants/1.0.0",
+      "criticalFlows": [
+        {
+          "name": "tenant-management",
+          "surface": "tenant-api",
+          "checks": [],
+          "status": "blocked",
+          "reason": "synthetic-lifecycle-authorization"
+        },
+        {
+          "name": "global-administrator-management",
+          "surface": "global-administrators-api",
+          "checks": [],
+          "status": "blocked",
+          "reason": "positive-administrator-coverage"
+        }
+      ],
+      "smokeSurfaces": [
+        {
+          "name": "tenant-read-smoke",
+          "surface": "tenant-api",
+          "checks": [],
+          "status": "blocked",
+          "reason": "safe-tenant-read-admission"
+        }
+      ]
+    },
+    {
+      "module": "memories",
+      "owner": "@jpiquot",
+      "source": "src/Hexalith.Platform.Composition/Declarations/memories.json",
+      "sourceKind": "manifest",
+      "suite": "memories-reference",
+      "descriptor": "checks/reference/suites/memories.json",
+      "package": "memories/1.0.0",
+      "criticalFlows": [
+        {
+          "name": "ingest-and-search",
+          "surface": "memories-api",
+          "checks": [
+            "memories.ingest-search"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ],
+      "smokeSurfaces": [
+        {
+          "name": "memories-smoke",
+          "surface": "memories-api",
+          "checks": [
+            "memories.search"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ]
+    },
+    {
+      "module": "mcpcli",
+      "owner": "@jpiquot",
+      "source": "references/Hexalith.McpCli/src/Hexalith.McpCli/Hosting/HostFactory.cs",
+      "sourceKind": "code",
+      "suite": "mcpcli-reference",
+      "descriptor": "checks/reference/suites/mcpcli.json",
+      "package": "mcpcli/1.0.0",
+      "criticalFlows": [
+        {
+          "name": "gateway-query",
+          "surface": "mcpcli-cli",
+          "checks": [
+            "mcpcli.query"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ],
+      "smokeSurfaces": [
+        {
+          "name": "mcpcli-smoke",
+          "surface": "mcpcli-cli",
+          "checks": [
+            "mcpcli.read"
+          ],
+          "status": "resolved",
+          "reason": "none"
+        }
+      ]
+    }
+  ]
+}

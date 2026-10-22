@@ -22,6 +22,11 @@ public static class PlatformAppModel
     public static void ComposeEntry(IDistributedApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        if (builder.Configuration.GetValue<bool>("Platform:Hosted:Enabled"))
+        {
+            PlatformHostedPublishing.ComposeNativeProbe(builder);
+            return;
+        }
         if (bool.TryParse(builder.Configuration["Platform:Agents:Enabled"], out bool agents) && agents)
         {
             if (!AgentsHostComposition.TryCompose(builder))
@@ -120,7 +125,8 @@ public static class PlatformAppModel
             if (result.ExitCode != 0 || result.TimedOut) throw new InvalidDataException($"{server.Module.Source}: {PlatformDeclarationSet.Id(server.Module.Declaration)}/{server.ServerId}: image '{server.Image}' is unavailable from its released registry.");
         }
         string components = options.ComponentsDirectory ?? Path.Combine(options.PlatformRoot, "DaprComponents", "reference");
-        string? daprHome = options.RunPlan?.DaprHome ?? Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
+        string? selectedDaprHome = options.RunPlan?.DaprHome ?? Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
+        string daprHome = selectedDaprHome ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         bool hasMemories = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");
         bool hasGateway = servers.Any(server => server.ResourceId == "eventstore");
         bool hasTimesheets = servers.Any(server => server.ResourceId == "timesheets");
@@ -132,9 +138,15 @@ public static class PlatformAppModel
             CompositionRunPorts localPorts = AllocateSecondaryPorts(Math.Max(1, servers.Count(server => server.ResourceId != "eventstore")), options.RunPlan?.Ports);
             int redisPort = options.RunPlan?.Ports.Redis ?? localPorts.Redis;
             int vectorPort = localPorts.UiHttp;
-            int? selectedSentryPort = options.RetentionProfile is null ? null : localPorts.Placement;
-            string placementAddress = options.RetentionProfile is null ? DaprSelfHostedMtls.PlacementHostAddress : "localhost:" + options.RunPlan!.Ports.Placement;
-            string schedulerAddress = options.RetentionProfile is null ? DaprSelfHostedMtls.SchedulerHostAddress : "localhost:" + options.RunPlan!.Ports.Scheduler;
+            int sentryPort = localPorts.PlacementHealth;
+            int placementPort = options.RunPlan?.Ports.Placement ?? localPorts.Placement;
+            int schedulerPort = options.RunPlan?.Ports.Scheduler ?? localPorts.Scheduler;
+            string sentryAddress = "localhost:" + sentryPort;
+            string placementAddress = "localhost:" + placementPort;
+            string schedulerAddress = "localhost:" + schedulerPort;
+            string discovery = options.RunPlan is null
+                ? CompositionDaprComponentRenderer.RenderConfiguration("platform-" + Path.GetFileName(rendered), rendered)
+                : File.ReadAllText(options.RunPlan.DaprConfigPath);
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
@@ -146,7 +158,7 @@ public static class PlatformAppModel
                 ["access-telemetry-marker-key"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
             }));
             if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(secrets, UnixFileMode.UserRead | UnixFileMode.UserWrite);
-            IReadOnlyDictionary<string, string> daprFiles = dapr.Render(components, redisPort, vectorPort, secrets, options.RunPlan is null ? null : File.ReadAllText(options.RunPlan.DaprConfigPath), selectedSentryPort is null ? null : "localhost:" + selectedSentryPort);
+            IReadOnlyDictionary<string, string> daprFiles = dapr.Render(components, redisPort, vectorPort, secrets, discovery, sentryAddress);
             string subscriptionsDirectory = Path.Combine(rendered, "subscriptions");
             bool hasSubscriptions = daprFiles.Keys.Any(file => file.StartsWith("subscription.", StringComparison.Ordinal));
             if (hasSubscriptions) CompositionWorkspace.CreatePrivateDirectory(subscriptionsDirectory);
@@ -160,13 +172,20 @@ public static class PlatformAppModel
             string? gatewayContentRoot = servers.FirstOrDefault(server => server.ResourceId == "eventstore")?.ProjectPath is { } gatewayProject
                 ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
 
-            if (options.RetentionProfile is not null) builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(rendered, "dapr-credentials");
-            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, selectedSentryPort);
+            var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, rendered, sentryPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, options.Mapping.Entries.Select(entry => entry.Path).OfType<string>().ToArray());
+            // An explicitly selected parent can live outside the workspace. Dispose only this run's child.
+            if (builder.Configuration["Dapr:Mtls:CertificateDirectory"] is not null)
+                builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(certificates));
+            string redisData = Path.Combine(rendered, "redis-data");
+            CompositionWorkspace.CreatePrivateDirectory(redisData);
             string[] redisReference = CompositionToolchainPins.RedisImageReference.Split('@', 2);
             int colon = redisReference[0].LastIndexOf(':');
             IResourceBuilder<ContainerResource> redis = builder.AddContainer("redis", redisReference[0][..colon], redisReference[0][(colon + 1)..])
                 .WithImageSHA256(redisReference[1]["sha256:".Length..])
+                .WithBindMount(redisData, "/data")
+                .WithArgs("redis-server", "--appendonly", "yes", "--dir", "/data")
                 .WithEndpoint(port: redisPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
+            if (DaprSelfHostedMtls.ResolveContainerUser() is { } redisUser) redis.WithContainerRuntimeArgs("--user", redisUser);
             PlatformRedisHealthCheck.Attach(builder, redis);
             if (options.RunPlan is { } run) redis.WithContainerName(run.RedisContainerName).WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={run.RunId}");
             IResourceBuilder<ContainerResource>? telemetryPostgres = options.RetentionProfile?.AddResource(builder);
@@ -180,7 +199,15 @@ public static class PlatformAppModel
             {
                 vectors = builder.AddContainer("memories-vectors", options.RetentionProfile is null ? "redis/redis-stack" : "docker.io/redis/redis-stack-server", options.RetentionProfile is null ? "latest" : "7.4.0-v8").WithEndpoint(port: vectorPort, targetPort: 6379, name: "tcp", scheme: "tcp", isProxied: false);
                 graph = builder.AddContainer("memories-graph", "falkordb/falkordb", options.RetentionProfile is null ? "latest" : "v4.12.0").WithEndpoint(targetPort: 6379, name: "tcp", scheme: "tcp");
+                foreach (var store in new[] { (Resource: vectors, Name: "vectors-data"), (Resource: graph, Name: "graph-data") })
+                {
+                    string data = Path.Combine(rendered, store.Name);
+                    CompositionWorkspace.CreatePrivateDirectory(data);
+                    store.Resource.WithBindMount(data, "/data").WithEnvironment("REDIS_ARGS", "--appendonly yes");
+                    if (DaprSelfHostedMtls.ResolveContainerUser() is { } storeUser) store.Resource.WithContainerRuntimeArgs("--user", storeUser);
+                }
                 PlatformRedisHealthCheck.Attach(builder, vectors);
+                graph.WithEnvironment("FALKORDB_DATA_PATH", "/data");
                 PlatformRedisHealthCheck.Attach(builder, graph);
                 if (options.RetentionProfile is not null)
                 {
@@ -193,8 +220,8 @@ public static class PlatformAppModel
                     graph.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={scoped.RunId}");
                 }
             }
-            if (daprHome is not null) builder.AddDapr(daprOptions => daprOptions.DaprPath = Path.Combine(daprHome, "tools", OperatingSystem.IsWindows() ? "dapr.exe" : "dapr"));
-            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Placement, options.RetentionProfile is null ? null : options.RunPlan!.Ports.Scheduler);
+            if (selectedDaprHome is not null) builder.AddDapr(daprOptions => daprOptions.DaprPath = Path.Combine(daprHome, "tools", OperatingSystem.IsWindows() ? "dapr.exe" : "dapr"));
+            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, placementPort, schedulerPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion);
             if (options.RunPlan is { } securityRun)
                 foreach (var control in new[] { sentry, placement, scheduler }) control.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={securityRun.RunId}");
             Dictionary<string, IResourceBuilder<ProjectResource>> projects = new(StringComparer.Ordinal);
@@ -311,7 +338,7 @@ public static class PlatformAppModel
                 else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);
                 else containers[server.ResourceId].WaitFor(containers[target.ResourceId]);
             }
-            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, selectedSentryPort is null ? null : "localhost:" + selectedSentryPort));
+            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered));
             if (options.RunPlan is null)
             {
                 builder.Services.AddSingleton(_ => new PlatformCompositionWorkspace(rendered));
@@ -325,9 +352,10 @@ public static class PlatformAppModel
                 builder.Services.Insert(0, ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService>(services => new PlatformGatewayStartup(services, runId, binding.Environment["Authentication__JwtBearer__SigningKey"])));
             }
         }
-        catch
+        catch (Exception failure)
         {
-            if (options.RunPlan is null) CompositionWorkspace.TryDeleteAsync(rendered, CancellationToken.None).GetAwaiter().GetResult();
+            // The private workspace belongs to this attempt. Retain startup diagnostics for inspection.
+            File.WriteAllText(Path.Combine(rendered, "composition-failure.txt"), failure.Message);
             throw;
         }
     }
@@ -360,16 +388,20 @@ public static class PlatformAppModel
 
     internal static string MergeRunDiscovery(string accessControl, string configuration)
     {
-        YamlStream acl = new();
-        acl.Load(new StringReader(accessControl));
+        System.Text.Json.Nodes.JsonNode acl = System.Text.Json.Nodes.JsonNode.Parse(accessControl)!;
         YamlStream run = new();
         run.Load(new StringReader(configuration));
-        YamlMappingNode aclSpec = (YamlMappingNode)((YamlMappingNode)acl.Documents[0].RootNode).Children[new YamlScalarNode("spec")];
-        YamlMappingNode runSpec = (YamlMappingNode)((YamlMappingNode)run.Documents[0].RootNode).Children[new YamlScalarNode("spec")];
-        aclSpec.Children[new YamlScalarNode("nameResolution")] = runSpec.Children[new YamlScalarNode("nameResolution")];
-        StringWriter writer = new(CultureInfo.InvariantCulture);
-        acl.Save(writer, assignAnchors: false);
-        return writer.ToString();
+        var spec = (YamlMappingNode)((YamlMappingNode)run.Documents[0].RootNode).Children[new YamlScalarNode("spec")];
+        acl["spec"]!["nameResolution"] = ToJson(spec.Children[new YamlScalarNode("nameResolution")]);
+        return acl.ToJsonString();
+
+        static System.Text.Json.Nodes.JsonNode ToJson(YamlNode node) => node switch
+        {
+            YamlMappingNode mapping => new System.Text.Json.Nodes.JsonObject(mapping.Children.Select(pair =>
+                new KeyValuePair<string, System.Text.Json.Nodes.JsonNode?>(pair.Key.ToString(), ToJson(pair.Value)))),
+            YamlScalarNode scalar => System.Text.Json.Nodes.JsonValue.Create(scalar.Value)!,
+            _ => throw new InvalidDataException("Run discovery must contain mappings and scalar values."),
+        };
     }
 
     private static void ConfigureEnvironment<T>(IResourceBuilder<T> resource, PlatformServerBinding server, PlatformCompositionOptions options, ECDsa clockKey) where T : IResourceWithEnvironment

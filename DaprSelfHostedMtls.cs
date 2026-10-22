@@ -9,11 +9,8 @@ public static class DaprSelfHostedMtls
     private const string ContainerCredentialsDirectory = "/var/run/dapr/credentials";
     private const string ContainerSentryConfigurationPath = "/var/run/dapr/config/sentry.yaml";
     private const string SchedulerDataDirectory = "/var/lock/dapr/scheduler";
-    private const string SchedulerVolumeName = "hexalith-platform-dapr-scheduler";
     private const int PlacementContainerPort = 50005;
-    private const int PlacementHostPort = 51005;
     private const int SchedulerContainerPort = 50006;
-    private const int SchedulerHostPort = 51006;
     private const int SentryPort = 50001;
 
     /// <summary>How many times a Sentry-issued credential is re-read while it is missing, locked, or empty.</summary>
@@ -22,35 +19,26 @@ public static class DaprSelfHostedMtls
     /// <summary>The delay between credential read attempts (20 attempts ≈ 9.5 seconds of budget).</summary>
     private static readonly TimeSpan CredentialReadRetryDelay = TimeSpan.FromMilliseconds(500);
 
-    /// <summary>The local mTLS placement endpoint.</summary>
-    public const string PlacementHostAddress = "localhost:51005";
-    /// <summary>The local mTLS scheduler endpoint.</summary>
-    public const string SchedulerHostAddress = "localhost:51006";
-
-    /// <summary>
-    /// Adds the local Sentry container and returns its external credential directory.
-    /// </summary>
-    public static (IResourceBuilder<ContainerResource> Sentry, string CertificateDirectory) AddSentry(
-        IDistributedApplicationBuilder builder,
-        string sentryConfigurationPath)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
-        return AddSentry(builder, sentryConfigurationPath, LocateRepositoryRoot(builder.AppHostDirectory));
-    }
-
-    /// <summary>Adds Sentry using the already resolved Platform checkout as the certificate exclusion boundary.</summary>
+    /// <summary>Adds Sentry with an allocated host listener and a private issuer directory.</summary>
     internal static (IResourceBuilder<ContainerResource> Sentry, string CertificateDirectory) AddSentry(
         IDistributedApplicationBuilder builder,
         string sentryConfigurationPath,
         string platformRoot,
+        string runDirectory,
+        int sentryHostPort,
         string? runtimeVersion = null,
-        int? sentryHostPort = null)
+        IReadOnlyList<string>? checkoutRoots = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentException.ThrowIfNullOrWhiteSpace(sentryConfigurationPath);
 
-        string certificateDirectory = ResolveCertificateDirectory(builder, platformRoot);
-        Directory.CreateDirectory(certificateDirectory);
+        string parent = ResolveCertificateParent(builder, platformRoot, runDirectory, checkoutRoots);
+        string identity = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(Path.GetFullPath(runDirectory))))[..32];
+        string certificateDirectory = Path.Combine(parent, "dapr-credentials-" + identity);
+        if (new DirectoryInfo(certificateDirectory).LinkTarget is not null)
+            throw new InvalidOperationException($"Private Sentry credential directory '{certificateDirectory}' must not be a symbolic link.");
+        // Builds preflight and execution compose the same workspace. Reuse only that run's private child.
+        CompositionWorkspace.CreatePrivateDirectory(certificateDirectory);
 
         IResourceBuilder<ContainerResource> sentry = builder
             .AddContainer("dapr-sentry", runtimeVersion is null ? "daprio/sentry" : "ghcr.io/dapr/sentry", runtimeVersion ?? CompositionToolchainPins.DaprRuntimeVersion)
@@ -65,9 +53,8 @@ public static class DaprSelfHostedMtls
                 "--healthz-listen-address=0.0.0.0")
             .WithBindMount(certificateDirectory, ContainerCredentialsDirectory)
             .WithBindMount(sentryConfigurationPath, ContainerSentryConfigurationPath, isReadOnly: true)
-            // Dapr's self-hosted configuration resolves Sentry through the host loopback address. Bind the
-            // fixed host port directly so daprd does not depend on a DCP proxy while obtaining its identity.
-            .WithEndpoint(port: sentryHostPort ?? SentryPort, targetPort: SentryPort, name: "grpc", isProxied: false)
+            // Native daprd uses this allocated loopback listener directly while obtaining its identity.
+            .WithEndpoint(port: sentryHostPort, targetPort: SentryPort, name: "grpc", isProxied: false)
             .WithHttpEndpoint(targetPort: 8080, name: "health")
             .WithHttpHealthCheck("/healthz", endpointName: "health")
             .WithLifetime(ContainerLifetime.Session)
@@ -91,14 +78,16 @@ public static class DaprSelfHostedMtls
             IDistributedApplicationBuilder builder,
             IResourceBuilder<ContainerResource> sentry,
             string certificateDirectory,
-            string? schedulerDataDirectory = null,
-            string? runtimeVersion = null,
-            int? placementHostPort = null,
-            int? schedulerHostPort = null)
+            string schedulerDataDirectory,
+            int placementHostPort,
+            int schedulerHostPort,
+            string? runtimeVersion = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(sentry);
         ArgumentException.ThrowIfNullOrWhiteSpace(certificateDirectory);
+        ArgumentException.ThrowIfNullOrWhiteSpace(schedulerDataDirectory);
+        CompositionWorkspace.CreatePrivateDirectory(schedulerDataDirectory);
 
         IResourceBuilder<ContainerResource> placement = builder
             .AddContainer("dapr-placement-mtls", runtimeVersion is null ? "daprio/dapr" : "ghcr.io/dapr/placement", runtimeVersion ?? CompositionToolchainPins.DaprRuntimeVersion)
@@ -112,7 +101,7 @@ public static class DaprSelfHostedMtls
                 "--metadata-enabled")
             .WithBindMount(certificateDirectory, ContainerCredentialsDirectory, isReadOnly: true)
             .WithEndpoint(
-                port: placementHostPort ?? PlacementHostPort,
+                port: placementHostPort,
                 targetPort: PlacementContainerPort,
                 name: "grpc")
             .WithHttpEndpoint(targetPort: 8080, name: "health")
@@ -130,11 +119,11 @@ public static class DaprSelfHostedMtls
                 "--trust-domain=localhost",
                 $"--trust-anchors-file={ContainerCredentialsDirectory}/ca.crt",
                 $"--etcd-data-dir={SchedulerDataDirectory}",
-                $"--override-broadcast-host-port=localhost:{schedulerHostPort ?? SchedulerHostPort}",
+                $"--override-broadcast-host-port=localhost:{schedulerHostPort}",
                 "--healthz-listen-address=0.0.0.0")
             .WithBindMount(certificateDirectory, ContainerCredentialsDirectory, isReadOnly: true)
             .WithEndpoint(
-                port: schedulerHostPort ?? SchedulerHostPort,
+                port: schedulerHostPort,
                 targetPort: SchedulerContainerPort,
                 name: "grpc")
             .WithHttpEndpoint(targetPort: 8080, name: "health")
@@ -143,8 +132,7 @@ public static class DaprSelfHostedMtls
             .WaitFor(sentry)
             .ExcludeFromManifest();
 
-        if (schedulerDataDirectory is null) scheduler.WithVolume(SchedulerVolumeName, "/var/lock");
-        else scheduler.WithBindMount(schedulerDataDirectory, "/var/lock");
+        scheduler.WithBindMount(schedulerDataDirectory, "/var/lock");
 
         if (runtimeVersion is not null)
         {
@@ -291,30 +279,22 @@ public static class DaprSelfHostedMtls
             lastFailure);
     }
 
-    private static string ResolveCertificateDirectory(IDistributedApplicationBuilder builder, string platformRoot)
+    private static string ResolveCertificateParent(IDistributedApplicationBuilder builder, string platformRoot, string runDirectory, IReadOnlyList<string>? checkoutRoots)
     {
-        string configured = builder.Configuration[CertificateDirectoryConfigurationKey]
-            ?? Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".dapr",
-                "certs",
-                "hexalith-platform");
+        string configured = builder.Configuration[CertificateDirectoryConfigurationKey] ?? runDirectory;
         string resolved = ResolveExistingLinks(Path.GetFullPath(configured));
-        string repositoryRoot = ResolveExistingLinks(Path.GetFullPath(platformRoot));
         StringComparison pathComparison = OperatingSystem.IsWindows()
             ? StringComparison.OrdinalIgnoreCase
             : StringComparison.Ordinal;
-        string relative = Path.GetRelativePath(repositoryRoot, resolved);
-        bool hasSameRoot = string.Equals(
-            Path.GetPathRoot(repositoryRoot),
-            Path.GetPathRoot(resolved),
-            pathComparison);
-        if (hasSameRoot
-            && !relative.StartsWith(".." + Path.DirectorySeparatorChar, pathComparison)
-            && !string.Equals(relative, "..", pathComparison))
+        foreach (string checkout in new[] { platformRoot }.Concat(checkoutRoots ?? []).Distinct(StringComparer.Ordinal))
         {
-            throw new InvalidOperationException(
-                $"Configuration '{CertificateDirectoryConfigurationKey}' must resolve outside the repository; got '{resolved}'.");
+            string repositoryRoot = ResolveExistingLinks(Path.GetFullPath(checkout));
+            string relative = Path.GetRelativePath(repositoryRoot, resolved);
+            bool hasSameRoot = string.Equals(Path.GetPathRoot(repositoryRoot), Path.GetPathRoot(resolved), pathComparison);
+            if (hasSameRoot && !relative.StartsWith(".." + Path.DirectorySeparatorChar, pathComparison)
+                && !string.Equals(relative, "..", pathComparison))
+                throw new InvalidOperationException(
+                    $"Configuration '{CertificateDirectoryConfigurationKey}' must resolve outside the repository; got '{resolved}' inside mapped checkout '{repositoryRoot}'.");
         }
 
         return resolved;
@@ -335,7 +315,7 @@ public static class DaprSelfHostedMtls
         {
             string candidate = Path.Combine(current, segment);
             var entry = new DirectoryInfo(candidate);
-            if (entry.Exists && entry.LinkTarget is not null)
+            if (entry.LinkTarget is not null)
             {
                 FileSystemInfo target = entry.ResolveLinkTarget(returnFinalTarget: true)
                     ?? throw new InvalidOperationException($"Could not resolve symbolic link '{candidate}'.");
@@ -348,24 +328,6 @@ public static class DaprSelfHostedMtls
         }
 
         return Path.GetFullPath(current);
-    }
-
-    private static string LocateRepositoryRoot(string appHostDirectory)
-    {
-        DirectoryInfo? directory = new(appHostDirectory);
-        while (directory is not null)
-        {
-            if (File.Exists(Path.Combine(directory.FullName, "apphost.cs"))
-                && File.Exists(Path.Combine(directory.FullName, "aspire.config.json")))
-            {
-                return directory.FullName;
-            }
-
-            directory = directory.Parent;
-        }
-
-        throw new DirectoryNotFoundException(
-            $"Could not locate the Platform AppHost from directory '{appHostDirectory}'.");
     }
 
     internal static string? ResolveContainerUser()

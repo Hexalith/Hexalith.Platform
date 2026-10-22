@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 10-22-2026 18:38
+last_updated: 10-22-2026 18:41
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -55,8 +55,8 @@ development_status:
 
   epic-2: in-progress
   2-1-decide-the-candidate-and-attachment-policy: done
-  2-2-define-the-test-environment-descriptor-and-result-contract: in-progress
-  2-3-make-local-composition-resources-run-scoped: backlog
+  2-2-define-the-test-environment-descriptor-and-result-contract: review
+  2-3-make-local-composition-resources-run-scoped: in-progress
   2-4-provision-a-run-owned-environment-for-a-test-suite: backlog
   2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs: backlog
   2-6-attach-a-run-to-a-compatible-environment: backlog
@@ -89,13 +89,13 @@ development_status:
   # 4.4: 2026-10-07 fresh discovery passes public controls; App/PAT/private repository/custody acceptance remains blocked.
   4-4-apply-publication-and-operations-repository-controls: in-progress
   # 2026-10-07: 44 local repository-control tests pass; live application, CODEOWNERS publication and owner custody evidence remain outstanding.
-  4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi: ready-for-dev
+  4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi: in-progress
   4-6-encode-release-attempt-qualification-and-administrator-recor: in-progress
   4-7-provide-the-staging-attempt-lock-and-promotion-stop-store: backlog
   4-8-maintain-the-module-intake-manifest: backlog
   4-9-ratify-the-hosted-runtime-and-identity-event-contracts: backlog
   4-10-define-the-recovery-hook-contract: done
-  4-11-define-the-check-suite-contract-and-own-the-reference-suites: backlog
+  4-11-define-the-check-suite-contract-and-own-the-reference-suites: in-progress
   4-12-publish-retained-releases-with-provenance: backlog
   4-13-retain-artifacts-off-the-primary-failure-domain: backlog
   4-14-build-staging-namespaces-storage-and-pod-and-network-isolati: backlog

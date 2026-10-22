@@ -4,9 +4,10 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: 'e39d59b9e7f93c5880eff423e24b8a0f274560ed'
 route: 'dispatch'
-review_loop_iteration: 0
+review_loop_iteration: 1
 story_key: '4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
@@ -63,11 +64,54 @@ context:
 
 ## Implementation Notes
 
+- The shared neutral graph selects the seven enabled reference servers before local configuration binding. Local resolution and hosted metadata use the same identities, readiness and Dapr capability/ACL/subscription helper.
+- Native Aspire 13.6.1 publishing completed but omitted every supplied Dapr sidecar annotation. The retained probe demonstrates the AD-1 hand-modeled Dapr plumbing trigger; the single generic maintained chart is selected. No native output was patched.
+- Initial iteration (superseded by review 1): the packaged chart passed all six real-Helm test groups and the complete owned-kind qualification, including seven injected Pod dry-runs, the same-controller unsafe rejection, Helm Apply ownership, unforced conflict refusal, recovery/removal boundaries, uninstall preservation and cleanup. Source hashes remained unchanged throughout the passing run.
+- Focused hosted, Parties, shared-Dapr and exact readiness regressions passed 52 tests with no skips. The full composition-suite attempt had 218 passes, 11 failures and eight existing opt-in skips; two diagnostic failures were fixed and reran successfully. The remaining nine failures concern concurrent local-composition changes or existing owner/tool-pin/content-root checks and remain visible in the retained log.
+- Commands, source/input/tool/package hashes and results are in [qualification evidence](evidence/4-5/qualification.json), [verification details](evidence/4-5/verification.json) and the [qualification guide](../../eng/helm-qualification/README.md). No publication, OCI-attestation, restoration or staging-deployment acceptance is claimed.
+
 ## Spec Change Log
+
+- Review 1: BH-1/BH-4 showed that a single hostname and text-only structured-input handling leave real reference workloads unusable; BH-2/BH-3/EH-2 exposed credential validation bypasses. The non-frozen implementation details now specify workload hostname bindings, decoded recursive references, case-equivalent key protection and exact token agreement, with regression expectations. Avoid recreating the known-bad shared-host or pre-decoding validator state.
+  KEEP: Preserve the neutral seven-server graph, shared ACL/capability/subscription helper, local-binding parity, measured native AD-1 fallback, generic maintained chart, digest/reference-only values, all three modes, pinned verified tools, controller-identity Pod injection and unsafe rejection, Helm Apply/conflict/removal checks, invocation-only cluster targeting and cleanup. A positive implementation snapshot is available at `/tmp/bmad-4-5-keep-ovkljnb4`; reuse those working parts while re-deriving the corrected chart/qualifier from these requirements. Prior passing qualification is evidence of the preserved foundation, not acceptance of the revised bytes.
 
 ## Review Triage Log
 
+| Finding | Verdict | Route | Evidence |
+|---|---|---|---|
+| BH-1 | medium | bad_spec | All public workloads share one host, and the current graph gives EventStore and Memories the identical /api/v1 match. Distinct backends therefore cannot both receive that match. |
+| BH-2 | high | bad_spec | Real Helm accepted Authentication\u0054oken and emitted review-literal as plaintext after JSON decoding; validation currently inspects serialized text. |
+| BH-3 | medium | bad_spec | Real Helm accepted a lowercase checkpoint-store credential key beside the canonical key; .NET resolves configuration without case sensitivity. |
+| BH-4 | medium | bad_spec | Nested endpoint reference objects are flattened into an extra __endpoint key instead of resolved; a literal HTTPS leaf is rejected. Clock Sources cannot bind a usable endpoint through that documented structured input. |
+| BH-5 | medium | patch | Real Helm rejected registry.example:5000/app@sha256 despite a valid immutable digest; the repository validator forbids the authority port. |
+| BH-6 | medium | defer | The concurrent 4.11 runner calls communicate before checking response length, so its stated limit does not bound peak buffering. This is outside the 4.5 implementation and must remain preserved. |
+| BH-7 | medium | patch | All 81 referenced logs exist and match hashes, but git check-ignore confirms *.log excludes them from durable repository evidence. |
+| BH-8 | medium | patch | cleanup removes its private directory after commands that can raise; failed deletion or inventory leaves the kubeconfig behind. |
+| BH-9 | medium | patch | The final source check hashes only the initial filenames; a newly added chart template is omitted from that inventory and can escape detection. |
+| BH-10 | medium | defer | The concurrent Parties check truncates invocationId to 110 characters; accepted distinct suffixes can select one aggregate. It is separate 4.11 work. |
+| VG-1 | medium | patch | Pre-verified: deleting every Subscription loop from a chart copy left all six chart groups green. Rendered subscriptions need full graph comparison in every mode and archive. |
+| VG-2 | medium | patch | Pre-verified: replacing the API-token annotation with the app-token reference left all tests green because fixtures use identical references. |
+| VG-3 | medium | patch | Pre-verified: removing the Tenants HTTPRoute left all six groups green because assertions iterate only present routes. Compare the complete expected route set and backends. |
+| VG-other-1 | medium | bad_spec | Same verified host/path collision as BH-1; retained normal.yaml contains identical hostname/listener/path matches for different backends. |
+| EH-1 | high | bad_spec | Same decoded-secret defect as BH-2; the escaped field name is converted into a plaintext AuthenticationToken environment entry. |
+| EH-2 | medium | bad_spec | Real Helm accepted credentials.EventStore__AppChannelToken pointing to a different Secret than appToken; credential overrides run after declared input agreement validation. |
+| EH-3 | medium | patch | Real Helm accepted replicas=1.5; int conversion passes the range guard while the unconverted fractional value is emitted into the Deployment. |
+| EH-4 | medium | patch | Same failure-path cleanup defect as BH-8; private file removal is bypassed when an earlier cleanup command raises. |
+| EH-5 | medium | defer | The concurrent 2.3 live test awaits each teardown without collecting exceptions; the first failure prevents second-session cleanup. This is not changed by 4.5. |
+| EH-6 | medium | patch | urlopen timeout bounds individual blocking socket operations; unbounded response.read can keep a download alive on trickled data. Bound the complete download operation. |
+
 ## Design Notes
+
+### Required implementation details after review 1
+
+- In `chart/values.yaml` and `application.yaml`, bind each public workload through `hostnames["module/server"]`. Reject identical normalized host/listener/path-prefix matches assigned to different backends; require every public workload route and its declared match set. Preserve declaration-derived paths and the namespaced Gateway reference.
+- In `_helpers.tpl`, decode structured JSON before validating keys and leaf values. Recursively resolve nested `{endpoint: parameter}` and `{configMapKeyRef: {name, key}}` leaves into flattened .NET environment keys, including Clock Sources arrays. Reject literal credential leaves after decoding, including escaped spellings and unsafe URLs. Existing Secret references remain the credential mechanism.
+- Normalize all configuration/environment keys using .NET case-insensitive semantics before detecting equivalent duplicates. Additional `credentials` must not override canonical Dapr/security values or declared channel/API-token inputs; reject mismatched app/API references. Distinct legitimate app and API token references must remain supported and wired correctly.
+- Accept digest images from registry authorities with explicit numeric ports while rejecting tags. Reject fractional replica values before emitting Kubernetes objects.
+- In `test_chart.py`, compare the complete rendered Subscription set to the shared graph for each mode and source/archive, compare the complete expected normal route set and backend matches, and test distinct per-workload app/API token references and their declared input bindings. Add regressions for the concrete decoded-secret, case-alias, token-override, nested-reference, host-collision, image-port and replica cases above.
+- In `qualify.py`, remove private temporary files in a `finally` even when cluster cleanup fails, retaining truthful cleanup failure evidence. Bound the entire download operation, compare both the complete source-file inventory and hashes at the end, and retain all referenced command logs in version-control-visible evidence. Test these demonstrated failure paths without relying on another live cluster.
+- Repeat the complete pinned-tool, owned-cluster qualification after these changes; earlier successful evidence is superseded. Preserve the frozen intent, source mapping, local behavior and concurrent work.
+
 
 Hosted publishing must bypass local secret generation, not redact its output. Native export remains preferred until measured against AD-1. The existing Timesheets fallback is precedent, not proof that the complete reference chart is qualified. Recovery rendering quiesces workloads; it does not perform data restoration.
 

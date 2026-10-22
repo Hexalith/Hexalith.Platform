@@ -1,0 +1,62 @@
+{{- include "reference.validate" . -}}
+{{- $graph := include "reference.graph" . | fromJson -}}
+{{- range $graph.capabilities }}
+{{- $binding := index $.Values.environment.components .name }}
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{ .name }}
+spec:
+  type: {{ $binding.type | quote }}
+  version: v1
+  metadata:
+    - name: {{ $binding.endpointMetadataKey | quote }}
+      {{- if eq (default "url" $binding.endpointFormat) "authority" }}
+      value: {{ (urlParse (index $.Values.endpoints $binding.endpoint)).host | quote }}
+      {{- else }}
+      value: {{ index $.Values.endpoints $binding.endpoint | quote }}
+      {{- end }}
+    - name: {{ $binding.credentialMetadataKey | quote }}
+      secretKeyRef:
+        {{- include "reference.secretRef" $binding.credential | nindent 8 }}
+    {{- range $key, $value := $binding.metadata }}
+    - name: {{ $key | quote }}
+      value: {{ toString $value | quote }}
+    {{- end }}
+scopes:
+  {{- toYaml .consumers | nindent 2 }}
+{{- end }}
+{{- range $graph.workloads }}
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-{{ .appId }}
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: {{ $.Values.environment.controlPlaneTrustDomain | quote }}
+    sentryAddress: {{ (urlParse (index $.Values.endpoints $.Values.environment.sentryEndpoint)).host | quote }}
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    {{- toJson .accessControl | replace "__APPLICATION_NAMESPACE__" $.Release.Namespace | replace "__TRUST_DOMAIN__" $.Values.environment.trustDomain | fromJson | toYaml | nindent 4 }}
+{{- end }}
+{{- range $graph.subscriptions }}
+---
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: {{ .name }}
+spec:
+  pubsubname: {{ .component }}
+  topic: {{ .topic | quote }}
+  routes:
+    default: {{ .route | quote }}
+  {{- if .deadLetter }}
+  deadLetterTopic: {{ .deadLetter | quote }}
+  {{- end }}
+scopes: [{{ .appId | quote }}]
+{{- end }}

@@ -2,7 +2,7 @@
 title: '4.6 Encode release, attempt, qualification and Administrator records'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
@@ -53,12 +53,12 @@ Paths below are relative to `references/Hexalith.Builds`.
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `schemas/hexalith.release-records.v1.json` — define eight closed, individually identified versioned branches and their writer/signature envelopes; embed through the existing Tooling project file.
-- [ ] `src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/{Release,Attempt,Qualification,ProductionPromoted,ReleaseAvailable,LatestWorkingPointer,PromotionStop,Administrator}Record.cs` — add typed payloads, one type per file. Release binds artifact/host/catalog/McpCli/profile/contract/suite identities, sidecar patch, qualified sets and classifications. Attempt binds release, kind, environment-current values, epoch, timing/deadlines/grace, recovery allowance, observed stop and outcome. Other kinds bind their issuing attempt, release/profile/qualified sets or observed action/stop as applicable.
-- [ ] `src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/{SignedRecord,RecordTrustPolicy,ReleaseRecordCodec}.cs` — implement bounded strict decoding, deterministic signing bytes/digests and P-256/SHA-256 signatures using platform cryptography. Cover every accepted field; reject ambiguous JSON. Private keys remain caller-held; trust configuration contains public anchors and explicit scopes.
-- [ ] `src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/RecordTransitionValidator.cs` — validate writer matrix, referenced verified records, immutable terminal state, linked takeover and monotonic latest-working moves. Keep verified inputs immutable; unverified DTOs cannot masquerade as verified context.
-- [ ] `test/Hexalith.Builds.Module.Tests/ReleaseRecords/{RecordSchema,RecordSignature,RecordTransition}Tests.cs` — test every matrix row and all eight kinds with real ephemeral keys, including key aliases, cross-environment replay, stale epochs, unauthorized stop clearance, post-verification mutation and deterministic encoding vectors.
-- [ ] `ReleaseRecords.md` — document schemas, fields, writer matrix, signing format, trust/custody assumptions and CAS integration examples; preserve the dirty root README.
+- [x] `schemas/hexalith.release-records.v1.json` — define eight closed, individually identified versioned branches and their writer/signature envelopes; embed through the existing Tooling project file.
+- [x] `src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/{Release,Attempt,Qualification,ProductionPromoted,ReleaseAvailable,LatestWorkingPointer,PromotionStop,Administrator}Record.cs` — add typed payloads, one type per file. Release binds artifact/host/catalog/McpCli/profile/contract/suite identities, sidecar patch, qualified sets and classifications. Attempt binds release, kind, environment-current values, epoch, timing/deadlines/grace, recovery allowance, observed stop and outcome. Other kinds bind their issuing attempt, release/profile/qualified sets or observed action/stop as applicable.
+- [x] `src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/{SignedRecord,RecordTrustPolicy,ReleaseRecordCodec}.cs` — implement bounded strict decoding, deterministic signing bytes/digests and P-256/SHA-256 signatures using platform cryptography. Cover every accepted field; reject ambiguous JSON. Private keys remain caller-held; trust configuration contains public anchors and explicit scopes.
+- [x] `src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/RecordTransitionValidator.cs` — validate writer matrix, referenced verified records, immutable terminal state, linked takeover and monotonic latest-working moves. Keep verified inputs immutable; unverified DTOs cannot masquerade as verified context.
+- [x] `test/Hexalith.Builds.Module.Tests/ReleaseRecords/{RecordSchema,RecordSignature,RecordTransition}Tests.cs` — test every matrix row and all eight kinds with real ephemeral keys, including key aliases, cross-environment replay, stale epochs, unauthorized stop clearance, post-verification mutation and deterministic encoding vectors.
+- [x] `ReleaseRecords.md` — document schemas, fields, writer matrix, signing format, trust/custody assumptions and CAS integration examples; preserve the dirty root README.
 
 **Acceptance Criteria:**
 - Given each of the eight record kinds, when encoded and verified, then its versioned schema identifies its writer and only an independently authorized writer signature is accepted.
@@ -67,9 +67,33 @@ Paths below are relative to `references/Hexalith.Builds`.
 
 ## Implementation Notes
 
+- Implemented the eight immutable payloads, embedded schema, canonical ES256 codec, independent trust policy and verified-only transition API in Builds; documented integration in `ReleaseRecords.md`.
+- Parent inspected the complete story diff, including untracked source/tests, at `/tmp/story46-task-39luvk74.diff`. Full concurrent workspace diff retained separately at `/tmp/story46-full-8w40d008.diff`; unrelated changes are preserved.
+- Matrix audit: all five rows have executed passing tests in `/tmp/story46-focused-tests.xml` (78 passed; zero failures, skips or unrun cases). Focused harness imports Builds warning gates and pinned package configuration and compiles original source/schema paths in separate library/test projects; build has zero warnings/errors.
+- Regression coverage includes DR-only takeover writers and exact canonical terminal replay including the signature. Verification commands and source hashes are in `/tmp/story46-verification-commands.txt` and `/tmp/story46-source-sha256.txt`.
+- Normal module-project build is currently blocked by concurrent `CheckSuites/CheckSuiteContract.cs` SA1143 diagnostics at lines 191 and 232; full existing-suite verification remains outstanding. Exact output: `/tmp/story46-normal-build-final.log`. No warning gate was weakened.
+
 ## Spec Change Log
 
 ## Review Triage Log
+
+| ID | Verdict | Evidence and route |
+| --- | --- | --- |
+| BH-01 | medium | The fixed-fields comparison masks rollout, verification and maximum-lifetime updates; the same-epoch branch has no established-deadline guard. Patch local transition checks and regression tests, preserving legitimate new phase deadlines and absolute recovery lifetime. |
+| BH-02 | medium | Codec timing checks omit phase-before-entry and future-outage rejection, and ordinary phase bounds can exceed the declared lifetime. Patch elementary chronology; recovery lifetime remains a notification bound and must not become an abort limit. |
+| BH-03 | false | Administrator actions always bind a signed action and target; an optional attempt reference supplies existing context. No operation is executed here, and the documented downstream entry/eligibility checks must bind newly entered recovery/takeover operations. The probe shows representable signed metadata, not an unauthorized operation or entitlement bypass. |
+| BH-04 | false | The signed envelope subject must equal the action target. A target can name a release, environment or recovery rather than the referenced attempt ID, so forcing equality would conflate distinct fields; no caller executing an unrelated operation was demonstrated. |
+| BH-05 | medium | Clearance checks current stop identity/revision but never reads CauseDispositions. Patch rejection of a missing or invalid disposition for the supplied current cause; downstream store retains responsibility for all outstanding cause history. |
+| BH-06 | low | Staging in-place restore is required by Stories 4.23/5.10, so the code correctly admits its staging executor. The writer-table wording is ambiguous: directly clarify target-environment ownership, with production ownership when the target is production. |
+| BH-07 | medium | The dollar end anchors admit a final newline in identifiers, digest strings and signature text; base64 decoding then accepts it. Patch whole-string matching and add signed-input regressions. |
+| BH-08 | medium | NamedRecovery.MaximumDurationSeconds is Int32 while its schema maximum is 9007199254740991. Patch the schema maximum to Int32.MaxValue and verify the published/typed boundary; grouped with EC-03. |
+| BH-09 | medium | Sign calls EnsureP256/SignData outside any expected-failure translation, contradicting its documented metadata-only RecordValidationException contract. Patch known invalid signing-key failures without changing null-argument behavior or exposing crypto exception content. |
+| BH-10 | medium | Digest and enum mutations use schema-invalid values, so null verification alone does not establish signature coverage. Patch schema-valid independent mutations and assert invalid-signature; grouped with VG-01. |
+| EC-01 | medium | The exact-envelope early return precedes currentEpoch validation for in-progress attempts. Patch active replay to require the current epoch while retaining terminal exact-replay no-ops. |
+| EC-02 | medium | The identifier regex first/last non-whitespace classes allow NUL even though the interior class excludes controls. Patch the endpoint classes and test leading/trailing control characters; distinct from the end-anchor defect. |
+| EC-03 | medium | The schema permits a named duration above Int32.MaxValue but typed decoding cannot represent it. Same verified contract mismatch as BH-08; one schema-bound patch. |
+| VG-01 | medium | Pre-verified broken-verification gap: applicationPackageDigest tampering is currently schema-invalid, masking a missing signature binding. Patch the signature test with valid digest replacements and the exact invalid-signature result; grouped with BH-10. |
+| VG-02 | medium | Pre-verified regression gap: ValidateReleaseAvailable has only a valid working-staging invocation. Add independent negative cases for outcome, environment, exact references and composed image, asserting invalid-transition. |
 
 ## Design Notes
 

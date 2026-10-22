@@ -9,5 +9,10 @@ internal sealed class PlatformCompositionWorkspace(string path) : IHostedService
     internal string Path => path;
     public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-    public void Dispose() => CompositionWorkspace.TryDeleteAsync(path, CancellationToken.None).GetAwaiter().GetResult();
+    public void Dispose()
+    {
+        // Failed startup diagnostics remain owned by this attempt after registered-service disposal.
+        if (!File.Exists(System.IO.Path.Combine(path, "composition-failure.txt")))
+            CompositionWorkspace.TryDeleteAsync(path, CancellationToken.None).GetAwaiter().GetResult();
+    }
 }

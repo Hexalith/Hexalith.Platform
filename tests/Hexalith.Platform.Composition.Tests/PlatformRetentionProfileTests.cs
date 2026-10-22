@@ -244,7 +244,9 @@ public sealed partial class PlatformAppModelTests
             builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port.ShouldBe(plan.Ports.Scheduler);
 
             // Run the real integration/subscriber handoff without starting any executable or container.
-            string credentials = Path.Combine(workspace, "platform-components", "dapr-credentials");
+            string credentials = builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<ContainerMountAnnotation>().Single(mount => mount.Target == "/var/run/dapr/credentials").Source!;
+            Directory.CreateDirectory(Path.Combine(plan.DaprHome, ".dapr", "bin"));
+            File.WriteAllText(Path.Combine(plan.DaprHome, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model fixture");
             foreach (string file in new[] { "ca.crt", "issuer.crt", "issuer.key" }) File.WriteAllText(Path.Combine(credentials, file), "fixture-" + file);
             int allocatedAppPort = 32000;
             foreach (IResource application in builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
@@ -307,8 +309,8 @@ public sealed partial class PlatformAppModelTests
                 string certificates = Path.Combine(directory, run.ToString(System.Globalization.CultureInfo.InvariantCulture));
                 builder.Configuration["Dapr:Mtls:CertificateDirectory"] = certificates;
                 CompositionRunPorts ports = CompositionPortAllocator.Allocate(1);
-                var (sentry, _) = DaprSelfHostedMtls.AddSentry(builder, Path.Combine(directory, "sentry.yaml"), Root, "1.18.1", ports.PlacementHealth);
-                var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, Path.Combine(directory, "scheduler-" + run), "1.18.1", ports.Placement, ports.Scheduler);
+                var (sentry, _) = DaprSelfHostedMtls.AddSentry(builder, Path.Combine(directory, "sentry.yaml"), Root, certificates, ports.PlacementHealth, "1.18.1");
+                var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, Path.Combine(directory, "scheduler-" + run), ports.Placement, ports.Scheduler, "1.18.1");
                 foreach (var pair in new[] { (sentry.Resource, ports.PlacementHealth), (placement.Resource, ports.Placement), (scheduler.Resource, ports.Scheduler) })
                 {
                     pair.Item1.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port.ShouldBe(pair.Item2);

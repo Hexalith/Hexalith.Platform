@@ -1,0 +1,30 @@
+{
+  "schema": "hexalith.check-suite.v1",
+  "suiteId": "tenants-reference",
+  "version": "1.0.0",
+  "module": "tenants",
+  "owner": "@jpiquot",
+  "source": "src/Hexalith.Platform.Composition/Declarations/tenants.json",
+  "runtime": "python3",
+  "entrypoint": "runner.py",
+  "payload": [
+    "runner.py",
+    "tenants.py"
+  ],
+  "checks": [
+    {
+      "id": "tenants.admin-denied",
+      "surface": "global-administrators-api",
+      "kind": "smoke",
+      "assertion": "denial",
+      "environments": [
+        "staging",
+        "production"
+      ],
+      "timeoutSeconds": 30,
+      "cadenceSeconds": 300,
+      "effect": "read",
+      "tenancy": "existing-synthetic"
+    }
+  ]
+}

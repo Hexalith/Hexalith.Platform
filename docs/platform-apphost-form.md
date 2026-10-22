@@ -110,7 +110,7 @@ actual owner configuration keys, scopes components to selected consumers, render
 one deny-default mTLS policy per receiver and disables programmatic subscription
 discovery in declarative mode. The actual CLI resource paths include a dedicated
 subscription directory, with the receiver scopes retained. Shared state readers and isolated telemetry state
-are preserved. Hosted policy and concurrent-run isolation remain later work.
+are preserved. Hosted policy remains later work; run resource isolation applies to signed runner plans and the direct file AppHost.
 
 The shared model applies allocated Dapr listener ports and server-scoped tokens to
 the actual generated CLI processes. Gateway configuration is rendered separately
@@ -128,3 +128,55 @@ projection pattern does not establish Redis wildcard fan-out: the pinned Redis
 component reads a stream using the requested topic value, so concrete projection
 notification delivery is a separate provider limitation, not a qualified result of
 this story's rendering or startup tests.
+
+
+Local reference runs use run-owned ports, private issuer credentials, SQLite name
+resolution, secrets, Redis data, scheduler data, and Memories vector/graph data.
+Sentry/placement/scheduler container target ports and mTLS trust domains are
+unchanged. Every receiver retains deny-default ACLs and selected component scopes.
+Allocated host addresses reach both rendered policy and the actual native `daprd`
+command. Native startup avoids the Dapr CLI's fixed Sentry-address behavior.
+Selected binaries and source templates are read-only shared inputs. Allocation
+probes release sockets before startup and are not cross-process reservations;
+bind conflicts fail and must leave foreign resources alone.
+
+`Dapr:Mtls:CertificateDirectory` is an external parent, with one private child per
+run. Paths resolving through symlinks into the Platform checkout fail before
+resources are added. Missing native runtime reports its selected path and refuses
+startup. A failed composition retains its private workspace diagnostics. Explicit
+runner teardown and file-host disposal clean only owned children and data.
+Reference runs create Redis themselves; they do not use dapr-init Redis, exported
+fixture locks or Keycloak. Legacy technical module fixtures remain outside Platform
+integration evidence; descriptor adoption is Story 2.9. Works uses the revised
+shared allocation helper and remains a development preview.
+
+Build each test project in Debug with `-m:1`, then run the xUnit executable:
+
+```bash
+dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -m:1
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*PlatformAppModelTests'
+HEXALITH_PLATFORM_CONCURRENT_LIVE=1 HEXALITH_DAPR_HOME=/absolute/pinned-dapr-home dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class '*PlatformConcurrentRunTests'
+```
+
+The concurrent proof creates two Builds sessions selecting Tenants' six-server
+reference closure. It checks declared readiness, disjoint listeners/container IDs,
+private discovery and certificate identities, different persisted values under
+identical keys in Redis/vector/graph stores, and fresh declared survivor readiness
+after peer teardown. It retains revisions, startup/readiness and resource inventories,
+persisted values and cleanup results under
+`_bmad-output/implementation-artifacts/evidence/2-3/` (override with
+`HEXALITH_PLATFORM_CONCURRENT_EVIDENCE`). It requires Docker, catalog-pinned Aspire,
+Dapr CLI/native runtime, a built Debug Builds AppHost, and a source mapping whose
+checkout revisions match the staged root gitlinks. Identity mismatches are live
+blockers; no model-only or skipped result qualifies concurrent readiness. Do not
+stage independent gitlinks to manufacture a passing mapping.
+
+
+For the bounded occupied-listener matrix case, set
+`HEXALITH_PLATFORM_OCCUPIED_PORT_LIVE=1` and select
+`-method '*OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync'`.
+It holds a separately labelled Redis listener, attempts the model's actual Sentry
+Docker binding, records the refusal, then verifies the listener and its marker
+survive candidate-only cleanup. Fixture teardown removes both task-created
+containers only after checking their separate run labels. Its redacted diagnostics
+are saved alongside the two-session evidence.

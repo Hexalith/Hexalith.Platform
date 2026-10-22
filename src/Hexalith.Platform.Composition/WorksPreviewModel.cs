@@ -12,6 +12,9 @@ using Hexalith.Platform.Composition;
 using Hexalith.Platform.Works.Runtime;
 
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Hexalith.Builds.Tooling.Runtime;
+using Aspire.Hosting.Lifecycle;
 
 /// <summary>The preserved opt-in Works preview.</summary>
 public static class WorksPreviewModel
@@ -89,16 +92,21 @@ public static class WorksPreviewModel
             throw new InvalidOperationException("Dapr placement and scheduler must be configured together.");
         }
 
-        var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath);
+        string workspace = Path.Combine(Path.GetTempPath(), "hexalith-works-preview", Guid.NewGuid().ToString("N"));
+        CompositionWorkspace.CreatePrivateDirectory(workspace);
+        builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));
+        CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
+        var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath, builder.AppHostDirectory, workspace, controlPorts.PlacementHealth, checkoutRoots: [worksRoot, eventStoreRoot]);
+        builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(certificateDirectory));
         IResourceBuilder<ContainerResource>? placement = null;
         IResourceBuilder<ContainerResource>? scheduler = null;
         string placementAddress;
         string schedulerAddress;
         if (string.IsNullOrWhiteSpace(configuredPlacement))
         {
-            (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificateDirectory);
-            placementAddress = DaprSelfHostedMtls.PlacementHostAddress;
-            schedulerAddress = DaprSelfHostedMtls.SchedulerHostAddress;
+            (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificateDirectory, Path.Combine(workspace, "scheduler-data"), controlPorts.Placement, controlPorts.Scheduler);
+            placementAddress = "localhost:" + controlPorts.Placement;
+            schedulerAddress = "localhost:" + controlPorts.Scheduler;
         }
         else
         {
@@ -234,6 +242,12 @@ public static class WorksPreviewModel
             .OfType<ProjectResource>()
             .Where(static project => SidecarOf(project) is not null).ToArray())
         {
+            IDaprSidecarResource securedSidecar = SidecarOf(project)!;
+            var runtimeOptions = securedSidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+            securedSidecar.Annotations[securedSidecar.Annotations.IndexOf(runtimeOptions)] = new DaprSidecarOptionsAnnotation(runtimeOptions.Options with
+            {
+                RuntimePath = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME") ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            });
             DaprSelfHostedMtls.ConfigureSidecar(
                 builder.CreateResourceBuilder(project),
                 SidecarOf(project)!,
@@ -241,8 +255,11 @@ public static class WorksPreviewModel
                 certificateDirectory,
                 placement,
                 scheduler);
-            _ = builder.CreateResourceBuilder(project).WithGeneratedEventStoreAppChannelToken();
+            if (!builder.Resources.OfType<ParameterResource>().Any(resource => resource.Name == project.Name + "-app-api-token"))
+                _ = builder.CreateResourceBuilder(project).WithGeneratedEventStoreAppChannelToken();
         }
+
+        builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber([], certificateDirectory, "127.0.0.1:" + controlPorts.PlacementHealth, workspace));
 
         string devSigningKey = builder.Configuration["Works:Authentication:DevSigningKey"] is { Length: > 0 } configuredKey
             ? configuredKey

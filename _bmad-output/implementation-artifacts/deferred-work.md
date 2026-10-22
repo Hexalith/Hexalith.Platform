@@ -1026,3 +1026,29 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-epic-1-retro-remediation.md`
   summary: Reconcile the accepted Platform tool release with the integrated Builds gitlink before release and enrollment qualification.
   evidence: Medium, pre-existing concurrent integration issue from verification review. Platform e02fa5bf43ba9c2561dc2da940264de1c9da3242 records Builds 2d653b611c8efcffb4d27bd8715d5dbf24eaebfd while the restored/pinned 4.35.2 tool and release tag identify 4248b8c70cb35ba79fdd7e4dd63049d4c73211a0. Three enabled DomainEnrollmentKitTests fail on that exact comparison; see evidence/epic-1-retro-remediation/composition-full.txt and README.md. Accountable owners: Platform/Builds release coordination maintainers. Preserve the integrated user revisions and fail-closed checks; this build does not publish or repin a tool.
+
+## Deferred from: Story 4.11 approved Option A (2026-10-22)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-11-define-the-check-suite-contract-and-own-the-reference-suites.md`
+  summary: Resolve Tenants positive reference-suite coverage before publication and Story 4.11 completion.
+  owner: Platform `@jpiquot`; review with Tenants and EventStore maintainers.
+  evidence: `checks/reference/registry.json` retains `tenant-management` and `global-administrator-management` as blocked critical-flow mappings, plus blocked `tenant-read-smoke`. Existing authorization requires authority unavailable in the synthetic-client contract. `tenants.admin-denied` is supplementary denial evidence and never substitutes for positive tenant creation/read or administrator coverage.
+  prerequisites: Decide and implement authorization for declared run-scoped synthetic tenant lifecycle; decide positive administrator coverage without granting production administration; admit a safe read of an existing synthetic tenant. Preserve critical-flow declarations and authorization. Resolve source-to-check mappings and obtain matching hosted evidence through the trusted executor before closing 4.11.
+  publication_gate: Builds reference coverage validation must refuse publication while any mapping is blocked; Story 4.12 must call it before publication.
+  status: open
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Bound candidate command output while reading in the separate reference-check runner.
+  evidence: BH-6: checks/reference/runner.py communicates into memory before enforcing 1 MiB; concurrent story 4.11 code, independent of Helm qualification.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Derive the Parties synthetic aggregate identifier from the complete invocation identity.
+  evidence: BH-10: checks/reference/parties.py truncates invocationId to 110 characters, so distinct accepted suffixes collide; separate story 4.11 work.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Attempt cleanup of every concurrent live-test session even when an earlier teardown fails.
+  evidence: EH-5: PlatformConcurrentRunTests.cs exits its finally loop on the first cleanup failure; concurrent story 2.3 code, unchanged by story 4.5.
+
+- source_spec: `spec-2-3-make-local-composition-resources-run-scoped.md`
+  summary: Persist external issuer-child ownership for crash-safe runner lifecycle cleanup and leftover reporting.
+  evidence: Story 2.3 creates a private child under an explicitly selected external certificate parent, with normal AppHost-disposal cleanup. Forced termination bypasses disposal and workspace-only runner cleanup cannot discover that external child. Verify by terminating an owned AppHost before disposal; resolve with the runner lifecycle retention/cleanup work without touching foreign parent contents.

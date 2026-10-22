@@ -7,7 +7,7 @@ using System.Text.Json;
 using Hexalith.Builds.Tooling.Manifest;
 using YamlDotNet.RepresentationModel;
 
-/// <summary>Resolves the local Dapr capability graph before resources exist.</summary>
+/// <summary>Resolves the shared Dapr capability graph before resources exist.</summary>
 public sealed class PlatformDaprBindings
 {
     private PlatformRetentionProfile? _retentionProfile;
@@ -162,7 +162,19 @@ public sealed class PlatformDaprBindings
         }
         foreach (var (appId, rules) in _rules)
         {
-            var policies = rules.GroupBy(rule => rule.Caller, StringComparer.Ordinal).OrderBy(group => group.Key, StringComparer.Ordinal).Select(group =>
+            string content = JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Configuration", metadata = new { name = "platform-" + appId }, spec = new { mtls = new { enabled = true, controlPlaneTrustDomain = "localhost", sentryAddress = sentryAddress ?? "localhost:50001" }, features = new[] { new { name = "HotReload", enabled = false } }, accessControl = AccessControl(appId, "default", "public") } });
+            if (discovery is not null) content = PlatformAppModel.MergeRunDiscovery(content, discovery);
+            files.Add("accesscontrol." + appId + ".yaml", content);
+        }
+        foreach (var subscription in _subscriptions)
+            files.Add("subscription." + subscription.Name + ".yaml", JsonSerializer.Serialize(new { apiVersion = "dapr.io/v2alpha1", kind = "Subscription", metadata = new { name = subscription.Name }, spec = new { pubsubname = subscription.Component, topic = subscription.Topic, routes = new { @default = subscription.Route }, deadLetterTopic = subscription.DeadLetter }, scopes = new[] { subscription.AppId } }, new JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull }));
+        return files;
+    }
+
+    /// <summary>Returns shared receiver ACLs with environment-selected trust and namespace.</summary>
+    public JsonElement AccessControl(string appId, string applicationNamespace, string trustDomain)
+    {
+        var policies = _rules[appId].GroupBy(rule => rule.Caller, StringComparer.Ordinal).OrderBy(group => group.Key, StringComparer.Ordinal).Select(group =>
             {
                 var operations = group.GroupBy(rule => rule.Path, StringComparer.OrdinalIgnoreCase).Select(path => new
                 {
@@ -171,7 +183,7 @@ public sealed class PlatformDaprBindings
                 }).ToArray();
                 return new
                 {
-                    appId = group.Key, @namespace = "default", trustDomain = "public", defaultAction = "deny",
+                    appId = group.Key, @namespace = applicationNamespace, trustDomain, defaultAction = "deny",
                     // Dapr returns the first populated prefix node. Its single-stage fallback preserves
                     // a parent's base invocation while letting explicit descendants retain their verbs.
                     operations = operations.OrderByDescending(operation => operation.Path.Length).ThenBy(operation => operation.Path, StringComparer.Ordinal).Select(operation => new
@@ -181,14 +193,21 @@ public sealed class PlatformDaprBindings
                     }).ToArray(),
                 };
             }).ToArray();
-            string content = JsonSerializer.Serialize(new { apiVersion = "dapr.io/v1alpha1", kind = "Configuration", metadata = new { name = "platform-" + appId }, spec = new { mtls = new { enabled = true, controlPlaneTrustDomain = "localhost", sentryAddress = sentryAddress ?? "localhost:50001" }, features = new[] { new { name = "HotReload", enabled = false } }, accessControl = new { defaultAction = "deny", trustDomain = "public", policies } } });
-            if (discovery is not null) content = PlatformAppModel.MergeRunDiscovery(content, discovery);
-            files.Add("accesscontrol." + appId + ".yaml", content);
-        }
-        foreach (var subscription in _subscriptions)
-            files.Add("subscription." + subscription.Name + ".yaml", JsonSerializer.Serialize(new { apiVersion = "dapr.io/v2alpha1", kind = "Subscription", metadata = new { name = subscription.Name }, spec = new { pubsubname = subscription.Component, topic = subscription.Topic, routes = new { @default = subscription.Route }, deadLetterTopic = subscription.DeadLetter }, scopes = new[] { subscription.AppId } }, new JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull }));
-        return files;
+        return JsonSerializer.SerializeToElement(new { defaultAction = "deny", trustDomain, policies });
     }
+
+    /// <summary>Gets environment-owned capability requirements; no providers or credentials are selected.</summary>
+    public object Capabilities => _components.Where(p => p.Value.Consumers.Count > 0).OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => new
+    {
+        name = p.Key, kind = p.Value.Kind, recovery = p.Value.Recovery,
+        consumers = p.Value.Consumers.Order(StringComparer.Ordinal).ToArray(),
+    }).ToArray();
+
+    /// <summary>Gets application-owned subscriptions, shared by local and hosted rendering.</summary>
+    public object Subscriptions => _subscriptions.Select(s => new
+    {
+        name = s.Name, component = s.Component, topic = s.Topic, route = s.Route, appId = s.AppId, deadLetter = s.DeadLetter,
+    }).ToArray();
 
     private static YamlMappingNode Parse(string content)
     {

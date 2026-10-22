@@ -1,0 +1,598 @@
+[
+  {
+    "name": "access-telemetry-config",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "access-telemetry-secrets",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "access-telemetry-store",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "configstore",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "dapr-placement-mtls-wfsejnck",
+    "resourceType": "Container",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:45205"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:21544"
+      }
+    ],
+    "healthReports": {
+      "dapr-placement-mtls_health_/healthz_200_check": {
+        "status": "Healthy"
+      }
+    },
+    "volumes": [
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/dapr-credentials-7795D7CF002380D050D9142FB1085C26",
+        "target": "/var/run/dapr/credentials",
+        "mountType": "bind",
+        "isReadOnly": true
+      }
+    ]
+  },
+  {
+    "name": "dapr-scheduler-mtls-kgqytfcj",
+    "resourceType": "Container",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:36197"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:29643"
+      }
+    ],
+    "healthReports": {
+      "dapr-scheduler-mtls_health_/healthz_200_check": {
+        "status": "Healthy"
+      }
+    },
+    "volumes": [
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/dapr-credentials-7795D7CF002380D050D9142FB1085C26",
+        "target": "/var/run/dapr/credentials",
+        "mountType": "bind",
+        "isReadOnly": true
+      },
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/scheduler-data",
+        "target": "/var/lock",
+        "mountType": "bind"
+      }
+    ]
+  },
+  {
+    "name": "dapr-sentry-xxcvuksb",
+    "resourceType": "Container",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "health",
+        "url": "http://localhost:43231"
+      },
+      {
+        "name": "grpc",
+        "url": "tcp://localhost:16328"
+      }
+    ],
+    "healthReports": {
+      "dapr-sentry_health_/healthz_200_check": {
+        "status": "Healthy"
+      }
+    },
+    "volumes": [
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/dapr-credentials-7795D7CF002380D050D9142FB1085C26",
+        "target": "/var/run/dapr/credentials",
+        "mountType": "bind"
+      },
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/sentry.yaml",
+        "target": "/var/run/dapr/config/sentry.yaml",
+        "mountType": "bind",
+        "isReadOnly": true
+      }
+    ]
+  },
+  {
+    "name": "eventstore-dapr",
+    "resourceType": "DaprSidecar",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "eventstore-dapr-cli-mggqwsup",
+    "resourceType": "Executable",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:27378"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:11640"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:18583"
+      }
+    ],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "eventstore-kxsdjbpf",
+    "resourceType": "Project",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:37101"
+      }
+    ],
+    "healthReports": {
+      "eventstore_http_/ready_200_check": {
+        "status": "Healthy"
+      }
+    },
+    "volumes": []
+  },
+  {
+    "name": "eventstore-rebuilder-cjebyrnv",
+    "resourceType": "Executable",
+    "state": "NotStarted",
+    "urls": [],
+    "healthReports": {
+      "eventstore_http_/ready_200_check": {}
+    },
+    "volumes": []
+  },
+  {
+    "name": "hexalith-g4-b20415bda101046323ce055bdb621364-redis",
+    "resourceType": "Container",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "tcp",
+        "url": "tcp://localhost:13744"
+      }
+    ],
+    "healthReports": {
+      "redis-redis-ping": {
+        "status": "Healthy",
+        "description": "Redis answered PING."
+      }
+    },
+    "volumes": [
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/redis-data",
+        "target": "/data",
+        "mountType": "bind"
+      }
+    ]
+  },
+  {
+    "name": "llm",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-clock-dakewvyt",
+    "resourceType": "Project",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:37759"
+      }
+    ],
+    "healthReports": {
+      "memories-access-telemetry-clock_http_/ready_200_check": {
+        "status": "Unhealthy",
+        "description": "Request to http://localhost:37759/ready timed out",
+        "exceptionMessage": "System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.IO.IOException: Unable to read data from the transport connection: Operation canceled.\n ---> System.Net.Sockets.SocketException (125): Operation canceled\n   --- End of inner exception stack trace ---\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)\n   at System.Net.Http.HttpConnection.InitialFillAsync(Boolean async)\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at Aspire.Hosting.HttpHealthCheckHelpers.CheckUriAsync(Uri uri, Int32 expectedStatusCode, Func`1 httpClientFactory, HealthCheckContext context, CancellationToken cancellationToken) in /_/src/Aspire.Hosting/ExternalServiceBuilderExtensions.cs:line 351"
+      }
+    },
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-clock-dapr",
+    "resourceType": "DaprSidecar",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-clock-dapr-cli-vzwsutsn",
+    "resourceType": "Executable",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:12766"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:29420"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:16197"
+      }
+    ],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-clock-rebuilder-ymtaxymp",
+    "resourceType": "Executable",
+    "state": "NotStarted",
+    "urls": [],
+    "healthReports": {
+      "memories-access-telemetry-clock_http_/ready_200_check": {}
+    },
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-dapr",
+    "resourceType": "DaprSidecar",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-dapr-cli-xvrskbma",
+    "resourceType": "Executable",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:14597"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:21700"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:20931"
+      }
+    ],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-rebuilder-ruxcjjaj",
+    "resourceType": "Executable",
+    "state": "NotStarted",
+    "urls": [],
+    "healthReports": {
+      "memories-access-telemetry_http_/ready_200_check": {}
+    },
+    "volumes": []
+  },
+  {
+    "name": "memories-access-telemetry-svebqdea",
+    "resourceType": "Project",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:37655"
+      }
+    ],
+    "healthReports": {
+      "memories-access-telemetry_http_/ready_200_check": {
+        "status": "Unhealthy",
+        "description": "Request to http://localhost:37655/ready timed out",
+        "exceptionMessage": "System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.IO.IOException: Unable to read data from the transport connection: Operation canceled.\n ---> System.Net.Sockets.SocketException (125): Operation canceled\n   --- End of inner exception stack trace ---\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)\n   at System.Net.Http.HttpConnection.InitialFillAsync(Boolean async)\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at Aspire.Hosting.HttpHealthCheckHelpers.CheckUriAsync(Uri uri, Int32 expectedStatusCode, Func`1 httpClientFactory, HealthCheckContext context, CancellationToken cancellationToken) in /_/src/Aspire.Hosting/ExternalServiceBuilderExtensions.cs:line 351"
+      }
+    },
+    "volumes": []
+  },
+  {
+    "name": "memories-dapr",
+    "resourceType": "DaprSidecar",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-dapr-cli-vhqyfzym",
+    "resourceType": "Executable",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:22363"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:19782"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:15498"
+      }
+    ],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "memories-dycxeatr",
+    "resourceType": "Project",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:34685"
+      }
+    ],
+    "healthReports": {
+      "memories_http_/ready_200_check": {
+        "status": "Unhealthy",
+        "description": "Request to http://localhost:34685/ready timed out",
+        "exceptionMessage": "System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.IO.IOException: Unable to read data from the transport connection: Operation canceled.\n ---> System.Net.Sockets.SocketException (125): Operation canceled\n   --- End of inner exception stack trace ---\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)\n   at System.Net.Http.HttpConnection.InitialFillAsync(Boolean async)\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at Aspire.Hosting.HttpHealthCheckHelpers.CheckUriAsync(Uri uri, Int32 expectedStatusCode, Func`1 httpClientFactory, HealthCheckContext context, CancellationToken cancellationToken) in /_/src/Aspire.Hosting/ExternalServiceBuilderExtensions.cs:line 351"
+      }
+    },
+    "volumes": []
+  },
+  {
+    "name": "memories-graph-urmxqqga",
+    "resourceType": "Container",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "tcp",
+        "url": "tcp://localhost:40073"
+      }
+    ],
+    "healthReports": {
+      "memories-graph-redis-ping": {
+        "status": "Healthy",
+        "description": "Redis answered PING."
+      }
+    },
+    "volumes": [
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/graph-data",
+        "target": "/data",
+        "mountType": "bind"
+      }
+    ]
+  },
+  {
+    "name": "memories-rebuilder-syedwupb",
+    "resourceType": "Executable",
+    "state": "NotStarted",
+    "urls": [],
+    "healthReports": {
+      "memories_http_/ready_200_check": {}
+    },
+    "volumes": []
+  },
+  {
+    "name": "memories-vectors-skkrrtrv",
+    "resourceType": "Container",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "tcp",
+        "url": "tcp://localhost:27348"
+      }
+    ],
+    "healthReports": {
+      "memories-vectors-redis-ping": {
+        "status": "Healthy",
+        "description": "Redis answered PING."
+      }
+    },
+    "volumes": [
+      {
+        "source": "/tmp/platform-two-runs-f064cd80d9ee47b3807a18a017bcc533/runs/b20415bda101046323ce055bdb621364/platform-components/vectors-data",
+        "target": "/data",
+        "mountType": "bind"
+      }
+    ]
+  },
+  {
+    "name": "pubsub",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "secretstore",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "statestore",
+    "resourceType": "DaprComponent",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "tenants-api-dapr",
+    "resourceType": "DaprSidecar",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "tenants-api-dapr-cli-afpyjvwf",
+    "resourceType": "Executable",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:23003"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:26674"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:10123"
+      }
+    ],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "tenants-api-fwfprgrg",
+    "resourceType": "Project",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:40307"
+      }
+    ],
+    "healthReports": {
+      "tenants-api_http_/ready_200_check": {
+        "status": "Unhealthy",
+        "description": "Request to http://localhost:40307/ready timed out",
+        "exceptionMessage": "System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.IO.IOException: Unable to read data from the transport connection: Operation canceled.\n ---> System.Net.Sockets.SocketException (125): Operation canceled\n   --- End of inner exception stack trace ---\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)\n   at System.Net.Http.HttpConnection.InitialFillAsync(Boolean async)\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at Aspire.Hosting.HttpHealthCheckHelpers.CheckUriAsync(Uri uri, Int32 expectedStatusCode, Func`1 httpClientFactory, HealthCheckContext context, CancellationToken cancellationToken) in /_/src/Aspire.Hosting/ExternalServiceBuilderExtensions.cs:line 351"
+      }
+    },
+    "volumes": []
+  },
+  {
+    "name": "tenants-api-rebuilder-exkhfmmq",
+    "resourceType": "Executable",
+    "state": "NotStarted",
+    "urls": [],
+    "healthReports": {
+      "tenants-api_http_/ready_200_check": {}
+    },
+    "volumes": []
+  },
+  {
+    "name": "tenants-dapr",
+    "resourceType": "DaprSidecar",
+    "urls": [],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "tenants-dapr-cli-aqqtqszc",
+    "resourceType": "Executable",
+    "state": "Running",
+    "healthStatus": "Healthy",
+    "urls": [
+      {
+        "name": "metrics",
+        "url": "http://localhost:18601"
+      },
+      {
+        "name": "http",
+        "url": "http://localhost:17591"
+      },
+      {
+        "name": "grpc",
+        "url": "http://localhost:11495"
+      }
+    ],
+    "healthReports": {},
+    "volumes": []
+  },
+  {
+    "name": "tenants-qzvwtact",
+    "resourceType": "Project",
+    "state": "Running",
+    "healthStatus": "Unhealthy",
+    "urls": [
+      {
+        "name": "http",
+        "url": "http://localhost:43705"
+      }
+    ],
+    "healthReports": {
+      "tenants_http_/ready_200_check": {
+        "status": "Unhealthy",
+        "description": "Request to http://localhost:43705/ready timed out",
+        "exceptionMessage": "System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.\n ---> System.IO.IOException: Unable to read data from the transport connection: Operation canceled.\n ---> System.Net.Sockets.SocketException (125): Operation canceled\n   --- End of inner exception stack trace ---\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)\n   at System.Net.Http.HttpConnection.InitialFillAsync(Boolean async)\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   --- End of inner exception stack trace ---\n   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at Aspire.Hosting.HttpHealthCheckHelpers.CheckUriAsync(Uri uri, Int32 expectedStatusCode, Func`1 httpClientFactory, HealthCheckContext context, CancellationToken cancellationToken) in /_/src/Aspire.Hosting/ExternalServiceBuilderExtensions.cs:line 351"
+      }
+    },
+    "volumes": []
+  },
+  {
+    "name": "tenants-rebuilder-bfqagjbz",
+    "resourceType": "Executable",
+    "state": "NotStarted",
+    "urls": [],
+    "healthReports": {
+      "tenants_http_/ready_200_check": {}
+    },
+    "volumes": []
+  }
+]

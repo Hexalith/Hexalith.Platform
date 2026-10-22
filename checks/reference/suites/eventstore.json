@@ -1,0 +1,43 @@
+{
+  "schema": "hexalith.check-suite.v1",
+  "suiteId": "eventstore-reference",
+  "version": "1.0.0",
+  "module": "eventstore",
+  "owner": "@jpiquot",
+  "source": "src/Hexalith.Platform.Composition/Declarations/eventstore.json",
+  "runtime": "python3",
+  "entrypoint": "runner.py",
+  "payload": [
+    "eventstore.py",
+    "parties.py",
+    "runner.py"
+  ],
+  "checks": [
+    {
+      "id": "eventstore.command-status",
+      "surface": "eventstore-gateway",
+      "kind": "e2e",
+      "assertion": "positive",
+      "environments": [
+        "staging"
+      ],
+      "timeoutSeconds": 120,
+      "effect": "synthetic-write",
+      "tenancy": "run-scoped-synthetic"
+    },
+    {
+      "id": "eventstore.query",
+      "surface": "eventstore-gateway",
+      "kind": "smoke",
+      "assertion": "positive",
+      "environments": [
+        "staging",
+        "production"
+      ],
+      "timeoutSeconds": 30,
+      "cadenceSeconds": 300,
+      "effect": "read",
+      "tenancy": "existing-synthetic"
+    }
+  ]
+}
