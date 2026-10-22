@@ -2,9 +2,10 @@
 title: 'Shared Platform delivery for Agents Story 5.4'
 type: 'feature'
 created: '2026-10-22'
-status: 'draft'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: 9a43e1ad8678db4016cc78db63545984cee727c8
 context:
   - '{project-root}/docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md'
   - '{project-root}/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md'

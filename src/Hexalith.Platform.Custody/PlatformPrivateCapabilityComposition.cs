@@ -1,3 +1,4 @@
+using Dapr.Client;
 using Hexalith.EventStore.Contracts.Security;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,14 @@ public static class PlatformPrivateCapabilityComposition
             provider.GetRequiredService<PlatformHmacService>(), spool, provider.GetRequiredService<TimeProvider>()));
         return services;
     }
+    /// <summary>Returns the existing spool with the supplied credential captured on its constructor. A null authority is not registered and writes nothing. The spool itself is not added to general DI.</summary>
+    public static ReplicatedSecurityObservationSpool CapturePrivateSpool(DaprClient client, TimeProvider clock, PrivateReplicatedSpoolAuthority? authority, ISecurityObservationRecorder? recorder = null)
+    {
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(clock);
+        return new ReplicatedSecurityObservationSpool(client, clock, authority, recorder);
+    }
+
     /// <summary>Adds only a restricted hosted recovery loop; raw spool/recorder credentials remain private constructor captures and ordinary registration installs no worker.</summary>
     public static IServiceCollection AddPrivateSecurityObservationDrainWorker(this IServiceCollection services, ReplicatedSecurityObservationSpool spool, TimeSpan interval, int maximumCount)
     {

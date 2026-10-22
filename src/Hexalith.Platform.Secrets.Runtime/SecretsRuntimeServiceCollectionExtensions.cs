@@ -52,10 +52,11 @@ public static class SecretsRuntimeServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(invoker);
         if (!SecretsProvisioning.IsDaprApplicationId(configuration.ReplayRegistrarReference)) { return "runtime.replayRegistrarReference"; }
-        if (!SecretsProvisioning.IsReference(configuration.ReplayRegistrarCredentialReference)) { return "runtime.replayRegistrarCredentialReference"; }
+        PrivateReplayCredentialBinding? credential = PrivateReplayCredentialBinding.TryCapture(configuration.ReplayRegistrarReference, configuration.ReplayRegistrarCredentialReference, revision: 1);
+        if (credential is null) { return "runtime.replayRegistrarCredentialReference"; }
         if (invoker is not ISecretsCredentialBoundDaprInvoker) { return "runtime.privateCredentialBoundTransport"; }
         if (configuration.CallTimeout is not { } timeout || timeout <= TimeSpan.Zero || timeout > TimeSpan.FromSeconds(30)) { return "runtime.callTimeout"; }
-        services.AddPrivateTrustedEnvelopeVerifier(new DaprReplayRegistrarAdapter(configuration, invoker, clock));
+        services.AddPrivateTrustedEnvelopeVerifier(new DaprReplayRegistrarAdapter(configuration, invoker, clock, credential));
         return null;
     }
 

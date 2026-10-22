@@ -124,26 +124,45 @@ public sealed class DaprSigningProviderAdapter(SecretsRuntimeConfiguration confi
 }
 
 /// <summary>Private replay registrar. Receipts that leave this adapter satisfy the custody exact-retention check.</summary>
-public sealed class DaprReplayRegistrarAdapter(SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock = null) : ITrustedEnvelopeReplayRegistrar
+public sealed class DaprReplayRegistrarAdapter : ITrustedEnvelopeReplayRegistrar
 {
-    private readonly SecretsDaprSession _session = new(invoker, configuration.CallTimeout ?? TimeSpan.Zero, clock ?? TimeProvider.System);
+    private readonly SecretsRuntimeConfiguration _configuration;
+    private readonly SecretsDaprSession _session;
+    private readonly string? _credentialReference;
+    private readonly bool _credentialDenied;
+
+    /// <summary>Creates the transport adapter. A captured credential is supplied only through the internal constructor.</summary>
+    public DaprReplayRegistrarAdapter(SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock = null)
+        : this(configuration, invoker, clock, credential: null)
+    {
+    }
+
+    internal DaprReplayRegistrarAdapter(SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker invoker, TimeProvider? clock, PrivateReplayCredentialBinding? credential)
+    {
+        _configuration = configuration;
+        _session = new(invoker, configuration.CallTimeout ?? TimeSpan.Zero, clock ?? TimeProvider.System);
+        _credentialReference = credential?.Reference ?? configuration.ReplayRegistrarCredentialReference;
+        _credentialDenied = credential is { IsCurrent: false };
+    }
 
     /// <inheritdoc/>
     public async Task<TrustedEnvelopeReplayReceipt?> RegisterAsync(TrustedEnvelopeReplayIntent intent, DateTimeOffset evaluatedAt, TimeSpan retention, CancellationToken cancellationToken = default)
     {
+        if (_credentialDenied) { return null; }
         JsonObject body = Body(intent, evaluatedAt, retention);
-        SecretsCall current = await _session.CallPrivateAsync(configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", body, cancellationToken).ConfigureAwait(false);
+        SecretsCall current = await _session.CallPrivateAsync(_configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", _credentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", body, cancellationToken).ConfigureAwait(false);
         if (current.Unavailable) { return null; }
         if (Receipt(current.Proof, intent, evaluatedAt, retention) is { } existing) { return existing; }
-        if (!SecretsProof.Absent(current.Proof, body, configuration.ReplayRegistrarReference, "query-replay", _session.Clock.GetUtcNow())) { return null; }
-        SecretsCall created = await _session.CallPrivateAsync(configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "effect-replay", body, cancellationToken).ConfigureAwait(false);
+        if (!SecretsProof.Absent(current.Proof, body, _configuration.ReplayRegistrarReference, "query-replay", _session.Clock.GetUtcNow())) { return null; }
+        SecretsCall created = await _session.CallPrivateAsync(_configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", _credentialReference, "runtime.replayRegistrarCredentialReference", "effect-replay", body, cancellationToken).ConfigureAwait(false);
         return created.Unavailable ? null : Receipt(created.Proof, intent, evaluatedAt, retention);
     }
 
     /// <inheritdoc/>
     public async Task<TrustedEnvelopeReplayReceipt?> LookupAsync(TrustedEnvelopeReplayIntent intent, CancellationToken cancellationToken = default)
     {
-        SecretsCall proof = await _session.CallPrivateAsync(configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", configuration.ReplayRegistrarCredentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", Body(intent, null, null), cancellationToken).ConfigureAwait(false);
+        if (_credentialDenied) { return null; }
+        SecretsCall proof = await _session.CallPrivateAsync(_configuration.ReplayRegistrarReference, "runtime.replayRegistrarReference", _credentialReference, "runtime.replayRegistrarCredentialReference", "query-replay", Body(intent, null, null), cancellationToken).ConfigureAwait(false);
         return proof.Unavailable ? null : Receipt(proof.Proof, intent, evaluatedAt: null, retention: null);
     }
 

@@ -177,7 +177,9 @@ def result_fields(qualified, gaps, coverage, cells):
 
 
 def write_evidence(evidence, category, gaps, suites, names, qualified, coverage, cells):
-    matched = [item for item in names if any(token in item["name"] for token in CATEGORIES[category])]
+    matched = [item for item in names
+               if method_name(item.get("name", "")) in REQUIRED_CELLS
+               and any(token in method_name(item.get("name", "")) for token in CATEGORIES[category])]
     document = {
         "schema": "EXT-HOST-1.full-evidence.v1",
         "category": category,
@@ -207,22 +209,35 @@ def write_lost_ack(evidence, gaps, suites, names, qualified, coverage, cells):
     (evidence / "lost-ack.json").write_bytes(canonical(document))
 
 
-def retain_prior_evidence(evidence):
+def evidence_files(evidence):
     files = []
     if evidence.exists():
         for path in evidence.rglob("*"):
             if path.is_file() and "prior" not in path.relative_to(evidence).parts:
                 files.append((path.relative_to(evidence).as_posix(), path))
-    if not files:
-        return None
     files.sort()
+    return files
+
+
+def hash_files(files):
     digest = hashlib.sha256()
     for name, path in files:
         digest.update(name.encode())
         digest.update(b"\0")
         digest.update(path.read_bytes())
         digest.update(b"\0")
-    digest_hex = digest.hexdigest()
+    return digest.hexdigest()
+
+
+def evidence_digest(evidence):
+    return hash_files(evidence_files(evidence))
+
+
+def retain_prior_evidence(evidence):
+    files = evidence_files(evidence)
+    if not files:
+        return None
+    digest_hex = hash_files(files)
     destination = evidence / "prior" / digest_hex
     if destination.exists():
         return digest_hex
@@ -320,6 +335,7 @@ def write_attempt(artifacts, key, head, profile, code, configuration="Debug"):
         "componentQualification": code == 0,
         "dependencyAvailable": False,
         "effects": 0,
+        "evidenceDigest": evidence_digest(Path(artifacts) / "evidence"),
         "exitCode": code,
         "head": head,
         "liveEffects": 0,
@@ -360,7 +376,11 @@ def verify(root, artifacts, profile, configuration="Debug"):
         stored = read_attempt(artifacts)
         if stored is not None:
             if stored.get("attemptKey") == key:
-                return int(stored["exitCode"])
+                code = int(stored["exitCode"])
+                if code == 0 and stored.get("evidenceDigest") != evidence_digest(evidence):
+                    print("ERROR: EXT-HOST-1 evidence digest does not match the persisted attempt.", file=sys.stderr)
+                    return 1
+                return code
             print("ERROR: EXT-HOST-1 keeps the first complete attempt.", file=sys.stderr)
             return 1
         custody_code, guard_code, names, suites = run_suites(root, artifacts, configuration)

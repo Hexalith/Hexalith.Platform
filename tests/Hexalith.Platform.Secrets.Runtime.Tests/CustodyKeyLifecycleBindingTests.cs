@@ -191,12 +191,19 @@ public sealed class CustodyKeyLifecycleBindingTests
         reply.Transport.ShouldBe(CustodyBindingTransportState.Refused);
         reply.Outcome.ShouldBeNull();
         client.ReceivedCalls().ShouldBeEmpty();
-        var built = CustodyBindingDaprCall.Build(new("pin", true, pin, Digest("pin-build"), null));
+        CustodyBindingDaprCall.Build(new("pin", true, pin, Digest("pin-build"), null)).ShouldBeNull();
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var authority = PrivateCustodyBindingAuthority.Create(key, "story-issuer", "story-audience", "tenant-a", "story-authority", 1);
+        authority.ShouldNotBeNull();
+        var built = CustodyBindingDaprCall.Build(new("pin", true, pin, Digest("pin-build"), null), authority);
         built.ShouldNotBeNull();
         built.Envelope.Operation.ShouldBe("pin");
+        built.Envelope.Proof.Issuer.ShouldBe("story-issuer");
+        built.Envelope.Enrollment.AuthorityId.ShouldBe("story-authority");
         CustodyBindingContract.Encode(built);
+        (await new PrivateCustodyBindingCurrentAuthority(authority).AuthorizeAsync(built, "binding-name", TestContext.Current.CancellationToken)).ShouldBeTrue();
         var reversed = Original("reservation-order", Key("interaction-0009"), identity);
-        CustodyBindingDaprCall.Build(new("destroy-manifest", true, null, Digest("order"), reversed)).ShouldBeNull();
+        CustodyBindingDaprCall.Build(new("destroy-manifest", true, null, Digest("order"), reversed), authority).ShouldBeNull();
     }
 
     private static CustodyComponentStore Store(out CustodyOutsideWitness witness, out CustodyKeyObjectIdentity target, out CustodyKeyObjectIdentity other)

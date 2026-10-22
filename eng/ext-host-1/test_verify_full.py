@@ -367,6 +367,21 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertEqual(0, attempt["effects"])
             self.assertEqual(0, attempt["liveEffects"])
             self.assertEqual(list(verify.MISSING_RUNTIME_INPUTS), attempt["missingRuntimeInputs"])
+            self.assertNotIn("signature", attempt)
+            self.assertEqual(verify.evidence_digest(artifacts / "evidence"), attempt["evidenceDigest"])
+            acl_methods = {item["name"].split("(", 1)[0].rsplit(".", 1)[-1] for item in acl["matchedTests"]}
+            self.assertTrue(acl_methods <= set(verify.REQUIRED_CELLS))
+            self.assertNotIn("AclFence", acl_methods)
+            self.assertFalse(any("RecoverSomething" in item["name"] or "AclFence" in item["name"] for item in acl["matchedTests"]))
+            blocked_path = artifacts / "evidence" / "blocked.json"
+            blocked_path.write_bytes(blocked_path.read_bytes() + b" ")
+            stderr = StringIO()
+            with patch.object(verify.sys, "stderr", stderr):
+                tampered = verify.verify(self.platform, artifacts, profile)
+            self.assertEqual(1, tampered)
+            self.assertIn("evidence digest", stderr.getvalue())
+            self.assertEqual(2, started.call_count)
+            self.assertEqual(attempt_bytes, (artifacts / verify.ATTEMPT_NAME).read_bytes())
 
     def test_missing_cell_or_suite_names_gap_and_keeps_prior_evidence(self):
         platform = self.platform
