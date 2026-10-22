@@ -996,3 +996,20 @@
   summary: Parties `Directory.Packages.props` reintroduced sibling and ancestor Builds catalog fallbacks, which the enrollment conventions forbid.
   evidence: Parties commit `a8e52fdc` (2026-10-21) replaced `HexalithBuildsRoot` defaulting to `references/Hexalith.Builds` with `Exists`-guarded imports of `references/`, `../Hexalith.Builds` and an unconditional `../../Hexalith.Builds` catalog. Released `4.35.2` fails `dependency-selectors` on `Directory.Packages.props` at Parties gitlink `9cfeb6c6` (`evidence/1-13/pass-5/release/released-package/real-parties-current-gitlink-json.stdout.txt`). `4.35.1` hid this behind its asserted-probe false positive. Parties owns the fix during its kit enrollment: restore the tool-mapped `HexalithBuildsRoot` bootstrap and let release CI supply the Builds mapping. Story 1.13 must not adopt another module.
   status: open
+
+## Deferred from: code review of spec-1-12-adopt-parties-as-the-reference-domain-module.md (2026-10-22)
+
+- source_spec: `spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Tenants' owner deploy ACL lacks the `parties GET /ready` grant that the Tenants manifest now declares.
+  evidence: Story 1.12 added caller `parties` and `GET /ready` to `references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json` (Tenants `9a94131`, unchanged at HEAD). The owner ACL `deploy/dapr/accesscontrol.tenants.yaml` still grants only `eventstore`. The grant exists only in Parties' legacy `src/Hexalith.Parties.AppHost/DaprComponents/accesscontrol.tenants.yaml`. No check compares the Tenants manifest with the Tenants owner ACL; Platform's checker compares only `accesscontrol.eventstore.yaml`. Parties readiness under that owner ACL was already denied before this story. The Tenants owner decides whether to add the grant to the deploy ACL or record the manifest grant as local-only.
+  status: open
+
+- source_spec: `spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Platform's reference-declaration checker validates with `assert`, so its checks vanish under `python -O`.
+  evidence: `scripts/test-reference-module-declarations.py` has 117 `assert` statements; Story 1.12 review finding B1 fixed only the Parties renderer copy (`references/Hexalith.Parties/scripts/render-platform-declaration.py`). This predates Story 1.12. Convert the checks to explicit raises with an optimized-process regression case, as Parties did.
+  status: open
+
+- source_spec: `spec-1-12-adopt-parties-as-the-reference-domain-module.md`
+  summary: Platform hardcodes each domain module's EventStore registration, so every domain enrollment needs Platform code.
+  evidence: `src/Hexalith.Platform.Composition/PlatformAppModel.cs` sets `EventStore__DomainServices__Registrations__wildcard_party_v1__*`, `wildcard_tenants_v1__*` and `*|timesheets|v1__*` literally; the v2 declaration has no field for the EventStore domain name or method. The Parties project path is also duplicated in `PlatformServerBindings.ReferenceProjects` and `AgentsHostComposition.cs:20`. Owner-led Tenants/Folders/Projects enrollment through the Story 1.13 kit will need Platform edits that the enrollment guide does not mention. A fix needs a declaration-schema field.
+  status: open

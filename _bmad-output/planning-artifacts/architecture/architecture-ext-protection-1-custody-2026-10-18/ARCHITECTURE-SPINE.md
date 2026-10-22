@@ -4,16 +4,19 @@ type: architecture-spine
 purpose: build-substrate
 altitude: feature
 paradigm: Hexagonal custody boundary with a recoverable state machine
-scope: Interaction-root custody, erasure epochs, physical pins, immutable originals and rollback recovery
+scope: Interaction-root destruction, retained human-binding history expiry and independent recovery authority
 status: final
 created: '2026-10-18'
-updated: '2026-10-20'
-binds: [EXT-SECRETS-1, EXT-PROTECTION-1, G1, G3]
+updated: '2026-10-22'
+binds: [EXT-SECRETS-1, EXT-PROTECTION-1, EXT-PARTIES-1, PLAT-ACTOR-HISTORY-1, G1, G3]
 sources:
   - ../../../../docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md
   - ../../../../docs/implementation/ext-secrets-1-completion-2026-10-19/INPUTS.md
   - ../../../../docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md
   - ../architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md
+  - ../../../specs/spec-production-actor-history-custody/lifecycle-contract.md
+  - ../../../../docs/implementation/actor-history-lifecycle-2026-10-07.md
+  - ../../../../../agents/_bmad-output/planning-artifacts/external-dependency-register.md
   - .memlog.md
 companions:
   - ../../../../docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md
@@ -27,6 +30,8 @@ companions:
 **Hexagonal custody boundary with a recoverable state machine.** Provider-neutral ports surround separately governed current authority and physical epoch erasure. Actors/restored application state are projections, never physical authority.
 
 AD-16–AD-25 are **ADOPTED** at architecture level following owner approval, qualified by the subsequent explicit Dapr-only instruction. The [decision](../../../../docs/implementation/ext-secrets-1-erasure-authority-decision-2026-10-20.md) and [approval record](../../../../docs/implementation/ext-secrets-1-erasure-authority-2026-10-20/OWNER-APPROVAL.md) define scope. Shared-cut/recoverable publication is the accepted physical criterion; one cross-service native transaction is not claimed. Component/provider feasibility, installation and qualification remain incomplete. No direct native-adapter exception or mandatory cloud dependency is adopted, and no register/status changes here.
+
+AD-26 carries the already accepted history policy into this slice. AD-27/AD-28 recommend its physical enforcement and shared recovery boundaries; their construction remains subject to the precise [owner decisions](../../../../docs/implementation/ext-protection-1-custody-design-2026-10-18.md#remaining-owner-decisions). Interaction pending-erasure tolerance never relaxes history expiry. AWS remains an unaccepted reference profile; no qualifying backend for either domain is established here.
 
 ## Inherited Invariants
 
@@ -90,7 +95,7 @@ Parent IDs retain their original meaning, read-only; local decisions start after
 
 - **Binds:** adapters, runtime integration and compatibility.
 - **Prevents:** backend selection weakening source contracts or policy.
-- **Rule:** Preserve provider-neutral six operations, original identity/AAD/statuses/anchored transitions, v21/v23 ordering and non-expiring revocable capability. Interaction Destroy delegates to its original complete manifest. Add private batch backend/outer envelope behind unchanged consumer contracts. Preserve timing 300/30/600/86400/604800, Open overlap, host/date and independent approval signer. Occurrence use requires original encryption/write leases, current checks and actual remote completion integration. First release retains actor 1,000-registration/10,000-request hard limits, no automatic archive/shard/eviction. Reserve completion capacity before admission and fail closed before exhaustion; F1 must measure that finite budget. Never drop physical originals/allocation exclusions. Separately encrypted export/partial/key/backup paths need their own accepted closure; Open/unqualified export policy blocks all-copy B5 for affected targets. Export-free branches remain eligible. Other history/qualification obligations remain separate.
+- **Rule:** Preserve provider-neutral six operations, original identity/AAD/statuses/anchored transitions, v21/v23 ordering and non-expiring revocable capability. Interaction Destroy delegates to its original complete manifest. Add private batch backend/outer envelope behind unchanged consumer contracts. Preserve timing 300/30/600/86400/604800, Open overlap, host/date and independent approval signer. Occurrence use requires original encryption/write leases, current checks and actual remote completion integration. First release retains actor 1,000-registration/10,000-request hard limits, no automatic archive/shard/eviction. Reserve completion capacity before admission and fail closed before exhaustion; Interaction-feasibility F1 must measure that finite budget. Never drop physical originals/allocation exclusions. Separately encrypted export/partial/key/backup paths need their own accepted closure; Open/unqualified export policy blocks all-copy B5 for affected targets. Export-free branches remain eligible. Other history/qualification obligations remain separate.
 
 ### AD-24 — Every copy and holder joins closure before effect [ADOPTED, AMENDED]
 
@@ -103,6 +108,24 @@ Parent IDs retain their original meaning, read-only; local decisions start after
 - **Binds:** this custody feature in Platform, custody application services, EventStore, Agents, observers, configuration and tests.
 - **Prevents:** a Dapr facade hiding an application-native SDK, provider connection or hand-built distributed infrastructure saga.
 - **Rule:** Application paths use existing Dapr invocation/binding APIs and neutral custody DTOs only. Resolve logical component/service roles from configuration; expose no cloud SDK/package/provider endpoint/resource ID/credential in app contracts or DI. No generic state+crypto+storage calls simulate physical atomicity. Component operations are closed and exact-original authenticated; Duplicate transport invokes recover one value-free original, lookup never sends an effect. Key-bearing unwrap results are ephemeral and never cached/persisted/replayed: one pre-enrolled recipient/transport-incarnation KeyUseLeaseId/DeliveryAttemptId tracks each actual release and buffer. Closed/frozen/erased duplicates return proof/status only; fresh authorized key-use admission may use the same original root. Expose distinct admit/record/recover/verify-transition phases; anchor recovery is separately authorized mutation, never lookup or physical replay. Fresh challenge-bound linearizable read-current never replays a cached signed head. Enforce daprd/component-only UDS access and immutable enrolled Init/re-registration preserving originals/intents/uncertain holders. The pinned pluggable response ceiling is 4 MiB without a verified override: retrieve value-free exact original vectors with bounded authenticated pages, reassemble/hash-verify before public Consumed, never page keys or split manifest consumption. Full input must fit verified supported limits or stop. Verify effective Dapr/component retries, reflection/imports/socket registration, sidecar restart/late I/O and secret-buffer lifetime. Infrastructure component implementation may use provider internals, isolated from app dependencies; generic wrapper/stub/secret delete is never qualification. Parent AD-9 remains intact with no custody exception.
+
+### AD-26 — Separate history units retain their original exclusive expiry [ADOPTED POLICY]
+
+- **Binds:** Parties binding evidence, EventStore source/snapshots and Platform history custody.
+- **Prevents:** profile/content erasure destroying retained attribution, or copying/revocation extending it.
+- **Rule:** Retain purpose party-actor-history-v1 under party-actor-retention-v1 for exactly 31,536,000 seconds from original binding-effective-at; permit only now < ExpiresAt. Normalize offsets without moving the instant; overflow/unknown scope denies. Profile erasure immediately removes current eligibility and preserves only approved bounded history. Isolate each original unit and every decrypting generation from profile keys, interaction epochs and other deadlines. Snapshots partition duplicated bindings/transitions by original unit. Retry, rotation, rebind, revoke, reprojection and restore never renew predecessor expiry. Parties/EventStore must resolve Q5's establish/rebind/revoke identity and history F1's actor-free successor proof before claiming source continuity; no current-binding substitution or indefinite predecessor retention.
+
+### AD-27 — History admission requires cryptographic expiry during failure [RECOMMENDED; Q1/Q2/Q4 OPEN]
+
+- **Binds:** production history admission, key release/copying, cleanup and qualification.
+- **Prevents:** read denial, a delayed worker or the interaction epoch protocol masquerading as exact history expiry.
+- **Rule:** Require a qualifying Dapr infrastructure component with per-unit nonrollback deadline enforcement, authenticated time/currentness, no recoverable key escrow/backup bypass and autonomous expiry across service outage, host/power loss and restore. Reusable plaintext history keys may not escape its qualified execution boundary; every Dapr/runtime holder and plaintext copy must be covered before the original deadline, including callers' detached event bytes, deserialized objects/strings, forwarded results and snapshots. Existing raw-array/arbitrary-object returns supply no deadline-completion proof; Q6 must accept a versioned enforced plaintext-ownership boundary or qualify every existing consumer lifetime before admission. Authorize release only when the authenticated time upper bound is strictly before expiry; uncertainty denies and never changes expiry. Do not erase early to hide timing error. Actual irreversible expiry must hold at ExpiresAt; later receipt observation is allowed only as evidence of that earlier cut. Unknown enforcement blocks new admission and qualification. Pending cleanup/five-second waits grant no grace. No such backend is selected or qualified. Applying delayed KMS destruction to history requires a separately approved policy change; it is outside this recommendation.
+
+### AD-28 — Recovery authority and retained evidence have distinct lifecycles [RECOMMENDED; Q2/Q3/Q7 OPEN]
+
+- **Binds:** both custody domains, recovery hooks, copy owners and receipt retention.
+- **Prevents:** an old key/lifecycle backup becoming current, survivor loss or receipts retaining expired attribution.
+- **Rule:** Separately inventory forward-only current authority, gated encrypted copies and retained originals/public trust, with distinct interaction/history purposes and key scopes. Authority enrollment, current witness/time, fencing and credentials survive the entire app/EventStore/OpenBao restore cut; same-host replicas are insufficient. Administrator and named deputy have independent recovery access; name each fence/reissue and copy/work owner. Quarantine restores until current authority reconciles exact original operations/deadlines/lineage, proves target non-revival and independent survivor recovery, and enrolls only a fenced replacement workload. Preserve AD-18's first-release prohibition on authority replacement/self-promotion; total authority loss fails closed. Keys remain separate from ciphertext backups and no backup can restore expired/erased material. History receipt identity/evidence/provenance fields remain protected history if linkable; exact originals cannot justify indefinite attribution. Q3/Q7 must approve a minimized post-expiry verification/anti-recreation format and numeric retention before admission. Recommend a versioned original containing a presealed deadline-bound identity segment plus independently verifiable non-attribution terminal proof; exact ciphertext/proof bytes survive, expired identity does not. Original lookup/index scope must use the approved minimal proof locator after expiry; plaintext Unit lookup under the existing receipt DTO is not equivalent. Otherwise accept an explicitly expiry-bounded receipt lookup contract. Never redact/resign an immutable original or prematurely expire an interaction batch receipt. Actor-free continuation needs separate history F1 acceptance.
 
 ## Stack
 
@@ -131,6 +154,8 @@ flowchart TD
 
 The independently governed backing authority survives application restore/host loss; a colocated pluggable process alone is not independence. Current authority, encrypted envelopes and retained originals have three named recovery classes, not Kubernetes StorageClasses. Provider infrastructure is configured inside the component boundary, not selected as an application dependency. Deployment/destructive qualification remain outside this task.
 
+Retained human-binding history uses a separate logical purpose and per-original-unit deadline enforcement through Dapr. It may share qualified recovery infrastructure, never an interaction erasure epoch or later-lived history key. No history component implementation is implied by the interaction binding contract.
+
 ## Capability → Architecture Map
 
 | Capability | Owner | Decisions |
@@ -139,11 +164,14 @@ The independently governed backing authority survives application restore/host l
 | Hold/dispatch/block/reserve | Guard, protection owner, custody head respectively | AD-19 |
 | Atomic vector/original outcome | Epoch plus independent head/original store | AD-16 / AD-20 / AD-21 / AD-22 |
 | Rotation/restart/restore | Independent authority/copy owners | AD-17 / AD-18 / AD-24 |
+| Bounded human-binding attribution | Parties source owner / Platform history custodian | AD-26 / AD-27 |
+| Cross-domain recovery and minimized evidence | Administrator/deputy, copy and privacy owners | AD-18 / AD-28 |
 | Qualification/availability | Independent owners and accepted joint cohort | AD-16 / AD-21 / AD-23 |
 
 ## Deferred
 
-- **Physical feasibility:** qualifying Dapr component/provider is absent. F0/F1 must validate whole protocol, Dapr transport/sidecar/retry/key-buffer behavior and actual provider primitives. No app-native bypass can close this gate.
+- **Physical feasibility:** qualifying Dapr component/provider is absent. Interaction-feasibility F0/F1 must validate whole protocol, Dapr transport/sidecar/retry/key-buffer behavior and actual provider primitives. No app-native bypass can close this gate.
 - **Actual provisioning inputs:** component/provider artifact, independent placement/current authority, public trust/scopes, copy/restore/original references, numerical retention/operating/admission limits and secret component configuration. Approval supplies none of these values or proofs.
 - **Separately authorized F2/F3:** native erasure/restore plus Dapr end-to-end ordering/loss/restart faults require exact synthetic resources, monetary ceiling and retained originals. No experiment/deployment run here.
-- **Other Story 5.4 prerequisites:** profiles/signers/replay/compromise/export delivery, real qualification roles, committed protection/shared target/host profile/joint runner. Open export policy and actor-history qualifications remain separate. No register or Available change.
+- **History owner decisions:** Q1/Q4 physical exact-expiry backend; Q2 independent placement/time/fencing; Q3 actual copy/work owners and numeric receipt retention; Q5 original binding/revoke identity; Q6 both owning-host/source-codec registrations; Q7 tenant/profile erasure and post-expiry metadata; history F1 actor-free successor continuity. Adopted duration/trigger/exclusive boundary are fixed. See the companion alternatives and evidence criteria; none of these permits incompatible production implementations pending a decision.
+- **Other Story 5.4 prerequisites:** profiles/signers/replay/compromise/export delivery, real qualification roles, committed protection/shared target/host profile/joint runner; Parties history D01–D04/F2 installation/qualification and complete P-01–P-10 remain open. Open export policy remains separate. No register or Available change; PLAT-ACTOR-HISTORY-1 is symbolic owner work, not an accepted register record.
