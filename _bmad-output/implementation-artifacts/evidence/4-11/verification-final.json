@@ -1,0 +1,80 @@
+{
+  "verifiedAtUtc": "2026-10-22T17:39:33.349120+00:00",
+  "scope": "Approved Option A; compatible implementation complete; Story 4.11 in-progress pending owned Tenants follow-up",
+  "hostedQualification": false,
+  "platformHeadAtVerification": "06105c09fe3c45784553475fc8660338b01cb24d",
+  "buildsHeadAtVerification": "c28c5c255226f85ef9533894b722d1ad99816b5b",
+  "checks": [
+    {
+      "cwd": "references/Hexalith.Builds",
+      "command": "dotnet build test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --configuration Debug --no-restore -m:1",
+      "exit": 0,
+      "warnings": 0,
+      "errors": 0,
+      "log": "build-final.txt"
+    },
+    {
+      "cwd": "references/Hexalith.Builds",
+      "command": "dotnet test/Hexalith.Builds.Evidence.Tests/bin/Debug/net10.0/Hexalith.Builds.Evidence.Tests.dll",
+      "exit": 0,
+      "passed": 178,
+      "failed": 0,
+      "skipped": 0,
+      "log": "evidence-tests-final.txt"
+    },
+    {
+      "cwd": ".",
+      "command": "python3 -m unittest discover -v -s checks/reference -p 'test_*.py'",
+      "exit": 0,
+      "passed": 23,
+      "log": "python-tests-final.txt"
+    },
+    {
+      "cwd": ".",
+      "command": "python3 -O -m unittest discover -v -s checks/reference -p 'test_*.py'",
+      "exit": 0,
+      "passed": 23,
+      "log": "python-optimized-tests-final.txt"
+    }
+  ],
+  "packageValidation": {
+    "report": "reference-package-validation-final.json",
+    "modulesValid": 5,
+    "coverageExit": 6,
+    "diagnostics": [
+      "HXS006"
+    ]
+  },
+  "sourceSha256": {
+    "checks/reference/eventstore.py": "5c9f7cb1bee94f3951c67fd063fe3b7e4d14b01ff36829d34a85be04765e85b1",
+    "checks/reference/mcpcli.py": "3b9f74d0e8bc06c079b7caa226ab2682b953490c7d542b504953cd1deb548071",
+    "checks/reference/memories.py": "8af55b197a6109a7c2bc0623a23df0fd2cecf0733f39bb862d00676331871429",
+    "checks/reference/parties.py": "428849b21e28f4a7876c9620837df0befb13bf96a1b2cfabe45e5731614abc2d",
+    "checks/reference/registry.json": "745eea30c0f03c0bd5261302db510e7eabd8331dd1965b0086aa95a9dee49cfa",
+    "checks/reference/runner.py": "e08898b0ed9421da0d4e1cf8562d4fc97688e060f3fc52e4a6b7e6c2fc43f990",
+    "checks/reference/suites/eventstore.json": "d92bb7b200fa82cff96b5939f4a33b474604661810b956376ba9d28133542219",
+    "checks/reference/suites/mcpcli.json": "0b6ddedf115c5da5bdaf91c7fd14e1ef842505847695f0ed5b8b50c446e147cd",
+    "checks/reference/suites/memories.json": "70b0167dfb4d5dc17ddabc5417e6b235db7480f4afc14dc095173894b08e3b78",
+    "checks/reference/suites/parties.json": "9f7089867ff05de7d4507d90966831346e46067460a76d72690ef67a5a563572",
+    "checks/reference/suites/tenants.json": "2d84622559adbb6b99531b858a9050dfcae42693a9edeec187cd5611e10568fc",
+    "checks/reference/tenants.py": "f2f4a39721ff25f942e1eab1071b2a22ab602901896c5c6b27fc9531ada37a14",
+    "checks/reference/test_reference_suites.py": "2368e14c270028dc298e8b56b18c9f0d4376a63a54bbe34ab8edc09bbbabb5aa",
+    "references/Hexalith.Builds/schemas/hexalith.check-invocation.v1.json": "9d16a729e2e4914cc88dcda6945296c0132a03708577f4378d2a8dc287fe2cba",
+    "references/Hexalith.Builds/schemas/hexalith.check-result.v1.json": "76cdc496c518791a593ecf2a69b3fdd0dded266c611b1f59c23dc6edee8d5a0f",
+    "references/Hexalith.Builds/schemas/hexalith.check-suite.v1.json": "3498bc1dd1646f9ca8808536448366bb69e7078d2a4c0bc96f3671d146d26a44",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/CheckSuiteCommands.cs": "e76357958cb307fbba039895676bf4d6162ffad461cb3b7c25b206a08666f239",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/EvidenceCommandApplication.cs": "fe1c083fb7dd41c6b414e58d1b10712145e7232ed3590744c8d398c961063607",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/CheckSuites/CheckSuiteContract.cs": "38279b20122f78acfa85c4ec7bdf3e4276f314b9ea91e0a0f8aeacda80237b70",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/CheckSuites/CheckSuiteReport.cs": "8991e8a43cdea493b537f26fdaed99ca3643f3223282a441bf5143e42c5996af",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/CheckSuites/ReferenceSuiteCoverage.cs": "c3302f74aeb1a5867d66851bb29f9465cd1678d7c4503445438321f5c9ba557c",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj": "5398373e0b0a31a3a72fb9073dcbeecc0d280b90ec540968eaf9c0006b879388",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/CheckSuites/CheckSuiteContractTests.cs": "9b00e211d41cf377d7366dff4b6ea32656719200934e59600c1781e69ae95ac1",
+    "references/Hexalith.Builds/test/fixtures/check-suites/runner.py": "eae0b40ace73b4831d267e1b4f58687dd36b928a109b20199f29c879f88c44e2",
+    "references/Hexalith.Builds/test/fixtures/check-suites/suite.json": "e46f3be0b7170e019522ae18d8bcf0d6bd518506a3c44f0b5b050c4042254357"
+  },
+  "sourceSnapshotAfterConcurrentCommits": {
+    "platform": "06105c09fe3c45784553475fc8660338b01cb24d",
+    "builds": "66b9136a0b223925e51177a51eb48852e2f12787",
+    "verifiedBytesUnchanged": true
+  }
+}
