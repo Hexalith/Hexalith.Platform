@@ -1,0 +1,25 @@
+{
+  "findings": [
+    {
+      "lens": "edge-case-hunter",
+      "location": "src/Hexalith.Platform.Composition/PlatformServerBindings.cs:57-63; references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:125-132",
+      "trigger_condition": "Launch Parties from a standalone checkout whose directory differs from Hexalith.Parties.",
+      "guard_snippet": "activeIdentity = DeclaredRepositoryIdentity(manifest) ?? Path.GetFileName(activeRoot);",
+      "potential_consequence": "Renamed standalone Parties worktrees cannot launch their active source through the Platform composition."
+    }
+  ],
+  "provenance": {
+    "disposition": "Carried unresolved, not novel: Story 1.3 decision D3\u2192B explicitly deferred declared identity until Stories 1.5/1.12.",
+    "ledger": "_bmad-output/implementation-artifacts/deferred-work.md:351-352",
+    "original": "_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md:133",
+    "workaround": "references/Hexalith.Parties/README.md:28-29 clones into canonical Hexalith.Parties; evidence/1-12/canonical-source-project-selection.json:5-9 uses that basename.",
+    "repro": "/tmp/epic1-retro-xcm49w3h/root-identity-repro/output.txt",
+    "observed": "Identical real project/declaration: canonical source-mapping identity binds 1 server; Hexalith.Parties-wt2 throws InvalidDataException parties/domain: mapped source project is unavailable. Raw csc compile and execution both exit 0; no resources started."
+  },
+  "scope": {
+    "checked": "Changed production boundaries through WorkspaceRootResolver, PlatformIdentityResolver, source mapping materialization/reconciliation/validation, pinned catalog materialization/validation, v2 lifecycle dispatch, CompositionEngine start/readiness/down, declaration closure, Platform server/environment/Dapr binding and enrollment validation. Read declaration/callee contracts reached by these paths; reviewed deletion/replacement in these paths; claims file read only after path tracing/completeness/deletion passes.",
+    "narrowed": "Did not exhaust every changed test hunk or unrelated Agents/Works/retention flow. No new full distributed launch. Reproduction exercises final binding with mapping shapes, not Git resolver initialization.",
+    "preexisting_dirty": "references/Hexalith.Builds/Props/Directory.Packages.props is preexisting modified; not attributed to Epic 1 or changed.",
+    "discarded": "Fixed ordinary Dapr ports are planned Epic 2 isolation work; SDK Degraded /ready200 is intentional module-defined readiness. No new deletion or falsified-claim findings."
+  }
+}

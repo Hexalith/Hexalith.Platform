@@ -1,0 +1,21 @@
+{
+  "command": [
+    "dotnet",
+    "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.35.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+    "validate",
+    "--adoption",
+    "--manifest",
+    "module/hexalith.module-manifest.v2.json",
+    "--output",
+    "json"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+  "exit_code": 1,
+  "status_unchanged": true,
+  "checked_files": {
+    "Directory.Packages.props": "d186cc5eca06e7143756758ae233935a0ee2788760f1bfa990fcad140975b6d6",
+    "Directory.Build.props": "bf62c34f8c128c9782cf04bc1e74cbcf60d792052cc41938e19472c2faf76ecb",
+    "module/hexalith.module-manifest.v2.json": "0fd4457a1801fa13053ef8821eb16a0cfcc6a5edac94b6ce89e8f220e8a30511"
+  },
+  "checked_hashes_unchanged": true
+}

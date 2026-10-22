@@ -1,0 +1,39 @@
+PASS comment-only deny: effective ACL refusal
+PASS reordered broad allow: effective ACL refusal
+PASS caller namespace drift: effective ACL refusal
+PASS caller trust-domain drift: effective ACL refusal
+PASS extra caller: effective ACL refusal
+PASS widened admin rule: effective ACL refusal
+PASS admin default drift: effective ACL refusal
+PASS admin namespace drift: effective ACL refusal
+PASS duplicate spec: effective ACL refusal
+PASS duplicate access control: effective ACL refusal
+PASS resource kind drift: effective ACL refusal
+PASS resource name drift: effective ACL refusal
+PASS Tenants copy resource kind drift: effective ACL refusal
+PASS Tenants copy resource name drift: effective ACL refusal
+PASS Tenants copy extra caller: effective ACL refusal
+PASS Tenants copy widened bootstrap: effective ACL refusal
+PASS duplicate identity: atomic refusal with source and field
+PASS absent readiness: atomic refusal with source and field
+PASS unapproved exception: atomic refusal with source and field
+PASS fifth exception: atomic refusal with source and field
+PASS unmarked coordination: atomic refusal with source and field
+PASS missing exception name: atomic refusal with source and field
+PASS missing exception transitional: atomic refusal with source and field
+PASS array exception name: atomic refusal with source and field
+PASS object exception name: atomic refusal with source and field
+PASS missing identity: atomic refusal with source and field
+PASS missing runtime: atomic refusal with source and field
+PASS null provider exception: atomic refusal with source and field
+PASS scalar provider exception: atomic refusal with source and field
+PASS renamed owner: atomic refusal with source and field
+PASS invented domain dependency: atomic refusal with source and field
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/scripts/test-reference-module-declarations.py", line 731, in <module>
+    main()
+    ~~~~^^
+  File "/home/administrator/projects/hexalith/platform/scripts/test-reference-module-declarations.py", line 698, in main
+    assert not accepted and not public_diagnostics, (owner, inventory, diagnostics)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (0, 'secrets', [{'ruleId': 'HXP020', 'phase': 'Manifest', 'category': 'Manifest', 'message': "Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.", 'field': 'modules[0].tests[0].entry', 'hint': None, 'source': '../../../../../../../tmp/hexalith-declarations-bc5dtacr/extra-secrets-0-1.json', 'location': None, 'row': None}, {'source': '/tmp/hexalith-declarations-bc5dtacr/extra-secrets-0-0.json', 'field': 'modules[0].integration.secrets'}])

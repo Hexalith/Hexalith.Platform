@@ -1,0 +1,43 @@
+[
+  {
+    "lens": "adversarial",
+    "location": "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:126",
+    "trigger_condition": "An active domain checkout or worktree is renamed (for example Hexalith.Parties-wt2), so the mapping continues to derive its identity from the directory even though the v2 declaration now supplies moduleId. The prerequisite-based deferral in spec-1-3-resolve-one-active-root-source-mapping.md:133 and deferred-work.md:352 still has not landed after Stories 1.5/1.12.",
+    "guard_snippet": "Use the validated active v2 declaration to derive the canonical repository identity before generating mapping entries and duplicate guards; preserve the documented legacy fallback for non-v2 inputs. Until then, document the required root directory name in the enrollment guide and track the earlier decision explicitly.",
+    "potential_consequence": "SourceMappingValidationTask.cs:113-130 and :174-178 compare packages against the directory-derived prefix: Hexalith.Parties-wt2 misses duplicate Hexalith.Parties packages, while Hexalith matches unrelated Hexalith packages. PlatformServerBindings.cs:57-63 can also fail to locate the active owner under the canonical name."
+  },
+  {
+    "lens": "adversarial",
+    "location": "docs/domain-module-enrollment.md:178",
+    "trigger_condition": "A new module owner follows the enrollment kit through static PASS and then its run/debug recipe, but no step registers that module/server executable with Platform. The runtime dictionary at PlatformServerBindings.cs:11-20 contains only the existing reference owners; :60-63 refuses an otherwise valid newly mapped sample/Folders/Projects server.",
+    "guard_snippet": "Add a Platform-owner executable-binding registration prerequisite before run/debug and SM-2, identifying the module/server project path and required local-profile bindings. State that schema/adoption validation can pass before this runtime integration is complete, and tie the handoff to the owning adoption story.",
+    "potential_consequence": "An owner can complete every published preparation step yet receive mapped source project is unavailable when attempting the advertised development flow. DomainEnrollmentKitTests.cs:12-19 validates schema compatibility only, so that integration gap is not surfaced by the kit acceptance check."
+  },
+  {
+    "lens": "edge-case-hunter",
+    "location": "src/Hexalith.Platform.Composition/PlatformServerBindings.cs:57-63; references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:125-132",
+    "trigger_condition": "Launch Parties from a standalone checkout whose directory differs from Hexalith.Parties.",
+    "guard_snippet": "activeIdentity = DeclaredRepositoryIdentity(manifest) ?? Path.GetFileName(activeRoot);",
+    "potential_consequence": "Renamed standalone Parties worktrees cannot launch their active source through the Platform composition."
+  },
+  {
+    "lens": "verification-gap",
+    "location": "references/Hexalith.Parties/Directory.Packages.props:6-13",
+    "trigger_condition": "The reference module restores sibling/ancestor catalog selection while its static kit tests use synthetic workspaces.",
+    "guard_snippet": "Resolve the existing owner-led catalog fallback item and gate relevant adoption rows on the actual pinned consumer.",
+    "potential_consequence": "Reference adoption can regress without the model and synthetic kit tests detecting it.",
+    "gap_shape": "missing-adoption-gap",
+    "consumer": "The Parties reference module enrolled by Story 1.12.",
+    "evidence": "evidence/1-13/README.md:31-36; deferred-work.md:993-998; fresh current-parties-adoption.json confirms the failing dependency-selectors row."
+  },
+  {
+    "lens": "verification-gap",
+    "location": "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json:425-430",
+    "trigger_condition": "The local Parties readiness grant has no reconciled scope against the Tenants deployed receiver ACL.",
+    "guard_snippet": "Owner decides local-only versus deployed grant, then aligns declaration scope, receiver ACL and tests.",
+    "potential_consequence": "Local and deployed contracts diverge while both existing test suites preserve different policies.",
+    "gap_shape": "missing-adoption-gap",
+    "consumer": "Tenants deploy/dapr/accesscontrol.tenants.yaml:22-45.",
+    "evidence": "EventPublicationConfigurationTests.cs:435-454; PartiesAdoptionTests.cs:127-131; deferred-work.md:1000-1005."
+  }
+]

@@ -1,0 +1,209 @@
+{
+  "scope": {
+    "platform_range": "f043a2f242762233091abdaa5bbe1ab777bd0f12..9a43e1a",
+    "builds_range": "520abb5898ad44b30c0744e707b53cd94741e6b1..4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+    "audited_head": "3b4151df682448557d58a09027a05c5b41b6ce31",
+    "stories": [
+      "_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md",
+      "_bmad-output/implementation-artifacts/spec-1-2-make-the-builds-catalog-the-single-version-authority.md",
+      "_bmad-output/implementation-artifacts/spec-1-3-resolve-one-active-root-source-mapping.md",
+      "_bmad-output/implementation-artifacts/spec-1-4-enforce-the-platform-identity-and-support-package-mode.md",
+      "_bmad-output/implementation-artifacts/spec-1-5-declare-eventstore-memories-and-tenants-for-the-reference-composition.md",
+      "_bmad-output/implementation-artifacts/spec-1-6-compose-environments-from-declarations-with-one-platform-aspire-model.md",
+      "_bmad-output/implementation-artifacts/spec-1-7-ratify-local-dapr-conventions-and-bind-component-names.md",
+      "_bmad-output/implementation-artifacts/spec-1-8-run-and-debug-with-readiness-aware-startup-and-useful-diagnostics.md",
+      "_bmad-output/implementation-artifacts/spec-1-9-ratify-and-pin-the-first-platform-accepted-tool-version.md",
+      "_bmad-output/implementation-artifacts/spec-1-10-run-and-debug-eventstore-and-memories-from-the-platform-workspace.md",
+      "_bmad-output/implementation-artifacts/spec-1-11-run-and-debug-mcpcli-from-the-platform-workspace.md",
+      "_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md",
+      "_bmad-output/implementation-artifacts/spec-1-13-publish-the-domain-module-enrollment-kit.md"
+    ],
+    "temp_dir": "/tmp/epic1-retro-xcm49w3h"
+  },
+  "submodule_ranges": {
+    "Hexalith.Builds": "520abb5898ad44b30c0744e707b53cd94741e6b1..4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+    "Hexalith.EventStore": "d87c969b6518751fafec9fbd01733d885b2efbfe..ed19e342f06b5fbfec14f3d85ea4dd6fb052d6c9",
+    "Hexalith.Memories": "289773387e0c6b665b669031616c1e84cc079297..eab4831ecd0096c647748b27730d9b57d972dceb",
+    "Hexalith.Tenants": "4fa38dad5af0387a41792ee64494c5c767950eff..ab6e99f656eaae14a01c021cf0c6eadf9f38cefe",
+    "Hexalith.McpCli": "e159f82b7528797fc245045625ff387d65294ba9..2dfe27be890b32457c2a34be46487d408979ca7b",
+    "Hexalith.Parties": "60b9836ea23151c5319dd06fd3deb80122f7abc3..45c033ced0cbdf3edfec12bba427361e2abe6b95"
+  },
+  "source_sizes": {
+    "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs": 205,
+    "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": 274,
+    "src/Hexalith.Platform.Composition/PlatformPostgresqlHealthCheck.cs": 44,
+    "src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs": 28,
+    "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs": 74,
+    "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": 111,
+    "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": 219,
+    "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": 165,
+    "src/Hexalith.Platform.Composition/PlatformTimesheetsBinding.cs": 91,
+    "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs": 40,
+    "src/Hexalith.Platform.Composition/WorksProductionProfile.cs": 74,
+    "src/Hexalith.Platform.Composition/PlatformGatewayConfiguration.cs": 28,
+    "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": 270,
+    "src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs": 92,
+    "src/Hexalith.Platform.Composition/PlatformServerBinding.cs": 16,
+    "src/Hexalith.Platform.Composition/PlatformMappedArtifact.cs": 56,
+    "src/Hexalith.Platform.Composition/PlatformRedisHealthCheck.cs": 49,
+    "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": 13,
+    "src/Hexalith.Platform.Composition/PlatformGatewayStartup.cs": 25,
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": 383,
+    "src/Hexalith.Platform.Composition/PlatformLocalProfile.cs": 137,
+    "src/Hexalith.Platform.Composition/PlatformServerAnnotation.cs": 6,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupTasks.cs": 254,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDownResult.cs": 15,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPrerequisiteResult.cs": 21,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ImmutableArrayJsonConverter.cs": 53,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs": 110,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupClock.cs": 31,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleInvocationState.cs": 27,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunRecord.cs": 21,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs": 51,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs": 95,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs": 241,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunUiMarker.cs": 14,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEnvironment.cs": 48,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/RuntimePrerequisiteCheck.cs": 15,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs": 145,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDocumentStore.cs": 104,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileClient.cs": 193,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileNativeTests.cs": 20,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleInvocationStateStore.cs": 143,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlan.cs": 105,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestRunRecord.cs": 51,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestReportRedactor.cs": 79,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": 410,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupRequest.cs": 126,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunStatus.cs": 24,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": 1505,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupDeadlineResolver.cs": 136,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionLaunchConfiguration.cs": 23,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionBudget.cs": 46,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupTask.cs": 26,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlanFactory.cs": 135,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileEvidence.cs": 38,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileExecutor.cs": 318,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionSelectedTestGate.cs": 236,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadinessProgress.cs": 28,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPortAllocator.cs": 174,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileStore.cs": 97,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessResult.cs": 22,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionTestObservationProvider.cs": 16,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionTokenFactory.cs": 68,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionSigningKey.cs": 24,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionControlResponse.cs": 23,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs": 270,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": 1600,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResources.cs": 20,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDaprComponentRenderer.cs": 114,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEffectiveDeadline.cs": 23,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupReport.cs": 35,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartResult.cs": 25,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs": 24,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunState.cs": 70,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPorts.cs": 92,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileDefinition.cs": 23,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionToolchainPins.cs": 35,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDaprSidecarPorts.cs": 15,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleRuntimePlan.cs": 48,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs": 342,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRuntimeArtifactVerifier.cs": 117,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionTestObservation.cs": 59,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileLoader.cs": 104,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPrerequisiteProbe.cs": 279,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs": 158,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWorkspace.cs": 67,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDiagnosticMirror.cs": 77,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": 62,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionControlRequest.cs": 24,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunSession.cs": 57,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/RuntimePrerequisiteGate.cs": 44,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceReadiness.cs": 21,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupFailure.cs": 40,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs": 315,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": 127,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs": 129,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileModule.cs": 23,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleInvocationCommand.cs": 24,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PackagedHostProject.cs": 71,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunModule.cs": 15,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAspireHostPaths.cs": 185,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionTokenRequest.cs": 23,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceController.cs": 76,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunStateStore.cs": 121,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleRuntimeModule.cs": 15,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformHostingInventory.cs": 75,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs": 771,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformVersionCatalog.cs": 134,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs": 246,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidationResult.cs": 17,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs": 478,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidationResult.cs": 21,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformPins.cs": 22,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionRow.cs": 13,
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformModuleDeclaration.cs": 19
+  },
+  "dependency_edges": {
+    "src/Hexalith.Platform.Secrets.Inventory/Hexalith.Platform.Secrets.Inventory.csproj": [
+      "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj"
+    ],
+    "src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj": [
+      "../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+      "../Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj"
+    ],
+    "src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj": [
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj"
+    ],
+    "src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj": [
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj"
+    ],
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": [
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+      "$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+      "../Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj",
+      "../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj"
+    ],
+    "src/Hexalith.Platform.Secrets.Qualification.Enrollment/Hexalith.Platform.Secrets.Qualification.Enrollment.csproj": [
+      "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj"
+    ],
+    "src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj": [
+      "../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj"
+    ],
+    "src/Hexalith.Platform.Secrets.Qualification.Observer/Hexalith.Platform.Secrets.Qualification.Observer.csproj": [
+      "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj"
+    ],
+    "src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj": [
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj"
+    ],
+    "src/Hexalith.Platform.Secrets.Qualification.Executor/Hexalith.Platform.Secrets.Qualification.Executor.csproj": [
+      "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj"
+    ],
+    "src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj": [
+      "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj",
+      "../Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj",
+      "$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj"
+    ],
+    "src/Hexalith.Platform.TenantRegistry.Host/Hexalith.Platform.TenantRegistry.Host.csproj": [],
+    "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj": [
+      "../Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj"
+    ]
+  },
+  "exact_duplicate_blocks": [
+    {
+      "locations": [
+        [
+          "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionWriterProtocolCutover.cs",
+          2
+        ],
+        [
+          "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PersistedProfileClient.cs",
+          2
+        ]
+      ],
+      "sample": "// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.\n// Licensed under the MIT license. See LICENSE file in the project root for full license "
+    }
+  ]
+}

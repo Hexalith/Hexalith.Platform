@@ -1,0 +1,29 @@
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [FAIL]
+      Shouldly.ShouldAssertException : result.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Traceback (most recent call last):
+        File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 25, in <module>
+          assert subprocess.check_output([str(dapr_home / '.dapr/bin/daprd'), '--version'], text=True).strip() == runtime_version
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      AssertionError
+       Evidence: /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-1-retro-2026-10-22/dapr-security
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(105,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RunLiveDaprSecurityFixtureAsync(Boolean timesheetsOnly)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '211d382a1ff4a24fd016a76b49168f941d1950c68ee32767f822d90ba49c07c0')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.866s

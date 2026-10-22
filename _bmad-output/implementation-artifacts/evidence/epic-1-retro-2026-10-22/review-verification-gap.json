@@ -1,0 +1,22 @@
+[
+  {
+    "lens": "verification-gap",
+    "location": "references/Hexalith.Parties/Directory.Packages.props:6-13",
+    "trigger_condition": "The reference module restores sibling/ancestor catalog selection while its static kit tests use synthetic workspaces.",
+    "guard_snippet": "Resolve the existing owner-led catalog fallback item and gate relevant adoption rows on the actual pinned consumer.",
+    "potential_consequence": "Reference adoption can regress without the model and synthetic kit tests detecting it.",
+    "gap_shape": "missing-adoption-gap",
+    "consumer": "The Parties reference module enrolled by Story 1.12.",
+    "evidence": "evidence/1-13/README.md:31-36; deferred-work.md:993-998; fresh current-parties-adoption.json confirms the failing dependency-selectors row."
+  },
+  {
+    "lens": "verification-gap",
+    "location": "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json:425-430",
+    "trigger_condition": "The local Parties readiness grant has no reconciled scope against the Tenants deployed receiver ACL.",
+    "guard_snippet": "Owner decides local-only versus deployed grant, then aligns declaration scope, receiver ACL and tests.",
+    "potential_consequence": "Local and deployed contracts diverge while both existing test suites preserve different policies.",
+    "gap_shape": "missing-adoption-gap",
+    "consumer": "Tenants deploy/dapr/accesscontrol.tenants.yaml:22-45.",
+    "evidence": "EventPublicationConfigurationTests.cs:435-454; PartiesAdoptionTests.cs:127-131; deferred-work.md:1000-1005."
+  }
+]
