@@ -523,3 +523,21 @@ decryption, infrastructure mutation, signing, publication, Git staging/commit/
 push or dependency update ran. Original production tasks stay pending:
 **4.27 in progress, 4.1 operational gate closed, Timesheets 3.6 in progress and
 release FAIL**. The offline checklist can complete without accepting retirement.
+
+
+## Current prerequisite reconciliation — 2026-10-22
+
+The [current operator handoff](../../eng/cluster-management/NEXT-OPERATOR-ACTION.md#current-prerequisite-reconciliation--2026-10-22)
+reconciles later unsigned RID `20261017t143202z`, expired at the unchanged
+**2026-10-18T14:32:02Z** ceiling, the disclosed three-file source-binding drift
+and October 17's owner documentary self-review direction. Earlier absence/
+reviewer summaries remain dated history. Current source/authority/custody,
+provider/readback and qualified capture/restore/cleanup adapter facts still
+precede an exact operational bundle and approval, then fresh accepted signed
+4.0 recovery. No live recovery action is ready for final approval. The
+[unsigned local reconciliation receipt](evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/verification.json)
+binds checked hashes, expiry and preservation under HEAD
+`dcb01b1bcbcfe678781674841697de383f25165d`. No operational command, old helper,
+unchanged suite, new recovery allocation or timestamp change occurred. Original
+production acceptance remains pending: **4.27 in-progress, 4.1 closed and
+Timesheets 3.6 open/FAIL**.

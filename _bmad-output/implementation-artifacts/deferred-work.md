@@ -1064,3 +1064,10 @@
   summary: Run the Platform canonical/Builds mirror schema parity unittest automatically.
   evidence: `tests/contracts/test_test_environment_contract_mirrors.py` only runs manually with `-s tests/contracts`. Plain `python3 -m unittest discover -s tests` finds zero tests because there is no `__init__.py`, and Platform has no workflow or script that invokes it. A Builds-only mirror edit or a Platform-only canonical edit would diverge unnoticed. Wire it into the contract verification script once one owns `docs/contracts`.
   status: open
+
+## Deferred from: code review of spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md (2026-10-22)
+
+- source_spec: `spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Scope configuration inputs and secrets per server instead of per module.
+  evidence: `runtime.extensions[].configurationInputs` is module-scoped, so `PlatformHostedPublishing.Describe` and `PlatformLocalProfile.Bind` give every enabled server the full list. Each of the three Memories workloads gets 48 inputs, including `Conversation:ProviderApiKey` and the JWT signing key; `tenants-api` gets every Tenants domain secret. This is pre-existing declaration shape, and story 4.5 forbids altering module declarations. It needs a declaration-contract change before real staging Secrets bind, for least-privilege exposure.
+  status: open

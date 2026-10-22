@@ -750,3 +750,49 @@ decryption, infrastructure mutation, signing, publication, Git staging/commit/
 push or dependency update ran. Original production tasks stay pending:
 **4.27 in progress, 4.1 operational gate closed, Timesheets 3.6 in progress and
 release FAIL**. The offline checklist can complete without accepting retirement.
+
+
+## Current prerequisite reconciliation — 2026-10-22
+
+Completed only local reconciliation of this spec's existing offline handoff
+with the later October 17 preparation and owner documentary direction. The
+[current operator handoff](../../eng/cluster-management/NEXT-OPERATOR-ACTION.md#current-prerequisite-reconciliation--2026-10-22)
+records unsigned RID `20261017t143202z`, its unchanged exclusive expiry
+**2026-10-18T14:32:02Z**, three disclosed corrected-source binding differences
+and permitted owner self-review. It replaces no historical approval/failure,
+receipt, signed original, date or frozen intent. No old helper or verifier was
+executed, source binding resealed, unchanged suite rerun or recovery RID allocated.
+
+The [unsigned local receipt](evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/verification.json)
+records actual checked-byte/expiry/preservation limits and full current HEAD
+`dcb01b1bcbcfe678781674841697de383f25165d`, separately from the frozen baseline.
+Current source/authority/custody/provider facts and qualified recovery adapters
+remain the first technical prerequisites to an exact bounded operational bundle
+and approval; fresh accepted signed 4.0 recovery and separately covered 4.1
+recovery/independent access still precede retirement. This appendix opens no
+operational scope and completes no original production task. **4.27 remains
+in-progress, 4.1's operational gate closed and Timesheets 3.6 open/FAIL**;
+preservation is limited to explicitly checked files and this continuation made
+no writes to unrelated edits. Builds was observed through Git status only;
+no content-integrity claim is made for its dirty submodule. All later gates
+and default-deny providers remain unchanged.
+
+### Review Triage Log — 2026-10-22 prerequisite reconciliation
+
+The review covers this continuation's five document appends and unsigned
+receipt. The retained 66,687,410-byte legacy-baseline diff was not re-reviewed
+for code or runtime acceptance. Root verified these classifications:
+
+| Finding | Verdict | Route and correction |
+| --- | --- | --- |
+| Blind 1 | medium | patch: state original policy-signature authentication and independent immutable policy/signature readback before capture. |
+| Blind 2 | low | patch: state future fresh RID allocation and current identity/policy/tool rebinding while retaining the expired candidate unchanged. |
+| Blind 3 | low | patch: limit preservation to checked bytes and no writes by this continuation; Builds status supplies no content-integrity proof. |
+| Blind 4 | low | patch: add exact observed paths and retained/observed byte lengths and hashes to a separate supporting receipt. |
+| Blind 5 | low | patch: attribute actual local audit command, source, interpreter and exit result; distinguish original execution from new checks. |
+
+Edge Case Hunter returned `[]`; Verification Gap Reviewer found no gaps.
+No survivors are deferred and frozen intent is unchanged. Status remains
+`in-progress`. The sealed original receipt stays historical and unchanged;
+the [supporting review verification](evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/review-verification.json)
+binds corrected final document hashes.

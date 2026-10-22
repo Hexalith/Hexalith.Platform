@@ -844,3 +844,60 @@ decryption, infrastructure mutation, signing, publication, Git staging/commit/
 push or dependency update ran. Original production tasks stay pending:
 **4.27 in progress, 4.1 operational gate closed, Timesheets 3.6 in progress and
 release FAIL**. The offline checklist can complete without accepting retirement.
+
+
+## Current prerequisite reconciliation — 2026-10-22
+
+The later [October 17 preparation](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t143112z-fresh-recovery-prerequisite/README.md)
+allocated unsigned RID `20261017t143202z`. Its unchanged exclusive preparation
+ceiling is **2026-10-18T14:32:02Z**; it is expired at this checkpoint. Earlier
+statements that no replacement was allocated describe October 15 only. The
+accepted historical recovery `20261014t112353z` still expired at
+**2026-10-15T11:40:42Z**. Neither preparation nor the October 31 window extends
+recovery freshness.
+
+The [October 17 owner direction](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t093206z-sole-owner-documentary-policy/sole-owner-policy.json)
+permits owner self-review of project documents. No distinct human documentary
+reviewer, new personal certificate or new signing key is required for that
+review. Current PKI, grants/revocations, protected credential custody, provider
+rights, independent recovery access and runtime outcomes still require their
+actual evidence. Existing dates, roles and scoped decisions are preserved.
+
+Local hash/length checks match the retained October 17 packet manifest and all
+five payloads. Its twelve complete-prerequisite categories and all operational
+results remain unestablished/null. The [separate shape-fix relation](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t144602z-fresh-prerequisite-shape-fix/README.md)
+correctly discloses that three current source files differ from the packet's
+original bindings; their current hashes match that correction record. The old
+consistency pass certifies neither this corrected revision nor current
+recovery. The original verifier refusal remains exit 1. No verifier was replayed,
+packet resealed, timestamp extended or replacement recovery allocated here.
+
+**Next technical prerequisite:** resolve current source/authority/custody,
+provider protection/readback and qualified capture/restore/cleanup adapter
+facts, then prepare one concrete bounded 4.0 command bundle with exact current
+source/target/tool bytes, stop behavior and source-resume/target-cleanup actions
+for the owner's exact operational approval. No live action is ready for that
+approval yet. The [offline preparation contract](../recovery-preparation/FRESH-PREREQUISITE.md)
+supplies no dispatcher. An expired candidate cannot select an old executor.
+For the next separately covered attempt, allocate a new RID and rebind its
+current source/target identities, policy and exact current tools; retain expired
+RID `20261017t143202z` unchanged. No allocation occurs in this continuation.
+Before any capture, authenticate the exact new policy's original Administrator
+signature and independently read back its immutable policy/signature versions
+with matching bytes and hashes. Approval or a local signature alone cannot
+open that pre-capture gate.
+Fresh actual captures, isolated restores, cleanup/resume, authentic signed
+records, independent immutable readbacks and final non-dry/M1/M2 acceptance
+must precede separately covered 4.1 recovery and retirement gates.
+
+The [unsigned local reconciliation receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/verification.json)
+records exact checked bytes, expiry and preservation limits under current HEAD
+`dcb01b1bcbcfe678781674841697de383f25165d`. Existing execution/procedure/maintenance
+preservation is limited to the explicitly checked files. This continuation
+made no writes to unrelated workspace files. Builds was observed through Git
+status only; its dirty submodule contents have no integrity claim here.
+The [supporting review verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/review-verification.json)
+binds the corrected documents and exact local audit provenance separately.
+Only local reads and documentation/audit writes occurred; unchanged suites and
+fixtures were not rerun. **4.27 remains in-progress, 4.1's operational gate
+closed and Timesheets 3.6 open/FAIL.**

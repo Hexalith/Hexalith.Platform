@@ -1,0 +1,200 @@
+{
+  "checks": {
+    "appendedLinksAndFragmentsChecked": 15,
+    "buildsContentIntegrityClaimed": false,
+    "explicitPreCapturePolicySignatureAndIndependentReadbackGate": true,
+    "futureFreshAllocationAndRebindingStatedWithoutAllocation": true,
+    "preservationLimitedToCheckedFilesAndNoContinuationWrites": true,
+    "scopedGitDiffCheckExitCode": 0
+  },
+  "correctedFinalDocuments": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "correctedDocumentBytes": 53890,
+      "correctedDocumentSha256": "f3755ab9b9085a5befd3e6c71c6aac842c290899046ea7d3e5c24bb5581549ff",
+      "originalReceiptDocumentSha256": "f3755ab9b9085a5befd3e6c71c6aac842c290899046ea7d3e5c24bb5581549ff"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "correctedDocumentBytes": 119218,
+      "correctedDocumentSha256": "f9ca8beeb88d0093ab64690df502fd6d9d7539f5ab107b82ea5a484a81b74d85",
+      "originalReceiptDocumentSha256": "542316e40b29e580cf03b794909b29cef96cf080b436731a127736956af06415"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "correctedDocumentBytes": 67702,
+      "correctedDocumentSha256": "fdb6a2b17ef3a67236f54aebc4d9edc81afa05b8d9a8194e1e6c15f261b97e76",
+      "originalReceiptDocumentSha256": "327c86b3dfdadd82d37ffeb5f9daae2f3ea847fb7c889ebf16dd29509cdc38ad"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "correctedDocumentBytes": 53494,
+      "correctedDocumentSha256": "8b57f3e1377938d9afc316bd576dfb831f92b5d18fa3324c4a0c095b3d3c340d",
+      "originalReceiptDocumentSha256": "8b57f3e1377938d9afc316bd576dfb831f92b5d18fa3324c4a0c095b3d3c340d"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "correctedDocumentBytes": 50410,
+      "correctedDocumentSha256": "6d08e5e0d25be8fec590ad84c58bf02eb9356af743b6598cd7aedda5b2a9e525",
+      "originalReceiptDocumentSha256": "6d08e5e0d25be8fec590ad84c58bf02eb9356af743b6598cd7aedda5b2a9e525"
+    }
+  },
+  "kind": "hexalith.prerequisite-reconciliation-review-verification",
+  "limits": [
+    "Exact source observations retain the Timesheets checkout paths; they are not observations of the Platform root copies.",
+    "No content audit of the dirty Builds submodule; original observation was status only and this continuation made no writes there.",
+    "Original test/signature/provider observations were not replayed and historical expiry is unchanged."
+  ],
+  "localRecordComparisons": [
+    {
+      "matchesRetainedBytesAndHash": true,
+      "observedBytes": 192074,
+      "observedHashMatchesOriginalAudit": true,
+      "observedSha256": "8a4b47d1a0cb00ca43d30ba9fef5d34b753dd60100135ec22b4800bfc3c989fe",
+      "observedSourcePath": "/home/administrator/projects/hexalith/timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261017t142841z-deployment-authority-runtime/native-observation.json",
+      "platformSourcesObservedFromTimesheetsReference": false,
+      "resolvedObservedSourcePath": "/home/administrator/projects/hexalith/timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261017t142841z-deployment-authority-runtime/native-observation.json",
+      "retainedBytes": 192074,
+      "retainedSha256": "8a4b47d1a0cb00ca43d30ba9fef5d34b753dd60100135ec22b4800bfc3c989fe",
+      "retainedSourcePath": "/home/administrator/projects/hexalith/timesheets/_bmad-output/implementation-artifacts/evidence/3-6/20261017t142841z-deployment-authority-runtime/native-observation.json",
+      "role": "native-environment",
+      "sourceCheckoutRoot": "/home/administrator/projects/hexalith/timesheets"
+    },
+    {
+      "matchesRetainedBytesAndHash": true,
+      "observedBytes": 4279,
+      "observedHashMatchesOriginalAudit": true,
+      "observedSha256": "5f59192495975cdb260f15517713a4c7f73cde693a50886bafdbe59aad04ec0a",
+      "observedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.EventStore/docs/evidence/story-3-6/20261017t142649z-production-authority-preparation/current-rights.json",
+      "platformSourcesObservedFromTimesheetsReference": false,
+      "resolvedObservedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.EventStore/docs/evidence/story-3-6/20261017t142649z-production-authority-preparation/current-rights.json",
+      "retainedBytes": 4279,
+      "retainedSha256": "5f59192495975cdb260f15517713a4c7f73cde693a50886bafdbe59aad04ec0a",
+      "retainedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.EventStore/docs/evidence/story-3-6/20261017t142649z-production-authority-preparation/current-rights.json",
+      "role": "current-rights",
+      "sourceCheckoutRoot": "/home/administrator/projects/hexalith/timesheets"
+    },
+    {
+      "matchesRetainedBytesAndHash": false,
+      "observedBytes": 19957,
+      "observedHashMatchesOriginalAudit": true,
+      "observedSha256": "ced52b51b6a44ede182a42b8e09a164354b6b7f2575211615ea097d2d6724266",
+      "observedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/fresh_prerequisite.py",
+      "platformSourcesObservedFromTimesheetsReference": true,
+      "resolvedObservedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/fresh_prerequisite.py",
+      "retainedBytes": 19387,
+      "retainedSha256": "35d27769e89b657e1cb7b0f140bbf58e34a9de61b57833de503afdcdc7642629",
+      "retainedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/fresh_prerequisite.py",
+      "role": "preparation-source",
+      "sourceCheckoutRoot": "/home/administrator/projects/hexalith/timesheets"
+    },
+    {
+      "matchesRetainedBytesAndHash": false,
+      "observedBytes": 13380,
+      "observedHashMatchesOriginalAudit": true,
+      "observedSha256": "c551a27914cd451b1c876079e23f2cfd95b8738a30f281597880d9a88b26df59",
+      "observedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/test_fresh_prerequisite.py",
+      "platformSourcesObservedFromTimesheetsReference": true,
+      "resolvedObservedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/test_fresh_prerequisite.py",
+      "retainedBytes": 9781,
+      "retainedSha256": "5f92ce034c7a70664c4f58e62e89d819c3ee511ceb4ba963632b9ab6a2c835c6",
+      "retainedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/test_fresh_prerequisite.py",
+      "role": "preparation-tests",
+      "sourceCheckoutRoot": "/home/administrator/projects/hexalith/timesheets"
+    },
+    {
+      "matchesRetainedBytesAndHash": false,
+      "observedBytes": 4322,
+      "observedHashMatchesOriginalAudit": true,
+      "observedSha256": "d5979d5db8202991e40b111462f405ce4f4629527d2fd2d04bfb722180b25f0c",
+      "observedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/FRESH-PREREQUISITE.md",
+      "platformSourcesObservedFromTimesheetsReference": true,
+      "resolvedObservedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/FRESH-PREREQUISITE.md",
+      "retainedBytes": 4244,
+      "retainedSha256": "cef13444d5da96a1a6ed3561992fb6ae836482e77ad0dc1810107b6b98e026be",
+      "retainedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/eng/recovery-preparation/FRESH-PREREQUISITE.md",
+      "role": "preparation-contract",
+      "sourceCheckoutRoot": "/home/administrator/projects/hexalith/timesheets"
+    },
+    {
+      "matchesRetainedBytesAndHash": true,
+      "observedBytes": 1835,
+      "observedHashMatchesOriginalAudit": true,
+      "observedSha256": "e1561a9a54e6b930787182fad8c3c0b3689cb2d4a14d022fb184e9ce6f6483f4",
+      "observedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t143112z-fresh-recovery-prerequisite/source-and-tests.json",
+      "platformSourcesObservedFromTimesheetsReference": true,
+      "resolvedObservedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t143112z-fresh-recovery-prerequisite/source-and-tests.json",
+      "retainedBytes": 1835,
+      "retainedSha256": "e1561a9a54e6b930787182fad8c3c0b3689cb2d4a14d022fb184e9ce6f6483f4",
+      "retainedSourcePath": "/home/administrator/projects/hexalith/timesheets/references/Hexalith.Platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t143112z-fresh-recovery-prerequisite/source-and-tests.json",
+      "role": "source-and-test-observation",
+      "sourceCheckoutRoot": "/home/administrator/projects/hexalith/timesheets"
+    }
+  ],
+  "newLocalAuditExecution": {
+    "actualExitCode": 0,
+    "checksCompleted": true,
+    "command": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261022t200517z-s427-prerequisite-review-verification/audit_review.py"
+    ],
+    "executingInterpreterPath": "/usr/bin/python3.14",
+    "exitResultSource": "exec_command returned exit_code 0 for the exact listed command after check-results.json was written.",
+    "interpreterSha256": "52e0a13e60a981d8c4b6478be2ba5176f69da07948a056bf49cf6f077e30cb41",
+    "interpreterVersion": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+    "privateSourcePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261022t200517z-s427-prerequisite-review-verification/audit_review.py",
+    "privateSourceSha256": "e6341035153be7e0df39b24b123b824f851a0dbbb7b8987691d86e8a6cd5adf9",
+    "workingDirectory": "/home/administrator/projects/hexalith/platform"
+  },
+  "observedAt": "2026-10-22T20:06:19.143055+00:00",
+  "operationalGate": "closed",
+  "operations": {
+    "credentialLoading": false,
+    "gitStagingCommitPush": false,
+    "historicalHelperExecution": false,
+    "recoveryAllocation": false,
+    "remoteRequests": 0,
+    "signing": false,
+    "testSuitesRun": []
+  },
+  "originalAuditExecution": {
+    "command": [
+      "python3",
+      "-I",
+      "-S",
+      "-B",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261022t195505z-s427-prerequisite-reconciliation/audit_local.py"
+    ],
+    "currentResolutionOfInvokedInterpreter": "/usr/bin/python3.14",
+    "currentResolutionSha256": "52e0a13e60a981d8c4b6478be2ba5176f69da07948a056bf49cf6f077e30cb41",
+    "executionFactSource": "Actual exec_command result in the original implementation turn; not a new execution.",
+    "exitCode": 0,
+    "identityLimit": "The resolved interpreter and digest are measured by this new check; they are not a historical binary-integrity attestation.",
+    "interpreterHistoricalBinaryDigestCapturedAtOriginalRun": false,
+    "interpreterNameAsInvoked": "python3",
+    "privateSourcePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261022t195505z-s427-prerequisite-reconciliation/audit_local.py",
+    "privateSourceSha256": "50c10589e1c9d57b943aac709eb8cd268eb1627ec31b2f2ff405c0eea4cefad0",
+    "workingDirectory": "/home/administrator/projects/hexalith/platform"
+  },
+  "originalReceipt": {
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261022t195505z-s427-prerequisite-reconciliation/verification.json",
+    "sha256": "34d780372a7a2163d12c56543bff558af988f3a72620d79e34d81a49d39a8b8a",
+    "unchanged": true
+  },
+  "retainedLocalRecordInventory": {
+    "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261017t143202z/prerequisite.json",
+    "sha256": "9b0d5040f1c43d562469bcb8cb4b6dfeb9769fd11b43499ee3304a22b013fbd4"
+  },
+  "reviewCheckCustody": {
+    "checksumManifestSha256": "d648437257ebf6a6a12ca0217734e41aa5a93647e20f9acfc49ade8887e5786a",
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261022t200517z-s427-prerequisite-review-verification",
+    "sealedFiles": 2
+  },
+  "schemaVersion": 1,
+  "sealedOriginalCustody": {
+    "auditRerun": false,
+    "checksumInventoryMatches": true,
+    "filesRewritten": false,
+    "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261022t195505z-s427-prerequisite-reconciliation"
+  },
+  "story427": "in-progress",
+  "timesheets36": "open/FAIL"
+}

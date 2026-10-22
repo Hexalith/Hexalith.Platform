@@ -1,0 +1,222 @@
+{
+  "checkpointId": "20261022t195505z-s427-prerequisite-reconciliation",
+  "correctedSourceRelation": {
+    "eng/recovery-preparation/FRESH-PREREQUISITE.md": {
+      "bytes": 4322,
+      "matchesCorrectedRevision": true,
+      "matchesOriginalPacketSource": false,
+      "originalPacketSourceSha256": "cef13444d5da96a1a6ed3561992fb6ae836482e77ad0dc1810107b6b98e026be",
+      "sha256": "d5979d5db8202991e40b111462f405ce4f4629527d2fd2d04bfb722180b25f0c"
+    },
+    "eng/recovery-preparation/fresh_prerequisite.py": {
+      "bytes": 19957,
+      "matchesCorrectedRevision": true,
+      "matchesOriginalPacketSource": false,
+      "originalPacketSourceSha256": "35d27769e89b657e1cb7b0f140bbf58e34a9de61b57833de503afdcdc7642629",
+      "sha256": "ced52b51b6a44ede182a42b8e09a164354b6b7f2575211615ea097d2d6724266"
+    },
+    "eng/recovery-preparation/test_fresh_prerequisite.py": {
+      "bytes": 13380,
+      "matchesCorrectedRevision": true,
+      "matchesOriginalPacketSource": false,
+      "originalPacketSourceSha256": "5f92ce034c7a70664c4f58e62e89d819c3ee511ceb4ba963632b9ab6a2c835c6",
+      "sha256": "c551a27914cd451b1c876079e23f2cfd95b8738a30f281597880d9a88b26df59"
+    }
+  },
+  "currentHead": "dcb01b1bcbcfe678781674841697de383f25165d",
+  "documentaryReview": {
+    "distinctHumanReviewerRequired": false,
+    "independentIdentityOrOperationalAuthorityClaimed": false,
+    "matchesPrivateRetainedOriginal": true,
+    "ownerPolicy": "_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261017t093206z-sole-owner-documentary-policy/sole-owner-policy.json",
+    "ownerSelfReviewPermitted": true,
+    "sha256": "d3c654d2e9c9f91a236fde5751f28a29ff02b8580dbb029cfc4fdd2e7b0bcbd7"
+  },
+  "documents": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "afterSha256": "f3755ab9b9085a5befd3e6c71c6aac842c290899046ea7d3e5c24bb5581549ff",
+      "beforeSha256": "04beec5f4ef10e714f65b46b7bfbc0c24e8ad1164747289f2051149c1c299bdc"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "afterSha256": "542316e40b29e580cf03b794909b29cef96cf080b436731a127736956af06415",
+      "beforeSha256": "04a8db3d4ddd737c4fa9c6092554b2ffaf5f6206af005b1e2301e7d96accc1b7"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "afterSha256": "327c86b3dfdadd82d37ffeb5f9daae2f3ea847fb7c889ebf16dd29509cdc38ad",
+      "beforeSha256": "f135a7f5a4b85cf1180ded1ba9d80d0e0166dc525e1fc0832579534a0cd4fdc0"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "afterSha256": "8b57f3e1377938d9afc316bd576dfb831f92b5d18fa3324c4a0c095b3d3c340d",
+      "beforeSha256": "e13d8e1fef0f15b81b19830f54cd1d77c3fd8f08411283077cc01cacb61f4fb3"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "afterSha256": "6d08e5e0d25be8fec590ad84c58bf02eb9356af743b6598cd7aedda5b2a9e525",
+      "beforeSha256": "331123fccc86d5e5bd7f8cb47043acfe403efdac0b44ed6dbe10280075da0075"
+    }
+  },
+  "historicalScripts": {
+    "story41-capture-recovery.py": {
+      "matchesRetainedLineage": true,
+      "parsedWithoutExecution": true,
+      "sha256": "1f122106adf8b1423f255d1aa2212c00d14173488b1d8edcdda8f4c2f06da1ce"
+    },
+    "story41-etcd-recovery-test.py": {
+      "matchesRetainedLineage": true,
+      "parsedWithoutExecution": true,
+      "sha256": "3b6e2a935e5b2d05527ac5bbce276488eac718a66f1c622f8e59ff7a0028d138"
+    },
+    "story41-node-recovery-test.py": {
+      "matchesRetainedLineage": true,
+      "parsedWithoutExecution": true,
+      "sha256": "a8a1edb0d2bccda33abb5b2b3315330faccb8bb155644f81f1cae20bdee75c2a"
+    },
+    "story41-sign-preparation.py": {
+      "matchesRetainedLineage": true,
+      "parsedWithoutExecution": true,
+      "sha256": "1b7fc9655483449a804097fc36d4e884adfd2a1f77cb7695d10e946638bba538"
+    }
+  },
+  "kind": "hexalith.local-prerequisite-reconciliation",
+  "laterOfflinePreparation": {
+    "boundLocalRecordComparisons": [
+      {
+        "matchesOriginal": true,
+        "observedSha256": "8a4b47d1a0cb00ca43d30ba9fef5d34b753dd60100135ec22b4800bfc3c989fe",
+        "retainedSha256": "8a4b47d1a0cb00ca43d30ba9fef5d34b753dd60100135ec22b4800bfc3c989fe",
+        "role": "native-environment"
+      },
+      {
+        "matchesOriginal": true,
+        "observedSha256": "5f59192495975cdb260f15517713a4c7f73cde693a50886bafdbe59aad04ec0a",
+        "retainedSha256": "5f59192495975cdb260f15517713a4c7f73cde693a50886bafdbe59aad04ec0a",
+        "role": "current-rights"
+      },
+      {
+        "matchesOriginal": false,
+        "observedSha256": "ced52b51b6a44ede182a42b8e09a164354b6b7f2575211615ea097d2d6724266",
+        "retainedSha256": "35d27769e89b657e1cb7b0f140bbf58e34a9de61b57833de503afdcdc7642629",
+        "role": "preparation-source"
+      },
+      {
+        "matchesOriginal": false,
+        "observedSha256": "c551a27914cd451b1c876079e23f2cfd95b8738a30f281597880d9a88b26df59",
+        "retainedSha256": "5f92ce034c7a70664c4f58e62e89d819c3ee511ceb4ba963632b9ab6a2c835c6",
+        "role": "preparation-tests"
+      },
+      {
+        "matchesOriginal": false,
+        "observedSha256": "d5979d5db8202991e40b111462f405ce4f4629527d2fd2d04bfb722180b25f0c",
+        "retainedSha256": "cef13444d5da96a1a6ed3561992fb6ae836482e77ad0dc1810107b6b98e026be",
+        "role": "preparation-contract"
+      },
+      {
+        "matchesOriginal": true,
+        "observedSha256": "e1561a9a54e6b930787182fad8c3c0b3689cb2d4a14d022fb184e9ce6f6483f4",
+        "retainedSha256": "e1561a9a54e6b930787182fad8c3c0b3689cb2d4a14d022fb184e9ce6f6483f4",
+        "role": "source-and-test-observation"
+      }
+    ],
+    "completePrerequisiteCategoriesUnestablished": 12,
+    "expiredAtObservedClock": true,
+    "expiresAtExclusive": "2026-10-18T14:32:02Z",
+    "manifestAndFivePayloadHashesAndLengthsMatch": true,
+    "oldOrCurrentVerifierExecuted": false,
+    "operationalResultsAllNull": true,
+    "originalVerifierExitCode": 1,
+    "ownerOnlyCustodyChecked": true,
+    "packetRewrittenOrResealed": false,
+    "packetSha256": "d14efe6e8e82d983187416392ccc77207b446827f149caf3b45ed4b1ae90939a",
+    "payloads": {
+      "original-verifier-refusal.json": {
+        "bytes": 646,
+        "sha256": "38610efadcc9e0358a806e9178c9de75cb737079e864e5186cee21c744d6f810"
+      },
+      "owner-documentary-policy.original.json": {
+        "bytes": 4162,
+        "sha256": "d3c654d2e9c9f91a236fde5751f28a29ff02b8580dbb029cfc4fdd2e7b0bcbd7"
+      },
+      "policy.candidate.json": {
+        "bytes": 18795,
+        "sha256": "e09fb1a8619725f3f40d48d352d3342c2f602a3a2f6bda2308efe6ac7d825f8a"
+      },
+      "prerequisite.json": {
+        "bytes": 5814,
+        "sha256": "9b0d5040f1c43d562469bcb8cb4b6dfeb9769fd11b43499ee3304a22b013fbd4"
+      },
+      "prior-policy.original.json": {
+        "bytes": 18795,
+        "sha256": "a4be017625ba312ab93d76d71bbbf8433f84c08ed43d798c892a39da8939fcdd"
+      }
+    },
+    "preparedAt": "2026-10-17T14:32:02Z",
+    "replacementRecoveryAllocated": false,
+    "rid": "20261017t143202z"
+  },
+  "legacyBaseline": "54920908f15a99b48e69861baf306365353fc6df",
+  "limits": [
+    "Hashes and locally parsed declarations do not authenticate current authority or recovery.",
+    "No new signature verification, provider/cluster observation or whole-history preservation sweep.",
+    "Historical test results remain dated; no unchanged suite was rerun for prose-only changes."
+  ],
+  "mutationAuthorized": false,
+  "nextTechnicalPrerequisites": [
+    "current source/authority/custody and provider protection/readback facts",
+    "qualified exact capture/restore/cleanup adapters and bounded current command bundle",
+    "owner approval of exact operational bundle, followed by actual fresh signed 4.0 recovery acceptance",
+    "separately covered 4.1 external-etcd/node recovery and recovered independent native/break-glass proof before retirement"
+  ],
+  "observedAt": "2026-10-22T20:00:05.595541+00:00",
+  "operationalGate": "closed",
+  "operations": {
+    "captureRestoreQuiescenceCleanup": false,
+    "credentialLoading": false,
+    "decryption": false,
+    "gitStagingCommitPush": false,
+    "oldHistoricalHelperExecution": false,
+    "remoteRequests": 0,
+    "retirementUpgradeDeployment": false,
+    "signingOrPublication": false
+  },
+  "originalProductionAcceptanceCompleted": false,
+  "originalRecovery": {
+    "earliestDeadline": "2026-10-15T11:40:42Z",
+    "expiredAtObservedClock": true,
+    "expiryBasis": "policy.preparedAt",
+    "failedOriginalOidcSha256": "014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578",
+    "historicalCheckpointSha256": "e7410aeb33e7d619f9b2b09d853e58c9c67e12d334d27913954d7af93eab8f43",
+    "maximumProofAgeSeconds": 86400,
+    "preparedAt": "2026-10-14T11:40:42Z",
+    "providerReadbackPerformed": false,
+    "recordAndSignaturePairsMatchingHistoricalCheckpoint": 8,
+    "rid": "20261014t112353z",
+    "signatureAuthenticationRerun": false
+  },
+  "privateCustody": {
+    "checksumManifestSha256": "387a895cd235e0faf552460f95ed48ee0e84f2b0f4f420da743fb4058cef3f4b",
+    "directory": "/home/administrator/hexalith-retirement-investigation-evidence/20261022t195505z-s427-prerequisite-reconciliation",
+    "initialPreservationSha256": "8bb1f4c83a5f5477353ddd81813b098993d5a4f99a3f27e5f03f4ef38829c483",
+    "preAppendArchiveSha256": "95b3fa72afb1beaec95f26da8b7919abc7eccd368534a0a5d79c30097af51628",
+    "retainedFileInventorySha256": "a9e567dc7d23eb7933dfa4c34d5a288528442634973ed204ece2413f55b613c7",
+    "sealedFiles": 6
+  },
+  "recoveryCurrent": false,
+  "schemaVersion": 1,
+  "scope": "Append-only reconciliation of five existing handoff/story/spec documents; explicit local files only.",
+  "signed": false,
+  "unchangedStatus": {
+    "story41OperationalGate": "closed",
+    "story427": "in-progress",
+    "timesheets36": "open/FAIL"
+  },
+  "verification": {
+    "appendedRelativeLinksAndFragmentsResolved": 13,
+    "buildsSubmoduleDirtyStatusUnchanged": true,
+    "existingFilesUnchanged": 96,
+    "firstLocalLinkCheckStopPreserved": true,
+    "fivePriorDocumentBytePrefixesPreserved": true,
+    "gitDiffCheckExitCode": 0,
+    "newTestsAdded": false,
+    "storySpecAndSprintRemainInProgress": true,
+    "unchangedTestOrFixtureSuitesRerun": false
+  }
+}
