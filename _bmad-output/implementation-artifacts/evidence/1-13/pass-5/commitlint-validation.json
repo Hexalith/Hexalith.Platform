@@ -1,0 +1,21 @@
+[
+  {
+    "repository": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/f8650afc-99db-4032-bdd5-326099def671/scratchpad/builds-pass5",
+    "command": [
+      "node_modules/.bin/commitlint",
+      "--edit",
+      "pass5-builds-commit.txt"
+    ],
+    "version": "21.2.4",
+    "message": "fix(tool): close pass-5 enrollment audit gaps\n\nDetect quoted -property: and /property: switches and semicolon-list\nreserved overrides in dotnet commands, plus sibling paths built with\nPath.Join or joined ../Hexalith.* segments. Add regressions for padded\nand multi-line build paths and the pass-4 syntax forms. Document\nvalidate --adoption in the README.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n",
+    "exitCode": 0,
+    "setup": {
+      "command": [
+        "ln",
+        "-s",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/node_modules",
+        "node_modules"
+      ]
+    }
+  }
+]

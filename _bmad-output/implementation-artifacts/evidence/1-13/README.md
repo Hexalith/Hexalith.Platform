@@ -1,7 +1,38 @@
 # Story 1.13 — domain-module enrollment kit
 
-Status: **accepted 4.35.1 gitlink restored; owner retained remote rollback; new publication stopped**. Story remains
-**in-review**, with the final publication/pin acceptance task open.
+Status: **release of Builds `main` pending owner approval** (decision P5-D1B,
+2026-10-21). The story stays **in-review** until its final publication/pin task is
+done.
+
+## Current state — 2026-10-21
+
+| Item | Value |
+| --- | --- |
+| Accepted tool pin | `4.35.1`, `rollForward: false`; range `[4.35.1, 5.0.0-0)`; binary source `f8599224457dda99e7c0ae4870147dd51b464feb` (`v4.35.1`). [Identities](post-release-patch/release/accepted-identities.json) |
+| Platform Builds gitlink | `359fee24aeca4d9eabed4b425d4cfa2520b2adda` (unreleased). `/pushall` commit `37715f3` moved it from the pass-4 restoration `f97065c`. It does not match the pin, so `AcceptedToolPinEqualsSupportedRangeFloorAsync` and the released-tool kit case fail until the gitlink moves to the next release tag. |
+| Builds remote `main` | `359fee24aeca4d9eabed4b425d4cfa2520b2adda`. The owner's `/pushall` pushed it at 2026-10-21T17:09Z, and [CI 39641234924](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39641234924) passed. It contains integration `1ae50de` and pass-4 commits `26317ab`/`750b1a0`. Decision P5-D1B accepts this push, which supersedes the earlier retained rollback. |
+| Final pass-4 candidate | `750b1a0e739b73c48e31f3ee812d37ab7950d8c3`: full serial suite 1,483/1,486 passed, with three documented location skips ([pass 4](pass-4/README.md)). The earlier 1,459-case run covered superseded `26317ab`. |
+| Pass-5 candidate | Local commit `154010b7640ba1da23e918f26bbad9917e4767ea` on Builds branch `fix/domain-enrollment-pass-5`, built on `359fee2` and not yet pushed. Full serial suite: 1,515 total, 1,512 passed, three documented location skips. Real-module rows are unchanged ([pass 5](pass-5/README.md)). |
+| Human gates | SM-2 and hosting retirement stay pending in the owner templates. No other module is adopted or retired. |
+
+## Next steps to close the story (P5-D1B)
+
+1. Get the owner's "I approve" for the pass-5 candidate, its push to Builds `main`
+   and the gated release. NuGet publication cannot be undone.
+2. Push Builds `main` and wait for exact-source CI to pass.
+3. Dispatch the existing gated release for the next patch version, and confirm that
+   its tag resolves to the exact source.
+4. Pin that version in `.config/dotnet-tools.json` with roll-forward disabled, raise
+   the `hexalith-platform.json` floor to it (upper bound `5.0.0-0`), move the Builds
+   gitlink and checkout to its release-tag commit, and update `README.md` and guide §4.
+5. Run fresh NuGet-only human/JSON success/failure commands, both real-Parties
+   formats, the normal Platform build and every kit case, and record the canonical
+   identities.
+
+The story leaves in-review when step 5 passes with every Git state and file hash
+unchanged.
+
+## Pass-4 restoration and rollback record (historical) — 2026-10-21
 
 The owner approved the reviewed pass-3 candidate with “approve”. Approved Builds
 `af4bf9f2e4d3fd913c536a08bb0c9e8a54f9f260` was preserved as a parent of integration
@@ -10,38 +41,21 @@ The owner approved the reviewed pass-3 candidate with “approve”. Approved Bu
 started [exact-source CI 39616688160](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39616688160).
 At 14:38:46 UTC, an owner-account force-push restored remote `main` to
 `2744d549270298cfe73679f76b477a7368429006`, canceling that CI before completion.
-The owner confirmed: **“Intentional — retain the rollback”**. The integration was
-not restored and no release workflow was dispatched
+The owner then confirmed **“Intentional — retain the rollback”**
 ([owner decision](pass-3/release/owner-approval.json),
 [canceled CI](pass-3/release/ci-39616688160-cancelled.json),
 [repository activity](pass-3/release/repository-activity-after-ci-cancellation.json)).
+The owner's 17:09Z `/pushall` push later superseded that rollback (see the current state above).
 
-The published tool pin remains **4.35.1**, roll-forward disabled, with range
-**[4.35.1, 5.0.0-0)** and binary source
-`f8599224457dda99e7c0ae4870147dd51b464feb`. A concurrent `/pushall` commit
-`0523573cf1e9b0b7b7ada22d9ac050f219070a49` independently moved Platform's Builds
-gitlink to the unpublished integration `1ae50de72e0755a2a43a1b33764b6b87eecba154`.
-That concurrent commit is preserved in history. The pass-4 correction restores
-Platform's recorded Builds gitlink and checkout to the published source above in
-local commit `f97065cc31c2bdc1afd11c515298cc8f1a51380b`; the unpublished candidate and integration remain on local
-Builds branch `fix/domain-enrollment-pass-4` and its isolated worktree. No remote
-rollback was restored, release dispatched, or tool pin/support floor changed.
-Fresh verification of this restored accepted identity is recorded under [pass 4](pass-4/README.md).
-The new unpublished local Builds candidate is
-`26317ab0060fc53dc842193729a503e144d142be`, retaining both prior reviewed commits.
-Its full serial suite passes 1,459 cases (1,456 passed; zero errors/failures; three
-existing location-dependent skips). The restored accepted Platform build and all
-five kit tests pass; fresh published-package commands preserve every Git state/file
-hash. No new owner approval, upstream integration or publication is claimed.
-
-The reviewed candidate and integration remain local. Final local verification
-passed **1,420/1,420 Builds cases** and **5/5 Platform kit cases** before the
-concurrent pointer change; see [pass-3 verification and disposition](pass-3/README.md).
-A later read-only preflight on the updated real Parties checkout preserves all
-6,098 tracked hashes/status and passes workspace/dependency-selection audits
-([preflight](pass-3/release/current-parties-preflight-summary.json)). The prepared
-fresh-package harness was not executed for a new release. No other module was
-adopted or retired; human SM-2 and retirement authority remain module-owner gates.
+Concurrent `/pushall` commit `0523573cf1e9b0b7b7ada22d9ac050f219070a49` had moved
+Platform's Builds gitlink to `1ae50de`. Pass-4 commit
+`f97065cc31c2bdc1afd11c515298cc8f1a51380b` restored the gitlink to `f8599224`.
+`/pushall` commit `37715f3` then moved it again, to `359fee2`. Fresh verification of
+the restored identity is recorded under [pass 4](pass-4/README.md). Pass-3 local
+verification passed 1,420/1,420 Builds cases and 5/5 Platform kit cases
+([pass 3](pass-3/README.md)). A read-only preflight on real Parties preserved all
+6,098 tracked hashes and status
+([preflight](pass-3/release/current-parties-preflight-summary.json)).
 
 ## Previous published correction and Platform acceptance (historical) — 2026-10-21
 
@@ -148,7 +162,7 @@ Owner review, exact-source upstream CI, existing gated publication and fresh
 Platform published-pin/range-floor/release-tag-gitlink acceptance remain pending.
 Story status stays **in-review** until those explicit completion gates pass.
 
-## Initial correction verification before required review — 2026-10-21
+## Initial correction verification before required review (historical) — 2026-10-21
 
 These corrections implement the approved patch findings in the story spec. They
 have not established a new published or Platform-accepted release. No pin, support
@@ -234,11 +248,8 @@ the accepted tool entry while retaining an existing `aspirate` `9.1.0` pin. See
 
 ## Canonical identities (historical v4.35.0 snapshot)
 
-Current accepted identities are **4.35.1**, range **[4.35.1, 5.0.0-0)** and
-Builds **f8599224457dda99e7c0ae4870147dd51b464feb**; see
-[canonical accepted identities](post-release-patch/release/accepted-identities.json).
-The pass-4 action restores that published gitlink while retaining unpublished
-corrections locally; the owner-directed upstream rollback remains in effect.
+This section records the v4.35.0 identities. The current identities are in
+[Current state](#current-state--2026-10-21).
 
 - Original Platform story baseline: `3d51fed1f3d99acf36ef690f150136593298bd95`.
 - Original Builds implementation baseline / accepted release tag `v4.34.0`:
@@ -311,7 +322,7 @@ Hosting inventory completeness grants no retirement authority. Every applicable
 producer-adoption, owner-reviewed source/package/deployed parity and EventStore
 AD-22 exact-subject consumer-removal gate remains independently required.
 
-## Prior release verification — 2026-10-20
+## Prior release verification (historical) — 2026-10-20
 
 All 17 findings from three independent review passes were corrected. The targeted
 regressions passed **65/65**, with zero build warnings/errors
@@ -359,7 +370,7 @@ The failing cleanup method passed all **4/4** cases on a separate serial retry
 ([output](builds-cleanup-retry.txt)) and the final full serial run.
 The initial 99 fixture failures below did not recur in the stable snapshot.
 
-## Owner-approved candidate and gated release
+## Owner-approved v4.35.0 candidate and gated release (historical)
 
 - Builds implementation/corrections: `b6642fecff8617e1765d835e71ebde316e3f71a5`.
 - Final additional-regression candidate: `fff4a212180d8cd1c5c0759655a9bc4fb6963c45`.
@@ -394,7 +405,7 @@ at 2026-10-20T14:14:32Z. See [workflow result](release-result.json),
 [qualified package inventory](published-package-inventory.json) and
 [publisher's remote verification](release-publication-hashes.txt).
 
-## Prior v4.35.0 Platform acceptance — 2026-10-20
+## Prior v4.35.0 Platform acceptance (historical) — 2026-10-20
 
 Platform now pins `4.35.0`, disables roll-forward, sets the range floor to `4.35.0`
 and retains upper bound `5.0.0-0`. The exact Builds release-tag commit is the

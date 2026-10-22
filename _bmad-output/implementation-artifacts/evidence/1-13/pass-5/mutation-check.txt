@@ -1,0 +1,188 @@
+The '-parallel' switch has been deprecated in favor of '-parallelMode' and will be removed in the next major version
+
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.CustomBuildPropertiesCannotSelectDependencyPathsAsync(path: "Directory.Packages.props", body: "<BuildPackageProps>\n    $(MSBuildThisFileDirectory"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(1049,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.CustomBuildPropertiesCannotSelectDependencyPathsAsync(String path, String body, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.CustomBuildPropertiesCannotSelectDependencyPathsAsync(path: "Directory.Packages.props", body: "<BuildPackageProps>  ../Hexalith.Builds/Props/Dire"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(1049,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.CustomBuildPropertiesCannotSelectDependencyPathsAsync(String path, String body, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.BuildReferencesDistinguishLocalAndMappedDependenciesAsync(body: "<ProjectReference Include=\"  ../../../references/H"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(946,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.BuildReferencesDistinguishLocalAndMappedDependenciesAsync(String body, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.BuildReferencesDistinguishLocalAndMappedDependenciesAsync(body: "<Import Project=\"\n    ../../../../Hexalith.Other/H"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(946,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.BuildReferencesDistinguishLocalAndMappedDependenciesAsync(String body, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DaprAuditUsesExecutableSyntaxAsync(source: "await dapr.PublishEventAsync(@$\"pubsub\", topic, da"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : report.Rows.Single(row => row.Requirement == "dapr-subscriptions").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(428,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DaprAuditUsesExecutableSyntaxAsync(String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.sh", source: "dotnet build \"/p:UseNuGetDeps=false\"", passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.sh", source: "exec dotnet build \"-p:UseNuGetDeps=false\"", passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.sh", source: "for c in Debug; do dotnet build \"-p:UseNuGetDeps=f"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.sh", source: "if ready; then dotnet build \"-p:UseNuGetDeps=false"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.py", source: "if UseHexalithProjectReferences == False:\n    prin"···, passes: True) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.sh", source: "if [[ $UseNuGetDeps == true ]]; then echo package;"···, passes: True) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(path: "eng/check.ps1", source: "dotnet build '/property:UseHexalithProjectReferenc"···, passes: False) [FAIL]
+      Shouldly.ShouldAssertException : (await workspace.ValidateAsync().ConfigureAwait(true)).Rows.Single(row => row.Requirement == "dependency-selectors").Passed
+          should be
+      False
+          but was
+      True
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs(783,0): at Hexalith.Builds.ModuleTool.Tests.PlatformAdoptionValidationTests.DependencyProbesRequireDependencyTargetsAsync(String path, String source, Boolean passes)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '8900b49e250316020c0d5a085bde35de80e9637cca22b307cd0384aa2fefe7e0')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 225, Errors: 0, Failed: 12, Skipped: 0, Not Run: 0, Time: 158.350s

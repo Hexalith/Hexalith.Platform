@@ -163,17 +163,24 @@ are excluded from the Dapr audit. Other JSON/YAML files, including evidence JSON
 and OpenAPI YAML, are not read. In `4.35.1`, dependency-targeted existence probes
 are rejected even when immediately asserted, including
 `Directory.Exists(path).ShouldBeFalse()` and `Assert.True(File.Exists(path))`.
-This known false failure requires owner review; it must not be recorded as PASS.
+`4.35.1` also rejects any string literal assigned to a `StoreName`, `ComponentName`,
+`storeName` or `pubsubName` name even without a Dapr call, for example
+`const string StoreName = "BusinessStore";`, and treats YAML `Null`/`NULL` component
+defaults as literal names. These known false failures require owner review; they
+must not be recorded as PASS.
 Human source review must inspect unusual configuration filenames, indirection,
 unsupported languages, generated code and any constructs outside that bound.
 Passing rows cannot prove runtime behavior or replace SM-2.
 
-Pending the next owner-approved release, the local correction candidate exempts
-immediately asserted verification probes, restricts the Dapr audit to `.cs` and
+Pending the next owner-approved release, the candidate on Builds `main` exempts
+immediately asserted verification probes, flags literal component names only in a
+Dapr context, accepts `null` in any case, restricts the Dapr audit to `.cs` and
 `appsettings*` files, and requires each frozen directory to match its project stem
-(ignoring case). Further local corrections detect split-segment sibling paths,
-parent-directory imports, nested generic Dapr calls and additional script probes.
-These checks are unpublished; the accepted pin remains `4.35.1`.
+(ignoring case). It also detects sibling paths that `Path.Combine`, `Path.Join`,
+`os.path.join` or `Join-Path` builds from `..` segments, parent-directory imports,
+Dapr calls with at most one nested generic level, reserved-property overrides in
+scripts and `dotnet` arguments, and additional script probes. These checks are
+unpublished; the accepted pin remains `4.35.1`.
 
 ## 5. Run, debug and stop the active checkout
 

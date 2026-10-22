@@ -969,3 +969,20 @@
   summary: Remove programmatic subscription discovery and literal Dapr component names from Parties production code before its kit enrollment.
   evidence: Released `4.35.1` `validate --adoption` on real Parties `6d9e341` fails `dapr-subscriptions` on `src/Hexalith.Parties/Program.cs:75` (`app.MapSubscribeHandler()`), `src/Hexalith.Parties/Extensions/PartiesServiceCollectionExtensions.cs`, `HealthChecks/PartiesHealthCheckExtensions.cs`, `src/Hexalith.Parties.Security/ErasureVerificationService.cs` and `appsettings*.json` (`evidence/1-13/post-release-patch/release/released-package/real-parties-human.stdout.txt`). The Story 1.12 README says Platform renders the declarative tenant subscription; the epic requires programmatic discovery to be disabled. This is Parties-owned code, and Story 1.13 must not adopt another module. Feed it into the Story 1.12 review and Parties' kit enrollment.
   status: open
+
+## Deferred from: code review of spec-1-13-publish-the-domain-module-enrollment-kit.md (2026-10-21, pass 5)
+
+- source_spec: `spec-1-13-publish-the-domain-module-enrollment-kit.md`
+  summary: Gate Platform pushes on the pinned-tool ↔ Builds-gitlink identity, so that `/pushall` cannot silently advance a release-pinned submodule.
+  evidence: `/pushall` checks out the default branch of every submodule and merges every local branch (`.github/skills/pushall/SKILL.md:74-86`). On 2026-10-21, Platform commit `37715f3` moved `references/Hexalith.Builds` from release tag `v4.35.1` (`f8599224`) to unreleased `359fee2`. `AcceptedToolPinEqualsSupportedRangeFloorAsync` fails at that HEAD, but Platform has no CI workflow, so nothing ran it. Fix: have `/pushall` skip advancing a submodule whose gitlink equals a pinned release tag, or add a Platform CI workflow that runs that test.
+  status: open
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-protection-1-custody-guard-admission.md`
+  summary: The Works proof gate can qualify a different Dapr runtime than the checked-in pin and the Works CI install.
+  evidence: `eng/works_toolchain.py` hashes daprd without a timeout, `eng/test_verify_works_host.py` never fails `run_verification` on a mismatched pin, and `references/Hexalith.Works/.github/workflows/ci.yml` still installs runtime 1.18.3 while `config/works-proof-toolchain.json` pins 1.18.7. This landed outside the custody guard commit.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-protection-1-custody-guard-admission.md`
+  summary: Works proof rows copy later target commands, and the linked-snapshot drift error still names only Identity or Parties.
+  evidence: `eng/verify_works_host.py` stores `target_commands` on every proof row and raises "Identity or Parties" at the drift check. Those edits are not part of the custody guard.
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-protection-1-custody-guard-admission.md`
+  summary: The Story 1.13 real-module compare script drops every failing row.
+  evidence: `real-module-compare.py.txt` ends the failing-row collection with `[:0]`, so `candidateFailing` is always empty. That file is Story 1.13 evidence, not the custody guard.

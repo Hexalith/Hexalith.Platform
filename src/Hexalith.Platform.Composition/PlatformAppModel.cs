@@ -207,6 +207,8 @@ public static class PlatformAppModel
                         .WithAnnotation(new PlatformServerAnnotation(server))
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile");
+                    if (options.RetentionProfile is not null)
+                        project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
                     if (server.ResourceId == "timesheets")
                     {
                         project.WithHttpEndpoint(name: "public")
@@ -328,6 +330,17 @@ public static class PlatformAppModel
             if (options.RunPlan is null) CompositionWorkspace.TryDeleteAsync(rendered, CancellationToken.None).GetAwaiter().GetResult();
             throw;
         }
+    }
+
+    internal static string RetentionArtifactsPath(PlatformCompositionOptions options, PlatformServerBinding server)
+    {
+        string? runId = options.RunPlan?.RunId;
+        string resource = server.ResourceId;
+        if (!CompositionRunPlanFactory.IsRunId(runId) || string.IsNullOrEmpty(resource) || resource.Length > 64
+            || !char.IsAsciiLetterOrDigit(resource[0]) || resource.Any(character => !char.IsAsciiLetterOrDigit(character) && character != '-'))
+            throw new InvalidDataException("Selected retention build outputs require a valid run identity and resource path segment.");
+        string owner = CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, server.Module);
+        return Path.Combine(Path.GetFullPath(owner), "artifacts", "retention", runId!, "build", resource);
     }
 
     internal static CompositionRunPorts AllocateSecondaryPorts(int count, CompositionRunPorts? persisted, Func<int, CompositionRunPorts>? allocator = null)

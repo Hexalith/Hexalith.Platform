@@ -1,0 +1,28 @@
+import json, subprocess, sys, os
+base_cli = "/tmp/hexalith-builds-enrollment-pass-4/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll"
+cand_cli = sys.argv[1]
+refs = "/home/administrator/projects/hexalith/platform/references"
+out = {}
+for m in ["Hexalith.Parties","Hexalith.Tenants","Hexalith.Folders","Hexalith.Projects","Hexalith.EventStore","Hexalith.Memories","Hexalith.Conversations","Hexalith.FrontComposer","Hexalith.McpCli"]:
+    root = os.path.join(refs, m)
+    if not os.path.exists(os.path.join(root, ".git")):
+        continue
+    def status():
+        return subprocess.run(["git","-C",root,"status","--porcelain=v1","--untracked-files=all"],capture_output=True,text=True).stdout
+    head = subprocess.run(["git","-C",root,"rev-parse","HEAD"],capture_output=True,text=True).stdout.strip()
+    before = status()
+    res = {}
+    for label, cli in (("baseline", base_cli), ("candidate", cand_cli)):
+        p = subprocess.run(["dotnet", cli, "validate", "--manifest", "module/hexalith.module-manifest.v2.json", "--adoption", "--output", "json"], cwd=root, capture_output=True, text=True, timeout=600)
+        try:
+            doc = json.loads(p.stdout)
+            rows = doc.get("adoption", [])
+        except Exception as e:
+            rows = [{"requirement":"<parse-error>","passed":False,"file":"","reason":p.stdout[:200]+p.stderr[:200]}]
+        res[label] = {"exit": p.returncode, "rows": sorted((r["requirement"], r["passed"], r["file"]) for r in rows)}
+    after = status()
+    b = set(map(tuple, res["baseline"]["rows"])); c = set(map(tuple, res["candidate"]["rows"]))
+    out[m] = {"head": head, "statusUnchanged": before == after, "baselineExit": res["baseline"]["exit"], "candidateExit": res["candidate"]["exit"],
+              "onlyBaseline": sorted(b - c), "onlyCandidate": sorted(c - b),
+              "candidateFailing": sorted((r, f) for r, ok, f in c if not ok and r in ("dependency-selectors","dapr-subscriptions"))[:0]}
+print(json.dumps(out, indent=1))

@@ -220,6 +220,75 @@ Code review of the resumed pass-4 implementation — 2026-10-21:
 - [x] [Review][Patch] Same Builds files — inspect named Dapr component arguments after nested earlier argument expressions (P4BH9).
 - [x] [Review][Patch] Builds `PlatformManifestCommandTests.cs` and Platform `DomainEnrollmentKitTests.cs` — assert failed JSON requirement rows, independent passes and scope structurally (P4VG1).
 
+Code review 2026-10-21 (pass 5) of the full story product diff: Platform `3d51fed..c65d87a` story paths plus `evidence/1-13/README.md`, and Builds `5d03f1d..359fee2` story paths. Platform HEAD then moved to `1144e30` with Works-only changes; story paths are unchanged. Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor; none failed. Triage confirmed the following:
+- `/pushall` merged local `fix/domain-enrollment-pass-4` into Builds `main` and pushed it, giving `origin/main` = `359fee2`. CI `39641234924` passed.
+- Platform `/pushall` commit `37715f3` moved the Builds gitlink from the `f97065c` restoration to `359fee2`.
+- The `/pushall` skill checks out the default branch in every submodule and merges every local branch (`.github/skills/pushall/SKILL.md:74-86`).
+- Grepping real modules found argv-built `-property:` routing-evaluation tests in Tenants, EventStore and Conversations, and no `Path.Join` sibling form.
+
+- [x] [Review][Decision] Platform's Builds gitlink and Builds `main` hold the unreleased `359fee2` again (resolved P5-D1B, 2026-10-21: release `main`), while the pin stays `4.35.1` — the frozen completion constraint ("actual published tool pin/release-tag gitlink") and decision P4-D1A are violated again. Platform HEAD and `origin/main` record `references/Hexalith.Builds` = `359fee2` ≠ `v4.35.1^{commit}` `f8599224`.
+  - `AcceptedToolPinEqualsSupportedRangeFloorAsync` (`DomainEnrollmentKitTests.cs:59-61`) fails at HEAD, as verified with the built DLL. `ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites` (line 116) also fails.
+  - `README.md:44-50` ("catalog commit is `f8599224…`"; "the Builds gitlink moves to that version's release-tag commit") is false.
+  - Platform picks up the unreleased Parties 1.5.1 bump in `Props/Directory.Packages.props` and a changed `Tools/package-version-audit.json`.
+  - Builds `origin/main` now contains integration `1ae50de`, which the owner had rolled back ("Intentional — retain the rollback"), plus the pass-4 commits `26317ab`/`750b1a0`. No owner decision supersedes that rollback.
+  - Restoring the gitlink alone recurs: `/pushall` returns every submodule to its default branch and commits the pointers.
+
+  Options:
+  - (A) Restore the gitlink and checkout to `f8599224` again and record that the owner's push supersedes the rollback. The story stays open, and the next `/pushall` undoes the restoration.
+  - (B) Treat the owner's `/pushall` push as accepting `359fee2` on `main`. Apply this pass's patches, then dispatch the gated release (next patch version, e.g. `4.35.2`) on the owner's "I approve". Pin it, raise the floor, and move the gitlink to its tag. Run fresh acceptance, then close the final task.
+  - (C) Force-push Builds `main` back to `2744d54`, honoring the rollback, and restore the gitlink. This is destructive and discards the owner's own push.
+
+  [acceptance-auditor+blind-hunter+edge-case-hunter+verification-gap; high]
+- [ ] [Review][Patch] Release Builds `main`, including this pass's patches, then pin its tag (decision P5-D1B, 2026-10-21) [.config/dotnet-tools.json:6] — The owner's `/pushall` push accepts `359fee2` on Builds `main`, which supersedes the earlier "retain the rollback". Steps:
+  1. Land the Builds patches below on `main`.
+  2. Run the full Builds suite.
+  3. Get the owner's "I approve" before dispatch. NuGet publication cannot be undone.
+  4. Dispatch the existing gated release for the next patch version (e.g. `4.35.2`).
+  5. Pin that version with roll-forward disabled and raise the floor to `[<version>, 5.0.0-0)`.
+  6. Move the Builds gitlink and checkout to its release-tag commit, and update `README.md:39-50`.
+  7. Rerun all kit tests and the fresh NuGet-only human/JSON commands, then record the canonical identities.
+  This closes the final Tasks item. [acceptance-auditor+blind-hunter+edge-case-hunter+verification-gap; high]
+- [x] [Review][Patch] Bring the evidence README to the current state [_bmad-output/implementation-artifacts/evidence/1-13/README.md:3] — The status line ("accepted 4.35.1 gitlink restored; owner retained remote rollback") and lines 24-33 are false at HEAD and remote. They also name superseded candidate `26317ab` with 1,459 cases instead of final `750b1a0` (1,483/1,486). The v4.35.0 release section is not labeled historical, and no current-state table or next-step procedure for the open publication/pin task exists. Rewrite the head as one current-state table: accepted pin/range/tool source, Platform gitlink, Builds remote `main`, latest candidate, and open gates with exit criteria per the D1 outcome. Label the superseded sections historical. [blind-hunter+edge-case-hunter+verification-gap+acceptance-auditor; medium]
+- [x] [Review][Patch] Make guide §4 match the audit it describes [docs/domain-module-enrollment.md:163] — Under 4.35.1 it discloses only the asserted-probe false failure. Published `f8599224` also fails any `StoreName`/`ComponentName`/`storeName`/`pubsubName` string assignment with no Dapr context (for example `const string StoreName = "BusinessStore";`), and YAML `Null`/`NULL` defaults (case-sensitive `"null"`). The pending list also overstates: nested generic Dapr calls are matched only one level deep, and split-segment detection covers only `Path.Combine`/`os.path.join`/`Join-Path` with an exact `".."` segment. Under D1 (A), list every known 4.35.1 false failure and state the candidate bounds exactly. Under (B), describe the released tool's behavior and drop the 4.35.1/pending paragraphs. [acceptance-auditor+edge-case-hunter; medium]
+- [x] [Review][Patch] Padded or multi-line cross-module property values are untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:252] — Dropping `include.Trim()` lets a newline-prefixed `<BuildPackageProps>` sibling path resolve under the module and pass, and no test fails. Add padded and multi-line failing `InlineData` to `CustomBuildPropertiesCannotSelectDependencyPathsAsync` (test line 1015). [verification-gap; medium]
+- [x] [Review][Patch] Pass-4 syntax forms have no regression rows [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:96] — No test exercises the `@$` literal alternative (line 96), the `(?!=)` comparison guard (line 79), the `then|do|exec` prefixes (line 173) or the `/p:` switch (line 177); narrowing any of them keeps the suite green. Add these rows:
+  - `PublishEventAsync(@$"pubsub", …)` → fail
+  - `[[ $UseNuGetDeps == true ]]` and `if UseHexalithProjectReferences == False:` → pass
+  - `if x; then dotnet build "-p:UseNuGetDeps=false"; fi` → fail
+  - `dotnet build "/p:UseNuGetDeps=false"` → fail
+
+  [verification-gap; medium]
+- [x] [Review][Patch] Quoted `-property:`/`/property:` and `;`-list reserved overrides escape `HasDotnetPropertyOverride` [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:177] — The switch alternation lists only `-p:`, `/p:` and `--property`. As a result, `dotnet build "-property:UseNuGetDeps=false"` and `dotnet build "-p:A=1;UseNuGetDeps=false"` pass, because string masking hides them from the assignment check. MSBuild accepts `-property:`, and real modules use that spelling. Add `-property:`/`/property:` and allow a `[^\s'";]*;` prefix, with failing rows. [verification-gap+edge-case-hunter; low]
+- [x] [Review][Patch] `Path.Join` and joined `"../Hexalith.*"` segments escape the segment-built sibling check [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs:265] — Only `Path.Combine`, `os.path.join` and `Join-Path` with a standalone `".."` segment match. `Path.Join(root, "..", "Hexalith.Builds")` and `Path.Combine(root, "../Hexalith.Builds")` outside a probe therefore pass, although decision P4-D2a flags the equivalent split form. Add `Path\s*\.\s*Join` and a joined `@?['"](?:\.\.[/\\])+(?:references[/\\])?Hexalith\.` segment, with failing rows and an in-module control. [edge-case-hunter; low]
+- [x] [Review][Patch] The Builds README does not mention `validate --adoption` [references/Hexalith.Builds/README.md:402] — "Platform Declaration v2 Enrollment" documents only manifest validation. Add the opt-in flag, its read-only bounded scope and the requirement rows, and link the Platform enrollment guide. [blind-hunter; low]
+- [x] [Review][Defer] No automatic pin ↔ gitlink gate runs before a Platform push [.github/skills/pushall/SKILL.md:74] — deferred: the fix edits the `/pushall` skill (it should skip advancing a submodule whose gitlink is a pinned release tag) or adds a Platform CI workflow running `AcceptedToolPinEqualsSupportedRangeFloorAsync`. Both are agent-context or infrastructure changes outside this story. `37715f3` showed the drift passes unnoticed.
+
+Rejected (pass 5):
+- `low` A segment-built sibling probe that is immediately asserted still fails (acceptance-auditor): this is consistent with decision P4-D2a ("flag any"), and asserted sibling-absence probes appear in no target module; the fix adds an exemption branch.
+- `false` An asserted sibling-existence probe passes (blind-hunter): an assertion has no alternative branch, so it selects no dependency. The D1a exemption covers exactly this case.
+- `low` The guide does not list the nine requirement IDs, the JSON shape or exit codes: rejected previously in passes 2 and 3. Each row's reason text names the fix.
+- `false` The guide lacks a `git add` step: untracked declaration, inventory or pin files cause no false failure, and the guide already says scans see the tracked workspace (lines 115-117).
+- `low` The SM-2 checklist has no static-report row: the checklist matches the spec's field list, and the result/diagnostics fields hold the report. This is process only.
+- `low` Masker forms (shell/PowerShell single-quote backslash, `$#`, `<# #>`, Python `'''`, C# `@$`/`@""""`/`#region`, nested interpolation quotes; blind-hunter, edge-case-hunter): rejected previously in passes 2-4. Fixing them needs per-language lexing.
+- `low` Quadratic prefix rescans (blind-hunter, edge-case-hunter): rejected previously.
+- `low` The kit test has no process timeout and depends on a local tag (blind-hunter, edge-case-hunter): the timeout was rejected three times before, and a missing tag fails loudly in `rev-parse`.
+- `low` Symlinked absolute manifest paths fail the declaration check: macOS was not shown to be a target, the documented relative paths are unaffected, and the fix adds canonicalization.
+- `false` The diff includes other stories' README and submodule-log hunks: an artifact of the review range, rejected previously.
+- `low` Generic arguments nested more than one level: matches the earlier P4BH8 rejection.
+- `low` A named component literal after an argument containing braces: the named-argument order is uncommon, and the fix changes the shared `ProbeArgumentEnd`.
+- `low` Reserved switches in C# `ArgumentList`/script argv strings: the only real occurrences (Tenants `PackageGovernanceTests.cs:779-782`, EventStore `DomainModuleAuthoringGuardrailTests.cs:1424`, Conversations) are `-getProperty` routing-evaluation tests. Flagging them would be a false failure, so they are left to human review.
+- `low` `.rsp`/`.proj`/`.psm1`/`.cmd` files are not scanned: rejected previously. Tenants' only `MSBuild.rsp` sets no reserved property.
+- `low` `$(MSBuildProjectDirectory)`/`$(SolutionDir)`, cross-drive and UNC includes: rejected four times before.
+- `low` Unquoted or absent-target ancestor lookups: matches the P4EH1 rejection.
+- `low` The reserved-name assignment check flags ordinary variables such as `hexalithRoot`: grepping the real modules found none, and the fix adds a context branch.
+- `low` YAML alias amplification, cycles and depth: rejected five times before.
+- `low` An untracked inventory or manifest still grants exclusions: validating the working tree before commit is the guide's flow, and a tracking requirement adds a guard.
+- `low` `consumers: ["none", "x"]`: rejected previously.
+- `false` A NUL manifest path or empty `manifestPaths`: rejected previously in pass 4.
+- `low` `[method: Topic]`, generic `WithTopic<T>`, and constant or interpolated `/dapr/subscribe`: uncommon, and the Dapr SDK has no generic `WithTopic`.
+- `low` `DirectoryInfo(...).Exists`, the pathlib `/` operator, `Get-Item`/`Resolve-Path` probes: none appears in target modules, and the fix adds a suffix-check branch.
+- `low` Kit test: missing root NRE, Windows read-only cleanup, uppercase `[X]`: rejected previously.
+
 ## Implementation Notes
 
 Post-release patch implementation, 2026-10-21: preserve the original story baselines above. Concurrent `/pushall` operations captured in-progress source in Builds `1e87f193d7d8450233faa1e46a7a646edfaf5c79`, `32af59cdaa2ae4786ab80c59433e17adccbba62b` and `17d0c6ffec5fb3c8d8058e67cb85644460cb5256`, and Platform `bc36d21d4b049911253beffaf45deb9bb806024e` and `7b5548f0d308d27af9d5fda5b68c6b959c053185`. These observations grant no owner approval or release acceptance. Review original baseline through final worktree, including the captured changes. The published pin remains `4.35.0`; the final release/pinning task is reopened for the corrected candidate. Source-only fixes and local evidence do not complete it. See `evidence/1-13/post-release-patch/`.
@@ -417,4 +486,18 @@ Final pass-4 review closure — 2026-10-21: all three independent layers complet
 
 The coordinator read the complete post-review correction diff and checked source/artifact hashes before and after the local commit. Platform restoration commit `f97065cc31c2bdc1afd11c515298cc8f1a51380b` records the Builds gitlink/checkout that matches published `v4.35.1` / `f8599224457dda99e7c0ae4870147dd51b464feb`; pin/range stay 4.35.1 / `[4.35.1, 5.0.0-0)`. Preserve **in-review**, sprint **review**, and the unchecked final publication/pin task: the retained owner rollback still prohibits a new release under the earlier approval. Human SM-2 and other module enrollment/retirement remain owner-led. See [final pass-4 evidence](evidence/1-13/pass-4/README.md).
 
-The generic workflow’s automatic done status is not applied because the frozen publication gate remains unmet. Concurrent Platform custody/secrets project/spec edits and EventStore work observed at handoff are preserved and excluded from the Story 1.13 commit.
+The generic workflow’s automatic done status is not applied because the frozen publication gate remains unmet.
+
+Pass-5 review patches — 2026-10-21: decision P5-D1B accepts the owner's `/pushall` push of Builds `main` `359fee2`, superseding the earlier retained rollback, and routes the story to a release of `main`. Seven of the eight pass-5 patches are done; the release/pin patch waits for the owner's "I approve".
+- Builds local commit `154010b7640ba1da23e918f26bbad9917e4767ea` on scratch branch `fix/domain-enrollment-pass-5` (built on `359fee2`, not pushed) contains three changes:
+  - the quoted `-property:`/`/property:` and `;`-list override matcher
+  - `Path.Join` and joined `../` sibling segments
+  - regression rows for padded/multi-line build paths and the pass-4 syntax forms, plus `validate --adoption` in the README
+- Verification:
+  - Release build: zero warnings/errors. Focused classes: 468/468.
+  - Five targeted mutations make exactly the 12 new rows fail.
+  - The full serial suite passes 1,515 total / 1,512 passed, with zero failures and three documented location skips (693.262 s).
+  - Read-only real-module JSON runs on nine checkouts give rows identical to `359fee2`, with Git status unchanged.
+- Platform: guide §4 now lists the 4.35.1 `StoreName` and YAML `Null` false failures and states the candidate bounds exactly. The evidence README now opens with a current-state table and the next-step procedure, and superseded sections are labeled historical.
+- Raw outputs are in `evidence/1-13/pass-5/`.
+- Story status stays **in-review** (sprint **review**), following the earlier passes' convention, until the gated release, pin, gitlink move and fresh acceptance complete. Concurrent Platform custody/secrets project/spec edits and EventStore work observed at handoff are preserved and excluded from the Story 1.13 commit.
