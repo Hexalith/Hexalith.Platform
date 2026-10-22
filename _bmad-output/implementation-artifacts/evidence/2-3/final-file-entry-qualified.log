@@ -1,0 +1,62 @@
+Command: ['dotnet', 'tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll', '-method', '*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync']
+UTC: 2026-10-22T18:01:29.495592+00:00
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [FAIL]
+      Shouldly.ShouldAssertException : start.ExitCode
+          should be
+      0
+          but was
+      2
+      
+      Additional Info:
+          onflictException: public CompositionResourceClaimConflictException(string 
+      message, Exception innerException) (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1032)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs(591,71): error 
+      IDE0055: Fix formatting (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0055)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs(592,10): error 
+      IDE0055: Fix formatting (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0055)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs(593,243): error 
+      IDE0055: Fix formatting (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0055)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs(594,195): error 
+      IDE0055: Fix formatting (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0055)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs(595,10): error 
+      IDE0055: Fix formatting (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0055)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionBudget.cs(42,17): 
+      error SA1202: 'public' members should come before 'internal' members (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1202.html)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionBudget.cs(14,46): 
+      error SA1214: Readonly fields should appear before non-readonly fields (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1214.html)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionTiming.cs(26,128): 
+      error CA1308: In method 'Start', replace the call to 'ToLowerInvariant' with 'ToUpperInvariant' 
+      (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1308)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionBudget.cs(21,9): 
+      error IDE0021: Use expression body for constructor (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0021)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionBudget.cs(23,5): 
+      error SA1508: A closing brace should not be preceded by a blank line (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1508.html)
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs(71,33):
+      error S3267: Loops should be simplified using the "Where" LINQ method
+      /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs(594,52): error 
+      S8969: Remove this null-forgiving operator; the compiler already knows this expression is not null here.
+        Hexalith.Platform.Works.Runtime -> 
+      /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/bin/Debug/net10.0/Hexalith.Platform.Works.Runtime.dll
+        Hexalith.Platform.Custody -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/bin/Debug/net10.0/Hexalith.Platform.Custody.dll
+      ❌ AppHost failed to build.
+      📄 See logs at /home/administrator/.aspire/logs/cli_20261022T180130_1929c277.log
+      🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261022T180130312_detach-child_e73080cf29bf4c34a724d0e9f5cdb71b.log
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(565,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(586,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 46.052s

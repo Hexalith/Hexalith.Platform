@@ -57,7 +57,8 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 - [x] `README.md`, `docs/platform-apphost-form.md` — replace the one-run restriction with scoped-resource inventory, prerequisites and verification instructions; distinguish legacy fixtures and preview scope.
 - [x] `_bmad-output/implementation-artifacts/sprint-status.yaml` — update only this story as implementation progresses. Save verification under `_bmad-output/implementation-artifacts/evidence/2-3/`.
 
-- [ ] Final required qualification — pass the normal Composition Debug build, then rerun the expanded concurrent-native-listener proof and file-entry smoke after the independent NU1506 package-declaration conflict is resolved.
+- [x] `references/Hexalith.EventStore/Directory.Packages.props` — preserve identical cryptography versions while avoiding duplicate catalog entries; retain the older-catalog fallback and verify both evaluation cases.
+- [ ] Final required qualification — pass normal builds after the independent Builds lifecycle work stabilizes, diagnose the gateway HXR027/HTTP-503 cutover failure, and rerun the expanded concurrent-native-listener proof plus file-entry smoke.
 
 **Acceptance Criteria:**
 
@@ -95,6 +96,8 @@ Preserve independent workspace edits and running applications. Do not stage gitl
 | E2 — unbounded candidate output | false | reject | Same independently corrected run_candidate path as B9: bounded incremental reads and process termination replace full communicate buffering. |
 | G1 — external certificate-parent disposal unverified | medium | patch | The gap review verified no test disposes the registered external-child services for two peers sharing a parent. Add that ownership assertion, including foreign files and peer credentials.  Resolved by actual registered-service disposal for two peers sharing a parent, preserving parent/foreign file/peer credentials; passed. |
 | G2 — Works qualification adapter rejects native Sentry address | medium | patch | The Works harness changes the model Sentry listener and selects an adapter that accepts only localhost:50001. The subscriber captured the earlier allocated address. Use the actual current model listener and permit the adapter's exact bound endpoint while retaining its refusal of foreign endpoints.  Resolved by callback-time model-port lookup, bound loopback spelling, and exact adapter acceptance. Actual Works-generated endpoints passed through the real adapter; foreign endpoints remain rejected. |
+| V1 — duplicate owner/catalog package declarations | medium | patch | The clean EventStore owner props repeated the current catalog cryptography entries. Conditional additions plus updates preserve 10.0.13 with either catalog shape; both evaluations and the normal Composition build passed. No selected version or independent workspace edit was changed. |
+
 
 
 ## Design Notes
@@ -119,8 +122,10 @@ Baseline `aspire start --apphost /home/administrator/projects/hexalith/platform/
 
 ### Final verification gate after review corrections (2026-10-22)
 
-141 ordinary Composition cases passed (146 total, five gated skips); Builds normal Debug build and 22 runtime cases passed. Review checks passed 13 C# cases and eight adapter cases; the additional Works-generated-endpoint/real-adapter assertion passed. The occupied-port proof passed again.
+The normal Composition Debug build passed with zero warnings/errors after a narrow owner-props compatibility correction: existing cryptography catalog items are updated, while older catalogs get the same 10.0.13 fallback additions. Both catalog evaluation cases passed. The owner file was clean before this correction; existing independent edits and all selected versions were preserved.
 
-Normal Composition build and retry fail NU1506 on duplicate `System.Security.Cryptography.Pkcs`/`System.Security.Cryptography.Xml` declarations from the EventStore owner props and Builds catalog. File-entry smoke reaches the owned AppHost but EventStore's build fails on the same declarations; teardown passed. The post-review concurrent attempt fails before first-session readiness (HXR025, EventStore Finished); final expanded native-listener overlap assertions remain unexecuted. The earlier full concurrent pass is retained as historical evidence, not final-tree qualification.
+141 ordinary Composition cases passed against the normal build (146 total, five gated skips); 22 Builds runtime cases passed. Review checks passed 13 C# cases and eight adapter cases; the additional actual Works-endpoint/real-adapter assertion passed. The occupied-port proof passed again. Builds' normal Debug build also passed before independent lifecycle implementation files changed during verification.
 
-The required build/live gate is unresolved, so this spec remains `in-review` and sprint story 2.3 remains `in-progress`. The approved constraint to preserve independent workspace edits prevents changing the owner dependency declarations in this run. No foreign application was stopped. See the [final verification index](evidence/2-3/README.md) and [cleanup audit](evidence/2-3/final-cleanup-audit.json).
+The latest Builds normal build now fails 37 analyzer checks in that independent lifecycle work. Latest file-entry smoke was executed and failed before AppHost resources started on those same errors. Latest concurrent proof was executed and failed HXR027, `cutover-timeout;health-HTTP-503`, before first-session readiness. Its final native-listener overlap assertions remain unexecuted. The earlier 403.261-second concurrency pass is retained as historical evidence, not final-tree qualification.
+
+The required current build/live gate is unresolved, so this spec remains `in-review` and sprint story 2.3 remains `in-progress`. Descriptor/attachment/lifecycle policy is explicitly outside the frozen intent; no changes were made to that independent work and no readiness, source-identity or mTLS guard was weakened. Both failed concurrent runs have no labelled containers or recorded processes remaining. See the [verification index](evidence/2-3/README.md), [startup diagnostics](evidence/2-3/live-concurrent-qualified/startup-failure.json), and [cleanup audit](evidence/2-3/final-cleanup-audit.json).

@@ -1,0 +1,197 @@
+{
+  "note": "Story 2.4 changed/new source and documentation bytes at handoff; README and contract docs also retain independent Story 2.2 changes. Current Story 2.2 schemas/reader were consumed unchanged by this implementation.",
+  "files": {
+    "_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md": {
+      "sha256": "07beedd08bf7143be87b64f2eedd69a0c42234fb7756770750a66c2698b43152",
+      "lfNormalizedSha256": "07beedd08bf7143be87b64f2eedd69a0c42234fb7756770750a66c2698b43152"
+    },
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": {
+      "sha256": "e19ceacee43c4fee946dccba13e1b98383cdcedb9c3587577c769af96ee36695",
+      "lfNormalizedSha256": "e19ceacee43c4fee946dccba13e1b98383cdcedb9c3587577c769af96ee36695"
+    },
+    "docs/contracts/test-environment-v1.md": {
+      "sha256": "dd67179ff9a9850a0fbca8890e9f609608e4abd6762124c1de35b46ada0db8a0",
+      "lfNormalizedSha256": "dd67179ff9a9850a0fbca8890e9f609608e4abd6762124c1de35b46ada0db8a0"
+    },
+    "eng/test-environment-provisioning/manifest.v2.json": {
+      "sha256": "006a0e3edabe9af64bebf567a58d938886d6d30a812bda124b344d153f031292",
+      "lfNormalizedSha256": "006a0e3edabe9af64bebf567a58d938886d6d30a812bda124b344d153f031292"
+    },
+    "eng/test-environment-provisioning/startup-verify.sh": {
+      "sha256": "e4f4f4c2868bfd4a48d16c1b87d1a2d6098f782a30533b9f87cfa6414788c130",
+      "lfNormalizedSha256": "e4f4f4c2868bfd4a48d16c1b87d1a2d6098f782a30533b9f87cfa6414788c130"
+    },
+    "eng/test-environment-provisioning/suite.py": {
+      "sha256": "ef0fe1eef132d19f520ccbc195a0330014fa7fd83e349f09ded3c4ebcb503aa0",
+      "lfNormalizedSha256": "ef0fe1eef132d19f520ccbc195a0330014fa7fd83e349f09ded3c4ebcb503aa0"
+    },
+    "references/Hexalith.Builds/README.md": {
+      "sha256": "d61d60dc19f83c69404bea3b059013fd76c15a6045c73c4fe857fbf3f8c7ff89",
+      "lfNormalizedSha256": "d61d60dc19f83c69404bea3b059013fd76c15a6045c73c4fe857fbf3f8c7ff89"
+    },
+    "references/Hexalith.Builds/schemas/hexalith.module-run-evidence.v1.json": {
+      "sha256": "1dfcc2aa062af8d0af1ee57a8d6086de5f5abad0f65328aee850db1d0e9834f2",
+      "lfNormalizedSha256": "114fa0a43068704d0665d23ddeea63464003175a08be3a63ed1f73d4a504f072"
+    },
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/AppHostRunner.cs": {
+      "sha256": "de0388ed47eed784e242b1db7aa9885cdf6c5fabc0756e5c56ee25177adb9fca",
+      "lfNormalizedSha256": "de0388ed47eed784e242b1db7aa9885cdf6c5fabc0756e5c56ee25177adb9fca"
+    },
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunEndpoints.cs": {
+      "sha256": "e9a2b48777c38a5a9ef42aad6ab31d9d07531bec82baadd881cc513cc51838c9",
+      "lfNormalizedSha256": "e9a2b48777c38a5a9ef42aad6ab31d9d07531bec82baadd881cc513cc51838c9"
+    },
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs": {
+      "sha256": "b3f4a2cbcd5c240d36142affd7a2b7be30508d4454ee13bae0b3897d48e159b9",
+      "lfNormalizedSha256": "b3f4a2cbcd5c240d36142affd7a2b7be30508d4454ee13bae0b3897d48e159b9"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": {
+      "sha256": "d9205907ad096df3c44817e93b803d5e229d683dbc1b92baa3c8a2dd7cf253c7",
+      "lfNormalizedSha256": "d9205907ad096df3c44817e93b803d5e229d683dbc1b92baa3c8a2dd7cf253c7"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceArtifactValidator.cs": {
+      "sha256": "a26511b4e03efa63a6fe49edacef8b9e00fb5b38e8c106a6960029c3b962697a",
+      "lfNormalizedSha256": "a26511b4e03efa63a6fe49edacef8b9e00fb5b38e8c106a6960029c3b962697a"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": {
+      "sha256": "84cf458dca45fedbc661f73b3fded5b86ff6d76baae9fe9603c64373f9a1ed7f",
+      "lfNormalizedSha256": "84cf458dca45fedbc661f73b3fded5b86ff6d76baae9fe9603c64373f9a1ed7f"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": {
+      "sha256": "5613bcdcb18f5e04c07232fe3d4fb0369d209101669bb32ba2314a3884a5fa68",
+      "lfNormalizedSha256": "5613bcdcb18f5e04c07232fe3d4fb0369d209101669bb32ba2314a3884a5fa68"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPortAllocator.cs": {
+      "sha256": "1c28a0af4f9e5ab6efc4785a0813f7e7b5fd5a1c6e6c30e0f431aab5fdf21708",
+      "lfNormalizedSha256": "1c28a0af4f9e5ab6efc4785a0813f7e7b5fd5a1c6e6c30e0f431aab5fdf21708"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs": {
+      "sha256": "b39300039bf5f62bf9d76e611ec28b5da936a34b5af3edfea259090b4000f6b8",
+      "lfNormalizedSha256": "b39300039bf5f62bf9d76e611ec28b5da936a34b5af3edfea259090b4000f6b8"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaim.cs": {
+      "sha256": "ad1e1fe7db2f2861cf564fc8240d697d75a1297e3d727681b0804b7aa4551181",
+      "lfNormalizedSha256": "ad1e1fe7db2f2861cf564fc8240d697d75a1297e3d727681b0804b7aa4551181"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimConflictException.cs": {
+      "sha256": "ef57ff68b9585d8d007fc639806e427b9e420cad56e008007c7ed55aa4ac079b",
+      "lfNormalizedSha256": "ef57ff68b9585d8d007fc639806e427b9e420cad56e008007c7ed55aa4ac079b"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceClaimStore.cs": {
+      "sha256": "8557fe354da201547116af1ce3a004688ecbee8bd89b5312ee86aa1ea305919b",
+      "lfNormalizedSha256": "8557fe354da201547116af1ce3a004688ecbee8bd89b5312ee86aa1ea305919b"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceEndpoint.cs": {
+      "sha256": "cf045c874f847f912d9a34a6656995e3dd02b8b0b20a08ee9203a5a803cba0f2",
+      "lfNormalizedSha256": "cf045c874f847f912d9a34a6656995e3dd02b8b0b20a08ee9203a5a803cba0f2"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionResourceReadiness.cs": {
+      "sha256": "73ca81260e29e2b6e826fc11b6bc6c304cf8704a93865d18256ba4045ac099fc",
+      "lfNormalizedSha256": "73ca81260e29e2b6e826fc11b6bc6c304cf8704a93865d18256ba4045ac099fc"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlan.cs": {
+      "sha256": "27c60a1a18283f410ddc1ae19c2f150d935f85d76cd588e4297a6b5f25a2def0",
+      "lfNormalizedSha256": "27c60a1a18283f410ddc1ae19c2f150d935f85d76cd588e4297a6b5f25a2def0"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunSession.cs": {
+      "sha256": "cd292c457b3db15cb7e130efdeeca8bba64dca43fad06679e7969b29df541f67",
+      "lfNormalizedSha256": "cd292c457b3db15cb7e130efdeeca8bba64dca43fad06679e7969b29df541f67"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunStateStore.cs": {
+      "sha256": "5caa09be25fa882cce0696c5cbabdabad0e85c377a88879b4829490f45f6ebe8",
+      "lfNormalizedSha256": "5caa09be25fa882cce0696c5cbabdabad0e85c377a88879b4829490f45f6ebe8"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionSelectedTestGate.cs": {
+      "sha256": "aac5e4ec220c97b07d2fa9a813bed846af5eb9592299773d4ac7c1367a160a56",
+      "lfNormalizedSha256": "aac5e4ec220c97b07d2fa9a813bed846af5eb9592299773d4ac7c1367a160a56"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupFailure.cs": {
+      "sha256": "f94f4bb46a998fcf9c554fe016328d2cbfff19918e8b46ca865071fb6edab85c",
+      "lfNormalizedSha256": "f94f4bb46a998fcf9c554fe016328d2cbfff19918e8b46ca865071fb6edab85c"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupRequest.cs": {
+      "sha256": "18ea5ed9a54da3eed8a525977b8ad006f5bba29f5f2cee67b8a17b64b70e6c3f",
+      "lfNormalizedSha256": "18ea5ed9a54da3eed8a525977b8ad006f5bba29f5f2cee67b8a17b64b70e6c3f"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupTaskResult.cs": {
+      "sha256": "31a938a8eae0901e6d75d337a643f7ee77d348a33b3b04fb01f2233a7da7a53b",
+      "lfNormalizedSha256": "31a938a8eae0901e6d75d337a643f7ee77d348a33b3b04fb01f2233a7da7a53b"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionStartupTasks.cs": {
+      "sha256": "ddc951dbc6974392f31c8d5a975fd5342095bd39a88e9d2ffcfb796c8afc16b1",
+      "lfNormalizedSha256": "ddc951dbc6974392f31c8d5a975fd5342095bd39a88e9d2ffcfb796c8afc16b1"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": {
+      "sha256": "f23a6fe942f43c2d01dbf8526c684b83a5db78eb9af309485b8acdebda50bf30",
+      "lfNormalizedSha256": "f23a6fe942f43c2d01dbf8526c684b83a5db78eb9af309485b8acdebda50bf30"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionBudget.cs": {
+      "sha256": "5cb09ae9fff3d037cfbc9fa3f3b7b406e9d82eaa0c52c983b61dba286775d99f",
+      "lfNormalizedSha256": "5cb09ae9fff3d037cfbc9fa3f3b7b406e9d82eaa0c52c983b61dba286775d99f"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestExecutionTiming.cs": {
+      "sha256": "b77f3a7c30065d7ab2d365b72c066ebfcb6d3049c54246cca08917b3ed34e5cc",
+      "lfNormalizedSha256": "b77f3a7c30065d7ab2d365b72c066ebfcb6d3049c54246cca08917b3ed34e5cc"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestRunRecord.cs": {
+      "sha256": "bd2812524c2a98774a8387749f39bced8731061e53f7ffe4c76ec32704980010",
+      "lfNormalizedSha256": "bd2812524c2a98774a8387749f39bced8731061e53f7ffe4c76ec32704980010"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs": {
+      "sha256": "3242a7d30bd62e2d82b04596ccf2724c9a5e99e17ae6249dd4500887adfc3603",
+      "lfNormalizedSha256": "3242a7d30bd62e2d82b04596ccf2724c9a5e99e17ae6249dd4500887adfc3603"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": {
+      "sha256": "0e502038eac89f76745091e3c0e9892f2d9bb47fb7a0a09b50f78217c31807e5",
+      "lfNormalizedSha256": "0e502038eac89f76745091e3c0e9892f2d9bb47fb7a0a09b50f78217c31807e5"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs": {
+      "sha256": "90672895e6800a989431ae304177fda5766dfa5527bb26d05dae9650e3d56b48",
+      "lfNormalizedSha256": "90672895e6800a989431ae304177fda5766dfa5527bb26d05dae9650e3d56b48"
+    },
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs": {
+      "sha256": "a19bf71ed4ac9b1dffd62be1665a38e29774346e5b26d77436985fc73b79e544",
+      "lfNormalizedSha256": "a19bf71ed4ac9b1dffd62be1665a38e29774346e5b26d77436985fc73b79e544"
+    },
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/CompositionResourceClaimStoreTests.cs": {
+      "sha256": "5a80ba8ae5c5664149f91aed2960c7aee4dbf560928e922fe2d48e4abd9f3125",
+      "lfNormalizedSha256": "5a80ba8ae5c5664149f91aed2960c7aee4dbf560928e922fe2d48e4abd9f3125"
+    },
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs": {
+      "sha256": "e3c21e3f5c1ee04e75644bd5c925622366729507a2a55008732c6e7ee25c440d",
+      "lfNormalizedSha256": "e3c21e3f5c1ee04e75644bd5c925622366729507a2a55008732c6e7ee25c440d"
+    },
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs": {
+      "sha256": "6b9841b7f5769b7239ac142baf6031c3b6ca7711428d3a246fe7917db2bac981",
+      "lfNormalizedSha256": "6b9841b7f5769b7239ac142baf6031c3b6ca7711428d3a246fe7917db2bac981"
+    },
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningFixture.cs": {
+      "sha256": "7bb9221c5191c21a799c61e160d3df6a477a6eda13b4e1b30bb41df9ca838b07",
+      "lfNormalizedSha256": "7bb9221c5191c21a799c61e160d3df6a477a6eda13b4e1b30bb41df9ca838b07"
+    },
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs": {
+      "sha256": "130f26b3e3ba2e00fef578030aac8fbc05a28957c5e8ef895a0f38747bdbcb07",
+      "lfNormalizedSha256": "130f26b3e3ba2e00fef578030aac8fbc05a28957c5e8ef895a0f38747bdbcb07"
+    },
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": {
+      "sha256": "54540c9f2685f2c31f9f0cc368c7f72d90c560c16c3a5e099498a0bf0d5eb07a",
+      "lfNormalizedSha256": "54540c9f2685f2c31f9f0cc368c7f72d90c560c16c3a5e099498a0bf0d5eb07a"
+    },
+    "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": {
+      "sha256": "f28e7bca6ebdca3292d1b4b3568ba2fdaf54ef66027665224902e31f2ca67556",
+      "lfNormalizedSha256": "fc6e1fbd94e62a84eafc0927996d33e45d164c97e9d64aceb9047b8189b3363b"
+    },
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionBuildIsolationTests.cs": {
+      "sha256": "21034640a1b61e3a96f32ac3eb228e91804f730fc8724a6855b51ac6a983bc59",
+      "lfNormalizedSha256": "26f5c57f1e7a85f000715e175f5a22e6156ead96b27ba9cf4ab28c90d24192b6"
+    },
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs": {
+      "sha256": "1cfa455b3752eb7efdaa99f9ca92f29797e44810b574863f776329d35ec50485",
+      "lfNormalizedSha256": "131ae098439582ca19e0af5f1e7bd21da7d29c32f53184f25c96301d0613cda5"
+    },
+    "tests/Hexalith.Platform.Composition.Tests/PlatformTestEnvironmentProvisioningTests.cs": {
+      "sha256": "7c98fb0314538f90920e5b2f84f9b75e65cc652488a2f243ec68b894c3590914",
+      "lfNormalizedSha256": "7c98fb0314538f90920e5b2f84f9b75e65cc652488a2f243ec68b894c3590914"
+    }
+  }
+}

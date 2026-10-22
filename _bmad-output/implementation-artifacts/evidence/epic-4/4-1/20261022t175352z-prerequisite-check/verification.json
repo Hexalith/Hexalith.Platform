@@ -1,0 +1,133 @@
+{
+  "attemptId": "20261022t175352z-prerequisite-check",
+  "classification": "sanitized local preparation and public upstream observations",
+  "exactFinalValidationBindings": {
+    "evidenceManifestSha256": "9d16ecb2c1074fa72e131bd448b1230bee2581d4877c83576c78d8b14365f9d2",
+    "gateSha256": "c23f0d12067a4eff0379af8a811ab8ae693b02304b897b570802fccd90356695",
+    "policySha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a",
+    "validationSha256": "b269db6ab85f3a99d27560742921f0192d41925d9a3fe2bebd3adc95c6b234ae"
+  },
+  "gateState": "closed",
+  "historicalMaintenanceSha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+  "kind": "kubernetes-upgrade-prerequisite-checkpoint",
+  "liveSourceVersionThisAttempt": null,
+  "liveWorkloadHealthThisAttempt": "not-collected",
+  "mutationAuthorized": false,
+  "operations": {
+    "capturesRestoresOrCleanupRepeated": false,
+    "clusterRequests": 0,
+    "credentialLoads": 0,
+    "kubeadmUpgrade": false,
+    "packageOrBinaryMutation": false,
+    "providerRequests": 0,
+    "publicUpstreamDownloads": 5,
+    "publicWebReferenceReadsPerformed": true,
+    "quiesceCordonDrain": false,
+    "reboots": false,
+    "signingAttempts": 0,
+    "sshRequests": 0
+  },
+  "preparationInputHashes": {
+    "_bmad-output/implementation-artifacts/4-0-prove-off-node-backups-and-isolated-restores.md": "d7f34027e8b0fd8a7450f395185d9690782b1c770b24aa8e01dcdbc67bf334b2",
+    "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md": "935c989668b77a957ee753280e38be27b87f30f3d369ffda957c2a65a8da13ab",
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "04beec5f4ef10e714f65b46b7bfbc0c24e8ad1164747289f2051149c1c299bdc",
+    "_bmad-output/implementation-artifacts/epic-4-context.md": "b06f9ededbdfd0bc547b592ac5a35c07f8ac1a5c67fef6009bec8fefb5d60568",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/4-26/20261004t095137z-target-review/target-review.json": "29342d36b3c859eeab2e597b495b4deaa907108411bcb2a485634cc8bed4e10b",
+    "_bmad-output/implementation-artifacts/evidence/epic-4/initial-cluster-inventory.md": "c58e35eeec940ec836c3d1ca42405dfac47b2ac0677bffd330ae2f5c47ad5179",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml": "50f10b5b7de642fa1fa714ea1785bb0782e03fb11a03207475e03ace942245ac",
+    "eng/cluster-management/README.md": "ea85b1348e3b79fb936958efdd576d5209503e9bff3b1174cb00782bd1b265a5",
+    "eng/cluster-management/RETIRE-KUBESPHERE.md": "6167e36e3064ab5aa1102b7c52e20a77f940cbbce99a36453aaf59358afb1c60",
+    "eng/cluster-management/retire.py": "e4f4c674b76625bf8be3ff037721e49c5fa62f6df4e80aa10a1218ef7b2e1355",
+    "eng/kubernetes-upgrade/MAINTENANCE.md": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+    "eng/kubernetes-upgrade/README.md": "f501fb96de66e9518cb3c8d376a64babc3b1a001d12145d9f07401eb3cd0570c",
+    "eng/kubernetes-upgrade/prepare.py": "234b922e8a5b52edfcea02419fa2749203b63e54cf792e9e6b8b18deb200a296"
+  },
+  "privateEvidence": {
+    "backupDiagnosticSha256": "10fc1ba002373a06caac4fcae9e0563b892d7393d8f6dc843f7b0d241546f5e8",
+    "checkpointLedgerSha256": "4caa10f9937c567b1bdd32f7b40a06f9d6aacd3a7719d07388c127b1d7ece7f9",
+    "checkpointSha256": "dd0c9713696dc100c4cb248fb84e5df1fa3b2cdb5aa5226d4f6ea4023a54e333",
+    "diagnosticSourceSha256": "639886a8088dcf1c243ba40e14995659f7d7019f72ab37928b47b0f7912a67f2",
+    "finalLedgerSha256": "670d238386b0d40b85243679027b7c8b6ed648623533e2bf180325b48a7214bc",
+    "original16RecordLedgerSha256": "f54afaa17649a6ef7ec389c27dbd200eea6fbcb3014ca89d17b18af7db0dfeb4",
+    "path": "/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261022t175352z-prerequisite-check",
+    "upstreamObservationSha256": "eafaccc0ec5aa8ef1eeb90c21b4639d5f931a8c4777c8c3474bc2af22f3b8e80"
+  },
+  "receiptSigned": false,
+  "recordedAt": "2026-10-22T17:58:22.839941+00:00",
+  "retainedRecovery": {
+    "allHistoricalRecordIntegrityAndBindingChecksPass": true,
+    "allOriginalInputsUnchanged": true,
+    "currentFreshness": {
+      "allProofsWithinSignedAgeAndExpiry": false,
+      "finalValidationWithinConservativeSignedAge": false,
+      "gateUnexpired": false
+    },
+    "earliestExpiry": "2026-10-15T11:40:42+00:00",
+    "expiryBasis": "policy.preparedAt",
+    "independentRemoteReadbackThisAttempt": "not-run",
+    "localVerifierSha256": "2dd834413c9d3f4c0e3535b9fcf2e96e14c11f3d36fd23b6c5fc24e50411d051",
+    "originalSignaturesVerifiedNow": 8,
+    "recoveryId": "20261014t112353z",
+    "retainedAcceptanceSourceSha256": "e7410aeb33e7d619f9b2b09d853e58c9c67e12d334d27913954d7af93eab8f43",
+    "signatureFingerprint": "SHA256:8XlNQvE3ucPf/e509wU4qtNgiyWA+TKmLei7F7+TCvk",
+    "signatureNamespace": "hexalith-recovery",
+    "trustRootSha256": "77df53775f890a393578cb5480512b532ef730bcc854a2bf1d4cdd9bb1d77247"
+  },
+  "schemaVersion": 1,
+  "sourceStatusRecheck": {
+    "checkedAt": "2026-10-22T18:00:56.363266+00:00",
+    "currentSourceSha256": "95777f9b834cb0a0225c1ce7a56bc72e43fa3120274a770bebb48e5b0fb3e072",
+    "earlierReceiptPublicationRefusedBeforeWrite": true,
+    "mutationAuthorized": false,
+    "originalCheckpointPreserved": true,
+    "preparationInputSha256": "50f10b5b7de642fa1fa714ea1785bb0782e03fb11a03207475e03ace942245ac",
+    "relevantStatusesUnchanged": true,
+    "relevantStoryStatuses": {
+      "4.0": "done",
+      "4.1": "in-progress",
+      "4.27": "in-progress"
+    },
+    "sourceDriftSincePreparation": true
+  },
+  "sourceStatuses": {
+    "4.0": "done",
+    "4.1": "in-progress",
+    "4.27": "in-progress"
+  },
+  "statusSourceSha256": "50f10b5b7de642fa1fa714ea1785bb0782e03fb11a03207475e03ace942245ac",
+  "storyState": "in-progress",
+  "targetPublication": {
+    "executionPinsAccepted": false,
+    "intermediateStable": "v1.35.9",
+    "observedAt": "2026-10-22T17:56:54.030407+00:00",
+    "officialSources": {
+      "kubeadm-v1.35.9-sha256": "https://dl.k8s.io/release/v1.35.9/bin/linux/amd64/kubeadm.sha256",
+      "kubeadm-v1.36.5-sha256": "https://dl.k8s.io/release/v1.36.5/bin/linux/amd64/kubeadm.sha256",
+      "release-page": "https://kubernetes.io/releases/",
+      "stable-1.35": "https://dl.k8s.io/release/stable-1.35.txt",
+      "stable-1.36": "https://dl.k8s.io/release/stable-1.36.txt"
+    },
+    "publishedKubeadmSha256": {
+      "1.35": "b77649f3f9d4fc9cff73f9d2cc70c39ad2ca3ffddf5b43d33b2f3493a77aab9a",
+      "1.36": "be2f2c73cd6d3414b37aafb05016bc3a1da3e17c8393aa75c34636198fefa77c"
+    },
+    "refreshBeforeEachHopRequired": true,
+    "releasePageReports134EndOfLife": "2026-10-27",
+    "retained135MatchesFreshPublication": true,
+    "runtimeCompatibilityValidated": false,
+    "targetStable": "v1.36.5"
+  },
+  "verification": {
+    "allPrivateAttemptFilesMode0600": true,
+    "bothHopGatesClosedAndUnsigned": true,
+    "currentFreshnessRefusalEstablished": true,
+    "existingPreparationAndRecoverySafetyTests": {
+      "command": "/usr/bin/python3 -I -S -B -m unittest discover -s eng/kubernetes-upgrade -p test_*.py",
+      "exitCode": 0,
+      "failures": 0,
+      "tests": 43
+    },
+    "localOriginalAuthenticationAndBindingsPass": true,
+    "original16PreparationRecordsChecksumsPass": true
+  }
+}

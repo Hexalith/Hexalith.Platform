@@ -17,7 +17,11 @@ internal sealed record CustodyBindingManifestStatusV1(DeletionManifestProviderRe
 internal sealed record CustodyBindingResponseV1(string ProtocolVersion, string OperationId, string RequestDigest,
     CustodyBindingOriginalHeaderV1? OriginalHeader = null, CustodyKeyLifecycleOutcome? Lifecycle = null,
     CustodyBindingCurrentReadV1? Current = null, bool? TransitionVerified = null, CustodyBindingOriginalPageV1? Page = null,
-    CustodyBindingManifestStatusV1? ManifestStatus = null);
+    CustodyBindingManifestStatusV1? ManifestStatus = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyKeyRegistration? WrappedRegistration = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] CustodyBindingKeyDeliveryV1? KeyDelivery = null);
+
+internal sealed record CustodyBindingKeyDeliveryV1(CustodyBindingKeyUseV1 KeyUse, byte[] RootKey);
 
 internal enum CustodyBindingTransportState { Unknown, Refused, ReceivedUnverified }
 internal sealed record CustodyBindingTransportResult(CustodyBindingTransportState State, CustodyBindingResponseV1? Response = null);

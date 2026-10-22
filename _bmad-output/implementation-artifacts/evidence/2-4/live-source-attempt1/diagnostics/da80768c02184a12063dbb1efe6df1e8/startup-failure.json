@@ -1,0 +1,61 @@
+{
+  "schema": "hexalith.g4-startup-failure.v1",
+  "runId": "da80768c02184a12063dbb1efe6df1e8",
+  "ruleId": "HXR025",
+  "resource": "memories",
+  "appId": "memories",
+  "status": "state=Finished;health=unknown",
+  "unreadyResources": [
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Finished;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349139+00:00",
+      "processId": 2730109
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349217+00:00",
+      "processId": 2730195
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349282+00:00",
+      "processId": 2730192
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.834993+00:00",
+      "processId": 2730227
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349994+00:00",
+      "processId": 2730106
+    }
+  ],
+  "failingTask": null
+}

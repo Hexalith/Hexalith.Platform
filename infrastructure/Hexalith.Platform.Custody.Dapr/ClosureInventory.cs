@@ -25,7 +25,8 @@ internal static class ClosureRules
             || inventory.Copies.Select(c => c.CopyId).Distinct(StringComparer.Ordinal).Count() != inventory.Copies.Length
             || inventory.ProducerIncarnations.Length == 0 || inventory.Queues.Length == 0
             || !inventory.NativeIntentIds.Order(StringComparer.Ordinal).SequenceEqual(state.NativeIntents.Keys.Order(StringComparer.Ordinal))) return false;
-        if (state.NativeIntents.Values.Any(i => i.Phase != CustodyBindingIntentPhase.Closed)) return false;
+        if (state.Deliveries.Values.Any(d => d.Phase != CustodyBindingIntentPhase.Closed)
+            || state.NativeIntents.Values.Any(i => i.Phase != CustodyBindingIntentPhase.Closed)) return false;
         var ids = inventory.Copies.Select(c => c.CopyId).ToHashSet(StringComparer.Ordinal);
         foreach (var coverage in inventory.Coverage)
             if (!CustodyBindingContract.Digest(coverage.InventoryEvidenceDigest)

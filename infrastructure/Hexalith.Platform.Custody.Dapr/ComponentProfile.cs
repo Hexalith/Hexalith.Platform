@@ -6,10 +6,11 @@ internal sealed record TrustedSigner(string KeyId, string Purpose, string Public
 internal sealed record BucketIdentity(string Name, string OwnerAccountId, string EnrollmentKey, string EnrollmentVersion,
     string EnrollmentSha256);
 internal sealed record NativeEpoch(string OpaqueId, string KeyArn, string KeyId, string TenantId);
+internal sealed record TenantKek(string TenantId, string Version, string ProtectorArn, string ProtectorKeyId, byte[] EncryptedKey);
 internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string Region, string TableArn, string TableId,
     BucketIdentity Checkpoints, BucketIdentity Originals, DateTimeOffset RetainUntil, long CompletionReserveBytes,
     string SocketPath, string ComponentSigningKeyPath, string ComponentPublicKeyPem, TrustedSigner[] Trust,
-    NativeEpoch[] Epochs, string[] Tenants, string QualificationStatementPath)
+    NativeEpoch[] Epochs, string[] Tenants, string QualificationStatementPath, TenantKek[] Keks)
 {
     internal string EnrollmentDigest => CustodyJson.Hash(CustodyJson.Bytes(Enrollment));
     // This includes private resource pins and trust, so a restored config cannot silently change them through Init.
@@ -21,6 +22,8 @@ internal sealed record ComponentProfile(AuthorityEnrollmentV1 Enrollment, string
             || Tenants.Length != 2 || Tenants.Distinct(StringComparer.Ordinal).Count() != 2
             || Epochs.Length > 5 || Epochs.Select(e => e.OpaqueId).Distinct(StringComparer.Ordinal).Count() != Epochs.Length
             || Epochs.Any(e => !Tenants.Contains(e.TenantId) || !e.KeyArn.StartsWith("arn:aws:kms:", StringComparison.Ordinal))
+            || Keks.Length != 2 || Keks.Select(k => k.ProtectorArn).Distinct().Count() != 2
+            || Keks.Any(k => !Tenants.Contains(k.TenantId) || k.EncryptedKey.Length == 0)
             || Checkpoints.Name == Originals.Name || Checkpoints.OwnerAccountId.Length != 12 || Originals.OwnerAccountId.Length != 12
             || !CustodyBindingContract.Digest(Checkpoints.EnrollmentSha256) || !CustodyBindingContract.Digest(Originals.EnrollmentSha256)
             || CompletionReserveBytes <= 0 || CompletionReserveBytes >= 32 * 1024 * 1024 || !Path.IsPathFullyQualified(SocketPath)

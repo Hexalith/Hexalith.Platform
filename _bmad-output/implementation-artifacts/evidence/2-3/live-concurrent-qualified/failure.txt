@@ -1,0 +1,19 @@
+Shouldly.ShouldAssertException: started.IsReady
+    should be
+True
+    but was
+False
+
+Additional Info:
+    HXR027: Unready resource 'eventstore' last='state=Running;health=Unhealthy'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'memories' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'memories-access-telemetry' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'memories-access-telemetry-clock' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'memories-access-telemetry-clock-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'memories-access-telemetry-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'memories-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'tenants' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'tenants-api' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'tenants-api-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+HXR027: Unready resource 'tenants-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-64b325eec28e42598d4bc1f59ed936b3/state/diagnostics/67162e4b4daaafdb4475394607cf943e'.
+   at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync() in /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs:line 50

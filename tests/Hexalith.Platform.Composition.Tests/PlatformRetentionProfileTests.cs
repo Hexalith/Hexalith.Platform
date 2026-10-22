@@ -33,6 +33,24 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
+    public void RetentionCertificateCoversStartupCeilingAndFullExecutionBudget()
+    {
+        CompositionRunPlan initial = RetentionPlan();
+        CompositionRunPlan plan = initial with { StartupDeadlineUtc = initial.SelectedTest!.RequestedAtUtc.AddHours(2) };
+        PlatformRetentionProfile profile = PlatformRetentionProfile.Select(plan, Root).ShouldNotBeNull();
+        profile.PreStartValidityCeiling.ShouldBe(plan.StartupDeadlineUtc!.Value.AddSeconds(plan.SelectedTest!.ExecutionTimeoutSeconds + 1));
+        profile.PreStartValidityCeiling.ShouldBeGreaterThan(plan.SelectedTest.CredentialExpiryUtc);
+        string directory = Path.Combine(Path.GetTempPath(), "retention-startup-cert-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            profile.Prepare(directory, 12345);
+            using X509Certificate2 certificate = X509Certificate2.CreateFromPemFile(Path.Combine(directory, "retention", "server.crt"), Path.Combine(directory, "retention", "server.key"));
+            new DateTimeOffset(certificate.NotAfter.ToUniversalTime()).ShouldBeGreaterThanOrEqualTo(plan.StartupDeadlineUtc.Value.AddSeconds(plan.SelectedTest.ExecutionTimeoutSeconds));
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true); }
+    }
+
+    [Fact]
     public void RetentionProfileIsRunAndMappingBoundAndConfiguresEveryMemoriesService()
     {
         CompositionRunPlan plan = RetentionPlan();
@@ -53,7 +71,7 @@ public sealed partial class PlatformAppModelTests
             values["AccessTelemetryLifecycle__Retention"].ShouldBe("01:00:00");
             values["AccessTelemetryLifecycle__ComponentProfileHash"].ShouldBe(profile.ProfileHash);
             values["AccessTelemetryLifecycle__LocalFunctionalRunId"].ShouldBe(plan.RunId);
-            values["AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc"].ShouldBe(plan.SelectedTest!.ExecutionDeadlineUtc.ToString("O", System.Globalization.CultureInfo.InvariantCulture));
+            values["AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc"].ShouldBe(profile.PreStartValidityCeiling.ToString("O", System.Globalization.CultureInfo.InvariantCulture));
             values["AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned"].ShouldBe("true");
         }
         PlatformRetentionProfile.Select(plan with { RunId = "other-run" }, Root).ShouldNotBeNull().ProfileHash.ShouldNotBe(profile.ProfileHash);

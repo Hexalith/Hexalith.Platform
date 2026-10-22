@@ -1,0 +1,96 @@
+{
+  "runId": "da80768c02184a12063dbb1efe6df1e8",
+  "ownerId": "da80768c02184a12063dbb1efe6df1e8",
+  "selection": {
+    "moduleId": "platform-provisioning",
+    "name": "descriptor-isolation",
+    "executor": "python3",
+    "entry": "eng/test-environment-provisioning/suite.py",
+    "manifestHash": "DE44B7BD6785F0600789F48CE51799A5BC23F35275944186532866D04D579256",
+    "entryHash": "7A2C2583A5516E9E2AD35CE8F38B3E10FBECA67A520F04D5170423F0256AA5F3",
+    "executionTimeoutSeconds": 120,
+    "stopTimeoutSeconds": 90,
+    "requestedAtUtc": "2026-10-22T18:20:53.2303045+00:00",
+    "executionDeadlineUtc": "2026-10-22T18:22:53.2303045+00:00",
+    "credentialExpiryUtc": "2026-10-22T18:22:54+00:00",
+    "mode": "source"
+  },
+  "sourceMappingHash": "a27046634c3523abddb0c6cbf478baba438b8869dbd9987e22ec9c4a0d890b0b",
+  "declaredPlatformCommit": "cebbf6a701ff537a3a8f9654338b914b2e70f7f4",
+  "checkoutPlatformCommit": "cebbf6a701ff537a3a8f9654338b914b2e70f7f4",
+  "observedCandidateHash": null,
+  "observedBackendIdentity": null,
+  "qualificationCredit": false,
+  "resources": [
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Finished;health=unknown",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349139+00:00",
+      "processId": 2730109
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349217+00:00",
+      "processId": 2730195
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "memories",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349282+00:00",
+      "processId": 2730192
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.834993+00:00",
+      "processId": 2730227
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Running;health=Unhealthy",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:25:21.8349994+00:00",
+      "processId": 2730106
+    }
+  ],
+  "terminalStatus": "failed",
+  "terminalOutcome": {
+    "exitCode": "TopologyOrLifecycle",
+    "phase": "Topology",
+    "category": "TopologyOrLifecycle",
+    "ruleId": "HXR025"
+  },
+  "terminalAtUtc": "2026-10-22T18:25:22.1507985+00:00",
+  "resourceDisposition": "removed",
+  "remainingResources": {
+    "containerIds": [],
+    "processIds": [],
+    "unverified": false,
+    "isEmpty": true
+  },
+  "observationHash": null,
+  "executionTiming": null,
+  "selections": [],
+  "reportHash": null,
+  "testCounts": null
+}

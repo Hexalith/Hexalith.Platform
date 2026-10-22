@@ -1,0 +1,61 @@
+{
+  "schema": "hexalith.module-manifest.v2",
+  "modules": [
+    {
+      "identity": {
+        "moduleId": "platform-provisioning",
+        "servers": [],
+        "dependencies": [
+          "eventstore",
+          "tenants",
+          "memories"
+        ]
+      },
+      "runtime": {
+        "dapr": [],
+        "extensions": [],
+        "resources": []
+      },
+      "surfaces": {
+        "interfaces": []
+      },
+      "integration": {
+        "topics": [],
+        "secrets": [],
+        "dynamicSecretNamespaces": [],
+        "identityNeeds": [],
+        "egress": [],
+        "providers": [],
+        "workers": []
+      },
+      "lifecycle": {
+        "readiness": [],
+        "tasks": [],
+        "startup": {},
+        "classification": {
+          "changeClass": "additive",
+          "reason": "Run-owned real-service descriptor and synthetic isolation qualification."
+        },
+        "recoveryHooks": [],
+        "fenceHooks": [],
+        "replay": {
+          "reopenBeforeReplay": false
+        },
+        "criticalFlows": [],
+        "smokeSurfaces": [],
+        "recoveryInventory": []
+      },
+      "tests": [
+        {
+          "name": "descriptor-isolation",
+          "executor": "python3",
+          "entry": "eng/test-environment-provisioning/suite.py",
+          "reportFormat": "trx",
+          "executionTimeoutSeconds": 120,
+          "stopTimeoutSeconds": 90,
+          "mode": "source"
+        }
+      ]
+    }
+  ]
+}

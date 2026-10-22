@@ -1,19 +1,21 @@
 # Story 2.3 verification
 
-## Final verification after review corrections
+## Current qualification status
 
-**Story remains in review: final qualification is blocked.**
+**Story 2.3 remains in review: final live qualification is incomplete.**
 
-- [Ordinary Composition checks](final-ordinary-composition.log): 146 discovered, **141 passed**, zero failures, five gated skips, 55.789 seconds. The occupied-port, concurrent, and file-entry cases were then run explicitly below.
-- [Required Builds Module Debug build](final-build-builds.log): **passed**, zero warnings/errors. [Builds runtime subset](final-builds-runtime-tests.log): **22 passed**, no skips.
+- [Normal Composition Debug build](final-build-composition-complete.log): **passed**, zero warnings/errors, with analyzers and project references enabled. [Ordinary suite against that build](final-ordinary-qualified.log): **141 passed**, zero failed, five gated skips (146 total), 76.840 seconds.
+- [Builds Module normal Debug build](final-build-builds.log) passed, as did [22 relevant runtime tests](final-builds-runtime-tests.log). Independent lifecycle changes then arrived during verification: the [latest required build](latest-builds-lifecycle-blocker.log) now fails with **37 analyzer errors** in execution-budget, resource-claim, command-execution, startup-task and descriptor work. Those lifecycle policies are outside the frozen Story 2.3 intent and were preserved.
 - [Occupied-port proof](final-occupied-port.log): **one passed**, no skip, 2.623 seconds. The foreign listener and marker survived candidate cleanup; task fixtures were removed.
-- [Required Composition Debug build](final-build-composition.log) and [retry after independent package edits](final-build-composition-retry.log): **failed** at NuGet restore with NU1506. EventStore's `Directory.Packages.props` and the Builds catalog both declare `System.Security.Cryptography.Pkcs` and `System.Security.Cryptography.Xml` version 10.0.13. These independent declarations were not changed by Story 2.3.
-- [Concurrent post-review attempt](final-live-concurrent.log): executed, not skipped; **failed before first-session readiness**, HXR025, EventStore state Finished. [Startup diagnostics](live-concurrent-post-review/startup-failure.json) are preserved. It did not execute the expanded four-native-listener inventory assertions. The earlier complete 403.261-second concurrency pass below remains historical evidence and does not qualify the final code state.
-- [File-entry post-review smoke](final-file-entry.log): executed, not skipped; **failed** when EventStore's source build reported the same NU1506 duplicate package versions. Its owned AppHost was stopped in the test's finally block.
-- [Cleanup audit](final-cleanup-audit.json): no containers with the failed concurrent run label, no recorded project processes, no AppHost process. No foreign-resource cleanup was performed.
-- [Exact source revisions and compiled artifact hashes](final-source-revisions.json), [workspace status](final-dirty-status.txt). The passing ordinary checks used the documented supplemental compilation; a normal Composition build is still required.
+- [Latest concurrent proof](final-live-qualified.log): executed, not skipped; fails **HXR027**, `cutover-timeout;health-HTTP-503`, before first-session readiness. [Startup diagnostics](live-concurrent-qualified/startup-failure.json) are retained. The expanded cross-run native-listener assertions remain unexecuted. The earlier complete 403.261-second concurrency pass remains historical evidence and does not qualify the final code state. No readiness or security check was weakened.
+- [Latest file-entry smoke](final-file-entry-qualified.log): executed, not skipped; fails before AppHost resources start on the new Builds analyzer errors. The [previous file-entry attempt](final-file-entry.log) reached its owned host and reported the earlier NuGet conflict; its finally teardown passed.
+- The earlier NU1506 blocker was repaired without changing package versions: the clean EventStore owner props now update existing cryptography pins, with conditional additions for older catalogs. [Both catalog evaluation cases passed](package-catalog-compatibility.json); [the exact owner compatibility diff](eventstore-package-compatibility.diff) is retained. No tool was published or repinned and no gitlink was staged by this workflow.
+- [Cleanup audit](final-cleanup-audit.json): both failed concurrent attempts have no labelled containers, recorded project processes or AppHost PID left. No foreign-resource cleanup was performed.
+- [Exact final source revisions/hashes](final-source-revisions.json), [workspace status](final-dirty-status.txt). The source tree continued changing independently during verification; passing results are tied to their recorded attempts.
 
-To finish: resolve the independent duplicate package declarations, pass the normal Composition Debug build, then rerun the concurrent proof with native-listener receipts and the file-entry smoke. Preserve existing source-identity checks and running foreign applications.
+To finish: let the independent Builds lifecycle implementation pass its normal build, collect the gateway `/health` result behind the HXR027 cutover timeout, then rerun normal builds, the expanded concurrent proof and file-entry smoke. Preserve existing source-identity, readiness and mTLS checks.
+
+## Earlier implementation evidence
 
 Local source verification only. No hosted data, package-mode CI, descriptor migration,
 attachment/lifecycle policy or Works qualification is claimed.

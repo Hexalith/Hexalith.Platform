@@ -8,6 +8,8 @@ python3 eng/kubernetes-upgrade/prepare.py --operator 'Codex (preparation only)'
 
 Use `--backup-bundle /absolute/path/to/final-bundle` only to inventory a selected local bundle. A rehearsal is not a final recovery proof. A successful preparation command means files were created; it never means the upgrade is authorized. Preserve each attempt rather than overwrite it. The tool refuses evidence output inside the repository or selected recovery bundle. The committed summary may include the attempt ID and digests; full logs and recovery material must be encrypted and access controlled outside Git.
 
+The [2026-10-22 checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261022t175352z-prerequisite-check/summary.md) independently authenticates all eight retained recovery signatures/bindings but finds their signed-policy deadline expired on October 15. Story 4.27 remains in progress. Its unsigned preparation leaves both hops closed; it records no current live health or operational acceptance. Follow its restart prerequisites before attempting a hop.
+
 ## Retained two-hop preparation
 
 The recorder reads `workloadHop.tag` and `workloadTarget.tag` from the

@@ -1,10 +1,19 @@
 {
-  "utc": "2026-10-22T17:49:20.507689+00:00",
-  "runId": "ac976b6dcbf7380d27d5a3c09d9f71b8",
-  "label": "hexalith.g4.run",
-  "remainingContainerIds": [],
-  "remainingRecordedProjectProcessIds": [],
-  "appHostProcessId": null,
-  "fileEntryTeardown": "Executed finally after owned start; stop assertions passed, primary failure was ready.ExitCode (NU1506).",
+  "utc": "2026-10-22T18:06:04.444762+00:00",
+  "failedConcurrentAttempts": [
+    {
+      "runId": "67162e4b4daaafdb4475394607cf943e",
+      "remainingContainerIds": [],
+      "remainingRecordedProjectProcessIds": [],
+      "appHostProcessId": null
+    },
+    {
+      "runId": "ac976b6dcbf7380d27d5a3c09d9f71b8",
+      "remainingContainerIds": [],
+      "remainingRecordedProjectProcessIds": [],
+      "appHostProcessId": null
+    }
+  ],
+  "fileEntryAttempts": "The previous started host passed its finally stop assertions; the latest attempt failed compilation before AppHost resources started.",
   "foreignResources": "No foreign-resource cleanup was performed."
 }

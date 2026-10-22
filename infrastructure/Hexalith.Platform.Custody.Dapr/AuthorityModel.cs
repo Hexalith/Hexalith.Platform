@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.Platform.Custody;
+using Hexalith.EventStore.Contracts.Security;
 using Hexalith.Platform.Secrets.Runtime;
 
 namespace Hexalith.Platform.Custody.Dapr;
@@ -19,7 +20,8 @@ internal sealed record Anchor(long Revision, string Digest, AnchoredStateTransit
 internal sealed record Checkpoint(string TenantId, string EnrollmentDigest, long Revision, string PredecessorDigest,
     string CurrentEpoch, Dictionary<string, StoredRegistration> Registrations, HashSet<string> AllocationExclusions,
     Dictionary<string, Pin> Pins, Dictionary<string, StoredOriginal> Originals, Dictionary<string, NativeIntentV1> NativeIntents,
-    Dictionary<string, Anchor> Anchors, Cycle? Cycle, HashSet<string> RevokedSignerIds)
+    Dictionary<string, Anchor> Anchors, Cycle? Cycle, HashSet<string> RevokedSignerIds,
+    Dictionary<string, ObjectVersion> NativeResults, Dictionary<string, CustodyBindingDeliveryV1> Deliveries)
 {
     internal bool Frozen => Cycle?.Phase is CyclePhase.Reserved or CyclePhase.Prepared;
 }

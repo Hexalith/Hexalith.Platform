@@ -4,9 +4,9 @@ using Hexalith.Platform.Secrets.Runtime;
 
 namespace Hexalith.Platform.Custody.Dapr;
 
-internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore store, StatementVerifier verifier, ECDsa responseSigner)
+internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore store, StatementVerifier verifier, ECDsa responseSigner, KeyExchange? keyExchange = null)
 {
-    internal async Task<CustodyBindingResponseV1> InvokeAsync(byte[] exactBytes, SignedStatement operation, SignedStatement control, CancellationToken token)
+    internal async Task<CustodyBindingResponseV1> InvokeAsync(byte[] exactBytes, SignedStatement operation, SignedStatement control, CancellationToken token, SignedStatement? keyAdmission = null)
     {
         var request = CustodyBindingContract.Decode(exactBytes) ?? throw new AuthorityUnavailableException("Invalid closed request.");
         var e = request.Envelope;
@@ -31,7 +31,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             byte[] slice = original.AsSpan(page.Offset, page.Length).ToArray();
             return Reply() with { Page = new(header, page.Offset, slice.Length, CustodyJson.Hash(slice), slice) };
         }
-        if (current.Checkpoint.Originals.TryGetValue(e.OperationId, out var originalOperation))
+        if (e.Operation != "unwrap" && current.Checkpoint.Originals.TryGetValue(e.OperationId, out var originalOperation))
         {
             if (originalOperation.RequestDigest != e.RequestDigest) throw new AuthorityUnavailableException("Permanent original operation conflict.");
             if (originalOperation.Response is { } reference)
@@ -42,6 +42,11 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                     : CustodyJson.Read<CustodyBindingResponseV1>(original);
             }
             return Pending(request); // An admitted uncertain original is never replayed or called NotStarted.
+        }
+        if (e.Operation is "wrap" or "unwrap")
+        {
+            if (keyExchange is null || keyAdmission is null) throw new AuthorityUnavailableException("Key execution installation missing.");
+            return await keyExchange.ExecuteAsync(request, current, keyAdmission, token);
         }
         if (e.Operation is "lookup-original" or "lookup-transition" or "verify-transition")
             return Pending(request); // No synthetic NotStarted proof.
@@ -74,7 +79,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                     throw new AuthorityUnavailableException("Exact currently authorized hold release missing.");
                 next.Pins.Remove(pinId);
                 var result = new CustodyKeyLifecycleOutcome(lifecycle.Identity, e.OperationId, e.RequestDigest,
-                    CustodyKeyLifecycleStatus.Unpinned, next.Revision, "release-" + Guid.NewGuid().ToString("N"), null);
+                    CustodyKeyLifecycleStatus.Unpinned, "release-" + Guid.NewGuid().ToString("N"), null);
                 var response = Reply() with { Lifecycle = result };
                 var reference = await store.PutImmutableAsync(CustodyJson.Bytes(response), "original", token);
                 next.Originals.Add(e.OperationId, new(e.RequestDigest, e.Operation, reference, null));
@@ -95,8 +100,8 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
         if (request.Manifest is { } manifest)
         {
             var result = new Hexalith.EventStore.Contracts.Security.DeletionManifestProviderResult(
-                Hexalith.EventStore.Contracts.Security.DeletionManifestProviderState.Unknown, e.TenantId,
-                manifest.Original.Capability.BatchId, manifest.ProtectionReservationReceiptId, []);
+                e.TenantId, manifest.Original.Capability.BatchId, manifest.ProtectionReservationReceiptId,
+                Hexalith.EventStore.Contracts.Security.DeletionManifestProviderState.Unknown, []);
             var status = new CustodyBindingManifestStatusV1(result, profile.Enrollment, manifest.Original.Capability.ManifestDigest, []);
             return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, ManifestStatus: status with { Signature = Sign(CustodyJson.Bytes(status)) });
         }

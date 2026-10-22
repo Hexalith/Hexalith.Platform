@@ -1,0 +1,16 @@
+diff --git a/Directory.Packages.props b/Directory.Packages.props
+index cff04ae13..9b8b14f99 100644
+--- a/Directory.Packages.props
++++ b/Directory.Packages.props
+@@ -13,11 +13,4 @@
+   <Import Project="$(Hexalith2BuildPackageProps)" Condition="Exists('$(Hexalith2BuildPackageProps)') And '$(HexalithVersionsLoaded)' != 'true'" />
+   <Import Project="$(Hexalith3BuildPackageProps)" Condition="Exists('$(Hexalith3BuildPackageProps)') And '$(HexalithVersionsLoaded)' != 'true'" />
+   <Import Project="$(Hexalith4BuildPackageProps)" Condition="'$(HexalithVersionsLoaded)' != 'true'" />
+-  <ItemGroup>
+-    <PackageVersion Update="Microsoft.AspNetCore.SignalR.Common" Version="10.0.13" />
+-    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+-    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.13" />
+-    <PackageVersion Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
+-    <PackageVersion Update="Microsoft.Extensions.Options" Version="10.0.13" />
+-  </ItemGroup>
+ </Project>

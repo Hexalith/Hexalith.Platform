@@ -67,14 +67,14 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
         CertificateRequest root = new("CN=Hexalith run " + _plan.RunId, rootKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         root.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
         root.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyCertSign, true));
-        using X509Certificate2 ca = root.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), _plan.SelectedTest!.CredentialExpiryUtc.AddMinutes(15));
+        using X509Certificate2 ca = root.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), PreStartValidityCeiling.AddMinutes(15));
         using RSA key = RSA.Create(3072);
         CertificateRequest server = new("CN=localhost", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         SubjectAlternativeNameBuilder names = new();
         names.AddDnsName("localhost"); names.AddIpAddress(IPAddress.Loopback);
         server.CertificateExtensions.Add(names.Build());
         server.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
-        using X509Certificate2 certificate = server.Create(ca, DateTimeOffset.UtcNow.AddMinutes(-1), _plan.SelectedTest.CredentialExpiryUtc, RandomNumberGenerator.GetBytes(16));
+        using X509Certificate2 certificate = server.Create(ca, DateTimeOffset.UtcNow.AddMinutes(-1), PreStartValidityCeiling, RandomNumberGenerator.GetBytes(16));
         File.WriteAllText(Path.Combine(_directory, "ca.pem"), ca.ExportCertificatePem());
         File.WriteAllText(Path.Combine(_directory, "server.crt"), certificate.ExportCertificatePem());
         File.WriteAllText(Path.Combine(_directory, "server.key"), key.ExportPkcs8PrivateKeyPem());
@@ -130,7 +130,7 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
         environment["AccessTelemetryLifecycle__DeploymentId"] = _plan.RunId;
         environment["AccessTelemetryLifecycle__LocalFunctionalRunId"] = _plan.RunId;
         environment["AccessTelemetryLifecycle__Enabled"] = "true";
-        environment["AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc"] = _plan.SelectedTest!.ExecutionDeadlineUtc.ToString("O", System.Globalization.CultureInfo.InvariantCulture);
+        environment["AccessTelemetryLifecycle__CapabilityEvidence__ValidUntilUtc"] = PreStartValidityCeiling.ToString("O", System.Globalization.CultureInfo.InvariantCulture);
         environment["AccessTelemetryLifecycle__CapabilityEvidence__ExactVersionPinned"] = "true";
         environment["AccessTelemetryLifecycle__CapacityEvidenceId"] = "not-qualified-local-functional";
         environment["AccessTelemetryLifecycle__PhysicalReclamationEvidenceId"] = "not-qualified-local-functional";
@@ -237,6 +237,10 @@ public sealed class PlatformRetentionProfile : ICompositionTestObservationProvid
             ObservedBackendIdentity = backend, PostgresqlContainerId = containerId, AccessPath = accessPath, GatePath = Path.Combine(_directory, "gate.json"), ObservedAtUtc = DateTimeOffset.UtcNow,
         };
     }
+
+    /// <summary>Gets a pre-start certificate ceiling; actual access still obeys the activated gate deadline.</summary>
+    internal DateTimeOffset PreStartValidityCeiling => (_plan.StartupDeadlineUtc ?? _plan.SelectedTest!.RequestedAtUtc.AddSeconds(600))
+        .AddSeconds(_plan.SelectedTests.Count > 0 ? _plan.SelectedTests.Sum(entry => entry.ExecutionTimeoutSeconds) : _plan.SelectedTest!.ExecutionTimeoutSeconds).AddSeconds(1);
 
     private static bool IsRequestedPostgres(string? reference) => reference == PostgresImage || reference == PostgresImage.Replace(":18.6-trixie@", "@", StringComparison.Ordinal);
 

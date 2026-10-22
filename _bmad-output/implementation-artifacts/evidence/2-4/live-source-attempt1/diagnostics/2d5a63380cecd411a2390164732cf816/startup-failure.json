@@ -1,0 +1,31 @@
+{
+  "schema": "hexalith.g4-startup-failure.v1",
+  "runId": "2d5a63380cecd411a2390164732cf816",
+  "ruleId": "HXR025",
+  "resource": "tenants",
+  "appId": "tenants",
+  "status": "state=Finished;health=unknown",
+  "unreadyResources": [
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Finished;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:26:19.5267988+00:00",
+      "processId": 2727888
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Finished;health=unknown",
+      "moduleId": "tenants",
+      "endpoints": [],
+      "observedAt": "2026-10-22T18:26:19.5268013+00:00",
+      "processId": 2727968
+    }
+  ],
+  "failingTask": null
+}

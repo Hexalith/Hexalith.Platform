@@ -135,7 +135,7 @@ public static class PlatformAppModel
         CompositionWorkspace.CreatePrivateDirectory(rendered);
         try
         {
-            CompositionRunPorts localPorts = AllocateSecondaryPorts(Math.Max(1, servers.Count(server => server.ResourceId != "eventstore")), options.RunPlan?.Ports);
+            CompositionRunPorts localPorts = AllocateOwnedSecondaryPorts(Math.Max(1, servers.Count(server => server.ResourceId != "eventstore")), options.RunPlan);
             int redisPort = options.RunPlan?.Ports.Redis ?? localPorts.Redis;
             int vectorPort = localPorts.UiHttp;
             int sentryPort = localPorts.PlacementHealth;
@@ -236,6 +236,8 @@ public static class PlatformAppModel
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile");
                     if (options.RetentionProfile is not null)
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
+                    else if (options.RunPlan?.SelectedTest is not null)
+                        project.WithArgs("--artifacts-path", Path.Combine(options.RunPlan.Workspace, "project-builds", server.ResourceId));
                     if (server.ResourceId == "timesheets")
                     {
                         project.WithHttpEndpoint(name: "public")
@@ -369,6 +371,14 @@ public static class PlatformAppModel
             throw new InvalidDataException("Selected retention build outputs require a valid run identity and resource path segment.");
         string owner = CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, server.Module);
         return Path.Combine(Path.GetFullPath(owner), "artifacts", "retention", runId!, "build", resource);
+    }
+
+    internal static CompositionRunPorts AllocateOwnedSecondaryPorts(int count, CompositionRunPlan? plan, Func<int, CompositionRunPorts>? allocator = null)
+    {
+        CompositionRunPorts accepted = AllocateSecondaryPorts(count, plan?.Ports, allocator);
+        if (plan is { ResourceClaimStateDirectory: { } claims })
+            new CompositionResourceClaimStore(claims).Acquire(plan.RunId, accepted.ToList().Select(port => "tcp:127.0.0.1:" + port.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+        return accepted;
     }
 
     internal static CompositionRunPorts AllocateSecondaryPorts(int count, CompositionRunPorts? persisted, Func<int, CompositionRunPorts>? allocator = null)

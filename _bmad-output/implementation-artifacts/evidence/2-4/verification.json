@@ -1,0 +1,113 @@
+{
+  "verificationScope": "source Debug local; no package/CI/candidate qualification credit",
+  "builds": {
+    "initialDebugBuild": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "log": "builds-build-debug.log"
+    },
+    "affectedSerialRegressions": {
+      "passed": 370,
+      "failed": 0,
+      "seconds": 115.462,
+      "log": "builds-affected-370.log"
+    },
+    "finalWriterGuardFocusedChecks": {
+      "passed": 75,
+      "failed": 0,
+      "seconds": 7.978,
+      "log": "builds-focused-75.log"
+    }
+  },
+  "platform": {
+    "initialDebugBuild": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "log": "platform-build-debug.log"
+    },
+    "finalLiveFixtureDebugBuild": {
+      "passed": true,
+      "warnings": 1,
+      "errors": 0,
+      "warning": "MSB3277 existing project graph selects StackExchange.Redis assembly 2.0 over Tooling reference 3.0",
+      "log": "platform-build-live-fixture-final.log"
+    },
+    "affectedRegressions": {
+      "passed": 29,
+      "failed": 0,
+      "seconds": 8.572,
+      "log": "platform-affected-29.log"
+    },
+    "liveTechnicalProof": {
+      "passed": 1,
+      "failed": 0,
+      "seconds": 101.923,
+      "log": "live-technical-attempt3/qualification.log",
+      "runs": [
+        {
+          "runId": "717519ee8557410c70682ed47bab1303",
+          "environmentId": "5a08b8303cbf460f86a82157dcce7033",
+          "attemptId": "45a4f51cc0ac494aa0200916e8c3194d",
+          "catalogCommit": "66b9136a0b223925e51177a51eb48852e2f12787",
+          "compositionContentIdentity": "sha256:c3b753d981aa32ba80a4502d6821055c5b84b5271df7cda28cd4469de3946d26",
+          "descriptor": "live-technical-attempt3/717519ee8557410c70682ed47bab1303.descriptor.json",
+          "executionTiming": {
+            "startedAtUtc": "2026-10-22T18:52:50.5972401+00:00",
+            "deadlineUtc": "2026-10-22T18:54:50.5972401+00:00",
+            "effectiveSeconds": 120,
+            "configurationContentIdentity": "sha256:5c59aadfdc0389d0e43117b28ba516dc8e00af52b596864c6b477c4b5e8503d6",
+            "actualDurationSeconds": 0.1238323,
+            "credentialExpiryUtc": "2026-10-22T18:54:51+00:00"
+          },
+          "ownPersistedValueObserved": true,
+          "peerKeyVisible": false
+        },
+        {
+          "runId": "fb10e0a7e55275b6a62b331610ad461f",
+          "environmentId": "d7fa2bb97d7e40d59ef6e4dd08af0838",
+          "attemptId": "46832dfa0eff43dcb35bdcc1f73cd729",
+          "catalogCommit": "66b9136a0b223925e51177a51eb48852e2f12787",
+          "compositionContentIdentity": "sha256:c3b753d981aa32ba80a4502d6821055c5b84b5271df7cda28cd4469de3946d26",
+          "descriptor": "live-technical-attempt3/fb10e0a7e55275b6a62b331610ad461f.descriptor.json",
+          "executionTiming": {
+            "startedAtUtc": "2026-10-22T18:52:50.588775+00:00",
+            "deadlineUtc": "2026-10-22T18:54:50.588775+00:00",
+            "effectiveSeconds": 120,
+            "configurationContentIdentity": "sha256:5c59aadfdc0389d0e43117b28ba516dc8e00af52b596864c6b477c4b5e8503d6",
+            "actualDurationSeconds": 0.1307827,
+            "credentialExpiryUtc": "2026-10-22T18:54:51+00:00"
+          },
+          "ownPersistedValueObserved": true,
+          "peerKeyVisible": false
+        }
+      ]
+    }
+  },
+  "cleanupAudit": "final-cleanup-audit.json",
+  "schemaParity": "schema-parity.json",
+  "preservedFailures": [
+    {
+      "location": "live-source-attempt1",
+      "reason": "Six-server reference domain composition failed HXR025 when Tenants/Memories resources finished before healthy; no descriptor/native test launch. Preserved separately; technical minimum closure subsequently proved provisioning."
+    },
+    {
+      "location": "live-technical-attempt2",
+      "reason": "Readiness and descriptor handoff succeeded; fixture evidence environment variable was correctly excluded by native allowlist. Fixture now derives shared output from descriptor path. First HXR028 stop receipts retained; same-ID idempotent retries succeeded."
+    },
+    {
+      "location": "builds-serial-before-fixture-adjustment.log",
+      "reason": "Eight-second startup-deadline fixture expired before entering its intended task phase. Fixture now proves task start via sentinel and uses a finite 15-second bound; final serial 370 passed."
+    },
+    {
+      "location": "builds-regression-initial-with-live-load.log",
+      "reason": "Earlier startup task fixture timing failure while live startup was active; retained. Isolated original fixture rerun passed, then sentinel-adjusted serial suite passed."
+    }
+  ],
+  "productionCodeAfter370And75": "unchanged; later source changes affect only gated live fixture transport/cleanup receipts and schema line endings",
+  "remainingLimitations": [
+    "Broader reference domain startup is not qualified by the minimum technical closure proof.",
+    "No package-mode live execution, CI orchestration, attachment admission, domain fixture migration, candidate acceptance or pin changes."
+  ]
+}

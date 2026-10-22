@@ -32,10 +32,15 @@ internal sealed record CustodyBindingPageReadV1(CustodyBindingOriginalHeaderV1 H
 internal sealed record CustodyBindingKeyUseV1(string KeyUseLeaseId, string DeliveryAttemptId, string RecipientProcessIncarnation,
     string TransportIncarnation, string OriginalRootReference);
 
+// Key-bearing input is ephemeral. It is never an immutable original or persisted request payload.
+internal sealed record CustodyBindingWrapInputV1(CustodyKeyObjectIdentity Identity, string OperationId, long ExpectedRevision,
+    string KekVersion, string OpaqueWrappedKeyReference, byte[] RootKey, CustodyBindingKeyUseV1 KeyUse);
+
 // A closed tagged union: validation admits exactly one operation-specific branch.
 internal sealed record CustodyBindingRequestV1(CustodyBindingEnvelopeV1 Envelope, CustodyKeyRegistration? Registration = null,
     CustodyKeyLifecycleRequest? Lifecycle = null, CustodyBindingManifestV1? Manifest = null,
-    AnchoredStateTransition? Transition = null, CustodyBindingPageReadV1? Page = null, CustodyBindingKeyUseV1? KeyUse = null);
+    AnchoredStateTransition? Transition = null, CustodyBindingPageReadV1? Page = null, CustodyBindingKeyUseV1? KeyUse = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] CustodyBindingWrapInputV1? WrapInput = null);
 
 internal static class CustodyBindingContract
 {
@@ -74,6 +79,7 @@ internal static class CustodyBindingContract
     // signed JCS bytes are carried separately; transport escaping never changes their signing identity.
     internal static string OriginalRequestDigest(CustodyBindingRequestV1 request)
     {
+        if (request.WrapInput is { } wrap) { return Hash(JsonSerializer.SerializeToUtf8Bytes(wrap)); }
         if (request.Manifest is { } manifest) { return Hash(JsonSerializer.SerializeToUtf8Bytes(manifest.Original)); }
         if (request.Lifecycle is { } lifecycle) { return Hash(JsonSerializer.SerializeToUtf8Bytes(lifecycle)); }
         if (request.Transition is { } transition) { return Hash(JsonSerializer.SerializeToUtf8Bytes(transition)); }
@@ -144,6 +150,18 @@ internal static class CustodyBindingContract
                 || !OptionalText(p.HoldId) || !OptionalText(p.DispatchReceiptId) || !OptionalText(p.ProtectionReservationReceiptId)
                 || p.DispatchRevision < 0 || !Pair(p.GuardRevision, p.GuardReceiptId) || !Pair(p.ReleaseGuardRevision, p.ReleaseGuardReceiptId)
                 || e.RequestDigest != OriginalRequestDigest(r)) { return false; }
+            if (r.WrapInput is { } input)
+            {
+                CustodyKeyLifecycleActor.ValidateIdentity(input.Identity);
+                return e.Operation == "wrap" && r.Registration is null && r.Manifest is null && r.Transition is null && r.Page is null
+                    && r.KeyUse is null && r.Lifecycle is null && input.Identity.TenantId == e.TenantId
+                    && input.Identity.StoreTarget == e.Enrollment.StoreTarget && input.OperationId == e.OperationId
+                    && input.ExpectedRevision == e.ExpectedCustodyRevision && CustodyText(input.KekVersion)
+                    && CustodyText(input.OpaqueWrappedKeyReference) && input.RootKey is { Length: 32 }
+                    && input.KeyUse is { } k && Text(k.KeyUseLeaseId) && Text(k.DeliveryAttemptId)
+                    && Text(k.RecipientProcessIncarnation) && Text(k.TransportIncarnation)
+                    && k.OriginalRootReference == input.OpaqueWrappedKeyReference;
+            }
             int branches = (r.Registration is null ? 0 : 1) + (r.Manifest is null ? 0 : 1) + (r.Transition is null ? 0 : 1) + (r.Page is null ? 0 : 1);
             switch (e.Operation)
             {

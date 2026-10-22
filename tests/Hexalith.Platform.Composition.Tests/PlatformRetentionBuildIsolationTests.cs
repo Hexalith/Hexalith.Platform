@@ -44,6 +44,27 @@ public sealed partial class PlatformAppModelTests
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
     }
 
+    [Fact]
+    public async Task DeclaredSuiteProjectsUseRunPrivateBuildOutputsAsync()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "suite-build-isolation-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            CompositionRunPlan initial = await BuildIsolationPlanAsync(workspace, selected: true);
+            CompositionRunPlan plan = initial with { SelectedTest = initial.SelectedTest! with { Name = "generic-integration", DaprRuntimeVersion = null } };
+            IDistributedApplicationBuilder builder = Builder();
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
+            foreach (ProjectResource project in builder.Resources.OfType<ProjectResource>())
+            {
+                string[] arguments = await BuildIsolationArgumentsAsync(project);
+                int marker = Array.IndexOf(arguments, "--artifacts-path");
+                marker.ShouldBeGreaterThanOrEqualTo(0);
+                arguments[marker + 1].ShouldBe(Path.Combine(workspace, "project-builds", project.Name));
+            }
+        }
+        finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

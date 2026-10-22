@@ -118,6 +118,28 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
+    public void SecondaryClaimsOnlyTheAcceptedNonOverlappingAllocation()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-secondary-claims-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            string owner = CompositionRunPlanFactory.NewRunId();
+            CompositionRunPorts persisted = CompositionPortAllocator.AllocateOwned(1, owner, directory);
+            CompositionRunPorts independent = CompositionPortAllocator.Allocate(1);
+            CompositionRunPorts rejected = independent with { Redis = persisted.Scheduler };
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(owner, Path.Combine(directory, "run"), directory, persisted, [], []) with { ResourceClaimStateDirectory = directory };
+            int attempts = 0;
+            PlatformAppModel.AllocateOwnedSecondaryPorts(1, plan, _ => ++attempts == 1 ? rejected : independent).ShouldBe(independent);
+            attempts.ShouldBe(2);
+            string peer = CompositionRunPlanFactory.NewRunId();
+            var claims = new CompositionResourceClaimStore(directory);
+            Should.Throw<CompositionResourceClaimConflictException>(() => claims.Acquire(peer, ["tcp:127.0.0.1:" + persisted.Scheduler])).OwnerRunId.ShouldBe(owner);
+            Should.Throw<CompositionResourceClaimConflictException>(() => claims.Acquire(peer, ["tcp:127.0.0.1:" + independent.Redis])).OwnerRunId.ShouldBe(owner);
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
+    [Fact]
     public void CertificateParentRejectsDanglingSymlinksIntoTheCheckoutBeforeAddingResources()
     {
         string directory = Path.Combine(Path.GetTempPath(), "platform-certificate-link-" + Guid.NewGuid().ToString("N"));
