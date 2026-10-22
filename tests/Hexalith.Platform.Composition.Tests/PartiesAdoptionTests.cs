@@ -5,6 +5,7 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Manifest;
+using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -78,8 +79,35 @@ public sealed class PartiesAdoptionTests
         environment["EventStore__DomainServices__Registrations__wildcard_party_v1__AppId"].ShouldBe("parties");
         environment["EventStore__DomainServices__Registrations__wildcard_party_v1__Domain"].ShouldBe("party");
         environment["EventStore__DomainServices__Registrations__wildcard_party_v1__MethodName"].ShouldBe("process");
+        environment["EventStore__DomainServices__Registrations__wildcard_party_v1__TenantId"].ShouldBe("*");
+        environment["EventStore__DomainServices__Registrations__wildcard_party_v1__Version"].ShouldBe("v1");
         ProjectResource parties = servers.Single(server => server.Name == "parties");
         DaprSidecarOptions sidecar = parties.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+        using JsonDocument accessControl = JsonDocument.Parse(File.ReadAllText(sidecar.Config!));
+        JsonElement receiver = accessControl.RootElement.GetProperty("spec");
+        receiver.GetProperty("mtls").GetProperty("enabled").GetBoolean().ShouldBeTrue();
+        JsonElement acl = receiver.GetProperty("accessControl");
+        acl.GetProperty("defaultAction").GetString().ShouldBe("deny");
+        acl.GetProperty("trustDomain").GetString().ShouldBe("public");
+        JsonElement policy = acl.GetProperty("policies").EnumerateArray().ShouldHaveSingleItem();
+        policy.GetProperty("appId").GetString().ShouldBe("eventstore");
+        policy.GetProperty("defaultAction").GetString().ShouldBe("deny");
+        policy.GetProperty("trustDomain").GetString().ShouldBe("public");
+        policy.GetProperty("namespace").GetString().ShouldBe("default");
+        JsonElement[] operations = policy.GetProperty("operations").EnumerateArray().ToArray();
+        // The existing Dapr prefix-node fallback renders approved parent paths with /*.
+        operations.Select(operation => operation.GetProperty("name").GetString()).Order().ShouldBe(new[]
+        {
+            "/process", "/query", "/admin/operational-index-metadata", "/project/*",
+            "/project/v2/*", "/project/v2/reconcile", "/replay-state", "/project/rebuild/v1",
+            "/project/rebuild/shared/v1", "/project/rebuild/stage/v1", "/project/rebuild/commit/v1",
+            "/project/rebuild/abort/v1", "/project/rebuild/verify/v1",
+        }.Order());
+        foreach (JsonElement operation in operations)
+        {
+            operation.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).ShouldBe(["POST"]);
+            operation.GetProperty("action").GetString().ShouldBe("allow");
+        }
         string[] subscriptions = sidecar.ResourcesPaths!.SelectMany(directory => Directory.GetFiles(directory, "subscription.*")).Select(File.ReadAllText).ToArray();
         JsonElement[] partySubscriptions = subscriptions.Select(content =>
         {
@@ -102,6 +130,42 @@ public sealed class PartiesAdoptionTests
         rules[0].GetProperty("path").GetString().ShouldBe("/ready");
         rules[0].GetProperty("verbs").EnumerateArray().Select(verb => verb.GetString()).ShouldBe(["GET"]);
         await using DistributedApplication application = builder.Build();
+    }
+
+    [Fact]
+    public async Task SignedPartiesRunUsesTheRunnerJwtSettingsAsync()
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "parties-signed-run-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(workspace);
+        try
+        {
+            PlatformCompositionOptions options = Options();
+            SourceMapping mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace,
+                CompositionPortAllocator.Allocate(1), [], [], mapping, options.DeclarationPaths, "parties", typeof(PlatformAppModel).Assembly.Location);
+            await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
+            IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true });
+            string signingKey = CompositionSigningKey.Create();
+            PlatformAppModel.ComposeRun(builder, plan, signingKey, seedProject: null);
+            foreach (string resourceId in new[] { "parties", "eventstore" })
+            {
+                ProjectResource resource = builder.Resources.OfType<ProjectResource>().Single(server => server.Name == resourceId);
+                Dictionary<string, object> environment = new();
+                foreach (EnvironmentCallbackAnnotation callback in resource.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                    await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, resource, environment, TestContext.Current.CancellationToken));
+                environment["Authentication__JwtBearer__SigningKey"].ShouldBe(signingKey, resourceId);
+                environment["Authentication__JwtBearer__Issuer"].ShouldBe(CompositionEnvironment.TokenIssuer, resourceId);
+                environment["Authentication__JwtBearer__Audience"].ShouldBe(CompositionEnvironment.TokenAudience, resourceId);
+                environment.Where(pair => pair.Key.StartsWith("Authentication__JwtBearer__ValidAudiences__", StringComparison.Ordinal))
+                    .Select(pair => (pair.Key, pair.Value)).ShouldBe([("Authentication__JwtBearer__ValidAudiences__0", (object)CompositionEnvironment.TokenAudience)]);
+                environment[CompositionEnvironment.RunId].ShouldBe(plan.RunId);
+            }
+            await using DistributedApplication application = builder.Build();
+        }
+        finally
+        {
+            Directory.Delete(workspace, true);
+        }
     }
 
     [Fact]

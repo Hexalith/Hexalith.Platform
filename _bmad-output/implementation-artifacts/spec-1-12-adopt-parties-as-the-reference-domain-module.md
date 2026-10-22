@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 12
 created: '2026-10-20'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -70,19 +70,19 @@ Aliases: `P = references/Hexalith.Parties`, `C = src/Hexalith.Platform.Compositi
 
 Code review 2026-10-22 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) of the story change set: Platform `3d51fed..e9a142d`, Parties `3608e121..35d891d` (story-commit files), Tenants `fc2d482..9a94131` (manifest). Each finding was rechecked at current HEAD (Platform `52e637d`, Parties gitlink `9cfeb6c6`); line references are HEAD lines.
 
-- [ ] [Review][Decision] Live proof is bound to unreachable pre-rebase revisions — The edit/clean/Platform-smoke runs record Parties `e935bb59`/`7ec755a6`/`fedbb9ec` and Platform `89a20036`, none of which exist in any repository. The pinned `35d891d` adds runtime deltas after that proof (security constructor overloads `8559c267`; upstream projection change `32fa72e2`), and only builds, model tests and joint validation ran post-rebase. AC4 asks for an SM-2 record with source revision. Options: annotate the evidence as unreachable candidates and list the deltas; rerun the live proof at current pins; or leave it to the Epic 3 SM-2 collection.
-- [ ] [Review][Patch] Getting-started default path contradicts itself after Step 1: Docker/dashboard readiness, Memories "optional with `EnableMemoriesSearch=true`", Keycloak token from the `security` resource [references/Hexalith.Parties/docs/getting-started.md:70]
-- [ ] [Review][Patch] No ComposeRun test binds the Parties JWT settings to the run key; dropping `parties/domain` from the signing loop passes every test [tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs:66]
-- [ ] [Review][Patch] `docs/ci.md` says the `platform-declaration` job needs no submodules and omits its `hexalith-module validate` step [references/Hexalith.Parties/docs/ci.md:241]
-- [ ] [Review][Patch] `docs/ci.md` still presents `-p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false` as source-mode triage; no props/targets/csproj consumes either property any more [references/Hexalith.Parties/docs/ci.md:166]
-- [ ] [Review][Patch] Renderer authority is undocumented: the route set is pinned to 13 and non-ACL fields live in the script `TEMPLATE`, yet docs say "regenerate after an owner-approved ACL change" [references/Hexalith.Parties/README.md:46]
-- [ ] [Review][Patch] Renderer leaks a traceback when `ast.literal_eval` raises `TypeError` (e.g. `[{[]: 1}]`); `main` catches only `OSError`/`ValueError`/`SyntaxError` [references/Hexalith.Parties/scripts/render-platform-declaration.py:512]
-- [ ] [Review][Patch] Renderer negative matrix skips policy-level `defaultAction`/`trustDomain`/`namespace` drift, `action: deny`, an extra operation field, tabs and reordered root keys [references/Hexalith.Parties/scripts/test_platform_declaration.py:33]
-- [ ] [Review][Patch] Platform adoption tests stop at declaration input: no assertion on the rendered `accesscontrol.parties.yaml`; `wildcard_party_v1` `TenantId`/`Version` unasserted [tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs:66]
-- [ ] [Review][Patch] Configured-health test gives the security and read-model keys the same value, so wiring the wrong key into readiness still passes [references/Hexalith.Parties/tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs:249]
-- [ ] [Review][Patch] Rewritten docs guard dropped its `git submodule update --recursive` negative [references/Hexalith.Parties/tests/Hexalith.Parties.Tests/FitnessTests/AppHostTenantsTopologyTests.cs:293]
-- [ ] [Review][Patch] Runtime-prerequisite links point inside the Platform submodule path, which GitHub does not resolve and which is absent before `submodule update` [references/Hexalith.Parties/README.md:24]
-- [ ] [Review][Patch] `platform-declaration` job has no `timeout-minutes`, unlike `ui-a11y` [references/Hexalith.Parties/.github/workflows/ci.yml:111]
+- [x] [Review][Decision] Live proof is bound to unreachable pre-rebase revisions — The edit/clean/Platform-smoke runs record Parties `e935bb59`/`7ec755a6`/`fedbb9ec` and Platform `89a20036`, none of which exist in any repository. The pinned `35d891d` adds runtime deltas after that proof (security constructor overloads `8559c267`; upstream projection change `32fa72e2`), and only builds, model tests and joint validation ran post-rebase. AC4 asks for an SM-2 record with source revision. Options: annotate the evidence as unreachable candidates and list the deltas; rerun the live proof at current pins; or leave it to the Epic 3 SM-2 collection. **Decision 2026-10-22:** annotate the unavailable candidates and enumerate both runtime deltas. The later published-source SM-2 run uses tool 4.35.0 and remains separate from this required 4.34.0 combination; no current-pin live rerun is claimed. See `evidence/1-12/README.md#live-proof-revision-limitation` and `review-follow-up.json`.
+- [x] [Review][Patch] Getting-started default path contradicts itself after Step 1: Docker/dashboard readiness, Memories "optional with `EnableMemoriesSearch=true`", Keycloak token from the `security` resource [references/Hexalith.Parties/docs/getting-started.md:70]
+- [x] [Review][Patch] No ComposeRun test binds the Parties JWT settings to the run key; dropping `parties/domain` from the signing loop passes every test [tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs:66]
+- [x] [Review][Patch] `docs/ci.md` says the `platform-declaration` job needs no submodules and omits its `hexalith-module validate` step [references/Hexalith.Parties/docs/ci.md:241]
+- [x] [Review][Patch] `docs/ci.md` still presents `-p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false` as source-mode triage; no props/targets/csproj consumes either property any more [references/Hexalith.Parties/docs/ci.md:166]
+- [x] [Review][Patch] Renderer authority is undocumented: the route set is pinned to 13 and non-ACL fields live in the script `TEMPLATE`, yet docs say "regenerate after an owner-approved ACL change" [references/Hexalith.Parties/README.md:46]
+- [x] [Review][Patch] Renderer leaks a traceback when `ast.literal_eval` raises `TypeError` (e.g. `[{[]: 1}]`); `main` catches only `OSError`/`ValueError`/`SyntaxError` [references/Hexalith.Parties/scripts/render-platform-declaration.py:512]
+- [x] [Review][Patch] Renderer negative matrix skips policy-level `defaultAction`/`trustDomain`/`namespace` drift, `action: deny`, an extra operation field, tabs and reordered root keys [references/Hexalith.Parties/scripts/test_platform_declaration.py:33]
+- [x] [Review][Patch] Platform adoption tests stop at declaration input: no assertion on the rendered `accesscontrol.parties.yaml`; `wildcard_party_v1` `TenantId`/`Version` unasserted [tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs:66]
+- [x] [Review][Patch] Configured-health test gives the security and read-model keys the same value, so wiring the wrong key into readiness still passes [references/Hexalith.Parties/tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs:249]
+- [x] [Review][Patch] Rewritten docs guard dropped its `git submodule update --recursive` negative [references/Hexalith.Parties/tests/Hexalith.Parties.Tests/FitnessTests/AppHostTenantsTopologyTests.cs:293]
+- [x] [Review][Patch] Runtime-prerequisite links point inside the Platform submodule path, which GitHub does not resolve and which is absent before `submodule update` [references/Hexalith.Parties/README.md:24]
+- [x] [Review][Patch] `platform-declaration` job has no `timeout-minutes`, unlike `ui-a11y` [references/Hexalith.Parties/.github/workflows/ci.yml:111]
 - [x] [Review][Defer] Tenants owner deploy ACL lacks the `parties GET /ready` grant the Tenants manifest now declares [references/Hexalith.Tenants/deploy/dapr/accesscontrol.tenants.yaml:26] — deferred: pre-existing deploy-ACL gap; adding the grant changes Tenants deployment security policy and needs the Tenants owner's call
 - [x] [Review][Defer] Platform's reference-declaration checker still validates with 117 `assert`s that vanish under `python -O` [scripts/test-reference-module-declarations.py:200] — deferred: pre-existing; B1 fixed only the Parties copy
 - [x] [Review][Defer] Platform hardcodes each module's EventStore domain registration (`party`, `tenants`, `timesheets`), so every domain enrollment needs Platform code; the Parties project path is duplicated in `AgentsHostComposition` [src/Hexalith.Platform.Composition/PlatformAppModel.cs:250] — deferred: pre-existing pattern; a fix needs a declaration field (schema change)
@@ -110,6 +110,13 @@ Rejected:
 - low — `ui-a11y` and the development-guide parity command pass the retired selectors: harmless no-ops pinned by `AccessibilityWorkflowTests.cs:102`.
 - note — Deferred-work item "programmatic subscription discovery and literal component names" was fed in as requested. Runtime suppression holds (`MapEventStoreDomainEvents` adds topic metadata only when `Dapr:DeclarativeSubscriptions` is false, and Platform sets it true); the remaining literals are compatible defaults. It stays open for Parties' kit enrollment.
 
+### Remaining follow-up completion gates
+
+- [ ] Module owner accepts the reviewed 2026-10-22 local follow-ups.
+- [ ] Integrate the new Parties commit upstream, then publish its Platform pin.
+
+The original adoption integration remains historical evidence. This resumed run stays `in-review` until these frozen completion requirements are satisfied; no current-pin 4.34.0 live rerun is claimed.
+
 ## Implementation Notes
 
 - 2026-10-20: User approved this spec and continued implementation. Build step 3 requires sequential execution with no pushes or remote version-control operations. Prepare and verify local changes first; upstream integration remains an orchestrator follow-through after review. Preserve all concurrent changes outside this story, including other specs and recovery/Works work.
@@ -119,6 +126,8 @@ Rejected:
 - 2026-10-20 final review: all three review layers completed and every finding is triaged below. Owner candidate `895e04c4a5cc46faab0ac2d780aeff6de4e9f777` includes every accepted patch; coordinator checks pass (250 security, 15 host/configuration, three adoption, five renderer, three cache cases, reference matrix and joint validation). Four pre-existing broad-test problems are appended to the deferred-work ledger. Local owner integration and final parent pin are prepared. Status stays `in-review` because the approved frozen constraint requires module-owner approval and upstream integration for completion; neither has been inferred from the earlier spec approval. The build workflow prohibits automatic push.
 
 - 2026-10-20 upstream completion: the user explicitly approved the reviewed owner changes and authorized pushing Parties, then Platform. The four approved Parties commits were rebased onto upstream `32fa72e2cb223d7f8554d3a5439fa6e15212ec26` with a byte-identical patch, yielding published `35d891d202a87fd4f494f2cadd26c277df44b84a`. Platform adoption `e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058` pins that reachable upstream commit while Parties retains P1 and Tenants. Both remote main heads were verified. Post-rebase builds and all seven integration checks pass, including 15 host/configuration, 14 upstream projection, five renderer and three adoption cases. Approval, revisions, ordering and patch equivalence are recorded in `evidence/1-12/upstream-integration.json`. The integration gate is satisfied; the spec is done, sprint tracking remains review per the build workflow, and the four pre-existing test problems remain deferred.
+
+- 2026-10-22 review remediation: closed all twelve remaining patch findings with renderer diagnostics/negative cases, signed-run and rendered-ACL assertions, distinct readiness/read-model component bindings, corrected onboarding/CI/renderer-authority documentation, stable pinned prerequisites links and a bounded CI job. Parties Release and Platform Debug builds pass with zero warnings/errors; four adoption, 28 health/topology, 15 sample-onboarding and six renderer cases pass, as do the pinned 4.34.0 joint validation and reference ACL matrix. `evidence/1-12/review-follow-up.json` records current-run starting revisions, exact changed paths, object availability and check outputs. The evidence decision annotates unavailable candidates and both post-proof runtime deltas; the later 4.35.0 SM-2 evidence is explicitly separate. No live 4.34.0 rerun, remote VCS operation or nested initialization occurred. These new local owner changes still require review and upstream integration under the frozen constraint; historical approval/integration records remain historical.
 
 ## Spec Change Log
 
@@ -145,6 +154,18 @@ Rejected:
 | C4 / coordinator verification | medium | The unchanged historical receipt expects a git-describe string superseded by a tag on the same accepted commit. Defer the failing historical expectation without weakening it. |
 
 All accepted findings are independent trivial corrections or test/gate additions: no new public surface or speculative runtime guards. B7/V1 share the missing production-binding test; the other accepted findings remain separate. No intent/spec loopback is needed.
+
+### 2026-10-22 follow-up review
+
+All three review layers completed: edge-case and verification-gap reviewers returned no findings; blind review returned these three concrete findings. Each was verified before routing.
+
+| ID / layer | Verdict | Evidence and route |
+|---|---|---|
+| R2-B1 / blind | medium | `dotnet aspire --help` fails because no `dotnet-aspire` command exists; `aspire run --help` exposes `--apphost`. The new Step 2 handoff makes the broken retained command the required next action. Patch the documentation to use `aspire run --apphost src/Hexalith.Parties.AppHost`. |
+| R2-B2 / blind | medium | The newly linked Platform `d189c7de74293e1a718e5e78b1b3b7c0e47b48b5` README explicitly excludes 4.34.0. Platform support P1 `17179e59843ee8cfb35892a74a2c18d3136fc9cf` contains the same Dapr preparation and accepts 4.34.0. Patch all three prerequisite links to the compatible historical P1 instructions. |
+| R2-B3 / blind | false | Checked the [Dapr 1.18.2 trie](https://github.com/dapr/dapr/blob/v1.18.2/pkg/config/acl_trie.go): the owner's `/project` entry already permits the cited descendants because lookup returns the first populated prefix. A probe using the unmodified upstream trie confirms `/project/unapproved` and `/project/v2/unapproved` match both owner and rendered policies; an unknown deeper path is denied only by the rendered policy. The new assertions preserve the existing receiver fallback; no broader grant was introduced. Reject the claimed policy expansion; retain the owner policy and persistence/hosting boundaries. |
+
+The two accepted findings are independent direct documentation corrections, add no public surface or runtime guard, and require no spec loopback. The legacy host itself and all runtime ACL rendering remain unchanged. Both corrections are applied. Final coordinator verification passes all ten checks and 53 focused cases with no skipped cases. A shared-output assembly mismatch was resolved by a fresh isolated restore/build without source changes; the failed attempt and resolution are preserved in the evidence receipt.
 
 ## Verification
 

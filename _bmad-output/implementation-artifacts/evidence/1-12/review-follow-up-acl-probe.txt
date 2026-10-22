@@ -1,0 +1,33 @@
+Source: https://raw.githubusercontent.com/dapr/dapr/v1.18.2/pkg/config/acl_trie.go
+SHA-256: f272a4692853146d75a8933592c683319891c42ce8893d794b8076ef02dca9ae
+=== RUN   TestOwnerAndRenderedParentPolicies
+    acl_review_test.go:15: /project: owner=/project rendered=/project/*
+    acl_review_test.go:15: /project/v2: owner=/project rendered=/project/v2/*
+    acl_review_test.go:15: /project/unapproved: owner=/project rendered=/project/*
+    acl_review_test.go:15: /project/v2/unapproved: owner=/project rendered=/project/v2/*
+    acl_review_test.go:15: /project/rebuild/verify/v1: owner=/project rendered=/project/rebuild/verify/v1
+    acl_review_test.go:15: /project/unapproved/deeper: owner=/project rendered=deny
+    acl_review_test.go:15: /unapproved: owner=deny rendered=deny
+--- PASS: TestOwnerAndRenderedParentPolicies (0.00s)
+PASS
+ok  	story112acl	0.002s
+
+Probe fixture (alongside the unmodified upstream acl_trie.go):
+package config
+import "testing"
+type AccessControlListOperationAction struct { OperationName string }
+func TestOwnerAndRenderedParentPolicies(t *testing.T) {
+  owner := NewTrie(); rendered := NewTrie()
+  ownerPaths := []string{"/process", "/query", "/admin/operational-index-metadata", "/project", "/project/v2", "/project/v2/reconcile", "/replay-state", "/project/rebuild/v1", "/project/rebuild/shared/v1", "/project/rebuild/stage/v1", "/project/rebuild/commit/v1", "/project/rebuild/abort/v1", "/project/rebuild/verify/v1"}
+  renderedPaths := []string{"/admin/operational-index-metadata", "/project/rebuild/commit/v1", "/project/rebuild/verify/v1", "/project/rebuild/shared/v1", "/project/rebuild/stage/v1", "/project/rebuild/abort/v1", "/project/v2/reconcile", "/project/rebuild/v1", "/replay-state", "/project/v2/*", "/project/*", "/process", "/query"}
+  for _, path := range ownerPaths { owner.PutOperationAction(path, &AccessControlListOperationAction{path}) }
+  for _, path := range renderedPaths { rendered.PutOperationAction(path, &AccessControlListOperationAction{path}) }
+  for _, path := range []string{"/project", "/project/v2", "/project/unapproved", "/project/v2/unapproved", "/project/rebuild/verify/v1", "/project/unapproved/deeper", "/unapproved"} {
+    before, after := owner.Search(path), rendered.Search(path)
+    beforeName, afterName := "deny", "deny"
+    if before != nil { beforeName = before.OperationName }
+    if after != nil { afterName = after.OperationName }
+    t.Logf("%s: owner=%s rendered=%s", path, beforeName, afterName)
+    if after != nil && before == nil { t.Fatalf("rendered policy broadened %s",path) }
+  }
+}

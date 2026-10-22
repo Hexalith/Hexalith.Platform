@@ -1,12 +1,46 @@
 # Story 1.12 local implementation evidence
 
-**Integrated upstream Parties revision: `35d891d202a87fd4f494f2cadd26c277df44b84a`.**
-This includes the compatibility audit and all accepted review patches. The
-isolated clone revisions and live debugger/edit/rerun records below are older
-historical proof inputs; they are not labeled as the current primary candidate.
+**Historical upstream adoption revision: `35d891d202a87fd4f494f2cadd26c277df44b84a`.**
+This includes the compatibility audit and the review patches accepted on
+2026-10-20. The 2026-10-22 follow-up starts at Platform
+`4ebe6798fe8bd6c22258f20c90d6861b7137c927` and Parties
+`9cfeb6c645317a6aff3aa3812822bb6b92c1ec86`; its exact changed paths and new
+checks are recorded in `review-follow-up.json`. Those local follow-ups have not
+been owner-reviewed or integrated upstream.
+
+## Live-proof revision limitation
+
+The 4.34.0 edit, clean-source and Platform smoke records name pre-rebase
+candidate commits Parties `e935bb59ff4e942735d1333f97c9b434611ff9c2`,
+`7ec755a664ff1910d377cc144e0b6a482b188472`,
+`fedbb9ecf5388bd08543be5350f72edb15794646` and Platform
+`89a20036053fb4dfbcc7478b884a8d953898de5c`. Those commit objects are unavailable
+in the current repositories. The retained logs, mappings, hashes and patch
+archives document observations of historical candidates; they do not establish
+a reproducible live run at published `35d891d` or the current pins.
+
+Two runtime changes entered published `35d891d` after that live proof:
+
+- `8559c2672623c784b8b940744ab9df1489bf6e3a` restores compatible constructors
+  for the audit, erasure-record and key-rotation services, delegating to the
+  configured/default component path without changing stored record formats.
+- Upstream `32fa72e2cb223d7f8554d3a5439fa6e15212ec26` overlaps the detail and
+  processing snapshot reads during projection rebuild with `Task.WhenAll`.
+
+Post-rebase builds, regression/model tests and declaration validation cover
+those deltas, as recorded below; they are not a replacement live proof.
+The later [SM-2 Parties run](../sm-2/2026-10-20/parties-live/sm-2-checklist.md)
+records a breakpoint and source edit based on published `35d891d`, using a
+pin-only qualification overlay (`413f63b0`), Platform `4f036ced` and tool
+**4.35.0**. It supplies later runtime evidence but does not qualify the required
+**4.34.0** combination; its module-owner acceptance is also pending.
+
+The review decision is to retain and annotate these unavailable candidates
+and list their runtime deltas. This follow-up does not rerun live proof or claim
+current-pin SM-2 acceptance. `review-follow-up.json` records the object audit.
 
 
-The independent Parties debugger/edit/clean-source proof passed with released
+The historical independent Parties debugger/edit/clean-source proof recorded success with released
 module tool **4.34.0**, accepted catalog `5d03f1db9c38db34ecac7fe6048937478ffb82cc`,
 .NET SDK 10.0.402, Aspire CLI 13.6.1 and isolated Dapr home
 `/home/administrator/.hexalith/dapr/1.18.2`.
@@ -128,7 +162,7 @@ full local `.log` files remain in this directory but are ignored by Git.
 The complete canonical debugger transcript and preliminary/follow-up patches
 are retained as gzip archives. `owner-mapping-expectation.patch` is a semantic
 diff that omits an accidental line-ending conversion; the integrated owner test
-preserves its original CRLF bytes. No runtime source changed during integration.
+preserves its original CRLF bytes. That historical test-only follow-up changed no runtime source; the later rebase added the runtime deltas listed above.
 
 ## Coordinator audit
 
@@ -168,10 +202,11 @@ and composition builds passed with zero warnings/errors; copied build summaries
 retain their full-output hashes. The four pre-existing broad-test problems remain
 explicitly deferred in the shared ledger; neither broad test gate is claimed green.
 
-The independent live proof uses the older revisions listed above. Subsequent
-runtime changes only restore the original constructor signatures; the review
-follow-up changes tests, rendering, CI and documentation, and leaves the live
-manifest and host configuration unchanged. The later explicit user approval authorized owner acceptance and remote
+The independent live proof uses the unavailable candidate revisions listed above.
+The published source also includes the compatible constructor overloads and
+upstream parallel snapshot reads identified in the revision limitation. The
+2026-10-20 review follow-up changes tests, rendering, CI and documentation, and
+leaves the live manifest and host configuration unchanged. The later explicit user approval authorized owner acceptance and remote
 integration. Both are now complete and the implementation spec is marked done;
 sprint tracking remains at review as required by the build workflow.
 

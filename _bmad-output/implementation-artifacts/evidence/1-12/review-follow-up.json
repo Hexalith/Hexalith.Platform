@@ -1,0 +1,524 @@
+{
+  "recordedAtUtc": "2026-10-22T10:58:44.107128+00:00",
+  "story": "1.12",
+  "scope": "2026-10-22 remediation of the twelve remaining review patches and explicit evidence decision; previous implementation and proof preserved",
+  "originalSpecBaselineCommit": "3d51fed1f3d99acf36ef690f150136593298bd95",
+  "currentRunStartingRevisions": {
+    "platform": "4ebe6798fe8bd6c22258f20c90d6861b7137c927",
+    "parties": "9cfeb6c645317a6aff3aa3812822bb6b92c1ec86"
+  },
+  "startingWorkingTrees": "Both root and Parties were clean before these follow-ups",
+  "changedPaths": {
+    "platform": [
+      "_bmad-output/implementation-artifacts/evidence/1-12/README.md",
+      "_bmad-output/implementation-artifacts/evidence/1-12/review-follow-up-checks.txt",
+      "_bmad-output/implementation-artifacts/evidence/1-12/review-follow-up.json",
+      "_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md",
+      "tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs",
+      "_bmad-output/implementation-artifacts/evidence/1-12/review-follow-up-acl-probe.txt",
+      "_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "references/Hexalith.Parties"
+    ],
+    "parties": [
+      ".github/workflows/ci.yml",
+      "README.md",
+      "docs/ci.md",
+      "docs/development-guide.md",
+      "docs/getting-started.md",
+      "scripts/render-platform-declaration.py",
+      "scripts/test_platform_declaration.py",
+      "tests/Hexalith.Parties.Tests/FitnessTests/AppHostTenantsTopologyTests.cs",
+      "tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs",
+      "tests/Hexalith.Parties.Sample.Tests/SampleOnboardingGuardrailTests.cs"
+    ]
+  },
+  "partiesGitlinkUnchanged": false,
+  "tool": {
+    "version": "4.34.0+5d03f1db9c38db34ecac7fe6048937478ffb82cc",
+    "selection": "Parties .config/dotnet-tools.json; current Platform tool pin is separate and was not changed"
+  },
+  "environment": {
+    "dotnetSdk": "10.0.402",
+    "runtime": ".NET 10.0.13",
+    "os": "Linux x86_64",
+    "workspace": "/home/administrator/projects/hexalith/platform"
+  },
+  "checks": [
+    {
+      "name": "owner-build",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--artifacts-path",
+        ".artifacts/story-1-12-final",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "8cf6132fbd38e969e49a528d83a650f4febf5f52bbc98303f053a75e748c77c1",
+      "localOutput": "/tmp/story-1-12-final-isolated-owner-build.log"
+    },
+    {
+      "name": "owner-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        ".artifacts/story-1-12-final/bin/Hexalith.Parties.Tests/release/Hexalith.Parties.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Tests.HealthChecks.HealthEndpointIntegrationTests",
+        "-class",
+        "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests"
+      ],
+      "exit": 0,
+      "outputSha256": "bd83822e101ef782bb6c8ac46e40cb189e7dccfd974644a012c90b7359b1bd4d",
+      "localOutput": "/tmp/story-1-12-final-isolated-owner-tests.log",
+      "passedCases": 28
+    },
+    {
+      "name": "sample-build",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--artifacts-path",
+        ".artifacts/story-1-12-final-sample",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "ba6380a8f3c401adde8904633a0917a633399e51cdf66b70e442c673c656f854",
+      "localOutput": "/tmp/story-1-12-final-sample-build.log"
+    },
+    {
+      "name": "sample-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        ".artifacts/story-1-12-final-sample/bin/Hexalith.Parties.Sample.Tests/release/Hexalith.Parties.Sample.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Sample.Tests.SampleOnboardingGuardrailTests"
+      ],
+      "exit": 0,
+      "outputSha256": "970a9002866ada8ea5e7a9d5c5303376d47bf515f5845cda181f2803da143a36",
+      "localOutput": "/tmp/story-1-12-final-sample-tests.log",
+      "passedCases": 15
+    },
+    {
+      "name": "renderer-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exit": 0,
+      "outputSha256": "19ffc1ee7fa4b4d1ff09475755edeed70731e2cd93334c1c7f24dcff85348068",
+      "localOutput": "/tmp/story-1-12-final-renderer-tests.log",
+      "passedCases": 6
+    },
+    {
+      "name": "declaration-check",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "python3",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exit": 0,
+      "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "localOutput": "/tmp/story-1-12-final-declaration-check.log"
+    },
+    {
+      "name": "joint-validation",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.Memories/module/hexalith.module-manifest.v2.json"
+      ],
+      "exit": 0,
+      "outputSha256": "670f8f82620ce8ee37554566e6d02a245a5c0bab0f76359e0d2b35bed45cb199",
+      "localOutput": "/tmp/story-1-12-final-joint-validation.log"
+    },
+    {
+      "name": "composition-build",
+      "cwd": ".",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "--configuration",
+        "Debug",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "3fdc309a8f073998d8b0a0de1b9baded95faf885bd02adca02788237cfa35154",
+      "localOutput": "/tmp/story-1-12-final-composition-build.log"
+    },
+    {
+      "name": "adoption-tests",
+      "cwd": ".",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests"
+      ],
+      "exit": 0,
+      "outputSha256": "cd805e70753f440bc77c563ca09edb7889df4b18c72448b36fe67ee1ca8f3887",
+      "localOutput": "/tmp/story-1-12-final-adoption-tests.log",
+      "passedCases": 4
+    },
+    {
+      "name": "reference-checks",
+      "cwd": ".",
+      "command": [
+        "python3",
+        "_bmad-output/implementation-artifacts/evidence/1-12/tools/run_reference_checks.py"
+      ],
+      "exit": 0,
+      "outputSha256": "4408b5d6740a40624e1675471775c7bdb4063c9eafe671ea88b42932c5133589",
+      "localOutput": "/tmp/story-1-12-final-reference-checks.log"
+    }
+  ],
+  "revisionAudit": {
+    "repositoriesChecked": [
+      ".",
+      "references/Hexalith.AI.Tools",
+      "references/Hexalith.Agents",
+      "references/Hexalith.Builds",
+      "references/Hexalith.ChatBot",
+      "references/Hexalith.Commons",
+      "references/Hexalith.Conversations",
+      "references/Hexalith.EventStore",
+      "references/Hexalith.Folders",
+      "references/Hexalith.FrontComposer",
+      "references/Hexalith.McpCli",
+      "references/Hexalith.Memories",
+      "references/Hexalith.Parties",
+      "references/Hexalith.PolymorphicSerializations",
+      "references/Hexalith.Projects",
+      "references/Hexalith.Tenants",
+      "references/Hexalith.Timesheets",
+      "references/Hexalith.Works"
+    ],
+    "commits": [
+      {
+        "label": "partiesEdit",
+        "revision": "e935bb59ff4e942735d1333f97c9b434611ff9c2",
+        "availableInRepositories": []
+      },
+      {
+        "label": "partiesClean",
+        "revision": "7ec755a664ff1910d377cc144e0b6a482b188472",
+        "availableInRepositories": []
+      },
+      {
+        "label": "partiesPlatformSmoke",
+        "revision": "fedbb9ecf5388bd08543be5350f72edb15794646",
+        "availableInRepositories": []
+      },
+      {
+        "label": "platformSmoke",
+        "revision": "89a20036053fb4dfbcc7478b884a8d953898de5c",
+        "availableInRepositories": []
+      }
+    ]
+  },
+  "liveProofDecision": {
+    "selectedOption": "Annotate unavailable candidates and list post-proof runtime deltas",
+    "currentPinLiveRerun": false,
+    "runtimeDeltasInPublishedAdoption": {
+      "8559c2672623c784b8b940744ab9df1489bf6e3a": "Restore compatible constructors for audit, erasure records and tenant rotation while retaining the configured/default store path",
+      "32fa72e2cb223d7f8554d3a5439fa6e15212ec26": "Run detail and processing snapshot reads concurrently during projection rebuild"
+    },
+    "laterSm2": {
+      "checklist": "../sm-2/2026-10-20/parties-live/sm-2-checklist.md",
+      "sourceBase": "35d891d202a87fd4f494f2cadd26c277df44b84a",
+      "pinOnlyQualificationCommit": "413f63b0373c1be4a65597d4920fbebf8b92a938",
+      "platform": "4f036ced45aa40700948c19949bb874881c960b5",
+      "toolVersion": "4.35.0",
+      "ownerAcceptance": "pending in that checklist",
+      "qualifiesStory4340Combination": false
+    }
+  },
+  "cleanup": {
+    "liveResourcesStarted": false,
+    "remoteVcsOperations": false,
+    "submoduleInitialization": false,
+    "initializedPartiesNestedReferences": 0,
+    "partiesNestedReferenceStatus": [
+      "-3f194e17174994d308ec84af9ee2b5aa68674d0d references/Hexalith.AI.Tools",
+      "-3fcb8f38919bb0961b06a19b57aa45623b35a33e references/Hexalith.Builds",
+      "-5c23c818f639c5bb3175f964c5549440bd5b876d references/Hexalith.Commons",
+      "-1748b16b11fb63b885dfa2fd4a9c7a420ea103a9 references/Hexalith.EventStore",
+      "-a258b992d08e73e2d3251c865ef01a982eba31ac references/Hexalith.FrontComposer",
+      "-7f4a08cb4b7ff9402d1dcf0826ad45ab0256ba65 references/Hexalith.McpCli",
+      "-0af009c20c97038b685f3d4b62c0c8e757982d14 references/Hexalith.Memories",
+      "-d189c7de74293e1a718e5e78b1b3b7c0e47b48b5 references/Hexalith.Platform",
+      "-221ac4592ba908ae7661ba1fa9e2d1fcc23baee0 references/Hexalith.PolymorphicSerializations",
+      "-66def172379f37d12e746fe6eb9195801929c572 references/Hexalith.Tenants"
+    ]
+  },
+  "remainingGates": [
+    "Module-owner review and upstream integration of these local follow-ups",
+    "Live proof at current pins with tool 4.34.0 is not claimed; the evidence follows the spec review decision to annotate historical unavailable candidates"
+  ],
+  "validationLimits": "Focused affected tests were run. Previously recorded broad-test limitations remain historical; no current broad full-suite result is claimed.",
+  "implementationChecks": [
+    {
+      "name": "owner-build",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "150d2787e45e1ff94c347c448c17e59ab1cc7b10ecc3347eaa0376fa72da8ef2",
+      "localOutput": "/tmp/story-1-12-review-owner-build.log"
+    },
+    {
+      "name": "owner-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Tests.HealthChecks.HealthEndpointIntegrationTests",
+        "-class",
+        "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests"
+      ],
+      "exit": 0,
+      "outputSha256": "940eb350e2f9ab1e67db82ba1b74900e20b2254ba216390f91b7c135e3159b82",
+      "localOutput": "/tmp/story-1-12-review-owner-tests.log",
+      "passedCases": 28
+    },
+    {
+      "name": "sample-build",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+        "--configuration",
+        "Release",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "80c1a9c79929fae6335c1cf9d1ff21934aa908a2f663a8f6e02f82f5bacb9a63",
+      "localOutput": "/tmp/story-1-12-review-sample-build.log"
+    },
+    {
+      "name": "sample-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Parties.Sample.Tests/bin/Release/net10.0/Hexalith.Parties.Sample.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Sample.Tests.SampleOnboardingGuardrailTests"
+      ],
+      "exit": 0,
+      "outputSha256": "d7919f8b03948baeb2aece11961fd64dd5b7b4d3ef9eee31fd2e645d23f907f9",
+      "localOutput": "/tmp/story-1-12-review-sample-tests.log",
+      "passedCases": 15
+    },
+    {
+      "name": "renderer-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exit": 0,
+      "outputSha256": "75ae35b7f0da344eb44a6bc44f368ba6831abcd208235693a496453e5aeb551f",
+      "localOutput": "/tmp/story-1-12-review-renderer-tests.log",
+      "passedCases": 6
+    },
+    {
+      "name": "declaration-check",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "python3",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exit": 0,
+      "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "localOutput": "/tmp/story-1-12-review-declaration-check.log"
+    },
+    {
+      "name": "joint-validation",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.Memories/module/hexalith.module-manifest.v2.json"
+      ],
+      "exit": 0,
+      "outputSha256": "670f8f82620ce8ee37554566e6d02a245a5c0bab0f76359e0d2b35bed45cb199",
+      "localOutput": "/tmp/story-1-12-review-joint-validation.log"
+    },
+    {
+      "name": "composition-build",
+      "cwd": ".",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "--configuration",
+        "Debug",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "09937f486eaa9a20fec772da7cf8e9b42c5e30be07a3ec1b5b97cc8dc600e9be",
+      "localOutput": "/tmp/story-1-12-review-composition-build.log"
+    },
+    {
+      "name": "adoption-tests",
+      "cwd": ".",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests"
+      ],
+      "exit": 0,
+      "outputSha256": "f604c2e5ce9361272341a0cb6bd31d1d9f19da0a937498044f9205990972d934",
+      "localOutput": "/tmp/story-1-12-review-adoption-tests.log",
+      "passedCases": 4
+    },
+    {
+      "name": "reference-checks",
+      "cwd": ".",
+      "command": [
+        "python3",
+        "_bmad-output/implementation-artifacts/evidence/1-12/tools/run_reference_checks.py"
+      ],
+      "exit": 0,
+      "outputSha256": "4408b5d6740a40624e1675471775c7bdb4063c9eafe671ea88b42932c5133589",
+      "localOutput": "/tmp/story-1-12-review-reference-checks.log"
+    }
+  ],
+  "finalVerificationAtUtc": "2026-10-22T11:15:55.461190+00:00",
+  "coordinatorReview": {
+    "layers": {
+      "blind": "three findings: two documentation corrections applied, one policy-expansion claim refuted with pinned Dapr trie probe",
+      "edgeCase": "no findings",
+      "verificationGap": "no findings"
+    },
+    "aclProbe": "review-follow-up-acl-probe.txt",
+    "frozenIntentUnchanged": true,
+    "originalBaselinePreserved": true,
+    "currentPinLiveRerun": false,
+    "focusedCasesPassed": 53
+  },
+  "recoveredVerificationFailure": {
+    "command": "owner build --no-restore, then direct owner-tests in shared bin/Release",
+    "failedCases": 12,
+    "cause": "Mixed shared restore/build artifacts: missing Hexalith.EventStore.Contracts 3.126.1.0 during startup",
+    "outputSha256": "e307e82f81b83234110f89ecf8354612d49de6d99899e5f79ec32cd8824ded47",
+    "localOutput": "/tmp/story-1-12-final-owner-tests.log",
+    "resolution": "Fresh restore/build in a separate artifacts directory; all 28 owner cases pass without source changes"
+  },
+  "matrixAudit": {
+    "ownWorkspaceDebug": "Historical live proof retained with unavailable-revision limitation; later published-source proof uses tool 4.35.0; no fresh 4.34.0/current-pin live qualification claimed",
+    "mapping": "MissingOrOverriddenPartiesSourceRefusesBeforeComposition and renderer build-selection check passed; historical mapped Debug/package selection receipts retained",
+    "aclSource": "All six renderer cases, declaration --check, pinned-tool joint validation, and reference ACL matrix passed",
+    "componentsAndTopics": "ConfiguredComponentsAreUsedByProgramReadinessAndHealthAsync and four PartiesAdoptionTests passed, with distinct state keys, exact subscription structure and run JWT bindings"
+  },
+  "localCommits": {
+    "parties": "8195ba9f9f1ea12420eaae42c4febca8545d2ce2"
+  },
+  "publication": {
+    "status": "not published",
+    "ownerApproval": "pending for the new local follow-ups",
+    "upstreamIntegration": "pending",
+    "storyStatus": "in-review",
+    "reason": "Frozen story completion requires module-owner review and upstream integration; prior approval applies to the historical adoption only"
+  },
+  "commitValidation": [
+    {
+      "owner": "parties",
+      "version": "21.2.2",
+      "command": "node_modules/.bin/commitlint --edit /tmp/story-1-12-parties-message.txt --verbose",
+      "message": "fix(platform): address adoption review findings",
+      "output": "\u29d7   --- input ---\nfix(platform): address adoption review findings\n\u2714   found 0 problems, 0 warnings",
+      "exit": 0
+    },
+    {
+      "owner": "platform",
+      "version": "21.2.1",
+      "command": "node_modules/.bin/commitlint --edit /tmp/story-1-12-platform-message.txt --verbose",
+      "message": "test(parties): close adoption review gaps",
+      "output": "\u29d7   --- input ---\ntest(parties): close adoption review gaps\n\u2714   found 0 problems, 0 warnings",
+      "exit": 0
+    }
+  ]
+}
