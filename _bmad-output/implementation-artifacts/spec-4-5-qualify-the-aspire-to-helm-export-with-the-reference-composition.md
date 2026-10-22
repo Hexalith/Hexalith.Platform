@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'done'
+status: 'in-progress'
 baseline_commit: 'e39d59b9e7f93c5880eff423e24b8a0f274560ed'
 route: 'dispatch'
 review_loop_iteration: 1
