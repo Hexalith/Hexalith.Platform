@@ -79,7 +79,7 @@ public sealed class PlatformFileEntryMappingTests : IDisposable
 
         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder));
 
-        refusal.Message.ShouldContain(declaration);
+        refusal.Message.ShouldContain(Path.GetRelativePath(Directory.GetCurrentDirectory(), declaration));
         refusal.Message.ShouldContain("schema: Platform enrollment requires major 2");
         builder.Resources.ShouldBeEmpty();
     }

@@ -1,5 +1,66 @@
 # Epic 1 retrospective remediation verification
 
+## Final verification after review
+
+This section supersedes the historical runs below. All accepted review patches
+are implemented. Three independent reviewers returned eleven findings: three
+were patched, one release-coordination issue was deferred, and the rest were
+individually rejected with evidence in the spec's Review Triage Log.
+
+Concurrent unfinished source changes prevented a fresh composition build in the
+shared workspace: [final-composition-build.txt](final-composition-build.txt)
+records the ReleaseRecords/TestEnvironment and Dapr renderer compile errors.
+Those changes were preserved. Verification therefore used a detached checkout
+of Platform `e39d59b9e7f93c5880eff423e24b8a0f274560ed`, with all seventeen
+root-declared references at their recorded commits, including Builds
+`2210aaaf54c779b8763dbf1e8767bdc1b422bc6d`. The complete checkout inventory is
+in [fixed-checkout.json](fixed-checkout.json); no nested references were initialized.
+
+The final checkout also includes exactly the two test-diagnostic assertion
+corrections in [final-reviewed-source.patch](final-reviewed-source.patch). These
+match the shared workspace files and accept the existing relative diagnostic
+paths while retaining the exact source/field, schema-reason and atomic-refusal
+assertions. Per-command commits, source hashes and assembly hashes are retained
+in the metadata linked below; the source remained stable during the fixed runs.
+
+| Verification | Final result | Evidence |
+| --- | --- | --- |
+| Debug Builds test-project build | Exit 0; 0 warnings/errors | [fixed-builds-build.txt](fixed-builds-build.txt) |
+| Full resolver and MSBuild test classes | 183 passed: 84 resolver and 99 MSBuild; 0 failures/errors/skips | [fixed-workspace-tests.xml](fixed-workspace-tests.xml), [command metadata](fixed-verification.json) |
+| Debug composition test-project rebuild | Exit 0; 0 warnings/errors | [review-file-entry-build.txt](review-file-entry-build.txt) |
+| Full composition assembly after both assertion corrections | 229 total: 218 passed, 4 failed, 7 opt-in live skips, 0 errors | [fixed-final-composition.xml](fixed-final-composition.xml), [command/source/assembly metadata](fixed-final-composition.json) |
+| Complete declaration matrix | Exit 0; all 42 PASS rows | [review-declaration-matrix.txt](review-declaration-matrix.txt), [command metadata](review-path-assertions-verification.json) |
+| Approved edge-case matrix | All 29 named cases across ten covering methods passed; no skips | [final-matrix-coverage.json](final-matrix-coverage.json) |
+
+The exact commands are recorded as argument arrays in those metadata files.
+They use `dotnet build <test-project> -c Debug -m:1`, the built xUnit assemblies
+with single-dash `-class`/`-result-xml` arguments, and
+`python3 scripts/test-reference-module-declarations.py`. The initial fixed runs
+precede the two assertion corrections; their superseded five-failure and
+38-PASS results remain available for traceability.
+
+### Remaining failures and accountable owners
+
+| Enabled failing test(s) | Exact blocker | Owner |
+| --- | --- | --- |
+| `DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync` | Recorded Builds `2210aaaf54c779b8763dbf1e8767bdc1b422bc6d` differs from pinned `4.35.2` release-tag commit `4248b8c70cb35ba79fdd7e4dd63049d4c73211a0` | Platform/Builds release coordination |
+| `DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites`, both `human` and `json` | Restored tool metadata identifies `4248b8c70cb35ba79fdd7e4dd63049d4c73211a0`; recorded Builds identifies `2210aaaf54c779b8763dbf1e8767bdc1b422bc6d` | Platform/Builds release coordination |
+| `PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers` | Duplicate `ParameterResource` named `eventstore-app-api-token` | Platform Works / EventStore Aspire integration |
+
+The historical seed content-root failure did not reproduce in this fixed
+checkout; no fix for it is claimed. The seven live skips and their required
+opt-ins are listed below. The full composition suite remains red. No pin,
+production snapshot, release guard or integration expectation was changed to
+hide these results. This is local synthetic/source verification; real-owner
+ordinary CLI acceptance, published-release acceptance and live SM-2 remain
+pending, and the retrospective verdict and historical Dapr timeout are unchanged.
+
+All eighteen temporary worktrees were removed after verification; the cleanup
+preflight confirmed only the two retained assertion corrections were dirty.
+[Cleanup commands/results](fixed-checkout-cleanup.json) are retained.
+
+## Historical runs
+
 Executed from `/home/administrator/projects/hexalith/platform` on 2026-10-22.
 These are local Debug regressions and synthetic composition/static declaration
 observations. They confer no published-release, ordinary CLI real-owner, or live
@@ -50,7 +111,7 @@ manifests, `ModuleCommandExecutionService` routes malformed/unsupported input to
 root mapping. Recognizable invalid v2 input is validated before identity extraction.
 Direct-reference pre-resolution still checks out recorded bytes before parsing.
 
-## Remaining integration blocker
+## Historical remaining integration blocker
 
 `PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers`
 reaches an existing production integration failure:
@@ -76,7 +137,7 @@ component directory and two registry diagnostic paths) were corrected before the
 final verification. The remaining Works failure is tracked above.
 
 
-## Full-suite blockers and opt-in skips
+## Historical full-suite blockers and opt-in skips
 
 | Failing row(s) | Exact observed failure | Accountable owning area |
 | --- | --- | --- |
@@ -94,7 +155,7 @@ Seven live rows remain opt-in and were not executed:
 The release checks and seed/Works integration assertions remain enabled. No
 production refusal, pin, or test expectation was relaxed to hide these blockers.
 
-## Concurrent source tuple integration
+## Historical concurrent source tuple integration
 
 The spec's baseline remains unchanged:
 
@@ -103,7 +164,7 @@ The spec's baseline remains unchanged:
 
 During implementation/verification, the user integrated a new tuple:
 
-- Platform final HEAD: `e02fa5bf43ba9c2561dc2da940264de1c9da3242`.
+- Platform intermediate HEAD: `e02fa5bf43ba9c2561dc2da940264de1c9da3242`.
 - Recorded and checked-out Builds: `2d653b611c8efcffb4d27bd8715d5dbf24eaebfd`.
 - Published/restored `4.35.2` tool/tag metadata observed by the release checks:
   `4248b8c70cb35ba79fdd7e4dd63049d4c73211a0`.

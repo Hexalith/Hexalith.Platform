@@ -1,0 +1,1060 @@
+[
+  {
+    "label": "final-builds-build",
+    "command": [
+      "dotnet",
+      "build",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-t:Rebuild"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "started_utc": "2026-10-22T16:40:29.300040+00:00",
+    "source_before": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "exit_code": 0,
+    "duration_seconds": 41.062,
+    "output": "final-builds-build.txt",
+    "source_after": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "45fbde0e6bd587f2adb6c172a94ea5fad8c0cfaea626ce7dfe440d916658a7e5"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "5e01cc8edd6d68b5ced0c875b1c278fb6a2b964ec7036ca83e1e2e66647ea25c"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "source_state_changed": true
+  },
+  {
+    "label": "final-resolver",
+    "command": [
+      "dotnet",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*WorkspaceRootResolverTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-resolver.xml"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "started_utc": "2026-10-22T16:41:12.110772+00:00",
+    "source_before": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "45fbde0e6bd587f2adb6c172a94ea5fad8c0cfaea626ce7dfe440d916658a7e5"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "5e01cc8edd6d68b5ced0c875b1c278fb6a2b964ec7036ca83e1e2e66647ea25c"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "executed_assembly_sha256": "26f1c2a38739d363b434945f85895aa10b14384f95ad4ed7fbd4f2bcb1dfddce",
+    "exit_code": 0,
+    "duration_seconds": 48.401,
+    "output": "final-resolver.txt",
+    "source_after": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "f164c8cbd4dbf00a1d2e4b3536d55b4595731744ef3c7faf15342f95c1bfe9c0"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "9528d1db766e664223013c05349dcfff2d3b5e8be9afe37c5d3138dbcade024e"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "source_state_changed": true,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "4ae04c5b-b461-4c92-9e42-41f9e0385a0c",
+        "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "run-date": "2026-10-22",
+        "run-time": "16:41:12",
+        "start-rtf": "2026-10-22T16:41:12.4066835+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-22T16:42:00.4179373+00:00",
+        "not-run": "0",
+        "passed": "84",
+        "skipped": "0",
+        "time": "48.011",
+        "time-rtf": "00:00:48.0110000",
+        "total": "84"
+      }
+    ],
+    "cases": [
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DanglingNestedGitSymlinkFailsPreflightAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InconclusiveNestedGitfileOwnershipFailsClosedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.ReservedPropertyIdentityFailsBeforeCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.CollidingGeneratedPropertySuffixesFailResolutionAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.FailedDirectCheckoutReportsGitStderrAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DeclaredReferenceWithoutIndexedGitlinkFailsAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DeclaredReferenceWithoutIndexedGitlinkFailsAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DanglingGitSymlinkFailsClosedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.SpaceContainingGitSubsectionKeepsDirectReferenceAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DirectReferenceManifestUsesOutermostRootAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InitializedDirectReferenceMismatchFailsWithoutMovingCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.BrokenInitializedCheckoutReportsGitFailureAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.BrokenInitializedCheckoutReportsGitFailureAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MixedSeparatorDirectReferenceFailsAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StagedGitlinkIsTheRecordedCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.UnavailableGitUsesOnlyStandaloneFallbackAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DirectReferenceWithPathspecMetacharacterInitializesAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InitializedNestedReferenceFailsBeforeOtherInitializationAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingGitmodulesIgnoresDeepReferenceFilesAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitManifestSymlinkOutsideRootFailsResolutionAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.IndependentNestedRepositoryUsesLiteralHistoryPathAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StaleNestedSubmoduleWithoutDirectMarkerFailsPreflightAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Source, multiple: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Package, multiple: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Source, multiple: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Package, multiple: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.ApostropheDirectReferenceUsesShellQuotedNestedDeinitAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DuplicateDirectIdentityNamesItsPathsAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingDirectManifestIsRestoredBeforeValidationAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingDirectManifestIsRestoredBeforeValidationAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PlatformOwnedSingleModuleDeclarationPreservesWorkspaceIdentityAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PlatformOwnedSingleModuleDeclarationPreservesWorkspaceIdentityAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.ExternalGitmodulesSymlinkFailsBeforeCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.UpdateNoneCannotHideInitializedMismatchAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PackageOriginSymlinkOutsideRootFailsBeforeMappingAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.TruncatedGitmodulesOutputFailsClosedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.IndependentNestedGitRepositoryIsAllowedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingRootManifestParentStillClassifiesAsRootAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitStandaloneV2UsesDeclaredIdentityAsync(name: \\\"Hexalith.Parties\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitStandaloneV2UsesDeclaredIdentityAsync(name: \\\"renamed-owner\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DirectReferencesComponentUsesFilesystemCasingAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingGitmodulesDetectsQuotedTrackedGitlinkAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingRequiredSourceDoesNotUseSiblingCopyAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitWorkspaceMapsOnlyActiveModuleAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitWorkspaceMapsOnlyActiveModuleAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DanglingGitmodulesMarkerFailsClosedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NestedGitfilePreservesTrailingDirectoryWhitespaceAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.UndefinedWorkspaceModeFailsBeforeCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Source, collision: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Package, collision: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Source, collision: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Package, collision: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Source, name: \\\"Hexalith.Parties\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Package, name: \\\"Hexalith.Parties\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Source, name: \\\"renamed-owner\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Package, name: \\\"renamed-owner\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Source, name: \\\"Hexalith\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Package, name: \\\"Hexalith\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.AliasToPackageOnlyReferenceIsNotMappedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.DirectoryFormNestedSubmoduleStopsPreflightAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StaleNestedCheckoutBlocksBothModesAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StaleNestedCheckoutBlocksBothModesAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.GitStderrUrlCredentialsAreRedacted(userInfo: \\\"alice:sec'ret(pa)ss\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.GitStderrUrlCredentialsAreRedacted(userInfo: \\\"alice:p@ss\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.GitStderrUrlCredentialsAreRedacted(userInfo: \\\"jane@corp.com:TOKEN\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.GitStderrUrlCredentialsAreRedacted(userInfo: \\\"alice:ab/cd+ef\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.FailedDirectCheckoutRedactsGitUrlCredentialsAsync(userInfo: \\\"alice:sec'ret(pa)ss\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.FailedDirectCheckoutRedactsGitUrlCredentialsAsync(userInfo: \\\"alice:p@ss\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.FailedDirectCheckoutRedactsGitUrlCredentialsAsync(userInfo: \\\"jane@corp.com:TOKEN\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NestedEnumerationFailureUsesHxw003ContextAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.TruncatedTrackedIndexOutputFailsClosedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PackageModeLeavesDirectReferencesUninitializedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.GitProcessReceivesClientCertificateEnvironmentAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StaleNestedGitfileWithDeletedGitDirectoryStopsPreflightAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidGitMarkerFailsResolutionAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PackageOriginStaleCheckoutFailsBeforeMappingAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.EmptyGeneratedPropertySuffixFailsBeforeCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.SourceModeInitializesOnlyDirectReferenceAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.ManifestSymlinkOutsideRootFailsResolutionAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.GitRootWithTrailingWhitespaceIsPreservedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.ApostropheDirectReferenceUsesShellQuotedRemediationAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.ApostropheDirectReferenceUsesShellQuotedRemediationAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.MissingTrackedGitmodulesFailsBeforeCheckoutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.XdgGitConfigurationAllowsConfiguredLocalTransportAsync",
+        "result": "Pass"
+      }
+    ]
+  },
+  {
+    "label": "final-msbuild",
+    "command": [
+      "dotnet",
+      "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*WorkspaceMsBuildTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-msbuild.xml"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "started_utc": "2026-10-22T16:42:03.035423+00:00",
+    "source_before": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "f164c8cbd4dbf00a1d2e4b3536d55b4595731744ef3c7faf15342f95c1bfe9c0"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "9528d1db766e664223013c05349dcfff2d3b5e8be9afe37c5d3138dbcade024e"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "executed_assembly_sha256": "26f1c2a38739d363b434945f85895aa10b14384f95ad4ed7fbd4f2bcb1dfddce",
+    "exit_code": 0,
+    "duration_seconds": 149.46,
+    "output": "final-msbuild.txt",
+    "source_after": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "2d8a40f85313478a71dc361b9df0f867f5453dc412042cf34e82ae52b64ae2e4"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "60922e7d6ae9171592c7dd215084beb375baeb3393d7b4850f419881f273b9df"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "source_state_changed": true,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "97769cb1-b331-4440-a066-234c9c1b3c1c",
+        "name": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "run-date": "2026-10-22",
+        "run-time": "16:42:03",
+        "start-rtf": "2026-10-22T16:42:03.4646764+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-22T16:44:32.4285974+00:00",
+        "not-run": "0",
+        "passed": "99",
+        "skipped": "0",
+        "time": "148.975",
+        "time-rtf": "00:02:28.9750000",
+        "total": "99"
+      }
+    ],
+    "cases": [
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.AliasToPackageOnlyReferenceStopsBuildAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.PackageConversionRejectsCentralManagementOptOutAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ToolModeOverridesConsumerProbesAsync(mode: Source, siblingPresent: True, sourceExpected: \\\"true\\\", nugetExpected: \\\"false\\\", configuration: \\\"Debug\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ToolModeOverridesConsumerProbesAsync(mode: Source, siblingPresent: False, sourceExpected: \\\"true\\\", nugetExpected: \\\"false\\\", configuration: \\\"Debug\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ToolModeOverridesConsumerProbesAsync(mode: Package, siblingPresent: True, sourceExpected: \\\"false\\\", nugetExpected: \\\"true\\\", configuration: \\\"Release\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ToolModeOverridesConsumerProbesAsync(mode: Package, siblingPresent: False, sourceExpected: \\\"false\\\", nugetExpected: \\\"true\\\", configuration: \\\"Release\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.LookalikeFinalImportPathFailsMappingGuardAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MalformedCandidateReportsMissingIdentityAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ProductionCandidateLayoutIgnoresDeeperMatchingScratchProjectAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MultipleAbsentExactCatalogProjectsConvertToPackagesAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.OwnerSubmoduleGuardUsesMappedPlatformRootAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SourceTreeHostProjectsStayOutsideMappingScopeAsync(mode: Source, hostName: \\\"Hexalith.Builds.Module.EventStoreHost\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SourceTreeHostProjectsStayOutsideMappingScopeAsync(mode: Package, hostName: \\\"Hexalith.Builds.Module.EventStoreHost\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SourceTreeHostProjectsStayOutsideMappingScopeAsync(mode: Source, hostName: \\\"Hexalith.Builds.Module.UiHost\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SourceTreeHostProjectsStayOutsideMappingScopeAsync(mode: Package, hostName: \\\"Hexalith.Builds.Module.UiHost\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.FrameworkDependentPackageIdFailsOuterReconciliationAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MissingProjectBehindEscapingLinkIsUnmappedAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UtilityDirectoryRolesCannotShadowProductionCandidateAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.PackageConversionUsesPhysicalOriginAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DifferentlyCasedSiblingProjectStopsBuildAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConvertedProjectCannotDuplicateDeclaredPackageAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.PackageCopyOfSourceIdentityStopsBuildAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.LateProjectReferenceCannotBypassFinalValidationAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectConfigurationMetadataHasDiagnosticAsync(metadata: \\\"SetConfiguration\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectConfigurationMetadataHasDiagnosticAsync(metadata: \\\"SetPlatform\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectConfigurationMetadataHasDiagnosticAsync(metadata: \\\"AdditionalProperties\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedProjectMetadataStopsPackageConversionAsync(metadata: \\\"ReferenceOutputAssembly\\\", value: \\\"false\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedProjectMetadataStopsPackageConversionAsync(metadata: \\\"EmbedInteropTypes\\\", value: \\\"true\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MappedChildBuildSelectsSecondSourceIdentityAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"renamed-owner\\\", transitive: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"renamed-owner\\\", transitive: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"Hexalith\\\", transitive: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"Hexalith\\\", transitive: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerTargetItemsFollowToolModeAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerTargetItemsFollowToolModeAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MalformedUnrelatedCandidateDoesNotBlockRequestedSourceAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DistinctPackageIdSelectsSourceAndKeepsMetadataAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MalformedAssetsLibrariesReportHxw005Async(assets: \\\"{\\\\\\\"libraries\\\\\\\":[]}\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MalformedAssetsLibrariesReportHxw005Async(assets: \\\"{\\\\\\\"libraries\\\\\\\":{\\\\\\\"Hexalith.Dep.Contracts/1.0.0\\\\\\\":{\\\\\\\"typ\\\"\u00b7\u00b7\u00b7)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MalformedAssetsLibrariesReportHxw005Async(assets: \\\"{\\\\\\\"libraries\\\\\\\":{\\\\\\\"Hexalith.Dep.Contracts/1.0.0\\\\\\\":[]}}\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerSpecificPropertiesFollowMappedIdentityAsync(mode: Source, expected: \\\"true\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerSpecificPropertiesFollowMappedIdentityAsync(mode: Package, expected: \\\"false\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectoryBuildTargetsCannotHideOriginFlagOverrideAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectoryBuildTargetsCannotHideOriginFlagOverrideAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ApostropheInWorkspacePathKeepsMappingValidAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MappedProjectNamedLikeHostReceivesMappingAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectPropertyRemovalPreservesMappedConfigurationAsync(removedProperty: \\\"WebPublishProfileFile\\\", accepted: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectPropertyRemovalPreservesMappedConfigurationAsync(removedProperty: \\\"Configuration\\\", accepted: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectPropertyRemovalPreservesMappedConfigurationAsync(removedProperty: \\\"WebPublishProfileFile;Configuration\\\", accepted: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.AssetlessPackageCopyReportsRestoredVersionAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.PackageProjectBytesCannotOverrideCatalogIdentityAsync(gitMarkerPresent: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.PackageProjectBytesCannotOverrideCatalogIdentityAsync(gitMarkerPresent: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"SetConfiguration\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"SetPlatform\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"Version\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"VersionOverride\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"IncludeAssets\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"ExcludeAssets\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"GeneratePathProperty\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"TreatAsUsed\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"PrunePackageReference\\\", sourceMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"SetConfiguration\\\", sourceMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"SetPlatform\\\", sourceMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"ExcludeAssets\\\", sourceMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"IncludeAssets\\\", sourceMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"ReferenceOutputAssembly\\\", sourceMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnsupportedConversionMetadataHasDiagnosticAsync(metadata: \\\"Private\\\", sourceMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.MultipleAbsentPackageProjectsAreAmbiguousAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerCannotDisableMappingBeforeDependencySelectionAsync(mode: Source)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerCannotDisableMappingBeforeDependencySelectionAsync(mode: Package)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectVersionMetadataMatchesCatalogAsync(additionalProperties: \\\"Version=1.0.0\\\", accepted: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectVersionMetadataMatchesCatalogAsync(additionalProperties: \\\"Version=2.0.0\\\", accepted: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RetainedProjectVersionMetadataMatchesCatalogAsync(additionalProperties: \\\"Version=1.0.0;Configuration=Release\\\", accepted: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectoryBuildPropsCannotRemoveEarlyMappingValidationAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ExplicitResolveProjectReferencesFailsBeforeChildEvaluationAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectoryBuildTargetsCannotHideMappedPathOverrideAsync(property: \\\"HexalithSourceMappingRoot\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectoryBuildTargetsCannotHideMappedPathOverrideAsync(property: \\\"HexalithDepRoot\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectoryBuildTargetsCannotHideMappedPathOverrideAsync(property: \\\"HexalithTenantsBasePath\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.FrameworkDependentPackabilityFailsOuterReconciliationAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.NormalBuildSelectsMappedOriginAsync(mode: Source, expected: \\\"source\\\", startsWithProject: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.NormalBuildSelectsMappedOriginAsync(mode: Package, expected: \\\"package\\\", startsWithProject: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.NormalBuildSelectsMappedOriginAsync(mode: Source, expected: \\\"source\\\", startsWithProject: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.NormalBuildSelectsMappedOriginAsync(mode: Package, expected: \\\"package\\\", startsWithProject: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerLateImportOverridesStillValidateMappingAsync(alterMode: False)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerLateImportOverridesStillValidateMappingAsync(alterMode: True)",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SymlinkedProjectReferenceOutsideMappedRootStopsBuildAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UninitializedPackageRootUsesCatalogIdentityAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SourceProjectPathWithWildcardsIsLiteralAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnmappedProjectReferenceStopsBuildAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.UnmappedNestedReferenceStopsBuildAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ChangedMappingFileFailsBeforeItemSelectionAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.SuppressedFinalSdkImportFailsMappingGuardAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerCannotRedirectMappedRootsAsync(property: \\\"HexalithSourceMappingRoot\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ConsumerCannotRedirectMappedRootsAsync(property: \\\"HexalithDepRoot\\\")",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.DirectDuplicateReportsVersionOverrideBeforeRestoreAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ObservedConsumerSelectionReportsExpectedAndActualAsync",
+        "result": "Pass"
+      },
+      {
+        "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.PackagedHostProjectStaysOutsideMappingScopeAsync",
+        "result": "Pass"
+      }
+    ]
+  },
+  {
+    "label": "final-composition-build",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "-t:Rebuild"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "started_utc": "2026-10-22T16:44:34.340059+00:00",
+    "source_before": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "2d8a40f85313478a71dc361b9df0f867f5453dc412042cf34e82ae52b64ae2e4"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "60922e7d6ae9171592c7dd215084beb375baeb3393d7b4850f419881f273b9df"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "exit_code": 1,
+    "duration_seconds": 30.653,
+    "output": "final-composition-build.txt",
+    "source_after": {
+      "platform": {
+        "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+        "working_diff_and_new_inputs_sha256": "2d8a40f85313478a71dc361b9df0f867f5453dc412042cf34e82ae52b64ae2e4"
+      },
+      "builds": {
+        "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+        "working_diff_and_new_inputs_sha256": "60922e7d6ae9171592c7dd215084beb375baeb3393d7b4850f419881f273b9df"
+      },
+      "eventstore": {
+        "head": "cb414530223f77cc845450a4877a4472559de2ad",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memories": {
+        "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "tenants": {
+        "head": "165bd76c908003fa92008632360ff8335cfd997a",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parties": {
+        "head": "7b7898307e8eca3774843b145d339e9986018409",
+        "working_diff_and_new_inputs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "source_state_changed": false
+  }
+]

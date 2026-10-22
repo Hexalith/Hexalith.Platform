@@ -753,7 +753,8 @@ def main() -> None:
             try:
                 validated_documents(variant_paths)
             except AssertionError as error:
-                assert str(variant_paths[1]) in str(error) and field in str(error), error
+                assert any((BUILDS / item.get("source", "")).resolve() == variant_paths[1].resolve()
+                           and item.get("field") == field for item in error.args[0]), error
             else:
                 raise AssertionError(f"{scenario} reached canonical owner parsing")
             print(f"PASS {scenario}: atomic refusal with public source and field")

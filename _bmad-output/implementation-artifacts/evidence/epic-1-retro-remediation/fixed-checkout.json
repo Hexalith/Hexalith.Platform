@@ -1,0 +1,224 @@
+{
+  "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform",
+  "base": "/tmp/epic1-reviewed-checkout-0o60v3gm",
+  "platform_commit": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+  "worktrees": [
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform",
+      "commit": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+      "inspection": {
+        "status": "## main...origin/main [ahead 1]\n M DaprSelfHostedMtls.cs\n M _bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md\n M _bmad-output/implementation-artifacts/spec-4-11-define-the-check-suite-contract-and-own-the-reference-suites.md\n M _bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md\n M _bmad-output/implementation-artifacts/sprint-status.yaml\n M apphost.cs\n m references/Hexalith.Builds\n M src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n M src/Hexalith.Platform.Composition/PlatformAppModel.cs\n M src/Hexalith.Platform.Composition/PlatformDaprBindings.cs\n M src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs\n M src/Hexalith.Platform.Composition/PlatformServerBindings.cs\n M src/Hexalith.Platform.Composition/WorksPreviewModel.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformDaprToolchainTests.cs\n M tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-builds-build.txt\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-composition-build.txt\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-msbuild.txt\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-msbuild.xml\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-resolver.txt\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-resolver.xml\n?? _bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/final-verification.json\n?? docs/contracts/schemas/\n?? eng/helm-qualification/\n?? src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs\n?? src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed fix: stories"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.AI.Tools",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.AI.Tools",
+      "commit": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "3f194e17174994d308ec84af9ee2b5aa68674d0d docs: add section on Hexalith MCP and CLI ownership guidelines"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Agents",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Agents",
+      "commit": "dd1639439c6822337a747e254fcd626151b27000",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "dd1639439c6822337a747e254fcd626151b27000 fix: story 5.4"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Builds",
+      "commit": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+      "inspection": {
+        "status": "## main...origin/main\n M src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj\n M src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj\n M src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDaprComponentRenderer.cs\n M test/Hexalith.Builds.Module.Tests/CompositionDaprComponentRendererTests.cs\n?? schemas/hexalith.check-invocation.v1.json\n?? schemas/hexalith.check-result.v1.json\n?? schemas/hexalith.check-suite.v1.json\n?? schemas/hexalith.release-records.v1.json\n?? schemas/hexalith.test-environment.v1.json\n?? schemas/hexalith.test-result.v1.json\n?? src/libraries/Hexalith.Builds.Tooling/CheckSuites/\n?? src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/\n?? src/libraries/Hexalith.Builds.Tooling/TestEnvironment/\n?? test/Hexalith.Builds.Module.Tests/TestEnvironmentContractReaderTests.cs\n?? test/fixtures/module/test-environment-v1/\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d build: sync local changes via /pushall"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.ChatBot",
+      "commit": "e6f36d4d6da448e0bdbf04c077ee6c2b3e4cee34",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "e6f36d4d6da448e0bdbf04c077ee6c2b3e4cee34 fix: story 1.7"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Commons",
+      "commit": "1663028fb6d9f46a0bf17919edeb21bb99be1587",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "1663028fb6d9f46a0bf17919edeb21bb99be1587 build: merge dependabot/npm_and_yarn/commitlint/config-conventional-21.2.4 into main via /pushall"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Conversations",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Conversations",
+      "commit": "60f18214d7a4565d28096628af95d867ddd5e874",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "60f18214d7a4565d28096628af95d867ddd5e874 fix: story 5.4"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.EventStore",
+      "commit": "cb414530223f77cc845450a4877a4472559de2ad",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "cb414530223f77cc845450a4877a4472559de2ad fix: story 12.2"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Folders",
+      "commit": "28513763ec5c0405ab942b1e5266a483573f451d",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "28513763ec5c0405ab942b1e5266a483573f451d fix: story 10.8"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.FrontComposer",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.FrontComposer",
+      "commit": "bf40b9276f440646e753a0636854595cc7d0affc",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "bf40b9276f440646e753a0636854595cc7d0affc fix: epic 13"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.McpCli",
+      "commit": "736db5930424ceb60025eaea6c28545dd496944e",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "736db5930424ceb60025eaea6c28545dd496944e build: merge origin/docs/4-11-review-pass4 into main via /pushall"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Memories",
+      "commit": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c build: sync local changes via /pushall"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Parties",
+      "commit": "7b7898307e8eca3774843b145d339e9986018409",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "7b7898307e8eca3774843b145d339e9986018409 fix: close five runtime and release deferrals"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.PolymorphicSerializations",
+      "commit": "221ac4592ba908ae7661ba1fa9e2d1fcc23baee0",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "221ac4592ba908ae7661ba1fa9e2d1fcc23baee0 chore(release): 1.19.5 [skip ci]"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Projects",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Projects",
+      "commit": "d30b9559e825afdd7d245cd8b74c3fb79800228f",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "d30b9559e825afdd7d245cd8b74c3fb79800228f fix: story 6.4"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Tenants",
+      "commit": "165bd76c908003fa92008632360ff8335cfd997a",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "165bd76c908003fa92008632360ff8335cfd997a fix(ui): resolve five deferred host routing records"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Timesheets",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Timesheets",
+      "commit": "ffb169221ba4bdd85d9e60b2ab5e914f36f0e9c5",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "ffb169221ba4bdd85d9e60b2ab5e914f36f0e9c5 fix(ci): accept unfiltered successful push runs in release preflight"
+      }
+    },
+    {
+      "source_repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Works",
+      "checkout": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/references/Hexalith.Works",
+      "commit": "c59231704952d57c5cd5f04bd276f2baaabfe7a2",
+      "inspection": {
+        "status": "## main...origin/main\n",
+        "remote_names": [
+          "origin"
+        ],
+        "recent_head": "c59231704952d57c5cd5f04bd276f2baaabfe7a2 build: sync local changes via /pushall"
+      }
+    }
+  ],
+  "purpose": "Fixed committed reviewed source only; original working trees preserved; no nested initialization or remote operations."
+}

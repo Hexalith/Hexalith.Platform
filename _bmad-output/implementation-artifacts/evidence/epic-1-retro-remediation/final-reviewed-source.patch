@@ -1,0 +1,27 @@
+diff --git a/scripts/test-reference-module-declarations.py b/scripts/test-reference-module-declarations.py
+index 5f6c2e7..0b7f092 100644
+--- a/scripts/test-reference-module-declarations.py
++++ b/scripts/test-reference-module-declarations.py
+@@ -753,7 +753,8 @@ def main() -> None:
+             try:
+                 validated_documents(variant_paths)
+             except AssertionError as error:
+-                assert str(variant_paths[1]) in str(error) and field in str(error), error
++                assert any((BUILDS / item.get("source", "")).resolve() == variant_paths[1].resolve()
++                           and item.get("field") == field for item in error.args[0]), error
+             else:
+                 raise AssertionError(f"{scenario} reached canonical owner parsing")
+             print(f"PASS {scenario}: atomic refusal with public source and field")
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs
+index 51c11d4..75339d1 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs
+@@ -79,7 +79,7 @@ public sealed class PlatformFileEntryMappingTests : IDisposable
+ 
+         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder));
+ 
+-        refusal.Message.ShouldContain(declaration);
++        refusal.Message.ShouldContain(Path.GetRelativePath(Directory.GetCurrentDirectory(), declaration));
+         refusal.Message.ShouldContain("schema: Platform enrollment requires major 2");
+         builder.Resources.ShouldBeEmpty();
+     }

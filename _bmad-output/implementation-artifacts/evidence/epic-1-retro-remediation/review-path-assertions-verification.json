@@ -1,0 +1,59 @@
+{
+  "qualification": "Narrow reviewed-checkout verification after the completed fixed-declaration-matrix run; no full composition suite or original-workspace build was run.",
+  "cwd": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform",
+  "source_files": {
+    "tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs": {
+      "original_sha256": "8ab3b1e0d830b0eb6d4534da35c73c16f5a9392800ac250b8c98d3f232e1df6e",
+      "reviewed_sha256": "8ab3b1e0d830b0eb6d4534da35c73c16f5a9392800ac250b8c98d3f232e1df6e",
+      "identical": true
+    },
+    "scripts/test-reference-module-declarations.py": {
+      "original_sha256": "591557f2c9e83e434625b7ece03cce4c1764f32bfa7fe79406f945d6c803b2d6",
+      "reviewed_sha256": "591557f2c9e83e434625b7ece03cce4c1764f32bfa7fe79406f945d6c803b2d6",
+      "identical": true
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1"
+      ],
+      "exit_code": 0,
+      "output": "review-file-entry-build.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "*ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/review-file-entry-tests.xml"
+      ],
+      "exit_code": 0,
+      "output": "review-file-entry-tests.txt",
+      "xml": "review-file-entry-tests.xml",
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation",
+          "result": "Pass"
+        }
+      ],
+      "executed_assembly_sha256": "12d0201e06c67e90f2d2ff0aae6efd6b9a85d97dcc49fe200f401303a02dfa87"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/test-reference-module-declarations.py"
+      ],
+      "exit_code": 0,
+      "output": "review-declaration-matrix.txt",
+      "pass_rows": 42
+    }
+  ]
+}

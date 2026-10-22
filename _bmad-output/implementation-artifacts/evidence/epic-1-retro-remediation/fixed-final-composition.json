@@ -1,0 +1,1103 @@
+{
+  "command": [
+    "dotnet",
+    "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-1-retro-remediation/fixed-final-composition.xml"
+  ],
+  "cwd": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform",
+  "started_utc": "2026-10-22T17:05:07.397561+00:00",
+  "source_before": {
+    ".": {
+      "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+      "diff_sha256": "689cafbfc5230208930edca19771688280208a6340c72b86c8b79cd080cb3751"
+    },
+    "references/Hexalith.AI.Tools": {
+      "head": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Agents": {
+      "head": "dd1639439c6822337a747e254fcd626151b27000",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Builds": {
+      "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.ChatBot": {
+      "head": "e6f36d4d6da448e0bdbf04c077ee6c2b3e4cee34",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Commons": {
+      "head": "1663028fb6d9f46a0bf17919edeb21bb99be1587",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Conversations": {
+      "head": "60f18214d7a4565d28096628af95d867ddd5e874",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.EventStore": {
+      "head": "cb414530223f77cc845450a4877a4472559de2ad",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Folders": {
+      "head": "28513763ec5c0405ab942b1e5266a483573f451d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.FrontComposer": {
+      "head": "bf40b9276f440646e753a0636854595cc7d0affc",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.McpCli": {
+      "head": "736db5930424ceb60025eaea6c28545dd496944e",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Memories": {
+      "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Parties": {
+      "head": "7b7898307e8eca3774843b145d339e9986018409",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.PolymorphicSerializations": {
+      "head": "221ac4592ba908ae7661ba1fa9e2d1fcc23baee0",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Projects": {
+      "head": "d30b9559e825afdd7d245cd8b74c3fb79800228f",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Tenants": {
+      "head": "165bd76c908003fa92008632360ff8335cfd997a",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Timesheets": {
+      "head": "ffb169221ba4bdd85d9e60b2ab5e914f36f0e9c5",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Works": {
+      "head": "c59231704952d57c5cd5f04bd276f2baaabfe7a2",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "executed_assembly_sha256": "12d0201e06c67e90f2d2ff0aae6efd6b9a85d97dcc49fe200f401303a02dfa87",
+  "source_patch": "diff --git a/scripts/test-reference-module-declarations.py b/scripts/test-reference-module-declarations.py\nindex 5f6c2e7..0b7f092 100644\n--- a/scripts/test-reference-module-declarations.py\n+++ b/scripts/test-reference-module-declarations.py\n@@ -753,7 +753,8 @@ def main() -> None:\n             try:\n                 validated_documents(variant_paths)\n             except AssertionError as error:\n-                assert str(variant_paths[1]) in str(error) and field in str(error), error\n+                assert any((BUILDS / item.get(\"source\", \"\")).resolve() == variant_paths[1].resolve()\n+                           and item.get(\"field\") == field for item in error.args[0]), error\n             else:\n                 raise AssertionError(f\"{scenario} reached canonical owner parsing\")\n             print(f\"PASS {scenario}: atomic refusal with public source and field\")\ndiff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs\nindex 51c11d4..75339d1 100644\n--- a/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs\n+++ b/tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs\n@@ -79,7 +79,7 @@ public sealed class PlatformFileEntryMappingTests : IDisposable\n \n         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder));\n \n-        refusal.Message.ShouldContain(declaration);\n+        refusal.Message.ShouldContain(Path.GetRelativePath(Directory.GetCurrentDirectory(), declaration));\n         refusal.Message.ShouldContain(\"schema: Platform enrollment requires major 2\");\n         builder.Resources.ShouldBeEmpty();\n     }\n",
+  "exit_code": 1,
+  "duration_seconds": 95.504,
+  "source_after": {
+    ".": {
+      "head": "e39d59b9e7f93c5880eff423e24b8a0f274560ed",
+      "diff_sha256": "689cafbfc5230208930edca19771688280208a6340c72b86c8b79cd080cb3751"
+    },
+    "references/Hexalith.AI.Tools": {
+      "head": "3f194e17174994d308ec84af9ee2b5aa68674d0d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Agents": {
+      "head": "dd1639439c6822337a747e254fcd626151b27000",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Builds": {
+      "head": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.ChatBot": {
+      "head": "e6f36d4d6da448e0bdbf04c077ee6c2b3e4cee34",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Commons": {
+      "head": "1663028fb6d9f46a0bf17919edeb21bb99be1587",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Conversations": {
+      "head": "60f18214d7a4565d28096628af95d867ddd5e874",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.EventStore": {
+      "head": "cb414530223f77cc845450a4877a4472559de2ad",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Folders": {
+      "head": "28513763ec5c0405ab942b1e5266a483573f451d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.FrontComposer": {
+      "head": "bf40b9276f440646e753a0636854595cc7d0affc",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.McpCli": {
+      "head": "736db5930424ceb60025eaea6c28545dd496944e",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Memories": {
+      "head": "91d91ed47838f232d3ae43d9643d8f468e5ec33c",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Parties": {
+      "head": "7b7898307e8eca3774843b145d339e9986018409",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.PolymorphicSerializations": {
+      "head": "221ac4592ba908ae7661ba1fa9e2d1fcc23baee0",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Projects": {
+      "head": "d30b9559e825afdd7d245cd8b74c3fb79800228f",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Tenants": {
+      "head": "165bd76c908003fa92008632360ff8335cfd997a",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Timesheets": {
+      "head": "ffb169221ba4bdd85d9e60b2ab5e914f36f0e9c5",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "references/Hexalith.Works": {
+      "head": "c59231704952d57c5cd5f04bd276f2baaabfe7a2",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "output": "fixed-final-composition.txt",
+  "source_state_changed": false,
+  "assemblies": [
+    {
+      "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "8dc5dc3d-d7dd-4a96-929e-9ce4e3f0d26c",
+      "name": "/tmp/epic1-reviewed-checkout-0o60v3gm/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "run-date": "2026-10-22",
+      "run-time": "17:05:08",
+      "start-rtf": "2026-10-22T17:05:08.2702603+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "4",
+      "finish-rtf": "2026-10-22T17:06:42.7114807+00:00",
+      "not-run": "0",
+      "passed": "218",
+      "skipped": "7",
+      "time": "94.447",
+      "time-rtf": "00:01:34.4470000",
+      "total": "229"
+    }
+  ],
+  "cases": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformMappedArtifactTests.HeldMappedInodeAuthenticatesAndRejectsReplacementOrDeletionAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SpoolFailureBlocksTargetCommand",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.RejectedTimingFailsValidation",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.PendingReferenceIsAnEmptySlot(pending: \\\"pending\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.PendingReferenceIsAnEmptySlot(pending: \\\"PENDING\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.ValidProfileComposesSiblingServicesAndBindsAdministratorReference",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.EmptyCredentialSlotsRefuseBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.MissingSiblingCheckoutFailsBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.RelativeProfilePathResolvesFromAppHostDirectory",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.RejectedConstantsFailValidation(key: \\\"host\\\", value: \\\"192.168.1.31\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.RejectedConstantsFailValidation(key: \\\"integrationDate\\\", value: \\\"2026-10-09\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.RejectedConstantsFailValidation(key: \\\"partiesBranch\\\", value: \\\"A\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.EmptyCredentialReferencesAreRejectedBeforeProjects",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.LostAcknowledgementRecoversOneEventAndBuildsNoCommand",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SpoolUnreadinessAfterVerificationBlocksTargetCommand",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.AbsentProfileRefusesBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"replay\\\", value: \\\"/home/administrator/.kube/hexalith-production\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"replay\\\", value: \\\"/HOME/ADMINISTRATOR/.KUBE/HEXALITH-PRODUCTION\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"recorder\\\", value: \\\"openbao/Secret/openbao-server-tls\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"worker\\\", value: \\\"OPENBAO/SECRET/OPENBAO-SEAL\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"spoolBackend\\\", value: \\\"-----begin private key-----\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"humanExactConversationScope\\\", value: \\\"approved\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SecretsAndUnapprovedScopesAreRejected(key: \\\"classUtcRangeScope\\\", value: \\\"approved\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.SignedAdmissionRegistersIssuerBeforeTargetCommand",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.AgentsHostCompositionTests.NonDevelopmentHostRefusesBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.SchemaDriftFailsActualBuildsValidation(drift: \\\"authority-claim\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.SchemaDriftFailsActualBuildsValidation(drift: \\\"mcp\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.SchemaDriftFailsActualBuildsValidation(drift: \\\"required-disabled\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.RetainedPlanKeepsPublicAndInternalListenersAndAllGatesClosed",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.CandidateSelectsTheRequiredClosureOutsideActiveComposition",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.CandidateValidatesAtomicallyWithTheDomainMinimum",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.OwnerOptionBindingTests.MemoriesProfileBindsAndValidatesActualOwnerOptionsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+      "result": "Fail"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"human\\\")",
+      "result": "Fail"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"json\\\")",
+      "result": "Fail"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.StarterValidatesWithRealTechnicalDeclarations",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.McpCliDeclarationTests.ActualMcpCliDeclarationValidatesAndSelectsOnlyTheEventStoreGatewayAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.WriterProtocolStartupTests.CutoverRequiresEveryOtherGatewayDependencyToBeHealthyAsync(onlyProtocolUnhealthy: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.WriterProtocolStartupTests.CutoverRequiresEveryOtherGatewayDependencyToBeHealthyAsync(onlyProtocolUnhealthy: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.MissingOrOverriddenPartiesSourceRefusesBeforeComposition",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.SignedPartiesRunUsesTheRunnerJwtSettingsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ActualPartiesDeclarationValidatesAndSelectsSevenMappedServers",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(name: \\\"Hexalith.Parties\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(name: \\\"renamed-parties-checkout\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.VerifiedMappingRefusesMissingOwnerByIdentityBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ExplicitDeclarationKeepsItsWorkspaceAnchorAndValidation",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: null)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: \\\"eventstore\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.ChangedExplicitMappingHashRefusesBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: \\\"redis\\\", healthy: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: \\\"redis\\\", healthy: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: \\\"memories-vectors\\\", healthy: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: \\\"memories-vectors\\\", healthy: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: \\\"memories-graph\\\", healthy: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InfrastructureHealthRequiresRedisProtocolResponseAsync(name: \\\"memories-graph\\\", healthy: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectedDaprHomeConfiguresTheActualCliAndEverySidecarRuntimeAsync(signedRun: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectedDaprHomeConfiguresTheActualCliAndEverySidecarRuntimeAsync(signedRun: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnsafeCertificateDirectoryRefusesBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(path: \\\"/api/v1/commands\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(path: \\\"/api/v1/COMMANDS\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionComponentUsesV2TlsAndExplicitScopeWhileDefaultStaysRedis",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 1, timedOut: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 0, timedOut: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ActualDaprCliListenersAndTokensRemainServerScopedAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PublisherInventoriesAloneCreateNoSubscriptions",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverRendersDeclaredDescendantsBeforeParentFallbacks",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EventStoreOnlyUsesItsComponentsAndRegistersConfigStore",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"scope\\\", field: \\\"runtime.dapr[0].servers\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"receiver\\\", field: \\\"subscription.server\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"route\\\", field: \\\"subscription.route\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"dead-letter\\\", field: \\\"deadLetter.topic\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"verb\\\", field: \\\"invocationRules[0].verbs\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"key-conflict\\\", field: \\\"runtime.dapr[2].configurationKey\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"key-case-conflict\\\", field: \\\"runtime.dapr[2].configurationKey\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"recovery-conflict\\\", field: \\\"runtime.dapr[1].role\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"physical-topic\\\", field: \\\"subscription.topic\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"physical-self\\\", field: \\\"deadLetter.topic\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"physical-wildcard-target\\\", field: \\\"deadLetter.topic\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"physical-duplicate\\\", field: \\\"subscription\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations(scenario: \\\"physical-ambiguous\\\", field: \\\"deadLetter.topic\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingSnapshotFailsByOwnerWithoutReadingSourceReferences",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PostgresqlReadinessRequiresTrustedTlsAndPropagatesCallerCancellationAsync(scenario: \\\"non-tls\\\", expected: Unhealthy)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PostgresqlReadinessRequiresTrustedTlsAndPropagatesCallerCancellationAsync(scenario: \\\"untrusted\\\", expected: Unhealthy)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PostgresqlReadinessRequiresTrustedTlsAndPropagatesCallerCancellationAsync(scenario: \\\"trusted\\\", expected: Healthy)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PostgresqlReadinessRequiresTrustedTlsAndPropagatesCallerCancellationAsync(scenario: \\\"open-port\\\", expected: Unhealthy)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PostgresqlReadinessRequiresTrustedTlsAndPropagatesCallerCancellationAsync(scenario: \\\"caller-cancellation\\\", expected: Unhealthy)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"run\\\", value: \\\"../../outside\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"run\\\", value: \\\"/outside\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"run\\\", value: \\\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"run\\\", value: \\\"\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"resource\\\", value: \\\"../outside\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"resource\\\", value: \\\"/outside\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"resource\\\", value: \\\"memories\\\\\\\\outside\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBuildPathsRefuseInvalidRunOrResourceSegments(field: \\\"resource\\\", value: \\\"\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"hash\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"commit\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"catalog-version\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnsupportedDaprCapabilityRefusesInsteadOfUsingStateStore",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ExplicitSubscriptionRendersDeliveryAndDeclaredDeadLetterWithoutPublisherSubscriptions",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants(appId: \\\"tenants\\\", expected: [\\\"eventstore POST /process\\\", \\\"eventstore POST /query\\\", \\\"eventstore POST /project\\\", \\\"eventstore POST /replay-state\\\", \\\"eventstore POST /admin/operational-index-metadata\\\", \u00b7\u00b7\u00b7])",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants(appId: \\\"tenants-api\\\", expected: [])",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants(appId: \\\"memories\\\", expected: [])",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants(appId: \\\"memories-access-telemetry-clock\\\", expected: [\\\"memories POST /v1/time/attest\\\", \\\"memories-access-telemetry POST /v1/time/attest\\\"])",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants(appId: \\\"memories-access-telemetry\\\", expected: [\\\"memories POST /v1/access-telemetry/write\\\", \\\"memories POST /v1/access-telemetry/heartbeat\\\", \\\"memories POST /v1/access-telemetry/validate\\\", \\\"memories-access-telemetry-inspector GET /v1/access\\\"\u00b7\u00b7\u00b7, \\\"access-telemetry-adapter POST /v1/access-telemetry\\\"\u00b7\u00b7\u00b7])",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectsOnlyTheDeclaredDependencyClosure(active: null, expected: 6)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectsOnlyTheDeclaredDependencyClosure(active: \\\"eventstore\\\", expected: 1)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectsOnlyTheDeclaredDependencyClosure(active: \\\"memories\\\", expected: 4)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectsOnlyTheDeclaredDependencyClosure(active: \\\"tenants\\\", expected: 6)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileEntryResolvesDefaultMappingAndComposesSixServers",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ResolvedComponentsHaveOnlySelectedConsumersAndEveryReceiverDeniesByDefault(active: \\\"eventstore\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ResolvedComponentsHaveOnlySelectedConsumersAndEveryReceiverDeniesByDefault(active: \\\"memories\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ResolvedComponentsHaveOnlySelectedConsumersAndEveryReceiverDeniesByDefault(active: \\\"tenants\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TimesheetsReceiverGrantsOnlyEstablishedEventStorePostOperations",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.BuildsReflectionContractNamesAndSignatureRemainResolvable",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync",
+      "result": "Skip"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DomainAddsReferenceOwnersAndExcludesUnrelatedModule",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingSourceDeclarationFailsByIdentityWithoutFallback",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SubscriptionIdentitiesDistinguishConcatenationAndPhysicalAliases(splitTuple: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SubscriptionIdentitiesDistinguishConcatenationAndPhysicalAliases(splitTuple: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionControlPlanePortsAreExplicitAndDisjointAcrossRunsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SecondaryPortAllocationRetriesPersistedCollisions",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewPreservesItsMissingSiblingRefusal",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.TwoServerTechnicalSelectionWithoutEventStoreHasDistinctSidecarsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProfileIsRunAndMappingBoundAndConfiguresEveryMemoriesService",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ActualOwnerOptionsShareResolvedNamesAndTelemetryStateIsIsolated",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingMappedProjectFailsBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SignedCompositionKeepsRunDiscoveryPortsSharedStateAndApiCredentialsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MemoriesSidecarsReceiveConversationAndSecretComponentsOnly",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileCompositionOwnsPrivateSecretsAndDeletesItsWorkspaceOnHostDisposalAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FailedFileCompositionDeletesItsPrivateWorkspace",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync",
+      "result": "Skip"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LocalSecretsAreIndependentPerInputAndFreshPerComposition",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ControlPlaneWithoutOwnedSchedulerDataUsesThePreservedNamedVolume",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposedDaprCapabilitiesKeepOwnerLiteralNames",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DuplicateOrInvalidDeclarationIsAtomicAndReportsSourceFieldAndReason",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GraphHasSixDeclaredServersAndNoOptionalOrLegacyHosts",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceConfigurationBindsTheActualOwnerNumericAndTimeOptions",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EmptyFileSelectionRefusesWithItsConfigurationKey",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ResolvedOptionKeysRejectCaseInsensitiveComponentConflicts",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: \\\"eventstore\\\", server: \\\"gateway\\\", targetOwner: \\\"tenants\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: \\\"tenants\\\", server: \\\"domain\\\", targetOwner: \\\"eventstore\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: \\\"memories\\\", server: \\\"server\\\", targetOwner: \\\"eventstore\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GatewaySettingsContainOnlySelectedAppRegistrations",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBackendBindsActualLoadedImageInsteadOfRequestedName(drift: \\\"matching\\\", accepted: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBackendBindsActualLoadedImageInsteadOfRequestedName(drift: \\\"wrong-digest\\\", accepted: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBackendBindsActualLoadedImageInsteadOfRequestedName(drift: \\\"wrong-loaded-id\\\", accepted: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionBackendBindsActualLoadedImageInsteadOfRequestedName(drift: \\\"missing-digest\\\", accepted: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic(count: 0)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic(count: 2)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileEntryHonorsActiveModuleAndRefusesChangedMappingHash",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(persistedRun: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.NonSelectedProjectArgumentsKeepNormalBuildOutputsAsync(persistedRun: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FileEntryRefusesNonDevelopmentBeforeComposing",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DependencyCycleRefusesBeforeResourceCreation",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.StructuredConfigurationIgnoresLeadingWhitespaceAndOpaqueSecretsStayWhole(structured: \\\" \\\\n\\\\t[\\\\\\\"audience\\\\\\\"]\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.StructuredConfigurationIgnoresLeadingWhitespaceAndOpaqueSecretsStayWhole(structured: \\\" \\\\r\\\\n{\\\\\\\"0\\\\\\\":\\\\\\\"audience\\\\\\\"}\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers",
+      "result": "Fail"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingSharedComponentNamesThePathBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OpaqueSecretsStayWholeAndMalformedStructuredInputsAreScoped",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: \\\"pubsub.yaml\\\", active: \\\"eventstore\\\", content: \\\"\\\", reason: \\\"expected one YAML mapping document\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: \\\"pubsub.yaml\\\", active: \\\"eventstore\\\", content: \\\"apiVersion: dapr.io/v1alpha1\\\\nkind: Component\\\\nspec:\\\"\u00b7\u00b7\u00b7, reason: \\\"metadata must be a mapping\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: \\\"secretstore.yaml\\\", active: \\\"memories\\\", content: \\\"apiVersion: dapr.io/v1alpha1\\\\nkind: Component\\\\nmetad\\\"\u00b7\u00b7\u00b7, reason: \\\"spec.metadata must contain a secretsFile entry\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: \\\"secretstore.yaml\\\", active: \\\"memories\\\", content: \\\"apiVersion: dapr.io/v1alpha1\\\\nkind: Component\\\\nmetad\\\"\u00b7\u00b7\u00b7, reason: \\\"spec.metadata must contain a secretsFile entry\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync",
+      "result": "Skip"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ClockTokensBindBySourceIdAndRejectUnknownOrMissingIds",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProfileRejectsUnsupportedRuntimeModeAndCandidate(drift: \\\"runtime\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProfileRejectsUnsupportedRuntimeModeAndCandidate(drift: \\\"package\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProfileRejectsUnsupportedRuntimeModeAndCandidate(drift: \\\"foreign-source\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionProjectArgumentsIsolateAllFourOwnerBuildsAcrossRunsAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SecretsYamlRoundTripsWindowsPaths",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SignedPackageCompositionUsesSeedAndRefusesCatalogMappingDriftAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests.StaticValidityRequiresExplicitProjectAndScopedConfigurationBeforeComposition",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.InvalidSharedDevelopmentJwtContractsRefuseBeforeResources(key: \\\"SigningKey\\\", value: \\\"short\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.InvalidSharedDevelopmentJwtContractsRefuseBeforeResources(key: \\\"SigningKey\\\", value: \\\" \\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.InvalidSharedDevelopmentJwtContractsRefuseBeforeResources(key: \\\"Issuer\\\", value: \\\"\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.InvalidSharedDevelopmentJwtContractsRefuseBeforeResources(key: \\\"AllowedAlgorithms\\\", value: \\\"[\\\\\\\"RS256\\\\\\\"]\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.InvalidSharedDevelopmentJwtContractsRefuseBeforeResources(key: \\\"Audience\\\", value: \\\"\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.PublishModelIsRefusedBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.MissingOrUnmappedSourceIsAnAtomicTimesheetsRefusal(fault: \\\"mapping\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.MissingOrUnmappedSourceIsAnAtomicTimesheetsRefusal(fault: \\\"project\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.MissingOrUnmappedSourceIsAnAtomicTimesheetsRefusal(fault: \\\"outside-root\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.CanonicalMappedHostMustExistPhysicallyInsideTheTimesheetsOwner(escapedLink: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.CanonicalMappedHostMustExistPhysicallyInsideTheTimesheetsOwner(escapedLink: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.CandidateSelectionRefusesImplicitActivationBeforeAddingResources",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsTimesheetsSelectionRefusesWrongMissingOrDriftedCandidate(fault: \\\"wrong-path\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsTimesheetsSelectionRefusesWrongMissingOrDriftedCandidate(fault: \\\"missing-path\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsTimesheetsSelectionRefusesWrongMissingOrDriftedCandidate(fault: \\\"extra-path\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsTimesheetsSelectionRefusesWrongMissingOrDriftedCandidate(fault: \\\"missing-hash\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsTimesheetsSelectionRefusesWrongMissingOrDriftedCandidate(fault: \\\"hash-drift\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsTimesheetsSelectionRefusesWrongMissingOrDriftedCandidate(fault: \\\"missing-candidate\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsReferenceSelectionRemainsUnexpandedAndRefusesAmbientOptInAsync(ambient: False)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsReferenceSelectionRemainsUnexpandedAndRefusesAmbientOptInAsync(ambient: True)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryPreservesAgentsUnavailableRefusal",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryRefusesMixedWorksAndTimesheetsBeforeSelectingEitherGraph",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.UnsupportedProfileRefusesBothEntryPathsBeforeAddingResources(profile: \\\"Production\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.UnsupportedProfileRefusesBothEntryPathsBeforeAddingResources(profile: \\\"Staging\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.MissingCandidateIsAtomicAndReportsItsOwnerFile",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: False, count: 6)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: True, count: 7)",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.PackageModeRefusesQualifiedReleaseBeforeReferenceResolution",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.NonlocalAuthenticationIsRefusedAtomically",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync",
+      "result": "Skip"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync",
+      "result": "Skip"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync",
+      "result": "Skip"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMemoriesStartsThroughTheRealBuildsEngineAsync",
+      "result": "Skip"
+    }
+  ]
+}

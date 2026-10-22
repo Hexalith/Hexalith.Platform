@@ -1,0 +1,97 @@
+{
+  "xml_files": [
+    "fixed-workspace-tests.xml",
+    "fixed-final-composition.xml"
+  ],
+  "coverage": [
+    {
+      "method": "StandaloneV2UsesValidatedOwnerIdentityAsync",
+      "passed": 6,
+      "tests": [
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Source, name: \\\"Hexalith.Parties\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Package, name: \\\"Hexalith.Parties\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Source, name: \\\"renamed-owner\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Package, name: \\\"renamed-owner\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Source, name: \\\"Hexalith\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneV2UsesValidatedOwnerIdentityAsync(mode: Package, name: \\\"Hexalith\\\")"
+      ]
+    },
+    {
+      "method": "StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync",
+      "passed": 4,
+      "tests": [
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Source, multiple: False)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Package, multiple: False)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Source, multiple: True)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.StandaloneWithoutUniqueV2OwnerKeepsDirectoryIdentityAsync(mode: Package, multiple: True)"
+      ]
+    },
+    {
+      "method": "InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync",
+      "passed": 4,
+      "tests": [
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Source, collision: False)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Package, collision: False)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Source, collision: True)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.InvalidOrCollidingStandaloneV2RefusesBeforeCheckoutAsync(mode: Package, collision: True)"
+      ]
+    },
+    {
+      "method": "NonGitStandaloneV2UsesDeclaredIdentityAsync",
+      "passed": 2,
+      "tests": [
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitStandaloneV2UsesDeclaredIdentityAsync(name: \\\"Hexalith.Parties\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.NonGitStandaloneV2UsesDeclaredIdentityAsync(name: \\\"renamed-owner\\\")"
+      ]
+    },
+    {
+      "method": "PlatformOwnedSingleModuleDeclarationPreservesWorkspaceIdentityAsync",
+      "passed": 2,
+      "tests": [
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PlatformOwnedSingleModuleDeclarationPreservesWorkspaceIdentityAsync(mode: Source)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceRootResolverTests.PlatformOwnedSingleModuleDeclarationPreservesWorkspaceIdentityAsync(mode: Package)"
+      ]
+    },
+    {
+      "method": "ResolvedStandaloneIdentityRejectsPackageCopiesAsync",
+      "passed": 4,
+      "tests": [
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"renamed-owner\\\", transitive: False)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"renamed-owner\\\", transitive: True)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"Hexalith\\\", transitive: False)",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.ResolvedStandaloneIdentityRejectsPackageCopiesAsync(name: \\\"Hexalith\\\", transitive: True)"
+      ]
+    },
+    {
+      "method": "ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync",
+      "passed": 2,
+      "tests": [
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(name: \\\"Hexalith.Parties\\\")",
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(name: \\\"renamed-parties-checkout\\\")"
+      ]
+    },
+    {
+      "method": "StaticValidityRequiresExplicitProjectAndScopedConfigurationBeforeComposition",
+      "passed": 1,
+      "tests": [
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests.StaticValidityRequiresExplicitProjectAndScopedConfigurationBeforeComposition"
+      ]
+    },
+    {
+      "method": "PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
+      "passed": 3,
+      "tests": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"hash\\\")",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"commit\\\")",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"catalog-version\\\")"
+      ]
+    },
+    {
+      "method": "PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources",
+      "passed": 1,
+      "tests": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources"
+      ]
+    }
+  ]
+}
