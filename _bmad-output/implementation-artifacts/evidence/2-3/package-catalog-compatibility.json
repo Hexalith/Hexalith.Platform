@@ -1,0 +1,32 @@
+{
+  "utc": "2026-10-22T17:54:21.413253+00:00",
+  "cases": [
+    {
+      "existingCatalogEntries": true,
+      "items": [
+        {
+          "Identity": "System.Security.Cryptography.Pkcs",
+          "Version": "10.0.13"
+        },
+        {
+          "Identity": "System.Security.Cryptography.Xml",
+          "Version": "10.0.13"
+        }
+      ]
+    },
+    {
+      "existingCatalogEntries": false,
+      "items": [
+        {
+          "Identity": "System.Security.Cryptography.Pkcs",
+          "Version": "10.0.13"
+        },
+        {
+          "Identity": "System.Security.Cryptography.Xml",
+          "Version": "10.0.13"
+        }
+      ]
+    }
+  ],
+  "assertion": "Exactly one unchanged 10.0.13 pin for each cryptography package, with current or older catalog inputs."
+}

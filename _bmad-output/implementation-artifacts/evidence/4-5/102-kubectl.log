@@ -1,30 +1,29 @@
 {
     "apiVersion": "v1",
     "data": {
-        ".dockerconfigjson": "eyJhdXRocyI6e319"
+        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
     },
     "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:39:56Z",
+        "creationTimestamp": "2026-10-22T17:49:12Z",
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
                     "f:stringData": {
-                        "f:.dockerconfigjson": {}
-                    },
-                    "f:type": {}
+                        "f:token": {}
+                    }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:39:56Z"
+                "time": "2026-10-22T17:49:12Z"
             }
         ],
-        "name": "fixture-registry",
+        "name": "fixture-credential",
         "namespace": "reference",
-        "resourceVersion": "977",
-        "uid": "2877eb5d-1af8-4817-b7ce-2ebc54eb8a0d"
+        "resourceVersion": "758",
+        "uid": "bbb6d439-d334-47f0-a697-3ee8c8875fe5"
     },
-    "type": "kubernetes.io/dockerconfigjson"
+    "type": "Opaque"
 }

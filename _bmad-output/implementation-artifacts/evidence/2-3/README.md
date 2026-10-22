@@ -1,5 +1,20 @@
 # Story 2.3 verification
 
+## Final verification after review corrections
+
+**Story remains in review: final qualification is blocked.**
+
+- [Ordinary Composition checks](final-ordinary-composition.log): 146 discovered, **141 passed**, zero failures, five gated skips, 55.789 seconds. The occupied-port, concurrent, and file-entry cases were then run explicitly below.
+- [Required Builds Module Debug build](final-build-builds.log): **passed**, zero warnings/errors. [Builds runtime subset](final-builds-runtime-tests.log): **22 passed**, no skips.
+- [Occupied-port proof](final-occupied-port.log): **one passed**, no skip, 2.623 seconds. The foreign listener and marker survived candidate cleanup; task fixtures were removed.
+- [Required Composition Debug build](final-build-composition.log) and [retry after independent package edits](final-build-composition-retry.log): **failed** at NuGet restore with NU1506. EventStore's `Directory.Packages.props` and the Builds catalog both declare `System.Security.Cryptography.Pkcs` and `System.Security.Cryptography.Xml` version 10.0.13. These independent declarations were not changed by Story 2.3.
+- [Concurrent post-review attempt](final-live-concurrent.log): executed, not skipped; **failed before first-session readiness**, HXR025, EventStore state Finished. [Startup diagnostics](live-concurrent-post-review/startup-failure.json) are preserved. It did not execute the expanded four-native-listener inventory assertions. The earlier complete 403.261-second concurrency pass below remains historical evidence and does not qualify the final code state.
+- [File-entry post-review smoke](final-file-entry.log): executed, not skipped; **failed** when EventStore's source build reported the same NU1506 duplicate package versions. Its owned AppHost was stopped in the test's finally block.
+- [Cleanup audit](final-cleanup-audit.json): no containers with the failed concurrent run label, no recorded project processes, no AppHost process. No foreign-resource cleanup was performed.
+- [Exact source revisions and compiled artifact hashes](final-source-revisions.json), [workspace status](final-dirty-status.txt). The passing ordinary checks used the documented supplemental compilation; a normal Composition build is still required.
+
+To finish: resolve the independent duplicate package declarations, pass the normal Composition Debug build, then rerun the concurrent proof with native-listener receipts and the file-entry smoke. Preserve existing source-identity checks and running foreign applications.
+
 Local source verification only. No hosted data, package-mode CI, descriptor migration,
 attachment/lifecycle policy or Works qualification is claimed.
 

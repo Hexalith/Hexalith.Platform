@@ -3,27 +3,27 @@
     "kind": "Pod",
     "metadata": {
         "annotations": {
-            "dapr.io/api-token-secret": "fixture-tenants-api-api",
-            "dapr.io/app-id": "tenants-api",
+            "dapr.io/api-token-secret": "fixture-tenants-api",
+            "dapr.io/app-id": "tenants",
             "dapr.io/app-port": "8080",
             "dapr.io/app-protocol": "http",
-            "dapr.io/app-token-secret": "fixture-tenants-api-app",
-            "dapr.io/config": "platform-tenants-api",
+            "dapr.io/app-token-secret": "fixture-tenants-app",
+            "dapr.io/config": "platform-tenants",
             "dapr.io/enable-api-logging": "false",
             "dapr.io/enabled": "true",
             "dapr.io/sidecar-listen-addresses": "127.0.0.1"
         },
-        "creationTimestamp": "2026-10-22T17:40:07Z",
+        "creationTimestamp": "2026-10-22T17:49:22Z",
         "generation": 1,
         "labels": {
-            "app.kubernetes.io/name": "tenants-api",
-            "dapr.io/app-id": "tenants-api",
+            "app.kubernetes.io/name": "tenants",
+            "dapr.io/app-id": "tenants",
             "dapr.io/metrics-enabled": "true",
             "dapr.io/sidecar-injected": "true"
         },
-        "name": "dry-tenants-api",
+        "name": "dry-tenants",
         "namespace": "reference",
-        "uid": "63ec7c7b-92a9-4ea0-b322-d8457ebc407d"
+        "uid": "762fa4a1-44b3-4205-b801-ec1dab2cad4d"
     },
     "spec": {
         "automountServiceAccountToken": true,
@@ -35,7 +35,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-tenants-api-app"
+                                "name": "fixture-tenants-app"
                             }
                         }
                     },
@@ -97,7 +97,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-tenants-api-api"
+                                "name": "fixture-tenants-api"
                             }
                         }
                     },
@@ -156,6 +156,14 @@
                         "value": "fixture"
                     },
                     {
+                        "name": "EventStore__DataProtection__StateStoreName",
+                        "value": "statestore"
+                    },
+                    {
+                        "name": "EventStore__ProjectionChanges__PubSubName",
+                        "value": "pubsub"
+                    },
+                    {
                         "name": "Jwt__SigningKey",
                         "valueFrom": {
                             "secretKeyRef": {
@@ -173,7 +181,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-tenants-api-api"
+                                "name": "fixture-tenants-api"
                             }
                         }
                     },
@@ -182,7 +190,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-tenants-api-app"
+                                "name": "fixture-tenants-app"
                             }
                         }
                     },
@@ -211,7 +219,7 @@
                         "value": "http"
                     }
                 ],
-                "image": "qualification.invalid/tenants-api@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "image": "qualification.invalid/tenants@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "imagePullPolicy": "IfNotPresent",
                 "name": "app",
                 "ports": [
@@ -270,7 +278,7 @@
                     },
                     {
                         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                        "name": "kube-api-access-bwt4j",
+                        "name": "kube-api-access-6fjgp",
                         "readOnly": true
                     }
                 ]
@@ -289,7 +297,7 @@
                     "--dapr-public-port",
                     "3501",
                     "--app-id",
-                    "tenants-api",
+                    "tenants",
                     "--app-protocol",
                     "http",
                     "--log-level",
@@ -308,7 +316,7 @@
                     "--metrics-port",
                     "9090",
                     "--config",
-                    "platform-tenants-api",
+                    "platform-tenants",
                     "--placement-host-address",
                     "dapr-placement-server.dapr-system.svc.cluster.local:50005",
                     "--enable-api-logging=false",
@@ -321,7 +329,7 @@
                     },
                     {
                         "name": "DAPR_TRUST_ANCHORS",
-                        "value": "-----BEGIN CERTIFICATE-----\nMIIBLzCB4qADAgECAhBAERrvsTTnB5SqR/utIh2VMAUGAytlcDAYMRYwFAYDVQQK\nEw1jbHVzdGVyLmxvY2FsMB4XDTI2MTAyMjE3MjMzMloXDTI3MTAyMjE3MzgzMlow\nGDEWMBQGA1UEChMNY2x1c3Rlci5sb2NhbDAqMAUGAytlcAMhALLEVRGLAuITsCuQ\n+hWgu/S4H/ACBesoPmrtJdte511wo0IwQDAOBgNVHQ8BAf8EBAMCAoQwDwYDVR0T\nAQH/BAUwAwEB/zAdBgNVHQ4EFgQUSQ9H/Qbx1AxJ3gpxLlgTZX6PAfQwBQYDK2Vw\nA0EAhJuBIn5PeNaCyL5eVBaudWV2Q9r21CEnVd016lCi7PWCJAin6Zz9lKlLvYHi\nZ/Imo2dT6kz6xdPxbeXMx7nnBQ==\n-----END CERTIFICATE-----\n"
+                        "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAh6ooBZ0e/67W63v6HBQcejAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxNzMzNTRaFw0yNzEwMjIxNzQ4NTRa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQDl2+TOGBU7Tlvv\n4hQQes4HLDuuYpls/CAfNoGXrLJn46NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFGF26X36B0sD9UJc+Ru/U0oYyyRKMAUGAytl\ncANBAD7AI39BQuYbhQvwyzhDuHNnkHSN/qtl6739zQTz/4jnO2kHxNmg/MJW3vls\nXfCzVTaCkNn1XK1JwxPg/mFbCAU=\n-----END CERTIFICATE-----\n"
                     },
                     {
                         "name": "POD_NAME",
@@ -345,7 +353,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-tenants-api-api"
+                                "name": "fixture-tenants-api"
                             }
                         }
                     },
@@ -354,7 +362,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-tenants-api-app"
+                                "name": "fixture-tenants-app"
                             }
                         }
                     }
@@ -428,7 +436,7 @@
                     },
                     {
                         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                        "name": "kube-api-access-bwt4j",
+                        "name": "kube-api-access-6fjgp",
                         "readOnly": true
                     }
                 ]
@@ -482,7 +490,7 @@
                 "name": "environment-components"
             },
             {
-                "name": "kube-api-access-bwt4j",
+                "name": "kube-api-access-6fjgp",
                 "projected": {
                     "defaultMode": 420,
                     "sources": [

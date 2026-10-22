@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'in-progress'
+status: 'in-review'
 baseline_commit: 'e39d59b9e7f93c5880eff423e24b8a0f274560ed'
 route: 'dispatch'
 review_loop_iteration: 1
@@ -48,12 +48,12 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs`, `PlatformServerBindings.cs`, `PlatformDaprBindings.cs` — expose shared neutral workload/Dapr metadata; local binding consumes the same graph without behavior changes.
-- [ ] `src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs`, `Hexalith.Platform.Composition.csproj`, `apphost.cs` — add hosted selection and a native publishing probe using catalog-pinned APIs; avoid local secret/provider setup. Record the export decision and trigger evidence in `eng/helm-qualification/README.md`.
-- [ ] `eng/helm-qualification/chart/` — when fallback is triggered, supply the single generic maintained chart. Otherwise use native generated output. Centralize Dapr/security, namespaced Gateway references, digest/endpoint/reference values and all three modes; separate application-owned Dapr objects from environment prerequisites.
-- [ ] `tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs` — test graph parity, selection and local regression. `eng/helm-qualification/test_chart.py` — exercise the matrix, secret/provider exclusion, two identical renders per mode, archive parity and changed-digest values without regeneration.
-- [ ] `eng/helm-qualification/qualify.py` and `toolchain.json` — pin verified Helm 4.2.0+, node image, Gateway CRDs and catalog Dapr patch. Create only an invocation-owned kind cluster/kubeconfig; enforce restricted policy. Server-dry-run actual Pod templates through Dapr injection, inspect sidecar/init security, and require an unsafe Pod rejection. Install/upgrade the archive with Helm SSA; prove Apply ownership, unforced conflict refusal and removal boundaries. Bound waits and clean up only owned resources on failure/success.
-- [ ] `_bmad-output/implementation-artifacts/evidence/4-5/qualification.json` and `eng/helm-qualification/README.md` — retain commands, exact source/input/tool/package hashes, results, exclusions and cleanup evidence; synchronize the existing sprint key only to demonstrated progress.
+- [x] `src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs`, `PlatformServerBindings.cs`, `PlatformDaprBindings.cs` — expose shared neutral workload/Dapr metadata; local binding consumes the same graph without behavior changes.
+- [x] `src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs`, `Hexalith.Platform.Composition.csproj`, `apphost.cs` — add hosted selection and a native publishing probe using catalog-pinned APIs; avoid local secret/provider setup. Record the export decision and trigger evidence in `eng/helm-qualification/README.md`.
+- [x] `eng/helm-qualification/chart/` — when fallback is triggered, supply the single generic maintained chart. Otherwise use native generated output. Centralize Dapr/security, namespaced Gateway references, digest/endpoint/reference values and all three modes; separate application-owned Dapr objects from environment prerequisites.
+- [x] `tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs` — test graph parity, selection and local regression. `eng/helm-qualification/test_chart.py` — exercise the matrix, secret/provider exclusion, two identical renders per mode, archive parity and changed-digest values without regeneration.
+- [x] `eng/helm-qualification/qualify.py` and `toolchain.json` — pin verified Helm 4.2.0+, node image, Gateway CRDs and catalog Dapr patch. Create only an invocation-owned kind cluster/kubeconfig; enforce restricted policy. Server-dry-run actual Pod templates through Dapr injection, inspect sidecar/init security, and require an unsafe Pod rejection. Install/upgrade the archive with Helm SSA; prove Apply ownership, unforced conflict refusal and removal boundaries. Bound waits and clean up only owned resources on failure/success.
+- [x] `_bmad-output/implementation-artifacts/evidence/4-5/qualification.json` and `eng/helm-qualification/README.md` — retain commands, exact source/input/tool/package hashes, results, exclusions and cleanup evidence; synchronize the existing sprint key only to demonstrated progress.
 
 **Acceptance Criteria:**
 - Given the canonical reference graph, when either selected publishing path renders, then every enabled server has matching identity, readiness and shared Dapr/security configuration, with no independent module topology.

@@ -7,7 +7,7 @@
             "meta.helm.sh/release-name": "reference",
             "meta.helm.sh/release-namespace": "reference"
         },
-        "creationTimestamp": "2026-10-22T17:40:05Z",
+        "creationTimestamp": "2026-10-22T17:49:21Z",
         "generation": 1,
         "labels": {
             "app.kubernetes.io/managed-by": "Helm",
@@ -189,6 +189,16 @@
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
+                                            "k:{\"name\":\"EventStore__DataProtection__StateStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EventStore__ProjectionChanges__PubSubName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
                                             "k:{\"name\":\"Jwt__SigningKey\"}": {
                                                 ".": {},
                                                 "f:name": {},
@@ -313,7 +323,7 @@
                 },
                 "manager": "helm",
                 "operation": "Apply",
-                "time": "2026-10-22T17:40:05Z"
+                "time": "2026-10-22T17:49:21Z"
             },
             {
                 "apiVersion": "apps/v1",
@@ -356,13 +366,13 @@
                 "manager": "kube-controller-manager",
                 "operation": "Update",
                 "subresource": "status",
-                "time": "2026-10-22T17:40:05Z"
+                "time": "2026-10-22T17:49:21Z"
             }
         ],
-        "name": "tenants-api",
+        "name": "tenants",
         "namespace": "reference",
-        "resourceVersion": "1172",
-        "uid": "bb7c6110-af16-4603-9f6a-e61d1425c013"
+        "resourceVersion": "956",
+        "uid": "d476bb53-06ad-466a-890d-25864f7cd1fc"
     },
     "spec": {
         "progressDeadlineSeconds": 600,
@@ -370,7 +380,7 @@
         "revisionHistoryLimit": 10,
         "selector": {
             "matchLabels": {
-                "app.kubernetes.io/name": "tenants-api"
+                "app.kubernetes.io/name": "tenants"
             }
         },
         "strategy": {
@@ -383,18 +393,18 @@
         "template": {
             "metadata": {
                 "annotations": {
-                    "dapr.io/api-token-secret": "fixture-tenants-api-api",
-                    "dapr.io/app-id": "tenants-api",
+                    "dapr.io/api-token-secret": "fixture-tenants-api",
+                    "dapr.io/app-id": "tenants",
                     "dapr.io/app-port": "8080",
                     "dapr.io/app-protocol": "http",
-                    "dapr.io/app-token-secret": "fixture-tenants-api-app",
-                    "dapr.io/config": "platform-tenants-api",
+                    "dapr.io/app-token-secret": "fixture-tenants-app",
+                    "dapr.io/config": "platform-tenants",
                     "dapr.io/enable-api-logging": "false",
                     "dapr.io/enabled": "true",
                     "dapr.io/sidecar-listen-addresses": "127.0.0.1"
                 },
                 "labels": {
-                    "app.kubernetes.io/name": "tenants-api"
+                    "app.kubernetes.io/name": "tenants"
                 }
             },
             "spec": {
@@ -407,7 +417,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-tenants-api-app"
+                                        "name": "fixture-tenants-app"
                                     }
                                 }
                             },
@@ -469,7 +479,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-tenants-api-api"
+                                        "name": "fixture-tenants-api"
                                     }
                                 }
                             },
@@ -528,6 +538,14 @@
                                 "value": "fixture"
                             },
                             {
+                                "name": "EventStore__DataProtection__StateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "EventStore__ProjectionChanges__PubSubName",
+                                "value": "pubsub"
+                            },
+                            {
                                 "name": "Jwt__SigningKey",
                                 "valueFrom": {
                                     "secretKeyRef": {
@@ -545,7 +563,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-tenants-api-api"
+                                        "name": "fixture-tenants-api"
                                     }
                                 }
                             },
@@ -554,7 +572,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-tenants-api-app"
+                                        "name": "fixture-tenants-app"
                                     }
                                 }
                             },
@@ -571,7 +589,7 @@
                                 "value": "/etc/hexalith/environment/daprconfigpath.yaml"
                             }
                         ],
-                        "image": "qualification.invalid/tenants-api@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "image": "qualification.invalid/tenants@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         "imagePullPolicy": "IfNotPresent",
                         "name": "app",
                         "ports": [
@@ -666,17 +684,17 @@
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2026-10-22T17:40:05Z",
-                "lastUpdateTime": "2026-10-22T17:40:05Z",
+                "lastTransitionTime": "2026-10-22T17:49:21Z",
+                "lastUpdateTime": "2026-10-22T17:49:21Z",
                 "message": "Deployment does not have minimum availability.",
                 "reason": "MinimumReplicasUnavailable",
                 "status": "False",
                 "type": "Available"
             },
             {
-                "lastTransitionTime": "2026-10-22T17:40:05Z",
-                "lastUpdateTime": "2026-10-22T17:40:05Z",
-                "message": "ReplicaSet \"tenants-api-545d8d6d45\" is progressing.",
+                "lastTransitionTime": "2026-10-22T17:49:21Z",
+                "lastUpdateTime": "2026-10-22T17:49:21Z",
+                "message": "ReplicaSet \"tenants-fd4b47b68\" is progressing.",
                 "reason": "ReplicaSetUpdated",
                 "status": "True",
                 "type": "Progressing"

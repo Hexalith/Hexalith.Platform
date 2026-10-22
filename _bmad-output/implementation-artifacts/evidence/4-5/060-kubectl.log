@@ -7,7 +7,7 @@
             "meta.helm.sh/release-name": "reference",
             "meta.helm.sh/release-namespace": "reference"
         },
-        "creationTimestamp": "2026-10-22T17:40:05Z",
+        "creationTimestamp": "2026-10-22T17:49:21Z",
         "generation": 1,
         "labels": {
             "app.kubernetes.io/managed-by": "Helm",
@@ -111,6 +111,11 @@
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__ConfigurationStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
                                             "k:{\"name\":\"AccessTelemetryLifecycle__DeploymentId\"}": {
                                                 ".": {},
                                                 "f:name": {},
@@ -142,6 +147,11 @@
                                                 "f:value": {}
                                             },
                                             "k:{\"name\":\"AccessTelemetryLifecycle__RetentionSource\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"AccessTelemetryLifecycle__SecretStoreName\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
@@ -279,6 +289,21 @@
                                                 "f:name": {},
                                                 "f:value": {}
                                             },
+                                            "k:{\"name\":\"EventStoreIntegration__Routing__PubSubName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"EventStoreIntegration__StateStore__StateStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Ingestion__WorkflowPayloadStore__StateStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
                                             "k:{\"name\":\"IsStubBackfill__Enabled\"}": {
                                                 ".": {},
                                                 "f:name": {},
@@ -299,6 +324,16 @@
                                                 }
                                             },
                                             "k:{\"name\":\"Memories__LlmComponentPath\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"Memories__SecretStoreName\"}": {
+                                                ".": {},
+                                                "f:name": {},
+                                                "f:value": {}
+                                            },
+                                            "k:{\"name\":\"NaturalLanguage__DaprComponentName\"}": {
                                                 ".": {},
                                                 "f:name": {},
                                                 "f:value": {}
@@ -411,7 +446,7 @@
                 },
                 "manager": "helm",
                 "operation": "Apply",
-                "time": "2026-10-22T17:40:05Z"
+                "time": "2026-10-22T17:49:21Z"
             },
             {
                 "apiVersion": "apps/v1",
@@ -454,13 +489,13 @@
                 "manager": "kube-controller-manager",
                 "operation": "Update",
                 "subresource": "status",
-                "time": "2026-10-22T17:40:05Z"
+                "time": "2026-10-22T17:49:21Z"
             }
         ],
-        "name": "memories-access-telemetry-clock",
+        "name": "memories",
         "namespace": "reference",
-        "resourceVersion": "1179",
-        "uid": "603b36b5-9e22-439a-b39a-7976e23d119b"
+        "resourceVersion": "959",
+        "uid": "2a4099d3-da5c-4a72-861c-29128e143060"
     },
     "spec": {
         "progressDeadlineSeconds": 600,
@@ -468,7 +503,7 @@
         "revisionHistoryLimit": 10,
         "selector": {
             "matchLabels": {
-                "app.kubernetes.io/name": "memories-access-telemetry-clock"
+                "app.kubernetes.io/name": "memories"
             }
         },
         "strategy": {
@@ -481,18 +516,18 @@
         "template": {
             "metadata": {
                 "annotations": {
-                    "dapr.io/api-token-secret": "fixture-memories-access-telemetry-clock-api",
-                    "dapr.io/app-id": "memories-access-telemetry-clock",
+                    "dapr.io/api-token-secret": "fixture-memories-api",
+                    "dapr.io/app-id": "memories",
                     "dapr.io/app-port": "8080",
                     "dapr.io/app-protocol": "http",
-                    "dapr.io/app-token-secret": "fixture-memories-access-telemetry-clock-app",
-                    "dapr.io/config": "platform-memories-access-telemetry-clock",
+                    "dapr.io/app-token-secret": "fixture-memories-app",
+                    "dapr.io/config": "platform-memories",
                     "dapr.io/enable-api-logging": "false",
                     "dapr.io/enabled": "true",
                     "dapr.io/sidecar-listen-addresses": "127.0.0.1"
                 },
                 "labels": {
-                    "app.kubernetes.io/name": "memories-access-telemetry-clock"
+                    "app.kubernetes.io/name": "memories"
                 }
             },
             "spec": {
@@ -505,7 +540,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-memories-access-telemetry-clock-app"
+                                        "name": "fixture-memories-app"
                                     }
                                 }
                             },
@@ -550,6 +585,10 @@
                                 "value": "/etc/hexalith/environment/configurationstorecomponentpath.yaml"
                             },
                             {
+                                "name": "AccessTelemetryLifecycle__ConfigurationStoreName",
+                                "value": "access-telemetry-config"
+                            },
+                            {
                                 "name": "AccessTelemetryLifecycle__DeploymentId",
                                 "value": "fixture"
                             },
@@ -576,6 +615,10 @@
                             {
                                 "name": "AccessTelemetryLifecycle__RetentionSource",
                                 "value": "fixture"
+                            },
+                            {
+                                "name": "AccessTelemetryLifecycle__SecretStoreName",
+                                "value": "access-telemetry-secrets"
                             },
                             {
                                 "name": "AccessTelemetryLifecycle__StateStoreComponentPath",
@@ -620,7 +663,7 @@
                             },
                             {
                                 "name": "Clock__SecretStoreName",
-                                "value": "access-telemetry-secrets"
+                                "value": "fixture"
                             },
                             {
                                 "name": "Clock__SignerKeyEpoch",
@@ -665,7 +708,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-memories-access-telemetry-clock-api"
+                                        "name": "fixture-memories-api"
                                     }
                                 }
                             },
@@ -698,6 +741,18 @@
                                 "value": "fixture"
                             },
                             {
+                                "name": "EventStoreIntegration__Routing__PubSubName",
+                                "value": "pubsub"
+                            },
+                            {
+                                "name": "EventStoreIntegration__StateStore__StateStoreName",
+                                "value": "statestore"
+                            },
+                            {
+                                "name": "Ingestion__WorkflowPayloadStore__StateStoreName",
+                                "value": "statestore"
+                            },
+                            {
                                 "name": "IsStubBackfill__Enabled",
                                 "value": "fixture"
                             },
@@ -706,7 +761,7 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-memories-access-telemetry-clock-app"
+                                        "name": "fixture-memories-app"
                                     }
                                 }
                             },
@@ -715,13 +770,21 @@
                                 "valueFrom": {
                                     "secretKeyRef": {
                                         "key": "token",
-                                        "name": "fixture-memories-access-telemetry-clock-api"
+                                        "name": "fixture-memories-api"
                                     }
                                 }
                             },
                             {
                                 "name": "Memories__LlmComponentPath",
                                 "value": "/etc/hexalith/environment/llmcomponentpath.yaml"
+                            },
+                            {
+                                "name": "Memories__SecretStoreName",
+                                "value": "secretstore"
+                            },
+                            {
+                                "name": "NaturalLanguage__DaprComponentName",
+                                "value": "llm"
                             },
                             {
                                 "name": "NaturalLanguage__RetryWorkerEnabled",
@@ -744,7 +807,7 @@
                                 "value": "fixture"
                             }
                         ],
-                        "image": "qualification.invalid/memories-access-telemetry-clock@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "image": "qualification.invalid/memories@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         "imagePullPolicy": "IfNotPresent",
                         "name": "app",
                         "ports": [
@@ -839,17 +902,17 @@
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2026-10-22T17:40:05Z",
-                "lastUpdateTime": "2026-10-22T17:40:05Z",
+                "lastTransitionTime": "2026-10-22T17:49:21Z",
+                "lastUpdateTime": "2026-10-22T17:49:21Z",
                 "message": "Deployment does not have minimum availability.",
                 "reason": "MinimumReplicasUnavailable",
                 "status": "False",
                 "type": "Available"
             },
             {
-                "lastTransitionTime": "2026-10-22T17:40:05Z",
-                "lastUpdateTime": "2026-10-22T17:40:05Z",
-                "message": "ReplicaSet \"memories-access-telemetry-clock-8c8fcbf4\" is progressing.",
+                "lastTransitionTime": "2026-10-22T17:49:21Z",
+                "lastUpdateTime": "2026-10-22T17:49:21Z",
+                "message": "ReplicaSet \"memories-744dd4f8bc\" is progressing.",
                 "reason": "ReplicaSetUpdated",
                 "status": "True",
                 "type": "Progressing"

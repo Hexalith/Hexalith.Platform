@@ -1,29 +1,21 @@
 {
     "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
-    },
-    "kind": "Secret",
+    "kind": "Namespace",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:39:56Z",
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T17:39:56Z"
-            }
-        ],
-        "name": "fixture-credential",
-        "namespace": "reference",
-        "resourceVersion": "976",
-        "uid": "4d624d0f-b353-4833-9b2c-3ee7bcb9f551"
+        "creationTimestamp": "2026-10-22T17:49:12Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "environment"
+        },
+        "name": "environment",
+        "resourceVersion": "755",
+        "uid": "cd2dcf05-bb10-4eab-94f9-3a709abaf458"
     },
-    "type": "Opaque"
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
 }

@@ -1,44 +1,23 @@
-{
-    "apiVersion": "v1",
-    "kind": "Namespace",
-    "metadata": {
-        "creationTimestamp": "2026-10-22T17:39:56Z",
-        "labels": {
-            "kubernetes.io/metadata.name": "reference",
-            "pod-security.kubernetes.io/audit": "restricted",
-            "pod-security.kubernetes.io/enforce": "restricted",
-            "pod-security.kubernetes.io/enforce-version": "v1.35",
-            "pod-security.kubernetes.io/warn": "restricted"
-        },
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:metadata": {
-                        "f:labels": {
-                            "f:pod-security.kubernetes.io/audit": {},
-                            "f:pod-security.kubernetes.io/enforce": {},
-                            "f:pod-security.kubernetes.io/enforce-version": {},
-                            "f:pod-security.kubernetes.io/warn": {}
-                        }
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T17:39:56Z"
-            }
-        ],
-        "name": "reference",
-        "resourceVersion": "970",
-        "uid": "37f6020b-51ba-4d04-998b-413f7ac067c2"
-    },
-    "spec": {
-        "finalizers": [
-            "kubernetes"
-        ]
-    },
-    "status": {
-        "phase": "Active"
-    }
-}
+namespace/reference serverside-applied
+namespace/environment serverside-applied
+secret/fixture-credential serverside-applied
+secret/fixture-registry serverside-applied
+configmap/fixture-components serverside-applied
+persistentvolumeclaim/fixture-storage serverside-applied
+gatewayclass.gateway.networking.k8s.io/fixture serverside-applied
+gateway.gateway.networking.k8s.io/fixture-gateway serverside-applied
+secret/fixture-eventstore-api serverside-applied
+secret/fixture-eventstore-app serverside-applied
+secret/fixture-memories-access-telemetry-api serverside-applied
+secret/fixture-memories-access-telemetry-app serverside-applied
+secret/fixture-memories-access-telemetry-clock-api serverside-applied
+secret/fixture-memories-access-telemetry-clock-app serverside-applied
+secret/fixture-memories-api serverside-applied
+secret/fixture-memories-app serverside-applied
+secret/fixture-parties-api serverside-applied
+secret/fixture-parties-app serverside-applied
+secret/fixture-tenants-api serverside-applied
+secret/fixture-tenants-api-api serverside-applied
+secret/fixture-tenants-api-app serverside-applied
+secret/fixture-tenants-app serverside-applied
+component.dapr.io/environment-preserved serverside-applied

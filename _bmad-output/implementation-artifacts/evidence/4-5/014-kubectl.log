@@ -1,21 +1,32 @@
 {
+    "kind": "Config",
     "apiVersion": "v1",
-    "kind": "Namespace",
-    "metadata": {
-        "creationTimestamp": "2026-10-22T17:37:55Z",
-        "labels": {
-            "kubernetes.io/metadata.name": "kube-system"
-        },
-        "name": "kube-system",
-        "resourceVersion": "6",
-        "uid": "33479889-f3f2-45ac-803b-a985cfd875e5"
-    },
-    "spec": {
-        "finalizers": [
-            "kubernetes"
-        ]
-    },
-    "status": {
-        "phase": "Active"
-    }
+    "clusters": [
+        {
+            "name": "kind-h45-69af486bc447",
+            "cluster": {
+                "server": "https://127.0.0.1:35579",
+                "certificate-authority-data": "DATA+OMITTED"
+            }
+        }
+    ],
+    "users": [
+        {
+            "name": "kind-h45-69af486bc447",
+            "user": {
+                "client-certificate-data": "DATA+OMITTED",
+                "client-key-data": "DATA+OMITTED"
+            }
+        }
+    ],
+    "contexts": [
+        {
+            "name": "kind-h45-69af486bc447",
+            "context": {
+                "cluster": "kind-h45-69af486bc447",
+                "user": "kind-h45-69af486bc447"
+            }
+        }
+    ],
+    "current-context": "kind-h45-69af486bc447"
 }

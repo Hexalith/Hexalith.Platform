@@ -3,27 +3,27 @@
     "kind": "Pod",
     "metadata": {
         "annotations": {
-            "dapr.io/api-token-secret": "fixture-memories-access-telemetry-api",
-            "dapr.io/app-id": "memories-access-telemetry",
+            "dapr.io/api-token-secret": "fixture-memories-access-telemetry-clock-api",
+            "dapr.io/app-id": "memories-access-telemetry-clock",
             "dapr.io/app-port": "8080",
             "dapr.io/app-protocol": "http",
-            "dapr.io/app-token-secret": "fixture-memories-access-telemetry-app",
-            "dapr.io/config": "platform-memories-access-telemetry",
+            "dapr.io/app-token-secret": "fixture-memories-access-telemetry-clock-app",
+            "dapr.io/config": "platform-memories-access-telemetry-clock",
             "dapr.io/enable-api-logging": "false",
             "dapr.io/enabled": "true",
             "dapr.io/sidecar-listen-addresses": "127.0.0.1"
         },
-        "creationTimestamp": "2026-10-22T17:40:08Z",
+        "creationTimestamp": "2026-10-22T17:49:24Z",
         "generation": 1,
         "labels": {
-            "app.kubernetes.io/name": "memories-access-telemetry",
-            "dapr.io/app-id": "memories-access-telemetry",
+            "app.kubernetes.io/name": "memories-access-telemetry-clock",
+            "dapr.io/app-id": "memories-access-telemetry-clock",
             "dapr.io/metrics-enabled": "true",
             "dapr.io/sidecar-injected": "true"
         },
-        "name": "dry-memories-access-telemetry",
+        "name": "dry-memories-access-telemetry-clock",
         "namespace": "reference",
-        "uid": "2100538d-0c13-4c7f-9dc7-eefaa50ddeff"
+        "uid": "4a53ecad-a08b-4f28-9998-502f847d47b8"
     },
     "spec": {
         "automountServiceAccountToken": true,
@@ -35,7 +35,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-memories-access-telemetry-app"
+                                "name": "fixture-memories-access-telemetry-clock-app"
                             }
                         }
                     },
@@ -80,10 +80,6 @@
                         "value": "/etc/hexalith/environment/configurationstorecomponentpath.yaml"
                     },
                     {
-                        "name": "AccessTelemetryLifecycle__ConfigurationStoreName",
-                        "value": "access-telemetry-config"
-                    },
-                    {
                         "name": "AccessTelemetryLifecycle__DeploymentId",
                         "value": "fixture"
                     },
@@ -112,16 +108,8 @@
                         "value": "fixture"
                     },
                     {
-                        "name": "AccessTelemetryLifecycle__SecretStoreName",
-                        "value": "access-telemetry-secrets"
-                    },
-                    {
                         "name": "AccessTelemetryLifecycle__StateStoreComponentPath",
                         "value": "/etc/hexalith/environment/statestorecomponentpath.yaml"
-                    },
-                    {
-                        "name": "AccessTelemetryLifecycle__StateStoreName",
-                        "value": "access-telemetry-store"
                     },
                     {
                         "name": "Authentication__JwtBearer__Audience",
@@ -162,7 +150,7 @@
                     },
                     {
                         "name": "Clock__SecretStoreName",
-                        "value": "fixture"
+                        "value": "access-telemetry-secrets"
                     },
                     {
                         "name": "Clock__SignerKeyEpoch",
@@ -207,7 +195,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-memories-access-telemetry-api"
+                                "name": "fixture-memories-access-telemetry-clock-api"
                             }
                         }
                     },
@@ -248,7 +236,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-memories-access-telemetry-app"
+                                "name": "fixture-memories-access-telemetry-clock-app"
                             }
                         }
                     },
@@ -257,7 +245,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-memories-access-telemetry-api"
+                                "name": "fixture-memories-access-telemetry-clock-api"
                             }
                         }
                     },
@@ -298,7 +286,7 @@
                         "value": "http"
                     }
                 ],
-                "image": "qualification.invalid/memories-access-telemetry@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "image": "qualification.invalid/memories-access-telemetry-clock@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "imagePullPolicy": "IfNotPresent",
                 "name": "app",
                 "ports": [
@@ -357,7 +345,7 @@
                     },
                     {
                         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                        "name": "kube-api-access-2vhtk",
+                        "name": "kube-api-access-d529j",
                         "readOnly": true
                     }
                 ]
@@ -376,7 +364,7 @@
                     "--dapr-public-port",
                     "3501",
                     "--app-id",
-                    "memories-access-telemetry",
+                    "memories-access-telemetry-clock",
                     "--app-protocol",
                     "http",
                     "--log-level",
@@ -395,7 +383,7 @@
                     "--metrics-port",
                     "9090",
                     "--config",
-                    "platform-memories-access-telemetry",
+                    "platform-memories-access-telemetry-clock",
                     "--placement-host-address",
                     "dapr-placement-server.dapr-system.svc.cluster.local:50005",
                     "--enable-api-logging=false",
@@ -408,7 +396,7 @@
                     },
                     {
                         "name": "DAPR_TRUST_ANCHORS",
-                        "value": "-----BEGIN CERTIFICATE-----\nMIIBLzCB4qADAgECAhBAERrvsTTnB5SqR/utIh2VMAUGAytlcDAYMRYwFAYDVQQK\nEw1jbHVzdGVyLmxvY2FsMB4XDTI2MTAyMjE3MjMzMloXDTI3MTAyMjE3MzgzMlow\nGDEWMBQGA1UEChMNY2x1c3Rlci5sb2NhbDAqMAUGAytlcAMhALLEVRGLAuITsCuQ\n+hWgu/S4H/ACBesoPmrtJdte511wo0IwQDAOBgNVHQ8BAf8EBAMCAoQwDwYDVR0T\nAQH/BAUwAwEB/zAdBgNVHQ4EFgQUSQ9H/Qbx1AxJ3gpxLlgTZX6PAfQwBQYDK2Vw\nA0EAhJuBIn5PeNaCyL5eVBaudWV2Q9r21CEnVd016lCi7PWCJAin6Zz9lKlLvYHi\nZ/Imo2dT6kz6xdPxbeXMx7nnBQ==\n-----END CERTIFICATE-----\n"
+                        "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAh6ooBZ0e/67W63v6HBQcejAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxNzMzNTRaFw0yNzEwMjIxNzQ4NTRa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQDl2+TOGBU7Tlvv\n4hQQes4HLDuuYpls/CAfNoGXrLJn46NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFGF26X36B0sD9UJc+Ru/U0oYyyRKMAUGAytl\ncANBAD7AI39BQuYbhQvwyzhDuHNnkHSN/qtl6739zQTz/4jnO2kHxNmg/MJW3vls\nXfCzVTaCkNn1XK1JwxPg/mFbCAU=\n-----END CERTIFICATE-----\n"
                     },
                     {
                         "name": "POD_NAME",
@@ -432,7 +420,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-memories-access-telemetry-api"
+                                "name": "fixture-memories-access-telemetry-clock-api"
                             }
                         }
                     },
@@ -441,7 +429,7 @@
                         "valueFrom": {
                             "secretKeyRef": {
                                 "key": "token",
-                                "name": "fixture-memories-access-telemetry-app"
+                                "name": "fixture-memories-access-telemetry-clock-app"
                             }
                         }
                     }
@@ -515,7 +503,7 @@
                     },
                     {
                         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                        "name": "kube-api-access-2vhtk",
+                        "name": "kube-api-access-d529j",
                         "readOnly": true
                     }
                 ]
@@ -569,7 +557,7 @@
                 "name": "environment-components"
             },
             {
-                "name": "kube-api-access-2vhtk",
+                "name": "kube-api-access-d529j",
                 "projected": {
                     "defaultMode": 420,
                     "sources": [

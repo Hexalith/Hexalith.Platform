@@ -1,0 +1,235 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "AWSSDK.DynamoDBv2": {
+        "type": "Direct",
+        "requested": "[4.0.109.1, )",
+        "resolved": "4.0.109.1",
+        "contentHash": "GJeycIKL2UyUVf5ew5bVezy4LIeWZm1oWt1Dvx6LK+oGar99Nexzbp7IsmHHII/mWJKRDRirbW7LOTBggYeeNg==",
+        "dependencies": {
+          "AWSSDK.Core": "[4.0.102.13, 5.0.0)"
+        }
+      },
+      "AWSSDK.KeyManagementService": {
+        "type": "Direct",
+        "requested": "[4.0.100.20, )",
+        "resolved": "4.0.100.20",
+        "contentHash": "GddQPG9dwX6yiyPtqoeb+VifR7orXA/JstZJOYdcULb83ysJCiUOIA/2lTUuva3tKwag9DRPoDNbq2gWO2Di4w==",
+        "dependencies": {
+          "AWSSDK.Core": "[4.0.102.13, 5.0.0)"
+        }
+      },
+      "AWSSDK.S3": {
+        "type": "Direct",
+        "requested": "[4.0.104.6, )",
+        "resolved": "4.0.104.6",
+        "contentHash": "fSqAOkftU8jKemilzLGZDU0zLEJXHjAemU+8Nd29+sUwRxVK04w6/GY3O4f9S1+JIYwEnHDGcW66VK4AZ2kx6g==",
+        "dependencies": {
+          "AWSSDK.Core": "[4.0.102.13, 5.0.0)"
+        }
+      },
+      "Google.Protobuf": {
+        "type": "Direct",
+        "requested": "[3.36.1, )",
+        "resolved": "3.36.1",
+        "contentHash": "77AqPEoaY1ODE+syYBHti0jXiwQq0J/fUr/fRyYhNlc9oKtH5dZZEr/OLKtdKNVG83PRnCYB2r8B80ZrObzOGQ=="
+      },
+      "Grpc.AspNetCore": {
+        "type": "Direct",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "mbHMTTCnuimxj2W87YpE6F/EIfJplmrsgMZHRFtdFUaRur3G6dMpO4J1mVsRZCld1Ez/a+yWs3JOElUINXutqA==",
+        "dependencies": {
+          "Google.Protobuf": "3.35.1",
+          "Grpc.AspNetCore.Server.ClientFactory": "2.84.0",
+          "Grpc.Tools": "2.84.0"
+        }
+      },
+      "Grpc.AspNetCore.Server.Reflection": {
+        "type": "Direct",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "nLTaTbwh35peCmQ1bvgDDavQ5HOI+YhIrS5EjiXwBEyy6GRSKD5ImEL08D+Dv6pdLYwy8ouoNmBFNCOmYbVfwQ==",
+        "dependencies": {
+          "Google.Protobuf": "3.35.1",
+          "Grpc.AspNetCore.Server": "2.84.0",
+          "Grpc.Reflection": "2.84.0"
+        }
+      },
+      "Grpc.Tools": {
+        "type": "Direct",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "SarjdfpQYU/mmdu/fWgSW8kEHQ54jiyG2+I4THu9eubtAud+QJf+1iJdGtoKTJ/ZRaI0qAG+7ttsK2WUTao2OQ=="
+      },
+      "AWSSDK.Core": {
+        "type": "Transitive",
+        "resolved": "4.0.102.13",
+        "contentHash": "vaYs/kwfB+Lv9PeVKYE4g2mQlzVtHImXLWgfTG8UgeCybUAPkew5kwb8GS6RhuzwvImbolyLHT+IM34WoM9lJg=="
+      },
+      "Dapr.Common": {
+        "type": "Transitive",
+        "resolved": "1.18.10",
+        "contentHash": "JsbUiR+V9DKZAMHhsnQREXLZJuY7Zee6hMY+PM/88jaufPVPXICUM3TQZCD2yJDFyYPXwu9iibGug6ea5SgfIw==",
+        "dependencies": {
+          "Dapr.Protos": "1.18.10",
+          "Google.Api.CommonProtos": "2.17.0",
+          "Google.Protobuf": "3.35.0",
+          "Grpc.Net.Client": "2.80.0",
+          "Grpc.Reflection": "2.80.0"
+        }
+      },
+      "Dapr.Protos": {
+        "type": "Transitive",
+        "resolved": "1.18.10",
+        "contentHash": "g0ZOJeTc7EosqBQIOynQOgg95icJrkYhccVRcWv1Naurx1xt+bRJp39wLkVRhtyCf/2ZIRgkEybCF+muJjFhwA==",
+        "dependencies": {
+          "Google.Api.CommonProtos": "2.17.0",
+          "Google.Protobuf": "3.35.0",
+          "Grpc.Net.Client": "2.80.0"
+        }
+      },
+      "Google.Api.CommonProtos": {
+        "type": "Transitive",
+        "resolved": "2.17.0",
+        "contentHash": "elfQPknFr495hm7vdy6ZlgyQh6yzZq9TU7sS35L/Fj/fqjM/mUGau9gVJLhvQEtUlPjtR80hpn/m9HvBMyCXIw==",
+        "dependencies": {
+          "Google.Protobuf": "[3.31.1, 4.0.0]"
+        }
+      },
+      "Grpc.AspNetCore.Server": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "RXUkMjU+Hu5tvf5EXNoJlKX+ADvR2HERkNRznMFpsQQiHFsaQ+OYyhgomuLxAaiNuPUmCUGPxyiCdqq//lrQdg==",
+        "dependencies": {
+          "Grpc.Net.Common": "2.84.0"
+        }
+      },
+      "Grpc.AspNetCore.Server.ClientFactory": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "cH2s3vbzsyASKZQK2IMK82a6pUyvs+FuGz40i3V5FvpKmWuT9r+vQjn/SqTLtAVY87Vq3x/T/ROTMnT/cIUWqQ==",
+        "dependencies": {
+          "Grpc.AspNetCore.Server": "2.84.0",
+          "Grpc.Net.ClientFactory": "2.84.0"
+        }
+      },
+      "Grpc.Core.Api": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "p2SOMl6q/GZ4/5MLkgboC/z55g4zKUEruRn/g46QgppjQBVnsLZVBU/9VO7n60ll38G3Eo8Zu9b7x+W01GKFVg=="
+      },
+      "Grpc.Net.Client": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "My6Fms2YCyAbihTBZZ3kLS39iTY2pkMAzGDBTC6XhPOujg70eB07AEJ7tPiW3tZ70bhFzHcc3+d4j3DaIPF3aA==",
+        "dependencies": {
+          "Grpc.Net.Common": "2.84.0"
+        }
+      },
+      "Grpc.Net.Common": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "DPxm/H8G/lDRrz997wM0M2zN/PGqVeZKDakhBbtABEbv6WIW4HI9g3BvntBQT6ZUROuGacMzfyyF9e5kiTVFfQ==",
+        "dependencies": {
+          "Grpc.Core.Api": "2.84.0"
+        }
+      },
+      "Grpc.Reflection": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "DoXXQZwOzh31IbgYAv/5FEBNvtTtETYvOd/PtYgFlHn3am8a2+Pjvl+XgmfM2J/iJ5gQkE4yAtPkZOdbh5fi7Q==",
+        "dependencies": {
+          "Google.Protobuf": "3.35.1",
+          "Grpc.Core.Api": "2.84.0"
+        }
+      },
+      "hexalith.platform.custody": {
+        "type": "Project",
+        "dependencies": {
+          "Dapr.Actors": "[1.18.10, )",
+          "Dapr.Client": "[1.18.10, )",
+          "Hexalith.EventStore.Contracts": "[3.126.1, )"
+        }
+      },
+      "hexalith.platform.custody.component": {
+        "type": "Project",
+        "dependencies": {
+          "Hexalith.EventStore.Contracts": "[3.126.1, )",
+          "Hexalith.Platform.Custody": "[1.0.0, )"
+        }
+      },
+      "hexalith.platform.secrets.runtime": {
+        "type": "Project",
+        "dependencies": {
+          "Dapr.Client": "[1.18.10, )",
+          "Hexalith.Platform.Custody": "[1.0.0, )",
+          "Hexalith.Platform.Custody.Component": "[1.0.0, )"
+        }
+      },
+      "ByteAether.Ulid": {
+        "type": "CentralTransitive",
+        "requested": "[1.4.2, )",
+        "resolved": "1.4.2",
+        "contentHash": "LCOjm7QFSdM2X779Db2K+i3pPei4f8PJEcY1wGehkdgYNmpQaP5uF7U8aZMMBWeYe+zV2Ues9j/nFpW4Pw10wQ=="
+      },
+      "Dapr.Actors": {
+        "type": "CentralTransitive",
+        "requested": "[1.18.10, )",
+        "resolved": "1.18.10",
+        "contentHash": "TEEoB9nnR5hA8XCzidjDKZPxv8r2zQ8nfP1fcs0iUjXBKH3Bw/DiuDlrkwaSVyjakYu+XN/q+8RQcz1u73ekDg==",
+        "dependencies": {
+          "Dapr.Client": "1.18.10",
+          "Dapr.Common": "1.18.10",
+          "Google.Api.CommonProtos": "2.17.0",
+          "Google.Protobuf": "3.35.0",
+          "Grpc.Net.Client": "2.80.0",
+          "Grpc.Reflection": "2.80.0"
+        }
+      },
+      "Dapr.Client": {
+        "type": "CentralTransitive",
+        "requested": "[1.18.10, )",
+        "resolved": "1.18.10",
+        "contentHash": "PZ/KP37LtLXv5oIIjpOpPSZaEB0mvJzT24oIoMwI/Nm0d3DpO3QdhmgkDPUWTkxkSQ7qunsEZ5ltlKv/axeXOg==",
+        "dependencies": {
+          "Dapr.Common": "1.18.10",
+          "Dapr.Protos": "1.18.10",
+          "Google.Api.CommonProtos": "2.17.0",
+          "Google.Protobuf": "3.35.0",
+          "Grpc.Net.Client": "2.80.0",
+          "Grpc.Reflection": "2.80.0"
+        }
+      },
+      "Grpc.Net.ClientFactory": {
+        "type": "CentralTransitive",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "o14kDW7VGMdam+d60mcpvjRcOC5+klto1Ck8zPpTqqbMP37nh1itrnVahbOL1w1XYZezsbTuIC99iERO7SRXPQ==",
+        "dependencies": {
+          "Grpc.Net.Client": "2.84.0"
+        }
+      },
+      "Hexalith.Commons.UniqueIds": {
+        "type": "CentralTransitive",
+        "requested": "[2.30.3, )",
+        "resolved": "2.30.3",
+        "contentHash": "e0tQgVfkT4CkozW/fO1Nl0i4m9dmfk4/Er6WJXjOduSftvHW2bo3ppIQQ/ncYwpC+2hUlqezwWMeFpjZzd+1Tw==",
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2"
+        }
+      },
+      "Hexalith.EventStore.Contracts": {
+        "type": "CentralTransitive",
+        "requested": "[3.126.1, )",
+        "resolved": "3.126.1",
+        "contentHash": "ZMdL54lY8nZmFMU4FnxpZudbumAbWnhnXwPzyMnD7SVVGUb1AGG+Cac3oERVBvH0OHAjWkDeLSTazffmy9k+oQ==",
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2",
+          "Hexalith.Commons.UniqueIds": "2.30.3"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-22T17:55:48.293954+00:00",
+  "command": [
+    "dotnet",
+    "test",
+    "--project",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:UseNuGetDeps=false",
+    "-p:RunAnalyzers=false",
+    "-p:DirectoryPackagesPropsPath=/home/administrator/projects/hexalith/platform/eng/helm-qualification/source-packages.props"
+  ],
+  "exitCode": 2,
+  "passed": 230,
+  "failed": 6,
+  "skipped": 9,
+  "log": "composition-full-current.log",
+  "logSha256": "1cb0c8bf922dd9907d0c5b9fed58202c52095f2acbc8d6b23cc36f5d750525c9",
+  "failures": [
+    "GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+    "DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(human)",
+    "DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(json)",
+    "DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+    "OwnerOptionBindingTests.MemoriesProfileBindsAndValidatesActualOwnerOptionsAsync",
+    "TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync"
+  ],
+  "notes": "Broad regression result; required hosted/graph/Dapr/readiness tests separately passed 52/52 without skips. Owner subprocess does not inherit the command-line import-wrapper property."
+}

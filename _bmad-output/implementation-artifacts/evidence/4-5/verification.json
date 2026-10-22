@@ -1,6 +1,7 @@
 {
   "schema": "hexalith.helm-qualification.verification.v1",
-  "recordedAt": "2026-10-22T17:12:50.453398+00:00",
+  "recordedAt": "2026-10-22T17:50:05.796506+00:00",
+  "reviewIteration": 1,
   "focusedCompositionTests": [
     {
       "label": "hosted-and-parties",
@@ -12,29 +13,33 @@
         "-class",
         "*PartiesAdoptionTests",
         "-class",
-        "*PlatformDaprBindingsTests"
+        "*PlatformDaprBindingsTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/composition-hosted-and-parties-revision1.xml"
       ],
       "result": {
         "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
-        "id": "ccfab5c5-6c68-457e-914a-766231fe49eb",
+        "id": "5f0987cb-e528-4745-98c8-bcd0b6f32a45",
         "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
         "run-date": "2026-10-22",
-        "run-time": "16:55:43",
-        "start-rtf": "2026-10-22T16:55:43.3966707+00:00",
+        "run-time": "17:47:40",
+        "start-rtf": "2026-10-22T17:47:40.1974896+00:00",
         "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
         "target-framework": ".NETCoreApp,Version=v10.0",
         "errors": "0",
         "failed": "0",
-        "finish-rtf": "2026-10-22T16:55:47.1264374+00:00",
+        "finish-rtf": "2026-10-22T17:47:41.3242145+00:00",
         "not-run": "0",
         "passed": "10",
         "skipped": "0",
-        "time": "3.737",
-        "time-rtf": "00:00:03.7370000",
+        "time": "1.127",
+        "time-rtf": "00:00:01.1270000",
         "total": "10"
       },
-      "xml": "composition-focused.xml",
-      "xmlSha256": "dc3e7612173ffe063d6aa3ce0f582dd4126e86dd8478a5e768b64cc2f2cfca08"
+      "xml": "composition-hosted-and-parties-revision1.xml",
+      "xmlSha256": "604ca4163f4ec07270b7805d235043c8aa478d44d5c5e51970a66b49c57530a9",
+      "log": "composition-hosted-and-parties-revision1.log",
+      "logSha256": "0aaa9227cb34249ebb1954de6b91ef0cd49c6db23cf54b81d98fae90c070d143"
     },
     {
       "label": "shared-dapr",
@@ -76,29 +81,31 @@
         "-method",
         "*ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary",
         "-result-xml",
-        "/tmp/helm-qualification-dapr-regression.xml"
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/composition-shared-dapr-revision1.xml"
       ],
       "result": {
         "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
-        "id": "06164964-a44a-4385-857c-4aaebb3b7dc6",
+        "id": "cea2d08b-5e1b-4f77-be0a-4d8af16075ad",
         "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
         "run-date": "2026-10-22",
-        "run-time": "16:56:21",
-        "start-rtf": "2026-10-22T16:56:21.3796989+00:00",
+        "run-time": "17:47:41",
+        "start-rtf": "2026-10-22T17:47:41.6140417+00:00",
         "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
         "target-framework": ".NETCoreApp,Version=v10.0",
         "errors": "0",
         "failed": "0",
-        "finish-rtf": "2026-10-22T16:56:24.2274504+00:00",
+        "finish-rtf": "2026-10-22T17:47:43.8253130+00:00",
         "not-run": "0",
         "passed": "40",
         "skipped": "0",
-        "time": "2.848",
-        "time-rtf": "00:00:02.8480000",
+        "time": "2.211",
+        "time-rtf": "00:00:02.2110000",
         "total": "40"
       },
-      "xml": "composition-dapr-regression.xml",
-      "xmlSha256": "39c439db932a2811388095acbb354e4cbc07642dad6da116e2775352506e1034"
+      "xml": "composition-shared-dapr-revision1.xml",
+      "xmlSha256": "671b2614ca5c47731cd4a610195bdea9fe6e9e9c9d01648f2390f1d2a5a160df",
+      "log": "composition-shared-dapr-revision1.log",
+      "logSha256": "184295b33aafe01b281c13e2d9af0a409ee77ee7801aae642d2a9289f81953ca"
     },
     {
       "label": "readiness-diagnostics",
@@ -106,35 +113,61 @@
         "dotnet",
         "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
         "-method",
-        "*UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic"
+        "*UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/composition-readiness-diagnostics-revision1.xml"
       ],
       "result": {
         "environment": "64-bit (x64) .NET 10.0.13 [collection-per-class, parallel (collections, 14 threads)]",
-        "id": "8dc6574f-fef5-454b-9b0b-8ea3b45ba562",
+        "id": "f2912097-cabf-4cea-94f1-b82686d50462",
         "name": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
         "run-date": "2026-10-22",
-        "run-time": "16:56:08",
-        "start-rtf": "2026-10-22T16:56:08.8798443+00:00",
+        "run-time": "17:47:44",
+        "start-rtf": "2026-10-22T17:47:44.2594348+00:00",
         "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
         "target-framework": ".NETCoreApp,Version=v10.0",
         "errors": "0",
         "failed": "0",
-        "finish-rtf": "2026-10-22T16:56:09.9670724+00:00",
+        "finish-rtf": "2026-10-22T17:47:45.0207892+00:00",
         "not-run": "0",
         "passed": "2",
         "skipped": "0",
-        "time": "1.088",
-        "time-rtf": "00:00:01.0880000",
+        "time": "0.761",
+        "time-rtf": "00:00:00.7610000",
         "total": "2"
       },
-      "xml": "composition-readiness.xml",
-      "xmlSha256": "636d93f8145fcdc8e1c08e4f62f89a786ebe57e62ae90cfb1c069346dd3dc262"
+      "xml": "composition-readiness-diagnostics-revision1.xml",
+      "xmlSha256": "715bad8c0f324ae6c94ea2b8640811f11b2778f9789d134154ff10dc500e9173",
+      "log": "composition-readiness-diagnostics-revision1.log",
+      "logSha256": "1f68aac8b7056984938ee7551a322fddcdfad228140689ddd705b1db00b31883"
     }
   ],
   "focusedTotal": 52,
   "focusedFailed": 0,
   "focusedSkipped": 0,
-  "fullCompositionSuite": {
+  "repositoryRunner": {
+    "command": [
+      "dotnet",
+      "test",
+      "--project",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:UseNuGetDeps=false",
+      "-p:RunAnalyzers=false",
+      "-p:DirectoryPackagesPropsPath=/home/administrator/projects/hexalith/platform/eng/helm-qualification/source-packages.props",
+      "--filter-class",
+      "*PlatformHostedPublishingTests",
+      "*PartiesAdoptionTests",
+      "*PlatformDaprBindingsTests"
+    ],
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "log": "composition-repository-runner-revision1.log",
+    "logSha256": "8285b65657abe91728d76e258963ef9f4b8780018ddce3dade86f4313ef1b559"
+  },
+  "compositionTestAssemblySha256": "69d294b03a7b3fa70d08efaa1107ba43595ebe62b48c76811759822ea6b28985",
+  "priorFullCompositionSuite": {
     "command": [
       "dotnet",
       "test",
@@ -149,9 +182,86 @@
     "skipped": 8,
     "log": "composition-full-suite.log",
     "logSha256": "ca8c46288aaaabfba4550f8fbba30dd5edb7a0cb43fb05caa6aeaea6e90e6504",
-    "notes": "Two diagnostic failures introduced by graph extraction were corrected and both exact regression cases pass. Nine remaining failures concern concurrent local-composition work or existing owner/tool-pin/content-root checks. Eight existing live opt-in tests were skipped. None of the Helm qualification checks are skipped."
+    "notes": "Two diagnostic failures introduced by graph extraction were corrected and both exact regression cases pass. Nine remaining failures concern concurrent local-composition work or existing owner/tool-pin/content-root checks. Eight existing live opt-in tests were skipped. None of the Helm qualification checks are skipped.",
+    "acceptanceScope": "Historical pre-review-1 diagnostic run; not a current full-suite acceptance claim. Current focused composition regressions above pass."
   },
-  "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
-  "pyyaml": "6.0.3",
-  "qualificationSha256": "9281e48c6e87a7e848c6e92f7c73db9c535649fe02b9c7155501caa6dcc2eb31"
+  "pythonTests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/helm-qualification",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "log": "010-python3.log",
+    "logSha256": "84f98dcf42750c2df54ba3a3669971bde916d62f82187c50ef67fc2663e7cc97"
+  },
+  "qualificationCommand": {
+    "argv": [
+      "python3",
+      "eng/helm-qualification/qualify.py"
+    ],
+    "helmBinary": "/tmp/hexalith-helm-tools/linux-amd64/helm",
+    "log": "qualification-run-revision1.log",
+    "logSha256": "ffed7ae19e28f0b3b0cccf57ed3b9c963d58f83975c82271b940698c5149ecd8"
+  },
+  "observedAdditionalTools": {
+    "curl": {
+      "version": "curl 8.18.0 (x86_64-pc-linux-gnu) libcurl/8.18.0 OpenSSL/3.5.5 zlib/1.3.1 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.2 libssh2/1.11.1 nghttp2/1.68.0 librtmp/2.3 mit-krb5/1.22.1 OpenLDAP/2.6.10",
+      "binarySha256": "b618fe7feb3283395f79f4ca97eebd921295d88285aa7de9eac54beaca4e7bb9"
+    },
+    "python": {
+      "version": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+      "binarySha256": "52e0a13e60a981d8c4b6478be2ba5176f69da07948a056bf49cf6f077e30cb41"
+    }
+  },
+  "qualificationSha256": "e60c8b5671f8fdccc0dd7982b78931b63ca848f14927bd91d4f64f0c979cc173",
+  "qualificationStatus": "passed",
+  "invalidatedAttempts": [
+    {
+      "report": "superseded-catalog-drift/qualification.json",
+      "sha256": "9069b799a5d3151a685f5c33bb85094a2ab77398e6b7c5925e3820d9fa26caad",
+      "status": "failed",
+      "failure": "AssertionError: source inventory or contents changed during qualification; rerun against stable inputs",
+      "cleanupComplete": true,
+      "allReferencedLogHashesMatch": true
+    },
+    {
+      "report": "superseded-catalog-integration/qualification.json",
+      "sha256": "dd06e327409efa957721f3def3c67abc01a96ab0ac4c5e899a062cb7c1395e85",
+      "status": "failed",
+      "failure": "RuntimeError: command failed (6): aspire \u2014 \u274c An unexpected error occurred: The app host build failed.\n\ud83d\udcc4 See logs at /home/administrator/.aspire/logs/cli_20261022T174139_6d1809a8.log\n\nA new version of Aspire is available: 13.6.3\nTo update, run: aspire update\nFor more information, see: https://aka.ms/aspire/update\n",
+      "cleanupComplete": true,
+      "allReferencedLogHashesMatch": true
+    },
+    {
+      "report": "superseded-forced-root-props/qualification.json",
+      "sha256": "7c80790a848b10872750b6c7af467de6e19a68919b9dc9ab8cb19bdc6354af80",
+      "status": "failed",
+      "failure": "RuntimeError: command failed (6): aspire \u2014 \u274c An unexpected error occurred: The app host build failed.\n\ud83d\udcc4 See logs at /home/administrator/.aspire/logs/cli_20261022T174538_941d210b.log\n\nA new version of Aspire is available: 13.6.3\nTo update, run: aspire update\nFor more information, see: https://aka.ms/aspire/update\n",
+      "cleanupComplete": true,
+      "allReferencedLogHashesMatch": true
+    },
+    {
+      "report": "superseded-source-drift/qualification.json",
+      "sha256": "02601c0933853b72abda6921f4bb25d5149ca3698cb4b76df5abdd3dd2ad6232",
+      "status": "failed",
+      "failure": "AssertionError: source inventory or contents changed during qualification; rerun against stable inputs",
+      "cleanupComplete": true,
+      "allReferencedLogHashesMatch": true
+    }
+  ],
+  "qualificationLogIntegrity": {
+    "referencedCommandLogs": 126,
+    "allHashesMatch": true,
+    "allVersionControlVisible": true
+  },
+  "notes": "Review-1 chart and qualifier failure-path corrections are covered by a repeated complete owned-kind qualification. The test project was rebuilt after the concurrent endpoint-subscriber/catalog edits and all 52 focused regressions passed through the owner-preserving source-package wrapper. Invalidated attempts retain their original reports and logs in superseded-* directories. Earlier successful qualification is superseded."
 }

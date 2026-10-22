@@ -1,0 +1,96 @@
+Command: HEXALITH_PLATFORM_LIVE_SMOKE=1 HEXALITH_DAPR_HOME=/tmp/platform-2-3-tool-inputs-y9ophakd ['dotnet', 'tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll', '-method', '*ReferenceServersReachDeclaredReadinessInTheFileEntryAsync']
+UTC: 2026-10-22T17:47:32.617485+00:00
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [FAIL]
+      Shouldly.ShouldAssertException : ready.ExitCode
+          should be
+      0
+          but was
+      18
+      
+      Additional Info:
+          eventstore: Waiting for resource 'eventstore' to be healthy...
+      
+      ❌ Resource 'eventstore' entered a failed state: Stopped waiting for resource 'eventstore' to become healthy because it failed to start.
+      📄 See logs at /home/administrator/.aspire/logs/cli_20261022T174805_eabf80f2.log
+      🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261022T174733036_detach-child_d027ce5808d64b359b0f9613a0e49518.log
+      Getting logs...
+      [eventstore] Waiting for resource 'redis' to enter the 'Running' state.
+      [eventstore] Waiting for resource 'redis' to enter the 'Running' state.
+      [eventstore] Waiting for resource 'dapr-sentry' to enter the 'Running' state.
+      [eventstore] Waiting for resource 'dapr-placement-mtls' to enter the 'Running' state.
+      [eventstore] Waiting for resource 'dapr-scheduler-mtls' to enter the 'Running' state.
+      [eventstore] Waiting for resource 'dapr-sentry' to become healthy.
+      [eventstore] Waiting for resource ready to execute for 'dapr-sentry'.
+      [eventstore] Finished waiting for resource 'dapr-sentry'.
+      [eventstore] Waiting for resource 'redis' to become healthy.
+      [eventstore] Waiting for resource 'redis' to become healthy.
+      [eventstore] Waiting for resource ready to execute for 'redis'.
+      [eventstore] Finished waiting for resource 'redis'.
+      [eventstore] Waiting for resource ready to execute for 'redis'.
+      [eventstore] Finished waiting for resource 'redis'.
+      [eventstore] Waiting for resource 'dapr-placement-mtls' to become healthy.
+      [eventstore] Waiting for resource ready to execute for 'dapr-placement-mtls'.
+      [eventstore] Finished waiting for resource 'dapr-placement-mtls'.
+      [eventstore] Waiting for resource 'dapr-scheduler-mtls' to become healthy.
+      [eventstore] Waiting for resource ready to execute for 'dapr-scheduler-mtls'.
+      [eventstore] Finished waiting for resource 'dapr-scheduler-mtls'.
+      [eventstore] [sys] Starting process...: Cmd = /home/administrator/.dotnet/dotnet, Args = ["run", "--project", 
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj", "--configuration", "Debug", 
+      "--no-launch-profile"]
+      [eventstore] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj : error 
+      NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore 
+      behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj
+      : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent 
+      restore behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj : 
+      error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent 
+      restore behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj : 
+      error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent 
+      restore behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj : 
+      error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent 
+      restore behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.
+      csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a 
+      consistent restore behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj : error NU1506: 
+      Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. 
+      The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; System.Security.Cryptography.Xml
+      10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] 
+      /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj : 
+      error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent 
+      restore behavior. The duplicate 'PackageVersion' items are: System.Security.Cryptography.Pkcs 10.0.13, System.Security.Cryptography.Pkcs 10.0.13; 
+      System.Security.Cryptography.Xml 10.0.13, System.Security.Cryptography.Xml 10.0.13.
+      [eventstore] 
+      [eventstore] The build failed. Fix the build errors and run again.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(575,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(586,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 42.519s

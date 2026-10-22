@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" />
+    <PackageReference Include="AWSSDK.S3" />
+    <PackageReference Include="AWSSDK.KeyManagementService" />
+    <PackageReference Include="Grpc.AspNetCore" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
+    <PackageReference Include="Google.Protobuf" />
+    <Protobuf Include="Protocol/dapr/proto/components/v1/common.proto" ProtoRoot="Protocol" GrpcServices="None" />
+    <Protobuf Include="Protocol/dapr/proto/components/v1/bindings.proto" ProtoRoot="Protocol" GrpcServices="Both" />
+    <InternalsVisibleTo Include="Hexalith.Platform.Custody.Dapr.Tests" />
+  </ItemGroup>
+</Project>

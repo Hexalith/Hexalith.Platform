@@ -1,28 +1,30 @@
 {
     "apiVersion": "v1",
     "data": {
-        "fixture": "environment-owned"
+        ".dockerconfigjson": "eyJhdXRocyI6e319"
     },
-    "kind": "ConfigMap",
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:39:56Z",
+        "creationTimestamp": "2026-10-22T17:49:12Z",
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:data": {
-                        "f:fixture": {}
-                    }
+                    "f:stringData": {
+                        "f:.dockerconfigjson": {}
+                    },
+                    "f:type": {}
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:39:56Z"
+                "time": "2026-10-22T17:49:12Z"
             }
         ],
-        "name": "fixture-components",
+        "name": "fixture-registry",
         "namespace": "reference",
-        "resourceVersion": "978",
-        "uid": "c57651da-1363-4e08-bda3-34589cf2a41d"
-    }
+        "resourceVersion": "759",
+        "uid": "77400e1d-b294-45e2-baeb-2b55b11bbdc8"
+    },
+    "type": "kubernetes.io/dockerconfigjson"
 }
