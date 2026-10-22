@@ -1,0 +1,59 @@
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [FAIL]
+      Shouldly.ShouldAssertException : result.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Owned sidecars and containers removed; no leftovers.
+      Traceback (most recent call last):
+        File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 172, in <module>
+          permitted = request(endpoints['eventstore'] + '/v1.0/invoke/tenants/method/process', b'{}')
+        File "/home/administrator/projects/hexalith/platform/eng/test-local-dapr-security.py", line 35, in request
+          with urllib.request.urlopen(urllib.request.Request(url, data=data, method=method, headers={'Content-Type': 'application/json'}), timeout=3) as response:
+               ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/usr/lib/python3.14/urllib/request.py", line 187, in urlopen
+          return opener.open(url, data, timeout)
+                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+        File "/usr/lib/python3.14/urllib/request.py", line 487, in open
+          response = self._open(req, data)
+        File "/usr/lib/python3.14/urllib/request.py", line 504, in _open
+          result = self._call_chain(self.handle_open, protocol, protocol +
+                                    '_open', req)
+        File "/usr/lib/python3.14/urllib/request.py", line 464, in _call_chain
+          result = func(*args)
+        File "/usr/lib/python3.14/urllib/request.py", line 1350, in http_open
+          return self.do_open(http.client.HTTPConnection, req)
+                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/usr/lib/python3.14/urllib/request.py", line 1325, in do_open
+          r = h.getresponse()
+        File "/usr/lib/python3.14/http/client.py", line 1459, in getresponse
+          response.begin()
+          ~~~~~~~~~~~~~~^^
+        File "/usr/lib/python3.14/http/client.py", line 336, in begin
+          version, status, reason = self._read_status()
+                                    ~~~~~~~~~~~~~~~~~^^
+        File "/usr/lib/python3.14/http/client.py", line 297, in _read_status
+          line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+        File "/usr/lib/python3.14/socket.py", line 725, in readinto
+          return self._sock.recv_into(b)
+                 ~~~~~~~~~~~~~~~~~~~~^^^
+      TimeoutError: timed out
+       Evidence: /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/epic-1-retro-2026-10-22/dapr-security-released
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs(105,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RunLiveDaprSecurityFixtureAsync(Boolean timesheetsOnly)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '57f35927ba717492ce8c665d456d62d1540e45d103edd1bc670196f7df96e85d')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 7.799s

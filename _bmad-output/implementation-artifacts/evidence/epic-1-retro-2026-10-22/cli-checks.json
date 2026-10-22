@@ -1,0 +1,26 @@
+[
+  {
+    "case": "joint-manifests",
+    "exit_code": 0,
+    "command": [
+      "dotnet",
+      "tool",
+      "run",
+      "hexalith-module",
+      "--",
+      "validate",
+      "--manifest",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli/module/hexalith.module-manifest.v2.json",
+      "--manifest",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/module/hexalith.module-manifest.v2.json",
+      "--output",
+      "json"
+    ]
+  }
+]

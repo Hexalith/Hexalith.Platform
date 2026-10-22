@@ -1,0 +1,21 @@
+{
+  "total": 223,
+  "failed": 10,
+  "skipped": 7,
+  "passed": 206,
+  "failures": [
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(module: \"memories\", server: \"server\", targetOwner: \"eventstore\")",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 1, timedOut: False)",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(exit: 0, timedOut: True)",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources"
+  ],
+  "absent_from_historical_failure_membership": [],
+  "reference_declaration_script_exit": 1,
+  "reference_declaration_failure": "extra secrets fixture unexpectedly emits public HXP020 tests[0].entry before policy assertion at line 698"
+}
