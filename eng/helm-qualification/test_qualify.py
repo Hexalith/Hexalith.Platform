@@ -85,6 +85,78 @@ class QualifierFailureTests(unittest.TestCase):
                     expected = added if scenario == 'added' else original
                     self.assertEqual(q.record['sourceChangedDuringRun'][scenario], [str(expected.relative_to(root))])
 
+    def test_source_inventory_refuses_authoritative_and_native_input_mutations(self):
+        families = [*(f'references/Hexalith.{owner}/module/hexalith.module-manifest.v2.json' for owner in ('EventStore', 'Tenants', 'Memories')),
+                    'DaprSelfHostedMtls.cs', 'Directory.Build.props', 'Directory.Build.targets',
+                    'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs',
+                    'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs',
+                    'references/Hexalith.Builds/Tools/write-platform-version-catalog.ps1']
+        with self.qualification() as q, tempfile.TemporaryDirectory(prefix='h45-source-closure-') as directory:
+            root = Path(directory); chart = root / 'eng/helm-qualification/chart'; chart.mkdir(parents=True)
+            with patch.multiple(qualify, ROOT=root, CHART=chart, HERE=chart.parent):
+                for family in families:
+                    path = root / family; path.parent.mkdir(parents=True, exist_ok=True)
+                    for operation in ('modified', 'removed', 'added'):
+                        with self.subTest(input=family, operation=operation):
+                            path.write_text('before')
+                            if operation == 'added': path.unlink()
+                            q.record['source'] = {'files': q.source_inventory()}
+                            if operation == 'removed': path.unlink()
+                            else: path.write_text('after')
+                            with self.assertRaisesRegex(AssertionError, 'source inventory or contents changed'):
+                                q.verify_source()
+                            self.assertIn(family, q.record['sourceChangedDuringRun'][operation])
+
+    def test_native_build_input_closure_follows_projects_linked_sources_and_imports(self):
+        with self.qualification() as q, tempfile.TemporaryDirectory(prefix='h45-build-closure-') as directory:
+            root = Path(directory)
+            entry = root / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
+            owner = root / 'owner/owner.csproj'
+            linked = root / 'linked/DaprSelfHostedMtls.cs'
+            resolver = owner.parent / 'Workspace/Resolver.cs'
+            imported = root / 'build/owner-import.props'
+            for path in (entry, owner, linked, resolver, imported):
+                path.parent.mkdir(parents=True, exist_ok=True); path.write_text('source')
+            def run(args, **kwargs):
+                project = Path(args[2])
+                self.assertEqual(q.env['DirectoryPackagesPropsPath'], str(root / 'eng/helm-qualification/source-packages.props'))
+                if args[-1].startswith('-preprocess:'):
+                    Path(args[-1].split(':', 1)[1]).write_text('<!--\n' + str(imported) + '\n-->')
+                    return subprocess.CompletedProcess(args, 0, '', '')
+                items = {'Compile': [{'FullPath': str(linked if project == entry else resolver)}],
+                         'ProjectReference': [{'FullPath': str(owner)}] if project == entry else []}
+                payload = {'Items': items, 'Properties': {'ProjectAssetsFile': str(project.parent / 'obj/project.assets.json')}}
+                return subprocess.CompletedProcess(args, 0, json.dumps(payload), '')
+            with patch.multiple(qualify, ROOT=root, HERE=root / 'eng/helm-qualification'), patch.object(q, 'run', side_effect=run):
+                self.assertEqual(q.native_build_inputs(), {entry, owner, linked, resolver, imported})
+
+    def test_resolved_kubernetes_integration_matches_both_assets_and_retains_hashes(self):
+        for mismatch in (None, 'native', 'composition'):
+            with self.subTest(mismatch=mismatch), self.qualification() as q, tempfile.TemporaryDirectory(prefix='h45-assets-') as directory:
+                root = Path(directory); data = root / 'data'; q.env['XDG_DATA_HOME'] = str(data)
+                native = data / 'dotnet/runfile/apphost-fixture/obj/project.assets.json'
+                composition = root / 'composition-project.assets.json'; q.composition_assets = composition
+                expected = q.tools['aspireKubernetes']; q.record['tools'] = {}
+                for role, path in [('native', native), ('composition', composition)]:
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    version = '0.0.0' if role == mismatch else expected
+                    path.write_text(json.dumps({'project': {'restore': {'projectPath': str(root / 'apphost.cs.csproj')}},
+                                                'libraries': {'Aspire.Hosting.Kubernetes/' + version: {'sha512': 'fixture-package-hash'}}}))
+                with patch.object(qualify, 'ROOT', root):
+                    if mismatch:
+                        with self.assertRaisesRegex(AssertionError, mismatch + ' resolved'):
+                            q.resolved_kubernetes_integration()
+                        self.assertNotIn('resolvedKubernetesIntegration', q.record['checks'])
+                    else:
+                        q.resolved_kubernetes_integration()
+                        result = q.record['tools']['aspireKubernetes']
+                        self.assertEqual(result['expectedVersion'], expected)
+                        for role in ('native', 'composition'):
+                            captured = result['resolved'][role]
+                            self.assertEqual(captured['version'], expected)
+                            self.assertEqual(captured['assetsSha256'], qualify.sha(q.evidence / captured['assetsFile']))
+                            self.assertEqual(captured['packageSha512'], 'fixture-package-hash')
+
     def test_trickled_download_has_a_complete_transfer_deadline(self):
         class Trickle(BaseHTTPRequestHandler):
             def log_message(self, *args): pass

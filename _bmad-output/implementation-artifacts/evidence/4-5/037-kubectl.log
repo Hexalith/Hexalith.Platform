@@ -1,29 +1,10 @@
-{
-    "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLW1lbW9yaWVzLWFjY2Vzcy10ZWxlbWV0cnktY2xvY2stYXBw"
-    },
-    "kind": "Secret",
-    "metadata": {
-        "creationTimestamp": "2026-10-22T17:49:12Z",
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T17:49:12Z"
-            }
-        ],
-        "name": "fixture-memories-access-telemetry-clock-app",
-        "namespace": "reference",
-        "resourceVersion": "770",
-        "uid": "a72836a8-164f-4436-b365-ef17f6474fc6"
-    },
-    "type": "Opaque"
-}
+customresourcedefinition.apiextensions.k8s.io/backendtlspolicies.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/listenersets.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/tlsroutes.gateway.networking.k8s.io serverside-applied
+validatingadmissionpolicy.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io serverside-applied
+validatingadmissionpolicybinding.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io serverside-applied

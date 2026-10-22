@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 baseline_commit: 'e39d59b9e7f93c5880eff423e24b8a0f274560ed'
 route: 'dispatch'
 review_loop_iteration: 1
@@ -64,11 +64,12 @@ context:
 
 ## Implementation Notes
 
-- The shared neutral graph selects the seven enabled reference servers before local configuration binding. Local resolution and hosted metadata use the same identities, readiness and Dapr capability/ACL/subscription helper.
-- Native Aspire 13.6.1 publishing completed but omitted every supplied Dapr sidecar annotation. The retained probe demonstrates the AD-1 hand-modeled Dapr plumbing trigger; the single generic maintained chart is selected. No native output was patched.
-- Initial iteration (superseded by review 1): the packaged chart passed all six real-Helm test groups and the complete owned-kind qualification, including seven injected Pod dry-runs, the same-controller unsafe rejection, Helm Apply ownership, unforced conflict refusal, recovery/removal boundaries, uninstall preservation and cleanup. Source hashes remained unchanged throughout the passing run.
-- Focused hosted, Parties, shared-Dapr and exact readiness regressions passed 52 tests with no skips. The full composition-suite attempt had 218 passes, 11 failures and eight existing opt-in skips; two diagnostic failures were fixed and reran successfully. The remaining nine failures concern concurrent local-composition changes or existing owner/tool-pin/content-root checks and remain visible in the retained log.
-- Commands, source/input/tool/package hashes and results are in [qualification evidence](evidence/4-5/qualification.json), [verification details](evidence/4-5/verification.json) and the [qualification guide](../../eng/helm-qualification/README.md). No publication, OCI-attestation, restoration or staging-deployment acceptance is claimed.
+- Local composition and hosted publishing share the neutral seven-server graph and the same Dapr capability, ACL and subscription metadata. Hosted selection bypasses local profile/provider/credential generation.
+- Native Aspire 13.6.1 with resolved Kubernetes integration 13.6.1-preview.1.26506.6 reproduces missing Dapr annotations for all seven workloads. The retained AD-1 measurement selects the single maintained generic chart.
+- Final parent verification passed a zero-warning build, 52 focused C# tests and 21 Python tests with zero skips. The packaged archive passed seven injected-Pod admission checks, same-identity unsafe rejection, Helm Apply ownership, unforced conflict refusal, recovery/removal/uninstall preservation, and owned cleanup.
+- Verification used an isolated snapshot because concurrent sessions continued changing shared inputs. All 1,441 recorded source inputs stayed fixed, all 166 command-log hashes match, and the chart/direct publishing inputs match the shared checkout. Exact root/owner revisions and 206 source overrides reconstruct the tested snapshot; concurrent local-test launch/executor changes are separately identified. The owned cluster, kubeconfig and seven temporary worktrees were removed.
+- Both independent review rounds are triaged below. All retained in-scope findings were corrected and verified; three independent-work follow-ups were recorded in the deferred ledger. The broad composition run (230 passed, six failed, nine opt-in skips) is retained separately; its owner subprocess failure subsequently passed with the inherited package-wrapper environment. The other broad-suite failures concern released-tool provenance, gateway seeding and a Timesheets fixture.
+- See [qualification](evidence/4-5/qualification.json), [verification](evidence/4-5/verification.json), [snapshot/reconstruction metadata](evidence/4-5/isolated-verification.json), [broad-suite results](evidence/4-5/parent-full-suite.json) and the [guide](../../eng/helm-qualification/README.md). Publication, OCI attestation, restoration and staging deployment remain excluded.
 
 ## Spec Change Log
 
@@ -76,6 +77,8 @@ context:
   KEEP: Preserve the neutral seven-server graph, shared ACL/capability/subscription helper, local-binding parity, measured native AD-1 fallback, generic maintained chart, digest/reference-only values, all three modes, pinned verified tools, controller-identity Pod injection and unsafe rejection, Helm Apply/conflict/removal checks, invocation-only cluster targeting and cleanup. A positive implementation snapshot is available at `/tmp/bmad-4-5-keep-ovkljnb4`; reuse those working parts while re-deriving the corrected chart/qualifier from these requirements. Prior passing qualification is evidence of the preserved foundation, not acceptance of the revised bytes.
 
 ## Review Triage Log
+
+Final resolution: all in-scope survivors were corrected by the review-1 re-derivation and review-2 patches. Final 52/21 tests and the complete isolated qualification pass; rejected findings retain their refutations, and independent-work deferrals remain recorded.
 
 | Finding | Verdict | Route | Evidence |
 |---|---|---|---|
@@ -99,6 +102,25 @@ context:
 | EH-4 | medium | patch | Same failure-path cleanup defect as BH-8; private file removal is bypassed when an earlier cleanup command raises. |
 | EH-5 | medium | defer | The concurrent 2.3 live test awaits each teardown without collecting exceptions; the first failure prevents second-session cleanup. This is not changed by 4.5. |
 | EH-6 | medium | patch | urlopen timeout bounds individual blocking socket operations; unbounded response.read can keep a download alive on trickled data. Bound the complete download operation. |
+
+
+### Review 2
+
+| Finding | Verdict | Route | Evidence |
+|---|---|---|---|
+| R2-BH-1 | high | patch | Real Helm accepts ConnectionStrings:redis with Password = literal because the literal guard matches password= only; this writes a credential into rendered Pod environment/release data. |
+| R2-BH-2 | medium | patch | Real Helm accepts integer and octal loopback spellings (2130706433 and 0177.0.0.1); textual 127/localhost checks do not normalize numeric authorities. |
+| R2-BH-3 | medium | patch | A required Audience binding of {} creates no flattened leaves and therefore silently disappears despite successful rendering. |
+| R2-BH-4 | medium | patch | A recursive null leaf reaches toString and is emitted as <nil>; the existing top-level null guard does not protect descendants. |
+| R2-BH-5 | medium | patch | The shared loose regex admits dotted namespaces and empty DNS labels, which are invalid for those fields. The dotted listener-section subclaim is false: the pinned Gateway API 1.5.1 CRD admits DNS subdomains up to 253 characters, so valid dotted sections must remain accepted. |
+| R2-BH-6 | medium | patch | The inventory omits linked DaprSelfHostedMtls.cs, root build imports and Builds resolver sources consumed by native compilation; modifying those inputs escapes the final content guard. |
+| R2-BH-7 | false | reject | The native model is a deliberately unqualified diagnostic for the Dapr AD-1 trigger, not the selected publishing artifact. The maintained chart is selected and each declared readiness path is asserted against graph/local bindings; absent native readiness does not invalidate that measured omission or selected-artifact parity. |
+| R2-BH-8 | medium | patch | toolchain.aspireKubernetes is not tied to recorded resolved package identity; the qualifier should compare its expected value with resolved native/composition integration assets and retain the package evidence. |
+| R2-BH-9 | medium | patch | No chart assertion verifies the complete Service set or its selector/target port against a workload; the current correct mapping lacks regression protection. |
+| R2-BH-10 | medium | patch | Normal mode asserts full Dapr fields, but recovery/removal checks do not compare the complete retained Component/Configuration objects, leaving scopes/ACL/mTLS/HotReload regressions unobserved. |
+| R2-VG-1 | medium | patch | Pre-verified: changing every Service targetPort to missing-port left all nine chart groups green; verify Service-to-Pod and HTTPRoute-to-Service mappings in both serving/quiesced modes and archive. |
+| R2-VG-2 | medium | patch | Pre-verified: replacing every Component type with state.redis left its identity/security test green; compare exact provider and named endpoint/credential metadata to each binding. |
+| R2-VG-other-1 | medium | patch | The source-mode closure reads EventStore/Tenants/Memories owner manifests, but only Parties is captured. A temporary-root change to EventStore after capture demonstrably passes verify_source; include all four authoritative manifests. |
 
 ## Design Notes
 

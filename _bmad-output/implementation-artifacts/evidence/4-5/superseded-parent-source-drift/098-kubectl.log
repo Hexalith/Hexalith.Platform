@@ -1,0 +1,29 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1zeW50aGV0aWMtdG9rZW4="
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T18:16:17Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T18:16:17Z"
+            }
+        ],
+        "name": "fixture-credential",
+        "namespace": "reference",
+        "resourceVersion": "988",
+        "uid": "6b796341-3418-4d4a-8aa6-080c8f30bd73"
+    },
+    "type": "Opaque"
+}

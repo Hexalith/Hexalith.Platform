@@ -1,0 +1,29 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLW1lbW9yaWVzLWFjY2Vzcy10ZWxlbWV0cnktYXBp"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T18:16:17Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T18:16:17Z"
+            }
+        ],
+        "name": "fixture-memories-access-telemetry-api",
+        "namespace": "reference",
+        "resourceVersion": "998",
+        "uid": "1e96e58d-4a66-43e7-bdd0-cdd8f51c15f2"
+    },
+    "type": "Opaque"
+}

@@ -5,11 +5,11 @@
 {{- define "reference.validate" -}}
 {{- if not (has .Values.mode (list "normal" "recovery" "remove-workloads")) -}}{{ fail "unknown mode" }}{{- end -}}
 {{- if not (regexMatch "^[1-3]$" (toString .Values.replicas)) -}}{{ fail "replicas must be an integer in 1..3" }}{{- end -}}
-{{- range $value := list .Values.imagePullSecret .Values.environment.componentConfigMap .Values.gateway.name .Values.gateway.namespace .Values.gateway.sectionName -}}
-{{- if not (regexMatch "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$" $value) -}}{{ fail "existing credential, ConfigMap and namespaced Gateway references are required" }}{{- end -}}
+{{- range $value := list .Values.imagePullSecret .Values.environment.componentConfigMap .Values.gateway.name .Values.gateway.sectionName .Values.environment.trustDomain .Values.environment.controlPlaneTrustDomain -}}
+{{- include "reference.dnsSubdomain" $value -}}
 {{- end -}}
-{{- range $value := list .Values.environment.trustDomain .Values.environment.controlPlaneTrustDomain -}}
-{{- if not (regexMatch "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$" $value) -}}{{ fail "hostname and trust domain are required" }}{{- end -}}
+{{- range $value := list .Values.gateway.namespace .Release.Namespace -}}
+{{- include "reference.namespace" $value -}}
 {{- end -}}
 {{- range $key, $endpoint := .Values.endpoints -}}
 {{- include "reference.endpoint" $endpoint -}}
@@ -28,6 +28,7 @@
 {{- if not (has (default "url" $binding.endpointFormat) (list "url" "authority")) -}}{{ fail "unknown endpoint metadata format" }}{{- end -}}
 {{- if and (hasSuffix ".redis" $binding.type) (ne (toString $binding.metadata.enableTLS) "true") -}}{{ fail "hosted Redis bindings require native TLS" }}{{- end -}}
 {{- range $key, $value := $binding.metadata -}}
+{{- include "reference.credentialLiteral" $value -}}
 {{- if or (regexMatch "(?i)(password|secret|token|apikey|authorization|connectionstring)" $key) (eq $key $binding.endpointMetadataKey) (eq $key $binding.credentialMetadataKey) -}}{{ fail "provider credentials and endpoints require references" }}{{- end -}}
 {{- if regexMatch "(?i)(://|localhost|127[.]|password=|token=)" (toString $value) -}}{{ fail "unsafe provider metadata literal" }}{{- end -}}
 {{- end -}}
@@ -47,7 +48,7 @@
 {{- include "reference.environment" (dict "workload" $w "binding" $b "root" $) | trunc 0 -}}
 {{- if .publicRoutes -}}
 {{- $host := required (printf "hostname binding missing for %s" .identity) (index $.Values.hostnames .identity) | lower | trimSuffix "." -}}
-{{- if not (regexMatch "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$" $host) -}}{{ fail "invalid workload hostname" }}{{- end -}}
+{{- include "reference.dnsSubdomain" $host -}}
 {{- range .publicRoutes -}}
 {{- $prefix := trimSuffix "/" (regexFind "^[^{]*" .) | default "/" -}}
 {{- $match := printf "%s/%s/%s/%s/%s" $.Values.gateway.namespace $.Values.gateway.name $.Values.gateway.sectionName $host $prefix -}}
@@ -58,14 +59,45 @@
 {{- end -}}
 {{- end -}}
 
+{{- define "reference.dnsSubdomain" -}}
+{{- if or (not (kindIs "string" .)) (gt (len (toString .)) 253) (not (regexMatch "^[a-z0-9]([-a-z0-9]*[a-z0-9])?([.][a-z0-9]([-a-z0-9]*[a-z0-9])?)*$" (toString .))) -}}{{ fail "existing reference or DNS name must be a DNS subdomain of at most 253 characters" }}{{- end -}}
+{{- end -}}
+
+{{- define "reference.namespace" -}}
+{{- if or (not (kindIs "string" .)) (gt (len (toString .)) 63) (not (regexMatch "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$" (toString .))) -}}{{ fail "namespace must be a DNS label of at most 63 characters" }}{{- end -}}
+{{- end -}}
+
 {{- define "reference.endpoint" -}}
-{{- if or (not (kindIs "string" .)) (not (regexMatch "^(https|rediss|postgresql)://[a-zA-Z0-9][-a-zA-Z0-9.:/]*$" (toString .))) (regexMatch "(?i)(localhost|127[.]|0[.]0[.]0[.]0)" (toString .)) -}}{{ fail "unsafe endpoint: use a non-secret TLS endpoint without credentials, query or fragment" }}{{- end -}}
+{{- if or (not (kindIs "string" .)) (not (regexMatch "^(https|rediss|postgresql)://[a-zA-Z0-9][a-zA-Z0-9.-]*(:[0-9]{1,5})?(/[a-zA-Z0-9._~/-]*)?$" (toString .))) -}}{{ fail "unsafe endpoint: use a non-secret TLS endpoint without credentials, query or fragment" }}{{- end -}}
+{{- $authority := (urlParse .).host -}}
+{{- $host := regexFind "^[^:]+" $authority | lower -}}
+{{- if contains ":" $authority -}}
+{{- $port := int (last (splitList ":" $authority)) -}}
+{{- if or (lt $port 1) (gt $port 65535) -}}{{ fail "invalid endpoint port" }}{{- end -}}
+{{- end -}}
+{{- if regexMatch "^(0x[0-9a-f]+|[0-9]+)([.](0x[0-9a-f]+|[0-9]+))*[.]?$" $host -}}
+{{- $parts := splitList "." $host -}}
+{{- if ne (len $parts) 4 -}}{{ fail "numeric endpoint authorities must use canonical non-loopback IPv4" }}{{- end -}}
+{{- range $parts -}}
+{{- if or (not (regexMatch "^(0|[1-9][0-9]{0,2})$" .)) (gt (int .) 255) -}}{{ fail "ambiguous numeric endpoint authority" }}{{- end -}}
+{{- end -}}
+{{- if has (first $parts) (list "0" "127") -}}{{ fail "loopback or unspecified endpoint authority" }}{{- end -}}
+{{- else -}}
+{{- $dns := trimSuffix "." $host -}}
+{{- include "reference.dnsSubdomain" $dns -}}
+{{- if or (eq $dns "localhost") (hasSuffix ".localhost" $dns) -}}{{ fail "localhost endpoint authority" }}{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "reference.credentialLiteral" -}}
+{{- if regexMatch `(?i)(^|[;,\s\p{Zs}])(password|pwd|user[ _]*id|uid|user[ _]*name|access[ _]*token|authentication[ _]*token|token|api[ _-]*key|client[ _]*secret|secret|authorization)[\s\p{Zs}]*=` (toString .) -}}{{ fail "credential-bearing connection-string literals require existing references" }}{{- end -}}
 {{- end -}}
 
 {{- define "reference.secretRef" -}}
 {{- if not (kindIs "map" .) -}}{{ fail "credential literals are forbidden; existing reference required" }}{{- end -}}
 {{- if or (ne (len .) 2) (not (hasKey . "name")) (not (hasKey . "key")) -}}{{ fail "existing reference requires only name and key" }}{{- end -}}
-{{- if or (not (regexMatch "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$" (toString .name))) (not (regexMatch "^[-a-zA-Z0-9._]+$" (toString .key))) -}}{{ fail "invalid existing reference name or key" }}{{- end -}}
+{{- include "reference.dnsSubdomain" .name -}}
+{{- if or (gt (len (toString .key)) 253) (not (regexMatch "^[-a-zA-Z0-9._]+$" (toString .key))) -}}{{ fail "invalid existing reference key" }}{{- end -}}
 name: {{ .name | quote }}
 key: {{ .key | quote }}
 {{- end -}}
@@ -110,6 +142,8 @@ dapr.io/enable-api-logging: "false"
 {{- if and (kindIs "string" $value) (or (hasPrefix "[" (trim $value)) (hasPrefix "{" (trim $value))) -}}
 {{- $value = mustFromJson $value -}}
 {{- end -}}
+{{- if kindIs "invalid" $value -}}{{ fail "recursive configuration leaves cannot be null" }}{{- end -}}
+{{- if and (or (kindIs "map" $value) (kindIs "slice" $value)) (empty $value) -}}{{ fail "configuration binding must produce at least one leaf" }}{{- end -}}
 {{- if kindIs "map" $value -}}
 {{- if or (hasKey $value "endpoint") (hasKey $value "configMapKeyRef") -}}
 {{- if ne (len $value) 1 -}}{{ fail "reference leaves must contain exactly one reference" }}{{- end -}}
@@ -133,6 +167,7 @@ dapr.io/enable-api-logging: "false"
 {{- end -}}
 {{- else -}}
 {{- include "reference.nonCredentialKey" $key -}}
+{{- include "reference.credentialLiteral" $value -}}
 {{- if regexMatch "(?i)(localhost|127[.]0[.]0[.]1|/tmp/|secretsFile|conversation[.]echo|secretstores[.]local|password=|token=|clientsecret|authenticationtoken|accesstoken|privatekey)" (toString $value) -}}{{ fail "unsafe or credential-bearing configuration literal" }}{{- end -}}
 {{- if contains "://" (toString $value) -}}{{ include "reference.endpoint" $value }}{{- end -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "value" (toString $value)) "environment" .environment "seen" .seen) -}}

@@ -13,7 +13,7 @@
       "dapr.io/enabled": "true",
       "dapr.io/sidecar-listen-addresses": "127.0.0.1"
     },
-    "creationTimestamp": "2026-10-22T17:49:24Z",
+    "creationTimestamp": "2026-10-22T18:30:46Z",
     "generation": 1,
     "labels": {
       "app.kubernetes.io/name": "parties",
@@ -23,7 +23,7 @@
     },
     "name": "dry-parties",
     "namespace": "reference",
-    "uid": "5023d6a8-6521-46c1-9c3e-029fb5d49161"
+    "uid": "e8a9e81c-23d1-49e2-b2a3-31c89d4a9f30"
   },
   "spec": {
     "automountServiceAccountToken": true,
@@ -246,7 +246,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-4jjm7",
+            "name": "kube-api-access-cp42l",
             "readOnly": true
           }
         ]
@@ -297,7 +297,7 @@
           },
           {
             "name": "DAPR_TRUST_ANCHORS",
-            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEAh6ooBZ0e/67W63v6HBQcejAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxNzMzNTRaFw0yNzEwMjIxNzQ4NTRa\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQDl2+TOGBU7Tlvv\n4hQQes4HLDuuYpls/CAfNoGXrLJn46NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFGF26X36B0sD9UJc+Ru/U0oYyyRKMAUGAytl\ncANBAD7AI39BQuYbhQvwyzhDuHNnkHSN/qtl6739zQTz/4jnO2kHxNmg/MJW3vls\nXfCzVTaCkNn1XK1JwxPg/mFbCAU=\n-----END CERTIFICATE-----\n"
+            "value": "-----BEGIN CERTIFICATE-----\nMIIBMDCB46ADAgECAhEA87HAK3r4Udr/x60D0vV1vTAFBgMrZXAwGDEWMBQGA1UE\nChMNY2x1c3Rlci5sb2NhbDAeFw0yNjEwMjIxODE0MThaFw0yNzEwMjIxODI5MTha\nMBgxFjAUBgNVBAoTDWNsdXN0ZXIubG9jYWwwKjAFBgMrZXADIQD3Q8mXL1RQXBxa\nJ5KfjoyWSzMFwqEdq1+RrRiVVAkjK6NCMEAwDgYDVR0PAQH/BAQDAgKEMA8GA1Ud\nEwEB/wQFMAMBAf8wHQYDVR0OBBYEFKaM6dub9PpOGbgpptfSUxe3ks9QMAUGAytl\ncANBAAenxFdPbJiuBKrrB29oRJjIpfnRTnxngaMff8dfDQn+L9EJdLDjV9wDJdPN\n7t+xYCZJD8SZOd8lWP0k6kr3OAw=\n-----END CERTIFICATE-----\n"
           },
           {
             "name": "POD_NAME",
@@ -404,7 +404,7 @@
           },
           {
             "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-            "name": "kube-api-access-4jjm7",
+            "name": "kube-api-access-cp42l",
             "readOnly": true
           }
         ]
@@ -458,7 +458,7 @@
         "name": "environment-components"
       },
       {
-        "name": "kube-api-access-4jjm7",
+        "name": "kube-api-access-cp42l",
         "projected": {
           "defaultMode": 420,
           "sources": [

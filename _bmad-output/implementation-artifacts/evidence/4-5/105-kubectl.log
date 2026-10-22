@@ -1,48 +1,29 @@
 {
     "apiVersion": "v1",
-    "kind": "PersistentVolumeClaim",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLWV2ZW50c3RvcmUtYXBw"
+    },
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:49:12Z",
-        "finalizers": [
-            "kubernetes.io/pvc-protection"
-        ],
+        "creationTimestamp": "2026-10-22T18:30:36Z",
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:spec": {
-                        "f:accessModes": {},
-                        "f:resources": {
-                            "f:requests": {
-                                "f:storage": {}
-                            }
-                        }
+                    "f:stringData": {
+                        "f:token": {}
                     }
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:49:12Z"
+                "time": "2026-10-22T18:30:36Z"
             }
         ],
-        "name": "fixture-storage",
-        "namespace": "environment",
-        "resourceVersion": "761",
-        "uid": "05bb2eda-2539-47aa-bcd9-d81e8ef8d05f"
+        "name": "fixture-eventstore-app",
+        "namespace": "reference",
+        "resourceVersion": "945",
+        "uid": "da9edf58-a7be-4cee-bcea-bf8aaf5f3a85"
     },
-    "spec": {
-        "accessModes": [
-            "ReadWriteOnce"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "1Mi"
-            }
-        },
-        "storageClassName": "standard",
-        "volumeMode": "Filesystem"
-    },
-    "status": {
-        "phase": "Pending"
-    }
+    "type": "Opaque"
 }

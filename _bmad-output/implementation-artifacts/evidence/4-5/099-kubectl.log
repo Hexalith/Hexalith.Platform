@@ -1,44 +1,30 @@
 {
     "apiVersion": "v1",
-    "kind": "Namespace",
+    "data": {
+        ".dockerconfigjson": "eyJhdXRocyI6e319"
+    },
+    "kind": "Secret",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:39:56Z",
-        "labels": {
-            "kubernetes.io/metadata.name": "reference",
-            "pod-security.kubernetes.io/audit": "restricted",
-            "pod-security.kubernetes.io/enforce": "restricted",
-            "pod-security.kubernetes.io/enforce-version": "v1.35",
-            "pod-security.kubernetes.io/warn": "restricted"
-        },
+        "creationTimestamp": "2026-10-22T18:30:36Z",
         "managedFields": [
             {
                 "apiVersion": "v1",
                 "fieldsType": "FieldsV1",
                 "fieldsV1": {
-                    "f:metadata": {
-                        "f:labels": {
-                            "f:pod-security.kubernetes.io/audit": {},
-                            "f:pod-security.kubernetes.io/enforce": {},
-                            "f:pod-security.kubernetes.io/enforce-version": {},
-                            "f:pod-security.kubernetes.io/warn": {}
-                        }
-                    }
+                    "f:stringData": {
+                        "f:.dockerconfigjson": {}
+                    },
+                    "f:type": {}
                 },
                 "manager": "h45-environment",
                 "operation": "Apply",
-                "time": "2026-10-22T17:39:56Z"
+                "time": "2026-10-22T18:30:36Z"
             }
         ],
-        "name": "reference",
-        "resourceVersion": "970",
-        "uid": "37f6020b-51ba-4d04-998b-413f7ac067c2"
+        "name": "fixture-registry",
+        "namespace": "reference",
+        "resourceVersion": "938",
+        "uid": "8b26e562-e38d-44f3-87c4-15ea87f5827a"
     },
-    "spec": {
-        "finalizers": [
-            "kubernetes"
-        ]
-    },
-    "status": {
-        "phase": "Active"
-    }
+    "type": "kubernetes.io/dockerconfigjson"
 }

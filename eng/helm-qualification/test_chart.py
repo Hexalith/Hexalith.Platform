@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from urllib.parse import urlsplit
 
 import yaml
 
@@ -132,6 +133,55 @@ class ChartTests(unittest.TestCase):
                 {'matches': [{'path': {'type': 'PathPrefix', 'value': prefix}}],
                  'backendRefs': [{'name': workload['resourceId'], 'port': 80}]} for prefix in sorted(prefixes)])
 
+    def assert_complete_services(self, docs, values):
+        workloads = graph()['workloads'] if values['mode'] != 'remove-workloads' else []
+        expected = [{'apiVersion': 'v1', 'kind': 'Service', 'metadata': {'name': w['resourceId']},
+                     'spec': {'selector': {'app.kubernetes.io/name': w['resourceId']},
+                              'ports': [{'name': 'http', 'port': 80, 'targetPort': 'http'}]}} for w in workloads]
+        services = [d for d in docs if d['kind'] == 'Service']
+        self.assertEqual(sorted(services, key=lambda d: d['metadata']['name']),
+                         sorted(expected, key=lambda d: d['metadata']['name']))
+        deployments = {d['metadata']['name']: d for d in docs if d['kind'] == 'Deployment'}
+        self.assertEqual(set(deployments), {w['resourceId'] for w in workloads})
+        for service in services:
+            deployment = deployments[service['metadata']['name']]
+            selector = service['spec']['selector']
+            self.assertEqual(deployment['spec']['selector']['matchLabels'], selector)
+            self.assertEqual(deployment['spec']['template']['metadata']['labels'], selector)
+            app = deployment['spec']['template']['spec']['containers'][0]
+            self.assertEqual(app['ports'], [{'name': 'http', 'containerPort': 8080}])
+            workload = next(w for w in workloads if w['resourceId'] == service['metadata']['name'])
+            self.assertEqual(app['readinessProbe']['httpGet'], {'path': workload['readiness'], 'port': 'http'})
+
+    def assert_complete_dapr(self, docs, values):
+        expected = []
+        for capability in graph()['capabilities']:
+            binding = values['environment']['components'][capability['name']]
+            endpoint = values['endpoints'][binding['endpoint']]
+            if binding.get('endpointFormat', 'url') == 'authority':
+                endpoint = urlsplit(endpoint).netloc
+            metadata = [{'name': binding['endpointMetadataKey'], 'value': endpoint},
+                        {'name': binding['credentialMetadataKey'], 'secretKeyRef': binding['credential']}]
+            metadata += [{'name': key, 'value': str(value).lower() if isinstance(value, bool) else str(value)}
+                         for key, value in sorted(binding.get('metadata', {}).items())]
+            expected.append({'apiVersion': 'dapr.io/v1alpha1', 'kind': 'Component',
+                             'metadata': {'name': capability['name']},
+                             'spec': {'type': binding['type'], 'version': 'v1', 'metadata': metadata},
+                             'scopes': capability['consumers']})
+        for workload in graph()['workloads']:
+            acl = json.loads(json.dumps(workload['accessControl']).replace('__APPLICATION_NAMESPACE__', 'reference')
+                             .replace('__TRUST_DOMAIN__', values['environment']['trustDomain']))
+            expected.append({'apiVersion': 'dapr.io/v1alpha1', 'kind': 'Configuration',
+                             'metadata': {'name': 'platform-' + workload['appId']},
+                             'spec': {'mtls': {'enabled': True,
+                                               'controlPlaneTrustDomain': values['environment']['controlPlaneTrustDomain'],
+                                               'sentryAddress': urlsplit(values['endpoints'][values['environment']['sentryEndpoint']]).netloc},
+                                      'features': [{'name': 'HotReload', 'enabled': False}], 'accessControl': acl}})
+        actual = [d for d in docs if d['kind'] in ('Component', 'Configuration')]
+        self.assertEqual(sorted(actual, key=lambda d: (d['kind'], d['metadata']['name'])),
+                         sorted(expected, key=lambda d: (d['kind'], d['metadata']['name'])))
+        self.assert_subscriptions(docs)
+
     def test_modes_determinism_and_archive_parity(self):
         with tempfile.TemporaryDirectory(prefix='h45-package-') as tmp:
             subprocess.run([HELM, 'package', str(CHART), '-d', tmp], check=True, capture_output=True)
@@ -143,14 +193,16 @@ class ChartTests(unittest.TestCase):
                     self.assertEqual(text, self.good(values)[0])
                     archive_docs = self.good(values, archive)[1]
                     self.assertEqual(docs, archive_docs)
-                    self.assert_subscriptions(archive_docs)
+                    self.assert_complete_dapr(archive_docs, values)
+                    self.assert_complete_services(archive_docs, values)
                     self.assert_complete_routes(archive_docs, values)
                     self.assertEqual(self.good(values, archive)[0], self.good(values, archive)[0])
                     workloads = [d for d in docs if d['kind'] == 'Deployment']
                     routes = [d for d in docs if d['kind'] == 'HTTPRoute']
                     self.assertEqual(len(workloads), 0 if mode == 'remove-workloads' else len(graph()['workloads']))
                     self.assert_complete_routes(docs, values)
-                    self.assert_subscriptions(docs)
+                    self.assert_complete_dapr(docs, values)
+                    self.assert_complete_services(docs, values)
                     for d in workloads:
                         self.assertEqual(d['spec']['replicas'], 0 if mode == 'recovery' else 1)
                     # Application Dapr objects are retained through workload removal; infrastructure is external.
@@ -300,6 +352,44 @@ class ChartTests(unittest.TestCase):
                 b['spec']['template']['spec']['containers'][0]['image'] = a['spec']['template']['spec']['containers'][0]['image']
             self.assertEqual(b, a)
         self.assertEqual(chart_hash, hashlib.sha256(b''.join(p.read_bytes() for p in sorted(CHART.rglob('*')) if p.is_file())).hexdigest())
+
+    def test_connection_string_credentials_and_ambiguous_numeric_endpoints_fail(self):
+        for literal in ('Host=data;Password = literal', 'Password\t=literal', 'Host=data; Pwd = literal',
+                        'Server=data; User Id = owner; Password = literal', 'Host=data;Token\u00a0=literal'):
+            values = fixture_values()
+            values['bindings']['memories/server']['configuration']['ConnectionStrings:redis'] = literal
+            with self.subTest(literal=literal): self.bad(values)
+        for endpoint in ('https://2130706433', 'https://0177.0.0.1', 'https://0x7f000001',
+                         'https://127.1', 'https://0x7f.0.0.1', 'https://127.0.0.1.', 'https://999.1.2.3'):
+            values = fixture_values(); values['endpoints']['identity'] = endpoint
+            with self.subTest(endpoint=endpoint): self.bad(values)
+        for endpoint in ('https://10.20.30.40:443/path', 'https://identity.fixture.invalid/path'):
+            values = fixture_values(); values['endpoints']['identity'] = endpoint
+            self.good(values)
+
+    def test_empty_bindings_and_recursive_nulls_fail(self):
+        for value in ({}, [], '{}', '[]', {'Nested': None}, '[null]', '[{"Endpoint":null}]', '{"Nested":{}}'):
+            values = fixture_values()
+            values['bindings']['memories/clock']['configuration']['Clock:Sources'] = value
+            with self.subTest(value=value): self.bad(values)
+
+    def test_existing_reference_names_follow_their_kubernetes_fields(self):
+        variants = [lambda v: v['gateway'].update(namespace='environment.invalid'),
+                    lambda v: v['gateway'].update(namespace='a' * 64),
+                    lambda v: v['gateway'].update(name='gateway..invalid'),
+                    lambda v: v['gateway'].update(name='a' * 254),
+                    lambda v: v['gateway'].update(sectionName='https..invalid'),
+                    lambda v: v['gateway'].update(sectionName='a' * 254),
+                    lambda v: v.update(imagePullSecret='registry..invalid'),
+                    lambda v: v['environment'].update(componentConfigMap='a' * 254),
+                    lambda v: v['hostnames'].update({'tenants/api': 'tenant..invalid'}),
+                    lambda v: v['hostnames'].update({'tenants/api': 'a' * 254}),
+                    lambda v: v['bindings']['eventstore/gateway']['appToken'].update(name='credential..invalid')]
+        for index, mutate in enumerate(variants):
+            values = fixture_values(); mutate(values)
+            with self.subTest(case=index): self.bad(values)
+        values = fixture_values(); values['gateway']['sectionName'] = 'https.public'
+        self.assert_complete_routes(self.good(values)[1], values)
 
     def test_missing_bindings_tags_literals_unknown_modes_and_unsafe_endpoints_fail(self):
         self.bad({})

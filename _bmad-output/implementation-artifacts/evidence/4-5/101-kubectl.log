@@ -1,21 +1,48 @@
 {
     "apiVersion": "v1",
-    "kind": "Namespace",
+    "kind": "PersistentVolumeClaim",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:49:12Z",
-        "labels": {
-            "kubernetes.io/metadata.name": "environment"
-        },
-        "name": "environment",
-        "resourceVersion": "755",
-        "uid": "cd2dcf05-bb10-4eab-94f9-3a709abaf458"
+        "creationTimestamp": "2026-10-22T18:30:36Z",
+        "finalizers": [
+            "kubernetes.io/pvc-protection"
+        ],
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:spec": {
+                        "f:accessModes": {},
+                        "f:resources": {
+                            "f:requests": {
+                                "f:storage": {}
+                            }
+                        }
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T18:30:36Z"
+            }
+        ],
+        "name": "fixture-storage",
+        "namespace": "environment",
+        "resourceVersion": "940",
+        "uid": "6b014b37-2cb5-46ba-a39c-b37642e7a5b2"
     },
     "spec": {
-        "finalizers": [
-            "kubernetes"
-        ]
+        "accessModes": [
+            "ReadWriteOnce"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "1Mi"
+            }
+        },
+        "storageClassName": "standard",
+        "volumeMode": "Filesystem"
     },
     "status": {
-        "phase": "Active"
+        "phase": "Pending"
     }
 }

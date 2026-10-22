@@ -1,0 +1,55 @@
+🛠️ Building AppHost... apphost.cs
+🛠️ Executing step publish
+20:12:19 (validate-compute-environments) → Starting validate-compute-environments...
+20:12:19 (validate-compute-environments) ✓ validate-compute-environments completed successfully
+20:12:19 (prepare-deployment-targets-qualification) → Starting prepare-deployment-targets-qualification...
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for eventstore
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for tenants
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for tenants-api
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-access-telemetry-clock
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-access-telemetry
+20:12:19 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for parties
+20:12:19 (prepare-deployment-targets-qualification) ✓ prepare-deployment-targets-qualification completed successfully
+20:12:19 (validate-kubernetes) → Starting validate-kubernetes...
+20:12:19 (validate-kubernetes) ✓ validate-kubernetes completed successfully
+20:12:19 (before-start) → Starting before-start...
+20:12:19 (before-start) ✓ before-start completed successfully
+20:12:19 (pipeline-execution) → Starting pipeline-execution...
+20:12:19 (process-parameters) → Starting process-parameters...
+20:12:19 (validate-build-only-container-references) → Starting validate-build-only-container-references...
+20:12:19 (validate-build-only-container-references) ✓ validate-build-only-container-references completed successfully
+20:12:19 (process-parameters) ✓ process-parameters completed successfully
+20:12:19 (publish-prereq) → Starting publish-prereq...
+20:12:19 (publish-prereq) ✓ publish-prereq completed successfully
+20:12:19 (publish-qualification) → Starting publish-qualification...
+20:12:19 (publish-qualification) i [INF] Generating Kubernetes output
+20:12:19 (publish-qualification) i [INF] Successfully generated Kubernetes output in '/tmp/h45-jb70je3e/native-output'
+20:12:19 (publish-qualification) ✓ publish-qualification completed successfully
+20:12:19 (publish) → Starting publish...
+20:12:19 (publish) ✓ publish completed successfully
+20:12:19 (pipeline-execution) ✓ Completed successfully
+------------------------------------------------------------
+✓ 10/10 steps succeeded • Total time: 0.12s
+
+Steps Summary:
+                Step timeline:                              0ms                    55.74ms
+                                                            │───────┬──────┬─────┬───────│
+      5.32ms  ✓ validate-compute-environments               │╶──╴                        │
+     43.38ms  ✓   prepare-deployment-targets-qualification  │   ╶─────────────────────╴  │
+      0.34ms  ✓     before-start                            │                         ╴  │
+      0.48ms  ✓   validate-kubernetes                       │                         ╴  │
+      3.05ms  ✓ pipeline-execution                          │                         ╶─╴│
+      1.01ms  ✓ process-parameters                          │                          ╴ │
+      0.19ms  ✓   publish-prereq                            │                          ╴ │
+      0.55ms  ✓     publish-qualification                   │                           ╴│
+      0.14ms  ✓       publish                               │                           ╴│
+      0.30ms  ✓ validate-build-only-container-references    │                          ╴ │
+
+✓ Pipeline succeeded
+------------------------------------------------------------
+
+
+A new version of Aspire is available: 13.6.3
+To update, run: aspire update
+For more information, see: https://aka.ms/aspire/update

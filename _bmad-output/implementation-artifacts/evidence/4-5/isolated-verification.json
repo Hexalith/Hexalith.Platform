@@ -1,0 +1,173 @@
+{
+  "originalRoot": "/home/administrator/projects/hexalith/platform",
+  "snapshotRoot": "/tmp/bmad-4-5-frozen-nfaju0ri/platform",
+  "rootRevision": "cebbf6a701ff537a3a8f9654338b914b2e70f7f4",
+  "owners": {
+    "Hexalith.Builds": "66b9136a0b223925e51177a51eb48852e2f12787",
+    "Hexalith.Commons": "1663028fb6d9f46a0bf17919edeb21bb99be1587",
+    "Hexalith.EventStore": "175082be7f108c95ea61e93b9df1ccf0a240534c",
+    "Hexalith.Memories": "74e4434fe2bffa7d850df99c5919706ba080cb31",
+    "Hexalith.Parties": "7b7898307e8eca3774843b145d339e9986018409",
+    "Hexalith.Tenants": "165bd76c908003fa92008632360ff8335cfd997a"
+  },
+  "createdWorktrees": [
+    {
+      "source": "/home/administrator/projects/hexalith/platform",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform",
+      "revision": "cebbf6a701ff537a3a8f9654338b914b2e70f7f4"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds",
+      "revision": "66b9136a0b223925e51177a51eb48852e2f12787"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons",
+      "revision": "1663028fb6d9f46a0bf17919edeb21bb99be1587"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore",
+      "revision": "175082be7f108c95ea61e93b9df1ccf0a240534c"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Memories",
+      "revision": "74e4434fe2bffa7d850df99c5919706ba080cb31"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Parties",
+      "revision": "7b7898307e8eca3774843b145d339e9986018409"
+    },
+    {
+      "source": "/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+      "path": "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Tenants",
+      "revision": "165bd76c908003fa92008632360ff8335cfd997a"
+    }
+  ],
+  "deliverableInputDifferences": [],
+  "focusedTests": [
+    {
+      "label": "hosted-and-parties",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "*PlatformHostedPublishingTests",
+        "-class",
+        "*PartiesAdoptionTests",
+        "-class",
+        "*PlatformDaprBindingsTests",
+        "-result-xml",
+        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/_bmad-output/implementation-artifacts/evidence/4-5/isolated-focused-hosted-and-parties.xml"
+      ],
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "isolated-focused-hosted-and-parties.xml",
+      "xmlSha256": "d8e0f1869ec96f15df6a9971ac77acd8605f7c5be7af3643ddff6ec7721f966c",
+      "log": "isolated-focused-hosted-and-parties.log",
+      "logSha256": "501e7d32f398ac23462cf7bb75217804af929f089bad9b0f0c365e131b43521e"
+    },
+    {
+      "label": "shared-dapr",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "*FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+        "-method",
+        "*TimesheetsReceiverGrantsOnlyEstablishedEventStorePostOperations",
+        "-method",
+        "*ResolvedComponentsHaveOnlySelectedConsumersAndEveryReceiverDeniesByDefault",
+        "-method",
+        "*PublisherInventoriesAloneCreateNoSubscriptions",
+        "-method",
+        "*GatewayAllowsOnlyEstablishedTenantsApiAndTimesheetsOperations",
+        "-method",
+        "*TenantsAndMemoriesReceiversHaveExactlyTheirDeclaredInvocationGrants",
+        "-method",
+        "*ActualOwnerOptionsShareResolvedNamesAndTelemetryStateIsIsolated",
+        "-method",
+        "*ExplicitSubscriptionRendersDeliveryAndDeclaredDeadLetterWithoutPublisherSubscriptions",
+        "-method",
+        "*InvalidDaprBindingsReturnSourceAndFieldWithoutDeclarations",
+        "-method",
+        "*ResolvedOptionKeysRejectCaseInsensitiveComponentConflicts",
+        "-method",
+        "*ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs",
+        "-method",
+        "*ReceiverRendersDeclaredDescendantsBeforeParentFallbacks",
+        "-method",
+        "*IndividuallyValidOwnersWithConflictingSharedRecoveryClassesRefuseBeforeResources",
+        "-method",
+        "*SubscriptionIdentitiesDistinguishConcatenationAndPhysicalAliases",
+        "-method",
+        "*InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources",
+        "-method",
+        "*UnsafeCertificateDirectoryRefusesBeforeAddingResources",
+        "-method",
+        "*ExternalAppHostDirectoryUsesResolvedPlatformCertificateBoundary",
+        "-result-xml",
+        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/_bmad-output/implementation-artifacts/evidence/4-5/isolated-focused-shared-dapr.xml"
+      ],
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "isolated-focused-shared-dapr.xml",
+      "xmlSha256": "5e84f3c46982ab39cda23ff5b55e817a66aa2b248b3161ec5ee916a134f37336",
+      "log": "isolated-focused-shared-dapr.log",
+      "logSha256": "1dc822906eefdd62da2319e768e74c8226df8651c63a93453ca6418b22876828"
+    },
+    {
+      "label": "readiness-diagnostics",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "*UnsupportedOptionalReadinessIsAnAtomicScopedDiagnostic",
+        "-result-xml",
+        "/tmp/bmad-4-5-frozen-nfaju0ri/platform/_bmad-output/implementation-artifacts/evidence/4-5/isolated-focused-readiness-diagnostics.xml"
+      ],
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "isolated-focused-readiness-diagnostics.xml",
+      "xmlSha256": "99ba26903d38fbd99aeda46e30b7ec1e0947ad29fe0b8431dc26b80c7436e834",
+      "log": "isolated-focused-readiness-diagnostics.log",
+      "logSha256": "e7ea77293b5c988406520f60341c5526520c054edc1bf35dee54e155016cb40d"
+    }
+  ],
+  "qualificationSha256": "72d4613d91365e9294afc2137cb53b329640d8d87b254f630e7dd9ebd497b355",
+  "qualifiedSourceCount": 1441,
+  "externalSourceDifferences": [
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs"
+  ],
+  "sourceOverrides": {
+    "archive": "isolated-source-overrides.tgz",
+    "archiveSha256": "d82878fdfe7e6038b8af9b65a60f41b9ba0e4e949f507f2b1feb9d36aa96df3b",
+    "manifest": "isolated-source-overrides.json",
+    "manifestSha256": "6a3f18eaf42e77e15247a4613091e5a14fcba987b07ceca68c92fd3495d1d2b5",
+    "count": 206
+  },
+  "externalDifferencesDisposition": {
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "Concurrent local test-launch change adds run-owned project-build artifacts; the hosted early-return branch and publishing inputs are unchanged.",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "Concurrent native-test executor work, separate from hosted graph rendering."
+  },
+  "temporaryWorktreeCleanup": {
+    "complete": true,
+    "removed": [
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Tenants",
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Parties",
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Memories",
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.EventStore",
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Commons",
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform/references/Hexalith.Builds",
+      "/tmp/bmad-4-5-frozen-nfaju0ri/platform"
+    ],
+    "temporaryParentRemoved": true
+  }
+}

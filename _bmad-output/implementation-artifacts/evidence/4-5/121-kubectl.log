@@ -1,29 +1,21 @@
 {
     "apiVersion": "v1",
-    "data": {
-        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXRlbmFudHMtYXBw"
-    },
-    "kind": "Secret",
+    "kind": "Namespace",
     "metadata": {
-        "creationTimestamp": "2026-10-22T17:49:12Z",
-        "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:stringData": {
-                        "f:token": {}
-                    }
-                },
-                "manager": "h45-environment",
-                "operation": "Apply",
-                "time": "2026-10-22T17:49:12Z"
-            }
-        ],
-        "name": "fixture-tenants-app",
-        "namespace": "reference",
-        "resourceVersion": "778",
-        "uid": "8f3be23b-653d-452d-8d9d-a7c31ea06106"
+        "creationTimestamp": "2026-10-22T18:30:36Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "environment"
+        },
+        "name": "environment",
+        "resourceVersion": "934",
+        "uid": "5144b719-775c-4bbe-83b8-07d06770fc09"
     },
-    "type": "Opaque"
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
 }

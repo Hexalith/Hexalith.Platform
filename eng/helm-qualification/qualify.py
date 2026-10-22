@@ -138,18 +138,61 @@ class Qualification:
                                  'sourcePackageProps': str(HERE / 'source-packages.props')}
         self.record['checks']['preflight'] = True
 
+    def native_build_inputs(self):
+        """Evaluate the source project graph and its actual compile/resource/import inputs."""
+        entry = ROOT / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
+        pending, seen, inputs = [entry], set(), set()
+        environment = dict(self.env)
+        self.env.update(UseHexalithProjectReferences='true', UseNuGetDeps='false', RunAnalyzers='false',
+                        DirectoryPackagesPropsPath=str(HERE / 'source-packages.props'))
+        try:
+            while pending:
+                project = pending.pop().resolve()
+                if project in seen or not project.is_file():
+                    continue
+                seen.add(project); inputs.add(project)
+                prefix = ['dotnet', 'msbuild', project]
+                evaluated = json.loads(self.run(prefix + ['-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference',
+                                                          '-getProperty:ProjectAssetsFile'], timeout=30).stdout)
+                if project == entry.resolve():
+                    self.composition_assets = Path(evaluated['Properties']['ProjectAssetsFile'])
+                for kind, items in evaluated['Items'].items():
+                    for item in items:
+                        path = Path(item.get('FullPath') or project.parent / item['Identity']).resolve()
+                        if kind == 'ProjectReference': pending.append(path)
+                        else: inputs.add(path)
+                # MSBuildAllProjects omits modern SDK imports; preprocessing lists resolved imports.
+                expanded = self.temp / ('imports-' + hashlib.sha256(str(project).encode()).hexdigest()[:16] + '.xml')
+                self.run(prefix + ['-preprocess:' + str(expanded)], timeout=30)
+                for line in expanded.read_text(encoding='utf-8-sig').splitlines():
+                    path = Path(line.strip())
+                    if path.is_absolute() and path.suffix in ('.props', '.targets', '.proj', '.csproj') and path.is_file():
+                        inputs.add(path)
+        finally:
+            self.env = environment
+        # Generated build outputs are derived from the recorded project/import inputs.
+        return {path for path in inputs if not any(part in ('bin', 'obj') for part in path.parts)}
+
     def source_inventory(self):
         paths = list(CHART.rglob('*')) + list((ROOT / 'src/Hexalith.Platform.Composition').glob('*.cs'))
         paths += list((ROOT / 'src/Hexalith.Platform.Composition').glob('*.csproj'))
         paths += list(HERE.glob('*.py')) + list(HERE.glob('*.props'))
+        paths += list(ROOT.glob('*.props')) + list(ROOT.glob('*.targets'))
         paths += list((ROOT / 'references').glob('*/Directory.Packages.props'))
         paths += [ROOT / 'tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs',
-                  HERE / 'README.md', ROOT / 'apphost.cs', HERE / 'toolchain.json',
+                  HERE / 'README.md', ROOT / 'apphost.cs', HERE / 'toolchain.json', ROOT / 'global.json',
+                  ROOT / 'nuget.config', ROOT / 'DaprSelfHostedMtls.cs',
                   ROOT / 'references/Hexalith.Builds/Props/Directory.Packages.props',
-                  ROOT / 'Directory.Packages.props', ROOT / 'references/Hexalith.EventStore/Directory.Packages.props']
+                  ROOT / 'references/Hexalith.Builds/Tools/write-platform-version-catalog.ps1']
         paths += list((ROOT / 'src/Hexalith.Platform.Composition/Declarations').glob('*.json'))
-        paths += [ROOT / 'references/Hexalith.Parties/module/hexalith.module-manifest.v2.json']
-        return {str(p.relative_to(ROOT)): sha(p) for p in sorted(set(paths)) if p.is_file()}
+        for owner in ('EventStore', 'Tenants', 'Memories', 'Parties'):
+            paths += list((ROOT / 'references' / ('Hexalith.' + owner) / 'module').rglob('*.json'))
+        tooling = ROOT / 'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling'
+        paths += [p for p in tooling.rglob('*') if p.suffix in ('.cs', '.csproj', '.props', '.targets', '.json')
+                  and not any(part in ('bin', 'obj') for part in p.parts)]
+        paths += list(self.native_build_inputs())
+        return {(str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)): sha(p)
+                for p in sorted(set(paths)) if p.is_file()}
 
     def verify_source(self):
         before = self.record['source']['files']
@@ -160,6 +203,34 @@ class Qualification:
         self.record['sourceChangedDuringRun'] = changes
         if any(changes.values()):
             raise AssertionError('source inventory or contents changed during qualification; rerun against stable inputs')
+
+    def resolved_kubernetes_integration(self):
+        """Retain resolved assets from the completed native build, not only requested pins."""
+        data_home = Path(self.env.get('XDG_DATA_HOME', Path.home() / '.local/share'))
+        candidates = []
+        for path in (data_home / 'dotnet/runfile').glob('apphost-*/obj/project.assets.json'):
+            assets = json.loads(path.read_text())
+            if assets.get('project', {}).get('restore', {}).get('projectPath') == str(ROOT / 'apphost.cs.csproj'):
+                candidates.append(path)
+        if len(candidates) != 1:
+            raise AssertionError('native resolved-package assets are missing or ambiguous')
+        paths = {'native': candidates[0],
+                 'composition': getattr(self, 'composition_assets', ROOT / 'src/Hexalith.Platform.Composition/obj/project.assets.json')}
+        expected = self.tools['aspireKubernetes']
+        evidence = {'package': 'Aspire.Hosting.Kubernetes', 'version': expected, 'expectedVersion': expected, 'resolved': {}}
+        for role, path in paths.items():
+            assets = json.loads(path.read_text())
+            packages = [(name, value) for name, value in assets['libraries'].items()
+                        if name.split('/')[0].lower() == 'aspire.hosting.kubernetes']
+            if len(packages) != 1 or packages[0][0].split('/', 1)[1] != expected:
+                raise AssertionError(role + ' resolved Aspire.Hosting.Kubernetes differs from the existing toolchain pin')
+            name, package = packages[0]
+            retained = self.evidence / ('resolved-' + role + '-project.assets.json')
+            shutil.copy2(path, retained)
+            evidence['resolved'][role] = {'version': name.split('/', 1)[1], 'assetsFile': retained.name,
+                                          'assetsSha256': sha(retained), 'packageSha512': package.get('sha512')}
+        self.record['tools']['aspireKubernetes'] = evidence
+        self.record['checks']['resolvedKubernetesIntegration'] = True
 
     def native_probe(self):
         output = self.temp / 'native-output'
@@ -173,6 +244,7 @@ class Qualification:
                       '--non-interactive', '--include-exception-details'], timeout=240)
         finally:
             self.env = previous
+        self.resolved_kubernetes_integration()
         if json.loads(metadata.read_text()) != graph():
             raise AssertionError('packaged graph metadata differs from the current native publishing graph')
         rendered = self.run([self.helm, 'template', 'native', output, '--namespace', 'reference']).stdout

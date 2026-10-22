@@ -76,9 +76,9 @@ not implement data restoration.
 Run from the Platform root with the repository's .NET test runner:
 
 ```bash
-dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
-  -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false \
-  -p:DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props"
+DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props" \
+  dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
+  -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false
 HELM_BIN=/absolute/path/to/verified/helm python3 -m unittest discover \
   -s eng/helm-qualification -p 'test_*.py' -v
 HELM_BIN=/absolute/path/to/verified/helm python3 eng/helm-qualification/qualify.py
@@ -134,3 +134,15 @@ entries. Different-version conflicts remain errors. The qualifier sets this path
 explicitly for source project evaluations, records it as an input, and hashes the
 wrapper and package import files. Catalog, owner and ordinary Platform package
 props remain unchanged; no dependency version is upgraded.
+
+The wrapper is an environment setting for .NET verification because owner-build
+subprocesses inherit the environment, including nested builds started by tests.
+A command-line MSBuild property alone does not reach those subprocesses.
+The qualifier evaluates the native composition project-reference closure and
+hashes actual source/resource inputs and resolved imports, alongside all four
+authoritative module manifests. It records linked sources, the Builds resolver
+and catalog-generation inputs, and detects added/deleted inputs on reevaluation.
+After native publishing, the resolved native and composition
+`Aspire.Hosting.Kubernetes` identities must both equal `aspireKubernetes` in
+`toolchain.json`; retained project-assets files, hashes and package SHA512 values
+provide the resolved-package evidence. No package version is changed.

@@ -1,0 +1,86 @@
+{
+    "apiVersion": "gateway.networking.k8s.io/v1",
+    "kind": "Gateway",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T18:30:36Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "gateway.networking.k8s.io/v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:spec": {
+                        "f:gatewayClassName": {},
+                        "f:listeners": {
+                            "k:{\"name\":\"https\"}": {
+                                ".": {},
+                                "f:allowedRoutes": {
+                                    "f:namespaces": {
+                                        "f:from": {}
+                                    }
+                                },
+                                "f:name": {},
+                                "f:port": {},
+                                "f:protocol": {},
+                                "f:tls": {
+                                    "f:certificateRefs": {},
+                                    "f:mode": {}
+                                }
+                            }
+                        }
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T18:30:36Z"
+            }
+        ],
+        "name": "fixture-gateway",
+        "namespace": "environment",
+        "resourceVersion": "943",
+        "uid": "1e1c70db-71b3-499d-9310-571fe8193490"
+    },
+    "spec": {
+        "gatewayClassName": "fixture",
+        "listeners": [
+            {
+                "allowedRoutes": {
+                    "namespaces": {
+                        "from": "All"
+                    }
+                },
+                "name": "https",
+                "port": 443,
+                "protocol": "HTTPS",
+                "tls": {
+                    "certificateRefs": [
+                        {
+                            "group": "",
+                            "kind": "Secret",
+                            "name": "fixture-certificate"
+                        }
+                    ],
+                    "mode": "Terminate"
+                }
+            }
+        ]
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastTransitionTime": "1970-01-01T00:00:00Z",
+                "message": "Waiting for controller",
+                "reason": "Pending",
+                "status": "Unknown",
+                "type": "Accepted"
+            },
+            {
+                "lastTransitionTime": "1970-01-01T00:00:00Z",
+                "message": "Waiting for controller",
+                "reason": "Pending",
+                "status": "Unknown",
+                "type": "Programmed"
+            }
+        ]
+    }
+}

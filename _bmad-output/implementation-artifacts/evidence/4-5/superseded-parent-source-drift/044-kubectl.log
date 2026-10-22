@@ -1,0 +1,44 @@
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T18:16:17Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "reference",
+            "pod-security.kubernetes.io/audit": "restricted",
+            "pod-security.kubernetes.io/enforce": "restricted",
+            "pod-security.kubernetes.io/enforce-version": "v1.35",
+            "pod-security.kubernetes.io/warn": "restricted"
+        },
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:labels": {
+                            "f:pod-security.kubernetes.io/audit": {},
+                            "f:pod-security.kubernetes.io/enforce": {},
+                            "f:pod-security.kubernetes.io/enforce-version": {},
+                            "f:pod-security.kubernetes.io/warn": {}
+                        }
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T18:16:17Z"
+            }
+        ],
+        "name": "reference",
+        "resourceVersion": "982",
+        "uid": "3116e853-3eba-4052-ba2e-66242daac9c0"
+    },
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
+}
