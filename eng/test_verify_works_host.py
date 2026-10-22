@@ -163,26 +163,44 @@ class WorksEvidenceGateTests(unittest.TestCase):
         commands = [{'name': name, 'exitCode': 0} for name in names + ['build-only']]
         self.assertEqual(verify_works_host.target_commands(commands), commands[:-1])
 
-    def test_linked_composition_source_exception_is_bound_and_detects_mutation(self):
+    def test_linked_composition_source_exception_is_bound_from_the_compiled_root_and_detects_mutation(self):
         works = self.directory()
-        for project in ('Identity', 'Composition'):
-            directory = works / ('references/Hexalith.Platform/src/Hexalith.Platform.' + project)
+        platform = self.directory()
+        identity = works / 'references/Hexalith.Platform/src/Hexalith.Platform.Identity'
+        stale = works / 'references/Hexalith.Platform/src/Hexalith.Platform.Composition'
+        compiled = platform / 'src/Hexalith.Platform.Composition'
+        for directory, project in ((identity, 'Identity'), (stale, 'Composition'), (compiled, 'Composition')):
             directory.mkdir(parents=True)
-            (directory / ('Hexalith.Platform.' + project + '.csproj')).write_text('<Project />')
             (directory / 'Adapter.cs').write_text('// original ' + project)
             (directory / 'bin').mkdir()
             (directory / 'bin/Generated.cs').write_text('// excluded')
+        (identity / 'Hexalith.Platform.Identity.csproj').write_text('<Project />')
+        (stale / 'Hexalith.Platform.Composition.csproj').write_text('<Project />')
+        (compiled / 'Hexalith.Platform.Composition.csproj').write_text(
+            '<Project><ItemGroup><Compile Include="../../DaprSelfHostedMtls.cs" Link="DaprSelfHostedMtls.cs" /></ItemGroup></Project>')
+        linked = platform / 'DaprSelfHostedMtls.cs'
+        linked.write_text('// linked control plane')
         test_project = works / 'tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj'
         test_project.parent.mkdir(parents=True)
         test_project.write_text('<Project />')
         with patch('verify_works_host.subprocess.check_output', return_value='fixture-commit\n'):
-            before = verify_works_host.linked_fixture_snapshot(works)
-            composition = works / 'references/Hexalith.Platform/src/Hexalith.Platform.Composition/Adapter.cs'
-            self.assertIn(str(composition), before['sourceFiles'])
+            before = verify_works_host.linked_fixture_snapshot(works, platform)
+            self.assertEqual(before['compositionRoot'], str(platform))
+            self.assertIn(str(compiled / 'Adapter.cs'), before['sourceFiles'])
+            self.assertIn(str(linked), before['sourceFiles'])
+            self.assertIn(str(identity / 'Adapter.cs'), before['sourceFiles'])
+            self.assertFalse(any(name.startswith(str(stale)) for name in before['sourceFiles']))
             self.assertFalse(any('/bin/' in name for name in before['sourceFiles']))
-            composition.write_text('// changed composition')
-            after = verify_works_host.linked_fixture_snapshot(works)
-            self.assertNotEqual(before['sourceFiles'][str(composition)], after['sourceFiles'][str(composition)])
+            # The uncompiled Works dependency copy is not the bound exception.
+            (stale / 'Adapter.cs').write_text('// changed uncompiled copy')
+            self.assertEqual(verify_works_host.linked_fixture_snapshot(works, platform), before)
+            for path in (compiled / 'Adapter.cs', linked):
+                with self.subTest(path=path.name):
+                    original = path.read_text()
+                    path.write_text('// changed compiled composition')
+                    after = verify_works_host.linked_fixture_snapshot(works, platform)
+                    self.assertNotEqual(before['sourceFiles'][str(path)], after['sourceFiles'][str(path)])
+                    path.write_text(original)
 
     def test_ci_execution_records_release_checks_without_claiming_absent_debug_success(self):
         works = self.directory()
@@ -203,11 +221,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.source_snapshot', return_value=snapshot), \
                 patch('verify_works_host.fixture_sources', return_value={}), \
                 patch('verify_works_host.canonical_source_snapshot', return_value=snapshot), \
-                patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
+                patch('verify_works_host.linked_fixture_snapshot', return_value={}) as linked, \
                 patch('verify_works_host.sha256', return_value=DIGEST), \
                 patch('verify_works_host.require_passed_tests', return_value={'total': 1, 'passed': 1, 'skipped': 0}), \
                 patch('verify_works_host.subprocess.run', side_effect=command):
             self.assertEqual(verify_works_host.run_verification(args), 1)
+        # The Composition exception is bound from the Platform tree passed to the consumer as PlatformWorksRuntimeRoot.
+        platform = Path(verify_works_host.__file__).resolve().parents[1]
+        self.assertEqual(linked.call_args.args, (works, platform))
         ledger = json.loads((artifacts / 'ledger.json').read_text())
         self.assertEqual(ledger['profile']['name'], 'ci')
         self.assertIn('Release', ledger['checks'])
@@ -221,6 +242,97 @@ class WorksEvidenceGateTests(unittest.TestCase):
             if entry['command'][0] == 'dotnet':
                 self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
+
+    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None):
+        """Drive the real gate sequence through toolchain qualification; stop at the first live command."""
+        works = self.directory()
+        for _, _, _, consumer in ROWS.values():
+            if not consumer.startswith('P/'):
+                (works / consumer).parent.mkdir(parents=True, exist_ok=True)
+                (works / consumer).write_text('// consumer')
+        artifacts = self.directory() / 'evidence'
+        runtime = self.directory() / 'daprd'
+        runtime.write_bytes(runtime_bytes)
+        platform = Path(verify_works_host.__file__).resolve().parents[1]
+        qualified = hashlib.sha256(b'qualified runtime').hexdigest()
+        pins = {'daprCli': '1.18.2', 'daprRuntime': '1.18.7', 'linuxAmd64DaprdSha256': qualified,
+                'catalog': str(platform / verify_works_host.CATALOG), 'catalogSha256': DIGEST}
+        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts,
+                                'prepare_only': False, 'profile': 'ci'})()
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        producers = {package: {'version': VERSION} for _, package, _, _ in ROWS.values()} | {'Hexalith.EventStore.Client': {'version': VERSION}}
+
+        def command(arguments, **kwargs):
+            name = Path(kwargs['stdout'].name).stem
+            if verify_works_host.target_commands([{'name': name}]):
+                raise RuntimeError('stopped at live lane ' + name)
+            if name == 'agents-full-refusal':
+                kwargs['stdout'].write('DependencyNotAvailable: EXT-HOST-1')
+                return subprocess.CompletedProcess(arguments, 1)
+            return subprocess.CompletedProcess(arguments, 0)
+
+        prepare = verify_works_host.isolated_daprd.prepare
+
+        def isolated(directory, path, port):
+            binding = prepare(directory, path, port)
+            return binding | ({'runtimeSha256': isolated_hash} if isolated_hash else {})
+
+        with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
+                patch('verify_works_host.require_consumer_pins', return_value={}), \
+                patch('verify_works_host.require_host_package_pins', return_value={}), \
+                patch('verify_works_host.source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.fixture_sources', return_value={}), \
+                patch('verify_works_host.canonical_source_snapshot', return_value=snapshot), \
+                patch('verify_works_host.linked_fixture_snapshot', return_value={}), \
+                patch('verify_works_host.sha256', return_value=DIGEST), \
+                patch('verify_works_host.require_passed_tests', return_value={'total': 1, 'passed': 1, 'skipped': 0}), \
+                patch('verify_works_host.require_identical_runtime', return_value={}), \
+                patch('verify_works_host.published_producers', return_value=producers), \
+                patch('verify_works_host.require_published_runtime_source', return_value={}), \
+                patch('verify_works_host.retained_works_host.prepare', return_value={}), \
+                patch('verify_works_host.select_control_plane_ports', return_value={'sentry': 41001, 'placement': 41002, 'scheduler': 41003}), \
+                patch('verify_works_host.isolated_daprd.prepare', side_effect=isolated), \
+                patch('works_toolchain.load', return_value=pins), \
+                patch('works_toolchain.subprocess.check_output', side_effect=['1.18.7', 'CLI version: 1.18.2\nRuntime version: 1.18.7']), \
+                patch.dict(os.environ, {'WORKS_PLATFORM_DAPRD': str(runtime)}), \
+                patch('verify_works_host.subprocess.run', side_effect=command):
+            self.assertEqual(verify_works_host.run_verification(args), 1)
+        return json.loads((artifacts / 'ledger.json').read_text()), artifacts, qualified
+
+    def test_unqualified_runtime_refuses_before_any_live_platform_lane(self):
+        ledger, artifacts, _ = self.run_until_live_lanes(b'unqualified runtime')
+        self.assertIn("qualified Works proof runtime hash", ledger['failure'])
+        self.assertEqual(verify_works_host.target_commands(ledger['commands']), [])
+        self.assertNotIn('qualifiedToolchain', ledger)
+        self.assertNotIn('isolatedRuntime', ledger)
+        self.assertFalse((artifacts / 'isolated-daprd').exists())
+        # Preparation did run, so the refusal is the toolchain gate and not an earlier stop.
+        self.assertIn('works-consumer-release', [entry['name'] for entry in ledger['commands']])
+
+    def test_isolated_runtime_other_than_the_qualified_bytes_refuses_before_any_live_platform_lane(self):
+        ledger, _, qualified = self.run_until_live_lanes(b'qualified runtime', isolated_hash='f' * 64)
+        self.assertIn('isolated daprd differs', ledger['failure'])
+        self.assertEqual(ledger['qualifiedToolchain']['runtimeSha256'], qualified)
+        self.assertEqual(verify_works_host.target_commands(ledger['commands']), [])
+
+    def test_qualified_runtime_binds_toolchain_and_both_isolated_launchers_before_live_lanes(self):
+        ledger, _, qualified = self.run_until_live_lanes(b'qualified runtime')
+        self.assertIn('stopped at live lane retained-host-preflight', ledger['failure'])
+        self.assertEqual(ledger['qualifiedToolchain']['runtimeSha256'], qualified)
+        self.assertEqual(ledger['qualifiedToolchain']['linuxAmd64DaprdSha256'], qualified)
+        self.assertEqual(ledger['isolatedRuntime']['runtimeSha256'], qualified)
+        self.assertEqual(ledger['retainedPreflightRuntime']['runtimeSha256'], qualified)
+        self.assertEqual([entry['name'] for entry in verify_works_host.target_commands(ledger['commands'])], ['retained-host-preflight'])
+
+    def test_toolchain_must_be_derived_from_the_platform_builds_catalog(self):
+        platform = Path(verify_works_host.__file__).resolve().parents[1]
+        catalog = str(platform / verify_works_host.CATALOG)
+        with patch('verify_works_host.sha256', return_value=DIGEST):
+            verify_works_host.require_toolchain_authority({'catalog': catalog, 'catalogSha256': DIGEST}, platform)
+            for qualified in ({'catalog': str(self.directory() / 'Directory.Packages.props'), 'catalogSha256': DIGEST},
+                              {'catalog': catalog, 'catalogSha256': 'b' * 64}):
+                with self.subTest(qualified=qualified), self.assertRaisesRegex(ValueError, 'Builds catalog'):
+                    verify_works_host.require_toolchain_authority(qualified, platform)
 
     def test_agents_scaffold_defaults_to_source_debug_but_accepts_package_release(self):
         directory = self.directory()

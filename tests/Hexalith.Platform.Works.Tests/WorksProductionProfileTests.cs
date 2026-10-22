@@ -73,14 +73,72 @@ public sealed class WorksProductionProfileTests
     [InlineData("1.18.3")]
     [InlineData("1.18.6")]
     [InlineData("1.17.99")]
+    [InlineData("1.9.0")]
+    [InlineData("0.99.99")]
     [InlineData("1.18.7-preview")]
     [InlineData("01.18.7")]
+    [InlineData("1.18.07")]
     public void UnsafeDaprRuntimeIsRefused(string runtime)
     {
         JsonObject candidate = Candidate();
         candidate["daprRuntimeVersion"] = runtime;
         Should.Throw<InvalidDataException>(() => WorksProductionProfile.Validate(candidate.ToJsonString()))
             .Message.ShouldContain("1.18.7");
+    }
+
+    /// <summary>The floor is numeric, not an exact pin or a string comparison: every stable later runtime is admissible.</summary>
+    [Theory]
+    [InlineData("1.18.7")]
+    [InlineData("1.18.8")]
+    [InlineData("1.18.10")]
+    [InlineData("1.19.0")]
+    [InlineData("1.100.0")]
+    [InlineData("2.0.0")]
+    public void QualifiedOrLaterDaprRuntimeIsAccepted(string runtime)
+    {
+        JsonObject candidate = Candidate();
+        candidate["daprRuntimeVersion"] = runtime;
+        Should.NotThrow(() => WorksProductionProfile.Validate(candidate.ToJsonString()));
+    }
+
+    /// <summary>The checked-in schema's runtime pattern and floor agree with the startup validator for every case.</summary>
+    [Theory]
+    [InlineData("1.18.7", true)]
+    [InlineData("1.18.8", true)]
+    [InlineData("1.18.10", true)]
+    [InlineData("1.19.0", true)]
+    [InlineData("1.100.0", true)]
+    [InlineData("2.0.0", true)]
+    [InlineData("1.18.6", false)]
+    [InlineData("1.18.3", false)]
+    [InlineData("1.17.99", false)]
+    [InlineData("1.9.0", false)]
+    [InlineData("0.99.99", false)]
+    [InlineData("1.18.7-preview", false)]
+    [InlineData("01.18.7", false)]
+    [InlineData("1.18.07", false)]
+    public void SchemaRuntimeFloorAgreesWithTheValidator(string runtime, bool admissible)
+    {
+        JsonNode schema = JsonNode.Parse(File.ReadAllText(Path.Combine(Root, "config", "works-production-profile.schema.json")))!
+            ["properties"]!["daprRuntimeVersion"]!;
+        string pattern = schema["pattern"]!.GetValue<string>();
+        string floor = schema["not"]!["pattern"]!.GetValue<string>();
+        bool schemaAdmits = System.Text.RegularExpressions.Regex.IsMatch(runtime, pattern)
+            && !System.Text.RegularExpressions.Regex.IsMatch(runtime, floor);
+        schemaAdmits.ShouldBe(admissible, "schema daprRuntimeVersion " + runtime);
+        JsonObject candidate = Candidate();
+        candidate["daprRuntimeVersion"] = runtime;
+        bool validatorAdmits = true;
+        try
+        {
+            WorksProductionProfile.Validate(candidate.ToJsonString());
+        }
+        catch (InvalidDataException)
+        {
+            validatorAdmits = false;
+        }
+
+        validatorAdmits.ShouldBe(schemaAdmits, "validator daprRuntimeVersion " + runtime);
     }
 
     /// <summary>Both mandatory transport protections must remain enabled.</summary>

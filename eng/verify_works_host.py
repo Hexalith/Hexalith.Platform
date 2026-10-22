@@ -927,6 +927,21 @@ def select_control_plane_ports(ephemeral_range=None, reserved_ranges=None):
             listener.close()
 
 
+def require_toolchain_authority(qualified, platform):
+    """The qualified toolchain must be derived from the same Builds catalog that selects the SDK and control plane."""
+    if Path(qualified["catalog"]).resolve() != (Path(platform) / CATALOG).resolve() or qualified["catalogSha256"] != sha256(Path(platform) / CATALOG):
+        raise ValueError("The Works proof toolchain was not derived from the Platform Builds catalog: " + str(qualified["catalog"]))
+    return qualified
+
+
+def require_qualified_runtime(binding, qualified):
+    """An isolated launch adapter may only execute the exact Platform-qualified daprd bytes."""
+    if binding["runtimeSha256"] != qualified["runtimeSha256"] or binding["runtimeSha256"] != qualified["linuxAmd64DaprdSha256"] \
+            or Path(binding["runtime"]) != Path(qualified["runtime"]):
+        raise ValueError("The isolated daprd differs from the qualified Works proof runtime")
+    return binding
+
+
 def canonical_source_snapshot(root):
     """Bind full canonical revisions and all ordinary build, source, fixture and verifier inputs."""
     output = subprocess.check_output(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
@@ -938,19 +953,29 @@ def canonical_source_snapshot(root):
             "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
 
 
-def linked_fixture_snapshot(works):
-    """Bind the explicitly source-only Identity/Composition graphs and Parties Compile links used by the proof."""
+def linked_fixture_snapshot(works, composition_root):
+    """Bind the explicitly source-only Identity/Composition graphs and Parties Compile links used by the proof.
+
+    Composition is bound from the Platform root the consumer actually compiles (its PlatformWorksRuntimeRoot),
+    never from the Works dependency copy that the parity consumer build does not select.
+    """
     parties = works / "references/Hexalith.Parties"
     identity = works / "references/Hexalith.Platform/src/Hexalith.Platform.Identity"
-    composition = works / "references/Hexalith.Platform/src/Hexalith.Platform.Composition"
+    composition = Path(composition_root) / "src/Hexalith.Platform.Composition"
     files = set(identity.rglob("*.cs")) | {identity / "Hexalith.Platform.Identity.csproj"}
     files |= set(composition.rglob("*.cs")) | {composition / "Hexalith.Platform.Composition.csproj"}
+    # Composition also compiles explicitly linked Platform sources (for example ../../DaprSelfHostedMtls.cs).
+    for item in ET.parse(composition / "Hexalith.Platform.Composition.csproj").getroot().iter("Compile"):
+        include = item.get("Include", "")
+        if include and "$(" not in include and "*" not in include:
+            files.add(Path(os.path.normpath(composition / include.replace("\\", "/"))))
     project = works / "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj"
     for item in ET.parse(project).getroot().iter("Compile"):
         include = item.get("Include", "")
         if include.startswith("$(HexalithPartiesRoot)/"):
             files.add(parties / include.removeprefix("$(HexalithPartiesRoot)/"))
     return {"sourceFiles": {str(path): sha256(path) for path in sorted(files) if not {"bin", "obj"}.intersection(path.parts)},
+            "compositionRoot": str(composition_root),
             "commits": {str(root): subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
                         for root in (parties, identity.parents[1])}}
 
@@ -1029,7 +1054,7 @@ def run_verification(args):
             summary["canonicalSources"]["Platform"] = canonical_source_snapshot(Path(summary["platformSourceSnapshot"]["originRoot"]))
         else:
             summary["canonicalSources"]["Platform"] = canonical_source_snapshot(platform)
-        summary["linkedFixtureSources"] = linked_fixture_snapshot(works)
+        summary["linkedFixtureSources"] = linked_fixture_snapshot(works, platform)
         summary["verifierSha256"] = sha256(Path(__file__))
         summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in VERIFIER_HELPERS}
         save()
@@ -1160,11 +1185,13 @@ def run_verification(args):
             "excludedReservedRanges": [list(bounds) for bounds in reserved_ranges],
             "excludedDockerBoundaryPorts": [65535], "selected": control_plane_ports,
             "policy": "Distinct dual-stack available ports outside application/reserved ranges; Docker WSL boundary port 65535 excluded"}
-        summary["qualifiedToolchain"] = works_toolchain.qualify(platform,
-            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")))
+        summary["qualifiedToolchain"] = require_toolchain_authority(works_toolchain.qualify(platform,
+            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd"))), platform)
+        save()
         isolated_runtime = artifacts / "isolated-daprd"
-        summary["isolatedRuntime"] = isolated_daprd.prepare(isolated_runtime,
-            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
+        summary["isolatedRuntime"] = require_qualified_runtime(isolated_daprd.prepare(isolated_runtime,
+            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"]),
+            summary["qualifiedToolchain"])
         runtime_environment = {"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
             "WORKS_PLATFORM_ROOT": str(platform), "WORKS_PLATFORM_WORKS_ROOT": str(works),
             "WORKS_RETAINED_HOST_ROOT": str(retained_root), "WORKS_RETAINED_HOST_ASSEMBLY": str(retained_assembly),
@@ -1191,8 +1218,9 @@ def run_verification(args):
         # The archive must actually start before expensive write/snapshot/restore scenarios begin.
         # Its isolated evidence never enters the matrix's actualStarts or rollback phase records.
         preflight_runtime = artifacts / "isolated-daprd-retained-preflight"
-        summary["retainedPreflightRuntime"] = isolated_daprd.prepare(preflight_runtime,
-            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"])
+        summary["retainedPreflightRuntime"] = require_qualified_runtime(isolated_daprd.prepare(preflight_runtime,
+            os.environ.get("WORKS_PLATFORM_DAPRD", str(Path.home() / ".dapr/bin/daprd")), control_plane_ports["sentry"]),
+            summary["qualifiedToolchain"])
         preflight_environment = environment | {"WORKS_PLATFORM_HOST_EVIDENCE": str(artifacts / "retained-preflight-starts.jsonl"),
             "WORKS_SDK_PROOF_EVIDENCE_PATH": str(artifacts / "retained-preflight-states.jsonl"),
             "WORKS_PLATFORM_DAPRD_RUNTIME_PATH": str(preflight_runtime)}
@@ -1256,7 +1284,7 @@ def run_verification(args):
                 raise ValueError("A verifier helper changed during execution: " + name)
         require_unchanged_fixture_sources(works, summary["fixtureSources"])
         retained_works_host.verify(summary["retainedHostSource"])
-        if linked_fixture_snapshot(works) != summary["linkedFixtureSources"]:
+        if linked_fixture_snapshot(works, platform) != summary["linkedFixtureSources"]:
             raise ValueError("Explicit linked test-only Identity or Parties fixture sources changed during execution")
         for name, baseline in summary["canonicalSources"].items():
             if name == "Platform" and snapshot_manifest:
