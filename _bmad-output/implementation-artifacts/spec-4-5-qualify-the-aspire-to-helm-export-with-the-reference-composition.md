@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'draft'
+status: 'ready-for-dev'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi'

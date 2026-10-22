@@ -2,9 +2,11 @@
 title: '4.6 Encode release, attempt, qualification and Administrator records'
 type: 'feature'
 created: '2026-10-22'
-status: 'draft'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
+builds_baseline_commit: '2210aaaf54c779b8763dbf1e8767bdc1b422bc6d'
 story_key: '4-6-encode-release-attempt-qualification-and-administrator-recor'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
