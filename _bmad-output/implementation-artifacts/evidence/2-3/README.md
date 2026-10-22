@@ -87,3 +87,15 @@ Scoped review checks cover diagnostic retention through real service disposal,
 all mapped checkout exclusions, certificate cleanup ownership, aggregate cleanup
 failures, native-listener inventory and the existing Works qualification adapter.
 They do not expand the Works live qualification claim.
+
+
+Review-fix verification: [13 focused C# cases passed](review-focused-tests.log)
+with no failures or skips (31.470 seconds), including registered-service failure
+disposal, shared certificate-parent cleanup, mapped owner/symlink exclusions,
+every-owned-session cleanup, listener inventory, and Works callback-time Sentry
+resolution. [Eight adapter cases passed](review-adapter-tests.log), including the
+exact bound native endpoint and foreign-endpoint refusal. The supplemental
+[library](review-library-build.log) and [test](review-tests-build.log) builds passed
+with `--no-restore -p:BuildProjectReferences=false -p:RunAnalyzers=false`; each
+reported zero warnings/errors. Full normal-build, ordinary-suite, and live/file-entry
+rechecks remain assigned to the parent verification pass.

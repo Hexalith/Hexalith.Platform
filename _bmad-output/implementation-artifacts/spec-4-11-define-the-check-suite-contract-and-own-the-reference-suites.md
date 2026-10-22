@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 11
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '4-11-define-the-check-suite-contract-and-own-the-reference-suites'
@@ -75,6 +75,7 @@ Platform-owned sources inherit owner `@jpiquot` from `.github/CODEOWNERS`. Prese
 - Approved Option A implemented in Builds and Platform; all seven scoped tasks complete. Tenants positive mappings remain blocked and sprint Story 4.11 stays in progress.
 - Parent acceptance audit corrected UTC-Z parsing, normal projection lag, fresh-install null-baseline support and accurate CLI surface metadata.
 - First-pass matrix coverage ran: immutable/tampered packages and missing ownership/mappings in CheckSuiteContractTests; independent identity/outcome admission cases; runner timeout/skip/failure/redirect/production guards; explicit Tenants blocker checks. Full Evidence assembly: 147 passed, no skips. Platform: 15 passed.
+- Final scoped implementation is complete after review corrections and parent verification. This spec's `done` status applies to approved Option A; sprint Story 4.11 remains `in-progress` with its owned Tenants follow-up open.
 
 ## Spec Change Log
 
@@ -112,8 +113,12 @@ Independent review pass 1, 2026-10-22. All three layers reported before triage. 
 
 | Parent-2 | low | patch | Concurrent Story 4.5 review recorded the 110-character Party ID truncation collision. Distinct accepted invocation IDs sharing that prefix generated the same aggregate. A direct SHA-256 derivation from the complete invocation removes the collision; a two-invocation regression pins it. The existing deferred ledger entry is preserved. |
 
+All patch findings are resolved and covered by the final checks. The two low-severity CODEOWNERS findings retain their recorded rejection; no review finding was silently dropped. The Tenants follow-up is the approved remaining story work, with publication refusal preserved.
+
 ## Verification
 
-- Builds: `dotnet test test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --configuration Debug` — contract, package and CLI tests pass; use focused built-assembly execution if environment-blocked.
-- Platform: `python3 -m unittest discover -s checks/reference -p 'test_*.py'` — package/runner matrix passes without hosted credentials.
-- Reference packages validate; reference publication eligibility fails explicitly for retained coverage blockers. Hosted execution follows later. Leave sprint Story 4.11 `in-progress`.
+- Builds: `dotnet build test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --configuration Debug --no-restore -m:1` — passed with analyzers enabled, zero warnings and zero errors.
+- Builds: `dotnet test/Hexalith.Builds.Evidence.Tests/bin/Debug/net10.0/Hexalith.Builds.Evidence.Tests.dll` — 178 passed, zero failed/skipped. Direct xUnit execution avoids the repository's `dotnet test` MTP/VSTest incompatibility without weakening build gates.
+- Platform: `python3 -m unittest discover -v -s checks/reference -p 'test_*.py'` and the same command with `python3 -O` — 23 passed in each mode, using controlled endpoints and no hosted credentials.
+- Fresh package/validate runs passed for all five reference suites. Registry coverage returned exit 6 and exactly `HXS006`, retaining the three Tenants publication blockers.
+- Final logs, commands, source hashes and package reports are retained in `evidence/4-11/verification-final.json` and `evidence/4-11/reference-package-validation-final.json`. Hosted execution follows later. Sprint Story 4.11 stays `in-progress`.

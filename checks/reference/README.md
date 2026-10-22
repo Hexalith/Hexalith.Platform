@@ -68,7 +68,7 @@ python3 -m unittest discover -s checks/reference -p 'test_*.py'
 python3 -O -m unittest discover -s checks/reference -p 'test_*.py'
 ```
 
-These tests use controlled loopback HTTP and a mocked candidate transport. They
+These tests use controlled loopback HTTP and a controlled candidate executable. They
 exercise response shapes, durable readback requirements and nonpassing/token
 handling, and are never hosted E2E qualification. Schema validity, local tests,
 specimen hosts and health probes do not satisfy hosted evidence.
