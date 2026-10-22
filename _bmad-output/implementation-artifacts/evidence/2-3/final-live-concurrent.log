@@ -1,0 +1,30 @@
+Command: HEXALITH_PLATFORM_CONCURRENT_LIVE=1 HEXALITH_DAPR_HOME=/tmp/platform-2-3-tool-inputs-y9ophakd HEXALITH_PLATFORM_CONCURRENT_EVIDENCE=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-3/live-concurrent-post-review ['dotnet', 'tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll', '-method', '*TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync']
+UTC: 2026-10-22T17:45:21.613528+00:00
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync [FAIL]
+      Shouldly.ShouldAssertException : started.IsReady
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          HXR025: Unready resource 'eventstore' last='state=Finished;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'memories' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'memories-access-telemetry' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'memories-access-telemetry-clock' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'memories-access-telemetry-clock-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'memories-access-telemetry-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'memories-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'tenants' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'tenants-api' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'tenants-api-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      HXR025: Unready resource 'tenants-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/tmp/platform-two-runs-84a7a1d1b3794ad1a8fa3c153f69b647/state/diagnostics/ac976b6dcbf7380d27d5a3c09d9f71b8'.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformConcurrentRunTests.cs(50,0): at Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync()
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 39.984s

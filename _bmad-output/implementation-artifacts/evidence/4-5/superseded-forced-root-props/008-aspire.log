@@ -1,0 +1,33 @@
+🛠️ Building AppHost... apphost.cs
+🛠️ Executing step publish
+  Determining projects to restore...
+/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj : error 
+NU1010: The following PackageReference items do not define a corresponding PackageVersion item: ByteAether.Ulid. Projects using Central Package Management must 
+declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+  Failed to restore 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj (in 123 
+ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj 
+(in 295 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 378 ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 
+388 ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 
+382 ms).
+  Restored 
+/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj
+(in 388 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 392 ms).
+  Restored 
+/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj (in
+389 ms).
+  Restored /home/administrator/projects/hexalith/platform/apphost.cs.csproj (in 447 ms).
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj (in 
+473 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 472 ms).
+❌ An unexpected error occurred: The app host build failed.
+📄 See logs at /home/administrator/.aspire/logs/cli_20261022T174538_941d210b.log
+
+A new version of Aspire is available: 13.6.3
+To update, run: aspire update
+For more information, see: https://aka.ms/aspire/update

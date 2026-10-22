@@ -7,7 +7,7 @@
             "meta.helm.sh/release-name": "reference",
             "meta.helm.sh/release-namespace": "reference"
         },
-        "creationTimestamp": "2026-10-22T17:35:22Z",
+        "creationTimestamp": "2026-10-22T17:40:05Z",
         "generation": 1,
         "labels": {
             "app.kubernetes.io/managed-by": "Helm",
@@ -313,7 +313,7 @@
                 },
                 "manager": "helm",
                 "operation": "Apply",
-                "time": "2026-10-22T17:35:22Z"
+                "time": "2026-10-22T17:40:05Z"
             },
             {
                 "apiVersion": "apps/v1",
@@ -356,13 +356,13 @@
                 "manager": "kube-controller-manager",
                 "operation": "Update",
                 "subresource": "status",
-                "time": "2026-10-22T17:35:23Z"
+                "time": "2026-10-22T17:40:05Z"
             }
         ],
         "name": "tenants-api",
         "namespace": "reference",
-        "resourceVersion": "1107",
-        "uid": "82312371-8b13-414e-a72c-8e10de7f44fd"
+        "resourceVersion": "1172",
+        "uid": "bb7c6110-af16-4603-9f6a-e61d1425c013"
     },
     "spec": {
         "progressDeadlineSeconds": 600,
@@ -666,16 +666,16 @@
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2026-10-22T17:35:22Z",
-                "lastUpdateTime": "2026-10-22T17:35:22Z",
+                "lastTransitionTime": "2026-10-22T17:40:05Z",
+                "lastUpdateTime": "2026-10-22T17:40:05Z",
                 "message": "Deployment does not have minimum availability.",
                 "reason": "MinimumReplicasUnavailable",
                 "status": "False",
                 "type": "Available"
             },
             {
-                "lastTransitionTime": "2026-10-22T17:35:22Z",
-                "lastUpdateTime": "2026-10-22T17:35:23Z",
+                "lastTransitionTime": "2026-10-22T17:40:05Z",
+                "lastUpdateTime": "2026-10-22T17:40:05Z",
                 "message": "ReplicaSet \"tenants-api-545d8d6d45\" is progressing.",
                 "reason": "ReplicaSetUpdated",
                 "status": "True",

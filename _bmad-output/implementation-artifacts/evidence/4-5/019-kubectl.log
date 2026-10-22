@@ -11,7 +11,7 @@
                     "prometheus.io/port": "9090",
                     "prometheus.io/scrape": "true"
                 },
-                "creationTimestamp": "2026-10-22T17:33:56Z",
+                "creationTimestamp": "2026-10-22T17:38:20Z",
                 "generateName": "dapr-operator-74bf8cfb58-",
                 "generation": 1,
                 "labels": {
@@ -23,7 +23,7 @@
                     "app.kubernetes.io/version": "1.18.7",
                     "pod-template-hash": "74bf8cfb58"
                 },
-                "name": "dapr-operator-74bf8cfb58-hk626",
+                "name": "dapr-operator-74bf8cfb58-9hjq9",
                 "namespace": "dapr-system",
                 "ownerReferences": [
                     {
@@ -32,11 +32,11 @@
                         "controller": true,
                         "kind": "ReplicaSet",
                         "name": "dapr-operator-74bf8cfb58",
-                        "uid": "c3979484-7edf-4d84-ae90-59ed5da00377"
+                        "uid": "0d61014c-bef1-4b7f-b87c-3d23a15adc1f"
                     }
                 ],
-                "resourceVersion": "895",
-                "uid": "de34238d-7c1e-410f-ad0b-b3cf3ad5515f"
+                "resourceVersion": "927",
+                "uid": "c5a8e1a2-5f8e-4913-9a3e-eba6b3736ea2"
             },
             "spec": {
                 "affinity": {
@@ -155,7 +155,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-gzmkh",
+                                "name": "kube-api-access-9n598",
                                 "readOnly": true
                             }
                         ]
@@ -163,7 +163,7 @@
                 ],
                 "dnsPolicy": "ClusterFirst",
                 "enableServiceLinks": true,
-                "nodeName": "h45-cdece7eae911-control-plane",
+                "nodeName": "h45-a05d24fa0587-control-plane",
                 "preemptionPolicy": "PreemptLowerPriority",
                 "priority": 0,
                 "restartPolicy": "Always",
@@ -217,7 +217,7 @@
                         }
                     },
                     {
-                        "name": "kube-api-access-gzmkh",
+                        "name": "kube-api-access-9n598",
                         "projected": {
                             "defaultMode": 420,
                             "sources": [
@@ -260,35 +260,35 @@
                 "conditions": [
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:01Z",
+                        "lastTransitionTime": "2026-10-22T17:38:26Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodReadyToStartContainers"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:57Z",
+                        "lastTransitionTime": "2026-10-22T17:38:21Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Initialized"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:35:13Z",
+                        "lastTransitionTime": "2026-10-22T17:39:38Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Ready"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:35:13Z",
+                        "lastTransitionTime": "2026-10-22T17:39:38Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "ContainersReady"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:56Z",
+                        "lastTransitionTime": "2026-10-22T17:38:20Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodScheduled"
@@ -296,7 +296,7 @@
                 ],
                 "containerStatuses": [
                     {
-                        "containerID": "containerd://4a1793031b5e86a3558f47b0cc188cc267d044eec46c02cb7a74a15b5c0a0240",
+                        "containerID": "containerd://35c434b3e3ffe06b9ad693fa4b6b9311bba8a958c39faadbdb2f657c40fb7d23",
                         "image": "ghcr.io/dapr/operator:1.18.7",
                         "imageID": "ghcr.io/dapr/operator@sha256:42192d91b0942afd694740336e4bd047d55235ebfb3b9cbd4ec0e05ae4026cae",
                         "lastState": {},
@@ -307,7 +307,7 @@
                         "started": true,
                         "state": {
                             "running": {
-                                "startedAt": "2026-10-22T17:34:01Z"
+                                "startedAt": "2026-10-22T17:38:25Z"
                             }
                         },
                         "user": {
@@ -338,7 +338,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-gzmkh",
+                                "name": "kube-api-access-9n598",
                                 "readOnly": true,
                                 "recursiveReadOnly": "Disabled"
                             }
@@ -360,7 +360,7 @@
                     }
                 ],
                 "qosClass": "BestEffort",
-                "startTime": "2026-10-22T17:33:57Z"
+                "startTime": "2026-10-22T17:38:21Z"
             }
         },
         {
@@ -373,7 +373,7 @@
                     "prometheus.io/port": "9090",
                     "prometheus.io/scrape": "true"
                 },
-                "creationTimestamp": "2026-10-22T17:33:58Z",
+                "creationTimestamp": "2026-10-22T17:38:22Z",
                 "generateName": "dapr-placement-server-",
                 "generation": 1,
                 "labels": {
@@ -396,11 +396,11 @@
                         "controller": true,
                         "kind": "StatefulSet",
                         "name": "dapr-placement-server",
-                        "uid": "3a5e8e80-a6e0-4845-9277-3e49029cdc10"
+                        "uid": "4af7627c-a7d5-41f0-9267-bd59b4a15eee"
                     }
                 ],
-                "resourceVersion": "902",
-                "uid": "b9c2613b-0999-4914-aaaf-47e2a3fcb591"
+                "resourceVersion": "899",
+                "uid": "471e2128-768c-45e4-96ba-e30f6027d26b"
             },
             "spec": {
                 "affinity": {
@@ -535,7 +535,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-xv8tw",
+                                "name": "kube-api-access-dpnhl",
                                 "readOnly": true
                             }
                         ]
@@ -544,7 +544,7 @@
                 "dnsPolicy": "ClusterFirst",
                 "enableServiceLinks": true,
                 "hostname": "dapr-placement-server-0",
-                "nodeName": "h45-cdece7eae911-control-plane",
+                "nodeName": "h45-a05d24fa0587-control-plane",
                 "preemptionPolicy": "PreemptLowerPriority",
                 "priority": 0,
                 "restartPolicy": "Always",
@@ -594,7 +594,7 @@
                         }
                     },
                     {
-                        "name": "kube-api-access-xv8tw",
+                        "name": "kube-api-access-dpnhl",
                         "projected": {
                             "defaultMode": 420,
                             "sources": [
@@ -637,35 +637,35 @@
                 "conditions": [
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:10Z",
+                        "lastTransitionTime": "2026-10-22T17:38:36Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodReadyToStartContainers"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:58Z",
+                        "lastTransitionTime": "2026-10-22T17:38:22Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Initialized"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:35:13Z",
+                        "lastTransitionTime": "2026-10-22T17:39:22Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Ready"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:35:13Z",
+                        "lastTransitionTime": "2026-10-22T17:39:22Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "ContainersReady"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:58Z",
+                        "lastTransitionTime": "2026-10-22T17:38:22Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodScheduled"
@@ -673,7 +673,7 @@
                 ],
                 "containerStatuses": [
                     {
-                        "containerID": "containerd://bd4d6c9126baf431c58963ce4c245dd54cc6a90fb8d788917147d4aa7bf3e8f4",
+                        "containerID": "containerd://fddd8b9f2aaa2c36c8c71f0bc85e3f07cd06024aa9a2aa9d88fb4a8760030d1d",
                         "image": "ghcr.io/dapr/placement:1.18.7",
                         "imageID": "ghcr.io/dapr/placement@sha256:c9da106eddcbb625c94baea31af4ed576d32750741b442c99f51518c420e76cc",
                         "lastState": {},
@@ -684,7 +684,7 @@
                         "started": true,
                         "state": {
                             "running": {
-                                "startedAt": "2026-10-22T17:34:09Z"
+                                "startedAt": "2026-10-22T17:38:36Z"
                             }
                         },
                         "user": {
@@ -709,7 +709,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-xv8tw",
+                                "name": "kube-api-access-dpnhl",
                                 "readOnly": true,
                                 "recursiveReadOnly": "Disabled"
                             }
@@ -731,7 +731,7 @@
                     }
                 ],
                 "qosClass": "BestEffort",
-                "startTime": "2026-10-22T17:33:58Z"
+                "startTime": "2026-10-22T17:38:22Z"
             }
         },
         {
@@ -744,7 +744,7 @@
                     "prometheus.io/port": "9090",
                     "prometheus.io/scrape": "true"
                 },
-                "creationTimestamp": "2026-10-22T17:33:56Z",
+                "creationTimestamp": "2026-10-22T17:38:20Z",
                 "generateName": "dapr-sentry-5677685946-",
                 "generation": 1,
                 "labels": {
@@ -756,7 +756,7 @@
                     "app.kubernetes.io/version": "1.18.7",
                     "pod-template-hash": "5677685946"
                 },
-                "name": "dapr-sentry-5677685946-l4qhv",
+                "name": "dapr-sentry-5677685946-tcgt4",
                 "namespace": "dapr-system",
                 "ownerReferences": [
                     {
@@ -765,11 +765,11 @@
                         "controller": true,
                         "kind": "ReplicaSet",
                         "name": "dapr-sentry-5677685946",
-                        "uid": "d3452aad-9618-4805-a7c4-2bc044299f83"
+                        "uid": "b305a437-4a3b-448f-94f0-ed8b16d7d74c"
                     }
                 ],
-                "resourceVersion": "858",
-                "uid": "86f53205-f3c3-46a4-99ef-ac6df12d069a"
+                "resourceVersion": "887",
+                "uid": "114453bb-5a1c-44b1-83bc-a7880695fa44"
             },
             "spec": {
                 "affinity": {
@@ -877,7 +877,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-bmxqw",
+                                "name": "kube-api-access-kxc8n",
                                 "readOnly": true
                             }
                         ]
@@ -885,7 +885,7 @@
                 ],
                 "dnsPolicy": "ClusterFirst",
                 "enableServiceLinks": true,
-                "nodeName": "h45-cdece7eae911-control-plane",
+                "nodeName": "h45-a05d24fa0587-control-plane",
                 "preemptionPolicy": "PreemptLowerPriority",
                 "priority": 0,
                 "restartPolicy": "Always",
@@ -917,7 +917,7 @@
                         }
                     },
                     {
-                        "name": "kube-api-access-bmxqw",
+                        "name": "kube-api-access-kxc8n",
                         "projected": {
                             "defaultMode": 420,
                             "sources": [
@@ -960,35 +960,35 @@
                 "conditions": [
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:04Z",
+                        "lastTransitionTime": "2026-10-22T17:38:33Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodReadyToStartContainers"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:57Z",
+                        "lastTransitionTime": "2026-10-22T17:38:21Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Initialized"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:51Z",
+                        "lastTransitionTime": "2026-10-22T17:39:17Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Ready"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:51Z",
+                        "lastTransitionTime": "2026-10-22T17:39:17Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "ContainersReady"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:56Z",
+                        "lastTransitionTime": "2026-10-22T17:38:20Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodScheduled"
@@ -996,7 +996,7 @@
                 ],
                 "containerStatuses": [
                     {
-                        "containerID": "containerd://d74fc8ee330b99e665bef5b05c69155e3f2ac0c914f8bc6de8130c0e3a553ede",
+                        "containerID": "containerd://f4252d5814925f48049d8399de573037d210c78ea505313a251e21fee4f7821c",
                         "image": "ghcr.io/dapr/sentry:1.18.7",
                         "imageID": "ghcr.io/dapr/sentry@sha256:b9fc166085289661f516150dc1c47ac3495b9e6d1e666079cb71cd2374ca7256",
                         "lastState": {},
@@ -1007,7 +1007,7 @@
                         "started": true,
                         "state": {
                             "running": {
-                                "startedAt": "2026-10-22T17:34:04Z"
+                                "startedAt": "2026-10-22T17:38:32Z"
                             }
                         },
                         "user": {
@@ -1028,7 +1028,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-bmxqw",
+                                "name": "kube-api-access-kxc8n",
                                 "readOnly": true,
                                 "recursiveReadOnly": "Disabled"
                             }
@@ -1043,14 +1043,14 @@
                 ],
                 "observedGeneration": 1,
                 "phase": "Running",
-                "podIP": "10.244.0.7",
+                "podIP": "10.244.0.6",
                 "podIPs": [
                     {
-                        "ip": "10.244.0.7"
+                        "ip": "10.244.0.6"
                     }
                 ],
                 "qosClass": "BestEffort",
-                "startTime": "2026-10-22T17:33:57Z"
+                "startTime": "2026-10-22T17:38:21Z"
             }
         },
         {
@@ -1063,7 +1063,7 @@
                     "prometheus.io/port": "9090",
                     "prometheus.io/scrape": "true"
                 },
-                "creationTimestamp": "2026-10-22T17:33:56Z",
+                "creationTimestamp": "2026-10-22T17:38:20Z",
                 "generateName": "dapr-sidecar-injector-8959cbc76-",
                 "generation": 1,
                 "labels": {
@@ -1075,7 +1075,7 @@
                     "app.kubernetes.io/version": "1.18.7",
                     "pod-template-hash": "8959cbc76"
                 },
-                "name": "dapr-sidecar-injector-8959cbc76-kc9jw",
+                "name": "dapr-sidecar-injector-8959cbc76-ws9qs",
                 "namespace": "dapr-system",
                 "ownerReferences": [
                     {
@@ -1084,11 +1084,11 @@
                         "controller": true,
                         "kind": "ReplicaSet",
                         "name": "dapr-sidecar-injector-8959cbc76",
-                        "uid": "4bf2d89b-3a66-4b70-a3ba-57a8fe7bd052"
+                        "uid": "91e0d575-728a-4230-b9ce-8005310c84c6"
                     }
                 ],
-                "resourceVersion": "816",
-                "uid": "91963e98-6cc2-4350-b90f-03699e553dc7"
+                "resourceVersion": "962",
+                "uid": "a9a0d1ef-5f23-49d4-8c25-1633849b3ef2"
             },
             "spec": {
                 "affinity": {
@@ -1265,7 +1265,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-jrhv4",
+                                "name": "kube-api-access-8dg8n",
                                 "readOnly": true
                             }
                         ]
@@ -1273,7 +1273,7 @@
                 ],
                 "dnsPolicy": "ClusterFirst",
                 "enableServiceLinks": true,
-                "nodeName": "h45-cdece7eae911-control-plane",
+                "nodeName": "h45-a05d24fa0587-control-plane",
                 "preemptionPolicy": "PreemptLowerPriority",
                 "priority": 0,
                 "restartPolicy": "Always",
@@ -1320,7 +1320,7 @@
                         }
                     },
                     {
-                        "name": "kube-api-access-jrhv4",
+                        "name": "kube-api-access-8dg8n",
                         "projected": {
                             "defaultMode": 420,
                             "sources": [
@@ -1363,35 +1363,35 @@
                 "conditions": [
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:07Z",
+                        "lastTransitionTime": "2026-10-22T17:38:29Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodReadyToStartContainers"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:57Z",
+                        "lastTransitionTime": "2026-10-22T17:38:21Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Initialized"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:32Z",
+                        "lastTransitionTime": "2026-10-22T17:39:54Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Ready"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:34:32Z",
+                        "lastTransitionTime": "2026-10-22T17:39:54Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "ContainersReady"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-22T17:33:56Z",
+                        "lastTransitionTime": "2026-10-22T17:38:20Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodScheduled"
@@ -1399,7 +1399,7 @@
                 ],
                 "containerStatuses": [
                     {
-                        "containerID": "containerd://d114bb5d3a82e43e6756fa50abf4093a40d8de02ba5ca53d59f17b18756dce58",
+                        "containerID": "containerd://1ce8c8635f4b0b0be0c613a3df275ca0ffccf7ffc1e62fdc3e68cbf431d1ab7b",
                         "image": "ghcr.io/dapr/injector:1.18.7",
                         "imageID": "ghcr.io/dapr/injector@sha256:4a7b491b2ac5d27c92f0c4192fedd54319452c0dd7d6ae30cda6a4266f751943",
                         "lastState": {},
@@ -1410,7 +1410,7 @@
                         "started": true,
                         "state": {
                             "running": {
-                                "startedAt": "2026-10-22T17:34:07Z"
+                                "startedAt": "2026-10-22T17:38:28Z"
                             }
                         },
                         "user": {
@@ -1437,7 +1437,7 @@
                             },
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-jrhv4",
+                                "name": "kube-api-access-8dg8n",
                                 "readOnly": true,
                                 "recursiveReadOnly": "Disabled"
                             }
@@ -1452,14 +1452,14 @@
                 ],
                 "observedGeneration": 1,
                 "phase": "Running",
-                "podIP": "10.244.0.6",
+                "podIP": "10.244.0.7",
                 "podIPs": [
                     {
-                        "ip": "10.244.0.6"
+                        "ip": "10.244.0.7"
                     }
                 ],
                 "qosClass": "BestEffort",
-                "startTime": "2026-10-22T17:33:57Z"
+                "startTime": "2026-10-22T17:38:21Z"
             }
         }
     ],

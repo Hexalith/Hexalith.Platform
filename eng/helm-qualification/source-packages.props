@@ -1,0 +1,14 @@
+<Project>
+  <!-- Preserve the source owner's package compatibility additions and updates. -->
+  <PropertyGroup>
+    <_PlatformOriginalPackageProps>$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildProjectDirectory)/'))</_PlatformOriginalPackageProps>
+  </PropertyGroup>
+  <Import Project="$(_PlatformOriginalPackageProps)" Condition="'$(_PlatformOriginalPackageProps)' != ''" />
+  <!-- Identical repeated pins are harmless. Conflicting versions must still fail. -->
+  <ItemGroup>
+    <_PlatformPackageVersions Include="@(PackageVersion->Distinct())" />
+    <PackageVersion Remove="@(_PlatformPackageVersions)" MatchOnMetadata="Identity;Version" />
+    <PackageVersion Include="@(_PlatformPackageVersions)" />
+    <_PlatformPackageVersions Remove="@(_PlatformPackageVersions)" />
+  </ItemGroup>
+</Project>

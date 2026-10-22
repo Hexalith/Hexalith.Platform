@@ -7,7 +7,7 @@
             "meta.helm.sh/release-name": "reference",
             "meta.helm.sh/release-namespace": "reference"
         },
-        "creationTimestamp": "2026-10-22T17:35:22Z",
+        "creationTimestamp": "2026-10-22T17:40:05Z",
         "generation": 1,
         "labels": {
             "app.kubernetes.io/managed-by": "Helm",
@@ -300,7 +300,7 @@
                 },
                 "manager": "helm",
                 "operation": "Apply",
-                "time": "2026-10-22T17:35:22Z"
+                "time": "2026-10-22T17:40:05Z"
             },
             {
                 "apiVersion": "apps/v1",
@@ -343,13 +343,13 @@
                 "manager": "kube-controller-manager",
                 "operation": "Update",
                 "subresource": "status",
-                "time": "2026-10-22T17:35:23Z"
+                "time": "2026-10-22T17:40:05Z"
             }
         ],
         "name": "parties",
         "namespace": "reference",
-        "resourceVersion": "1108",
-        "uid": "36c1b870-15b3-40e0-bd1b-f588c690ab72"
+        "resourceVersion": "1169",
+        "uid": "6f305d9e-71b5-4e99-ab18-4400d8cf8287"
     },
     "spec": {
         "progressDeadlineSeconds": 600,
@@ -629,16 +629,16 @@
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2026-10-22T17:35:22Z",
-                "lastUpdateTime": "2026-10-22T17:35:22Z",
+                "lastTransitionTime": "2026-10-22T17:40:05Z",
+                "lastUpdateTime": "2026-10-22T17:40:05Z",
                 "message": "Deployment does not have minimum availability.",
                 "reason": "MinimumReplicasUnavailable",
                 "status": "False",
                 "type": "Available"
             },
             {
-                "lastTransitionTime": "2026-10-22T17:35:22Z",
-                "lastUpdateTime": "2026-10-22T17:35:23Z",
+                "lastTransitionTime": "2026-10-22T17:40:05Z",
+                "lastUpdateTime": "2026-10-22T17:40:05Z",
                 "message": "ReplicaSet \"parties-857b449446\" is progressing.",
                 "reason": "ReplicaSetUpdated",
                 "status": "True",

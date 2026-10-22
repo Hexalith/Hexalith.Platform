@@ -1,0 +1,217 @@
+{
+  "schema": "hexalith.helm-qualification.v1",
+  "started": "2026-10-22T17:45:35.958244+00:00",
+  "status": "failed",
+  "commands": [
+    {
+      "argv": [
+        "/tmp/hexalith-helm-tools/linux-amd64/helm",
+        "version",
+        "--short"
+      ],
+      "returncode": 0,
+      "log": "000-helm.log",
+      "logSha256": "020b1d6747838c6846e2f7d07e280141da653dd8ca9fdf428393d0b28d5a7a18",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kind",
+        "version"
+      ],
+      "returncode": 0,
+      "log": "001-kind.log",
+      "logSha256": "4f20456ed346280834cc128a7048efa0f53a361cdbbba88c18b1f9124b018ba3",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "version",
+        "--client",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "log": "002-kubectl.log",
+      "logSha256": "554d17a2af6df290e7fbad7a8c6643bc6b78f4b25691b2c4aef7d94b03773329",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "aspire",
+        "--version"
+      ],
+      "returncode": 0,
+      "log": "003-aspire.log",
+      "logSha256": "1508bd63df5af6e1b15ec072b855bb9d4347343a919848c9a970afba8d36de84",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "dotnet",
+        "--version"
+      ],
+      "returncode": 0,
+      "log": "004-dotnet.log",
+      "logSha256": "44ea2595bc5a7acabc030531952071226aa70862fd008ed7327d752b39c8513c",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}}"
+      ],
+      "returncode": 0,
+      "log": "005-docker.log",
+      "logSha256": "c007c7e1712540ee77c9ce8e454890d905ff0193ec24907cb08ffd9d00b25d98",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--version"
+      ],
+      "returncode": 0,
+      "log": "006-curl.log",
+      "logSha256": "4870e27617372477dc169f5899702e7181c831502810d4c9310ae350ed43a077",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "log": "007-git.log",
+      "logSha256": "65471b0a521f84ad4e303e944ce13f78b993aaca2cdfc4ab37118d97be3b3490",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "aspire",
+        "publish",
+        "--apphost",
+        "/home/administrator/projects/hexalith/platform/apphost.cs",
+        "--output-path",
+        "/tmp/h45-2e2uv30t/native-output",
+        "--non-interactive",
+        "--include-exception-details"
+      ],
+      "returncode": 6,
+      "log": "008-aspire.log",
+      "logSha256": "4eb7ea9dc98862499643a742baca256cdea014b64e03f72944088a4a0a7f582b",
+      "stdinSha256": null
+    }
+  ],
+  "checks": {
+    "preflight": true
+  },
+  "cleanup": {
+    "complete": true,
+    "ownedCluster": "h45-a95e9b8323e8",
+    "onlyInvocationOwnedResourcesDeleted": true,
+    "temporaryKubeconfigRemoved": true,
+    "clusterRemovalVerified": true,
+    "temporaryDirectoryRemoved": true
+  },
+  "exclusions": [
+    "OCI publication and attestation",
+    "off-site restoration",
+    "staging deployment",
+    "application functional readiness with retained images",
+    "future environment policy qualification"
+  ],
+  "tools": {
+    "helm": {
+      "version": "v4.2.0+g0646808",
+      "binarySha256": "bf1e2f933afaaab981b4dce6f0caea951635539336f463780ad479de5408f869"
+    },
+    "kind": {
+      "version": "kind v0.31.0 go1.25.5 linux/amd64",
+      "binarySha256": "eb244cbafcc157dff60cf68693c14c9a75c4e6e6fedaf9cd71c58117cb93e3fa"
+    },
+    "kubectl": {
+      "version": "v1.36.1",
+      "binarySha256": "629d3f410e09bf49b64ae7079f7f0bda1191efed311f7d37fdbab0ad5b0ec2b7"
+    },
+    "aspire": {
+      "version": "13.6.1+3751e615ad660621f2a7aa4c390ef48e08a0eed8",
+      "binarySha256": "82d2aacd2432040cb3f9391e39e3ea7ed3d6e6c0143c4e0dfe38cfbb04b02bc0"
+    },
+    "dotnet": {
+      "version": "10.0.402",
+      "binarySha256": "594657cba5f6f34b80e927951f144881ff875df269b6fb5eba1c595730267753"
+    },
+    "docker": {
+      "version": "29.8.2",
+      "binarySha256": "6f7a95d27f98fc8c5f6b220898988bf8f61dd9b040936797917cbdc72c6cabe6"
+    },
+    "curl": {
+      "version": "curl 8.18.0 (x86_64-pc-linux-gnu) libcurl/8.18.0 OpenSSL/3.5.5 zlib/1.3.1 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.2 libssh2/1.11.1 nghttp2/1.68.0 librtmp/2.3 mit-krb5/1.22.1 OpenLDAP/2.6.10",
+      "binarySha256": "b618fe7feb3283395f79f4ca97eebd921295d88285aa7de9eac54beaca4e7bb9"
+    }
+  },
+  "source": {
+    "revision": "18b8e228d219c18b90c3710849194b84d49fbf2b",
+    "files": {
+      "Directory.Packages.props": "ead5777c305aa2849830dc861621c33720ab3f72fed465eda91541e672d2d240",
+      "apphost.cs": "47de90759cf793885de595cec29b34402195e6fa6299b11c0041a7d22aff146a",
+      "eng/helm-qualification/README.md": "b50b11a3d5e3424452313acb20d7e052f18461e3bbbea3121b23ac6d9bf2ff1c",
+      "eng/helm-qualification/chart/Chart.yaml": "b5c7d2eb27d2ec237620088a13bd4c45a67a1ba424f0b9e0b01429aca9a8da7a",
+      "eng/helm-qualification/chart/reference-graph.json": "6d6e28d4b190540fbd82559dc39b484c758853897709c6ea4473345fd2de4d87",
+      "eng/helm-qualification/chart/templates/_helpers.tpl": "b4bdf5e0dc705bb0745f83e7ba7befebc124c210d56754e87846314bc4891145",
+      "eng/helm-qualification/chart/templates/application.yaml": "1befe9f88ceb530807adaef32694aecd546f9b65c3eb54594ce63bba6cabbe7a",
+      "eng/helm-qualification/chart/templates/dapr.yaml": "4aa781088e3e3e50b441385d9605fe51a9bd1f2ec72e7288281abb3b35dfa1e5",
+      "eng/helm-qualification/chart/values.yaml": "1d7873e046862d488f886e53a04a35a9c44291c1ac77514e3d18c9773b2c1e8f",
+      "eng/helm-qualification/qualify.py": "903cd91889aa342381ad8723bd0f9f61b5b06d7becab9b33bff5c6d24e7eaa9b",
+      "eng/helm-qualification/test_chart.py": "03880040b38f0accabfa8cbb4b7b9a2e6478beffab52496bef4c4581895c96c1",
+      "eng/helm-qualification/test_qualify.py": "4809324dedbc2796033a4bd80a7c70c0b3dc5736dbeac49d2162f26c5462a955",
+      "eng/helm-qualification/toolchain.json": "00748adc6377af60992319eeb1a9a6870ebbfc25bf29c0f2d16fa7ec64f4cee4",
+      "references/Hexalith.Builds/Props/Directory.Packages.props": "f020b65a89a5e6256cf7f09bbe02a2e288a89d2eff00f68e978af8b99409276a",
+      "references/Hexalith.EventStore/Directory.Packages.props": "db5d5fe58b48b384b9bd311e22cc29cccc4fdb41fe5bcb29ac39d5439f98a58e",
+      "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json": "0fd4457a1801fa13053ef8821eb16a0cfcc6a5edac94b6ce89e8f220e8a30511",
+      "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "54ddb1d5398ebb5624001f8f1b630c22fc7e3a9eb6b80e804a4d5ec3268e7652",
+      "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "ad026cd806ec92140439425ff6f36bbc5c465553a201c947f03d6a2e5e36f0e9",
+      "src/Hexalith.Platform.Composition/Declarations/eventstore.json": "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
+      "src/Hexalith.Platform.Composition/Declarations/local-profile.json": "bc1264427956827d59be25a418119ed6aa0425dc150231f3f8c177728900ca80",
+      "src/Hexalith.Platform.Composition/Declarations/memories.json": "30f97d509aeb9fa019373579ad24db113aa84a9df52139a88a0cfdbaa6b192d4",
+      "src/Hexalith.Platform.Composition/Declarations/provenance.json": "8ab18487c4a62b1d4ab41067ec85b136ccf069e40489c3b64b0c831565a356b7",
+      "src/Hexalith.Platform.Composition/Declarations/tenants.json": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
+      "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "5adfd9894015dd552b1fc53f01f7e37c1c06730026401b9e2836deb14babae3e",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "4371f247c026ddf3f8099e3e86f8a25ce65a47590a8f2409b53936bb9875e360",
+      "src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs": "42378f4ac70f4145bf414c4007ba7a0f3a69b4dfa7edb02de8206e7134427374",
+      "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs": "701afefa07424c905dab202a368f6100fb6c42f3d4b14e2750ca43c17eacb54c",
+      "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": "8b9cbcb30547956ffbfe74cc0435e4c0c3d38b58400c563163f3a19043ac6049",
+      "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs": "18a0a7535ee3827e9c98d559079d53761e702463c96b57a63e3c24dd7d3a0db8",
+      "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs": "ccfaefc80b47855858c1c4d71daff13ae11316aa1d6693587a41fab03f8728a8",
+      "src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs": "187a544710fbbd4d6074a56229cf9c61cc2e0cfafd73a9f664462df5c58075af",
+      "src/Hexalith.Platform.Composition/PlatformGatewayConfiguration.cs": "8f158eaa188610032df2179b49203fd149702a05a1095705097aeca4fb055b76",
+      "src/Hexalith.Platform.Composition/PlatformGatewayStartup.cs": "901c9faa34c572d470675def9ceb7776b0783cbd95ff0beb772a759a00e1bbcc",
+      "src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs": "9310c28224e47ad79329edd0432124fa56521791e9646bc9ecea6f4e64801693",
+      "src/Hexalith.Platform.Composition/PlatformLocalProfile.cs": "62fd734ed2e9316e4662e6029c88f84476674e696664b6e45cc96c74c70f462a",
+      "src/Hexalith.Platform.Composition/PlatformMappedArtifact.cs": "b14c693049de9fd0505cf2ed815bd9879f2e30a83245a117665fc5579fd07d5f",
+      "src/Hexalith.Platform.Composition/PlatformPostgresqlHealthCheck.cs": "694dad5a9ba81a1aa5c7d2938a64057933ff87d43252f9657e8a33518a9d9751",
+      "src/Hexalith.Platform.Composition/PlatformRedisHealthCheck.cs": "2548f5dd02b64c639f0f08bd6ca43ef29ffe80688c26f10097820978ddc086a9",
+      "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": "39d66763fae999ac3dbf08f77dc0a20d3f08c21f22aaa532c45f692d7d8ef78c",
+      "src/Hexalith.Platform.Composition/PlatformServerAnnotation.cs": "e6e694457827249572c3b44006235ccbcf761c047ebb3d558b2e54c9bcbc33c2",
+      "src/Hexalith.Platform.Composition/PlatformServerBinding.cs": "fe5a8e652c3a77effce4eb28ab39a22d0ca3d2bd25139d1a70093c1f8e3dafed",
+      "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "0ce5b022201d8bc7fa1c7617d1198e3c9ad84d792658d3ffafc675d2ba34db77",
+      "src/Hexalith.Platform.Composition/PlatformTimesheetsBinding.cs": "9aeb4ba3adade96b728c4ec74c5708ea86d2b5f525b8e0436b9351519ef889a2",
+      "src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs": "ec57f02a8453306aff5f31978f9374694daa39fba2c82f86141e1ba557fd140f",
+      "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": "8d75ce41eaf9be13f85d3c253fab4452a0635f617797ccf510a6a192dd459fe1",
+      "src/Hexalith.Platform.Composition/WorksProductionProfile.cs": "1dca97f316ec39e56f755403907bbc85acae50b044b43ed7809a2cf5c114c9e7",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs": "73657f25fd850c7885b37040eebf6726ac1d52b0a9392d51fb8cccb07c4297b3"
+    }
+  },
+  "inputs": {
+    "graphSha256": "6d6e28d4b190540fbd82559dc39b484c758853897709c6ea4473345fd2de4d87",
+    "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
+    "sourcePackageProps": "/home/administrator/projects/hexalith/platform/Directory.Packages.props"
+  },
+  "failure": "RuntimeError: command failed (6): aspire \u2014 \u274c An unexpected error occurred: The app host build failed.\n\ud83d\udcc4 See logs at /home/administrator/.aspire/logs/cli_20261022T174538_941d210b.log\n\nA new version of Aspire is available: 13.6.3\nTo update, run: aspire update\nFor more information, see: https://aka.ms/aspire/update\n",
+  "finished": "2026-10-22T17:45:41.640275+00:00"
+}

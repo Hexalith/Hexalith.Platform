@@ -10,7 +10,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -18,8 +18,8 @@
                 },
                 "name": "eventstore",
                 "namespace": "reference",
-                "resourceVersion": "1198",
-                "uid": "4d929b8d-04e3-4b0b-a2f6-2786092ce65d"
+                "resourceVersion": "1241",
+                "uid": "10b9de07-82b4-4379-8207-7c18f17bccba"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -396,16 +396,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:30Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "ReplicaSet \"eventstore-f94576b5c\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",
@@ -425,7 +425,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -433,8 +433,8 @@
                 },
                 "name": "memories",
                 "namespace": "reference",
-                "resourceVersion": "1217",
-                "uid": "191d3d42-c9c3-4e88-a8fa-b665ff5c05c0"
+                "resourceVersion": "1288",
+                "uid": "96fa766b-7b77-4dd8-a3ae-b7368d5ace50"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -841,16 +841,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:30Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "ReplicaSet \"memories-744dd4f8bc\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",
@@ -870,7 +870,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -878,8 +878,8 @@
                 },
                 "name": "memories-access-telemetry",
                 "namespace": "reference",
-                "resourceVersion": "1260",
-                "uid": "98c5fbfc-805f-45c5-9e66-e8e6efc4888e"
+                "resourceVersion": "1304",
+                "uid": "4ee0927f-b8f5-4839-a588-774f9fd7a631"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -1270,16 +1270,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:30Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:31Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "ReplicaSet \"memories-access-telemetry-66d9584b69\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",
@@ -1299,7 +1299,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -1307,8 +1307,8 @@
                 },
                 "name": "memories-access-telemetry-clock",
                 "namespace": "reference",
-                "resourceVersion": "1230",
-                "uid": "4c2d7db2-5e94-46af-b37d-c2dde5fdcf04"
+                "resourceVersion": "1298",
+                "uid": "603b36b5-9e22-439a-b39a-7976e23d119b"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -1687,16 +1687,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:30Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "ReplicaSet \"memories-access-telemetry-clock-8c8fcbf4\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",
@@ -1716,7 +1716,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -1724,8 +1724,8 @@
                 },
                 "name": "parties",
                 "namespace": "reference",
-                "resourceVersion": "1263",
-                "uid": "36c1b870-15b3-40e0-bd1b-f588c690ab72"
+                "resourceVersion": "1309",
+                "uid": "6f305d9e-71b5-4e99-ab18-4400d8cf8287"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -2005,16 +2005,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:31Z",
-                        "lastUpdateTime": "2026-10-22T17:35:31Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:31Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:14Z",
                         "message": "ReplicaSet \"parties-857b449446\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",
@@ -2034,7 +2034,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -2042,8 +2042,8 @@
                 },
                 "name": "tenants",
                 "namespace": "reference",
-                "resourceVersion": "1196",
-                "uid": "8c95dbe1-01dc-4c02-b794-5670db30edfd"
+                "resourceVersion": "1255",
+                "uid": "117d0427-f035-4d83-9aea-fcf37c89df2b"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -2355,16 +2355,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:30Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "ReplicaSet \"tenants-fd4b47b68\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",
@@ -2384,7 +2384,7 @@
                     "meta.helm.sh/release-name": "reference",
                     "meta.helm.sh/release-namespace": "reference"
                 },
-                "creationTimestamp": "2026-10-22T17:35:22Z",
+                "creationTimestamp": "2026-10-22T17:40:05Z",
                 "generation": 2,
                 "labels": {
                     "app.kubernetes.io/managed-by": "Helm",
@@ -2392,8 +2392,8 @@
                 },
                 "name": "tenants-api",
                 "namespace": "reference",
-                "resourceVersion": "1202",
-                "uid": "82312371-8b13-414e-a72c-8e10de7f44fd"
+                "resourceVersion": "1276",
+                "uid": "bb7c6110-af16-4603-9f6a-e61d1425c013"
             },
             "spec": {
                 "progressDeadlineSeconds": 600,
@@ -2697,16 +2697,16 @@
             "status": {
                 "conditions": [
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:30Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:13Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "Deployment has minimum availability.",
                         "reason": "MinimumReplicasAvailable",
                         "status": "True",
                         "type": "Available"
                     },
                     {
-                        "lastTransitionTime": "2026-10-22T17:35:22Z",
-                        "lastUpdateTime": "2026-10-22T17:35:30Z",
+                        "lastTransitionTime": "2026-10-22T17:40:05Z",
+                        "lastUpdateTime": "2026-10-22T17:40:13Z",
                         "message": "ReplicaSet \"tenants-api-545d8d6d45\" has successfully progressed.",
                         "reason": "NewReplicaSetAvailable",
                         "status": "True",

@@ -1,0 +1,48 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolumeClaim",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T17:39:56Z",
+        "finalizers": [
+            "kubernetes.io/pvc-protection"
+        ],
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:spec": {
+                        "f:accessModes": {},
+                        "f:resources": {
+                            "f:requests": {
+                                "f:storage": {}
+                            }
+                        }
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T17:39:56Z"
+            }
+        ],
+        "name": "fixture-storage",
+        "namespace": "environment",
+        "resourceVersion": "979",
+        "uid": "b6b75b14-7fc8-46f3-b0b2-d48e57865bbd"
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteOnce"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "1Mi"
+            }
+        },
+        "storageClassName": "standard",
+        "volumeMode": "Filesystem"
+    },
+    "status": {
+        "phase": "Pending"
+    }
+}

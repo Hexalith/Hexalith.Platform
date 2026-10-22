@@ -374,14 +374,25 @@ public sealed partial class PlatformAppModelTests : IDisposable
                 await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
             await eventing.PublishAsync(new BeforeStartEvent(application.Services, model), TestContext.Current.CancellationToken);
             builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port = currentSentry;
+            List<string[]> nativeSentryArguments = [];
             foreach (var sidecar in model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)))
             {
                 List<object> arguments = [];
                 foreach (var callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
                     await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
-                arguments[arguments.IndexOf("--sentry-address") + 1].ShouldBe("127.0.0.1:" + currentSentry);
+                string endpoint = arguments[arguments.IndexOf("--sentry-address") + 1].ShouldBeOfType<string>();
+                endpoint.ShouldBe("127.0.0.1:" + currentSentry);
+                arguments.ShouldContain("--enable-mtls");
+                nativeSentryArguments.Add(["--enable-mtls", "--sentry-address", endpoint]);
                 sidecar.Command.ShouldBe(Path.Combine(home, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
             }
+            nativeSentryArguments.Count.ShouldBe(4);
+            // Exercise the adapter contract with the actual Works-generated endpoints.
+            CompositionProcessResult adapter = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("python3",
+                ["-c", "import json,sys,isolated_daprd; arguments=json.loads(sys.argv[1]); assert all(isolated_daprd.translated(value,sys.argv[2]) == value for value in arguments)",
+                    JsonSerializer.Serialize(nativeSentryArguments), "127.0.0.1:" + currentSentry], Path.Combine(Root, "eng"), null), TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken);
+            adapter.TimedOut.ShouldBeFalse();
+            adapter.ExitCode.ShouldBe(0, adapter.Output + adapter.ErrorOutput);
 
         }
         finally { Directory.Delete(directory, true); }

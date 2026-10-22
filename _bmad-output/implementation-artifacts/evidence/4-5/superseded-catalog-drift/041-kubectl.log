@@ -1,0 +1,29 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLXRlbmFudHMtYXBp"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T17:39:56Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T17:39:56Z"
+            }
+        ],
+        "name": "fixture-tenants-api",
+        "namespace": "reference",
+        "resourceVersion": "994",
+        "uid": "1871e0f9-8690-4b60-a64d-8748be2d4d23"
+    },
+    "type": "Opaque"
+}

@@ -1,0 +1,29 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLWV2ZW50c3RvcmUtYXBp"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-10-22T17:39:56Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-10-22T17:39:56Z"
+            }
+        ],
+        "name": "fixture-eventstore-api",
+        "namespace": "reference",
+        "resourceVersion": "983",
+        "uid": "1d142dd9-fc46-4bf8-bf11-9e99d1dd6ebe"
+    },
+    "type": "Opaque"
+}

@@ -77,7 +77,8 @@ Run from the Platform root with the repository's .NET test runner:
 
 ```bash
 dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
-  -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false
+  -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false \
+  -p:DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props"
 HELM_BIN=/absolute/path/to/verified/helm python3 -m unittest discover \
   -s eng/helm-qualification -p 'test_*.py' -v
 HELM_BIN=/absolute/path/to/verified/helm python3 eng/helm-qualification/qualify.py
@@ -125,3 +126,11 @@ does not close the story. The evidence excludes OCI publication/attestation,
 off-site restoration, staging deployment and functional application readiness
 with retained production images. Those are separate downstream acceptances. The
 Timesheets enrollment candidate is unchanged.
+
+Source builds use the qualification-owned `source-packages.props` import boundary.
+It loads each project's original nearest central package props, preserving owner
+compatibility additions and updates, then collapses repeated identity/version
+entries. Different-version conflicts remain errors. The qualifier sets this path
+explicitly for source project evaluations, records it as an input, and hashes the
+wrapper and package import files. Catalog, owner and ordinary Platform package
+props remain unchanged; no dependency version is upgraded.

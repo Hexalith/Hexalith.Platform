@@ -119,7 +119,8 @@ class Qualification:
                     'kubectl': json.loads(self.run(['kubectl', 'version', '--client', '-o', 'json']).stdout)['clientVersion']['gitVersion'],
                     'aspire': self.run(['aspire', '--version']).stdout.strip(),
                     'dotnet': self.run(['dotnet', '--version']).stdout.strip(),
-                    'docker': self.run(['docker', 'info', '--format', '{{.ServerVersion}}']).stdout.strip()}
+                    'docker': self.run(['docker', 'info', '--format', '{{.ServerVersion}}']).stdout.strip(),
+                    'curl': self.run(['curl', '--version']).stdout.splitlines()[0]}
         if not versions['helm'].startswith('v' + self.tools['helm']['version'] + '+'):
             raise RuntimeError('Helm differs from the verified toolchain pin')
         if 'v' + self.tools['kind'] + ' ' not in versions['kind']:
@@ -133,16 +134,19 @@ class Qualification:
                                 for k, v in versions.items()}
         self.record['source'] = {'revision': self.run(['git', 'rev-parse', 'HEAD']).stdout.strip(),
                                  'files': self.source_inventory()}
-        self.record['inputs'] = {'graphSha256': sha(CHART / 'reference-graph.json'), 'nodeImage': self.tools['nodeImage']}
+        self.record['inputs'] = {'graphSha256': sha(CHART / 'reference-graph.json'), 'nodeImage': self.tools['nodeImage'],
+                                 'sourcePackageProps': str(HERE / 'source-packages.props')}
         self.record['checks']['preflight'] = True
 
     def source_inventory(self):
         paths = list(CHART.rglob('*')) + list((ROOT / 'src/Hexalith.Platform.Composition').glob('*.cs'))
         paths += list((ROOT / 'src/Hexalith.Platform.Composition').glob('*.csproj'))
-        paths += list(HERE.glob('*.py'))
+        paths += list(HERE.glob('*.py')) + list(HERE.glob('*.props'))
+        paths += list((ROOT / 'references').glob('*/Directory.Packages.props'))
         paths += [ROOT / 'tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs',
                   HERE / 'README.md', ROOT / 'apphost.cs', HERE / 'toolchain.json',
-                  ROOT / 'references/Hexalith.Builds/Props/Directory.Packages.props']
+                  ROOT / 'references/Hexalith.Builds/Props/Directory.Packages.props',
+                  ROOT / 'Directory.Packages.props', ROOT / 'references/Hexalith.EventStore/Directory.Packages.props']
         paths += list((ROOT / 'src/Hexalith.Platform.Composition/Declarations').glob('*.json'))
         paths += [ROOT / 'references/Hexalith.Parties/module/hexalith.module-manifest.v2.json']
         return {str(p.relative_to(ROOT)): sha(p) for p in sorted(set(paths)) if p.is_file()}
@@ -162,7 +166,8 @@ class Qualification:
         metadata = self.temp / 'native-graph.json'
         previous = dict(self.env)
         self.env.update(Platform__Hosted__Enabled='true', Platform__Hosted__GraphPath=str(metadata),
-                        UseHexalithProjectReferences='true', UseNuGetDeps='false', RunAnalyzers='false')
+                        UseHexalithProjectReferences='true', UseNuGetDeps='false', RunAnalyzers='false',
+                        DirectoryPackagesPropsPath=str(HERE / 'source-packages.props'))
         try:
             self.run(['aspire', 'publish', '--apphost', ROOT / 'apphost.cs', '--output-path', output,
                       '--non-interactive', '--include-exception-details'], timeout=240)

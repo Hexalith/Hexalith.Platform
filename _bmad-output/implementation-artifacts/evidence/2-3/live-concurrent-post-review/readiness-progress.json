@@ -1,0 +1,132 @@
+{
+  "schema": "hexalith.g4-readiness-progress.v1",
+  "runId": "ac976b6dcbf7380d27d5a3c09d9f71b8",
+  "resources": [
+    {
+      "name": "redis",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "processId": null
+    },
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "dapr-placement-mtls",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Starting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "dapr-scheduler-mtls",
+      "kind": "container",
+      "state": "Unhealthy",
+      "detail": "state=Starting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "dapr-sentry",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "processId": null
+    },
+    {
+      "name": "eventstore-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-graph",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "processId": null
+    },
+    {
+      "name": "memories-vectors",
+      "kind": "container",
+      "state": "Healthy",
+      "detail": "state=Running;health=Healthy",
+      "processId": null
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants-api-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    }
+  ]
+}

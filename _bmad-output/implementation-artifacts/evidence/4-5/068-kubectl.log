@@ -7,7 +7,7 @@
             "meta.helm.sh/release-name": "reference",
             "meta.helm.sh/release-namespace": "reference"
         },
-        "creationTimestamp": "2026-10-22T17:35:22Z",
+        "creationTimestamp": "2026-10-22T17:40:05Z",
         "generation": 3,
         "labels": {
             "app.kubernetes.io/managed-by": "Helm",
@@ -15,8 +15,8 @@
         },
         "name": "eventstore",
         "namespace": "reference",
-        "resourceVersion": "1388",
-        "uid": "4d929b8d-04e3-4b0b-a2f6-2786092ce65d"
+        "resourceVersion": "1365",
+        "uid": "10b9de07-82b4-4379-8207-7c18f17bccba"
     },
     "spec": {
         "progressDeadlineSeconds": 600,
@@ -393,16 +393,16 @@
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2026-10-22T17:35:22Z",
-                "lastUpdateTime": "2026-10-22T17:35:30Z",
+                "lastTransitionTime": "2026-10-22T17:40:05Z",
+                "lastUpdateTime": "2026-10-22T17:40:13Z",
                 "message": "ReplicaSet \"eventstore-f94576b5c\" has successfully progressed.",
                 "reason": "NewReplicaSetAvailable",
                 "status": "True",
                 "type": "Progressing"
             },
             {
-                "lastTransitionTime": "2026-10-22T17:35:32Z",
-                "lastUpdateTime": "2026-10-22T17:35:32Z",
+                "lastTransitionTime": "2026-10-22T17:40:15Z",
+                "lastUpdateTime": "2026-10-22T17:40:15Z",
                 "message": "Deployment does not have minimum availability.",
                 "reason": "MinimumReplicasUnavailable",
                 "status": "False",

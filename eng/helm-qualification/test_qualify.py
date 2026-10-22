@@ -3,6 +3,8 @@ from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import subprocess
+import json
+import xml.etree.ElementTree as ET
 import tempfile
 import threading
 import time
@@ -112,6 +114,32 @@ class QualifierFailureTests(unittest.TestCase):
             server.shutdown()
             server.server_close()
             thread.join(timeout=2)
+
+    def test_source_package_boundary_keeps_catalog_pins_and_exposes_conflicts(self):
+        boundary = qualify.HERE / 'source-packages.props'
+        properties = ['-p:UseHexalithProjectReferences=true', '-p:UseNuGetDeps=false',
+                      '-p:HexalithBuildsRoot=' + str(qualify.ROOT / 'references/Hexalith.Builds'),
+                      '-p:HexalithEventStoreRoot=' + str(qualify.ROOT / 'references/Hexalith.EventStore'),
+                      '-p:DirectoryPackagesPropsPath=' + str(boundary)]
+        def evaluate(project):
+            result = subprocess.run(['dotnet', 'msbuild', str(project), *properties, '-getItem:PackageVersion'],
+                                    capture_output=True, text=True, check=True, timeout=30)
+            return json.loads(result.stdout)['Items']['PackageVersion']
+        catalog = ET.parse(qualify.ROOT / 'references/Hexalith.Builds/Props/Directory.Packages.props')
+        names = ['System.Security.Cryptography.Pkcs', 'System.Security.Cryptography.Xml']
+        pins = {name: next(e.attrib['Version'] for e in catalog.iter('PackageVersion') if e.attrib.get('Include') == name) for name in names}
+        items = evaluate(qualify.ROOT / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj')
+        for name in names:
+            self.assertEqual([i['Version'] for i in items if i['Identity'] == name], [pins[name]])
+        commons = evaluate(qualify.ROOT / 'references/Hexalith.Commons/src/libraries/Hexalith.Commons.UniqueIds/Hexalith.Commons.UniqueIds.csproj')
+        self.assertTrue(any(i['Identity'] == 'ByteAether.Ulid' for i in commons), 'owner-specific package additions must survive')
+        with tempfile.TemporaryDirectory(prefix='h45-package-conflict-') as directory:
+            project = Path(directory) / 'conflict.proj'
+            project.write_text('<Project><ItemGroup><PackageVersion Include="System.Security.Cryptography.Pkcs" Version="0.0.0" /></ItemGroup>'
+                               + '<Import Project="' + str(qualify.ROOT / 'Directory.Packages.props') + '" />'
+                               + '<Import Project="' + str(boundary) + '" /></Project>')
+            versions = {i['Version'] for i in evaluate(project) if i['Identity'] == names[0]}
+            self.assertEqual(versions, {'0.0.0', pins[names[0]]})
 
     def test_command_logs_are_visible_to_version_control(self):
         log = qualify.DEFAULT_EVIDENCE / 'qualification-command.log'

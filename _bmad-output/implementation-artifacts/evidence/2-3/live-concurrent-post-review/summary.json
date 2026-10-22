@@ -1,0 +1,90 @@
+{
+  "schema": "hexalith.g4-startup-report.v1",
+  "runId": "ac976b6dcbf7380d27d5a3c09d9f71b8",
+  "ruleId": "HXR025",
+  "durationSeconds": 35.0930047,
+  "effectiveDeadlineSeconds": 600,
+  "effectiveDeadlineIsOverride": false,
+  "effectiveDeadlineJustification": null,
+  "effectiveDeadlineModuleId": null,
+  "failingTask": null,
+  "resources": [
+    {
+      "name": "eventstore",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Finished;health=unknown",
+      "processId": 1521976
+    },
+    {
+      "name": "memories",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-clock-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-access-telemetry-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "memories-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants-api",
+      "kind": "project",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants-api-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    },
+    {
+      "name": "tenants-dapr-cli",
+      "kind": "executable",
+      "state": "Unhealthy",
+      "detail": "state=Waiting;health=unknown",
+      "processId": null
+    }
+  ]
+}
