@@ -2,7 +2,7 @@
 title: 'Shared Platform delivery for Agents Story 5.4'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 9a43e1ad8678db4016cc78db63545984cee727c8
