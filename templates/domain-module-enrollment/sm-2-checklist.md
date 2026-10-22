@@ -8,6 +8,12 @@ observed evidence; attach source audit notes and diagnostic paths.
 | --- | --- |
 | Module / repository / revision / dirty state | pending |
 | Direct Platform revision / release tag | pending |
+| Accountable module owner / Platform owner / platform-handoff.md reference | pending |
+| Reviewed direct Platform revision containing executable/image registration | pending |
+| Server-scoped configuration / authentication/signing propagation / token adapters | pending |
+| Gateway tenant/domain/version/appId/method tuple / preservation and filtering review | pending |
+| Dapr static/model policy evidence / separate live acceptance references | pending |
+| Ordinary public CLI qualification / registration acceptance references | pending |
 | Builds catalog gitlink / release tag commit | pending |
 | Tool package / exact restored version / pin comparison | pending |
 | Verifier / owner / UTC date | pending |
@@ -30,6 +36,8 @@ observed evidence; attach source audit notes and diagnostic paths.
 
 - [ ] Owner reviewed every module-owned source/build/helper path, including constructs outside the static scanner's supported patterns.
 - [ ] Tool pin equals the direct Platform checkout; published release and gitlink identities verified.
+- [ ] Accountable module and Platform owners reviewed the registration handoff before ordinary CLI run/debug; its direct Platform revision contains the required executable bindings, scoped configuration, authentication/token adapters, gateway routing and Dapr policies.
+- [ ] Composition-only synthetic observations remain separate from ordinary CLI qualification and real-owner/live acceptance; the historical Dapr timeout stays unresolved without new live evidence.
 - [ ] Breakpoint hit and source-edit runtime effect observed in the active checkout.
 - [ ] Direct-only/nested checks captured; no sibling or nested fallback selected.
 - [ ] No hosting project retired without producer adoption, owner-reviewed source/package/deployed parity and applicable EventStore AD-22 exact-subject removal authority.

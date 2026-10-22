@@ -19,7 +19,7 @@ using Hexalith.EventStore.ServiceDefaults.Authentication;
 using YamlDotNet.RepresentationModel;
 
 [Collection("Platform file entry")]
-public sealed partial class PlatformAppModelTests
+public sealed partial class PlatformAppModelTests : IDisposable
 {
     private static string Root
     {
@@ -31,26 +31,20 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
-    private static PlatformCompositionOptions Options(WorkspaceMode mode = WorkspaceMode.Source, string? active = null)
+    private PlatformPackageFixture? _packageFixture;
+
+    private PlatformCompositionOptions PackageOptions() => (_packageFixture ??= new PlatformPackageFixture(Root)).Options;
+
+    public void Dispose() => _packageFixture?.Dispose();
+
+    private static PlatformCompositionOptions Options(string? active = null)
     {
         SourceMappingEntry[] entries = new[] { "EventStore", "Tenants", "Memories" }
-            .Select(name => new SourceMappingEntry("Hexalith." + name, mode == WorkspaceMode.Source ? "source" : "package", mode == WorkspaceMode.Source ? Path.Combine(Root, "references", "Hexalith." + name) : null)).ToArray();
+            .Select(name => new SourceMappingEntry("Hexalith." + name, "source", Path.Combine(Root, "references", "Hexalith." + name))).ToArray();
         return new PlatformCompositionOptions
         {
-            PlatformRoot = Root, Mapping = new SourceMapping(mode, Root, "Hexalith.Platform", entries, false), ActiveModule = active,
+            PlatformRoot = Root, Mapping = new SourceMapping(WorkspaceMode.Source, Root, "Hexalith.Platform", entries, false), ActiveModule = active,
             EventStoreSeedProject = Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
-            ReleaseCommits = mode == WorkspaceMode.Package ? new Dictionary<string, string>
-            {
-                ["eventstore/3.120.0"] = "947c843c7bb73f217e27463d9540fde0c24d0332",
-                ["tenants/5.8.0"] = "6f88e4e95ae464617766f6a1294ff08a4504f42b",
-                ["memories/2.27.1"] = "867e09a357ab94719e4d1572b1ab14d8d124eabe",
-            } : new Dictionary<string, string>(),
-            ReleaseSnapshotHashes = mode == WorkspaceMode.Package ? new Dictionary<string, string>
-            {
-                ["eventstore/3.120.0"] = "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09",
-                ["tenants/5.8.0"] = "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4",
-                ["memories/2.27.1"] = "30f97d509aeb9fa019373579ad24db113aa84a9df52139a88a0cfdbaa6b192d4",
-            } : new Dictionary<string, string>(),
         };
     }
 
@@ -58,7 +52,9 @@ public sealed partial class PlatformAppModelTests
     public void PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources()
     {
         IDistributedApplicationBuilder builder = Builder();
-        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(WorkspaceMode.Package) with { ReleaseCommits = new PlatformCompositionOptions { PlatformRoot = Root, Mapping = Options().Mapping }.ReleaseCommits }));
+        // This case deliberately reads real production snapshots/catalog/provenance, independently of synthetic package fixtures.
+        PlatformCompositionOptions production = Options() with { Mapping = Options().Mapping with { Mode = WorkspaceMode.Package } };
+        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
         refusal.Message.ShouldContain("Hexalith.EventStore");
         refusal.Message.ShouldContain("3.120.0");
         refusal.Message.ShouldContain("947c843c");
@@ -82,7 +78,7 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public void PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed()
     {
-        PlatformCompositionOptions options = Options(WorkspaceMode.Package);
+        PlatformCompositionOptions options = PackageOptions();
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
         servers.Count.ShouldBe(6);
         servers.Single(s => s.ResourceId == "eventstore").ProjectPath.ShouldBe(options.EventStoreSeedProject);
@@ -96,7 +92,7 @@ public sealed partial class PlatformAppModelTests
     public async Task PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
     {
         List<string> inspected = [];
-        PlatformCompositionOptions options = Options(WorkspaceMode.Package) with
+        PlatformCompositionOptions options = PackageOptions() with
         {
             Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-scoped-token", ["tenants/domain/Tenants:AppChannelToken"] = "domain-scoped-token" },
             ImageProbeRunner = (process, timeout, _) =>
@@ -365,7 +361,7 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public void MissingImageFailsBeforeAddingResources()
     {
-        PlatformCompositionOptions options = Options(WorkspaceMode.Package) with { Images = new Dictionary<string, string>() };
+        PlatformCompositionOptions options = PackageOptions() with { Images = new Dictionary<string, string>() };
         IDistributedApplicationBuilder builder = Builder();
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("released image is unavailable");
         builder.Resources.ShouldBeEmpty();
@@ -375,7 +371,7 @@ public sealed partial class PlatformAppModelTests
     public void MissingSnapshotFailsByOwnerWithoutReadingSourceReferences()
     {
         IDistributedApplicationBuilder builder = Builder();
-        PlatformCompositionOptions options = Options(WorkspaceMode.Package) with { PlatformRoot = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N")) };
+        PlatformCompositionOptions options = PackageOptions() with { PlatformRoot = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N")) };
         InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
         failure.Message.ShouldContain("Hexalith.EventStore");
         failure.Message.ShouldContain("release snapshot");
@@ -545,6 +541,7 @@ public sealed partial class PlatformAppModelTests
         declaration["lifecycle"]!["fenceHooks"] = new JsonArray();
         File.WriteAllText(Path.Combine(directory, "verify.sh"), "#!/bin/sh\nexit 0\n");
         string path = Path.Combine(directory, module + ".json");
+        PlatformOwnerFixture.MaterializeDeclaredFiles(directory, document);
         File.WriteAllText(path, document.ToJsonString());
         return path;
     }

@@ -1,0 +1,33 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers [FAIL]
+      Aspire.Hosting.DistributedApplicationException : Cannot add resource of type 'Aspire.Hosting.ApplicationModel.ParameterResource' with name 'eventstore-app-api-token' because resource of type 'Aspire.Hosting.ApplicationModel.ParameterResource' with that name already exists. Resource names are case-insensitive.
+      Stack Trace:
+        /_/src/Aspire.Hosting/ApplicationModel/ResourceCollection.cs(120,0): at Aspire.Hosting.ApplicationModel.ResourceCollection.ThrowDuplicateResource(IResource newResource, IResource existingResource)
+        /_/src/Aspire.Hosting/ApplicationModel/ResourceCollection.cs(59,0): at Aspire.Hosting.ApplicationModel.ResourceCollection.Add(IResource item)
+        /_/src/Aspire.Hosting/DistributedApplicationBuilder.cs(910,0): at Aspire.Hosting.DistributedApplicationBuilder.AddResource[T](T resource)
+        /_/src/Aspire.Hosting/ParameterResourceBuilderExtensions.cs(310,0): at Aspire.Hosting.ParameterResourceBuilderExtensions.AddParameter[T](IDistributedApplicationBuilder builder, T resource)
+        /_/src/Aspire.Hosting/ParameterResourceBuilderExtensions.cs(115,0): at Aspire.Hosting.ParameterResourceBuilderExtensions.AddParameter(IDistributedApplicationBuilder builder, String name, Func`1 valueGetter, Boolean publishValueAsDefault, Boolean secret)
+        references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/HexalithEventStoreAppChannelExtensions.cs(33,0): at Hexalith.EventStore.Aspire.HexalithEventStoreAppChannelExtensions.WithGeneratedEventStoreAppChannelToken(IResourceBuilder`1 project)
+        src/Hexalith.Platform.Composition/WorksPreviewModel.cs(244,0): at Hexalith.Platform.Composition.WorksPreviewModel.Compose(IDistributedApplicationBuilder builder)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(34,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeEntry(IDistributedApplicationBuilder builder)
+        tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs(332,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync [SKIP]
+      Set HEXALITH_PLATFORM_BUILDS_LIVE_SMOKE=1 and HEXALITH_DAPR_HOME for live Dapr security fixtures.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync [SKIP]
+      Set HEXALITH_PLATFORM_LIVE_SMOKE=1 to run the Docker/Dapr source composition.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check redis-redis-ping with status Unhealthy completed after 26.2764ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-vectors-redis-ping with status Unhealthy completed after 20.9647ms with message 'Redis did not answer PING.'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check memories-graph-redis-ping with status Unhealthy completed after 21.0087ms with message 'Redis did not answer PING.'
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 138, Errors: 0, Failed: 1, Skipped: 3, Not Run: 0, Time: 26.813s

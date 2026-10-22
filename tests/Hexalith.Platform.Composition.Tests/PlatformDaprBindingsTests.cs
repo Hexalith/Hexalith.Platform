@@ -2,7 +2,6 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Security.Cryptography;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
@@ -17,34 +16,13 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public async Task FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync()
     {
-        string directory = Path.Combine(Path.GetTempPath(), "platform-package-bindings-" + Guid.NewGuid().ToString("N"));
-        string declarations = Path.Combine(directory, "src", "Hexalith.Platform.Composition", "Declarations");
-        string catalog = Path.Combine(directory, "references", "Hexalith.Builds", "Props");
-        Directory.CreateDirectory(declarations);
-        Directory.CreateDirectory(catalog);
+        PlatformCompositionOptions options = PackageOptions() with
+        {
+            ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
+        };
         IDistributedApplicationBuilder builder = Builder();
         try
         {
-            string originals = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
-            File.Copy(Path.Combine(originals, "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
-            File.Copy(Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
-            File.Copy(Path.Combine(Root, "Directory.Packages.props"), Path.Combine(directory, "Directory.Packages.props"));
-            JsonNode provenance = JsonNode.Parse(File.ReadAllText(Path.Combine(originals, "provenance.json")))!;
-            Dictionary<string, string> hashes = [];
-            foreach (string owner in new[] { "eventstore", "tenants", "memories" })
-            {
-                string snapshot = Path.Combine(declarations, owner + ".json");
-                File.Copy(Path.Combine(Root, "references", PlatformServerBindings.Repository(owner), "module", "hexalith.module-manifest.v2.json"), snapshot);
-                string hash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(snapshot)));
-                provenance[owner]!["sha256"] = hash;
-                hashes[owner + "/" + provenance[owner]!["version"]!.GetValue<string>()] = hash;
-            }
-            File.WriteAllText(Path.Combine(declarations, "provenance.json"), provenance.ToJsonString());
-            PlatformCompositionOptions options = Options(WorkspaceMode.Package) with
-            {
-                PlatformRoot = directory, ComponentsDirectory = Path.Combine(Root, "DaprComponents", "reference"), ReleaseSnapshotHashes = hashes,
-                ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
-            };
             PlatformAppModel.Compose(builder, options);
             IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
             servers.Length.ShouldBe(6);
@@ -71,7 +49,6 @@ public sealed partial class PlatformAppModelTests
             string? policy = builder.Resources.SelectMany(resource => resource.Annotations.OfType<DaprSidecarAnnotation>())
                 .Select(sidecar => sidecar.Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config).FirstOrDefault();
             if (policy is not null) await CompositionWorkspace.TryDeleteAsync(Path.GetDirectoryName(policy)!, CancellationToken.None);
-            Directory.Delete(directory, true);
         }
     }
 
@@ -412,6 +389,7 @@ public sealed partial class PlatformAppModelTests
                 if (owner == "Tenants")
                     foreach (var capability in document["modules"]![0]!["runtime"]!["dapr"]!.AsArray().Where(capability => capability!["role"]!.GetValue<string>() == "state"))
                         capability!["recoveryClass"] = "rebuild-only";
+                PlatformOwnerFixture.MaterializeDeclaredFiles(ownerRoot, document);
                 File.WriteAllText(manifest, document.ToJsonString());
                 var validated = PlatformManifestValidator.Validate([manifest], TestContext.Current.CancellationToken);
                 validated.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, validated.Diagnostics.Select(diagnostic => diagnostic.Message)));

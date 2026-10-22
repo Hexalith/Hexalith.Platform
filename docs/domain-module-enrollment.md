@@ -53,7 +53,7 @@ state-store, pub/sub or secret-store component name into code or configuration.
 
 ```bash
 mkdir -p module
-for file in hexalith.module-manifest.v2.json hosting-inventory.json sm-2-checklist.md; do
+for file in hexalith.module-manifest.v2.json hosting-inventory.json platform-handoff.md sm-2-checklist.md; do
   if [ ! -e "module/$file" ]; then
     cp "references/Hexalith.Platform/templates/domain-module-enrollment/$file" "module/$file"
   fi
@@ -174,7 +174,53 @@ nested level. Human source review must inspect unusual configuration filenames,
 indirection, unsupported languages, generated code and any constructs outside that
 bound. Passing rows cannot prove runtime behavior or replace SM-2.
 
-## 5. Run, debug and stop the active checkout
+## 5. Complete the accountable Platform registration handoff
+
+Create `module/platform-handoff.md` from the copied template and identify the module
+owner and Platform owner. Keep its status **pending** until the owners review the
+implementation and attach evidence. A valid declaration, adoption PASS, or source
+mapping does not register an executable. A new owner outside
+`PlatformServerBindings.ReferenceProjects` will refuse with an unavailable mapped
+project until Platform implements the binding.
+
+The ordinary public runner has no caller `Projects` override. The internal
+composition-run override used by tests is a test seam. Synthetic composition tests
+can demonstrate binding behavior; ordinary CLI qualification is still required.
+Record the exact reviewed **direct Platform revision** that must contain the
+registration implementation before attempting the commands in step 6. Review and
+record all of the following with both accountable owners:
+
+- Every enabled `module/server` identity and project path relative to its mapped
+  owner root in `PlatformServerBindings`; package-mode image bindings and the
+  matching Builds catalog/released declaration provenance, or an explicit pending
+  package qualification.
+- Required full-key, server-scoped configuration in `PlatformLocalProfile` and the
+  local profile, including structured inputs and secret references. Record
+  authentication/signing settings, runner signing-key propagation and token
+  adapters such as `APP_API_TOKEN` or `DAPR_API_TOKEN` where the server requires
+  them; a scoped value alone does not implement an adapter for a new owner.
+- Each EventStore gateway routing tuple: **tenant, domain, version, appId,
+  method**. Identify its owner settings and review preservation of selected
+  registrations plus filtering of unselected appIds in
+  `PlatformGatewayConfiguration`. A declaration does not invent this tuple.
+- Dapr capability, scoped component, subscription/dead-letter, receiver ACL and
+  mTLS evidence. Separate static/model observations from ordinary CLI and live
+  acceptance; keep unobserved checks pending.
+- Registration review/acceptance references, the direct module/Platform/tool
+  identities, and the pending ordinary CLI and human SM-2 evidence references.
+
+Resolve missing implementation with the accountable Platform owner and re-review
+the recorded direct Platform revision. Leave real-owner run/debug, published
+package and live acceptance pending until their evidence exists. The historical
+Dapr timeout remains unresolved without a new live observation.
+
+## 6. Run, debug and stop the active checkout
+
+Proceed after the accountable registration handoff records the reviewed direct
+Platform revision containing the required source bindings, configuration,
+authentication/token adapters, gateway routing and Dapr policy implementation.
+Use that revision in the minimum workspace from step 1. Ordinary CLI qualification
+and real-owner acceptance remain pending while these commands are performed.
 
 Install the exact SDK/Aspire/Dapr prerequisites documented in the direct Platform
 [README](../README.md#requirements), including its isolated Dapr home. From the
@@ -194,7 +240,7 @@ tool-owned run resources. Record returned run identity and mapping. Package mode
 uses released images and catalog packages; it also requires a clean, tagged direct
 Platform checkout matching its committed identity.
 
-## 6. Perform and record human SM-2 verification
+## 7. Perform and record human SM-2 verification
 
 Use the copied checklist. Bind module, direct Platform and tool identities to the
 environment/run/mapping. Attach the debugger to the reported active-checkout

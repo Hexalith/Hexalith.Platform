@@ -177,4 +177,24 @@ public sealed class PartiesAdoptionTests
         Dictionary<string, string> projects = new(PlatformServerBindings.ReferenceProjects) { ["parties/domain"] = "../Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj" };
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Prepare(options with { Projects = projects })).Message.ShouldContain("outside");
     }
+
+    [Theory]
+    [InlineData("Hexalith.Parties")]
+    [InlineData("renamed-parties-checkout")]
+    public async Task ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(string name)
+    {
+        string parent = Path.Combine(Path.GetTempPath(), "parties-resolved-root-" + Guid.NewGuid().ToString("N"));
+        using PlatformCompositionWorkspace cleanup = new(parent);
+        using PlatformOwnerFixture owner = PlatformOwnerFixture.Copy(Root, "parties", Path.Combine(parent, name));
+        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(owner.Manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
+        mapping.ActiveModule.ShouldBe("Hexalith.Parties");
+        mapping.Entries.ShouldBe([new SourceMappingEntry("Hexalith.Parties", "source", owner.Root)]);
+        PlatformManifestValidationResult validated = PlatformManifestValidator.Validate([owner.Manifest], TestContext.Current.CancellationToken);
+        validated.IsValid.ShouldBeTrue(string.Join("; ", validated.Diagnostics.Select(diagnostic => diagnostic.Message)));
+
+        PlatformServerBinding binding = PlatformServerBindings.Resolve(Options() with { Mapping = mapping }, validated.Declarations!).Single();
+
+        binding.ProjectPath.ShouldBe(Path.Combine(owner.Root, PlatformServerBindings.ReferenceProjects["parties/domain"]));
+        File.Exists(binding.ProjectPath).ShouldBeTrue();
+    }
 }

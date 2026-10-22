@@ -114,16 +114,16 @@ public sealed partial class PlatformAppModelTests
     [InlineData("memories", "server", "eventstore")]
     public void SourceProjectSymlinkIntoAnotherMappedOwnerRefusesAtomically(string module, string server, string targetOwner)
     {
-        string owner = Path.Combine(Path.GetTempPath(), "platform-cross-owner-" + Guid.NewGuid().ToString("N"));
-        Directory.CreateDirectory(Path.Combine(owner, "module"));
+        using PlatformOwnerFixture fixture = PlatformOwnerFixture.Copy(Root, module);
+        string owner = fixture.Root;
         try
         {
             PlatformCompositionOptions options = Options(active: module);
             string repository = PlatformServerBindings.Repository(module);
-            File.Copy(Path.Combine(Root, "references", repository, "module", "hexalith.module-manifest.v2.json"), Path.Combine(owner, "module", "hexalith.module-manifest.v2.json"));
             string project = Path.Combine(owner, PlatformServerBindings.ReferenceProjects[module + "/" + server]);
             Directory.CreateDirectory(Path.GetDirectoryName(project)!);
             string targetServer = targetOwner == "tenants" ? "domain" : "gateway";
+            File.Delete(project);
             File.CreateSymbolicLink(project, Path.Combine(Root, "references", PlatformServerBindings.Repository(targetOwner), PlatformServerBindings.ReferenceProjects[targetOwner + "/" + targetServer]));
             options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == repository ? entry with { Path = owner } : entry).ToArray() } };
             options.Mapping.ContainsProject(project).ShouldBeTrue("the complete mapping admits the other owner's physical project");
@@ -134,7 +134,7 @@ public sealed partial class PlatformAppModelTests
             refusal.Message.ShouldContain("physically outside its owner root");
             builder.Resources.ShouldBeEmpty();
         }
-        finally { Directory.Delete(owner, true); }
+        finally { File.Delete(Path.Combine(owner, PlatformServerBindings.ReferenceProjects[module + "/" + server])); }
     }
 
     [Fact]
@@ -254,27 +254,18 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public void PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources()
     {
-        string root = Path.Combine(Path.GetTempPath(), "platform-provenance-" + Guid.NewGuid().ToString("N"));
-        string declarations = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Declarations");
-        string catalog = Path.Combine(root, "references", "Hexalith.Builds", "Props");
-        Directory.CreateDirectory(declarations);
-        Directory.CreateDirectory(catalog);
-        try
-        {
-            foreach (string name in new[] { "eventstore.json", "tenants.json", "memories.json", "provenance.json" })
-                File.Copy(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", name), Path.Combine(declarations, name));
-            File.Copy(Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
-            File.Copy(Path.Combine(Root, "Directory.Packages.props"), Path.Combine(root, "Directory.Packages.props"));
-            PlatformCompositionOptions options = Options(WorkspaceMode.Package) with { PlatformRoot = root };
-            File.AppendAllText(Path.Combine(declarations, "tenants.json"), " ");
-            Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
-            File.Copy(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"), Path.Combine(declarations, "tenants.json"), true);
-            JsonNode provenance = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!;
-            provenance["eventstore"]!["repository"] = "Hexalith.Other";
-            File.WriteAllText(Path.Combine(declarations, "provenance.json"), provenance.ToJsonString());
-            Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
-        }
-        finally { Directory.Delete(root, true); }
+        PlatformCompositionOptions options = PackageOptions();
+        PlatformDeclarationSet.Load(options).Count.ShouldBe(3);
+        string declarations = Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations");
+        string tenants = Path.Combine(declarations, "tenants.json");
+        byte[] original = File.ReadAllBytes(tenants);
+        File.AppendAllText(tenants, " ");
+        Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
+        File.WriteAllBytes(tenants, original);
+        JsonNode provenance = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!;
+        provenance["eventstore"]!["repository"] = "Hexalith.Other";
+        File.WriteAllText(Path.Combine(declarations, "provenance.json"), provenance.ToJsonString());
+        Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
     }
 
     [Fact]
@@ -366,14 +357,14 @@ public sealed partial class PlatformAppModelTests
         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
         try
         {
-            PlatformCompositionOptions release = Options(WorkspaceMode.Package);
+            PlatformCompositionOptions release = PackageOptions();
             SourceMapping mapping = release.Mapping with
             {
-                Entries = [.. release.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)],
+                Entries = [.. release.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", release.PlatformRoot)],
             };
             CompositionRunPlan plan = CompositionRunPlanFactory.Create(
                 CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [],
-                mapping, [Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json")],
+                mapping, [Path.Combine(release.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json")],
                 null, typeof(PlatformAppModel).Assembly.Location);
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             Dictionary<string, string> versions = new(StringComparer.Ordinal)
@@ -390,6 +381,7 @@ public sealed partial class PlatformAppModelTests
             {
                 ReleaseCommits = release.ReleaseCommits,
                 ReleaseSnapshotHashes = release.ReleaseSnapshotHashes,
+                ComponentsDirectory = release.ComponentsDirectory,
                 ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
             };
             IDistributedApplicationBuilder builder = Builder();
@@ -411,10 +403,10 @@ public sealed partial class PlatformAppModelTests
     [InlineData(0, true)]
     public void RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(int exit, bool timedOut)
     {
-        PlatformCompositionOptions options = Options(WorkspaceMode.Package) with { ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)) };
+        PlatformCompositionOptions options = PackageOptions() with { ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)) };
         IDistributedApplicationBuilder builder = Builder();
         InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
-        failure.Message.ShouldBe($"{Path.GetRelativePath(Directory.GetCurrentDirectory(), Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"))}: tenants/domain: image 'registry.hexalith.com/tenants:5.8.0' is unavailable from its released registry.");
+        failure.Message.ShouldBe($"{Path.GetRelativePath(Directory.GetCurrentDirectory(), Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"))}: tenants/domain: image 'registry.hexalith.com/tenants:5.8.0' is unavailable from its released registry.");
         builder.Resources.ShouldBeEmpty();
     }
 
@@ -604,21 +596,19 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public void PackageModeRefusesAConflictingSuppliedOwnerBeforeDeduplication()
     {
-        string file = Path.Combine(Path.GetTempPath(), "platform-owner-review-" + Guid.NewGuid().ToString("N") + ".json");
-        try
-        {
-            JsonNode document = JsonNode.Parse(File.ReadAllText(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json")))!;
-            document["modules"]![0]!["lifecycle"]!["readiness"]![0]!["endpoint"] = "/different-ready";
-            File.WriteAllText(file, document.ToJsonString());
-            IDistributedApplicationBuilder builder = Builder();
-            InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(WorkspaceMode.Package) with { DeclarationPaths = [file] }));
-            failure.Message.ShouldContain(file + ": eventstore: modules[0]:");
-            failure.Message.ShouldContain("authoritative release snapshot"); builder.Resources.ShouldBeEmpty();
-            document["modules"]![0]!["lifecycle"]!["readiness"]![0]!["endpoint"] = "/ready";
-            File.WriteAllText(file, document.ToJsonString());
-            PlatformAppModel.Prepare(Options(WorkspaceMode.Package) with { DeclarationPaths = [file] }).Count.ShouldBe(6);
-        }
-        finally { File.Delete(file); }
+        PlatformCompositionOptions options = PackageOptions();
+        PlatformAppModel.Prepare(options).Count.ShouldBe(6);
+        string file = Path.Combine(options.PlatformRoot, "supplied-eventstore.json");
+        string original = File.ReadAllText(Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json"));
+        JsonNode document = JsonNode.Parse(original)!;
+        document["modules"]![0]!["lifecycle"]!["readiness"]![0]!["endpoint"] = "/different-ready";
+        File.WriteAllText(file, document.ToJsonString());
+        IDistributedApplicationBuilder builder = Builder();
+        InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options with { DeclarationPaths = [file] }));
+        failure.Message.ShouldContain(file + ": eventstore: modules[0]:");
+        failure.Message.ShouldContain("authoritative release snapshot"); builder.Resources.ShouldBeEmpty();
+        File.WriteAllText(file, original);
+        PlatformAppModel.Prepare(options with { DeclarationPaths = [file] }).Count.ShouldBe(6);
     }
 
     [Fact]
@@ -651,11 +641,10 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public void FailedFileCompositionDeletesItsPrivateWorkspace()
     {
-        string directory = Path.Combine(Path.GetTempPath(), "platform-failed-review-" + Guid.NewGuid().ToString("N"));
-        Directory.CreateDirectory(Path.Combine(directory, "module"));
+        using PlatformOwnerFixture fixture = PlatformOwnerFixture.Copy(Root, "eventstore");
+        string directory = fixture.Root;
         try
         {
-            File.Copy(Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json"), Path.Combine(directory, "module", "hexalith.module-manifest.v2.json"));
             File.WriteAllText(Path.Combine(directory, "gateway.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
             File.WriteAllText(Path.Combine(directory, "appsettings.json"), "invalid JSON");
             PlatformCompositionOptions original = Options(active: "eventstore");
@@ -663,11 +652,12 @@ public sealed partial class PlatformAppModelTests
             string tempRoot = Path.Combine(Path.GetTempPath(), "hexalith-platform");
             string[] before = Directory.Exists(tempRoot) ? Directory.GetDirectories(tempRoot).Order(StringComparer.Ordinal).ToArray() : [];
             IDistributedApplicationBuilder builder = Builder();
-            Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+            InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+            failure.Message.ShouldContain("appsettings: JSON is invalid");
             builder.Resources.ShouldBeEmpty();
             Directory.GetDirectories(tempRoot).Order(StringComparer.Ordinal).ShouldBe(before);
         }
-        finally { Directory.Delete(directory, true); }
+        finally { File.Delete(Path.Combine(directory, "appsettings.json")); }
     }
 
     private static YamlStream Yaml(string text) { YamlStream yaml = new(); yaml.Load(new StringReader(text)); return yaml; }

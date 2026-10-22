@@ -175,6 +175,30 @@ def validate(paths: list[Path]) -> tuple[bool, list[dict[str, str]], list[dict[s
     return accepted, diagnostics, public_diagnostics
 
 
+def materialize_declared_entries(root: Path, documents: list[dict]) -> None:
+    """Create static-only prerequisites; these placeholders are never live acceptance."""
+    (root / "Hexalith.Builds.slnx").write_text("<Solution />")
+
+    def visit(value: object) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in {"entry", "executable"} and isinstance(child, str):
+                    path = (root / child).resolve()
+                    assert path.is_relative_to(root.resolve()), child
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    if not path.exists():
+                        path.write_text("<Project />" if path.suffix == ".csproj"
+                                        else "# synthetic declaration prerequisite\n")
+                else:
+                    visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    for document in documents:
+        visit(document)
+
+
 def validated_documents(paths: list[Path]) -> list[dict]:
     """Keep the public source/field report authoritative before owner JSON parsing."""
     accepted, diagnostics, _ = validate(paths)
@@ -644,6 +668,15 @@ def main() -> None:
             raise AssertionError(f"{scenario} escaped the effective ACL check")
     with tempfile.TemporaryDirectory(prefix="hexalith-declarations-") as directory:
         temp = Path(directory)
+        materialize_declared_entries(temp, documents)
+        baseline_paths = []
+        for index, document in enumerate(documents):
+            path = temp / f"baseline-{index}.json"
+            path.write_text(json.dumps(document))
+            baseline_paths.append(path)
+        accepted, diagnostics, public_diagnostics = validate(baseline_paths)
+        assert accepted and not diagnostics and not public_diagnostics, diagnostics
+        print("PASS unmodified synthetic temporary set: declared entries and root prerequisites valid")
         for scenario, mutate, field in (
             ("duplicate identity", lambda docs: docs[2]["modules"][0]["identity"].update(moduleId="memories"), "identity.moduleId"),
             ("absent readiness", lambda docs: docs[0]["modules"][0]["lifecycle"].update(readiness=[]), "lifecycle.readiness"),
