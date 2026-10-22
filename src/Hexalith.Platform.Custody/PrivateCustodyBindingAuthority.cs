@@ -33,7 +33,7 @@ internal sealed class PrivateCustodyBindingAuthority
     internal long Revision { get; }
     internal string KeyVersion { get; } = "capability-v1";
     internal string PublicAnchorId => Convert.ToHexString(SHA256.HashData(_spki))[..32];
-    internal string PublicAnchorVersion => "v1";
+    internal string PublicAnchorVersion { get; } = "v1";
     internal string ArtifactDigest => Convert.ToHexString(SHA256.HashData(_spki));
     internal DeletionCapabilityTrustProfile Profile => new(Issuer, Audience, TenantId, KeyVersion, PublicAnchorId, PublicAnchorVersion);
 
