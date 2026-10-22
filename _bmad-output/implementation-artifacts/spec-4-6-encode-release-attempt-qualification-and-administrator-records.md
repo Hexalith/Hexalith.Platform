@@ -33,7 +33,7 @@ Release and release-available records belong to publication; attempts belong to 
 | Authentic record | Valid schema, signature and entitled writer | Return verified typed record and content digest | No store-access shortcut |
 | Forgery or confusion | Tampering, wrong writer/environment/key, duplicate/unknown fields, unsupported kind/version/algorithm | Reject before returning trusted data | Stable metadata-only failure |
 | Terminal attempt | Previously verified terminal record; proposed changed record | Reject every mutation, including writer replacement | Exact replay may be a no-op |
-| Supersession | Nonterminal predecessor plus verified higher-epoch takeover linked to it | Only successor writer can terminalize predecessor as superseded | Missing/conflicting takeover evidence rejects |
+| Supersession | Nonterminal predecessor plus verified takeover linked to it at the current higher CAS epoch | Only successor writer can terminalize predecessor as superseded | Missing/conflicting takeover evidence rejects |
 | Administrator action | Executor, workflow, monitor or deputy key claims Administrator | Reject despite valid cryptographic signature | Fail closed on shared identity/key enrollment |
 
 </frozen-after-approval>
@@ -46,7 +46,7 @@ Paths below are relative to `references/Hexalith.Builds`.
 - `src/libraries/Hexalith.Builds.Tooling/RunEvidence/ModuleRunEvidenceWriter.cs`: deterministic UTF-8 encoding pattern; leave existing evidence contracts unchanged.
 - `src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj`: existing shared assembly, central schema dependency and embedded resources; presently bundled with CLI packages, not independently published.
 - `test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj`: existing xUnit/Shouldly project; no new package dependencies needed.
-- Platform `ARCHITECTURE-SPINE.md`, “Binding classes and records” and “Attempt ownership”: authoritative field classes, writers and takeover semantics. Previous completed 4.0 spec supplies continuity, not record schemas. Existing development JWTs grant no hosted authority.
+- `{project-root}/_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md`: authoritative fields, writers and takeover semantics. Existing development JWTs grant no hosted authority.
 
 ## Tasks & Acceptance
 
@@ -71,7 +71,7 @@ Paths below are relative to `references/Hexalith.Builds`.
 
 ## Design Notes
 
-One schema resource may contain eight discriminated branches with distinct schema identifiers; each kind remains independently versioned. Keep these Platform records separate from existing Builds package-release receipts. Reuse Tooling rather than extending the two-package publication pipeline. Signature validity and state-transition authority are separate checks; neither alone establishes a committed store write.
+One schema resource contains eight branches with distinct versioned schema identifiers. Keep Platform records separate from Builds package-release receipts. Reuse Tooling without extending the two-package publication pipeline. Signature and transition checks alone cannot establish a committed store write.
 
 ## Verification
 

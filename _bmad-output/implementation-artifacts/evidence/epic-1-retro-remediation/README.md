@@ -7,7 +7,14 @@ SM-2 acceptance. The historical Dapr timeout remains unresolved without new live
 evidence. Production snapshots/provenance, catalog changes and gitlinks were not
 changed by this implementation; concurrent Memories work was preserved.
 
-## Commands and retained results
+## Historical implementation verification before review fixes
+
+The class/full-suite counts and matrix below predate the review fixes. They are
+historical observations and do not establish the current source matrix. See
+[review-verification.md](review-verification.md) for current narrow per-case
+results; the parent agent's subsequent rebuilt full audit supersedes this history.
+
+### Commands and retained results
 
 | Exact command | Result | Retained output |
 | --- | --- | --- |
