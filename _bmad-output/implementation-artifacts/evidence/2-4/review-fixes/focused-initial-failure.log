@@ -1,0 +1,597 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(65,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(68,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "other-ci") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      4
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(273,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "missing-job") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      4
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(273,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "bad-attempt") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      4
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(273,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "invalid-repository") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      4
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(273,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "unsupported-runner") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      4
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(273,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "github-hosted") [FAIL]
+      Shouldly.ShouldAssertException : starts
+          should be
+      1
+          but was
+      0
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(context: "self-hosted") [FAIL]
+      Shouldly.ShouldAssertException : starts
+          should be
+      1
+          but was
+      0
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ActualCiContextIsCheckedBeforeProvisioningAsync(String context)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: "changed") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(312,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(String replacement)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: "fifo") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(312,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(String replacement)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(declared: False) [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      4
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(226,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(230,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(declared: True) [FAIL]
+      Shouldly.ShouldAssertException : starts
+          should be
+      1
+          but was
+      0
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(225,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(230,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "pass", expectedExit: 0, expectedCleanup: 1, disposition: "removed") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "cleanup-unverified", expectedExit: 3, expectedCleanup: 1, disposition: "unknown") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      3
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "cleanup-throws", expectedExit: 3, expectedCleanup: 1, disposition: "unknown") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      3
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "ci-failure", expectedExit: 4, expectedCleanup: 1, disposition: "removed") [FAIL]
+      Shouldly.ShouldAssertException : cleanups
+          should be
+      1
+          but was
+      0
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(182,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "manifest-drift", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "entry-drift", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "dapr-secret", expectedExit: 6, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      6
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "app-secret", expectedExit: 6, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      6
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "secret", expectedExit: 6, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      6
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "skipped", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "failed", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "missing", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "nonzero", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "observed-identities", expectedExit: 0, expectedCleanup: 1, disposition: "removed") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "detail-malformed", expectedExit: 6, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      6
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "detail-secret", expectedExit: 6, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      6
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "gate-failure-nonzero", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "gate-failure-pass", expectedExit: 3, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      3
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "detail-no-report", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "memories-missing-detail", expectedExit: 6, expectedCleanup: 0, disposition: "retained") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      6
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "memories-detail-pass", expectedExit: 0, expectedCleanup: 1, disposition: "removed") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "detail-pass", expectedExit: 0, expectedCleanup: 1, disposition: "removed") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "cancel", expectedExit: 130, expectedCleanup: 1, disposition: "removed") [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      130
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT007"},"diagnostics":[{"ruleId":"HXT007","phase":"Test","category":"ProductOrTest","message":"The owned execution failed; inspect retained diagnostics.","field":"profile","hint":null,"source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(181,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(scenario: "timeout", expectedExit: 4, expectedCleanup: 0, disposition: "retained") [FAIL]
+      System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+      Stack Trace:
+           at System.Text.Json.JsonElement.GetProperty(String propertyName)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(186,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        test/Hexalith.Builds.Module.Tests/ModuleTestSelectionTests.cs(279,0): at Hexalith.Builds.ModuleTool.Tests.ModuleTestSelectionTests.PythonCommandBindsRealReportAndCleanupAsync(String scenario, Int32 expectedExit, Int32 expectedCleanup, String disposition)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 109, Errors: 0, Failed: 36, Skipped: 0, Not Run: 0, Time: 4.836s

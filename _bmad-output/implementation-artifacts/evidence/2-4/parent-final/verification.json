@@ -1,0 +1,103 @@
+{
+  "scope": "local source/Debug provisioning; no package-mode live, full reference-domain, CI or candidate qualification",
+  "regressions": {
+    "builds-affected": {
+      "total": 426,
+      "passed": 426,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 163.359,
+      "skips": []
+    },
+    "platform-affected": {
+      "total": 38,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 1,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 29.587,
+      "skips": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync"
+      ]
+    }
+  },
+  "live": {
+    "runs": [
+      {
+        "runId": "8629727f7f9688e67b86b7a06e4dcf9d",
+        "attemptId": "0dc5d6443b8f462ea3fff53d040aeec9",
+        "environmentId": "f1afbc30dcdb4b7da3c8c6ab7b94dc39",
+        "catalogCommit": "66b9136a0b223925e51177a51eb48852e2f12787",
+        "compositionContentIdentity": "sha256:c3b753d981aa32ba80a4502d6821055c5b84b5271df7cda28cd4469de3946d26",
+        "startupSeconds": 75.5437518,
+        "executionSeconds": 120,
+        "observedResources": 6,
+        "requiredTasksPassed": 1,
+        "ownPersistedValueObserved": true,
+        "peerKeyVisible": false,
+        "reportSha256": "76e95d47f821d26e55668a7cf9663c090c4bb71483c5e22a3fa98e8a290390c1"
+      },
+      {
+        "runId": "927a57797db4d90d6bb817fc7d1cdc8b",
+        "attemptId": "18a47d3034a64992bcc9839d3b752658",
+        "environmentId": "e913068281c64db9bf4522497218df79",
+        "catalogCommit": "66b9136a0b223925e51177a51eb48852e2f12787",
+        "compositionContentIdentity": "sha256:c3b753d981aa32ba80a4502d6821055c5b84b5271df7cda28cd4469de3946d26",
+        "startupSeconds": 77.5330928,
+        "executionSeconds": 120,
+        "observedResources": 6,
+        "requiredTasksPassed": 1,
+        "ownPersistedValueObserved": true,
+        "peerKeyVisible": false,
+        "reportSha256": "76e95d47f821d26e55668a7cf9663c090c4bb71483c5e22a3fa98e8a290390c1"
+      }
+    ],
+    "passed": 1,
+    "seconds": 82.865
+  },
+  "preservedFailure": "live/qualification.log: concurrent provider restore used shared project.assets.json; corrected with run-owned --artifacts-path",
+  "reviewRegressions": {
+    "SubprocessContentionAndInterruptedHolderPreservePeerClaimsAsync": 1,
+    "DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync": 2,
+    "ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync": 2,
+    "ActualCiContextIsCheckedBeforeProvisioningAsync": 7,
+    "BatchLegacyEvidenceRefusesBeforeProvisioningAsync": 1,
+    "StartupFallbackIsCheckedBeforeProvisioningAsync": 2,
+    "IncompleteCleanupKeepsOwnerAndPeerClaimsAsync": 1,
+    "SelectedFallbackRefusesBeforeAllocationAsync": 1,
+    "RenewalAdvancesCapsAndFailsClosedAsync": 2,
+    "ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync": 1,
+    "ConcurrentProviderBuildsOwnAllGraphOutputsAsync": 2
+  },
+  "sourceFilesUnchanged": 51,
+  "heads": {
+    ".": "dcb01b1bcbcfe678781674841697de383f25165d",
+    "references/Hexalith.Builds": "66b9136a0b223925e51177a51eb48852e2f12787"
+  },
+  "frozenIntentSha256": "1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852",
+  "status": "verified",
+  "builds": {
+    "buildsDebug": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0
+    },
+    "platformDebug": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0
+    }
+  },
+  "schemaParity": {
+    "passed": 1
+  },
+  "cleanupAudit": {
+    "file": "exact-owner-cleanup-audit.json",
+    "completed": true,
+    "owners": 10,
+    "independentlyValidatedDescriptors": 2
+  }
+}

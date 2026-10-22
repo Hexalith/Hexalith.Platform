@@ -1,0 +1,13 @@
+# cwd: /home/administrator/projects/hexalith/platform/references/Hexalith.Builds
+
+dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1 --no-restore
+
+dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -parallelMode none -class '*TestEnvironmentProvisioningTests' -class '*CompositionResourceClaimStoreTests' -class '*ModuleTestSelectionTests' -class '*NativeTestExecutorTests' -class '*SelectedObservationTests'
+
+dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -parallelMode none -method '*CompositionEngineTests.DownIsKeyedByRunIdAndIdempotentAsync' -method '*CompositionEngineTests.IncompleteCleanupKeepsOwnerAndPeerClaimsAsync' -method '*CompositionEngineTests.SelectedFallbackRefusesBeforeAllocationAsync'
+
+# cwd: /home/administrator/projects/hexalith/platform
+
+dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -m:1 --no-restore
+
+dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -parallelMode none -method '*SecondaryClaimsOnlyTheAcceptedNonOverlappingAllocation' -method '*SecondaryPortAllocationRetriesPersistedOverlapAndFailsClosed' -method '*SecondaryPortAllocationRetriesPersistedCollisions'

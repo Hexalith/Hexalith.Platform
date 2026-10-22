@@ -127,7 +127,7 @@ public sealed partial class PlatformAppModelTests
             CompositionRunPorts persisted = CompositionPortAllocator.AllocateOwned(1, owner, directory);
             CompositionRunPorts independent = CompositionPortAllocator.Allocate(1);
             CompositionRunPorts rejected = independent with { Redis = persisted.Scheduler };
-            CompositionRunPlan plan = CompositionRunPlanFactory.Create(owner, Path.Combine(directory, "run"), directory, persisted, [], []) with { ResourceClaimStateDirectory = directory };
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(owner, Path.Combine(directory, "run"), directory, persisted, [], [], platformDeclarationPaths: [Path.Combine(directory, "manifest.json")]) with { ResourceClaimStateDirectory = directory };
             int attempts = 0;
             PlatformAppModel.AllocateOwnedSecondaryPorts(1, plan, _ => ++attempts == 1 ? rejected : independent).ShouldBe(independent);
             attempts.ShouldBe(2);

@@ -2,7 +2,7 @@
 title: '2.4 Provision a run-owned environment for a test suite'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '543ea182bd83c813609c7df0491d1419b7f1f99e'
@@ -108,6 +108,7 @@ All three independent layers completed before triage. Each finding was assessed 
 | Edge 3: per-entry report loss | medium | Patch; same omission as Blind 2. |
 | Verification 1: activated gate deadline absent from tests | medium | Patch. Filed evidence verifies every direct gate test uses the legacy deadline; add delayed activation and controlled renewal/expiry assertions. |
 | Verification 2: engine claim release absent from normal tests | medium | Patch. Filed evidence verifies engine cleanup tests seed no claims; assert successful release, peer preservation and retention after incomplete cleanup. |
+| Parent live verification: shared provider restore collision | medium | Patch. Concurrent actual suite commands exposed shared composition-provider `obj/project.assets.json` despite separate final output directories. Added the existing `--artifacts-path` option under the run workspace; preserved assembly location, catalog, configuration and startup deadline. A real concurrent three-project regression passed both mode cases, followed by a passing fresh two-environment proof. |
 
 
 ## Design Notes
@@ -145,3 +146,21 @@ The complete baseline diff, including concurrent work, is retained at `/tmp/stor
 | Missing catalog/observations/descriptor | Ten `MissingProofNeverLaunchesAChildAsync` cases | Passed in 75 focused checks. |
 
 Parent independently parsed the actual logs: 370/370, 75/75, 29/29 and live 1/1, each with zero errors/failures/skips/not-run. Inspected both positive descriptors, UTC execution intervals, startup tasks, data receipts and successful explicit cleanup receipts. All six exact-owner cleanup audits are empty; no `HXR003` appears in either positive command. Machine-readable parent checks are in `evidence/2-4/parent-verification-audit.json`.
+
+
+### Review corrections and final parent verification, 2026-10-22
+
+All review findings routed to patch are corrected. No findings were deferred, and frozen intent remains unchanged. Secondary allocation claims only accepted non-overlapping ports; claim documents publish atomically. Native execution retains validated pre-launch descriptor snapshots and every inspected report within the original processing bound. Mixed batches use the active entry's stopping/cleanup limit. Unsupported fallback/CI configuration and multi-entry legacy evidence export refuse before provisioning; imported evidence checks canonical selection membership. Activated gate and exact-owner cleanup regressions now run normally.
+
+Parent verification exposed one further real concurrency defect: composition provider builds shared source restore intermediates. The one-argument `PlatformManifestCommand.BuildModelAsync` correction places artifacts under each existing run workspace. `PlatformModelBuildIsolationTests.ConcurrentProviderBuildsOwnAllGraphOutputsAsync` executes two concurrent three-project builds in each mode and verifies private graph outputs, unchanged source directories, catalog and configuration. Failed live evidence is preserved at `evidence/2-4/parent-final/live/`.
+
+Final evidence is indexed in `evidence/2-4/parent-final/README.md` and `verification.json`:
+
+- Both individual Debug builds passed with zero warnings/errors.
+- Builds affected regressions: **426 passed**, zero failures/errors/skips/not-run, 163.359 seconds. All new review regression cases executed and passed.
+- Platform affected regressions: **37 passed**, zero failures/errors; one separate opt-in occupied-listener proof was skipped. Current schema mirror parity: **1 passed**.
+- Fresh real-service qualification: **1 passed**, zero failures/errors/skips, 82.865 seconds. Runs `8629727f7f9688e67b86b7a06e4dcf9d` and `927a57797db4d90d6bb817fc7d1cdc8b` each observed six healthy resources and a passed required startup verifier. Startup took 75.54 and 77.53 seconds; each then received the full 120-second execution interval. Both persisted/read their own value and could not observe the peer's key. Neither returned `HXR003`.
+- Parent independently validated both retained descriptors and inspected durable entry reports. Final source fingerprints match all **51** reviewed files. Approved frozen fingerprint remains `1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852`.
+- Read-only exact-owner resource scanning covers all **ten** run IDs from every attempt: no owned containers/processes, run workspaces, state files or JSON claims remain. Each final positive cleanup succeeded on its first explicit call.
+
+This accepts local source/Debug provisioning for the supported technical closure. The retained broader reference-domain startup failure remains outside this positive runtime qualification; package-mode live execution, CI orchestration and candidate acceptance are not claimed. Concurrent work and pins were preserved. Full and Story 2.4 review diffs were rewritten after corrections at their original temporary paths.

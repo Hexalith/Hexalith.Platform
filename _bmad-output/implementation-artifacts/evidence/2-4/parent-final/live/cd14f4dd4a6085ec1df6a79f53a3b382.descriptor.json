@@ -1,0 +1,238 @@
+{
+  "schema": "hexalith.test-environment.v1",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "bindings": {
+    "run": {
+      "runId": "cd14f4dd4a6085ec1df6a79f53a3b382",
+      "attemptId": "95b8e9de07424556bcd1716a14acde6b",
+      "attemptSequence": 1,
+      "ownerRunId": "cd14f4dd4a6085ec1df6a79f53a3b382",
+      "environmentId": "6cddc49825324d53bee761bbacb54f05",
+      "role": "owner"
+    },
+    "environment": {
+      "composition": {
+        "id": "platform",
+        "contentIdentity": "sha256:c3b753d981aa32ba80a4502d6821055c5b84b5271df7cda28cd4469de3946d26"
+      },
+      "mode": "source",
+      "executionContext": {
+        "kind": "local"
+      },
+      "catalog": {
+        "commit": "66b9136a0b223925e51177a51eb48852e2f12787",
+        "instanceId": "6cddc49825324d53bee761bbacb54f05-catalog"
+      },
+      "isolation": {
+        "state": "populated",
+        "syntheticTenantId": "g4t-cd14f4dd4a60",
+        "dataIsolationId": "g4r-cd14f4dd4a60",
+        "resourceScopeId": "6cddc49825324d53bee761bbacb54f05",
+        "catalogScopeId": "6cddc49825324d53bee761bbacb54f05-catalog"
+      },
+      "resources": [
+        {
+          "resourceId": "dapr-placement-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:14092/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:34193/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-scheduler-mtls",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:28533/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:38151/"
+            }
+          ]
+        },
+        {
+          "resourceId": "dapr-sentry",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:22462/"
+            },
+            {
+              "name": "health",
+              "protocol": "http",
+              "uri": "http://localhost:43749/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:43535/"
+            }
+          ]
+        },
+        {
+          "resourceId": "eventstore-dapr-cli",
+          "moduleId": "eventstore",
+          "endpoints": [
+            {
+              "name": "grpc",
+              "protocol": "http",
+              "uri": "http://localhost:12813/"
+            },
+            {
+              "name": "http",
+              "protocol": "http",
+              "uri": "http://localhost:11435/"
+            },
+            {
+              "name": "metrics",
+              "protocol": "http",
+              "uri": "http://localhost:19752/"
+            }
+          ]
+        },
+        {
+          "resourceId": "redis",
+          "moduleId": "platform",
+          "endpoints": [
+            {
+              "name": "tcp",
+              "protocol": "tcp",
+              "uri": "tcp://localhost:19454/"
+            }
+          ]
+        }
+      ],
+      "readiness": {
+        "state": "populated",
+        "status": "ready",
+        "observedAt": "2026-10-22T19:48:00.3925970Z",
+        "resources": [
+          {
+            "resourceId": "dapr-placement-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-22T19:48:00.3925258Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-scheduler-mtls",
+            "status": "ready",
+            "observedAt": "2026-10-22T19:48:00.3925309Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "dapr-sentry",
+            "status": "ready",
+            "observedAt": "2026-10-22T19:48:00.3925380Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore",
+            "status": "ready",
+            "observedAt": "2026-10-22T19:48:00.3925168Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "eventstore-dapr-cli",
+            "status": "ready",
+            "observedAt": "2026-10-22T19:48:00.3925439Z",
+            "diagnosticIds": []
+          },
+          {
+            "resourceId": "redis",
+            "status": "ready",
+            "observedAt": "2026-10-22T19:48:00.3925065Z",
+            "diagnosticIds": []
+          }
+        ]
+      },
+      "startupTasks": {
+        "state": "populated",
+        "tasks": [
+          {
+            "taskId": "platform/verify-run-owner",
+            "required": true,
+            "status": "passed",
+            "startedAt": "2026-10-22T19:48:00.2879204Z",
+            "finishedAt": "2026-10-22T19:48:00.2944626Z",
+            "diagnosticIds": []
+          }
+        ]
+      }
+    },
+    "tool": {
+      "state": "not-yet-populated"
+    },
+    "candidate": {
+      "state": "not-yet-populated"
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "not-yet-populated"
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "populated",
+      "holds": []
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2026-10-22T19:46:52.1080593Z",
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-10-22T19:56:52.1080593Z",
+        "actualDurationSeconds": 68.6932662,
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "populated",
+        "origin": "test-execution-started",
+        "originAt": "2026-10-22T19:48:00.8214175Z",
+        "effectiveSeconds": 120,
+        "expiresAt": "2026-10-22T19:50:00.8214175Z",
+        "configurationContentIdentity": "sha256:5c59aadfdc0389d0e43117b28ba516dc8e00af52b596864c6b477c4b5e8503d6"
+      }
+    }
+  },
+  "diagnostics": []
+}

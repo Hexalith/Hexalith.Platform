@@ -1,5 +1,11 @@
 # Story 2.4 implementation evidence
 
+Final post-review acceptance: **426 Builds tests, 37 Platform tests, schema parity and the fresh live two-environment proof passed**. One separate opt-in Platform listener test was skipped. All ten attempted owners have verified empty cleanup. See [final acceptance evidence](parent-final/README.md) and [machine-readable results](parent-final/verification.json).
+
+The sections below retain the initial implementation evidence before review corrections. Final results above supersede those earlier acceptance counts.
+
+## Initial implementation phase
+
 The runner provisions one fresh owned environment for a declared suite or compatible repeated-profile batch, waits for actual readiness and required startup tasks, persists separate execution activation, validates the credential-free v1 descriptor, and launches native children with its absolute path. Local source/Debug qualification is complete and Story 2.4 is ready for review.
 
 ## Verification results

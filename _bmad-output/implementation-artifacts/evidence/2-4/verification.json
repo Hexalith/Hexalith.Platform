@@ -105,9 +105,20 @@
       "reason": "Earlier startup task fixture timing failure while live startup was active; retained. Isolated original fixture rerun passed, then sentinel-adjusted serial suite passed."
     }
   ],
-  "productionCodeAfter370And75": "unchanged; later source changes affect only gated live fixture transport/cleanup receipts and schema line endings",
+  "productionCodeAfter370And75": "Initial-handoff observation only. Subsequent parent-review corrections have focused verification recorded in review-fixes/verification.json; parent full regression/live verification remains pending.",
   "remainingLimitations": [
     "Broader reference domain startup is not qualified by the minimum technical closure proof.",
     "No package-mode live execution, CI orchestration, attachment admission, domain fixture migration, candidate acceptance or pin changes."
-  ]
+  ],
+  "reviewCorrections": "review-fixes/verification.json",
+  "phase": "initial implementation before independent review",
+  "finalPostReviewAcceptance": {
+    "file": "parent-final/verification.json",
+    "buildsPassed": 426,
+    "platformPassed": 37,
+    "platformSeparateOptInSkipped": 1,
+    "schemaParityPassed": 1,
+    "livePassed": 1,
+    "exactOwnersClean": 10
+  }
 }

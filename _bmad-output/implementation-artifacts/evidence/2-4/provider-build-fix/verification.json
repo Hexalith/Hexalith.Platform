@@ -1,0 +1,32 @@
+{
+  "productionChange": "BuildModelAsync adds --artifacts-path <workspace>/build/platform-model while retaining --output <workspace>/hosts/platform-model and the expected provider assembly path.",
+  "build": {
+    "configuration": "Debug",
+    "warnings": 0,
+    "errors": 0,
+    "command": "dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1 --no-restore"
+  },
+  "focused": {
+    "passed": 2,
+    "failed": 0,
+    "seconds": 11.648,
+    "workingDirectory": "references/Hexalith.Builds",
+    "command": "dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -parallelMode none -class '*PlatformModelBuildIsolationTests'",
+    "method": "PlatformModelBuildIsolationTests.ConcurrentProviderBuildsOwnAllGraphOutputsAsync",
+    "cases": [
+      "WorkspaceMode.Source (Debug)",
+      "WorkspaceMode.Package (Release)"
+    ],
+    "coverage": "Each case runs two actual concurrent builds of a three-project graph, verifies private restore/intermediate/output paths for every project, unchanged source filesystem entries, pinned catalog observations and the retained copied provider/dependency assembly paths."
+  },
+  "newSourceReviewFiles": [
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformModelBuildIsolationTests.cs"
+  ],
+  "sourceSha256": {
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/PlatformManifestCommand.cs": "cfeaacfb2d790bdcc1391cb12c9a6536f2fd3f9a8071ce0003677c767611a92e",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/PlatformModelBuildIsolationTests.cs": "1f821db30eb437fa64daa77b8983e47bed9df81e6bf35742dc1f570f42e167c7"
+  },
+  "preservedFailedLiveEvidence": "../parent-final/live (read only; no changes)",
+  "fullRegressionsAndFreshLiveProof": "Parent verification; not rerun by this correction."
+}

@@ -1,0 +1,66 @@
+{
+  "builds": {
+    "build": {
+      "warnings": 0,
+      "errors": 0
+    },
+    "focused": {
+      "passed": 109,
+      "failed": 0,
+      "seconds": 11.645
+    },
+    "engine": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 5.524
+    }
+  },
+  "platform": {
+    "build": {
+      "warnings": 1,
+      "errors": 0,
+      "warning": "Existing MSB3277 StackExchange.Redis assembly 2.0/3.0 conflict"
+    },
+    "focused": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 0.283
+    }
+  },
+  "execution": "All test invocations serial; only edited-file coverage. Full affected regressions and fresh live proof delegated to parent verification.",
+  "commands": "commands.txt",
+  "newOrExpandedMethods": {
+    "TestEnvironmentProvisioningTests": [
+      "ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync (expanded: mixed stop limits and both inspected reports survive workspace deletion)",
+      "BatchLegacyEvidenceRefusesBeforeProvisioningAsync",
+      "StartupFallbackIsCheckedBeforeProvisioningAsync",
+      "ActualCiContextIsCheckedBeforeProvisioningAsync",
+      "DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync",
+      "ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync"
+    ],
+    "CompositionResourceClaimStoreTests": [
+      "SubprocessContentionAndInterruptedHolderPreservePeerClaimsAsync"
+    ],
+    "ModuleTestSelectionTests": [
+      "PythonCommandBindsRealReportAndCleanupAsync (expanded: reject imported batches and represented selections absent from the selection list)"
+    ],
+    "SelectedObservationTests": [
+      "SelectedGateClosesOnOwnerWithdrawalWithoutExtendingDeadlineAsync (expanded: expired legacy selection with fresh actual execution)",
+      "RenewalAdvancesCapsAndFailsClosedAsync (expanded: actual expiry cap and closure at that expiry)",
+      "RenewalRefusesReplacedAuthorityWithoutReopeningAsync (expanded: actual execution activation)"
+    ],
+    "CompositionEngineTests": [
+      "DownIsKeyedByRunIdAndIdempotentAsync (expanded: owner release and peer preservation)",
+      "IncompleteCleanupKeepsOwnerAndPeerClaimsAsync",
+      "SelectedFallbackRefusesBeforeAllocationAsync"
+    ],
+    "PlatformAppModelTests": [
+      "SecondaryClaimsOnlyTheAcceptedNonOverlappingAllocation"
+    ]
+  },
+  "retainedFailures": [
+    "focused-initial-failure.log: 109 tests, 36 failures caused by duplicated preflight closure resolution before simulated start fixtures prepared their authoritative roots; command now reuses the original resolved startup deadline and validated active declaration, and the real engine still rechecks authoritative closure before allocation. Two descriptor test cases also needed their selected readiness metadata populated.",
+    "focused-fixture-assertion-failure.log: 109 tests, 1 failure from expecting a native test name to survive existing redaction; switched fixture distinction to preserved counts, keeping redaction unchanged.",
+    "platform-fixture-setup-failure.log: 3 tests, 1 setup failure because the zero-module fixture lacked its Platform plan marker; corrected marker and reran the same three methods."
+  ]
+}
