@@ -441,6 +441,18 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertEqual(1, code)
             self.assertEqual(["RoutingUsesAuthenticatedOriginAndRetainedReceiptDigest"], failed_blocked["coverageGaps"])
             self.assertEqual(0, failed_blocked["effects"])
+            attempt_path = failed_artifacts / verify.ATTEMPT_NAME
+            flipped = json.loads(attempt_path.read_text())
+            self.assertEqual(1, flipped["exitCode"])
+            flipped["exitCode"] = 0
+            attempt_path.write_bytes(verify.canonical(flipped))
+            with patch.object(verify, "run_suite", side_effect=failed) as replayed:
+                stderr = StringIO()
+                with patch.object(verify.sys, "stderr", stderr):
+                    code = verify.verify(platform, failed_artifacts, profile)
+            self.assertEqual(1, code)
+            self.assertIn("required cell", stderr.getvalue())
+            self.assertEqual(0, replayed.call_count)
 
             def mixed(root, project, test_filter, results, log_name, configuration="Debug"):
                 method = "ExactLookupDoesNotMutateAndRequiresCurrentPrivateAuthority"

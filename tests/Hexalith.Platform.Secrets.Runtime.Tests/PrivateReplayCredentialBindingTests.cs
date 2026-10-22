@@ -1,5 +1,7 @@
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Nodes;
 using Hexalith.EventStore.Contracts.Security;
 using Hexalith.Platform.Custody;
 using Hexalith.Platform.Custody.Component;
@@ -36,6 +38,34 @@ public sealed class PrivateReplayCredentialBindingTests
         (await stale.RegisterAsync(intent, Fixtures.Now, TimeSpan.FromDays(7), TestContext.Current.CancellationToken)).ShouldBeNull();
         (await stale.LookupAsync(intent, TestContext.Current.CancellationToken)).ShouldBeNull();
         invoker.Calls.ShouldBeEmpty();
+        ITrustedEnvelopeReplayRegistrar installed = InstalledRegistrar(services);
+        invoker.Reply = (_, method, body, _) => method == "query-replay" ? Absent(body, ready.ReplayRegistrarReference!, method) : "{}";
+        (await installed.RegisterAsync(intent, Fixtures.Now, TimeSpan.FromDays(7), TestContext.Current.CancellationToken)).ShouldBeNull();
+        (await installed.LookupAsync(intent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        invoker.Calls.Select(call => call.Method).ShouldBe(["query-replay", "effect-replay", "query-replay"]);
+        invoker.PrivateBindings.ShouldAllBe(call => call.App == ready.ReplayRegistrarReference && call.Credential == ready.ReplayRegistrarCredentialReference);
+    }
+
+    private static ITrustedEnvelopeReplayRegistrar InstalledRegistrar(IServiceCollection services)
+    {
+        ServiceDescriptor descriptor = services.Single(item => item.ServiceType == typeof(TrustedEnvelopeReplayVerifier));
+        object closure = descriptor.ImplementationFactory!.Target!;
+        return closure.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Select(field => field.GetValue(closure)).OfType<ITrustedEnvelopeReplayRegistrar>().Single();
+    }
+
+    private static string Absent(string body, string authority, string method)
+    {
+        JsonNode node = JsonNode.Parse(body)!;
+        node["observedAt"] = Fixtures.Now.ToString("O");
+        node["validUntil"] = Fixtures.Now.AddSeconds(21).ToString("O");
+        node["authorityRevision"] = "rev-1";
+        node["authorized"] = true;
+        node["status"] = "absent";
+        node["proofType"] = "absence";
+        node["authorityReference"] = authority;
+        node["queryMethod"] = method;
+        return node.ToJsonString();
     }
 
     [Fact]

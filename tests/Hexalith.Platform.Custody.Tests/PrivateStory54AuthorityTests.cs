@@ -67,6 +67,7 @@ public sealed class PrivateStory54AuthorityTests
         SecurityObservationRecoveryGrant? grant = await authority.AuthorizeAgedOriginalRecoveryAsync(fixture.Target, record, new(SecurityEventRecorderLookupState.NotRecorded), TestContext.Current.CancellationToken);
         grant.ShouldNotBeNull();
         (await authority.VerifyAgedOriginalRecoveryAsync(grant, new(SecurityEventRecorderLookupState.Unknown), TestContext.Current.CancellationToken)).ShouldBeFalse();
+        (await authority.VerifyAgedOriginalRecoveryAsync(grant, new(SecurityEventRecorderLookupState.Recorded, SecuritySpoolFixture.Receipt(record)), TestContext.Current.CancellationToken)).ShouldBeTrue();
         var services = new ServiceCollection();
         services.AddPrivateSecurityObservationDrainWorker(bare, TimeSpan.FromHours(1), 1);
         services.ShouldNotContain(descriptor => descriptor.ServiceType == typeof(ReplicatedSecurityObservationSpool));

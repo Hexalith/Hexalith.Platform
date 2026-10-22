@@ -233,6 +233,19 @@ def evidence_digest(evidence):
     return hash_files(evidence_files(evidence))
 
 
+def required_cells_passed(evidence):
+    path = Path(evidence) / "blocked.json"
+    try:
+        document = json.loads(path.read_text())
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return False
+    cells = document.get("requiredCells") if isinstance(document, dict) else None
+    if not isinstance(cells, list):
+        return False
+    passed = {item.get("name"): item.get("outcome") for item in cells if isinstance(item, dict)}
+    return all(passed.get(name) == "Passed" for name in REQUIRED_CELLS)
+
+
 def retain_prior_evidence(evidence):
     files = evidence_files(evidence)
     if not files:
@@ -376,9 +389,12 @@ def verify(root, artifacts, profile, configuration="Debug"):
         stored = read_attempt(artifacts)
         if stored is not None:
             if stored.get("attemptKey") == key:
-                code = int(stored["exitCode"])
-                if code == 0 and stored.get("evidenceDigest") != evidence_digest(evidence):
+                if stored.get("evidenceDigest") != evidence_digest(evidence):
                     print("ERROR: EXT-HOST-1 evidence digest does not match the persisted attempt.", file=sys.stderr)
+                    return 1
+                code = int(stored["exitCode"])
+                if code == 0 and not required_cells_passed(evidence):
+                    print("ERROR: EXT-HOST-1 evidence does not show every required cell Passed.", file=sys.stderr)
                     return 1
                 return code
             print("ERROR: EXT-HOST-1 keeps the first complete attempt.", file=sys.stderr)

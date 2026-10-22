@@ -1013,3 +1013,11 @@
   summary: Platform hardcodes each domain module's EventStore registration, so every domain enrollment needs Platform code.
   evidence: `src/Hexalith.Platform.Composition/PlatformAppModel.cs` sets `EventStore__DomainServices__Registrations__wildcard_party_v1__*`, `wildcard_tenants_v1__*` and `*|timesheets|v1__*` literally; the v2 declaration has no field for the EventStore domain name or method. The Parties project path is also duplicated in `PlatformServerBindings.ReferenceProjects` and `AgentsHostComposition.cs:20`. Owner-led Tenants/Folders/Projects enrollment through the Story 1.13 kit will need Platform edits that the enrollment guide does not mention. A fix needs a declaration-schema field.
   status: open
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-ext-host-1-shared-delivery.md`
+  summary: Custody manifest build still signs a later target whose tenant differs from the authority tenant.
+  evidence: `CustodyBindingDaprCall.Build` compares only `targets[0].TenantId` with the authority. The previous `Build` also put every target on the consumption request. This story did not introduce that acceptance.
+
+- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-ext-host-1-shared-delivery.md`
+  summary: Custody manifest enrollment records only the first identity store.
+  evidence: `CustodyBindingDaprCall.Envelope` uses `manifest.Targets[0].StoreTarget` for the whole request. The previous `Build` did the same. This story did not introduce that acceptance.
