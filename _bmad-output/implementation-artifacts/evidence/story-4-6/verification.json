@@ -1,0 +1,104 @@
+{
+  "story": "4.6",
+  "recordedUtc": "2026-10-22T17:30:45.226265+00:00",
+  "platformBaselineCommit": "6fbe5a024650382e25bac7d47ac919457e8d393c",
+  "buildsBaselineCommit": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+  "observedPlatformHead": "f4181e5b94b55cdee56223c0adb44802818f3e98",
+  "observedBuildsHead": "2210aaaf54c779b8763dbf1e8767bdc1b422bc6d",
+  "checks": {
+    "focusedBuild": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "log": "focused-build.log"
+    },
+    "focusedTests": {
+      "passed": 130,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "xml": "focused-tests.xml",
+      "log": "focused-tests.log"
+    },
+    "moduleBuild": {
+      "passed": true,
+      "warnings": 0,
+      "errors": 0,
+      "command": "dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug -m:1",
+      "log": "module-build.log"
+    },
+    "moduleTests": {
+      "passed": 1789,
+      "failed": 0,
+      "skipped": 0,
+      "command": "dotnet test test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug --no-build",
+      "log": "module-tests.log"
+    },
+    "whitespace": {
+      "passed": true,
+      "newUntrackedCSharpScanned": true
+    }
+  },
+  "matrixCoverage": {
+    "Authentic record": [
+      "AllEightKindsRoundTripWithDistinctSchemas",
+      "EveryKindRejectsAnUnentitledWriter"
+    ],
+    "Forgery or confusion": [
+      "TamperingNeverReturnsTrustedData",
+      "EveryReleasePayloadValueIsSigned",
+      "RejectsDuplicateAndEscapedDuplicateProperties",
+      "RejectsCrossEnvironmentReplayAndWronglyScopedSignature"
+    ],
+    "Terminal attempt": [
+      "TerminalAttemptIsImmutable",
+      "TerminalReplayRequiresTheExactCanonicalEnvelope"
+    ],
+    "Supersession": [
+      "SupersessionRequiresExactSuccessorEvidence",
+      "DisasterRecoveryWriterCanTerminalizeTheReleaseItTakesOver",
+      "ActiveReplayCannotUseAnObsoleteEpoch"
+    ],
+    "Administrator action": [
+      "AdministratorCannotBeSelfDeclared",
+      "RejectsAdministratorCustodyOverlapAndAliases",
+      "ClearanceRequiresTheCurrentCauseDisposition"
+    ]
+  },
+  "review": {
+    "layers": [
+      "blind-hunter",
+      "edge-case-hunter",
+      "verification-gap"
+    ],
+    "findings": 15,
+    "fixed": 13,
+    "rejectedWithRefutation": 2,
+    "unresolved": 0
+  },
+  "sourceHashes": "source-sha256.json",
+  "focusedHarness": {
+    "project": "focused-harness/ReleaseRecords.Verification.csproj",
+    "notes": "Imports exact original source/schema paths, Builds warning gates and centrally pinned package catalog; source and tests compile in separate assemblies. Harness paths preserve this workspace."
+  },
+  "scope": "Local encoding, cryptographic verification and record transitions only; deployment, custody provisioning and CAS store integration remain downstream.",
+  "buildsImplementationCommit": "c28c5c255226f85ef9533894b722d1ad99816b5b",
+  "localOnly": true,
+  "testedCombinedWorkingTree": true,
+  "commitBoundary": "Builds commit includes only the 26 story-owned files and the release-record schema resource; concurrent resources/source remain uncommitted and were present during the passing module run.",
+  "commitlint": {
+    "builds": {
+      "cliVersion": "21.2.4",
+      "configVersion": "21.2.4",
+      "log": "builds-commitlint.log",
+      "passed": true
+    },
+    "platform": {
+      "cliVersion": "21.2.1",
+      "configVersion": "21.2.0",
+      "log": "platform-commitlint.log",
+      "passed": true,
+      "installation": "Temporary install from the Platform package-lock.json; working-tree dependencies unchanged."
+    }
+  }
+}

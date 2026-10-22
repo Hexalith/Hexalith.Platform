@@ -2,11 +2,12 @@
 title: '4.6 Encode release, attempt, qualification and Administrator records'
 type: 'feature'
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '6fbe5a024650382e25bac7d47ac919457e8d393c'
 builds_baseline_commit: '2210aaaf54c779b8763dbf1e8767bdc1b422bc6d'
+builds_implementation_commit: 'c28c5c255226f85ef9533894b722d1ad99816b5b'
 story_key: '4-6-encode-release-attempt-qualification-and-administrator-recor'
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/epic-4-context.md'
@@ -72,6 +73,12 @@ Paths below are relative to `references/Hexalith.Builds`.
 - Matrix audit: all five rows have executed passing tests in `/tmp/story46-focused-tests.xml` (78 passed; zero failures, skips or unrun cases). Focused harness imports Builds warning gates and pinned package configuration and compiles original source/schema paths in separate library/test projects; build has zero warnings/errors.
 - Regression coverage includes DR-only takeover writers and exact canonical terminal replay including the signature. Verification commands and source hashes are in `/tmp/story46-verification-commands.txt` and `/tmp/story46-source-sha256.txt`.
 - Normal module-project build is currently blocked by concurrent `CheckSuites/CheckSuiteContract.cs` SA1143 diagnostics at lines 191 and 232; full existing-suite verification remains outstanding. Exact output: `/tmp/story46-normal-build-final.log`. No warning gate was weakened.
+
+- Final verification after review fixes: focused build is clean and 130/130 cases pass; the ordinary Debug module-project build has zero warnings/errors and the complete module suite passes 1789/1789, with zero failures or skips. The earlier concurrent blockers are resolved; one missing blank line was added to the renderer test without changing its statements.
+- All 13 accepted review findings were patched across 11 root-cause entries, with no public API expansion. Parent inspected the patch delta and audited executed coverage again. Preserved initial phase progress, single automatic recovery (including resumption), fixed recovery notification lifetime and staging in-place restore.
+- Retained evidence: [verification packet](evidence/story-4-6/verification.json), [focused per-case XML](evidence/story-4-6/focused-tests.xml), [module suite output](evidence/story-4-6/module-tests.log), and source hashes with the exact focused fallback harness. Hash audit confirms the 26 captured source/configuration inputs still match.
+
+- Local Builds implementation commit: `c28c5c255226f85ef9533894b722d1ad99816b5b`. Only story-owned files and its schema-resource addition were staged; concurrent shared-file work was preserved. Both exact commit messages passed each repository’s pinned commitlint configuration. Full module verification used the combined working tree recorded in the packet; no remote operation was performed.
 
 ## Spec Change Log
 
