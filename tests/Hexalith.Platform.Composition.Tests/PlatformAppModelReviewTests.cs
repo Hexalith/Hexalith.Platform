@@ -268,6 +268,44 @@ public sealed partial class PlatformAppModelTests
         Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options)).Message.ShouldContain("differs from its source provenance");
     }
 
+    [Theory]
+    [InlineData("hash")]
+    [InlineData("commit")]
+    [InlineData("catalog-version")]
+    public void PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(string value)
+    {
+        PlatformCompositionOptions options = PackageOptions();
+        string identity = options.ReleaseCommits.Keys.Single(key => key.StartsWith("eventstore/", StringComparison.Ordinal));
+        const string alternateIdentity = "eventstore/99.0.0";
+        if (value == "catalog-version")
+        {
+            // Keep both trusted lookups available so this row isolates the catalog/provenance version comparison.
+            options = options with
+            {
+                ReleaseCommits = new Dictionary<string, string>(options.ReleaseCommits) { [alternateIdentity] = options.ReleaseCommits[identity] },
+                ReleaseSnapshotHashes = new Dictionary<string, string>(options.ReleaseSnapshotHashes) { [alternateIdentity] = options.ReleaseSnapshotHashes[identity] },
+            };
+        }
+        PlatformAppModel.Prepare(options).Count.ShouldBe(6);
+        if (value == "hash") options = options with { ReleaseSnapshotHashes = new Dictionary<string, string>(options.ReleaseSnapshotHashes) { [identity] = new string('f', 64) } };
+        else if (value == "commit") options = options with { ReleaseCommits = new Dictionary<string, string>(options.ReleaseCommits) { [identity] = new string('d', 40) } };
+        else
+        {
+            string catalogPath = Path.Combine(options.PlatformRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
+            System.Xml.Linq.XDocument catalog = System.Xml.Linq.XDocument.Load(catalogPath);
+            catalog.Descendants("HexalithEventStoreVersion").Single().Value = "99.0.0";
+            catalog.Save(catalogPath);
+        }
+
+        IDistributedApplicationBuilder builder = Builder();
+        InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+        failure.Message.ShouldContain("Hexalith.EventStore");
+        failure.Message.ShouldContain("does not match Builds catalog version '" + (value == "catalog-version" ? "99.0.0" : identity.Split('/')[1]) + "'");
+        failure.Message.ShouldContain("release commit '" + options.ReleaseCommits[value == "catalog-version" ? alternateIdentity : identity] + "'");
+        failure.Message.ShouldContain("released v2 declaration");
+        builder.Resources.ShouldBeEmpty();
+    }
+
     [Fact]
     public void ComposedDaprCapabilitiesKeepOwnerLiteralNames()
     {

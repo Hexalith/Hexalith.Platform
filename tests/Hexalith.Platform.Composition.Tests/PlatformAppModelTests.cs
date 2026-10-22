@@ -53,7 +53,12 @@ public sealed partial class PlatformAppModelTests : IDisposable
     {
         IDistributedApplicationBuilder builder = Builder();
         // This case deliberately reads real production snapshots/catalog/provenance, independently of synthetic package fixtures.
-        PlatformCompositionOptions production = Options() with { Mapping = Options().Mapping with { Mode = WorkspaceMode.Package } };
+        SourceMapping mapping = Options().Mapping;
+        PlatformCompositionOptions production = Options() with
+        {
+            Mapping = mapping with { Mode = WorkspaceMode.Package, Entries = mapping.Entries.Select(entry => entry with { Origin = "package", Path = null }).ToArray() },
+        };
+        production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
         refusal.Message.ShouldContain("Hexalith.EventStore");
         refusal.Message.ShouldContain("3.120.0");

@@ -1021,3 +1021,8 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-5-4-ext-secrets-1-ext-host-1-shared-delivery.md`
   summary: Custody manifest enrollment records only the first identity store.
   evidence: `CustodyBindingDaprCall.Envelope` uses `manifest.Targets[0].StoreTarget` for the whole request. The previous `Build` did the same. This story did not introduce that acceptance.
+
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-epic-1-retro-remediation.md`
+  summary: Reconcile the accepted Platform tool release with the integrated Builds gitlink before release and enrollment qualification.
+  evidence: Medium, pre-existing concurrent integration issue from verification review. Platform e02fa5bf43ba9c2561dc2da940264de1c9da3242 records Builds 2d653b611c8efcffb4d27bd8715d5dbf24eaebfd while the restored/pinned 4.35.2 tool and release tag identify 4248b8c70cb35ba79fdd7e4dd63049d4c73211a0. Three enabled DomainEnrollmentKitTests fail on that exact comparison; see evidence/epic-1-retro-remediation/composition-full.txt and README.md. Accountable owners: Platform/Builds release coordination maintainers. Preserve the integrated user revisions and fail-closed checks; this build does not publish or repin a tool.
