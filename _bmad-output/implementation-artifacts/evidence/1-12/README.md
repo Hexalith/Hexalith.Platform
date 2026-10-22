@@ -5,8 +5,11 @@ This includes the compatibility audit and the review patches accepted on
 2026-10-20. The 2026-10-22 follow-up starts at Platform
 `4ebe6798fe8bd6c22258f20c90d6861b7137c927` and Parties
 `9cfeb6c645317a6aff3aa3812822bb6b92c1ec86`; its exact changed paths and new
-checks are recorded in `review-follow-up.json`. Those local follow-ups have not
-been owner-reviewed or integrated upstream.
+checks are recorded in `review-follow-up.json`. The user approved those follow-ups and upstream integration. Parties
+`45c033ced0cbdf3edfec12bba427361e2abe6b95` is published; the final Platform pin and completion are
+recorded in this containing commit. [Approved integration](approved-integration.json)
+records both histories, the unchanged approved patch and ten successful
+post-merge checks (53 focused cases).
 
 ## Live-proof revision limitation
 

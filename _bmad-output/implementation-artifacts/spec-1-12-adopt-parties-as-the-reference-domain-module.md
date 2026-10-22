@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 12
 created: '2026-10-20'
-status: 'in-review'
+status: 'done'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -112,10 +112,10 @@ Rejected:
 
 ### Remaining follow-up completion gates
 
-- [ ] Module owner accepts the reviewed 2026-10-22 local follow-ups.
-- [ ] Integrate the new Parties commit upstream, then publish its Platform pin.
+- [x] Module owner accepts the reviewed 2026-10-22 local follow-ups — approved by the user reply `yes`.
+- [x] Integrate the new Parties commit upstream, then publish its Platform pin — Parties `45c033ced0cbdf3edfec12bba427361e2abe6b95` is published; this containing completion commit records the final Platform pin.
 
-The original adoption integration remains historical evidence. This resumed run stays `in-review` until these frozen completion requirements are satisfied; no current-pin 4.34.0 live rerun is claimed.
+The user approved the reviewed local changes and upstream integration. Both completion gates are satisfied by the approved Parties publication and this Platform completion record. The original adoption integration remains historical evidence; no current-pin 4.34.0 live rerun is claimed.
 
 ## Implementation Notes
 
@@ -128,6 +128,8 @@ The original adoption integration remains historical evidence. This resumed run 
 - 2026-10-20 upstream completion: the user explicitly approved the reviewed owner changes and authorized pushing Parties, then Platform. The four approved Parties commits were rebased onto upstream `32fa72e2cb223d7f8554d3a5439fa6e15212ec26` with a byte-identical patch, yielding published `35d891d202a87fd4f494f2cadd26c277df44b84a`. Platform adoption `e9a142dc5c56cdb3c187f5eec0d3b3a7178a0058` pins that reachable upstream commit while Parties retains P1 and Tenants. Both remote main heads were verified. Post-rebase builds and all seven integration checks pass, including 15 host/configuration, 14 upstream projection, five renderer and three adoption cases. Approval, revisions, ordering and patch equivalence are recorded in `evidence/1-12/upstream-integration.json`. The integration gate is satisfied; the spec is done, sprint tracking remains review per the build workflow, and the four pre-existing test problems remain deferred.
 
 - 2026-10-22 review remediation: closed all twelve remaining patch findings with renderer diagnostics/negative cases, signed-run and rendered-ACL assertions, distinct readiness/read-model component bindings, corrected onboarding/CI/renderer-authority documentation, stable pinned prerequisites links and a bounded CI job. Parties Release and Platform Debug builds pass with zero warnings/errors; four adoption, 28 health/topology, 15 sample-onboarding and six renderer cases pass, as do the pinned 4.34.0 joint validation and reference ACL matrix. `evidence/1-12/review-follow-up.json` records current-run starting revisions, exact changed paths, object availability and check outputs. The evidence decision annotates unavailable candidates and both post-proof runtime deltas; the later 4.35.0 SM-2 evidence is explicitly separate. No live 4.34.0 rerun, remote VCS operation or nested initialization occurred. These new local owner changes still require review and upstream integration under the frozen constraint; historical approval/integration records remain historical.
+
+- 2026-10-22 approved follow-up integration: the user replied `yes` to approval of Parties `8195ba9f9f1ea12420eaae42c4febca8545d2ce2` and Platform `95a634168e715fa2f99cee6b89d29c261973bc63`. Newer Parties upstream `969669b42bfa596e31c0633663fb7a515cedf3c8` was merged without changing the approved patch (stable patch ID `beba790e93bd2e2fd4a040185b34a60d2933481d`), preserving the already-published Platform gitlink identity. Published Parties `45c033ced0cbdf3edfec12bba427361e2abe6b95` contains both histories. All ten post-merge checks and 53 focused cases pass. The final Platform pin and completion records preserve the concurrent Story 5.4 commit. Evidence, approval, canonical revisions, merge tree and commands are in `evidence/1-12/approved-integration.json`; the separate historical live-proof limitation remains accepted and explicit. The spec and sprint story are done after owner approval and upstream integration.
 
 ## Spec Change Log
 

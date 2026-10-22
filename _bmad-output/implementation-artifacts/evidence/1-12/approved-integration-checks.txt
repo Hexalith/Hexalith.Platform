@@ -1,0 +1,101 @@
+Story 1.12 approved upstream integration verification
+
+[owner-build] exit=0 sha256=8b0163a8b940102fdc57b6c10963250d0881bb942402594f5350422055fd5c1d
+cwd: references/Hexalith.Parties
+command: dotnet build tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj --configuration Release --artifacts-path .artifacts/story-1-12-final -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.82
+
+[owner-tests] exit=0 sha256=7e6cf460d3cef5bcf9c4467a3a945a694d0124fff7029e27ad74b46bf9554515
+cwd: references/Hexalith.Parties
+command: dotnet .artifacts/story-1-12-final/bin/Hexalith.Parties.Tests/release/Hexalith.Parties.Tests.dll -class Hexalith.Parties.Tests.HealthChecks.HealthEndpointIntegrationTests -class Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests
+{"EventId":3,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopping","State":{"{OriginalFormat}":"Hosting stopping"}}
+{"EventId":4,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopped","State":{"{OriginalFormat}":"Hosting stopped"}}
+{"EventId":4,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting stopped","State":{"{OriginalFormat}":"Hosting stopped"}}
+  Finished:    Hexalith.Parties.Tests (ID = 'a703331af573595ca5acf803189e372c4fe6b41b936c7297427168ab74c77521')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Tests  Total: 28, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 3.153s
+
+[sample-build] exit=0 sha256=482359f343ae3e18ae7cc7fc4391a6b70693483baf8caf2da5906a7829fb8c1a
+cwd: references/Hexalith.Parties
+command: dotnet build tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj --configuration Release --artifacts-path .artifacts/story-1-12-final-sample -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.44
+
+[sample-tests] exit=0 sha256=a2bc5dbd10e2b6711990c6232eb52156214f58765704b0fe8098d4606bd1c567
+cwd: references/Hexalith.Parties
+command: dotnet .artifacts/story-1-12-final-sample/bin/Hexalith.Parties.Sample.Tests/release/Hexalith.Parties.Sample.Tests.dll -class Hexalith.Parties.Sample.Tests.SampleOnboardingGuardrailTests
+  Discovering: Hexalith.Parties.Sample.Tests
+  Discovered:  Hexalith.Parties.Sample.Tests
+  Starting:    Hexalith.Parties.Sample.Tests
+  Finished:    Hexalith.Parties.Sample.Tests (ID = 'a368aefedef84c4ab2ac05198b8372f22a2b06198ebf6eb8219befaee83aae01')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Sample.Tests  Total: 15, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.134s
+
+[renderer-tests] exit=0 sha256=5cd10ed69c82360a4c390b7aae47836b86f13342eba89769fe93e6b975c9ddd1
+cwd: references/Hexalith.Parties
+command: python3 -B -m unittest discover -s scripts -p test_platform_declaration.py -v
+test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed (test_platform_declaration.PlatformDeclarationTests.test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.799s
+
+OK
+
+[declaration-check] exit=0 sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+cwd: references/Hexalith.Parties
+command: python3 scripts/render-platform-declaration.py --check
+(no output)
+
+[joint-validation] exit=0 sha256=670f8f82620ce8ee37554566e6d02a245a5c0bab0f76359e0d2b35bed45cb199
+cwd: references/Hexalith.Parties
+command: dotnet tool run hexalith-module -- validate --manifest module/hexalith.module-manifest.v2.json --manifest ../Hexalith.EventStore/module/hexalith.module-manifest.v2.json --manifest ../Hexalith.Tenants/module/hexalith.module-manifest.v2.json --manifest ../Hexalith.Memories/module/hexalith.module-manifest.v2.json
+validated: Success
+
+[composition-build] exit=0 sha256=01b442b6d90cbc6dd617be69e52454a2fdc8cab2d53c43b944ae1e6341c17ac1
+cwd: .
+command: dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Debug --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:15.06
+
+[adoption-tests] exit=0 sha256=246c03d3790b51c70dc2e4b18eaea545f8431d57a8a91285fc23163e5ecfd573
+cwd: .
+command: dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PartiesAdoptionTests
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 4, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.652s
+
+[reference-checks] exit=0 sha256=4408b5d6740a40624e1675471775c7bdb4063c9eafe671ea88b42932c5133589
+cwd: .
+command: python3 _bmad-output/implementation-artifacts/evidence/1-12/tools/run_reference_checks.py
+PASS extra secrets in 2: atomic policy refusal
+PASS extra egress in 2: atomic policy refusal
+PASS malformed json: atomic refusal with public source and field
+PASS non-object root: atomic refusal with public source and field
+PASS invalid utf-8: atomic refusal with public source and field
+PASS joint declaration set, readiness, routes, inventories and empty tasks
+
+Parties merge commitlint:
+⧗   --- input ---
+fix(platform): integrate reviewed parties adoption
+✔   found 0 problems, 0 warnings
+
+Platform completion commitlint:
+⧗   --- input ---
+build(parties): integrate approved review fixes
+✔   found 0 problems, 0 warnings

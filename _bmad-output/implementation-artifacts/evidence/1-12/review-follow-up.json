@@ -291,12 +291,10 @@
       "-d189c7de74293e1a718e5e78b1b3b7c0e47b48b5 references/Hexalith.Platform",
       "-221ac4592ba908ae7661ba1fa9e2d1fcc23baee0 references/Hexalith.PolymorphicSerializations",
       "-66def172379f37d12e746fe6eb9195801929c572 references/Hexalith.Tenants"
-    ]
+    ],
+    "phase": "Local implementation and review before approval; approved VCS integration is recorded separately in approved-integration.json"
   },
-  "remainingGates": [
-    "Module-owner review and upstream integration of these local follow-ups",
-    "Live proof at current pins with tool 4.34.0 is not claimed; the evidence follows the spec review decision to annotate historical unavailable candidates"
-  ],
+  "remainingGates": [],
   "validationLimits": "Focused affected tests were run. Previously recorded broad-test limitations remain historical; no current broad full-suite result is claimed.",
   "implementationChecks": [
     {
@@ -497,11 +495,13 @@
     "parties": "8195ba9f9f1ea12420eaae42c4febca8545d2ce2"
   },
   "publication": {
-    "status": "not published",
-    "ownerApproval": "pending for the new local follow-ups",
-    "upstreamIntegration": "pending",
-    "storyStatus": "in-review",
-    "reason": "Frozen story completion requires module-owner review and upstream integration; prior approval applies to the historical adoption only"
+    "status": "integrated",
+    "ownerApproval": "User reply yes approved the reviewed owner changes and upstream integration",
+    "upstreamIntegration": "Parties published first; final Platform pin and completion are recorded in this containing commit",
+    "partiesCommit": "45c033ced0cbdf3edfec12bba427361e2abe6b95",
+    "integrationRecord": "approved-integration.json",
+    "storyStatus": "done",
+    "reason": "Owner approval and upstream integration completion gates are satisfied; historical live-proof limitation is retained"
   },
   "commitValidation": [
     {

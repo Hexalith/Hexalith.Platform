@@ -1,0 +1,248 @@
+{
+  "startedAtUtc": "2026-10-22T11:34:37.274213+00:00",
+  "approval": {
+    "reply": "yes",
+    "scope": [
+      "Approve reviewed story 1.12 owner changes",
+      "Integrate and push Parties before the final Platform pin"
+    ],
+    "approvedPartiesCommit": "8195ba9f9f1ea12420eaae42c4febca8545d2ce2",
+    "approvedPlatformCommit": "95a634168e715fa2f99cee6b89d29c261973bc63"
+  },
+  "startingRevisions": {
+    "platformHead": "737d5021e02347519bfe0ffeff165c1ec5e1bd45",
+    "platformRemoteMain": "737d5021e02347519bfe0ffeff165c1ec5e1bd45",
+    "partiesHead": "8195ba9f9f1ea12420eaae42c4febca8545d2ce2",
+    "partiesRemoteMain": "969669b42bfa596e31c0633663fb7a515cedf3c8"
+  },
+  "integrationStrategy": "Merge newer Parties upstream into the approved local commit so its already-published Platform gitlink remains reachable; preserve unrelated Platform history.",
+  "approvedPatchId": "beba790e93bd2e2fd4a040185b34a60d2933481d",
+  "integratedPatchId": "beba790e93bd2e2fd4a040185b34a60d2933481d",
+  "approvedPatchUnchanged": true,
+  "candidateTree": "847bd998c23787912a6442085a7d3e7cc3b49a86",
+  "integrationChecks": [
+    {
+      "name": "owner-build",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--artifacts-path",
+        ".artifacts/story-1-12-final",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "8b0163a8b940102fdc57b6c10963250d0881bb942402594f5350422055fd5c1d",
+      "localOutput": "/tmp/story-1-12-approved-integration-owner-build.log"
+    },
+    {
+      "name": "owner-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        ".artifacts/story-1-12-final/bin/Hexalith.Parties.Tests/release/Hexalith.Parties.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Tests.HealthChecks.HealthEndpointIntegrationTests",
+        "-class",
+        "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests"
+      ],
+      "exit": 0,
+      "outputSha256": "7e6cf460d3cef5bcf9c4467a3a945a694d0124fff7029e27ad74b46bf9554515",
+      "localOutput": "/tmp/story-1-12-approved-integration-owner-tests.log",
+      "passedCases": 28
+    },
+    {
+      "name": "sample-build",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--artifacts-path",
+        ".artifacts/story-1-12-final-sample",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "482359f343ae3e18ae7cc7fc4391a6b70693483baf8caf2da5906a7829fb8c1a",
+      "localOutput": "/tmp/story-1-12-approved-integration-sample-build.log"
+    },
+    {
+      "name": "sample-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        ".artifacts/story-1-12-final-sample/bin/Hexalith.Parties.Sample.Tests/release/Hexalith.Parties.Sample.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Sample.Tests.SampleOnboardingGuardrailTests"
+      ],
+      "exit": 0,
+      "outputSha256": "a2bc5dbd10e2b6711990c6232eb52156214f58765704b0fe8098d4606bd1c567",
+      "localOutput": "/tmp/story-1-12-approved-integration-sample-tests.log",
+      "passedCases": 15
+    },
+    {
+      "name": "renderer-tests",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exit": 0,
+      "outputSha256": "5cd10ed69c82360a4c390b7aae47836b86f13342eba89769fe93e6b975c9ddd1",
+      "localOutput": "/tmp/story-1-12-approved-integration-renderer-tests.log",
+      "passedCases": 6
+    },
+    {
+      "name": "declaration-check",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "python3",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exit": 0,
+      "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "localOutput": "/tmp/story-1-12-approved-integration-declaration-check.log"
+    },
+    {
+      "name": "joint-validation",
+      "cwd": "references/Hexalith.Parties",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "../Hexalith.Memories/module/hexalith.module-manifest.v2.json"
+      ],
+      "exit": 0,
+      "outputSha256": "670f8f82620ce8ee37554566e6d02a245a5c0bab0f76359e0d2b35bed45cb199",
+      "localOutput": "/tmp/story-1-12-approved-integration-joint-validation.log"
+    },
+    {
+      "name": "composition-build",
+      "cwd": ".",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "--configuration",
+        "Debug",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "exit": 0,
+      "outputSha256": "01b442b6d90cbc6dd617be69e52454a2fdc8cab2d53c43b944ae1e6341c17ac1",
+      "localOutput": "/tmp/story-1-12-approved-integration-composition-build.log"
+    },
+    {
+      "name": "adoption-tests",
+      "cwd": ".",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests"
+      ],
+      "exit": 0,
+      "outputSha256": "246c03d3790b51c70dc2e4b18eaea545f8431d57a8a91285fc23163e5ecfd573",
+      "localOutput": "/tmp/story-1-12-approved-integration-adoption-tests.log",
+      "passedCases": 4
+    },
+    {
+      "name": "reference-checks",
+      "cwd": ".",
+      "command": [
+        "python3",
+        "_bmad-output/implementation-artifacts/evidence/1-12/tools/run_reference_checks.py"
+      ],
+      "exit": 0,
+      "outputSha256": "4408b5d6740a40624e1675471775c7bdb4063c9eafe671ea88b42932c5133589",
+      "localOutput": "/tmp/story-1-12-approved-integration-reference-checks.log"
+    }
+  ],
+  "integrationVerifiedAtUtc": "2026-10-22T11:36:07.926450+00:00",
+  "focusedCasesPassed": 53,
+  "integratedPartiesCommit": "45c033ced0cbdf3edfec12bba427361e2abe6b95",
+  "integratedPartiesTree": "847bd998c23787912a6442085a7d3e7cc3b49a86",
+  "partiesPublication": {
+    "remoteMain": "45c033ced0cbdf3edfec12bba427361e2abe6b95",
+    "verifiedAtUtc": "2026-10-22T11:38:20.910261+00:00",
+    "remote": "https://github.com/Hexalith/Hexalith.Parties.git"
+  },
+  "platformBaseBeforeCompletion": "737d5021e02347519bfe0ffeff165c1ec5e1bd45",
+  "reviewedPlatformCommitAlreadyOnRemoteAtStart": true,
+  "pushOrder": [
+    "parties",
+    "platform"
+  ],
+  "storyCompletion": {
+    "ownerReview": "approved by user yes",
+    "integration": "Parties published; Platform completion and final pin are published by the containing commit",
+    "status": "done",
+    "currentPinLiveRerun": false,
+    "acceptedEvidenceDecision": "Keep annotated historical candidates, runtime deltas and separate tool 4.35.0 SM-2 record; no new 4.34.0 live proof claimed"
+  },
+  "commitValidation": [
+    {
+      "repository": "parties",
+      "version": "21.2.2",
+      "message": "fix(platform): integrate reviewed parties adoption",
+      "command": "node_modules/.bin/commitlint --edit /tmp/story-1-12-parties-integration-message.txt --verbose",
+      "exit": 0,
+      "output": "\u29d7   --- input ---\nfix(platform): integrate reviewed parties adoption\n\u2714   found 0 problems, 0 warnings"
+    },
+    {
+      "repository": "platform",
+      "version": "21.2.1",
+      "message": "build(parties): integrate approved review fixes",
+      "command": "node_modules/.bin/commitlint --edit /tmp/story-1-12-platform-integration-message.txt --verbose",
+      "exit": 0,
+      "output": "\u29d7   --- input ---\nbuild(parties): integrate approved review fixes\n\u2714   found 0 problems, 0 warnings"
+    }
+  ],
+  "cleanup": {
+    "nestedSubmodulesInitialized": false,
+    "liveResourcesStarted": false,
+    "unrelatedHistoryPreserved": true
+  },
+  "platformCompletionPaths": [
+    "_bmad-output/implementation-artifacts/evidence/1-12/README.md",
+    "_bmad-output/implementation-artifacts/evidence/1-12/approved-integration.json",
+    "_bmad-output/implementation-artifacts/evidence/1-12/approved-integration-checks.txt",
+    "_bmad-output/implementation-artifacts/evidence/1-12/review-follow-up.json",
+    "_bmad-output/implementation-artifacts/spec-1-12-adopt-parties-as-the-reference-domain-module.md",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml",
+    "references/Hexalith.Parties"
+  ]
+}
