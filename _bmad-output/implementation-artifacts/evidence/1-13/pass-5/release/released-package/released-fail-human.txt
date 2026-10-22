@@ -1,0 +1,12 @@
+failed: UsageOrManifest
+HXA001 Manifest Manifest source=module/hosting-inventory.json field=hosting-inventory: Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist.
+PASS workspace file=.git: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS declaration file=module/hexalith.module-manifest.v2.json: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS references file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS gitlinks file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS nested-references file=.gitmodules: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS tool-pin file=.config/dotnet-tools.json: Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+FAIL hosting-inventory file=module/hosting-inventory.json: Supply module/hosting-inventory.json; use an empty projects array only when no hosting projects exist.
+PASS dependency-selectors file=.: No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+PASS dapr-subscriptions file=.: No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.
+Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified.

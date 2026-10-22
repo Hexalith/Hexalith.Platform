@@ -36,15 +36,16 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The local tool manifest pins `hexalith.builds.module.cli` `4.35.1`, accepted for
+The local tool manifest pins `hexalith.builds.module.cli` `4.35.2`, accepted for
 Platform `run`, `debug` and opt-in domain enrollment validation.
-`hexalith-platform.json` accepts versions in `[4.35.1, 5.0.0-0)`.
+`hexalith-platform.json` accepts versions in `[4.35.2, 5.0.0-0)`.
 The floor includes corrected Story 1.13 adoption checks for real workspaces.
 Later 4.x releases, prereleases included, are accepted without a Platform edit; 5.0
 prereleases are excluded. The catalog commit is
-`f8599224457dda99e7c0ae4870147dd51b464feb`, matching release tag `v4.35.1`.
-The pinned tool's runtime catalog and run/debug topology are unchanged from
-`4.34.0`. Only the pinned version is guaranteed to embed that catalog.
+`4248b8c70cb35ba79fdd7e4dd63049d4c73211a0`, matching release tag `v4.35.2`.
+The pinned tool's run/debug topology, SDK and Dapr/Aspire pins are unchanged from
+`4.34.0`; its package catalog selects EventStore `3.126.1`, Tenants `5.10.0` and
+Parties `1.5.1`. Only the pinned version is guaranteed to embed that catalog.
 Another accepted 4.x tool brings its own embedded Dapr, Redis and AppHost SDK
 pins, and nothing compares them with the catalog yet. When the exact pin moves,
 the Builds gitlink moves to that version's release-tag commit.
@@ -56,7 +57,7 @@ records McpCli, EventStore and Memories verification with `4.34.0`; the
 records the earlier EventStore and Memories proof with `4.33.1`.
 
 Versions below the configured range are not Platform-accepted, including
-`4.34.0` and `4.35.0`. Version `4.34.0` first built McpCli; `4.33.1` composed only
+`4.34.0`, `4.35.0` and `4.35.1`. Version `4.34.0` first built McpCli; `4.33.1` composed only
 servers. The earlier `4.33.0` also had a mismatched packaged Tooling identity and build-machine paths.
 From `4.31.0`, a tool outside the range is refused with `HXW010` in package mode
 and warned in source mode. Older tools do not check the range, so run the pinned
@@ -100,7 +101,7 @@ Parties' owner-led enrollment; see the
 Use the [enrollment guide](docs/domain-module-enrollment.md) and
 [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
 direct-only initialization, source mapping, Dapr conventions, hosting inventory
-and human SM-2 evidence. The accepted `4.35.1` tool provides read-only
+and human SM-2 evidence. The accepted `4.35.2` tool provides read-only
 `validate --adoption` reports in human and JSON formats. Static reports leave
 SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).

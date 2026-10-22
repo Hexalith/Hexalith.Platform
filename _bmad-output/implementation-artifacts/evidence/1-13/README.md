@@ -1,36 +1,44 @@
 # Story 1.13 — domain-module enrollment kit
 
-Status: **release of Builds `main` pending owner approval** (decision P5-D1B,
-2026-10-21). The story stays **in-review** until its final publication/pin task is
-done.
+Status: **done**. Builds `4.35.2` was released from reviewed `main` (decision P5-D1B),
+pinned in Platform and accepted from a fresh NuGet-only restore on 2026-10-22. The
+owner-led SM-2 demonstration remains a separate human gate (Story 3.11).
 
-## Current state — 2026-10-21
+## Current state — 2026-10-22
 
 | Item | Value |
 | --- | --- |
-| Accepted tool pin | `4.35.1`, `rollForward: false`; range `[4.35.1, 5.0.0-0)`; binary source `f8599224457dda99e7c0ae4870147dd51b464feb` (`v4.35.1`). [Identities](post-release-patch/release/accepted-identities.json) |
-| Platform Builds gitlink | `359fee24aeca4d9eabed4b425d4cfa2520b2adda` (unreleased). `/pushall` commit `37715f3` moved it from the pass-4 restoration `f97065c`. It does not match the pin, so `AcceptedToolPinEqualsSupportedRangeFloorAsync` and the released-tool kit case fail until the gitlink moves to the next release tag. |
-| Builds remote `main` | `359fee24aeca4d9eabed4b425d4cfa2520b2adda`. The owner's `/pushall` pushed it at 2026-10-21T17:09Z, and [CI 39641234924](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39641234924) passed. It contains integration `1ae50de` and pass-4 commits `26317ab`/`750b1a0`. Decision P5-D1B accepts this push, which supersedes the earlier retained rollback. |
-| Final pass-4 candidate | `750b1a0e739b73c48e31f3ee812d37ab7950d8c3`: full serial suite 1,483/1,486 passed, with three documented location skips ([pass 4](pass-4/README.md)). The earlier 1,459-case run covered superseded `26317ab`. |
-| Pass-5 candidate | Local commit `154010b7640ba1da23e918f26bbad9917e4767ea` on Builds branch `fix/domain-enrollment-pass-5`, built on `359fee2` and not yet pushed. Full serial suite: 1,515 total, 1,512 passed, three documented location skips. Real-module rows are unchanged ([pass 5](pass-5/README.md)). |
+| Accepted tool pin | `4.35.2`, `rollForward: false`; range `[4.35.2, 5.0.0-0)`; binary source `4248b8c70cb35ba79fdd7e4dd63049d4c73211a0` (`v4.35.2`). [Identities](pass-5/release/accepted-identities.json) |
+| Platform Builds gitlink | `4248b8c70cb35ba79fdd7e4dd63049d4c73211a0`, the `v4.35.2` tag commit ([tag target](pass-5/release/tag-target.json)). `/pushall` commit `10c50af` moved it there before the pin; the pin now matches it. |
+| Reviewed Builds change | Pass-5 patches merged through [PR #129](https://github.com/Hexalith/Hexalith.Builds/pull/129) as squash commit `abcb1f39e1ae740de896792fd75f5b344d3890b2` after every required check passed ([record](pass-5/release/pr-129.json)). |
+| Released source | Builds `main` `4248b8c`, which adds the EventStore `3.126.1`, Tenants `5.10.0` and fixture commits plus a content-neutral `/pushall` merge. [CI 39736790198](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39736790198) passed on that exact commit ([record](pass-5/release/ci-result.json)). |
+| Release | Gated [release run 39741376261](https://github.com/Hexalith/Hexalith.Builds/actions/runs/39741376261) passed after the owner's production-gate approval ([result](pass-5/release/release-result.json), [GitHub release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.35.2)). Published Module.Cli SHA-256 `637bebd5…7cf1d` equals the package restored from NuGet.org ([hashes](pass-5/release/publication-hashes.txt)). |
+| Runtime inputs | The package catalog changes from `4.35.1`: EventStore `3.126.1`, Tenants `5.10.0`, Parties `1.5.1`. `Props/ContainerProvenance.targets` is added but no build file imports it. SDK, NuGet, root build, host source and tool dependency declarations are unchanged ([comparison](pass-5/release/runtime-input-comparison.json)). |
 | Human gates | SM-2 and hosting retirement stay pending in the owner templates. No other module is adopted or retired. |
 
-## Next steps to close the story (P5-D1B)
+## Release acceptance (pass 5) — 2026-10-22
 
-1. Get the owner's "I approve" for the pass-5 candidate, its push to Builds `main`
-   and the gated release. NuGet publication cannot be undone.
-2. Push Builds `main` and wait for exact-source CI to pass.
-3. Dispatch the existing gated release for the next patch version, and confirm that
-   its tag resolves to the exact source.
-4. Pin that version in `.config/dotnet-tools.json` with roll-forward disabled, raise
-   the `hexalith-platform.json` floor to it (upper bound `5.0.0-0`), move the Builds
-   gitlink and checkout to its release-tag commit, and update `README.md` and guide §4.
-5. Run fresh NuGet-only human/JSON success/failure commands, both real-Parties
-   formats, the normal Platform build and every kit case, and record the canonical
-   identities.
-
-The story leaves in-review when step 5 passes with every Git state and file hash
-unchanged.
+- [Fresh NuGet-only acceptance](pass-5/release/released-package/released-commands.json)
+  ([script](pass-5/release/accept-released.py.txt)): an empty CLI home and package
+  cache restored `4.35.2+4248b8c…` from NuGet.org alone. Human and JSON success
+  commands exited 0, and failure commands exited 1. Git state and every file hash
+  stayed unchanged in a disposable workspace with 85,894 tracked path bytes.
+- [Real Parties runs](pass-5/release/released-package/real-module-commands.json), all
+  read-only with unchanged hashes:
+  - At pass-4-accepted Parties `63cd1279`, `workspace` and `dependency-selectors` pass.
+    The run used a disposable clone. `4.35.1` failed this row with a false positive on
+    an asserted existence probe.
+  - At the current Parties gitlink `9cfeb6c6`, `dependency-selectors` fails on
+    `Directory.Packages.props`. Parties commit `a8e52fdc` (2026-10-21) replaced the
+    tool-compatible `HexalithBuildsRoot` bootstrap with `Exists`-guarded
+    `../Hexalith.Builds` and `../../Hexalith.Builds` catalog fallbacks. Guide §4 forbids
+    that pattern, so this is a true positive. `4.35.1` hid it behind the probe false
+    positive. The fix belongs to Parties ([deferred](../deferred-work.md)).
+- [Platform build](pass-5/release/platform-build.txt): zero warnings and errors.
+  [`DomainEnrollmentKitTests`](pass-5/release/platform-kit-tests.txt) passed 5/5,
+  including `AcceptedToolPinEqualsSupportedRangeFloorAsync` and the released-tool
+  disposable-workspace cases.
+- The owner's approval and production-gate records are in [release](pass-5/release/).
 
 ## Pass-4 restoration and rollback record (historical) — 2026-10-21
 
@@ -249,7 +257,7 @@ the accepted tool entry while retaining an existing `aspirate` `9.1.0` pin. See
 ## Canonical identities (historical v4.35.0 snapshot)
 
 This section records the v4.35.0 identities. The current identities are in
-[Current state](#current-state--2026-10-21).
+[Current state](#current-state--2026-10-22).
 
 - Original Platform story baseline: `3d51fed1f3d99acf36ef690f150136593298bd95`.
 - Original Builds implementation baseline / accepted release tag `v4.34.0`:

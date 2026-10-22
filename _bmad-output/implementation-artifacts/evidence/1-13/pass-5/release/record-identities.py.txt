@@ -1,0 +1,52 @@
+import datetime, hashlib, json, subprocess
+from pathlib import Path
+root = Path('/home/administrator/projects/hexalith/platform')
+R = root / '_bmad-output/implementation-artifacts/evidence/1-13/pass-5/release'
+B = root / 'references/Hexalith.Builds'
+def git(cwd, *a): return subprocess.check_output(['git', '-C', str(cwd), *a], text=True).strip()
+paths = ['Props', 'global.json', 'NuGet.Config', 'Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props', 'src/hosts',
+         'src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj', 'src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj']
+diff = subprocess.check_output(['git', '-C', str(B), 'diff', 'v4.35.1', 'v4.35.2', '--', *paths])
+changed = git(B, 'diff', '--name-only', 'v4.35.1', 'v4.35.2', '--', *paths).splitlines()
+imports = subprocess.run(['git', '-C', str(B), 'grep', '-l', 'ContainerProvenance.targets', 'v4.35.2', '--', '*.props', '*.targets', '*.csproj'], capture_output=True, text=True).stdout.strip()
+(R / 'runtime-input-comparison.json').write_text(json.dumps({
+    'baseline': git(B, 'rev-parse', 'v4.35.1^{commit}'), 'releaseSource': git(B, 'rev-parse', 'v4.35.2^{commit}'),
+    'comparedPaths': paths, 'changedPaths': changed, 'diffBytes': len(diff), 'diffSha256': hashlib.sha256(diff).hexdigest(), 'unchanged': False,
+    'changes': {
+        'Props/Directory.Packages.props': {'HexalithEventStoreVersion': ['3.126.0', '3.126.1'], 'HexalithTenantsVersion': ['5.9.0', '5.10.0'], 'HexalithPartiesVersion': ['1.5.0', '1.5.1']},
+        'Props/ContainerProvenance.targets': 'Added by Builds PR #128; applied only by container publication arguments; no MSBuild props/targets/csproj imports it' if not imports else 'Imported by: ' + imports},
+    'scope': 'Package catalog selects published EventStore 3.126.1, Tenants 5.10.0 and Parties 1.5.1; SDK pin, NuGet configuration, root build settings, packaged host source and tool dependency declarations are identical to v4.35.1. Platform apphost.cs EventStore.Aspire/ServiceDefaults 3.126.0 references belong to another workstream.'}, indent=2) + '\n')
+manifest = root / '.config/dotnet-tools.json'
+released = json.loads((R / 'released-package/released-commands.json').read_text())
+real = json.loads((R / 'released-package/real-module-commands.json').read_text())
+inventory = {p['id']: p['nupkg']['sha256'].lower() for p in json.loads((R / 'g4-tool-package-inventory.json').read_text())['packages']}
+published = {}
+for line in (R / 'publication-hashes.txt').read_text().splitlines():
+    if 'Verified remote' in line:
+        pid = line.split("Verified remote '")[1].split("'")[0]
+        published[pid] = line.split('SHA-256 ')[1].split(' ')[0].lower()
+assert published['Hexalith.Builds.Module.Cli'] == released['packageSha256']
+release = json.loads((R / 'release-result.json').read_text()); ci = json.loads((R / 'ci-result.json').read_text())
+rel = json.loads((R / 'published-release.json').read_text()); pr = json.loads((R / 'pr-129.json').read_text())
+tag = json.loads((R / 'tag-target.json').read_text())
+assert tag['remoteRef'] == tag['localPeeled'] == tag['platformGitlink'] == release['headSha'] == ci['headSha'] == released['sourceRevision']
+kit = (R / 'platform-kit-tests.txt').read_text()
+assert 'Total: 5, Errors: 0, Failed: 0, Skipped: 0' in kit
+tool = json.loads(manifest.read_text())['tools']['hexalith.builds.module.cli']
+range_ = json.loads((root / 'hexalith-platform.json').read_text())['toolVersionRange']
+(R / 'accepted-identities.json').write_text(json.dumps({
+    'acceptedAtUtc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'version': tool['version'], 'rollForward': tool['rollForward'],
+    'supportedToolRange': range_, 'reviewedBuildsChange': {'pullRequest': pr['url'], 'headRefOid': pr['headRefOid'], 'squashCommit': pr['mergeCommit'], 'mergedAt': pr['mergedAt']},
+    'buildsSourceCommit': tag['localPeeled'], 'buildsReleaseTag': tag['tag'], 'platformRecordedBuildsGitlink': tag['platformGitlink'],
+    'platformSourceBaselineAtVerification': git(root, 'rev-parse', 'HEAD'),
+    'platformToolManifestSha256': hashlib.sha256(manifest.read_bytes()).hexdigest(),
+    'restoredVersion': (R / 'released-package/tool-version.txt').read_text().strip(),
+    'ciRunId': ci['runId'], 'ciConclusion': ci['conclusion'], 'releaseRunId': release['runId'], 'releaseConclusion': release['conclusion'],
+    'releaseUrl': rel['url'], 'publishedAtUtc': rel['publishedAt'],
+    'packageHashes': {pid: {'publishedSignedArchiveSha256': published[pid], 'qualifiedUnsignedArchiveSha256': inventory[pid]} for pid in sorted(published)},
+    'freshNuGetOnlyAcceptance': {'emptyCliHomeAndPackageCache': True, 'commands': len(released['commands']), 'unchanged': all(c['gitUnchanged'] and c['allFileHashesUnchanged'] for c in released['commands']), 'trackedPathBytes': released['trackedPathBytes'], 'restoredPackageSha256': released['packageSha256']},
+    'publishedBinaryRealModuleAcceptance': [{k: r[k] for k in ('label', 'format', 'exitCode', 'unchanged', 'moduleCommit', 'trackedPathBytes', 'hashedTrackedFiles', 'dependencySelectors')} for r in real],
+    'platformKitTests': {'class': 'Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests', 'total': 5, 'failed': 0, 'log': 'platform-kit-tests.txt'},
+    'runtimeInputsUnchanged': False, 'runtimeInputComparison': 'runtime-input-comparison.json',
+    'humanSm2': 'Not performed; static PASS rows leave the owner-led SM-2 demonstration separately unverified (Story 3.11).'}, indent=2) + '\n')
+print('recorded', tool['version'], tag['localPeeled'])

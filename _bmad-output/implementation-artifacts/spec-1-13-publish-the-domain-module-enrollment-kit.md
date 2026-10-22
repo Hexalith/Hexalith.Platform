@@ -4,7 +4,7 @@ type: 'feature'
 epic: 1
 story: 13
 created: '2026-10-20'
-status: 'in-review'
+status: 'done'
 baseline_commit: '3d51fed1f3d99acf36ef690f150136593298bd95'
 builds_baseline_commit: '5d03f1db9c38db34ecac7fe6048937478ffb82cc'
 route: 'dispatch'
@@ -62,7 +62,7 @@ Match the tool pin to the direct Platform checkout. Audit tracked module-owned f
 - [x] Builds CLI/Diagnostics files above — wire `--adoption`, all requirement rows and failing exit behavior; require manifests inside the active workspace.
 - [x] Builds `test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs` and `PlatformManifestCommandTests.cs` — positive workspace and one failure per requirement, malformed/missing files, valid guards, frozen-directory confinement, read-only behavior, human/JSON rows and legacy compatibility.
 - [x] `tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs` — validate starter with real technical declarations, inventory defaults and candidate-tool commands in a disposable workspace.
-- [ ] `.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md`, `_bmad-output/implementation-artifacts/evidence/1-13/README.md` — after review/release, pin actual published version, raise the floor to it, retain upper bound `5.0.0-0`, and record canonical revisions, owner review, release and fresh acceptance evidence.
+- [x] `.config/dotnet-tools.json`, `hexalith-platform.json`, Builds gitlink, `README.md`, `_bmad-output/implementation-artifacts/evidence/1-13/README.md` — after review/release, pin actual published version, raise the floor to it, retain upper bound `5.0.0-0`, and record canonical revisions, owner review, release and fresh acceptance evidence.
 
 **Acceptance Criteria:**
 - Given the kit, when followed, then all six Story 1.13 enrollment topics have commands and identified human verification.
@@ -239,7 +239,7 @@ Code review 2026-10-21 (pass 5) of the full story product diff: Platform `3d51fe
   - (C) Force-push Builds `main` back to `2744d54`, honoring the rollback, and restore the gitlink. This is destructive and discards the owner's own push.
 
   [acceptance-auditor+blind-hunter+edge-case-hunter+verification-gap; high]
-- [ ] [Review][Patch] Release Builds `main`, including this pass's patches, then pin its tag (decision P5-D1B, 2026-10-21) [.config/dotnet-tools.json:6] — The owner's `/pushall` push accepts `359fee2` on Builds `main`, which supersedes the earlier "retain the rollback". Steps:
+- [x] [Review][Patch] Release Builds `main`, including this pass's patches, then pin its tag (decision P5-D1B, 2026-10-21) [.config/dotnet-tools.json:6] — The owner's `/pushall` push accepts `359fee2` on Builds `main`, which supersedes the earlier "retain the rollback". Steps:
   1. Land the Builds patches below on `main`.
   2. Run the full Builds suite.
   3. Get the owner's "I approve" before dispatch. NuGet publication cannot be undone.
@@ -501,3 +501,14 @@ Pass-5 review patches — 2026-10-21: decision P5-D1B accepts the owner's `/push
 - Platform: guide §4 now lists the 4.35.1 `StoreName` and YAML `Null` false failures and states the candidate bounds exactly. The evidence README now opens with a current-state table and the next-step procedure, and superseded sections are labeled historical.
 - Raw outputs are in `evidence/1-13/pass-5/`.
 - Story status stays **in-review** (sprint **review**), following the earlier passes' convention, until the gated release, pin, gitlink move and fresh acceptance complete. Concurrent Platform custody/secrets project/spec edits and EventStore work observed at handoff are preserved and excluded from the Story 1.13 commit.
+
+Release and acceptance — 2026-10-22: the release/pin patch and the final Tasks item are done, so all eight pass-5 patches are complete.
+- Builds: pass-5 commit `154010b` was rebased unchanged as `558122e` and squash-merged through [PR #129](https://github.com/Hexalith/Hexalith.Builds/pull/129) as `abcb1f3` after every required check passed. Released `main` `4248b8c` also contains other sessions' EventStore `3.126.1`, Tenants `5.10.0` and fixture commits. Exact-source CI 39736790198 passed. After the owner's "i approve" and production-gate approval, release run 39741376261 published `4.35.2`; tag `v4.35.2` resolves to `4248b8c`.
+- Platform: pin `4.35.2` with `rollForward: false`, range `[4.35.2, 5.0.0-0)`. The Builds gitlink is `4248b8c` (`/pushall` commit `10c50af` moved it before the pin). `README.md` and guide §2/§4 describe the released behavior, and the 4.35.1/pending paragraphs are removed.
+- Acceptance:
+  - Four fresh NuGet-only human/JSON success/failure commands passed with Git state and file hashes unchanged. The restored package SHA-256 equals the published one.
+  - Four read-only real-Parties commands passed. At pass-4-accepted `63cd1279`, `workspace` and `dependency-selectors` pass. At current gitlink `9cfeb6c6`, `4.35.2` correctly fails `dependency-selectors` on `Directory.Packages.props`: Parties commit `a8e52fdc` added sibling/ancestor catalog fallbacks, deferred to the Parties owner.
+  - Normal Platform build: zero warnings/errors. `DomainEnrollmentKitTests`: 5/5 passed.
+  - Runtime inputs: only the package catalog changes (EventStore `3.126.1`, Tenants `5.10.0`, Parties `1.5.1`).
+- The `real-module-compare.py.txt` `[:0]` truncation logged by another review affects only an informational field. A recheck at the compared Parties commit confirms the pass-5 claim.
+- Identities: `evidence/1-13/pass-5/release/accepted-identities.json`. Human SM-2 and hosting retirement remain owner-led gates (Story 3.11). Story status: **done**.

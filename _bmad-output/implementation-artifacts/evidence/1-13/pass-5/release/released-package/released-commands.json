@@ -1,0 +1,99 @@
+{
+  "scope": "Official published pinned tool restored from NuGet.org into an empty package cache; static enrollment proof only, no SM-2 evidence",
+  "version": "4.35.2",
+  "sourceRevision": "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+  "packageSha256": "637bebd547f45b5f2012c2f43af79b9b01772f1e81af02809babe62f4aa7cf1d",
+  "trackedPathBytes": 85894,
+  "workingDirectory": "disposable enrolled module Git workspace; removed after verification",
+  "isolation": "Empty DOTNET_CLI_HOME and NUGET_PACKAGES; explicit NuGet globalPackagesFolder and sole NuGet.org source",
+  "restoreCommand": [
+    "dotnet",
+    "tool",
+    "restore",
+    "--configfile",
+    "/tmp/enrollment-nuget-cmm802yo/NuGet.Config",
+    "--no-cache"
+  ],
+  "commands": [
+    {
+      "state": "pass",
+      "format": "human",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "exitCode": 0,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "pass",
+      "format": "json",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "fail",
+      "format": "human",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "human"
+      ],
+      "exitCode": 1,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    },
+    {
+      "state": "fail",
+      "format": "json",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--adoption",
+        "--output",
+        "json"
+      ],
+      "exitCode": 1,
+      "gitUnchanged": true,
+      "allFileHashesUnchanged": true
+    }
+  ]
+}

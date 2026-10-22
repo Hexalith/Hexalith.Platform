@@ -976,6 +976,7 @@
   summary: Gate Platform pushes on the pinned-tool ↔ Builds-gitlink identity, so that `/pushall` cannot silently advance a release-pinned submodule.
   evidence: `/pushall` checks out the default branch of every submodule and merges every local branch (`.github/skills/pushall/SKILL.md:74-86`). On 2026-10-21, Platform commit `37715f3` moved `references/Hexalith.Builds` from release tag `v4.35.1` (`f8599224`) to unreleased `359fee2`. `AcceptedToolPinEqualsSupportedRangeFloorAsync` fails at that HEAD, but Platform has no CI workflow, so nothing ran it. Fix: have `/pushall` skip advancing a submodule whose gitlink equals a pinned release tag, or add a Platform CI workflow that runs that test.
   status: open
+  note: 2026-10-22: it recurred. `/pushall` commit `10c50af` moved the gitlink to `v4.35.2` before the Platform pin moved. The owner declined adding Platform CI on 2026-10-22.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-protection-1-custody-guard-admission.md`
   summary: The Works proof gate can qualify a different Dapr runtime than the checked-in pin and the Works CI install.
@@ -986,3 +987,12 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-protection-1-custody-guard-admission.md`
   summary: The Story 1.13 real-module compare script drops every failing row.
   evidence: `real-module-compare.py.txt` ends the failing-row collection with `[:0]`, so `candidateFailing` is always empty. That file is Story 1.13 evidence, not the custody guard.
+  status: resolved
+  resolution: Only the informational `candidateFailing` field is affected. The baseline/candidate row comparison uses the `onlyBaseline`/`onlyCandidate` set differences, which are intact. Released `4.35.2` rechecked at compared Parties `61921f7c` passes `workspace` and `dependency-selectors` (`evidence/1-13/pass-5/real-module-compare-parties-recheck.json`). The pass-5 README records the correction, and the executed script stays as it ran.
+
+## Deferred from: Story 1.13 release acceptance (2026-10-22)
+
+- source_spec: `spec-1-13-publish-the-domain-module-enrollment-kit.md`
+  summary: Parties `Directory.Packages.props` reintroduced sibling and ancestor Builds catalog fallbacks, which the enrollment conventions forbid.
+  evidence: Parties commit `a8e52fdc` (2026-10-21) replaced `HexalithBuildsRoot` defaulting to `references/Hexalith.Builds` with `Exists`-guarded imports of `references/`, `../Hexalith.Builds` and an unconditional `../../Hexalith.Builds` catalog. Released `4.35.2` fails `dependency-selectors` on `Directory.Packages.props` at Parties gitlink `9cfeb6c6` (`evidence/1-13/pass-5/release/released-package/real-parties-current-gitlink-json.stdout.txt`). `4.35.1` hid this behind its asserted-probe false positive. Parties owns the fix during its kit enrollment: restore the tool-mapped `HexalithBuildsRoot` bootstrap and let release CI supply the Builds mapping. Story 1.13 must not adopt another module.
+  status: open

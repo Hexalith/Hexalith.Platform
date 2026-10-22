@@ -1,0 +1,26 @@
+{
+  "purpose": "Recheck of the pass-5 claim that Parties passes workspace and dependency-selectors; real-module-compare.py.txt truncated its informational candidateFailing list with [:0], so that field is always empty. The onlyBaseline/onlyCandidate row comparison is unaffected.",
+  "tool": "hexalith.builds.module.cli 4.35.2 (restored from NuGet.org)",
+  "partiesCommit": "61921f7c0a25e00d9dd102d863e366cf67120f3d",
+  "checkout": "disposable local clone",
+  "rows": [
+    {
+      "requirement": "workspace",
+      "passed": true,
+      "file": ".git",
+      "reason": "Static requirement passed. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified."
+    },
+    {
+      "requirement": "dependency-selectors",
+      "passed": true,
+      "file": ".",
+      "reason": "No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified."
+    }
+  ],
+  "failingRequirements": [
+    "dapr-subscriptions",
+    "gitlinks",
+    "hosting-inventory",
+    "tool-pin"
+  ]
+}

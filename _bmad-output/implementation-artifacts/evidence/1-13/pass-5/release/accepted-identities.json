@@ -1,0 +1,106 @@
+{
+  "acceptedAtUtc": "2026-10-22T08:54:57.773601+00:00",
+  "version": "4.35.2",
+  "rollForward": false,
+  "supportedToolRange": "[4.35.2, 5.0.0-0)",
+  "reviewedBuildsChange": {
+    "pullRequest": "https://github.com/Hexalith/Hexalith.Builds/pull/129",
+    "headRefOid": "558122eaab16ec6f785063c51e23ca40f61a9493",
+    "squashCommit": "abcb1f39e1ae740de896792fd75f5b344d3890b2",
+    "mergedAt": "2026-10-21T21:24:31Z"
+  },
+  "buildsSourceCommit": "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+  "buildsReleaseTag": "v4.35.2",
+  "platformRecordedBuildsGitlink": "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+  "platformSourceBaselineAtVerification": "10c50afc3cab41506fbb260e9fbc48a1804e0b61",
+  "platformToolManifestSha256": "5d72a022a9416cb753da75cda1b0f1945fd938c065521fd9946aaa525fe048da",
+  "restoredVersion": "4.35.2+4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+  "ciRunId": 39736790198,
+  "ciConclusion": "success",
+  "releaseRunId": 39741376261,
+  "releaseConclusion": "success",
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.35.2",
+  "publishedAtUtc": "2026-10-22T08:48:45Z",
+  "packageHashes": {
+    "Hexalith.Builds.Evidence.Cli": {
+      "publishedSignedArchiveSha256": "3659978298499a6bc67335c32c70aef15217f9f23d410f31dcc175aa14b7c708",
+      "qualifiedUnsignedArchiveSha256": "3cb7f879305e0da9d0edb6d4b66911b16c290814b62a8b76a47c5390356defaa"
+    },
+    "Hexalith.Builds.Module.Cli": {
+      "publishedSignedArchiveSha256": "637bebd547f45b5f2012c2f43af79b9b01772f1e81af02809babe62f4aa7cf1d",
+      "qualifiedUnsignedArchiveSha256": "69d94250acd8790997692bc66884e6f7be35e714487a4dfe04a13138b3459328"
+    }
+  },
+  "freshNuGetOnlyAcceptance": {
+    "emptyCliHomeAndPackageCache": true,
+    "commands": 4,
+    "unchanged": true,
+    "trackedPathBytes": 85894,
+    "restoredPackageSha256": "637bebd547f45b5f2012c2f43af79b9b01772f1e81af02809babe62f4aa7cf1d"
+  },
+  "publishedBinaryRealModuleAcceptance": [
+    {
+      "label": "pass4-accepted",
+      "format": "human",
+      "exitCode": 1,
+      "unchanged": true,
+      "moduleCommit": "63cd1279a82df47af3d16dd0ff9f002f3e4c86eb",
+      "trackedPathBytes": 480890,
+      "hashedTrackedFiles": 6098,
+      "dependencySelectors": null
+    },
+    {
+      "label": "pass4-accepted",
+      "format": "json",
+      "exitCode": 1,
+      "unchanged": true,
+      "moduleCommit": "63cd1279a82df47af3d16dd0ff9f002f3e4c86eb",
+      "trackedPathBytes": 480890,
+      "hashedTrackedFiles": 6098,
+      "dependencySelectors": [
+        {
+          "requirement": "dependency-selectors",
+          "passed": true,
+          "file": ".",
+          "reason": "No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified."
+        }
+      ]
+    },
+    {
+      "label": "current-gitlink",
+      "format": "human",
+      "exitCode": 1,
+      "unchanged": true,
+      "moduleCommit": "9cfeb6c645317a6aff3aa3812822bb6b92c1ec86",
+      "trackedPathBytes": 496191,
+      "hashedTrackedFiles": 6243,
+      "dependencySelectors": null
+    },
+    {
+      "label": "current-gitlink",
+      "format": "json",
+      "exitCode": 1,
+      "unchanged": true,
+      "moduleCommit": "9cfeb6c645317a6aff3aa3812822bb6b92c1ec86",
+      "trackedPathBytes": 496191,
+      "hashedTrackedFiles": 6243,
+      "dependencySelectors": [
+        {
+          "requirement": "dependency-selectors",
+          "passed": false,
+          "file": "Directory.Packages.props",
+          "reason": "File-based dependency selection or sibling/nested fallback; consume only tool-mapped roots and project/package pairs."
+        }
+      ]
+    }
+  ],
+  "platformKitTests": {
+    "class": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests",
+    "total": 5,
+    "failed": 0,
+    "log": "platform-kit-tests.txt"
+  },
+  "runtimeInputsUnchanged": false,
+  "runtimeInputComparison": "runtime-input-comparison.json",
+  "humanSm2": "Not performed; static PASS rows leave the owner-led SM-2 demonstration separately unverified (Story 3.11)."
+}

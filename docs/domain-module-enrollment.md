@@ -2,7 +2,7 @@
 
 The module owner uses this kit to prepare enrollment in Platform. Static validation
 and the human demonstration are separate gates. The accepted published tool is
-`4.35.1`, including ordinary declaration validation and the read-only `--adoption`
+`4.35.2`, including ordinary declaration validation and the read-only `--adoption`
 report. Copy the exact pin from the direct Platform checkout as described below.
 [Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
 records owner approval, gated publication and fresh acceptance. Static PASS rows
@@ -75,8 +75,9 @@ adoption, owner-reviewed **source/package/deployed parity**, and, when applicabl
 EventStore **AD-22 exact-subject consumer-removal authority**. Record exact evidence
 and authorized subject; never infer permission from a successful static report.
 Only exact frozen hosting-project directories are excluded from the Dapr audit.
-The accepted tool rejects shared `src`, `test` and `tests` directories and directories
-containing another project; use a dedicated hosting-project directory.
+A frozen directory's last segment must equal its project file name without the
+extension (ignoring case), and it must contain no other project; use a dedicated
+hosting-project directory.
 Root build files and dependency checks always remain in scope.
 
 ## 3. Restore exactly the accepted tool
@@ -154,33 +155,24 @@ injects the declared configuration key during the run.
 The audit is a **bounded static check**, limited to known patterns in supported
 tracked files up to 1 MiB each after file-type filtering. Every tracked `.cs`,
 `.csproj`, `.props`, `.targets`, `.ps1`, `.sh` and `.py` file is in scope, including
-tests and tracked evidence copies. The dependency audit inspects those extensions;
-the accepted `4.35.1` Dapr audit also checks the existence, confinement and size of
-those extensions, while inspecting Dapr patterns in `.cs` and configuration defaults
-in `appsettings*.json`, `appsettings*.yaml` or `appsettings*.yml`. Only exact frozen
-hosting-project directories
-are excluded from the Dapr audit. Other JSON/YAML files, including evidence JSON
-and OpenAPI YAML, are not read. In `4.35.1`, dependency-targeted existence probes
-are rejected even when immediately asserted, including
-`Directory.Exists(path).ShouldBeFalse()` and `Assert.True(File.Exists(path))`.
-`4.35.1` also rejects any string literal assigned to a `StoreName`, `ComponentName`,
-`storeName` or `pubsubName` name even without a Dapr call, for example
-`const string StoreName = "BusinessStore";`, and treats YAML `Null`/`NULL` component
-defaults as literal names. These known false failures require owner review; they
-must not be recorded as PASS.
-Human source review must inspect unusual configuration filenames, indirection,
-unsupported languages, generated code and any constructs outside that bound.
-Passing rows cannot prove runtime behavior or replace SM-2.
+tests and tracked evidence copies. The dependency audit inspects those extensions.
+The Dapr audit inspects `.cs` files and configuration defaults in `appsettings*.json`,
+`appsettings*.yaml` or `appsettings*.yml`. Only exact frozen hosting-project
+directories are excluded from the Dapr audit. Other JSON/YAML files, including
+evidence JSON and OpenAPI YAML, are not read.
 
-Pending the next owner-approved release, the candidate on Builds `main` exempts
-immediately asserted verification probes, flags literal component names only in a
-Dapr context, accepts `null` in any case, restricts the Dapr audit to `.cs` and
-`appsettings*` files, and requires each frozen directory to match its project stem
-(ignoring case). It also detects sibling paths that `Path.Combine`, `Path.Join`,
-`os.path.join` or `Join-Path` builds from `..` segments, parent-directory imports,
-Dapr calls with at most one nested generic level, reserved-property overrides in
-scripts and `dotnet` arguments, and additional script probes. These checks are
-unpublished; the accepted pin remains `4.35.1`.
+An immediately asserted existence probe, such as `Directory.Exists(path).ShouldBeFalse()`
+or `Assert.True(File.Exists(path))`, is verification and passes; the same probe in a
+condition is rejected. Dapr API arguments and Dapr-specific names (`StateStoreName`,
+`PubSubName`, `SecretStoreName`, `bindingName`) reject literal component names;
+generic `StoreName`/`ComponentName` literals fail only in a Dapr context. `null` in
+any case and `~` count as unset. The dependency audit also rejects sibling paths that
+`Path.Combine`, `Path.Join`, `os.path.join` or `Join-Path` builds from `..` segments,
+parent-directory imports that start outside the module, and reserved-property
+overrides in scripts and `dotnet` arguments. Generic Dapr calls are matched up to one
+nested level. Human source review must inspect unusual configuration filenames,
+indirection, unsupported languages, generated code and any constructs outside that
+bound. Passing rows cannot prove runtime behavior or replace SM-2.
 
 ## 5. Run, debug and stop the active checkout
 

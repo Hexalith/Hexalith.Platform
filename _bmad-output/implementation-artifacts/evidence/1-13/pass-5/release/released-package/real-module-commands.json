@@ -1,0 +1,96 @@
+[
+  {
+    "label": "pass4-accepted",
+    "command": [
+      "dotnet",
+      "/tmp/enrollment-nuget-cmm802yo/hexalith.builds.module.cli/4.35.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "validate",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--adoption",
+      "--output",
+      "human"
+    ],
+    "format": "human",
+    "exitCode": 1,
+    "unchanged": true,
+    "moduleCommit": "63cd1279a82df47af3d16dd0ff9f002f3e4c86eb",
+    "trackedPathBytes": 480890,
+    "hashedTrackedFiles": 6098,
+    "dependencySelectors": null
+  },
+  {
+    "label": "pass4-accepted",
+    "command": [
+      "dotnet",
+      "/tmp/enrollment-nuget-cmm802yo/hexalith.builds.module.cli/4.35.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "validate",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--adoption",
+      "--output",
+      "json"
+    ],
+    "format": "json",
+    "exitCode": 1,
+    "unchanged": true,
+    "moduleCommit": "63cd1279a82df47af3d16dd0ff9f002f3e4c86eb",
+    "trackedPathBytes": 480890,
+    "hashedTrackedFiles": 6098,
+    "dependencySelectors": [
+      {
+        "requirement": "dependency-selectors",
+        "passed": true,
+        "file": ".",
+        "reason": "No known forbidden patterns in tracked module-owned files. Bounded static checks only. Human source review is required for unsupported constructs. SM-2 remains separately unverified."
+      }
+    ]
+  },
+  {
+    "label": "current-gitlink",
+    "command": [
+      "dotnet",
+      "/tmp/enrollment-nuget-cmm802yo/hexalith.builds.module.cli/4.35.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "validate",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--adoption",
+      "--output",
+      "human"
+    ],
+    "format": "human",
+    "exitCode": 1,
+    "unchanged": true,
+    "moduleCommit": "9cfeb6c645317a6aff3aa3812822bb6b92c1ec86",
+    "trackedPathBytes": 496191,
+    "hashedTrackedFiles": 6243,
+    "dependencySelectors": null
+  },
+  {
+    "label": "current-gitlink",
+    "command": [
+      "dotnet",
+      "/tmp/enrollment-nuget-cmm802yo/hexalith.builds.module.cli/4.35.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "validate",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json",
+      "--adoption",
+      "--output",
+      "json"
+    ],
+    "format": "json",
+    "exitCode": 1,
+    "unchanged": true,
+    "moduleCommit": "9cfeb6c645317a6aff3aa3812822bb6b92c1ec86",
+    "trackedPathBytes": 496191,
+    "hashedTrackedFiles": 6243,
+    "dependencySelectors": [
+      {
+        "requirement": "dependency-selectors",
+        "passed": false,
+        "file": "Directory.Packages.props",
+        "reason": "File-based dependency selection or sibling/nested fallback; consume only tool-mapped roots and project/package pairs."
+      }
+    ]
+  }
+]

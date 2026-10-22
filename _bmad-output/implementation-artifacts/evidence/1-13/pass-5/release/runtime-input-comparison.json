@@ -1,0 +1,40 @@
+{
+  "baseline": "f8599224457dda99e7c0ae4870147dd51b464feb",
+  "releaseSource": "4248b8c70cb35ba79fdd7e4dd63049d4c73211a0",
+  "comparedPaths": [
+    "Props",
+    "global.json",
+    "NuGet.Config",
+    "Directory.Build.props",
+    "Directory.Build.targets",
+    "Directory.Packages.props",
+    "src/hosts",
+    "src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+    "src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj"
+  ],
+  "changedPaths": [
+    "Props/ContainerProvenance.targets",
+    "Props/Directory.Packages.props"
+  ],
+  "diffBytes": 5113,
+  "diffSha256": "fdfa1648175f175e29825c7a25f45fdacd0022e4989edd2cf99f622649ba786c",
+  "unchanged": false,
+  "changes": {
+    "Props/Directory.Packages.props": {
+      "HexalithEventStoreVersion": [
+        "3.126.0",
+        "3.126.1"
+      ],
+      "HexalithTenantsVersion": [
+        "5.9.0",
+        "5.10.0"
+      ],
+      "HexalithPartiesVersion": [
+        "1.5.0",
+        "1.5.1"
+      ]
+    },
+    "Props/ContainerProvenance.targets": "Added by Builds PR #128; applied only by container publication arguments; no MSBuild props/targets/csproj imports it"
+  },
+  "scope": "Package catalog selects published EventStore 3.126.1, Tenants 5.10.0 and Parties 1.5.1; SDK pin, NuGet configuration, root build settings, packaged host source and tool dependency declarations are identical to v4.35.1. Platform apphost.cs EventStore.Aspire/ServiceDefaults 3.126.0 references belong to another workstream."
+}
