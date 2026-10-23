@@ -69,7 +69,10 @@ depth before returning a document.
 ## Shared bindings
 
 The descriptor and result carry the same `bindings` structure. The result is the
-runner's snapshot for that same run/attempt, not a new identity. Immutable fields
+runner's snapshot for that same run/attempt, not a new identity. A
+`hexalith.test-result.v1` document always snapshots `hexalith.test-environment.v1`
+bindings, so neither records the other's version; a new descriptor version
+requires a new result version. Immutable fields
 must agree across both documents; readiness, startup tasks, observed loaded
 artifacts, completion, actual durations and hold end records can advance as their
 producers report observations. A later result cannot relabel a decision, reset an
@@ -178,6 +181,16 @@ retention, cancellation or withdrawal must never replace it. Expiry or environme
 withdrawal turns an active attached run into `withdrawn`; no late pass can undo
 that outcome. An attached run's own cancellation affects only that run.
 
+For an attached result with populated `attachments`, the reader checks the
+outcome against the run's own hold. Because expiry is exclusive and the runner's
+record decides it, `cause` is `hold-expired` exactly when `recordedAt` is at or
+after that hold's `expiresAt`; no other outcome or withdrawal cause can be
+recorded then. An ended hold's `reason` must match the outcome: `terminal-outcome`
+for `passed`, `failed` or `cancelled`, `expired` for `hold-expired`, and each
+withdrawal reason for the same withdrawal cause. A still-`active` hold record may
+lag the outcome. Contradictions refuse as `HXT107`; owner outcomes are
+independent of the holds of other runs.
+
 The following result objects are required reserved fields, so a terminal outcome
 can be recorded before later stopping and cleanup finish:
 
@@ -205,17 +218,19 @@ all parsing, version, policy, shape and timing checks pass. Any refusal returns
 `Document: null` and stable metadata-only diagnostics; no partial values escape.
 Cancellation propagates as cancellation. Schemas are embedded in Tooling and
 packaged under `tools/net10.0/any/schemas/`; remote schema retrieval is disabled.
-No source checkout is needed by the installed reader.
+No source checkout is needed by the installed reader. Tooling is not published as
+a standalone package: the reader runs inside the installed `hexalith-module` tool,
+and module fixtures that validate descriptors themselves use the published schemas.
 
 | Diagnostic | Meaning |
 | --- | --- |
 | `HXT101` | Missing/unsupported/wrong-kind contract version; names supported versions. |
 | `HXT102` | Missing/unknown/wrongly typed policy; names the exact supported policy. |
-| `HXT103` | Invalid strict JSON/UTF-8, duplicate keys, non-finite numbers, excessive depth or hold/deadline timestamps that cannot be represented by the reader. |
+| `HXT103` | Invalid strict JSON/UTF-8, duplicate keys, non-finite numbers, excessive depth or hold/deadline/attached-outcome timestamps that cannot be represented by the reader. |
 | `HXT104` | Closed schema shape/type/value violation, non-plain/out-of-range Int32, inconsistent run/hold identities, duplicate scoped identities or unresolved document-local resource/item/diagnostic references. |
 | `HXT105` | Input exceeds the byte bound or is not a seekable file. |
 | `HXT106` | Invalid/unreadable file. |
-| `HXT107` | Inconsistent request/effective hold, acceptance/expiry/end or deadline/default/override bindings, including unsupported deadline tick precision. |
+| `HXT107` | Inconsistent request/effective hold, acceptance/expiry/end or deadline/default/override bindings, including unsupported deadline tick precision, or an attached run's terminal outcome contradicting its own hold expiry or end. |
 
 Diagnostic source is the requested contract identity, field is a fixed metadata
 location, and messages never echo input values, unknown keys, file paths,
