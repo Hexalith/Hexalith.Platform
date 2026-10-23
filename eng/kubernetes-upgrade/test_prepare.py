@@ -52,7 +52,11 @@ class PreparationTests(unittest.TestCase):
         result = json.loads((directory / "upgrade-result.json").read_text())
         self.assertFalse(result["complete"])
         self.assertEqual(result["executedMinorHops"], [])
+        self.assertEqual(set(result["workloadOutcomes"]),
+                         {"keycloak", "openbao", "memories", "forgejo", "forgejo-runner"})
         self.assertTrue(all(value == "not-run" for value in result["workloadOutcomes"].values()))
+        self.assertIsNone(result["additionalWorkloadOutcomesFromFreshCensus"])
+        self.assertIsNone(result["collectionRequirements"]["signedSanitizedSummarySha256"])
 
     def test_both_dated_hops_have_separate_closed_gates_and_hashed_lineage(self):
         before = {str(name): prepare.sha256(self.project / name) for name in prepare.SOURCE_FILES}
@@ -100,6 +104,11 @@ class PreparationTests(unittest.TestCase):
                 self.assertIsNone(outcome["approvedSuccessorMaintenanceSha256"])
                 self.assertEqual(outcome["postflightEvidenceHashes"],
                                  {"post-upgrade-health.json": None, "dynamic-storage-proof.json": None})
+                postflight = outcome["preUncordonRequirements"]
+                self.assertTrue(postflight["instructionsOnly"])
+                self.assertFalse(postflight["uncordonAuthorized"])
+                self.assertEqual(postflight["verificationResult"], "not-run")
+                self.assertIsNone(postflight["acceptedEvidenceSha256"])
         result = json.loads((directory / "upgrade-result.json").read_text())
         self.assertIsNone(result["actualFinalComponentVersions"])
         self.assertEqual(before, {str(name): prepare.sha256(self.project / name) for name in prepare.SOURCE_FILES})
@@ -241,8 +250,7 @@ class PreparationTests(unittest.TestCase):
 
     def test_collection_scope_requires_fresh_complete_evidence_for_both_hops(self):
         directory = self.run_preparation()
-        for name in ("api-addon-compatibility.json", "dynamic-storage-proof.json",
-                     "pre-upgrade-health.json", "post-upgrade-health.json"):
+        for name in prepare.OPERATIONAL_FILES:
             with self.subTest(record=name):
                 record = json.loads((directory / name).read_text())
                 plan = record["collectionRequirements"]
@@ -257,6 +265,22 @@ class PreparationTests(unittest.TestCase):
                     self.assertEqual(item["verificationResult"], "not-run")
                 self.assertEqual(record["verificationResult"], "not-run")
                 self.assertFalse(record["mutationAuthorized"])
+        for name, required_bindings in (
+                ("preflight.json", ("liveComponentVersions", "acceptedExecutionIdentitiesSha256")),
+                ("external-etcd-recovery-point.json", ("sourceMemberCensusSha256", "snapshotIntegrityEvidenceSha256",
+                                                      "immutableValidatorReadbackSha256", "signedSourceComparisonSha256")),
+                ("external-etcd-isolated-restore.json", ("sourceRecoveryPointSha256", "isolationEvidenceSha256",
+                                                       "comparisonEvidenceSha256", "signedCleanupEvidenceSha256")),
+                ("node-recovery-bundle.json", ("sourceRecoveryPointSha256", "matchingConfigurationCensusSha256",
+                                              "immutableValidatorReadbackSha256", "testedRecoveryProcedureSha256"))):
+            with self.subTest(recovery_or_preflight=name):
+                plan = json.loads((directory / name).read_text())["collectionRequirements"]
+                self.assertTrue(plan["requiredChecks"])
+                for binding in required_bindings:
+                    self.assertIsNone(plan[binding])
+        preflight = json.loads((directory / "preflight.json").read_text())["collectionRequirements"]
+        self.assertEqual(preflight["versionSkewResult"], "not-run")
+        self.assertEqual(preflight["kubeadmPlanResult"], "not-run")
         compatibility = json.loads((directory / "api-addon-compatibility.json").read_text())["collectionRequirements"]
         self.assertFalse(compatibility["completeLiveAndDesiredInventoryEstablished"])
         self.assertIsNone(compatibility["additionalInstalledOperatorsAddonsAndWebhooks"])

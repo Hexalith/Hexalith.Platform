@@ -180,6 +180,50 @@ def collection_requirements(name, hops):
                 "evidenceSha256": None, "verificationResult": "not-run"} for hop in hops]
     common = {"instructionsOnly": True, "freshEvidenceRequiredForEveryHop": True,
               "perHopEvidence": per_hop}
+    if name == "preflight.json":
+        return {**common, "liveComponentVersions": None, "acceptedExecutionIdentitiesSha256": None,
+                "versionSkewResult": "not-run", "kubeadmPlanResult": "not-run",
+                "requiredChecks": [
+                    "fresh API/control-plane, kubelet, kubeadm, kubectl, runtime, CNI and kube-proxy versions",
+                    "current supported exact sequential target patch and target-minor release/upgrade instructions",
+                    "exact binary/package version and SHA-256, repository/source verification and image digests",
+                    "live kubeadm plan/preflight command versions, exits, warnings and accountable blocker dispositions",
+                    "never skip preflight errors; installed package, repository or binary changes remain gated mutations",
+                    "explicit component version-skew compliance before and after the hop",
+                ]}
+    if name == "external-etcd-recovery-point.json":
+        return {**common, "sourceEndpoint": "192.168.1.30:2379", "sourceMemberCensusSha256": None,
+                "snapshotIntegrityEvidenceSha256": None, "immutableValidatorReadbackSha256": None,
+                "signedSourceComparisonSha256": None,
+                "requiredChecks": [
+                    "fresh post-retirement external-etcd endpoint/member health and alarm checks",
+                    "fresh snapshot integrity/status using the matching etcd tools; never copy the live data directory",
+                    "encrypted access-controlled immutable off-node object and independent exact-version checksum readback",
+                    "signed snapshot/source revision, key count, native hash and approved non-secret canary digests",
+                    "bind matching node/configuration inventory and isolated restore to this recovery point",
+                ]}
+    if name == "external-etcd-isolated-restore.json":
+        return {**common, "sourceRecoveryPointSha256": None, "isolationEvidenceSha256": None,
+                "comparisonEvidenceSha256": None, "signedCleanupEvidenceSha256": None,
+                "requiredChecks": [
+                    "distinct isolated target/member with no network path to the production source",
+                    "restore the independently read-back snapshot; require target member health and integrity",
+                    "match the signed source revision, key count, native hash and approved non-secret canaries",
+                    "preserve revision for rehearsal comparison; production revision bump/watch-cache decisions belong to the approved recovery procedure",
+                    "signed target cleanup and absence evidence; incomplete or unknown cleanup closes acceptance",
+                ]}
+    if name == "node-recovery-bundle.json":
+        return {**common, "sourceRecoveryPointSha256": None, "matchingConfigurationCensusSha256": None,
+                "immutableValidatorReadbackSha256": None, "testedRecoveryProcedureSha256": None,
+                "requiredCoverage": ["kubeadm configuration", "static-pod manifests", "PKI/certificates/key material",
+                                     "kubelet configuration", "installed binary/package and repository state"],
+                "requiredChecks": [
+                    "fresh post-retirement matching node/configuration census with owner/mode-preserving per-file checksums",
+                    "encrypted access-controlled off-node archive and independent immutable readback with matching checksums",
+                    "tested file/key recovery preserving numeric owner/group, modes and all inventoried content",
+                    "record accountable recovery procedure, custody and scoped limitations; full OS reconstruction is not an added immediate gate",
+                    "keep archive contents, private keys, certificates, kubeconfig and credentials outside Git",
+                ]}
     if name == "api-addon-compatibility.json":
         return {**common, "minimumComponents": list(COMPATIBILITY_COMPONENTS),
                 "additionalInstalledOperatorsAddonsAndWebhooks": None,
@@ -369,6 +413,14 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
                 "approvedGateRecord": f"hop-gate-{suffix}.json", "approvedGateSha256": None,
                 "approvedSuccessorMaintenanceSha256": None,
                 "postflightEvidenceHashes": {"post-upgrade-health.json": None, "dynamic-storage-proof.json": None},
+                "preUncordonRequirements": {
+                    "instructionsOnly": True, "verificationResult": "not-run", "acceptedEvidenceSha256": None,
+                    "uncordonAuthorized": False,
+                    "requiredChecks": ["API ready and node1 Ready", "healthy CNI, DNS, add-ons and operators",
+                        "cleared target API/deprecation scan", "healthy external etcd", "component version-skew compliance",
+                        "fresh cordoned-node dynamic-storage provision/write/read/delete and provider cleanup",
+                        "protected workload health or approved paused-state expectations; any unhealthy workload stops the next hop"],
+                },
             })
         write_record(directory, "maintenance-transition.json", {
             **base, "verificationResult": "not-run",
@@ -390,7 +442,15 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
             **base, "verificationResult": "blocked", "state": "blocked-before-mutation",
             "complete": False, "supportedVersionEstablished": False,
             "actualFinalComponentVersions": None, "executedMinorHops": [],
-            "workloadOutcomes": {name: "not-run" for name in ["keycloak", "openbao", "memories", "forgejo"]},
+            "workloadOutcomes": {name: "not-run" for name in PROTECTED_WORKLOAD_CHECKS},
+            "additionalWorkloadOutcomesFromFreshCensus": None,
+            "collectionRequirements": {
+                "instructionsOnly": True, "signedSanitizedSummarySha256": None,
+                "requiredChecks": ["actual final server/node, kubeadm, kubelet, kubectl, runtime and workload versions",
+                    "accepted sequential hop records and complete pre-uncordon results",
+                    "every protected and additionally discovered workload outcome, approved restore outcome and remaining incident",
+                    "Administrator-signed result and sanitized summary; only supported actual versions and successful workload outcomes permit completion"],
+            },
         })
         hashes = {path.name: sha256(path) for path in sorted(directory.glob("*.json"))}
         with (directory / "SHA256SUMS").open("x", encoding="utf-8") as stream:

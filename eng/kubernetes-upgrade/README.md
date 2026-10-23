@@ -15,6 +15,13 @@ adds concrete per-hop collection requirements and verifies all 44 local safety
 tests plus the same eight retained signatures/bindings. All freshness checks
 still fail; no upstream publication, provider or cluster observation was refreshed.
 
+The [recovery/preflight preparation continuation](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261023t085443z-recovery-preflight-preparation/summary.md)
+fills the remaining empty collection requirements for live preflight, external-etcd
+snapshot/isolated restore and node recovery. It also names all pre-uncordon checks
+and includes the runner in final workload outcomes. All 44 local tests pass;
+the new private records remain unsigned, pending and closed. Retained signature
+authentication and remote readback were not repeated in this continuation.
+
 ## Retained two-hop preparation
 
 The recorder reads `workloadHop.tag` and `workloadTarget.tag` from the
@@ -42,6 +49,11 @@ Every per-hop accepted target and evidence hash starts null; selected dated patc
 and collection instructions establish no live result. The transition record also
 names terminal quiesce/cordon/drain and accountable stop/recovery evidence, leaving
 the exact successor-procedure and recovery-decision hashes null until approved.
+The preflight and recovery instructions require fresh per-hop identities, matching
+snapshot/configuration bindings, independent immutable readback, isolated comparison
+and signed cleanup. Each hop's pre-uncordon requirements remain `not-run` with
+`uncordonAuthorized: false`; final component versions, runner and other workload
+outcomes, discovered additional workloads and signed-summary evidence stay pending.
 
 Both gates explicitly require accepted 4.27 signed retirement/preservation and
 private native access, fresh post-retirement external-etcd/isolated-restore and
