@@ -39,3 +39,19 @@ The owner subsequently explicitly included telemetry PostgreSQL recovery in the
 proposal. New read-only catalog/peer metadata and a separate offline planner
 bind that additional dataset; the decision authorizes preparation only. It
 does not authorize a dump, snapshot, restore or source pause.
+
+
+The final [verification receipt](verification.json) binds the single private
+revision-4 bundle and its local verifier command. All 94 common and 70 telemetry
+unit tests pass; final synthetic SQL and parser replay checks pass separately.
+Native observations total 90 bounded read commands; provider observations 31.
+All 14 source volume path/node bindings are resolved privately. Missing full
+executable integration remains an implementation prerequisite. Actual recovery
+qualifications remain null and no operational approval is requested.
+
+
+The selected [private command bundle](/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/COMMAND-BUNDLE.md)
+has 64 checksummed payload files. Its corrected local verifier checks 10 tool
+files and 140 measured runtime files; wrong anchors and fabricated qualification
+are rejected. Earlier packets and the failed verifier result are retained in
+private lineage. No operational approval is requested.

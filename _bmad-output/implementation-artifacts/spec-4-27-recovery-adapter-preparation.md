@@ -4,7 +4,8 @@ type: 'feature'
 epic: 4
 story: 27
 created: '2026-10-23'
-status: 'in-review'
+status: 'in-progress'
+preparation_review_status: 'verified-offline-only'
 route: 'dispatch'
 baseline_commit: '7c37f3f2c5e7e55693db70baa8885bdb10bd9ff6'
 review_loop_iteration: 2
@@ -52,11 +53,11 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `eng/recovery-preparation/recovery_adapters.py` -- implement typed capture/restore/resume/cleanup request builders and guarded transitions with injected backend; exact immutable reads, explicit resource identities, bounded argv/stdin, no ambient credentials, no retries, create-only receipts and safe failure states. Real-system acceptance fields remain unestablished without actual execution. Public CLI must refuse live activation before touching credentials. Do not claim these primitives implement complete CNPG/OpenBao/Memories orchestration.
-- [ ] `eng/recovery-preparation/test_recovery_adapters.py` -- test meaningful adversarial inputs, semantic failures, source protection, resume/cleanup handling, partial failure and offline/live separation.
-- [ ] `eng/recovery-preparation/RECOVERY-ADAPTERS.md` -- document how the adapters compose with exact future staged operations, explicit missing orchestration/qualification and failure recovery.
-- [ ] Private new preparation custody -- collect current bounded read-only native/provider/custody facts; retain exact request/tool/input identities and encrypted raw data; prepare one concrete reviewable bundle with commands, proposed targets, expected effects, dependencies, stops, resume and cleanup. Missing current authority/runtime facts stay explicit gates.
-- [ ] New sanitized evidence receipt and append-only handoff/story/spec checkpoint -- bind tools/tests/private packet, preserve historical bytes and gates; do not stage, commit or push.
+- [x] `eng/recovery-preparation/recovery_adapters.py` -- implement typed capture/restore/resume/cleanup request builders and guarded transitions with injected backend; exact immutable reads, explicit resource identities, bounded argv/stdin, no ambient credentials, no retries, create-only receipts and safe failure states. Real-system acceptance fields remain unestablished without actual execution. Public CLI must refuse live activation before touching credentials. Do not claim these primitives implement complete CNPG/OpenBao/Memories orchestration.
+- [x] `eng/recovery-preparation/test_recovery_adapters.py` -- test meaningful adversarial inputs, semantic failures, source protection, resume/cleanup handling, partial failure and offline/live separation.
+- [x] `eng/recovery-preparation/RECOVERY-ADAPTERS.md` -- document how the adapters compose with exact future staged operations, explicit missing orchestration/qualification and failure recovery.
+- [x] Private new preparation custody -- collect current bounded read-only native/provider/custody facts; retain exact request/tool/input identities and encrypted raw data; prepare one concrete reviewable bundle with commands, proposed targets, expected effects, dependencies, stops, resume and cleanup. Missing current authority/runtime facts stay explicit gates.
+- [x] New sanitized evidence receipt and append-only handoff/story/spec checkpoint -- bind tools/tests/private packet, preserve historical bytes and gates; do not stage, commit or push.
 
 **Acceptance Criteria:**
 - Given the current read-only authorization, when observations complete, then measured facts and unknown PKI/recovery-access/provider/runtime qualifications are explicit and no prohibited operation occurred.
@@ -167,3 +168,60 @@ All findings are this preparation's issue; none are deferred. Source-volume/fenc
 | Verification 2 | medium | Pre-verified mutant replacing set inventory comparison with ordered tuple passes90 tests; add reordered complete-census success regression. |
 
 All fourteen findings are retained. Common PV/fence/order findings are patch corrections to existing demonstrated state and interfaces. Telemetry coverage/profile/authority contract corrections require re-derivation from the exact review-3-source snapshot, outside unchanged frozen intent; no finding is deferred. No real qualification or operational approval follows from this review.
+
+### Integrated review 4
+
+| Finding | Verdict | Verified evidence / route |
+| --- | --- | --- |
+| Blind 1 | medium | PG18 accepts smallint sequence increment100000; current range check falsely rejects valid native metadata. Use int64 nonzero increment independently of sequence value type. |
+| Blind 2 | high | Generated column query omits attacl; column-level grants can change with identical canaries. Observe/compare column ACL. |
+| Blind 3 | high | Column query omits resolved collation/database defaults; changed text comparison semantics can pass identical canaries. Observe portable column collation and database collation semantics. |
+| Blind 4 | medium | relkind r admits UNLOGGED changes with identical canaries; observe relation persistence (and bounded native storage profile). |
+| Blind 5 | medium | Unsupported-object query omits pg_statistic_ext; add explicit refusal census for extended statistics. |
+| Blind 6 | medium | Identity flag can lack NOT NULL/internal sequence in matching malformed transcripts; cross-check native identity ownership and required properties. |
+| Blind 7 | medium | Generated flag with missing expression passes; require a nonempty expression. |
+| Blind 8 | medium | Structured index/constraint column references are absent, so malformed missing-column catalogs can pass the documented cross-check; bind structured references. |
+| Blind 9 | medium | Sequence relation schema can omit log_cnt/is_called despite completeness claim; validate the native PG18 fixed column shape. |
+| Verification 1 | medium | Pre-verified removing source builtin-profile guard passes47 tests; mutate all source builtin authority flags. |
+| Verification 2 | medium | Pre-verified removing pinned source role projection check passes47 tests; mutate source custom canLogin/superuser independently. |
+
+Edge-case layer returned no findings. All eleven findings are retained, none deferred. Telemetry catalog contract additions route to bad_spec outside frozen intent; preserve all47 positive cases and exact earlier packets. The two tests-only gaps and numeric/identity/generated/fixed-shape corrections are retained re-derivation requirements. Root's local cached-image SQL fixture v2 passed17 tagged outputs and the16-category parser replay, including changed-digest refusal; it qualifies only those exact earlier synthetic SQL bytes, not the next revision or any actual recovery.
+
+### Integrated review 5
+
+| Finding | Verdict | Verified evidence / route |
+| --- | --- | --- |
+| Blind 1 | high | Index validity/readiness/liveness omitted; add existing unsupported-census refusal for unusable indexes rather than a new payload interface. |
+| Blind 2 | medium | Nondefault table/index replica identity omitted; explicitly exclude it through existing unsupported census. |
+| Blind 3 | high | Internal FK triggers can be disabled while constraint flags remain true; refuse nonstandard internal constraint trigger enable state in existing census. |
+| Blind 4 | low | Persistent CLUSTER selection omitted; direct unsupported-census correction rejects this nondefault profile with no new public surface. |
+| Blind 5 | medium | Matching CHECK slot/dependency arrays can be cleared independently with counts; require set agreement, retaining legitimate zero-column checks. |
+| Blind 6 | medium | Direct bigint index column accepts boolean native type; require supported direct-key base-type coherence and refuse unsupported operator-class physical key storage in existing census. |
+| Blind 7 | medium | Index relation identity flag bypasses table-only owned-sequence guard; restrict identity/generated properties to ordinary table columns. |
+| Blind 8 | medium | Bigint can carry collation; text[]/name[] can omit it. Tighten exact collation presence for the existing supported builtin scalar/array profile. |
+| Blind 9 | medium | User-schema collation contradicts empty unsupported census; restrict referenced collations to supported pg_catalog identities. |
+| Edge 1 | medium | Same collatable-array omission as Blind8; patch existing builtin-family guard. |
+| Edge 2 | medium | Same non-table identity gap as Blind7; patch existing relation-kind guard. |
+| Verification 1 | medium | Pre-verified removing supporting-index owner-table guard passes62 tests; add wrong-table existing-index rejection test. |
+| Verification 2 | medium | Pre-verified removing deferred/deferrable guard passes62 tests; add positive and contradictory native constraint flag cases. |
+| Verification 3 | medium | Pre-verified removing NOT NULL constraint guard passes62 tests; add native n constraint positive/nullable/wrong-column-count cases. |
+
+All fourteen findings are retained. These route to patch: each corrects demonstrated state using existing payload fields or existing unsupportedObjects.otherObjects, with no new public interface. The limited heap/btree/system-collation profile is explicit; no universal PostgreSQL support is inferred. All62 previous tests and exact snapshots/engine evidence remain. No finding is deferred. New SQL bytes require a new local fixture receipt; earlier passes are not reused as qualifications.
+
+## Verified offline checkpoint — 2026-10-23
+
+The five review rounds are triaged above; all verified corrections are implemented and no finding is deferred. Common adapters pass 94 tests and telemetry adapters pass 70, with no skips. The final cached-image, network-disabled synthetic SQL fixture and 16-category parser replay pass, including identity/generated/FK/CHECK/sequence metadata and changed-digest refusal. Earlier SQL passes remain bound to their own bytes; the initial stdin harness failure is retained. These are offline checks, not actual recovery qualifications.
+
+The owner explicitly included telemetry PostgreSQL. Two final bounded GETs resolve all 14 protected source PV local-path/node-UID bindings and all 30 current PV exclusions, matching earlier source identities/claimRefs/resourceVersions and Node incarnations. Total native observation scope is 90 read commands (82 GETs, 8 read-only execs), 3,404,041 response bytes under 4 MiB; provider scope remains 31 GET/HEAD calls. Security/host/custody detail stays private.
+
+The single private revision-4 technical bundle binds exact current code/tool/input bytes, command proposals, expected effects, stop conditions and source-resume/target-cleanup procedures. Its final checksum/verifier results are linked from [the sanitized verification receipt](evidence/epic-4/4-27/20261023t085529z-s427-recovery-command-preparation/verification.json). It remains non-runnable: credential/exact-version readback/signature-scope/native execution drivers, full system/target orchestration and proof-consumer integration are explicitly unimplemented. Actual authority/custody and execution qualifications remain separate closed gates. No operational approval is requested.
+
+Original Story 4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL. No fresh recovery RID/policy, source/provider mutation, capture/quiescence/restore, signing/upload, permission change, retirement, upgrade or deployment occurred. Original frozen intent, checked historical/retirement/procedure bytes, expired attempts and signed originals retain their exact bytes and meaning.
+
+
+Final selected bundle: revision 4, as bound by the sanitized verification receipt.
+The revision 3 checksum packet remains unchanged. Its first verifier refused the
+host's root-owned multicall env hardlink; revision 4 corrects only that runtime
+inventory check, with private/tool single-link checks retained. Actual positive,
+wrong-anchor and fabricated-qualification checks pass. Adapter/input bytes and
+all 164 offline unit results are unchanged. No source/provider action followed.

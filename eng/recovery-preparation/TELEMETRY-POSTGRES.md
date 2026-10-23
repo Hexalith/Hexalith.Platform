@@ -175,6 +175,84 @@ materialized views, foreign tables, partitioned tables/indexes and other
 relation kinds refuse comparison. Catalog position gaps can represent dropped
 columns; the surviving column definitions must agree on both sides.
 
+The schema payload also records portable `database` semantics: encoding,
+locale provider, collate/ctype, provider locale, ICU rules, recorded collation
+version, actual provider collation version and the default tablespace name.
+These values must agree across source and target; a non-null recorded version
+must match its actual provider version. No current locale facts are invented
+in the proposal input. A future target bootstrap must establish compatible
+locale semantics before restore/canary acceptance; the existing manifest
+templates do not prove that compatibility.
+
+Column records include column ACLs, resolved collation identity and semantics,
+native storage/compression modes, statistics target, options and declared array
+dimensions. A collation is null for a noncollatable column; otherwise it records
+schema/name, provider, encoding applicability, collate/ctype, locale, ICU rules,
+version/actual version and determinism, with no raw OID comparison. Database
+default collations resolve their effective provider version through the database
+semantics. ACL null and an empty ACL remain distinct. Native statistics targets
+are null or integers from zero through 10,000; compression supports the default,
+pglz and LZ4 modes and storage supports the native p/e/m/x modes. These are
+observations to compare, not evidence that their actual SQL representation or
+target support has been qualified.
+Within this builtin scalar/array profile, text, name, character and character
+varying (including their arrays) require a collation; noncollatable base types
+such as bigint and their arrays require null. Referenced collations must belong
+to the supported `pg_catalog` profile. User-schema collations refuse even when
+the supplied unsupported census is empty.
+
+Relations record persistence, resolved access method, relation/toast options
+and a tablespace name without any physical source path. This limited profile
+accepts only logged heap tables, logged btree indexes and logged native
+sequences. Nondefault relation/toast/column options, custom tablespaces,
+unlogged/temp persistence and other access methods refuse. The unsupported
+census also observes identifiers for custom relation/database tablespaces,
+security labels, database/role settings and extended statistics. Label values,
+setting values and tablespace paths are never returned.
+The same census refuses unusable indexes (not valid/ready/live), nondefault
+replica identity or a replica-identity index, a CLUSTER-selected index, and
+internal constraint triggers whose enable mode is not standard origin mode.
+Operator classes with an explicit physical key storage type are also outside
+this heap/btree profile. These are refusal entries in the existing payload;
+no new runtime qualifications or execution authority follow.
+
+Index records use native pg_index key/INCLUDE slots and column counts, with
+ordinal, source table column position/name and explicit expression markers.
+Constraint records use native pg_constraint kind/flags, constrained slots,
+referenced FK table/slots and supporting index identity. Both include resolved
+column dependency records from pg_depend and their counts. Every direct or
+dependency reference must resolve to its exact observed bound table and column
+position/name. Counts, ordinals, duplicate/orphan references, FK reference
+lengths, supporting index ownership and key positions are checked; index slots
+also agree with their own index relation columns. Expression slots retain zero
+attribute markers and explicit expression text; constant expressions can have
+an explicit empty dependency census. Expression and predicate text and full
+portable SQL definitions remain compared. The consumer does not parse SQL or
+claim universal validation of its meaning: reference coverage is exactly the
+native slots/dependencies that the proposed catalog queries observe. Dropped
+or unresolved dependency attributes remain visible as nulls and refuse.
+Simple index/INCLUDE native columns must have the indexed column's base type;
+native typmod spelling differences are permitted. Expression result types
+remain separately observed and compared. CHECK native column slots must be
+unique and equal their resolved column dependency positions, so independently
+clearing either array together with its count refuses. A genuinely zero-column
+CHECK may explicitly have both censuses empty. Supporting indexes must belong
+to the exact constrained/referenced table, deferred constraints must be
+deferrable, and native NOT NULL constraints require exactly one NOT NULL column.
+These are catalog consistency checks, not a parser for arbitrary SQL meaning.
+
+Identity columns require NOT NULL, no generated/default expression and exactly
+one internally owned (`i`) sequence with a matching native value type. Every
+internal ownership edge must point to such an identity; serial `a` ownership
+remains separate. Generated columns require a nonempty generation expression
+and no identity flag. Identity/generated flags are accepted only on ordinary
+table columns, never index or sequence columns. Each sequence relation must have exactly the native
+three columns in order: `last_value bigint`, `log_cnt bigint`, `is_called
+boolean`, all NOT NULL and with no identity/generated/default expression.
+The directly observed sequence state remains a separate stable before/after
+comparison. Missing metadata or contradictory identity/generated/native
+sequence shapes refuse even when both transcripts share the same omission.
+
 An explicit `unsupportedObjects` tagged payload must contain exactly empty
 arrays for `routines`, `triggers`, `rowSecurity`, `policies`, `types` and
 `otherObjects`. Read-only catalog queries observe non-extension-owned
@@ -184,7 +262,8 @@ table row types/array types are distinguished from standalone types. The
 other-object census covers user operators/operator classes/operator families,
 collations/conversions/text-search objects, rules/inheritance, event triggers,
 languages, publications/subscriptions, foreign servers/wrappers, large objects,
-casts, access methods and transforms. It records identities, never subscription
+casts, access methods, transforms, extended statistics, security labels,
+custom tablespaces and database/role settings. It records identities, never subscription
 connection strings, routine bodies or row content. Custom casts/access methods
 use the native PG18 normal-object OID boundary (16,384) as an additional
 conservative detection rule; that assumption still needs runtime qualification.
@@ -251,8 +330,9 @@ it here. Source and restored sequence state must also agree.
 Definitions support only native `smallint`, `integer` and `bigint` sequences.
 Canonical signed decimal strings must fit their type/range; minimum must be
 less than maximum, start and direct observed values must lie inside those
-bounds, increment must be nonzero and fit the sequence type, and cache must
-be a positive bigint. Stable target samples with a different last value or
+bounds. Increment is a nonzero signed int64 independent of the sequence value
+type (a smallint sequence can have increment 100,000); cache is a positive
+int64. Stable target samples with a different last value or
 `is_called` still refuse source/target agreement.
 
 Every result is one newline-delimited JSON object with exactly `category` and
@@ -429,7 +509,7 @@ null runtime/fence/artifact/acceptance gates; neutral CLI/private create-only
 custody and activation refusal before local access. No actual PG process,
 cluster or provider call is made.
 
-The 47 synthetic tests retain all 34 earlier test cases, including mutation tests
+The 70 synthetic tests retain all 62 earlier test methods, including mutation tests
 in both directions for independent returned contracts, exact retention/freshness
 consistency, dimensional resource limits, same-count/different-content refusal,
 direct sequence samples and explicit zero census, bounded semantic tagged
@@ -438,7 +518,17 @@ Additional regressions cover native JSON preservation, complete/coherent
 catalog references, unsupported relation/object refusal, native sequence
 numeric/range limits and stable target sequence differences, feasible content
 statistics, full target role authority/membership checks and cleanup root/census
-alignment. This implementation starts no database and executes no proposed SQL.
+alignment. New cases cover database/column locale and ACL changes, persistence
+and storage limits, native expression/INCLUDE index and FK references,
+identity/generated/fixed sequence coherence, valid smallint/int64 increments,
+new unsupported census categories and independent source-side builtin and
+custom role mutations. The earlier incorrect sequence increment restriction
+was updated to the specified independent int64 rule. This implementation
+starts no database and executes no proposed SQL.
+Bounded in-memory guard mutations were also checked: removing the source
+builtin authority guard triggers five independent assertion failures; removing
+the pinned source custom role projection guard triggers two. These checks use
+only synthetic records and establish test sensitivity, not source qualification.
 An earlier separate review used an ephemeral cached PG18.6 synthetic container
 with no network or existing source connection. That review does not qualify
 this final revised SQL, the current actual proposal or any recovery outcome.
@@ -450,4 +540,8 @@ Primary algorithm references:
 [PostgreSQL 18 built-in binary hashes](https://www.postgresql.org/docs/18/functions-binarystring.html),
 [PostgreSQL 18 psql generated-query execution](https://www.postgresql.org/docs/18/app-psql.html),
 [PostgreSQL 18 row JSON construction](https://www.postgresql.org/docs/18/functions-json.html),
-[PostgreSQL 18 role memberships](https://www.postgresql.org/docs/18/catalog-pg-auth-members.html).
+[PostgreSQL 18 role memberships](https://www.postgresql.org/docs/18/catalog-pg-auth-members.html),
+[PostgreSQL 18 database locale metadata](https://www.postgresql.org/docs/18/catalog-pg-database.html),
+[PostgreSQL 18 column metadata](https://www.postgresql.org/docs/18/catalog-pg-attribute.html),
+[PostgreSQL 18 native index references](https://www.postgresql.org/docs/18/catalog-pg-index.html),
+[PostgreSQL 18 native constraint references](https://www.postgresql.org/docs/18/catalog-pg-constraint.html).

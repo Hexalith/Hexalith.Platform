@@ -127,6 +127,50 @@ def restore_binding(value):
     }
 
 
+def database_semantics():
+    return {'encoding': 'UTF8', 'localeProvider': 'c', 'collate': 'C', 'ctype': 'C', 'locale': None,
+            'icuRules': None, 'collationVersion': None, 'actualCollationVersion': None, 'tablespace': 'pg_default'}
+
+
+def default_collation():
+    return {'schema': 'pg_catalog', 'name': 'default', 'provider': 'd', 'encoding': None, 'collate': None,
+            'ctype': None, 'locale': None, 'icuRules': None, 'version': None, 'actualVersion': None,
+            'deterministic': True}
+
+
+def native_relation(relation, kind='r', owner='synthetic_admin', acl=None):
+    return {**relation, 'kind': kind, 'owner': owner, 'acl': acl, 'persistence': 'p',
+            'accessMethod': {'r': 'heap', 'i': 'btree', 'S': None}[kind],
+            'options': None, 'toastOptions': None, 'tablespace': None}
+
+
+def native_column(relation, position, column, typ='bigint', **changes):
+    return {**relation, 'position': position, 'column': column, 'type': typ, 'notNull': False,
+            'identity': '', 'generated': '', 'default': None, 'acl': None,
+            'collation': default_collation() if typ == 'text' else None, 'storage': 'x' if typ == 'text' else 'p',
+            'compression': '', 'statisticsTarget': None, 'options': None, 'dimensions': 0, **changes}
+
+
+def slot(ordinal, position, column, index=False, expression=False, included=False):
+    result = {'ordinal': ordinal, 'position': position, 'column': column, 'expression': expression}
+    if index:
+        result['included'] = included
+    return result
+
+
+def dependency_reference(table, position, column):
+    return {**table, 'position': position, 'column': column}
+
+
+def native_constraint(table, name, kind, columns, definition, dependencies=None, **changes):
+    dependencies = [] if dependencies is None else dependencies
+    return {**table, 'constraint': name, 'validated': True, 'definition': definition, 'kind': kind,
+            'enforced': True, 'deferrable': False, 'initiallyDeferred': False, 'period': False,
+            'columnCount': len(columns), 'columns': columns, 'referenceColumnCount': 0, 'referencedColumns': [],
+            'referencedTable': None, 'supportingIndex': None, 'dependencyReferences': dependencies,
+            'dependencyReferenceCount': len(dependencies), **changes}
+
+
 def canary_records(value, target=False, sequences=True):
     """Synthetic structured observations, with explicit empty categories."""
     s = value['source']
@@ -143,14 +187,12 @@ def canary_records(value, target=False, sequences=True):
             role.update(createDb=True, createRole=True)
         if target and role['name'] != 'postgres' and not role['name'].startswith('pg_'):
             role.update({flag: False for flag in a.ROLE_FLAGS})
-    relations = [{**table, 'kind': 'r', 'owner': s['user'], 'acl': ['a|b\nc=d/u']} for table in tables]
-    columns = [{**table, 'position': position, 'column': column, 'type': 'text' if position == 1 else 'bigint',
-                'notNull': False, 'identity': '', 'generated': '', 'default': None}
+    relations = [native_relation(table, owner=s['user'], acl=['a|b\nc=d/u']) for table in tables]
+    columns = [native_column(table, position, column, 'text' if position == 1 else 'bigint')
                for table in tables for position, column in ((1, 'body|line\nname'), (2, 'id'))]
     if sequences:
-        relations.append({**census[0], 'kind': 'S', 'owner': s['user'], 'acl': None})
-        columns.extend({**census[0], 'position': position, 'column': column, 'type': typ,
-                        'notNull': True, 'identity': '', 'generated': '', 'default': None}
+        relations.append(native_relation(census[0], 'S', s['user']))
+        columns.extend(native_column(census[0], position, column, typ, notNull=True)
                        for position, column, typ in ((1, 'last_value', 'bigint'), (2, 'log_cnt', 'bigint'),
                                                      (3, 'is_called', 'boolean')))
     return {
@@ -158,6 +200,7 @@ def canary_records(value, target=False, sequences=True):
                             'serverVersionNum': s['serverVersionNum']},
         'tableCensus': tables,
         'schema': {
+            'database': database_semantics(),
             'namespaces': [{'schema': name, 'owner': s['user'], 'acl': None} for name in s['schemas']],
             'relations': relations,
             'columns': columns,
@@ -165,8 +208,9 @@ def canary_records(value, target=False, sequences=True):
         'dataCounts': [{**table, 'rows': 2} for table in tables],
         'dataContents': [{**table, 'rows': 2, 'sha256': H, 'profileAccepted': True,
                           'rowBytesMaximum': 64, 'contentBytes': 128} for table in tables],
-        'constraints': [{**tables[0], 'constraint': 'check|line\nname', 'validated': True,
-                         'definition': "CHECK (body <> 'first|second\nthird')"}],
+        'constraints': [native_constraint(tables[0], 'check|line\nname', 'c',
+            [slot(1, 1, 'body|line\nname')], "CHECK (body <> 'first|second\nthird')",
+            [dependency_reference(tables[0], 1, 'body|line\nname')])],
         'indexes': [],
         'sequences': {'definitions': [{**census[0], 'owner': s['user'], 'type': 'bigint', 'start': '1',
                                        'minimum': '1', 'maximum': '9223372036854775807', 'increment': '1',
@@ -187,14 +231,49 @@ def canary_bytes(records):
     return b''.join(a.canonical({'category': key, 'payload': value}) + b'\n' for key, value in records.items())
 
 
-def add_index(records):
-    table = records['tableCensus'][0]
-    index = {**table, 'name': 'synthetic_access_index'}
-    records['schema']['relations'].append({**index, 'kind': 'i', 'owner': 'synthetic_admin', 'acl': None})
-    records['schema']['columns'].append({**index, 'position': 1, 'column': 'id', 'type': 'bigint',
-        'notNull': False, 'identity': '', 'generated': '', 'default': None})
+def add_index(records, table_index=0, index_name='synthetic_access_index'):
+    table = records['tableCensus'][table_index]
+    index = {**table, 'name': index_name}
+    records['schema']['relations'].append(native_relation(index, 'i'))
+    records['schema']['columns'].append(native_column(index, 1, 'id'))
     records['indexes'].append({**table, 'index': index['name'],
-        'definition': 'CREATE INDEX synthetic_access_index ON synthetic_telemetry.access_events USING btree (id)'})
+        'definition': 'CREATE INDEX ' + index_name + ' ON synthetic_telemetry.' + table['name'] + ' USING btree (id)',
+        'columnCount': 1, 'keyColumnCount': 1, 'columns': [slot(1, 2, 'id', True)],
+        'dependencyReferences': [dependency_reference(table, 2, 'id')], 'dependencyReferenceCount': 1,
+        'expressions': None, 'predicate': None})
+    return records
+
+
+def add_expression_index(records):
+    add_index(records)
+    index = records['indexes'][-1]
+    table = records['tableCensus'][0]
+    index.update(columns=[slot(1, 0, None, True, expression=True)], expressions='lower(body)',
+                 predicate='body IS NOT NULL', dependencyReferences=[dependency_reference(table, 1, 'body|line\nname')])
+    index_column = records['schema']['columns'][-1]
+    index_column.update(column='lower', type='text', storage='x', collation=default_collation())
+    return records
+
+
+def add_foreign_key(records):
+    add_index(records, 1, 'synthetic_parent_unique')
+    table, referenced = records['tableCensus']
+    supporting = {'schema': referenced['schema'], 'name': 'synthetic_parent_unique'}
+    records['constraints'].append(native_constraint(referenced, 'parent_unique', 'u',
+        [slot(1, 2, 'id')], 'UNIQUE (id)', [dependency_reference(referenced, 2, 'id')], supportingIndex=supporting))
+    records['constraints'].append(native_constraint(table, 'child_foreign_key', 'f', [slot(1, 2, 'id')],
+        'FOREIGN KEY (id) REFERENCES synthetic_telemetry.access_rollups(id)',
+        [dependency_reference(table, 2, 'id'), dependency_reference(referenced, 2, 'id')],
+        referenceColumnCount=1, referencedColumns=[slot(1, 2, 'id')], referencedTable=referenced, supportingIndex=supporting))
+    return records
+
+
+def with_identity(records):
+    table = records['tableCensus'][0]
+    column = next(row for row in records['schema']['columns']
+                  if row['schema'] == table['schema'] and row['name'] == table['name'] and row['column'] == 'id')
+    column.update(identity='a', notNull=True, default=None)
+    records['sequences']['ownership'][0]['dependency'] = 'i'
     return records
 
 
@@ -966,7 +1045,7 @@ class PlannerTests(unittest.TestCase):
             definition.update(type=typ, minimum=minimum, maximum=maximum)
             a.parse_canaries(value, canary_bytes(records))
             for field, bad in (('minimum', str(int(minimum) - 1)), ('maximum', str(int(maximum) + 1)),
-                               ('start', str(int(maximum) + 1)), ('increment', str(int(maximum) + 1))):
+                               ('start', str(int(maximum) + 1))):
                 altered = deepcopy(records)
                 altered['sequences']['definitions'][0][field] = bad
                 with self.subTest(typ=typ, field=field), self.assertRaises(a.Refusal):
@@ -1098,6 +1177,421 @@ class PlannerTests(unittest.TestCase):
         for row in cleanup['cleanupCensusTemplate']:
             self.assertIsNone(row['uid'])
             self.assertIsNone(row['resourceVersion'])
+
+    def test_portable_database_semantics_are_required_and_compared_without_current_fact_invention(self):
+        value = fixture()
+        source = canary_records(value)
+        for key, change in (
+            ('encoding', {'encoding': 'LATIN1'}), ('collate', {'collate': 'POSIX'}),
+            ('ctype', {'ctype': 'POSIX'}), ('locale', {'localeProvider': 'b', 'locale': 'C.UTF-8'}),
+            ('icuRules', {'localeProvider': 'i', 'locale': 'und', 'icuRules': '&a < b'}),
+        ):
+            target = canary_records(value, target=True)
+            target['schema']['database'].update(change)
+            a.parse_canaries(value, canary_bytes(target))
+            with self.subTest(key=key), self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+        target = canary_records(value, target=True)
+        target['schema']['database'].update(collationVersion='version-2', actualCollationVersion='version-2')
+        for column in target['schema']['columns']:
+            if column['collation'] is not None:
+                column['collation']['actualVersion'] = 'version-2'
+        a.parse_canaries(value, canary_bytes(target))
+        with self.assertRaises(a.Refusal):
+            a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+        for key in database_semantics():
+            changed = deepcopy(source)
+            del changed['schema']['database'][key]
+            with self.subTest(missing=key), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(changed))
+        self.assertNotIn('localeProvider', value['source'])
+
+    def test_column_acl_collation_and_storage_semantics_are_compared_as_structured_metadata(self):
+        value = fixture()
+        source = canary_records(value)
+        for change in (
+            {'acl': ['synthetic_admin=r/postgres']}, {'acl': []}, {'storage': 'm'}, {'compression': 'p'},
+            {'statisticsTarget': 42},
+            {'collation': {**default_collation(), 'name': 'C', 'provider': 'c', 'collate': 'C', 'ctype': 'C'}},
+        ):
+            target = canary_records(value, target=True)
+            target['schema']['columns'][0].update(change)
+            a.parse_canaries(value, canary_bytes(target))
+            with self.subTest(change=change), self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+        # The portable identity alone is insufficient: provider semantics are
+        # independently compared, including nondeterminism and version metadata.
+        base = {**default_collation(), 'name': 'C', 'provider': 'c', 'collate': 'C', 'ctype': 'C'}
+        source['schema']['columns'][0]['collation'] = deepcopy(base)
+        for change in ({'encoding': 'UTF8'}, {'collate': 'POSIX'}, {'ctype': 'POSIX'},
+                       {'version': 'version-1', 'actualVersion': 'version-1'}, {'deterministic': False},
+                       {'provider': 'i', 'locale': 'und', 'collate': None, 'ctype': None, 'icuRules': '&a < b'}):
+            target = canary_records(value, target=True)
+            target['schema']['columns'][0]['collation'] = {**base, **change}
+            a.parse_canaries(value, canary_bytes(target))
+            with self.subTest(change=change), self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+
+    def test_locale_and_column_metadata_missing_or_incoherent_values_refuse(self):
+        value = fixture()
+        for change in (
+            lambda r: r['schema']['columns'][0].pop('acl'),
+            lambda r: r['schema']['columns'][0].pop('collation'),
+            lambda r: r['schema']['columns'][0].update(collation=None),
+            lambda r: r['schema']['columns'][0]['collation'].update(actualVersion='drift'),
+            lambda r: r['schema']['database'].update(localeProvider='unsupported'),
+            lambda r: r['schema']['database'].update(collationVersion='old', actualCollationVersion='new'),
+            lambda r: r['schema']['database'].update(locale='unsupported-libc-locale'),
+            lambda r: r['schema']['columns'][0].update(storage='invalid'),
+            lambda r: r['schema']['columns'][0].update(compression='invalid'),
+            lambda r: r['schema']['columns'][0].update(statisticsTarget=True),
+            lambda r: r['schema']['columns'][0].update(statisticsTarget=10001),
+            lambda r: r['schema']['columns'][0].update(options=['unsupported=value']),
+        ):
+            records = canary_records(value)
+            change(records)
+            with self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+
+    def test_relation_logged_default_storage_profile_refuses_unlogged_temp_and_unsupported_options(self):
+        value = fixture()
+        for kind in ('r', 'i', 'S'):
+            for persistence in ('u', 't', ''):
+                records = add_index(canary_records(value))
+                relation = next(row for row in records['schema']['relations'] if row['kind'] == kind)
+                relation['persistence'] = persistence
+                with self.subTest(kind=kind, persistence=persistence), self.assertRaises(a.Refusal):
+                    a.parse_canaries(value, canary_bytes(records))
+        for change in ({'accessMethod': 'custom'}, {'accessMethod': None}, {'options': ['fillfactor=80']},
+                       {'toastOptions': ['autovacuum_enabled=false']}, {'tablespace': 'custom_source_space'}):
+            records = canary_records(value)
+            records['schema']['relations'][0].update(change)
+            with self.subTest(change=change), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+        records = canary_records(value)
+        records['schema']['database']['tablespace'] = 'custom_database_space'
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_extended_statistics_labels_tablespaces_and_settings_census_refuses_without_values(self):
+        value = fixture()
+        for kind in ('extended-statistics', 'security-label', 'shared-security-label',
+                     'relation-tablespace', 'database-tablespace', 'database-role-settings'):
+            records = canary_records(value)
+            records['unsupportedObjects']['otherObjects'] = [{'kind': kind, 'schema': None, 'name': 'synthetic'}]
+            with self.subTest(kind=kind), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+        sql = a.render_proposal(value)['canaryContract']['sqlByCategory']['unsupportedObjects']
+        for catalog in ('pg_statistic_ext', 'pg_tablespace', 'pg_seclabel', 'pg_shseclabel', 'pg_db_role_setting'):
+            self.assertIn(catalog, sql)
+        for secret_or_path in ('setconfig', 's.label', 'pg_tablespace_location', 'subconninfo'):
+            self.assertNotIn(secret_or_path, sql)
+
+    def test_native_index_expression_and_include_slots_have_portable_exact_references(self):
+        value = fixture()
+        source, target = add_expression_index(canary_records(value)), add_expression_index(canary_records(value, target=True))
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        # A constant expression legitimately has no column dependency.
+        for records in (source, target):
+            records['indexes'][0].update(expressions='1', predicate=None, dependencyReferences=[], dependencyReferenceCount=0)
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        source, target = add_index(canary_records(value)), add_index(canary_records(value, target=True))
+        for records in (source, target):
+            index = records['indexes'][0]
+            index['columnCount'] = 2
+            index['columns'].append(slot(2, 1, 'body|line\nname', True, included=True))
+            index['dependencyReferences'].append(dependency_reference(records['tableCensus'][0], 1, 'body|line\nname'))
+            index['dependencyReferenceCount'] = 2
+            records['schema']['columns'].append(native_column({'schema': index['schema'], 'name': index['index']},
+                                                             2, 'body|line\nname', 'text'))
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+
+    def test_index_reference_missing_duplicate_orphan_and_expression_contradictions_refuse(self):
+        value = fixture()
+        for change in (
+            lambda r: r['indexes'][0]['columns'].clear(),
+            lambda r: r['indexes'][0]['columns'].append(deepcopy(r['indexes'][0]['columns'][0])),
+            lambda r: r['indexes'][0]['columns'][0].update(position=99),
+            lambda r: r['indexes'][0]['columns'][0].update(column='missing'),
+            lambda r: r['indexes'][0]['columns'][0].update(included=True),
+            lambda r: r['indexes'][0]['columns'][0].update(expression=True),
+            lambda r: r['indexes'][0]['dependencyReferences'].clear(),
+            lambda r: r['indexes'][0]['dependencyReferences'][0].update(position=99),
+            lambda r: r['indexes'][0]['dependencyReferences'][0].update(name=r['tableCensus'][1]['name']),
+            lambda r: r['indexes'][0]['dependencyReferences'].append(deepcopy(r['indexes'][0]['dependencyReferences'][0])),
+            lambda r: r['indexes'][0].update(keyColumnCount=2),
+            lambda r: r['indexes'][0].update(expressions='unexpected-expression'),
+            lambda r: r['indexes'][0].update(predicate=''),
+        ):
+            records = add_index(canary_records(value))
+            change(records)
+            with self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+        records = add_expression_index(canary_records(value))
+        records['indexes'][0]['expressions'] = None
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_foreign_key_referenced_table_columns_and_supporting_index_are_cross_checked(self):
+        value = fixture()
+        source, target = add_foreign_key(canary_records(value)), add_foreign_key(canary_records(value, target=True))
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        for change in (
+            lambda c: c.update(referencedTable=None), lambda c: c['referencedTable'].update(name='missing'),
+            lambda c: c['referencedColumns'].clear(), lambda c: c['referencedColumns'][0].update(column='missing'),
+            lambda c: c['referencedColumns'][0].update(position=1), lambda c: c['columns'][0].update(position=99),
+            lambda c: c['columns'].clear(), lambda c: c.update(supportingIndex=None),
+            lambda c: c['supportingIndex'].update(name='missing'), lambda c: c.update(referenceColumnCount=0),
+            lambda c: c['dependencyReferences'].pop(), lambda c: c['dependencyReferences'][0].update(position=99),
+            lambda c: c['dependencyReferences'].append(deepcopy(c['dependencyReferences'][0])),
+        ):
+            altered = deepcopy(target)
+            change(altered['constraints'][-1])
+            with self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(altered))
+        # A plain check constraint also cannot lose its native column census.
+        records = canary_records(value)
+        records['constraints'][0]['columns'].clear()
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_identity_columns_require_not_null_and_exactly_one_internally_owned_sequence(self):
+        value = fixture()
+        source, target = with_identity(canary_records(value)), with_identity(canary_records(value, target=True))
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        identity = lambda records: next(row for row in records['schema']['columns'] if row['identity'])
+        for change in (
+            lambda r: identity(r).update(notNull=False), lambda r: identity(r).update(default='1'),
+            lambda r: identity(r).update(generated='s', default='1'),
+            lambda r: r['sequences']['ownership'].clear(),
+            lambda r: r['sequences']['ownership'][0].update(dependency='a'),
+            lambda r: r['sequences']['ownership'][0].update(column='body|line\nname'),
+            lambda r: identity(r).update(identity=''),
+            lambda r: identity(r).update(type='integer'),
+        ):
+            records = deepcopy(source)
+            change(records)
+            with self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+        records = deepcopy(source)
+        # A distinct, fully described second sequence cannot also own one identity.
+        for category in ('sequenceCensus', 'sequenceStateBefore', 'sequenceStateAfter'):
+            records[category].append({**records[category][0], 'name': 'second_sequence'})
+        for key in ('definitions', 'ownership'):
+            records['sequences'][key].append({**records['sequences'][key][0], 'name': 'second_sequence'})
+        sequence = source['sequenceCensus'][0]
+        records['schema']['relations'].append(native_relation({'schema': sequence['schema'], 'name': 'second_sequence'}, 'S'))
+        records['schema']['columns'].extend({**column, 'name': 'second_sequence'}
+            for column in source['schema']['columns'] if column['name'] == sequence['name'])
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_generated_columns_require_expression_and_remain_distinct_from_identity_and_serial(self):
+        value = fixture()
+        source, target = canary_records(value), canary_records(value, target=True)
+        for records in (source, target):
+            records['schema']['columns'][0].update(generated='s', default='upper(body)')
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        for expression in (None, '', '   '):
+            changed = deepcopy(source)
+            changed['schema']['columns'][0]['default'] = expression
+            with self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(changed))
+        records = with_identity(canary_records(value))
+        col = next(row for row in records['schema']['columns'] if row['identity'])
+        col.update(generated='v', default='1')
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+        records = canary_records(value)
+        records['schema']['columns'][1].update(generated='s', default='1')
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_native_sequence_relation_has_exact_three_columns_with_fixed_properties(self):
+        value = fixture()
+        for change in (
+            lambda rows: rows.pop(1), lambda rows: rows[1].update(column='wrong'),
+            lambda rows: rows[1].update(type='integer'), lambda rows: rows[2].update(notNull=False),
+            lambda rows: rows[1].update(position=4), lambda rows: rows[0].update(identity='a'),
+            lambda rows: rows[1].update(generated='s', default='1'), lambda rows: rows[2].update(default='false'),
+            lambda rows: rows.append({**rows[0], 'position': 4, 'column': 'extra'}),
+        ):
+            records = canary_records(value)
+            name = records['sequenceCensus'][0]['name']
+            columns = [row for row in records['schema']['columns'] if row['name'] == name]
+            change(columns)
+            records['schema']['columns'] = [row for row in records['schema']['columns'] if row['name'] != name] + columns
+            with self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+
+    def test_smallint_sequence_increment_is_independent_nonzero_int64(self):
+        value = fixture()
+        source, target = canary_records(value), canary_records(value, target=True)
+        for records in (source, target):
+            records['sequences']['definitions'][0].update(type='smallint', minimum='-32768', maximum='32767', increment='100000')
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        for increment in ('0', '9223372036854775808', '-9223372036854775809'):
+            changed = deepcopy(source)
+            changed['sequences']['definitions'][0]['increment'] = increment
+            with self.subTest(increment=increment), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(changed))
+
+    def test_source_builtin_authority_guard_rejects_independent_runtime_flag_drift(self):
+        value = fixture()
+        target = canary_records(value, target=True)
+        for flag, bad in (('createDb', True), ('createRole', True), ('replication', True), ('bypassRls', True), ('inherit', False)):
+            source = canary_records(value)
+            source['roleIsolation']['roles'][2][flag] = bad
+            a.parse_canaries(value, canary_bytes(source))
+            with self.subTest(flag=flag), self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+
+    def test_source_custom_role_login_and_superuser_projection_are_independently_pinned(self):
+        value = fixture()
+        target = canary_records(value, target=True)
+        for flag, bad in (('canLogin', False), ('superuser', True)):
+            source = canary_records(value)
+            source['roleIsolation']['roles'][1][flag] = bad
+            a.parse_canaries(value, canary_bytes(source))
+            with self.subTest(flag=flag), self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+
+    def test_new_catalog_sql_observes_portable_native_metadata_without_oids_secrets_or_execution(self):
+        sql = a.render_proposal(fixture())['canaryContract']['sqlByCategory']
+        for field in ('datlocprovider', 'datcollate', 'datctype', 'datlocale', 'daticurules', 'datcollversion',
+                      'pg_database_collation_actual_version', 'a.attacl', 'a.attcollation', 'collprovider', 'colllocale',
+                      'pg_collation_actual_version', 'attstorage', 'attcompression', 'attstattarget', 'relpersistence', 'reloptions'):
+            self.assertIn(field, sql['schema'])
+        for field in ('pg_index', 'indkey', 'indnatts', 'indnkeyatts', 'indexprs', 'indpred', 'pg_depend', 'WITH ORDINALITY'):
+            self.assertIn(field, sql['indexes'])
+        for field in ('conkey', 'confkey', 'confrelid', 'conindid', 'pg_depend', 'referencedColumns', 'dependencyReferences'):
+            self.assertIn(field, sql['constraints'])
+        for forbidden in ('rolpassword', 'pg_authid', 'pg_tablespace_location', 'subconninfo', 'setconfig', 'pg_get_functiondef'):
+            self.assertNotIn(forbidden, '\n'.join(sql.values()))
+
+    def test_unsupported_native_index_and_trigger_states_are_explicit_refusals(self):
+        value = fixture()
+        sql = a.render_proposal(value)['canaryContract']['sqlByCategory']['unsupportedObjects']
+        for kind, native_condition in (
+            ('unusable-index', 'NOT i.indisvalid OR NOT i.indisready OR NOT i.indislive'),
+            ('nondefault-replica-identity', "c.relreplident <> 'd'"),
+            ('replica-identity-index', 'i.indisreplident'),
+            ('cluster-selected-index', 'i.indisclustered'),
+            ('nonstandard-internal-constraint-trigger', "t.tgisinternal AND t.tgconstraint<>0 AND t.tgenabled <> 'O'"),
+            ('operator-class-key-storage', 'op.opckeytype<>0'),
+        ):
+            self.assertIn(kind, sql)
+            self.assertIn(native_condition, sql)
+            records = canary_records(value)
+            records['unsupportedObjects']['otherObjects'] = [{'kind': kind, 'schema': 'synthetic_telemetry', 'name': 'native-object'}]
+            with self.subTest(kind=kind), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+
+    def test_check_slots_match_column_dependency_census_including_zero_column_checks(self):
+        value = fixture()
+        for change in (
+            lambda row: row.update(columns=[], columnCount=0),
+            lambda row: row.update(dependencyReferences=[], dependencyReferenceCount=0),
+            lambda row: row.update(columns=row['columns'] + [{**row['columns'][0], 'ordinal': 2}], columnCount=2),
+        ):
+            records = canary_records(value)
+            change(records['constraints'][0])
+            # Identical malformed transcripts must refuse as well.
+            with self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(records), canary_bytes(records))
+        source, target = canary_records(value), canary_records(value, target=True)
+        for records in (source, target):
+            records['constraints'][0].update(columns=[], columnCount=0, dependencyReferences=[], dependencyReferenceCount=0,
+                                             definition='CHECK (true)')
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+
+    def test_direct_index_column_base_type_matches_and_typmods_can_differ(self):
+        value = fixture()
+        records = add_index(canary_records(value))
+        records['schema']['columns'][-1]['type'] = 'boolean'
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+        source, target = add_index(canary_records(value)), add_index(canary_records(value, target=True))
+        for records in (source, target):
+            table = records['tableCensus'][0]
+            column = next(row for row in records['schema']['columns'] if row['name'] == table['name'] and row['column'] == 'id')
+            column.update(type='character varying(24)', collation=default_collation(), storage='x')
+            records['schema']['columns'][-1].update(type='character varying', collation=default_collation(), storage='x')
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+
+    def test_index_columns_cannot_declare_identity_or_generated_properties(self):
+        value = fixture()
+        for changes in ({'identity': 'a', 'notNull': True}, {'generated': 's', 'default': '1'}):
+            records = add_index(canary_records(value))
+            records['schema']['columns'][-1].update(changes)
+            with self.subTest(changes=changes), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+
+    def test_builtin_scalar_and_array_collation_presence_and_catalog_scope(self):
+        value = fixture()
+        for typ in ('text', 'text[]', 'name', 'name[]', 'character varying(24)[]', 'character(8)[]'):
+            records = canary_records(value)
+            records['schema']['columns'][0].update(type=typ, collation=default_collation())
+            a.parse_canaries(value, canary_bytes(records))
+            records['schema']['columns'][0]['collation'] = None
+            with self.subTest(missing=typ), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+        for typ in ('bigint', 'bigint[]', 'boolean', 'uuid', 'numeric(10,2)', 'jsonb[]'):
+            records = canary_records(value)
+            records['schema']['columns'][0].update(type=typ, collation=None)
+            a.parse_canaries(value, canary_bytes(records))
+            records['schema']['columns'][0]['collation'] = default_collation()
+            with self.subTest(extra=typ), self.assertRaises(a.Refusal):
+                a.parse_canaries(value, canary_bytes(records))
+        records = canary_records(value)
+        records['schema']['columns'][0]['collation'] = {
+            **default_collation(), 'schema': 'synthetic_telemetry', 'name': 'custom_c', 'provider': 'c', 'collate': 'C', 'ctype': 'C'}
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_constraint_supporting_index_must_belong_to_exact_existing_table(self):
+        value = fixture()
+        records = add_index(add_foreign_key(canary_records(value)), 0, 'wrong_table_support')
+        # The existing wrong-table index has the same key position and base
+        # type, so only the native table-ownership guard distinguishes it.
+        records['constraints'][-1]['supportingIndex'] = {'schema': records['tableCensus'][0]['schema'], 'name': 'wrong_table_support'}
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_constraint_deferred_flag_requires_deferrable_with_valid_positive_modes(self):
+        value = fixture()
+        for initially_deferred in (False, True):
+            source, target = add_foreign_key(canary_records(value)), add_foreign_key(canary_records(value, target=True))
+            for records in (source, target):
+                records['constraints'][-1].update(deferrable=True, initiallyDeferred=initially_deferred)
+            self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        records = add_foreign_key(canary_records(value))
+        records['constraints'][-1].update(deferrable=False, initiallyDeferred=True)
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(records))
+
+    def test_native_not_null_constraint_requires_one_not_null_column(self):
+        value = fixture()
+        source, target = canary_records(value), canary_records(value, target=True)
+        for records in (source, target):
+            table = records['tableCensus'][0]
+            next(row for row in records['schema']['columns'] if row['name'] == table['name'] and row['column'] == 'id')['notNull'] = True
+            records['constraints'].append(native_constraint(table, 'native_not_null', 'n', [slot(1, 2, 'id')], 'NOT NULL id',
+                                                          [dependency_reference(table, 2, 'id')]))
+        self.assertTrue(a.compare_canaries(value, canary_bytes(source), canary_bytes(target))['consistent'])
+        changed = deepcopy(source)
+        changed['schema']['columns'][1]['notNull'] = False
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(changed))
+        changed = deepcopy(source)
+        constraint = changed['constraints'][-1]
+        constraint['columns'].append(slot(2, 1, 'body|line\nname'))
+        constraint['columnCount'] = 2
+        constraint['dependencyReferences'].append(dependency_reference(changed['tableCensus'][0], 1, 'body|line\nname'))
+        constraint['dependencyReferenceCount'] = 2
+        changed['schema']['columns'][0]['notNull'] = True
+        with self.assertRaises(a.Refusal):
+            a.parse_canaries(value, canary_bytes(changed))
 
 
 class CliTests(unittest.TestCase):

@@ -5,9 +5,10 @@ epic: 4
 story: 27
 created: '2026-10-23'
 status: 'in-progress'
+preparation_review_status: 'verified-offline-only'
 baseline_commit: '1516a6be0e3b9500cbcaeb14da1c0101f88caafa'
 route: 'dispatch'
-review_loop_iteration: 2
+review_loop_iteration: 3
 context: []
 ---
 
@@ -48,11 +49,11 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] New planner -- closed JSON schema with source cluster/ns/StatefulSet/pod/container/image/PVC/PV/tools/database/user/tables/extensions/roles, paused telemetry worker with recorded replicas, proposed target namespace and exact limits. Use actual private metadata to design it; synthetic values only in tests. Parent constructs the private actual input. CLI accepts absolute 0600 exact-hash JSON, emits neutral summary and optional create-only private plan, no backend/subprocess/socket/credential loader. Validate PostgreSQL identifier and snapshot-ID values safely; no shell interpolation or connection-string override.
-- [ ] New planner -- generate explicit peer-only `env -i` psql/pg_dump/pg_restore argv using exact absolute binaries, Unix socket, user/database, PGPASSFILE/PGSERVICEFILE=/dev/null and no prompt. Future capture holds one REPEATABLE READ READ ONLY exported-snapshot transaction while same-snapshot source canaries and pg_dump custom archive complete. Dump snapshot ID is null in the proposal; provide a separate pure constructor validating an actual runtime snapshot binding before returning executable argv. No --clean/--create/source overwrite. Restore stdin must be a verified/decrypted exact immutable artifact, with separate checks for new target UID/image/PVC and empty schema. Two known source tables need schema/data-count/sequence/constraint/extension/ACL canaries; a whole-DB dump includes both schemas. Source roles/ACLs must be recorded without passwords; the target runtime role is proposed NOLOGIN to preserve isolation rather than inherit source activation authority, with that deliberate difference disclosed.
-- [ ] New planner -- propose isolated PG18 resources (new namespace, default-deny NetworkPolicy, new Delete-class PVC, nonroot StatefulSet, no Service/Ingress, no host/source mounts, no service-account token). Target bootstrap credentials are fresh run-owned material, null until supplied; no source password copy. Exact image is the source digest; UID/fsGroup/storage/startup assumptions are proposed inputs, not qualified facts. Plan guarded pause/resume of only the source telemetry consumer (observed prior replicas 1), preserve the already-zero clock, and integrate with parent MCP/paired-store resume prerequisites. Clean drain, paired restore and PG restore must all pass before source resume. Cleanup binds future owned UIDs/RVs/paths and creation fence; unknowns remain null. Transfer uses approved memories/ prefix and independent validator exact versions; no writer upload/abort implementation is claimed.
-- [ ] Tests -- cover all matrix rows plus command injection/connection string/ref alias, wrong image/tool hash, source-target storage overlap, missing required tables, snapshot binding/no snapshot execution, target missing UID/empty-schema gate, safe restore flags, no password env/file reads, patch preconditions/prior counts, null fence/artifact/run outcomes and CLI refusal before live access. No actual PG process/cluster/provider call.
-- [ ] Docs -- distinguish offline construction/tests, current read-only peer metadata success and all actual snapshot/dump/stdin/restore/capacity/fence/signature/acceptance qualifications. Full orchestration and proof-consumer updates remain explicitly required before an operational bundle; never imply this planner implements those drivers.
+- [x] New planner -- closed JSON schema with source cluster/ns/StatefulSet/pod/container/image/PVC/PV/tools/database/user/tables/extensions/roles, paused telemetry worker with recorded replicas, proposed target namespace and exact limits. Use actual private metadata to design it; synthetic values only in tests. Parent constructs the private actual input. CLI accepts absolute 0600 exact-hash JSON, emits neutral summary and optional create-only private plan, no backend/subprocess/socket/credential loader. Validate PostgreSQL identifier and snapshot-ID values safely; no shell interpolation or connection-string override.
+- [x] New planner -- generate explicit peer-only `env -i` psql/pg_dump/pg_restore argv using exact absolute binaries, Unix socket, user/database, PGPASSFILE/PGSERVICEFILE=/dev/null and no prompt. Future capture holds one REPEATABLE READ READ ONLY exported-snapshot transaction while same-snapshot source canaries and pg_dump custom archive complete. Dump snapshot ID is null in the proposal; provide a separate pure constructor validating an actual runtime snapshot binding before returning executable argv. No --clean/--create/source overwrite. Restore stdin must be a verified/decrypted exact immutable artifact, with separate checks for new target UID/image/PVC and empty schema. Two known source tables need schema/data-count/sequence/constraint/extension/ACL canaries; a whole-DB dump includes both schemas. Source roles/ACLs must be recorded without passwords; the target runtime role is proposed NOLOGIN to preserve isolation rather than inherit source activation authority, with that deliberate difference disclosed.
+- [x] New planner -- propose isolated PG18 resources (new namespace, default-deny NetworkPolicy, new Delete-class PVC, nonroot StatefulSet, no Service/Ingress, no host/source mounts, no service-account token). Target bootstrap credentials are fresh run-owned material, null until supplied; no source password copy. Exact image is the source digest; UID/fsGroup/storage/startup assumptions are proposed inputs, not qualified facts. Plan guarded pause/resume of only the source telemetry consumer (observed prior replicas 1), preserve the already-zero clock, and integrate with parent MCP/paired-store resume prerequisites. Clean drain, paired restore and PG restore must all pass before source resume. Cleanup binds future owned UIDs/RVs/paths and creation fence; unknowns remain null. Transfer uses approved memories/ prefix and independent validator exact versions; no writer upload/abort implementation is claimed.
+- [x] Tests -- cover all matrix rows plus command injection/connection string/ref alias, wrong image/tool hash, source-target storage overlap, missing required tables, snapshot binding/no snapshot execution, target missing UID/empty-schema gate, safe restore flags, no password env/file reads, patch preconditions/prior counts, null fence/artifact/run outcomes and CLI refusal before live access. No actual PG process/cluster/provider call.
+- [x] Docs -- distinguish offline construction/tests, current read-only peer metadata success and all actual snapshot/dump/stdin/restore/capacity/fence/signature/acceptance qualifications. Full orchestration and proof-consumer updates remain explicitly required before an operational bundle; never imply this planner implements those drivers.
 
 **Acceptance Criteria:**
 - Given the explicit owner scope choice, when the final private bundle is assembled, then telemetry PostgreSQL is included with exact actual inputs/tool hashes and proposed recovery procedures, without broadening current execution authorization.
@@ -130,3 +131,75 @@ This amends only non-frozen implementation contract. No new source reads, databa
 | Verification 2 | medium | Pre-verified mutant replacing set inventory comparison with ordered tuple passes90 tests; add reordered complete-census success regression. |
 
 All fourteen findings are retained. Common PV/fence/order findings are patch corrections to existing demonstrated state and interfaces. Telemetry coverage/profile/authority contract corrections require re-derivation from the exact review-3-source snapshot, outside unchanged frozen intent; no finding is deferred. No real qualification or operational approval follows from this review.
+
+## Review 4 Re-derivation Contract
+
+Restore ONLY the three telemetry source/test/docs files from exact snapshots under `/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/review-4-source/source-telemetry_postgres_adapter.py`, `source-test_telemetry_postgres_adapter.py` and `source-TELEMETRY-POSTGRES.md`. Keep the common source pin c9330eacfe3ad174920d0def0ea1112fd75463dac52556f8ee6d92dfe67662e0 and every existing47 test behavior. Parent owns packet, fixture reruns, actual source input and tracking. Do not run a database, source/provider call or historical executor. Do not edit frozen text, common files or private snapshots.
+
+Complete the bounded catalog comparison coherently:
+- Add portable database semantics to the schema canary: encoding, locale provider, collate/ctype, locale and collation version as PG18 supplies them. Compare these across source and target. This is future runtime metadata; add no invented current values to proposal input. Add per-column ACL and portable resolved collation (schema/name and its provider/locale/collation semantics where applicable), never raw OID equality. Include stable native column storage/compression/statistics metadata if it changes pg_dump schema behavior, so a type/column comparison is explicit about what it covers.
+- Add relation persistence to catalog records and validation. Accept only logged ordinary tables/indexes and native sequence metadata in this limited profile; a source unlogged/temp profile must refuse, not silently alter target durability. Include access method/options where applicable or explicitly refuse nondefault unsupported storage features. Census/refuse custom table/database tablespaces (no physical source paths), security labels, database/role-specific settings and extended statistics as unsupported until supported. Existing unsupportedObjects.otherObjects can contain their identifiers; nonempty still refuses. Never return secrets/conninfo/function bodies.
+- Add structured referenced-column metadata to index and constraint canaries, derived from native pg_index/pg_constraint and expression dependencies as needed. Validate every referenced column/position belongs to its exact observed table, including FK referenced table/columns. Preserve expression-index semantics without parsing SQL, and refuse missing/orphan references. Existing SQL definitions remain compared as portable text; describe the exact reference checks rather than universal SQL validation.
+- Sequence increment is a nonzero int64, independent of its smallint/integer/bigint value type; keep start/min/max/lastValue within the chosen native value bounds and cache positive int64. Add a valid smallint increment100000 regression and int64 overflow/zero refusals.
+- Identity columns require NOT NULL, no generated flag, and exactly one matching internally owned (dependency i) sequence. Every i ownership edge must point to an identity column; serial a ownership remains distinct. Generated columns require a nonempty generation expression. Validate all three native sequence columns exactly by position/name/type/NOT NULL/no identity/generated/default: last_value bigint, log_cnt bigint, is_called boolean. Existing sequence samples remain separately observed/stable/equal.
+- Add source-side builtin authority mutations (createDb/createRole/replication/bypassRls/inherit) and independent source custom canLogin/superuser drift tests. They must fail when the respective source builtin or pinned projection guard is removed.
+- Cover the new structured metadata/profile fields with meaningful positive and negative tests: changed column ACL/collation/DB semantics; unlogged source; missing/duplicate/orphan references; nonempty extended-statistics/security-label/tablespace/settings census; incomplete sequence schema; identity/generated contradictions. All47 earlier cases remain, updating fixture shape where the explicitly revised schema requires it.
+
+KEEP all prior alias isolation, exact immutable retention/readback, content SHA/native-json framing, structured bounded parser, resource/quantity guards, source snapshot consistency, source role pinning, membership isolation, owned-root/census distinction, live CLI refusal and null operational/acceptance fields. Current source facts and owner telemetry scope remain unchanged. These are implementation corrections; only actual later execution can establish the source profile, locale compatibility, captures/restores or cleanup.
+
+### Integrated review 4
+
+| Finding | Verdict | Verified evidence / route |
+| --- | --- | --- |
+| Blind 1 | medium | PG18 accepts smallint sequence increment100000; current range check falsely rejects valid native metadata. Use int64 nonzero increment independently of sequence value type. |
+| Blind 2 | high | Generated column query omits attacl; column-level grants can change with identical canaries. Observe/compare column ACL. |
+| Blind 3 | high | Column query omits resolved collation/database defaults; changed text comparison semantics can pass identical canaries. Observe portable column collation and database collation semantics. |
+| Blind 4 | medium | relkind r admits UNLOGGED changes with identical canaries; observe relation persistence (and bounded native storage profile). |
+| Blind 5 | medium | Unsupported-object query omits pg_statistic_ext; add explicit refusal census for extended statistics. |
+| Blind 6 | medium | Identity flag can lack NOT NULL/internal sequence in matching malformed transcripts; cross-check native identity ownership and required properties. |
+| Blind 7 | medium | Generated flag with missing expression passes; require a nonempty expression. |
+| Blind 8 | medium | Structured index/constraint column references are absent, so malformed missing-column catalogs can pass the documented cross-check; bind structured references. |
+| Blind 9 | medium | Sequence relation schema can omit log_cnt/is_called despite completeness claim; validate the native PG18 fixed column shape. |
+| Verification 1 | medium | Pre-verified removing source builtin-profile guard passes47 tests; mutate all source builtin authority flags. |
+| Verification 2 | medium | Pre-verified removing pinned source role projection check passes47 tests; mutate source custom canLogin/superuser independently. |
+
+Edge-case layer returned no findings. All eleven findings are retained, none deferred. Telemetry catalog contract additions route to bad_spec outside frozen intent; preserve all47 positive cases and exact earlier packets. The two tests-only gaps and numeric/identity/generated/fixed-shape corrections are retained re-derivation requirements. Root's local cached-image SQL fixture v2 passed17 tagged outputs and the16-category parser replay, including changed-digest refusal; it qualifies only those exact earlier synthetic SQL bytes, not the next revision or any actual recovery.
+
+### Integrated review 5
+
+| Finding | Verdict | Verified evidence / route |
+| --- | --- | --- |
+| Blind 1 | high | Index validity/readiness/liveness omitted; add existing unsupported-census refusal for unusable indexes rather than a new payload interface. |
+| Blind 2 | medium | Nondefault table/index replica identity omitted; explicitly exclude it through existing unsupported census. |
+| Blind 3 | high | Internal FK triggers can be disabled while constraint flags remain true; refuse nonstandard internal constraint trigger enable state in existing census. |
+| Blind 4 | low | Persistent CLUSTER selection omitted; direct unsupported-census correction rejects this nondefault profile with no new public surface. |
+| Blind 5 | medium | Matching CHECK slot/dependency arrays can be cleared independently with counts; require set agreement, retaining legitimate zero-column checks. |
+| Blind 6 | medium | Direct bigint index column accepts boolean native type; require supported direct-key base-type coherence and refuse unsupported operator-class physical key storage in existing census. |
+| Blind 7 | medium | Index relation identity flag bypasses table-only owned-sequence guard; restrict identity/generated properties to ordinary table columns. |
+| Blind 8 | medium | Bigint can carry collation; text[]/name[] can omit it. Tighten exact collation presence for the existing supported builtin scalar/array profile. |
+| Blind 9 | medium | User-schema collation contradicts empty unsupported census; restrict referenced collations to supported pg_catalog identities. |
+| Edge 1 | medium | Same collatable-array omission as Blind8; patch existing builtin-family guard. |
+| Edge 2 | medium | Same non-table identity gap as Blind7; patch existing relation-kind guard. |
+| Verification 1 | medium | Pre-verified removing supporting-index owner-table guard passes62 tests; add wrong-table existing-index rejection test. |
+| Verification 2 | medium | Pre-verified removing deferred/deferrable guard passes62 tests; add positive and contradictory native constraint flag cases. |
+| Verification 3 | medium | Pre-verified removing NOT NULL constraint guard passes62 tests; add native n constraint positive/nullable/wrong-column-count cases. |
+
+All fourteen findings are retained. These route to patch: each corrects demonstrated state using existing payload fields or existing unsupportedObjects.otherObjects, with no new public interface. The limited heap/btree/system-collation profile is explicit; no universal PostgreSQL support is inferred. All62 previous tests and exact snapshots/engine evidence remain. No finding is deferred. New SQL bytes require a new local fixture receipt; earlier passes are not reused as qualifications.
+
+## Verified offline checkpoint — 2026-10-23
+
+The five review rounds are triaged above; all verified corrections are implemented and no finding is deferred. Common adapters pass 94 tests and telemetry adapters pass 70, with no skips. The final cached-image, network-disabled synthetic SQL fixture and 16-category parser replay pass, including identity/generated/FK/CHECK/sequence metadata and changed-digest refusal. Earlier SQL passes remain bound to their own bytes; the initial stdin harness failure is retained. These are offline checks, not actual recovery qualifications.
+
+The owner explicitly included telemetry PostgreSQL. Two final bounded GETs resolve all 14 protected source PV local-path/node-UID bindings and all 30 current PV exclusions, matching earlier source identities/claimRefs/resourceVersions and Node incarnations. Total native observation scope is 90 read commands (82 GETs, 8 read-only execs), 3,404,041 response bytes under 4 MiB; provider scope remains 31 GET/HEAD calls. Security/host/custody detail stays private.
+
+The single private revision-4 technical bundle binds exact current code/tool/input bytes, command proposals, expected effects, stop conditions and source-resume/target-cleanup procedures. Its final checksum/verifier results are linked from [the sanitized verification receipt](evidence/epic-4/4-27/20261023t085529z-s427-recovery-command-preparation/verification.json). It remains non-runnable: credential/exact-version readback/signature-scope/native execution drivers, full system/target orchestration and proof-consumer integration are explicitly unimplemented. Actual authority/custody and execution qualifications remain separate closed gates. No operational approval is requested.
+
+Original Story 4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL. No fresh recovery RID/policy, source/provider mutation, capture/quiescence/restore, signing/upload, permission change, retirement, upgrade or deployment occurred. Original frozen intent, checked historical/retirement/procedure bytes, expired attempts and signed originals retain their exact bytes and meaning.
+
+
+Final selected bundle: revision 4, as bound by the sanitized verification receipt.
+The revision 3 checksum packet remains unchanged. Its first verifier refused the
+host's root-owned multicall env hardlink; revision 4 corrects only that runtime
+inventory check, with private/tool single-link checks retained. Actual positive,
+wrong-anchor and fabricated-qualification checks pass. Adapter/input bytes and
+all 164 offline unit results are unchanged. No source/provider action followed.

@@ -1,0 +1,123 @@
+namespace Hexalith.Platform.Composition;
+
+using Aspire.Hosting;
+using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Eventing;
+using Aspire.Hosting.Lifecycle;
+using Hexalith.Builds.Tooling.Runtime;
+using Microsoft.Extensions.DependencyInjection;
+
+/// <summary>Captures native sidecar evidence through public Aspire services without changing process ownership.</summary>
+internal sealed class PlatformDaprDiagnostics(string directory, IReadOnlyList<string> applications, IEnumerable<string> secrets) : IDistributedApplicationEventingSubscriber, IAsyncDisposable, IDisposable
+{
+    private readonly CancellationTokenSource _stop = new();
+    private readonly List<Task> _watchers = [];
+    private readonly Dictionary<string, PlatformDaprDiagnosticResource> _resources = new(StringComparer.Ordinal);
+    private ResourceLoggerService? _logs;
+    private ResourceNotificationService? _notifications;
+    private Task? _stateWatcher;
+    private Task? _dispose;
+
+    /// <inheritdoc />
+    public Task SubscribeAsync(IDistributedApplicationEventing eventing, DistributedApplicationExecutionContext executionContext, CancellationToken cancellationToken)
+    {
+        _ = eventing.Subscribe<BeforeStartEvent>((startup, token) =>
+        {
+            token.ThrowIfCancellationRequested();
+            if (_dispose is not null || _logs is not null) throw new InvalidOperationException("Native sidecar capture cannot be started twice.");
+            // Evidence lives in the owner's retained artifacts, outside the disposable runtime workspace.
+            for (DirectoryInfo? path = new(Path.GetFullPath(directory)); path is not null; path = path.Parent)
+                if (path.LinkTarget is not null) throw new IOException("Native sidecar diagnostics cannot use symbolic links.");
+            CompositionWorkspace.CreatePrivateDirectory(directory);
+            PlatformDaprDiagnosticRedactor redactor = new(secrets);
+            foreach (string application in applications)
+            {
+                ExecutableResource resource = startup.Model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == application + "-dapr-cli");
+                if (resource.Name.Length > 128 || resource.Name.Any(character => !char.IsAsciiLetterOrDigit(character) && character != '-'))
+                    throw new InvalidDataException("Native sidecar capture requires a safe resource identity.");
+                _resources.Add(resource.Name, new(directory, resource, redactor));
+            }
+            _logs = startup.Services.GetRequiredService<ResourceLoggerService>();
+            _notifications = startup.Services.GetRequiredService<ResourceNotificationService>();
+            // Calling the async readers here installs subscriptions before BeforeStart returns.
+            foreach (PlatformDaprDiagnosticResource resource in _resources.Values) _watchers.Add(WatchLogsAsync(resource));
+            _stateWatcher = WatchStatesAsync();
+            return Task.CompletedTask;
+        });
+        return Task.CompletedTask;
+    }
+
+    private async Task WatchLogsAsync(PlatformDaprDiagnosticResource resource)
+    {
+        try
+        {
+            await foreach (IReadOnlyList<LogLine> batch in _logs!.WatchAsync(resource.Resource).WithCancellation(_stop.Token).ConfigureAwait(false))
+                resource.RecordLogs(batch);
+            resource.RecordStatus("log-stream-completed");
+        }
+        catch (OperationCanceledException) when (_stop.IsCancellationRequested) { }
+        catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or ObjectDisposedException)
+        {
+            Status(resource, "console-capture-failed");
+        }
+    }
+
+    private async Task WatchStatesAsync()
+    {
+        try
+        {
+            await foreach (ResourceEvent update in _notifications!.WatchAsync(_stop.Token).ConfigureAwait(false))
+                if (_resources.TryGetValue(update.Resource.Name, out PlatformDaprDiagnosticResource? resource) && ReferenceEquals(resource.Resource, update.Resource))
+                    resource.RecordState(update);
+        }
+        catch (OperationCanceledException) when (_stop.IsCancellationRequested) { }
+        catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or ObjectDisposedException)
+        {
+            foreach (PlatformDaprDiagnosticResource resource in _resources.Values) Status(resource, "state-capture-failed");
+        }
+    }
+
+    /// <inheritdoc />
+    public ValueTask DisposeAsync() => new(_dispose ??= StopAsync());
+
+    /// <inheritdoc />
+    public void Dispose() => DisposeAsync().AsTask().GetAwaiter().GetResult();
+
+    private async Task StopAsync()
+    {
+        // Do not cancel at ApplicationStopping: retain evidence while public producers still run.
+        // DCP stops its watchers before native cleanup, so disposal can drain only delivered
+        // batches. A final nonterminal snapshot must remain explicitly incomplete evidence.
+        foreach (PlatformDaprDiagnosticResource resource in _resources.Values) _logs?.Complete(resource.Resource);
+        _stop.CancelAfter(TimeSpan.FromSeconds(3));
+        await Task.WhenAll(_watchers).ConfigureAwait(false);
+        bool drainTimedOut = _stop.IsCancellationRequested;
+        await _stop.CancelAsync().ConfigureAwait(false);
+        if (_stateWatcher is not null) await _stateWatcher.ConfigureAwait(false);
+        foreach (PlatformDaprDiagnosticResource resource in _resources.Values)
+        {
+            try
+            {
+                if (drainTimedOut) resource.RecordStatus("console-drain-failed");
+                if (_notifications is not null && _notifications.TryGetCurrentState(resource.Resource.Name, out ResourceEvent? final)) resource.RecordState(final);
+                else resource.RecordStatus("final-state-unavailable");
+                resource.RecordStatus("capture-stopped");
+            }
+            catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or ObjectDisposedException)
+            {
+                Status(resource, "final-capture-failed");
+            }
+        }
+        _stop.Dispose();
+    }
+
+    private static void Status(PlatformDaprDiagnosticResource resource, string status)
+    {
+        try { resource.RecordStatus(status); }
+        catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or ObjectDisposedException)
+        {
+            // An unavailable evidence directory cannot be reported as a clean/complete capture.
+            // The caller must require the final capture-stopped receipt for every selected sidecar.
+        }
+    }
+}

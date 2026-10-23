@@ -439,6 +439,27 @@ def _unsupported_objects_sql():
             'o.' + column + '::text AS name FROM ' + catalog + ' o JOIN pg_namespace n ON n.oid=o.' +
             namespace_column + ' WHERE ' + namespace + ' AND ' + not_extension(catalog, 'o.oid'))
     others.extend([
+        "SELECT 'unusable-index'::text AS kind, n.nspname::text AS schema, ic.relname::text AS name "
+        'FROM pg_index i JOIN pg_class c ON c.oid=i.indrelid JOIN pg_class ic ON ic.oid=i.indexrelid '
+        'JOIN pg_namespace n ON n.oid=c.relnamespace '
+        'WHERE (NOT i.indisvalid OR NOT i.indisready OR NOT i.indislive) AND ' + namespace,
+        "SELECT 'nondefault-replica-identity'::text AS kind, n.nspname::text AS schema, c.relname::text AS name "
+        'FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace '
+        "WHERE c.relkind IN ('r','p') AND c.relreplident <> 'd' AND " + namespace,
+        "SELECT 'replica-identity-index'::text AS kind, n.nspname::text AS schema, ic.relname::text AS name "
+        'FROM pg_index i JOIN pg_class c ON c.oid=i.indrelid JOIN pg_class ic ON ic.oid=i.indexrelid '
+        'JOIN pg_namespace n ON n.oid=c.relnamespace WHERE i.indisreplident AND ' + namespace,
+        "SELECT 'cluster-selected-index'::text AS kind, n.nspname::text AS schema, ic.relname::text AS name "
+        'FROM pg_index i JOIN pg_class c ON c.oid=i.indrelid JOIN pg_class ic ON ic.oid=i.indexrelid '
+        'JOIN pg_namespace n ON n.oid=c.relnamespace WHERE i.indisclustered AND ' + namespace,
+        "SELECT 'nonstandard-internal-constraint-trigger'::text AS kind, n.nspname::text AS schema, t.tgname::text AS name "
+        'FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace '
+        "WHERE t.tgisinternal AND t.tgconstraint<>0 AND t.tgenabled <> 'O' AND " + namespace,
+        "SELECT 'operator-class-key-storage'::text AS kind, n.nspname::text AS schema, ic.relname::text AS name "
+        'FROM pg_index i JOIN pg_class c ON c.oid=i.indrelid JOIN pg_class ic ON ic.oid=i.indexrelid '
+        'JOIN pg_namespace n ON n.oid=c.relnamespace '
+        'JOIN LATERAL unnest(i.indclass::oid[]) AS key(opclass) ON true '
+        'JOIN pg_opclass op ON op.oid=key.opclass WHERE op.opckeytype<>0 AND ' + namespace,
         "SELECT 'rule'::text AS kind, n.nspname::text AS schema, r.rulename::text AS name "
         'FROM pg_rewrite r JOIN pg_class c ON c.oid=r.ev_class '
         'JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ' + namespace,
@@ -470,10 +491,47 @@ def _unsupported_objects_sql():
     others.append("SELECT 'transform'::text AS kind, NULL::text AS schema, "
                   "format_type(o.trftype,NULL) || '/' || l.lanname AS name FROM pg_transform o "
                   'JOIN pg_language l ON l.oid=o.trflang WHERE ' + not_extension('pg_transform', 'o.oid'))
+    others.extend([
+        "SELECT 'extended-statistics'::text AS kind, n.nspname::text AS schema, s.stxname::text AS name "
+        'FROM pg_statistic_ext s JOIN pg_namespace n ON n.oid=s.stxnamespace WHERE ' + namespace,
+        "SELECT 'relation-tablespace'::text AS kind, n.nspname::text AS schema, "
+        "c.relname::text || '/' || t.spcname AS name FROM pg_class c "
+        'JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_tablespace t ON t.oid=c.reltablespace '
+        "WHERE t.spcname <> 'pg_default' AND " + namespace,
+        "SELECT 'database-tablespace'::text AS kind, NULL::text AS schema, t.spcname::text AS name "
+        'FROM pg_database d JOIN pg_tablespace t ON t.oid=d.dattablespace '
+        "WHERE d.datname=current_database() AND t.spcname <> 'pg_default'",
+        "SELECT 'security-label'::text AS kind, NULL::text AS schema, s.provider::text AS name FROM pg_seclabel s",
+        "SELECT 'shared-security-label'::text AS kind, NULL::text AS schema, s.provider::text AS name FROM pg_shseclabel s",
+        "SELECT 'database-role-settings'::text AS kind, NULL::text AS schema, "
+        "COALESCE(d.datname::text,'all-databases') || '/' || COALESCE(r.rolname::text,'all-roles') AS name "
+        'FROM pg_db_role_setting s LEFT JOIN pg_database d ON d.oid=s.setdatabase '
+        'LEFT JOIN pg_roles r ON r.oid=s.setrole WHERE s.setdatabase=0 OR d.datname=current_database()',
+    ])
     payloads = {'routines': routines, 'triggers': triggers, 'rowSecurity': rls, 'policies': policies,
                 'types': types, 'otherObjects': _array_sql('SELECT * FROM (' + ' UNION ALL '.join(others) +
                     ') objects ORDER BY kind COLLATE "C", schema COLLATE "C" NULLS FIRST, name COLLATE "C"')}
     return 'json_build_object(' + ', '.join("'" + key + "', " + payloads[key] for key in UNSUPPORTED_CATEGORIES) + ')'
+
+
+def _column_slots_sql(array, relation, index=False):
+    return _array_sql('SELECT key.ordinality::integer AS ordinal, key.position AS position, '
+        'a.attname AS column, (key.position=0) AS expression' +
+        (', (key.ordinality > i.indnkeyatts) AS included' if index else '') +
+        ' FROM unnest(' + array + ') WITH ORDINALITY AS key(position, ordinality) '
+        'LEFT JOIN pg_attribute a ON a.attrelid=' + relation +
+        ' AND a.attnum=key.position AND NOT a.attisdropped ORDER BY key.ordinality')
+
+
+def _dependency_references_sql(catalog, object_id):
+    # Keep unresolved/dropped catalog references visible as nulls so the pure
+    # consumer refuses them. Names/positions, never catalog OIDs, are compared.
+    return _array_sql('SELECT DISTINCT n.nspname AS schema, c.relname AS name, '
+        'd.refobjsubid AS position, a.attname AS column FROM pg_depend d '
+        'LEFT JOIN pg_class c ON c.oid=d.refobjid LEFT JOIN pg_namespace n ON n.oid=c.relnamespace '
+        'LEFT JOIN pg_attribute a ON a.attrelid=d.refobjid AND a.attnum=d.refobjsubid AND NOT a.attisdropped '
+        "WHERE d.classid='" + catalog + "'::regclass AND d.objid=" + object_id +
+        " AND d.refclassid='pg_class'::regclass AND d.refobjsubid<>0 ORDER BY 1,2,3,4")
 
 
 def _canary_sections(value):
@@ -504,15 +562,36 @@ def _canary_sections(value):
     namespaces = _array_sql('SELECT n.nspname AS schema, pg_get_userbyid(n.nspowner) AS owner, '
                            'n.nspacl AS acl FROM pg_namespace n WHERE ' + user_namespace +
                            ' ORDER BY n.nspname COLLATE "C"')
+    database = "(SELECT json_build_object('encoding', pg_encoding_to_char(d.encoding), "
+    database += "'localeProvider', d.datlocprovider, 'collate', d.datcollate, 'ctype', d.datctype, "
+    database += "'locale', d.datlocale, 'icuRules', d.daticurules, 'collationVersion', d.datcollversion, "
+    database += "'actualCollationVersion', pg_database_collation_actual_version(d.oid), 'tablespace', t.spcname) "
+    database += 'FROM pg_database d JOIN pg_tablespace t ON t.oid=d.dattablespace WHERE d.datname=current_database())'
     relations = _array_sql('SELECT n.nspname AS schema, c.relname AS name, c.relkind AS kind, '
-        'pg_get_userbyid(c.relowner) AS owner, c.relacl AS acl FROM pg_class c '
-        'JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ' + user_namespace +
+        'pg_get_userbyid(c.relowner) AS owner, c.relacl AS acl, c.relpersistence AS persistence, '
+        'am.amname AS "accessMethod", c.reloptions AS options, toast.reloptions AS "toastOptions", '
+        'ts.spcname AS tablespace FROM pg_class c '
+        'JOIN pg_namespace n ON n.oid=c.relnamespace LEFT JOIN pg_am am ON am.oid=c.relam '
+        'LEFT JOIN pg_class toast ON toast.oid=c.reltoastrelid '
+        'LEFT JOIN pg_tablespace ts ON ts.oid=c.reltablespace WHERE ' + user_namespace +
         ' ORDER BY n.nspname COLLATE "C", c.relname COLLATE "C"')
+    collation = ("CASE WHEN co.oid IS NULL THEN NULL ELSE json_build_object('schema', cn.nspname, "
+        "'name', co.collname, 'provider', co.collprovider, 'encoding', "
+        "CASE WHEN co.collencoding=-1 THEN NULL ELSE pg_encoding_to_char(co.collencoding) END, "
+        "'collate', co.collcollate, 'ctype', co.collctype, 'locale', co.colllocale, "
+        "'icuRules', co.collicurules, 'version', co.collversion, 'actualVersion', "
+        "CASE WHEN co.collprovider='d' THEN (SELECT pg_database_collation_actual_version(db.oid) "
+        "FROM pg_database db WHERE db.datname=current_database()) ELSE pg_collation_actual_version(co.oid) END, "
+        "'deterministic', co.collisdeterministic) END")
     columns = _array_sql('SELECT n.nspname AS schema, c.relname AS name, a.attnum AS position, '
         'a.attname AS column, format_type(a.atttypid,a.atttypmod) AS type, a.attnotnull AS "notNull", '
-        'a.attidentity AS identity, a.attgenerated AS generated, pg_get_expr(d.adbin,d.adrelid) AS "default" '
+        'a.attidentity AS identity, a.attgenerated AS generated, pg_get_expr(d.adbin,d.adrelid) AS "default", '
+        'a.attacl AS acl, ' + collation + ' AS collation, a.attstorage AS storage, '
+        'a.attcompression::text AS compression, a.attstattarget AS "statisticsTarget", '
+        'a.attoptions AS options, a.attndims AS dimensions '
         'FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid '
         'JOIN pg_namespace n ON n.oid=c.relnamespace '
+        'LEFT JOIN pg_collation co ON co.oid=a.attcollation LEFT JOIN pg_namespace cn ON cn.oid=co.collnamespace '
         'LEFT JOIN pg_attrdef d ON d.adrelid=a.attrelid AND d.adnum=a.attnum '
         'WHERE a.attnum>0 AND NOT a.attisdropped AND ' + user_namespace +
         ' ORDER BY n.nspname COLLATE "C", c.relname COLLATE "C", a.attnum')
@@ -530,25 +609,46 @@ def _canary_sections(value):
         "WHERE qn.nspname !~ '^pg_' AND qn.nspname <> 'information_schema' "
         'ORDER BY qn.nspname COLLATE "C", q.relname COLLATE "C", n.nspname COLLATE "C", '
         'c.relname COLLATE "C", a.attname COLLATE "C"')
+    index_columns = _column_slots_sql('i.indkey::smallint[]', 'i.indrelid', True)
+    index_references = _dependency_references_sql('pg_class', 'i.indexrelid')
+    indexes = _array_sql('SELECT n.nspname AS schema, c.relname AS name, ic.relname AS index, '
+        'pg_get_indexdef(i.indexrelid) AS definition, i.indnatts AS "columnCount", '
+        'i.indnkeyatts AS "keyColumnCount", ' + index_columns + ' AS columns, ' + index_references +
+        ' AS "dependencyReferences", json_array_length(' + index_references + ') AS "dependencyReferenceCount", '
+        'pg_get_expr(i.indexprs,i.indrelid,true) AS expressions, pg_get_expr(i.indpred,i.indrelid,true) AS predicate '
+        'FROM pg_index i JOIN pg_class c ON c.oid=i.indrelid JOIN pg_namespace n ON n.oid=c.relnamespace '
+        'JOIN pg_class ic ON ic.oid=i.indexrelid WHERE ' + user_namespace +
+        ' ORDER BY n.nspname COLLATE "C", c.relname COLLATE "C", ic.relname COLLATE "C"')
+    constraint_columns = _column_slots_sql('k.conkey', 'k.conrelid')
+    referenced_columns = _column_slots_sql('k.confkey', 'k.confrelid')
+    constraint_references = _dependency_references_sql('pg_constraint', 'k.oid')
+    constraints = _array_sql('SELECT n.nspname AS schema, c.relname AS name, k.conname AS constraint, '
+        'k.convalidated AS validated, pg_get_constraintdef(k.oid,true) AS definition, k.contype AS kind, '
+        'k.conenforced AS enforced, k.condeferrable AS deferrable, k.condeferred AS "initiallyDeferred", '
+        'k.conperiod AS period, COALESCE(cardinality(k.conkey),0) AS "columnCount", ' + constraint_columns +
+        ' AS columns, COALESCE(cardinality(k.confkey),0) AS "referenceColumnCount", ' + referenced_columns +
+        ' AS "referencedColumns", CASE WHEN k.confrelid=0 THEN NULL ELSE '
+        "json_build_object('schema', rn.nspname, 'name', rc.relname) END AS \"referencedTable\", "
+        'CASE WHEN k.conindid=0 THEN NULL ELSE '
+        "json_build_object('schema', ixn.nspname, 'name', ix.relname) END AS \"supportingIndex\", " +
+        constraint_references + ' AS "dependencyReferences", json_array_length(' + constraint_references +
+        ') AS "dependencyReferenceCount" FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid '
+        'JOIN pg_namespace n ON n.oid=c.relnamespace LEFT JOIN pg_class rc ON rc.oid=k.confrelid '
+        'LEFT JOIN pg_namespace rn ON rn.oid=rc.relnamespace LEFT JOIN pg_class ix ON ix.oid=k.conindid '
+        'LEFT JOIN pg_namespace ixn ON ixn.oid=ix.relnamespace WHERE ' + user_namespace +
+        ' ORDER BY n.nspname COLLATE "C", c.relname COLLATE "C", k.conname COLLATE "C"')
     queries = {
         'sessionIdentity': "json_build_object('database', current_database(), 'user', current_user, "
                            "'serverVersionNum', current_setting('server_version_num')::integer)",
         'tableCensus': _array_sql('SELECT n.nspname AS schema, c.relname AS name FROM pg_class c '
             "JOIN pg_namespace n ON n.oid=c.relnamespace WHERE c.relkind IN ('r','p','f','m') AND " +
             user_namespace + ' ORDER BY n.nspname COLLATE "C", c.relname COLLATE "C"'),
-        'schema': "json_build_object('namespaces', " + namespaces + ", 'relations', " + relations +
+        'schema': "json_build_object('database', " + database + ", 'namespaces', " + namespaces + ", 'relations', " + relations +
                   ", 'columns', " + columns + ')',
         'dataCounts': _array_sql(' UNION ALL '.join(table_queries)),
         'dataContents': _array_sql(' UNION ALL '.join('(' + q + ')' for q in content_queries)),
-        'constraints': _array_sql('SELECT n.nspname AS schema, c.relname AS name, k.conname AS constraint, '
-            'k.convalidated AS validated, pg_get_constraintdef(k.oid,true) AS definition '
-            'FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid '
-            'JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ' + user_namespace +
-            ' ORDER BY n.nspname COLLATE "C", c.relname COLLATE "C", k.conname COLLATE "C"'),
-        'indexes': _array_sql('SELECT schemaname AS schema, tablename AS name, indexname AS index, '
-            "indexdef AS definition FROM pg_indexes WHERE schemaname !~ '^pg_' "
-            "AND schemaname <> 'information_schema' ORDER BY schemaname COLLATE \"C\", "
-            'tablename COLLATE "C", indexname COLLATE "C"'),
+        'constraints': constraints,
+        'indexes': indexes,
         'sequences': "json_build_object('definitions', " + definitions + ", 'ownership', " + ownership + ')',
         'sequenceCensus': _array_sql('SELECT n.nspname AS schema, c.relname AS name FROM pg_class c '
             "JOIN pg_namespace n ON n.oid=c.relnamespace WHERE c.relkind='S' AND " + user_namespace +
@@ -612,13 +712,15 @@ def _catalog_text(value, nullable=False):
             len(value.encode('utf8')) <= MAX_CANARY_ROW_BYTES)
 
 
-def _catalog_rows(rows, columns, keys, nullable=(), boolean=(), integer=(), acl=()):
+def _catalog_rows(rows, columns, keys, nullable=(), boolean=(), integer=(), acl=(), structured=()):
     require(type(rows) is list and len(rows) <= MAX_CATALOG_ROWS)
     identities = set()
     for row in rows:
         fields(row, columns)
         for key, item in row.items():
-            if key in boolean:
+            if key in structured:
+                continue  # A bounded category-specific validator checks this.
+            elif key in boolean:
                 require(type(item) is bool)
             elif key in integer:
                 c.integer(item, 0, 2**63 - 1)
@@ -652,7 +754,7 @@ def _validate_sequence_profile(sequences, samples):
         maximum = _sequence_integer(row['maximum'], lower, upper)
         require(minimum < maximum)
         _sequence_integer(row['start'], minimum, maximum)
-        require(_sequence_integer(row['increment'], lower, upper) != 0)
+        require(_sequence_integer(row['increment'], -(2**63), 2**63 - 1) != 0)
         _sequence_integer(row['cache'], 1, 2**63 - 1)
         by_name[(row['schema'], row['name'])] = (minimum, maximum)
     for rows in samples:
@@ -661,15 +763,93 @@ def _validate_sequence_profile(sequences, samples):
             _sequence_integer(row['lastValue'], minimum, maximum)
 
 
+def _validate_database_semantics(database):
+    fields(database, 'encoding localeProvider collate ctype locale icuRules collationVersion '
+                     'actualCollationVersion tablespace')
+    for key, item in database.items():
+        _catalog_text(item, key in ('locale', 'icuRules', 'collationVersion', 'actualCollationVersion'))
+    require(database['encoding'] and database['localeProvider'] in ('b', 'c', 'i') and
+            database['collate'] and database['ctype'] and database['tablespace'] == 'pg_default')
+    require(database['locale'] is None if database['localeProvider'] == 'c' else bool(database['locale']))
+    require(database['icuRules'] is None or database['localeProvider'] == 'i')
+    require(database['collationVersion'] is None or
+            database['collationVersion'] == database['actualCollationVersion'])
+
+
+def _validate_column_collation(collation, database):
+    if collation is None:
+        return
+    fields(collation, 'schema name provider encoding collate ctype locale icuRules version actualVersion deterministic')
+    require(type(collation['deterministic']) is bool)
+    for key, item in collation.items():
+        if key != 'deterministic':
+            _catalog_text(item, key not in ('schema', 'name', 'provider'))
+    require(collation['schema'] == 'pg_catalog' and collation['name'] and collation['provider'] in ('b', 'c', 'i', 'd'))
+    require(collation['encoding'] in (None, database['encoding']))
+    if collation['provider'] == 'd':
+        require(collation['schema'] == 'pg_catalog' and collation['name'] == 'default' and
+                all(collation[key] is None for key in ('encoding', 'collate', 'ctype', 'locale', 'icuRules', 'version')) and
+                collation['deterministic'] and collation['actualVersion'] == database['actualCollationVersion'])
+    elif collation['provider'] == 'c':
+        require(collation['collate'] and collation['ctype'] and collation['locale'] is None and
+                collation['icuRules'] is None)
+    else:
+        require(collation['locale'] and collation['collate'] is None and collation['ctype'] is None and
+                (collation['icuRules'] is None or collation['provider'] == 'i'))
+    require(collation['version'] is None or collation['version'] == collation['actualVersion'])
+
+
+def _validate_slots(rows, table, columns, count, index=False, allow_expression=False, key_count=0):
+    c.integer(count, 0, 32 if index else 1600)
+    rows = _catalog_rows(rows, 'ordinal position column expression' + (' included' if index else ''),
+        ('ordinal',), nullable=('column',), boolean=('expression', 'included') if index else ('expression',),
+        integer=('ordinal', 'position'))
+    rows.sort(key=lambda row: row['ordinal'])
+    require([row['ordinal'] for row in rows] == list(range(1, count + 1)))
+    by_position = {row['position']: row['column'] for row in columns[table].values()}
+    for row in rows:
+        if row['expression']:
+            require(allow_expression and row['position'] == 0 and row['column'] is None and
+                    not row.get('included', False))
+        else:
+            require(row['position'] > 0 and by_position.get(row['position']) == row['column'] and row['column'])
+        if index:
+            require(row['included'] == (row['ordinal'] > key_count))
+    return rows
+
+
+def _validate_dependency_references(row, allowed_tables, columns):
+    references = _catalog_rows(row['dependencyReferences'], 'schema name position column',
+                               ('schema', 'name', 'position'), integer=('position',))
+    c.integer(row['dependencyReferenceCount'], 0, MAX_CATALOG_ROWS)
+    require(len(references) == row['dependencyReferenceCount'])
+    for reference in references:
+        table = reference['schema'], reference['name']
+        require(table in allowed_tables and reference['position'] > 0 and reference['column'] in columns[table] and
+                columns[table][reference['column']]['position'] == reference['position'])
+    row['dependencyReferences'] = references
+
+
+def _native_base_type(formatted_type):
+    # Native format_type spellings differ in typmod detail for table/index
+    # attributes. Keep the base spelling and array suffixes, not precision/size.
+    return re.sub(r'\([^()]*\)', '', formatted_type)
+
+
 def _validate_schema_profile(value, records):
     """Supported catalog coverage, not a claim of arbitrary database equality."""
     s, schema = value['source'], records['schema']
+    _validate_database_semantics(schema['database'])
     tables = {(row['schema'], row['name']) for row in s['tables']}
     schemas, roles = set(s['schemas']), {row['name'] for row in s['roles']}
     relations = {(row['schema'], row['name']): row for row in schema['relations']}
     require({key for key, row in relations.items() if row['kind'] == 'r'} == tables)
-    require(all(row['kind'] in ('r', 'i', 'S') and row['schema'] in schemas and row['name'] and
-                row['owner'] in roles for row in schema['relations']))
+    for row in schema['relations']:
+        require(row['kind'] in ('r', 'i', 'S') and row['schema'] in schemas and row['name'] and
+                row['owner'] in roles and row['persistence'] == 'p')
+        require(row['accessMethod'] == {'r': 'heap', 'i': 'btree', 'S': None}[row['kind']] and
+                row['options'] in (None, []) and row['toastOptions'] in (None, []) and
+                row['tablespace'] in (None, 'pg_default'))
     require(all(row['owner'] in roles for row in schema['namespaces']))
     columns = {key: {} for key in relations}
     for row in schema['columns']:
@@ -678,6 +858,19 @@ def _validate_schema_profile(value, records):
                 row['identity'] in ('', 'a', 'd') and row['generated'] in ('', 's', 'v'))
         require(row['column'] not in columns[key])
         require(not (row['identity'] and row['generated']))
+        require(relations[key]['kind'] == 'r' or not (row['identity'] or row['generated']))
+        require(row['storage'] in ('p', 'e', 'm', 'x') and row['compression'] in ('', 'p', 'l') and
+                row['options'] in (None, []) and 0 <= row['dimensions'] <= 32767)
+        if row['statisticsTarget'] is not None:
+            c.integer(row['statisticsTarget'], 0, 10000)
+        _validate_column_collation(row['collation'], schema['database'])
+        scalar_type = re.sub(r'(?:\[\])+$', '', _native_base_type(row['type']))
+        require((row['collation'] is not None) ==
+                (scalar_type in ('text', 'name', 'character', 'character varying')))
+        if row['identity']:
+            require(row['notNull'] and row['default'] is None)
+        if row['generated']:
+            require(type(row['default']) is str and row['default'].strip())
         columns[key][row['column']] = row
     # Requiring metadata for every supported relation also refuses a sequence
     # or index census with its defining relation metadata silently omitted.
@@ -685,20 +878,84 @@ def _validate_schema_profile(value, records):
     indexes = records['indexes']
     require({(row['schema'], row['index']) for row in indexes} ==
             {key for key, row in relations.items() if row['kind'] == 'i'})
+    indexes_by_name = {(row['schema'], row['index']): row for row in indexes}
     for row in indexes:
-        require((row['schema'], row['name']) in tables and row['definition'])
+        table, index = (row['schema'], row['name']), (row['schema'], row['index'])
+        require(table in tables and row['definition'])
+        c.integer(row['columnCount'], 1, 32)
+        c.integer(row['keyColumnCount'], 1, row['columnCount'])
+        row['columns'] = _validate_slots(row['columns'], table, columns, row['columnCount'], True, True, row['keyColumnCount'])
+        require(sorted(column['position'] for column in columns[index].values()) == list(range(1, row['columnCount'] + 1)))
+        index_columns = {column['position']: column for column in columns[index].values()}
+        for slot in row['columns']:
+            if not slot['expression']:
+                require(_native_base_type(index_columns[slot['ordinal']]['type']) ==
+                        _native_base_type(columns[table][slot['column']]['type']))
+        _validate_dependency_references(row, {table}, columns)
+        require(bool(row['expressions']) == any(slot['expression'] for slot in row['columns']))
+        require(row['expressions'] is None or row['expressions'].strip())
+        require(row['predicate'] is None or row['predicate'].strip())
     for row in records['constraints']:
-        require((row['schema'], row['name']) in tables and row['constraint'] and row['definition'])
+        table = row['schema'], row['name']
+        require(table in tables and row['constraint'] and row['definition'] and row['kind'] in ('c', 'n', 'p', 'u', 'f', 'x'))
+        require(not row['initiallyDeferred'] or row['deferrable'])
+        row['columns'] = _validate_slots(row['columns'], table, columns, row['columnCount'], allow_expression=row['kind'] == 'x')
+        referenced = row['referencedTable']
+        allowed_tables = {table}
+        if row['kind'] == 'f':
+            fields(referenced, 'schema name')
+            referenced = referenced['schema'], referenced['name']
+            require(referenced in tables and row['columnCount'] > 0 and row['referenceColumnCount'] == row['columnCount'])
+            row['referencedColumns'] = _validate_slots(row['referencedColumns'], referenced, columns, row['referenceColumnCount'])
+            allowed_tables.add(referenced)
+        else:
+            require(referenced is None and row['referenceColumnCount'] == 0 and row['referencedColumns'] == [])
+        supporting = row['supportingIndex']
+        if row['kind'] in ('p', 'u', 'f', 'x'):
+            fields(supporting, 'schema name')
+            supporting = supporting['schema'], supporting['name']
+            require(supporting in indexes_by_name and row['columnCount'] > 0)
+            index = indexes_by_name[supporting]
+            require((index['schema'], index['name']) == (referenced if row['kind'] == 'f' else table))
+            slots = row['referencedColumns'] if row['kind'] == 'f' else row['columns']
+            require(len(slots) == index['keyColumnCount'] and
+                    sorted(slot['position'] for slot in slots) ==
+                    sorted(slot['position'] for slot in index['columns'] if not slot['included']))
+        else:
+            require(supporting is None)
+        if row['kind'] == 'n':
+            require(row['columnCount'] == 1 and columns[table][row['columns'][0]['column']]['notNull'])
+        _validate_dependency_references(row, allowed_tables, columns)
+        if row['kind'] == 'c':
+            slot_positions = [slot['position'] for slot in row['columns']]
+            require(len(slot_positions) == len(set(slot_positions)) and
+                    set(slot_positions) == {reference['position'] for reference in row['dependencyReferences']})
     census = {(row['schema'], row['name']) for row in records['sequenceCensus']}
     require(census == {key for key, row in relations.items() if row['kind'] == 'S'})
     for row in records['sequences']['definitions']:
         require(row['owner'] == relations[(row['schema'], row['name'])]['owner'])
+        fixed = sorted(columns[(row['schema'], row['name'])].values(), key=lambda column: column['position'])
+        require([(column['position'], column['column'], column['type']) for column in fixed] ==
+                [(1, 'last_value', 'bigint'), (2, 'log_cnt', 'bigint'), (3, 'is_called', 'boolean')])
+        require(all(column['notNull'] and not column['identity'] and not column['generated'] and
+                    column['default'] is None for column in fixed))
     owned = set()
+    identity_edges = {}
+    sequence_definitions = {(row['schema'], row['name']): row for row in records['sequences']['definitions']}
     for row in records['sequences']['ownership']:
         sequence, table = (row['schema'], row['name']), (row['tableSchema'], row['tableName'])
         require(sequence not in owned and table in tables and row['column'] in columns[table] and
                 row['dependency'] in ('a', 'i'))
         owned.add(sequence)
+        column = columns[table][row['column']]
+        if row['dependency'] == 'i':
+            require(column['identity'] and not column['generated'] and column['notNull'] and
+                    column['type'] == sequence_definitions[sequence]['type'])
+            identity_edges.setdefault((table, row['column']), []).append(sequence)
+        else:
+            require(not column['identity'] and not column['generated'])
+    require(all(len(identity_edges.get((table, column['column']), [])) == 1
+                for table in tables for column in columns[table].values() if column['identity']))
     for row in records['acls']:
         require(row['owner'] in roles and (row['schema'] is None or row['schema'] in schemas))
 
@@ -751,20 +1008,33 @@ def _validate_canary_records(value, records):
     counts = {(r['schema'], r['name']): r['rows'] for r in records['dataCounts']}
     require(all(counts[(r['schema'], r['name'])] == r['rows'] for r in records['dataContents']))
     schema = records['schema']
-    fields(schema, 'namespaces relations columns')
+    fields(schema, 'database namespaces relations columns')
     schema['namespaces'] = _catalog_rows(schema['namespaces'], 'schema owner acl', ('schema',), acl=('acl',))
     require(sorted(row['schema'] for row in schema['namespaces']) == sorted(s['schemas']))
-    schema['relations'] = _catalog_rows(schema['relations'], 'schema name kind owner acl',
-                                        ('schema', 'name'), acl=('acl',))
+    schema['relations'] = _catalog_rows(schema['relations'],
+        'schema name kind owner acl persistence accessMethod options toastOptions tablespace',
+        ('schema', 'name'), nullable=('accessMethod', 'tablespace'), acl=('acl', 'options', 'toastOptions'))
     schema['columns'] = _catalog_rows(schema['columns'],
-        'schema name position column type notNull identity generated default',
-        ('schema', 'name', 'position'), nullable=('default',), boolean=('notNull',), integer=('position',))
+        'schema name position column type notNull identity generated default acl collation storage compression '
+        'statisticsTarget options dimensions', ('schema', 'name', 'position'), nullable=('default',),
+        boolean=('notNull',), integer=('position', 'dimensions'), acl=('acl', 'options'),
+        structured=('collation', 'statisticsTarget'))
     for category, columns, keys, bools in (
-        ('constraints', 'schema name constraint validated definition', ('schema', 'name', 'constraint'), ('validated',)),
-        ('indexes', 'schema name index definition', ('schema', 'index'), ()),
         ('extensions', 'name schema version', ('name',), ()),
     ):
         records[category] = _catalog_rows(records[category], columns, keys, boolean=bools)
+    records['indexes'] = _catalog_rows(records['indexes'],
+        'schema name index definition columnCount keyColumnCount columns dependencyReferences dependencyReferenceCount expressions predicate',
+        ('schema', 'index'), nullable=('expressions', 'predicate'),
+        integer=('columnCount', 'keyColumnCount', 'dependencyReferenceCount'),
+        structured=('columns', 'dependencyReferences'))
+    records['constraints'] = _catalog_rows(records['constraints'],
+        'schema name constraint validated definition kind enforced deferrable initiallyDeferred period '
+        'columnCount columns referenceColumnCount referencedColumns referencedTable supportingIndex '
+        'dependencyReferences dependencyReferenceCount', ('schema', 'name', 'constraint'),
+        boolean=('validated', 'enforced', 'deferrable', 'initiallyDeferred', 'period'),
+        integer=('columnCount', 'referenceColumnCount', 'dependencyReferenceCount'),
+        structured=('columns', 'referencedColumns', 'referencedTable', 'supportingIndex', 'dependencyReferences'))
     require(records['extensions'] == sorted(s['extensions'], key=canonical))
     records['acls'] = _catalog_rows(records['acls'], 'owner schema type acl', ('owner', 'schema', 'type'),
                                      nullable=('schema',), acl=('acl',))
@@ -924,6 +1194,8 @@ GATES = ('freshAuthenticatedPolicy independentSignatureReadback distinctValidato
          'exportedSnapshotHolderLifetime sameSnapshotCanaryDumpAgreement stableQuiescedSequences '
          'deterministicFullTableContentHashQualification taggedCanaryConsumerQualification '
          'supportedDatabaseProfileAndUnsupportedObjectCensus targetFullRoleAuthorityAndMembershipQualification '
+         'databaseAndColumnLocaleCompatibility loggedNativeStorageProfile nativeIndexConstraintReferenceAgreement '
+         'identityGeneratedAndFixedSequenceSchemaQualification '
          'independentComplianceRetentionAndEncryptionReadback authenticatedCaptureTimingAndProofFreshness '
          'immutableCaptureVersionAndIndependentReadback verifiedDecryptedExactStdin '
          'targetAbsentBeforeCreation createdTargetIdentities targetEmptySchema '
@@ -972,6 +1244,9 @@ def render_proposal(value):
                 'statementTimeoutSeconds': 15, 'maximumTranscriptBytes': c.MAX_JSON,
                 'maximumCatalogRowsPerArray': MAX_CATALOG_ROWS, 'qualification': None},
             'supportedSchemaProfile': {'relations': ['ordinary-table', 'index', 'sequence'],
+                'persistence': 'logged-only', 'accessMethods': {'ordinary-table': 'heap', 'index': 'btree', 'sequence': None},
+                'databaseSemantics': None, 'columnAclCollationAndStorageSemantics': None,
+                'nativeIndexConstraintReferences': None, 'identityGeneratedAndFixedSequenceSchema': None,
                 'boundTableRelationsAndColumnsRequired': True, 'unsupportedObjectCensus': None,
                 'unsupportedObjectCategories': UNSUPPORTED_CATEGORIES,
                 'extensionCoverage': 'only-pinned-plpgsql-and-pgstattuple-identity-schema-version; no-routine-body-equality',

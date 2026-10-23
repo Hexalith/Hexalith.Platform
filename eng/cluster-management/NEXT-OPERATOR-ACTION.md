@@ -931,3 +931,31 @@ signed originals, retained failures, frozen intent and checked bound retirement/
 procedure/maintenance bytes remain preserved. No capture, quiescence, restore,
 signing, upload, permission change, retirement, upgrade or deployment occurred.
 **4.27 stays in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**
+
+
+## Recovery command bundle checkpoint — 2026-10-23
+
+Telemetry PostgreSQL is explicitly included in the owner's recovery proposal.
+The [verified preparation receipt](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261023t085529z-s427-recovery-command-preparation/verification.json)
+binds the private revision-3 technical bundle, exact available tools/inputs,
+94 common and 70 PostgreSQL offline tests, bounded local SQL checks and the
+limited preservation audit. Current source volume bindings are resolved in
+private custody. Offline consistency remains separate from actual qualification.
+
+This is technical review material with explicit missing executable integration;
+no operational approval is requested. Complete native/credential/readback/
+signature-scope and system/target/proof-consumer drivers, then rebind a separately
+covered fresh attempt before exact operational approval. Actual authenticated
+policy/signature immutable readbacks precede capture; actual recovery, source
+resume, target cleanup and signed/non-dry/manual acceptance precede later gates.
+No prohibited source/provider operation or fresh recovery RID/policy occurred.
+Story 4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL. Historical
+expiry, signed originals, frozen intent and checked bound bytes are preserved.
+
+
+Final selected bundle: revision 4, as bound by the sanitized verification receipt.
+The revision 3 checksum packet remains unchanged. Its first verifier refused the
+host's root-owned multicall env hardlink; revision 4 corrects only that runtime
+inventory check, with private/tool single-link checks retained. Actual positive,
+wrong-anchor and fabricated-qualification checks pass. Adapter/input bytes and
+all 164 offline unit results are unchanged. No source/provider action followed.

@@ -1,0 +1,232 @@
+{
+  "authorityAcceptance": {
+    "operationalQualification": null,
+    "privateDetails": {
+      "bytes": 2879,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/authority-custody.json",
+      "sha256": "c69cfa943c80d8a2efa5d3a14f996d313945e3b91dcf73fbca2c3c8173b16a4a"
+    }
+  },
+  "boundedReadOnlyInvestigation": {
+    "boundSourceVolumes": 14,
+    "countScope": "Source/provider observations only; excludes documentation access and local offline test/Docker activity.",
+    "currentPvCleanupExclusions": 30,
+    "nativeAggregateCapBytes": 4194304,
+    "nativeGets": 82,
+    "nativeReadCommands": 90,
+    "nativeReadOnlyExecs": 8,
+    "nativeResponseBytes": 3404041,
+    "providerGetHeadCalls": 31,
+    "rawCustody": "encrypted privately to the retained recipient; selected review facts remain in restricted private custody",
+    "recipientDecryptionQualified": false
+  },
+  "dependentGates": {
+    "4.0CurrentRecovery": false,
+    "4.1": "closed",
+    "Timesheets3.6": "open/FAIL"
+  },
+  "kind": "hexalith.story427.recovery-preparation-verification",
+  "newPolicyAllocated": false,
+  "newRecoveryRidAllocated": false,
+  "observedAt": "2026-10-23T12:32:36.497037+00:00",
+  "offlineProjections": {
+    "authenticationPerformed": false,
+    "backendRequests": 0,
+    "commonRawInputSha256": "8a78aa9004cfc69aa7c545b08b6e10c770fababd05f53144e168db57e632723b",
+    "runnable": false,
+    "telemetryRawInputSha256": "98a21f5c1cf4f954be0334a423ef899b9cebd088a5320660fa65ba28e16911b0"
+  },
+  "offlineSqlFixture": {
+    "actualRecoveryQualification": false,
+    "canaryCategories": 16,
+    "fixtureContainerAbsentAfterRun": true,
+    "hostBindMounts": false,
+    "imagePull": "never",
+    "network": "none",
+    "parserReplay": {
+      "bytes": 557,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/offline-sql-fixture-v4-parser-result.json",
+      "sha256": "b4079bf5c443508a6b073f1c4fdb91bedce09e42bfb4a5dde026973671238378"
+    },
+    "receipt": {
+      "bytes": 3755,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/offline-sql-fixture-v4-result.json",
+      "sha256": "8f34ed82d19f152de23008582ceea07fa06abb28d745a43f6bd45a08590fce97"
+    },
+    "result": "passed"
+  },
+  "offlineUnitTests": {
+    "actualRecoveryQualification": false,
+    "common": {
+      "exitCode": 0,
+      "skipped": 0,
+      "tests": 94
+    },
+    "telemetryPostgreSQL": {
+      "exitCode": 0,
+      "skipped": 0,
+      "tests": 70
+    },
+    "total": 164
+  },
+  "operationalApprovalRequested": false,
+  "operationalGate": "closed",
+  "preservation": {
+    "additionalHistoricalFailedOidcHashMatches": true,
+    "allHashesAndLengthsMatch": true,
+    "checkedFiles": 85,
+    "originalFrozenIntentSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+    "originalFrozenIntentUnchanged": true,
+    "originalInventory": {
+      "bytes": 18433,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/preservation-before.json",
+      "sha256": "14cbe026f84efb2adff9b9b5baa47f06ccdd5b617e05d8e4675688d70e2d6563"
+    },
+    "priorPacketsPreserved": true,
+    "scope": "Only inventoried85 files, original frozen block, three document prefixes and the separately checked failed OIDC bytes; no whole-history or submodule integrity claim.",
+    "threeOriginalDocumentPrefixes": {
+      "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": true,
+      "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": true,
+      "eng/cluster-management/NEXT-OPERATOR-ACTION.md": true
+    }
+  },
+  "recoveryCurrent": false,
+  "remainingImplementation": {
+    "privateDetails": {
+      "bytes": 1481,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/scope-and-qualification.json",
+      "sha256": "b266ba0928bf3f0e0348935b80e0d6b237042036f4986d28bd05c70ea885fa58"
+    },
+    "status": "required-before-operational-approval"
+  },
+  "review": {
+    "deferredFindings": 0,
+    "loggedFindingsIncludingDuplicates": 70,
+    "rounds": 5,
+    "scope": "Offline adapters and technical packet; actual recovery acceptance remains unestablished.",
+    "verifiedFindingsFixed": true
+  },
+  "schemaVersion": 1,
+  "sourceFiles": {
+    "eng/recovery-preparation/RECOVERY-ADAPTERS.md": {
+      "bytes": 28452,
+      "sha256": "96ef757c46d782702923b97f1c01c91c78eb6d4184b736f41713f4d26e129e24"
+    },
+    "eng/recovery-preparation/TELEMETRY-POSTGRES.md": {
+      "bytes": 36552,
+      "sha256": "015ee7ee00cb41b3ff888b443397c7dfa498ea742e88ade7a62e9b608154dfcd"
+    },
+    "eng/recovery-preparation/recovery_adapters.py": {
+      "bytes": 61253,
+      "sha256": "c9330eacfe3ad174920d0def0ea1112fd75463dac52556f8ee6d92dfe67662e0"
+    },
+    "eng/recovery-preparation/telemetry_postgres_adapter.py": {
+      "bytes": 94795,
+      "sha256": "21584b5e4d0976f5027e18bb0d8581fe8099294c2a3bc4afaa8c7c538489b83b"
+    },
+    "eng/recovery-preparation/test_recovery_adapters.py": {
+      "bytes": 83143,
+      "sha256": "42e1f48888aecf4d6000cb8230d7ff73dd560ad7b4e665b893101dfc15c12de4"
+    },
+    "eng/recovery-preparation/test_telemetry_postgres_adapter.py": {
+      "bytes": 102221,
+      "sha256": "74283f4b5fd64de7b0e4a7f14e574a3a637bc4ff46313cbf442527edb8010563"
+    }
+  },
+  "sourceProviderOperationalActions": {
+    "capture": false,
+    "cleanup": false,
+    "deployment": false,
+    "permissionChanges": false,
+    "quiescence": false,
+    "restore": false,
+    "resume": false,
+    "retirement": false,
+    "signing": false,
+    "upgrade": false,
+    "upload": false
+  },
+  "storyStatus": "in-progress",
+  "technicalBundle": {
+    "actualLocalChecks": {
+      "exactAnchor": {
+        "exitCode": 0,
+        "result": {
+          "authenticationPerformed": false,
+          "backendRequests": 0,
+          "externalToolFilesChecked": 10,
+          "filesChecked": 64,
+          "operationalGate": "closed",
+          "recoveryCurrent": false,
+          "result": "consistent-technical-review-bundle",
+          "runnable": false,
+          "runtimeFilesChecked": 140
+        }
+      },
+      "selfConsistentInventedQualification": {
+        "exitCode": 1,
+        "result": {
+          "backendRequests": 0,
+          "operationalGate": "closed",
+          "result": "review-bundle-refused",
+          "runnable": false
+        }
+      },
+      "wrongAnchor": {
+        "exitCode": 1,
+        "result": {
+          "backendRequests": 0,
+          "operationalGate": "closed",
+          "result": "review-bundle-refused",
+          "runnable": false
+        }
+      }
+    },
+    "availableToolInventory": {
+      "bytes": 16172,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/tools.json",
+      "sha256": "d9016c2a5d7454126f0c7bbe43b25f6e90412907f65d014cf64a43249aafa9dd"
+    },
+    "directory": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4",
+    "manifest": {
+      "bytes": 10359,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/bundle.json",
+      "sha256": "bfacf377954c038e089ea81d57e4b6f369484541c48008678ea41fa00c4fc174"
+    },
+    "payloadFiles": 64,
+    "purpose": "Technical review of exact available bytes; independent executable integration remains incomplete.",
+    "runnable": false,
+    "runtimeInventory": {
+      "bytes": 25857,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/runtime-inventory.json",
+      "sha256": "d2eb7b863660b821021fe503798c19ad0725529606d2da2deaeaa80ccb75b501"
+    },
+    "verifierArgv": [
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/verify_review_bundle.py",
+      "--bundle",
+      "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4",
+      "--sha256",
+      "bfacf377954c038e089ea81d57e4b6f369484541c48008678ea41fa00c4fc174"
+    ]
+  },
+  "telemetryScope": "owner explicitly included PostgreSQL recovery in proposal; preparation only",
+  "unperformedActualQualifications": {
+    "established": false,
+    "privateDetails": {
+      "bytes": 1481,
+      "path": "/home/administrator/hexalith-retirement-investigation-evidence/20261023t085529z-s427-recovery-command-preparation/revision-4/scope-and-qualification.json",
+      "sha256": "b266ba0928bf3f0e0348935b80e0d6b237042036f4986d28bd05c70ea885fa58"
+    }
+  },
+  "versionControl": {
+    "initialBaseline": "7c37f3f2c5e7e55693db70baa8885bdb10bd9ff6",
+    "legacyStoryBaseline": "54920908f15a99b48e69861baf306365353fc6df",
+    "sessionStagedCommittedOrPushed": false,
+    "unrelatedWorkPreserved": true,
+    "verificationCheckoutHead": "5e0d46397798ab84894c7791aab3be0537e52b0a"
+  }
+}

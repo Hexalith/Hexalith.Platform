@@ -356,6 +356,14 @@ public static class PlatformAppModel
                     ownedSidecar.Annotations.Add(new PlatformResourceOwnerAnnotation(owner));
             }
             builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered));
+            if (options.RetentionProfile is not null)
+            {
+                PlatformServerBinding owner = servers.First(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");
+                string diagnostics = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(RetentionArtifactsPath(options, owner)))!, "diagnostics", "native-sidecars");
+                builder.Services.AddSingleton<PlatformDaprDiagnostics>(_ => new(diagnostics, servers.Select(server => server.ResourceId).ToArray(),
+                    servers.SelectMany(server => server.Environment).Where(pair => pair.Value.Length >= 8).Select(pair => pair.Value).ToArray()));
+                builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(services => services.GetRequiredService<PlatformDaprDiagnostics>());
+            }
             if (options.RunPlan is null)
             {
                 builder.Services.AddSingleton(_ => new PlatformCompositionWorkspace(rendered));
