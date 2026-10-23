@@ -1,0 +1,188 @@
+{
+  "focused": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 21.223
+  },
+  "builds": {
+    "total": 553,
+    "passed": 553,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 223.934
+  },
+  "platform": {
+    "total": 45,
+    "passed": 44,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1,
+    "not-run": 0,
+    "seconds": 31.055
+  },
+  "live": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 98.121
+  },
+  "proofs": [
+    {
+      "runId": "2f8a837fd855653bfee1186fbe8c65e6",
+      "environmentId": "526cdb42b8b4422bafd8099a19ce0fda",
+      "descriptor": "live/2f8a837fd855653bfee1186fbe8c65e6.archived-descriptor.json",
+      "schemaValid": true,
+      "resourceCount": 6,
+      "startupTasks": [
+        {
+          "taskId": "platform/verify-run-owner",
+          "required": true,
+          "status": "passed",
+          "startedAt": "2026-10-23T18:41:16.8271858Z",
+          "finishedAt": "2026-10-23T18:41:16.8304174Z",
+          "diagnosticIds": []
+        }
+      ],
+      "startupSeconds": 81.4909196,
+      "executionSeconds": 120,
+      "executionOriginAt": "2026-10-23T18:41:17.3464169Z",
+      "executionExpiresAt": "2026-10-23T18:43:17.3464169Z",
+      "data": {
+        "runId": "2f8a837fd855653bfee1186fbe8c65e6",
+        "environmentId": "526cdb42b8b4422bafd8099a19ce0fda",
+        "identicalKey": "platform-story-2-4-identical-key",
+        "observedValue": "2f8a837fd855653bfee1186fbe8c65e6",
+        "peerRunId": "fa089a284b28d8794b801465c48b905f",
+        "peerKeyVisible": false,
+        "endpoint": "tcp://localhost:14925/",
+        "persisted": true,
+        "qualificationCredit": false
+      },
+      "cleanup": {
+        "Result": {
+          "Status": "completed",
+          "Outcome": {
+            "ExitCode": 0,
+            "Phase": 0,
+            "Category": 0,
+            "RuleId": null
+          },
+          "Diagnostics": [
+            {
+              "RuleId": "HXI001",
+              "Phase": 8,
+              "Category": 0,
+              "Message": "Runner-owned invocation cleanup completed.",
+              "Field": "down",
+              "Hint": null,
+              "Source": null,
+              "Location": null,
+              "Row": null
+            }
+          ]
+        },
+        "Remaining": {
+          "ContainerIds": [],
+          "ProcessIds": [],
+          "Unverified": false,
+          "IsEmpty": true
+        }
+      }
+    },
+    {
+      "runId": "fa089a284b28d8794b801465c48b905f",
+      "environmentId": "a036485b537445c5a9868d9ea84f386c",
+      "descriptor": "live/fa089a284b28d8794b801465c48b905f.archived-descriptor.json",
+      "schemaValid": true,
+      "resourceCount": 6,
+      "startupTasks": [
+        {
+          "taskId": "platform/verify-run-owner",
+          "required": true,
+          "status": "passed",
+          "startedAt": "2026-10-23T18:41:26.1651812Z",
+          "finishedAt": "2026-10-23T18:41:26.1672899Z",
+          "diagnosticIds": []
+        }
+      ],
+      "startupSeconds": 90.8279425,
+      "executionSeconds": 120,
+      "executionOriginAt": "2026-10-23T18:41:26.6740316Z",
+      "executionExpiresAt": "2026-10-23T18:43:26.6740316Z",
+      "data": {
+        "runId": "fa089a284b28d8794b801465c48b905f",
+        "environmentId": "a036485b537445c5a9868d9ea84f386c",
+        "identicalKey": "platform-story-2-4-identical-key",
+        "observedValue": "fa089a284b28d8794b801465c48b905f",
+        "peerRunId": "2f8a837fd855653bfee1186fbe8c65e6",
+        "peerKeyVisible": false,
+        "endpoint": "tcp://localhost:28524/",
+        "persisted": true,
+        "qualificationCredit": false
+      },
+      "cleanup": {
+        "Result": {
+          "Status": "completed",
+          "Outcome": {
+            "ExitCode": 0,
+            "Phase": 0,
+            "Category": 0,
+            "RuleId": null
+          },
+          "Diagnostics": [
+            {
+              "RuleId": "HXI001",
+              "Phase": 8,
+              "Category": 0,
+              "Message": "Runner-owned invocation cleanup completed.",
+              "Field": "down",
+              "Hint": null,
+              "Source": null,
+              "Location": null,
+              "Row": null
+            }
+          ]
+        },
+        "Remaining": {
+          "ContainerIds": [],
+          "ProcessIds": [],
+          "Unverified": false,
+          "IsEmpty": true
+        }
+      }
+    }
+  ],
+  "cleanupAudit": {
+    "completed": true,
+    "workspace": "/tmp/platform-suite-provisioning-e64844d07ad34511adc2f3f07d54bac4",
+    "failures": [],
+    "remainingClaims": [],
+    "remainingWorkspaces": []
+  },
+  "resourceAudit": "resource-audit.json",
+  "schemaParity": {
+    "hexalith.test-environment.v1.json": "8d98ce1bfa1b536a22b083050033d6ea67c088129ff1e575cee9121affa710ea",
+    "hexalith.test-result.v1.json": "b5d5055219e61646cc58cef9064f9190b139467a4c729b840686284f4a38ebfb"
+  },
+  "sourceFileCount": 60,
+  "testedRevisions": {
+    "Platform": "95ee736dd43df51f328126ff48113e42b2bd4c6d",
+    "Builds": "8c9caa77feb85a2dce03153519d81684128890a6",
+    "EventStore": "f5d36b84522893386069bf723f5a398fa42c4c7b",
+    "Tenants": "48b0cd98be5ff75402e1206e083e561552146454",
+    "Memories": "7ccba6ca6eb2603557404f10a748b17a557d714a"
+  },
+  "frozenIntentSha256": "1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852",
+  "concurrentSourceFileCount": 3,
+  "compiledSourceVerification": "compiled-source-verification.json",
+  "parentAcceptanceAudit": "parent-acceptance-audit.json"
+}

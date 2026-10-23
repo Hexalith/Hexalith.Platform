@@ -1,0 +1,118 @@
+{
+  "layers": {
+    "blindHunter": {
+      "findings": 10
+    },
+    "edgeCaseHunter": {
+      "findings": 1
+    },
+    "verificationGap": {
+      "findings": 0
+    }
+  },
+  "findings": [
+    {
+      "id": "B1",
+      "verdict": "high",
+      "route": "defer",
+      "claim": "Terminal readiness FIFO",
+      "evidence": "Parent reproduced the compiled-assembly hang after a 200 ms cancellation (still blocked at 1.2 s). The exact readiness.json read exists at Builds baseline 66b9136a0b223925e51177a51eb48852e2f12787; this is inherited metadata I/O, separate from the corrected startup-task/timing paths."
+    },
+    {
+      "id": "B2",
+      "verdict": "medium",
+      "route": "defer",
+      "claim": "Detached entry descendants",
+      "evidence": "The batch loop awaits each native command, but the unchanged baseline CompositionProcess.RunCoreAsync successful-exit path does not establish descendant quiescence when streams are detached. Run-scoped final cleanup remains; stronger per-entry process supervision is inherited lifecycle work and needs its own ownership/termination policy."
+    },
+    {
+      "id": "B3",
+      "verdict": "low",
+      "route": "reject",
+      "claim": "Batch readiness snapshot",
+      "evidence": "Carried: the prior round-2/round-3 disposition remains. Descriptors truthfully expose the original startup observedAt; re-observation between entries requires a new AppHost query mechanism and guards an uncommon service-breaking suite."
+    },
+    {
+      "id": "B4",
+      "verdict": "false",
+      "route": "reject",
+      "claim": "Unknown resource owner",
+      "evidence": "The production owner is selected only from the loaded declarations; server owners come from their loaded declaration and Memories ownership is null unless its declaration exists. Writer handoff consumes runner-held readiness, including across batch entries. No production path producing the alleged arbitrary nonempty owner was established; fabricated public API input is not that path."
+    },
+    {
+      "id": "B5",
+      "verdict": "false",
+      "route": "reject",
+      "claim": "Observation chronology",
+      "evidence": "Required tasks complete before the engine requests and accepts a matching post-task refreshId. RunReadiness stamps the actual observations, and the writer uses the retained session rather than child-rewritten metadata. The proposed inconsistent session is not produced by this causal readiness path; no false-ready production handoff was shown."
+    },
+    {
+      "id": "B6",
+      "verdict": "low",
+      "route": "reject",
+      "claim": "Uncancelled task-results write",
+      "evidence": "A stalled filesystem can delay the non-deadline bookkeeping write; normal atomic private-file writes do not demonstrate that condition. Its purpose is preserving expired-task evidence after the startup token cancels. Adding another allowance/exception path is more than a direct correction for this uncommon filesystem failure."
+    },
+    {
+      "id": "B7",
+      "verdict": "low",
+      "route": "reject",
+      "claim": "Claim release exception",
+      "evidence": "Carried: R3-B6 already records the same ReleaseOwned exception path and rejects the uncommon >2-second lock contention/deletion-failure guard under the low-finding rule. The code and claim are unchanged."
+    },
+    {
+      "id": "B8",
+      "verdict": "low",
+      "route": "reject",
+      "claim": "Malformed durable claim",
+      "evidence": "Carried: the round-3 rejection records the same ClaimedPorts failure. Claims publish complete documents atomically; damage or a foreign JSON file is required, and isolating those failures adds recovery guards."
+    },
+    {
+      "id": "B9",
+      "verdict": "low",
+      "route": "reject",
+      "claim": "Archive parent replacement race",
+      "evidence": "The static path policy rechecks ancestry before creation and rename, but cannot make pathname operations atomic against an actively racing child. That child already runs with the same filesystem privileges; this is an uncommon deliberate replacement, and directory-handle publication adds a new mechanism rather than a direct correction."
+    },
+    {
+      "id": "B10",
+      "verdict": "low",
+      "route": "patch",
+      "claim": "Superseded evidence entry point",
+      "evidence": "Confirmed the main evidence README still called 426/37 results final. The implementation agent directly corrected the opening to the verified 553/44 results and review-round-3 links, retaining parent-final as history. Link/count and whitespace checks passed; no runtime source changed."
+    },
+    {
+      "id": "E1",
+      "verdict": "high",
+      "route": "defer",
+      "claim": "Terminal readiness FIFO",
+      "evidence": "The edge layer independently identified the same synchronous readiness.json open as B1. Parent reproduction and baseline comparison verify both the hang and its pre-existing attribution; group only after recording this separate verdict."
+    }
+  ],
+  "groups": [
+    {
+      "members": [
+        "B1",
+        "E1"
+      ],
+      "route": "defer",
+      "verdict": "high"
+    },
+    {
+      "members": [
+        "B2"
+      ],
+      "route": "defer",
+      "verdict": "medium"
+    },
+    {
+      "members": [
+        "B10"
+      ],
+      "route": "patch",
+      "verdict": "low",
+      "completed": true
+    }
+  ],
+  "runtimeSourceChangedAfterVerification": false
+}

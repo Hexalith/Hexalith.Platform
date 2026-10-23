@@ -1,0 +1,194 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entries") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(264,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entry") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(264,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-file") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(264,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(declared: False) [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(272,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(276,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(declared: True) [FAIL]
+      Shouldly.ShouldAssertException : starts
+          should be
+      1
+          but was
+      0
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-18509617b86d43889b4d0e2bf9eadd5b/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-18509617b86d43889b4d0e2bf9eadd5b/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(271,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(276,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.StartupFallbackIsCheckedBeforeProvisioningAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(refusesBeforeLaunch: False) [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      4
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-a632a8fdb26d4ee5b0d98503d5c1f562/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-a632a8fdb26d4ee5b0d98503d5c1f562/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(47,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(56,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(refusesBeforeLaunch: True) [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      4
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-421c0bc0f837497e8055f74801a77c1f/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-421c0bc0f837497e8055f74801a77c1f/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(47,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(56,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalMetadataRejectsStartupTaskFifoWithinOriginalBoundAsync [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(331,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalMetadataRejectsStartupTaskFifoWithinOriginalBoundAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync(expired: False) [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(375,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync(Boolean expired)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync(expired: True) [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestSelection.cs(58,0): at Hexalith.Builds.Tooling.Runtime.ModuleTestSelection.Select(IReadOnlyList`1 declarations, String name, String manifestPath, DateTimeOffset requestedAt)
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(375,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchivalFailurePreservesTheFirstOutcomeAndStoppingTimestampAsync(Boolean expired)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchLegacyEvidenceRefusesBeforeProvisioningAsync [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      1
+          but was
+      3
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"TopologyOrLifecycle","phase":"Topology","category":"TopologyOrLifecycle","ruleId":"HXW001"},"diagnostics":[{"ruleId":"HXW001","phase":"Topology","category":"TopologyOrLifecycle","message":"Cannot inspect Git workspace containing manifest \u0027/tmp/hexalith-g4-unit-2c35a2156ba446b9af84648f2b5f2024/manifest.json\u0027: Git metadata is invalid or inaccessible.","field":"/tmp/hexalith-g4-unit-2c35a2156ba446b9af84648f2b5f2024/manifest.json","hint":"Use a manifest in the active root or one of its direct references.","source":null,"location":null,"row":null}]}
+      
+      Stack Trace:
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(241,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchLegacyEvidenceRefusesBeforeProvisioningAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(244,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchLegacyEvidenceRefusesBeforeProvisioningAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: every resource is healthy.
+g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.5596ms with message '(null)'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'worker' to become healthy.
+g4: waiting for Dapr invocation of 'worker-app'.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR027 resource='eventstore' appId='eventstore' status='fault-OptionsValidationException'.
+g4: waiting for resource 'first' to become healthy.
+g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'redis' to become healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check infrastructure-redis with status Unhealthy completed after 1.3101ms with message 'Redis did not answer PING.'
+g4: waiting for resource 'eventstore' to become healthy.
+g4: every resource is healthy.
+g4: waiting for resource 'eventstore' to become healthy.
+g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0066ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0075ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.0075ms with message '(null)'
+fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+      Health check module-defined with status Unhealthy completed after 0.01ms with message '(null)'
+g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+g4: waiting for resource 'worker' to become healthy.
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 553, Errors: 0, Failed: 11, Skipped: 0, Not Run: 0, Time: 217.967s

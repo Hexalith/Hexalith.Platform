@@ -1,0 +1,52 @@
+{
+  "validations": [
+    {
+      "repository": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "message": "fix(tooling): complete story 2.4 run-owned suite provisioning\n",
+      "validator": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/tmp/story24-builds-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "installedVersion": "21.2.4",
+      "lockfileVersion": "21.2.4"
+    },
+    {
+      "repository": "/home/administrator/projects/hexalith/platform",
+      "message": "fix(testing): complete story 2.4 run-owned suite provisioning\n",
+      "validator": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/tmp/story24-platform-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "installedVersion": "21.2.1",
+      "lockfileVersion": "21.2.1"
+    }
+  ],
+  "whitespace": {
+    "command": [
+      "git",
+      "-c",
+      "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+      "diff",
+      "--check",
+      "HEAD",
+      "--",
+      "docs/contracts/test-environment-v1.md",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs",
+      "_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md",
+      "_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "_bmad-output/implementation-artifacts/deferred-work.md",
+      "_bmad-output/implementation-artifacts/evidence/2-4/README.md",
+      "_bmad-output/implementation-artifacts/evidence/2-4/review-round-3"
+    ],
+    "exitCode": 0,
+    "note": "The default check treated the existing required CRLF line ending on the added retention assertion as trailing whitespace; the final check recognizes CR at EOL without changing source bytes."
+  }
+}

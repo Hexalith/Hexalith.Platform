@@ -1223,3 +1223,11 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
   summary: Same open item as the round-2 `RunEndpoints.Observe` entry above (healthy resource with an unallocated endpoint); re-raised by three layers, not a new defect.
   evidence: Unverified (maybe-false; medium if true). New corroboration toward false: the Story 2.3 round-3 live check showed Aspire 13.6.3 `DcpExecutor.PrepareServices` allocates every proxyless endpoint port before resources start. Settle by observing reference-composition progress snapshots under run/debug, or by confirming no 13.6 resource type can report `Healthy` with an unallocated endpoint.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Avoid the inherited synchronous readiness.json open during terminal recording, which can hang on a child-created FIFO after stopping cancellation.
+  evidence: Completion-review B1/E1; the read is present verbatim at Builds baseline 66b9136a0b223925e51177a51eb48852e2f12787. Parent reproduced cancelled=True and completed=False after 1200 ms with a 200 ms token against the current compiled assembly; see evidence/2-4/review-round-3/readiness-fifo-parent-reproduction.json. Use runner-held readiness or the existing nonblocking bounded input mechanism.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-provision-a-run-owned-environment-for-a-test-suite.md`
+  summary: Define and enforce per-entry descendant completion for shared-environment batches without stopping shared run resources.
+  evidence: Completion-review B2; CompositionProcess.RunCoreAsync is byte-equivalent to Builds baseline 66b9136a0b223925e51177a51eb48852e2f12787 and returns on a successful parent exit plus drained streams without descendant quiescence. Detached inherited children can remain while the next command runs. Final run ownership cleanup exists; stronger entry supervision needs a separate lifecycle/ownership policy and a detached-child regression.

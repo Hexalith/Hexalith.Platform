@@ -1,0 +1,13 @@
+using System.Reflection;
+using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Diagnostics;
+string root=args[0]; string id=new('a',32);
+string workspace=Path.Combine(root,"runs",id); Directory.CreateDirectory(workspace);
+var options=new CompositionEngineOptions("unused","unused") { StateDirectory=Path.Combine(root,"state"), WorkspaceRoot=Path.Combine(root,"runs"), SelectedTest=new ModuleTestSelection("sample","verify","python3","runner.py",new('A',64),new('B',64),120,1,DateTimeOffset.UtcNow,DateTimeOffset.UtcNow.AddSeconds(120),DateTimeOffset.UtcNow.AddSeconds(121),"source") };
+var engine=new CompositionEngine(options);
+using var fifo=System.Diagnostics.Process.Start("mkfifo", Path.Combine(workspace,"readiness.json")); fifo!.WaitForExit();
+using var cancel=new CancellationTokenSource(TimeSpan.FromMilliseconds(200));
+var method=typeof(CompositionEngine).GetMethod("RecordTestOutcomeAsync", BindingFlags.Instance|BindingFlags.NonPublic)!;
+var task=Task.Run(async()=>await (Task)method.Invoke(engine,new object?[]{id,Array.Empty<CompositionResourceReadiness>(),new ToolCommandResult("completed",ToolOutcome.Passed(),Array.Empty<ToolDiagnostic>()),"unknown",new CompositionRunResources([],[]),cancel.Token,null,true,null})!);
+await Task.Delay(1200);Console.WriteLine($"cancelled={cancel.IsCancellationRequested}; completed={task.IsCompleted}");
+Environment.Exit(task.IsCompleted?0:42);

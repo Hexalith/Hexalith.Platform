@@ -1,0 +1,136 @@
+{
+  "counts": {
+    "builds-focused": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "builds-affected": {
+      "total": 553,
+      "passed": 553,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "platform-affected": {
+      "total": 45,
+      "passed": 44,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "not-run": 0
+    },
+    "live/qualification": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0
+    }
+  },
+  "matrixPassedCases": {
+    "ready suite/batch": 1,
+    "invalid/incompatible": 6,
+    "exclusive claim": 4,
+    "readiness/task failure or timeout": 4,
+    "missing proof": 14
+  },
+  "sourceFilesMatched": 60,
+  "frozenIntentSha256": "1f9629e6eaa57fac455129b09e94a9667293a9c5cb167d6403d239d0fbe5d852",
+  "liveProofs": [
+    {
+      "runId": "2f8a837fd855653bfee1186fbe8c65e6",
+      "resources": 6,
+      "executionSeconds": 120,
+      "dataIsolationVerified": true,
+      "dockerIds": []
+    },
+    {
+      "runId": "fa089a284b28d8794b801465c48b905f",
+      "resources": 6,
+      "executionSeconds": 120,
+      "dataIsolationVerified": true,
+      "dockerIds": []
+    }
+  ],
+  "ownedProcesses": [],
+  "fixtureWorkspaceDeleted": true,
+  "allNineReviewPatchesVerified": [
+    {
+      "patch": "selected-declaration infrastructure ownership",
+      "passedCases": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: \"memories\", selectedSuiteFallback: False)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: \"memories\", selectedSuiteFallback: True)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: \"tenants\", selectedSuiteFallback: False)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: False)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: True)"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "cross-assembly annotation lookup",
+      "passedCases": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: \"memories\", selectedSuiteFallback: False)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: \"memories\", selectedSuiteFallback: True)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: \"tenants\", selectedSuiteFallback: False)"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "engine composition content identity",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskReadyRequiresItsArgumentsAsync"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "repeated profile refusal outside v2 test",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RepeatedProfilesRequireV2TestBeforeStartupAsync(command: \"run\", v2: False)",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RepeatedProfilesRequireV2TestBeforeStartupAsync(command: \"run\", v2: True)",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleCommandApplicationTests.RepeatedProfilesRequireV2TestBeforeStartupAsync(command: \"test\", v2: False)"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "later batch terminal selection",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "v1 test setup startup clock",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: \"test\", kind: \"v1\")"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "selected startup cancellation during model build",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "declared Memories store ownership",
+      "passedCases": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: False)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: True)",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync"
+      ],
+      "manualDocumentCheck": false
+    },
+    {
+      "patch": "versioned contract omits process-artifact evidence path",
+      "passedCases": [],
+      "manualDocumentCheck": true
+    }
+  ]
+}

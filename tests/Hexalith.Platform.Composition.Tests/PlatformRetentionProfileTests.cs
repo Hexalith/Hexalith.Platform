@@ -243,6 +243,7 @@ public sealed partial class PlatformAppModelTests
             AssertContainerImage(defaults, "memories-graph", "falkordb/falkordb", "latest", null);
 
             ContainerResource postgres = builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "memories-retention-postgresql");
+            postgres.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe("memories");
             postgres.Annotations.OfType<HealthCheckAnnotation>().ShouldNotBeEmpty();
             IResource[] memories = builder.Resources.Where(resource => resource.Name is "memories" or "memories-access-telemetry-clock" or "memories-access-telemetry").ToArray();
             memories.Length.ShouldBe(3);

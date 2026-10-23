@@ -257,11 +257,12 @@ set; normal batch execution retains each inspected diagnostic report. Tests
 consume absolute `HEXALITH_TEST_ENVIRONMENT_PATH` and the observed endpoint
 list. Credentials remain in the existing separate private channel and never
 enter this descriptor. Every resource needs explicit ownership from an actual
-declaration. Shared runner infrastructure is attributed only to an actual
-selected Platform declaration; ordinary EventStore, Tenants and Memories
-closures currently omit that declaration and therefore refuse descriptor
-handoff. Their run/debug paths remain available. The qualified technical fixture
-below includes the required Platform declaration.
+declaration. Shared runner infrastructure belongs to the active selected module's
+declaration, falling back to the selected suite's declaring module when no active
+module is set. Servers and Memories stores retain their own declaring modules.
+EventStore, Tenants and Memories closures therefore carry ownership without a
+separate module named `platform`; unavailable declaration ownership still refuses
+handoff.
 
 The startup clock begins at the environment request (600 seconds by default,
 with justified finite declaration overrides). A non-600 caller fallback requires
@@ -284,6 +285,5 @@ The source qualification fixture is
 runs one declared suite in two concurrent fresh environments, consumes each
 validated descriptor, persists identical keys through each owned Redis endpoint,
 verifies its own value and absence of the peer's unique key, and cleans only its
-recorded run identities. Evidence belongs under
-`_bmad-output/implementation-artifacts/evidence/2-4/`. This local proof supplies
+recorded run identities. This local proof supplies
 no package-mode CI, candidate or tool acceptance credit.

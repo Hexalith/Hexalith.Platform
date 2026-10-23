@@ -1,0 +1,17 @@
+{
+  "inspection": "read-only; no lifecycle action",
+  "aspireApphost": "No AppHost is currently running for apphost.cs",
+  "containers": [
+    "fe6c35911851 fluent-ui-blazor-mcp ",
+    "f1e0a30a3a93 dapr_placement ",
+    "8623af8b7bbd dapr_scheduler ",
+    "8d0788f8322f dapr_redis ",
+    "cb7c12622c18 dapr_zipkin "
+  ],
+  "exitCode": 0,
+  "earlierReadOnlyObservation": {
+    "independentRunId": "97f7d0542335ba34c85f5a3b4e868577",
+    "status": "Observed in initial Docker inspection; absent at this later receipt before live proof began",
+    "lifecycleCause": "unconfirmed external lifecycle; no command from this task targeted the run"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "method": "Portable PDB SHA-256 document checksums; CodeView GUID verifies each PDB belongs to its binary",
+  "toolDirectory": "/tmp/story24-pdb-7x_x6xtb",
+  "toolSource": "using System.Reflection.Metadata;\nusing System.Reflection.PortableExecutable;\nusing System.Security.Cryptography;\nusing System.Text.Json;\n\nusing var binaryStream = File.OpenRead(args[0]);\nusing var pe = new PEReader(binaryStream);\nusing var pdbStream = File.OpenRead(args[1]);\nusing var provider = MetadataReaderProvider.FromPortablePdbStream(pdbStream);\nvar reader = provider.GetMetadataReader();\nGuid id = new(reader.DebugMetadataHeader!.Id.Take(16).ToArray());\nvar codeView = pe.ReadCodeViewDebugDirectoryData(pe.ReadDebugDirectory().Single(entry => entry.Type == DebugDirectoryEntryType.CodeView));\nif (codeView.Guid != id) throw new InvalidDataException(\"Binary and portable PDB identities differ.\");\nList<object> files = [];\nforeach (string source in args.Skip(2))\n{\n    var document = reader.Documents.Select(handle => reader.GetDocument(handle)).Single(item => Path.GetFileName(reader.GetString(item.Name)) == Path.GetFileName(source));\n    Guid algorithm = reader.GetGuid(document.HashAlgorithm);\n    if (algorithm != new Guid(\"8829d00f-11b8-4213-878b-770e8597ac16\")) throw new InvalidDataException(\"Expected SHA-256 source checksum.\");\n    string compiled = Convert.ToHexStringLower(reader.GetBlobBytes(document.Hash));\n    string current = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(source)));\n    files.Add(new { source, document = reader.GetString(document.Name), algorithm = \"SHA-256\", compiled, current, matches = compiled == current });\n    if (compiled != current) throw new InvalidDataException(\"Current source differs from compiled source: \" + Path.GetFileName(source));\n}\nConsole.WriteLine(JsonSerializer.Serialize(new { binary = args[0], binarySha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(args[0]))), pdb = args[1], pdbSha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(args[1]))), matchedBinaryPdbIdentity = id, files }));\n",
+  "buildCommand": [
+    "dotnet",
+    "build",
+    "/tmp/story24-pdb-7x_x6xtb/SourceChecksums.csproj",
+    "-c",
+    "Debug",
+    "-m:1",
+    "-nodeReuse:false",
+    "-p:UseSharedCompilation=false",
+    "--nologo"
+  ],
+  "receipts": [
+    {
+      "binary": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.dll",
+      "binarySha256": "f66d3790417ed4facc3874e864dd9f6a1f65fb9fa5019dd791aa6a1dccafcff5",
+      "pdb": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.pdb",
+      "pdbSha256": "3c65d3c0652345549575773b70bfd4024222d62757ef610210262daa4615be2b",
+      "matchedBinaryPdbIdentity": "ae9d62c7-7bbe-4e68-bd62-2ebcf895ad65",
+      "files": [
+        {
+          "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+          "document": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+          "algorithm": "SHA-256",
+          "compiled": "26353f29b01262abd05108b0e393d01271d7dbe4c2e9091e0dc93f26c135ada3",
+          "current": "26353f29b01262abd05108b0e393d01271d7dbe4c2e9091e0dc93f26c135ada3",
+          "matches": true
+        },
+        {
+          "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformDaprDiagnosticResource.cs",
+          "document": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformDaprDiagnosticResource.cs",
+          "algorithm": "SHA-256",
+          "compiled": "d32ef6e6ad150b5c79dc92083d5fd4ee059d7d9f37757fa93428cbf69b87f417",
+          "current": "d32ef6e6ad150b5c79dc92083d5fd4ee059d7d9f37757fa93428cbf69b87f417",
+          "matches": true
+        },
+        {
+          "source": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformDaprDiagnostics.cs",
+          "document": "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformDaprDiagnostics.cs",
+          "algorithm": "SHA-256",
+          "compiled": "fc31471c8ce854bd990fd7bdcb6d542143695d55d4683496e4379b0ff62b6541",
+          "current": "fc31471c8ce854bd990fd7bdcb6d542143695d55d4683496e4379b0ff62b6541",
+          "matches": true
+        }
+      ],
+      "command": [
+        "dotnet",
+        "/tmp/story24-pdb-7x_x6xtb/bin/Debug/net10.0/SourceChecksums.dll",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.dll",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.pdb",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformDaprDiagnosticResource.cs",
+        "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformDaprDiagnostics.cs"
+      ]
+    },
+    {
+      "binary": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "binarySha256": "7b74834a350f51473e96bdb9e2cb25de145e84ed162fbb875ab7f071d14fdc3c",
+      "pdb": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.pdb",
+      "pdbSha256": "f0ac0636794e20f74d5a2341c86f56bd31156bb5de1e9310a693ef70add042a0",
+      "matchedBinaryPdbIdentity": "7398a647-f4a1-430c-985e-9cf15716e2bc",
+      "files": [
+        {
+          "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs",
+          "document": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs",
+          "algorithm": "SHA-256",
+          "compiled": "7eff73258fa90f527cffec81b338aa639e89118c9b3241862a3052062da76137",
+          "current": "7eff73258fa90f527cffec81b338aa639e89118c9b3241862a3052062da76137",
+          "matches": true
+        },
+        {
+          "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs",
+          "document": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs",
+          "algorithm": "SHA-256",
+          "compiled": "40095050b5aad59df7838d3049ccd164384d0743ca14eafcd4c51305858ce955",
+          "current": "40095050b5aad59df7838d3049ccd164384d0743ca14eafcd4c51305858ce955",
+          "matches": true
+        },
+        {
+          "source": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformDaprDiagnosticsTests.cs",
+          "document": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformDaprDiagnosticsTests.cs",
+          "algorithm": "SHA-256",
+          "compiled": "2c1e7853ab471f821dc41885b2d3b5c8040c2f776ca5e6e1840a5dbc6c240541",
+          "current": "2c1e7853ab471f821dc41885b2d3b5c8040c2f776ca5e6e1840a5dbc6c240541",
+          "matches": true
+        }
+      ],
+      "command": [
+        "dotnet",
+        "/tmp/story24-pdb-7x_x6xtb/bin/Debug/net10.0/SourceChecksums.dll",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.pdb",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRetentionProfileTests.cs",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformDaprDiagnosticsTests.cs"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.13)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync [SKIP]
+      Set HEXALITH_PLATFORM_OCCUPIED_PORT_LIVE=1 for the bounded Docker listener-conflict proof.
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(module: "memories", selectedSuiteFallback: True) [FAIL]
+      System.IO.InvalidDataException : The PostgreSQL retention experiment requires a runner-owned Development source run.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(116,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(99,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(271,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(String module, Boolean selectedSuiteFallback)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'e7f3bec901eeb2c2bfbfe46711c7f3a4410abe8c3077fa8c7ec44e7bcf4dd89f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 45, Errors: 0, Failed: 1, Skipped: 1, Not Run: 0, Time: 31.344s

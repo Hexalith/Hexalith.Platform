@@ -1,0 +1,58 @@
+[
+  {
+    "patch": "selected-declaration infrastructure ownership",
+    "verification": [
+      "ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync",
+      "IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync"
+    ]
+  },
+  {
+    "patch": "cross-assembly annotation lookup",
+    "verification": [
+      "ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync"
+    ]
+  },
+  {
+    "patch": "engine composition content identity",
+    "verification": [
+      "StartupTaskReadyRequiresItsArgumentsAsync"
+    ]
+  },
+  {
+    "patch": "repeated profile refusal outside v2 test",
+    "verification": [
+      "RepeatedProfilesRequireV2TestBeforeStartupAsync"
+    ]
+  },
+  {
+    "patch": "later batch terminal selection",
+    "verification": [
+      "TerminalTimingNeverReadsChildFileAndDownKeepsMembershipAsync"
+    ]
+  },
+  {
+    "patch": "v1 test setup startup clock",
+    "verification": [
+      "MappingConsumesOriginalDefaultDeadlineAsync(command: \"test\", kind: \"v1\")"
+    ]
+  },
+  {
+    "patch": "selected startup cancellation during model build",
+    "verification": [
+      "SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync"
+    ]
+  },
+  {
+    "patch": "declared Memories store ownership",
+    "verification": [
+      "IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync",
+      "RetentionSelectedComposeRunAdoptsGraphCallbacksReadinessAndIsolatedControlPortsAsync"
+    ]
+  },
+  {
+    "patch": "versioned contract omits process-artifact evidence path",
+    "verification": [
+      "docs/contracts/test-environment-v1.md runner-handoff prose inspection"
+    ]
+  }
+]

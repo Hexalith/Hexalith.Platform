@@ -344,7 +344,9 @@ public static class PlatformAppModel
                 else if (projects.TryGetValue(target.ResourceId, out IResourceBuilder<ProjectResource>? targetProject)) containers[server.ResourceId].WaitFor(targetProject);
                 else containers[server.ResourceId].WaitFor(containers[target.ResourceId]);
             }
-            string? infrastructureOwner = declarations.SingleOrDefault(module => PlatformDeclarationSet.Id(module.Declaration) == "platform")?.Declaration.GetProperty("identity").GetProperty("moduleId").GetString();
+            string? selectedModule = options.ActiveModule ?? options.RunPlan?.SelectedTest?.ModuleId;
+            string? infrastructureOwner = declarations.Where(module => PlatformDeclarationSet.Id(module.Declaration) == selectedModule)
+                .Select(module => PlatformDeclarationSet.Id(module.Declaration)).SingleOrDefault();
             foreach (IResource resource in builder.Resources.Where(resource => !existingResources.Contains(resource)))
             {
                 string name = resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal) ? resource.Name[..^"-dapr-cli".Length] : resource.Name;

@@ -43,7 +43,7 @@ public sealed partial class PlatformAppModelTests
                     await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
                     PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
                 }
-                else PlatformAppModel.Compose(builder, Options());
+                else PlatformAppModel.Compose(builder, Options(active: "tenants"));
 
                 var servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
                 servers.Length.ShouldBe(6);
@@ -80,8 +80,11 @@ public sealed partial class PlatformAppModelTests
                 int sentryPort = sentry.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
                 foreach (var server in servers)
                     server.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe(PlatformDeclarationSet.Id(server.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.Module.Declaration));
-                // No platform declaration is in this domain closure; infrastructure ownership stays unavailable.
-                sentry.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBeNull();
+                // Shared infrastructure belongs to the active module, while declared stores retain their owner.
+                foreach (string name in new[] { "dapr-sentry", "dapr-placement-mtls", "dapr-scheduler-mtls", "redis" })
+                    builder.Resources.Single(resource => resource.Name == name).Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe("tenants", name);
+                foreach (string name in new[] { "memories-vectors", "memories-graph" })
+                    builder.Resources.Single(resource => resource.Name == name).Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe("memories", name);
                 if (plan is not null)
                 {
                     var claims = new CompositionResourceClaimStore(plan.ResourceClaimStateDirectory!);
@@ -244,6 +247,41 @@ public sealed partial class PlatformAppModelTests
                     ?? builder.Resources.FirstOrDefault(candidate => candidate.Annotations.OfType<DaprSidecarAnnotation>().Any(annotation => ReferenceEquals(annotation.Sidecar, resource)))?.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault();
                 string expected = server is null ? "platform" : PlatformDeclarationSet.Id(server.Binding.Module.Declaration);
                 resource.Annotations.OfType<PlatformResourceOwnerAnnotation>().Single().ModuleId.ShouldBe(expected, resource.Name);
+            }
+        }
+        finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
+    }
+
+    [Theory]
+    [InlineData("tenants", false)]
+    [InlineData("memories", false)]
+    [InlineData("memories", true)]
+    public async Task ComposeRunOwnersSurviveTheBuildsAnnotationLookupAsync(string module, bool selectedSuiteFallback)
+    {
+        string workspace = Path.Combine(Path.GetTempPath(), "platform-owner-lookup-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            CompositionRunPlan initial = await BuildIsolationPlanAsync(workspace, selected: selectedSuiteFallback);
+            CompositionRunPlan plan = initial with
+            {
+                PlatformDeclarationPaths = [Path.Combine(Root, "references", module == "tenants" ? "Hexalith.Tenants" : "Hexalith.Memories", "module", "hexalith.module-manifest.v2.json")],
+                PlatformActiveModule = selectedSuiteFallback ? null : module,
+            };
+            var builder = Builder();
+            builder.Environment.EnvironmentName = "Development";
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
+            builder.Resources.ShouldNotBeEmpty();
+            foreach (IResource resource in builder.Resources)
+            {
+                PlatformServerAnnotation? server = resource.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault()
+                    ?? builder.Resources.FirstOrDefault(candidate => candidate.Annotations.OfType<DaprSidecarAnnotation>().Any(annotation => ReferenceEquals(annotation.Sidecar, resource)))?.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault();
+                string expected = server is not null ? PlatformDeclarationSet.Id(server.Binding.Module.Declaration)
+                    : resource.Name is "memories-vectors" or "memories-graph" or "memories-retention-postgresql" ? "memories" : module;
+                // Match RunReadiness.OwningModule's cross-assembly name and property lookup.
+                string name = resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal) ? resource.Name[..^"-dapr-cli".Length] : resource.Name;
+                IResource owner = builder.Resources.FirstOrDefault(candidate => candidate.Name == name) ?? resource;
+                IResourceAnnotation annotation = owner.Annotations.Single(candidate => candidate.GetType().Name == "PlatformResourceOwnerAnnotation");
+                (annotation.GetType().GetProperty("ModuleId")?.GetValue(annotation) as string).ShouldBe(expected, resource.Name);
             }
         }
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true); }
