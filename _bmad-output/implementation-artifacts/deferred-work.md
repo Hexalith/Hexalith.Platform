@@ -1107,3 +1107,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: Test custody worker uncertainty and restart behavior across native I/O failures.
   evidence: Verification review found no RecoverableLifecycle test proving the durable SendCommitted intent survives a lost native acknowledgement and prevents resend.
+
+## Deferred from: code review of spec-4-6-encode-release-attempt-qualification-and-administrator-records.md (2026-10-23)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Define which attempt kinds may issue qualification and production-promoted records, and enforce it in `RecordTransitionValidator.ValidateIssuer`.
+  evidence: `ValidateIssuer` (Builds `RecordTransitionValidator.cs:253`) accepts any `AttemptKind`, so a `rotation` or `in-place-restore` attempt can issue either record. The spine's Production profile rule legitimately lets release, environment-layer and shared-infrastructure attempts issue qualification (and renew production-promoted in production), so the allowed-kind matrix needs lifecycle design. Deferred to Story 4.7 or the lifecycle work by the Administrator decision of 2026-10-23 (review decision D2).
